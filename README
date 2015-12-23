@@ -1,2 +1,39 @@
 Up is a set of conventions for writing plain text.
 
+
+
+This is a [helpful link -> https://stackoverflow.com].
+
+This text is *emphasized*.
+
+This is text is **stressed**.
+
+
+
+All three conventions can be nested within each other.
+
+This is an *emphasized and **stressed [link -> https://ddg.gg]***.
+
+This [link contains **stressed and *emphasized text*** -> https://ddg.gg].
+
+Innermost conventions must be "closed" before outer ones.
+
+
+
+Link text [can contain [any] brackets -> https://altavista.com].
+
+Link URLs [can contain any brackets -> https://google.com/search?q=[hi]].
+
+
+
+A backslash "escapes" the following character, removing any special meaning:
+
+This is not a \[helpful link -> https://stackoverflow.com].
+
+This text is not \*emphasized\*.
+
+This text is not \*\*stressed\*\*.
+
+
+
+P.S. I'm not accepting contributions at this time!
