@@ -16,13 +16,18 @@ describe('Text', function () {
 });
 describe('A backslash', function () {
     it('causes the following character to be treated as plain text', function () {
-        chai_1.expect(Up.ast('Hello, \\\\')).to.be.eql(new DocumentNode_1.DocumentNode([
-            new PlainTextNode_1.PlainTextNode('Hello, \\!')
+        chai_1.expect(Up.ast('Hello, \\world!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, world!')
         ]));
     });
     it('causes the following backslash to be treated as plain text', function () {
-        chai_1.expect(Up.ast('Hello, \\world! \\')).to.be.eql(new DocumentNode_1.DocumentNode([
-            new PlainTextNode_1.PlainTextNode('Hello, world!')
+        chai_1.expect(Up.ast('Hello, \\\\!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, \\!')
+        ]));
+    });
+    it('is ignored if it is the final character', function () {
+        chai_1.expect(Up.ast('Hello, \\')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, ')
         ]));
     });
 });

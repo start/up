@@ -8,8 +8,11 @@ function parse(text) {
         var currentChar = text[i];
         switch (currentChar) {
             case '\\':
+                if (1 + i === text.length) {
+                    break;
+                }
                 i += 1;
-                workingText += text[1 + i];
+                workingText += text[i];
                 break;
             default:
                 workingText += currentChar;

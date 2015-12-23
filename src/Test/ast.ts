@@ -23,15 +23,21 @@ describe('Text', function() {
 
 describe('A backslash', function() {
   it('causes the following character to be treated as plain text', function() {
-    expect(Up.ast('Hello, \\\\')).to.be.eql(
+    expect(Up.ast('Hello, \\world!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, world!')
+      ]))
+  })
+  it('causes the following backslash to be treated as plain text', function() {
+    expect(Up.ast('Hello, \\\\!')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, \\!')
       ]))
   })
-  it('causes the following backslash to be treated as plain text', function() {
-    expect(Up.ast('Hello, \\world! \\')).to.be.eql(
+  it('is ignored if it is the final character', function() {
+    expect(Up.ast('Hello, \\')).to.be.eql(
       new DocumentNode([
-        new PlainTextNode('Hello, world!')
+        new PlainTextNode('Hello, ')
       ]))
   })
 })
