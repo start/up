@@ -3,21 +3,14 @@ import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 
-enum ParseMode {
-  Literal,
-  Normal
-}
-
 export class Parser {
   private currentNode: SyntaxNode;
-  private mode: ParseMode;
   private workingText: string;
 
   parse(text: string): DocumentNode {
     const documentNode = new DocumentNode()
 
     this.currentNode = documentNode
-    this.mode = ParseMode.Normal
     this.workingText = ''
 
     this.parseInline(text)
@@ -26,37 +19,36 @@ export class Parser {
   }
 
   private parseInline(text: string) {
-    
+    let isNextCharEscaped = false;
+
     for (let currentChar of text) {
-      
-      if (this.mode == ParseMode.Literal) {
+
+      if (isNextCharEscaped) {
         this.workingText += currentChar
-        this.mode = ParseMode.Normal
+        isNextCharEscaped = false
         continue;
       }
-      
-      if (this.mode == ParseMode.Normal) {
-        if (currentChar === '\\') {
-          this.mode = ParseMode.Literal
+
+      if (currentChar === '\\') {
+        isNextCharEscaped = true
+        continue;
+      }
+
+      if (this.currentNode instanceof EmphasisNode) {
+        if (currentChar === '*') {
+          this.flushWorkingText()
+          this.exitCurrentNode()
           continue;
         }
-        
-        if (this.currentNode instanceof EmphasisNode) {
-          if (currentChar === '*') {
-            this.flushWorkingText()
-            this.exitCurrentNode()
-            continue;
-          }
-        } else {
-          if (currentChar === '*') {
-            this.flushWorkingText()
-            this.enterNewChildNode(new EmphasisNode())
-            continue;
-          }
+      } else {
+        if (currentChar === '*') {
+          this.flushWorkingText()
+          this.enterNewChildNode(new EmphasisNode())
+          continue;
         }
-
-        this.workingText += currentChar
       }
+
+      this.workingText += currentChar
     }
 
     this.flushWorkingText()

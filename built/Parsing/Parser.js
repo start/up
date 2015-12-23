@@ -1,51 +1,44 @@
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
-var ParseMode;
-(function (ParseMode) {
-    ParseMode[ParseMode["Literal"] = 0] = "Literal";
-    ParseMode[ParseMode["Normal"] = 1] = "Normal";
-})(ParseMode || (ParseMode = {}));
 var Parser = (function () {
     function Parser() {
     }
     Parser.prototype.parse = function (text) {
         var documentNode = new DocumentNode_1.DocumentNode();
         this.currentNode = documentNode;
-        this.mode = ParseMode.Normal;
         this.workingText = '';
         this.parseInline(text);
         return documentNode;
     };
     Parser.prototype.parseInline = function (text) {
+        var isNextCharEscaped = false;
         for (var _i = 0; _i < text.length; _i++) {
             var currentChar = text[_i];
-            if (this.mode == ParseMode.Literal) {
+            if (isNextCharEscaped) {
                 this.workingText += currentChar;
-                this.mode = ParseMode.Normal;
+                isNextCharEscaped = false;
                 continue;
             }
-            if (this.mode == ParseMode.Normal) {
-                if (currentChar === '\\') {
-                    this.mode = ParseMode.Literal;
+            if (currentChar === '\\') {
+                isNextCharEscaped = true;
+                continue;
+            }
+            if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
+                if (currentChar === '*') {
+                    this.flushWorkingText();
+                    this.exitCurrentNode();
                     continue;
                 }
-                if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
-                    if (currentChar === '*') {
-                        this.flushWorkingText();
-                        this.exitCurrentNode();
-                        continue;
-                    }
-                }
-                else {
-                    if (currentChar === '*') {
-                        this.flushWorkingText();
-                        this.enterNewChildNode(new EmphasisNode_1.EmphasisNode());
-                        continue;
-                    }
-                }
-                this.workingText += currentChar;
             }
+            else {
+                if (currentChar === '*') {
+                    this.flushWorkingText();
+                    this.enterNewChildNode(new EmphasisNode_1.EmphasisNode());
+                    continue;
+                }
+            }
+            this.workingText += currentChar;
         }
         this.flushWorkingText();
     };
