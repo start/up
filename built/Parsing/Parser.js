@@ -6,59 +6,67 @@ var ParseMode;
     ParseMode[ParseMode["Literal"] = 0] = "Literal";
     ParseMode[ParseMode["Normal"] = 1] = "Normal";
 })(ParseMode || (ParseMode = {}));
-function parse(text) {
-    var documentNode = new DocumentNode_1.DocumentNode;
-    var currentNode = documentNode;
-    var workingText = '';
-    function addPlainTextNodeForWorkingText() {
-        if (workingText) {
-            currentNode.addChild(new PlainTextNode_1.PlainTextNode(workingText));
-        }
-        workingText = '';
+var Parser = (function () {
+    function Parser() {
     }
-    function addChildAndMakeChildCurrentNode(child) {
-        currentNode.addChild(child);
-        currentNode = child;
-    }
-    var mode = ParseMode.Normal;
-    var i = -1;
-    while (true) {
-        i += 1;
-        if (i === text.length) {
-            break;
-        }
-        var currentChar = text[i];
-        if (mode == ParseMode.Literal) {
-            workingText += currentChar;
-            mode = ParseMode.Normal;
-        }
-        else if (mode == ParseMode.Normal) {
-            if (currentChar === '\\') {
-                mode = ParseMode.Literal;
+    Parser.prototype.initialize = function (documentNode) {
+        this.currentNode = documentNode;
+        this.mode = ParseMode.Normal;
+        this.index = -1;
+        this.workingText = '';
+    };
+    Parser.prototype.parse = function (text) {
+        var documentNode = new DocumentNode_1.DocumentNode();
+        this.initialize(documentNode);
+        while (true) {
+            this.index += 1;
+            if (this.index === text.length) {
+                break;
             }
-            else {
-                if (currentNode instanceof EmphasisNode_1.EmphasisNode) {
-                    if (currentChar === '*') {
-                        addPlainTextNodeForWorkingText();
-                        currentNode = currentNode.parent;
-                        continue;
-                    }
+            var currentChar = text[this.index];
+            if (this.mode == ParseMode.Literal) {
+                this.workingText += currentChar;
+                this.mode = ParseMode.Normal;
+            }
+            else if (this.mode == ParseMode.Normal) {
+                if (currentChar === '\\') {
+                    this.mode = ParseMode.Literal;
                 }
                 else {
-                    if (currentChar === '*') {
-                        addPlainTextNodeForWorkingText();
-                        addChildAndMakeChildCurrentNode(new EmphasisNode_1.EmphasisNode());
-                        continue;
+                    if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
+                        if (currentChar === '*') {
+                            this.flushWorkingText();
+                            this.currentNode = this.currentNode.parent;
+                            continue;
+                        }
                     }
+                    else {
+                        if (currentChar === '*') {
+                            this.flushWorkingText();
+                            this.enterNewChildNode(new EmphasisNode_1.EmphasisNode());
+                            continue;
+                        }
+                    }
+                    this.workingText += currentChar;
                 }
-                workingText += currentChar;
+            }
+            else {
+                throw 'Unrecognized parse mode';
             }
         }
-        else {
-            throw 'Unrecognized parse mode';
+        this.flushWorkingText();
+        return documentNode;
+    };
+    Parser.prototype.flushWorkingText = function () {
+        if (this.workingText) {
+            this.currentNode.addChild(new PlainTextNode_1.PlainTextNode(this.workingText));
         }
-    }
-    addPlainTextNodeForWorkingText();
-    return documentNode;
-}
-exports.parse = parse;
+        this.workingText = '';
+    };
+    Parser.prototype.enterNewChildNode = function (child) {
+        this.currentNode.addChild(child);
+        this.currentNode = child;
+    };
+    return Parser;
+})();
+exports.Parser = Parser;
