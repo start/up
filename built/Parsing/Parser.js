@@ -14,6 +14,7 @@ function parse(text) {
         var currentChar = text[i];
         if (mode == ParseMode.Literal) {
             workingText += currentChar;
+            mode = ParseMode.Normal;
         }
         else if (mode == ParseMode.Normal) {
             if (currentChar == '\\') {

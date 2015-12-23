@@ -19,6 +19,7 @@ export function parse(text: string): DocumentNode {
 
     if (mode == ParseMode.Literal) {
       workingText += currentChar
+      mode = ParseMode.Normal
 
     } else if (mode == ParseMode.Normal) {
       if (currentChar == '\\') {
