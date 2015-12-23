@@ -14,24 +14,14 @@ export class Parser {
   private mode: ParseMode;
   private workingText: string;
 
-  private initialize(documentNode: DocumentNode): void {
-    this.currentNode = documentNode
-    this.mode = ParseMode.Normal
-    this.index = -1
-    this.workingText = ''
-  }
-
   parse(text: string): DocumentNode {
     const documentNode = new DocumentNode()    
-    this.initialize(documentNode);
+    
+    this.currentNode = documentNode
+    this.mode = ParseMode.Normal
+    this.workingText = ''
 
-    while (true) {
-      this.index += 1
-
-      if (this.index === text.length) {
-        break;
-      }
-
+    for (this.index = 0; this.index < text.length; this.index++) {
       let currentChar = text[this.index]
 
       if (this.mode == ParseMode.Literal) {

@@ -9,20 +9,12 @@ var ParseMode;
 var Parser = (function () {
     function Parser() {
     }
-    Parser.prototype.initialize = function (documentNode) {
-        this.currentNode = documentNode;
-        this.mode = ParseMode.Normal;
-        this.index = -1;
-        this.workingText = '';
-    };
     Parser.prototype.parse = function (text) {
         var documentNode = new DocumentNode_1.DocumentNode();
-        this.initialize(documentNode);
-        while (true) {
-            this.index += 1;
-            if (this.index === text.length) {
-                break;
-            }
+        this.currentNode = documentNode;
+        this.mode = ParseMode.Normal;
+        this.workingText = '';
+        for (this.index = 0; this.index < text.length; this.index++) {
             var currentChar = text[this.index];
             if (this.mode == ParseMode.Literal) {
                 this.workingText += currentChar;
