@@ -3,7 +3,11 @@ import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 
 export function parse(text: string): DocumentNode {
-  const documentNode = new DocumentNode;
+  const documentNode = new DocumentNode
   
-  return documentNode;
+  if (text) {
+    documentNode.children.push(new PlainTextNode(text))
+  }
+  
+  return documentNode
 }
