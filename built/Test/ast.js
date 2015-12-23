@@ -2,6 +2,7 @@ var chai_1 = require('chai');
 var Up = require('../index');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
+var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 describe('No text', function () {
     it('creates only a document node', function () {
         chai_1.expect(Up.ast('')).to.be.eql(new DocumentNode_1.DocumentNode());
@@ -28,6 +29,17 @@ describe('A backslash', function () {
     it('is ignored if it is the final character', function () {
         chai_1.expect(Up.ast('Hello, \\')).to.be.eql(new DocumentNode_1.DocumentNode([
             new PlainTextNode_1.PlainTextNode('Hello, ')
+        ]));
+    });
+});
+describe('Text surrounded by asterisks', function () {
+    it('is put inside an emphasis node', function () {
+        chai_1.expect(Up.ast('Hello, *world*!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, '),
+            new EmphasisNode_1.EmphasisNode([
+                new PlainTextNode_1.PlainTextNode('world')
+            ]),
+            new PlainTextNode_1.PlainTextNode('!')
         ]));
     });
 });

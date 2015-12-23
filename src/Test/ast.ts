@@ -5,6 +5,7 @@ import { expect } from 'chai'
 import * as Up from '../index'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
+import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 
 describe('No text', function() {
   it('creates only a document node', function() {
@@ -38,6 +39,19 @@ describe('A backslash', function() {
     expect(Up.ast('Hello, \\')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, ')
+      ]))
+  })
+})
+
+describe('Text surrounded by asterisks', function() {
+  it('is put inside an emphasis node', function() {
+    expect(Up.ast('Hello, *world*!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new EmphasisNode([
+          new PlainTextNode('world')
+        ]),
+        new PlainTextNode('!')
       ]))
   })
 })
