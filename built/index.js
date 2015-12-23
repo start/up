@@ -1,5 +1,5 @@
-var DocumentNode_1 = require('./SyntaxNodes/DocumentNode');
+var Parser_1 = require('./Parsing/Parser');
 function ast(text) {
-    return new DocumentNode_1.DocumentNode([]);
+    return Parser_1.parse(text);
 }
 exports.ast = ast;
