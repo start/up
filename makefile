@@ -1,6 +1,6 @@
 .PHONY: clean install all
 
-all: install
+all: test
 
 clean:
 	rm -rf built
@@ -8,4 +8,7 @@ clean:
 install: clean
 	mkdir built
 	tsc
+
+test: install
+	npm test
 
