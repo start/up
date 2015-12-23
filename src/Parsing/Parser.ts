@@ -9,6 +9,7 @@ enum ParseMode {
 
 export function parse(text: string): DocumentNode {
   const documentNode = new DocumentNode
+  let currentNode: SyntaxNode = documentNode
 
   let mode = ParseMode.Normal
   let i = 0
@@ -36,7 +37,7 @@ export function parse(text: string): DocumentNode {
   }
 
   if (workingText) {
-    documentNode.children.push(new PlainTextNode(workingText))
+    currentNode.children.push(new PlainTextNode(workingText))
   }
 
   return documentNode

@@ -7,6 +7,7 @@ var ParseMode;
 })(ParseMode || (ParseMode = {}));
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode;
+    var currentNode = documentNode;
     var mode = ParseMode.Normal;
     var i = 0;
     var workingText = '';
@@ -30,7 +31,7 @@ function parse(text) {
         i += 1;
     }
     if (workingText) {
-        documentNode.children.push(new PlainTextNode_1.PlainTextNode(workingText));
+        currentNode.children.push(new PlainTextNode_1.PlainTextNode(workingText));
     }
     return documentNode;
 }
