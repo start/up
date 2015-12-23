@@ -20,3 +20,20 @@ describe('A document node', function() {
       ]))
   })
 });
+
+describe('A backslash', function() {
+  describe('causes the following character to be treated as plain text', function() {
+    it('whether that following character is a backslash', function() {
+      expect(Up.ast('Hello, \\\\')).to.be.eql(
+        new DocumentNode([
+          new PlainTextNode('Hello, \\!')
+        ]))
+    })
+    it('or not', function() {
+      expect(Up.ast('Hello, \\world! \\')).to.be.eql(
+        new DocumentNode([
+          new PlainTextNode('Hello, world!')
+        ]))
+    })
+  })
+});
