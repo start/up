@@ -1,21 +1,30 @@
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
+var ParseMode;
+(function (ParseMode) {
+    ParseMode[ParseMode["Literal"] = 0] = "Literal";
+    ParseMode[ParseMode["Normal"] = 1] = "Normal";
+})(ParseMode || (ParseMode = {}));
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode;
+    var mode = ParseMode.Normal;
     var i = 0;
     var workingText = '';
     while (i < text.length) {
         var currentChar = text[i];
-        switch (currentChar) {
-            case '\\':
-                if (1 + i === text.length) {
-                    break;
-                }
-                i += 1;
-                workingText += text[i];
-                break;
-            default:
+        if (mode == ParseMode.Literal) {
+            workingText += currentChar;
+        }
+        else if (mode == ParseMode.Normal) {
+            if (currentChar == '\\') {
+                mode = ParseMode.Literal;
+            }
+            else {
                 workingText += currentChar;
+            }
+        }
+        else {
+            throw 'Unrecognized parse mode';
         }
         i += 1;
     }
