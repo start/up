@@ -1,5 +1,6 @@
 var SyntaxNode = (function () {
     function SyntaxNode(children) {
+        if (children === void 0) { children = []; }
         this.children = children;
     }
     SyntaxNode.prototype.text = function () {
