@@ -8,7 +8,7 @@ var EmphasisNode = (function (_super) {
     __extends(EmphasisNode, _super);
     function EmphasisNode() {
         _super.apply(this, arguments);
-        this.EMPHASIS_NODE = 'emphasis node';
+        this.EMPHASIS_NODE = null;
     }
     return EmphasisNode;
 })(SyntaxNode_1.SyntaxNode);

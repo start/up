@@ -9,7 +9,7 @@ var PlainTextNode = (function (_super) {
     function PlainTextNode(plainText) {
         _super.call(this, null);
         this.plainText = plainText;
-        this.PLAIN_TEXT_NODE = 'plain text node';
+        this.PLAIN_TEXT_NODE = null;
     }
     PlainTextNode.prototype.text = function () {
         return this.plainText;

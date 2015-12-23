@@ -9,5 +9,5 @@ export class PlainTextNode extends SyntaxNode {
     return this.plainText
   }
   
-  PLAIN_TEXT_NODE = 'plain text node'
+  PLAIN_TEXT_NODE: any = null
 }
