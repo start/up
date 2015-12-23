@@ -20,6 +20,12 @@ export class Parser {
     this.mode = ParseMode.Normal
     this.workingText = ''
 
+    this.parseInline(text)
+
+    return documentNode
+  }
+  
+  private parseInline(text: string) {
     for (let currentChar of text) {
       if (this.mode == ParseMode.Literal) {
         this.workingText += currentChar
@@ -54,8 +60,6 @@ export class Parser {
     }
 
     this.flushWorkingText()
-
-    return documentNode
   }
 
   private flushWorkingText(): void {

@@ -14,6 +14,10 @@ var Parser = (function () {
         this.currentNode = documentNode;
         this.mode = ParseMode.Normal;
         this.workingText = '';
+        this.parseInline(text);
+        return documentNode;
+    };
+    Parser.prototype.parseInline = function (text) {
         for (var _i = 0; _i < text.length; _i++) {
             var currentChar = text[_i];
             if (this.mode == ParseMode.Literal) {
@@ -47,7 +51,6 @@ var Parser = (function () {
             }
         }
         this.flushWorkingText();
-        return documentNode;
     };
     Parser.prototype.flushWorkingText = function () {
         if (this.workingText) {
