@@ -10,7 +10,6 @@ enum ParseMode {
 
 export class Parser {
   private currentNode: SyntaxNode;
-  private index: number;
   private mode: ParseMode;
   private workingText: string;
 
@@ -21,9 +20,7 @@ export class Parser {
     this.mode = ParseMode.Normal
     this.workingText = ''
 
-    for (this.index = 0; this.index < text.length; this.index++) {
-      let currentChar = text[this.index]
-
+    for (let currentChar of text) {
       if (this.mode == ParseMode.Literal) {
         this.workingText += currentChar
         this.mode = ParseMode.Normal
@@ -36,7 +33,7 @@ export class Parser {
           if (this.currentNode instanceof EmphasisNode) {
             if (currentChar === '*') {
               this.flushWorkingText()
-              this.currentNode = this.currentNode.parent
+              this.exitCurrentNode()
               continue;
             }
 
@@ -71,5 +68,9 @@ export class Parser {
   private enterNewChildNode(child: SyntaxNode): void {
     this.currentNode.addChild(child)
     this.currentNode = child
+  }
+  
+  private exitCurrentNode() {
+    this.currentNode = this.currentNode.parent
   }
 }

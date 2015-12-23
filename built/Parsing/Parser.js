@@ -14,8 +14,8 @@ var Parser = (function () {
         this.currentNode = documentNode;
         this.mode = ParseMode.Normal;
         this.workingText = '';
-        for (this.index = 0; this.index < text.length; this.index++) {
-            var currentChar = text[this.index];
+        for (var _i = 0; _i < text.length; _i++) {
+            var currentChar = text[_i];
             if (this.mode == ParseMode.Literal) {
                 this.workingText += currentChar;
                 this.mode = ParseMode.Normal;
@@ -28,7 +28,7 @@ var Parser = (function () {
                     if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
                         if (currentChar === '*') {
                             this.flushWorkingText();
-                            this.currentNode = this.currentNode.parent;
+                            this.exitCurrentNode();
                             continue;
                         }
                     }
@@ -58,6 +58,9 @@ var Parser = (function () {
     Parser.prototype.enterNewChildNode = function (child) {
         this.currentNode.addChild(child);
         this.currentNode = child;
+    };
+    Parser.prototype.exitCurrentNode = function () {
+        this.currentNode = this.currentNode.parent;
     };
     return Parser;
 })();
