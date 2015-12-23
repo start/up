@@ -24,14 +24,14 @@ export function parse(text: string): DocumentNode {
       if (currentChar == '\\') {
         mode = ParseMode.Literal
       } else {
-        workingText += currentChar;
+        workingText += currentChar
       }
     
     } else {
       throw 'Unrecognized parse mode'
     }
 
-    i += 1;
+    i += 1
   }
 
   if (workingText) {

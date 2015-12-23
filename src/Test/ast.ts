@@ -35,6 +35,12 @@ describe('A backslash', function() {
         new PlainTextNode('Hello, \\!')
       ]))
   })
+  it('causes only the following character to be treated as plain text', function() {
+    expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, \\, meet \\!')
+      ]))
+  })
   it('is ignored if it is the final character', function() {
     expect(Up.ast('Hello, \\')).to.be.eql(
       new DocumentNode([

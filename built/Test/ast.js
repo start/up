@@ -26,6 +26,11 @@ describe('A backslash', function () {
             new PlainTextNode_1.PlainTextNode('Hello, \\!')
         ]));
     });
+    it('causes only the following character to be treated as plain text', function () {
+        chai_1.expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, \\, meet \\!')
+        ]));
+    });
     it('is ignored if it is the final character', function () {
         chai_1.expect(Up.ast('Hello, \\')).to.be.eql(new DocumentNode_1.DocumentNode([
             new PlainTextNode_1.PlainTextNode('Hello, ')
