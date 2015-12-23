@@ -6,24 +6,19 @@ This is a [helpful link -> https://stackoverflow.com].
 
 This text is *emphasized*.
 
-This is text is **stressed**.
+This text is **stressed**.
 
-
-
-All three conventions can be nested within each other.
-
-This is an *emphasized and **stressed [link -> https://ddg.gg]***.
-
-This [link contains **stressed and *emphasized text*** -> https://ddg.gg].
-
-Innermost conventions must be "closed" before outer ones.
-
+This is some `inline_code()`. 
 
 
 Link text [can contain [any] brackets -> https://altavista.com].
 
 Link URLs [can contain any brackets -> https://google.com/search?q=[hi]].
 
+
+Within an inline code snippet, other conventions do not apply.
+
+This `**is not emphasized**`.
 
 
 A backslash "escapes" the following character, removing any special meaning:
@@ -33,6 +28,8 @@ This is not a \[helpful link -> https://stackoverflow.com].
 This text is not \*emphasized\*.
 
 This text is not \*\*stressed\*\*.
+
+This is not some \`inline_code\`.
 
 
 

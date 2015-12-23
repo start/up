@@ -6,6 +6,7 @@ import * as Up from '../index'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
 describe('No text', function() {
   it('creates only a document node', function() {
@@ -57,6 +58,17 @@ describe('Text surrounded by asterisks', function() {
         new EmphasisNode([
           new PlainTextNode('world')
         ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
+
+describe('Text surrounded by backticks', function() {
+  it('is put inside an inline code node', function() {
+    expect(Up.ast('Hello, `["w", "o", "r", "l", "d"].join("")`!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode('["w", "o", "r", "l", "d"].join("")'),
         new PlainTextNode('!')
       ]))
   })
