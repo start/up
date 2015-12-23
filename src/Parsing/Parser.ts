@@ -14,8 +14,8 @@ export class Parser {
   private workingText: string;
 
   parse(text: string): DocumentNode {
-    const documentNode = new DocumentNode()    
-    
+    const documentNode = new DocumentNode()
+
     this.currentNode = documentNode
     this.mode = ParseMode.Normal
     this.workingText = ''
@@ -24,38 +24,38 @@ export class Parser {
 
     return documentNode
   }
-  
+
   private parseInline(text: string) {
+    
     for (let currentChar of text) {
+      
       if (this.mode == ParseMode.Literal) {
         this.workingText += currentChar
         this.mode = ParseMode.Normal
-
-      } else if (this.mode == ParseMode.Normal) {
+        continue;
+      }
+      
+      if (this.mode == ParseMode.Normal) {
         if (currentChar === '\\') {
           this.mode = ParseMode.Literal
-
-        } else {
-          if (this.currentNode instanceof EmphasisNode) {
-            if (currentChar === '*') {
-              this.flushWorkingText()
-              this.exitCurrentNode()
-              continue;
-            }
-
-          } else {
-            if (currentChar === '*') {
-              this.flushWorkingText()
-              this.enterNewChildNode(new EmphasisNode())
-              continue;
-            }
+          continue;
+        }
+        
+        if (this.currentNode instanceof EmphasisNode) {
+          if (currentChar === '*') {
+            this.flushWorkingText()
+            this.exitCurrentNode()
+            continue;
           }
-
-          this.workingText += currentChar
+        } else {
+          if (currentChar === '*') {
+            this.flushWorkingText()
+            this.enterNewChildNode(new EmphasisNode())
+            continue;
+          }
         }
 
-      } else {
-        throw 'Unrecognized parse mode'
+        this.workingText += currentChar
       }
     }
 
@@ -73,7 +73,7 @@ export class Parser {
     this.currentNode.addChild(child)
     this.currentNode = child
   }
-  
+
   private exitCurrentNode() {
     this.currentNode = this.currentNode.parent
   }

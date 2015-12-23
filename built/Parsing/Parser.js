@@ -23,31 +23,28 @@ var Parser = (function () {
             if (this.mode == ParseMode.Literal) {
                 this.workingText += currentChar;
                 this.mode = ParseMode.Normal;
+                continue;
             }
-            else if (this.mode == ParseMode.Normal) {
+            if (this.mode == ParseMode.Normal) {
                 if (currentChar === '\\') {
                     this.mode = ParseMode.Literal;
+                    continue;
+                }
+                if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
+                    if (currentChar === '*') {
+                        this.flushWorkingText();
+                        this.exitCurrentNode();
+                        continue;
+                    }
                 }
                 else {
-                    if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
-                        if (currentChar === '*') {
-                            this.flushWorkingText();
-                            this.exitCurrentNode();
-                            continue;
-                        }
+                    if (currentChar === '*') {
+                        this.flushWorkingText();
+                        this.enterNewChildNode(new EmphasisNode_1.EmphasisNode());
+                        continue;
                     }
-                    else {
-                        if (currentChar === '*') {
-                            this.flushWorkingText();
-                            this.enterNewChildNode(new EmphasisNode_1.EmphasisNode());
-                            continue;
-                        }
-                    }
-                    this.workingText += currentChar;
                 }
-            }
-            else {
-                throw 'Unrecognized parse mode';
+                this.workingText += currentChar;
             }
         }
         this.flushWorkingText();
