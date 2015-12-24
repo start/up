@@ -8,6 +8,13 @@ export abstract class SyntaxNode {
   }
 
   parent: SyntaxNode = null
+  
+  parents(): SyntaxNode[] {
+    if (this.parent === null) {
+      return [];
+    }
+    return [this.parent].concat(this.parent.parents())
+  }
 
   text(): string {
     return this.children.reduce((text, child) => text + child.text(), '')

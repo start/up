@@ -27,7 +27,7 @@ function parseInlineInto(node, text) {
             isNextCharEscaped = true;
             continue;
         }
-        if (isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
+        if (directlyInside(InlineCodeNode_1.InlineCodeNode)) {
             if (!tryFlushAndExitCurrentNode('`')) {
                 workingText += char;
             }
@@ -45,7 +45,7 @@ function parseInlineInto(node, text) {
         workingText += char;
     }
     flushWorkingText();
-    function isCurrentNode(SyntaxNodeType) {
+    function directlyInside(SyntaxNodeType) {
         return currentNode instanceof SyntaxNodeType;
     }
     function currentText(needle) {
@@ -87,7 +87,7 @@ function parseInlineInto(node, text) {
             return false;
         }
         countCharsConsumed = bun.length;
-        if (isCurrentNode(SandwichNodeType)) {
+        if (directlyInside(SandwichNodeType)) {
             flushAndCloseCurrentNode();
         }
         else {

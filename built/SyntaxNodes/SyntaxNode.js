@@ -10,6 +10,12 @@ var SyntaxNode = (function () {
             }
         }
     }
+    SyntaxNode.prototype.parents = function () {
+        if (this.parent === null) {
+            return [];
+        }
+        return [this.parent].concat(this.parent.parents());
+    };
     SyntaxNode.prototype.text = function () {
         return this.children.reduce(function (text, child) { return text + child.text(); }, '');
     };

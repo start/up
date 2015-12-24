@@ -41,7 +41,7 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
       continue;
     }
 
-    if (isCurrentNode(InlineCodeNode)) {
+    if (directlyInside(InlineCodeNode)) {
       if (!tryFlushAndExitCurrentNode('`')) {
         workingText += char
       }
@@ -65,7 +65,7 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
 
   flushWorkingText()
   
-  function isCurrentNode(SyntaxNodeType: SyntaxNodeType): boolean {
+  function directlyInside(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
   }
   
@@ -116,7 +116,7 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     
     countCharsConsumed = bun.length;
     
-    if (isCurrentNode(SandwichNodeType)) {
+    if (directlyInside(SandwichNodeType)) {
       flushAndCloseCurrentNode()
     } else {
       flushAndEnterNewChildNode(new SandwichNodeType())
