@@ -14,11 +14,26 @@ var Parser = (function () {
         return documentNode;
     };
     Parser.prototype.parseInline = function (text) {
-        var isNextCharEscaped = false;
+        var _this = this;
         var index;
-        function current(needle) {
+        function currentText(needle) {
             return needle === text.substr(index, needle.length);
         }
+        var parseSandwich = function (bun, SandwichNode) {
+            if (currentText(bun)) {
+                if (_this.isCurrentNode(SandwichNode)) {
+                    _this.flushAndCloseCurrentNode();
+                }
+                else {
+                    _this.flushAndEnterNewChildNode(new SandwichNode());
+                }
+                var extraCharsToSkip = bun.length - 1;
+                index += extraCharsToSkip;
+                return true;
+            }
+            return false;
+        };
+        var isNextCharEscaped = false;
         for (index = 0; index < text.length; index++) {
             var char = text[index];
             if (isNextCharEscaped) {
@@ -26,12 +41,12 @@ var Parser = (function () {
                 isNextCharEscaped = false;
                 continue;
             }
-            if (current('\\')) {
+            if (currentText('\\')) {
                 isNextCharEscaped = true;
                 continue;
             }
             if (this.isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
-                if (current('`')) {
+                if (currentText('`')) {
                     this.flushAndCloseCurrentNode();
                 }
                 else {
@@ -39,27 +54,14 @@ var Parser = (function () {
                 }
                 continue;
             }
-            if (current('`')) {
+            if (currentText('`')) {
                 this.flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
                 continue;
             }
-            if (current('**')) {
-                if (this.isCurrentNode(StressNode_1.StressNode)) {
-                    this.flushAndCloseCurrentNode();
-                }
-                else {
-                    this.flushAndEnterNewChildNode(new StressNode_1.StressNode());
-                }
-                index += 1;
+            if (parseSandwich('**', StressNode_1.StressNode)) {
                 continue;
             }
-            if (current('*')) {
-                if (this.isCurrentNode(EmphasisNode_1.EmphasisNode)) {
-                    this.flushAndCloseCurrentNode();
-                }
-                else {
-                    this.flushAndEnterNewChildNode(new EmphasisNode_1.EmphasisNode());
-                }
+            if (parseSandwich('*', EmphasisNode_1.EmphasisNode)) {
                 continue;
             }
             this.workingText += char;

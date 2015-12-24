@@ -5,6 +5,10 @@ import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
+interface SyntaxNodeType { 
+  new(): SyntaxNode
+}
+
 export class Parser {
   private currentNode: SyntaxNode;
   private workingText: string;
@@ -21,13 +25,27 @@ export class Parser {
   }
 
   private parseInline(text: string) {
-    let isNextCharEscaped = false;
-    
     let index: number;
     
-    function current(needle: string): boolean {
+    function currentText(needle: string): boolean {
       return needle === text.substr(index, needle.length)
     }
+    
+    const parseSandwich = (bun: string, SandwichNode: SyntaxNodeType): boolean => {
+      if (currentText(bun)) {
+        if (this.isCurrentNode(SandwichNode)) {
+          this.flushAndCloseCurrentNode()
+        } else {
+          this.flushAndEnterNewChildNode(new SandwichNode())
+        }
+        const extraCharsToSkip = bun.length - 1
+        index += extraCharsToSkip
+        return true
+      }
+      return false
+    }
+    
+    let isNextCharEscaped = false;
     
     for (index = 0; index < text.length; index++) {
       
@@ -39,13 +57,13 @@ export class Parser {
         continue;
       }
 
-      if (current('\\')) {
+      if (currentText('\\')) {
         isNextCharEscaped = true
         continue;
       }
 
       if (this.isCurrentNode(InlineCodeNode)) {
-        if (current('`')) {
+        if (currentText('`')) {
           this.flushAndCloseCurrentNode()
         } else {
           this.workingText += char
@@ -53,27 +71,16 @@ export class Parser {
         continue;
       }
       
-      if (current('`')) {
+      if (currentText('`')) {
         this.flushAndEnterNewChildNode(new InlineCodeNode())
         continue
       }
       
-      if (current('**')) {
-        if (this.isCurrentNode(StressNode)) {
-          this.flushAndCloseCurrentNode()
-        } else {
-          this.flushAndEnterNewChildNode(new StressNode())
-        }
-        index += 1;
+      if (parseSandwich('**', StressNode)) {
         continue;
       }
       
-      if (current('*')) {
-        if (this.isCurrentNode(EmphasisNode)) {
-          this.flushAndCloseCurrentNode()
-        } else {
-          this.flushAndEnterNewChildNode(new EmphasisNode())
-        }
+      if (parseSandwich('*', EmphasisNode)) {
         continue;
       }
 
@@ -83,7 +90,7 @@ export class Parser {
     this.flushWorkingText()
   }
   
-  private isCurrentNode(SyntaxNodeType: { new(): SyntaxNode }): boolean {
+  private isCurrentNode(SyntaxNodeType: SyntaxNodeType): boolean {
     return this.currentNode instanceof SyntaxNodeType
   }
 
