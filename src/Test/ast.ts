@@ -149,3 +149,33 @@ describe('Text surrounded by 2 asterisks', function() {
       ]))
   })
 })
+
+describe('Text starting with 3 asterisks', function() {
+  it('can have its emphasis node closed first', function() {
+    expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new StressNode([
+          new EmphasisNode([
+            new PlainTextNode('my'),
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+  
+  it('can have its stress node closed first', function() {
+    expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new EmphasisNode([
+          new StressNode([
+            new PlainTextNode('my'),
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
