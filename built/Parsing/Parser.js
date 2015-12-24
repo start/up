@@ -13,12 +13,12 @@ function parseInlineInto(node, text) {
     function isCurrentNode(SyntaxNodeType) {
         return currentNode instanceof SyntaxNodeType;
     }
-    var workingText = '';
     var currentNode = node;
     var index;
     function currentText(needle) {
         return needle === text.substr(index, needle.length);
     }
+    var workingText = '';
     function flushWorkingText() {
         if (workingText) {
             currentNode.addChild(new PlainTextNode_1.PlainTextNode(workingText));
@@ -34,13 +34,27 @@ function parseInlineInto(node, text) {
         flushWorkingText();
         currentNode = currentNode.parent;
     }
-    function parseSandwich(bun, SandwichNode) {
+    function tryFlushAndEnterNewChildNode(needle, SyntaxNodeType) {
+        if (currentText(needle)) {
+            flushAndEnterNewChildNode(new SyntaxNodeType());
+            return true;
+        }
+        return false;
+    }
+    function tryFlushAndCloseCurrentNode(needle) {
+        if (currentText(needle)) {
+            flushAndCloseCurrentNode();
+            return true;
+        }
+        return false;
+    }
+    function tryParseSandwich(bun, SandwichNodeType) {
         if (currentText(bun)) {
-            if (isCurrentNode(SandwichNode)) {
+            if (isCurrentNode(SandwichNodeType)) {
                 flushAndCloseCurrentNode();
             }
             else {
-                flushAndEnterNewChildNode(new SandwichNode());
+                flushAndEnterNewChildNode(new SandwichNodeType());
             }
             var extraCharsToSkip = bun.length - 1;
             index += extraCharsToSkip;
@@ -61,22 +75,18 @@ function parseInlineInto(node, text) {
             continue;
         }
         if (isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
-            if (currentText('`')) {
-                flushAndCloseCurrentNode();
-            }
-            else {
+            if (!tryFlushAndCloseCurrentNode('`')) {
                 workingText += char;
             }
             continue;
         }
-        if (currentText('`')) {
-            flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
+        if (tryFlushAndEnterNewChildNode('`', InlineCodeNode_1.InlineCodeNode)) {
             continue;
         }
-        if (parseSandwich('**', StressNode_1.StressNode)) {
+        if (tryParseSandwich('**', StressNode_1.StressNode)) {
             continue;
         }
-        if (parseSandwich('*', EmphasisNode_1.EmphasisNode)) {
+        if (tryParseSandwich('*', EmphasisNode_1.EmphasisNode)) {
             continue;
         }
         workingText += char;

@@ -23,13 +23,14 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     return currentNode instanceof SyntaxNodeType
   }
   
-  let workingText = '';
   let currentNode = node;
   let index: number;
 
   function currentText(needle: string): boolean {
     return needle === text.substr(index, needle.length)
   }
+  
+  let workingText = '';
   
   function flushWorkingText(): void {
     if (workingText) {
@@ -48,13 +49,29 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     flushWorkingText()
     currentNode = currentNode.parent
   }
+  
+  function tryFlushAndEnterNewChildNode(needle: string, SyntaxNodeType: SyntaxNodeType) {
+    if (currentText(needle)) {
+      flushAndEnterNewChildNode(new SyntaxNodeType())
+      return true;
+    }
+    return false;
+  }
+  
+  function tryFlushAndCloseCurrentNode(needle: string) {
+    if (currentText(needle)) {
+      flushAndCloseCurrentNode()
+      return true;
+    }
+    return false;
+  }
 
-  function parseSandwich(bun: string, SandwichNode: SyntaxNodeType): boolean {
+  function tryParseSandwich(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
     if (currentText(bun)) {
-      if (isCurrentNode(SandwichNode)) {
+      if (isCurrentNode(SandwichNodeType)) {
         flushAndCloseCurrentNode()
       } else {
-        flushAndEnterNewChildNode(new SandwichNode())
+        flushAndEnterNewChildNode(new SandwichNodeType())
       }
       const extraCharsToSkip = bun.length - 1
       index += extraCharsToSkip
@@ -66,7 +83,6 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
   let isNextCharEscaped = false;
 
   for (index = 0; index < text.length; index++) {
-
     let char = text[index]
 
     if (isNextCharEscaped) {
@@ -81,24 +97,21 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     }
 
     if (isCurrentNode(InlineCodeNode)) {
-      if (currentText('`')) {
-        flushAndCloseCurrentNode()
-      } else {
+      if (!tryFlushAndCloseCurrentNode('`')) {
         workingText += char
       }
       continue;
     }
 
-    if (currentText('`')) {
-      flushAndEnterNewChildNode(new InlineCodeNode())
+    if (tryFlushAndEnterNewChildNode('`', InlineCodeNode)) {
       continue
     }
 
-    if (parseSandwich('**', StressNode)) {
+    if (tryParseSandwich('**', StressNode)) {
       continue;
     }
 
-    if (parseSandwich('*', EmphasisNode)) {
+    if (tryParseSandwich('*', EmphasisNode)) {
       continue;
     }
 
