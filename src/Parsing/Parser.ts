@@ -5,110 +5,105 @@ import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
-interface SyntaxNodeType { 
-  new(): SyntaxNode
+interface SyntaxNodeType {
+  new (): SyntaxNode
 }
 
-export class Parser {
-  private currentNode: SyntaxNode;
-  private workingText: string;
+export function parse(text: string): DocumentNode {
+  const documentNode = new DocumentNode()
 
-  parse(text: string): DocumentNode {
-    const documentNode = new DocumentNode()
+  parseInlineInto(documentNode, text)
 
-    this.currentNode = documentNode
-    this.workingText = ''
+  return documentNode
+}
 
-    this.parseInline(text)
-
-    return documentNode
-  }
-
-  private parseInline(text: string) {
-    let index: number;
-    
-    function currentText(needle: string): boolean {
-      return needle === text.substr(index, needle.length)
-    }
-    
-    const parseSandwich = (bun: string, SandwichNode: SyntaxNodeType): boolean => {
-      if (currentText(bun)) {
-        if (this.isCurrentNode(SandwichNode)) {
-          this.flushAndCloseCurrentNode()
-        } else {
-          this.flushAndEnterNewChildNode(new SandwichNode())
-        }
-        const extraCharsToSkip = bun.length - 1
-        index += extraCharsToSkip
-        return true
-      }
-      return false
-    }
-    
-    let isNextCharEscaped = false;
-    
-    for (index = 0; index < text.length; index++) {
-      
-      let char = text[index]
-      
-      if (isNextCharEscaped) {
-        this.workingText += char
-        isNextCharEscaped = false
-        continue;
-      }
-
-      if (currentText('\\')) {
-        isNextCharEscaped = true
-        continue;
-      }
-
-      if (this.isCurrentNode(InlineCodeNode)) {
-        if (currentText('`')) {
-          this.flushAndCloseCurrentNode()
-        } else {
-          this.workingText += char
-        }
-        continue;
-      }
-      
-      if (currentText('`')) {
-        this.flushAndEnterNewChildNode(new InlineCodeNode())
-        continue
-      }
-      
-      if (parseSandwich('**', StressNode)) {
-        continue;
-      }
-      
-      if (parseSandwich('*', EmphasisNode)) {
-        continue;
-      }
-
-      this.workingText += char
-    }
-
-    this.flushWorkingText()
+function parseInlineInto(node: SyntaxNode, text: string): void {
+  
+  function isCurrentNode(SyntaxNodeType: SyntaxNodeType): boolean {
+    return currentNode instanceof SyntaxNodeType
   }
   
-  private isCurrentNode(SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.currentNode instanceof SyntaxNodeType
-  }
+  let workingText = '';
+  let currentNode = node;
+  let index: number;
 
-  private flushWorkingText(): void {
-    if (this.workingText) {
-      this.currentNode.addChild(new PlainTextNode(this.workingText))
+  function currentText(needle: string): boolean {
+    return needle === text.substr(index, needle.length)
+  }
+  
+  function flushWorkingText(): void {
+    if (workingText) {
+      currentNode.addChild(new PlainTextNode(workingText))
     }
-    this.workingText = ''
+    workingText = ''
   }
 
-  private flushAndEnterNewChildNode(child: SyntaxNode): void {
-    this.flushWorkingText()
-    this.currentNode.addChild(child)
-    this.currentNode = child
+  function flushAndEnterNewChildNode(child: SyntaxNode): void {
+    flushWorkingText()
+    currentNode.addChild(child)
+    currentNode = child
   }
 
-  private flushAndCloseCurrentNode() {
-    this.flushWorkingText()
-    this.currentNode = this.currentNode.parent
+  function flushAndCloseCurrentNode() {
+    flushWorkingText()
+    currentNode = currentNode.parent
   }
+
+  function parseSandwich(bun: string, SandwichNode: SyntaxNodeType): boolean {
+    if (currentText(bun)) {
+      if (isCurrentNode(SandwichNode)) {
+        flushAndCloseCurrentNode()
+      } else {
+        flushAndEnterNewChildNode(new SandwichNode())
+      }
+      const extraCharsToSkip = bun.length - 1
+      index += extraCharsToSkip
+      return true
+    }
+    return false
+  }
+
+  let isNextCharEscaped = false;
+
+  for (index = 0; index < text.length; index++) {
+
+    let char = text[index]
+
+    if (isNextCharEscaped) {
+      workingText += char
+      isNextCharEscaped = false
+      continue;
+    }
+
+    if (currentText('\\')) {
+      isNextCharEscaped = true
+      continue;
+    }
+
+    if (isCurrentNode(InlineCodeNode)) {
+      if (currentText('`')) {
+        flushAndCloseCurrentNode()
+      } else {
+        workingText += char
+      }
+      continue;
+    }
+
+    if (currentText('`')) {
+      flushAndEnterNewChildNode(new InlineCodeNode())
+      continue
+    }
+
+    if (parseSandwich('**', StressNode)) {
+      continue;
+    }
+
+    if (parseSandwich('*', EmphasisNode)) {
+      continue;
+    }
+
+    workingText += char
+  }
+
+  flushWorkingText()
 }

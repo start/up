@@ -3,89 +3,83 @@ var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
-var Parser = (function () {
-    function Parser() {
+function parse(text) {
+    var documentNode = new DocumentNode_1.DocumentNode();
+    parseInlineInto(documentNode, text);
+    return documentNode;
+}
+exports.parse = parse;
+function parseInlineInto(node, text) {
+    function isCurrentNode(SyntaxNodeType) {
+        return currentNode instanceof SyntaxNodeType;
     }
-    Parser.prototype.parse = function (text) {
-        var documentNode = new DocumentNode_1.DocumentNode();
-        this.currentNode = documentNode;
-        this.workingText = '';
-        this.parseInline(text);
-        return documentNode;
-    };
-    Parser.prototype.parseInline = function (text) {
-        var _this = this;
-        var index;
-        function currentText(needle) {
-            return needle === text.substr(index, needle.length);
+    var workingText = '';
+    var currentNode = node;
+    var index;
+    function currentText(needle) {
+        return needle === text.substr(index, needle.length);
+    }
+    function flushWorkingText() {
+        if (workingText) {
+            currentNode.addChild(new PlainTextNode_1.PlainTextNode(workingText));
         }
-        var parseSandwich = function (bun, SandwichNode) {
-            if (currentText(bun)) {
-                if (_this.isCurrentNode(SandwichNode)) {
-                    _this.flushAndCloseCurrentNode();
-                }
-                else {
-                    _this.flushAndEnterNewChildNode(new SandwichNode());
-                }
-                var extraCharsToSkip = bun.length - 1;
-                index += extraCharsToSkip;
-                return true;
+        workingText = '';
+    }
+    function flushAndEnterNewChildNode(child) {
+        flushWorkingText();
+        currentNode.addChild(child);
+        currentNode = child;
+    }
+    function flushAndCloseCurrentNode() {
+        flushWorkingText();
+        currentNode = currentNode.parent;
+    }
+    function parseSandwich(bun, SandwichNode) {
+        if (currentText(bun)) {
+            if (isCurrentNode(SandwichNode)) {
+                flushAndCloseCurrentNode();
             }
-            return false;
-        };
-        var isNextCharEscaped = false;
-        for (index = 0; index < text.length; index++) {
-            var char = text[index];
-            if (isNextCharEscaped) {
-                this.workingText += char;
-                isNextCharEscaped = false;
-                continue;
+            else {
+                flushAndEnterNewChildNode(new SandwichNode());
             }
-            if (currentText('\\')) {
-                isNextCharEscaped = true;
-                continue;
-            }
-            if (this.isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
-                if (currentText('`')) {
-                    this.flushAndCloseCurrentNode();
-                }
-                else {
-                    this.workingText += char;
-                }
-                continue;
-            }
+            var extraCharsToSkip = bun.length - 1;
+            index += extraCharsToSkip;
+            return true;
+        }
+        return false;
+    }
+    var isNextCharEscaped = false;
+    for (index = 0; index < text.length; index++) {
+        var char = text[index];
+        if (isNextCharEscaped) {
+            workingText += char;
+            isNextCharEscaped = false;
+            continue;
+        }
+        if (currentText('\\')) {
+            isNextCharEscaped = true;
+            continue;
+        }
+        if (isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
             if (currentText('`')) {
-                this.flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
-                continue;
+                flushAndCloseCurrentNode();
             }
-            if (parseSandwich('**', StressNode_1.StressNode)) {
-                continue;
+            else {
+                workingText += char;
             }
-            if (parseSandwich('*', EmphasisNode_1.EmphasisNode)) {
-                continue;
-            }
-            this.workingText += char;
+            continue;
         }
-        this.flushWorkingText();
-    };
-    Parser.prototype.isCurrentNode = function (SyntaxNodeType) {
-        return this.currentNode instanceof SyntaxNodeType;
-    };
-    Parser.prototype.flushWorkingText = function () {
-        if (this.workingText) {
-            this.currentNode.addChild(new PlainTextNode_1.PlainTextNode(this.workingText));
+        if (currentText('`')) {
+            flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
+            continue;
         }
-        this.workingText = '';
-    };
-    Parser.prototype.flushAndEnterNewChildNode = function (child) {
-        this.flushWorkingText();
-        this.currentNode.addChild(child);
-        this.currentNode = child;
-    };
-    Parser.prototype.flushAndCloseCurrentNode = function () {
-        this.flushWorkingText();
-        this.currentNode = this.currentNode.parent;
-    };
-    return Parser;
-})();
-exports.Parser = Parser;
+        if (parseSandwich('**', StressNode_1.StressNode)) {
+            continue;
+        }
+        if (parseSandwich('*', EmphasisNode_1.EmphasisNode)) {
+            continue;
+        }
+        workingText += char;
+    }
+    flushWorkingText();
+}
