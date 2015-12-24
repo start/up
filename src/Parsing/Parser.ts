@@ -23,46 +23,58 @@ export class Parser {
   private parseInline(text: string) {
     let isNextCharEscaped = false;
     
-    let i: number;
+    let index: number;
     
-    function is(needle: string): boolean {
-      return needle === text.substr(i, needle.length)
+    function current(needle: string): boolean {
+      return needle === text.substr(index, needle.length)
     }
     
-    for (i = 0; i < text.length; i++) {
+    for (index = 0; index < text.length; index++) {
       
-      let char = text[i]
+      let char = text[index]
       
       if (isNextCharEscaped) {
-        this.workingText += text[i]
+        this.workingText += char
         isNextCharEscaped = false
         continue;
       }
 
-      if (is('\\')) {
+      if (current('\\')) {
         isNextCharEscaped = true
         continue;
       }
 
       if (this.currentNode instanceof InlineCodeNode) {
-        if (is('`')) {
+        if (current('`')) {
           this.flushAndCloseCurrentNode()
-          continue;
+        } else {
+          this.workingText += char
         }
-      } else if (this.currentNode instanceof EmphasisNode) {
-        if (is('*')) {
+        continue;
+      }
+      
+      if (current('`')) {
+        this.flushAndEnterNewChildNode(new InlineCodeNode())
+        continue
+      }
+      
+      if (current('**')) {
+        if (this.currentNode instanceof StressNode) {
           this.flushAndCloseCurrentNode()
-          continue;
+        } else {
+          this.flushAndEnterNewChildNode(new StressNode())
         }
-      } else {
-        if (is('`')) {
-          this.flushAndEnterNewChildNode(new InlineCodeNode())
-          continue
-        }
-        if (is('*')) {
+        index += 1;
+        continue;
+      }
+      
+      if (current('*')) {
+        if (this.currentNode instanceof EmphasisNode) {
+          this.flushAndCloseCurrentNode()
+        } else {
           this.flushAndEnterNewChildNode(new EmphasisNode())
-          continue;
         }
+        continue;
       }
 
       this.workingText += char

@@ -1,6 +1,7 @@
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
+var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var Parser = (function () {
     function Parser() {
@@ -14,42 +15,52 @@ var Parser = (function () {
     };
     Parser.prototype.parseInline = function (text) {
         var isNextCharEscaped = false;
-        var i;
-        function is(needle) {
-            return needle === text.substr(i, needle.length);
+        var index;
+        function current(needle) {
+            return needle === text.substr(index, needle.length);
         }
-        for (i = 0; i < text.length; i++) {
-            var char = text[i];
+        for (index = 0; index < text.length; index++) {
+            var char = text[index];
             if (isNextCharEscaped) {
-                this.workingText += text[i];
+                this.workingText += char;
                 isNextCharEscaped = false;
                 continue;
             }
-            if (is('\\')) {
+            if (current('\\')) {
                 isNextCharEscaped = true;
                 continue;
             }
             if (this.currentNode instanceof InlineCodeNode_1.InlineCodeNode) {
-                if (is('`')) {
+                if (current('`')) {
                     this.flushAndCloseCurrentNode();
-                    continue;
                 }
+                else {
+                    this.workingText += char;
+                }
+                continue;
             }
-            else if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
-                if (is('*')) {
+            if (current('`')) {
+                this.flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
+                continue;
+            }
+            if (current('**')) {
+                if (this.currentNode instanceof StressNode_1.StressNode) {
                     this.flushAndCloseCurrentNode();
-                    continue;
                 }
+                else {
+                    this.flushAndEnterNewChildNode(new StressNode_1.StressNode());
+                }
+                index += 1;
+                continue;
             }
-            else {
-                if (is('`')) {
-                    this.flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
-                    continue;
+            if (current('*')) {
+                if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
+                    this.flushAndCloseCurrentNode();
                 }
-                if (is('*')) {
+                else {
                     this.flushAndEnterNewChildNode(new EmphasisNode_1.EmphasisNode());
-                    continue;
                 }
+                continue;
             }
             this.workingText += char;
         }
