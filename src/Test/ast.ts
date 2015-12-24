@@ -6,6 +6,7 @@ import * as Up from '../index'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
 describe('No text', function() {
@@ -76,6 +77,19 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('Hello, '),
         new InlineCodeNode([
           new PlainTextNode('["w", "o", "r", "l", "d"].join("")')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
+
+describe('Text surrounded by 2 asterisks', function() {
+  it('is put inside an stress node', function() {
+    expect(Up.ast('Hello, **world**!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new StressNode([
+          new PlainTextNode('world')
         ]),
         new PlainTextNode('!')
       ]))

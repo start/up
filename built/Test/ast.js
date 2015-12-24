@@ -3,6 +3,7 @@ var Up = require('../index');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
+var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 describe('No text', function () {
     it('creates only a document node', function () {
@@ -60,6 +61,17 @@ describe('Text surrounded by backticks', function () {
             new PlainTextNode_1.PlainTextNode('Hello, '),
             new InlineCodeNode_1.InlineCodeNode([
                 new PlainTextNode_1.PlainTextNode('["w", "o", "r", "l", "d"].join("")')
+            ]),
+            new PlainTextNode_1.PlainTextNode('!')
+        ]));
+    });
+});
+describe('Text surrounded by 2 asterisks', function () {
+    it('is put inside an stress node', function () {
+        chai_1.expect(Up.ast('Hello, **world**!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, '),
+            new StressNode_1.StressNode([
+                new PlainTextNode_1.PlainTextNode('world')
             ]),
             new PlainTextNode_1.PlainTextNode('!')
         ]));
