@@ -65,6 +65,15 @@ describe('Text surrounded by backticks', function () {
             new PlainTextNode_1.PlainTextNode('!')
         ]));
     });
+    it('is not evaluated for other conventions', function () {
+        chai_1.expect(Up.ast('Hello, `*world*`!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, '),
+            new InlineCodeNode_1.InlineCodeNode([
+                new PlainTextNode_1.PlainTextNode('*world*')
+            ]),
+            new PlainTextNode_1.PlainTextNode('!')
+        ]));
+    });
 });
 describe('Text surrounded by 2 asterisks', function () {
     it('is put inside an stress node', function () {

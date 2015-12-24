@@ -81,6 +81,17 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('is not evaluated for other conventions', function() {
+    expect(Up.ast('Hello, `*world*`!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('*world*')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
 })
 
 describe('Text surrounded by 2 asterisks', function() {
