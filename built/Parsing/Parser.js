@@ -1,6 +1,7 @@
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
+var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var Parser = (function () {
     function Parser() {
     }
@@ -14,31 +15,39 @@ var Parser = (function () {
     Parser.prototype.parseInline = function (text) {
         var isNextCharEscaped = false;
         for (var _i = 0; _i < text.length; _i++) {
-            var currentChar = text[_i];
+            var char = text[_i];
             if (isNextCharEscaped) {
-                this.workingText += currentChar;
+                this.workingText += char;
                 isNextCharEscaped = false;
                 continue;
             }
-            if (currentChar === '\\') {
+            if (char === '\\') {
                 isNextCharEscaped = true;
                 continue;
             }
-            if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
-                if (currentChar === '*') {
-                    this.flushWorkingText();
-                    this.exitCurrentNode();
+            if (this.currentNode instanceof InlineCodeNode_1.InlineCodeNode) {
+                if (char === '`') {
+                    this.flushAndExitCurrentNode();
+                    continue;
+                }
+            }
+            else if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
+                if (char === '*') {
+                    this.flushAndExitCurrentNode();
                     continue;
                 }
             }
             else {
-                if (currentChar === '*') {
-                    this.flushWorkingText();
-                    this.enterNewChildNode(new EmphasisNode_1.EmphasisNode());
+                if (char === '`') {
+                    this.flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
+                    continue;
+                }
+                if (char === '*') {
+                    this.flushAndEnterNewChildNode(new EmphasisNode_1.EmphasisNode());
                     continue;
                 }
             }
-            this.workingText += currentChar;
+            this.workingText += char;
         }
         this.flushWorkingText();
     };
@@ -48,11 +57,13 @@ var Parser = (function () {
         }
         this.workingText = '';
     };
-    Parser.prototype.enterNewChildNode = function (child) {
+    Parser.prototype.flushAndEnterNewChildNode = function (child) {
+        this.flushWorkingText();
         this.currentNode.addChild(child);
         this.currentNode = child;
     };
-    Parser.prototype.exitCurrentNode = function () {
+    Parser.prototype.flushAndExitCurrentNode = function () {
+        this.flushWorkingText();
         this.currentNode = this.currentNode.parent;
     };
     return Parser;

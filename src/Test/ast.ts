@@ -74,7 +74,9 @@ describe('Text surrounded by backticks', function() {
     expect(Up.ast('Hello, `["w", "o", "r", "l", "d"].join("")`!')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, '),
-        new InlineCodeNode('["w", "o", "r", "l", "d"].join("")'),
+        new InlineCodeNode([
+          new PlainTextNode('["w", "o", "r", "l", "d"].join("")')
+        ]),
         new PlainTextNode('!')
       ]))
   })

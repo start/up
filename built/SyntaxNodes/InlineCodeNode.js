@@ -6,14 +6,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var SyntaxNode_1 = require('./SyntaxNode');
 var InlineCodeNode = (function (_super) {
     __extends(InlineCodeNode, _super);
-    function InlineCodeNode(plainText) {
-        _super.call(this, null);
-        this.plainText = plainText;
+    function InlineCodeNode() {
+        _super.apply(this, arguments);
         this.INLINE_CODE_NODE = null;
     }
-    InlineCodeNode.prototype.text = function () {
-        return this.plainText;
-    };
     return InlineCodeNode;
 })(SyntaxNode_1.SyntaxNode);
 exports.InlineCodeNode = InlineCodeNode;

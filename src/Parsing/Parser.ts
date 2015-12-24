@@ -2,6 +2,7 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
 export class Parser {
   private currentNode: SyntaxNode;
@@ -21,34 +22,41 @@ export class Parser {
   private parseInline(text: string) {
     let isNextCharEscaped = false;
 
-    for (let currentChar of text) {
+    for (let char of text) {
 
       if (isNextCharEscaped) {
-        this.workingText += currentChar
+        this.workingText += char
         isNextCharEscaped = false
         continue;
       }
 
-      if (currentChar === '\\') {
+      if (char === '\\') {
         isNextCharEscaped = true
         continue;
       }
 
-      if (this.currentNode instanceof EmphasisNode) {
-        if (currentChar === '*') {
-          this.flushWorkingText()
-          this.exitCurrentNode()
+      if (this.currentNode instanceof InlineCodeNode) {
+        if (char === '`') {
+          this.flushAndExitCurrentNode()
+          continue;
+        }
+      } else if (this.currentNode instanceof EmphasisNode) {
+        if (char === '*') {
+          this.flushAndExitCurrentNode()
           continue;
         }
       } else {
-        if (currentChar === '*') {
-          this.flushWorkingText()
-          this.enterNewChildNode(new EmphasisNode())
+        if (char === '`') {
+          this.flushAndEnterNewChildNode(new InlineCodeNode())
+          continue
+        }
+        if (char === '*') {
+          this.flushAndEnterNewChildNode(new EmphasisNode())
           continue;
         }
       }
 
-      this.workingText += currentChar
+      this.workingText += char
     }
 
     this.flushWorkingText()
@@ -61,12 +69,14 @@ export class Parser {
     this.workingText = ''
   }
 
-  private enterNewChildNode(child: SyntaxNode): void {
+  private flushAndEnterNewChildNode(child: SyntaxNode): void {
+    this.flushWorkingText()
     this.currentNode.addChild(child)
     this.currentNode = child
   }
 
-  private exitCurrentNode() {
+  private flushAndExitCurrentNode() {
+    this.flushWorkingText()
     this.currentNode = this.currentNode.parent
   }
 }

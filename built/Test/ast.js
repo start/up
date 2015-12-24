@@ -58,7 +58,9 @@ describe('Text surrounded by backticks', function () {
     it('is put inside an inline code node', function () {
         chai_1.expect(Up.ast('Hello, `["w", "o", "r", "l", "d"].join("")`!')).to.be.eql(new DocumentNode_1.DocumentNode([
             new PlainTextNode_1.PlainTextNode('Hello, '),
-            new InlineCodeNode_1.InlineCodeNode('["w", "o", "r", "l", "d"].join("")'),
+            new InlineCodeNode_1.InlineCodeNode([
+                new PlainTextNode_1.PlainTextNode('["w", "o", "r", "l", "d"].join("")')
+            ]),
             new PlainTextNode_1.PlainTextNode('!')
         ]));
     });
