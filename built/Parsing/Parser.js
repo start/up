@@ -14,35 +14,39 @@ var Parser = (function () {
     };
     Parser.prototype.parseInline = function (text) {
         var isNextCharEscaped = false;
-        for (var _i = 0; _i < text.length; _i++) {
-            var char = text[_i];
+        var i;
+        function is(needle) {
+            return needle === text.substr(i, needle.length);
+        }
+        for (i = 0; i < text.length; i++) {
+            var char = text[i];
             if (isNextCharEscaped) {
-                this.workingText += char;
+                this.workingText += text[i];
                 isNextCharEscaped = false;
                 continue;
             }
-            if (char === '\\') {
+            if (is('\\')) {
                 isNextCharEscaped = true;
                 continue;
             }
             if (this.currentNode instanceof InlineCodeNode_1.InlineCodeNode) {
-                if (char === '`') {
-                    this.flushAndExitCurrentNode();
+                if (is('`')) {
+                    this.flushAndCloseCurrentNode();
                     continue;
                 }
             }
             else if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
-                if (char === '*') {
-                    this.flushAndExitCurrentNode();
+                if (is('*')) {
+                    this.flushAndCloseCurrentNode();
                     continue;
                 }
             }
             else {
-                if (char === '`') {
+                if (is('`')) {
                     this.flushAndEnterNewChildNode(new InlineCodeNode_1.InlineCodeNode());
                     continue;
                 }
-                if (char === '*') {
+                if (is('*')) {
                     this.flushAndEnterNewChildNode(new EmphasisNode_1.EmphasisNode());
                     continue;
                 }
@@ -62,7 +66,7 @@ var Parser = (function () {
         this.currentNode.addChild(child);
         this.currentNode = child;
     };
-    Parser.prototype.flushAndExitCurrentNode = function () {
+    Parser.prototype.flushAndCloseCurrentNode = function () {
         this.flushWorkingText();
         this.currentNode = this.currentNode.parent;
     };

@@ -2,6 +2,7 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
 export class Parser {
@@ -21,36 +22,44 @@ export class Parser {
 
   private parseInline(text: string) {
     let isNextCharEscaped = false;
-
-    for (let char of text) {
-
+    
+    let i: number;
+    
+    function is(needle: string): boolean {
+      return needle === text.substr(i, needle.length)
+    }
+    
+    for (i = 0; i < text.length; i++) {
+      
+      let char = text[i]
+      
       if (isNextCharEscaped) {
-        this.workingText += char
+        this.workingText += text[i]
         isNextCharEscaped = false
         continue;
       }
 
-      if (char === '\\') {
+      if (is('\\')) {
         isNextCharEscaped = true
         continue;
       }
 
       if (this.currentNode instanceof InlineCodeNode) {
-        if (char === '`') {
-          this.flushAndExitCurrentNode()
+        if (is('`')) {
+          this.flushAndCloseCurrentNode()
           continue;
         }
       } else if (this.currentNode instanceof EmphasisNode) {
-        if (char === '*') {
-          this.flushAndExitCurrentNode()
+        if (is('*')) {
+          this.flushAndCloseCurrentNode()
           continue;
         }
       } else {
-        if (char === '`') {
+        if (is('`')) {
           this.flushAndEnterNewChildNode(new InlineCodeNode())
           continue
         }
-        if (char === '*') {
+        if (is('*')) {
           this.flushAndEnterNewChildNode(new EmphasisNode())
           continue;
         }
@@ -75,7 +84,7 @@ export class Parser {
     this.currentNode = child
   }
 
-  private flushAndExitCurrentNode() {
+  private flushAndCloseCurrentNode() {
     this.flushWorkingText()
     this.currentNode = this.currentNode.parent
   }
