@@ -133,4 +133,19 @@ describe('Text surrounded by 2 asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('can even hold emphasized text', function() {
+    expect(Up.ast('Hello, **my *little* world**!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new StressNode([
+          new PlainTextNode('my '),
+          new EmphasisNode([
+            new PlainTextNode('little')
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
 })
