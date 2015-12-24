@@ -30,7 +30,7 @@ var Parser = (function () {
                 isNextCharEscaped = true;
                 continue;
             }
-            if (this.currentNode instanceof InlineCodeNode_1.InlineCodeNode) {
+            if (this.isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
                 if (current('`')) {
                     this.flushAndCloseCurrentNode();
                 }
@@ -44,7 +44,7 @@ var Parser = (function () {
                 continue;
             }
             if (current('**')) {
-                if (this.currentNode instanceof StressNode_1.StressNode) {
+                if (this.isCurrentNode(StressNode_1.StressNode)) {
                     this.flushAndCloseCurrentNode();
                 }
                 else {
@@ -54,7 +54,7 @@ var Parser = (function () {
                 continue;
             }
             if (current('*')) {
-                if (this.currentNode instanceof EmphasisNode_1.EmphasisNode) {
+                if (this.isCurrentNode(EmphasisNode_1.EmphasisNode)) {
                     this.flushAndCloseCurrentNode();
                 }
                 else {
@@ -65,6 +65,9 @@ var Parser = (function () {
             this.workingText += char;
         }
         this.flushWorkingText();
+    };
+    Parser.prototype.isCurrentNode = function (SyntaxNodeType) {
+        return this.currentNode instanceof SyntaxNodeType;
     };
     Parser.prototype.flushWorkingText = function () {
         if (this.workingText) {

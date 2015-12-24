@@ -44,7 +44,7 @@ export class Parser {
         continue;
       }
 
-      if (this.currentNode instanceof InlineCodeNode) {
+      if (this.isCurrentNode(InlineCodeNode)) {
         if (current('`')) {
           this.flushAndCloseCurrentNode()
         } else {
@@ -59,7 +59,7 @@ export class Parser {
       }
       
       if (current('**')) {
-        if (this.currentNode instanceof StressNode) {
+        if (this.isCurrentNode(StressNode)) {
           this.flushAndCloseCurrentNode()
         } else {
           this.flushAndEnterNewChildNode(new StressNode())
@@ -69,7 +69,7 @@ export class Parser {
       }
       
       if (current('*')) {
-        if (this.currentNode instanceof EmphasisNode) {
+        if (this.isCurrentNode(EmphasisNode)) {
           this.flushAndCloseCurrentNode()
         } else {
           this.flushAndEnterNewChildNode(new EmphasisNode())
@@ -81,6 +81,10 @@ export class Parser {
     }
 
     this.flushWorkingText()
+  }
+  
+  private isCurrentNode(SyntaxNodeType: { new(): SyntaxNode }): boolean {
+    return this.currentNode instanceof SyntaxNodeType
   }
 
   private flushWorkingText(): void {
