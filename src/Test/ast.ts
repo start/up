@@ -81,6 +81,21 @@ describe('Text surrounded by asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('can even hold stressed text', function() {
+    expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new EmphasisNode([
+          new PlainTextNode('my '),
+          new StressNode([
+            new PlainTextNode('little')
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
 })
 
 describe('Text surrounded by backticks', function() {

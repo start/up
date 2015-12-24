@@ -65,6 +65,19 @@ describe('Text surrounded by asterisks', function () {
             new PlainTextNode_1.PlainTextNode('!')
         ]));
     });
+    it('can even hold stressed text', function () {
+        chai_1.expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, '),
+            new EmphasisNode_1.EmphasisNode([
+                new PlainTextNode_1.PlainTextNode('my '),
+                new StressNode_1.StressNode([
+                    new PlainTextNode_1.PlainTextNode('little')
+                ]),
+                new PlainTextNode_1.PlainTextNode(' world')
+            ]),
+            new PlainTextNode_1.PlainTextNode('!')
+        ]));
+    });
 });
 describe('Text surrounded by backticks', function () {
     it('is put inside an inline code node', function () {
