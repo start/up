@@ -10,15 +10,15 @@ function parse(text) {
 }
 exports.parse = parse;
 function parseInlineInto(node, text) {
+    var currentNode = node;
+    var charIndex;
+    var workingText = '';
     function isCurrentNode(SyntaxNodeType) {
         return currentNode instanceof SyntaxNodeType;
     }
-    var currentNode = node;
-    var index;
     function currentText(needle) {
-        return needle === text.substr(index, needle.length);
+        return needle === text.substr(charIndex, needle.length);
     }
-    var workingText = '';
     function flushWorkingText() {
         if (workingText) {
             currentNode.addChild(new PlainTextNode_1.PlainTextNode(workingText));
@@ -49,22 +49,22 @@ function parseInlineInto(node, text) {
         return false;
     }
     function tryParseSandwich(bun, SandwichNodeType) {
-        if (currentText(bun)) {
-            if (isCurrentNode(SandwichNodeType)) {
-                flushAndCloseCurrentNode();
-            }
-            else {
-                flushAndEnterNewChildNode(new SandwichNodeType());
-            }
-            var extraCharsToSkip = bun.length - 1;
-            index += extraCharsToSkip;
-            return true;
+        if (!currentText(bun)) {
+            return false;
         }
-        return false;
+        var extraCharsToSkip = bun.length - 1;
+        charIndex += extraCharsToSkip;
+        if (isCurrentNode(SandwichNodeType)) {
+            flushAndCloseCurrentNode();
+        }
+        else {
+            flushAndEnterNewChildNode(new SandwichNodeType());
+        }
+        return true;
     }
     var isNextCharEscaped = false;
-    for (index = 0; index < text.length; index++) {
-        var char = text[index];
+    for (charIndex = 0; charIndex < text.length; charIndex++) {
+        var char = text[charIndex];
         if (isNextCharEscaped) {
             workingText += char;
             isNextCharEscaped = false;

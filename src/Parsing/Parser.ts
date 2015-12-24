@@ -18,19 +18,17 @@ export function parse(text: string): DocumentNode {
 }
 
 function parseInlineInto(node: SyntaxNode, text: string): void {
+  let currentNode = node;
+  let charIndex: number;
+  let workingText = '';
   
   function isCurrentNode(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
   }
   
-  let currentNode = node;
-  let index: number;
-
   function currentText(needle: string): boolean {
-    return needle === text.substr(index, needle.length)
+    return needle === text.substr(charIndex, needle.length)
   }
-  
-  let workingText = '';
   
   function flushWorkingText(): void {
     if (workingText) {
@@ -67,23 +65,28 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
   }
 
   function tryParseSandwich(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
-    if (currentText(bun)) {
-      if (isCurrentNode(SandwichNodeType)) {
-        flushAndCloseCurrentNode()
-      } else {
-        flushAndEnterNewChildNode(new SandwichNodeType())
-      }
-      const extraCharsToSkip = bun.length - 1
-      index += extraCharsToSkip
-      return true
+    if (!currentText(bun)) {
+      return false
     }
-    return false
+    
+    // If the length of the "bun" is greater than 1, we need to skip ahead that extra length
+    // here. The parser will only skip ahead by 1 character on its own. 
+    const extraCharsToSkip = bun.length - 1
+    charIndex += extraCharsToSkip
+    
+    if (isCurrentNode(SandwichNodeType)) {
+      flushAndCloseCurrentNode()
+    } else {
+      flushAndEnterNewChildNode(new SandwichNodeType())
+    }
+    
+    return true
   }
 
   let isNextCharEscaped = false;
 
-  for (index = 0; index < text.length; index++) {
-    let char = text[index]
+  for (charIndex = 0; charIndex < text.length; charIndex++) {
+    let char = text[charIndex]
 
     if (isNextCharEscaped) {
       workingText += char
