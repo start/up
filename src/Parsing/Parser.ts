@@ -18,9 +18,52 @@ export function parse(text: string): DocumentNode {
 }
 
 function parseInlineInto(node: SyntaxNode, text: string): void {
-  let currentNode = node;
-  let charIndex: number;
-  let workingText = '';
+  let currentNode = node
+  let charIndex: number
+  let countCharsConsumed: number;
+  let workingText = ''
+  let isNextCharEscaped = false
+
+  for (charIndex = 0; charIndex < text.length; charIndex += countCharsConsumed) {
+    let char = text[charIndex]
+    
+    // Until proven otherwise, we assume 1 character will be consumed
+    countCharsConsumed = 1;
+
+    if (isNextCharEscaped) {
+      workingText += char
+      isNextCharEscaped = false
+      continue;
+    }
+
+    if (currentText('\\')) {
+      isNextCharEscaped = true
+      continue;
+    }
+
+    if (isCurrentNode(InlineCodeNode)) {
+      if (!tryFlushAndExitCurrentNode('`')) {
+        workingText += char
+      }
+      continue;
+    }
+
+    if (tryFlushAndEnterNewChildNode('`', InlineCodeNode)) {
+      continue
+    }
+
+    if (tryParseSandwich('**', StressNode)) {
+      continue;
+    }
+
+    if (tryParseSandwich('*', EmphasisNode)) {
+      continue;
+    }
+
+    workingText += char
+  }
+
+  flushWorkingText()
   
   function isCurrentNode(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
@@ -51,14 +94,16 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
   function tryFlushAndEnterNewChildNode(needle: string, SyntaxNodeType: SyntaxNodeType) {
     if (currentText(needle)) {
       flushAndEnterNewChildNode(new SyntaxNodeType())
+      countCharsConsumed = needle.length;
       return true;
     }
     return false;
   }
   
-  function tryFlushAndCloseCurrentNode(needle: string) {
+  function tryFlushAndExitCurrentNode(needle: string) {
     if (currentText(needle)) {
       flushAndCloseCurrentNode()
+      countCharsConsumed = needle.length;
       return true;
     }
     return false;
@@ -69,10 +114,7 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
       return false
     }
     
-    // If the length of the "bun" is greater than 1, we need to skip ahead that extra length
-    // here. The parser will only skip ahead by 1 character on its own. 
-    const extraCharsToSkip = bun.length - 1
-    charIndex += extraCharsToSkip
+    countCharsConsumed = bun.length;
     
     if (isCurrentNode(SandwichNodeType)) {
       flushAndCloseCurrentNode()
@@ -82,44 +124,4 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     
     return true
   }
-
-  let isNextCharEscaped = false;
-
-  for (charIndex = 0; charIndex < text.length; charIndex++) {
-    let char = text[charIndex]
-
-    if (isNextCharEscaped) {
-      workingText += char
-      isNextCharEscaped = false
-      continue;
-    }
-
-    if (currentText('\\')) {
-      isNextCharEscaped = true
-      continue;
-    }
-
-    if (isCurrentNode(InlineCodeNode)) {
-      if (!tryFlushAndCloseCurrentNode('`')) {
-        workingText += char
-      }
-      continue;
-    }
-
-    if (tryFlushAndEnterNewChildNode('`', InlineCodeNode)) {
-      continue
-    }
-
-    if (tryParseSandwich('**', StressNode)) {
-      continue;
-    }
-
-    if (tryParseSandwich('*', EmphasisNode)) {
-      continue;
-    }
-
-    workingText += char
-  }
-
-  flushWorkingText()
 }

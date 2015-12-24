@@ -12,7 +12,39 @@ exports.parse = parse;
 function parseInlineInto(node, text) {
     var currentNode = node;
     var charIndex;
+    var countCharsConsumed;
     var workingText = '';
+    var isNextCharEscaped = false;
+    for (charIndex = 0; charIndex < text.length; charIndex += countCharsConsumed) {
+        var char = text[charIndex];
+        countCharsConsumed = 1;
+        if (isNextCharEscaped) {
+            workingText += char;
+            isNextCharEscaped = false;
+            continue;
+        }
+        if (currentText('\\')) {
+            isNextCharEscaped = true;
+            continue;
+        }
+        if (isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
+            if (!tryFlushAndExitCurrentNode('`')) {
+                workingText += char;
+            }
+            continue;
+        }
+        if (tryFlushAndEnterNewChildNode('`', InlineCodeNode_1.InlineCodeNode)) {
+            continue;
+        }
+        if (tryParseSandwich('**', StressNode_1.StressNode)) {
+            continue;
+        }
+        if (tryParseSandwich('*', EmphasisNode_1.EmphasisNode)) {
+            continue;
+        }
+        workingText += char;
+    }
+    flushWorkingText();
     function isCurrentNode(SyntaxNodeType) {
         return currentNode instanceof SyntaxNodeType;
     }
@@ -37,13 +69,15 @@ function parseInlineInto(node, text) {
     function tryFlushAndEnterNewChildNode(needle, SyntaxNodeType) {
         if (currentText(needle)) {
             flushAndEnterNewChildNode(new SyntaxNodeType());
+            countCharsConsumed = needle.length;
             return true;
         }
         return false;
     }
-    function tryFlushAndCloseCurrentNode(needle) {
+    function tryFlushAndExitCurrentNode(needle) {
         if (currentText(needle)) {
             flushAndCloseCurrentNode();
+            countCharsConsumed = needle.length;
             return true;
         }
         return false;
@@ -52,8 +86,7 @@ function parseInlineInto(node, text) {
         if (!currentText(bun)) {
             return false;
         }
-        var extraCharsToSkip = bun.length - 1;
-        charIndex += extraCharsToSkip;
+        countCharsConsumed = bun.length;
         if (isCurrentNode(SandwichNodeType)) {
             flushAndCloseCurrentNode();
         }
@@ -62,34 +95,4 @@ function parseInlineInto(node, text) {
         }
         return true;
     }
-    var isNextCharEscaped = false;
-    for (charIndex = 0; charIndex < text.length; charIndex++) {
-        var char = text[charIndex];
-        if (isNextCharEscaped) {
-            workingText += char;
-            isNextCharEscaped = false;
-            continue;
-        }
-        if (currentText('\\')) {
-            isNextCharEscaped = true;
-            continue;
-        }
-        if (isCurrentNode(InlineCodeNode_1.InlineCodeNode)) {
-            if (!tryFlushAndCloseCurrentNode('`')) {
-                workingText += char;
-            }
-            continue;
-        }
-        if (tryFlushAndEnterNewChildNode('`', InlineCodeNode_1.InlineCodeNode)) {
-            continue;
-        }
-        if (tryParseSandwich('**', StressNode_1.StressNode)) {
-            continue;
-        }
-        if (tryParseSandwich('*', EmphasisNode_1.EmphasisNode)) {
-            continue;
-        }
-        workingText += char;
-    }
-    flushWorkingText();
 }
