@@ -9,13 +9,13 @@ function parse(text) {
     return documentNode;
 }
 exports.parse = parse;
-function parseInlineInto(node, text) {
+function parseInlineInto(node, text, charIndex, countCharsConsumed) {
+    if (charIndex === void 0) { charIndex = 0; }
+    if (countCharsConsumed === void 0) { countCharsConsumed = 0; }
     var currentNode = node;
-    var charIndex;
-    var countCharsConsumed;
     var workingText = '';
     var isNextCharEscaped = false;
-    for (charIndex = 0; charIndex < text.length; charIndex += countCharsConsumed) {
+    for (; charIndex < text.length; charIndex += countCharsConsumed) {
         var char = text[charIndex];
         countCharsConsumed = 1;
         if (isNextCharEscaped) {

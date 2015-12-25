@@ -17,15 +17,18 @@ export function parse(text: string): DocumentNode {
   return documentNode
 }
 
-function parseInlineInto(node: SyntaxNode, text: string): void {
-  // The functions defined after the loop close over the variables below
+function parseInlineInto(
+  node: SyntaxNode,
+  text: string,
+  charIndex: number = 0,
+  countCharsConsumed: number = 0
+  ): void {
+    
   let currentNode = node
-  let charIndex: number
-  let countCharsConsumed: number;
   let workingText = ''
   let isNextCharEscaped = false
 
-  for (charIndex = 0; charIndex < text.length; charIndex += countCharsConsumed) {
+  for (; charIndex < text.length; charIndex += countCharsConsumed) {
     let char = text[charIndex]
     
     // Until proven otherwise, we assume 1 character will be consumed
