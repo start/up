@@ -79,7 +79,7 @@ function tryParseInline(intoNode, text, charIndex, countCharsConsumed) {
         if (currentTextIs(needle)) {
             flushAndEnterNewChildNode(new SyntaxNodeType());
             countCharsConsumed = needle.length;
-            return true;
+            return tryParseInline(currentNode, text, charIndex, countCharsConsumed);
         }
         return false;
     }
