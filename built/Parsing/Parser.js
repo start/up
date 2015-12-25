@@ -8,7 +8,7 @@ var StressNode_1 = require('../SyntaxNodes/StressNode');
 var NodeStatus;
 (function (NodeStatus) {
     NodeStatus[NodeStatus["Okay"] = 0] = "Okay";
-    NodeStatus[NodeStatus["Dangling"] = 1] = "Dangling";
+    NodeStatus[NodeStatus["NeedsToBeClosed"] = 1] = "NeedsToBeClosed";
 })(NodeStatus || (NodeStatus = {}));
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode();
@@ -49,18 +49,18 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
             }
             continue;
         }
-        if (parseIf('`', InlineCodeNode_1.InlineCodeNode)) {
+        if (parseIfCurrentTextIs('`', InlineCodeNode_1.InlineCodeNode)) {
             continue;
         }
-        if (handleSandwich('**', StressNode_1.StressNode)) {
+        if (handleSandwichIfCurrentTextIs('**', StressNode_1.StressNode)) {
             continue;
         }
-        if (handleSandwich('*', EmphasisNode_1.EmphasisNode)) {
+        if (handleSandwichIfCurrentTextIs('*', EmphasisNode_1.EmphasisNode)) {
             continue;
         }
         workingText += char;
     }
-    if (failed || parentNodeStatus == NodeStatus.Dangling) {
+    if (failed || parentNodeStatus === NodeStatus.NeedsToBeClosed) {
         return new FailedParseResult_1.FailedParseResult();
     }
     flushWorkingText();
@@ -88,7 +88,8 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     function parse(SyntaxNodeType, countCharsToSkip) {
         var potentialNode = new SyntaxNodeType();
         potentialNode.parent = parentNode;
-        var parseResult = parseInline(potentialNode, text, charIndex + countCharsToSkip, NodeStatus.Dangling);
+        var startIndex = charIndex + countCharsToSkip;
+        var parseResult = parseInline(potentialNode, text, startIndex, NodeStatus.NeedsToBeClosed);
         if (parseResult.success()) {
             flushWorkingText();
             potentialNode.addChildren(parseResult.nodes);
@@ -103,7 +104,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         parentNodeStatus = NodeStatus.Okay;
         isParentClosed = true;
     }
-    function parseIf(needle, SyntaxNodeType) {
+    function parseIfCurrentTextIs(needle, SyntaxNodeType) {
         return isCurrentText(needle) && parse(SyntaxNodeType, needle.length);
     }
     function closeParentIfCurrentTextIs(needle) {
@@ -114,12 +115,13 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         }
         return false;
     }
-    function handleSandwich(bun, SandwichNodeType) {
+    function handleSandwichIfCurrentTextIs(bun, SandwichNodeType) {
         if (!isCurrentText(bun)) {
             return false;
         }
         if (isParent(SandwichNodeType)) {
             closeParent();
+            advanceExtraCountCharsConsumed(bun.length);
             return true;
         }
         if (isAnyAncestor(SandwichNodeType)) {

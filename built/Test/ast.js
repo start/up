@@ -155,7 +155,7 @@ describe('An unmatched asterisk', function () {
             new PlainTextNode_1.PlainTextNode('Hello, *world!')
         ]));
     });
-    it('does not create an emphasis node when nested inside another node', function () {
+    it('does not close an emphasis node when nested inside another node', function () {
         chai_1.expect(Up.ast('*Hello, **my* world***!')).to.be.eql(new DocumentNode_1.DocumentNode([
             new EmphasisNode_1.EmphasisNode([
                 new PlainTextNode_1.PlainTextNode('Hello, '),

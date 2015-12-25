@@ -13,7 +13,7 @@ interface SyntaxNodeType {
 
 enum NodeStatus {
   Okay,
-  Dangling
+  NeedsToBeClosed
 }
 
 export function parse(text: string): DocumentNode {
@@ -67,22 +67,22 @@ function parseInline(
       continue;
     }
 
-    if (parseIf('`', InlineCodeNode)) {
+    if (parseIfCurrentTextIs('`', InlineCodeNode)) {
       continue
     }
 
-    if (handleSandwich('**', StressNode)) {
+    if (handleSandwichIfCurrentTextIs('**', StressNode)) {
       continue;
     }
 
-    if (handleSandwich('*', EmphasisNode)) {
+    if (handleSandwichIfCurrentTextIs('*', EmphasisNode)) {
       continue;
     }
 
     workingText += char
   }
   
-  if (failed || parentNodeStatus == NodeStatus.Dangling) {
+  if (failed || parentNodeStatus === NodeStatus.NeedsToBeClosed) {
     return new FailedParseResult();
   }
 
@@ -123,11 +123,9 @@ function parseInline(
     const potentialNode = new SyntaxNodeType();
     potentialNode.parent = parentNode
     
-    const parseResult = parseInline(
-      potentialNode,
-      text,
-      charIndex + countCharsToSkip,
-      NodeStatus.Dangling);
+    const startIndex = charIndex + countCharsToSkip
+    const parseResult =
+      parseInline(potentialNode, text, startIndex, NodeStatus.NeedsToBeClosed);
     
     if (parseResult.success()) {
         flushWorkingText()
@@ -146,7 +144,7 @@ function parseInline(
     isParentClosed = true
   }
 
-  function parseIf(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
+  function parseIfCurrentTextIs(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
     return isCurrentText(needle) && parse(SyntaxNodeType, needle.length)
   }
 
@@ -160,13 +158,14 @@ function parseInline(
     return false;
   }
 
-  function handleSandwich(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
+  function handleSandwichIfCurrentTextIs(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
     if (!isCurrentText(bun)) {
       return false
     }
 
     if (isParent(SandwichNodeType)) {
       closeParent()
+      advanceExtraCountCharsConsumed(bun.length)
       return true
     }
     
