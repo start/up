@@ -24,4 +24,8 @@ export abstract class SyntaxNode {
     syntaxNode.parent = this
     this.children.push(syntaxNode)
   }
+  
+  valid(): boolean {
+    return true
+  }
 }

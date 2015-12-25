@@ -5,5 +5,9 @@ export class LinkNode extends SyntaxNode {
     super(children)
   }
   
+  valid(): boolean {
+    return !!this.url; 
+  }
+  
   private LINK_NODE: any = null
 }

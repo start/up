@@ -23,6 +23,9 @@ var SyntaxNode = (function () {
         syntaxNode.parent = this;
         this.children.push(syntaxNode);
     };
+    SyntaxNode.prototype.valid = function () {
+        return true;
+    };
     return SyntaxNode;
 })();
 exports.SyntaxNode = SyntaxNode;

@@ -5,17 +5,22 @@ var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode();
-    parseInlineInto(documentNode, text);
+    if (!tryParseInline(documentNode, text)) {
+        throw "Unable to parse text";
+    }
     return documentNode;
 }
 exports.parse = parse;
-function parseInlineInto(node, text, charIndex, countCharsConsumed) {
+function tryParseInline(intoNode, text, charIndex, countCharsConsumed) {
     if (charIndex === void 0) { charIndex = 0; }
     if (countCharsConsumed === void 0) { countCharsConsumed = 0; }
-    var currentNode = node;
+    var currentNode = intoNode;
     var workingText = '';
     var isNextCharEscaped = false;
     for (; charIndex < text.length; charIndex += countCharsConsumed) {
+        if (currentNode === intoNode.parent) {
+            return true;
+        }
         var char = text[charIndex];
         countCharsConsumed = 1;
         if (isNextCharEscaped) {
@@ -45,6 +50,7 @@ function parseInlineInto(node, text, charIndex, countCharsConsumed) {
         workingText += char;
     }
     flushWorkingText();
+    return (currentNode === intoNode) && currentNode.valid();
     function parentIs(SyntaxNodeType) {
         return currentNode instanceof SyntaxNodeType;
     }

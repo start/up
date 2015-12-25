@@ -12,23 +12,30 @@ interface SyntaxNodeType {
 export function parse(text: string): DocumentNode {
   const documentNode = new DocumentNode()
 
-  parseInlineInto(documentNode, text)
+  if (!tryParseInline(documentNode, text)) {
+    throw "Unable to parse text"
+  }
 
   return documentNode
 }
 
-function parseInlineInto(
-  node: SyntaxNode,
+function tryParseInline(
+  intoNode: SyntaxNode,
   text: string,
   charIndex: number = 0,
   countCharsConsumed: number = 0
-  ): void {
+  ): boolean {
     
-  let currentNode = node
+  let currentNode = intoNode
   let workingText = ''
   let isNextCharEscaped = false
 
   for (; charIndex < text.length; charIndex += countCharsConsumed) {
+    
+    if (currentNode === intoNode.parent) {
+        return true;
+    }
+    
     let char = text[charIndex]
     
     // Until proven otherwise, we assume 1 character will be consumed
@@ -68,6 +75,15 @@ function parseInlineInto(
   }
 
   flushWorkingText()
+  
+  // If there are still some open nodes, that means we couldn't properly parse
+  // the text.
+  //
+  // This should never happen on the top-level call to this function, but it will
+  // happen if (for example) we start parsing an unmatched asterisk as though it
+  // were the opening of an emphasis node.  
+  return (currentNode === intoNode) && currentNode.valid()
+  
 
   function parentIs(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
