@@ -36,14 +36,14 @@ function parseInline(
   ): ParseResult {
     
   let isParentClosed = false
-  let failed = false;
+  let parentFailedToParse = false;
   let resultNodes: SyntaxNode[] = [];
   let workingText = ''
   let isNextCharEscaped = false
   let charIndex = 0
 
   for (charIndex = initialCharIndex; charIndex < text.length; charIndex += 1) {
-    if (isParentClosed || failed) {
+    if (isParentClosed || parentFailedToParse) {
       break;
     }
     
@@ -82,7 +82,7 @@ function parseInline(
     workingText += char
   }
   
-  if (failed || parentNodeStatus === NodeStatus.NeedsToBeClosed) {
+  if (parentFailedToParse || parentNodeStatus === NodeStatus.NeedsToBeClosed) {
     return new FailedParseResult();
   }
 
@@ -98,10 +98,8 @@ function parseInline(
     return parentNode instanceof SyntaxNodeType
   }
 
-  function isAnyAncestor(SyntaxNodeType: SyntaxNodeType): boolean {
-    return
-      isParent(SyntaxNodeType)
-      || parentNode.parents().some(parent => parent instanceof SyntaxNodeType)
+  function isDistantAncestor(SyntaxNodeType: SyntaxNodeType): boolean {
+    return parentNode.parents().some(parent => parent instanceof SyntaxNodeType)
   }
 
   function isCurrentText(needle: string): boolean {
@@ -169,9 +167,12 @@ function parseInline(
       return true
     }
     
-    // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end.
-    // That's because we'd be leaving the innermost nodes dangling.
-    if (isAnyAncestor(SandwichNodeType)) {
+    // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end,
+    // just yet, because we'd be leaving the innermost nodes dangling. So we fail the current node,
+    // which lets the parser try again (likely interpreting the opening of the dangling node as plain
+    // text.
+    if (isDistantAncestor(SandwichNodeType)) {
+      parentFailedToParse = true;
       return false
     }
 

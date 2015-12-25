@@ -188,15 +188,13 @@ describe('An unmatched asterisk', function() {
       ]))
   })
   
-  it('does not close an emphasis node when nested inside another node', function() {
-    expect(Up.ast('*Hello, **my* world***!')).to.be.eql(
+  it('does not create emphasis node when nested inside a stress node', function() {
+    expect(Up.ast('Hello, **my* world**!')).to.be.eql(
       new DocumentNode([
-        new EmphasisNode([
           new PlainTextNode('Hello, '),
           new StressNode([
             new PlainTextNode('my* world'),
           ]),
-        ]),
         new PlainTextNode('!')
       ]))
   })

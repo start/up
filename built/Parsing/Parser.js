@@ -24,13 +24,13 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     if (initialCharIndex === void 0) { initialCharIndex = 0; }
     if (parentNodeStatus === void 0) { parentNodeStatus = NodeStatus.Okay; }
     var isParentClosed = false;
-    var failed = false;
+    var parentFailedToParse = false;
     var resultNodes = [];
     var workingText = '';
     var isNextCharEscaped = false;
     var charIndex = 0;
     for (charIndex = initialCharIndex; charIndex < text.length; charIndex += 1) {
-        if (isParentClosed || failed) {
+        if (isParentClosed || parentFailedToParse) {
             break;
         }
         var char = text[charIndex];
@@ -60,7 +60,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         }
         workingText += char;
     }
-    if (failed || parentNodeStatus === NodeStatus.NeedsToBeClosed) {
+    if (parentFailedToParse || parentNodeStatus === NodeStatus.NeedsToBeClosed) {
         return new FailedParseResult_1.FailedParseResult();
     }
     flushWorkingText();
@@ -68,10 +68,8 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     function isParent(SyntaxNodeType) {
         return parentNode instanceof SyntaxNodeType;
     }
-    function isAnyAncestor(SyntaxNodeType) {
-        return;
-        isParent(SyntaxNodeType)
-            || parentNode.parents().some(function (parent) { return parent instanceof SyntaxNodeType; });
+    function isDistantAncestor(SyntaxNodeType) {
+        return parentNode.parents().some(function (parent) { return parent instanceof SyntaxNodeType; });
     }
     function isCurrentText(needle) {
         return needle === text.substr(charIndex, needle.length);
@@ -124,7 +122,8 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
             advanceExtraCountCharsConsumed(bun.length);
             return true;
         }
-        if (isAnyAncestor(SandwichNodeType)) {
+        if (isDistantAncestor(SandwichNodeType)) {
+            parentFailedToParse = true;
             return false;
         }
         if (parse(SandwichNodeType, bun.length)) {
