@@ -70,6 +70,10 @@ function parseInline(
     if (parseIfCurrentTextIs('`', InlineCodeNode)) {
       continue
     }
+    
+    if (isCurrentText('***') && !areAnyDistantAncestorsEither([EmphasisNode, StressNode])) {
+      // TODO
+    }
 
     if (handleSandwichIfCurrentTextIs('**', StressNode)) {
       continue;
@@ -97,9 +101,21 @@ function parseInline(
   function isParent(SyntaxNodeType: SyntaxNodeType): boolean {
     return parentNode instanceof SyntaxNodeType
   }
+  
+  function isParentEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
+    return isNodeEither(parentNode, syntaxNodeTypes)
+  }
+  
+  function isNodeEither(node: SyntaxNode, syntaxNodeTypes: SyntaxNodeType[]): boolean {
+    return syntaxNodeTypes.some(SyntaxNodeType => node instanceof SyntaxNodeType)
+  }
 
-  function isDistantAncestor(SyntaxNodeType: SyntaxNodeType): boolean {
-    return parentNode.parents().some(parent => parent instanceof SyntaxNodeType)
+  function areAnyDistantAncestors(SyntaxNodeType: SyntaxNodeType): boolean {
+    return parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
+  }
+  
+  function areAnyDistantAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
+    return parentNode.parents().some(ancestor => isNodeEither(ancestor, syntaxNodeTypes))
   }
 
   function isCurrentText(needle: string): boolean {
@@ -171,7 +187,7 @@ function parseInline(
     // just yet, because we'd be leaving the innermost nodes dangling. So we fail the current node,
     // which lets the parser try again (likely interpreting the opening of the dangling node as plain
     // text.
-    if (isDistantAncestor(SandwichNodeType)) {
+    if (areAnyDistantAncestors(SandwichNodeType)) {
       parentFailedToParse = true;
       return false
     }

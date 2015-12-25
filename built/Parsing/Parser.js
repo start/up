@@ -52,6 +52,8 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         if (parseIfCurrentTextIs('`', InlineCodeNode_1.InlineCodeNode)) {
             continue;
         }
+        if (isCurrentText('***') && !areAnyDistantAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode])) {
+        }
         if (handleSandwichIfCurrentTextIs('**', StressNode_1.StressNode)) {
             continue;
         }
@@ -68,8 +70,17 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     function isParent(SyntaxNodeType) {
         return parentNode instanceof SyntaxNodeType;
     }
-    function isDistantAncestor(SyntaxNodeType) {
-        return parentNode.parents().some(function (parent) { return parent instanceof SyntaxNodeType; });
+    function isParentEither(syntaxNodeTypes) {
+        return isNodeEither(parentNode, syntaxNodeTypes);
+    }
+    function isNodeEither(node, syntaxNodeTypes) {
+        return syntaxNodeTypes.some(function (SyntaxNodeType) { return node instanceof SyntaxNodeType; });
+    }
+    function areAnyDistantAncestors(SyntaxNodeType) {
+        return parentNode.parents().some(function (ancestor) { return ancestor instanceof SyntaxNodeType; });
+    }
+    function areAnyDistantAncestorsEither(syntaxNodeTypes) {
+        return parentNode.parents().some(function (ancestor) { return isNodeEither(ancestor, syntaxNodeTypes); });
     }
     function isCurrentText(needle) {
         return needle === text.substr(charIndex, needle.length);
@@ -122,7 +133,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
             advanceExtraCountCharsConsumed(bun.length);
             return true;
         }
-        if (isDistantAncestor(SandwichNodeType)) {
+        if (areAnyDistantAncestors(SandwichNodeType)) {
             parentFailedToParse = true;
             return false;
         }
