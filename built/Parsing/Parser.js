@@ -48,6 +48,9 @@ function parseInlineInto(node, text) {
     function parentIs(SyntaxNodeType) {
         return currentNode instanceof SyntaxNodeType;
     }
+    function anyParentIs(SyntaxNodeType) {
+        return currentNode.parents().some(function (parent) { return parent instanceof SyntaxNodeType; });
+    }
     function currentTextIs(needle) {
         return needle === text.substr(charIndex, needle.length);
     }
@@ -89,10 +92,12 @@ function parseInlineInto(node, text) {
         countCharsConsumed = bun.length;
         if (parentIs(SandwichNodeType)) {
             flushAndCloseCurrentNode();
+            return true;
         }
-        else {
-            flushAndEnterNewChildNode(new SandwichNodeType());
+        if (anyParentIs(SandwichNodeType)) {
+            return false;
         }
+        flushAndEnterNewChildNode(new SandwichNodeType());
         return true;
     }
 }

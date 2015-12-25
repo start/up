@@ -18,6 +18,7 @@ export function parse(text: string): DocumentNode {
 }
 
 function parseInlineInto(node: SyntaxNode, text: string): void {
+  // The functions defined after the loop close over the variables below
   let currentNode = node
   let charIndex: number
   let countCharsConsumed: number;
@@ -64,15 +65,19 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
   }
 
   flushWorkingText()
-  
+
   function parentIs(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
   }
-  
+
+  function anyParentIs(SyntaxNodeType: SyntaxNodeType): boolean {
+    return currentNode.parents().some(parent => parent instanceof SyntaxNodeType)
+  }
+
   function currentTextIs(needle: string): boolean {
     return needle === text.substr(charIndex, needle.length)
   }
-  
+
   function flushWorkingText(): void {
     if (workingText) {
       currentNode.addChild(new PlainTextNode(workingText))
@@ -86,11 +91,11 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     currentNode = child
   }
 
-  function flushAndCloseCurrentNode() {
+  function flushAndCloseCurrentNode(): void {
     flushWorkingText()
     currentNode = currentNode.parent
   }
-  
+
   function flushAndEnterNewChildNodeIf(needle: string, SyntaxNodeType: SyntaxNodeType) {
     if (currentTextIs(needle)) {
       flushAndEnterNewChildNode(new SyntaxNodeType())
@@ -99,7 +104,7 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     }
     return false;
   }
-  
+
   function flushAndExitCurrentNodeIf(needle: string) {
     if (currentTextIs(needle)) {
       flushAndCloseCurrentNode()
@@ -113,15 +118,21 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     if (!currentTextIs(bun)) {
       return false
     }
-    
+
     countCharsConsumed = bun.length;
-    
+
     if (parentIs(SandwichNodeType)) {
       flushAndCloseCurrentNode()
-    } else {
-      flushAndEnterNewChildNode(new SandwichNodeType())
+      return true
     }
     
+    // If we're *indirectly* nested inside a node of this type, we can't reognize this bun as its end.
+    // That's because we'd be leaving the innermost nodes dangling.
+    if (anyParentIs(SandwichNodeType)) {
+      return false
+    }
+
+    flushAndEnterNewChildNode(new SandwichNodeType())
     return true
   }
 }
