@@ -3,7 +3,7 @@ import { ParseResult } from './ParseResult'
 
 export class FailedParseResult extends ParseResult {
   constructor() {
-    super(null)
+    super(null, 0)
   }
   
   success(): boolean {

@@ -1,11 +1,13 @@
 export abstract class SyntaxNode {
-  constructor(public children: SyntaxNode[] = []) {
-    if (this.children) {
-      for (let child of this.children) {
-        child.parent = this;
-      }
+  constructor(initialChildren: SyntaxNode[] = []) {
+    this.children = []
+    
+    if (initialChildren) {
+      this.addChildren(initialChildren);
     }
   }
+  
+  public children: SyntaxNode[]
 
   parent: SyntaxNode = null
   
@@ -24,8 +26,11 @@ export abstract class SyntaxNode {
     syntaxNode.parent = this
     this.children.push(syntaxNode)
   }
-  
-  valid(): boolean {
-    return true
+
+  addChildren(nodes: SyntaxNode[]) {
+    for (var node of nodes) {
+      node.parent = this;
+      this.children.push(node)
+    }
   }
 }

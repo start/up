@@ -11,9 +11,6 @@ var LinkNode = (function (_super) {
         this.url = url;
         this.LINK_NODE = null;
     }
-    LinkNode.prototype.valid = function () {
-        return !!this.url;
-    };
     return LinkNode;
 })(SyntaxNode_1.SyntaxNode);
 exports.LinkNode = LinkNode;

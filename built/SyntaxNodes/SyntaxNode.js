@@ -1,13 +1,10 @@
 var SyntaxNode = (function () {
-    function SyntaxNode(children) {
-        if (children === void 0) { children = []; }
-        this.children = children;
+    function SyntaxNode(initialChildren) {
+        if (initialChildren === void 0) { initialChildren = []; }
         this.parent = null;
-        if (this.children) {
-            for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
-                var child = _a[_i];
-                child.parent = this;
-            }
+        this.children = [];
+        if (initialChildren) {
+            this.addChildren(initialChildren);
         }
     }
     SyntaxNode.prototype.parents = function () {
@@ -23,8 +20,12 @@ var SyntaxNode = (function () {
         syntaxNode.parent = this;
         this.children.push(syntaxNode);
     };
-    SyntaxNode.prototype.valid = function () {
-        return true;
+    SyntaxNode.prototype.addChildren = function (nodes) {
+        for (var _i = 0; _i < nodes.length; _i++) {
+            var node = nodes[_i];
+            node.parent = this;
+            this.children.push(node);
+        }
     };
     return SyntaxNode;
 })();

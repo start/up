@@ -7,7 +7,7 @@ var ParseResult_1 = require('./ParseResult');
 var FailedParseResult = (function (_super) {
     __extends(FailedParseResult, _super);
     function FailedParseResult() {
-        _super.call(this, null);
+        _super.call(this, null, 0);
     }
     FailedParseResult.prototype.success = function () {
         return false;

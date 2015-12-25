@@ -1,9 +1,11 @@
+import { ParseResult } from './ParseResult'
+import { FailedParseResult } from './FailedParseResult'
+import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
-import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 
 interface SyntaxNodeType {
   new (): SyntaxNode
@@ -12,34 +14,30 @@ interface SyntaxNodeType {
 export function parse(text: string): DocumentNode {
   const documentNode = new DocumentNode()
 
-  if (!tryParseInline(documentNode, text)) {
+  const parseResult = parseInline(documentNode, text) 
+  if (!parseResult.success) {
     throw "Unable to parse text"
   }
 
+  documentNode.addChildren(parseResult.nodes)
   return documentNode
 }
 
-function tryParseInline(
-  intoNode: SyntaxNode,
+function parseInline(
+  parentNode: SyntaxNode,
   text: string,
-  charIndex: number = 0,
-  countCharsConsumed: number = 0
-  ): boolean {
+  initialCharIndex = 0,
+  isNodeOpen = false
+  ): ParseResult {
     
-  let currentNode = intoNode
+  let done = false
+  let nodes: SyntaxNode[] = [];
   let workingText = ''
   let isNextCharEscaped = false
+  let charIndex = 0
 
-  for (; charIndex < text.length; charIndex += countCharsConsumed) {
-    
-    if (currentNode === intoNode.parent) {
-        return true;
-    }
-    
+  for (charIndex = initialCharIndex; !done && charIndex < text.length; charIndex += 1) {
     let char = text[charIndex]
-    
-    // Until proven otherwise, we assume 1 character will be consumed
-    countCharsConsumed = 1;
 
     if (isNextCharEscaped) {
       workingText += char
@@ -53,13 +51,13 @@ function tryParseInline(
     }
 
     if (isParent(InlineCodeNode)) {
-      if (!flushAndExitCurrentNodeIf('`')) {
+      if (!closeIfCurrentTextIs('`')) {
         workingText += char
       }
       continue;
     }
 
-    if (flushAndEnterNewChildNodeIf('`', InlineCodeNode)) {
+    if (parseIf('`', InlineCodeNode)) {
       continue
     }
 
@@ -73,63 +71,81 @@ function tryParseInline(
 
     workingText += char
   }
-
-  flushWorkingText()
   
-  // If there are still some open nodes, that means we couldn't properly parse
-  // the text.
-  //
-  // This should never happen on the top-level call to this function, but it will
-  // happen if (for example) we start parsing an unmatched asterisk as though it
-  // were the opening of an emphasis node.  
-  return (currentNode === intoNode) && currentNode.valid()
-  
-
-  function isParent(SyntaxNodeType: SyntaxNodeType): boolean {
-    return currentNode instanceof SyntaxNodeType
+  if (isNodeOpen) {
+    // This should never happen on the top-level call to this function, but it will
+    // happen if (for example) we start parsing an unmatched asterisk as though it
+    // were the opening of an emphasis node. 
+    return new FailedParseResult();
   }
 
-  function isAnyParent(SyntaxNodeType: SyntaxNodeType): boolean {
-    return currentNode.parents().some(parent => parent instanceof SyntaxNodeType)
+  flush()
+  return new ParseResult(nodes, charIndex - initialCharIndex)
+  
+  
+  // The functions below are essentially member functions. I should probably create a
+  // parser class, but it's currently a function because there's only one entry point
+  // and exit point.
+  
+  function isParent(SyntaxNodeType: SyntaxNodeType): boolean {
+    return parentNode instanceof SyntaxNodeType
+  }
+
+  function isAnyAncestor(SyntaxNodeType: SyntaxNodeType): boolean {
+    return
+      isParent(SyntaxNodeType)
+      || parentNode.parents().some(parent => parent instanceof SyntaxNodeType)
   }
 
   function isCurrentText(needle: string): boolean {
     return needle === text.substr(charIndex, needle.length)
   }
+  
+  function advanceExtraCountCharsConsumed(countCharsConsumed: number): void {
+    charIndex += countCharsConsumed - 1
+  }
 
-  function flushWorkingText(): void {
+  function flush(): void {
     if (workingText) {
-      currentNode.addChild(new PlainTextNode(workingText))
+      nodes.push(new PlainTextNode(workingText))
     }
     workingText = ''
   }
-
-  function flushAndEnterNewChildNode(child: SyntaxNode): void {
-    flushWorkingText()
-    currentNode.addChild(child)
-    currentNode = child
-  }
-
-  function flushAndCloseCurrentNode(): void {
-    flushWorkingText()
-    currentNode = currentNode.parent
-  }
-
-  function flushAndEnterNewChildNodeIf(needle: string, SyntaxNodeType: SyntaxNodeType) {
-    if (isCurrentText(needle)) {
-      flushAndEnterNewChildNode(new SyntaxNodeType())
-      countCharsConsumed = needle.length;
-      return tryParseInline(currentNode, text, charIndex, countCharsConsumed);
+  
+  function parse(SyntaxNodeType: SyntaxNodeType, countCharsToSkip: number): boolean {
+    const newNode = new SyntaxNodeType();
+    newNode.parent = parentNode
+    
+    const parseResult = parseInline(newNode, text, charIndex + countCharsToSkip);
+    
+    if (parseResult.success()) {
+        flush()
+        newNode.addChildren(parseResult.nodes)
+        nodes.push(newNode)
+        advanceExtraCountCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed)
+        return true
     }
-    return false;
+    
+    return false
   }
 
-  function flushAndExitCurrentNodeIf(needle: string) {
+  function close(): void {
+    flush()
+    isNodeOpen = false
+    done = true
+  }
+
+  function parseIf(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
+    return isCurrentText(needle) && parse(SyntaxNodeType, needle.length)
+  }
+
+  function closeIfCurrentTextIs(needle: string) {
     if (isCurrentText(needle)) {
-      flushAndCloseCurrentNode()
-      countCharsConsumed = needle.length;
+      close()
+      advanceExtraCountCharsConsumed(needle.length);
       return true;
     }
+    
     return false;
   }
 
@@ -138,20 +154,22 @@ function tryParseInline(
       return false
     }
 
-    countCharsConsumed = bun.length;
-
     if (isParent(SandwichNodeType)) {
-      flushAndCloseCurrentNode()
+      close()
       return true
     }
     
     // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end.
     // That's because we'd be leaving the innermost nodes dangling.
-    if (isAnyParent(SandwichNodeType)) {
+    if (isAnyAncestor(SandwichNodeType)) {
       return false
     }
 
-    flushAndEnterNewChildNode(new SandwichNodeType())
-    return true
+    if (parse(SandwichNodeType, bun.length)) {
+      close()
+      return true
+    }
+    
+    return false
   }
 }

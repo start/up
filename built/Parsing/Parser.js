@@ -1,28 +1,30 @@
+var ParseResult_1 = require('./ParseResult');
+var FailedParseResult_1 = require('./FailedParseResult');
+var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
-var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode();
-    if (!tryParseInline(documentNode, text)) {
+    var parseResult = parseInline(documentNode, text);
+    if (!parseResult.success) {
         throw "Unable to parse text";
     }
+    documentNode.addChildren(parseResult.nodes);
     return documentNode;
 }
 exports.parse = parse;
-function tryParseInline(intoNode, text, charIndex, countCharsConsumed) {
-    if (charIndex === void 0) { charIndex = 0; }
-    if (countCharsConsumed === void 0) { countCharsConsumed = 0; }
-    var currentNode = intoNode;
+function parseInline(parentNode, text, initialCharIndex, isNodeOpen) {
+    if (initialCharIndex === void 0) { initialCharIndex = 0; }
+    if (isNodeOpen === void 0) { isNodeOpen = false; }
+    var done = false;
+    var nodes = [];
     var workingText = '';
     var isNextCharEscaped = false;
-    for (; charIndex < text.length; charIndex += countCharsConsumed) {
-        if (currentNode === intoNode.parent) {
-            return true;
-        }
+    var charIndex = 0;
+    for (charIndex = initialCharIndex; !done && charIndex < text.length; charIndex += 1) {
         var char = text[charIndex];
-        countCharsConsumed = 1;
         if (isNextCharEscaped) {
             workingText += char;
             isNextCharEscaped = false;
@@ -33,12 +35,12 @@ function tryParseInline(intoNode, text, charIndex, countCharsConsumed) {
             continue;
         }
         if (isParent(InlineCodeNode_1.InlineCodeNode)) {
-            if (!flushAndExitCurrentNodeIf('`')) {
+            if (!closeIfCurrentTextIs('`')) {
                 workingText += char;
             }
             continue;
         }
-        if (flushAndEnterNewChildNodeIf('`', InlineCodeNode_1.InlineCodeNode)) {
+        if (parseIf('`', InlineCodeNode_1.InlineCodeNode)) {
             continue;
         }
         if (parseSandwichIf('**', StressNode_1.StressNode)) {
@@ -49,44 +51,56 @@ function tryParseInline(intoNode, text, charIndex, countCharsConsumed) {
         }
         workingText += char;
     }
-    flushWorkingText();
-    return (currentNode === intoNode) && currentNode.valid();
-    function isParent(SyntaxNodeType) {
-        return currentNode instanceof SyntaxNodeType;
+    if (isNodeOpen) {
+        return new FailedParseResult_1.FailedParseResult();
     }
-    function isAnyParent(SyntaxNodeType) {
-        return currentNode.parents().some(function (parent) { return parent instanceof SyntaxNodeType; });
+    flush();
+    return new ParseResult_1.ParseResult(nodes, charIndex - initialCharIndex);
+    function isParent(SyntaxNodeType) {
+        return parentNode instanceof SyntaxNodeType;
+    }
+    function isAnyAncestor(SyntaxNodeType) {
+        return;
+        isParent(SyntaxNodeType)
+            || parentNode.parents().some(function (parent) { return parent instanceof SyntaxNodeType; });
     }
     function isCurrentText(needle) {
         return needle === text.substr(charIndex, needle.length);
     }
-    function flushWorkingText() {
+    function advanceExtraCountCharsConsumed(countCharsConsumed) {
+        charIndex += countCharsConsumed - 1;
+    }
+    function flush() {
         if (workingText) {
-            currentNode.addChild(new PlainTextNode_1.PlainTextNode(workingText));
+            nodes.push(new PlainTextNode_1.PlainTextNode(workingText));
         }
         workingText = '';
     }
-    function flushAndEnterNewChildNode(child) {
-        flushWorkingText();
-        currentNode.addChild(child);
-        currentNode = child;
-    }
-    function flushAndCloseCurrentNode() {
-        flushWorkingText();
-        currentNode = currentNode.parent;
-    }
-    function flushAndEnterNewChildNodeIf(needle, SyntaxNodeType) {
-        if (isCurrentText(needle)) {
-            flushAndEnterNewChildNode(new SyntaxNodeType());
-            countCharsConsumed = needle.length;
-            return tryParseInline(currentNode, text, charIndex, countCharsConsumed);
+    function parse(SyntaxNodeType, countCharsToSkip) {
+        var newNode = new SyntaxNodeType();
+        newNode.parent = parentNode;
+        var parseResult = parseInline(newNode, text, charIndex + countCharsToSkip);
+        if (parseResult.success()) {
+            flush();
+            newNode.addChildren(parseResult.nodes);
+            nodes.push(newNode);
+            advanceExtraCountCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed);
+            return true;
         }
         return false;
     }
-    function flushAndExitCurrentNodeIf(needle) {
+    function close() {
+        flush();
+        isNodeOpen = false;
+        done = true;
+    }
+    function parseIf(needle, SyntaxNodeType) {
+        return isCurrentText(needle) && parse(SyntaxNodeType, needle.length);
+    }
+    function closeIfCurrentTextIs(needle) {
         if (isCurrentText(needle)) {
-            flushAndCloseCurrentNode();
-            countCharsConsumed = needle.length;
+            close();
+            advanceExtraCountCharsConsumed(needle.length);
             return true;
         }
         return false;
@@ -95,15 +109,17 @@ function tryParseInline(intoNode, text, charIndex, countCharsConsumed) {
         if (!isCurrentText(bun)) {
             return false;
         }
-        countCharsConsumed = bun.length;
         if (isParent(SandwichNodeType)) {
-            flushAndCloseCurrentNode();
+            close();
             return true;
         }
-        if (isAnyParent(SandwichNodeType)) {
+        if (isAnyAncestor(SandwichNodeType)) {
             return false;
         }
-        flushAndEnterNewChildNode(new SandwichNodeType());
-        return true;
+        if (parse(SandwichNodeType, bun.length)) {
+            close();
+            return true;
+        }
+        return false;
     }
 }
