@@ -126,7 +126,7 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
       return true
     }
     
-    // If we're *indirectly* nested inside a node of this type, we can't reognize this bun as its end.
+    // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end.
     // That's because we'd be leaving the innermost nodes dangling.
     if (anyParentIs(SandwichNodeType)) {
       return false
