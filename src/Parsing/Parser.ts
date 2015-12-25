@@ -36,27 +36,27 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
       continue;
     }
 
-    if (currentText('\\')) {
+    if (currentTextIs('\\')) {
       isNextCharEscaped = true
       continue;
     }
 
-    if (directlyInside(InlineCodeNode)) {
-      if (!tryFlushAndExitCurrentNode('`')) {
+    if (parentIs(InlineCodeNode)) {
+      if (!flushAndExitCurrentNodeIf('`')) {
         workingText += char
       }
       continue;
     }
 
-    if (tryFlushAndEnterNewChildNode('`', InlineCodeNode)) {
+    if (flushAndEnterNewChildNodeIf('`', InlineCodeNode)) {
       continue
     }
 
-    if (tryParseSandwich('**', StressNode)) {
+    if (parseSandwichIf('**', StressNode)) {
       continue;
     }
 
-    if (tryParseSandwich('*', EmphasisNode)) {
+    if (parseSandwichIf('*', EmphasisNode)) {
       continue;
     }
 
@@ -65,11 +65,11 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
 
   flushWorkingText()
   
-  function directlyInside(SyntaxNodeType: SyntaxNodeType): boolean {
+  function parentIs(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
   }
   
-  function currentText(needle: string): boolean {
+  function currentTextIs(needle: string): boolean {
     return needle === text.substr(charIndex, needle.length)
   }
   
@@ -91,8 +91,8 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     currentNode = currentNode.parent
   }
   
-  function tryFlushAndEnterNewChildNode(needle: string, SyntaxNodeType: SyntaxNodeType) {
-    if (currentText(needle)) {
+  function flushAndEnterNewChildNodeIf(needle: string, SyntaxNodeType: SyntaxNodeType) {
+    if (currentTextIs(needle)) {
       flushAndEnterNewChildNode(new SyntaxNodeType())
       countCharsConsumed = needle.length;
       return true;
@@ -100,8 +100,8 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     return false;
   }
   
-  function tryFlushAndExitCurrentNode(needle: string) {
-    if (currentText(needle)) {
+  function flushAndExitCurrentNodeIf(needle: string) {
+    if (currentTextIs(needle)) {
       flushAndCloseCurrentNode()
       countCharsConsumed = needle.length;
       return true;
@@ -109,14 +109,14 @@ function parseInlineInto(node: SyntaxNode, text: string): void {
     return false;
   }
 
-  function tryParseSandwich(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
-    if (!currentText(bun)) {
+  function parseSandwichIf(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
+    if (!currentTextIs(bun)) {
       return false
     }
     
     countCharsConsumed = bun.length;
     
-    if (directlyInside(SandwichNodeType)) {
+    if (parentIs(SandwichNodeType)) {
       flushAndCloseCurrentNode()
     } else {
       flushAndEnterNewChildNode(new SandwichNodeType())
