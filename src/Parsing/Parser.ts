@@ -11,6 +11,11 @@ interface SyntaxNodeType {
   new (): SyntaxNode
 }
 
+enum NodeState {
+  Okay,
+  Dangling
+}
+
 export function parse(text: string): DocumentNode {
   const documentNode = new DocumentNode()
 
@@ -27,11 +32,11 @@ function parseInline(
   parentNode: SyntaxNode,
   text: string,
   initialCharIndex = 0,
-  isNodeOpen = false
+  parentNodeState = NodeState.Okay
   ): ParseResult {
     
   let done = false
-  let nodes: SyntaxNode[] = [];
+  let resultNodes: SyntaxNode[] = [];
   let workingText = ''
   let isNextCharEscaped = false
   let charIndex = 0
@@ -72,15 +77,15 @@ function parseInline(
     workingText += char
   }
   
-  if (isNodeOpen) {
+  if (parentNodeState) {
     // This should never happen on the top-level call to this function, but it will
     // happen if (for example) we start parsing an unmatched asterisk as though it
     // were the opening of an emphasis node. 
     return new FailedParseResult();
   }
 
-  flush()
-  return new ParseResult(nodes, charIndex - initialCharIndex)
+  flushWorkingText()
+  return new ParseResult(resultNodes, charIndex - initialCharIndex)
   
   
   // The functions below are essentially member functions. I should probably create a
@@ -105,23 +110,27 @@ function parseInline(
     charIndex += countCharsConsumed - 1
   }
 
-  function flush(): void {
+  function flushWorkingText(): void {
     if (workingText) {
-      nodes.push(new PlainTextNode(workingText))
+      resultNodes.push(new PlainTextNode(workingText))
     }
     workingText = ''
   }
   
   function parse(SyntaxNodeType: SyntaxNodeType, countCharsToSkip: number): boolean {
-    const newNode = new SyntaxNodeType();
-    newNode.parent = parentNode
+    const potentialNode = new SyntaxNodeType();
+    potentialNode.parent = parentNode
     
-    const parseResult = parseInline(newNode, text, charIndex + countCharsToSkip);
+    const parseResult = parseInline(
+      potentialNode,
+      text,
+      charIndex + countCharsToSkip,
+      NodeState.Dangling);
     
     if (parseResult.success()) {
-        flush()
-        newNode.addChildren(parseResult.nodes)
-        nodes.push(newNode)
+        flushWorkingText()
+        potentialNode.addChildren(parseResult.nodes)
+        resultNodes.push(potentialNode)
         advanceExtraCountCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed)
         return true
     }
@@ -130,8 +139,8 @@ function parseInline(
   }
 
   function close(): void {
-    flush()
-    isNodeOpen = false
+    flushWorkingText()
+    parentNodeState = NodeState.Okay
     done = true
   }
 

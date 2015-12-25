@@ -5,6 +5,11 @@ var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
+var NodeState;
+(function (NodeState) {
+    NodeState[NodeState["Okay"] = 0] = "Okay";
+    NodeState[NodeState["Dangling"] = 1] = "Dangling";
+})(NodeState || (NodeState = {}));
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode();
     var parseResult = parseInline(documentNode, text);
@@ -15,11 +20,11 @@ function parse(text) {
     return documentNode;
 }
 exports.parse = parse;
-function parseInline(parentNode, text, initialCharIndex, isNodeOpen) {
+function parseInline(parentNode, text, initialCharIndex, parentNodeState) {
     if (initialCharIndex === void 0) { initialCharIndex = 0; }
-    if (isNodeOpen === void 0) { isNodeOpen = false; }
+    if (parentNodeState === void 0) { parentNodeState = NodeState.Okay; }
     var done = false;
-    var nodes = [];
+    var resultNodes = [];
     var workingText = '';
     var isNextCharEscaped = false;
     var charIndex = 0;
@@ -51,11 +56,11 @@ function parseInline(parentNode, text, initialCharIndex, isNodeOpen) {
         }
         workingText += char;
     }
-    if (isNodeOpen) {
+    if (parentNodeState) {
         return new FailedParseResult_1.FailedParseResult();
     }
-    flush();
-    return new ParseResult_1.ParseResult(nodes, charIndex - initialCharIndex);
+    flushWorkingText();
+    return new ParseResult_1.ParseResult(resultNodes, charIndex - initialCharIndex);
     function isParent(SyntaxNodeType) {
         return parentNode instanceof SyntaxNodeType;
     }
@@ -70,28 +75,28 @@ function parseInline(parentNode, text, initialCharIndex, isNodeOpen) {
     function advanceExtraCountCharsConsumed(countCharsConsumed) {
         charIndex += countCharsConsumed - 1;
     }
-    function flush() {
+    function flushWorkingText() {
         if (workingText) {
-            nodes.push(new PlainTextNode_1.PlainTextNode(workingText));
+            resultNodes.push(new PlainTextNode_1.PlainTextNode(workingText));
         }
         workingText = '';
     }
     function parse(SyntaxNodeType, countCharsToSkip) {
-        var newNode = new SyntaxNodeType();
-        newNode.parent = parentNode;
-        var parseResult = parseInline(newNode, text, charIndex + countCharsToSkip);
+        var potentialNode = new SyntaxNodeType();
+        potentialNode.parent = parentNode;
+        var parseResult = parseInline(potentialNode, text, charIndex + countCharsToSkip, NodeState.Dangling);
         if (parseResult.success()) {
-            flush();
-            newNode.addChildren(parseResult.nodes);
-            nodes.push(newNode);
+            flushWorkingText();
+            potentialNode.addChildren(parseResult.nodes);
+            resultNodes.push(potentialNode);
             advanceExtraCountCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed);
             return true;
         }
         return false;
     }
     function close() {
-        flush();
-        isNodeOpen = false;
+        flushWorkingText();
+        parentNodeState = NodeState.Okay;
         done = true;
     }
     function parseIf(needle, SyntaxNodeType) {
