@@ -46,12 +46,12 @@ describe('A backslash', function () {
 });
 describe('Text surrounded by asterisks', function () {
     it('is put inside an emphasis node', function () {
-        chai_1.expect(Up.ast('Hello, *world*!')).to.be.eql(new DocumentNode_1.DocumentNode([
+        chai_1.expect(Up.ast('Hello, *world*!!')).to.be.eql(new DocumentNode_1.DocumentNode([
             new PlainTextNode_1.PlainTextNode('Hello, '),
             new EmphasisNode_1.EmphasisNode([
                 new PlainTextNode_1.PlainTextNode('world')
             ]),
-            new PlainTextNode_1.PlainTextNode('!')
+            new PlainTextNode_1.PlainTextNode('!!')
         ]));
     });
     it('is evaluated for other conventions', function () {

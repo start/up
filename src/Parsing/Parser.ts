@@ -11,7 +11,7 @@ interface SyntaxNodeType {
   new (): SyntaxNode
 }
 
-enum NodeState {
+enum NodeStatus {
   Okay,
   Dangling
 }
@@ -32,16 +32,16 @@ function parseInline(
   parentNode: SyntaxNode,
   text: string,
   initialCharIndex = 0,
-  parentNodeState = NodeState.Okay
+  parentNodeStatus = NodeStatus.Okay
   ): ParseResult {
     
-  let done = false
+  let isParentClosed = false
   let resultNodes: SyntaxNode[] = [];
   let workingText = ''
   let isNextCharEscaped = false
   let charIndex = 0
 
-  for (charIndex = initialCharIndex; !done && charIndex < text.length; charIndex += 1) {
+  for (charIndex = initialCharIndex; !isParentClosed && charIndex < text.length; charIndex += 1) {
     let char = text[charIndex]
 
     if (isNextCharEscaped) {
@@ -56,7 +56,7 @@ function parseInline(
     }
 
     if (isParent(InlineCodeNode)) {
-      if (!closeIfCurrentTextIs('`')) {
+      if (!closeParentIfCurrentTextIs('`')) {
         workingText += char
       }
       continue;
@@ -66,21 +66,18 @@ function parseInline(
       continue
     }
 
-    if (parseSandwichIf('**', StressNode)) {
+    if (handleSandwich('**', StressNode)) {
       continue;
     }
 
-    if (parseSandwichIf('*', EmphasisNode)) {
+    if (handleSandwich('*', EmphasisNode)) {
       continue;
     }
 
     workingText += char
   }
   
-  if (parentNodeState) {
-    // This should never happen on the top-level call to this function, but it will
-    // happen if (for example) we start parsing an unmatched asterisk as though it
-    // were the opening of an emphasis node. 
+  if (parentNodeStatus == NodeStatus.Dangling) {
     return new FailedParseResult();
   }
 
@@ -125,7 +122,7 @@ function parseInline(
       potentialNode,
       text,
       charIndex + countCharsToSkip,
-      NodeState.Dangling);
+      NodeStatus.Dangling);
     
     if (parseResult.success()) {
         flushWorkingText()
@@ -138,19 +135,19 @@ function parseInline(
     return false
   }
 
-  function close(): void {
+  function closeParent(): void {
     flushWorkingText()
-    parentNodeState = NodeState.Okay
-    done = true
+    parentNodeStatus = NodeStatus.Okay
+    isParentClosed = true
   }
 
   function parseIf(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
     return isCurrentText(needle) && parse(SyntaxNodeType, needle.length)
   }
 
-  function closeIfCurrentTextIs(needle: string) {
+  function closeParentIfCurrentTextIs(needle: string) {
     if (isCurrentText(needle)) {
-      close()
+      closeParent()
       advanceExtraCountCharsConsumed(needle.length);
       return true;
     }
@@ -158,13 +155,13 @@ function parseInline(
     return false;
   }
 
-  function parseSandwichIf(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
+  function handleSandwich(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
     if (!isCurrentText(bun)) {
       return false
     }
 
     if (isParent(SandwichNodeType)) {
-      close()
+      closeParent()
       return true
     }
     
@@ -175,7 +172,6 @@ function parseInline(
     }
 
     if (parse(SandwichNodeType, bun.length)) {
-      close()
       return true
     }
     

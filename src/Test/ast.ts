@@ -59,13 +59,13 @@ describe('A backslash', function() {
 
 describe('Text surrounded by asterisks', function() {
   it('is put inside an emphasis node', function() {
-    expect(Up.ast('Hello, *world*!')).to.be.eql(
+    expect(Up.ast('Hello, *world*!!')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
           new PlainTextNode('world')
         ]),
-        new PlainTextNode('!')
+        new PlainTextNode('!!')
       ]))
   })
   

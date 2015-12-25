@@ -5,11 +5,11 @@ var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
-var NodeState;
-(function (NodeState) {
-    NodeState[NodeState["Okay"] = 0] = "Okay";
-    NodeState[NodeState["Dangling"] = 1] = "Dangling";
-})(NodeState || (NodeState = {}));
+var NodeStatus;
+(function (NodeStatus) {
+    NodeStatus[NodeStatus["Okay"] = 0] = "Okay";
+    NodeStatus[NodeStatus["Dangling"] = 1] = "Dangling";
+})(NodeStatus || (NodeStatus = {}));
 function parse(text) {
     var documentNode = new DocumentNode_1.DocumentNode();
     var parseResult = parseInline(documentNode, text);
@@ -20,15 +20,15 @@ function parse(text) {
     return documentNode;
 }
 exports.parse = parse;
-function parseInline(parentNode, text, initialCharIndex, parentNodeState) {
+function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     if (initialCharIndex === void 0) { initialCharIndex = 0; }
-    if (parentNodeState === void 0) { parentNodeState = NodeState.Okay; }
-    var done = false;
+    if (parentNodeStatus === void 0) { parentNodeStatus = NodeStatus.Okay; }
+    var isParentClosed = false;
     var resultNodes = [];
     var workingText = '';
     var isNextCharEscaped = false;
     var charIndex = 0;
-    for (charIndex = initialCharIndex; !done && charIndex < text.length; charIndex += 1) {
+    for (charIndex = initialCharIndex; !isParentClosed && charIndex < text.length; charIndex += 1) {
         var char = text[charIndex];
         if (isNextCharEscaped) {
             workingText += char;
@@ -40,7 +40,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeState) {
             continue;
         }
         if (isParent(InlineCodeNode_1.InlineCodeNode)) {
-            if (!closeIfCurrentTextIs('`')) {
+            if (!closeParentIfCurrentTextIs('`')) {
                 workingText += char;
             }
             continue;
@@ -48,15 +48,15 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeState) {
         if (parseIf('`', InlineCodeNode_1.InlineCodeNode)) {
             continue;
         }
-        if (parseSandwichIf('**', StressNode_1.StressNode)) {
+        if (handleSandwich('**', StressNode_1.StressNode)) {
             continue;
         }
-        if (parseSandwichIf('*', EmphasisNode_1.EmphasisNode)) {
+        if (handleSandwich('*', EmphasisNode_1.EmphasisNode)) {
             continue;
         }
         workingText += char;
     }
-    if (parentNodeState) {
+    if (parentNodeStatus == NodeStatus.Dangling) {
         return new FailedParseResult_1.FailedParseResult();
     }
     flushWorkingText();
@@ -84,7 +84,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeState) {
     function parse(SyntaxNodeType, countCharsToSkip) {
         var potentialNode = new SyntaxNodeType();
         potentialNode.parent = parentNode;
-        var parseResult = parseInline(potentialNode, text, charIndex + countCharsToSkip, NodeState.Dangling);
+        var parseResult = parseInline(potentialNode, text, charIndex + countCharsToSkip, NodeStatus.Dangling);
         if (parseResult.success()) {
             flushWorkingText();
             potentialNode.addChildren(parseResult.nodes);
@@ -94,35 +94,34 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeState) {
         }
         return false;
     }
-    function close() {
+    function closeParent() {
         flushWorkingText();
-        parentNodeState = NodeState.Okay;
-        done = true;
+        parentNodeStatus = NodeStatus.Okay;
+        isParentClosed = true;
     }
     function parseIf(needle, SyntaxNodeType) {
         return isCurrentText(needle) && parse(SyntaxNodeType, needle.length);
     }
-    function closeIfCurrentTextIs(needle) {
+    function closeParentIfCurrentTextIs(needle) {
         if (isCurrentText(needle)) {
-            close();
+            closeParent();
             advanceExtraCountCharsConsumed(needle.length);
             return true;
         }
         return false;
     }
-    function parseSandwichIf(bun, SandwichNodeType) {
+    function handleSandwich(bun, SandwichNodeType) {
         if (!isCurrentText(bun)) {
             return false;
         }
         if (isParent(SandwichNodeType)) {
-            close();
+            closeParent();
             return true;
         }
         if (isAnyAncestor(SandwichNodeType)) {
             return false;
         }
         if (parse(SandwichNodeType, bun.length)) {
-            close();
             return true;
         }
         return false;
