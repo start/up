@@ -47,12 +47,12 @@ function tryParseInline(
       continue;
     }
 
-    if (currentTextIs('\\')) {
+    if (isCurrentText('\\')) {
       isNextCharEscaped = true
       continue;
     }
 
-    if (parentIs(InlineCodeNode)) {
+    if (isParent(InlineCodeNode)) {
       if (!flushAndExitCurrentNodeIf('`')) {
         workingText += char
       }
@@ -85,15 +85,15 @@ function tryParseInline(
   return (currentNode === intoNode) && currentNode.valid()
   
 
-  function parentIs(SyntaxNodeType: SyntaxNodeType): boolean {
+  function isParent(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode instanceof SyntaxNodeType
   }
 
-  function anyParentIs(SyntaxNodeType: SyntaxNodeType): boolean {
+  function isAnyParent(SyntaxNodeType: SyntaxNodeType): boolean {
     return currentNode.parents().some(parent => parent instanceof SyntaxNodeType)
   }
 
-  function currentTextIs(needle: string): boolean {
+  function isCurrentText(needle: string): boolean {
     return needle === text.substr(charIndex, needle.length)
   }
 
@@ -116,7 +116,7 @@ function tryParseInline(
   }
 
   function flushAndEnterNewChildNodeIf(needle: string, SyntaxNodeType: SyntaxNodeType) {
-    if (currentTextIs(needle)) {
+    if (isCurrentText(needle)) {
       flushAndEnterNewChildNode(new SyntaxNodeType())
       countCharsConsumed = needle.length;
       return tryParseInline(currentNode, text, charIndex, countCharsConsumed);
@@ -125,7 +125,7 @@ function tryParseInline(
   }
 
   function flushAndExitCurrentNodeIf(needle: string) {
-    if (currentTextIs(needle)) {
+    if (isCurrentText(needle)) {
       flushAndCloseCurrentNode()
       countCharsConsumed = needle.length;
       return true;
@@ -134,20 +134,20 @@ function tryParseInline(
   }
 
   function parseSandwichIf(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
-    if (!currentTextIs(bun)) {
+    if (!isCurrentText(bun)) {
       return false
     }
 
     countCharsConsumed = bun.length;
 
-    if (parentIs(SandwichNodeType)) {
+    if (isParent(SandwichNodeType)) {
       flushAndCloseCurrentNode()
       return true
     }
     
     // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end.
     // That's because we'd be leaving the innermost nodes dangling.
-    if (anyParentIs(SandwichNodeType)) {
+    if (isAnyParent(SandwichNodeType)) {
       return false
     }
 
