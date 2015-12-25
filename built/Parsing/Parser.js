@@ -24,11 +24,15 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     if (initialCharIndex === void 0) { initialCharIndex = 0; }
     if (parentNodeStatus === void 0) { parentNodeStatus = NodeStatus.Okay; }
     var isParentClosed = false;
+    var failed = false;
     var resultNodes = [];
     var workingText = '';
     var isNextCharEscaped = false;
     var charIndex = 0;
-    for (charIndex = initialCharIndex; !isParentClosed && charIndex < text.length; charIndex += 1) {
+    for (charIndex = initialCharIndex; charIndex < text.length; charIndex += 1) {
+        if (isParentClosed || failed) {
+            break;
+        }
         var char = text[charIndex];
         if (isNextCharEscaped) {
             workingText += char;
@@ -56,7 +60,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         }
         workingText += char;
     }
-    if (parentNodeStatus == NodeStatus.Dangling) {
+    if (failed || parentNodeStatus == NodeStatus.Dangling) {
         return new FailedParseResult_1.FailedParseResult();
     }
     flushWorkingText();

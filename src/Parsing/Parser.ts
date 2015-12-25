@@ -36,12 +36,17 @@ function parseInline(
   ): ParseResult {
     
   let isParentClosed = false
+  let failed = false;
   let resultNodes: SyntaxNode[] = [];
   let workingText = ''
   let isNextCharEscaped = false
   let charIndex = 0
 
-  for (charIndex = initialCharIndex; !isParentClosed && charIndex < text.length; charIndex += 1) {
+  for (charIndex = initialCharIndex; charIndex < text.length; charIndex += 1) {
+    if (isParentClosed || failed) {
+      break;
+    }
+    
     let char = text[charIndex]
 
     if (isNextCharEscaped) {
@@ -77,7 +82,7 @@ function parseInline(
     workingText += char
   }
   
-  if (parentNodeStatus == NodeStatus.Dangling) {
+  if (failed || parentNodeStatus == NodeStatus.Dangling) {
     return new FailedParseResult();
   }
 

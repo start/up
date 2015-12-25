@@ -123,7 +123,7 @@ describe('Text surrounded by backticks', function() {
 })
 
 describe('Text surrounded by 2 asterisks', function() {
-  it('is put inside an stress node', function() {
+  it('is put inside a stress node', function() {
     expect(Up.ast('Hello, **world**!')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, '),
