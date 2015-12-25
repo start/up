@@ -149,3 +149,10 @@ describe('Text starting with 3 asterisks', function () {
         ]));
     });
 });
+describe('An unmatched asterisk', function () {
+    it('does not create an emphasis node', function () {
+        chai_1.expect(Up.ast('Hello, *world!')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('Hello, *world!')
+        ]));
+    });
+});

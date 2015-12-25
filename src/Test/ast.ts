@@ -179,3 +179,12 @@ describe('Text starting with 3 asterisks', function() {
       ]))
   })
 })
+
+describe('An unmatched asterisk', function() {
+  it('does not create an emphasis node', function() {
+    expect(Up.ast('Hello, *world!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, *world!')
+      ]))
+  })
+})
