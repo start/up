@@ -9,10 +9,6 @@ import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 
-interface SyntaxNodeType {
-  new (): SyntaxNode
-}
-
 export class Parser {
   public documentNode: DocumentNode;
    
