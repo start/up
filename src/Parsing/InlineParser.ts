@@ -123,7 +123,7 @@ export class InlineParser {
     const parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode)
 
     if (parseResult.success()) {
-      this.addParsedNode(parseResult.parentNode, parseResult, countCharsThatOpenedNode)
+      this.addParsedNode(parseResult, countCharsThatOpenedNode)
       return true
     }
 
@@ -131,17 +131,16 @@ export class InlineParser {
   }
   
   private getInlineParseResult(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): ParseResult {
+    const startIndex = this.charIndex + countCharsThatOpenedNode
     const newParentNode = new ParentSyntaxNodeType();
     newParentNode.parent = this.parentNode
-
-    const startIndex = this.charIndex + countCharsThatOpenedNode
     return new InlineParser(this.text.slice(startIndex), newParentNode, ParentNodeClosureStatus.MustBeClosed).result;
   }
 
-  private addParsedNode(node: SyntaxNode, parseResult: ParseResult, countCharsThatOpenedNode: number): void {
+  private addParsedNode(parseResult: ParseResult, countCharsThatOpenedNode: number): void {
     this.flushWorkingText()
-    node.addChildren(parseResult.nodes)
-    this.resultNodes.push(node)
+    parseResult.parentNode.addChildren(parseResult.nodes)
+    this.resultNodes.push(parseResult.parentNode)
     this.advanceCountExtraCharsConsumed(countCharsThatOpenedNode + parseResult.countCharsConsumed)
   }
 

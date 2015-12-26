@@ -91,21 +91,21 @@ var InlineParser = (function () {
     InlineParser.prototype.tryParseInline = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
         var parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode);
         if (parseResult.success()) {
-            this.addParsedNode(parseResult.parentNode, parseResult, countCharsThatOpenedNode);
+            this.addParsedNode(parseResult, countCharsThatOpenedNode);
             return true;
         }
         return false;
     };
     InlineParser.prototype.getInlineParseResult = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
+        var startIndex = this.charIndex + countCharsThatOpenedNode;
         var newParentNode = new ParentSyntaxNodeType();
         newParentNode.parent = this.parentNode;
-        var startIndex = this.charIndex + countCharsThatOpenedNode;
         return new InlineParser(this.text.slice(startIndex), newParentNode, ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed).result;
     };
-    InlineParser.prototype.addParsedNode = function (node, parseResult, countCharsThatOpenedNode) {
+    InlineParser.prototype.addParsedNode = function (parseResult, countCharsThatOpenedNode) {
         this.flushWorkingText();
-        node.addChildren(parseResult.nodes);
-        this.resultNodes.push(node);
+        parseResult.parentNode.addChildren(parseResult.nodes);
+        this.resultNodes.push(parseResult.parentNode);
         this.advanceCountExtraCharsConsumed(countCharsThatOpenedNode + parseResult.countCharsConsumed);
     };
     InlineParser.prototype.closeParent = function () {
