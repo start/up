@@ -1,4 +1,6 @@
 import { ParseResult } from './ParseResult'
+import { ParentNodeClosureType } from './ParentNodeClosureType'
+import { InlineParser } from './InlineParser'
 import { FailedParseResult } from './FailedParseResult'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
@@ -11,202 +13,17 @@ interface SyntaxNodeType {
   new (): SyntaxNode
 }
 
-enum ParentNodeClosureStatus {
-  AutomaticallyClosesItself,
-  NeedsToBeClosed
-}
-
 export class Parser {
-  private text: string;
-  private parentNode: SyntaxNode;
-  private reachedEndOfParent: boolean;
-  private parentFailedToParse: boolean;
-  private resultNodes: SyntaxNode[];
-  private workingText: string;
-  private parentNodeStatus: ParentNodeClosureStatus;
-  private charIndex: number;
+  public documentNode: DocumentNode;
+   
+  constructor(private text: string) {
+    this.documentNode = new DocumentNode()
 
-  parse(text: string): DocumentNode {
-    const documentNode = new DocumentNode()
-
-    const parseResult = this.parseInline(documentNode, text)
+    const parseResult = new InlineParser(text, this.documentNode, ParentNodeClosureType.ClosesItself).result;
     if (!parseResult.success) {
       throw new Error("Unable to parse text")
     }
 
-    documentNode.addChildren(parseResult.nodes)
-    return documentNode
-  }
-
-  private parseInline(
-    parentNode: SyntaxNode,
-    text: string,
-    initialCharIndex = 0,
-    parentNodeStatus = ParentNodeClosureStatus.AutomaticallyClosesItself
-  ): ParseResult {
-
-    this.parentNode = parentNode
-    this.text = text;
-    this.parentNodeStatus = parentNodeStatus
-    this.resultNodes = []
-    this.workingText = ''
-    this.reachedEndOfParent = false
-    this.parentFailedToParse = false
-    this.charIndex = 0
-    
-    let isNextCharEscaped = false
-
-    for (this.charIndex = initialCharIndex; this.charIndex < text.length; this.charIndex += 1) {
-      if (this.reachedEndOfParent || this.parentFailedToParse) {
-        break;
-      }
-
-      let char = text[this.charIndex]
-
-      if (isNextCharEscaped) {
-        this.workingText += char
-        isNextCharEscaped = false
-        continue;
-      }
-
-      if (this.isCurrentText('\\')) {
-        isNextCharEscaped = true
-        continue;
-      }
-
-      if (this.isParent(InlineCodeNode)) {
-        if (!this.closeParentIfCurrentTextIs('`')) {
-          this.workingText += char
-        }
-        continue;
-      }
-
-      if (this.parseIfCurrentTextIs('`', InlineCodeNode)) {
-        continue
-      }
-
-      if (this.isCurrentText('***') && !this.areAnyDistantAncestorsEither([EmphasisNode, StressNode])) {
-        // TODO
-      }
-
-      if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode)) {
-        continue;
-      }
-
-      if (this.openOrCloseSandwichIfCurrentTextIs('*', EmphasisNode)) {
-        continue;
-      }
-
-      this.workingText += char
-    }
-
-    if (this.parentFailedToParse || this.parentNodeStatus === ParentNodeClosureStatus.NeedsToBeClosed) {
-      return new FailedParseResult();
-    }
-
-    this.flushWorkingText()
-    return new ParseResult(this.resultNodes, this.charIndex - initialCharIndex)
-  }
-
-  private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.parentNode instanceof SyntaxNodeType
-  }
-
-  private isParentEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return this.isNodeEither(this.parentNode, syntaxNodeTypes)
-  }
-
-  private isNodeEither(node: SyntaxNode, syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return syntaxNodeTypes.some(SyntaxNodeType => node instanceof SyntaxNodeType)
-  }
-
-  private areAnyDistantAncestors(SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
-  }
-
-  private areAnyDistantAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return this.parentNode.parents()
-      .some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
-  }
-
-  private isCurrentText(needle: string): boolean {
-    return needle === this.text.substr(this.charIndex, needle.length)
-  }
-
-  private advanceCountExtraCharsConsumed(countCharsConsumed: number): void {
-    this.charIndex += countCharsConsumed - 1
-  }
-
-  private flushWorkingText(): void {
-    if (this.workingText) {
-      this.resultNodes.push(new PlainTextNode(this.workingText))
-    }
-    this.workingText = ''
-  }
-
-  private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsToSkip: number): boolean {
-    const potentialNode = new ParentSyntaxNodeType();
-    potentialNode.parent = this.parentNode
-
-    const startIndex = this.charIndex + countCharsToSkip
-    const parseResult =
-      new Parser().parseInline(potentialNode, this.text, startIndex, ParentNodeClosureStatus.NeedsToBeClosed);
-
-    if (parseResult.success()) {
-      this.flushWorkingText()
-      potentialNode.addChildren(parseResult.nodes)
-      this.resultNodes.push(potentialNode)
-      this.advanceCountExtraCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed)
-      return true
-    }
-
-    return false
-  }
-
-  private closeParent(): void {
-    this.flushWorkingText()
-    this.parentNodeStatus = ParentNodeClosureStatus.AutomaticallyClosesItself
-    this.reachedEndOfParent = true
-  }
-
-  private parseIfCurrentTextIs(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.isCurrentText(needle) && this.tryParseInline(SyntaxNodeType, needle.length)
-  }
-
-  private closeParentIfCurrentTextIs(needle: string) {
-    if (this.isCurrentText(needle)) {
-      this.closeParent()
-      this.advanceCountExtraCharsConsumed(needle.length);
-      return true;
-    }
-
-    return false;
-  }
-
-  private openOrCloseSandwichIfCurrentTextIs(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
-    if (!this.isCurrentText(bun)) {
-      return false
-    }
-
-    if (this.isParent(SandwichNodeType)) {
-      this.closeParent()
-      this.advanceCountExtraCharsConsumed(bun.length)
-      return true
-    }
-    
-    // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end
-    // just yet, because we'd be leaving the innermost nodes dangling. So we fail the current
-    // (innermost) node, which lets the parser try again (likely interpreting the opening of the
-    // dangling node as plain text.
-    if (this.areAnyDistantAncestors(SandwichNodeType)) {
-      this.parentFailedToParse = true;
-      return false
-    }
-
-    if (this.tryParseInline(SandwichNodeType, bun.length)) {
-      return true
-    }
-
-    return false
+    this.documentNode.addChildren(parseResult.nodes)
   }
 }
