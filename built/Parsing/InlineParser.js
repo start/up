@@ -6,7 +6,8 @@ var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineParser = (function () {
-    function InlineParser(text, parentNode, parentNodeClosureStatus) {
+    function InlineParser(text, parentNode, parentNodeClosureStatus, countCharsConsumedOpeningParentNode) {
+        if (countCharsConsumedOpeningParentNode === void 0) { countCharsConsumedOpeningParentNode = 0; }
         this.text = text;
         this.parentNode = parentNode;
         this.parentNodeClosureStatus = parentNodeClosureStatus;
@@ -18,7 +19,7 @@ var InlineParser = (function () {
         this.parentFailedToParse = false;
         this.charIndex = 0;
         var isNextCharEscaped = false;
-        for (this.charIndex = 0; this.charIndex < text.length; this.charIndex += 1) {
+        for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
             if (this.reachedEndOfParent || this.parentFailedToParse) {
                 break;
             }
@@ -42,6 +43,11 @@ var InlineParser = (function () {
                 continue;
             }
             if (this.isCurrentText('***') && !this.areAnyDistantAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode])) {
+                var emphasisFirstResult = this.getInlineParseResult(EmphasisNode_1.EmphasisNode, '*'.length);
+                var stressFirstResult = this.getInlineParseResult(StressNode_1.StressNode, '**'.length);
+                if (this.tryAcceptLeastAmbiguousResult([emphasisFirstResult, stressFirstResult])) {
+                    continue;
+                }
             }
             if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode_1.StressNode)) {
                 continue;
@@ -91,22 +97,21 @@ var InlineParser = (function () {
     InlineParser.prototype.tryParseInline = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
         var parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode);
         if (parseResult.success()) {
-            this.addParsedNode(parseResult, countCharsThatOpenedNode);
+            this.addParsedNode(parseResult);
             return true;
         }
         return false;
     };
     InlineParser.prototype.getInlineParseResult = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
-        var startIndex = this.charIndex + countCharsThatOpenedNode;
         var newParentNode = new ParentSyntaxNodeType();
         newParentNode.parent = this.parentNode;
-        return new InlineParser(this.text.slice(startIndex), newParentNode, ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed).result;
+        return new InlineParser(this.text.slice(this.charIndex), newParentNode, ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed, countCharsThatOpenedNode).result;
     };
-    InlineParser.prototype.addParsedNode = function (parseResult, countCharsThatOpenedNode) {
+    InlineParser.prototype.addParsedNode = function (parseResult) {
         this.flushWorkingText();
         parseResult.parentNode.addChildren(parseResult.nodes);
         this.resultNodes.push(parseResult.parentNode);
-        this.advanceCountExtraCharsConsumed(countCharsThatOpenedNode + parseResult.countCharsConsumed);
+        this.advanceCountExtraCharsConsumed(parseResult.countCharsConsumed);
     };
     InlineParser.prototype.closeParent = function () {
         this.flushWorkingText();
@@ -141,6 +146,15 @@ var InlineParser = (function () {
             return true;
         }
         return false;
+    };
+    InlineParser.prototype.tryAcceptLeastAmbiguousResult = function (parseResults) {
+        var acceptableResults = parseResults.filter(function (result) { return result.success(); });
+        if (acceptableResults.length === 0) {
+            return false;
+        }
+        parseResults.sort(function (r1, r2) { return r2.countCharsConsumed - r1.countCharsConsumed; });
+        this.addParsedNode(parseResults[0]);
+        return true;
     };
     return InlineParser;
 })();

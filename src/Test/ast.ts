@@ -166,7 +166,7 @@ describe('Text starting with 3 asterisks', function() {
   })
   
   it('can have its stress node closed first', function() {
-    expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
+    expect(Up.ast('Hello, ***my** world*!')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, '),
         new EmphasisNode([

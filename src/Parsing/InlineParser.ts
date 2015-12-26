@@ -21,7 +21,12 @@ export class InlineParser {
   private workingText: string;
   private charIndex: number;
 
-  constructor(private text: string, private parentNode: SyntaxNode, private parentNodeClosureStatus: ParentNodeClosureStatus) {
+  constructor(
+    private text: string,
+    private parentNode: SyntaxNode,
+    private parentNodeClosureStatus: ParentNodeClosureStatus,
+    countCharsConsumedOpeningParentNode = 0) {
+    
     this.parentNode = parentNode
     this.parentNodeClosureStatus = parentNodeClosureStatus
     this.resultNodes = []
@@ -32,7 +37,7 @@ export class InlineParser {
 
     let isNextCharEscaped = false
 
-    for (this.charIndex = 0; this.charIndex < text.length; this.charIndex += 1) {
+    for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
       if (this.reachedEndOfParent || this.parentFailedToParse) {
         break;
       }
@@ -62,7 +67,12 @@ export class InlineParser {
       }
 
       if (this.isCurrentText('***') && !this.areAnyDistantAncestorsEither([EmphasisNode, StressNode])) {
-        // TODO
+        const emphasisFirstResult = this.getInlineParseResult(EmphasisNode, '*'.length)
+        const stressFirstResult = this.getInlineParseResult(StressNode, '**'.length)
+        
+        if (this.tryAcceptLeastAmbiguousResult([emphasisFirstResult, stressFirstResult])) {
+          continue;
+        }
       }
 
       if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode)) {
@@ -123,7 +133,7 @@ export class InlineParser {
     const parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode)
 
     if (parseResult.success()) {
-      this.addParsedNode(parseResult, countCharsThatOpenedNode)
+      this.addParsedNode(parseResult)
       return true
     }
 
@@ -131,17 +141,22 @@ export class InlineParser {
   }
   
   private getInlineParseResult(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): ParseResult {
-    const startIndex = this.charIndex + countCharsThatOpenedNode
-    const newParentNode = new ParentSyntaxNodeType();
+    const newParentNode = new ParentSyntaxNodeType()
     newParentNode.parent = this.parentNode
-    return new InlineParser(this.text.slice(startIndex), newParentNode, ParentNodeClosureStatus.MustBeClosed).result;
+    
+    return new InlineParser(
+      this.text.slice(this.charIndex),
+      newParentNode,
+      ParentNodeClosureStatus.MustBeClosed,
+      countCharsThatOpenedNode
+    ).result;
   }
 
-  private addParsedNode(parseResult: ParseResult, countCharsThatOpenedNode: number): void {
+  private addParsedNode(parseResult: ParseResult): void {
     this.flushWorkingText()
     parseResult.parentNode.addChildren(parseResult.nodes)
     this.resultNodes.push(parseResult.parentNode)
-    this.advanceCountExtraCharsConsumed(countCharsThatOpenedNode + parseResult.countCharsConsumed)
+    this.advanceCountExtraCharsConsumed(parseResult.countCharsConsumed)
   }
 
   private closeParent(): void {
@@ -189,5 +204,18 @@ export class InlineParser {
     }
 
     return false
+  }
+  
+  private tryAcceptLeastAmbiguousResult(parseResults: ParseResult[]): boolean {
+    const acceptableResults = parseResults.filter((result) => result.success())
+    
+    if (acceptableResults.length === 0) {
+      return false
+    }
+
+    parseResults.sort((r1, r2) => r2.countCharsConsumed - r1.countCharsConsumed)
+    
+    this.addParsedNode(parseResults[0])
+    return true;
   }
 }
