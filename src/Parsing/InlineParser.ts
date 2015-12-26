@@ -1,5 +1,5 @@
 import { ParseResult } from './ParseResult'
-import { ParentNodeClosureType } from './ParentNodeClosureType'
+import { ParentNodeClosureStatus } from './ParentNodeClosureStatus'
 import { FailedParseResult } from './FailedParseResult'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
@@ -21,9 +21,9 @@ export class InlineParser {
   private workingText: string;
   private charIndex: number;
 
-  constructor(private text: string, private parentNode: SyntaxNode, private parentNodeStatus: ParentNodeClosureType) {
+  constructor(private text: string, private parentNode: SyntaxNode, private parentNodeClosureStatus: ParentNodeClosureStatus) {
     this.parentNode = parentNode
-    this.parentNodeStatus = parentNodeStatus
+    this.parentNodeClosureStatus = parentNodeClosureStatus
     this.resultNodes = []
     this.workingText = ''
     this.reachedEndOfParent = false
@@ -76,11 +76,11 @@ export class InlineParser {
       this.workingText += char
     }
 
-    if (this.parentFailedToParse || this.parentNodeStatus === ParentNodeClosureType.RequiresClosure) {
+    if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.MustBeClosed) {
       this.result = new FailedParseResult();
     } else {
       this.flushWorkingText()
-      this.result = new ParseResult(this.resultNodes, this.charIndex)
+      this.result = new ParseResult(this.resultNodes, this.charIndex, parentNode)
     }
   }
   private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
@@ -120,19 +120,22 @@ export class InlineParser {
   }
 
   private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): boolean {
-    const potentialNode = new ParentSyntaxNodeType();
-    potentialNode.parent = this.parentNode
-
-    const startIndex = this.charIndex + countCharsThatOpenedNode
-    const parseResult =
-      new InlineParser(this.text.slice(startIndex), potentialNode, ParentNodeClosureType.RequiresClosure).result;
+    const parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode)
 
     if (parseResult.success()) {
-      this.addParsedNode(potentialNode, parseResult, countCharsThatOpenedNode)
+      this.addParsedNode(parseResult.parentNode, parseResult, countCharsThatOpenedNode)
       return true
     }
 
     return false
+  }
+  
+  private getInlineParseResult(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): ParseResult {
+    const newParentNode = new ParentSyntaxNodeType();
+    newParentNode.parent = this.parentNode
+
+    const startIndex = this.charIndex + countCharsThatOpenedNode
+    return new InlineParser(this.text.slice(startIndex), newParentNode, ParentNodeClosureStatus.MustBeClosed).result;
   }
 
   private addParsedNode(node: SyntaxNode, parseResult: ParseResult, countCharsThatOpenedNode: number): void {
@@ -144,7 +147,7 @@ export class InlineParser {
 
   private closeParent(): void {
     this.flushWorkingText()
-    this.parentNodeStatus = ParentNodeClosureType.ClosesItself
+    this.parentNodeClosureStatus = ParentNodeClosureStatus.Closed
     this.reachedEndOfParent = true
   }
 

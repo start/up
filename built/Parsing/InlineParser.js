@@ -1,17 +1,17 @@
 var ParseResult_1 = require('./ParseResult');
-var ParentNodeClosureType_1 = require('./ParentNodeClosureType');
+var ParentNodeClosureStatus_1 = require('./ParentNodeClosureStatus');
 var FailedParseResult_1 = require('./FailedParseResult');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineParser = (function () {
-    function InlineParser(text, parentNode, parentNodeStatus) {
+    function InlineParser(text, parentNode, parentNodeClosureStatus) {
         this.text = text;
         this.parentNode = parentNode;
-        this.parentNodeStatus = parentNodeStatus;
+        this.parentNodeClosureStatus = parentNodeClosureStatus;
         this.parentNode = parentNode;
-        this.parentNodeStatus = parentNodeStatus;
+        this.parentNodeClosureStatus = parentNodeClosureStatus;
         this.resultNodes = [];
         this.workingText = '';
         this.reachedEndOfParent = false;
@@ -51,12 +51,12 @@ var InlineParser = (function () {
             }
             this.workingText += char;
         }
-        if (this.parentFailedToParse || this.parentNodeStatus === ParentNodeClosureType_1.ParentNodeClosureType.RequiresClosure) {
+        if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed) {
             this.result = new FailedParseResult_1.FailedParseResult();
         }
         else {
             this.flushWorkingText();
-            this.result = new ParseResult_1.ParseResult(this.resultNodes, this.charIndex);
+            this.result = new ParseResult_1.ParseResult(this.resultNodes, this.charIndex, parentNode);
         }
     }
     InlineParser.prototype.isParent = function (SyntaxNodeType) {
@@ -89,15 +89,18 @@ var InlineParser = (function () {
         this.workingText = '';
     };
     InlineParser.prototype.tryParseInline = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
-        var potentialNode = new ParentSyntaxNodeType();
-        potentialNode.parent = this.parentNode;
-        var startIndex = this.charIndex + countCharsThatOpenedNode;
-        var parseResult = new InlineParser(this.text.slice(startIndex), potentialNode, ParentNodeClosureType_1.ParentNodeClosureType.RequiresClosure).result;
+        var parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode);
         if (parseResult.success()) {
-            this.addParsedNode(potentialNode, parseResult, countCharsThatOpenedNode);
+            this.addParsedNode(parseResult.parentNode, parseResult, countCharsThatOpenedNode);
             return true;
         }
         return false;
+    };
+    InlineParser.prototype.getInlineParseResult = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
+        var newParentNode = new ParentSyntaxNodeType();
+        newParentNode.parent = this.parentNode;
+        var startIndex = this.charIndex + countCharsThatOpenedNode;
+        return new InlineParser(this.text.slice(startIndex), newParentNode, ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed).result;
     };
     InlineParser.prototype.addParsedNode = function (node, parseResult, countCharsThatOpenedNode) {
         this.flushWorkingText();
@@ -107,7 +110,7 @@ var InlineParser = (function () {
     };
     InlineParser.prototype.closeParent = function () {
         this.flushWorkingText();
-        this.parentNodeStatus = ParentNodeClosureType_1.ParentNodeClosureType.ClosesItself;
+        this.parentNodeClosureStatus = ParentNodeClosureStatus_1.ParentNodeClosureStatus.Closed;
         this.reachedEndOfParent = true;
     };
     InlineParser.prototype.parseIfCurrentTextIs = function (needle, SyntaxNodeType) {

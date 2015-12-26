@@ -1,5 +1,5 @@
 import { ParseResult } from './ParseResult'
-import { ParentNodeClosureType } from './ParentNodeClosureType'
+import { ParentNodeClosureStatus } from './ParentNodeClosureStatus'
 import { InlineParser } from './InlineParser'
 import { FailedParseResult } from './FailedParseResult'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
@@ -15,7 +15,7 @@ export class Parser {
   constructor(private text: string) {
     this.documentNode = new DocumentNode()
 
-    const parseResult = new InlineParser(text, this.documentNode, ParentNodeClosureType.ClosesItself).result;
+    const parseResult = new InlineParser(text, this.documentNode, ParentNodeClosureStatus.Closed).result;
     if (!parseResult.success) {
       throw new Error("Unable to parse text")
     }
