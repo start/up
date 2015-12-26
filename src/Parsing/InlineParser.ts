@@ -14,14 +14,14 @@ interface SyntaxNodeType {
 
 export class InlineParser {
   public result: ParseResult;
-  
+
   private reachedEndOfParent: boolean;
   private parentFailedToParse: boolean;
   private resultNodes: SyntaxNode[];
   private workingText: string;
   private charIndex: number;
-  
-  constructor(private text: string, private parentNode: SyntaxNode, private parentNodeStatus: ParentNodeClosureType) {    
+
+  constructor(private text: string, private parentNode: SyntaxNode, private parentNodeStatus: ParentNodeClosureType) {
     this.parentNode = parentNode
     this.parentNodeStatus = parentNodeStatus
     this.resultNodes = []
@@ -29,7 +29,7 @@ export class InlineParser {
     this.reachedEndOfParent = false
     this.parentFailedToParse = false
     this.charIndex = 0
-    
+
     let isNextCharEscaped = false
 
     for (this.charIndex = 0; this.charIndex < text.length; this.charIndex += 1) {
@@ -119,23 +119,27 @@ export class InlineParser {
     this.workingText = ''
   }
 
-  private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsToSkip: number): boolean {
+  private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): boolean {
     const potentialNode = new ParentSyntaxNodeType();
     potentialNode.parent = this.parentNode
 
-    const startIndex = this.charIndex + countCharsToSkip
+    const startIndex = this.charIndex + countCharsThatOpenedNode
     const parseResult =
       new InlineParser(this.text.slice(startIndex), potentialNode, ParentNodeClosureType.RequiresClosure).result;
 
     if (parseResult.success()) {
-      this.flushWorkingText()
-      potentialNode.addChildren(parseResult.nodes)
-      this.resultNodes.push(potentialNode)
-      this.advanceCountExtraCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed)
+      this.addParsedNode(potentialNode, parseResult, countCharsThatOpenedNode)
       return true
     }
 
     return false
+  }
+
+  private addParsedNode(node: SyntaxNode, parseResult: ParseResult, countCharsThatOpenedNode: number): void {
+    this.flushWorkingText()
+    node.addChildren(parseResult.nodes)
+    this.resultNodes.push(node)
+    this.advanceCountExtraCharsConsumed(countCharsThatOpenedNode + parseResult.countCharsConsumed)
   }
 
   private closeParent(): void {

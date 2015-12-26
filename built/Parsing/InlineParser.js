@@ -88,19 +88,22 @@ var InlineParser = (function () {
         }
         this.workingText = '';
     };
-    InlineParser.prototype.tryParseInline = function (ParentSyntaxNodeType, countCharsToSkip) {
+    InlineParser.prototype.tryParseInline = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
         var potentialNode = new ParentSyntaxNodeType();
         potentialNode.parent = this.parentNode;
-        var startIndex = this.charIndex + countCharsToSkip;
+        var startIndex = this.charIndex + countCharsThatOpenedNode;
         var parseResult = new InlineParser(this.text.slice(startIndex), potentialNode, ParentNodeClosureType_1.ParentNodeClosureType.RequiresClosure).result;
         if (parseResult.success()) {
-            this.flushWorkingText();
-            potentialNode.addChildren(parseResult.nodes);
-            this.resultNodes.push(potentialNode);
-            this.advanceCountExtraCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed);
+            this.addParsedNode(potentialNode, parseResult, countCharsThatOpenedNode);
             return true;
         }
         return false;
+    };
+    InlineParser.prototype.addParsedNode = function (node, parseResult, countCharsThatOpenedNode) {
+        this.flushWorkingText();
+        node.addChildren(parseResult.nodes);
+        this.resultNodes.push(node);
+        this.advanceCountExtraCharsConsumed(countCharsThatOpenedNode + parseResult.countCharsConsumed);
     };
     InlineParser.prototype.closeParent = function () {
         this.flushWorkingText();
