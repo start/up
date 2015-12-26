@@ -122,7 +122,7 @@ function parseInline(
     return needle === text.substr(charIndex, needle.length)
   }
   
-  function advanceExtraCountCharsConsumed(countCharsConsumed: number): void {
+  function advanceCountExtraCharsConsumed(countCharsConsumed: number): void {
     charIndex += countCharsConsumed - 1
   }
 
@@ -133,8 +133,8 @@ function parseInline(
     workingText = ''
   }
   
-  function parse(SyntaxNodeType: SyntaxNodeType, countCharsToSkip: number): boolean {
-    const potentialNode = new SyntaxNodeType();
+  function tryParse(ParentSyntaxNodeType: SyntaxNodeType, countCharsToSkip: number): boolean {
+    const potentialNode = new ParentSyntaxNodeType();
     potentialNode.parent = parentNode
     
     const startIndex = charIndex + countCharsToSkip
@@ -145,7 +145,7 @@ function parseInline(
         flushWorkingText()
         potentialNode.addChildren(parseResult.nodes)
         resultNodes.push(potentialNode)
-        advanceExtraCountCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed)
+        advanceCountExtraCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed)
         return true
     }
     
@@ -159,13 +159,13 @@ function parseInline(
   }
 
   function parseIfCurrentTextIs(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
-    return isCurrentText(needle) && parse(SyntaxNodeType, needle.length)
+    return isCurrentText(needle) && tryParse(SyntaxNodeType, needle.length)
   }
 
   function closeParentIfCurrentTextIs(needle: string) {
     if (isCurrentText(needle)) {
       closeParent()
-      advanceExtraCountCharsConsumed(needle.length);
+      advanceCountExtraCharsConsumed(needle.length);
       return true;
     }
     
@@ -179,7 +179,7 @@ function parseInline(
 
     if (isParent(SandwichNodeType)) {
       closeParent()
-      advanceExtraCountCharsConsumed(bun.length)
+      advanceCountExtraCharsConsumed(bun.length)
       return true
     }
     
@@ -192,7 +192,7 @@ function parseInline(
       return false
     }
 
-    if (parse(SandwichNodeType, bun.length)) {
+    if (tryParse(SandwichNodeType, bun.length)) {
       return true
     }
     

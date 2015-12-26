@@ -85,7 +85,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
     function isCurrentText(needle) {
         return needle === text.substr(charIndex, needle.length);
     }
-    function advanceExtraCountCharsConsumed(countCharsConsumed) {
+    function advanceCountExtraCharsConsumed(countCharsConsumed) {
         charIndex += countCharsConsumed - 1;
     }
     function flushWorkingText() {
@@ -94,8 +94,8 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         }
         workingText = '';
     }
-    function parse(SyntaxNodeType, countCharsToSkip) {
-        var potentialNode = new SyntaxNodeType();
+    function tryParse(ParentSyntaxNodeType, countCharsToSkip) {
+        var potentialNode = new ParentSyntaxNodeType();
         potentialNode.parent = parentNode;
         var startIndex = charIndex + countCharsToSkip;
         var parseResult = parseInline(potentialNode, text, startIndex, NodeStatus.NeedsToBeClosed);
@@ -103,7 +103,7 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
             flushWorkingText();
             potentialNode.addChildren(parseResult.nodes);
             resultNodes.push(potentialNode);
-            advanceExtraCountCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed);
+            advanceCountExtraCharsConsumed(countCharsToSkip + parseResult.countCharsConsumed);
             return true;
         }
         return false;
@@ -114,12 +114,12 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         isParentClosed = true;
     }
     function parseIfCurrentTextIs(needle, SyntaxNodeType) {
-        return isCurrentText(needle) && parse(SyntaxNodeType, needle.length);
+        return isCurrentText(needle) && tryParse(SyntaxNodeType, needle.length);
     }
     function closeParentIfCurrentTextIs(needle) {
         if (isCurrentText(needle)) {
             closeParent();
-            advanceExtraCountCharsConsumed(needle.length);
+            advanceCountExtraCharsConsumed(needle.length);
             return true;
         }
         return false;
@@ -130,14 +130,14 @@ function parseInline(parentNode, text, initialCharIndex, parentNodeStatus) {
         }
         if (isParent(SandwichNodeType)) {
             closeParent();
-            advanceExtraCountCharsConsumed(bun.length);
+            advanceCountExtraCharsConsumed(bun.length);
             return true;
         }
         if (areAnyDistantAncestors(SandwichNodeType)) {
             parentFailedToParse = true;
             return false;
         }
-        if (parse(SandwichNodeType, bun.length)) {
+        if (tryParse(SandwichNodeType, bun.length)) {
             return true;
         }
         return false;
