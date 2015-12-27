@@ -8,7 +8,6 @@ var StressNode = (function (_super) {
     __extends(StressNode, _super);
     function StressNode() {
         _super.apply(this, arguments);
-        this.STRESS_NODE = null;
     }
     return StressNode;
 })(SyntaxNode_1.SyntaxNode);

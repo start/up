@@ -8,7 +8,6 @@ var DocumentNode = (function (_super) {
     __extends(DocumentNode, _super);
     function DocumentNode() {
         _super.apply(this, arguments);
-        this.DOCUMENT_NODE = null;
     }
     return DocumentNode;
 })(SyntaxNode_1.SyntaxNode);

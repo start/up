@@ -9,7 +9,6 @@ var LinkNode = (function (_super) {
     function LinkNode(children, url) {
         _super.call(this, children);
         this.url = url;
-        this.LINK_NODE = null;
     }
     return LinkNode;
 })(SyntaxNode_1.SyntaxNode);

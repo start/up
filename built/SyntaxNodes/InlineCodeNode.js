@@ -8,7 +8,6 @@ var InlineCodeNode = (function (_super) {
     __extends(InlineCodeNode, _super);
     function InlineCodeNode() {
         _super.apply(this, arguments);
-        this.INLINE_CODE_NODE = null;
     }
     return InlineCodeNode;
 })(SyntaxNode_1.SyntaxNode);
