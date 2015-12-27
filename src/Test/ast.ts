@@ -96,6 +96,25 @@ describe('Text surrounded by asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('can be indirectly nested inside another emphasis node', function() {
+    expect(Up.ast('Hello, *my **very, *very* little** world*!')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('Hello, '),
+        new EmphasisNode([
+          new PlainTextNode('my '),
+          new StressNode([
+            new PlainTextNode('very, '),
+            new EmphasisNode([
+              new PlainTextNode("very")
+            ]),       
+            new PlainTextNode(' little')
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
 })
 
 describe('Text surrounded by backticks', function() {
