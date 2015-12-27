@@ -6,8 +6,8 @@ var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineParser = (function () {
-    function InlineParser(text, parentNode, parentNodeClosureStatus, countCharsConsumedOpeningParentNode) {
-        if (countCharsConsumedOpeningParentNode === void 0) { countCharsConsumedOpeningParentNode = 0; }
+    function InlineParser(text, parentNode, parentNodeClosureStatus, initialCharIndex) {
+        if (initialCharIndex === void 0) { initialCharIndex = 0; }
         this.text = text;
         this.parentNode = parentNode;
         this.parentNodeClosureStatus = parentNodeClosureStatus;
@@ -19,7 +19,7 @@ var InlineParser = (function () {
         this.parentFailedToParse = false;
         this.charIndex = 0;
         var isNextCharEscaped = false;
-        for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
+        for (this.charIndex = initialCharIndex; this.charIndex < text.length; this.charIndex += 1) {
             if (this.reachedEndOfParent || this.parentFailedToParse) {
                 break;
             }
@@ -137,10 +137,6 @@ var InlineParser = (function () {
             this.closeParent();
             this.advanceCountExtraCharsConsumed(bun.length);
             return true;
-        }
-        if (this.areAnyDistantAncestors(SandwichNodeType)) {
-            this.parentFailedToParse = true;
-            return false;
         }
         if (this.tryParseInline(SandwichNodeType, bun.length)) {
             return true;

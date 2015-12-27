@@ -25,7 +25,7 @@ export class InlineParser {
     private text: string,
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
-    countCharsConsumedOpeningParentNode = 0) {
+    initialCharIndex = 0) {
     
     this.parentNode = parentNode
     this.parentNodeClosureStatus = parentNodeClosureStatus
@@ -37,7 +37,7 @@ export class InlineParser {
 
     let isNextCharEscaped = false
 
-    for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
+    for (this.charIndex = initialCharIndex; this.charIndex < text.length; this.charIndex += 1) {
       if (this.reachedEndOfParent || this.parentFailedToParse) {
         break;
       }
@@ -188,15 +188,6 @@ export class InlineParser {
       this.closeParent()
       this.advanceCountExtraCharsConsumed(bun.length)
       return true
-    }
-    
-    // If we're indirectly nested inside a node of this type, we can't reognize this bun as its end
-    // just yet, because we'd be leaving the innermost nodes dangling. So we fail the current
-    // (innermost) node, which lets the parser try again (likely interpreting the opening of the
-    // dangling node as plain text.
-    if (this.areAnyDistantAncestors(SandwichNodeType)) {
-      this.parentFailedToParse = true;
-      return false
     }
 
     if (this.tryParseInline(SandwichNodeType, bun.length)) {
