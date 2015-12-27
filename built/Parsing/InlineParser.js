@@ -6,8 +6,8 @@ var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineParser = (function () {
-    function InlineParser(text, parentNode, parentNodeClosureStatus, initialCharIndex) {
-        if (initialCharIndex === void 0) { initialCharIndex = 0; }
+    function InlineParser(text, parentNode, parentNodeClosureStatus, countCharsConsumedOpeningParentNode) {
+        if (countCharsConsumedOpeningParentNode === void 0) { countCharsConsumedOpeningParentNode = 0; }
         this.text = text;
         this.parentNode = parentNode;
         this.parentNodeClosureStatus = parentNodeClosureStatus;
@@ -19,7 +19,7 @@ var InlineParser = (function () {
         this.parentFailedToParse = false;
         this.charIndex = 0;
         var isNextCharEscaped = false;
-        for (this.charIndex = initialCharIndex; this.charIndex < text.length; this.charIndex += 1) {
+        for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
             if (this.reachedEndOfParent || this.parentFailedToParse) {
                 break;
             }
@@ -33,19 +33,17 @@ var InlineParser = (function () {
                 isNextCharEscaped = true;
                 continue;
             }
-            if (this.isParent(InlineCodeNode_1.InlineCodeNode)) {
-                if (!this.closeParentIfCurrentTextIs('`')) {
-                    this.workingText += char;
-                }
+            if (this.openOrCloseSandwichIfCurrentTextIs('`', InlineCodeNode_1.InlineCodeNode)) {
                 continue;
             }
-            if (this.parseIfCurrentTextIs('`', InlineCodeNode_1.InlineCodeNode)) {
+            if (this.isParent(InlineCodeNode_1.InlineCodeNode)) {
+                this.workingText += char;
                 continue;
             }
             if (this.isCurrentText('***') && !this.areAnyDistantAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode])) {
-                var emphasisFirstResult = this.getInlineParseResult(EmphasisNode_1.EmphasisNode, '*'.length);
-                var stressFirstResult = this.getInlineParseResult(StressNode_1.StressNode, '**'.length);
-                if (this.tryAcceptLeastAmbiguousResult([emphasisFirstResult, stressFirstResult])) {
+                var startWithEmphasis = this.getInlineParseResult(EmphasisNode_1.EmphasisNode, '*'.length);
+                var startWithStress = this.getInlineParseResult(StressNode_1.StressNode, '**'.length);
+                if (this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])) {
                     continue;
                 }
             }
@@ -143,13 +141,14 @@ var InlineParser = (function () {
         }
         return false;
     };
-    InlineParser.prototype.tryAcceptLeastAmbiguousResult = function (parseResults) {
-        var acceptableResults = parseResults.filter(function (result) { return result.success(); });
-        if (acceptableResults.length === 0) {
+    InlineParser.prototype.tryAcceptBestTripleAsteriskParseResult = function (parseResults) {
+        var sortedResults = parseResults.slice()
+            .filter(function (result) { return result.success(); })
+            .sort(function (result1, result2) { return result2.countCharsConsumed - result1.countCharsConsumed; });
+        if (!sortedResults.length) {
             return false;
         }
-        parseResults.sort(function (r1, r2) { return r2.countCharsConsumed - r1.countCharsConsumed; });
-        this.addParsedNode(parseResults[0]);
+        this.addParsedNode(sortedResults[0]);
         return true;
     };
     return InlineParser;
