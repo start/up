@@ -28,7 +28,7 @@ export class InlineParser {
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
     countCharsConsumedOpeningParentNode = 0) {
-    
+
     let isNextCharEscaped = false
 
     main_parser_loop:
@@ -50,7 +50,7 @@ export class InlineParser {
         continue;
       }
 
-      if (this.openOrCloseSandwichIfCurrentTextIs('`', InlineCodeNode)) {
+      if (this.tryOpenOrCloseSandwich(new InlineSandwich(InlineCodeNode, '`'))) {
         continue;
       }
 
@@ -58,31 +58,22 @@ export class InlineParser {
         this.workingText += char
         continue;
       }
-      
-      if (this.isCurrentText('[<_<]') && this.tryParseInline(SpoilerNode, '[<_<]'.length)) {
-        continue
-      }
-      
-      if (this.isParent(SpoilerNode) && this.isCurrentText('[>_>]')) {
-        this.closeParent()
-        this.advanceCountExtraCharsConsumed('[>_>]'.length)
-        continue
-      }
 
       const shouldProbablyOpenEmphasisAndStress =
         this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
-        
+
       if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
         continue
       }
-      
+
       for (const sandwich of [
-        new InlineSandwich("**", StressNode),
-        new InlineSandwich("*", EmphasisNode),
-        new InlineSandwich("++", RevisionInsertionNode),
-        new InlineSandwich("~~", RevisionDeletionNode),
+        new InlineSandwich(StressNode, "**"),
+        new InlineSandwich(EmphasisNode, "*"),
+        new InlineSandwich(RevisionInsertionNode, "++"),
+        new InlineSandwich(RevisionDeletionNode, "~~"),
+        new InlineSandwich(SpoilerNode, "[<_<]", "[>_>]"),
       ]) {
-        if (this.openOrCloseSandwichIfCurrentTextIs(sandwich.bun, sandwich.SyntaxNodeType)) {
+        if (this.tryOpenOrCloseSandwich(sandwich)) {
           continue main_parser_loop
         }
       }
@@ -92,8 +83,8 @@ export class InlineParser {
 
     this.finish()
   }
-  
-  
+
+
   private finish() {
     if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {
       this.result = new FailedParseResult();
@@ -120,8 +111,8 @@ export class InlineParser {
   }
 
   private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return 
-      this.isParentEither(syntaxNodeTypes)
+    return
+    this.isParentEither(syntaxNodeTypes)
       || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
   }
 
@@ -190,22 +181,12 @@ export class InlineParser {
     return false;
   }
 
-  private openOrCloseSandwichIfCurrentTextIs(bun: string, SandwichNodeType: SyntaxNodeType): boolean {
-    if (!this.isCurrentText(bun)) {
-      return false
+  private tryOpenOrCloseSandwich(sandwich: InlineSandwich): boolean {
+    if (this.isParent(sandwich.SyntaxNodeType)) {
+      return this.closeParentIfCurrentTextIs(sandwich.closingBun)
     }
 
-    if (this.isParent(SandwichNodeType)) {
-      this.closeParent()
-      this.advanceCountExtraCharsConsumed(bun.length)
-      return true
-    }
-
-    if (this.tryParseInline(SandwichNodeType, bun.length)) {
-      return true
-    }
-
-    return false
+    return this.isCurrentText(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
   }
   
   // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can

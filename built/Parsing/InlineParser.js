@@ -35,19 +35,11 @@ var InlineParser = (function () {
                 isNextCharEscaped = true;
                 continue;
             }
-            if (this.openOrCloseSandwichIfCurrentTextIs('`', InlineCodeNode_1.InlineCodeNode)) {
+            if (this.tryOpenOrCloseSandwich(new InlineSandwich_1.InlineSandwich(InlineCodeNode_1.InlineCodeNode, '`'))) {
                 continue;
             }
             if (this.isParent(InlineCodeNode_1.InlineCodeNode)) {
                 this.workingText += char;
-                continue;
-            }
-            if (this.isCurrentText('[<_<]') && this.tryParseInline(SpoilerNode_1.SpoilerNode, '[<_<]'.length)) {
-                continue;
-            }
-            if (this.isParent(SpoilerNode_1.SpoilerNode) && this.isCurrentText('[>_>]')) {
-                this.closeParent();
-                this.advanceCountExtraCharsConsumed('[>_>]'.length);
                 continue;
             }
             var shouldProbablyOpenEmphasisAndStress = this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode]);
@@ -55,13 +47,14 @@ var InlineParser = (function () {
                 continue;
             }
             for (var _i = 0, _a = [
-                new InlineSandwich_1.InlineSandwich("**", StressNode_1.StressNode),
-                new InlineSandwich_1.InlineSandwich("*", EmphasisNode_1.EmphasisNode),
-                new InlineSandwich_1.InlineSandwich("++", RevisionInsertionNode_1.RevisionInsertionNode),
-                new InlineSandwich_1.InlineSandwich("~~", RevisionDeletionNode_1.RevisionDeletionNode),
+                new InlineSandwich_1.InlineSandwich(StressNode_1.StressNode, "**"),
+                new InlineSandwich_1.InlineSandwich(EmphasisNode_1.EmphasisNode, "*"),
+                new InlineSandwich_1.InlineSandwich(RevisionInsertionNode_1.RevisionInsertionNode, "++"),
+                new InlineSandwich_1.InlineSandwich(RevisionDeletionNode_1.RevisionDeletionNode, "~~"),
+                new InlineSandwich_1.InlineSandwich(SpoilerNode_1.SpoilerNode, "[<_<]", "[>_>]"),
             ]; _i < _a.length; _i++) {
                 var sandwich = _a[_i];
-                if (this.openOrCloseSandwichIfCurrentTextIs(sandwich.bun, sandwich.SyntaxNodeType)) {
+                if (this.tryOpenOrCloseSandwich(sandwich)) {
                     continue main_parser_loop;
                 }
             }
@@ -143,19 +136,11 @@ var InlineParser = (function () {
         }
         return false;
     };
-    InlineParser.prototype.openOrCloseSandwichIfCurrentTextIs = function (bun, SandwichNodeType) {
-        if (!this.isCurrentText(bun)) {
-            return false;
+    InlineParser.prototype.tryOpenOrCloseSandwich = function (sandwich) {
+        if (this.isParent(sandwich.SyntaxNodeType)) {
+            return this.closeParentIfCurrentTextIs(sandwich.closingBun);
         }
-        if (this.isParent(SandwichNodeType)) {
-            this.closeParent();
-            this.advanceCountExtraCharsConsumed(bun.length);
-            return true;
-        }
-        if (this.tryParseInline(SandwichNodeType, bun.length)) {
-            return true;
-        }
-        return false;
+        return this.isCurrentText(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length);
     };
     InlineParser.prototype.tryOpenBothEmphasisAndStress = function () {
         if (!this.isCurrentText('***') || this.areAnyAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode])) {
