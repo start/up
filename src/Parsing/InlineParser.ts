@@ -14,6 +14,13 @@ import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
+const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`')
+const STRESS = new InlineSandwich(StressNode, "**")
+const EMPHASIS = new InlineSandwich(EmphasisNode, "*")
+const REVISION_INSERTION = new InlineSandwich(RevisionInsertionNode, "++")
+const REVISION_DELETION = new InlineSandwich(RevisionDeletionNode, "~~")
+const SPOILER = new InlineSandwich(SpoilerNode, "[<_<]", "[>_>]")
+
 export class InlineParser {
   public result: ParseResult;
 
@@ -50,7 +57,7 @@ export class InlineParser {
         continue;
       }
 
-      if (this.tryOpenOrCloseSandwich(new InlineSandwich(InlineCodeNode, '`'))) {
+      if (this.tryOpenOrCloseSandwich(INLINE_CODE)) {
         continue;
       }
 
@@ -67,11 +74,11 @@ export class InlineParser {
       }
 
       for (const sandwich of [
-        new InlineSandwich(StressNode, "**"),
-        new InlineSandwich(EmphasisNode, "*"),
-        new InlineSandwich(RevisionInsertionNode, "++"),
-        new InlineSandwich(RevisionDeletionNode, "~~"),
-        new InlineSandwich(SpoilerNode, "[<_<]", "[>_>]"),
+        STRESS,
+        EMPHASIS,
+        REVISION_INSERTION,
+        REVISION_DELETION,
+        SPOILER,
       ]) {
         if (this.tryOpenOrCloseSandwich(sandwich)) {
           continue main_parser_loop

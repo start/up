@@ -9,6 +9,12 @@ var StressNode_1 = require('../SyntaxNodes/StressNode');
 var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
 var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
 var SpoilerNode_1 = require('../SyntaxNodes/SpoilerNode');
+var INLINE_CODE = new InlineSandwich_1.InlineSandwich(InlineCodeNode_1.InlineCodeNode, '`');
+var STRESS = new InlineSandwich_1.InlineSandwich(StressNode_1.StressNode, "**");
+var EMPHASIS = new InlineSandwich_1.InlineSandwich(EmphasisNode_1.EmphasisNode, "*");
+var REVISION_INSERTION = new InlineSandwich_1.InlineSandwich(RevisionInsertionNode_1.RevisionInsertionNode, "++");
+var REVISION_DELETION = new InlineSandwich_1.InlineSandwich(RevisionDeletionNode_1.RevisionDeletionNode, "~~");
+var SPOILER = new InlineSandwich_1.InlineSandwich(SpoilerNode_1.SpoilerNode, "[<_<]", "[>_>]");
 var InlineParser = (function () {
     function InlineParser(text, parentNode, parentNodeClosureStatus, countCharsConsumedOpeningParentNode) {
         if (countCharsConsumedOpeningParentNode === void 0) { countCharsConsumedOpeningParentNode = 0; }
@@ -35,7 +41,7 @@ var InlineParser = (function () {
                 isNextCharEscaped = true;
                 continue;
             }
-            if (this.tryOpenOrCloseSandwich(new InlineSandwich_1.InlineSandwich(InlineCodeNode_1.InlineCodeNode, '`'))) {
+            if (this.tryOpenOrCloseSandwich(INLINE_CODE)) {
                 continue;
             }
             if (this.isParent(InlineCodeNode_1.InlineCodeNode)) {
@@ -47,11 +53,11 @@ var InlineParser = (function () {
                 continue;
             }
             for (var _i = 0, _a = [
-                new InlineSandwich_1.InlineSandwich(StressNode_1.StressNode, "**"),
-                new InlineSandwich_1.InlineSandwich(EmphasisNode_1.EmphasisNode, "*"),
-                new InlineSandwich_1.InlineSandwich(RevisionInsertionNode_1.RevisionInsertionNode, "++"),
-                new InlineSandwich_1.InlineSandwich(RevisionDeletionNode_1.RevisionDeletionNode, "~~"),
-                new InlineSandwich_1.InlineSandwich(SpoilerNode_1.SpoilerNode, "[<_<]", "[>_>]"),
+                STRESS,
+                EMPHASIS,
+                REVISION_INSERTION,
+                REVISION_DELETION,
+                SPOILER,
             ]; _i < _a.length; _i++) {
                 var sandwich = _a[_i];
                 if (this.tryOpenOrCloseSandwich(sandwich)) {
