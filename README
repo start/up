@@ -24,7 +24,7 @@ Link URLs [can contain any brackets -> https://google.com/search?q=[hi]].
 
 Within an inline code snippet, other conventions do not apply.
 
-This `**is not emphasized**`.
+This `*is not emphasized*`.
 
 
 A backslash "escapes" the following character, removing any special meaning:
