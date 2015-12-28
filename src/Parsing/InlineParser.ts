@@ -16,26 +16,18 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 export class InlineParser {
   public result: ParseResult;
 
-  private reachedEndOfParent: boolean;
-  private parentFailedToParse: boolean;
-  private resultNodes: SyntaxNode[];
-  private workingText: string;
-  private charIndex: number;
+  private reachedEndOfParent = false;
+  private parentFailedToParse = false;
+  private resultNodes: SyntaxNode[] = [];
+  private workingText = '';
+  private charIndex = 0;
 
   constructor(
     private text: string,
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
     countCharsConsumedOpeningParentNode = 0) {
-
-    this.parentNode = parentNode
-    this.parentNodeClosureStatus = parentNodeClosureStatus
-    this.resultNodes = []
-    this.workingText = ''
-    this.reachedEndOfParent = false
-    this.parentFailedToParse = false
-    this.charIndex = 0
-
+    
     let isNextCharEscaped = false
 
     main_parser_loop:
@@ -87,11 +79,15 @@ export class InlineParser {
       this.workingText += char
     }
 
+    this.finish()
+  }
+  
+  private finish() {
     if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {
       this.result = new FailedParseResult();
     } else {
       this.flushWorkingText()
-      this.result = new ParseResult(this.resultNodes, this.charIndex, parentNode)
+      this.result = new ParseResult(this.resultNodes, this.charIndex, this.parentNode)
     }
   }
 

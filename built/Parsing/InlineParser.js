@@ -14,12 +14,10 @@ var InlineParser = (function () {
         this.text = text;
         this.parentNode = parentNode;
         this.parentNodeClosureStatus = parentNodeClosureStatus;
-        this.parentNode = parentNode;
-        this.parentNodeClosureStatus = parentNodeClosureStatus;
-        this.resultNodes = [];
-        this.workingText = '';
         this.reachedEndOfParent = false;
         this.parentFailedToParse = false;
+        this.resultNodes = [];
+        this.workingText = '';
         this.charIndex = 0;
         var isNextCharEscaped = false;
         main_parser_loop: for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
@@ -60,14 +58,17 @@ var InlineParser = (function () {
             }
             this.workingText += char;
         }
+        this.finish();
+    }
+    InlineParser.prototype.finish = function () {
         if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus_1.ParentNodeClosureStatus.OpenAndMustBeClosed) {
             this.result = new FailedParseResult_1.FailedParseResult();
         }
         else {
             this.flushWorkingText();
-            this.result = new ParseResult_1.ParseResult(this.resultNodes, this.charIndex, parentNode);
+            this.result = new ParseResult_1.ParseResult(this.resultNodes, this.charIndex, this.parentNode);
         }
-    }
+    };
     InlineParser.prototype.isParent = function (SyntaxNodeType) {
         return this.parentNode instanceof SyntaxNodeType;
     };
