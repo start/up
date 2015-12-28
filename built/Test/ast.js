@@ -5,6 +5,8 @@ var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
+var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
+var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
 describe('No text', function () {
     it('creates only a document node', function () {
         chai_1.expect(Up.ast('')).to.be.eql(new DocumentNode_1.DocumentNode());
@@ -170,6 +172,54 @@ describe('An unmatched asterisk', function () {
     it('does not create an emphasis node', function () {
         chai_1.expect(Up.ast('Hello, *world!')).to.be.eql(new DocumentNode_1.DocumentNode([
             new PlainTextNode_1.PlainTextNode('Hello, *world!')
+        ]));
+    });
+});
+describe('Text surrounded by 2 plus signs', function () {
+    it('is put inside a revision insertion node', function () {
+        chai_1.expect(Up.ast('I like ++to brush++ my teeth')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('I like '),
+            new RevisionInsertionNode_1.RevisionInsertionNode([
+                new PlainTextNode_1.PlainTextNode('to brush')
+            ]),
+            new PlainTextNode_1.PlainTextNode('!!')
+        ]));
+    });
+    it('is evaluated for other conventions', function () {
+        chai_1.expect(Up.ast('I like ++to *regularly* brush++ my teeth')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('I like '),
+            new RevisionInsertionNode_1.RevisionInsertionNode([
+                new PlainTextNode_1.PlainTextNode('to '),
+                new EmphasisNode_1.EmphasisNode([
+                    new PlainTextNode_1.PlainTextNode('regularly')
+                ]),
+                new PlainTextNode_1.PlainTextNode(' brush')
+            ]),
+            new PlainTextNode_1.PlainTextNode('my teeth')
+        ]));
+    });
+});
+describe('Text surrounded by 2 tildes', function () {
+    it('is put inside a revision deletion node', function () {
+        chai_1.expect(Up.ast('I like ~~certain types of~~ pizza')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('I like '),
+            new RevisionDeletionNode_1.RevisionDeletionNode([
+                new PlainTextNode_1.PlainTextNode('certain types of')
+            ]),
+            new PlainTextNode_1.PlainTextNode('pizza')
+        ]));
+    });
+    it('is evaluated for other conventions', function () {
+        chai_1.expect(Up.ast('I like ~~certain *types* of~~ pizza')).to.be.eql(new DocumentNode_1.DocumentNode([
+            new PlainTextNode_1.PlainTextNode('I like '),
+            new RevisionDeletionNode_1.RevisionDeletionNode([
+                new PlainTextNode_1.PlainTextNode('certain '),
+                new EmphasisNode_1.EmphasisNode([
+                    new PlainTextNode_1.PlainTextNode('types')
+                ]),
+                new PlainTextNode_1.PlainTextNode(' of')
+            ]),
+            new PlainTextNode_1.PlainTextNode('pizza')
         ]));
     });
 });

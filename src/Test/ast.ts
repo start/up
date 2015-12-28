@@ -8,6 +8,8 @@ import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
+import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
+import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 
 describe('No text', function() {
   it('creates only a document node', function() {
@@ -204,6 +206,64 @@ describe('An unmatched asterisk', function() {
     expect(Up.ast('Hello, *world!')).to.be.eql(
       new DocumentNode([
         new PlainTextNode('Hello, *world!')
+      ]))
+  })
+})
+
+
+describe('Text surrounded by 2 plus signs', function() {
+  it('is put inside a revision insertion node', function() {
+    expect(Up.ast('I like ++to brush++ my teeth')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('I like '),
+        new RevisionInsertionNode([
+          new PlainTextNode('to brush')
+        ]),
+        new PlainTextNode('!!')
+      ]))
+  })
+  
+  it('is evaluated for other conventions', function() {
+    expect(Up.ast('I like ++to *regularly* brush++ my teeth')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('I like '),
+        new RevisionInsertionNode([
+          new PlainTextNode('to '),
+          new EmphasisNode([
+            new PlainTextNode('regularly')
+          ]),
+          new PlainTextNode(' brush')
+        ]),
+        new PlainTextNode('my teeth')
+      ]))
+  })
+})
+
+
+describe('Text surrounded by 2 tildes', function() {
+  it('is put inside a revision deletion node', function() {
+    expect(Up.ast('I like ~~certain types of~~ pizza')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('I like '),
+        new RevisionDeletionNode([
+          new PlainTextNode('certain types of')
+        ]),
+        new PlainTextNode('pizza')
+      ]))
+  })
+  
+  it('is evaluated for other conventions', function() {
+    expect(Up.ast('I like ~~certain *types* of~~ pizza')).to.be.eql(
+      new DocumentNode([
+        new PlainTextNode('I like '),
+        new RevisionDeletionNode([
+          new PlainTextNode('certain '),
+          new EmphasisNode([
+            new PlainTextNode('types')
+          ]),
+          new PlainTextNode(' of')
+        ]),
+        new PlainTextNode('pizza')
       ]))
   })
 })
