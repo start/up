@@ -12,6 +12,7 @@ import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
+import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
 export class InlineParser {
   public result: ParseResult;
@@ -57,6 +58,16 @@ export class InlineParser {
         this.workingText += char
         continue;
       }
+      
+      if (this.isCurrentText('[<_<]') && this.tryParseInline(SpoilerNode, '[<_<]'.length)) {
+        continue
+      }
+      
+      if (this.isParent(SpoilerNode) && this.isCurrentText('[>_>]')) {
+        this.closeParent()
+        this.advanceCountExtraCharsConsumed('[>_>]'.length)
+        continue
+      }
 
       const shouldProbablyOpenEmphasisAndStress =
         this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
@@ -81,6 +92,7 @@ export class InlineParser {
 
     this.finish()
   }
+  
   
   private finish() {
     if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {

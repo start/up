@@ -8,6 +8,7 @@ var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
 var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
 var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
+var SpoilerNode_1 = require('../SyntaxNodes/SpoilerNode');
 var InlineParser = (function () {
     function InlineParser(text, parentNode, parentNodeClosureStatus, countCharsConsumedOpeningParentNode) {
         if (countCharsConsumedOpeningParentNode === void 0) { countCharsConsumedOpeningParentNode = 0; }
@@ -39,6 +40,14 @@ var InlineParser = (function () {
             }
             if (this.isParent(InlineCodeNode_1.InlineCodeNode)) {
                 this.workingText += char;
+                continue;
+            }
+            if (this.isCurrentText('[<_<]') && this.tryParseInline(SpoilerNode_1.SpoilerNode, '[<_<]'.length)) {
+                continue;
+            }
+            if (this.isParent(SpoilerNode_1.SpoilerNode) && this.isCurrentText('[>_>]')) {
+                this.closeParent();
+                this.advanceCountExtraCharsConsumed('[>_>]'.length);
                 continue;
             }
             var shouldProbablyOpenEmphasisAndStress = this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode]);
