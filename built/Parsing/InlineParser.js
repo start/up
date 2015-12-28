@@ -91,8 +91,7 @@ var InlineParser = (function () {
     };
     InlineParser.prototype.areAnyAncestorsEither = function (syntaxNodeTypes) {
         var _this = this;
-        return;
-        this.isParentEither(syntaxNodeTypes)
+        return this.isParentEither(syntaxNodeTypes)
             || this.parentNode.parents().some(function (ancestor) { return _this.isNodeEither(ancestor, syntaxNodeTypes); });
     };
     InlineParser.prototype.isCurrentText = function (needle) {

@@ -118,8 +118,7 @@ export class InlineParser {
   }
 
   private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return
-    this.isParentEither(syntaxNodeTypes)
+    return this.isParentEither(syntaxNodeTypes)
       || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
   }
 
