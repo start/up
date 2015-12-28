@@ -1,5 +1,6 @@
 var ParseResult_1 = require('./ParseResult');
 var ParentNodeClosureStatus_1 = require('./ParentNodeClosureStatus');
+var InlineSandwich_1 = require('./InlineSandwich');
 var FailedParseResult_1 = require('./FailedParseResult');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
@@ -21,7 +22,7 @@ var InlineParser = (function () {
         this.parentFailedToParse = false;
         this.charIndex = 0;
         var isNextCharEscaped = false;
-        for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
+        main_parser_loop: for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
             if (this.reachedEndOfParent || this.parentFailedToParse) {
                 break;
             }
@@ -46,17 +47,16 @@ var InlineParser = (function () {
             if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
                 continue;
             }
-            if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode_1.StressNode)) {
-                continue;
-            }
-            if (this.openOrCloseSandwichIfCurrentTextIs('*', EmphasisNode_1.EmphasisNode)) {
-                continue;
-            }
-            if (this.openOrCloseSandwichIfCurrentTextIs('++', RevisionInsertionNode_1.RevisionInsertionNode)) {
-                continue;
-            }
-            if (this.openOrCloseSandwichIfCurrentTextIs('~~', RevisionDeletionNode_1.RevisionDeletionNode)) {
-                continue;
+            for (var _i = 0, _a = [
+                new InlineSandwich_1.InlineSandwich("**", StressNode_1.StressNode),
+                new InlineSandwich_1.InlineSandwich("*", EmphasisNode_1.EmphasisNode),
+                new InlineSandwich_1.InlineSandwich("++", RevisionInsertionNode_1.RevisionInsertionNode),
+                new InlineSandwich_1.InlineSandwich("~~", RevisionDeletionNode_1.RevisionDeletionNode),
+            ]; _i < _a.length; _i++) {
+                var sandwich = _a[_i];
+                if (this.openOrCloseSandwichIfCurrentTextIs(sandwich.bun, sandwich.SyntaxNodeType)) {
+                    continue main_parser_loop;
+                }
             }
             this.workingText += char;
         }

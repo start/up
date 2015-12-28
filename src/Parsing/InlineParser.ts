@@ -1,6 +1,9 @@
 import { ParseResult } from './ParseResult'
 import { ParentNodeClosureStatus } from './ParentNodeClosureStatus'
+import { InlineSandwich } from './InlineSandwich'
+import { SyntaxNodeType } from './SyntaxNodeType'
 import { FailedParseResult } from './FailedParseResult'
+
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
@@ -9,10 +12,6 @@ import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
-
-interface SyntaxNodeType {
-  new (): SyntaxNode
-}
 
 export class InlineParser {
   public result: ParseResult;
@@ -39,6 +38,7 @@ export class InlineParser {
 
     let isNextCharEscaped = false
 
+    main_parser_loop:
     for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
       if (this.reachedEndOfParent || this.parentFailedToParse) {
         break;
@@ -72,21 +72,16 @@ export class InlineParser {
       if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
         continue
       }
-
-      if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode)) {
-        continue;
-      }
-
-      if (this.openOrCloseSandwichIfCurrentTextIs('*', EmphasisNode)) {
-        continue;
-      }
-
-      if (this.openOrCloseSandwichIfCurrentTextIs('++', RevisionInsertionNode)) {
-        continue;
-      }
-
-      if (this.openOrCloseSandwichIfCurrentTextIs('~~', RevisionDeletionNode)) {
-        continue;
+      
+      for (const sandwich of [
+        new InlineSandwich("**", StressNode),
+        new InlineSandwich("*", EmphasisNode),
+        new InlineSandwich("++", RevisionInsertionNode),
+        new InlineSandwich("~~", RevisionDeletionNode),
+      ]) {
+        if (this.openOrCloseSandwichIfCurrentTextIs(sandwich.bun, sandwich.SyntaxNodeType)) {
+          continue main_parser_loop
+        }
       }
 
       this.workingText += char
