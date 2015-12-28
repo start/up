@@ -7,6 +7,8 @@ import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
+import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
+import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 
 interface SyntaxNodeType {
   new (): SyntaxNode
@@ -80,6 +82,14 @@ export class InlineParser {
       }
 
       if (this.openOrCloseSandwichIfCurrentTextIs('*', EmphasisNode)) {
+        continue;
+      }
+
+      if (this.openOrCloseSandwichIfCurrentTextIs('++', RevisionInsertionNode)) {
+        continue;
+      }
+
+      if (this.openOrCloseSandwichIfCurrentTextIs('~~', RevisionDeletionNode)) {
         continue;
       }
 

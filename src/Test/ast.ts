@@ -219,7 +219,7 @@ describe('Text surrounded by 2 plus signs', function() {
         new RevisionInsertionNode([
           new PlainTextNode('to brush')
         ]),
-        new PlainTextNode('!!')
+        new PlainTextNode(' my teeth')
       ]))
   })
   
@@ -234,7 +234,7 @@ describe('Text surrounded by 2 plus signs', function() {
           ]),
           new PlainTextNode(' brush')
         ]),
-        new PlainTextNode('my teeth')
+        new PlainTextNode(' my teeth')
       ]))
   })
 })
@@ -248,7 +248,7 @@ describe('Text surrounded by 2 tildes', function() {
         new RevisionDeletionNode([
           new PlainTextNode('certain types of')
         ]),
-        new PlainTextNode('pizza')
+        new PlainTextNode(' pizza')
       ]))
   })
   
@@ -263,7 +263,7 @@ describe('Text surrounded by 2 tildes', function() {
           ]),
           new PlainTextNode(' of')
         ]),
-        new PlainTextNode('pizza')
+        new PlainTextNode(' pizza')
       ]))
   })
 })

@@ -182,7 +182,7 @@ describe('Text surrounded by 2 plus signs', function () {
             new RevisionInsertionNode_1.RevisionInsertionNode([
                 new PlainTextNode_1.PlainTextNode('to brush')
             ]),
-            new PlainTextNode_1.PlainTextNode('!!')
+            new PlainTextNode_1.PlainTextNode(' my teeth')
         ]));
     });
     it('is evaluated for other conventions', function () {
@@ -195,7 +195,7 @@ describe('Text surrounded by 2 plus signs', function () {
                 ]),
                 new PlainTextNode_1.PlainTextNode(' brush')
             ]),
-            new PlainTextNode_1.PlainTextNode('my teeth')
+            new PlainTextNode_1.PlainTextNode(' my teeth')
         ]));
     });
 });
@@ -206,7 +206,7 @@ describe('Text surrounded by 2 tildes', function () {
             new RevisionDeletionNode_1.RevisionDeletionNode([
                 new PlainTextNode_1.PlainTextNode('certain types of')
             ]),
-            new PlainTextNode_1.PlainTextNode('pizza')
+            new PlainTextNode_1.PlainTextNode(' pizza')
         ]));
     });
     it('is evaluated for other conventions', function () {
@@ -219,7 +219,7 @@ describe('Text surrounded by 2 tildes', function () {
                 ]),
                 new PlainTextNode_1.PlainTextNode(' of')
             ]),
-            new PlainTextNode_1.PlainTextNode('pizza')
+            new PlainTextNode_1.PlainTextNode(' pizza')
         ]));
     });
 });

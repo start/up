@@ -5,6 +5,8 @@ var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
 var StressNode_1 = require('../SyntaxNodes/StressNode');
+var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
+var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
 var InlineParser = (function () {
     function InlineParser(text, parentNode, parentNodeClosureStatus, countCharsConsumedOpeningParentNode) {
         if (countCharsConsumedOpeningParentNode === void 0) { countCharsConsumedOpeningParentNode = 0; }
@@ -51,6 +53,12 @@ var InlineParser = (function () {
                 continue;
             }
             if (this.openOrCloseSandwichIfCurrentTextIs('*', EmphasisNode_1.EmphasisNode)) {
+                continue;
+            }
+            if (this.openOrCloseSandwichIfCurrentTextIs('++', RevisionInsertionNode_1.RevisionInsertionNode)) {
+                continue;
+            }
+            if (this.openOrCloseSandwichIfCurrentTextIs('~~', RevisionDeletionNode_1.RevisionDeletionNode)) {
                 continue;
             }
             this.workingText += char;
