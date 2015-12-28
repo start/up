@@ -4,11 +4,17 @@ Up is a set of conventions for writing plain text.
 
 This is a [helpful link -> https://stackoverflow.com].
 
-This text is *emphasized*.
+This is *emphasized*.
 
-This text is **stressed**.
+This is **stressed**.
 
 This is some `inline_code()`. 
+
+This is ++inserted++.
+
+This is ~~removed~~.
+
+This is [<_<]an important spoiler[>_>].
 
 
 Link text [can contain [any] brackets -> https://altavista.com].
@@ -34,3 +40,4 @@ This is not some \`inline_code\`.
 
 
 P.S. I'm not accepting contributions at this time!
+
