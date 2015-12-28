@@ -8,18 +8,24 @@ import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
+import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 
 export class Parser {
   public documentNode: DocumentNode;
    
   constructor(private text: string) {
     this.documentNode = new DocumentNode()
+    
+    const paragraphNode = new ParagraphNode();
 
-    const parseResult = new InlineParser(text, this.documentNode, ParentNodeClosureStatus.Closed).result;
+    const parseResult = new InlineParser(text, paragraphNode, ParentNodeClosureStatus.Closed).result;
     if (!parseResult.success) {
       throw new Error("Unable to parse text")
     }
-
-    this.documentNode.addChildren(parseResult.nodes)
+    
+    if (parseResult.nodes.length) {
+      paragraphNode.addChildren(parseResult.nodes)
+      this.documentNode.addChild(paragraphNode);
+    }
   }
 }
