@@ -5,5 +5,5 @@ export class LinkNode extends SyntaxNode {
     super(children)
   }
   
-  private LINK_NODE: any
+  private LINK: any
 }
