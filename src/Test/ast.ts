@@ -11,6 +11,7 @@ import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
+import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 
 function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
@@ -76,7 +77,7 @@ describe('Text surrounded by asterisks', function() {
         new PlainTextNode('!!')
       ]))
   })
-  
+
   it('is evaluated for other conventions', function() {
     expect(Up.ast('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -89,7 +90,7 @@ describe('Text surrounded by asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can even hold stressed text', function() {
     expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -104,7 +105,7 @@ describe('Text surrounded by asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can be indirectly nested inside another emphasis node', function() {
     expect(Up.ast('Hello, *my **very, *very* little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -115,7 +116,7 @@ describe('Text surrounded by asterisks', function() {
             new PlainTextNode('very, '),
             new EmphasisNode([
               new PlainTextNode("very")
-            ]),       
+            ]),
             new PlainTextNode(' little')
           ]),
           new PlainTextNode(' world')
@@ -136,7 +137,7 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('is not evaluated for other conventions', function() {
     expect(Up.ast('Hello, `*world*`!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -160,7 +161,7 @@ describe('Text surrounded by 2 asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can even hold emphasized text', function() {
     expect(Up.ast('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -191,7 +192,7 @@ describe('Text starting with 3 asterisks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can have its stress node closed first', function() {
     expect(Up.ast('Hello, ***my** world*!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -228,7 +229,7 @@ describe('Text surrounded by 2 plus signs', function() {
         new PlainTextNode(' my teeth')
       ]))
   })
-  
+
   it('is evaluated for other conventions', function() {
     expect(Up.ast('I like ++to *regularly* brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
@@ -245,7 +246,6 @@ describe('Text surrounded by 2 plus signs', function() {
   })
 })
 
-
 describe('Text surrounded by 2 tildes', function() {
   it('is put inside a revision deletion node', function() {
     expect(Up.ast('I like ~~certain types of~~ pizza')).to.be.eql(
@@ -257,7 +257,7 @@ describe('Text surrounded by 2 tildes', function() {
         new PlainTextNode(' pizza')
       ]))
   })
-  
+
   it('is evaluated for other conventions', function() {
     expect(Up.ast('I like ~~certain *types* of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
@@ -270,6 +270,34 @@ describe('Text surrounded by 2 tildes', function() {
           new PlainTextNode(' of')
         ]),
         new PlainTextNode(' pizza')
+      ]))
+  })
+})
+
+
+describe('Text surrounded by faces looking away', function() {
+  it('is put inside a spoiler node', function() {
+    expect(Up.ast('After you beat the Elite Four, [<_<]you fight Gary[>_>].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  it('is evaluated for other conventions', function() {
+    expect(Up.ast('After you beat the Elite Four, [<_<]you fight *Gary*[>_>].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight '),
+          new EmphasisNode([
+            new PlainTextNode('Gary')
+          ]),
+        ]),
+        new PlainTextNode('.')
       ]))
   })
 })

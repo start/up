@@ -7,6 +7,7 @@ var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
 var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
+var SpoilerNode_1 = require('../SyntaxNodes/SpoilerNode');
 var ParagraphNode_1 = require('../SyntaxNodes/ParagraphNode');
 function insideDocumentAndParagraph(syntaxNodes) {
     return new DocumentNode_1.DocumentNode([new ParagraphNode_1.ParagraphNode(syntaxNodes)]);
@@ -224,6 +225,29 @@ describe('Text surrounded by 2 tildes', function () {
                 new PlainTextNode_1.PlainTextNode(' of')
             ]),
             new PlainTextNode_1.PlainTextNode(' pizza')
+        ]));
+    });
+});
+describe('Text surrounded by faces looking away', function () {
+    it('is put inside a spoiler node', function () {
+        chai_1.expect(Up.ast('After you beat the Elite Four, [<_<]you fight Gary[>_>].')).to.be.eql(insideDocumentAndParagraph([
+            new PlainTextNode_1.PlainTextNode('After you beat the Elite Four, '),
+            new SpoilerNode_1.SpoilerNode([
+                new PlainTextNode_1.PlainTextNode('you fight Gary')
+            ]),
+            new PlainTextNode_1.PlainTextNode('.')
+        ]));
+    });
+    it('is evaluated for other conventions', function () {
+        chai_1.expect(Up.ast('After you beat the Elite Four, [<_<]you fight *Gary*[>_>].')).to.be.eql(insideDocumentAndParagraph([
+            new PlainTextNode_1.PlainTextNode('After you beat the Elite Four, '),
+            new SpoilerNode_1.SpoilerNode([
+                new PlainTextNode_1.PlainTextNode('you fight '),
+                new EmphasisNode_1.EmphasisNode([
+                    new PlainTextNode_1.PlainTextNode('Gary')
+                ]),
+            ]),
+            new PlainTextNode_1.PlainTextNode('.')
         ]));
     });
 });
