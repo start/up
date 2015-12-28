@@ -28,7 +28,7 @@ export class InlineParser {
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
     countCharsConsumedOpeningParentNode = 0) {
-    
+
     this.parentNode = parentNode
     this.parentNodeClosureStatus = parentNodeClosureStatus
     this.resultNodes = []
@@ -56,7 +56,7 @@ export class InlineParser {
         isNextCharEscaped = true
         continue;
       }
-      
+
       if (this.openOrCloseSandwichIfCurrentTextIs('`', InlineCodeNode)) {
         continue;
       }
@@ -66,15 +66,11 @@ export class InlineParser {
         continue;
       }
 
-      // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can
-      // be closed in either order.      
-      if (this.isCurrentText('***') && !this.areAnyDistantAncestorsEither([EmphasisNode, StressNode])) {
-        const startWithEmphasis = this.getInlineParseResult(EmphasisNode, '*'.length)
-        const startWithStress = this.getInlineParseResult(StressNode, '**'.length)
+      const shouldProbablyOpenEmphasisAndStress =
+        this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
         
-        if (this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])) {
-          continue;
-        }
+      if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
+        continue
       }
 
       if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode)) {
@@ -96,13 +92,14 @@ export class InlineParser {
       this.workingText += char
     }
 
-    if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.MustBeClosed) {
+    if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {
       this.result = new FailedParseResult();
     } else {
       this.flushWorkingText()
       this.result = new ParseResult(this.resultNodes, this.charIndex, parentNode)
     }
   }
+
   private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
     return this.parentNode instanceof SyntaxNodeType
   }
@@ -119,9 +116,10 @@ export class InlineParser {
     return this.parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
   }
 
-  private areAnyDistantAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return this.parentNode.parents()
-      .some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
+  private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
+    return 
+      this.isParentEither(syntaxNodeTypes)
+      || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
   }
 
   private isCurrentText(needle: string): boolean {
@@ -149,15 +147,15 @@ export class InlineParser {
 
     return false
   }
-  
+
   private getInlineParseResult(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): ParseResult {
     const newParentNode = new ParentSyntaxNodeType()
     newParentNode.parent = this.parentNode
-    
+
     return new InlineParser(
       this.text.slice(this.charIndex),
       newParentNode,
-      ParentNodeClosureStatus.MustBeClosed,
+      ParentNodeClosureStatus.OpenAndMustBeClosed,
       countCharsThatOpenedNode
     ).result;
   }
@@ -207,6 +205,19 @@ export class InlineParser {
     return false
   }
   
+  // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can
+  // be closed in either order by parsing the text both ways and using the best result.
+  private tryOpenBothEmphasisAndStress(): boolean {
+    if (!this.isCurrentText('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
+      return false;
+    }
+
+    const startWithEmphasis = this.getInlineParseResult(EmphasisNode, '*'.length)
+    const startWithStress = this.getInlineParseResult(StressNode, '**'.length)
+
+    return this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])
+  }
+
   private tryAcceptBestTripleAsteriskParseResult(parseResults: ParseResult[]): boolean {
     // We only want to accept valid parse results. And if there are more than one, we
     // accept the result that consumed the most characters.
@@ -307,11 +318,11 @@ export class InlineParser {
       parseResults.slice()
         .filter(result => result.success())
         .sort((result1, result2) => result2.countCharsConsumed - result1.countCharsConsumed)
-        
+
     if (!sortedResults.length) {
       return false;
     }
-    
+
     this.addParsedNode(sortedResults[0])
     return true;
   }

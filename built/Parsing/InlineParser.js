@@ -42,12 +42,9 @@ var InlineParser = (function () {
                 this.workingText += char;
                 continue;
             }
-            if (this.isCurrentText('***') && !this.areAnyDistantAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode])) {
-                var startWithEmphasis = this.getInlineParseResult(EmphasisNode_1.EmphasisNode, '*'.length);
-                var startWithStress = this.getInlineParseResult(StressNode_1.StressNode, '**'.length);
-                if (this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])) {
-                    continue;
-                }
+            var shouldProbablyOpenEmphasisAndStress = this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode]);
+            if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
+                continue;
             }
             if (this.openOrCloseSandwichIfCurrentTextIs('**', StressNode_1.StressNode)) {
                 continue;
@@ -63,7 +60,7 @@ var InlineParser = (function () {
             }
             this.workingText += char;
         }
-        if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed) {
+        if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus_1.ParentNodeClosureStatus.OpenAndMustBeClosed) {
             this.result = new FailedParseResult_1.FailedParseResult();
         }
         else {
@@ -83,10 +80,11 @@ var InlineParser = (function () {
     InlineParser.prototype.areAnyDistantAncestors = function (SyntaxNodeType) {
         return this.parentNode.parents().some(function (ancestor) { return ancestor instanceof SyntaxNodeType; });
     };
-    InlineParser.prototype.areAnyDistantAncestorsEither = function (syntaxNodeTypes) {
+    InlineParser.prototype.areAnyAncestorsEither = function (syntaxNodeTypes) {
         var _this = this;
-        return this.parentNode.parents()
-            .some(function (ancestor) { return _this.isNodeEither(ancestor, syntaxNodeTypes); });
+        return;
+        this.isParentEither(syntaxNodeTypes)
+            || this.parentNode.parents().some(function (ancestor) { return _this.isNodeEither(ancestor, syntaxNodeTypes); });
     };
     InlineParser.prototype.isCurrentText = function (needle) {
         return needle === this.text.substr(this.charIndex, needle.length);
@@ -111,7 +109,7 @@ var InlineParser = (function () {
     InlineParser.prototype.getInlineParseResult = function (ParentSyntaxNodeType, countCharsThatOpenedNode) {
         var newParentNode = new ParentSyntaxNodeType();
         newParentNode.parent = this.parentNode;
-        return new InlineParser(this.text.slice(this.charIndex), newParentNode, ParentNodeClosureStatus_1.ParentNodeClosureStatus.MustBeClosed, countCharsThatOpenedNode).result;
+        return new InlineParser(this.text.slice(this.charIndex), newParentNode, ParentNodeClosureStatus_1.ParentNodeClosureStatus.OpenAndMustBeClosed, countCharsThatOpenedNode).result;
     };
     InlineParser.prototype.addParsedNode = function (parseResult) {
         this.flushWorkingText();
@@ -148,6 +146,14 @@ var InlineParser = (function () {
             return true;
         }
         return false;
+    };
+    InlineParser.prototype.tryOpenBothEmphasisAndStress = function () {
+        if (!this.isCurrentText('***') || this.areAnyAncestorsEither([EmphasisNode_1.EmphasisNode, StressNode_1.StressNode])) {
+            return false;
+        }
+        var startWithEmphasis = this.getInlineParseResult(EmphasisNode_1.EmphasisNode, '*'.length);
+        var startWithStress = this.getInlineParseResult(StressNode_1.StressNode, '**'.length);
+        return this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress]);
     };
     InlineParser.prototype.tryAcceptBestTripleAsteriskParseResult = function (parseResults) {
         var sortedResults = parseResults.slice()
