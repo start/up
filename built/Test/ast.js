@@ -1,5 +1,6 @@
 var chai_1 = require('chai');
 var Up = require('../index');
+var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var EmphasisNode_1 = require('../SyntaxNodes/EmphasisNode');
@@ -247,6 +248,29 @@ describe('Text surrounded by faces looking away', function () {
                     new PlainTextNode_1.PlainTextNode('Gary')
                 ]),
             ]),
+            new PlainTextNode_1.PlainTextNode('.')
+        ]));
+    });
+});
+describe('Bracketed text pointing to a URL', function () {
+    it('is put inside a link node', function () {
+        chai_1.expect(Up.ast('I like [this site -> https://stackoverflow.com].')).to.be.eql(insideDocumentAndParagraph([
+            new PlainTextNode_1.PlainTextNode('I like '),
+            new LinkNode_1.LinkNode([
+                new PlainTextNode_1.PlainTextNode('this site')
+            ], 'https://stackoverflow.com'),
+            new PlainTextNode_1.PlainTextNode('.')
+        ]));
+    });
+    it('is evaluated for other conventions', function () {
+        chai_1.expect(Up.ast('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(insideDocumentAndParagraph([
+            new PlainTextNode_1.PlainTextNode('I like '),
+            new LinkNode_1.LinkNode([
+                new EmphasisNode_1.EmphasisNode([
+                    new PlainTextNode_1.PlainTextNode('this')
+                ]),
+                new PlainTextNode_1.PlainTextNode(' site')
+            ], 'https://stackoverflow.com'),
             new PlainTextNode_1.PlainTextNode('.')
         ]));
     });

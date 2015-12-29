@@ -4,6 +4,7 @@
 import { expect } from 'chai'
 import * as Up from '../index'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
@@ -297,6 +298,33 @@ describe('Text surrounded by faces looking away', function() {
             new PlainTextNode('Gary')
           ]),
         ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+describe('Bracketed text pointing to a URL', function() {
+  it('is put inside a link node', function() {
+    expect(Up.ast('I like [this site -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  it('is evaluated for other conventions', function() {
+    expect(Up.ast('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new EmphasisNode([
+            new PlainTextNode('this')
+          ]),
+          new PlainTextNode(' site')
+        ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
       ]))
   })
