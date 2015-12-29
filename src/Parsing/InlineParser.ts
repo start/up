@@ -13,6 +13,7 @@ import { StressNode } from '../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
+import { LinkNode } from '../SyntaxNodes/LinkNode'
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`')
 const STRESS = new InlineSandwich(StressNode, "**")
@@ -37,6 +38,7 @@ export class InlineParser {
     countCharsConsumedOpeningParentNode = 0) {
 
     let isNextCharEscaped = false
+    let isParsingImageUrl = false
 
     main_parser_loop:
     for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
@@ -64,6 +66,29 @@ export class InlineParser {
       if (this.isParent(InlineCodeNode)) {
         this.workingText += char
         continue;
+      }
+      
+      if (!(parentNode instanceof LinkNode)) {
+        if (this.isCurrentText('[')) {
+          if (this.tryParseInline(LinkNode, '['.length)) {
+            this.advanceCountExtraCharsConsumed('['.length)
+            continue
+          }
+        }
+      } else {
+        if (this.isCurrentText(' -> ')) {
+          this.advanceCountExtraCharsConsumed(' -> '.length)
+          this.flushWorkingTextToPlainTextNode()
+          isParsingImageUrl = true
+          continue;
+        }
+        
+        if (isParsingImageUrl && this.isCurrentText(']')) {
+          parentNode.url = this.getAndFlushWorkingText()
+          this.advanceCountExtraCharsConsumed(' ]'.length)
+          this.closeParent()
+          break;
+        }
       }
 
       const shouldProbablyOpenEmphasisAndStress =
@@ -96,7 +121,7 @@ export class InlineParser {
     if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {
       this.result = new FailedParseResult();
     } else {
-      this.flushWorkingText()
+      this.flushWorkingTextToPlainTextNode()
       this.result = new ParseResult(this.resultNodes, this.charIndex, this.parentNode)
     }
   }
@@ -129,8 +154,15 @@ export class InlineParser {
   private advanceCountExtraCharsConsumed(countCharsConsumed: number): void {
     this.charIndex += countCharsConsumed - 1
   }
+  
 
-  private flushWorkingText(): void {
+  private getAndFlushWorkingText(): string {
+    const workingText = this.workingText
+    this.workingText = ''
+    return workingText
+  }
+
+  private flushWorkingTextToPlainTextNode(): void {
     if (this.workingText) {
       this.resultNodes.push(new PlainTextNode(this.workingText))
     }
@@ -161,14 +193,14 @@ export class InlineParser {
   }
 
   private addParsedNode(parseResult: ParseResult): void {
-    this.flushWorkingText()
+    this.flushWorkingTextToPlainTextNode()
     parseResult.parentNode.addChildren(parseResult.nodes)
     this.resultNodes.push(parseResult.parentNode)
     this.advanceCountExtraCharsConsumed(parseResult.countCharsConsumed)
   }
 
   private closeParent(): void {
-    this.flushWorkingText()
+    this.flushWorkingTextToPlainTextNode()
     this.parentNodeClosureStatus = ParentNodeClosureStatus.Closed
     this.reachedEndOfParent = true
   }
