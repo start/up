@@ -328,4 +328,24 @@ describe('Bracketed text pointing to a URL', function() {
         new PlainTextNode('.')
       ]))
   })
+  
+  it('is put inside a link node', function() {
+    expect(Up.ast('I like [this site -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+  
+  it('will not create a link node if inside another link node', function() {
+    expect(Up.ast('[[nested -> https://ddg.gg] -> https://ddg.gg]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('[nested -> https://ddg.gg]')
+        ], 'https://stackoverflow.com')
+      ]))
+  })
 })
