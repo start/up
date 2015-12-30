@@ -29,13 +29,16 @@ export class InlineParser {
   private parentFailedToParse = false;
   private resultNodes: SyntaxNode[] = [];
   private workingText = '';
-  private charIndex = 0;
+  private charIndex: number;
 
   constructor(
     private text: string,
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
-    countCharsConsumedOpeningParentNode = 0) {
+    countCharsConsumedOpeningParentNode = 0,
+    private countOpenParens = 0,
+    private countOpenSquareBrackets = 0,
+    private countOpenCurlyBraces = 0) {
 
     let isNextCharEscaped = false
     let isParsingImageUrl = false
@@ -67,6 +70,8 @@ export class InlineParser {
         this.workingText += char
         continue;
       }
+      
+      this.updateOpenParenCount()
       
       if (!(parentNode instanceof LinkNode)) {
         if (this.isCurrentText('[')) {
@@ -124,6 +129,29 @@ export class InlineParser {
       this.flushWorkingTextToPlainTextNode()
       this.result = new ParseResult(this.resultNodes, this.charIndex, this.parentNode)
     }
+  }
+  
+  private updateOpenParenCount() {
+    switch (this.text[this.charIndex]) {
+        case '(':
+          this.countOpenParens += 1
+          break;
+        case ')':
+          this.countOpenParens -= 1
+          break;
+        case '[':
+          this.countOpenSquareBrackets += 1
+          break;
+        case ']':
+          this.countOpenSquareBrackets -= 1
+          break;
+        case '{':
+          this.countOpenCurlyBraces += 1
+          break;
+        case '}':
+          this.countOpenCurlyBraces -= 1
+          break;
+      }
   }
 
   private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
