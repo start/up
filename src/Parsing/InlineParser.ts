@@ -32,7 +32,6 @@ export class InlineParser {
   private charIndex: number;
   private countUnclosedParens = 0;
   private countUnclosedSquareBrackes = 0;
-  private countUnclosedCurlyBraces = 0;
 
   constructor(
     private text: string,
@@ -142,13 +141,7 @@ export class InlineParser {
         this.countUnclosedSquareBrackes += 1
         break
       case ']':
-      this.countUnclosedSquareBrackes = Math.max(0, this.countUnclosedSquareBrackes - 1)
-        break
-      case '{':
-        this.countUnclosedCurlyBraces += 1
-        break
-      case '}':
-        this.countUnclosedCurlyBraces = Math.max(0, this.countUnclosedCurlyBraces - 1)
+        this.countUnclosedSquareBrackes = Math.max(0, this.countUnclosedSquareBrackes - 1)
         break
     }
   }
@@ -184,10 +177,6 @@ export class InlineParser {
     }
     
     if (countOf(']', needle) && this.countUnclosedSquareBrackes) {
-      return false;
-    }
-    
-    if (countOf('}', needle) && this.countUnclosedCurlyBraces) {
       return false;
     }
     
@@ -262,7 +251,6 @@ export class InlineParser {
       this.advanceCountExtraCharsConsumed(needle);
       return true;
     }
-
     return false;
   }
 
@@ -270,7 +258,6 @@ export class InlineParser {
     if (this.isParent(sandwich.SyntaxNodeType)) {
       return this.closeParentIfCurrentTextIs(sandwich.closingBun)
     }
-
     return this.canMatch(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
   }
   
@@ -280,10 +267,8 @@ export class InlineParser {
     if (!this.canMatch('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
       return false;
     }
-
     const startWithEmphasis = this.getInlineParseResult(EmphasisNode, '*'.length)
     const startWithStress = this.getInlineParseResult(StressNode, '**'.length)
-
     return this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])
   }
 
