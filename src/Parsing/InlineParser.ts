@@ -56,7 +56,7 @@ export class InlineParser {
         continue;
       }
 
-      if (this.canMatch('\\')) {
+      if (this.isMatch('\\')) {
         isNextCharEscaped = true
         continue;
       }
@@ -71,21 +71,21 @@ export class InlineParser {
       }
 
       if (!this.areAnyAncestors(LinkNode)) {
-        if (this.canMatch('[')) {
+        if (this.isMatch('[')) {
           if (this.tryParseInline(LinkNode, '['.length)) {
             this.advanceCountExtraCharsConsumed('[')
             continue
           }
         }
       } else if (parentNode instanceof LinkNode) {
-        if (this.canMatch(' -> ')) {
+        if (this.isMatch(' -> ')) {
           this.advanceCountExtraCharsConsumed(' -> ')
           this.flushWorkingTextToPlainTextNode()
           isParsingImageUrl = true
           continue;
         }
 
-        if (isParsingImageUrl && this.canMatch(']')) {
+        if (isParsingImageUrl && this.isMatch(']')) {
           parentNode.url = this.getAndFlushWorkingPlainText()
           this.advanceCountExtraCharsConsumed(' ]')
           this.closeParent()
@@ -94,7 +94,7 @@ export class InlineParser {
       }
 
       const shouldProbablyOpenEmphasisAndStress =
-        this.canMatch('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
+        this.isMatch('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
 
       if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
         continue
@@ -173,7 +173,7 @@ export class InlineParser {
   }
   
 
-  private canMatch(needle: string): boolean {
+  private isMatch(needle: string): boolean {
     return (needle === this.text.substr(this.charIndex, needle.length)) && this.areAllRelevantBracketsClosed(needle)
   }
   
@@ -256,11 +256,11 @@ export class InlineParser {
   }
 
   private parseIfCurrentTextIs(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.canMatch(needle) && this.tryParseInline(SyntaxNodeType, needle.length)
+    return this.isMatch(needle) && this.tryParseInline(SyntaxNodeType, needle.length)
   }
 
   private closeParentIfCurrentTextIs(needle: string) {
-    if (this.canMatch(needle)) {
+    if (this.isMatch(needle)) {
       this.closeParent()
       this.advanceCountExtraCharsConsumed(needle);
       return true;
@@ -273,14 +273,14 @@ export class InlineParser {
     if (this.isParent(sandwich.SyntaxNodeType)) {
       return this.closeParentIfCurrentTextIs(sandwich.closingBun)
     }
-    return this.canMatch(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
+    return this.isMatch(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
   }
   
   
   // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can
   // be closed in either order by parsing the text both ways and using the best result.
   private tryOpenBothEmphasisAndStress(): boolean {
-    if (!this.canMatch('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
+    if (!this.isMatch('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
       return false;
     }
     const startWithEmphasis = this.getInlineParseResult(EmphasisNode, '*'.length)
