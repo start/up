@@ -30,15 +30,15 @@ export class InlineParser {
   private resultNodes: SyntaxNode[] = [];
   private workingPlainText = '';
   private charIndex: number;
+  private countUnclosedParens = 0;
+  private countUnclosedSquareBrackes = 0;
+  private countUnclosedCurlyBraces = 0;
 
   constructor(
     private text: string,
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
-    countCharsConsumedOpeningParentNode = 0,
-    private countUnclosedParens = 0,
-    private countUnclosedSquareBrackes = 0,
-    private countUnclosedCurlyBraces = 0) {
+    countCharsConsumedOpeningParentNode = 0) {
 
     let isNextCharEscaped = false
     let isParsingImageUrl = false
@@ -235,10 +235,7 @@ export class InlineParser {
       this.text.slice(this.charIndex),
       newParentNode,
       ParentNodeClosureStatus.OpenAndMustBeClosed,
-      countCharsThatOpenedNode,
-      this.countUnclosedParens,
-      this.countUnclosedSquareBrackes,
-      this.countUnclosedCurlyBraces
+      countCharsThatOpenedNode
     ).result;
   }
 
