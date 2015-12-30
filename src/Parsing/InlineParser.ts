@@ -28,7 +28,7 @@ export class InlineParser {
   private reachedEndOfParent = false;
   private parentFailedToParse = false;
   private resultNodes: SyntaxNode[] = [];
-  private workingText = '';
+  private workingPlainText = '';
   private charIndex: number;
 
   constructor(
@@ -52,12 +52,12 @@ export class InlineParser {
       let char = text[this.charIndex]
 
       if (isNextCharEscaped) {
-        this.workingText += char
+        this.workingPlainText += char
         isNextCharEscaped = false
         continue;
       }
 
-      if (this.isCurrentText('\\')) {
+      if (this.canMatch('\\')) {
         isNextCharEscaped = true
         continue;
       }
@@ -67,35 +67,35 @@ export class InlineParser {
       }
 
       if (this.isParent(InlineCodeNode)) {
-        this.workingText += char
+        this.workingPlainText += char
         continue;
       }
 
       if (!this.areAnyAncestors(LinkNode)) {
-        if (this.isCurrentText('[')) {
+        if (this.canMatch('[')) {
           if (this.tryParseInline(LinkNode, '['.length)) {
-            this.advanceCountExtraCharsConsumed('['.length)
+            this.advanceCountExtraCharsConsumed('[')
             continue
           }
         }
       } else if (parentNode instanceof LinkNode) {
-        if (this.isCurrentText(' -> ')) {
-          this.advanceCountExtraCharsConsumed(' -> '.length)
+        if (this.canMatch(' -> ')) {
+          this.advanceCountExtraCharsConsumed(' -> ')
           this.flushWorkingTextToPlainTextNode()
           isParsingImageUrl = true
           continue;
         }
 
-        if (isParsingImageUrl && this.isCurrentText(']')) {
-          parentNode.url = this.getAndFlushWorkingText()
-          this.advanceCountExtraCharsConsumed(' ]'.length)
+        if (isParsingImageUrl && this.canMatch(']')) {
+          parentNode.url = this.getAndFlushWorkingPlainText()
+          this.advanceCountExtraCharsConsumed(' ]')
           this.closeParent()
           break;
         }
       }
 
       const shouldProbablyOpenEmphasisAndStress =
-        this.isCurrentText('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
+        this.canMatch('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
 
       if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
         continue
@@ -114,7 +114,7 @@ export class InlineParser {
       }
 
       this.updateUnclosedBracketCount()
-      this.workingText += char
+      this.workingPlainText += char
     }
 
     this.finish()
@@ -174,7 +174,7 @@ export class InlineParser {
       || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
   }
 
-  private isCurrentText(needle: string): boolean {
+  private canMatch(needle: string): boolean {
     return (needle === this.text.substr(this.charIndex, needle.length)) && this.allRelevantBracketsAreClosed(needle)
   }
 
@@ -194,21 +194,26 @@ export class InlineParser {
     return true
   }
 
-  private advanceCountExtraCharsConsumed(countCharsConsumed: number): void {
-    this.charIndex += countCharsConsumed - 1
+  private advanceCountExtraCharsConsumed(countOrCharsConsumed: number|string): void {
+    const countConsumed = (
+      typeof countOrCharsConsumed === "string"
+      ? countOrCharsConsumed.length
+      : countOrCharsConsumed
+    )
+    this.charIndex += countConsumed - 1
   }
 
-  private getAndFlushWorkingText(): string {
-    const workingText = this.workingText
-    this.workingText = ''
+  private getAndFlushWorkingPlainText(): string {
+    const workingText = this.workingPlainText
+    this.workingPlainText = ''
     return workingText
   }
 
   private flushWorkingTextToPlainTextNode(): void {
-    if (this.workingText) {
-      this.resultNodes.push(new PlainTextNode(this.workingText))
+    if (this.workingPlainText) {
+      this.resultNodes.push(new PlainTextNode(this.workingPlainText))
     }
-    this.workingText = ''
+    this.workingPlainText = ''
   }
 
   private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): boolean {
@@ -251,13 +256,13 @@ export class InlineParser {
   }
 
   private parseIfCurrentTextIs(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.isCurrentText(needle) && this.tryParseInline(SyntaxNodeType, needle.length)
+    return this.canMatch(needle) && this.tryParseInline(SyntaxNodeType, needle.length)
   }
 
   private closeParentIfCurrentTextIs(needle: string) {
-    if (this.isCurrentText(needle)) {
+    if (this.canMatch(needle)) {
       this.closeParent()
-      this.advanceCountExtraCharsConsumed(needle.length);
+      this.advanceCountExtraCharsConsumed(needle);
       return true;
     }
 
@@ -269,13 +274,13 @@ export class InlineParser {
       return this.closeParentIfCurrentTextIs(sandwich.closingBun)
     }
 
-    return this.isCurrentText(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
+    return this.canMatch(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
   }
   
   // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can
   // be closed in either order by parsing the text both ways and using the best result.
   private tryOpenBothEmphasisAndStress(): boolean {
-    if (!this.isCurrentText('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
+    if (!this.canMatch('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
       return false;
     }
 
