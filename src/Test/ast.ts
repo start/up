@@ -329,17 +329,6 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
   
-  it('is put inside a link node', function() {
-    expect(Up.ast('I like [this site -> https://stackoverflow.com].')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('this site')
-        ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
-      ]))
-  })
-  
   it('can contain matching unescaped brackets in the URL', function() {
     expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -347,6 +336,17 @@ describe('Bracketed text pointing to a URL', function() {
         new LinkNode([
           new PlainTextNode('strange URL')
         ], 'https://google.com/search?q=[hi]'),
+        new PlainTextNode('.')
+      ]))
+  })
+  
+  it('does not try to match brackets in the link text with brackets in the URL', function() {
+    expect(Up.ast('I like [you [: -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('you [:')
+        ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
       ]))
   })
