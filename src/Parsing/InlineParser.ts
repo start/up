@@ -129,6 +129,7 @@ export class InlineParser {
     }
   }
 
+
   private updateUnclosedBracketCount() {
     switch (this.text[this.charIndex]) {
       case '(':
@@ -149,29 +150,35 @@ export class InlineParser {
   private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
     return this.parentNode instanceof SyntaxNodeType
   }
+  
 
   private isParentEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
     return this.isNodeEither(this.parentNode, syntaxNodeTypes)
   }
+  
 
   private isNodeEither(node: SyntaxNode, syntaxNodeTypes: SyntaxNodeType[]): boolean {
     return syntaxNodeTypes.some(SyntaxNodeType => node instanceof SyntaxNodeType)
   }
+  
 
   private areAnyAncestors(SyntaxNodeType: SyntaxNodeType): boolean {
     return this.isParent(SyntaxNodeType) || this.parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
   }
+  
 
   private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
     return this.isParentEither(syntaxNodeTypes)
       || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
   }
+  
 
   private canMatch(needle: string): boolean {
-    return (needle === this.text.substr(this.charIndex, needle.length)) && this.allRelevantBracketsAreClosed(needle)
+    return (needle === this.text.substr(this.charIndex, needle.length)) && this.areAllRelevantBracketsClosed(needle)
   }
+  
 
-  private allRelevantBracketsAreClosed(needle: string) {
+  private areAllRelevantBracketsClosed(needle: string): boolean { 
     if (countOf(')', needle) && this.countUnclosedParens) {
       return false;
     }
@@ -183,14 +190,16 @@ export class InlineParser {
     return true
   }
 
-  private advanceCountExtraCharsConsumed(countOrCharsConsumed: number|string): void {
+
+  private advanceCountExtraCharsConsumed(countOrCharsConsumed: number | string): void {
     const countConsumed = (
       typeof countOrCharsConsumed === "string"
-      ? countOrCharsConsumed.length
-      : countOrCharsConsumed
+        ? countOrCharsConsumed.length
+        : countOrCharsConsumed
     )
     this.charIndex += countConsumed - 1
   }
+
 
   private getAndFlushWorkingPlainText(): string {
     const workingText = this.workingPlainText
@@ -198,12 +207,14 @@ export class InlineParser {
     return workingText
   }
 
+
   private flushWorkingTextToPlainTextNode(): void {
     if (this.workingPlainText) {
       this.resultNodes.push(new PlainTextNode(this.workingPlainText))
     }
     this.workingPlainText = ''
   }
+
 
   private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): boolean {
     const parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode)
@@ -215,6 +226,7 @@ export class InlineParser {
 
     return false
   }
+
 
   private getInlineParseResult(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): ParseResult {
     const newParentNode = new ParentSyntaxNodeType()
@@ -228,12 +240,14 @@ export class InlineParser {
     ).result;
   }
 
+
   private addParsedNode(parseResult: ParseResult): void {
     this.flushWorkingTextToPlainTextNode()
     parseResult.parentNode.addChildren(parseResult.nodes)
     this.resultNodes.push(parseResult.parentNode)
     this.advanceCountExtraCharsConsumed(parseResult.countCharsConsumed)
   }
+  
 
   private closeParent(): void {
     this.flushWorkingTextToPlainTextNode()
@@ -251,6 +265,7 @@ export class InlineParser {
       this.advanceCountExtraCharsConsumed(needle);
       return true;
     }
+    
     return false;
   }
 
@@ -261,6 +276,7 @@ export class InlineParser {
     return this.canMatch(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
   }
   
+  
   // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can
   // be closed in either order by parsing the text both ways and using the best result.
   private tryOpenBothEmphasisAndStress(): boolean {
@@ -269,120 +285,125 @@ export class InlineParser {
     }
     const startWithEmphasis = this.getInlineParseResult(EmphasisNode, '*'.length)
     const startWithStress = this.getInlineParseResult(StressNode, '**'.length)
-    return this.tryAcceptBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])
-  }
-
-  private tryAcceptBestTripleAsteriskParseResult(parseResults: ParseResult[]): boolean {
-    // We only want to accept valid parse results. And if there are more than one, we
-    // accept the result that consumed the most characters.
-    //
-    // If you're severely curious why, read on.
-    //
-    // Let's say we have the following text: ***Note:* This is tricky!**
-    //
-    // Clearly, this should be parsed starting with the stress node:
-    //
-    //   <stress>
-    //     <emphasis>
-    //       Note:
-    //     </emphasis>
-    //     This is tricky!
-    //   </stress>
-    //
-    // Unfortunately, when the parser first sees the "***", it doesn't know whether to parse
-    // stress first or emphasis first. It can't simply look ahead for asterisks to see which
-    // one gets closed first, because any asterisks it finds could be escaped by a backlash.
-    // Or in a code snippet node. Or part of a link's URL. Or one of a bunch of other reasons.
-    // So the parser actually has to parse the text both ways.
-    //
-    // If the parser starts with the emphasis node, it would get to here:
-    //
-    //   <emphasis>
-    //     <stress>
-    //       Note:
-    //
-    // And then the parser would see a single asterisk. This would open new emphasis node,
-    // which would eventually bring us to here:
-    //
-    //   <emphasis>
-    //     <stress>
-    //       Note:
-    //       <emphasis>
-    //         This is tricky!
-    //       </emphasis>
-    //
-    // Then, the parser would see another single asterisk. This would open a nested emphasis
-    // node, but that one would fail because it never gets closed. So that single asterisk
-    // would be interpreted as plain text:
-    //
-    //   <emphasis>
-    //     <stress>
-    //       Note:
-    //       <emphasis>
-    //         This is tricky!
-    //       </emphasis>
-    //       *
-    //
-    // But wait! The stress node now fails, because it is never closed, either!
-    //
-    // So the parser backs up, and rather than interpreting those two asterisks as the
-    // beginning of a stress node, it interprets the first of the two as the end of the
-    // initial emphasis node:
-    // 
-    //   <emphasis>
-    //   </emphasis>
-    //
-    // The parser stops, because it has closed the parent node.
-    //
-    // We get a technically valid parse result, but one which consumes far fewer characters
-    // than the desired result (the one created by starting with a stress node).
-    //
-    // Let's try with some different text: ***Note:** This is tricky!*
-    //
-    // Unlike the first text, this should clearly be parsed with the emphasis node first:
-    //
-    //   <emphasis>
-    //     <stress>
-    //       Note:
-    //     </stress>
-    //     This is tricky!
-    //   </emphasis>
-    //
-    // In this case, if the parser starts with the stress node, it will arrive here:
-    //   
-    //   <stress>
-    //     <emphasis>
-    //       Note:
-    //
-    // At this point, the parser sees two asterisks. This opens a nested stress node, which
-    // eventually fails to parse because it is never closed. So the parser backs up, and
-    // rather than interpreting those two asterisks as the beginning of a stress node, it
-    // interprets the first of the two as the end of the emphasis node:
-    //
-    //   <stress>
-    //     <emphasis>
-    //       Note:
-    //     </emphasis>
-    //
-    // With the first of those two asterisks consumed, the opening stress node has no chance
-    // to be closed. It eventually fails to parse, leaving us with only the desired parse
-    // result (the one created by starting with an emphasis node).
+    const bestResult = getBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])
     
-    const sortedResults =
-      parseResults.slice()
-        .filter(result => result.success())
-        .sort((result1, result2) => result2.countCharsConsumed - result1.countCharsConsumed)
-
-    if (!sortedResults.length) {
-      return false;
+    if (bestResult) {
+      this.addParsedNode(bestResult)
+      return true
     }
-
-    this.addParsedNode(sortedResults[0])
-    return true;
+    
+    return false
   }
 }
+
 
 function countOf(char: string, haystack: string): number {
   const matches: RegExpMatchArray = haystack.match(new RegExp(`\\${char}`, 'g')) || [];
   return matches.length
+}
+
+
+function getBestTripleAsteriskParseResult(parseResults: ParseResult[]): ParseResult {
+  // We only want to accept valid parse results. And if there are more than one, we
+  // accept the result that consumed the most characters.
+  //
+  // If you're severely curious why, read on.
+  //
+  // Let's say we have the following text: ***Note:* This is tricky!**
+  //
+  // Clearly, this should be parsed starting with the stress node:
+  //
+  //   <stress>
+  //     <emphasis>
+  //       Note:
+  //     </emphasis>
+  //     This is tricky!
+  //   </stress>
+  //
+  // Unfortunately, when the parser first sees the "***", it doesn't know whether to parse
+  // stress first or emphasis first. It can't simply look ahead for asterisks to see which
+  // one gets closed first, because any asterisks it finds could be escaped by a backlash.
+  // Or in a code snippet node. Or part of a link's URL. Or one of a bunch of other reasons.
+  // So the parser actually has to parse the text both ways.
+  //
+  // If the parser starts with the emphasis node, it would get to here:
+  //
+  //   <emphasis>
+  //     <stress>
+  //       Note:
+  //
+  // And then the parser would see a single asterisk. This would open new emphasis node,
+  // which would eventually bring us to here:
+  //
+  //   <emphasis>
+  //     <stress>
+  //       Note:
+  //       <emphasis>
+  //         This is tricky!
+  //       </emphasis>
+  //
+  // Then, the parser would see another single asterisk. This would open a nested emphasis
+  // node, but that one would fail because it never gets closed. So that single asterisk
+  // would be interpreted as plain text:
+  //
+  //   <emphasis>
+  //     <stress>
+  //       Note:
+  //       <emphasis>
+  //         This is tricky!
+  //       </emphasis>
+  //       *
+  //
+  // But wait! The stress node now fails, because it is never closed, either!
+  //
+  // So the parser backs up, and rather than interpreting those two asterisks as the
+  // beginning of a stress node, it interprets the first of the two as the end of the
+  // initial emphasis node:
+  // 
+  //   <emphasis>
+  //   </emphasis>
+  //
+  // The parser stops, because it has closed the parent node.
+  //
+  // We get a technically valid parse result, but one which consumes far fewer characters
+  // than the desired result (the one created by starting with a stress node).
+  //
+  // Let's try with some different text: ***Note:** This is tricky!*
+  //
+  // Unlike the first text, this should clearly be parsed with the emphasis node first:
+  //
+  //   <emphasis>
+  //     <stress>
+  //       Note:
+  //     </stress>
+  //     This is tricky!
+  //   </emphasis>
+  //
+  // In this case, if the parser starts with the stress node, it will arrive here:
+  //   
+  //   <stress>
+  //     <emphasis>
+  //       Note:
+  //
+  // At this point, the parser sees two asterisks. This opens a nested stress node, which
+  // eventually fails to parse because it is never closed. So the parser backs up, and
+  // rather than interpreting those two asterisks as the beginning of a stress node, it
+  // interprets the first of the two as the end of the emphasis node:
+  //
+  //   <stress>
+  //     <emphasis>
+  //       Note:
+  //     </emphasis>
+  //
+  // With the first of those two asterisks consumed, the opening stress node has no chance
+  // to be closed. It eventually fails to parse, leaving us with only the desired parse
+  // result (the one created by starting with an emphasis node).
+    
+  const sortedResults =
+    parseResults.slice()
+      .filter(result => result.success())
+      .sort((result1, result2) => result2.countCharsConsumed - result1.countCharsConsumed)
+
+  // This function will return null if there are no successful parse results 
+  return sortedResults[0]
 }
