@@ -36,9 +36,9 @@ export class InlineParser {
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
     countCharsConsumedOpeningParentNode = 0,
-    private countOpenParens = 0,
-    private countOpenSquareBrackets = 0,
-    private countOpenCurlyBraces = 0) {
+    private countUnclosedParens = 0,
+    private countUnclosedSquareBrackes = 0,
+    private countUnclosedCurlyBraces = 0) {
 
     let isNextCharEscaped = false
     let isParsingImageUrl = false
@@ -70,24 +70,22 @@ export class InlineParser {
         this.workingText += char
         continue;
       }
-      
-      this.updateOpenParenCount()
-      
-      if (!(parentNode instanceof LinkNode)) {
+
+      if (!this.areAnyAncestors(LinkNode)) {
         if (this.isCurrentText('[')) {
           if (this.tryParseInline(LinkNode, '['.length)) {
             this.advanceCountExtraCharsConsumed('['.length)
             continue
           }
         }
-      } else {
+      } else if (parentNode instanceof LinkNode) {
         if (this.isCurrentText(' -> ')) {
           this.advanceCountExtraCharsConsumed(' -> '.length)
           this.flushWorkingTextToPlainTextNode()
           isParsingImageUrl = true
           continue;
         }
-        
+
         if (isParsingImageUrl && this.isCurrentText(']')) {
           parentNode.url = this.getAndFlushWorkingText()
           this.advanceCountExtraCharsConsumed(' ]'.length)
@@ -115,6 +113,7 @@ export class InlineParser {
         }
       }
 
+      this.updateUnclosedBracketCount()
       this.workingText += char
     }
 
@@ -130,28 +129,28 @@ export class InlineParser {
       this.result = new ParseResult(this.resultNodes, this.charIndex, this.parentNode)
     }
   }
-  
-  private updateOpenParenCount() {
+
+  private updateUnclosedBracketCount() {
     switch (this.text[this.charIndex]) {
-        case '(':
-          this.countOpenParens += 1
-          break;
-        case ')':
-          this.countOpenParens -= 1
-          break;
-        case '[':
-          this.countOpenSquareBrackets += 1
-          break;
-        case ']':
-          this.countOpenSquareBrackets -= 1
-          break;
-        case '{':
-          this.countOpenCurlyBraces += 1
-          break;
-        case '}':
-          this.countOpenCurlyBraces -= 1
-          break;
-      }
+      case '(':
+        this.countUnclosedParens += 1
+        break
+      case ')':
+        this.countUnclosedParens = Math.max(0, this.countUnclosedParens - 1)
+        break
+      case '[':
+        this.countUnclosedSquareBrackes += 1
+        break
+      case ']':
+      this.countUnclosedSquareBrackes = Math.max(0, this.countUnclosedSquareBrackes - 1)
+        break
+      case '{':
+        this.countUnclosedCurlyBraces += 1
+        break
+      case '}':
+        this.countUnclosedCurlyBraces = Math.max(0, this.countUnclosedCurlyBraces - 1)
+        break
+    }
   }
 
   private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
@@ -166,8 +165,8 @@ export class InlineParser {
     return syntaxNodeTypes.some(SyntaxNodeType => node instanceof SyntaxNodeType)
   }
 
-  private areAnyDistantAncestors(SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
+  private areAnyAncestors(SyntaxNodeType: SyntaxNodeType): boolean {
+    return this.isParent(SyntaxNodeType) || this.parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
   }
 
   private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
@@ -176,13 +175,28 @@ export class InlineParser {
   }
 
   private isCurrentText(needle: string): boolean {
-    return needle === this.text.substr(this.charIndex, needle.length)
+    return (needle === this.text.substr(this.charIndex, needle.length)) && this.allRelevantBracketsAreClosed(needle)
+  }
+
+  private allRelevantBracketsAreClosed(needle: string) {
+    if (countOf(')', needle) && this.countUnclosedParens) {
+      return false;
+    }
+    
+    if (countOf(']', needle) && this.countUnclosedSquareBrackes) {
+      return false;
+    }
+    
+    if (countOf('}', needle) && this.countUnclosedCurlyBraces) {
+      return false;
+    }
+    
+    return true
   }
 
   private advanceCountExtraCharsConsumed(countCharsConsumed: number): void {
     this.charIndex += countCharsConsumed - 1
   }
-  
 
   private getAndFlushWorkingText(): string {
     const workingText = this.workingText
@@ -216,7 +230,10 @@ export class InlineParser {
       this.text.slice(this.charIndex),
       newParentNode,
       ParentNodeClosureStatus.OpenAndMustBeClosed,
-      countCharsThatOpenedNode
+      countCharsThatOpenedNode,
+      this.countUnclosedParens,
+      this.countUnclosedSquareBrackes,
+      this.countUnclosedCurlyBraces
     ).result;
   }
 
@@ -376,4 +393,9 @@ export class InlineParser {
     this.addParsedNode(sortedResults[0])
     return true;
   }
+}
+
+function countOf(char: string, haystack: string): number {
+  const matches: RegExpMatchArray = haystack.match(new RegExp(`\\${char}`, 'g')) || [];
+  return matches.length
 }

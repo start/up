@@ -340,12 +340,14 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
   
-  it('will not create a link node if inside another link node', function() {
-    expect(Up.ast('[[nested -> https://ddg.gg] -> https://ddg.gg]')).to.be.eql(
+  it('can contain matching unescaped brackets in the URL', function() {
+    expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
+        new PlainTextNode('Here is a '),
         new LinkNode([
-          new PlainTextNode('[nested -> https://ddg.gg]')
-        ], 'https://stackoverflow.com')
+          new PlainTextNode('strange URL')
+        ], 'https://google.com/search?q=[hi]'),
+        new PlainTextNode('.')
       ]))
   })
 })
