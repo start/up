@@ -82,6 +82,8 @@ export class InlineParser {
           this.advanceCountExtraCharsConsumed(' -> ')
           this.flushWorkingTextToPlainTextNode()
           isParsingLinkUrl = true
+          this.countUnclosedParens = 0;
+          this.countUnclosedSquareBrackes = 0;
           continue;
         }
 
