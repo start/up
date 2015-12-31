@@ -40,7 +40,7 @@ export class InlineParser {
     countCharsConsumedOpeningParentNode = 0) {
 
     let isNextCharEscaped = false
-    let isParsingImageUrl = false
+    let isParsingLinkUrl = false
 
     main_parser_loop:
     for (this.charIndex = countCharsConsumedOpeningParentNode; this.charIndex < text.length; this.charIndex += 1) {
@@ -81,11 +81,11 @@ export class InlineParser {
         if (this.isMatch(' -> ')) {
           this.advanceCountExtraCharsConsumed(' -> ')
           this.flushWorkingTextToPlainTextNode()
-          isParsingImageUrl = true
+          isParsingLinkUrl = true
           continue;
         }
 
-        if (isParsingImageUrl && this.isMatch(']')) {
+        if (isParsingLinkUrl && this.isMatch(']')) {
           parentNode.url = this.getAndFlushWorkingPlainText()
           this.advanceCountExtraCharsConsumed(' ]')
           this.closeParent()
