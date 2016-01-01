@@ -11,6 +11,11 @@ export class TextConsumer {
   }
   
   
+  remaining() {
+    return this.text.slice(this.index)
+  }
+  
+  
   isMatch(needle: string) {
     if (this.isEscaped()) {
       return false
@@ -20,15 +25,27 @@ export class TextConsumer {
   }
   
   
-  advance(): boolean {
+  advanceIfMatch(needle: string): boolean {
+    const isMatch = this.isMatch(needle)
+    
+    if (isMatch) {
+      this.advance()
+    }
+    
+    return isMatch
+  }
+  
+  
+  advance() {
+    this.updateUnclosedBracketCount()
+    this.index += 1
+  }
+  
+  
+  isDone(): boolean {
     if (this.index === this.text.length) {
       return false
     }
-    
-    this.updateUnclosedBracketCount()
-    this.index += 1
-    
-    return true
   }
   
   
@@ -65,8 +82,7 @@ export class TextConsumer {
     }
     
     return true
-  }
-  
+  }  
 }
 
 
