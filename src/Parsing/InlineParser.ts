@@ -28,18 +28,12 @@ export class InlineParser {
   private reachedEndOfParent = false;
   private parentFailedToParse = false;
   private resultNodes: SyntaxNode[] = [];
-  private workingPlainText = '';
-  private charIndex: number;
-  private countUnclosedParens = 0;
-  private countUnclosedSquareBrackes = 0;
 
   constructor(
     private text: string,
     private parentNode: SyntaxNode,
-    private parentNodeClosureStatus: ParentNodeClosureStatus,
-    countCharsConsumedOpeningParentNode = 0) {
+    private parentNodeClosureStatus: ParentNodeClosureStatus) {
 
-    let isNextCharEscaped = false
     let isParsingLinkUrl = false
 
     main_parser_loop:
@@ -400,7 +394,7 @@ function getBestTripleAsteriskParseResult(parseResults: ParseResult[]): ParseRes
   // With the first of those two asterisks consumed, the opening stress node has no chance
   // to be closed. It eventually fails to parse, leaving us with only the desired parse
   // result (the one created by starting with an emphasis node).
-    
+
   const sortedResults =
     parseResults.slice()
       .filter(result => result.success())
