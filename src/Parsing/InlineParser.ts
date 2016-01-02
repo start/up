@@ -151,16 +151,6 @@ export class InlineParser {
   }
 
 
-  private advanceCountExtraCharsConsumed(countOrCharsConsumed: number | string): void {
-    const countConsumed = (
-      typeof countOrCharsConsumed === "string"
-        ? countOrCharsConsumed.length
-        : countOrCharsConsumed
-    )
-    this.charIndex += countConsumed - 1
-  }
-
-
   private getAndFlushWorkingPlainText(): string {
     const workingText = this.workingPlainText
     this.workingPlainText = ''
@@ -257,12 +247,6 @@ export class InlineParser {
     
     return false
   }
-}
-
-
-function countOf(char: string, haystack: string): number {
-  const matches: RegExpMatchArray = haystack.match(new RegExp(`\\${char}`, 'g')) || [];
-  return matches.length
 }
 
 
