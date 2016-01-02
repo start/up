@@ -125,24 +125,6 @@ export class InlineParser {
     }
   }
 
-
-  private updateUnclosedBracketCount() {
-    switch (this.text[this.charIndex]) {
-      case '(':
-        this.countUnclosedParens += 1
-        break
-      case ')':
-        this.countUnclosedParens = Math.max(0, this.countUnclosedParens - 1)
-        break
-      case '[':
-        this.countUnclosedSquareBrackes += 1
-        break
-      case ']':
-        this.countUnclosedSquareBrackes = Math.max(0, this.countUnclosedSquareBrackes - 1)
-        break
-    }
-  }
-
   private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
     return this.parentNode instanceof SyntaxNodeType
   }
@@ -166,24 +148,6 @@ export class InlineParser {
   private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
     return this.isParentEither(syntaxNodeTypes)
       || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
-  }
-  
-
-  private isMatch(needle: string): boolean {
-    return (needle === this.text.substr(this.charIndex, needle.length)) && this.areAllRelevantBracketsClosed(needle)
-  }
-  
-
-  private areAllRelevantBracketsClosed(needle: string): boolean { 
-    if (countOf(')', needle) && this.countUnclosedParens) {
-      return false;
-    }
-    
-    if (countOf(']', needle) && this.countUnclosedSquareBrackes) {
-      return false;
-    }
-    
-    return true
   }
 
 
@@ -251,9 +215,11 @@ export class InlineParser {
     this.reachedEndOfParent = true
   }
 
+
   private parseIfCurrentTextIs(needle: string, SyntaxNodeType: SyntaxNodeType): boolean {
     return this.isMatch(needle) && this.tryParseInline(SyntaxNodeType, needle.length)
   }
+  
 
   private closeParentIfCurrentTextIs(needle: string) {
     if (this.isMatch(needle)) {
@@ -264,6 +230,7 @@ export class InlineParser {
     
     return false;
   }
+  
 
   private tryOpenOrCloseSandwich(sandwich: InlineSandwich): boolean {
     if (this.isParent(sandwich.SyntaxNodeType)) {
