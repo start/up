@@ -1,6 +1,6 @@
-import { Parser } from './Parsing/Parser'
+import { BlockParser } from './Parsing/BlockParser'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 
 export function ast(text: string): DocumentNode {
-  return new Parser(text).documentNode;
+  return new BlockParser(text).documentNode;
 }

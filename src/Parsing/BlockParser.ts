@@ -10,7 +10,7 @@ import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 
-export class Parser {
+export class BlockParser {
   public documentNode: DocumentNode;
    
   constructor(private text: string) {
