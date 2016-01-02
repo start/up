@@ -16,7 +16,7 @@ export class TextConsumer {
   }
   
   
-  isMatch(needle: string) {
+  private isMatch(needle: string) {
     if (this.isEscaped()) {
       return false
     }
@@ -25,7 +25,7 @@ export class TextConsumer {
   }
   
   
-  advanceIfMatch(needle: string): boolean {
+  match(needle: string): boolean {
     const isMatch = this.isMatch(needle)
     
     if (isMatch) {
@@ -36,7 +36,7 @@ export class TextConsumer {
   }
   
   
-  advance() {
+  private advance() {
     this.updateUnclosedBracketCount()
     this.index += 1
   }
