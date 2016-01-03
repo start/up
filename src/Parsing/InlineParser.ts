@@ -30,7 +30,6 @@ export class InlineParser {
   public result: ParseResult;
 
   private reachedEndOfParent = false;
-  private parentFailedToParse = false;
   private resultNodes: SyntaxNode[] = [];
   private textConsumer: TextConsumer;
 
@@ -44,14 +43,7 @@ export class InlineParser {
     let isParsingLinkUrl = false
 
     main_parser_loop:
-    while (!this.textConsumer.hasExaminedAllText()) {
-      if (this.reachedEndOfParent || this.parentFailedToParse) {
-        break;
-      }
-
-      if (this.tryOpenOrCloseSandwich(INLINE_CODE)) {
-        continue;
-      }
+    while (!this.textConsumer.hasExaminedAllText() || this.reachedEndOfParent) {
       
       if (this.textConsumer.isMatch(INLINE_CODE.bun)) {
         const inlineCodeNode = new InlineCodeNode();
@@ -117,7 +109,7 @@ export class InlineParser {
 
 
   private finish() {
-    if (this.parentFailedToParse || this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {
+    if (this.parentNodeClosureStatus === ParentNodeClosureStatus.OpenAndMustBeClosed) {
       this.result = new FailedParseResult();
     } else {
       this.flushSkippedTextToPlainTextNode()
