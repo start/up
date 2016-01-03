@@ -54,7 +54,7 @@ export class InlineParser {
           inlineCodeNode)
         
         if (result.success) {
-          this.textConsumer.ignore(result.countCharsConsumed)
+          this.textConsumer.ignore(INLINE_CODE.bun.length + result.countCharsConsumed)
           continue;
         }
       }

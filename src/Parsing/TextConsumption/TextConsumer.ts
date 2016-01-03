@@ -3,7 +3,8 @@ export class TextConsumer {
   public index = 0;
   private countUnclosedParens = 0;
   private countUnclosedSquareBrackes = 0;
-  public isCurrentCharEscaped = false
+  public isCurrentCharEscaped = false;
+  public unconsumedText = '';
   
   
   constructor(private text: string) {
@@ -31,6 +32,7 @@ export class TextConsumer {
   
   
   advance(): void {
+    this.unconsumedText += this.currentChar()
     this.index += 1
     this.analyze()
   }
@@ -44,9 +46,7 @@ export class TextConsumer {
   
   
   hasExaminedAllText(): boolean {
-    if (this.index >= this.text.length) {
-      return false
-    }
+    return this.index >= this.text.length
   }
   
   
@@ -62,17 +62,14 @@ export class TextConsumer {
   
   
   public skippedText() {
-    return this.text.slice(this.countCharsConsumed, this.index)
-  }
-  
-  
-  public consumeSkippedText() {
-    return this.consumeSkippedTextAndDiscard('')
+    return this.unconsumedText
   }
   
   
   public consumeSkippedTextAndDiscard(toDiscard: string|number): string {
     const skippedText = this.skippedText()
+    
+    this.unconsumedText = ''
     
     const discardLenth = (
       typeof toDiscard === "string"
@@ -84,6 +81,11 @@ export class TextConsumer {
     this.countCharsConsumed = this.index - 1 + discardLenth
     
     return skippedText;
+  }
+  
+  
+  public consumeSkippedText() {
+    return this.consumeSkippedTextAndDiscard('')
   }
   
   

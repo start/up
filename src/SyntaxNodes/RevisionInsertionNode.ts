@@ -1,5 +1,5 @@
 import { SyntaxNode } from './SyntaxNode'
 
 export class RevisionInsertionNode extends SyntaxNode {
-  private REVISION_INSERTION: any
+  private REVISION_INSERTION: any = null
 }
