@@ -37,22 +37,23 @@ export class InlineParser {
     text: string,
     private parentNode: SyntaxNode,
     private parentNodeClosureStatus: ParentNodeClosureStatus,
-    private countCharsConsumedOpeningParentNode = 0) {
+    private countCharsConsumedOpeningParentNode = 0
+    ) {
 
-    this.textConsumer = new TextConsumer(text)
+    this.textConsumer = new TextConsumer(text.slice(countCharsConsumedOpeningParentNode))
 
     let isParsingLinkUrl = false
 
     main_parser_loop:
-    while (!this.textConsumer.hasExaminedAllText() || this.reachedEndOfParent) {
-      
+    while (!(this.textConsumer.hasExaminedAllText() || this.reachedEndOfParent)) {
+
       if (this.textConsumer.isMatch(INLINE_CODE.bun)) {
         const inlineCodeNode = new InlineCodeNode();
         inlineCodeNode.parent = this.parentNode
-        
+
         const result =
           parseInlineCode(this.textConsumer.remainingTextBeyond(INLINE_CODE.bun), inlineCodeNode)
-        
+
         if (result.success()) {
           this.flushSkippedTextToPlainTextNode()
           this.textConsumer.ignoreAndConsume(INLINE_CODE.bun.length + result.countCharsConsumed)
@@ -154,10 +155,10 @@ export class InlineParser {
 
 
   private tryParseInline(ParentSyntaxNodeType: SyntaxNodeType, countCharsThatOpenedNode: number): boolean {
-    const parseResult = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode)
+    const result = this.getInlineParseResult(ParentSyntaxNodeType, countCharsThatOpenedNode)
 
-    if (parseResult.success()) {
-      this.addParsedNode(parseResult)
+    if (result.success()) {
+      this.addParsedNode(result)
       return true
     }
 
@@ -237,7 +238,7 @@ export class InlineParser {
 }
 
 
-function getBestTripleAsteriskParseResult(parseResults: ParseResult[]): ParseResult {
+function getBestTripleAsteriskParseResult(results: ParseResult[]): ParseResult {
   // We only want to accept valid parse results. And if there are more than one, we
   // accept the result that consumed the most characters.
   //
@@ -334,7 +335,7 @@ function getBestTripleAsteriskParseResult(parseResults: ParseResult[]): ParseRes
   // result (the one created by starting with an emphasis node).
 
   const sortedResults =
-    parseResults.slice()
+    results.slice()
       .filter(result => result.success())
       .sort((result1, result2) => result2.countCharsConsumed - result1.countCharsConsumed)
 
