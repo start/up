@@ -67,6 +67,30 @@ describe('A backslash', function() {
   })
 })
 
+describe('Text surrounded by backticks', function() {
+  it('is put inside an inline code node', function() {
+    expect(Up.ast('Hello, `["w", "o", "r", "l", "d"].join("")`!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('["w", "o", "r", "l", "d"].join("")')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+
+  it('is not evaluated for other conventions', function() {
+    expect(Up.ast('Hello, `*world*`!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('*world*')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
+
 describe('Text surrounded by asterisks', function() {
   it('is put inside an emphasis node', function() {
     expect(Up.ast('Hello, *world*!!')).to.be.eql(
@@ -121,30 +145,6 @@ describe('Text surrounded by asterisks', function() {
             new PlainTextNode(' little')
           ]),
           new PlainTextNode(' world')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
-})
-
-describe('Text surrounded by backticks', function() {
-  it('is put inside an inline code node', function() {
-    expect(Up.ast('Hello, `["w", "o", "r", "l", "d"].join("")`!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('["w", "o", "r", "l", "d"].join("")')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
-
-  it('is not evaluated for other conventions', function() {
-    expect(Up.ast('Hello, `*world*`!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('*world*')
         ]),
         new PlainTextNode('!')
       ]))

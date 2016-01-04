@@ -14,12 +14,15 @@ export function parseInlineCode(text: string, parentNode: SyntaxNode) {
   
   while (!textConsumer.hasExaminedAllText()) {
     if (textConsumer.isMatch(END_DELIMETER)) {
-      const inlineCodeNode = new InlineCodeNode([
-          new PlainTextNode(textConsumer.consumeSkippedTextAndDiscard(END_DELIMETER))
-        ]);
+      const plainTextNode = 
+          new PlainTextNode(textConsumer.consumeSkippedTextThenIgnoreNext(END_DELIMETER))
         
-      return new ParseResult([inlineCodeNode], textConsumer.countCharsConsumed, parentNode)
+        textConsumer.ignoreAndConsume(END_DELIMETER.length)
+        
+      return new ParseResult([plainTextNode], textConsumer.countCharsConsumed, parentNode)
     }
+    
+    textConsumer.advance()
   }
   
   return new FailedParseResult()

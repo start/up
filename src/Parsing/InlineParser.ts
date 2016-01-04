@@ -36,7 +36,8 @@ export class InlineParser {
   constructor(
     text: string,
     private parentNode: SyntaxNode,
-    private parentNodeClosureStatus: ParentNodeClosureStatus) {
+    private parentNodeClosureStatus: ParentNodeClosureStatus,
+    private countCharsConsumedOpeningParentNode = 0) {
 
     this.textConsumer = new TextConsumer(text)
 
@@ -49,12 +50,14 @@ export class InlineParser {
         const inlineCodeNode = new InlineCodeNode();
         inlineCodeNode.parent = this.parentNode
         
-        const result = parseInlineCode(
-          this.textConsumer.remainingTextBeyond(INLINE_CODE.bun),
-          inlineCodeNode)
+        const result =
+          parseInlineCode(this.textConsumer.remainingTextBeyond(INLINE_CODE.bun), inlineCodeNode)
         
-        if (result.success) {
-          this.textConsumer.ignore(INLINE_CODE.bun.length + result.countCharsConsumed)
+        if (result.success()) {
+          this.flushSkippedTextToPlainTextNode()
+          this.textConsumer.ignoreAndConsume(INLINE_CODE.bun.length + result.countCharsConsumed)
+          inlineCodeNode.addChildren(result.nodes)
+          this.resultNodes.push(inlineCodeNode)
           continue;
         }
       }
@@ -62,13 +65,13 @@ export class InlineParser {
       if (!this.areAnyAncestors(LinkNode)) {
         if (this.textConsumer.isMatch('[')) {
           if (this.tryParseInline(LinkNode, '['.length)) {
-            this.textConsumer.ignore('['.length)
+            this.textConsumer.ignoreAndConsume('['.length)
             continue
           }
         }
       } else if (parentNode instanceof LinkNode) {
         if (this.textConsumer.isMatch(' -> ')) {
-          this.textConsumer.ignore(' -> '.length)
+          this.textConsumer.ignoreAndConsume(' -> '.length)
           this.flushSkippedTextToPlainTextNode()
           isParsingLinkUrl = true
           continue;
@@ -76,7 +79,7 @@ export class InlineParser {
 
         if (isParsingLinkUrl && this.textConsumer.isMatch(']')) {
           parentNode.url = this.textConsumer.consumeSkippedText()
-          this.textConsumer.ignore(' ]'.length)
+          this.textConsumer.ignoreAndConsume(' ]'.length)
           this.closeParent()
           break;
         }
@@ -113,7 +116,7 @@ export class InlineParser {
       this.result = new FailedParseResult();
     } else {
       this.flushSkippedTextToPlainTextNode()
-      this.result = new ParseResult(this.resultNodes, this.textConsumer.index, this.parentNode)
+      this.result = new ParseResult(this.resultNodes, this.countCharsConsumedOpeningParentNode + this.textConsumer.index, this.parentNode)
     }
   }
 
@@ -144,7 +147,7 @@ export class InlineParser {
 
 
   private flushSkippedTextToPlainTextNode(): void {
-    if (this.textConsumer.skippedText) {
+    if (this.textConsumer.skippedText()) {
       this.resultNodes.push(new PlainTextNode(this.textConsumer.consumeSkippedText()))
     }
   }
@@ -169,7 +172,8 @@ export class InlineParser {
     return new InlineParser(
       this.textConsumer.remainingText(),
       newParentNode,
-      ParentNodeClosureStatus.OpenAndMustBeClosed
+      ParentNodeClosureStatus.OpenAndMustBeClosed,
+      countCharsThatOpenedNode
     ).result;
   }
 
@@ -178,7 +182,7 @@ export class InlineParser {
     this.flushSkippedTextToPlainTextNode()
     parseResult.parentNode.addChildren(parseResult.nodes)
     this.resultNodes.push(parseResult.parentNode)
-    this.textConsumer.ignore(parseResult.countCharsConsumed)
+    this.textConsumer.ignoreAndConsume(parseResult.countCharsConsumed)
   }
 
 
@@ -197,7 +201,7 @@ export class InlineParser {
   private closeParentIfCurrentTextIs(needle: string) {
     if (this.textConsumer.isMatch(needle)) {
       this.closeParent()
-      this.textConsumer.ignore(needle.length);
+      this.textConsumer.ignoreAndConsume(needle.length);
       return true;
     }
 

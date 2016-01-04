@@ -38,7 +38,7 @@ export class TextConsumer {
   }
   
   
-  ignore(count: number): void {
+  ignoreAndConsume(count: number): void {
     this.index += count
     this.countCharsConsumed = this.index
     this.analyze()
@@ -66,7 +66,7 @@ export class TextConsumer {
   }
   
   
-  public consumeSkippedTextAndDiscard(toDiscard: string|number): string {
+  public consumeSkippedTextThenIgnoreNext(toDiscard: string|number): string {
     const skippedText = this.skippedText()
     
     this.unconsumedText = ''
@@ -85,7 +85,7 @@ export class TextConsumer {
   
   
   public consumeSkippedText() {
-    return this.consumeSkippedTextAndDiscard('')
+    return this.consumeSkippedTextThenIgnoreNext('')
   }
   
   
