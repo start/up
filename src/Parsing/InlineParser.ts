@@ -66,21 +66,20 @@ export class InlineParser {
       if (!this.areAnyAncestors(LinkNode)) {
         if (this.textConsumer.isMatch('[')) {
           if (this.tryParseInline(LinkNode, '['.length)) {
-            this.textConsumer.ignoreAndConsume('['.length)
             continue
           }
         }
       } else if (parentNode instanceof LinkNode) {
         if (this.textConsumer.isMatch(' -> ')) {
-          this.textConsumer.ignoreAndConsume(' -> '.length)
           this.flushSkippedTextToPlainTextNode()
+          this.textConsumer.ignoreAndConsume(' -> '.length)
           isParsingLinkUrl = true
           continue;
         }
 
         if (isParsingLinkUrl && this.textConsumer.isMatch(']')) {
           parentNode.url = this.textConsumer.consumeSkippedText()
-          this.textConsumer.ignoreAndConsume(' ]'.length)
+          this.textConsumer.ignoreAndConsume(']'.length)
           this.closeParent()
           break;
         }
