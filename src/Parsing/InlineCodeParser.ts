@@ -16,6 +16,7 @@ export function parseInlineCode(text: string, parentNode: SyntaxNode) {
     if (textConsumer.isMatch(END_DELIMETER)) {
       const plainTextNode = 
           new PlainTextNode(textConsumer.consumeSkippedTextThenIgnoreNext(END_DELIMETER))
+
         
         textConsumer.ignoreAndConsume(END_DELIMETER.length)
         
