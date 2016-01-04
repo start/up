@@ -1,3 +1,7 @@
+export interface SyntaxNodeType {
+  new (): SyntaxNode
+}
+
 export abstract class SyntaxNode {
   constructor(initialChildren: SyntaxNode[] = []) {
     this.children = []
@@ -11,11 +15,11 @@ export abstract class SyntaxNode {
 
   parent: SyntaxNode = null
   
-  parents(): SyntaxNode[] {
+  ancestors(): SyntaxNode[] {
     if (this.parent === null) {
       return [];
     }
-    return [this.parent].concat(this.parent.parents())
+    return [this.parent].concat(this.parent.ancestors())
   }
 
   text(): string {
@@ -32,5 +36,17 @@ export abstract class SyntaxNode {
       node.parent = this;
       this.children.push(node)
     }
+  }
+  
+  andAllAncestors(): SyntaxNode[] {
+    return [<SyntaxNode>this].concat(this.ancestors())
+  }
+
+  isEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
+    return syntaxNodeTypes.some(SyntaxNodeType => this instanceof SyntaxNodeType)
+  }
+  
+  andAnyAncestors(predicate: (node: SyntaxNode) => boolean) {
+    return this.andAllAncestors().some(predicate)
   }
 }

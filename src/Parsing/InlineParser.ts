@@ -1,13 +1,12 @@
 import { ParseResult } from './ParseResult'
 import { ParentNodeClosureStatus } from './ParentNodeClosureStatus'
 import { InlineSandwich } from './InlineSandwich'
-import { SyntaxNodeType } from './SyntaxNodeType'
 import { FailedParseResult } from './FailedParseResult'
 
 import { TextConsumer } from './TextConsumption/TextConsumer'
 
+import { SyntaxNode, SyntaxNodeType } from '../SyntaxNodes/SyntaxNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
@@ -63,7 +62,7 @@ export class InlineParser {
         }
       }
 
-      if (!this.areAnyAncestors(LinkNode)) {
+      if (!this.parentNode.andAnyAncestors(node => node instanceof LinkNode)) {
         if (this.textConsumer.isMatch('[')) {
           if (this.tryParseInline(LinkNode, '['.length)) {
             continue
@@ -85,10 +84,7 @@ export class InlineParser {
         }
       }
 
-      const shouldProbablyOpenEmphasisAndStress =
-        this.textConsumer.isMatch('***') && !this.areAnyAncestorsEither([EmphasisNode, StressNode])
-
-      if (shouldProbablyOpenEmphasisAndStress && this.tryOpenBothEmphasisAndStress()) {
+      if (this.tryOpenBothEmphasisAndStress()) {
         continue
       }
 
@@ -118,31 +114,6 @@ export class InlineParser {
       this.flushSkippedTextToPlainTextNode()
       this.result = new ParseResult(this.resultNodes, this.countCharsConsumedOpeningParentNode + this.textConsumer.index, this.parentNode)
     }
-  }
-
-  private isParent(SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.parentNode instanceof SyntaxNodeType
-  }
-
-
-  private isParentEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return this.isNodeEither(this.parentNode, syntaxNodeTypes)
-  }
-
-
-  private isNodeEither(node: SyntaxNode, syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return syntaxNodeTypes.some(SyntaxNodeType => node instanceof SyntaxNodeType)
-  }
-
-
-  private areAnyAncestors(SyntaxNodeType: SyntaxNodeType): boolean {
-    return this.isParent(SyntaxNodeType) || this.parentNode.parents().some(ancestor => ancestor instanceof SyntaxNodeType)
-  }
-
-
-  private areAnyAncestorsEither(syntaxNodeTypes: SyntaxNodeType[]): boolean {
-    return this.isParentEither(syntaxNodeTypes)
-      || this.parentNode.parents().some(ancestor => this.isNodeEither(ancestor, syntaxNodeTypes))
   }
 
 
@@ -210,7 +181,7 @@ export class InlineParser {
 
 
   private tryOpenOrCloseSandwich(sandwich: InlineSandwich): boolean {
-    if (this.isParent(sandwich.SyntaxNodeType)) {
+    if (this.parentNode instanceof sandwich.SyntaxNodeType) {
       return this.closeParentIfCurrentTextIs(sandwich.closingBun)
     }
     return this.textConsumer.isMatch(sandwich.bun) && this.tryParseInline(sandwich.SyntaxNodeType, sandwich.bun.length)
@@ -220,9 +191,13 @@ export class InlineParser {
   // "***" opens both a stress node and an emphasis node. Here, we ensure the two nodes can
   // be closed in either order by parsing the text both ways and using the best result.
   private tryOpenBothEmphasisAndStress(): boolean {
-    if (!this.textConsumer.isMatch('***') || this.areAnyAncestorsEither([EmphasisNode, StressNode])) {
+    const shouldProbablyOpenEmphasisAndStress =
+        this.textConsumer.isMatch('***') && !this.parentNode.andAnyAncestors(node => node.isEither([EmphasisNode, StressNode]))
+        
+    if (!shouldProbablyOpenEmphasisAndStress) {
       return false;
     }
+    
     const startWithEmphasis = this.getInlineParseResult(EmphasisNode, '*'.length)
     const startWithStress = this.getInlineParseResult(StressNode, '**'.length)
     const bestResult = getBestTripleAsteriskParseResult([startWithEmphasis, startWithStress])
