@@ -9,7 +9,7 @@ export class TextConsumer {
   
   constructor(private text: string) {
     if (!this.hasExaminedAllText()) {
-      this.analyze()
+      this.handleEscaping()
     }
   }
   
@@ -32,16 +32,17 @@ export class TextConsumer {
   
   
   advance(): void {
+    this.updateUnclosedBracketCount()
     this.unconsumedText += this.currentChar()
     this.index += 1
-    this.analyze()
+    this.handleEscaping()
   }
   
   
   ignoreAndConsume(count: number): void {
     this.index += count
     this.countCharsConsumed = this.index
-    this.analyze()
+    this.handleEscaping()
   }
   
   
@@ -53,13 +54,6 @@ export class TextConsumer {
   private currentChar(): string {
     return this.text[this.index]
   }
-  
-  
-  public analyze() {
-    this.updateUnclosedBracketCount()
-    this.handleEscaping()
-  }
-  
   
   public skippedText() {
     return this.unconsumedText

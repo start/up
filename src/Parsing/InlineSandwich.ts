@@ -1,4 +1,3 @@
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { SyntaxNodeType } from './SyntaxNodeType'
 
 export class InlineSandwich {
