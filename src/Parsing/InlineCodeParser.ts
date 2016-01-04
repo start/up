@@ -4,11 +4,10 @@ import { ParseResult } from './ParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 
 
-export function parseInlineCode(text: string, parentNode: SyntaxNode) {
+export function parseInlineCode(text: string, parentNode: InlineCodeNode) {
   const textConsumer = new TextConsumer(text)
   const END_DELIMETER = '`'
   
