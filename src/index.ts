@@ -1,5 +1,6 @@
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
+import { parseOutline } from './Parsing/OutlineParser'
 
 export function ast(text: string): DocumentNode {
-  return new DocumentNode()
+  return new DocumentNode(parseOutline(text).nodes)
 }
