@@ -2,11 +2,10 @@ import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { ParseResult } from './ParseResult'
 import { parse } from './Parse'
-import { parseInlineCode } from './ParseInlineCode'
 
-export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
-  
+export function parseInlineCode(text: string, parentNode: RichSyntaxNode): ParseResult {
   return parse(text, parentNode, {
-    parsers: [parseInlineCode]
+    startsWith: '`',
+    endsWith: '`'
   })
 }
