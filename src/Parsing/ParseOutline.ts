@@ -1,6 +1,6 @@
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { ParseResult } from './ParseResult'
-import { parseInline } from './InlineParser'
+import { parseInline } from './ParseInline'
 
 export function parseOutline(text: string): ParseResult {
   if (!text) {
