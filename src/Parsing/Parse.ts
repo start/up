@@ -15,16 +15,17 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
   let nodes: SyntaxNode[] = []
   let isEscaped = false
   let index: number
+  options.parsers = options.parsers || []
 
   function isMatch(needle: string): boolean {
-    return needle && needle === text.substr(index, needle.length)
+    return needle === text.substr(index, needle.length)
   }
 
   main_parser_loop:
   for (index = 0; index < text.length; index++) {
     const char = text[index]
 
-    if (isEscaped || char !== '\\') {
+    if (isEscaped) {
       nodes.push(new PlainTextNode(char))
       isEscaped = false
       continue
@@ -35,7 +36,7 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
       continue
     }
 
-    if (index === 0) {
+    if (index === 0 && options.startsWith) {
       if (isMatch(options.startsWith)) {
         // We subtract 1 because the loop automatically incremements by 1
         index += options.startsWith.length - 1
@@ -45,7 +46,7 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
       }
     }
 
-    if (isMatch(options.endsWith)) {
+    if (options.endsWith && isMatch(options.endsWith)) {
       return new ParseResult(nodes, index + options.endsWith.length)
     }
 
