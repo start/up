@@ -47,10 +47,6 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
       }
     }
 
-    if (options.endsWith && isMatch(options.endsWith)) {
-      return new SuccessfulParseResult(nodes, index + options.endsWith.length)
-    }
-
     for (let parser of options.parsers) {
       const result = parser(text.slice(index), parentNode)
       if (result.success()) {
@@ -59,6 +55,10 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
         index += result.countCharsConsumed - 1
         continue main_parser_loop
       }
+    }
+
+    if (options.endsWith && isMatch(options.endsWith)) {
+      return new SuccessfulParseResult(nodes, index + options.endsWith.length)
     }
 
     nodes.push(new PlainTextNode(char))
