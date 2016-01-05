@@ -1,6 +1,6 @@
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { ParseResult } from './ParseResult'
 
 export interface Parser {
-  (text: string, parentNode?: SyntaxNode): ParseResult
+  (text: string, parentNode?: RichSyntaxNode): ParseResult
 }

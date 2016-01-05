@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class RevisionInsertionNode extends SyntaxNode {
+export class RevisionInsertionNode extends RichSyntaxNode {
   private REVISION_INSERTION: any = null
 }

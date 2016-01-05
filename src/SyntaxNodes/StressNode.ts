@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class StressNode extends SyntaxNode {
+export class StressNode extends RichSyntaxNode {
   STRESS: any = null
 }

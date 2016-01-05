@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class DocumentNode extends SyntaxNode {
+export class DocumentNode extends RichSyntaxNode {
   private DOCUMENT: any = null
 }

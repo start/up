@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class ParagraphNode extends SyntaxNode {
+export class ParagraphNode extends RichSyntaxNode {
   private PARAGRAPH: any = null
 }

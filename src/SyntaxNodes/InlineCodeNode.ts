@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class InlineCodeNode extends SyntaxNode {
+export class InlineCodeNode extends RichSyntaxNode {
   private INLINE_CODE: any = null
 }

@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class SpoilerNode extends SyntaxNode {
+export class SpoilerNode extends RichSyntaxNode {
   private SPOILER: any = null
 }

@@ -1,5 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class EmphasisNode extends SyntaxNode {
+export class EmphasisNode extends RichSyntaxNode {
   private EMPHASIS: any = null
 }
