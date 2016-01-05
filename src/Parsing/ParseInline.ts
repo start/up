@@ -5,6 +5,7 @@ import { parse } from './Parse'
 import { parseInlineCode } from './ParseInlineCode'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
+  console.log(text)
   return parse(text, parentNode, {
     parsers: [parseInlineCode]
   })

@@ -1,6 +1,7 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
+import { SuccessfulParseResult } from './SuccessfulParseResult'
 import { ParseResult } from './ParseResult'
 import { FailedParseResult } from './FailedParseResult'
 import { Parser } from './Parser'
@@ -47,13 +48,15 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
     }
 
     if (options.endsWith && isMatch(options.endsWith)) {
-      return new ParseResult(nodes, index + options.endsWith.length)
+      return new SuccessfulParseResult(nodes, index + options.endsWith.length)
     }
 
     for (let parser of options.parsers) {
-      const result = parser(text, parentNode)
-      if (result.success) {
+      const result = parser(text.slice(index), parentNode)
+      if (result.success()) {
         nodes.push.apply(nodes, result.nodes)
+        // We subtract 1 because the loop automatically incremements by 1
+        index += result.countCharsConsumed - 1
         continue main_parser_loop
       }
     }
@@ -65,5 +68,5 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
     return new FailedParseResult()
   }
 
-  return new ParseResult(nodes, text.length)
+  return new SuccessfulParseResult(nodes, text.length)
 }
