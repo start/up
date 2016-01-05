@@ -4,5 +4,5 @@ import { ParseResult } from './ParseResult'
 import { parseEither } from './ParseEither'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
-  return parseEither(text, [], parentNode)
+  return parseEither(text, parentNode, [])
 }
