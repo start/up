@@ -9,14 +9,13 @@ import { Parser } from './Parser'
 interface ParseOptions {
   parsers?: Parser[],
   startsWith?: string
-  endsWith?: string,
-  exitBefore?: string
+  endsWith?: string
 }
 
-export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOptions): ParseResult {
+export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOptions, exitBefore?: string): ParseResult {
   let nodes: SyntaxNode[] = []
   let isEscaped = false
-  options.parsers = options.parsers || []
+  const parsers = options.parsers || []
   
   let index = 0
 
@@ -50,16 +49,16 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
       }
     }
 
-    if (options.exitBefore && isMatch(options.exitBefore)) {
-      return new SuccessfulParseResult(nodes, index)
+    if (exitBefore && isMatch(exitBefore)) {
+      break
     }
     
     if (options.endsWith && isMatch(options.endsWith)) {
       return new SuccessfulParseResult(nodes, index + options.endsWith.length)
     }
 
-    for (let parser of options.parsers) {
-      const result = parser(text.slice(index), parentNode)
+    for (let parser of parsers) {
+      const result = parser(text.slice(index), parentNode, options.endsWith)
       if (result.success()) {
         nodes.push.apply(nodes, result.nodes)
         index += result.countCharsConsumed
