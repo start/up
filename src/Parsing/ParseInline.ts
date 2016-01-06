@@ -6,7 +6,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { sandwichParser } from './SandwichParser'
 
-export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
+export function parseInline(text: string, parentNode: RichSyntaxNode, exitBefore?: string): ParseResult {
   
   return parse(text, parentNode, {
     parsers: [
