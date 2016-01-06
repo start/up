@@ -19,8 +19,20 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
   
   let index = 0
 
-  function isMatch(needle: string): boolean {
+  function isMatchHere(needle: string): boolean {
     return needle === text.substr(index, needle.length)
+  }
+  
+  if (exitBefore && isMatchHere(exitBefore)) {
+    return new FailedParseResult();
+  }
+
+  if (options.startsWith) {
+    if (isMatchHere(options.startsWith)) {
+      index += options.startsWith.length
+      } else {
+      return new FailedParseResult()
+    }
   }
   
   main_parser_loop:
@@ -39,22 +51,9 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
       index += 1
       continue
     }
-
-    if (index === 0 && options.startsWith) {
-      if (isMatch(options.startsWith)) {
-        index += options.startsWith.length
-        continue
-      } else {
-        return new FailedParseResult()
-      }
-    }
-
-    if (exitBefore && isMatch(exitBefore)) {
-      break
-    }
     
-    if (options.endsWith && isMatch(options.endsWith)) {
-      return new SuccessfulParseResult(nodes, index + options.endsWith.length)
+    if (exitBefore && isMatchHere(exitBefore)) {
+      break
     }
 
     for (let parser of parsers) {
@@ -64,6 +63,10 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
         index += result.countCharsConsumed
         continue main_parser_loop
       }
+    }
+    
+    if (options.endsWith && isMatchHere(options.endsWith)) {
+      return new SuccessfulParseResult(nodes, index + options.endsWith.length)
     }
 
     nodes.push(new PlainTextNode(char))
