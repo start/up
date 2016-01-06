@@ -9,8 +9,4 @@ export class FailedParseResult extends ParseResult {
   wrappedIn(RichSyntaxNodeType: RichSyntaxNodeType): ParseResult {
     return this
   }
-  
-  success(): boolean {
-    return false
-  }
 }

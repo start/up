@@ -1,7 +1,7 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
-import { SuccessfulParseResult } from './SuccessfulParseResult'
+import { CompletedParseResult } from './CompletedParseResult'
 import { ParseResult } from './ParseResult'
 import { FailedParseResult } from './FailedParseResult'
 import { Parser } from './Parser'
@@ -23,10 +23,6 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
     return needle === text.substr(index, needle.length)
   }
   
-  if (exitBefore && isMatchHere(exitBefore)) {
-    return new FailedParseResult();
-  }
-
   if (options.startsWith) {
     if (isMatchHere(options.startsWith)) {
       index += options.startsWith.length
@@ -66,7 +62,7 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
     }
     
     if (options.endsWith && isMatchHere(options.endsWith)) {
-      return new SuccessfulParseResult(nodes, index + options.endsWith.length)
+      return new CompletedParseResult(nodes, index + options.endsWith.length)
     }
 
     nodes.push(new PlainTextNode(char))
@@ -77,5 +73,5 @@ export function parse(text: string, parentNode: RichSyntaxNode, options: ParseOp
     return new FailedParseResult()
   }
 
-  return new SuccessfulParseResult(nodes, index)
+  return new CompletedParseResult(nodes, index)
 }
