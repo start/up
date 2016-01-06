@@ -2,11 +2,16 @@ import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { ParseResult } from './ParseResult'
 import { parse } from './Parse'
-import { parseInlineCode } from './ParseInlineCode'
+import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
+import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { sandwichParser } from './SandwichParser'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
-  console.log(text)
+  
   return parse(text, parentNode, {
-    parsers: [parseInlineCode]
+    parsers: [
+      sandwichParser(InlineCodeNode, '`', '`'),
+      sandwichParser(EmphasisNode, '*', '*')
+    ]
   })
 }
