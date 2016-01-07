@@ -34,10 +34,10 @@ export class Matcher {
   advance(result?: MatchResult) {
     if (result) {
       this.index = result.newIndex
-      return
+    } else {
+      this.index += 1
     }
     
-    this.index += 1
     this.handleEscaping()
   }
   
