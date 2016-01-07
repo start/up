@@ -3,6 +3,7 @@ import { CompletedParseResult } from './CompletedParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
 import { Matcher } from '../Matching/Matcher'
+import { MatchResult } from '../Matching/MatchResult'
 
 import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
@@ -17,18 +18,22 @@ import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
-  return parse(new Matcher(text), parentNode)
+  return new InlineParser(new Matcher(text), parentNode).result
 }
 
-function parse(matcher: Matcher, parentNode: RichSyntaxNode): ParseResult {
-  const nodes: SyntaxNode[] = [] 
+class InlineParser {
+  public result: ParseResult
   
-  while (!matcher.done()) {
-    const result = matcher.matchAnyChar()
-    nodes.push(new PlainTextNode(result.matchedText))
+  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
+    const nodes: SyntaxNode[] = [] 
     
-    matcher.advance(result)
+    while (!matcher.done()) {
+      const result = matcher.matchAnyChar()
+      nodes.push(new PlainTextNode(result.matchedText))
+      
+      matcher.advance(result)
+    }
+    
+    this.result = new CompletedParseResult(nodes, matcher.index)
   }
-  
-  return new CompletedParseResult(nodes, matcher.index)
 }
