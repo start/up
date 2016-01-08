@@ -36,10 +36,16 @@ class InlineParser {
         continue
       }
       
-      const plainCharResult = this.matcher.matchAnyChar()
-      this.nodes.push(new PlainTextNode(plainCharResult.matchedText))
-
-      this.matcher.advance(plainCharResult)
+      if (this.parentNode instanceof InlineCodeNode) {
+        this.addPlainCharNode()
+        continue 
+      }
+      
+      if (this.tryOpenOrCloseSandiwch(EmphasisNode, '*', '*')) {
+        continue
+      }
+      
+      this.addPlainCharNode()
     }
     
     if (this.mustCloseParent) {
@@ -90,5 +96,11 @@ class InlineParser {
   
   private fail(): void {
     this.result = new FailedParseResult()
+  }
+  
+  private addPlainCharNode(): void {
+    const plainCharResult = this.matcher.matchAnyChar()
+    this.nodes.push(new PlainTextNode(plainCharResult.matchedText))
+    this.matcher.advance(plainCharResult)
   }
 }
