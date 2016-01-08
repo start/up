@@ -2,7 +2,7 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 
 export interface RichSyntaxNodeType {
-  new (chilren: SyntaxNode[]): RichSyntaxNode
+  new (chilren?: SyntaxNode[]): RichSyntaxNode
 }
 
 export abstract class RichSyntaxNode extends SyntaxNode {
