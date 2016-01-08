@@ -2,10 +2,19 @@ import { MatchResult } from './MatchResult'
 import { FailedMatchResult } from './FailedMatchResult'
 
 export class Matcher {
+  public text: string
   private isCurrentCharEscaped = false
+  public index: number
   
   
-  constructor(public text: string, public index = 0) {
+  constructor(textOrMatcher: string|Matcher, implicitFirstMatch = '') {
+    if (textOrMatcher instanceof Matcher) {
+      this.text = textOrMatcher.remaining()
+    } else {
+      this.text = <string>textOrMatcher
+    }
+    
+    this.index += implicitFirstMatch.length
     this.handleEscaping()
   }
   
@@ -17,7 +26,7 @@ export class Matcher {
   
   match(needle: string): MatchResult {
     const success =
-      !this.isCurrentCharEscaped && (needle === this.text.slice(this.index, needle.length))
+      !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length))
     
     if (success) {
       return new MatchResult(this.index + needle.length, needle)
@@ -31,16 +40,30 @@ export class Matcher {
   }
   
   
-  advance(result?: MatchResult) {
-    if (result) {
-      this.index = result.newIndex
-    } else {
-      this.index += 1
+  advance(countOrResult: MatchResult|number = 1) {
+    if (countOrResult instanceof MatchResult) {
+      this.index = countOrResult.newIndex
+    } else if (typeof countOrResult === "number") {
+      this.index += countOrResult
     }
     
     this.handleEscaping()
   }
   
+  
+  countCharsAdvanced(): number {
+    return this.index
+  }
+  
+  
+  countCharsAdvancedIncluding(result: MatchResult): number {
+    return this.countCharsAdvanced() + result.matchedText.length
+  }
+  
+  
+  remaining(): string {
+    return this.text.slice(this.index)
+  }
   
   private handleEscaping() {
     this.isCurrentCharEscaped = false

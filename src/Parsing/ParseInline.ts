@@ -18,22 +18,55 @@ import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
-  return new InlineParser(new Matcher(text), parentNode).result
+  return new InlineParser(new Matcher(text), parentNode, false).result
 }
 
 class InlineParser {
   public result: ParseResult
   
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
+  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {
+    this.result = this.getResult()
+  }
+  
+  
+  private getResult(): ParseResult {
     const nodes: SyntaxNode[] = [] 
     
-    while (!matcher.done()) {
-      const result = matcher.matchAnyChar()
-      nodes.push(new PlainTextNode(result.matchedText))
+    while (!this.matcher.done()) {
       
-      matcher.advance(result)
+      const inlineCodeDelimeterResult = this.matcher.match('`')
+      
+      if (inlineCodeDelimeterResult.success()) {
+        console.log(this)
+        if (this.parentNode instanceof InlineCodeNode) {
+          return new CompletedParseResult(nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimeterResult))
+        }
+        
+        const inlineCodeNode = new InlineCodeNode()
+        const inlineCodeResult =
+          new InlineParser(
+            new Matcher(this.matcher, inlineCodeDelimeterResult.matchedText),
+            inlineCodeNode).result
+            
+        if (inlineCodeResult.success()) {
+          inlineCodeNode.addChildren(inlineCodeResult.nodes)
+          nodes.push(inlineCodeNode)
+          this.matcher.advance(inlineCodeResult.countCharsConsumed)
+          continue
+        }
+        
+      }
+      
+      const plainCharResult = this.matcher.matchAnyChar()
+      nodes.push(new PlainTextNode(plainCharResult.matchedText))
+      
+      this.matcher.advance(plainCharResult)
     }
     
-    this.result = new CompletedParseResult(nodes, matcher.index)
+    if (this.mustCloseParent) {
+      return new FailedParseResult()
+    }
+    
+    return new CompletedParseResult(nodes, this.matcher.countCharsAdvanced())
   }
 }
