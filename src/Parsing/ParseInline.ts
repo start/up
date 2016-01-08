@@ -25,11 +25,7 @@ class InlineParser {
   public result: ParseResult
   
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {    
-    this.result = this.getResult()
-  }
-  
-  
-  private getResult(): ParseResult {
+    
     const nodes: SyntaxNode[] = [] 
     
     while (!this.matcher.done()) {
@@ -38,14 +34,13 @@ class InlineParser {
       
       if (inlineCodeDelimiterResult.success()) {
         if (this.parentNode instanceof InlineCodeNode) {
-          return new CompletedParseResult(nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimiterResult))
+          this.finish(new CompletedParseResult(nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimiterResult)))
+          return
         }
         
         const inlineCodeNode = new InlineCodeNode()
         const inlineCodeResult =
-          new InlineParser(
-            new Matcher(this.matcher, inlineCodeDelimiterResult.matchedText),
-            inlineCodeNode).result
+          new InlineParser(new Matcher(this.matcher, inlineCodeDelimiterResult.matchedText), inlineCodeNode).result
             
         if (inlineCodeResult.success()) {
           inlineCodeNode.addChildren(inlineCodeResult.nodes)
@@ -62,9 +57,15 @@ class InlineParser {
     }
     
     if (this.mustCloseParent) {
-      return new FailedParseResult()
+      this.finish(new FailedParseResult())
+      return
     }
     
-    return new CompletedParseResult(nodes, this.matcher.countCharsAdvanced())
+    this.finish(new CompletedParseResult(nodes, this.matcher.countCharsAdvanced()))
+  }
+  
+  
+  private finish(result: ParseResult): void {
+    this.result = result
   }
 }
