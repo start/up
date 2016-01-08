@@ -14,7 +14,7 @@ export class Matcher {
       this.text = <string>textOrMatcher
     }
     
-    this.index += implicitFirstMatch.length
+    this.index = implicitFirstMatch.length
     this.handleEscaping()
   }
   
@@ -43,8 +43,8 @@ export class Matcher {
   advance(countOrResult: MatchResult|number = 1) {
     if (countOrResult instanceof MatchResult) {
       this.index = countOrResult.newIndex
-    } else if (typeof countOrResult === "number") {
-      this.index += countOrResult
+    } else {
+      this.index += <number>countOrResult
     }
     
     this.handleEscaping()

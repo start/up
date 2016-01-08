@@ -24,7 +24,7 @@ export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResu
 class InlineParser {
   public result: ParseResult
   
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {
+  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {    
     this.result = this.getResult()
   }
   
@@ -37,7 +37,6 @@ class InlineParser {
       const inlineCodeDelimeterResult = this.matcher.match('`')
       
       if (inlineCodeDelimeterResult.success()) {
-        console.log(this)
         if (this.parentNode instanceof InlineCodeNode) {
           return new CompletedParseResult(nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimeterResult))
         }
@@ -53,13 +52,12 @@ class InlineParser {
           nodes.push(inlineCodeNode)
           this.matcher.advance(inlineCodeResult.countCharsConsumed)
           continue
-        }
-        
+        }        
       }
       
       const plainCharResult = this.matcher.matchAnyChar()
       nodes.push(new PlainTextNode(plainCharResult.matchedText))
-      
+
       this.matcher.advance(plainCharResult)
     }
     
