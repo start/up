@@ -34,17 +34,17 @@ class InlineParser {
     
     while (!this.matcher.done()) {
       
-      const inlineCodeDelimeterResult = this.matcher.match('`')
+      const inlineCodeDelimiterResult = this.matcher.match('`')
       
-      if (inlineCodeDelimeterResult.success()) {
+      if (inlineCodeDelimiterResult.success()) {
         if (this.parentNode instanceof InlineCodeNode) {
-          return new CompletedParseResult(nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimeterResult))
+          return new CompletedParseResult(nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimiterResult))
         }
         
         const inlineCodeNode = new InlineCodeNode()
         const inlineCodeResult =
           new InlineParser(
-            new Matcher(this.matcher, inlineCodeDelimeterResult.matchedText),
+            new Matcher(this.matcher, inlineCodeDelimiterResult.matchedText),
             inlineCodeNode).result
             
         if (inlineCodeResult.success()) {
