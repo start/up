@@ -32,24 +32,8 @@ class InlineParser {
         return
       }
       
-      const inlineCodeDelimiterResult = this.matcher.match('`')
-      
-      if (inlineCodeDelimiterResult.success()) {
-        if (this.parentNode instanceof InlineCodeNode) {
-          this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(inlineCodeDelimiterResult)))
-          return
-        }
-        
-        const inlineCodeNode = new InlineCodeNode()
-        const inlineCodeResult =
-          new InlineParser(new Matcher(this.matcher, inlineCodeDelimiterResult.matchedText), inlineCodeNode).result
-            
-        if (inlineCodeResult.success()) {
-          inlineCodeNode.addChildren(inlineCodeResult.nodes)
-          this.nodes.push(inlineCodeNode)
-          this.matcher.advance(inlineCodeResult.countCharsConsumed)
-          continue
-        }        
+      if (this.tryOpenOrCloseSandiwch(InlineCodeNode, '`', '`')) {
+        continue
       }
       
       const plainCharResult = this.matcher.matchAnyChar()
