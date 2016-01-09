@@ -112,7 +112,7 @@ export class Matcher {
   private areRelevantBracketsClosed(needle: string): boolean {
     return (
       (!this.countOpenSquareBracket || (countOf('[', needle) >= countOf(']', needle)))
-      || (!this.countOpenParen || (countOf('(', needle) >= countOf(')', needle)))
+      && (!this.countOpenParen || (countOf('(', needle) >= countOf(')', needle)))
     )
   }
 }
