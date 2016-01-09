@@ -5,6 +5,8 @@ import { FailedParseResult } from './FailedParseResult'
 import { Matcher } from '../Matching/Matcher'
 import { MatchResult } from '../Matching/MatchResult'
 
+import { InlineSandwich } from './InlineSandwich'
+
 import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
@@ -21,6 +23,9 @@ export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResu
   return new InlineParser(new Matcher(text), parentNode, false).result
 }
 
+const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
+const EMPHASIS = new InlineSandwich(EmphasisNode, '*', '*')
+
 class InlineParser {
   public result: ParseResult
   private nodes: SyntaxNode[] = []
@@ -32,7 +37,7 @@ class InlineParser {
         return
       }
       
-      if (this.tryOpenOrCloseSandiwch(InlineCodeNode, '`', '`')) {
+      if (this.tryOpenOrCloseSandiwch(INLINE_CODE)) {
         continue
       }
       
@@ -41,7 +46,7 @@ class InlineParser {
         continue 
       }
       
-      if (this.tryOpenOrCloseSandiwch(EmphasisNode, '*', '*')) {
+      if (this.tryOpenOrCloseSandiwch(EMPHASIS)) {
         continue
       }
       
@@ -57,26 +62,25 @@ class InlineParser {
   }
   
   
-  tryOpenOrCloseSandiwch(SandwichNodeType: RichSyntaxNodeType, openingBun: string, closingBun: string): boolean {
-    if (this.parentNode instanceof SandwichNodeType) {
-      const closingBunResult = this.matcher.match(closingBun)
+  tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
+    if (this.parentNode instanceof sandwich.NodeType) {
+      const closingBunResult = this.matcher.match(sandwich.closingBun)
       
       if (closingBunResult.success()) {
         this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(closingBunResult)))
         return true
       }
     } else {
-      const openingBunResult = this.matcher.match(openingBun)
+      const openingBunResult = this.matcher.match(sandwich.openingBun)
        
        if (openingBunResult.success()) {
-         const sandwichNode = new SandwichNodeType()
+         const sandwichNode = new sandwich.NodeType()
          const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode).result 
          
          if (sandwichResult.success()) {
            sandwichNode.addChildren(sandwichResult.nodes)
            this.nodes.push(sandwichNode)
            this.matcher.advance(sandwichResult.countCharsConsumed)
-           
            return true
          }
        }
