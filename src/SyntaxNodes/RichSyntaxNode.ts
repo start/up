@@ -7,7 +7,7 @@ export interface RichSyntaxNodeType {
 
 export abstract class RichSyntaxNode extends SyntaxNode {
   children: SyntaxNode[] = [];
-  parent: SyntaxNode = null;
+  parentNode: SyntaxNode = null;
   
   
   constructor(children: SyntaxNode[] = []) {
@@ -17,10 +17,11 @@ export abstract class RichSyntaxNode extends SyntaxNode {
 
   
   ancestors(): SyntaxNode[] {
-    if (this.parent === null) {
+    if (this.parentNode === null) {
       return [];
     }
-    return [this.parent].concat(this.parent.ancestors())
+    
+    return [this.parentNode].concat(this.parentNode.ancestors())
   }
 
 
@@ -45,7 +46,7 @@ export abstract class RichSyntaxNode extends SyntaxNode {
       return 
     }
     
-    syntaxNode.parent = this
+    syntaxNode.parentNode = this
     this.children.push(syntaxNode)
   }
 }

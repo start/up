@@ -21,8 +21,8 @@ import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
 import { LinkParser } from './LinkParser'
 
-export function parseInline(text: string, parentNode: RichSyntaxNode, end: string = null): ParseResult {
-  return new InlineParser(new Matcher(text), parentNode, end, false).result
+export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
+  return new InlineParser(new Matcher(text), parentNode, terminateOn, false).result
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
@@ -32,11 +32,14 @@ const REVISION_INSERTION = new InlineSandwich(RevisionInsertionNode, '++', '++')
 const REVISION_DELETION = new InlineSandwich(RevisionDeletionNode, '~~', '~~')
 const SPOILER = new InlineSandwich(SpoilerNode, '[<_<]', '[>_>]')
 
+
 class InlineParser {
+  
   public result: ParseResult
   private nodes: SyntaxNode[] = []
 
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private end: string = null, private mustCloseParent = true) {
+
+  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
 
     main_parser_loop:
     while (!this.matcher.done()) {
@@ -53,7 +56,7 @@ class InlineParser {
         continue
       }
 
-      if (this.reachedTheEnd()) {
+      if (this.terminatedEarly()) {
         break
       }
 
@@ -82,10 +85,10 @@ class InlineParser {
 
 
   private tryParseLink(): boolean {
-    const result = new LinkParser(new Matcher(this.matcher), this.parentNode).result
+    const linkResult = new LinkParser(new Matcher(this.matcher), this.parentNode).result
 
-    if (result.success()) {
-      this.incorporateResultIfSuccessful(result)
+    if (linkResult.success()) {
+      this.incorporateResultIfSuccessful(linkResult)
       return true
     }
     
@@ -106,7 +109,7 @@ class InlineParser {
 
       if (openingBunResult.success()) {
         const sandwichNode = new sandwich.NodeType()
-        const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.end).result
+        const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.terminateOn).result
 
         if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
           return true
@@ -116,6 +119,7 @@ class InlineParser {
 
     return false
   }
+
 
   private finish(result: ParseResult): void {
     this.result = result
@@ -155,12 +159,12 @@ class InlineParser {
   }
 
 
-  private reachedTheEnd(): boolean {
-    if (this.end) {
-      const endResult = this.matcher.match(this.end)
+  private terminatedEarly(): boolean {
+    if (this.terminateOn) {
+      const terminatorResult = this.matcher.match(this.terminateOn)
 
-      if (endResult.success()) {
-        this.matcher.advanceBy(endResult)
+      if (terminatorResult.success()) {
+        this.matcher.advanceBy(terminatorResult)
         return true
       }
 

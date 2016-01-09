@@ -6,25 +6,26 @@ export interface SyntaxNodeType {
 
 export abstract class SyntaxNode {
   children: SyntaxNode[]
+  parentNode: SyntaxNode = null
 
-  parent: SyntaxNode = null
 
-  
   ancestors(): SyntaxNode[] {
-    if (this.parent === null) {
+    if (this.parentNode === null) {
       return [];
     }
-    return [this.parent].concat(this.parent.ancestors())
+
+    return [this.parentNode].concat(this.parentNode.ancestors())
   }
 
 
   abstract text(): string
-  
+
+
   plusAllAncestors(): SyntaxNode[] {
     return [<SyntaxNode>this].concat(this.ancestors())
   }
 
-  
+
   orAnyAncestor(predicate: (node: SyntaxNode) => boolean) {
     return this.plusAllAncestors().some(predicate)
   }
