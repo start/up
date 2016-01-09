@@ -3,8 +3,11 @@ import { FailedMatchResult } from './FailedMatchResult'
 
 export class Matcher {
   public text: string
-  private isCurrentCharEscaped = false
   public index: number
+  private isCurrentCharEscaped = false
+  private countOpenParen = 0
+  private countOpenSquareBracket = 0
+  
   
   
   constructor(textOrMatcher: string|Matcher, implicitFirstMatch = '') {
@@ -26,7 +29,7 @@ export class Matcher {
   
   match(needle: string): MatchResult {
     const success =
-      !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length))
+      !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
     
     if (success) {
       return new MatchResult(this.index + needle.length, needle)
@@ -45,6 +48,10 @@ export class Matcher {
     if (countOrResult instanceof MatchResult) {
       this.index = countOrResult.newIndex
     } else {
+      // Only non-escaped brackets that weren't part of a match affect the opened/closed counts we're keeping.
+      if (!this.isCurrentCharEscaped) {
+        this.updateOpenBracketCounts()  
+      }
       this.index += <number>countOrResult
     }
     
@@ -79,5 +86,31 @@ export class Matcher {
   
   private currentChar(): string {
     return this.text[this.index]
+  }
+  
+  
+  private updateOpenBracketCounts(): void {
+    switch (this.currentChar()) {
+      case '(':
+        this.countOpenParen += 1
+        break;
+      case ')':
+        this.countOpenParen = Math.max(0, this.countOpenParen - 1) 
+        break;
+      case '[':
+        this.countOpenSquareBracket += 1
+        break;
+      case ']':
+        this.countOpenSquareBracket = Math.max(0, this.countOpenSquareBracket - 1) 
+        break;
+    }
+  }
+  
+  
+  private areRelevantBracketsClosed(needle: string): boolean {
+    return (
+      (!this.countOpenSquareBracket || !/]/.test(needle))
+      && (!this.countOpenParen || !/)/.test(needle))
+    )
   }
 }
