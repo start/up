@@ -24,7 +24,11 @@ export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResu
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
+const STRESS = new InlineSandwich(StressNode, '**', '**')
 const EMPHASIS = new InlineSandwich(EmphasisNode, '*', '*')
+const REVISION_INSERTION = new InlineSandwich(RevisionInsertionNode, '++', '++')
+const REVISION_DELETION = new InlineSandwich(RevisionDeletionNode, '~~', '~~')
+const SPOILER = new InlineSandwich(SpoilerNode, '[<_<]', '[>_>]')
 
 class InlineParser {
   public result: ParseResult
@@ -32,6 +36,7 @@ class InlineParser {
   
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {    
     
+    main_parser_loop:
     while (!this.matcher.done()) {
       if (this.done()) {
         return
@@ -46,8 +51,12 @@ class InlineParser {
         continue 
       }
       
-      if (this.tryOpenOrCloseSandiwch(EMPHASIS)) {
-        continue
+      for (let sandwhich of [
+        STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER
+      ]) {
+        if (this.tryOpenOrCloseSandiwch(sandwhich)) {
+          continue main_parser_loop
+        }
       }
       
       this.addPlainCharNode()
