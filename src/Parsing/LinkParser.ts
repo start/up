@@ -14,15 +14,15 @@ import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { parseInline } from './parseInline'
 
 export class LinkParser {
-  private result: ParseResult
+  public result: ParseResult
 
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
-    
+
     if (this.parentNode.andAllAncestors().some(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return
     }
-    
+
     const openBracketResult = this.matcher.match('[')
 
     if (!openBracketResult.success()) {
@@ -31,30 +31,34 @@ export class LinkParser {
     }
 
     this.matcher.advance(openBracketResult)
-    
+
     const linkNode = new LinkNode()
 
     const contentResult = parseInline(this.matcher.remaining(), linkNode, ' -> ')
-    
+
     if (!contentResult.success()) {
       this.fail()
       return
     }
-    
+
     this.matcher.advance(contentResult.countCharsConsumed)
     linkNode.addChildren(contentResult.nodes)
-    
+
     let url = ''
-    
+
     while (!this.matcher.done()) {
       const closeBrackerResult = this.matcher.match(']')
-      
+
       if (closeBrackerResult.success()) {
         linkNode.url = url
         this.finish(new CompletedParseResult([linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
-      }  
+      }
+
+      const plainCharResult = this.matcher.matchAnyChar()
+      url += plainCharResult.matchedText
+      this.matcher.advance(plainCharResult)
     }
-    
+
     this.fail()
   }
 

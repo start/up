@@ -19,6 +19,8 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
+import { LinkParser } from './LinkParser'
+
 export function parseInline(text: string, parentNode: RichSyntaxNode, end: string = null): ParseResult {
   return new InlineParser(new Matcher(text), parentNode, end, false).result
 }
@@ -50,9 +52,13 @@ class InlineParser {
         this.addPlainCharNode()
         continue
       }
-      
+
       if (this.reachedTheEnd()) {
         break
+      }
+
+      if (this.tryParseLink()) {
+        continue
       }
 
       for (let sandwhich of [
@@ -116,7 +122,7 @@ class InlineParser {
   }
 
 
-  private incorporateResultIfSuccessful(result: ParseResult, resultParentNode: RichSyntaxNode): boolean {
+  private incorporateResultIfSuccessful(result: ParseResult, resultParentNode?: RichSyntaxNode): boolean {
     if (result.success()) {
       this.incporporateResult(result, resultParentNode)
       return true
@@ -126,23 +132,40 @@ class InlineParser {
   }
 
 
-  private incporporateResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
-    resultParentNode.addChildren(result.nodes)
-    this.nodes.push(resultParentNode)
+  private incporporateResult(result: ParseResult, resultParentNode?: RichSyntaxNode): void {
+    if (resultParentNode) {
+      resultParentNode.addChildren(result.nodes)
+      this.nodes.push(resultParentNode)
+    } else {
+      this.nodes.push.apply(this.nodes, result.nodes)
+    }
+
     this.matcher.advance(result.countCharsConsumed)
   }
-  
-  
-  private reachedTheEnd(): boolean { 
-      if (this.end) {
-        const endResult = this.matcher.match(this.end)
-        
-        if (endResult.success()) {
-          this.matcher.advance(endResult)
-          return true
-        }
-        
-        return false
+
+
+  private reachedTheEnd(): boolean {
+    if (this.end) {
+      const endResult = this.matcher.match(this.end)
+
+      if (endResult.success()) {
+        this.matcher.advance(endResult)
+        return true
       }
+
+      return false
+    }
+  }
+
+
+  private tryParseLink(): boolean {
+    const result = new LinkParser(new Matcher(this.matcher), this.parentNode).result
+
+    if (result.success()) {
+      this.incorporateResultIfSuccessful(result)
+      return true
+    }
+    
+    return false
   }
 }
