@@ -18,6 +18,7 @@ import { StressNode } from '../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
+import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 
 import { LinkParser } from './LinkParser'
 
@@ -31,6 +32,7 @@ const EMPHASIS = new InlineSandwich(EmphasisNode, '*', '*')
 const REVISION_INSERTION = new InlineSandwich(RevisionInsertionNode, '++', '++')
 const REVISION_DELETION = new InlineSandwich(RevisionDeletionNode, '~~', '~~')
 const SPOILER = new InlineSandwich(SpoilerNode, '[<_<]', '[>_>]')
+const INLINE_ASIDE = new InlineSandwich(InlineAsideNode, '((', '))')
 
 
 class InlineParser {
@@ -65,7 +67,7 @@ class InlineParser {
       }
 
       for (let sandwhich of [
-        STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER
+        STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER, INLINE_ASIDE
       ]) {
         if (this.tryOpenOrCloseSandiwch(sandwhich)) {
           continue main_parser_loop
