@@ -2,11 +2,12 @@ import { MatchResult } from './MatchResult'
 import { FailedMatchResult } from './FailedMatchResult'
 
 export class Matcher {
+
   public text: string;
   public index: number;
   private isCurrentCharEscaped = false;
-  private countOpenParen = 0;
-  private countOpenSquareBracket = 0;
+  private countUnclosedParen = 0;
+  private countUnclosedSquareBracket = 0;
 
 
 
@@ -94,30 +95,60 @@ export class Matcher {
   private updateOpenBracketCounts(): void {
     switch (this.currentChar()) {
       case '(':
-        this.countOpenParen += 1
-        break;
+        this.countUnclosedParen += 1
+        break
       case ')':
-        this.countOpenParen = Math.max(0, this.countOpenParen - 1)
-        break;
+        this.countUnclosedParen = Math.max(0, this.countUnclosedParen - 1)
+        break
       case '[':
-        this.countOpenSquareBracket += 1
-        break;
+        this.countUnclosedSquareBracket += 1
+        break
       case ']':
-        this.countOpenSquareBracket = Math.max(0, this.countOpenSquareBracket - 1)
-        break;
+        this.countUnclosedSquareBracket = Math.max(0, this.countUnclosedSquareBracket - 1)
+        break
     }
   }
 
 
   private areRelevantBracketsClosed(needle: string): boolean {
     return (
-      (!this.countOpenSquareBracket || (countOf('[', needle) >= countOf(']', needle)))
-      && (!this.countOpenParen || (countOf('(', needle) >= countOf(')', needle)))
+      (!this.countUnclosedSquareBracket || !appearsToClosePreceedingBracket(needle, '[', ']'))
+      && (!this.countUnclosedParen || !appearsToClosePreceedingBracket(needle, '(', ')'))
     )
   }
 }
 
-function countOf(char: string, haystack: string): number {
-  const matches: RegExpMatchArray = haystack.match(new RegExp(`\\${char}`, 'g')) || [];
-  return matches.length
+// Returns true if `text` contains a closing bracket that would appear to close a preceeding opening bracket.
+//
+// The following examples satisfy that condition:
+//
+//   )
+//   hello)
+//   ( ))
+//   ) ((((
+//
+// And the following examples do not:
+//
+//   ()
+//   (( ))
+function appearsToClosePreceedingBracket(text: string, openingBracket: string, closingBracket: string) {
+  let countSurplusOpened = 0
+
+  for (let char of text) {
+    
+    switch (char) {
+      case openingBracket:
+        countSurplusOpened += 1
+        break
+        
+      case closingBracket:
+        if (!countSurplusOpened) {
+          return true
+        }
+        countSurplusOpened -= 1
+        break
+    }  
+  }
+
+  return false
 }
