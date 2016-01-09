@@ -116,9 +116,8 @@ class InlineParser {
 
 
   private addPlainCharNode(): void {
-    const plainCharResult = this.matcher.matchAnyChar()
-    this.nodes.push(new PlainTextNode(plainCharResult.matchedText))
-    this.matcher.advance(plainCharResult)
+    this.nodes.push(new PlainTextNode(this.matcher.currentChar()))
+    this.matcher.advance()
   }
 
 
@@ -140,7 +139,7 @@ class InlineParser {
       this.nodes.push.apply(this.nodes, result.nodes)
     }
 
-    this.matcher.advance(result.countCharsConsumed)
+    this.matcher.advanceBy(result.countCharsConsumed)
   }
 
 
@@ -149,7 +148,7 @@ class InlineParser {
       const endResult = this.matcher.match(this.end)
 
       if (endResult.success()) {
-        this.matcher.advance(endResult)
+        this.matcher.advanceBy(endResult)
         return true
       }
 

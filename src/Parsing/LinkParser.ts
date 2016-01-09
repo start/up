@@ -30,7 +30,7 @@ export class LinkParser {
       return
     }
 
-    this.matcher.advance(openBracketResult)
+    this.matcher.advanceBy(openBracketResult)
 
     const linkNode = new LinkNode()
 
@@ -41,7 +41,7 @@ export class LinkParser {
       return
     }
 
-    this.matcher.advance(contentResult.countCharsConsumed)
+    this.matcher.advanceBy(contentResult.countCharsConsumed)
     linkNode.addChildren(contentResult.nodes)
 
     let url = ''
@@ -54,10 +54,9 @@ export class LinkParser {
         this.finish(new CompletedParseResult([linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
         return
       }
-
-      const plainCharResult = this.matcher.matchAnyChar()
-      url += plainCharResult.matchedText
-      this.matcher.advance(plainCharResult)
+      
+      url += this.matcher.currentChar()
+      this.matcher.advance()
     }
 
     this.fail()
