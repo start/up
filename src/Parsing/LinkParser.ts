@@ -14,8 +14,10 @@ import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { parseInline } from './parseInline'
 
 export class LinkParser {
+
   public result: ParseResult;
   private linkNode = new LinkNode()
+
 
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
     if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
@@ -31,7 +33,7 @@ export class LinkParser {
       return
     }
 
-    this.tryParseUrlAndClosingBracketOrFail()
+    this.tryParseUrlPlusClosingBracketOrFail()
   }
 
 
@@ -63,7 +65,7 @@ export class LinkParser {
   }
 
 
-  private tryParseUrlAndClosingBracketOrFail(): boolean {
+  private tryParseUrlPlusClosingBracketOrFail(): boolean {
     let url = ''
 
     while (!this.matcher.done()) {

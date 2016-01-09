@@ -112,17 +112,18 @@ export class Matcher {
 
   private areRelevantBracketsClosed(needle: string): boolean {
     return (
-      (!this.countUnclosedSquareBracket || !appearsToClosePreceedingBracket(needle, '[', ']'))
-      && (!this.countUnclosedParen || !appearsToClosePreceedingBracket(needle, '(', ')'))
+      (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
+      && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
     )
   }
 }
 
-// Returns true if `text` contains a closing bracket that would appear to close a preceeding opening bracket.
+// Returns true if `text` contains any closing brackets that appear to close any preceeding opening brackets.
 //
-// The following examples satisfy that condition:
+// The following examples satisfy that criteria:
 //
 //   )
+//   ))
 //   hello)
 //   ( ))
 //   ) ((((
@@ -131,7 +132,9 @@ export class Matcher {
 //
 //   ()
 //   (( ))
-function appearsToClosePreceedingBracket(text: string, openingBracket: string, closingBracket: string) {
+//
+// This method helps us determine whether any preceeding unclosed brackets even matter.
+function appearsToCloseAnyPreceedingBrackets(text: string, openingBracket: string, closingBracket: string) {
   let countSurplusOpened = 0
 
   for (let char of text) {
