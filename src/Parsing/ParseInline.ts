@@ -87,9 +87,7 @@ class InlineParser {
          const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode).result 
          
          if (sandwichResult.success()) {
-           sandwichNode.addChildren(sandwichResult.nodes)
-           this.nodes.push(sandwichNode)
-           this.matcher.advance(sandwichResult.countCharsConsumed)
+           this.addParseResult(sandwichResult, sandwichNode)
            return true
          }
        }
@@ -115,5 +113,11 @@ class InlineParser {
     const plainCharResult = this.matcher.matchAnyChar()
     this.nodes.push(new PlainTextNode(plainCharResult.matchedText))
     this.matcher.advance(plainCharResult)
+  }
+  
+  private addParseResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
+    resultParentNode.addChildren(result.nodes)
+    this.nodes.push(resultParentNode)
+    this.matcher.advance(result.countCharsConsumed)
   }
 }
