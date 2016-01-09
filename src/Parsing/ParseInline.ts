@@ -33,24 +33,24 @@ const SPOILER = new InlineSandwich(SpoilerNode, '[<_<]', '[>_>]')
 class InlineParser {
   public result: ParseResult
   private nodes: SyntaxNode[] = []
-  
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {    
-    
+
+  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {
+
     main_parser_loop:
     while (!this.matcher.done()) {
       if (this.done()) {
         return
       }
-      
+
       if (this.tryOpenOrCloseSandiwch(INLINE_CODE)) {
         continue
       }
-      
+
       if (this.parentNode instanceof InlineCodeNode) {
         this.addPlainCharNode()
-        continue 
+        continue
       }
-      
+
       for (let sandwhich of [
         STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER
       ]) {
@@ -58,76 +58,76 @@ class InlineParser {
           continue main_parser_loop
         }
       }
-      
+
       this.addPlainCharNode()
     }
-    
+
     if (this.mustCloseParent) {
       this.finish(new FailedParseResult())
       return
     }
-    
+
     this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvanced()))
   }
-  
-  
+
+
   tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
     if (this.parentNode instanceof sandwich.NodeType) {
       const closingBunResult = this.matcher.match(sandwich.closingBun)
-      
+
       if (closingBunResult.success()) {
         this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(closingBunResult)))
         return true
       }
     } else {
       const openingBunResult = this.matcher.match(sandwich.openingBun)
-       
-       if (openingBunResult.success()) {
-         const sandwichNode = new sandwich.NodeType()
-         const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode).result 
-         
-         if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
-           return true
-         }
-       }
+
+      if (openingBunResult.success()) {
+        const sandwichNode = new sandwich.NodeType()
+        const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode).result
+
+        if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
+          return true
+        }
+      }
     }
-    
+
     return false
   }
-  
-  
+
+
   private done(): boolean {
     return !!this.result
   }
-  
-  
+
+
   private finish(result: ParseResult): void {
     this.result = result
   }
-  
-  
+
+
   private fail(): void {
     this.result = new FailedParseResult()
   }
-  
-  
+
+
   private addPlainCharNode(): void {
     const plainCharResult = this.matcher.matchAnyChar()
     this.nodes.push(new PlainTextNode(plainCharResult.matchedText))
     this.matcher.advance(plainCharResult)
   }
-  
-  
+
+
   private incorporateResultIfSuccessful(result: ParseResult, resultParentNode: RichSyntaxNode): boolean {
     if (result.success()) {
       this.incorporateResult(result, resultParentNode)
       return true
     }
-    
+
     return false
   }
-  
-  
+
+
   private incorporateResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
     resultParentNode.addChildren(result.nodes)
     this.nodes.push(resultParentNode)
