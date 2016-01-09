@@ -35,6 +35,7 @@ export class Matcher {
     return new FailedMatchResult()
   }
   
+  
   matchAnyChar(): MatchResult {
     return new MatchResult(this.index + 1, this.currentChar())
   }
@@ -64,6 +65,7 @@ export class Matcher {
   remaining(): string {
     return this.text.slice(this.index)
   }
+  
   
   private handleEscaping() {
     this.isCurrentCharEscaped = false

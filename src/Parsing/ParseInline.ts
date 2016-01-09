@@ -19,8 +19,8 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 
-export function parseInline(text: string, parentNode: RichSyntaxNode): ParseResult {
-  return new InlineParser(new Matcher(text), parentNode, false).result
+export function parseInline(text: string, parentNode: RichSyntaxNode, end: string = null): ParseResult {
+  return new InlineParser(new Matcher(text), parentNode, end, false).result
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
@@ -34,11 +34,11 @@ class InlineParser {
   public result: ParseResult
   private nodes: SyntaxNode[] = []
 
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private mustCloseParent = true) {
+  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private end: string = null, private mustCloseParent = true) {
 
     main_parser_loop:
     while (!this.matcher.done()) {
-      if (this.done()) {
+      if (this.result) {
         return
       }
 
@@ -49,6 +49,15 @@ class InlineParser {
       if (this.parentNode instanceof InlineCodeNode) {
         this.addPlainCharNode()
         continue
+      }
+      
+      if (end) {
+        const endResult = this.matcher.match(end)
+        
+        if (endResult.success()) {
+          this.matcher.advance(endResult)
+          break
+        }
       }
 
       for (let sandwhich of [
@@ -84,7 +93,7 @@ class InlineParser {
 
       if (openingBunResult.success()) {
         const sandwichNode = new sandwich.NodeType()
-        const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode).result
+        const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.end).result
 
         if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
           return true
@@ -94,12 +103,6 @@ class InlineParser {
 
     return false
   }
-
-
-  private done(): boolean {
-    return !!this.result
-  }
-
 
   private finish(result: ParseResult): void {
     this.result = result
@@ -120,7 +123,7 @@ class InlineParser {
 
   private incorporateResultIfSuccessful(result: ParseResult, resultParentNode: RichSyntaxNode): boolean {
     if (result.success()) {
-      this.incorporateResult(result, resultParentNode)
+      this.incporporateResult(result, resultParentNode)
       return true
     }
 
@@ -128,7 +131,7 @@ class InlineParser {
   }
 
 
-  private incorporateResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
+  private incporporateResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
     resultParentNode.addChildren(result.nodes)
     this.nodes.push(resultParentNode)
     this.matcher.advance(result.countCharsConsumed)
