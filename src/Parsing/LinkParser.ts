@@ -11,27 +11,40 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 
 import { LinkNode } from '../SyntaxNodes/LinkNode'
 
+import { parseInline } from './parseInline'
+
 export class LinkParser {
   private result: ParseResult
-  
+
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
     if (this.parentNode.andAllAncestors().some(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return
     }
-    const openBracketResult = this.matcher.match('[') 
-    
+    const openBracketResult = this.matcher.match('[')
+
     if (!openBracketResult.success()) {
       this.fail()
       return
     }
-    
+
     this.matcher.advance(openBracketResult)
     
+    const linkNode = new LinkNode()
+
+    const contentResult = parseInline(this.matcher.remaining(), this.parentNode, ' -> ')
     
+    if (!contentResult.success()) {
+      this.fail()
+      return
+    }
+    
+    this.matcher.advance(contentResult.countCharsConsumed)
+    linkNode.addChildren(contentResult.nodes)
+
   }
-  
-  
+
+
 
   private finish(result: ParseResult): void {
     this.result = result

@@ -51,13 +51,8 @@ class InlineParser {
         continue
       }
       
-      if (end) {
-        const endResult = this.matcher.match(end)
-        
-        if (endResult.success()) {
-          this.matcher.advance(endResult)
-          break
-        }
+      if (this.reachedTheEnd()) {
+        break
       }
 
       for (let sandwhich of [
@@ -135,5 +130,19 @@ class InlineParser {
     resultParentNode.addChildren(result.nodes)
     this.nodes.push(resultParentNode)
     this.matcher.advance(result.countCharsConsumed)
+  }
+  
+  
+  private reachedTheEnd(): boolean { 
+      if (this.end) {
+        const endResult = this.matcher.match(this.end)
+        
+        if (endResult.success()) {
+          this.matcher.advance(endResult)
+          return true
+        }
+        
+        return false
+      }
   }
 }
