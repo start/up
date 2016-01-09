@@ -13,6 +13,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
+import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 
 function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
@@ -348,6 +349,35 @@ describe('Bracketed text pointing to a URL', function() {
           new PlainTextNode('you [:')
         ], 'https://stackoverflow.com'),
         new PlainTextNode('!!')
+      ]))
+  })
+})
+
+
+describe('Text surrounded by double parentheses away', function() {
+  it('is put inside an inline aside node', function() {
+    expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I don't eat cereal. "),
+        new InlineAsideNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ]),
+        new PlainTextNode(" I haven't for years.")
+      ]))
+  })
+
+  it('is evaluated for other conventions', function() {
+    expect(Up.ast("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I don't eat cereal. "),
+        new InlineAsideNode([
+          new PlainTextNode('Well, I '),
+          new EmphasisNode([
+            new PlainTextNode('do')
+          ]),
+          new PlainTextNode(', but I pretend not to.')
+        ]),
+        new PlainTextNode(" I haven't for years.")
       ]))
   })
 })
