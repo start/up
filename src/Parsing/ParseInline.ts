@@ -86,8 +86,7 @@ class InlineParser {
          const sandwichNode = new sandwich.NodeType()
          const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode).result 
          
-         if (sandwichResult.success()) {
-           this.addParseResult(sandwichResult, sandwichNode)
+         if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
            return true
          }
        }
@@ -101,13 +100,16 @@ class InlineParser {
     return !!this.result
   }
   
+  
   private finish(result: ParseResult): void {
     this.result = result
   }
   
+  
   private fail(): void {
     this.result = new FailedParseResult()
   }
+  
   
   private addPlainCharNode(): void {
     const plainCharResult = this.matcher.matchAnyChar()
@@ -115,7 +117,18 @@ class InlineParser {
     this.matcher.advance(plainCharResult)
   }
   
-  private addParseResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
+  
+  private incorporateResultIfSuccessful(result: ParseResult, resultParentNode: RichSyntaxNode): boolean {
+    if (result.success()) {
+      this.incorporateResult(result, resultParentNode)
+      return true
+    }
+    
+    return false
+  }
+  
+  
+  private incorporateResult(result: ParseResult, resultParentNode: RichSyntaxNode): void {
     resultParentNode.addChildren(result.nodes)
     this.nodes.push(resultParentNode)
     this.matcher.advance(result.countCharsConsumed)
