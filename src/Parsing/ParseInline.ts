@@ -106,16 +106,16 @@ class InlineParser {
         this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(closingBunResult)))
         return true
       }
-    } else {
-      const openingBunResult = this.matcher.match(sandwich.openingBun)
+    }
+    
+    const openingBunResult = this.matcher.match(sandwich.openingBun)
 
-      if (openingBunResult.success()) {
-        const sandwichNode = new sandwich.NodeType()
-        const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.terminateOn).result
+    if (openingBunResult.success()) {
+      const sandwichNode = new sandwich.NodeType()
+      const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.terminateOn).result
 
-        if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
-          return true
-        }
+      if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
+        return true
       }
     }
 
