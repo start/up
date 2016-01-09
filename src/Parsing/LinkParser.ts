@@ -52,6 +52,7 @@ export class LinkParser {
       if (closeBrackerResult.success()) {
         linkNode.url = url
         this.finish(new CompletedParseResult([linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
+        return
       }
 
       const plainCharResult = this.matcher.matchAnyChar()
