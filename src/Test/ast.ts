@@ -329,7 +329,7 @@ describe('Bracketed text pointing to a URL', function() {
         new PlainTextNode('.')
       ]))
   })
-  
+
   it('can contain matching unescaped brackets in the URL', function() {
     expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -340,7 +340,7 @@ describe('Bracketed text pointing to a URL', function() {
         new PlainTextNode('.')
       ]))
   })
-  
+
   it('does not try to match brackets in the link text with brackets in the URL', function() {
     expect(Up.ast('I like [you [: -> https://stackoverflow.com]!!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -354,7 +354,7 @@ describe('Bracketed text pointing to a URL', function() {
 })
 
 
-describe('Text surrounded by double parentheses away', function() {
+describe('Text surrounded by double parentheses', function() {
   it('is put inside an inline aside node', function() {
     expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
       insideDocumentAndParagraph([
@@ -378,6 +378,23 @@ describe('Text surrounded by double parentheses away', function() {
           new PlainTextNode(', but I pretend not to.')
         ]),
         new PlainTextNode(" I haven't for years.")
+      ]))
+  })
+
+  it('can be nested inside other aside nodes', function() {
+    expect(Up.ast("((I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.))")).to.be.eql(
+      insideDocumentAndParagraph([
+        new InlineAsideNode([
+          new PlainTextNode("I don't eat cereal. "),
+          new InlineAsideNode([
+            new PlainTextNode('Well, I '),
+            new EmphasisNode([
+              new PlainTextNode('do')
+            ]),
+            new PlainTextNode(', but I pretend not to.')
+          ]),
+          new PlainTextNode(" I haven't for years.")
+        ])
       ]))
   })
 })
