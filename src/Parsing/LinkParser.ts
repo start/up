@@ -14,54 +14,74 @@ import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { parseInline } from './parseInline'
 
 export class LinkParser {
-  public result: ParseResult
+  public result: ParseResult;
+  private linkNode = new LinkNode()
 
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
-
-    if (this.parentNode.andAllAncestors().some(ancestor => ancestor instanceof LinkNode)) {
+    if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return
     }
 
+    if (!this.tryParseOpenBracketOrFail()) {
+      return
+    }
+
+    if (!this.tryParseContentOrFail()) {
+      return
+    }
+
+    this.tryParseUrlAndClosingBracketOrFail()
+  }
+
+
+  private tryParseOpenBracketOrFail(): boolean {
     const openBracketResult = this.matcher.match('[')
 
     if (!openBracketResult.success()) {
       this.fail()
-      return
+      return false
     }
 
     this.matcher.advanceBy(openBracketResult)
 
-    const linkNode = new LinkNode()
+    return true
+  }
 
-    const contentResult = parseInline(this.matcher.remaining(), linkNode, ' -> ')
+  private tryParseContentOrFail(): boolean {
+    const contentResult = parseInline(this.matcher.remaining(), this.linkNode, ' -> ')
 
     if (!contentResult.success()) {
       this.fail()
-      return
+      return false
     }
 
     this.matcher.advanceBy(contentResult.countCharsConsumed)
-    linkNode.addChildren(contentResult.nodes)
+    this.linkNode.addChildren(contentResult.nodes)
 
+    return true
+  }
+
+
+  private tryParseUrlAndClosingBracketOrFail(): boolean {
     let url = ''
 
     while (!this.matcher.done()) {
       const closeBrackerResult = this.matcher.match(']')
 
       if (closeBrackerResult.success()) {
-        linkNode.url = url
-        this.finish(new CompletedParseResult([linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
-        return
+        this.linkNode.url = url
+        this.finish(new CompletedParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
+        return false
       }
-      
+
       url += this.matcher.currentChar()
       this.matcher.advance()
     }
 
     this.fail()
+    return false
   }
-
 
 
   private finish(result: ParseResult): void {

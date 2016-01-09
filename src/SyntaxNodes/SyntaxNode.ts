@@ -20,13 +20,13 @@ export abstract class SyntaxNode {
 
   abstract text(): string
   
-  andAllAncestors(): SyntaxNode[] {
+  plusAllAncestors(): SyntaxNode[] {
     return [<SyntaxNode>this].concat(this.ancestors())
   }
 
   
-  andAnyAncestors(predicate: (node: SyntaxNode) => boolean) {
-    return this.andAllAncestors().some(predicate)
+  orAnyAncestor(predicate: (node: SyntaxNode) => boolean) {
+    return this.plusAllAncestors().some(predicate)
   }
 }
 

@@ -81,6 +81,18 @@ class InlineParser {
   }
 
 
+  private tryParseLink(): boolean {
+    const result = new LinkParser(new Matcher(this.matcher), this.parentNode).result
+
+    if (result.success()) {
+      this.incorporateResultIfSuccessful(result)
+      return true
+    }
+    
+    return false
+  }
+
+
   tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
     if (this.parentNode instanceof sandwich.NodeType) {
       const closingBunResult = this.matcher.match(sandwich.closingBun)
@@ -154,17 +166,5 @@ class InlineParser {
 
       return false
     }
-  }
-
-
-  private tryParseLink(): boolean {
-    const result = new LinkParser(new Matcher(this.matcher), this.parentNode).result
-
-    if (result.success()) {
-      this.incorporateResultIfSuccessful(result)
-      return true
-    }
-    
-    return false
   }
 }

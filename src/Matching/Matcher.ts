@@ -2,11 +2,11 @@ import { MatchResult } from './MatchResult'
 import { FailedMatchResult } from './FailedMatchResult'
 
 export class Matcher {
-  public text: string
-  public index: number
-  private isCurrentCharEscaped = false
-  private countOpenParen = 0
-  private countOpenSquareBracket = 0
+  public text: string;
+  public index: number;
+  private isCurrentCharEscaped = false;
+  private countOpenParen = 0;
+  private countOpenSquareBracket = 0;
 
 
 
