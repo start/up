@@ -381,7 +381,7 @@ describe('Text surrounded by double parentheses', function() {
       ]))
   })
 
-  it('can be nested inside other aside nodes', function() {
+  it('can be nested inside other inline aside nodes', function() {
     expect(Up.ast("((I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.))")).to.be.eql(
       insideDocumentAndParagraph([
         new InlineAsideNode([

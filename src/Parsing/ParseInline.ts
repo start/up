@@ -37,9 +37,8 @@ const INLINE_ASIDE = new InlineSandwich(InlineAsideNode, '((', '))')
 
 class InlineParser {
   
-  public result: ParseResult
-  private nodes: SyntaxNode[] = []
-
+  public result: ParseResult;
+  private nodes: SyntaxNode[] = [];
 
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
 

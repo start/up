@@ -31,6 +31,7 @@ export abstract class SyntaxNode {
   }
 }
 
+
 function top<T>(items: T[]): T {
   return items[items.length - 1]
 }

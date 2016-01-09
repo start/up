@@ -9,7 +9,6 @@ export abstract class RichSyntaxNode extends SyntaxNode {
   children: SyntaxNode[] = [];
   parentNode: SyntaxNode = null;
   
-  
   constructor(children: SyntaxNode[] = []) {
     super()
     this.addChildren(children)

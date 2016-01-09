@@ -9,8 +9,6 @@ export class Matcher {
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-
-
   constructor(textOrMatcher: string | Matcher, implicitFirstMatch = '') {
     if (textOrMatcher instanceof Matcher) {
       this.text = textOrMatcher.remaining()

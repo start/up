@@ -13,11 +13,11 @@ import { LinkNode } from '../SyntaxNodes/LinkNode'
 
 import { parseInline } from './parseInline'
 
+
 export class LinkParser {
 
   public result: ParseResult;
-  private linkNode = new LinkNode()
-
+  private linkNode = new LinkNode();
 
   constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
     if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
@@ -49,6 +49,7 @@ export class LinkParser {
 
     return true
   }
+
 
   private tryParseContentOrFail(): boolean {
     const contentResult = parseInline(this.matcher.remaining(), this.linkNode, ' -> ')
