@@ -354,7 +354,7 @@ describe('Bracketed text pointing to a URL', function() {
 })
 
 
-describe('Text surrounded by double parentheses', function() {
+describe('Text surrounded by 2 parentheses', function() {
   it('is put inside an inline aside node', function() {
     expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
       insideDocumentAndParagraph([
