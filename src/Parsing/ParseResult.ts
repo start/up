@@ -12,6 +12,6 @@ export class ParseResult {
   }
   
   success(): boolean {
-    return !!this.countCharsConsumed
+    return true
   }
 }
