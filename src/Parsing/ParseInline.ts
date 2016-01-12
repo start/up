@@ -3,7 +3,7 @@ import { CompletedParseResult } from './CompletedParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
 import { TextMatcher } from '../Matching/TextMatcher'
-import { MatchResult } from '../Matching/MatchResult'
+import { TextMatchResult } from '../Matching/TextMatchResult'
 
 import { InlineSandwich } from './InlineSandwich'
 

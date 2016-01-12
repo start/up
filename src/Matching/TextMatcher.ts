@@ -1,5 +1,5 @@
-import { MatchResult } from './MatchResult'
-import { FailedMatchResult } from './FailedMatchResult'
+import { TextMatchResult } from './TextMatchResult'
+import { FailedTextMatchResult } from './FailedTextMatchResult'
 
 export class TextMatcher {
 
@@ -26,20 +26,20 @@ export class TextMatcher {
   }
 
 
-  match(needle: string): MatchResult {
+  match(needle: string): TextMatchResult {
     const success =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
     if (success) {
-      return new MatchResult(this.index + needle.length, needle)
+      return new TextMatchResult(this.index + needle.length, needle)
     }
 
-    return new FailedMatchResult()
+    return new FailedTextMatchResult()
   }
 
 
-  advanceBy(countOrResult: MatchResult | number): void {
-    if (countOrResult instanceof MatchResult) {
+  advanceBy(countOrResult: TextMatchResult | number): void {
+    if (countOrResult instanceof TextMatchResult) {
       this.index = countOrResult.newIndex
     } else {
       this.index += <number>countOrResult
@@ -65,7 +65,7 @@ export class TextMatcher {
   }
 
 
-  countCharsAdvancedIncluding(result: MatchResult): number {
+  countCharsAdvancedIncluding(result: TextMatchResult): number {
     return this.countCharsAdvanced() + result.matchedText.length
   }
 
