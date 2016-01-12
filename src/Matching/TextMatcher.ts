@@ -82,21 +82,24 @@ export class TextMatcher {
 
   line(): TextMatchResult {
     const clonedMatcher = new TextMatcher(this, this.text.substring(0, this.index))
+    
+    let line = ''
 
     while (!clonedMatcher.done()) {
       const eolMatch = clonedMatcher.match('\n')
       if (eolMatch.success()) {
-        return this.getResult(eolMatch.newIndex)
+        return new TextMatchResult(eolMatch.newIndex, line)
       }
-
+      
+      line += clonedMatcher.currentChar()
       clonedMatcher.advance()
     }
 
-    return this.getResult(this.text.length)
+    return new TextMatchResult(this.text.length, line)
   }
 
 
-  lineIgnoringEscaping(): TextMatchResult {
+  rawLine(): TextMatchResult {
     const indexOfEol = this.text.indexOf('\n', this.index)
 
     const newIndex = (
@@ -105,7 +108,7 @@ export class TextMatcher {
         : indexOfEol + 1
     )
 
-    return this.getResult(newIndex)
+    return new TextMatchResult(newIndex, this.text.substring(this.index, newIndex))
   }
 
 
@@ -116,11 +119,6 @@ export class TextMatcher {
       this.index += 1
       this.isCurrentCharEscaped = true
     }
-  }
-
-
-  private getResult(newIndex: number) {
-    return new TextMatchResult(newIndex, this.text.substring(this.index, newIndex))
   }
 
 
