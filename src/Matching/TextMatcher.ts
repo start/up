@@ -80,6 +80,35 @@ export class TextMatcher {
   }
 
 
+  line(): TextMatchResult {
+    const clonedMatcher = new TextMatcher(this, this.text.substring(0, this.index))
+
+    while (!clonedMatcher.done()) {
+      const eolMatch = clonedMatcher.match('\n')
+      if (eolMatch.success()) {
+        return this.getResult(eolMatch.newIndex)
+      }
+
+      clonedMatcher.advance()
+    }
+
+    return this.getResult(this.text.length)
+  }
+
+
+  lineIgnoringEscaping(): TextMatchResult {
+    const indexOfEol = this.text.indexOf('\n', this.index)
+
+    const newIndex = (
+      indexOfEol === -1
+        ? this.text.length
+        : indexOfEol + 1
+    )
+
+    return this.getResult(newIndex)
+  }
+
+
   private handleEscaping() {
     this.isCurrentCharEscaped = false
 
@@ -87,6 +116,11 @@ export class TextMatcher {
       this.index += 1
       this.isCurrentCharEscaped = true
     }
+  }
+
+
+  private getResult(newIndex: number) {
+    return new TextMatchResult(newIndex, this.text.substring(this.index, newIndex))
   }
 
 
@@ -136,19 +170,19 @@ function appearsToCloseAnyPreceedingBrackets(text: string, openingBracket: strin
   let countSurplusOpened = 0
 
   for (let char of text) {
-    
+
     switch (char) {
       case openingBracket:
         countSurplusOpened += 1
         break
-        
+
       case closingBracket:
         if (!countSurplusOpened) {
           return true
         }
         countSurplusOpened -= 1
         break
-    }  
+    }
   }
 
   return false
