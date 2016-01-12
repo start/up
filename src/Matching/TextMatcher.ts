@@ -1,7 +1,7 @@
 import { MatchResult } from './MatchResult'
 import { FailedMatchResult } from './FailedMatchResult'
 
-export class Matcher {
+export class TextMatcher {
 
   public text: string;
   public index: number;
@@ -9,8 +9,8 @@ export class Matcher {
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(textOrMatcher: string | Matcher, implicitFirstMatch = '') {
-    if (textOrMatcher instanceof Matcher) {
+  constructor(textOrMatcher: string | TextMatcher, implicitFirstMatch = '') {
+    if (textOrMatcher instanceof TextMatcher) {
       this.text = textOrMatcher.remaining()
     } else {
       this.text = <string>textOrMatcher

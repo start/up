@@ -2,7 +2,7 @@ import { ParseResult } from './ParseResult'
 import { CompletedParseResult } from './CompletedParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
-import { Matcher } from '../Matching/Matcher'
+import { TextMatcher } from '../Matching/TextMatcher'
 import { MatchResult } from '../Matching/MatchResult'
 
 import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
@@ -19,7 +19,7 @@ export class LinkParser {
   public result: ParseResult;
   private linkNode = new LinkNode();
 
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode) {
+  constructor(private matcher: TextMatcher, private parentNode: RichSyntaxNode) {
     if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return

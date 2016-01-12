@@ -2,7 +2,7 @@ import { ParseResult } from './ParseResult'
 import { CompletedParseResult } from './CompletedParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
-import { Matcher } from '../Matching/Matcher'
+import { TextMatcher } from '../Matching/TextMatcher'
 import { MatchResult } from '../Matching/MatchResult'
 
 import { InlineSandwich } from './InlineSandwich'
@@ -23,7 +23,7 @@ import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { LinkParser } from './LinkParser'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
-  return new InlineParser(new Matcher(text), parentNode, terminateOn, false).result
+  return new InlineParser(new TextMatcher(text), parentNode, terminateOn, false).result
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
@@ -40,7 +40,7 @@ class InlineParser {
   public result: ParseResult;
   private nodes: SyntaxNode[] = [];
 
-  constructor(private matcher: Matcher, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
+  constructor(private matcher: TextMatcher, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
 
     main_parser_loop:
     while (!this.matcher.done()) {
@@ -86,7 +86,7 @@ class InlineParser {
 
 
   private tryParseLink(): boolean {
-    const linkResult = new LinkParser(new Matcher(this.matcher), this.parentNode).result
+    const linkResult = new LinkParser(new TextMatcher(this.matcher), this.parentNode).result
 
     if (linkResult.success()) {
       this.incorporateResultIfSuccessful(linkResult)
@@ -111,7 +111,7 @@ class InlineParser {
 
     if (openingBunResult.success()) {
       const sandwichNode = new sandwich.NodeType()
-      const sandwichResult = new InlineParser(new Matcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.terminateOn).result
+      const sandwichResult = new InlineParser(new TextMatcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.terminateOn).result
 
       if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
         return true
