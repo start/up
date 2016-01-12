@@ -1,5 +1,4 @@
 import { ParseResult } from './ParseResult'
-import { CompletedParseResult } from './CompletedParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
 import { TextMatcher } from '../Matching/TextMatcher'
@@ -81,7 +80,7 @@ class InlineParser {
       return
     }
 
-    this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvanced()))
+    this.finish(new ParseResult(this.nodes, this.matcher.countCharsAdvanced()))
   }
 
 
@@ -102,7 +101,7 @@ class InlineParser {
       const closingBunResult = this.matcher.match(sandwich.closingBun)
 
       if (closingBunResult.success()) {
-        this.finish(new CompletedParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(closingBunResult)))
+        this.finish(new ParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(closingBunResult)))
         return true
       }
     }

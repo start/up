@@ -1,5 +1,4 @@
 import { ParseResult } from './ParseResult'
-import { CompletedParseResult } from './CompletedParseResult'
 import { FailedParseResult } from './FailedParseResult'
 
 import { TextMatcher } from '../Matching/TextMatcher'
@@ -74,7 +73,7 @@ export class LinkParser {
 
       if (closeBrackerResult.success()) {
         this.linkNode.url = url
-        this.finish(new CompletedParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
+        this.finish(new ParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
         return false
       }
 

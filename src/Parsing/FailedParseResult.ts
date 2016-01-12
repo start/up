@@ -3,7 +3,7 @@ import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
 
 export class FailedParseResult extends ParseResult {
   constructor() {
-    super()
+    super([], 0)
   }
   
   wrappedIn(RichSyntaxNodeType: RichSyntaxNodeType): ParseResult {

@@ -1,11 +1,15 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
 
-export abstract class ParseResult {
-  nodes: SyntaxNode[]
-  countCharsConsumed: number
+export class ParseResult {
+  constructor(public nodes: SyntaxNode[], public countCharsConsumed: number) { }
   
-  abstract wrappedIn(RichSyntaxNodeType: RichSyntaxNodeType): ParseResult
+  wrappedIn(RichSyntaxNodeType: RichSyntaxNodeType): ParseResult {
+    return new ParseResult(
+      [new RichSyntaxNodeType(this.nodes)]
+      , this.countCharsConsumed
+    );
+  }
   
   success(): boolean {
     return !!this.countCharsConsumed
