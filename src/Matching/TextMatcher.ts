@@ -66,7 +66,7 @@ export class TextMatcher {
 
 
   countCharsAdvancedIncluding(result: TextMatchResult): number {
-    return this.countCharsAdvanced() + result.matchedText.length
+    return this.countCharsAdvanced() + result.text.length
   }
 
 
@@ -82,24 +82,21 @@ export class TextMatcher {
 
   line(): TextMatchResult {
     const clonedMatcher = new TextMatcher(this, this.text.substring(0, this.index))
-    
-    let line = ''
 
     while (!clonedMatcher.done()) {
       const eolMatch = clonedMatcher.match('\n')
-      if (eolMatch.success()) {
-        return new TextMatchResult(eolMatch.newIndex, line)
-      }
       
-      line += clonedMatcher.currentChar()
+      if (eolMatch.success()) {
+        return new TextMatchResult(eolMatch.newIndex, this.text.substring(this.index, eolMatch.newIndex))
+      }
       clonedMatcher.advance()
     }
 
-    return new TextMatchResult(this.text.length, line)
+    return new TextMatchResult(this.text.length, this.remaining())
   }
 
 
-  rawLine(): TextMatchResult {
+  lineIgnoringEscaping(): TextMatchResult {
     const indexOfEol = this.text.indexOf('\n', this.index)
 
     const newIndex = (

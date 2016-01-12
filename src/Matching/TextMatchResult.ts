@@ -1,7 +1,7 @@
 export class TextMatchResult {
-  constructor (public newIndex: number, public matchedText: string) { }
+  constructor (public newIndex: number, public text: string) { }
   
   success(): boolean {
-    return !!this.matchedText.length
+    return !!this.text.length
   }
 }

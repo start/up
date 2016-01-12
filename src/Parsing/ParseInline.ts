@@ -110,7 +110,7 @@ class InlineParser {
 
     if (openingBunResult.success()) {
       const sandwichNode = new sandwich.NodeType()
-      const sandwichResult = new InlineParser(new TextMatcher(this.matcher, openingBunResult.matchedText), sandwichNode, this.terminateOn).result
+      const sandwichResult = new InlineParser(new TextMatcher(this.matcher, openingBunResult.text), sandwichNode, this.terminateOn).result
 
       if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
         return true
