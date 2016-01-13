@@ -4,13 +4,13 @@ import { parseInline } from './ParseInline'
 
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 
-import { TextMatcher } from '../Matching/TextMatcher'
+import { LineMatcher } from '../Matching/LineMatcher'
 import { TextMatchResult } from '../Matching/TextMatchResult'
 
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []
   
-  const matcher = new TextMatcher(text)
+  const matcher = new LineMatcher(text)
 
   while (!matcher.done()) {
     var lineResult = matcher.line()
