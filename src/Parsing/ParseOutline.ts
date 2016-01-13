@@ -15,7 +15,7 @@ export function parseOutline(text: string): ParseResult {
   while (!matcher.done()) {
     var lineResult = matcher.line()
     
-    if (/^\s+$/.test(lineResult.text)) {
+    if (/^\s*$/.test(lineResult.text)) {
       matcher.advanceBy(lineResult)
       continue
     }

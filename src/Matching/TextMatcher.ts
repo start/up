@@ -81,17 +81,22 @@ export class TextMatcher {
 
 
   line(): TextMatchResult {
-    const clonedMatcher = new TextMatcher(this, this.text.substring(0, this.index))
-
+    const clonedMatcher = new TextMatcher(this.text, this.text.substring(0, this.index))
+    
     while (!clonedMatcher.done()) {
       const eolMatch = clonedMatcher.match('\n')
       
       if (eolMatch.success()) {
-        return new TextMatchResult(eolMatch.newIndex, this.text.substring(this.index, eolMatch.newIndex))
+        // Don't include the final line break in the result's text...
+        const line = this.text.slice(this.index, eolMatch.newIndex - 1)
+        
+        // ...But do advance past the line break in the new index
+        return new TextMatchResult(eolMatch.newIndex, line)
       }
+      
       clonedMatcher.advance()
     }
-
+    
     return new TextMatchResult(this.text.length, this.remaining())
   }
 

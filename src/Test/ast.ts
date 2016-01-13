@@ -16,8 +16,12 @@ import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 
+function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
+  return new DocumentNode(syntaxNodes);
+}
+
 function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode([new ParagraphNode(syntaxNodes)]);
+  return insideDocument([new ParagraphNode(syntaxNodes)]);
 }
 
 describe('No text', function() {
@@ -395,6 +399,19 @@ describe('Text surrounded by 2 parentheses', function() {
           ]),
           new PlainTextNode(" I haven't for years.")
         ])
+      ]))
+  })
+})
+
+describe('Two lines of text with a blank line in between', function() {
+  it('creates two paragraph nodes', function() {
+    const text = `Hello, world!
+
+Goodbye, world!`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
       ]))
   })
 })
