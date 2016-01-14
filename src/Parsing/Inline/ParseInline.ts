@@ -96,27 +96,19 @@ class InlineParser {
 
 
   tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
-    if (this.parentNode instanceof sandwich.NodeType) {
-      const closingBunResult = this.matcher.match(sandwich.closingBun)
-
-      if (closingBunResult.success()) {
-        this.finish(new ParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(closingBunResult)))
-        return true
-      }
+    
+    if (this.parentNode instanceof sandwich.NodeType) {    
+      return this.matcher.match(sandwich.closingBun, (match) => {
+        this.finish(new ParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(match)))
+      })
     }
     
-    const openingBunResult = this.matcher.match(sandwich.openingBun)
-
-    if (openingBunResult.success()) {
+    return this.matcher.match(sandwich.openingBun, (match) => {
       const sandwichNode = new sandwich.NodeType()
-      const sandwichResult = new InlineParser(new TextMatcher(this.matcher, openingBunResult.text), sandwichNode, this.terminateOn).result
+      const sandwichResult = new InlineParser(new TextMatcher(this.matcher, match.text), sandwichNode, this.terminateOn).result
 
-      if (this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)) {
-        return true
-      }
-    }
-
-    return false
+      this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)
+    })
   }
 
 
@@ -160,14 +152,11 @@ class InlineParser {
 
   private terminatedEarly(): boolean {
     if (this.terminateOn) {
-      const terminatorResult = this.matcher.match(this.terminateOn)
-
-      if (terminatorResult.success()) {
-        this.matcher.advanceBy(terminatorResult)
-        return true
-      }
-
-      return false
+      return this.matcher.match(this.terminateOn, (match) => {
+        this.matcher.advanceBy(match)
+      })
     }
+    
+    return false
   }
 }

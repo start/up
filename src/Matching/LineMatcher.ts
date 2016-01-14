@@ -1,30 +1,43 @@
 import { TextMatchResult } from './TextMatchResult'
 import { FailedTextMatchResult } from './FailedTextMatchResult'
-import { TextMatcher } from './TextMatcher'
+import { TextMatcher, onTextMatch } from './TextMatcher'
 
 export class LineMatcher extends TextMatcher {
+  
+  line(onSuccess: onTextMatch): void {
+    this.matchLine(/.?/, onSuccess)
+  }
 
-  line(): TextMatchResult {
+  matchLine(pattern: RegExp, onSuccess: onTextMatch): boolean {
     const clonedMatcher = new TextMatcher(this.text, this.text.substring(0, this.index))
     
+    let endOfLineIndex = 0
+    let line = ''
+    
     while (!clonedMatcher.done()) {
-      const eolMatch = clonedMatcher.match('\n')
+      endOfLineIndex += 1
       
-      if (eolMatch.success()) {
-        // Don't include the final line break in the result's text...
-        const line = this.text.slice(this.index, eolMatch.newIndex - 1)
-        
-        // ...But do advance past the line break in the new index
-        return new TextMatchResult(eolMatch.newIndex, line)
+      if(clonedMatcher.match('\n')) {
+        break;
       }
       
+      // We don't want to include the final line break when returning the line's text,
+      // so we only add a character once we know it's 
+      line += clonedMatcher.currentChar()
       clonedMatcher.advance()
     }
     
-    return new TextMatchResult(this.text.length, this.remaining())
+    
+    let isRejected = true
+    const reject =  () => { isRejected = false }
+    
+    onSuccess(new TextMatchResult(endOfLineIndex, line), reject)
+    
+    return !isRejected
   }
 
 
+  // TODO: Make this take a callback
   lineIgnoringEscaping(): TextMatchResult {
     const indexOfEol = this.text.indexOf('\n', this.index)
 

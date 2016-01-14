@@ -1,6 +1,14 @@
 import { TextMatchResult } from './TextMatchResult'
 import { FailedTextMatchResult } from './FailedTextMatchResult'
 
+export interface onTextMatch {
+  (result: TextMatchResult, reject?: rejectTextMatch): void
+}
+
+interface rejectTextMatch {
+  (): void
+}
+
 export class TextMatcher {
 
   public text: string;
@@ -26,15 +34,24 @@ export class TextMatcher {
   }
 
 
-  match(needle: string): TextMatchResult {
-    const success =
+  match(needle: string, onSuccess?: onTextMatch): boolean {
+    const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
-    if (success) {
-      return new TextMatchResult(this.index + needle.length, needle)
+    if (isMatch) {
+      const result = new TextMatchResult(this.index + needle.length, needle)
+      
+      let isRejected = true
+      const reject =  () => { isRejected = false }
+      
+      if (onSuccess) {
+        onSuccess(result, reject)
+      }
+      
+      return !isRejected
     }
 
-    return new FailedTextMatchResult()
+    return false
   }
 
 

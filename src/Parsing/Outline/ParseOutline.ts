@@ -13,17 +13,17 @@ export function parseOutline(text: string): ParseResult {
   const matcher = new LineMatcher(text)
 
   while (!matcher.done()) {
-    var lineResult = matcher.line()
-    
-    if (/^\s*$/.test(lineResult.text)) {
-      matcher.advanceBy(lineResult)
-      continue
+    if (matcher.matchLine(/^\s*$/, (match) => { matcher.advanceBy(match) })) {
+      continue;
     }
     
-    const paragraphNode = new ParagraphNode()
-    paragraphNode.addChildren(parseInline(lineResult.text, paragraphNode).nodes)
-    nodes.push(paragraphNode)
-    matcher.advanceBy(lineResult)
+    matcher.line((match) => {
+      const paragraphNode = new ParagraphNode()
+      paragraphNode.addChildren(parseInline(match.text, paragraphNode).nodes)
+      
+      nodes.push(paragraphNode)
+      matcher.advanceBy(match)
+    })
   }
 
   return new ParseResult(nodes, text.length)

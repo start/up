@@ -37,16 +37,14 @@ export class LinkParser {
 
 
   private tryParseOpenBracketOrFail(): boolean {
-    const openBracketResult = this.matcher.match('[')
-
-    if (!openBracketResult.success()) {
-      this.fail()
-      return false
+    if (!this.matcher.match('[', (match) => {
+      this.matcher.advanceBy(match)
+    })) {
+      return true
     }
-
-    this.matcher.advanceBy(openBracketResult)
-
-    return true
+    
+    this.fail()
+    return false
   }
 
 
@@ -69,12 +67,12 @@ export class LinkParser {
     let url = ''
 
     while (!this.matcher.done()) {
-      const closeBrackerResult = this.matcher.match(']')
-
-      if (closeBrackerResult.success()) {
+      
+      if (this.matcher.match(']', (match) => {
         this.linkNode.url = url
-        this.finish(new ParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(closeBrackerResult)))
-        return false
+        this.finish(new ParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(match)))
+      })) {
+        return true
       }
 
       url += this.matcher.currentChar()
