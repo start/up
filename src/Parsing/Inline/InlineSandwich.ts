@@ -1,4 +1,4 @@
-import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
+import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 
 export class InlineSandwich {
   constructor(

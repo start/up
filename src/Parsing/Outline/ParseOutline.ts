@@ -1,11 +1,11 @@
-import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
-import { ParseResult } from './ParseResult'
-import { parseInline } from './ParseInline'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { ParseResult } from '.././ParseResult'
+import { parseInline } from '../Inline/ParseInline'
 
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
-import { LineMatcher } from '../Matching/LineMatcher'
-import { TextMatchResult } from '../Matching/TextMatchResult'
+import { LineMatcher } from '../../Matching/LineMatcher'
+import { TextMatchResult } from '../../Matching/TextMatchResult'
 
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []

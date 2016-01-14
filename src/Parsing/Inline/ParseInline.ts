@@ -1,25 +1,24 @@
-import { ParseResult } from './ParseResult'
-import { FailedParseResult } from './FailedParseResult'
+import { ParseResult } from '.././ParseResult'
+import { FailedParseResult } from '.././FailedParseResult'
 
-import { TextMatcher } from '../Matching/TextMatcher'
-import { TextMatchResult } from '../Matching/TextMatchResult'
+import { TextMatcher } from '../../Matching/TextMatcher'
+import { TextMatchResult } from '../../Matching/TextMatchResult'
 
-import { InlineSandwich } from './InlineSandwich'
+import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
+import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
+import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
-import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
-import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-
-import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
-import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
-import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../SyntaxNodes/StressNode'
-import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
-import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
-import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
-import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
+import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../../SyntaxNodes/StressNode'
+import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
+import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
+import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 
 import { LinkParser } from './LinkParser'
+import { InlineSandwich } from './InlineSandwich'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
   return new InlineParser(new TextMatcher(text), parentNode, terminateOn, false).result

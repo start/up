@@ -1,14 +1,14 @@
-import { ParseResult } from './ParseResult'
-import { FailedParseResult } from './FailedParseResult'
+import { ParseResult } from './../ParseResult'
+import { FailedParseResult } from './../FailedParseResult'
 
-import { TextMatcher } from '../Matching/TextMatcher'
-import { TextMatchResult } from '../Matching/TextMatchResult'
+import { TextMatcher } from '../../Matching/TextMatcher'
+import { TextMatchResult } from '../../Matching/TextMatchResult'
 
-import { RichSyntaxNodeType } from '../SyntaxNodes/RichSyntaxNode'
-import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
+import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
+import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
-import { LinkNode } from '../SyntaxNodes/LinkNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 import { parseInline } from './parseInline'
 
