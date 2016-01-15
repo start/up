@@ -37,9 +37,7 @@ export class LinkParser {
 
 
   private tryParseOpenBracketOrFail(): boolean {
-    if (!this.matcher.match('[', (match) => {
-      this.matcher.advanceBy(match)
-    })) {
+    if (!this.matcher.match('[')) {
       return true
     }
     

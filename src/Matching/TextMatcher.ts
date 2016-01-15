@@ -2,11 +2,15 @@ import { TextMatchResult } from './TextMatchResult'
 import { FailedTextMatchResult } from './FailedTextMatchResult'
 
 export interface onTextMatch {
-  (result: TextMatchResult, reject?: rejectTextMatch): void
+  (result: TextMatchResult, reject?: rejectTextMatch, advance?: advanceTextMatcher): void
 }
 
 interface rejectTextMatch {
   (): void
+}
+
+interface advanceTextMatcher {
+  (countChars: number): void
 }
 
 export class TextMatcher {
@@ -41,28 +45,30 @@ export class TextMatcher {
     if (isMatch) {
       const result = new TextMatchResult(this.index + needle.length, needle)
       
-      let isRejected = true
-      const reject =  () => { isRejected = false }
+      let isRejected = false
+      let countCharsToAdvance = 0
       
       if (onSuccess) {
-        onSuccess(result, reject)
+        const reject =  () => { isRejected = true }
+        const advance = (count: number) => countCharsToAdvance = count
+        
+        onSuccess(result, reject, advance)
       }
       
-      return !isRejected
+      if (isRejected) {
+        return false
+      }
+      
+      if (countCharsToAdvance) {
+        this.advanceBy(countCharsToAdvance)
+      } else {
+        this.advanceBy(result)
+      }
+      
+      return true
     }
 
     return false
-  }
-
-
-  advanceBy(countOrResult: TextMatchResult | number): void {
-    if (countOrResult instanceof TextMatchResult) {
-      this.index = countOrResult.newIndex
-    } else {
-      this.index += <number>countOrResult
-    }
-
-    this.handleEscaping()
   }
 
 
@@ -73,6 +79,17 @@ export class TextMatcher {
     }
 
     this.index += 1
+    this.handleEscaping()
+  }
+
+
+  private advanceBy(countOrResult: TextMatchResult | number): void {
+    if (countOrResult instanceof TextMatchResult) {
+      this.index = countOrResult.newIndex
+    } else {
+      this.index += <number>countOrResult
+    }
+
     this.handleEscaping()
   }
 

@@ -151,12 +151,6 @@ class InlineParser {
 
 
   private terminatedEarly(): boolean {
-    if (this.terminateOn) {
-      return this.matcher.match(this.terminateOn, (match) => {
-        this.matcher.advanceBy(match)
-      })
-    }
-    
-    return false
+    return this.terminateOn && this.matcher.match(this.terminateOn)
   }
 }
