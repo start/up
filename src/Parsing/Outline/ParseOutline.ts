@@ -10,21 +10,13 @@ import { TextMatchResult } from '../../Matching/TextMatchResult'
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []
   
-  const matcher = new LineMatcher(text)
-
-  while (!matcher.done()) {
-    if (matcher.matchLine(/^\s*$/, (match) => { matcher.advanceBy(match) })) {
-      continue;
-    }
-    
-    matcher.line((match) => {
-      const paragraphNode = new ParagraphNode()
-      paragraphNode.addChildren(parseInline(match.text, paragraphNode).nodes)
-      
-      nodes.push(paragraphNode)
-      matcher.advanceBy(match)
-    })
+  if (!text) {
+    return new ParseResult([], 0)
   }
   
-  return new ParseResult(nodes, text.length)
+  const paragraphNode = new ParagraphNode()
+  
+  paragraphNode.addChildren(parseInline(text, paragraphNode).nodes)
+  
+  return new ParseResult([paragraphNode], text.length)
 }

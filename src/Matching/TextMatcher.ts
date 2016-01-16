@@ -2,14 +2,14 @@ import { TextMatchResult } from './TextMatchResult'
 import { FailedTextMatchResult } from './FailedTextMatchResult'
 
 export interface onTextMatch {
-  (result: TextMatchResult, reject?: rejectTextMatch, advance?: advanceTextMatcher): void
+  (result: TextMatchResult, reject?: rejectTextMatch, advance?: advanceTextMatcherExtra): void
 }
 
 interface rejectTextMatch {
   (): void
 }
 
-interface advanceTextMatcher {
+interface advanceTextMatcherExtra {
   (countChars: number): void
 }
 
@@ -50,9 +50,9 @@ export class TextMatcher {
       
       if (onSuccess) {
         const reject =  () => { isRejected = true }
-        const advance = (count: number) => countCharsToAdvance = count
+        const advanceExtra = (count: number) => countCharsToAdvance = count
         
-        onSuccess(result, reject, advance)
+        onSuccess(result, reject, advanceExtra)
       }
       
       if (isRejected) {
@@ -111,6 +111,11 @@ export class TextMatcher {
 
   currentChar(): string {
     return this.text[this.index]
+  }
+  
+  
+  private clone() {
+    return new TextMatcher(this.text, this.text.substring(0, this.index))
   }
 
 
