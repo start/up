@@ -8,7 +8,7 @@ export class LineMatcher extends TextMatcher {
     this.matchLine(/.?/, onSuccess)
   }
 
-  matchLine(pattern: RegExp, onSuccess: onTextMatch): boolean {
+  matchLine(pattern: RegExp, onSuccess?: onTextMatch): boolean {
     const clonedMatcher = new TextMatcher(this.text, this.text.substring(0, this.index))
     
     let endOfLineIndex = 0
@@ -21,19 +21,22 @@ export class LineMatcher extends TextMatcher {
         break;
       }
       
-      // We don't want to include the final line break when returning the line's text,
-      // so we only add a character once we know it's 
+      // We don't want the line's text to include the final line break, so we only add
+      // characters once we know they're not line breaks. 
       line += clonedMatcher.currentChar()
       clonedMatcher.advance()
     }
     
-    
+    // TODO: Use this
     let isRejected = true
     const reject =  () => { isRejected = false }
     
-    onSuccess(new TextMatchResult(endOfLineIndex, line), reject)
+    if (pattern.test(line)) {
+      onSuccess(new TextMatchResult(endOfLineIndex, line), reject)
+      return true
+    }
     
-    return !isRejected
+    return false
   }
 
 

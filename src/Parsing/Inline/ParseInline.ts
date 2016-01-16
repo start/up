@@ -39,7 +39,6 @@ class InlineParser {
   private nodes: SyntaxNode[] = [];
 
   constructor(private matcher: TextMatcher, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
-
     main_parser_loop:
     while (!this.matcher.done()) {
       if (this.result) {

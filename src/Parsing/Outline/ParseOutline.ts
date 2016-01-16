@@ -25,6 +25,6 @@ export function parseOutline(text: string): ParseResult {
       matcher.advanceBy(match)
     })
   }
-
+  
   return new ParseResult(nodes, text.length)
 }

@@ -83,7 +83,7 @@ export class TextMatcher {
   }
 
 
-  private advanceBy(countOrResult: TextMatchResult | number): void {
+  advanceBy(countOrResult: TextMatchResult | number): void {
     if (countOrResult instanceof TextMatchResult) {
       this.index = countOrResult.newIndex
     } else {
