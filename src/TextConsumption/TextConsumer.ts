@@ -35,22 +35,21 @@ export class TextConsumer {
     if (isMatch) {
       const result = new ConsumedTextResult(this.index + needle.length, needle)
       
-      const clone = new TextConsumer(this.remaining())
-      clone.advanceBy(result)
+      const consumer = new TextConsumer(this.remaining())
+      consumer.advanceBy(result)
       
       let isRejected = false
       
       if (onSuccess) {
-        const reject =  () => { isRejected = true }
-        
-        onSuccess(reject, clone)
+        const reject = () => { isRejected = true }        
+        onSuccess(reject, consumer)
       }
       
       if (isRejected) {
         return false
       }
       
-      this.advanceBy(clone.countCharsAdvanced())
+      this.advanceBy(consumer.countCharsAdvanced())
       
       return true
     }

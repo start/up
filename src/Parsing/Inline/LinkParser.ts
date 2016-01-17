@@ -37,7 +37,7 @@ export class LinkParser {
 
 
   private tryParseOpenBracketOrFail(): boolean {
-    if (!this.consumer.consume('[')) {
+    if (this.consumer.consume('[')) {
       return true
     }
 
