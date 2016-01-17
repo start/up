@@ -101,8 +101,8 @@ class InlineParser {
   tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
 
     if (this.parentNode instanceof sandwich.NodeType) {
-      return this.consumer.consume(sandwich.closingBun, (match) => {
-        this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvancedIncluding(match)))
+      return this.consumer.consume(sandwich.closingBun, (reject, consumer) => {
+        this.finish(new ParseResult(this.nodes, consumer.countCharsAdvanced()))
       })
     }
 

@@ -66,9 +66,9 @@ export class LinkParser {
 
     while (!this.consumer.done()) {
 
-      if (this.consumer.consume(']', () => {
+      if (this.consumer.consume(']', (reject, consumer) => {
         this.linkNode.url = url
-        this.finish(new ParseResult([this.linkNode]))
+        this.finish(new ParseResult([this.linkNode], consumer.countCharsAdvanced()))
       })) {
         return true
       }
