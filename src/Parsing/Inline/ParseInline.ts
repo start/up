@@ -88,9 +88,7 @@ class InlineParser {
     if (!linkResult.success()) {
       return false
     }
-
-    this.incorporateResultIfSuccessful(linkResult)
-
+    
     this.nodes.push.apply(this.nodes, linkResult.nodes)
     this.consumer.advanceBy(linkResult.countCharsConsumed)
 
@@ -137,29 +135,7 @@ class InlineParser {
     this.nodes.push(new PlainTextNode(this.consumer.currentChar()))
     this.consumer.advance()
   }
-
-
-  private incorporateResultIfSuccessful(result: ParseResult, resultParentNode?: RichSyntaxNode): boolean {
-    if (result.success()) {
-      this.incporporateResult(result, resultParentNode)
-      return true
-    }
-
-    return false
-  }
-
-
-  private incporporateResult(result: ParseResult, resultParentNode?: RichSyntaxNode): void {
-    if (resultParentNode) {
-      resultParentNode.addChildren(result.nodes)
-      this.nodes.push(resultParentNode)
-    } else {
-      this.nodes.push.apply(this.nodes, result.nodes)
-    }
-
-    this.consumer.advanceBy(result.countCharsConsumed)
-  }
-
+  
 
   private terminatedEarly(): boolean {
     return this.terminateOn && this.consumer.consume(this.terminateOn)
