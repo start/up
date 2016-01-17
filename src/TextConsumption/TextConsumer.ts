@@ -35,7 +35,7 @@ export class TextConsumer {
     if (isMatch) {
       const result = new ConsumedTextResult(this.index + needle.length, needle)
       
-      const clone = this.clone()
+      const clone = new TextConsumer(this.remaining())
       clone.advanceBy(result)
       
       let isRejected = false
@@ -50,7 +50,7 @@ export class TextConsumer {
         return false
       }
       
-      this.mimic(clone)
+      this.advanceBy(clone.countCharsAdvanced())
       
       return true
     }
@@ -98,25 +98,6 @@ export class TextConsumer {
 
   currentChar(): string {
     return this.text[this.index]
-  }
-  
-  
-  private clone(): TextConsumer {
-    const clone = new TextConsumer('')
-    
-    clone.mimic(this)
-    
-    return clone
-  }
-  
-  
-  private mimic(other: TextConsumer) {
-    this.text = other.text
-    this.index = other.index
-    this.isCurrentCharEscaped = other.isCurrentCharEscaped
-    this.countCharsAdvanced = other.countCharsAdvanced
-    this.countUnclosedParen = other.countUnclosedParen
-    this.countUnclosedSquareBracket = other.countUnclosedSquareBracket
   }
 
 

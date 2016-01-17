@@ -40,7 +40,6 @@ class InlineParser {
 
   constructor(private consumer: TextConsumer, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
     
-    console.log(consumer.text)
     main_parser_loop:
     while (!this.consumer.done()) {
       if (this.result) {
