@@ -11,19 +11,18 @@ interface rejectTextMatch {
 export class TextConsumer {
 
   public text: string;
-  public index: number;
+  public index = 0;
   private isCurrentCharEscaped = false;
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(textOrMatcher: string | TextConsumer, implicitFirstMatch = '') {
+  constructor(textOrMatcher: string | TextConsumer) {
     if (textOrMatcher instanceof TextConsumer) {
       this.text = textOrMatcher.remaining()
     } else {
       this.text = <string>textOrMatcher
     }
 
-    this.index = implicitFirstMatch.length
     this.handleEscaping()
   }
 
