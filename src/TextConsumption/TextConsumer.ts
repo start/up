@@ -1,7 +1,7 @@
 import { ConsumedTextResult } from './ConsumedTextResult'
 
 export interface onTextMatch {
-  (result: ConsumedTextResult, reject?: rejectTextMatch, advance?: advanceTextMatcherExtra): void
+  (reject?: rejectTextMatch, advance?: advanceTextMatcherExtra, consumer?: TextConsumer): void
 }
 
 interface rejectTextMatch {
@@ -46,6 +46,8 @@ export class TextConsumer {
       
       let isRejected = false
       let countCharsToAdvance = 0
+      
+      const clone = this.clone()
       
       if (onSuccess) {
         const reject =  () => { isRejected = true }
@@ -113,8 +115,22 @@ export class TextConsumer {
   }
   
   
-  private clone() {
-    return new TextConsumer(this.text, this.text.substring(0, this.index))
+  private clone(): TextConsumer {
+    const clone = new TextConsumer('')
+    
+    clone.mimic(this)
+    
+    return clone
+  }
+  
+  
+  private mimic(other: TextConsumer) {
+    this.text = other.text
+    this.index = other.index
+    this.isCurrentCharEscaped = other.isCurrentCharEscaped
+    this.countCharsAdvanced = other.countCharsAdvanced
+    this.countUnclosedParen = other.countUnclosedParen
+    this.countUnclosedSquareBracket = other.countUnclosedSquareBracket
   }
 
 

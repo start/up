@@ -18,7 +18,7 @@ export class LinkParser {
   public result: ParseResult;
   private linkNode = new LinkNode();
 
-  constructor(private matcher: TextConsumer, private parentNode: RichSyntaxNode) {
+  constructor(private consumer: TextConsumer, private parentNode: RichSyntaxNode) {
     if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return
@@ -37,7 +37,7 @@ export class LinkParser {
 
 
   private tryParseOpenBracketOrFail(): boolean {
-    if (!this.matcher.consume('[')) {
+    if (!this.consumer.consume('[')) {
       return true
     }
     
@@ -47,14 +47,14 @@ export class LinkParser {
 
 
   private tryParseContentOrFail(): boolean {
-    const contentResult = parseInline(this.matcher.remaining(), this.linkNode, ' -> ')
+    const contentResult = parseInline(this.consumer.remaining(), this.linkNode, ' -> ')
 
     if (!contentResult.success()) {
       this.fail()
       return false
     }
 
-    this.matcher.advanceBy(contentResult.countCharsConsumed)
+    this.consumer.advanceBy(contentResult.countCharsConsumed)
     this.linkNode.addChildren(contentResult.nodes)
 
     return true
@@ -64,17 +64,17 @@ export class LinkParser {
   private tryParseUrlPlusClosingBracketOrFail(): boolean {
     let url = ''
 
-    while (!this.matcher.done()) {
+    while (!this.consumer.done()) {
       
-      if (this.matcher.consume(']', (match) => {
+      if (this.consumer.consume(']', (match) => {
         this.linkNode.url = url
-        this.finish(new ParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(match)))
+        this.finish(new ParseResult([this.linkNode], this.consumer.countCharsAdvancedIncluding(match)))
       })) {
         return true
       }
 
-      url += this.matcher.currentChar()
-      this.matcher.advance()
+      url += this.consumer.currentChar()
+      this.consumer.advance()
     }
 
     this.fail()
