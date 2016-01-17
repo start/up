@@ -16,12 +16,8 @@ export class TextConsumer {
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(textOrMatcher: string | TextConsumer) {
-    if (textOrMatcher instanceof TextConsumer) {
-      this.text = textOrMatcher.remaining()
-    } else {
-      this.text = <string>textOrMatcher
-    }
+  constructor(text: string) {
+    this.text = text
 
     this.handleEscaping()
   }
