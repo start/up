@@ -40,7 +40,7 @@ export class LinkParser {
     if (!this.consumer.consume('[')) {
       return true
     }
-    
+
     this.fail()
     return false
   }
@@ -65,10 +65,10 @@ export class LinkParser {
     let url = ''
 
     while (!this.consumer.done()) {
-      
-      if (this.consumer.consume(']', (match) => {
+
+      if (this.consumer.consume(']', () => {
         this.linkNode.url = url
-        this.finish(new ParseResult([this.linkNode], this.consumer.countCharsAdvancedIncluding(match)))
+        this.finish(new ParseResult([this.linkNode]))
       })) {
         return true
       }

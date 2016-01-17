@@ -34,7 +34,7 @@ const INLINE_ASIDE = new InlineSandwich(InlineAsideNode, '((', '))')
 
 
 class InlineParser {
-  
+
   public result: ParseResult;
   private nodes: SyntaxNode[] = [];
 
@@ -85,28 +85,40 @@ class InlineParser {
   private tryParseLink(): boolean {
     const linkResult = new LinkParser(new TextConsumer(this.consumer), this.parentNode).result
 
-    if (linkResult.success()) {
-      this.incorporateResultIfSuccessful(linkResult)
-      return true
+    if (!linkResult.success()) {
+      return false
     }
-    
-    return false
+
+    this.incorporateResultIfSuccessful(linkResult)
+
+    this.nodes.push.apply(this.nodes, linkResult.nodes)
+    this.consumer.advanceBy(linkResult.countCharsConsumed)
+
+    return true
   }
 
 
   tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
-    
-    if (this.parentNode instanceof sandwich.NodeType) {    
+
+    if (this.parentNode instanceof sandwich.NodeType) {
       return this.consumer.consume(sandwich.closingBun, (match) => {
         this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvancedIncluding(match)))
       })
     }
-    
-    return this.consumer.consume(sandwich.openingBun, (match) => {
-      const sandwichNode = new sandwich.NodeType()
-      const sandwichResult = new InlineParser(new TextConsumer(this.consumer, match.text), sandwichNode, this.terminateOn).result
 
-      this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)
+    return this.consumer.consume(sandwich.openingBun, (reject, consumer) => {
+      const sandwichNode = new sandwich.NodeType()
+      const sandwichResult = new InlineParser(consumer, sandwichNode, this.terminateOn).result
+
+      if (!sandwichResult.success()) {
+        reject()
+        return
+      }
+
+      sandwichNode.addChildren(sandwichResult.nodes)
+      this.nodes.push(sandwichNode)
+
+      consumer.advanceBy(sandwichResult.countCharsConsumed)
     })
   }
 
