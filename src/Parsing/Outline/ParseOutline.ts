@@ -4,8 +4,7 @@ import { parseInline } from '../Inline/ParseInline'
 
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
-import { LineMatcher } from '../../Matching/LineMatcher'
-import { TextMatchResult } from '../../Matching/TextMatchResult'
+import { ConsumedTextResult } from '../../TextConsumption/ConsumedTextResult'
 
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []

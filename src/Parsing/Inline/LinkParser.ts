@@ -1,8 +1,8 @@
 import { ParseResult } from './../ParseResult'
 import { FailedParseResult } from './../FailedParseResult'
 
-import { TextMatcher } from '../../Matching/TextMatcher'
-import { TextMatchResult } from '../../Matching/TextMatchResult'
+import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { ConsumedTextResult } from '../../TextConsumption/ConsumedTextResult'
 
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
@@ -18,7 +18,7 @@ export class LinkParser {
   public result: ParseResult;
   private linkNode = new LinkNode();
 
-  constructor(private matcher: TextMatcher, private parentNode: RichSyntaxNode) {
+  constructor(private matcher: TextConsumer, private parentNode: RichSyntaxNode) {
     if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return
@@ -37,7 +37,7 @@ export class LinkParser {
 
 
   private tryParseOpenBracketOrFail(): boolean {
-    if (!this.matcher.match('[')) {
+    if (!this.matcher.consume('[')) {
       return true
     }
     
@@ -66,7 +66,7 @@ export class LinkParser {
 
     while (!this.matcher.done()) {
       
-      if (this.matcher.match(']', (match) => {
+      if (this.matcher.consume(']', (match) => {
         this.linkNode.url = url
         this.finish(new ParseResult([this.linkNode], this.matcher.countCharsAdvancedIncluding(match)))
       })) {

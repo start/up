@@ -1,8 +1,8 @@
 import { ParseResult } from '.././ParseResult'
 import { FailedParseResult } from '.././FailedParseResult'
 
-import { TextMatcher } from '../../Matching/TextMatcher'
-import { TextMatchResult } from '../../Matching/TextMatchResult'
+import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { ConsumedTextResult } from '../../TextConsumption/ConsumedTextResult'
 
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
@@ -21,7 +21,7 @@ import { LinkParser } from './LinkParser'
 import { InlineSandwich } from './InlineSandwich'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
-  return new InlineParser(new TextMatcher(text), parentNode, terminateOn, false).result
+  return new InlineParser(new TextConsumer(text), parentNode, terminateOn, false).result
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
@@ -38,7 +38,7 @@ class InlineParser {
   public result: ParseResult;
   private nodes: SyntaxNode[] = [];
 
-  constructor(private matcher: TextMatcher, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
+  constructor(private matcher: TextConsumer, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
     main_parser_loop:
     while (!this.matcher.done()) {
       if (this.result) {
@@ -83,7 +83,7 @@ class InlineParser {
 
 
   private tryParseLink(): boolean {
-    const linkResult = new LinkParser(new TextMatcher(this.matcher), this.parentNode).result
+    const linkResult = new LinkParser(new TextConsumer(this.matcher), this.parentNode).result
 
     if (linkResult.success()) {
       this.incorporateResultIfSuccessful(linkResult)
@@ -97,14 +97,14 @@ class InlineParser {
   tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
     
     if (this.parentNode instanceof sandwich.NodeType) {    
-      return this.matcher.match(sandwich.closingBun, (match) => {
+      return this.matcher.consume(sandwich.closingBun, (match) => {
         this.finish(new ParseResult(this.nodes, this.matcher.countCharsAdvancedIncluding(match)))
       })
     }
     
-    return this.matcher.match(sandwich.openingBun, (match) => {
+    return this.matcher.consume(sandwich.openingBun, (match) => {
       const sandwichNode = new sandwich.NodeType()
-      const sandwichResult = new InlineParser(new TextMatcher(this.matcher, match.text), sandwichNode, this.terminateOn).result
+      const sandwichResult = new InlineParser(new TextConsumer(this.matcher, match.text), sandwichNode, this.terminateOn).result
 
       this.incorporateResultIfSuccessful(sandwichResult, sandwichNode)
     })
@@ -150,6 +150,6 @@ class InlineParser {
 
 
   private terminatedEarly(): boolean {
-    return this.terminateOn && this.matcher.match(this.terminateOn)
+    return this.terminateOn && this.matcher.consume(this.terminateOn)
   }
 }

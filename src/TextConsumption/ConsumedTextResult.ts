@@ -1,4 +1,4 @@
-export class TextMatchResult {
+export class ConsumedTextResult {
   constructor (public newIndex: number, public text: string) { }
   
   success(): boolean {

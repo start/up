@@ -1,8 +1,7 @@
-import { TextMatchResult } from './TextMatchResult'
-import { FailedTextMatchResult } from './FailedTextMatchResult'
+import { ConsumedTextResult } from './ConsumedTextResult'
 
 export interface onTextMatch {
-  (result: TextMatchResult, reject?: rejectTextMatch, advance?: advanceTextMatcherExtra): void
+  (result: ConsumedTextResult, reject?: rejectTextMatch, advance?: advanceTextMatcherExtra): void
 }
 
 interface rejectTextMatch {
@@ -13,7 +12,7 @@ interface advanceTextMatcherExtra {
   (countChars: number): void
 }
 
-export class TextMatcher {
+export class TextConsumer {
 
   public text: string;
   public index: number;
@@ -21,8 +20,8 @@ export class TextMatcher {
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(textOrMatcher: string | TextMatcher, implicitFirstMatch = '') {
-    if (textOrMatcher instanceof TextMatcher) {
+  constructor(textOrMatcher: string | TextConsumer, implicitFirstMatch = '') {
+    if (textOrMatcher instanceof TextConsumer) {
       this.text = textOrMatcher.remaining()
     } else {
       this.text = <string>textOrMatcher
@@ -38,12 +37,12 @@ export class TextMatcher {
   }
 
 
-  match(needle: string, onSuccess?: onTextMatch): boolean {
+  consume(needle: string, onSuccess?: onTextMatch): boolean {
     const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
     if (isMatch) {
-      const result = new TextMatchResult(this.index + needle.length, needle)
+      const result = new ConsumedTextResult(this.index + needle.length, needle)
       
       let isRejected = false
       let countCharsToAdvance = 0
@@ -83,8 +82,8 @@ export class TextMatcher {
   }
 
 
-  advanceBy(countOrResult: TextMatchResult | number): void {
-    if (countOrResult instanceof TextMatchResult) {
+  advanceBy(countOrResult: ConsumedTextResult | number): void {
+    if (countOrResult instanceof ConsumedTextResult) {
       this.index = countOrResult.newIndex
     } else {
       this.index += <number>countOrResult
@@ -99,7 +98,7 @@ export class TextMatcher {
   }
 
 
-  countCharsAdvancedIncluding(result: TextMatchResult): number {
+  countCharsAdvancedIncluding(result: ConsumedTextResult): number {
     return this.countCharsAdvanced() + result.text.length
   }
 
@@ -115,7 +114,7 @@ export class TextMatcher {
   
   
   private clone() {
-    return new TextMatcher(this.text, this.text.substring(0, this.index))
+    return new TextConsumer(this.text, this.text.substring(0, this.index))
   }
 
 
