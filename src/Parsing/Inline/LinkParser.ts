@@ -32,6 +32,8 @@ export class LinkParser {
     }
 
     this.tryParseUrlPlusClosingBracketOrFail()
+    
+    this.finish(new ParseResult([this.linkNode], consumer.countCharsAdvanced()))
   }
 
 
@@ -67,7 +69,6 @@ export class LinkParser {
 
       if (this.consumer.consume(']', (reject, consumer) => {
         this.linkNode.url = url
-        this.finish(new ParseResult([this.linkNode], consumer.countCharsAdvanced()))
       })) {
         return true
       }
