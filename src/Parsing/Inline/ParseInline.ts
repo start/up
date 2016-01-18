@@ -91,7 +91,7 @@ class InlineParser {
     }
     
     this.nodes.push.apply(this.nodes, linkResult.nodes)
-    this.consumer.advanceBy(linkResult.countCharsConsumed)
+    this.consumer.skip(linkResult.countCharsConsumed)
 
     return true
   }
@@ -117,7 +117,7 @@ class InlineParser {
       sandwichNode.addChildren(sandwichResult.nodes)
       this.nodes.push(sandwichNode)
 
-      consumer.advanceBy(sandwichResult.countCharsConsumed)
+      consumer.skip(sandwichResult.countCharsConsumed)
     })
   }
 
@@ -134,7 +134,7 @@ class InlineParser {
 
   private addPlainCharNode(): void {
     this.nodes.push(new PlainTextNode(this.consumer.currentChar()))
-    this.consumer.advance()
+    this.consumer.moveNext()
   }
   
 

@@ -54,7 +54,7 @@ export class LinkParser {
       return false
     }
 
-    this.consumer.advanceBy(contentResult.countCharsConsumed)
+    this.consumer.skip(contentResult.countCharsConsumed)
     this.linkNode.addChildren(contentResult.nodes)
 
     return true
@@ -74,7 +74,7 @@ export class LinkParser {
       }
 
       url += this.consumer.currentChar()
-      this.consumer.advance()
+      this.consumer.moveNext()
     }
 
     this.fail()

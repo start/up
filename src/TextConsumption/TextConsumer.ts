@@ -36,7 +36,7 @@ export class TextConsumer {
       const result = new ConsumedTextResult(this.index + needle.length, needle)
       
       const consumer = new TextConsumer(this.remaining())
-      consumer.advanceBy(result)
+      consumer.skip(result.text.length)
       
       let isRejected = false
       
@@ -49,7 +49,7 @@ export class TextConsumer {
         return false
       }
       
-      this.advanceBy(consumer.countCharsAdvanced())
+      this.skip(consumer.countCharsAdvanced())
       
       return true
     }
@@ -58,7 +58,7 @@ export class TextConsumer {
   }
 
 
-  advance(): void {
+  moveNext(): void {
     // Only non-escaped brackets that weren't part of some match should affect the opened/closed counts we're keeping.
     if (!this.isCurrentCharEscaped) {
       this.updateOpenBracketCounts()
@@ -69,24 +69,14 @@ export class TextConsumer {
   }
 
 
-  advanceBy(countOrResult: ConsumedTextResult | number): void {
-    if (countOrResult instanceof ConsumedTextResult) {
-      this.index = countOrResult.newIndex
-    } else {
-      this.index += <number>countOrResult
-    }
-
+  skip(count: number): void {
+    this.index += count
     this.handleEscaping()
   }
 
 
   countCharsAdvanced(): number {
     return this.index
-  }
-
-
-  countCharsAdvancedIncluding(result: ConsumedTextResult): number {
-    return this.countCharsAdvanced() + result.text.length
   }
 
 
@@ -129,6 +119,8 @@ export class TextConsumer {
 
 
   private areRelevantBracketsClosed(needle: string): boolean {
+    // We only care about unclosed brackets if `needle` would appear to close them. If that's the case
+    // we refuse to match `needle`, because the author likely intended it to be plain text.
     return (
       (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
       && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
@@ -136,9 +128,9 @@ export class TextConsumer {
   }
 }
 
-// Returns true if `text` contains any closing brackets that appear to close any preceeding opening brackets.
+// Returns true if `text` contains any closing brackets that would appear to close any preceeding opening brackets.
 //
-// The following examples satisfy that criteria:
+// Assuming '(' and ')' are the specified brackets, the following examples would cause this function to return `true`:
 //
 //   )
 //   ))
@@ -146,12 +138,10 @@ export class TextConsumer {
 //   ( ))
 //   ) ((((
 //
-// And the following examples do not:
+// And the following examples would not:
 //
 //   ()
-//   (( ))
-//
-// This method helps us determine whether any preceeding unclosed brackets even matter.
+//   (( )
 function appearsToCloseAnyPreceedingBrackets(text: string, openingBracket: string, closingBracket: string) {
   let countSurplusOpened = 0
 
