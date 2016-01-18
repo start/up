@@ -1,5 +1,3 @@
-import { ConsumedTextResult } from './ConsumedTextResult'
-
 export interface onTextMatch {
   (reject?: rejectTextMatch, consumer?: TextConsumer): void
 }
@@ -33,10 +31,8 @@ export class TextConsumer {
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
     if (isMatch) {
-      const result = new ConsumedTextResult(this.index + needle.length, needle)
-      
       const consumer = new TextConsumer(this.remaining())
-      consumer.skip(result.text.length)
+      consumer.skip(needle.length)
       
       let isRejected = false
       

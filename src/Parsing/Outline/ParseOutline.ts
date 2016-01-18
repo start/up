@@ -4,8 +4,6 @@ import { parseInline } from '../Inline/ParseInline'
 
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
-import { ConsumedTextResult } from '../../TextConsumption/ConsumedTextResult'
-
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []
   

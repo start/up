@@ -2,7 +2,6 @@ import { ParseResult } from './../ParseResult'
 import { FailedParseResult } from './../FailedParseResult'
 
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { ConsumedTextResult } from '../../TextConsumption/ConsumedTextResult'
 
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
