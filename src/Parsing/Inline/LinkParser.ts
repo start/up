@@ -53,7 +53,7 @@ export class LinkParser {
       return false
     }
 
-    this.consumer.skip(contentResult.countCharsConsumed)
+    this.consumer.skip(contentResult.countCharsParsed)
     this.linkNode.addChildren(contentResult.nodes)
 
     return true

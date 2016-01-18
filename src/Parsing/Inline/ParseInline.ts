@@ -20,7 +20,7 @@ import { LinkParser } from './LinkParser'
 import { InlineSandwich } from './InlineSandwich'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
-  return new InlineParser(new TextConsumer(text), parentNode, terminateOn, false).result
+  return new InlineParser(new TextConsumer(text), parentNode, terminateOn, false).parseResult
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
@@ -34,18 +34,18 @@ const INLINE_ASIDE = new InlineSandwich(InlineAsideNode, '((', '))')
 
 class InlineParser {
 
-  public result: ParseResult;
+  public parseResult: ParseResult;
   private nodes: SyntaxNode[] = [];
 
-  constructor(private consumer: TextConsumer, private parentNode: RichSyntaxNode, private terminateOn: string = null, private mustCloseParent = true) {
+  constructor(private consumer: TextConsumer, private parentNode: RichSyntaxNode, private terminateOn: string = null, private parentRequiresClosing = true) {
     
     main_parser_loop:
     while (!this.consumer.done()) {
-      if (this.result) {
+      if (this.parseResult) {
         return
       }
 
-      if (this.tryOpenOrCloseSandiwch(INLINE_CODE)) {
+      if (this.tryOpenOrCloseSandwich(INLINE_CODE)) {
         continue
       }
 
@@ -54,7 +54,7 @@ class InlineParser {
         continue
       }
 
-      if (this.terminatedEarly()) {
+      if (this.terminatesEarly()) {
         break
       }
 
@@ -65,7 +65,7 @@ class InlineParser {
       for (let sandwhich of [
         STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER, INLINE_ASIDE
       ]) {
-        if (this.tryOpenOrCloseSandiwch(sandwhich)) {
+        if (this.tryOpenOrCloseSandwich(sandwhich)) {
           continue main_parser_loop
         }
       }
@@ -73,8 +73,8 @@ class InlineParser {
       this.addPlainCharNode()
     }
 
-    if (this.mustCloseParent) {
-      this.finish(new FailedParseResult())
+    if (this.parentRequiresClosing) {
+      this.fail()
       return
     }
 
@@ -90,44 +90,45 @@ class InlineParser {
     }
     
     this.nodes.push.apply(this.nodes, linkResult.nodes)
-    this.consumer.skip(linkResult.countCharsConsumed)
+    this.consumer.skip(linkResult.countCharsParsed)
 
     return true
   }
 
 
-  tryOpenOrCloseSandiwch(sandwich: InlineSandwich): boolean {
+  tryOpenOrCloseSandwich(sandwich: InlineSandwich): boolean {
 
     if (this.parentNode instanceof sandwich.NodeType) {
       return this.consumer.consume(sandwich.closingBun, (reject, consumer) => {
+        this.parentRequiresClosing = false
         this.finish(new ParseResult(this.nodes, consumer.countCharsAdvanced()))
       })
     }
 
     return this.consumer.consume(sandwich.openingBun, (reject, consumer) => {
       const sandwichNode = new sandwich.NodeType()
-      const sandwichResult = new InlineParser(consumer, sandwichNode, this.terminateOn).result
+      const parseResult = new InlineParser(consumer, sandwichNode, this.terminateOn).parseResult
 
-      if (!sandwichResult.success()) {
+      if (!parseResult.success()) {
         reject()
         return
       }
 
-      sandwichNode.addChildren(sandwichResult.nodes)
+      sandwichNode.addChildren(parseResult.nodes)
       this.nodes.push(sandwichNode)
 
-      consumer.skip(sandwichResult.countCharsConsumed)
+      consumer.skip(parseResult.countCharsParsed)
     })
   }
 
 
   private finish(result: ParseResult): void {
-    this.result = result
+    this.parseResult = result
   }
 
 
   private fail(): void {
-    this.result = new FailedParseResult()
+    this.parseResult = new FailedParseResult()
   }
 
 
@@ -137,7 +138,7 @@ class InlineParser {
   }
   
 
-  private terminatedEarly(): boolean {
+  private terminatesEarly(): boolean {
     return this.terminateOn && this.consumer.consume(this.terminateOn)
   }
 }
