@@ -164,6 +164,16 @@ describe('An unmatched asterisk', function() {
         new PlainTextNode('Hello, *world!')
       ]))
   })
+  
+  it('does not create an emphasis node, even when following two matched asterisks', function() {
+    expect(Up.ast('*Hello*, *world!')).to.be.eql(
+      insideDocumentAndParagraph([
+          new EmphasisNode([
+            new PlainTextNode('Hello'),
+          ]),
+        new PlainTextNode(', *world!')
+      ]))
+  })
 })
 
 

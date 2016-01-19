@@ -124,6 +124,7 @@ export class TextConsumer {
       (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
       && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
     )
+    
   }
 }
 
