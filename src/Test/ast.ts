@@ -259,6 +259,20 @@ describe('Text surrounded by faces looking away', function() {
         new PlainTextNode('.')
       ]))
   })
+  
+  it('can be nested within another spoiler node', function() {
+    expect(Up.ast('After you beat the Elite Four, [<_<]you fight [<_<]Gary[>_>][>_>].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight '),
+          new SpoilerNode([
+            new PlainTextNode('Gary')
+          ]),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
 })
 
 describe('Bracketed text pointing to a URL', function() {
