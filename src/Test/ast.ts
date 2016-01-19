@@ -24,65 +24,8 @@ function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
   return insideDocument([new ParagraphNode(syntaxNodes)]);
 }
 
-describe('No text', function() {
-  it('creates only a document node', function() {
-    expect(Up.ast('')).to.be.eql(new DocumentNode())
-  })
-})
-
-describe('Text', function() {
-  it('is put inside a plain text node inside a paragraph', function() {
-    expect(Up.ast('Hello, world!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, world!')
-      ]))
-  })
-})
-
-describe('A backslash', function() {
-  it('causes the following character to be treated as plain text', function() {
-    expect(Up.ast('Hello, \\world!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, world!')
-      ]))
-  })
-  it('causes the following backslash to be treated as plain text', function() {
-    expect(Up.ast('Hello, \\\\!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, \\!')
-      ]))
-  })
-  it('disables any special meaning of the following character', function() {
-    expect(Up.ast('Hello, \\*world\\*!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, *world*!')
-      ]))
-  })
-  it('causes only the following character to be treated as plain text', function() {
-    expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, \\, meet \\!')
-      ]))
-  })
-  it('is ignored if it is the final character', function() {
-    expect(Up.ast('Hello, \\')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, ')
-      ]))
-  })
-})
 
 describe('Text surrounded by backticks', function() {
-  it('is put inside an inline code node', function() {
-    expect(Up.ast('Hello, `["w", "o", "r", "l", "d"].join("")`!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('["w", "o", "r", "l", "d"].join("")')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
 
   it('is not evaluated for other conventions', function() {
     expect(Up.ast('Hello, `*world*`!')).to.be.eql(

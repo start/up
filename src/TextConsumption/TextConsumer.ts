@@ -1,9 +1,13 @@
-export interface onTextMatch {
-  (reject?: rejectTextMatch, consumer?: TextConsumer): void
+export interface onMatchBeforeConsumption {
+  (remaining?: string, skip?: skipCountChars, reject?: rejectTextMatch): void
 }
 
 interface rejectTextMatch {
   (): void
+}
+
+interface skipCountChars {
+  (count: number): void
 }
 
 export class TextConsumer {
@@ -26,26 +30,25 @@ export class TextConsumer {
   }
 
 
-  consume(needle: string, onSuccess?: onTextMatch): boolean {
+  consume(needle: string, onMatchBeforeConsumption?: onMatchBeforeConsumption): boolean {
     const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
     if (isMatch) {
-      const consumer = new TextConsumer(this.remaining())
-      consumer.skip(needle.length)
-      
       let isRejected = false
+      let charsToSkip = needle.length
       
-      if (onSuccess) {
-        const reject = () => { isRejected = true }        
-        onSuccess(reject, consumer)
+      if (onMatchBeforeConsumption) {
+        const skip = (count: number) => { charsToSkip += count }
+        const reject = () => { isRejected = true }
+        onMatchBeforeConsumption(this.remaining().substr(charsToSkip), skip, reject)
       }
       
       if (isRejected) {
         return false
       }
       
-      this.skip(consumer.countCharsAdvanced())
+      this.skip(charsToSkip)
       
       return true
     }
@@ -55,9 +58,9 @@ export class TextConsumer {
 
 
   moveNext(): void {
-    // Only non-escaped brackets that weren't part of some match should affect the opened/closed counts we're keeping.
+    // Only non-escaped brackets that weren't part of a match should affect the opened/closed counts we're keeping.
     if (!this.isCurrentCharEscaped) {
-      this.updateOpenBracketCounts()
+      this.updateUnclosedBracketCounts()
     }
 
     this.index += 1
@@ -96,7 +99,7 @@ export class TextConsumer {
   }
 
 
-  private updateOpenBracketCounts(): void {
+  private updateUnclosedBracketCounts(): void {
     switch (this.currentChar()) {
       case '(':
         this.countUnclosedParen += 1

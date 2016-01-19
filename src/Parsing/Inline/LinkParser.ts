@@ -68,10 +68,7 @@ export class LinkParser {
     let url = ''
 
     while (!this.consumer.done()) {
-
-      if (this.consumer.consume(']', () => {
-        this.linkNode.url = url
-      })) {
+      if (this.consumer.consume(']', () => { this.linkNode.url = url })) {
         return true
       }
 

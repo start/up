@@ -20,7 +20,7 @@ import { LinkParser } from './LinkParser'
 import { InlineSandwich } from './InlineSandwich'
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
-  return new InlineParser(new TextConsumer(text), parentNode, terminateOn, false).parseResult
+  return new InlineParser(text, parentNode, terminateOn, false).parseResult
 }
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
@@ -36,8 +36,10 @@ class InlineParser {
 
   public parseResult: ParseResult;
   private nodes: SyntaxNode[] = [];
+  private consumer: TextConsumer
 
-  constructor(private consumer: TextConsumer, private parentNode: RichSyntaxNode, private terminateOn: string = null, private parentRequiresClosing = true) {
+  constructor(text: string, private parentNode: RichSyntaxNode, private terminateOn: string = null, private parentRequiresClosing = true) {
+    this.consumer = new TextConsumer(text)
     
     main_parser_loop:
     while (!this.consumer.done()) {
@@ -99,15 +101,17 @@ class InlineParser {
   tryOpenOrCloseSandwich(sandwich: InlineSandwich): boolean {
 
     if (this.parentNode instanceof sandwich.NodeType) {
-      return this.consumer.consume(sandwich.closingBun, (reject, consumer) => {
-        this.parentRequiresClosing = false
-        this.finish(new ParseResult(this.nodes, consumer.countCharsAdvanced()))
-      })
+      if (this.consumer.consume(sandwich.closingBun)) {
+        this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvanced()))
+        return true
+      } else {
+        return false
+      }
     }
 
-    return this.consumer.consume(sandwich.openingBun, (reject, consumer) => {
+    return this.consumer.consume(sandwich.openingBun, (remaining, skip, reject) => {
       const sandwichNode = new sandwich.NodeType()
-      const parseResult = new InlineParser(consumer, sandwichNode, this.terminateOn).parseResult
+      const parseResult = new InlineParser(remaining, sandwichNode, this.terminateOn).parseResult
 
       if (!parseResult.success()) {
         reject()
@@ -116,8 +120,8 @@ class InlineParser {
 
       sandwichNode.addChildren(parseResult.nodes)
       this.nodes.push(sandwichNode)
-
-      consumer.skip(parseResult.countCharsParsed)
+      
+      skip(parseResult.countCharsParsed)
     })
   }
 
