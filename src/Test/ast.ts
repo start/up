@@ -165,7 +165,7 @@ describe('An unmatched asterisk', function() {
       ]))
   })
   
-  it('does not create an emphasis node, even when following two matched asterisks', function() {
+  it('does not create an emphasis node, even when following 2 matching asterisks', function() {
     expect(Up.ast('*Hello*, *world!')).to.be.eql(
       insideDocumentAndParagraph([
           new EmphasisNode([
