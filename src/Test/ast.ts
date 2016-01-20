@@ -26,7 +26,6 @@ function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
 
 
 describe('Text surrounded by backticks', function() {
-
   it('is not evaluated for other conventions', function() {
     expect(Up.ast('Hello, `*world*`!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -95,6 +94,16 @@ describe('Text surrounded by asterisks', function() {
           new PlainTextNode(' world')
         ]),
         new PlainTextNode('!')
+      ]))
+  })
+  
+  it('can be the last convention in a paragraph', function() {
+    expect(Up.ast('Hello, `*world*`')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('*world*')
+        ])
       ]))
   })
 })
