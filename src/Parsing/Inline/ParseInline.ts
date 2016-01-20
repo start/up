@@ -46,11 +46,6 @@ class InlineParser {
       if (this.parseResult) {
         return
       }
-      
-      if (this.consumer.currentChar() == ')') {
-        console.log(`"${text}"`)
-        console.log(`"${this.consumer.remaining()}"`)
-      }
 
       if (this.tryCloseOrParseSandwich(INLINE_CODE)) {
         continue
