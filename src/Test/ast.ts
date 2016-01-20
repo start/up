@@ -368,6 +368,16 @@ describe('Text surrounded by 2 parentheses', function() {
         ])
       ]))
   })
+  
+  it('can be the last convention in a paragraph', function() {
+    expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I don't eat cereal. "),
+        new InlineAsideNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ])
+      ]))
+  })
 })
 
 describe('Two lines of text with a blank line in between', function() {
