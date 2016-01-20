@@ -125,6 +125,7 @@ class InlineParser {
 
   private tryCloseSandwich(sandwich: InlineSandwich): boolean {
     if (this.parentNode instanceof sandwich.NodeType && this.consumer.consume(sandwich.closingBun)) {
+      this.parentRequiresClosing = false
       this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvanced()))
       return true
     }
