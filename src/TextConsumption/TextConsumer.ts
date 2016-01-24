@@ -1,8 +1,8 @@
 export interface onMatchBeforeConsumption {
-  (remaining?: string, skip?: skipCountChars, reject?: rejectTextMatch): void
+  (remaining?: string, skip?: skipCountChars, reject?: rejectMatch): void
 }
 
-interface rejectTextMatch {
+interface rejectMatch {
   (): void
 }
 
