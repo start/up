@@ -6,14 +6,17 @@ import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []
-  
-  if (!text) {
-    return new ParseResult([], 0)
+
+  const lines = text.split('\n')
+
+  for (const line of lines) {
+    if (line) {
+      const paragraphNode = new ParagraphNode()
+      paragraphNode.addChildren(parseInline(line, paragraphNode).nodes)
+      nodes.push(paragraphNode)
+    }
   }
-  
-  const paragraphNode = new ParagraphNode()
-  
-  paragraphNode.addChildren(parseInline(text, paragraphNode).nodes)
-  
-  return new ParseResult([paragraphNode], text.length)
+
+
+  return new ParseResult(nodes, text.length)
 }
