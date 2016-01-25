@@ -45,28 +45,42 @@ describe('A backslash', function() {
         new PlainTextNode('Hello, world!')
       ]))
   })
+  
   it('causes the following backslash to be treated as plain text', function() {
     expect(Up.ast('Hello, \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\!')
       ]))
   })
+  
   it('disables any special meaning of the following character', function() {
     expect(Up.ast('Hello, \\*world\\*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, *world*!')
       ]))
   })
+  
   it('causes only the following character to be treated as plain text', function() {
     expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\, meet \\!')
       ]))
   })
-  it('is ignored if it is the final character', function() {
+  
+  it('is ignored if it is the final character of the text', function() {
     expect(Up.ast('Hello, \\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, ')
+      ]))
+  })
+  
+  it('disables any special meaning of the following line break', function() {
+    const text = `Hello, world!\\
+\\
+Goodbye, world!`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, world!\n\nGoodbye, world!')
       ]))
   })
 })
