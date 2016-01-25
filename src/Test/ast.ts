@@ -38,6 +38,39 @@ describe('Text surrounded by backticks', function() {
   })
 })
 
+describe('A backslash', function() {
+  it('causes the following character to be treated as plain text', function() {
+    expect(Up.ast('Hello, \\world!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, world!')
+      ]))
+  })
+  it('causes the following backslash to be treated as plain text', function() {
+    expect(Up.ast('Hello, \\\\!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, \\!')
+      ]))
+  })
+  it('disables any special meaning of the following character', function() {
+    expect(Up.ast('Hello, \\*world\\*!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, *world*!')
+      ]))
+  })
+  it('causes only the following character to be treated as plain text', function() {
+    expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, \\, meet \\!')
+      ]))
+  })
+  it('is ignored if it is the final character', function() {
+    expect(Up.ast('Hello, \\')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, ')
+      ]))
+  })
+})
+
 describe('Text surrounded by asterisks', function() {
   it('is put inside an emphasis node', function() {
     expect(Up.ast('Hello, *world*!!')).to.be.eql(
