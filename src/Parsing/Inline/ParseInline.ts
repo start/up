@@ -19,9 +19,11 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { LinkParser } from './LinkParser'
 import { InlineSandwich } from './InlineSandwich'
 
+
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
   return new InlineParser(text, parentNode, terminateOn, false).parseResult
 }
+
 
 const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
 const STRESS = new InlineSandwich(StressNode, '**', '**')

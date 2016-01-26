@@ -142,17 +142,17 @@ export class TextConsumer {
 //
 //   ()
 //   (( )
-function appearsToCloseAnyPreceedingBrackets(text: string, openingBracket: string, closingBracket: string) {
+function appearsToCloseAnyPreceedingBrackets(text: string, openingBracketChar: string, closingBracketChar: string) {
   let countSurplusOpened = 0
 
   for (let char of text) {
 
     switch (char) {
-      case openingBracket:
+      case openingBracketChar:
         countSurplusOpened += 1
         break
 
-      case closingBracket:
+      case closingBracketChar:
         if (!countSurplusOpened) {
           return true
         }
