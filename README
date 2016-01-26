@@ -1,8 +1,8 @@
-Up is a set of conventions for writing plain text.
+Up is a set of conventions for writing plain text. I'm not accepting contributions at this time!
 
 
 
-This is a [helpful link -> https://stackoverflow.com].
+This is a [link -> https://stackoverflow.com].
 
 This is *emphasized*.
 
@@ -41,5 +41,39 @@ This is not some \`inline_code\`.
 
 
 
-P.S. I'm not accepting contributions at this time!
+This is a paragraph.
 
+This is another.
+
+
+
+Three or more blank lines indicates separation between sections of the document.
+
+
+This is a top-level heading
+###########################
+
+
+This is a second-level heading
+==============================
+
+
+This is a third-level heading
+-----------------------------
+
+
+This is a fourth-level heading
+# # # # # # # # # # # # # # #
+
+
+This is a fifth-level heading
+= = = = = = = = = = = = = = =
+
+
+This is a sixth-level heading
+- - - - - - - - - - - - - - -
+
+
+#########################################
+Any heading can have an optional overline
+#########################################
