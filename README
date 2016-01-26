@@ -43,11 +43,19 @@ This is not some \`inline_code\`.
 
 This is a paragraph.
 
-This is another.
+One or two blank lines separate paragraphs.
 
 
 
 Three or more blank lines indicates separation between sections of the document.
+
+Consecutive lines represent... lines. Not a pagragraph.
+
+Roses are read
+Violets are blue
+Lyrics have lines
+And addresses do too
+
 
 
 This is a top-level heading
