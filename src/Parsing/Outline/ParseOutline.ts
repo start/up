@@ -4,6 +4,29 @@ import { parseInline } from '../Inline/ParseInline'
 
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
+import { OutlineConvention } from './OutlineConvention'
+
+/*
+
+Heading
+  Optional overline
+  Non-blank line
+  Underline
+  
+  
+  new OutlineRule(
+    [
+      optional(line('#')),
+      non-blank-line
+      line('#')
+    ],
+    (_1, content, _2) => {
+       
+    }
+  )
+*/
+
+
 export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []
 
@@ -16,7 +39,6 @@ export function parseOutline(text: string): ParseResult {
       nodes.push(paragraphNode)
     }
   }
-
 
   return new ParseResult(nodes, text.length)
 }
