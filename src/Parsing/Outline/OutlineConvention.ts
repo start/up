@@ -1,8 +1,9 @@
+import { LinePattern } from './LinePattern'
 
 interface onMatch {
   (...lines: string[]): void
 }
 
 export class OutlineConvention {
-  constructor(public linePatterns: string[], public onMatch: onMatch) { }
+  constructor(public linePatterns: LinePattern[], public onMatch: onMatch) { }
 }
