@@ -1,5 +1,9 @@
-export interface onMatchBeforeConsumption {
+interface onMatchBeforeConsumption {
   (remaining?: string, skip?: skipCountChars, reject?: rejectMatch): void
+}
+
+interface beforeLineConsumption {
+  (line: string, remaining?: string, skip?: skipCountChars, reject?: rejectMatch): void
 }
 
 interface rejectMatch {
@@ -49,11 +53,42 @@ export class TextConsumer {
       }
       
       this.skip(charsToSkip)
-      
       return true
     }
 
     return false
+  }
+  
+  
+  consumeLine(beforeLineConsumption: beforeLineConsumption): boolean {
+    const clone = this.clone()
+    
+    let lineContentLength = 0
+    
+    while (!clone.done() && !clone.consume('\n')) {
+      clone.moveNext()      
+      lineContentLength += 1 
+    }
+  
+    let isRejected = false
+    let charsToSkip = lineContentLength + 1
+    
+    if (beforeLineConsumption) {        
+      const line = this.remaining().substr(0, lineContentLength)
+      const remaining = this.remaining().substr(line.length)
+      
+      const skip = (count: number) => { charsToSkip += count }
+      const reject = () => { isRejected = true }
+      
+      beforeLineConsumption(line, remaining, skip, reject)
+    }
+    
+    if (isRejected) {
+      return false
+    }
+    
+    this.skip(charsToSkip)
+    return true
   }
 
 
@@ -124,7 +159,19 @@ export class TextConsumer {
       (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
       && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
     )
+  }
+  
+  
+  private clone(): TextConsumer {
+    const clone = new TextConsumer('')
     
+    clone.text = this.text
+    clone.index = this.index
+    clone.isCurrentCharEscaped = this.isCurrentCharEscaped
+    clone.countUnclosedParen = this.countUnclosedParen
+    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
+    
+    return clone
   }
 }
 

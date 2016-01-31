@@ -1,16 +1,11 @@
 import { ParseResult } from './../ParseResult'
 import { FailedParseResult } from './../FailedParseResult'
+import { parseInline } from './ParseInline'
 
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 
-import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
-import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
-
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-
-import { parseInline } from './parseInline'
-
 
 export class LinkParser {
 
@@ -27,7 +22,7 @@ export class LinkParser {
       return
     }
 
-    if (!this.tryParseContentOrFail()) {
+    if (!this.tryParseContentPlusArrowOrFail()) {
       return
     }
 
@@ -49,7 +44,7 @@ export class LinkParser {
   }
 
 
-  private tryParseContentOrFail(): boolean {
+  private tryParseContentPlusArrowOrFail(): boolean {
     const contentResult = parseInline(this.consumer.remaining(), this.linkNode, ' -> ')
 
     if (!contentResult.success()) {
