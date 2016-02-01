@@ -41,52 +41,53 @@ export class TextConsumer {
     if (isMatch) {
       let isRejected = false
       let charsToSkip = needle.length
-      
+
       if (onMatchBeforeConsumption) {
         const skip = (count: number) => { charsToSkip += count }
         const reject = () => { isRejected = true }
         onMatchBeforeConsumption(this.remaining().substr(charsToSkip), skip, reject)
       }
-      
+
       if (isRejected) {
         return false
       }
-      
+
       this.skip(charsToSkip)
       return true
     }
 
     return false
   }
-  
-  
+
+
   consumeLine(beforeLineConsumption: beforeLineConsumption): boolean {
     const clone = this.clone()
-    
-    let lineContentLength = 0
-    
+
     while (!clone.done() && !clone.consume('\n')) {
-      clone.moveNext()      
-      lineContentLength += 1 
+      clone.moveNext()
     }
-  
+
+    const line = clone.consumed()
+
     let isRejected = false
-    let charsToSkip = lineContentLength + 1
-    
-    if (beforeLineConsumption) {        
-      const line = this.remaining().substr(0, lineContentLength)
-      const remaining = this.remaining().substr(line.length)
-      
+    let charsToSkip = line.length
+
+    if (beforeLineConsumption) {
+      const remaining = this.remaining()
+      const remainingAfterLine = remaining.substr(charsToSkip)
+
       const skip = (count: number) => { charsToSkip += count }
       const reject = () => { isRejected = true }
-      
-      beforeLineConsumption(line, remaining, skip, reject)
+
+      const trimmedLine = line.replace(/\s+$/, '')
+
+      beforeLineConsumption(trimmedLine, remainingAfterLine, skip, reject)
     }
-    
+
     if (isRejected) {
       return false
     }
-    
+
     this.skip(charsToSkip)
     return true
   }
@@ -116,6 +117,11 @@ export class TextConsumer {
 
   remaining(): string {
     return this.text.slice(this.index)
+  }
+
+
+  consumed(): string {
+    return this.text.substr(0, this.index)
   }
 
 
@@ -153,24 +159,24 @@ export class TextConsumer {
 
 
   private areRelevantBracketsClosed(needle: string): boolean {
-    // We only care about unclosed brackets if `needle` would appear to close them. If that's the case
-    // we refuse to match `needle`, because the author likely intended it to be plain text.
+    // We only care about unclosed brackets if `needle` would appear to close them. If that's the case,
+    // we refuse to match `needle`, because the author likely intended the needle to be plain text.
     return (
       (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
       && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
     )
   }
-  
-  
+
+
   private clone(): TextConsumer {
     const clone = new TextConsumer('')
-    
+
     clone.text = this.text
     clone.index = this.index
     clone.isCurrentCharEscaped = this.isCurrentCharEscaped
     clone.countUnclosedParen = this.countUnclosedParen
     clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
-    
+
     return clone
   }
 }
