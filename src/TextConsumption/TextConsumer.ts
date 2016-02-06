@@ -60,12 +60,12 @@ export class TextConsumer {
   }
 
   
-  consumeLine(beforeLineConsumption: beforeLineConsumption): boolean {
+  consumeLine(beforeLineConsumption?: beforeLineConsumption): boolean {
     return this.consumeLineIf(null, beforeLineConsumption)
   }
 
   
-  consumeLineIf(pattern: string, beforeLineConsumption: beforeLineConsumption): boolean {
+  consumeLineIf(pattern: RegExp, beforeLineConsumption?: beforeLineConsumption): boolean {
     const consumer = new TextConsumer(this.remaining())
 
     while (!consumer.done() && !consumer.consumeIf('\n')) {
@@ -75,7 +75,7 @@ export class TextConsumer {
     const line = consumer.consumed()
     const trimmedLine = line.replace(/\s+$/, '')
     
-    if (pattern && !new RegExp(pattern).test(trimmedLine)) {
+    if (pattern && !pattern.test(trimmedLine)) {
       return false
     }
 
