@@ -17,14 +17,16 @@
 				"NODE_ENV": "development"
 			},
 			"externalConsole": false,
-			"sourceMaps": false,
-			"outDir": null
+			"sourceMaps": true,
+			"outDir": "built"
 		},
 		{
 			"name": "Attach",
 			"type": "node",
 			"request": "attach",
-			"port": 5858
+			"port": 5858,
+			"sourceMaps": true,
+			"outDir": "built"
 		}
 	]
 }

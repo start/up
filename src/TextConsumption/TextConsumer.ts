@@ -61,13 +61,13 @@ export class TextConsumer {
 
 
   consumeLine(beforeLineConsumption: beforeLineConsumption): boolean {
-    const clone = this.clone()
+    const consumer = new TextConsumer(this.remaining())
 
-    while (!clone.done() && !clone.consume('\n')) {
-      clone.moveNext()
+    while (!consumer.done() && !consumer.consume('\n')) {
+      consumer.moveNext()
     }
 
-    const line = clone.consumed()
+    const line = consumer.consumed()
 
     let isRejected = false
     let charsToSkip = line.length
@@ -165,19 +165,6 @@ export class TextConsumer {
       (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
       && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
     )
-  }
-
-
-  private clone(): TextConsumer {
-    const clone = new TextConsumer('')
-
-    clone.text = this.text
-    clone.index = this.index
-    clone.isCurrentCharEscaped = this.isCurrentCharEscaped
-    clone.countUnclosedParen = this.countUnclosedParen
-    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
-
-    return clone
   }
 }
 
