@@ -106,7 +106,7 @@ class InlineParser {
 
 
   private tryParseSandwich(sandwich: InlineSandwich): boolean {
-    return this.consumer.consume(sandwich.openingBun, (remaining, skip, reject) => {
+    return this.consumer.consumeIf(sandwich.openingBun, (remaining, skip, reject) => {
       const sandwichNode = new sandwich.NodeType()
       sandwichNode.parentNode = this.parentNode
 
@@ -126,7 +126,7 @@ class InlineParser {
 
 
   private tryCloseSandwich(sandwich: InlineSandwich): boolean {
-    if (this.parentNode instanceof sandwich.NodeType && this.consumer.consume(sandwich.closingBun)) {
+    if (this.parentNode instanceof sandwich.NodeType && this.consumer.consumeIf(sandwich.closingBun)) {
       this.parentRequiresClosing = false
       this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvanced()))
       return true
@@ -153,6 +153,6 @@ class InlineParser {
 
 
   private terminatesEarly(): boolean {
-    return this.terminateOn && this.consumer.consume(this.terminateOn)
+    return this.terminateOn && this.consumer.consumeIf(this.terminateOn)
   }
 }

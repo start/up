@@ -35,7 +35,7 @@ export class LinkParser {
 
 
   private tryParseOpenBracketOrFail(): boolean {
-    if (this.consumer.consume('[')) {
+    if (this.consumer.consumeIf('[')) {
       return true
     }
 
@@ -63,7 +63,7 @@ export class LinkParser {
     let url = ''
 
     while (!this.consumer.done()) {
-      if (this.consumer.consume(']', () => { this.linkNode.url = url })) {
+      if (this.consumer.consumeIf(']', () => { this.linkNode.url = url })) {
         return true
       }
 

@@ -34,7 +34,7 @@ export class TextConsumer {
   }
 
 
-  consume(needle: string, onMatchBeforeConsumption?: onMatchBeforeConsumption): boolean {
+  consumeIf(needle: string, onMatchBeforeConsumption?: onMatchBeforeConsumption): boolean {
     const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
@@ -59,15 +59,25 @@ export class TextConsumer {
     return false
   }
 
-
+  
   consumeLine(beforeLineConsumption: beforeLineConsumption): boolean {
+    return this.consumeLineIf(null, beforeLineConsumption)
+  }
+
+  
+  consumeLineIf(pattern: string, beforeLineConsumption: beforeLineConsumption): boolean {
     const consumer = new TextConsumer(this.remaining())
 
-    while (!consumer.done() && !consumer.consume('\n')) {
+    while (!consumer.done() && !consumer.consumeIf('\n')) {
       consumer.moveNext()
     }
 
     const line = consumer.consumed()
+    const trimmedLine = line.replace(/\s+$/, '')
+    
+    if (pattern && !new RegExp(pattern).test(trimmedLine)) {
+      return false
+    }
 
     let isRejected = false
     let charsToSkip = line.length
@@ -78,8 +88,6 @@ export class TextConsumer {
 
       const skip = (count: number) => { charsToSkip += count }
       const reject = () => { isRejected = true }
-
-      const trimmedLine = line.replace(/\s+$/, '')
 
       beforeLineConsumption(trimmedLine, remainingAfterLine, skip, reject)
     }
