@@ -14,7 +14,7 @@ export function parseOutline(text: string): ParseResult {
   while (!consumer.done()) {
     const sectionSeparatorWhitespaceResult = parseSectionSeparatorWhitespace(consumer.remaining())
     
-    if (sectionSeparatorWhitespaceResult.success()) {
+    if (sectionSeparatorWhitespaceResult.success) {
       nodes.push(new SectionSeparatorNode())
       consumer.skip(sectionSeparatorWhitespaceResult.countCharsParsed)
       continue

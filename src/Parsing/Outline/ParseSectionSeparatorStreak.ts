@@ -7,10 +7,9 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 import { BLANK_LINE } from './Patterns'
 
-// 3 or more consecutive blank lines indicates separation between sections.
 export function parseSectionSeparatorWhitespace (text: string) {
   const consumer = new TextConsumer(text)
-  
+
   const countBlankLinesInSeparator = 3
   
   let count = 0

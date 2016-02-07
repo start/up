@@ -89,7 +89,7 @@ class InlineParser {
   private tryParseLink(): boolean {
     const linkResult = new LinkParser(this.consumer.remaining(), this.parentNode).result
 
-    if (!linkResult.success()) {
+    if (!linkResult.success) {
       return false
     }
 
@@ -112,7 +112,7 @@ class InlineParser {
 
       const parseResult = new InlineParser(remaining, sandwichNode, this.terminateOn).parseResult
 
-      if (!parseResult.success()) {
+      if (!parseResult.success) {
         reject()
         return
       }

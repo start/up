@@ -50,7 +50,7 @@ export class LinkParser {
   private tryParseContentPlusArrowOrFail(): boolean {
     const contentResult = parseInline(this.consumer.remaining(), this.linkNode, ' -> ')
 
-    if (!contentResult.success()) {
+    if (!contentResult.success) {
       this.fail()
       return false
     }
