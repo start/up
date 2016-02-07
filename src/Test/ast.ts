@@ -449,8 +449,7 @@ Goodbye, world!`
       ]))
   })
   
-  it('2 blank lines simply provide separation, producing no syntax nodes themselves', function() {
-    
+  it('2 blank lines simply provide separation, producing no syntax nodes themselves', function() { 
     const text = `Hello, world!
 
 
@@ -464,6 +463,23 @@ Goodbye, world!`
   
   it('3 blank lines produces a section separator node', function() {
     const text = `Hello, world!
+
+
+
+Goodbye, world!`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new SectionSeparatorNode(),
+        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+      ]))
+  })
+  
+  it('more than 3 blank lines produces a single section separator node', function() {
+    const text = `Hello, world!
+
+
+
 
 
 
