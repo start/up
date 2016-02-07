@@ -11,8 +11,11 @@ export class LinkParser {
 
   public result: ParseResult;
   private linkNode = new LinkNode();
+  private consumer: TextConsumer;
 
-  constructor(private consumer: TextConsumer, private parentNode: RichSyntaxNode) {
+  constructor(text: string, private parentNode: RichSyntaxNode) {
+    this.consumer = new TextConsumer(text)
+    
     if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
       this.fail()
       return
@@ -30,7 +33,7 @@ export class LinkParser {
       return
     }
     
-    this.finish(new ParseResult([this.linkNode], consumer.countCharsAdvanced()))
+    this.finish(new ParseResult([this.linkNode], this.consumer.countCharsAdvanced()))
   }
 
 

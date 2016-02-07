@@ -87,7 +87,7 @@ class InlineParser {
 
 
   private tryParseLink(): boolean {
-    const linkResult = new LinkParser(new TextConsumer(this.consumer.remaining()), this.parentNode).result
+    const linkResult = new LinkParser(this.consumer.remaining(), this.parentNode).result
 
     if (!linkResult.success()) {
       return false
