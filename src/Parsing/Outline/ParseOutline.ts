@@ -17,6 +17,7 @@ export function parseOutline(text: string): ParseResult {
     if (sectionSeparatorWhitespaceResult.success()) {
       nodes.push(new SectionSeparatorNode())
       consumer.skip(sectionSeparatorWhitespaceResult.countCharsParsed)
+      continue
     }
     
     if (consumer.consumeLineIf(/\S/, (line) => {

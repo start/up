@@ -437,8 +437,8 @@ describe('Text surrounded by 2 parentheses', function() {
   })
 })
 
-describe('Two lines of text with a blank line in between', function() {
-  it('creates two paragraph nodes', function() {
+describe('Between paragraphs', function() {
+  it('1 blank line simply provides separation, producing no syntax node itself', function() {
     const text = `Hello, world!
 
 Goodbye, world!`
@@ -448,11 +448,21 @@ Goodbye, world!`
         new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
       ]))
   })
-})
+  
+  it('2 blank lines simply provide separation, producing no syntax nodes themselves', function() {
+    
+    const text = `Hello, world!
 
 
-describe('Two lines of text with 3 blank lines in between', function() {
-  it('creates two paragraph nodes separated by a section separator node', function() {
+Goodbye, world!`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+      ]))
+  })
+  
+  it('3 blank lines produces a section separator node', function() {
     const text = `Hello, world!
 
 
@@ -466,3 +476,4 @@ Goodbye, world!`
       ]))
   })
 })
+
