@@ -11,10 +11,14 @@ export function parseSectionSeparatorWhitespace (text: string) {
   const blankLine = /^\s*$/
   const countBlankLinesInSeparator = 3
   
-  for (let i = 0; i < countBlankLinesInSeparator; i++) {
-    if (!consumer.consumeLineIf(blankLine)) {
-      return new FailedParseResult()
-    }
+  let count = 0
+  
+  while (consumer.consumeLineIf(blankLine)) {
+    count += 1
+  }
+  
+  if (count < countBlankLinesInSeparator) {
+    return new FailedParseResult()
   }
   
   return new ParseResult([new SectionSeparatorNode()], consumer.countCharsAdvanced())
