@@ -15,6 +15,7 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
+import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 
 function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
   return new DocumentNode(syntaxNodes);
@@ -444,6 +445,23 @@ Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+      ]))
+  })
+})
+
+
+describe('Two lines of text with 3 blank lines in between', function() {
+  it('creates two paragraph nodes separated by a section separator node', function() {
+    const text = `Hello, world!
+
+
+
+Goodbye, world!`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new SectionSeparatorNode(),
         new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
       ]))
   })
