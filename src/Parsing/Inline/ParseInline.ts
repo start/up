@@ -16,6 +16,8 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 
+import { parseCode } from './parseCode'
+import { getSandwichParser } from './GetSandwichParser'
 import { LinkParser } from './LinkParser'
 import { InlineSandwich } from './InlineSandwich'
 
@@ -24,15 +26,12 @@ export function parseInline(text: string, parentNode: RichSyntaxNode, terminateO
   return new InlineParser(text, parentNode, terminateOn, false).parseResult
 }
 
-
-const INLINE_CODE = new InlineSandwich(InlineCodeNode, '`', '`')
 const STRESS = new InlineSandwich(StressNode, '**', '**')
 const EMPHASIS = new InlineSandwich(EmphasisNode, '*', '*')
 const REVISION_INSERTION = new InlineSandwich(RevisionInsertionNode, '++', '++')
 const REVISION_DELETION = new InlineSandwich(RevisionDeletionNode, '~~', '~~')
 const SPOILER = new InlineSandwich(SpoilerNode, '[<_<]', '[>_>]')
 const INLINE_ASIDE = new InlineSandwich(InlineAsideNode, '((', '))')
-
 
 class InlineParser {
 
@@ -49,12 +48,10 @@ class InlineParser {
         return
       }
 
-      if (this.tryCloseOrParseSandwich(INLINE_CODE)) {
-        continue
-      }
-
-      if (this.parentNode instanceof InlineCodeNode) {
-        this.addPlainCharNode()
+      if (parseCode(this.consumer.remaining(), this.parentNode, (resultNodes, countCharsParsed) => {
+        this.nodes.push.apply(this.nodes, resultNodes)
+        this.consumer.skip(countCharsParsed)
+      })) {
         continue
       }
 

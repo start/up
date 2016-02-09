@@ -37,6 +37,17 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('can be the last convention in a paragraph', function() {
+    console.log(Up.ast('Hello, `*world*`'))
+    expect(Up.ast('Hello, `*world*`')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('*world*')
+        ])
+      ]))
+  })
 })
 
 describe('A backslash', function() {
@@ -142,16 +153,6 @@ describe('Text surrounded by asterisks', function() {
           new PlainTextNode(' world')
         ]),
         new PlainTextNode('!')
-      ]))
-  })
-  
-  it('can be the last convention in a paragraph', function() {
-    expect(Up.ast('Hello, `*world*`')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('*world*')
-        ])
       ]))
   })
 })
