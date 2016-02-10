@@ -24,7 +24,7 @@ import { InlineSandwich } from './InlineSandwich'
 
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
-  return new InlineParser(text, parentNode, terminateOn, false).parseResult
+  return new InlineParser(text, parentNode, terminateOn).parseResult
 }
 
 const STRESS = getSandwichParser(StressNode, '**', '**')
@@ -40,7 +40,7 @@ class InlineParser {
   private nodes: SyntaxNode[] = [];
   private consumer: TextConsumer
 
-  constructor(text: string, private parentNode: RichSyntaxNode, private terminateOn: string = null, private parentRequiresClosing = true) {
+  constructor(text: string, private parentNode: RichSyntaxNode, private terminateOn: string = null) {
     this.consumer = new TextConsumer(text)
 
     main_parser_loop:
@@ -56,8 +56,9 @@ class InlineParser {
         continue
       }
 
-      if (this.terminatesEarly()) {
-        break
+      if (this.terminateOn && this.consumer.consumeIf(this.terminateOn)) {
+    	  this.succeed()
+        return
       }
 
       if (this.tryParseLink()) {
@@ -78,12 +79,12 @@ class InlineParser {
       this.addPlainCharNode()
     }
 
-    if (this.parentRequiresClosing) {
+    if (this.terminateOn) {
       this.fail()
       return
     }
 
-    this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvanced()))
+    this.succeed()
   }
 
 
@@ -99,10 +100,10 @@ class InlineParser {
 
     return true
   }
-
-
-  private finish(result: ParseResult): void {
-    this.parseResult = result
+  
+  
+  private succeed(): void {
+    this.parseResult = new ParseResult(this.nodes, this.consumer.countCharsAdvanced())
   }
 
 
@@ -114,10 +115,5 @@ class InlineParser {
   private addPlainCharNode(): void {
     this.nodes.push(new PlainTextNode(this.consumer.currentChar()))
     this.consumer.moveNext()
-  }
-
-
-  private terminatesEarly(): boolean {
-    return this.terminateOn && this.consumer.consumeIf(this.terminateOn)
   }
 }
