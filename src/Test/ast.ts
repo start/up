@@ -39,7 +39,6 @@ describe('Text surrounded by backticks', function() {
   })
   
   it('can be the last convention in a paragraph', function() {
-    console.log(Up.ast('Hello, `*world*`'))
     expect(Up.ast('Hello, `*world*`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
