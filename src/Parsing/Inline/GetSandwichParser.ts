@@ -7,24 +7,30 @@ import { parseInline } from './ParseInline'
 
 export function getSandwichParser(
   NodeType: RichSyntaxNodeType,
-  openingBun: string,
-  closingBun: string
+  startingBun: string,
+  endingBun: string
 ): Parser {
-  return (text, parentNode, parentTerminatesOn, onParse): boolean => {
+  return (text, parentNode, parentTerminator, onParse): boolean => {
     
-    if (startsWith(parentTerminatesOn, openingBun) && startsWith(text, parentTerminatesOn)) {
+    // If the text starts with the parent node's terminator, we have an opportunity to
+    // close the parent node. However, if that terminator starts with this sandwich's
+    // starting "bun", then we will *always* start parsing this sandwich instead.
+    //
+    // To avoid that, we check for those two conditions. If both are true, we fail to
+    // parse this sandwich, allowing the parent node to close.
+    if (startsWith(text, parentTerminator) && startsWith(parentTerminator, startingBun)) {
       return false
     }
     
     const consumer = new TextConsumer(text)
     
-    if (!consumer.consumeIf(openingBun)) {
+    if (!consumer.consumeIf(startingBun)) {
       return false
     }
     
     const sandwichNode = new NodeType()
     sandwichNode.parentNode = parentNode
-    const inlineResult = parseInline(consumer.remaining(), sandwichNode, closingBun)
+    const inlineResult = parseInline(consumer.remaining(), sandwichNode, endingBun)
     
     if (!inlineResult.success) {
       return false

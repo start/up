@@ -20,11 +20,10 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { parseCode } from './parseCode'
 import { getSandwichParser } from './GetSandwichParser'
 import { LinkParser } from './LinkParser'
-import { InlineSandwich } from './InlineSandwich'
 
 
-export function parseInline(text: string, parentNode: RichSyntaxNode, terminateOn: string = null): ParseResult {
-  return new InlineParser(text, parentNode, terminateOn).parseResult
+export function parseInline(text: string, parentNode: RichSyntaxNode, parentTerminator: string = null): ParseResult {
+  return new InlineParser(text, parentNode, parentTerminator).parseResult
 }
 
 const parseStress = getSandwichParser(StressNode, '**', '**')
@@ -40,7 +39,7 @@ class InlineParser {
   private nodes: SyntaxNode[] = [];
   private consumer: TextConsumer
 
-  constructor(text: string, private parentNode: RichSyntaxNode, private terminateOn: string = null) {
+  constructor(text: string, private parentNode: RichSyntaxNode, private parentTerminator: string = null) {
     this.consumer = new TextConsumer(text)
     
     const includeParseResult = (resultNodes: SyntaxNode[], countCharsParsed: number) => {
@@ -65,12 +64,12 @@ class InlineParser {
       for (let parseSandwich of [
         parseStress, parseEmphasis, parseRevisionInsertion, parseRevisionDeletion, parseSpoiler, parseInlineAside
       ]) {
-        if (parseSandwich(this.consumer.remaining(), this.parentNode, terminateOn, includeParseResult)) {
+        if (parseSandwich(this.consumer.remaining(), this.parentNode, parentTerminator, includeParseResult)) {
           continue main_parser_loop
         }
       }
 
-      if (this.terminateOn && this.consumer.consumeIf(this.terminateOn)) {
+      if (this.parentTerminator && this.consumer.consumeIf(this.parentTerminator)) {
         this.succeed()
         return
       }
@@ -79,7 +78,7 @@ class InlineParser {
       this.consumer.moveNext()
     }
 
-    if (this.terminateOn) {
+    if (this.parentTerminator) {
       this.fail()
       return
     }

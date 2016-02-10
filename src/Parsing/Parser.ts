@@ -6,5 +6,5 @@ export interface OnParse {
 }
 
 export interface Parser {
-  (text: string, parentNode: RichSyntaxNode, parentTerminatesOn: string, onParse: OnParse): boolean
+  (text: string, currentNode: RichSyntaxNode, terminatedBy: string, onParse: OnParse): boolean
 }
