@@ -42,6 +42,11 @@ class InlineParser {
 
   constructor(text: string, private parentNode: RichSyntaxNode, private terminateOn: string = null) {
     this.consumer = new TextConsumer(text)
+    
+    const includeParseResult = (resultNodes: SyntaxNode[], countCharsParsed: number) => {
+      this.nodes.push.apply(this.nodes, resultNodes)
+      this.consumer.skip(countCharsParsed)
+    }
 
     main_parser_loop:
     while (!this.consumer.done()) {
@@ -49,10 +54,7 @@ class InlineParser {
         return
       }
 
-      if (parseCode(this.consumer.remaining(), this.parentNode, (resultNodes, countCharsParsed) => {
-        this.nodes.push.apply(this.nodes, resultNodes)
-        this.consumer.skip(countCharsParsed)
-      })) {
+      if (parseCode(this.consumer.remaining(), this.parentNode, includeParseResult)) {
         continue
       }
 
@@ -68,10 +70,7 @@ class InlineParser {
       for (let parseSandwich of [
         parseStress, parseEmphasis, parseRevisionInsertion, parseRevisionDeletion, parseSpoiler, parseInlineAside
       ]) {
-        if (parseSandwich(this.consumer.remaining(), this.parentNode, (resultNodes, countCharsParsed) => {
-          this.nodes.push.apply(this.nodes, resultNodes)
-          this.consumer.skip(countCharsParsed)
-        })) {
+        if (parseSandwich(this.consumer.remaining(), this.parentNode, includeParseResult)) {
           continue main_parser_loop
         }
       }
