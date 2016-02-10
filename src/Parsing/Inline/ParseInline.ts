@@ -2,6 +2,7 @@ import { ParseResult } from '.././ParseResult'
 import { FailedParseResult } from '.././FailedParseResult'
 
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { Parser, OnParse } from '../Parser'
 
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
@@ -26,12 +27,12 @@ export function parseInline(text: string, parentNode: RichSyntaxNode, terminateO
   return new InlineParser(text, parentNode, terminateOn, false).parseResult
 }
 
-const STRESS = new InlineSandwich(StressNode, '**', '**')
-const EMPHASIS = new InlineSandwich(EmphasisNode, '*', '*')
-const REVISION_INSERTION = new InlineSandwich(RevisionInsertionNode, '++', '++')
-const REVISION_DELETION = new InlineSandwich(RevisionDeletionNode, '~~', '~~')
-const SPOILER = new InlineSandwich(SpoilerNode, '[<_<]', '[>_>]')
-const INLINE_ASIDE = new InlineSandwich(InlineAsideNode, '((', '))')
+const STRESS = getSandwichParser(StressNode, '**', '**')
+const EMPHASIS = getSandwichParser(EmphasisNode, '*', '*')
+const REVISION_INSERTION = getSandwichParser(RevisionInsertionNode, '++', '++')
+const REVISION_DELETION = getSandwichParser(RevisionDeletionNode, '~~', '~~')
+const SPOILER = getSandwichParser(SpoilerNode, '[<_<]', '[>_>]')
+const INLINE_ASIDE = getSandwichParser(InlineAsideNode, '((', '))')
 
 class InlineParser {
 
@@ -66,7 +67,10 @@ class InlineParser {
       for (let sandwich of [
         STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER, INLINE_ASIDE
       ]) {
-        if (this.tryCloseOrParseSandwich(sandwich)) {
+        if (sandwich(this.consumer.remaining(), this.parentNode, (resultNodes, countCharsParsed) => {
+          this.nodes.push.apply(this.nodes, resultNodes)
+          this.consumer.skip(countCharsParsed)
+        })) {
           continue main_parser_loop
         }
       }
@@ -94,42 +98,6 @@ class InlineParser {
     this.consumer.skip(linkResult.countCharsParsed)
 
     return true
-  }
-
-
-  tryCloseOrParseSandwich(sandwich: InlineSandwich): boolean {
-    return this.tryCloseSandwich(sandwich) || this.tryParseSandwich(sandwich)
-  }
-
-
-  private tryParseSandwich(sandwich: InlineSandwich): boolean {
-    return this.consumer.consumeIf(sandwich.openingBun, (remaining, skip, reject) => {
-      const sandwichNode = new sandwich.NodeType()
-      sandwichNode.parentNode = this.parentNode
-
-      const parseResult = new InlineParser(remaining, sandwichNode, this.terminateOn).parseResult
-
-      if (!parseResult.success) {
-        reject()
-        return
-      }
-
-      sandwichNode.addChildren(parseResult.nodes)
-      this.nodes.push(sandwichNode)
-
-      skip(parseResult.countCharsParsed)
-    })
-  }
-
-
-  private tryCloseSandwich(sandwich: InlineSandwich): boolean {
-    if (this.parentNode instanceof sandwich.NodeType && this.consumer.consumeIf(sandwich.closingBun)) {
-      this.parentRequiresClosing = false
-      this.finish(new ParseResult(this.nodes, this.consumer.countCharsAdvanced()))
-      return true
-    }
-
-    return false
   }
 
 
