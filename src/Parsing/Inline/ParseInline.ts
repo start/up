@@ -27,12 +27,12 @@ export function parseInline(text: string, parentNode: RichSyntaxNode, terminateO
   return new InlineParser(text, parentNode, terminateOn).parseResult
 }
 
-const STRESS = getSandwichParser(StressNode, '**', '**')
-const EMPHASIS = getSandwichParser(EmphasisNode, '*', '*')
-const REVISION_INSERTION = getSandwichParser(RevisionInsertionNode, '++', '++')
-const REVISION_DELETION = getSandwichParser(RevisionDeletionNode, '~~', '~~')
-const SPOILER = getSandwichParser(SpoilerNode, '[<_<]', '[>_>]')
-const INLINE_ASIDE = getSandwichParser(InlineAsideNode, '((', '))')
+const parseStress = getSandwichParser(StressNode, '**', '**')
+const parseEmphasis = getSandwichParser(EmphasisNode, '*', '*')
+const parseRevisionInsertion = getSandwichParser(RevisionInsertionNode, '++', '++')
+const parseRevisionDeletion = getSandwichParser(RevisionDeletionNode, '~~', '~~')
+const parseSpoiler = getSandwichParser(SpoilerNode, '[<_<]', '[>_>]')
+const parseInlineAside = getSandwichParser(InlineAsideNode, '((', '))')
 
 class InlineParser {
 
@@ -57,7 +57,7 @@ class InlineParser {
       }
 
       if (this.terminateOn && this.consumer.consumeIf(this.terminateOn)) {
-    	  this.succeed()
+        this.succeed()
         return
       }
 
@@ -65,10 +65,10 @@ class InlineParser {
         continue
       }
 
-      for (let sandwich of [
-        STRESS, EMPHASIS, REVISION_INSERTION, REVISION_DELETION, SPOILER, INLINE_ASIDE
+      for (let parseSandwich of [
+        parseStress, parseEmphasis, parseRevisionInsertion, parseRevisionDeletion, parseSpoiler, parseInlineAside
       ]) {
-        if (sandwich(this.consumer.remaining(), this.parentNode, (resultNodes, countCharsParsed) => {
+        if (parseSandwich(this.consumer.remaining(), this.parentNode, (resultNodes, countCharsParsed) => {
           this.nodes.push.apply(this.nodes, resultNodes)
           this.consumer.skip(countCharsParsed)
         })) {
@@ -76,7 +76,8 @@ class InlineParser {
         }
       }
 
-      this.addPlainCharNode()
+      this.nodes.push(new PlainTextNode(this.consumer.currentChar()))
+      this.consumer.moveNext()
     }
 
     if (this.terminateOn) {
@@ -100,8 +101,8 @@ class InlineParser {
 
     return true
   }
-  
-  
+
+
   private succeed(): void {
     this.parseResult = new ParseResult(this.nodes, this.consumer.countCharsAdvanced())
   }
@@ -109,11 +110,5 @@ class InlineParser {
 
   private fail(): void {
     this.parseResult = new FailedParseResult()
-  }
-
-
-  private addPlainCharNode(): void {
-    this.nodes.push(new PlainTextNode(this.consumer.currentChar()))
-    this.consumer.moveNext()
   }
 }
