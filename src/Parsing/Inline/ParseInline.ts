@@ -58,11 +58,6 @@ class InlineParser {
         continue
       }
 
-      if (this.terminateOn && this.consumer.consumeIf(this.terminateOn)) {
-        this.succeed()
-        return
-      }
-
       if (this.tryParseLink()) {
         continue
       }
@@ -70,9 +65,14 @@ class InlineParser {
       for (let parseSandwich of [
         parseStress, parseEmphasis, parseRevisionInsertion, parseRevisionDeletion, parseSpoiler, parseInlineAside
       ]) {
-        if (parseSandwich(this.consumer.remaining(), this.parentNode, includeParseResult)) {
+        if (parseSandwich(this.consumer.remaining(), this.parentNode, terminateOn, includeParseResult)) {
           continue main_parser_loop
         }
+      }
+
+      if (this.terminateOn && this.consumer.consumeIf(this.terminateOn)) {
+        this.succeed()
+        return
       }
 
       this.nodes.push(new PlainTextNode(this.consumer.currentChar()))
