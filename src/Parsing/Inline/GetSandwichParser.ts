@@ -12,30 +12,27 @@ export function getSandwichParser(
 ): Parser {
   return (text, parseArgs, onParse): boolean => {
     
-    // If the text starts with the parent node's terminator, we have an opportunity to
-    // close the parent node. However, if that terminator starts with this sandwich's
-    // starting "bun", then we will *always* start parsing this sandwich instead.
+    // If the text starts with the terminator, and the terminator itself starts with
+    // this sandwich's starting "bun", then we'd normally *always* start parsing this
+    // sandwich instead of recognizing the terminator.
     //
-    // To avoid that, we check for those two conditions. If both are true, we fail to
-    // parse this sandwich, allowing the parent node to close.
+    // To avoid that, we check for those two conditions. If both are true, we decline
+    // to parse this sandwich, allowing the parent node to close.
     if (startsWith(text, parseArgs.terminator) && startsWith(parseArgs.terminator, startingBun)) {
       return false
     }
-    
+
     const consumer = new TextConsumer(text)
-    
-    if (!consumer.consumeIf(startingBun)) {
-      return false
-    }
-    
+
     const sandwichNode = new NodeType()
     sandwichNode.parentNode = parseArgs.parentNode
-    
-    return parseInline(consumer.remaining(), {parentNode: sandwichNode, terminator: endingBun}, (nodes, countCharsParsed) => {
-      consumer.skip(countCharsParsed)
-      sandwichNode.addChildren(nodes)
-      onParse([sandwichNode], consumer.countCharsAdvanced())
-    })
+
+    return consumer.consumeIf(startingBun) &&
+      parseInline(consumer.remaining(), { parentNode: sandwichNode, terminator: endingBun }, (nodes, countCharsParsed) => {
+        consumer.skip(countCharsParsed)
+        sandwichNode.addChildren(nodes)
+        onParse([sandwichNode], consumer.countCharsAdvanced())
+      })
   }
 }
 
