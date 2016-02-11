@@ -33,12 +33,13 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
 
   main_parser_loop:
   while (!consumer.done()) {
-    
+
     for (let parser of parsers) {
-      if (parser(consumer.remaining(), parseArgs, (resultNodes, countCharsParsed) => {
-        nodes.push.apply(nodes, resultNodes)
-        consumer.skip(countCharsParsed)
-      })) {
+      if (parser(consumer.remaining(), parseArgs,
+        (resultNodes, countCharsParsed) => {
+          nodes.push.apply(nodes, resultNodes)
+          consumer.skip(countCharsParsed)
+        })) {
         continue main_parser_loop
       }
     }

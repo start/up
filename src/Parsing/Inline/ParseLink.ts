@@ -22,10 +22,11 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
   const linkNode = new LinkNode(parseArgs.parentNode)
   
   // Parse the content, which ends with the ` -> ` pointing to the URL
-  if (!parseInline(consumer.remaining(), {parentNode: linkNode, terminator: ' -> '}, (nodes, countChars) => {
-    consumer.skip(countChars)
-    linkNode.addChildren(nodes)
-  })) {
+  if (!parseInline(consumer.remaining(), { parentNode: linkNode, terminator: ' -> ' },
+    (nodes, countChars) => {
+      consumer.skip(countChars)
+      linkNode.addChildren(nodes)
+    })) {
     return false
   }
 

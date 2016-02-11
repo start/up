@@ -8,22 +8,23 @@ import { ParseArgs, OnParse } from '../Parser'
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   let outlineNodes: SyntaxNode[] = []
-
   const consumer = new TextConsumer(text)
 
-  while (!consumer.done()) {    
-    if (parseSectionSeparatorWhitespace(consumer.remaining(), {}, (sectionSeparatorNodes, countCharsAdvanced) => {
-      outlineNodes.push.apply(outlineNodes, sectionSeparatorNodes)
-      consumer.skip(countCharsAdvanced)
-    })) {
+  while (!consumer.done()) {
+    if (parseSectionSeparatorWhitespace(consumer.remaining(), parseArgs,
+      (sectionSeparatorNodes, countCharsAdvanced) => {
+        outlineNodes.push.apply(outlineNodes, sectionSeparatorNodes)
+        consumer.skip(countCharsAdvanced)
+      })) {
       continue
     }
 
     if (consumer.consumeLineIf(/\S/, (nonBlankLine) => {
-      parseInline(nonBlankLine, { parentNode: new ParagraphNode(parseArgs.parentNode) }, (inlineNodes, countCharsAdvanced, paragraphNode) => {
-        paragraphNode.addChildren(inlineNodes)
-        outlineNodes.push(paragraphNode)
-      })
+      parseInline(nonBlankLine, { parentNode: new ParagraphNode(parseArgs.parentNode) },
+        (inlineNodes, countCharsAdvanced, paragraphNode) => {
+          paragraphNode.addChildren(inlineNodes)
+          outlineNodes.push(paragraphNode)
+        })
     })) {
       continue
     }
