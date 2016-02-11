@@ -488,7 +488,19 @@ Goodbye, world!`
       insideDocument([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new SectionSeparatorNode(),
-        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+        new ParagraphNode([new PlainTextNode('Goodbye, world!')])
+      ]))
+  })
+})
+
+
+
+describe('A line of a streak of characters', function() {
+  it('produces a section separator node', function() {
+    const text = `----`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
       ]))
   })
 })
