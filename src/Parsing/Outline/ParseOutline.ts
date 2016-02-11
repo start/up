@@ -10,24 +10,26 @@ export function parseOutline(text: string): ParseResult {
   let nodes: SyntaxNode[] = []
 
   const consumer = new TextConsumer(text)
-  
+
   while (!consumer.done()) {
     const sectionSeparatorWhitespaceResult = parseSectionSeparatorWhitespace(consumer.remaining())
-    
+
     if (sectionSeparatorWhitespaceResult.success) {
       nodes.push(new SectionSeparatorNode())
       consumer.skip(sectionSeparatorWhitespaceResult.countCharsParsed)
       continue
     }
-    
-    if (consumer.consumeLineIf(/\S/, (line) => {
-        const paragraphNode = new ParagraphNode()
-        paragraphNode.addChildren(parseInline(line, paragraphNode).nodes)
+
+    if (consumer.consumeLineIf(/\S/, (nonBlankLine) => {
+      const paragraphNode = new ParagraphNode()
+      parseInline(nonBlankLine, paragraphNode, null, (inlineNodes, inlineCountCharsParsed) => {
+        paragraphNode.addChildren(inlineNodes)
         nodes.push(paragraphNode)
+      })
     })) {
       continue
     }
-    
+
     consumer.consumeLine()
   }
 

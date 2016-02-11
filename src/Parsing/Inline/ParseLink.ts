@@ -20,19 +20,17 @@ export function parseLink(text: string, parentNode: RichSyntaxNode, onParse: OnP
   if (!consumer.consumeIf('[')) {
     return false
   }
-  
+
   const linkNode = new LinkNode()
   linkNode.parentNode = parentNode
   
   // Parse the content, which ends with the ` -> ` pointing to the URL
-  const contentResult = parseInline(consumer.remaining(), linkNode, ' -> ')
-
-  if (!contentResult.success) {
+  if (!parseInline(consumer.remaining(), linkNode, ' -> ', (nodes, countChars) => {
+    consumer.skip(countChars)
+    linkNode.addChildren(nodes)
+  })) {
     return false
   }
-
-  consumer.skip(contentResult.countCharsParsed)
-  linkNode.addChildren(contentResult.nodes)
 
   // Parse the URL, which ends with the closing `]` 
   while (!consumer.done()) {

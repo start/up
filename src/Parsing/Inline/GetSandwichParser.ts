@@ -30,18 +30,12 @@ export function getSandwichParser(
     
     const sandwichNode = new NodeType()
     sandwichNode.parentNode = parentNode
-    const inlineResult = parseInline(consumer.remaining(), sandwichNode, endingBun)
     
-    if (!inlineResult.success) {
-      return false
-    }
-    
-    consumer.skip(inlineResult.countCharsParsed)
-    
-    sandwichNode.addChildren(inlineResult.nodes)
-    onParse([sandwichNode], consumer.countCharsAdvanced())
-    
-    return true
+    return parseInline(consumer.remaining(), sandwichNode, endingBun, (inlineNodes, inlineCountCharsParsed) => {
+      consumer.skip(inlineCountCharsParsed)
+      sandwichNode.addChildren(inlineNodes)
+      onParse([sandwichNode], consumer.countCharsAdvanced())
+    })
   }
 }
 
