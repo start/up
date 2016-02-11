@@ -7,16 +7,15 @@ import { parseSectionSeparatorWhitespace } from './SectionSeparatorWhitespacePar
 import { OnParse } from '../Parser'
 
 export function parseOutline(text: string, onParse: OnParse): boolean {
-  let nodes: SyntaxNode[] = []
+  let outlineNodes: SyntaxNode[] = []
 
   const consumer = new TextConsumer(text)
 
-  while (!consumer.done()) {
-    const sectionSeparatorWhitespaceResult = parseSectionSeparatorWhitespace(consumer.remaining())
-
-    if (sectionSeparatorWhitespaceResult.success) {
-      nodes.push(new SectionSeparatorNode())
-      consumer.skip(sectionSeparatorWhitespaceResult.countCharsParsed)
+  while (!consumer.done()) {    
+    if (parseSectionSeparatorWhitespace(consumer.remaining(), (sectionSeparatorNodes, countCharsAdvanced) => {
+      outlineNodes.push.apply(outlineNodes, sectionSeparatorNodes)
+      consumer.skip(countCharsAdvanced)
+    })) {
       continue
     }
 
@@ -24,7 +23,7 @@ export function parseOutline(text: string, onParse: OnParse): boolean {
       const paragraphNode = new ParagraphNode()
       parseInline(nonBlankLine, paragraphNode, null, (inlineNodes) => {
         paragraphNode.addChildren(inlineNodes)
-        nodes.push(paragraphNode)
+        outlineNodes.push(paragraphNode)
       })
     })) {
       continue
@@ -33,6 +32,6 @@ export function parseOutline(text: string, onParse: OnParse): boolean {
     consumer.consumeLine()
   }
 
-  onParse(nodes, consumer.countCharsAdvanced())
+  onParse(outlineNodes, consumer.countCharsAdvanced())
   return true
 }

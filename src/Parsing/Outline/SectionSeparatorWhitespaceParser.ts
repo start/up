@@ -1,14 +1,12 @@
 import { ParseResult } from './../ParseResult'
 import { FailedParseResult } from './../FailedParseResult'
-import { parseInline } from '../Inline/ParseInline'
-
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-
 import { BLANK_LINE } from './Patterns'
+import { OnParse } from '../Parser'
 
 // 3 or more consecutive blank lines indicates separation between sections.
-export function parseSectionSeparatorWhitespace (text: string) {
+export function parseSectionSeparatorWhitespace (text: string, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
   
   const countBlankLinesInSeparator = 3
@@ -20,8 +18,9 @@ export function parseSectionSeparatorWhitespace (text: string) {
   }
   
   if (count < countBlankLinesInSeparator) {
-    return new FailedParseResult()
+    return false
   }
   
-  return new ParseResult([new SectionSeparatorNode()], consumer.countCharsAdvanced())
+  onParse([new SectionSeparatorNode()], consumer.countCharsAdvanced())
+  return true
 }
