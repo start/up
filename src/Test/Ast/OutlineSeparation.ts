@@ -114,6 +114,22 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
+  it('can have a space between each character', function() {
+    const text = `= = =`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  it('can have a space between each character and start with a space', function() {
+    const text = `= = =`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
   it('must not be immediately followed by a non-blank line', function() {
     const text = `---
 hi`
@@ -129,7 +145,7 @@ hi`
   })
 
   it('can be immediately followed by any number of blank lines', function() {
-    const text = `---
+    const text = `===
     
 
 
@@ -147,7 +163,7 @@ hi`
 
   \t
    
----
+###
     
 \t   
 `
