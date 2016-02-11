@@ -16,7 +16,7 @@ import { getSandwichParser } from './GetSandwichParser'
 import { parseLink } from './ParseLink'
 
 
-const parsers = [
+const conventionParsers = [
   parseCode,
   parseLink,
   getSandwichParser(StressNode, '**', '**'),
@@ -34,7 +34,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
   main_parser_loop:
   while (!consumer.done()) {
 
-    for (let parser of parsers) {
+    for (let parser of conventionParsers) {
       if (parser(consumer.remaining(), parseArgs,
         (resultNodes, countCharsParsed) => {
           nodes.push.apply(nodes, resultNodes)
