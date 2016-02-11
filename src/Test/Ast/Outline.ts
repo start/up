@@ -28,6 +28,18 @@ describe('A non-blank line underlined by number signs', function() {
   it('produces a level-1 heading node', function() {
     const text =
 `Hello, world!
+####`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+    
+    it('can have an optional overline', function() {
+    const text =
+`
+######
+Hello, world!
 ######`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
