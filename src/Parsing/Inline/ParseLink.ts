@@ -19,8 +19,7 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
     return false
   }
 
-  const linkNode = new LinkNode()
-  linkNode.parentNode = parseArgs.parentNode
+  const linkNode = new LinkNode(parseArgs.parentNode)
   
   // Parse the content, which ends with the ` -> ` pointing to the URL
   if (!parseInline(consumer.remaining(), {parentNode: linkNode, terminator: ' -> '}, (nodes, countChars) => {

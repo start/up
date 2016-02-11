@@ -20,9 +20,8 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
     }
 
     if (consumer.consumeLineIf(/\S/, (nonBlankLine) => {
-      const paragraphNode = new ParagraphNode()
-      paragraphNode.parentNode = parseArgs.parentNode
-      parseInline(nonBlankLine, { parentNode: paragraphNode }, (inlineNodes) => {
+      const paragraphNode = new ParagraphNode(parseArgs.parentNode)
+      parseInline(nonBlankLine, { parentNode: new ParagraphNode(parseArgs.parentNode) }, (inlineNodes) => {
         paragraphNode.addChildren(inlineNodes)
         outlineNodes.push(paragraphNode)
       })

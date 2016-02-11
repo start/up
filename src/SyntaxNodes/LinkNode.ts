@@ -2,8 +2,8 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
 export class LinkNode extends RichSyntaxNode {
-  constructor(children?: SyntaxNode[], public url: string = '') {
-    super(children)
+  constructor(parentOrChildren?: RichSyntaxNode|SyntaxNode[], public url: string = '') {
+    super(parentOrChildren)
   }
   
   private LINK: any = null

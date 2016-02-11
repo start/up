@@ -2,7 +2,7 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 
 export interface RichSyntaxNodeType {
-  new (chilren?: SyntaxNode[]): RichSyntaxNode
+  new(parentOrChildren?: RichSyntaxNode|SyntaxNode[]): RichSyntaxNode
 }
 
 export abstract class RichSyntaxNode extends SyntaxNode {
@@ -10,6 +10,7 @@ export abstract class RichSyntaxNode extends SyntaxNode {
   
   constructor(parentNode?: RichSyntaxNode);
   constructor(children?: SyntaxNode[]);
+  constructor(parentOrChildren?: RichSyntaxNode|SyntaxNode[]);
   constructor(parentOrChildren?: RichSyntaxNode|SyntaxNode[]) {
     super()
     
