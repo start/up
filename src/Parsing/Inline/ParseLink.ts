@@ -14,26 +14,19 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
     return false
   }
   
-  // Parse the opening `[`
-  if (!consumer.consumeIf('[')) {
-    return false
-  }
-
   const linkNode = new LinkNode(parseArgs.parentNode)
-  
-  // Parse the content, which ends with the ` -> ` pointing to the URL
-  if (!parseInline(consumer.remaining(), { parentNode: linkNode, terminator: ' -> ' },
-    (nodes, countChars) => {
-      consumer.skip(countChars)
-      linkNode.addChildren(nodes)
-    })) {
-    return false
-  }
 
-  // Parse the URL, which ends with the closing `]` 
-  
-  return consumer.consumeUpTo(']', (url, totalCountCharsAdvanced) => {
-    linkNode.url = url
-    onParse([linkNode], totalCountCharsAdvanced, parseArgs.parentNode)
-  })
+  const parsedOpeningBracketAndContent =
+    consumer.consumeIf('[')
+    && parseInline(consumer.remaining(), { parentNode: linkNode, terminator: ' -> ' },
+      (nodes, countChars) => {
+        consumer.skip(countChars)
+        linkNode.addChildren(nodes)
+      })
+
+  return parsedOpeningBracketAndContent
+    && consumer.consumeUpTo(']', (url, totalCountCharsAdvanced) => {
+      linkNode.url = url
+      onParse([linkNode], totalCountCharsAdvanced, parseArgs.parentNode)
+    })
 }
