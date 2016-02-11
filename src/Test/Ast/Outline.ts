@@ -83,7 +83,7 @@ Goodbye, world!`
 
 describe('A line of a streak of characters', function() {
   it('produces a section separator node', function() {
-    const text = `----`
+    const text = `---`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new SectionSeparatorNode()
@@ -91,12 +91,12 @@ describe('A line of a streak of characters', function() {
   })
 
   it('must not be immediately followed by a non-blank line', function() {
-    const text = `----
+    const text = `---
 hi`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new ParagraphNode([
-          new PlainTextNode('----')
+          new PlainTextNode('---')
         ]),
         new ParagraphNode([
           new PlainTextNode('hi')
@@ -105,7 +105,7 @@ hi`
   })
 
   it('can be immediately followed by any number of blank lines', function() {
-    const text = `----
+    const text = `---
     
 
 
@@ -123,12 +123,28 @@ hi`
 
   \t
    
-----
+---
     
 
 
 \t    
 `
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  it('can be comprised of equal signs', function() {
+    const text = `===`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  it('can be comprised of number signs', function() {
+    const text = `###`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new SectionSeparatorNode()
