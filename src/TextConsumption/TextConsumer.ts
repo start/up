@@ -66,6 +66,10 @@ export class TextConsumer {
 
   
   consumeLineIf(pattern: RegExp, beforeLineConsumption?: beforeLineConsumption): boolean {
+    if (this.done()) {
+      return false
+    }
+    
     const consumer = new TextConsumer(this.remaining())
 
     while (!consumer.done() && !consumer.consumeIf('\n')) {
