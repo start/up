@@ -19,7 +19,7 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 
 import { parseCode } from './parseCode'
 import { getSandwichParser } from './GetSandwichParser'
-import { parseLink } from './LinkParser'
+import { parseLink } from './ParseLink'
 
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, parentTerminator: string = null): ParseResult {
