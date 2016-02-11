@@ -12,22 +12,9 @@ export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) 
   if (!consumer.consumeIf(delimiter)) {
     return false
   }
-
-  let content = ''
-
-  while (!consumer.done()) {
-    if (consumer.consumeIf(delimiter)) {
-      if (onParse) {
-        const node = new InlineCodeNode([new PlainTextNode(content)])
-        onParse([node], consumer.countCharsAdvanced(), parseArgs.parentNode)
-      }
-
-      return true
-    }
-
-    content += consumer.currentChar()
-    consumer.moveNext()
-  }
-
-  return false
+  
+  return consumer.consumeUpTo(delimiter, (code) => {
+    const node = new InlineCodeNode([new PlainTextNode(code)])
+    onParse([node], consumer.countCharsAdvanced(), parseArgs.parentNode)
+  })
 }

@@ -26,29 +26,6 @@ function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
 }
 
 
-describe('Text surrounded by backticks', function() {
-  it('is not evaluated for other conventions', function() {
-    expect(Up.ast('Hello, `*world*`!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('*world*')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
-
-  it('can be the last convention in a paragraph', function() {
-    expect(Up.ast('Hello, `*world*`')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('*world*')
-        ])
-      ]))
-  })
-})
-
 describe('A backslash', function() {
   it('causes the following character to be treated as plain text', function() {
     expect(Up.ast('Hello, \\world!')).to.be.eql(
@@ -92,6 +69,29 @@ Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, world!\n\nGoodbye, world!')
+      ]))
+  })
+})
+
+describe('Text surrounded by backticks', function() {
+  it('is not evaluated for other conventions', function() {
+    expect(Up.ast('Hello, `*world*`!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('*world*')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+
+  it('can be the last convention in a paragraph', function() {
+    expect(Up.ast('Hello, `*world*`')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('*world*')
+        ])
       ]))
   })
 })
