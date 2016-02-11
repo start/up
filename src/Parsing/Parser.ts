@@ -7,7 +7,7 @@ export interface ParseArgs {
 }
 
 export interface OnParse {
-  (resultNodes: SyntaxNode[], countCharsParsed: number): void
+  (resultNodes: SyntaxNode[], countCharsParsed: number, parentNode: RichSyntaxNode): void
 }
 
 export interface Parser {

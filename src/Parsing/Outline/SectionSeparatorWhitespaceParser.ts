@@ -19,6 +19,6 @@ export function parseSectionSeparatorWhitespace (text: string, parseArgs: ParseA
     return false
   }
   
-  onParse([new SectionSeparatorNode()], consumer.countCharsAdvanced())
+  onParse([new SectionSeparatorNode()], consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true
 }

@@ -19,7 +19,7 @@ export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) 
     if (consumer.consumeIf(delimiter)) {
       if (onParse) {
         const node = new InlineCodeNode([new PlainTextNode(content)])
-        onParse([node], consumer.countCharsAdvanced())
+        onParse([node], consumer.countCharsAdvanced(), parseArgs.parentNode)
       }
 
       return true

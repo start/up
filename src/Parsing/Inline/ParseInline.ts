@@ -44,7 +44,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     }
 
     if (parseArgs.terminator && consumer.consumeIf(parseArgs.terminator)) {
-      onParse(nodes, consumer.countCharsAdvanced())
+      onParse(nodes, consumer.countCharsAdvanced(), parseArgs.parentNode)
       return true
     }
 
@@ -56,6 +56,6 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     return false
   }
 
-  onParse(nodes, consumer.countCharsAdvanced())
+  onParse(nodes, consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true
 }

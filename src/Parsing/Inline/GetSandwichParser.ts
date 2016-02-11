@@ -30,7 +30,7 @@ export function getSandwichParser(
       parseInline(consumer.remaining(), { parentNode: sandwichNode, terminator: endingBun }, (nodes, countCharsParsed) => {
         consumer.skip(countCharsParsed)
         sandwichNode.addChildren(nodes)
-        onParse([sandwichNode], consumer.countCharsAdvanced())
+        onParse([sandwichNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
       })
   }
 }
