@@ -23,15 +23,20 @@ const parseRevisionDeletion = getSandwichParser(RevisionDeletionNode, '~~', '~~'
 const parseSpoiler = getSandwichParser(SpoilerNode, '[<_<]', '[>_>]')
 const parseInlineAside = getSandwichParser(InlineAsideNode, '((', '))')
 
+const parsers = [
+  parseCode,
+  parseLink,
+  parseStress,
+  parseEmphasis,
+  parseRevisionInsertion,
+  parseRevisionDeletion,
+  parseSpoiler,
+  parseInlineAside
+]
 
 export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
-
-  function includeParseResult(resultNodes: SyntaxNode[], countCharsParsed: number): void {
-    nodes.push.apply(nodes, resultNodes)
-    consumer.skip(countCharsParsed)
-  }
 
   function onSuccessfulParse() {
     onParse(nodes, consumer.countCharsAdvanced())
@@ -39,18 +44,11 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
 
   main_parser_loop:
   while (!consumer.done()) {
-    if (parseCode(consumer.remaining(), parseArgs, includeParseResult)) {
-      continue
-    }
-
-    if (parseLink(consumer.remaining(), parseArgs, includeParseResult)) {
-      continue
-    }
-
-    for (let parser of [
-      parseStress, parseEmphasis, parseRevisionInsertion, parseRevisionDeletion, parseSpoiler, parseInlineAside
-    ]) {
-      if (parser(consumer.remaining(), parseArgs, includeParseResult)) {
+    for (let parser of parsers) {
+      if (parser(consumer.remaining(), parseArgs, (resultNodes: SyntaxNode[], countCharsParsed: number) => {
+        nodes.push.apply(nodes, resultNodes)
+        consumer.skip(countCharsParsed)
+      })) {
         continue main_parser_loop
       }
     }
