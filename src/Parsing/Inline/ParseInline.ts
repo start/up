@@ -16,36 +16,26 @@ import { getSandwichParser } from './GetSandwichParser'
 import { parseLink } from './ParseLink'
 
 
-const parseStress = getSandwichParser(StressNode, '**', '**')
-const parseEmphasis = getSandwichParser(EmphasisNode, '*', '*')
-const parseRevisionInsertion = getSandwichParser(RevisionInsertionNode, '++', '++')
-const parseRevisionDeletion = getSandwichParser(RevisionDeletionNode, '~~', '~~')
-const parseSpoiler = getSandwichParser(SpoilerNode, '[<_<]', '[>_>]')
-const parseInlineAside = getSandwichParser(InlineAsideNode, '((', '))')
-
 const parsers = [
   parseCode,
   parseLink,
-  parseStress,
-  parseEmphasis,
-  parseRevisionInsertion,
-  parseRevisionDeletion,
-  parseSpoiler,
-  parseInlineAside
+  getSandwichParser(StressNode, '**', '**'),
+  getSandwichParser(EmphasisNode, '*', '*'),
+  getSandwichParser(RevisionInsertionNode, '++', '++'),
+  getSandwichParser(RevisionDeletionNode, '~~', '~~'),
+  getSandwichParser(SpoilerNode, '[<_<]', '[>_>]'),
+  getSandwichParser(InlineAsideNode, '((', '))')
 ]
 
 export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
 
-  function onSuccessfulParse() {
-    onParse(nodes, consumer.countCharsAdvanced())
-  }
-
   main_parser_loop:
   while (!consumer.done()) {
+    
     for (let parser of parsers) {
-      if (parser(consumer.remaining(), parseArgs, (resultNodes: SyntaxNode[], countCharsParsed: number) => {
+      if (parser(consumer.remaining(), parseArgs, (resultNodes, countCharsParsed) => {
         nodes.push.apply(nodes, resultNodes)
         consumer.skip(countCharsParsed)
       })) {
@@ -54,7 +44,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     }
 
     if (parseArgs.terminator && consumer.consumeIf(parseArgs.terminator)) {
-      onSuccessfulParse()
+      onParse(nodes, consumer.countCharsAdvanced())
       return true
     }
 
@@ -66,6 +56,6 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     return false
   }
 
-  onSuccessfulParse()
+  onParse(nodes, consumer.countCharsAdvanced())
   return true
 }
