@@ -27,6 +27,7 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
     return hasContentAndOverline
       && parseInline(content, { parentNode: headingNode }, (inlineNodes) => {
         headingNode.addChildren(inlineNodes)
+        onParse([headingNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
       })
   }
 }
