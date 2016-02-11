@@ -3,7 +3,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { parseInline } from '../Inline/ParseInline'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { parseSectionSeparatorWhitespace } from './SectionSeparatorWhitespaceParser'
+import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
 import { ParseArgs, OnParse } from '../Parser'
 import { NON_BLANK_LINE } from './Patterns'
 
