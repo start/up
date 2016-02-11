@@ -479,8 +479,8 @@ Goodbye, world!`
     const text = `Hello, world!
 
 
-
-
+  
+\t
 
 
 Goodbye, world!`
@@ -520,6 +520,24 @@ hi`
   
   it('can be immediately followed by any number of blank lines', function() {
     const text = `----
+    
+
+
+    
+`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+  
+  it('can be immediately preceeded by any number of blank lines', function() {
+    const text = `
+
+
+
+   
+----
     
 
 
