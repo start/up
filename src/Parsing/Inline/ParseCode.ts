@@ -1,11 +1,11 @@
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { OnParse } from '../Parser'
+import { ParseArgs, OnParse } from '../Parser'
 
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
-export function parseCode(text: string, onParse: OnParse) {
+export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) {
   const consumer = new TextConsumer(text)
   const delimiter = '`'
 

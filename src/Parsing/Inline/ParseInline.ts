@@ -1,5 +1,5 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { Parser, OnParse } from '../Parser'
+import { ParseArgs, Parser, OnParse } from '../Parser'
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
@@ -24,7 +24,7 @@ const parseSpoiler = getSandwichParser(SpoilerNode, '[<_<]', '[>_>]')
 const parseInlineAside = getSandwichParser(InlineAsideNode, '((', '))')
 
 
-export function parseInline(text: string, parentNode: RichSyntaxNode, parentTerminator: string, onParse: OnParse): boolean {
+export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
 
@@ -39,23 +39,23 @@ export function parseInline(text: string, parentNode: RichSyntaxNode, parentTerm
 
   main_parser_loop:
   while (!consumer.done()) {
-    if (parseCode(consumer.remaining(), includeParseResult)) {
+    if (parseCode(consumer.remaining(), parseArgs, includeParseResult)) {
       continue
     }
 
-    if (parseLink(consumer.remaining(), parentNode, includeParseResult)) {
+    if (parseLink(consumer.remaining(), parseArgs, includeParseResult)) {
       continue
     }
 
-    for (let parseSandwich of [
+    for (let parser of [
       parseStress, parseEmphasis, parseRevisionInsertion, parseRevisionDeletion, parseSpoiler, parseInlineAside
     ]) {
-      if (parseSandwich(consumer.remaining(), parentNode, parentTerminator, includeParseResult)) {
+      if (parser(consumer.remaining(), parseArgs, includeParseResult)) {
         continue main_parser_loop
       }
     }
 
-    if (parentTerminator && consumer.consumeIf(parentTerminator)) {
+    if (parseArgs.terminator && consumer.consumeIf(parseArgs.terminator)) {
       onSuccessfulParse()
       return true
     }
@@ -64,7 +64,7 @@ export function parseInline(text: string, parentNode: RichSyntaxNode, parentTerm
     consumer.moveNext()
   }
 
-  if (parentTerminator) {
+  if (parseArgs.terminator) {
     return false
   }
 

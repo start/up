@@ -1,10 +1,10 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK_LINE } from './Patterns'
-import { OnParse } from '../Parser'
+import { ParseArgs, OnParse } from '../Parser'
 
 // 3 or more consecutive blank lines indicates separation between sections.
-export function parseSectionSeparatorWhitespace (text: string, onParse: OnParse): boolean {
+export function parseSectionSeparatorWhitespace (text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
   
   const countBlankLinesInSeparator = 3

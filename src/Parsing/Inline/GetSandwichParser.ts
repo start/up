@@ -1,6 +1,6 @@
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
-import { Parser } from '../Parser'
+import { ParseArgs, Parser } from '../Parser'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { parseInline } from './ParseInline'
 
@@ -10,7 +10,7 @@ export function getSandwichParser(
   startingBun: string,
   endingBun: string
 ): Parser {
-  return (text, parentNode, parentTerminator, onParse): boolean => {
+  return (text, parseArgs, onParse): boolean => {
     
     // If the text starts with the parent node's terminator, we have an opportunity to
     // close the parent node. However, if that terminator starts with this sandwich's
@@ -18,7 +18,7 @@ export function getSandwichParser(
     //
     // To avoid that, we check for those two conditions. If both are true, we fail to
     // parse this sandwich, allowing the parent node to close.
-    if (startsWith(text, parentTerminator) && startsWith(parentTerminator, startingBun)) {
+    if (startsWith(text, parseArgs.terminator) && startsWith(parseArgs.terminator, startingBun)) {
       return false
     }
     
@@ -29,11 +29,11 @@ export function getSandwichParser(
     }
     
     const sandwichNode = new NodeType()
-    sandwichNode.parentNode = parentNode
+    sandwichNode.parentNode = parseArgs.parentNode
     
-    return parseInline(consumer.remaining(), sandwichNode, endingBun, (inlineNodes, inlineCountCharsParsed) => {
-      consumer.skip(inlineCountCharsParsed)
-      sandwichNode.addChildren(inlineNodes)
+    return parseInline(consumer.remaining(), {parentNode: sandwichNode, terminator: endingBun}, (nodes, countCharsParsed) => {
+      consumer.skip(countCharsParsed)
+      sandwichNode.addChildren(nodes)
       onParse([sandwichNode], consumer.countCharsAdvanced())
     })
   }
