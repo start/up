@@ -17,12 +17,9 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
+
 function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
   return new DocumentNode(syntaxNodes);
-}
-
-function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return insideDocument([new ParagraphNode(syntaxNodes)]);
 }
 
 
@@ -124,13 +121,13 @@ hi`
     const text = `
 
 
-
+  \t
    
 ----
     
 
 
-    
+\t    
 `
     expect(Up.ast(text)).to.be.eql(
       insideDocument([

@@ -37,7 +37,7 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can be the last convention in a paragraph', function() {
     expect(Up.ast('Hello, `*world*`')).to.be.eql(
       insideDocumentAndParagraph([
@@ -56,35 +56,35 @@ describe('A backslash', function() {
         new PlainTextNode('Hello, world!')
       ]))
   })
-  
+
   it('causes the following backslash to be treated as plain text', function() {
     expect(Up.ast('Hello, \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\!')
       ]))
   })
-  
+
   it('disables any special meaning of the following character', function() {
     expect(Up.ast('Hello, \\*world\\*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, *world*!')
       ]))
   })
-  
+
   it('causes only the following character to be treated as plain text', function() {
     expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\, meet \\!')
       ]))
   })
-  
+
   it('is ignored if it is the final character of the text', function() {
     expect(Up.ast('Hello, \\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, ')
       ]))
   })
-  
+
   it('disables any special meaning of the following line break', function() {
     const text = `Hello, world!\\
 \\
@@ -221,13 +221,13 @@ describe('An unmatched asterisk', function() {
         new PlainTextNode('Hello, *world!')
       ]))
   })
-  
+
   it('does not create an emphasis node, even when following 2 matching asterisks', function() {
     expect(Up.ast('*Hello*, *world!')).to.be.eql(
       insideDocumentAndParagraph([
-          new EmphasisNode([
-            new PlainTextNode('Hello'),
-          ]),
+        new EmphasisNode([
+          new PlainTextNode('Hello'),
+        ]),
         new PlainTextNode(', *world!')
       ]))
   })
@@ -316,7 +316,7 @@ describe('Text surrounded by faces looking away', function() {
         new PlainTextNode('.')
       ]))
   })
-  
+
   it('can be nested within another spoiler node', function() {
     expect(Up.ast('After you beat the Elite Four, [<_<]you fight [<_<]Gary[>_>][>_>].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -379,6 +379,17 @@ describe('Bracketed text pointing to a URL', function() {
         new PlainTextNode('!!')
       ]))
   })
+
+    it('can have an escaped, unmatched closing bracket in the URL', function() {
+      expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('I like '),
+          new LinkNode([
+            new PlainTextNode('this site')
+          ], 'https://google.com/?fake=]query'),
+          new PlainTextNode('. I bet you do, too.')
+        ]))
+    })
 })
 
 
@@ -425,7 +436,7 @@ describe('Text surrounded by 2 parentheses', function() {
         ])
       ]))
   })
-  
+
   it('can be the last convention in a paragraph', function() {
     expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
       insideDocumentAndParagraph([
