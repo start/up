@@ -19,7 +19,7 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 
 import { parseCode } from './parseCode'
 import { getSandwichParser } from './GetSandwichParser'
-import { LinkParser } from './LinkParser'
+import { parseLink } from './LinkParser'
 
 
 export function parseInline(text: string, parentNode: RichSyntaxNode, parentTerminator: string = null): ParseResult {
@@ -39,6 +39,7 @@ class InlineParser {
   private nodes: SyntaxNode[] = [];
   private consumer: TextConsumer
 
+
   constructor(text: string, private parentNode: RichSyntaxNode, private parentTerminator: string = null) {
     this.consumer = new TextConsumer(text)
     
@@ -53,11 +54,11 @@ class InlineParser {
         return
       }
 
-      if (parseCode(this.consumer.remaining(), this.parentNode, includeParseResult)) {
+      if (parseCode(this.consumer.remaining(), includeParseResult)) {
         continue
       }
 
-      if (this.tryParseLink()) {
+      if (parseLink(this.consumer.remaining(), this.parentNode, includeParseResult)) {
         continue
       }
 
@@ -85,21 +86,7 @@ class InlineParser {
 
     this.succeed()
   }
-
-
-  private tryParseLink(): boolean {
-    const linkResult = new LinkParser(this.consumer.remaining(), this.parentNode).result
-
-    if (!linkResult.success) {
-      return false
-    }
-
-    this.nodes.push.apply(this.nodes, linkResult.nodes)
-    this.consumer.skip(linkResult.countCharsParsed)
-
-    return true
-  }
-
+  
 
   private succeed(): void {
     this.parseResult = new ParseResult(this.nodes, this.consumer.countCharsAdvanced())

@@ -1,11 +1,23 @@
 import { ParseResult } from './../ParseResult'
 import { FailedParseResult } from './../FailedParseResult'
 import { parseInline } from './ParseInline'
-
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { OnParse } from '../Parser'
+
+// Todo: Handle parent node's terminator
+
+export function parseLink(text: string, parentNode: RichSyntaxNode, onParse: OnParse): boolean {
+  const result = new LinkParser(text, parentNode).result
+  
+  if (!result.success) {
+    return false
+  }
+  
+  onParse(result.nodes, result.countCharsParsed)
+  return true
+}
 
 export class LinkParser {
 

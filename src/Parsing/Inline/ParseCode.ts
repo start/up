@@ -5,7 +5,7 @@ import { OnParse } from '../Parser'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
-export function parseCode(text: string, parentNode: RichSyntaxNode, onParse: OnParse) {
+export function parseCode(text: string, onParse: OnParse) {
   const consumer = new TextConsumer(text)
   const delimiter = '`'
 
