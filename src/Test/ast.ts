@@ -527,9 +527,7 @@ hi`
 `
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
-        new ParagraphNode([
-          new PlainTextNode('----')
-        ])
+        new SectionSeparatorNode()
       ]))
   })
 })
