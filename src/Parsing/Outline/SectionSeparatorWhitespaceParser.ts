@@ -1,5 +1,3 @@
-import { ParseResult } from './../ParseResult'
-import { FailedParseResult } from './../FailedParseResult'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK_LINE } from './Patterns'
