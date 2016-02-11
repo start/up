@@ -1,13 +1,13 @@
 interface OnMatchBeforeConsumption {
-  (remaining?: string, skip?: skipCountChars, reject?: rejectMatch): void
+  (remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
 interface BeforeLineConsumption {
-  (line: string, remaining?: string, skip?: skipCountChars, reject?: rejectMatch): void
+  (line: string, remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
 interface BeforeConsumingUpTo {
-  (beforeNeedle: string, remaining?: string, skip?: skipCountChars, reject?: rejectMatch): void
+  (beforeNeedle: string, totalCountCharsAdvancedIfAccepted: number, remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
 interface rejectMatch {
@@ -117,7 +117,7 @@ export class TextConsumer {
     let upToNeedle = ''
     
     while (!consumer.done() && !consumer.consumeIf(needle, () => { foundNeedle = true })) {
-      upToNeedle = consumer.currentChar()
+      upToNeedle += consumer.currentChar()
       consumer.moveNext()
     }
     
@@ -132,7 +132,8 @@ export class TextConsumer {
       const skip = (count: number) => { charsToSkip += count }
       const reject = () => { isRejected = true }
       
-      beforeConsumingUpTo(upToNeedle, consumer.remaining(), skip, reject)
+      const totalCountCharsAdvancedIfAccepted = this.countCharsAdvanced() + consumer.countCharsAdvanced()      
+      beforeConsumingUpTo(upToNeedle, totalCountCharsAdvancedIfAccepted, consumer.remaining(), skip, reject)
     }
 
     if (isRejected) {

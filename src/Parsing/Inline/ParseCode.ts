@@ -13,8 +13,8 @@ export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) 
     return false
   }
   
-  return consumer.consumeUpTo(delimiter, (code) => {
+  return consumer.consumeUpTo(delimiter, (code, totalCountCharsAdvanced) => {
     const node = new InlineCodeNode([new PlainTextNode(code)])
-    onParse([node], consumer.countCharsAdvanced(), parseArgs.parentNode)
+    onParse([node], totalCountCharsAdvanced, parseArgs.parentNode)
   })
 }
