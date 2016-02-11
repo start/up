@@ -5,6 +5,7 @@ import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { parseSectionSeparatorWhitespace } from './SectionSeparatorWhitespaceParser'
 import { ParseArgs, OnParse } from '../Parser'
+import { NON_BLANK_LINE } from './Patterns'
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   let outlineNodes: SyntaxNode[] = []
@@ -19,7 +20,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
       continue
     }
 
-    if (consumer.consumeLineIf(/\S/, (nonBlankLine) => {
+    if (consumer.consumeLineIf(NON_BLANK_LINE, (nonBlankLine) => {
       parseInline(nonBlankLine, { parentNode: new ParagraphNode(parseArgs.parentNode) },
         (inlineNodes, countCharsAdvanced, paragraphNode) => {
           paragraphNode.addChildren(inlineNodes)
