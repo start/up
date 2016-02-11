@@ -5,16 +5,18 @@ const optional = (pattern: string) => pattern + '?'
 
 const all = (pattern: string) => pattern + '*'
 
-const atLeast = (pattern: string, count: number) => pattern + `{${atLeast},}`
+const atLeast = (count: number, pattern: string) => pattern + `{${atLeast},}`
 
 const either = (...patterns: string[]) => group(patterns.join('|'))
 
-const lineOf = (pattern: string) => `^` + pattern + '$'
+const whitespace = '[^\\S\n]'
 
-const space = '[^\\S\n]'
+const lineOf = (pattern: string) => `^` + pattern + all(whitespace) + '$'
+
+const streakOf = (char: string) => lineOf(atLeast(3, char))
 
 const BLANK_LINE = new RegExp(
-  lineOf(all(space))
+  lineOf('')
 )
 
 // We don't need to check for the start or end of the string, because if a line
@@ -23,5 +25,7 @@ const NON_BLANK_LINE = /\S/
 
 export {
   NON_BLANK_LINE,
-  BLANK_LINE
+  BLANK_LINE,
+  lineOf,
+  streakOf
 }
