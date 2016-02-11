@@ -503,5 +503,34 @@ describe('A line of a streak of characters', function() {
         new SectionSeparatorNode()
       ]))
   })
+  
+  it('must not be immediately followed by a non-blank line', function() {
+    const text = `----
+hi`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new ParagraphNode([
+          new PlainTextNode('----')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('hi')
+        ])
+      ]))
+  })
+  
+  it('can be immediately followed by any number of blank lines', function() {
+    const text = `----
+    
+
+
+    
+`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new ParagraphNode([
+          new PlainTextNode('----')
+        ])
+      ]))
+  })
 })
 

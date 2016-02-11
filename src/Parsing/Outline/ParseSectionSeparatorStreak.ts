@@ -11,8 +11,9 @@ const STREAK = new RegExp(
   )
 )
 
-// A line consisting solely of a streak of characters, surrounded by any number of blank lines,
-// indicates separation between section. 
+// A line consisting solely of a streak of characters indicates separation between section. The streak
+// must not be immediately followed by a non-blank line, and it can be surrounded by any number of blank
+// lines. 
 export function parseSectionSeparatorStreak(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
@@ -22,7 +23,16 @@ export function parseSectionSeparatorStreak(text: string, parseArgs: ParseArgs, 
     return false
   }
 
-  while (consumer.consumeLineIf(BLANK_LINE)) { }
+  // If there are any lines left...
+  if (!consumer.done()) {
+    // ...the next one needs to be blank
+    if (!consumer.consumeLineIf(BLANK_LINE)) {
+      return false
+    }
+    
+    while (consumer.consumeLineIf(BLANK_LINE)) { }
+  }
+  
 
   onParse([new SectionSeparatorNode()], consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true
