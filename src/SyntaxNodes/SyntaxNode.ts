@@ -1,4 +1,5 @@
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
+import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
 export interface SyntaxNodeType {
   new (): SyntaxNode
@@ -6,10 +7,14 @@ export interface SyntaxNodeType {
 
 export abstract class SyntaxNode {
   children: SyntaxNode[]
-  parentNode: SyntaxNode = null
+  
+  constructor();
+  constructor(public parentNode?: RichSyntaxNode) {
+  }
+  
+  abstract text(): string
 
-
-  ancestors(): SyntaxNode[] {
+  ancestors(): RichSyntaxNode[] {
     if (this.parentNode === null) {
       return [];
     }
@@ -17,14 +22,9 @@ export abstract class SyntaxNode {
     return [this.parentNode].concat(this.parentNode.ancestors())
   }
 
-
-  abstract text(): string
-
-
   plusAllAncestors(): SyntaxNode[] {
-    return [<SyntaxNode>this].concat(this.ancestors())
+    return [<SyntaxNode>this].concat(<SyntaxNode[]>this.ancestors())
   }
-
 
   orAnyAncestor(predicate: (node: SyntaxNode) => boolean) {
     return this.plusAllAncestors().some(predicate)

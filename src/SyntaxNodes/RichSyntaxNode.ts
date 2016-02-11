@@ -7,34 +7,36 @@ export interface RichSyntaxNodeType {
 
 export abstract class RichSyntaxNode extends SyntaxNode {
   children: SyntaxNode[] = [];
-  parentNode: SyntaxNode = null;
   
-  constructor(children: SyntaxNode[] = []) {
+  constructor(parentNode?: RichSyntaxNode);
+  constructor(children?: SyntaxNode[]);
+  constructor(parentOrChildren?: RichSyntaxNode|SyntaxNode[]) {
     super()
-    this.addChildren(children)
+    
+    if (parentOrChildren instanceof RichSyntaxNode) {
+      this.parentNode = parentOrChildren
+    } else if (parentOrChildren) {
+      this.addChildren(<SyntaxNode[]>parentOrChildren)
+    }
   }
-
   
-  ancestors(): SyntaxNode[] {
-    if (this.parentNode === null) {
+  ancestors(): RichSyntaxNode[] {
+    if (!this.parentNode) {
       return [];
     }
     
     return [this.parentNode].concat(this.parentNode.ancestors())
   }
 
-
   text(): string {
     return this.children.reduce((text, child) => text + child.text(), '')
   }
-
 
   addChildren(nodes: SyntaxNode[]) {
     for (var node of nodes) {
       this.addChild(node)
     }
   }
-
   
   addChild(syntaxNode: SyntaxNode) {
     const topChild = this.children[this.children.length - 1]
