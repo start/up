@@ -1,11 +1,11 @@
 
 const group = (pattern: string) => `(?:${pattern})`
 
-const optional = (pattern: string) => pattern + '?'
+const optional = (pattern: string) => group(pattern) + '?'
 
-const all = (pattern: string) => pattern + '*'
+const all = (pattern: string) => group(pattern) + '*'
 
-const atLeast = (count: number, pattern: string) => pattern + `{${count},}`
+const atLeast = (count: number, pattern: string) => group(pattern) + `{${count},}`
 
 const either = (...patterns: string[]) => group(patterns.join('|'))
 
@@ -15,7 +15,7 @@ const lineOf = (pattern: string) => `^` + pattern + all(whitespace) + '$'
 
 const streakOf = (char: string) => lineOf(atLeast(3, char))
 
-const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, group(char + ' ')) + char)
+const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, char + ' ') + char)
 
 const BLANK_LINE = new RegExp(
   lineOf('')
