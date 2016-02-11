@@ -14,8 +14,6 @@ const STREAK = new RegExp(
   )
 )
 
-console.log(STREAK)
-
 // A line consisting solely of a streak of '-', '=', or '#' characters indicates separation between
 // sections. The streak must not be immediately followed by a non-blank line, and it can be surrounded
 // by any number of blank lines.
