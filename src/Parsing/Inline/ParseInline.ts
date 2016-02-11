@@ -1,5 +1,3 @@
-import { ParseResult } from '.././ParseResult'
-import { FailedParseResult } from '.././FailedParseResult'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { Parser, OnParse } from '../Parser'
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
