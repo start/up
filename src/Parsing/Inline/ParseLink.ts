@@ -31,15 +31,9 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
   }
 
   // Parse the URL, which ends with the closing `]` 
-  while (!consumer.done()) {
-    if (consumer.consumeIf(']')) {
-      onParse([linkNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
-      return true
-    }
-
-    linkNode.url += consumer.currentChar()
-    consumer.moveNext()
-  }
-
-  return false
+  
+  return consumer.consumeUpTo(']', (url, totalCountCharsAdvanced) => {
+    linkNode.url = url
+    onParse([linkNode], totalCountCharsAdvanced, parseArgs.parentNode)
+  })
 }
