@@ -5,11 +5,11 @@ const optional = (pattern: string) => pattern + '?'
 
 const all = (pattern: string) => pattern + '*'
 
-const atLeast = (count: number, pattern: string) => pattern + `{${atLeast},}`
+const atLeast = (count: number, pattern: string) => pattern + `{${count},}`
 
 const either = (...patterns: string[]) => group(patterns.join('|'))
 
-const whitespace = '[^\\S\n]'
+const whitespace = '[^\\S\\n]'
 
 const lineOf = (pattern: string) => `^` + pattern + all(whitespace) + '$'
 

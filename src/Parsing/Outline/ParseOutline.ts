@@ -3,12 +3,14 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { parseInline } from '../Inline/ParseInline'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
 import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
 import { ParseArgs, OnParse } from '../Parser'
 import { NON_BLANK_LINE } from './Patterns'
 
 
 const conventionParsers = [
+  parseSectionSeparatorStreak,
   parseSectionSeparatorWhitespace
 ]
 
