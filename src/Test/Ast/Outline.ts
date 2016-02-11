@@ -81,9 +81,33 @@ Goodbye, world!`
 
 
 
-describe('A line of a streak of characters', function() {
-  it('produces a section separator node', function() {
+describe('A line consisting solely of a streak of characters', function() {
+  it('produces a section separator node when comprised of at least 3 hyphens', function() {
     const text = `---`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  it('can be comprised of equal signs', function() {
+    const text = `===`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  it('can be comprised of number signs', function() {
+    const text = `###`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  it('can be comprised of more than 3 characters', function() {
+    const text = `##########`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new SectionSeparatorNode()
@@ -125,26 +149,8 @@ hi`
    
 ---
     
-
-
-\t    
+\t   
 `
-    expect(Up.ast(text)).to.be.eql(
-      insideDocument([
-        new SectionSeparatorNode()
-      ]))
-  })
-
-  it('can be comprised of equal signs', function() {
-    const text = `===`
-    expect(Up.ast(text)).to.be.eql(
-      insideDocument([
-        new SectionSeparatorNode()
-      ]))
-  })
-
-  it('can be comprised of number signs', function() {
-    const text = `###`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new SectionSeparatorNode()
