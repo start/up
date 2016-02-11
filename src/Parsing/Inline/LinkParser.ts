@@ -6,97 +6,44 @@ import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { OnParse } from '../Parser'
 
-// Todo: Handle parent node's terminator
+// Todo: Handle parent node's terminator?
 
 export function parseLink(text: string, parentNode: RichSyntaxNode, onParse: OnParse): boolean {
-  const result = new LinkParser(text, parentNode).result
+  const consumer = new TextConsumer(text)
   
-  if (!result.success) {
+  // Links cannot be nested within other links 
+  if (parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
     return false
   }
   
-  onParse(result.nodes, result.countCharsParsed)
-  return true
-}
+  // Parse the opening `[`
+  if (!consumer.consumeIf('[')) {
+    return false
+  }
+  
+  const linkNode = new LinkNode()
+  linkNode.parentNode = parentNode
+  
+  // Parse the content, which ends with the ` -> ` pointing to the URL
+  const contentResult = parseInline(consumer.remaining(), linkNode, ' -> ')
 
-export class LinkParser {
-
-  public result: ParseResult;
-  private linkNode = new LinkNode();
-  private consumer: TextConsumer;
-
-  constructor(text: string, private parentNode: RichSyntaxNode) {
-    this.consumer = new TextConsumer(text)
-    
-    if (this.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
-      this.fail()
-      return
-    }
-
-    if (!this.tryParseOpenBracketOrFail()) {
-      return
-    }
-
-    if (!this.tryParseContentPlusArrowOrFail()) {
-      return
-    }
-
-    if (!this.tryParseUrlPlusClosingBracketOrFail()) {
-      return
-    }
-    
-    this.finish(new ParseResult([this.linkNode], this.consumer.countCharsAdvanced()))
+  if (!contentResult.success) {
+    return false
   }
 
+  consumer.skip(contentResult.countCharsParsed)
+  linkNode.addChildren(contentResult.nodes)
 
-  private tryParseOpenBracketOrFail(): boolean {
-    if (this.consumer.consumeIf('[')) {
+  // Parse the URL, which ends with the closing `]` 
+  while (!consumer.done()) {
+    if (consumer.consumeIf(']')) {
+      onParse([linkNode], consumer.countCharsAdvanced())
       return true
     }
 
-    this.fail()
-    return false
+    linkNode.url += consumer.currentChar()
+    consumer.moveNext()
   }
 
-
-  private tryParseContentPlusArrowOrFail(): boolean {
-    const contentResult = parseInline(this.consumer.remaining(), this.linkNode, ' -> ')
-
-    if (!contentResult.success) {
-      this.fail()
-      return false
-    }
-
-    this.consumer.skip(contentResult.countCharsParsed)
-    this.linkNode.addChildren(contentResult.nodes)
-
-    return true
-  }
-
-
-  private tryParseUrlPlusClosingBracketOrFail(): boolean {
-    let url = ''
-
-    while (!this.consumer.done()) {
-      if (this.consumer.consumeIf(']', () => { this.linkNode.url = url })) {
-        return true
-      }
-
-      url += this.consumer.currentChar()
-      this.consumer.moveNext()
-    }
-
-    this.fail()
-    return false
-  }
-
-
-  private finish(result: ParseResult): void {
-    this.result = result
-  }
-
-
-  private fail(): void {
-    this.result = new FailedParseResult()
-  }
+  return false
 }
