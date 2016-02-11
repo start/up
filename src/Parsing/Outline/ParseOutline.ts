@@ -4,15 +4,18 @@ import { parseInline } from '../Inline/ParseInline'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
+import { getHeadingParser } from './GetHeadingParser'
 import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
 import { ParseArgs, OnParse } from '../Parser'
-import { NON_BLANK_LINE } from './Patterns'
+import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 
 
 const conventionParsers = [
+  getHeadingParser('#', 1),
   parseSectionSeparatorStreak,
   parseSectionSeparatorWhitespace
 ]
+
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   let outlineNodes: SyntaxNode[] = []

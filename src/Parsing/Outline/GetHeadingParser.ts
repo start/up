@@ -1,7 +1,7 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseArgs, OnParse, Parser } from '../Parser'
-import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
+import { NON_BLANK_LINE } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 
 // Underlined text is considered a heading. Headings can have an optional overline, too.
@@ -13,8 +13,7 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
 
     // Parse optional overline
     consumer.consumeLineIf(underlineOrOverline)
-
-    const headingNode = new HeadingNode(parseArgs.parentNode, level)
+    
     let content: string
 
     const hasContentAndOverline =
@@ -25,7 +24,8 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
       && consumer.consumeLineIf(underlineOrOverline)
 
     return hasContentAndOverline
-      && parseInline(content, { parentNode: headingNode }, (inlineNodes) => {
+      && parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, level) },
+      (inlineNodes, countCharsParsed, headingNode) => {
         headingNode.addChildren(inlineNodes)
         onParse([headingNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
       })
