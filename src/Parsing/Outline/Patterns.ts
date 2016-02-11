@@ -15,7 +15,7 @@ const lineOf = (pattern: string) => `^` + pattern + all(whitespace) + '$'
 
 const streakOf = (char: string) => lineOf(atLeast(3, char))
 
-const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, char + ' ') + char)
+const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, group(char + ' ')) + char)
 
 const BLANK_LINE = new RegExp(
   lineOf('')
