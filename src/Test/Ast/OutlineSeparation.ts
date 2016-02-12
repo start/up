@@ -133,11 +133,9 @@ describe('A line consisting solely of a streak of characters', function() {
   it('must not be immediately followed by a non-blank line', function() {
     const text = `---
 hi`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.ast(text)).to.not.eql(
       insideDocument([
-        new ParagraphNode([
-          new PlainTextNode('---')
-        ]),
+        new SectionSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('hi')
         ])
