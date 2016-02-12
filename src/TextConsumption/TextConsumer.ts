@@ -20,24 +20,18 @@ interface skipCountChars {
 
 
 export class TextConsumer {
-
-  public text: string;
   public index = 0;
   private isCurrentCharEscaped = false;
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(text: string) {
-    this.text = text
-
+  constructor(public text: string) {
     this.handleEscaping()
   }
-
 
   done(): boolean {
     return this.index >= this.text.length
   }
-
 
   consumeIf(needle: string, onMatchBeforeConsumption?: OnConsumption): boolean {
     const isMatch =
@@ -65,11 +59,9 @@ export class TextConsumer {
     return false
   }
 
-
   consumeLine(onLineConsumption?: OnLineConsumption): boolean {
     return this.consumeLineIf(null, onLineConsumption)
   }
-
 
   consumeLineIf(pattern: RegExp, onLineConsumption?: OnLineConsumption): boolean {
     if (this.done()) {
@@ -111,7 +103,6 @@ export class TextConsumer {
     return true
   }
 
-
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
     const consumer = new TextConsumer(this.remaining())
 
@@ -147,7 +138,6 @@ export class TextConsumer {
     return true
   }
 
-
   moveNext(): void {
     // Only non-escaped brackets that weren't part of a match should affect the opened/closed counts we're keeping.
     if (!this.isCurrentCharEscaped) {
@@ -158,22 +148,18 @@ export class TextConsumer {
     this.handleEscaping()
   }
 
-
   skip(count: number): void {
     this.index += count
     this.handleEscaping()
   }
 
-
   countCharsAdvanced(): number {
     return this.index
   }
 
-
   remaining(): string {
     return this.text.slice(this.index)
   }
-
 
   clone(): TextConsumer {
     const clone = new TextConsumer('')
@@ -187,16 +173,13 @@ export class TextConsumer {
     return clone
   }
 
-
   consumed(): string {
     return this.text.substr(0, this.index)
   }
 
-
   currentChar(): string {
     return this.text[this.index]
   }
-
 
   private handleEscaping() {
     this.isCurrentCharEscaped = false
@@ -206,7 +189,6 @@ export class TextConsumer {
       this.isCurrentCharEscaped = true
     }
   }
-
 
   private updateUnclosedBracketCounts(): void {
     switch (this.currentChar()) {
@@ -224,7 +206,6 @@ export class TextConsumer {
         break
     }
   }
-
 
   private areRelevantBracketsClosed(needle: string): boolean {
     // We only care about unclosed brackets if `needle` would appear to close them. If that's the case,
