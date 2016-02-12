@@ -11,7 +11,7 @@ import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 
 
 const conventionParsers = [
-  getHeadingParser('#', 1),
+  getHeadingParser(streakOf('#'), 1),
   parseSectionSeparatorStreak,
   parseSectionSeparatorWhitespace
 ]
