@@ -104,7 +104,6 @@ export class TextConsumer {
     this.skip(consumer.countCharsAdvanced())
 
     if (onConsumingUpTo) {
-      const totalCountCharsAdvancedIfAccepted = this.countCharsAdvanced() + consumer.countCharsAdvanced()
       onConsumingUpTo(upToNeedle, consumer.remainingText())
     }
 
