@@ -77,10 +77,7 @@ export class TextConsumer {
     this.skip(charsToSkip)
 
     if (onLineConsumption) {
-      const remaining = this.remainingText()
-      const remainingAfterLine = remaining.substr(charsToSkip)
-
-      onLineConsumption(trimmedLine, remainingAfterLine)
+      onLineConsumption(trimmedLine, this.remainingText())
     }
 
     return true
