@@ -72,5 +72,18 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
+  
+    
+    it('cannot have a dotted overline comprised of number signs', function() {
+    const text =
+`
+# # # #
+Hello, world!
+#######`
+    expect(Up.ast(text)).to.not.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
 })
 
