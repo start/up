@@ -141,3 +141,17 @@ Hello, world!
       ]))
   })
 })
+
+
+describe('A non-blank line underlined by equal signs signs', function() {
+  it('produces a level-2 heading node when there are at least 3 equal signs', function() {
+    const text =
+      `
+Hello, world!
+===`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 2),
+      ]))
+  })
+})
