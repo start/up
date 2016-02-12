@@ -49,7 +49,10 @@ Violets are blue`
     const text =
       `
 Roses are red
-Violets are **blue**`
+Violets are **blue**
+Lyrics have lines
+And addresses do, too
+`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new LineBlockNode([
@@ -61,6 +64,32 @@ Violets are **blue**`
             new StressNode([
               new PlainTextNode('blue')
             ])
+          ]),
+          new LineNode([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new LineNode([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ]),
+      ]))
+  })
+  
+  it('are still considered consecutive when separated by escaped blank lines', function() {
+    const text =
+      `
+Roses are red\\
+\\
+
+Violets are blue`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new LineBlockNode([
+          new LineNode([
+            new PlainTextNode('Roses are red')
+          ]),
+          new LineNode([
+            new PlainTextNode('Violets are blue')
           ]),
         ]),
       ]))
