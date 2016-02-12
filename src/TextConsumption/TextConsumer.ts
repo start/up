@@ -56,7 +56,7 @@ export class TextConsumer {
       return false
     }
 
-    const consumer = new TextConsumer(this.remainingText())
+    const consumer = this.getConsumerForRemainingText()
 
     while (!consumer.done() && !consumer.consumeIf('\n')) {
       consumer.moveNext()
@@ -80,7 +80,7 @@ export class TextConsumer {
   }
 
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
-    const consumer = this.consumerForRemainingText()
+    const consumer = this.getConsumerForRemainingText()
 
     let foundNeedle = false
     let escapedTextBeforeNeedle = ''
@@ -139,13 +139,11 @@ export class TextConsumer {
     return this.text[this.index]
   }
 
-  private consumerForRemainingText(): TextConsumer {
+  private getConsumerForRemainingText(): TextConsumer {
     const clone = new TextConsumer('')
 
     clone.text = this.remainingText()
     clone.isCurrentCharEscaped = this.isCurrentCharEscaped
-    clone.countUnclosedParen = this.countUnclosedParen
-    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
 
     return clone
   }
