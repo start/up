@@ -37,18 +37,18 @@ export class TextConsumer {
     const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
-    if (isMatch) {
-      let charsToSkip = needle.length
-      this.skip(needle.length)
+    if (!isMatch) {
+      return false
+    }
+    
+    let charsToSkip = needle.length
+    this.skip(needle.length)
 
-      if (onMatchBeforeConsumption) {
-        onMatchBeforeConsumption(this.remainingText())
-      }
-
-      return true
+    if (onMatchBeforeConsumption) {
+      onMatchBeforeConsumption(this.remainingText())
     }
 
-    return false
+    return true
   }
 
   consumeLine(onLineConsumption?: OnLineConsumption): boolean {
@@ -82,7 +82,7 @@ export class TextConsumer {
 
       onLineConsumption(trimmedLine, remainingAfterLine)
     }
-    
+
     return true
   }
 
@@ -143,12 +143,12 @@ export class TextConsumer {
 
   private consumerForRemainingText(): TextConsumer {
     const clone = new TextConsumer('')
-    
+
     clone.text = this.remainingText()
     clone.isCurrentCharEscaped = this.isCurrentCharEscaped
     clone.countUnclosedParen = this.countUnclosedParen
     clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
-    
+
     return clone
   }
 
