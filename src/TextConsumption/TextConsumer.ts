@@ -42,7 +42,7 @@ export class TextConsumer {
       this.skip(needle.length)
 
       if (onMatchBeforeConsumption) {
-        onMatchBeforeConsumption(this.remainingText().substr(charsToSkip))
+        onMatchBeforeConsumption(this.remainingText())
       }
 
       return true
