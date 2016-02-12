@@ -194,7 +194,7 @@ Hello, world!
 
 
 describe('A non-blank line with a dotted underline comprised of number signs', function() {
-  it('produces a level-4 heading node when there are at least 3 number signs delimited by 1 space', function() {
+  it('produces a level-4 heading node when there are at least 3 number signs each delimited by 1 space', function() {
     const text =
       `
 Hello, world!
@@ -308,6 +308,31 @@ Hello, world!
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
+      ]))
+  })
+})
+
+describe('A non-blank line with a dotted underline comprised of equal signs', function() {
+  it('produces a level-5 heading node when there are at least 3 equal signs each delimited by 1 space', function() {
+    const text =
+      `
+Hello, world!
+= = =`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 5),
+      ]))
+  })
+  
+  it('can have an optional overline comprised of equal signs', function() {
+    const text =
+      `
+= = = =
+Hello, world!
+= = =`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 5),
       ]))
   })
 })

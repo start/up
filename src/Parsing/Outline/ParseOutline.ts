@@ -15,6 +15,7 @@ const conventionParsers = [
   getHeadingParser(streakOf('='), 2),
   getHeadingParser(streakOf('-'), 3),
   getHeadingParser(dottedStreakOf('#'), 4),
+  getHeadingParser(dottedStreakOf('='), 5),
   parseSectionSeparatorStreak,
   parseSectionSeparatorWhitespace
 ]
