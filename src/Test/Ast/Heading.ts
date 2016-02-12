@@ -336,3 +336,29 @@ Hello, world!
       ]))
   })
 })
+
+
+describe('A non-blank line with a dotted underline comprised of hyphens', function() {
+  it('produces a level-6 heading node when there are at least 3 hyphens each delimited by 1 space', function() {
+    const text =
+      `
+Hello, world!
+- - - - -`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 6),
+      ]))
+  })
+  
+  it('can have an optional overline comprised of equal signs', function() {
+    const text =
+      `
+- - -
+Hello, world!
+- - - -`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 6),
+      ]))
+  })
+})
