@@ -80,14 +80,13 @@ And addresses do, too
       `
 Roses are red\\
 \\
-\\
 
 Violets are blue`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new LineBlockNode([
           new LineNode([
-            new PlainTextNode('Roses are red')
+            new PlainTextNode('Roses are red\n\n')
           ]),
           new LineNode([
             new PlainTextNode('Violets are blue')

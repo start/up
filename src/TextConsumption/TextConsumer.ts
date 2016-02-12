@@ -23,7 +23,7 @@ export class TextConsumer {
   consumeIf(needle: string): boolean {
     const isMatch =
       !this.isCurrentCharEscaped
-      && (needle === this.text.substr(this.index, needle.length)) 
+      && (needle === this.text.substr(this.index, needle.length))
       && this.areRelevantBracketsClosed(needle)
 
     if (!isMatch) {
@@ -44,22 +44,32 @@ export class TextConsumer {
     }
 
     const consumer = this.getConsumerForRemainingText()
+    let endsWithLineBreak = false
 
-    while (!consumer.done() && !consumer.consumeIf('\n')) {
+    while (!consumer.done()) {
+      if (consumer.consumeIf('\n')) {
+        endsWithLineBreak = true
+        break
+      }
+      
       consumer.moveNext()
     }
 
     const line = consumer.consumed()
-    const trimmedLine = line.replace(/\s+$/, '')
+    const lineWithoutFinalLineBreak = (
+      endsWithLineBreak
+        ? line.substr(0, line.length - 1)
+        : line
+    )
 
-    if (pattern && !pattern.test(trimmedLine)) {
+    if (pattern && !pattern.test(lineWithoutFinalLineBreak)) {
       return false
     }
 
     this.skip(line.length)
 
     if (onLineConsumption) {
-      onLineConsumption(trimmedLine)
+      onLineConsumption(lineWithoutFinalLineBreak)
     }
 
     return true
@@ -84,7 +94,7 @@ export class TextConsumer {
       escapedTextBeforeNeedle += consumer.currentChar()
       consumer.moveNext()
     }
-    
+
     return false
   }
 
