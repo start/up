@@ -27,10 +27,10 @@ export class TextConsumer {
     if (!isMatch) {
       return false
     }
-    
+
     let charsToSkip = needle.length
     this.skip(needle.length)
-    
+
     return true
   }
 
@@ -74,25 +74,20 @@ export class TextConsumer {
 
     while (!consumer.done()) {
       if (consumer.consumeIf(needle)) {
-        foundNeedle = true
-        break
+        this.skip(consumer.countCharsAdvanced())
+
+        if (onConsumingUpTo) {
+          onConsumingUpTo(escapedTextBeforeNeedle)
+        }
+
+        return true
       }
-      
+
       escapedTextBeforeNeedle += consumer.currentChar()
       consumer.moveNext()
     }
-
-    if (!foundNeedle) {
-      return false
-    }
-
-    this.skip(consumer.countCharsAdvanced())
-
-    if (onConsumingUpTo) {
-      onConsumingUpTo(escapedTextBeforeNeedle)
-    }
-
-    return true
+    
+    return false
   }
 
   moveNext(): void {
