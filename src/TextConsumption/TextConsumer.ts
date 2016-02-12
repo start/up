@@ -1,7 +1,3 @@
-interface OnConsumption {
-  (): void
-}
-
 interface OnLineConsumption {
   (line: string): void
 }
@@ -9,15 +5,6 @@ interface OnLineConsumption {
 interface OnConsumingUpTo {
   (escapedTextBeforeNeedle: string): void
 }
-
-interface rejectMatch {
-  (): void
-}
-
-interface skipCountChars {
-  (count: number): void
-}
-
 
 export class TextConsumer {
   private index = 0;
