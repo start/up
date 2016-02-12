@@ -84,6 +84,17 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('can be escaped with backslashes', function() {
+    expect(Up.ast('Hello, `\\`\\h\\i\\``!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new InlineCodeNode([
+          new PlainTextNode('`hi`')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
 
   it('can be the last convention in a paragraph', function() {
     expect(Up.ast('Hello, `*world*`')).to.be.eql(
