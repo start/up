@@ -32,7 +32,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
   while (!consumer.done()) {
 
     for (let parser of conventionParsers) {
-      if (parser(consumer.remaining(), parseArgs,
+      if (parser(consumer.remainingText(), parseArgs,
         (parsedNodes, countCharsAdvanced) => {
           outlineNodes.push.apply(outlineNodes, parsedNodes)
           consumer.skip(countCharsAdvanced)

@@ -25,7 +25,7 @@ export function getSandwichParser(
     const consumer = new TextConsumer(text)
 
     return consumer.consumeIf(startingBun) &&
-      parseInline(consumer.remaining(), { parentNode: new NodeType(parseArgs.parentNode), terminator: endingBun },
+      parseInline(consumer.remainingText(), { parentNode: new NodeType(parseArgs.parentNode), terminator: endingBun },
         (contentNodes, countCharsParsed, sandwichNode) => {
           consumer.skip(countCharsParsed)
           sandwichNode.addChildren(contentNodes)

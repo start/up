@@ -1,13 +1,13 @@
 interface OnConsumption {
-  (remaining: string): void
+  (remainingText: string): void
 }
 
 interface OnLineConsumption {
-  (line: string, remaining: string): void
+  (line: string, remainingText: string): void
 }
 
 interface OnConsumingUpTo {
-  (escapedTextBeforeNeedle: string, remaining: string): void
+  (escapedTextBeforeNeedle: string, remainingText: string): void
 }
 
 interface rejectMatch {
@@ -42,7 +42,7 @@ export class TextConsumer {
       this.skip(needle.length)
 
       if (onMatchBeforeConsumption) {
-        onMatchBeforeConsumption(this.remaining().substr(charsToSkip))
+        onMatchBeforeConsumption(this.remainingText().substr(charsToSkip))
       }
 
       return true
@@ -60,7 +60,7 @@ export class TextConsumer {
       return false
     }
 
-    const consumer = new TextConsumer(this.remaining())
+    const consumer = new TextConsumer(this.remainingText())
 
     while (!consumer.done() && !consumer.consumeIf('\n')) {
       consumer.moveNext()
@@ -77,7 +77,7 @@ export class TextConsumer {
     this.skip(charsToSkip)
 
     if (onLineConsumption) {
-      const remaining = this.remaining()
+      const remaining = this.remainingText()
       const remainingAfterLine = remaining.substr(charsToSkip)
 
       onLineConsumption(trimmedLine, remainingAfterLine)
@@ -105,7 +105,7 @@ export class TextConsumer {
 
     if (onConsumingUpTo) {
       const totalCountCharsAdvancedIfAccepted = this.countCharsAdvanced() + consumer.countCharsAdvanced()
-      onConsumingUpTo(upToNeedle, consumer.remaining())
+      onConsumingUpTo(upToNeedle, consumer.remainingText())
     }
 
     return true
@@ -130,7 +130,7 @@ export class TextConsumer {
     return this.index
   }
 
-  remaining(): string {
+  remainingText(): string {
     return this.text.slice(this.index)
   }
 
@@ -145,7 +145,7 @@ export class TextConsumer {
   private consumerForRemainingText(): TextConsumer {
     const clone = new TextConsumer('')
     
-    clone.text = this.remaining()
+    clone.text = this.remainingText()
     clone.isCurrentCharEscaped = this.isCurrentCharEscaped
     clone.countUnclosedParen = this.countUnclosedParen
     clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket

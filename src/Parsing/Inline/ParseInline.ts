@@ -35,7 +35,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
   while (!consumer.done()) {
 
     for (let parser of conventionParsers) {
-      if (parser(consumer.remaining(), parseArgs,
+      if (parser(consumer.remainingText(), parseArgs,
         (resultNodes, countCharsParsed) => {
           nodes.push.apply(nodes, resultNodes)
           consumer.skip(countCharsParsed)
