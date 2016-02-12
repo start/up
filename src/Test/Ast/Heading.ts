@@ -46,6 +46,24 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
+  
+  
+  it('can contain inline conventions', function() {
+    const text =
+      `
+Hello, *world*!
+##############`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([
+          new PlainTextNode('Hello, '),
+          new EmphasisNode([
+            new PlainTextNode('world')
+          ]),
+          new PlainTextNode('!')
+          ], 1),
+      ]))
+  })
 
   it('can have an optional overline comprised of number signs', function() {
     const text =
