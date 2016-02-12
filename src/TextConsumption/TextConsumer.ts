@@ -22,7 +22,9 @@ export class TextConsumer {
 
   consumeIf(needle: string): boolean {
     const isMatch =
-      !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
+      !this.isCurrentCharEscaped
+      && (needle === this.text.substr(this.index, needle.length)) 
+      && this.areRelevantBracketsClosed(needle)
 
     if (!isMatch) {
       return false
@@ -92,8 +94,7 @@ export class TextConsumer {
       this.updateUnclosedBracketCounts()
     }
 
-    this.index += 1
-    this.handleEscaping()
+    this.skip(1)
   }
 
   skip(count: number): void {
@@ -118,15 +119,14 @@ export class TextConsumer {
   }
 
   private getConsumerForRemainingText(): TextConsumer {
-    const clone = new TextConsumer('')
+    const clone = new TextConsumer(this.remainingText())
 
-    clone.text = this.remainingText()
     clone.isCurrentCharEscaped = this.isCurrentCharEscaped
 
     return clone
   }
 
-  private handleEscaping() {
+  private handleEscaping(): void {
     this.isCurrentCharEscaped = false
 
     if (this.currentChar() === '\\') {
