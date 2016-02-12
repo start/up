@@ -25,17 +25,29 @@ function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
 
 
 describe('A non-blank line underlined by number signs', function() {
-  it('produces a level-1 heading node', function() {
+  it('produces a level-1 heading node when there are at least 3 number signs', function() {
     const text =
-      `Hello, world!
-####`
+      `
+Hello, world!
+###`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+  
+  it('can be underlined by more than 3 number signs', function() {
+    const text =
+      `
+Hello, world!
+##############`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
 
-  it('can have an optional overline comprised of the same characters', function() {
+  it('can have an optional overline comprised of number signs', function() {
     const text =
       `
 ######
