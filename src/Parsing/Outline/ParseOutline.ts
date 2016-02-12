@@ -13,6 +13,7 @@ import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 const conventionParsers = [
   getHeadingParser(streakOf('#'), 1),
   getHeadingParser(streakOf('='), 2),
+  getHeadingParser(streakOf('-'), 3),
   parseSectionSeparatorStreak,
   parseSectionSeparatorWhitespace
 ]

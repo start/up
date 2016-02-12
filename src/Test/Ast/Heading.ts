@@ -142,7 +142,7 @@ Hello, world!
   })
 })
 
-describe('A non-blank line underlined by equal signs signs', function() {
+describe('A non-blank line underlined by equal signs', function() {
   it('produces a level-2 heading node when there are at least 3 equal signs', function() {
     const text =
       `
@@ -163,6 +163,31 @@ Hello, world!
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 2),
+      ]))
+  })
+})
+
+describe('A non-blank line underlined by equal hyphens', function() {
+  it('produces a level-3 heading node when there are at least 3 hyphens', function() {
+    const text =
+      `
+Hello, world!
+---`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 3),
+      ]))
+  })
+  
+  it('can have an optional overline comprised of hyphen', function() {
+    const text =
+      `
+---
+Hello, world!
+-----`
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 3),
       ]))
   })
 })
