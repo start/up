@@ -175,6 +175,19 @@ export class TextConsumer {
   }
 
 
+  clone(): TextConsumer {
+    const clone = new TextConsumer('')
+    
+    clone.text = this.text
+    clone.index = this.index
+    clone.isCurrentCharEscaped = this.isCurrentCharEscaped
+    clone.countUnclosedParen = this.countUnclosedParen
+    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
+    
+    return clone
+  }
+
+
   consumed(): string {
     return this.text.substr(0, this.index)
   }
