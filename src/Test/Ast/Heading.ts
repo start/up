@@ -85,5 +85,30 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
+  
+    
+    it('cannot have any other characters in the underline', function() {
+    const text =
+`
+Hello, world!
+######=`
+    expect(Up.ast(text)).to.not.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+  
+    
+    it('cannot have any other characters in the overline', function() {
+    const text =
+`
+=######
+Hello, world!
+######`
+    expect(Up.ast(text)).to.not.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
 })
 
