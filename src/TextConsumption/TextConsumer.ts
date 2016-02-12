@@ -87,7 +87,7 @@ export class TextConsumer {
   }
 
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
-    const consumer = new TextConsumer(this.remaining())
+    const consumer = this.consumerForRemainingText()
 
     let foundNeedle = false
     let upToNeedle = ''
@@ -134,24 +134,23 @@ export class TextConsumer {
     return this.text.slice(this.index)
   }
 
-  clone(): TextConsumer {
-    const clone = new TextConsumer('')
-    
-    clone.text = this.text
-    clone.index = this.index
-    clone.isCurrentCharEscaped = this.isCurrentCharEscaped
-    clone.countUnclosedParen = this.countUnclosedParen
-    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
-    
-    return clone
-  }
-
   consumed(): string {
     return this.text.substr(0, this.index)
   }
 
   currentChar(): string {
     return this.text[this.index]
+  }
+
+  private consumerForRemainingText(): TextConsumer {
+    const clone = new TextConsumer('')
+    
+    clone.text = this.remaining()
+    clone.isCurrentCharEscaped = this.isCurrentCharEscaped
+    clone.countUnclosedParen = this.countUnclosedParen
+    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
+    
+    return clone
   }
 
   private handleEscaping() {
@@ -204,7 +203,7 @@ export class TextConsumer {
 //
 //   ()
 //   (( )
-function appearsToCloseAnyPreceedingBrackets(text: string, openingBracketChar: string, closingBracketChar: string) {
+function appearsToCloseAnyPreceedingBrackets(text: string, openingBracketChar: string, closingBracketChar: string): boolean {
   let countSurplusOpened = 0
 
   for (let char of text) {
