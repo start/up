@@ -20,12 +20,12 @@ interface skipCountChars {
 
 
 export class TextConsumer {
-  public index = 0;
+  private index = 0;
   private isCurrentCharEscaped = false;
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(public text: string) {
+  constructor(private text: string) {
     this.handleEscaping()
   }
 
