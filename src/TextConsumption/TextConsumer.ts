@@ -1,13 +1,13 @@
 interface OnConsumption {
-  (remainingText: string): void
+  (): void
 }
 
 interface OnLineConsumption {
-  (line: string, remainingText: string): void
+  (line: string): void
 }
 
 interface OnConsumingUpTo {
-  (escapedTextBeforeNeedle: string, remainingText: string): void
+  (escapedTextBeforeNeedle: string): void
 }
 
 interface rejectMatch {
@@ -33,7 +33,7 @@ export class TextConsumer {
     return this.index >= this.text.length
   }
 
-  consumeIf(needle: string, onMatchBeforeConsumption?: OnConsumption): boolean {
+  consumeIf(needle: string): boolean {
     const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
@@ -43,11 +43,7 @@ export class TextConsumer {
     
     let charsToSkip = needle.length
     this.skip(needle.length)
-
-    if (onMatchBeforeConsumption) {
-      onMatchBeforeConsumption(this.remainingText())
-    }
-
+    
     return true
   }
 
@@ -77,7 +73,7 @@ export class TextConsumer {
     this.skip(charsToSkip)
 
     if (onLineConsumption) {
-      onLineConsumption(trimmedLine, this.remainingText())
+      onLineConsumption(trimmedLine)
     }
 
     return true
@@ -87,10 +83,15 @@ export class TextConsumer {
     const consumer = this.consumerForRemainingText()
 
     let foundNeedle = false
-    let upToNeedle = ''
+    let escapedTextBeforeNeedle = ''
 
-    while (!consumer.done() && !consumer.consumeIf(needle, () => { foundNeedle = true })) {
-      upToNeedle += consumer.currentChar()
+    while (!consumer.done()) {
+      if (consumer.consumeIf(needle)) {
+        foundNeedle = true
+        break
+      }
+      
+      escapedTextBeforeNeedle += consumer.currentChar()
       consumer.moveNext()
     }
 
@@ -101,7 +102,7 @@ export class TextConsumer {
     this.skip(consumer.countCharsAdvanced())
 
     if (onConsumingUpTo) {
-      onConsumingUpTo(upToNeedle, consumer.remainingText())
+      onConsumingUpTo(escapedTextBeforeNeedle)
     }
 
     return true
