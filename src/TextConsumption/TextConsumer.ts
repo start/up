@@ -28,9 +28,7 @@ export class TextConsumer {
       return false
     }
 
-    let charsToSkip = needle.length
     this.skip(needle.length)
-
     return true
   }
 
@@ -56,8 +54,7 @@ export class TextConsumer {
       return false
     }
 
-    let charsToSkip = line.length
-    this.skip(charsToSkip)
+    this.skip(line.length)
 
     if (onLineConsumption) {
       onLineConsumption(trimmedLine)
@@ -69,7 +66,6 @@ export class TextConsumer {
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
     const consumer = this.getConsumerForRemainingText()
 
-    let foundNeedle = false
     let escapedTextBeforeNeedle = ''
 
     while (!consumer.done()) {
