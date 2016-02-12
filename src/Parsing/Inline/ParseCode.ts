@@ -9,8 +9,8 @@ export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) 
   const consumer = new TextConsumer(text)
   
   return consumer.consumeIf('`')
-    && consumer.consumeUpTo('`', (code, totalCountCharsAdvanced) => {
-      const node = new InlineCodeNode([new PlainTextNode(code)])
+    && consumer.consumeUpTo('`', (escapedCode, totalCountCharsAdvanced) => {
+      const node = new InlineCodeNode([new PlainTextNode(escapedCode)])
       onParse([node], totalCountCharsAdvanced, parseArgs.parentNode)
     })
 }

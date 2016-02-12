@@ -25,8 +25,8 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
       })
 
   return didParseOpeningBracketAndContent
-    && consumer.consumeUpTo(']', (url, totalCountCharsAdvanced) => {
-      linkNode.url = url
+    && consumer.consumeUpTo(']', (escapedUrl, totalCountCharsAdvanced) => {
+      linkNode.url = escapedUrl
       onParse([linkNode], totalCountCharsAdvanced, parseArgs.parentNode)
     })
 }

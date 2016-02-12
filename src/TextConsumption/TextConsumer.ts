@@ -7,7 +7,7 @@ interface BeforeLineConsumption {
 }
 
 interface BeforeConsumingUpTo {
-  (beforeNeedle: string, totalCountCharsAdvancedIfAccepted: number, remaining: string, skip: skipCountChars, reject: rejectMatch): void
+  (escapedTextBeforeNeedle: string, totalCountCharsAdvancedIfAccepted: number, remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
 interface rejectMatch {

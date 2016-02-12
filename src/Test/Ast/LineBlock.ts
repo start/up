@@ -80,6 +80,7 @@ And addresses do, too
       `
 Roses are red\\
 \\
+\\
 
 Violets are blue`
     expect(Up.ast(text)).to.be.eql(
