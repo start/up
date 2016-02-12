@@ -6,6 +6,7 @@ import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
 import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
+import { parseLineBlock } from './ParseLineBlock'
 import { ParseArgs, OnParse } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 
@@ -18,6 +19,7 @@ const conventionParsers = [
   getHeadingParser(dottedStreakOf('='), 5),
   getHeadingParser(dottedStreakOf('-'), 6),
   parseSectionSeparatorStreak,
+  parseLineBlock,
   parseSectionSeparatorWhitespace
 ]
 

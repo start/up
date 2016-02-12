@@ -14,7 +14,7 @@ export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
   while (consumer.consumeLineIf(NON_BLANK_LINE, (line) => { nonBlankLines.push(line) })) {
   }
 
-  if (nonBlankLines.length > 1) {
+  if (nonBlankLines.length <= 1) {
     return false
   }
 
