@@ -4,7 +4,7 @@ import { ParseArgs, OnParse, Parser } from '../Parser'
 import { NON_BLANK_LINE } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 
-// Underlined text is considered a heading. Headings can have an optional overline, too.
+// Underlined text is treated as a heading. Headings can have an optional overline, too.
 export function getHeadingParser(underlinePattern: string, level: number): Parser {
   let underlineOrOverline = new RegExp(underlinePattern)
 
@@ -16,14 +16,14 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
     
     let content: string
 
-    const hasContentAndOverline =
+    const hasContentAndUnderline =
       consumer.consumeLineIf(NON_BLANK_LINE,
         (line) => {
           content = line
         })
       && consumer.consumeLineIf(underlineOrOverline)
 
-    return hasContentAndOverline
+    return hasContentAndUnderline
       && parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, level) },
       (inlineNodes, countCharsParsed, headingNode) => {
         headingNode.addChildren(inlineNodes)

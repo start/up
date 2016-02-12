@@ -23,7 +23,7 @@ const conventionParsers = [
 
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
-  let outlineNodes: SyntaxNode[] = []
+  const outlineNodes: SyntaxNode[] = []
   const consumer = new TextConsumer(text)
 
   main_parser_loop:
@@ -31,8 +31,8 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
 
     for (let parser of conventionParsers) {
       if (parser(consumer.remaining(), parseArgs,
-        (sectionSeparatorNodes, countCharsAdvanced) => {
-          outlineNodes.push.apply(outlineNodes, sectionSeparatorNodes)
+        (parsedNodes, countCharsAdvanced) => {
+          outlineNodes.push.apply(outlineNodes, parsedNodes)
           consumer.skip(countCharsAdvanced)
         })) {
         continue main_parser_loop
@@ -41,8 +41,8 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
 
     // Alright, none of the other conventions applied. If the current line isn't blank,
     // we're going to treat it as a regular paragraph.
-    if (consumer.consumeLineIf(NON_BLANK_LINE, (nonBlankLine) => {
-      parseInline(nonBlankLine, { parentNode: new ParagraphNode(parseArgs.parentNode) },
+    if (consumer.consumeLineIf(NON_BLANK_LINE, (line) => {
+      parseInline(line, { parentNode: new ParagraphNode(parseArgs.parentNode) },
         (inlineNodes, countCharsAdvanced, paragraphNode) => {
           paragraphNode.addChildren(inlineNodes)
           outlineNodes.push(paragraphNode)
