@@ -8,12 +8,12 @@ import { ParseArgs, OnParse } from '../Parser'
 
 export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
-  
-  // Links cannot be nested within other links 
+
+  // Links cannot be nested within other links
   if (parseArgs.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
     return false
   }
-  
+
   const linkNode = new LinkNode(parseArgs.parentNode)
 
   const didParseOpeningBracketAndContent =
@@ -25,8 +25,8 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
       })
 
   return didParseOpeningBracketAndContent
-    && consumer.consumeUpTo(']', (escapedUrl, totalCountCharsAdvanced) => {
+    && consumer.consumeUpTo(']', (escapedUrl) => {
       linkNode.url = escapedUrl
-      onParse([linkNode], totalCountCharsAdvanced, parseArgs.parentNode)
+      onParse([linkNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
     })
 }

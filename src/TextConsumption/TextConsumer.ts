@@ -1,13 +1,13 @@
-interface OnMatchBeforeConsumption {
+interface OnConsumption {
   (remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
-interface BeforeLineConsumption {
+interface OnLineConsumption {
   (line: string, remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
-interface BeforeConsumingUpTo {
-  (escapedTextBeforeNeedle: string, totalCountCharsAdvancedIfAccepted: number, remaining: string, skip: skipCountChars, reject: rejectMatch): void
+interface OnConsumingUpTo {
+  (escapedTextBeforeNeedle: string, remaining: string, skip: skipCountChars, reject: rejectMatch): void
 }
 
 interface rejectMatch {
@@ -39,13 +39,14 @@ export class TextConsumer {
   }
 
 
-  consumeIf(needle: string, onMatchBeforeConsumption?: OnMatchBeforeConsumption): boolean {
+  consumeIf(needle: string, onMatchBeforeConsumption?: OnConsumption): boolean {
     const isMatch =
       !this.isCurrentCharEscaped && (needle === this.text.substr(this.index, needle.length)) && this.areRelevantBracketsClosed(needle)
 
     if (isMatch) {
       let isRejected = false
       let charsToSkip = needle.length
+      this.skip(charsToSkip)
 
       if (onMatchBeforeConsumption) {
         const skip = (count: number) => { charsToSkip += count }
@@ -54,27 +55,27 @@ export class TextConsumer {
       }
 
       if (isRejected) {
+        this.skip(-charsToSkip)
         return false
       }
 
-      this.skip(charsToSkip)
       return true
     }
 
     return false
   }
 
-  
-  consumeLine(beforeLineConsumption?: BeforeLineConsumption): boolean {
-    return this.consumeLineIf(null, beforeLineConsumption)
+
+  consumeLine(onLineConsumption?: OnLineConsumption): boolean {
+    return this.consumeLineIf(null, onLineConsumption)
   }
 
-  
-  consumeLineIf(pattern: RegExp, beforeLineConsumption?: BeforeLineConsumption): boolean {
+
+  consumeLineIf(pattern: RegExp, onLineConsumption?: OnLineConsumption): boolean {
     if (this.done()) {
       return false
     }
-    
+
     const consumer = new TextConsumer(this.remaining())
 
     while (!consumer.done() && !consumer.consumeIf('\n')) {
@@ -83,64 +84,66 @@ export class TextConsumer {
 
     const line = consumer.consumed()
     const trimmedLine = line.replace(/\s+$/, '')
-    
+
     if (pattern && !pattern.test(trimmedLine)) {
       return false
     }
 
     let isRejected = false
     let charsToSkip = line.length
+    this.skip(charsToSkip)
 
-    if (beforeLineConsumption) {
+    if (onLineConsumption) {
       const remaining = this.remaining()
       const remainingAfterLine = remaining.substr(charsToSkip)
 
       const skip = (count: number) => { charsToSkip += count }
       const reject = () => { isRejected = true }
 
-      beforeLineConsumption(trimmedLine, remainingAfterLine, skip, reject)
+      onLineConsumption(trimmedLine, remainingAfterLine, skip, reject)
     }
 
     if (isRejected) {
+      this.skip(-charsToSkip)
       return false
     }
 
-    this.skip(charsToSkip)
     return true
   }
 
-  
-  consumeUpTo(needle: string, beforeConsumingUpTo?: BeforeConsumingUpTo): boolean {
+
+  consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
     const consumer = new TextConsumer(this.remaining())
 
     let foundNeedle = false
     let upToNeedle = ''
-    
+
     while (!consumer.done() && !consumer.consumeIf(needle, () => { foundNeedle = true })) {
       upToNeedle += consumer.currentChar()
       consumer.moveNext()
     }
-    
+
     if (!foundNeedle) {
       return false
     }
-    
+
     let isRejected = false
     let charsToSkip = consumer.countCharsAdvanced()
-    
-    if (beforeConsumingUpTo) {
+    this.skip(charsToSkip)
+
+    if (onConsumingUpTo) {
       const skip = (count: number) => { charsToSkip += count }
       const reject = () => { isRejected = true }
-      
-      const totalCountCharsAdvancedIfAccepted = this.countCharsAdvanced() + consumer.countCharsAdvanced()      
-      beforeConsumingUpTo(upToNeedle, totalCountCharsAdvancedIfAccepted, consumer.remaining(), skip, reject)
+
+      const totalCountCharsAdvancedIfAccepted = this.countCharsAdvanced() + consumer.countCharsAdvanced()
+      onConsumingUpTo(upToNeedle, consumer.remaining(), skip, reject)
     }
 
     if (isRejected) {
+      this.skip(-charsToSkip)
       return false
     }
 
-    this.skip(charsToSkip)
     return true
   }
 
