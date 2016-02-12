@@ -27,17 +27,17 @@ function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
 describe('A non-blank line underlined by number signs', function() {
   it('produces a level-1 heading node', function() {
     const text =
-`Hello, world!
+      `Hello, world!
 ####`
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-    
-    it('can have an optional overline', function() {
+
+  it('can have an optional overline comprised of the same characters', function() {
     const text =
-`
+      `
 ######
 Hello, world!
 ######`
@@ -46,11 +46,10 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
-    
-    it('can have an overline that is not the same length as the underline', function() {
+
+  it('can have an overline that is not the same length as its underline', function() {
     const text =
-`
+      `
 #########
 Hello, world!
 ######`
@@ -59,11 +58,10 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
-    
-    it('cannot have an overline comprised of different characters', function() {
+
+  it('cannot have an overline comprised of different characters', function() {
     const text =
-`
+      `
 ======
 Hello, world!
 ######`
@@ -72,11 +70,10 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
-    
-    it('cannot have a dotted overline comprised of number signs', function() {
+
+  it('cannot have a dotted overline comprised of number signs', function() {
     const text =
-`
+      `
 # # # #
 Hello, world!
 #######`
@@ -85,11 +82,10 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
-    
-    it('cannot have any other characters in the underline', function() {
+
+  it('cannot have any other characters in its underline', function() {
     const text =
-`
+      `
 Hello, world!
 ######=`
     expect(Up.ast(text)).to.not.eql(
@@ -97,11 +93,10 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
-    
-    it('cannot have any other characters in the overline', function() {
+
+  it('cannot have any other characters in the overline', function() {
     const text =
-`
+      `
 =######
 Hello, world!
 ######`
@@ -110,5 +105,27 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-})
 
+  it('cannot have a leading space in its underline', function() {
+    const text =
+      `
+Hello, world!
+ ######`
+    expect(Up.ast(text)).to.not.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+
+  })
+  it('cannot have a leading space in overline underline', function() {
+    const text =
+      `
+ ######
+Hello, world!
+######`
+    expect(Up.ast(text)).to.not.eql(
+      insideDocument([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+})
