@@ -24,6 +24,19 @@ function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
   ])
 }
 
+describe('An empty document', function() {
+  it('produces only a document node', function() {
+    expect(Up.ast('')).to.eql(new DocumentNode())
+  })
+  
+  it('is considered empty even if there are up to two lines of whitespace', function() {
+    const text =
+`     
+\t
+`
+    expect(Up.ast(text)).to.eql(new DocumentNode())
+  })
+})
 
 describe('A backslash', function() {
   it('causes the following character to be treated as plain text', function() {
