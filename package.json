@@ -2,7 +2,7 @@
   "private": true,
   "name": "up",
   "version": "0.0.0",
-  "description": "Conventions for writing plain text",
+  "description": "Conventions for writing documents in plain text",
   "main": "built/js/index.js",
   "scripts": {
     "test": "mocha --recursive ./built/Test"
