@@ -19,12 +19,30 @@ describe('Text surrounded (underlined and overlined) by streaks of backticks', f
     const text =
       `
 \`\`\`
-let x = y
+const pie = 3.5
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
         new CodeBlockNode([
-          new PlainTextNode('let x = y')
+          new PlainTextNode('const pie = 3.5')
+        ]),
+      ]))
+  })
+  
+  it('can have multiple lines', function() {
+    const text =
+      `
+\`\`\`
+// Escaping backticks in typescript...
+// Such a pain!
+\`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new CodeBlockNode([
+          new PlainTextNode(
+`// Escaping backticks in typescript...
+// Such a pain!`
+          )
         ]),
       ]))
   })
