@@ -79,4 +79,15 @@ Goodbye, world!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
   
+  it('treat the space after the ">" as optional', () => {
+    const blockquotedText =
+`>Hello, world!
+>
+> Goodbye, world!`
+    const text =
+`Hello, world!
+
+Goodbye, world!`
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
 })
