@@ -26,18 +26,30 @@ function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
 
 
 describe('Consecutive lines starting with "> "', function() {
-  it('produce a blockquote', function() {
-    const text =
+  it('are parsed like a document and are placed in a blockquote node', function() {
+    const blockquoteText =
       `
 > Hello, world!
 >
 > Goodbye, world!`
-    expect(Up.ast(text)).to.be.eql(
+
+    const text =
+      `
+Hello, world!
+
+Goodbye, world!`
+    expect(Up.ast(blockquoteText)).to.be.eql(
       insideDocument([
-        new BlockquoteNode([
-          new ParagraphNode([new PlainTextNode('Hello, world!')]),
-          new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
-        ])
+        new BlockquoteNode(Up.ast(text).children)
+      ]))
+  })
+
+  it('Can have just 1 line', function() {
+    const blockquoteText = '> Hi.'
+    const text = 'Hi.'
+    expect(Up.ast(blockquoteText)).to.be.eql(
+      insideDocument([
+        new BlockquoteNode(Up.ast(text).children)
       ]))
   })
 })
