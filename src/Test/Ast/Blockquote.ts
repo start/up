@@ -32,7 +32,7 @@ function expectBlockquoteContentsToEqualDocumentContents(blockquotedText: string
 }
 
 describe('Consecutive lines starting with "> "', function() {
-  it('are parsed like a document and the contents are placed in a blockquote node', function() {
+  it('are parsed like a document and then placed in a blockquote node', function() {
     const blockquotedText =
 `> Hello, world!
 >
@@ -44,9 +44,37 @@ Goodbye, world!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
-  it('Can have just 1 line', function() {
-    const blockquotedText = '> Hi.'
-    const text = 'Hi.'
+  it('are placed in a blockquote node even when there is just 1 empty line', function() {
+    const blockquotedText = '> '
+    const text = ''
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+
+  it('can contain inline conventions', function() {
+    const blockquotedText = '> Hello, *world*!!'
+    const text = 'Hello, *world*!!'
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+
+  it('can contain headings', function() {
+    const blockquotedText =
+`> Hello, world!
+> ===========`
+    const text =
+`Hello, world!
+===========`
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+
+  it('can contain nested blockquotes', function() {
+    const blockquotedText =
+`> Hello, world!
+>
+> > Hello, mantle!`
+    const text =
+`Hello, world!
+
+> Hello, mantle!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 })
