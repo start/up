@@ -1,5 +1,5 @@
 import { parseInline } from './ParseInline'
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer, applyBackslashEscaping } from '../../TextConsumption/TextConsumer'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParseArgs, OnParse } from '../Parser'
@@ -25,8 +25,8 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
       })
 
   return didParseOpeningBracketAndContent
-    && consumer.consumeUpTo(']', (escapedUrl) => {
-      linkNode.url = escapedUrl
+    && consumer.consumeUpTo(']', (url) => {
+      linkNode.url = applyBackslashEscaping(url)
       onParse([linkNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
     })
 }

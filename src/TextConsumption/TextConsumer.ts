@@ -3,7 +3,7 @@ interface OnLineConsumption {
 }
 
 interface OnConsumingUpTo {
-  (escapedTextBeforeNeedle: string): void
+  (beforeNeedle: string): void
 }
 
 // During parsing, a backslash "escapes" (disables) any special meaning the following character
@@ -98,20 +98,19 @@ export class TextConsumer {
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
     const consumer = this.getConsumerForRemainingText()
 
-    let escapedTextBeforeNeedle = ''
-
     while (!consumer.done()) {
       if (consumer.consumeIf(needle)) {
         this.skip(consumer.countCharsAdvanced())
 
         if (onConsumingUpTo) {
-          onConsumingUpTo(escapedTextBeforeNeedle)
+          const consumedText = consumer.consumed()
+          const beforeNeedle = consumedText.substr(0, consumedText.length - needle.length)
+          onConsumingUpTo(beforeNeedle)
         }
 
         return true
       }
 
-      escapedTextBeforeNeedle += consumer.currentChar()
       consumer.moveNext()
     }
 
