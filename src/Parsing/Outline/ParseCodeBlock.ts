@@ -9,7 +9,7 @@ import { ParseArgs, OnParse } from '../Parser'
 const FENCE = new RegExp(streakOf('`'))
 
 // Code blocks are surrounded (underlined and overlined) by streaks of backticks
-export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+export function parseCodeBlock(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
   if (!consumer.consumeLineIf(FENCE)) {
