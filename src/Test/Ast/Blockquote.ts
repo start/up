@@ -24,32 +24,29 @@ function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
   return new DocumentNode(syntaxNodes);
 }
 
+function expectBlockquoteContentsToEqualDocumentContents(blockquotedText: string, text: string): void {
+  expect(Up.ast(blockquotedText)).to.be.eql(
+    insideDocument([
+      new BlockquoteNode(Up.ast(text).children)
+    ]))
+}
 
 describe('Consecutive lines starting with "> "', function() {
-  it('are parsed like a document and are placed in a blockquote node', function() {
-    const blockquoteText =
-      `
-> Hello, world!
+  it('are parsed like a document and the contents are placed in a blockquote node', function() {
+    const blockquotedText =
+`> Hello, world!
 >
 > Goodbye, world!`
-
     const text =
-      `
-Hello, world!
+`Hello, world!
 
 Goodbye, world!`
-    expect(Up.ast(blockquoteText)).to.be.eql(
-      insideDocument([
-        new BlockquoteNode(Up.ast(text).children)
-      ]))
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
   it('Can have just 1 line', function() {
-    const blockquoteText = '> Hi.'
+    const blockquotedText = '> Hi.'
     const text = 'Hi.'
-    expect(Up.ast(blockquoteText)).to.be.eql(
-      insideDocument([
-        new BlockquoteNode(Up.ast(text).children)
-      ]))
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 })
