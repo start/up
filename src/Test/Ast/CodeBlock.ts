@@ -77,4 +77,18 @@ const lineBreak = "\\n"
         ]),
       ]))
   })
+
+  it('can contain a streak of backticks if the streak is preceeded by whitespace', function() {
+    const text =
+      `
+\`\`\`
+ \`\`\`
+\`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new CodeBlockNode([
+          new PlainTextNode(' ```')
+        ]),
+      ]))
+  })
 })
