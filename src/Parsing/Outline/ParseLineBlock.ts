@@ -20,17 +20,13 @@ export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
 
   let lineBlockNode = new LineBlockNode(parseArgs.parentNode)
 
-  const lineNodes = nonBlankLines.map((line) => {
-    let lineNode = new LineNode(lineBlockNode)
-
-    parseInline(line, { parentNode: parseArgs.parentNode }, (inlineNodes) => {
-      lineNode.addChildren(inlineNodes)
-    })
-
-    return lineNode
-  })
-
-  lineBlockNode.addChildren(lineNodes)
+  for (let line of nonBlankLines) {
+    parseInline(line, { parentNode: new LineNode(lineBlockNode) },
+      (inlineNodes, countCharsAdvanced, lineNode) => {
+        lineNode.addChildren(inlineNodes)
+        lineBlockNode.addChild(lineNode)
+      })
+  }
 
   onParse([lineBlockNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true
