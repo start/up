@@ -36,7 +36,7 @@ describe('Consecutive lines starting with "> "', function() {
       insideDocument([
         new BlockquoteNode([
           new ParagraphNode([new PlainTextNode('Hello, world!')]),
-          new ParagraphNode([new PlainTextNode('Hello, world!')]),
+          new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
         ])
       ]))
   })

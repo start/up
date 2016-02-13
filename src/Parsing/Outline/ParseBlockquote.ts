@@ -1,5 +1,5 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockQuoteNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
@@ -30,7 +30,7 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
     .join('\n')
 
   // Parse the contents of the blockquote as though it's a mini-document. Because it is!
-  return parseOutline(blockquoteContent, { parentNode: new LineBlockNode(parseArgs.parentNode) },
+  return parseOutline(blockquoteContent, { parentNode: new BlockquoteNode(parseArgs.parentNode) },
     (contentNodes, countCharsParsed, blockquoteNode) => {
       blockquoteNode.addChildren(contentNodes)
       onParse([blockquoteNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
