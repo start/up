@@ -16,8 +16,7 @@ function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
 
 describe('Text surrounded (underlined and overlined) by streaks of backticks', function() {
   it('produces a code block node containing the surrounded text', function() {
-    const text =
-      `
+    const text = `
 \`\`\`
 const pie = 3.5
 \`\`\``
@@ -30,8 +29,7 @@ const pie = 3.5
   })
   
   it('can have multiple lines', function() {
-    const text =
-      `
+    const text = `
 \`\`\`
 // Escaping backticks in typescript...
 // Such a pain!
@@ -42,6 +40,26 @@ const pie = 3.5
           new PlainTextNode(
 `// Escaping backticks in typescript...
 // Such a pain!`
+          )
+        ]),
+      ]))
+  })
+  
+  it('preserves indentation', function() {
+    const text =
+      `
+\`\`\`
+if (x < 0) {
+  return false
+}
+\`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new CodeBlockNode([
+          new PlainTextNode(
+`if (x < 0) {
+  return false
+}`            
           )
         ]),
       ]))
