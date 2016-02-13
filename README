@@ -47,7 +47,11 @@ One or two blank lines separate paragraphs.
 
 
 
-Three or more blank lines indicates separation between sections of the document.
+Three or more blank lines indicate separation between sections of the document.
+
+Alternatively, you can just use a line!
+
+-----------------------------------------------------------------------
 
 Consecutive lines represent... lines. Not a pagragraph.
 
