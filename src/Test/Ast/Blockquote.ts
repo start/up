@@ -44,12 +44,6 @@ Goodbye, world!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
-  it('are placed in a blockquote node even when there is just 1 empty line', function() {
-    const blockquotedText = '> '
-    const text = ''
-    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
-  })
-
   it('can contain inline conventions', function() {
     const blockquotedText = '> Hello, *world*!!'
     const text = 'Hello, *world*!!'
@@ -77,4 +71,17 @@ Goodbye, world!`
 > Hello, mantle!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
+
+  it('are placed in a blockquote node even when there is just 1 empty line', function() {
+    const blockquotedText = '> '
+    const text = ''
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+  
+  it('can contain nested blockquotes even when there is just 1 line', function() {
+    const blockquotedText = '> > > Hello, *world*!!'
+    const text = '> > Hello, *world*!!'
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+  
 })
