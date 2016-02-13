@@ -19,8 +19,8 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
-describe('A non-blank line underlined by number signs', function() {
-  it('produces a level-1 heading node when there are at least 3 number signs', function() {
+describe('A non-blank line underlined by number signs', () => {
+  it('produces a level-1 heading node when there are at least 3 number signs', () => {
     const text =
       `
 Hello, world!
@@ -31,7 +31,7 @@ Hello, world!
       ]))
   })
   
-  it('can be underlined by more than 3 number signs', function() {
+  it('can be underlined by more than 3 number signs', () => {
     const text =
       `
 Hello, world!
@@ -43,7 +43,7 @@ Hello, world!
   })
   
   
-  it('can contain inline conventions', function() {
+  it('can contain inline conventions', () => {
     const text =
       `
 Hello, *world*!
@@ -60,7 +60,7 @@ Hello, *world*!
       ]))
   })
 
-  it('can have an optional overline comprised of number signs', function() {
+  it('can have an optional overline comprised of number signs', () => {
     const text =
       `
 ######
@@ -72,7 +72,7 @@ Hello, world!
       ]))
   })
 
-  it('can have an overline that is not the same length as its underline', function() {
+  it('can have an overline that is not the same length as its underline', () => {
     const text =
       `
 #########
@@ -84,7 +84,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have an overline comprised of different characters', function() {
+  it('cannot have an overline comprised of different characters', () => {
     const text =
       `
 ======
@@ -96,7 +96,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have a dotted overline comprised of number signs', function() {
+  it('cannot have a dotted overline comprised of number signs', () => {
     const text =
       `
 # # # #
@@ -108,7 +108,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have any other characters in its underline', function() {
+  it('cannot have any other characters in its underline', () => {
     const text =
       `
 Hello, world!
@@ -119,7 +119,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have any other characters in the overline', function() {
+  it('cannot have any other characters in the overline', () => {
     const text =
       `
 =######
@@ -131,7 +131,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have a leading space in its underline', function() {
+  it('cannot have a leading space in its underline', () => {
     const text =
       `
 Hello, world!
@@ -142,7 +142,7 @@ Hello, world!
       ]))
 
   })
-  it('cannot have a leading space in overline underline', function() {
+  it('cannot have a leading space in overline underline', () => {
     const text =
       `
  ######
@@ -155,8 +155,8 @@ Hello, world!
   })
 })
 
-describe('A non-blank line underlined by equal signs', function() {
-  it('produces a level-2 heading node when there are at least 3 equal signs', function() {
+describe('A non-blank line underlined by equal signs', () => {
+  it('produces a level-2 heading node when there are at least 3 equal signs', () => {
     const text =
       `
 Hello, world!
@@ -167,7 +167,7 @@ Hello, world!
       ]))
   })
   
-  it('can have an optional overline comprised of equal signs', function() {
+  it('can have an optional overline comprised of equal signs', () => {
     const text =
       `
 ====
@@ -180,8 +180,8 @@ Hello, world!
   })
 })
 
-describe('A non-blank line underlined by equal hyphens', function() {
-  it('produces a level-3 heading node when there are at least 3 hyphens', function() {
+describe('A non-blank line underlined by equal hyphens', () => {
+  it('produces a level-3 heading node when there are at least 3 hyphens', () => {
     const text =
       `
 Hello, world!
@@ -192,7 +192,7 @@ Hello, world!
       ]))
   })
   
-  it('can have an optional overline comprised of hyphen', function() {
+  it('can have an optional overline comprised of hyphen', () => {
     const text =
       `
 ---
@@ -206,8 +206,8 @@ Hello, world!
 })
 
 
-describe('A non-blank line with a dotted underline comprised of number signs', function() {
-  it('produces a level-4 heading node when there are at least 3 number signs each delimited by 1 space', function() {
+describe('A non-blank line with a dotted underline comprised of number signs', () => {
+  it('produces a level-4 heading node when there are at least 3 number signs each delimited by 1 space', () => {
     const text =
       `
 Hello, world!
@@ -218,7 +218,7 @@ Hello, world!
       ]))
   })
   
-  it('can have more than 3 number signs in its underline', function() {
+  it('can have more than 3 number signs in its underline', () => {
     const text =
       `
 Hello, world!
@@ -229,7 +229,7 @@ Hello, world!
       ]))
   })
 
-  it('can have an optional dotted overline comprised of number signs', function() {
+  it('can have an optional dotted overline comprised of number signs', () => {
     const text =
       `
 # # # #
@@ -241,7 +241,7 @@ Hello, world!
       ]))
   })
 
-  it('can have an overline that is not the same length as its underline', function() {
+  it('can have an overline that is not the same length as its underline', () => {
     const text =
       `
 # # #
@@ -253,7 +253,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have an overline comprised of different characters', function() {
+  it('cannot have an overline comprised of different characters', () => {
     const text =
       `
 = = = =
@@ -265,7 +265,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have a solid overline comprised of number signs', function() {
+  it('cannot have a solid overline comprised of number signs', () => {
     const text =
       `
 #######
@@ -277,7 +277,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have any other characters in its underline', function() {
+  it('cannot have any other characters in its underline', () => {
     const text =
       `
 Hello, world!
@@ -288,7 +288,7 @@ Hello, world!
       ]))
   })
 
-  it('cannot have any other characters in the overline', function() {
+  it('cannot have any other characters in the overline', () => {
     const text =
       `
 - # # #
@@ -300,7 +300,7 @@ Hello, world!
       ]))
   })
 
-  it('can have a leading space in its underline', function() {
+  it('can have a leading space in its underline', () => {
     const text =
       `
 Hello, world!
@@ -312,7 +312,7 @@ Hello, world!
 
   })
   
-  it('can have a leading space in overline underline', function() {
+  it('can have a leading space in overline underline', () => {
     const text =
       `
  # # # # # #
@@ -325,8 +325,8 @@ Hello, world!
   })
 })
 
-describe('A non-blank line with a dotted underline comprised of equal signs', function() {
-  it('produces a level-5 heading node when there are at least 3 equal signs each delimited by 1 space', function() {
+describe('A non-blank line with a dotted underline comprised of equal signs', () => {
+  it('produces a level-5 heading node when there are at least 3 equal signs each delimited by 1 space', () => {
     const text =
       `
 Hello, world!
@@ -337,7 +337,7 @@ Hello, world!
       ]))
   })
   
-  it('can have an optional overline comprised of equal signs', function() {
+  it('can have an optional overline comprised of equal signs', () => {
     const text =
       `
 = = = =
@@ -351,8 +351,8 @@ Hello, world!
 })
 
 
-describe('A non-blank line with a dotted underline comprised of hyphens', function() {
-  it('produces a level-6 heading node when there are at least 3 hyphens each delimited by 1 space', function() {
+describe('A non-blank line with a dotted underline comprised of hyphens', () => {
+  it('produces a level-6 heading node when there are at least 3 hyphens each delimited by 1 space', () => {
     const text =
       `
 Hello, world!
@@ -363,7 +363,7 @@ Hello, world!
       ]))
   })
   
-  it('can have an optional overline comprised of equal signs', function() {
+  it('can have an optional overline comprised of equal signs', () => {
     const text =
       `
 - - -

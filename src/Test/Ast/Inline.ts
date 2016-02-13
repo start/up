@@ -24,12 +24,12 @@ function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
   ])
 }
 
-describe('An empty document', function() {
-  it('produces only a document node', function() {
+describe('An empty document', () => {
+  it('produces only a document node', () => {
     expect(Up.ast('')).to.eql(new DocumentNode())
   })
   
-  it('is considered empty even if there are up to two lines of whitespace', function() {
+  it('is considered empty even if there are up to two lines of whitespace', () => {
     const text =
 `     
 \t
@@ -38,43 +38,43 @@ describe('An empty document', function() {
   })
 })
 
-describe('A backslash', function() {
-  it('causes the following character to be treated as plain text', function() {
+describe('A backslash', () => {
+  it('causes the following character to be treated as plain text', () => {
     expect(Up.ast('Hello, \\world!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, world!')
       ]))
   })
 
-  it('causes the following backslash to be treated as plain text', function() {
+  it('causes the following backslash to be treated as plain text', () => {
     expect(Up.ast('Hello, \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\!')
       ]))
   })
 
-  it('disables any special meaning of the following character', function() {
+  it('disables any special meaning of the following character', () => {
     expect(Up.ast('Hello, \\*world\\*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, *world*!')
       ]))
   })
 
-  it('causes only the following character to be treated as plain text', function() {
+  it('causes only the following character to be treated as plain text', () => {
     expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\, meet \\!')
       ]))
   })
 
-  it('is ignored if it is the final character of the text', function() {
+  it('is ignored if it is the final character of the text', () => {
     expect(Up.ast('Hello, \\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, ')
       ]))
   })
 
-  it('disables any special meaning of the following line break', function() {
+  it('disables any special meaning of the following line break', () => {
     const text = `Hello, world!\\
 \\
 Goodbye, world!`
@@ -85,8 +85,8 @@ Goodbye, world!`
   })
 })
 
-describe('Text surrounded by backticks', function() {
-  it('is not evaluated for other conventions', function() {
+describe('Text surrounded by backticks', () => {
+  it('is not evaluated for other conventions', () => {
     expect(Up.ast('Hello, `*world*`!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -95,7 +95,7 @@ describe('Text surrounded by backticks', function() {
       ]))
   })
 
-  it('can be escaped', function() {
+  it('can be escaped', () => {
     expect(Up.ast('Hello, `\\h\\i`!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -104,7 +104,7 @@ describe('Text surrounded by backticks', function() {
       ]))
   })
 
-  it('can contain escaped backslashes', function() {
+  it('can contain escaped backslashes', () => {
     expect(Up.ast('Hello, `\\`\\h\\i\\``!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -113,7 +113,7 @@ describe('Text surrounded by backticks', function() {
       ]))
   })
 
-  it('can be the last convention in a paragraph', function() {
+  it('can be the last convention in a paragraph', () => {
     expect(Up.ast('Hello, `*world*`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -122,8 +122,8 @@ describe('Text surrounded by backticks', function() {
   })
 })
 
-describe('Text surrounded by asterisks', function() {
-  it('is put inside an emphasis node', function() {
+describe('Text surrounded by asterisks', () => {
+  it('is put inside an emphasis node', () => {
     expect(Up.ast('Hello, *world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -134,7 +134,7 @@ describe('Text surrounded by asterisks', function() {
       ]))
   })
 
-  it('is evaluated for other conventions', function() {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -145,7 +145,7 @@ describe('Text surrounded by asterisks', function() {
       ]))
   })
 
-  it('can even hold stressed text', function() {
+  it('can even hold stressed text', () => {
     expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -160,7 +160,7 @@ describe('Text surrounded by asterisks', function() {
       ]))
   })
 
-  it('can be indirectly nested inside another emphasis node', function() {
+  it('can be indirectly nested inside another emphasis node', () => {
     expect(Up.ast('Hello, *my **very, *very* little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -180,8 +180,8 @@ describe('Text surrounded by asterisks', function() {
   })
 })
 
-describe('Text surrounded by 2 asterisks', function() {
-  it('is put inside a stress node', function() {
+describe('Text surrounded by 2 asterisks', () => {
+  it('is put inside a stress node', () => {
     expect(Up.ast('Hello, **world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -192,7 +192,7 @@ describe('Text surrounded by 2 asterisks', function() {
       ]))
   })
 
-  it('can even hold emphasized text', function() {
+  it('can even hold emphasized text', () => {
     expect(Up.ast('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -208,8 +208,8 @@ describe('Text surrounded by 2 asterisks', function() {
   })
 })
 
-describe('Text starting with 3 asterisks', function() {
-  it('can have its emphasis node closed first', function() {
+describe('Text starting with 3 asterisks', () => {
+  it('can have its emphasis node closed first', () => {
     expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -223,7 +223,7 @@ describe('Text starting with 3 asterisks', function() {
       ]))
   })
 
-  it('can have its stress node closed first', function() {
+  it('can have its stress node closed first', () => {
     expect(Up.ast('Hello, ***my** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -238,15 +238,15 @@ describe('Text starting with 3 asterisks', function() {
   })
 })
 
-describe('An unmatched asterisk', function() {
-  it('does not create an emphasis node', function() {
+describe('An unmatched asterisk', () => {
+  it('does not create an emphasis node', () => {
     expect(Up.ast('Hello, *world!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, *world!')
       ]))
   })
 
-  it('does not create an emphasis node, even when following 2 matching asterisks', function() {
+  it('does not create an emphasis node, even when following 2 matching asterisks', () => {
     expect(Up.ast('*Hello*, *world!')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
@@ -258,8 +258,8 @@ describe('An unmatched asterisk', function() {
 })
 
 
-describe('Text surrounded by 2 plus signs', function() {
-  it('is put inside a revision insertion node', function() {
+describe('Text surrounded by 2 plus signs', () => {
+  it('is put inside a revision insertion node', () => {
     expect(Up.ast('I like ++to brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -270,7 +270,7 @@ describe('Text surrounded by 2 plus signs', function() {
       ]))
   })
 
-  it('is evaluated for other conventions', function() {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast('I like ++to *regularly* brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -286,8 +286,8 @@ describe('Text surrounded by 2 plus signs', function() {
   })
 })
 
-describe('Text surrounded by 2 tildes', function() {
-  it('is put inside a revision deletion node', function() {
+describe('Text surrounded by 2 tildes', () => {
+  it('is put inside a revision deletion node', () => {
     expect(Up.ast('I like ~~certain types of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -298,7 +298,7 @@ describe('Text surrounded by 2 tildes', function() {
       ]))
   })
 
-  it('is evaluated for other conventions', function() {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast('I like ~~certain *types* of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -315,8 +315,8 @@ describe('Text surrounded by 2 tildes', function() {
 })
 
 
-describe('Text surrounded by faces looking away', function() {
-  it('is put inside a spoiler node', function() {
+describe('Text surrounded by faces looking away', () => {
+  it('is put inside a spoiler node', () => {
     expect(Up.ast('After you beat the Elite Four, [<_<]you fight Gary[>_>].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -327,7 +327,7 @@ describe('Text surrounded by faces looking away', function() {
       ]))
   })
 
-  it('is evaluated for other conventions', function() {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast('After you beat the Elite Four, [<_<]you fight *Gary*[>_>].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -341,7 +341,7 @@ describe('Text surrounded by faces looking away', function() {
       ]))
   })
 
-  it('can be nested within another spoiler node', function() {
+  it('can be nested within another spoiler node', () => {
     expect(Up.ast('After you beat the Elite Four, [<_<]you fight [<_<]Gary[>_>][>_>].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -356,8 +356,8 @@ describe('Text surrounded by faces looking away', function() {
   })
 })
 
-describe('Bracketed text pointing to a URL', function() {
-  it('is put inside a link node', function() {
+describe('Bracketed text pointing to a URL', () => {
+  it('is put inside a link node', () => {
     expect(Up.ast('I like [this site -> https://stackoverflow.com]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -368,7 +368,7 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
 
-  it('is evaluated for other conventions', function() {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -382,7 +382,7 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
 
-  it('can contain matching unescaped brackets in the URL', function() {
+  it('can contain matching unescaped brackets in the URL', () => {
     expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Here is a '),
@@ -393,7 +393,7 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
 
-  it('does not try to match brackets in the link text with brackets in the URL', function() {
+  it('does not try to match brackets in the link text with brackets in the URL', () => {
     expect(Up.ast('I like [you [: -> https://stackoverflow.com]!!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -404,7 +404,7 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
 
-  it('can have an escaped, unmatched closing bracket in the URL', function() {
+  it('can have an escaped, unmatched closing bracket in the URL', () => {
     expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -417,8 +417,8 @@ describe('Bracketed text pointing to a URL', function() {
 })
 
 
-describe('Text surrounded by 2 parentheses', function() {
-  it('is put inside an inline aside node', function() {
+describe('Text surrounded by 2 parentheses', () => {
+  it('is put inside an inline aside node', () => {
     expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I don't eat cereal. "),
@@ -429,7 +429,7 @@ describe('Text surrounded by 2 parentheses', function() {
       ]))
   })
 
-  it('is evaluated for other conventions', function() {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I don't eat cereal. "),
@@ -444,7 +444,7 @@ describe('Text surrounded by 2 parentheses', function() {
       ]))
   })
 
-  it('can be nested inside other inline aside nodes', function() {
+  it('can be nested inside other inline aside nodes', () => {
     expect(Up.ast("((I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.))")).to.be.eql(
       insideDocumentAndParagraph([
         new InlineAsideNode([
@@ -461,7 +461,7 @@ describe('Text surrounded by 2 parentheses', function() {
       ]))
   })
 
-  it('can be the last convention in a paragraph', function() {
+  it('can be the last convention in a paragraph', () => {
     expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I don't eat cereal. "),

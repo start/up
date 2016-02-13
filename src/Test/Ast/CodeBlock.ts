@@ -9,8 +9,8 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
-describe('Text surrounded (underlined and overlined) by streaks of backticks', function() {
-  it('produces a code block node containing the surrounded text', function() {
+describe('Text surrounded (underlined and overlined) by streaks of backticks', () => {
+  it('produces a code block node containing the surrounded text', () => {
     const text = `
 \`\`\`
 const pie = 3.5
@@ -21,7 +21,7 @@ const pie = 3.5
       ]))
   })
 
-  it('can have multiple lines', function() {
+  it('can have multiple lines', () => {
     const text = `
 \`\`\`
 // Escaping backticks in typescript...
@@ -35,7 +35,7 @@ const pie = 3.5
       ]))
   })
 
-  it('preserves indentation', function() {
+  it('preserves indentation', () => {
     const text =
       `
 \`\`\`
@@ -52,7 +52,7 @@ if (x < 0) {
       ]))
   })
 
-  it('preserves backslashes', function() {
+  it('preserves backslashes', () => {
     const text = `
 \`\`\`
 const lineBreak = "\\n"
@@ -63,7 +63,7 @@ const lineBreak = "\\n"
       ]))
   })
 
-  it('can contain a streak of backticks if the streak is preceeded by whitespace', function() {
+  it('can contain a streak of backticks if the streak is preceeded by whitespace', () => {
     const text =
       `
 \`\`\`

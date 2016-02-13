@@ -22,8 +22,8 @@ import { LineNode } from '../../SyntaxNodes/LineNode'
 
 
 
-describe('Consecutive non-blank lines', function() {
-  it('produce a line block node containing line nodes', function() {
+describe('Consecutive non-blank lines', () => {
+  it('produce a line block node containing line nodes', () => {
     const text =
       `
 Roses are red
@@ -41,7 +41,7 @@ Violets are blue`
       ]))
   })
 
-  it('can contain inline conventions', function() {
+  it('can contain inline conventions', () => {
     const text =
       `
 Roses are red
@@ -71,7 +71,7 @@ And addresses do, too
       ]))
   })
   
-  it('are still considered consecutive when separated by escaped blank lines', function() {
+  it('are still considered consecutive when separated by escaped blank lines', () => {
     const text =
       `
 Roses are red\\
