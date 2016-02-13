@@ -11,7 +11,6 @@ export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) 
   return consumer.consumeIf('`')
     && consumer.consumeUpTo('`', (code) => {
       const escapedCode = applyBackslashEscaping(code)
-      const inlineCodeNode = new InlineCodeNode([new PlainTextNode(escapedCode)])
-      onParse([inlineCodeNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
+      onParse([new InlineCodeNode(escapedCode)], consumer.countCharsAdvanced(), parseArgs.parentNode)
     })
 }

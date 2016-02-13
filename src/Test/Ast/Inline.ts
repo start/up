@@ -78,9 +78,7 @@ describe('Text surrounded by backticks', function() {
     expect(Up.ast('Hello, `*world*`!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('*world*')
-        ]),
+        new InlineCodeNode('*world*'),
         new PlainTextNode('!')
       ]))
   })
@@ -89,9 +87,7 @@ describe('Text surrounded by backticks', function() {
     expect(Up.ast('Hello, `\\`\\h\\i\\``!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('`hi`')
-        ]),
+        new InlineCodeNode('`hi`'),
         new PlainTextNode('!')
       ]))
   })
@@ -100,9 +96,7 @@ describe('Text surrounded by backticks', function() {
     expect(Up.ast('Hello, `*world*`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new InlineCodeNode([
-          new PlainTextNode('*world*')
-        ])
+        new InlineCodeNode('*world*')
       ]))
   })
 })
@@ -124,9 +118,7 @@ describe('Text surrounded by asterisks', function() {
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
-          new InlineCodeNode([
-            new PlainTextNode('world')
-          ])
+          new InlineCodeNode('world')
         ]),
         new PlainTextNode('!')
       ]))

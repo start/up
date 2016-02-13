@@ -20,7 +20,7 @@ export function parseCodeBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
 
   while (!consumer.done()) {
     if (consumer.consumeLineIf(FENCE)) {
-      const codeBlockNode = new CodeBlockNode([new PlainTextNode(codeLines.join('\n'))])
+      const codeBlockNode = new CodeBlockNode(codeLines.join('\n'))
       onParse([codeBlockNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
       return true
     }

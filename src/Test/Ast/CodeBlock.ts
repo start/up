@@ -22,9 +22,7 @@ const pie = 3.5
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
-        new CodeBlockNode([
-          new PlainTextNode('const pie = 3.5')
-        ]),
+        new CodeBlockNode('const pie = 3.5'),
       ]))
   })
 
@@ -36,12 +34,9 @@ const pie = 3.5
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
-        new CodeBlockNode([
-          new PlainTextNode(
- `// Escaping backticks in typescript...
-// Such a pain!`
-          )
-        ]),
+        new CodeBlockNode(
+`// Escaping backticks in typescript...
+// Such a pain!`),
       ]))
   })
 
@@ -55,13 +50,10 @@ if (x < 0) {
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
-        new CodeBlockNode([
-          new PlainTextNode(
+        new CodeBlockNode(
 `if (x < 0) {
   return false
-}`
-          )
-        ]),
+}`),
       ]))
   })
 
@@ -72,9 +64,7 @@ const lineBreak = "\\n"
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
-        new CodeBlockNode([
-          new PlainTextNode('const lineBreak = "\\n"')
-        ]),
+        new CodeBlockNode('const lineBreak = "\\n"'),
       ]))
   })
 
@@ -86,9 +76,7 @@ const lineBreak = "\\n"
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
       insideDocument([
-        new CodeBlockNode([
-          new PlainTextNode(' ```')
-        ]),
+        new CodeBlockNode(' ```'),
       ]))
   })
 })
