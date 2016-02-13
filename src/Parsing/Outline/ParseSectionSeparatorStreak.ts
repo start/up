@@ -20,6 +20,7 @@ const STREAK = new RegExp(
 export function parseSectionSeparatorStreak(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
+  // Happily consume any leading blank lines
   while (consumer.consumeLineIf(BLANK_LINE)) { }
 
   if (!consumer.consumeLineIf(STREAK)) {
@@ -33,9 +34,9 @@ export function parseSectionSeparatorStreak(text: string, parseArgs: ParseArgs, 
       return false
     }
     
+    // Consume any remaining blank lines
     while (consumer.consumeLineIf(BLANK_LINE)) { }
   }
-  
 
   onParse([new SectionSeparatorNode()], consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true

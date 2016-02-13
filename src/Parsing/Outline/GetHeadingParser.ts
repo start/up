@@ -13,7 +13,7 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
 
     // Parse optional overline
     consumer.consumeLineIf(underlineOrOverline)
-    
+
     let content: string
 
     const hasContentAndUnderline =
@@ -23,11 +23,14 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
         })
       && consumer.consumeLineIf(underlineOrOverline)
 
-    return hasContentAndUnderline
+    return (
+      hasContentAndUnderline
+      // The heading's content should never fail to parse
       && parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, level) },
-      (inlineNodes, countCharsParsed, headingNode) => {
-        headingNode.addChildren(inlineNodes)
-        onParse([headingNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
-      })
+        (inlineNodes, countCharsParsed, headingNode) => {
+          headingNode.addChildren(inlineNodes)
+          onParse([headingNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
+        })
+    )
   }
 }

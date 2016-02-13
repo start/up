@@ -21,16 +21,21 @@ export function getSandwichParser(
     if (startsWith(text, parseArgs.terminator) && startsWith(parseArgs.terminator, startingBun)) {
       return false
     }
-
     const consumer = new TextConsumer(text)
 
-    return consumer.consumeIf(startingBun) &&
-      parseInline(consumer.remainingText(), { parentNode: new NodeType(parseArgs.parentNode), terminator: endingBun },
+    return (
+      consumer.consumeIf(startingBun)
+      && parseInline(
+        consumer.remainingText(), {
+          parentNode: new NodeType(parseArgs.parentNode),
+          terminator: endingBun
+        },
         (contentNodes, countCharsParsed, sandwichNode) => {
           consumer.skip(countCharsParsed)
           sandwichNode.addChildren(contentNodes)
           onParse([sandwichNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
         })
+    )
   }
 }
 
