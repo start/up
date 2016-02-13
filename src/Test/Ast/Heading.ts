@@ -19,11 +19,6 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
-function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode(syntaxNodes);
-}
-
-
 describe('A non-blank line underlined by number signs', function() {
   it('produces a level-1 heading node when there are at least 3 number signs', function() {
     const text =
@@ -31,7 +26,7 @@ describe('A non-blank line underlined by number signs', function() {
 Hello, world!
 ###`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -42,7 +37,7 @@ Hello, world!
 Hello, world!
 ##############`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -54,7 +49,7 @@ Hello, world!
 Hello, *world*!
 ##############`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([
           new PlainTextNode('Hello, '),
           new EmphasisNode([
@@ -72,7 +67,7 @@ Hello, *world*!
 Hello, world!
 ######`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -84,7 +79,7 @@ Hello, world!
 Hello, world!
 ######`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -96,7 +91,7 @@ Hello, world!
 Hello, world!
 ######`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -108,7 +103,7 @@ Hello, world!
 Hello, world!
 #######`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -119,7 +114,7 @@ Hello, world!
 Hello, world!
 ######=`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -131,7 +126,7 @@ Hello, world!
 Hello, world!
 ######`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -142,7 +137,7 @@ Hello, world!
 Hello, world!
  ######`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
 
@@ -154,7 +149,7 @@ Hello, world!
 Hello, world!
 ######`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -167,7 +162,7 @@ describe('A non-blank line underlined by equal signs', function() {
 Hello, world!
 ===`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 2),
       ]))
   })
@@ -179,7 +174,7 @@ Hello, world!
 Hello, world!
 ===`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 2),
       ]))
   })
@@ -192,7 +187,7 @@ describe('A non-blank line underlined by equal hyphens', function() {
 Hello, world!
 ---`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 3),
       ]))
   })
@@ -204,7 +199,7 @@ Hello, world!
 Hello, world!
 -----`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 3),
       ]))
   })
@@ -218,7 +213,7 @@ describe('A non-blank line with a dotted underline comprised of number signs', f
 Hello, world!
 # # #`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -229,7 +224,7 @@ Hello, world!
 Hello, world!
 # # # # # # #`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -241,7 +236,7 @@ Hello, world!
 Hello, world!
 # # # #`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -253,7 +248,7 @@ Hello, world!
 Hello, world!
 # # # # #`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -265,7 +260,7 @@ Hello, world!
 Hello, world!
 # # # #`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -277,7 +272,7 @@ Hello, world!
 Hello, world!
 # # # #`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -288,7 +283,7 @@ Hello, world!
 Hello, world!
 # # # # -`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -300,7 +295,7 @@ Hello, world!
 Hello, world!
 # # #`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -311,7 +306,7 @@ Hello, world!
 Hello, world!
  # # #`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
 
@@ -324,7 +319,7 @@ Hello, world!
 Hello, world!
 # # # # # #`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 4),
       ]))
   })
@@ -337,7 +332,7 @@ describe('A non-blank line with a dotted underline comprised of equal signs', fu
 Hello, world!
 = = =`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 5),
       ]))
   })
@@ -349,7 +344,7 @@ Hello, world!
 Hello, world!
 = = =`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 5),
       ]))
   })
@@ -363,7 +358,7 @@ describe('A non-blank line with a dotted underline comprised of hyphens', functi
 Hello, world!
 - - - - -`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 6),
       ]))
   })
@@ -375,7 +370,7 @@ Hello, world!
 Hello, world!
 - - - -`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 6),
       ]))
   })

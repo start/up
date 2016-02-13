@@ -9,11 +9,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
-function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode(syntaxNodes);
-}
-
-
 describe('Text surrounded (underlined and overlined) by streaks of backticks', function() {
   it('produces a code block node containing the surrounded text', function() {
     const text = `
@@ -21,7 +16,7 @@ describe('Text surrounded (underlined and overlined) by streaks of backticks', f
 const pie = 3.5
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new CodeBlockNode('const pie = 3.5'),
       ]))
   })
@@ -33,7 +28,7 @@ const pie = 3.5
 // Such a pain!
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new CodeBlockNode(
 `// Escaping backticks in typescript...
 // Such a pain!`),
@@ -49,7 +44,7 @@ if (x < 0) {
 }
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new CodeBlockNode(
 `if (x < 0) {
   return false
@@ -63,7 +58,7 @@ if (x < 0) {
 const lineBreak = "\\n"
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new CodeBlockNode('const lineBreak = "\\n"'),
       ]))
   })
@@ -75,7 +70,7 @@ const lineBreak = "\\n"
  \`\`\`
 \`\`\``
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new CodeBlockNode(' ```'),
       ]))
   })

@@ -17,12 +17,11 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
-function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode(syntaxNodes);
-}
 
 function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return insideDocument([new ParagraphNode(syntaxNodes)]);
+  return new DocumentNode([
+    new ParagraphNode(syntaxNodes)
+  ])
 }
 
 
@@ -82,7 +81,7 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can be escaped', function() {
     expect(Up.ast('Hello, `\\h\\i`!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -91,7 +90,7 @@ describe('Text surrounded by backticks', function() {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can contain escaped backslashes', function() {
     expect(Up.ast('Hello, `\\`\\h\\i\\``!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -392,16 +391,16 @@ describe('Bracketed text pointing to a URL', function() {
       ]))
   })
 
-    it('can have an escaped, unmatched closing bracket in the URL', function() {
-      expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
-        insideDocumentAndParagraph([
-          new PlainTextNode('I like '),
-          new LinkNode([
-            new PlainTextNode('this site')
-          ], 'https://google.com/?fake=]query'),
-          new PlainTextNode('. I bet you do, too.')
-        ]))
-    })
+  it('can have an escaped, unmatched closing bracket in the URL', function() {
+    expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://google.com/?fake=]query'),
+        new PlainTextNode('. I bet you do, too.')
+      ]))
+  })
 })
 
 

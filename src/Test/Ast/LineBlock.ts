@@ -21,10 +21,6 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 
 
-function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode(syntaxNodes);
-}
-
 
 describe('Consecutive non-blank lines', function() {
   it('produce a line block node containing line nodes', function() {
@@ -33,7 +29,7 @@ describe('Consecutive non-blank lines', function() {
 Roses are red
 Violets are blue`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new LineBlockNode([
           new LineNode([
             new PlainTextNode('Roses are red')
@@ -54,7 +50,7 @@ Lyrics have lines
 And addresses do, too
 `
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new LineBlockNode([
           new LineNode([
             new PlainTextNode('Roses are red')
@@ -83,7 +79,7 @@ Roses are red\\
 
 Violets are blue`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new LineBlockNode([
           new LineNode([
             new PlainTextNode('Roses are red\n\n')

@@ -18,18 +18,13 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode(syntaxNodes);
-}
-
-
 describe('Between paragraphs', function() {
   it('1 blank line simply provides separation, producing no syntax node itself', function() {
     const text = `Hello, world!
 
 Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
       ]))
@@ -41,7 +36,7 @@ Goodbye, world!`
   \t 
 Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
       ]))
@@ -54,7 +49,7 @@ Goodbye, world!`
 
 Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new SectionSeparatorNode(),
         new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
@@ -71,7 +66,7 @@ Goodbye, world!`
 
 Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new SectionSeparatorNode(),
         new ParagraphNode([new PlainTextNode('Goodbye, world!')])
@@ -85,7 +80,7 @@ describe('A line consisting solely of a streak of characters', function() {
   it('produces a section separator node when comprised of at least 3 hyphens', function() {
     const text = `---`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -93,7 +88,7 @@ describe('A line consisting solely of a streak of characters', function() {
   it('can be comprised of equal signs', function() {
     const text = `===`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -101,7 +96,7 @@ describe('A line consisting solely of a streak of characters', function() {
   it('can be comprised of number signs', function() {
     const text = `###`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -109,7 +104,7 @@ describe('A line consisting solely of a streak of characters', function() {
   it('can be comprised of more than 3 characters', function() {
     const text = `##########`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -117,7 +112,7 @@ describe('A line consisting solely of a streak of characters', function() {
   it('can have a space between each character', function() {
     const text = `= = =`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -125,7 +120,7 @@ describe('A line consisting solely of a streak of characters', function() {
   it('can have a space between each character and start with a space', function() {
     const text = `= = =`
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -134,7 +129,7 @@ describe('A line consisting solely of a streak of characters', function() {
     const text = `---
 hi`
     expect(Up.ast(text)).to.not.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('hi')
@@ -150,7 +145,7 @@ hi`
     
 `
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
@@ -166,7 +161,7 @@ hi`
 \t   
 `
     expect(Up.ast(text)).to.be.eql(
-      insideDocument([
+      new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })

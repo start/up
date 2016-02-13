@@ -19,14 +19,9 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
-
-function insideDocument(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode(syntaxNodes);
-}
-
 function expectBlockquoteContentsToEqualDocumentContents(blockquotedText: string, text: string): void {
   expect(Up.ast(blockquotedText)).to.be.eql(
-    insideDocument([
+    new DocumentNode([
       new BlockquoteNode(Up.ast(text).children)
     ]))
 }
