@@ -8,7 +8,7 @@ import { getHeadingParser } from './GetHeadingParser'
 import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
 import { parseLineBlock } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
-import { parseBlockquote } from './ParseBlockQuote'
+import { parseBlockquote } from './ParseBlockquote'
 import { ParseArgs, OnParse } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 

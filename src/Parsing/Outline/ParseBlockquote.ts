@@ -1,5 +1,5 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockQuoteNode'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
