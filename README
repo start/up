@@ -31,7 +31,7 @@ This text is not \*emphasized\*.
 
 Link URLs can easily contain [matching brackets -> https://google.com/search?q=[hi]].
 
-If you need to include any non-matching brackets, escape them using a backslash.
+If you need to include a non-matching bracket, escape it using a backslash.
 
 
 This is a paragraph.
@@ -79,9 +79,9 @@ This is a sixth-level heading
 - - - - - - - - - - - - - - -
 
 
-#########################################
-Any heading can have an optional overline
-#########################################
+###########################################
+Any heading can have an *optional* overline
+###########################################
 
 
 ````````````
@@ -91,3 +91,10 @@ const description = "The content and formatting of code blocks are preserved com
 
 const funFact = "Even backslashes are preserved.\n\nExciting!"
 ````````````
+
+> This is a blockquote
+>
+> > This is a heading within a nested blockquote
+> > =====================================
+> >
+> > Blockquotes are essentially mini-documents.
