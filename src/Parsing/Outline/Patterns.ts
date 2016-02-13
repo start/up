@@ -9,13 +9,15 @@ const atLeast = (count: number, pattern: string) => group(pattern) + `{${count},
 
 const either = (...patterns: string[]) => group(patterns.join('|'))
 
-const whitespace = '[^\\S\\n]'
+const WHITESPACE_CHAR = '[^\\S\\n]'
 
-const lineOf = (pattern: string) => `^` + pattern + all(whitespace) + '$'
+const lineOf = (pattern: string) => '^' + pattern + all(WHITESPACE_CHAR) + '$'
 
 const streakOf = (char: string) => lineOf(atLeast(3, char))
 
 const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, char + ' ') + char)
+
+const lineStartingWith = (pattern: string) => '^' + pattern
 
 const BLANK_LINE = new RegExp(
   lineOf('')
@@ -28,8 +30,11 @@ const NON_BLANK_LINE = /\S/
 export {
   NON_BLANK_LINE,
   BLANK_LINE,
+  WHITESPACE_CHAR,
+  optional,
   either,
   lineOf,
   streakOf,
-  dottedStreakOf
+  dottedStreakOf,
+  lineStartingWith
 }
