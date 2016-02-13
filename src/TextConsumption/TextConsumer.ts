@@ -62,34 +62,29 @@ export class TextConsumer {
     if (this.done()) {
       return false
     }
-
+    
     const consumer = this.getConsumerForRemainingText()
-    let endsWithLineBreak = false
+    
+    let line: string
 
-    while (!consumer.done()) {
-      if (consumer.consumeIf('\n')) {
-        endsWithLineBreak = true
-        break
-      }
-      
-      consumer.moveNext()
+    const didConsumeUpToLineBreak =
+      consumer.consumeUpTo('\n', (upToLineBreak) => {
+        line = upToLineBreak
+      })
+
+    if (!didConsumeUpToLineBreak) {
+      line = consumer.remainingText()
+      consumer.skipToEnd()
     }
 
-    const line = consumer.consumed()
-    const lineWithoutFinalLineBreak = (
-      endsWithLineBreak
-        ? line.substr(0, line.length - 1)
-        : line
-    )
-
-    if (pattern && !pattern.test(lineWithoutFinalLineBreak)) {
+    if (pattern && !pattern.test(line)) {
       return false
     }
 
-    this.skip(line.length)
-
+    this.skip(consumer.countCharsAdvanced())
+    
     if (onLineConsumption) {
-      onLineConsumption(lineWithoutFinalLineBreak)
+      onLineConsumption(line)
     }
 
     return true
@@ -145,6 +140,10 @@ export class TextConsumer {
 
   currentChar(): string {
     return this.text[this.index]
+  }
+
+  private skipToEnd(): void {
+    this.index = this.text.length
   }
 
   private getConsumerForRemainingText(): TextConsumer {
