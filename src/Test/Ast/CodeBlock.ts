@@ -27,7 +27,7 @@ const pie = 3.5
         ]),
       ]))
   })
-  
+
   it('can have multiple lines', function() {
     const text = `
 \`\`\`
@@ -38,13 +38,13 @@ const pie = 3.5
       insideDocument([
         new CodeBlockNode([
           new PlainTextNode(
-`// Escaping backticks in typescript...
+ `// Escaping backticks in typescript...
 // Such a pain!`
           )
         ]),
       ]))
   })
-  
+
   it('preserves indentation', function() {
     const text =
       `
@@ -59,8 +59,21 @@ if (x < 0) {
           new PlainTextNode(
 `if (x < 0) {
   return false
-}`            
+}`
           )
+        ]),
+      ]))
+  })
+
+  it('preserves backslashes', function() {
+    const text = `
+\`\`\`
+const lineBreak = "\\n"
+\`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      insideDocument([
+        new CodeBlockNode([
+          new PlainTextNode('const lineBreak = "\\n"')
         ]),
       ]))
   })
