@@ -36,7 +36,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
   while (!consumer.done()) {
 
     const isBulletedLine = consumer.consumeLineIf(BULLETED_LINE_START, (line) => {
-      currentListItem = line.replace(BULLETED_LINE_START, '')
+      currentListItem = line.replace(BULLETED_LINE_START, '') + '\n'
     })
 
     if (!isBulletedLine) {
@@ -45,19 +45,9 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
 
     // Okay, we're dealing with a list item. Now let's collect the rest of this list item's lines.
     while (!consumer.done()) {
-      const isAnotherBulletedLine = BULLETED_LINE_START.test(consumer.remainingText())
-       
-      if (!isAnotherBulletedLine) {
-        // We've found the start of the next list item.
-        listItems.push(currentListItem)
-        break
-      }
-    
-      const isLineIndented = consumer.consumeLineIf(INDENTED_LINE_START, (line) => {
-        currentListItem += line.replace(INDENTED_LINE_START, '')
-      })
-
-      if (isLineIndented) {
+      if (consumer.consumeLineIf(INDENTED_LINE_START, (line) => {
+        currentListItem += line.replace(INDENTED_LINE_START, '') + '\n'
+      })) {
         continue
       }
 
@@ -73,17 +63,19 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
       if (consumer.consumeLineIf(BLANK_LINE)) {
         // Since we know we aren't dealing with a list terminator (2+ consecutive blank lines),
         // it's safe to consume this single blank line and continue parsing the list item. To be
-        // clear, any blank lines in a list item do *not* need to be indented.
+        // clear, any blank lines in a list item do *not* need to be indented.        
+        currentListItem += '\n'
         continue
       }
       
       // If we've made it this far, that means the current line is neither blank nor indented.
       // It could be the start of another bulleted list item, or it could indicate the end of
-      // the list (e.g. a paragraph after the list). Let's include the current list item, then
-      // see if we can parse the next one.
-      listItems.push(currentListItem)
+      // the list (e.g. a paragraph after the list). We're done with list item, so let's see
+      // whether we have time for the next one
       break
     }
+    
+      listItems.push(currentListItem)
   }
 
   if (!listItems.length) {
