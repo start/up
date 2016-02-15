@@ -46,3 +46,28 @@ describe('Consecutive bulleted lines', () => {
       ]))
   })
 })
+
+describe('Bulleted lines separated by a single blank line', () => {
+  it('produce a bulleted list node containing bulleted list item nodes', () => {
+    const text =
+      `
+* Hello, world!
+
+* Goodbyte, world!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ]),
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Goodbyte, world!')
+            ])
+          ]),
+        ]),
+      ]))
+  })
+})
