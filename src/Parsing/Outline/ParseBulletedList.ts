@@ -1,5 +1,6 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
+import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
@@ -9,7 +10,7 @@ import { ParseArgs, OnParse } from '../Parser'
 
 const BULLETED_LINE_START = new RegExp(
   lineStartingWith(
-    optional(WHITESPACE_CHAR) + either('\\*', '-', '\\+') + WHITESPACE_CHAR
+    optional(' ') + either('\\*', '-', '\\+') + WHITESPACE_CHAR
   )
 )
 
@@ -19,11 +20,11 @@ const INDENTED_LINE_START = new RegExp(
 
 // Bulleted lists are simply collections of bulleted list items.
 //
-// Each bulleted list item can contain any convention, even other lists! To include more than
-// one line in a list item, indent any subsequent lines.
+// List items can contain any kind of convention, even other lists!  In list items
+// with multiple lines, all subsequent lines are indented.
 //
-// List items can be separated by an optional blank line. Two consecutive blank lines end both
-// the list item and the whole list itself.
+// List items can be separated by an optional blank line. Two consecutive blank lines
+// indicates the end of the whole list.
 export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
 
   const consumer = new TextConsumer(text)
@@ -42,8 +43,16 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
       break
     }
 
-    // Okay, we're dealing with a list item. Now let's collect the rest of the list item's lines.
+    // Okay, we're dealing with a list item. Now let's collect the rest of this list item's lines.
     while (!consumer.done()) {
+      const isAnotherBulletedLine = BULLETED_LINE_START.test(consumer.remainingText())
+       
+      if (!isAnotherBulletedLine) {
+        // We've found the start of the next list item.
+        listItems.push(currentListItem)
+        break
+      }
+    
       const isLineIndented = consumer.consumeLineIf(INDENTED_LINE_START, (line) => {
         currentListItem += line.replace(INDENTED_LINE_START, '')
       })
@@ -68,37 +77,32 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
         continue
       }
       
-      // Uh-oh. If we've made it this far, that means the current line is neither blank nor indented.
-      // Our list is over!
+      // If we've made it this far, that means the current line is neither blank nor indented.
+      // It could be the start of another bulleted list item, or it could indicate the end of
+      // the list (e.g. a paragraph after the list). Let's include the current list item, then
+      // see if we can parse the next one.
       listItems.push(currentListItem)
-      break list_item_collector_loop
+      break
     }
   }
 
   if (!listItems.length) {
     return false
   }
+  
+  const listNode = new BulletedListNode(parseArgs.parentNode)
 
-  const lines: string[] = []
-
-  // Collect all consecutive lines starting with "> "
-  while (consumer.consumeLineIf(BULLETED_LINE_START, (line) => { lines.push(line) })) { }
-
-  if (!lines.length) {
-    return false
+  // Parse each list item like its own mini-document
+  for (var listItem in listItems) {
+    parseOutline(listItem, { parentNode: new BulletedListItemNode(listNode) },
+      (outlineNodes, countCharsAdvanced, listItemNode) => {
+        listItemNode.addChildren(outlineNodes)
+        listNode.addChild(listItemNode)
+      })
   }
   
-  // Strip "> " from each line, then stick them all back together. See where this is going?
-  let blockquoteContent = lines
-    .map((line) => line.replace(BULLETED_LINE_START, ''))
-    .join('\n')
-
-  // Parse the contents of the blockquote as though it's a mini-document. Because it is!
-  return parseOutline(blockquoteContent, { parentNode: new BlockquoteNode(parseArgs.parentNode) },
-    (contentNodes, countCharsParsed, blockquoteNode) => {
-      blockquoteNode.addChildren(contentNodes)
-      onParse([blockquoteNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
-    })
+  onParse([listNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
+  return true 
 }
 
 function isListTerminator(text: string) {
