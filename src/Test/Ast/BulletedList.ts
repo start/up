@@ -41,8 +41,8 @@ describe('Consecutive bulleted lines', () => {
             new ParagraphNode([
               new PlainTextNode('Goodbyte, world!')
             ])
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 })
@@ -66,9 +66,10 @@ describe('Bulleted lines separated by a single blank line', () => {
             new ParagraphNode([
               new PlainTextNode('Goodbyte, world!')
             ])
-          ]),
-        ]),
-      ]))
+          ])
+        ])
+      ])
+    )
   })
 })
 
@@ -94,9 +95,10 @@ describe('Bulleted lines separated by a 2 blank lines', () => {
             new ParagraphNode([
               new PlainTextNode('Goodbyte, world!')
             ])
-          ]),
-        ]),
-      ]))
+          ])
+        ])
+      ])
+    )
   })
 })
 
@@ -124,8 +126,27 @@ describe('Bulleted lines separated by a 3 blank lines', () => {
             new ParagraphNode([
               new PlainTextNode('Goodbyte, world!')
             ])
-          ]),
-        ]),
-      ]))
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('A single bulleted line', () => {
+  it('produce a bulleted list node containing a single bulleted list item', () => {
+    const text = '* Hello, world!'
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ])
+        ])
+      ])
+    )
   })
 })
