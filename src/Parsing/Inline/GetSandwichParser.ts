@@ -18,7 +18,7 @@ export function getSandwichParser(
     //
     // To avoid that, we check for those two conditions. If both are true, we decline
     // to parse this sandwich, allowing the parent node to close.
-    if (startsWith(text, parseArgs.terminator) && startsWith(parseArgs.terminator, startingBun)) {
+    if (startsWith(text, parseArgs.inlineTerminator) && startsWith(parseArgs.inlineTerminator, startingBun)) {
       return false
     }
     const consumer = new TextConsumer(text)
@@ -28,7 +28,7 @@ export function getSandwichParser(
       && parseInline(
         consumer.remainingText(), {
           parentNode: new NodeType(parseArgs.parentNode),
-          terminator: endingBun
+          inlineTerminator: endingBun
         },
         (contentNodes, countCharsParsed, sandwichNode) => {
           consumer.skip(countCharsParsed)

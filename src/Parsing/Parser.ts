@@ -3,7 +3,8 @@ import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
 export interface ParseArgs {
   parentNode?: RichSyntaxNode,
-  terminator?: string
+  // TODO: Add an outline equivalent, or make this field work applicable for both
+  inlineTerminator?: string
 }
 
 export interface OnParse {
