@@ -150,3 +150,30 @@ describe('A single bulleted line', () => {
     )
   })
 })
+
+describe('A bulleted line followed by an indented line', () => {
+  it('are part of the same bulleted list item', () => {
+    const text =
+      `
+* Hello, world!
+  ============
+* Goodbyte, world!
+  ---------------`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new HeadingNode([
+              new PlainTextNode('Hello, world!')
+            ], 2)
+          ]),
+          new BulletedListItemNode([
+            new HeadingNode([
+              new PlainTextNode('Goodbyte, world!')
+            ], 3)
+          ])
+        ])
+      ])
+    )
+  })
+})
