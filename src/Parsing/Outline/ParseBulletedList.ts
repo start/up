@@ -85,7 +85,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
   const listNode = new BulletedListNode(parseArgs.parentNode)
 
   // Parse each list item like its own mini-document
-  for (var listItem in listItems) {
+  for (var listItem of listItems) {
     parseOutline(listItem, { parentNode: new BulletedListItemNode(listNode) },
       (outlineNodes, countCharsAdvanced, listItemNode) => {
         listItemNode.addChildren(outlineNodes)
