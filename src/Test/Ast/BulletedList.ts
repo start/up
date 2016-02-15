@@ -152,13 +152,13 @@ describe('A single bulleted line', () => {
 })
 
 describe('A bulleted line followed by an indented line', () => {
-  it('are part of the same bulleted list item', () => {
+  it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
       `
 * Hello, world!
   ============
-* Goodbyte, world!
-  ---------------`
+* Roses are red
+  Violets are blue`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new BulletedListNode([
@@ -168,8 +168,46 @@ describe('A bulleted line followed by an indented line', () => {
             ], 2)
           ]),
           new BulletedListItemNode([
+            new LineBlockNode([
+              new LineNode([
+                new PlainTextNode('Roses are red')
+              ]),
+              new LineNode([
+                new PlainTextNode('Violets are blue')
+              ])
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('A bulleted line followed by indented lines and single blank lines', () => {
+  it('are parsed like a document and placed in the same bulleted list item node', () => {
+    const text =
+      `
+* Hello, world!
+  ============
+
+  It is really late, and I am really tired.
+
+* Goodbye, world!
+  ---------------`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
             new HeadingNode([
-              new PlainTextNode('Goodbyte, world!')
+              new PlainTextNode('Hello, world!')
+            ], 2),
+            new ParagraphNode([
+              new PlainTextNode('It is really late, and I am really tired.')
+            ])
+          ]),
+          new BulletedListItemNode([
+            new HeadingNode([
+              new PlainTextNode('Goodbye, world!')
             ], 3)
           ])
         ])
