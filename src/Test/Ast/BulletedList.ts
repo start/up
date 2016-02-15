@@ -293,8 +293,8 @@ describe('A bullet list item with an asterisk bullet', () => {
   })
 })
 
-describe('A bulleted list item containing a properly indented code block', () => {
-  it('produces a list item node containing a code block node with unintented content', () => {
+describe('A code block in a list item', () => {
+  it('produces a code block node with unintented content', () => {
     const text =
 `
 * \`\`\`
@@ -305,6 +305,26 @@ describe('A bulleted list item containing a properly indented code block', () =>
         new BulletedListNode([
           new BulletedListItemNode([
             new CodeBlockNode('const x = 0')
+          ])
+        ])
+      ])
+    )
+  })
+  
+  it('can have multiple consecutive blank lines', () => {
+    const text =
+`
+* \`\`\`
+  const x = 0
+
+
+  const y = 0
+  \`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new CodeBlockNode('const x = 0\n\n\nconst y = 0')
           ])
         ])
       ])
