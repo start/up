@@ -71,3 +71,61 @@ describe('Bulleted lines separated by a single blank line', () => {
       ]))
   })
 })
+
+describe('Bulleted lines separated by a 2 blank lines', () => {
+  it('produce two separate bulleted lists', () => {
+    const text =
+      `
+* Hello, world!
+
+
+* Goodbyte, world!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ])
+        ]),
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Goodbyte, world!')
+            ])
+          ]),
+        ]),
+      ]))
+  })
+})
+
+describe('Bulleted lines separated by a 3 blank lines', () => {
+  it('produce two separate bulleted lists separated by a section separator node', () => {
+    const text =
+      `
+* Hello, world!
+
+
+
+* Goodbyte, world!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ])
+        ]),
+        new SectionSeparatorNode(),
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Goodbyte, world!')
+            ])
+          ]),
+        ]),
+      ]))
+  })
+})
