@@ -25,7 +25,7 @@ const INDENTED_LINE_START = new RegExp(
 //
 // List items can be separated by an optional blank line. Two consecutive blank lines
 // indicates the end of the whole list.
-export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
 
   const consumer = new TextConsumer(text)
 

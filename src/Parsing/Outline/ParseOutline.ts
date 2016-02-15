@@ -9,6 +9,7 @@ import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespa
 import { parseLineBlock } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
+import { parseBulletedList } from './ParseBulletedList'
 import { ParseArgs, OnParse } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 
@@ -23,6 +24,7 @@ const conventionParsers = [
   parseSectionSeparatorStreak,
   parseCodeBlock,
   parseBlockquote,
+  parseBulletedList,
   parseLineBlock,
   parseSectionSeparatorWhitespace
 ]
