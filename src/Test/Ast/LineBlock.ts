@@ -70,8 +70,10 @@ And addresses do, too
         ]),
       ]))
   })
-  
-  it('are still considered consecutive when separated by escaped blank lines', () => {
+})
+
+describe('Non-blank lines separated by escaped blank lines', () => {
+  it('are still considered consecutive and still produce a line block node', () => {
     const text =
       `
 Roses are red\\

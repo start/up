@@ -39,9 +39,16 @@ Goodbye, world!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
+
   it('can contain inline conventions', () => {
-    const blockquotedText = '> Hello, *world*!!'
-    const text = 'Hello, *world*!!'
+    const blockquotedText =
+`> Hello, world!
+>
+> Goodbye, *world*!`
+    const text =
+`Hello, world!
+
+Goodbye, *world*!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
@@ -66,18 +73,6 @@ Goodbye, world!`
 > Hello, mantle!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
-
-  it('are placed in a blockquote node even when there is just 1 empty line', () => {
-    const blockquotedText = '> '
-    const text = ''
-    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
-  })
-  
-  it('can contain nested blockquotes even when there is just 1 line', () => {
-    const blockquotedText = '> > > Hello, *world*!!'
-    const text = '> > Hello, *world*!!'
-    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
-  })
   
   it('treat the space after the ">" as optional', () => {
     const blockquotedText =
@@ -88,6 +83,20 @@ Goodbye, world!`
 `Hello, world!
 
 Goodbye, world!`
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+})
+
+describe('A single line starting with "> "', () => {
+  it('can contain nested blockquotes', () => {
+    const blockquotedText = '> > > Hello, *world*!!'
+    const text = '> > Hello, *world*!!'
+    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+  })
+  
+  it('is placed in a blockquote node even when the line is empty', () => {
+    const blockquotedText = '> '
+    const text = ''
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 })
