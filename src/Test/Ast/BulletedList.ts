@@ -42,39 +42,27 @@ describe('Consecutive bulleted lines', () => {
             ])
           ])
         ])
-      ]))
+      ])
+      )
   })
-})
-
-describe('Bulleted lines separated by a single blank line', () => {
-  it('produce a bulleted list node containing bulleted list item nodes', () => {
-    const text =
+  
+  it('can be separated by a single optional blank line', () => {
+    const textWithSeparator =
 `* Hello, world!
 
 * Goodbyte, world!`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
-            ])
-          ]),
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Goodbyte, world!')
-            ])
-          ])
-        ])
-      ])
-    )
+
+    const textWithoutSeparator =
+`* Hello, world!
+* Goodbyte, world!`
+    expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
 })
 
 describe('Bulleted lines separated by a 2 blank lines', () => {
   it('produce two separate bulleted lists', () => {
     const text =
-      `* Hello, world!
+`* Hello, world!
 
 
 * Goodbyte, world!`
@@ -131,7 +119,7 @@ describe('Bulleted lines separated by a 3 blank lines', () => {
 
 
 describe('A single bulleted line', () => {
-  it('produce a bulleted list node containing a single bulleted list item', () => {
+  it('produces a bulleted list node containing a single bulleted list item', () => {
     const text = '* Hello, world!'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
