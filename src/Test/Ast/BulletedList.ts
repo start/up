@@ -26,8 +26,7 @@ import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 describe('Consecutive bulleted lines', () => {
   it('produce a bulleted list node containing bulleted list item nodes', () => {
     const text =
-      `
-* Hello, world!
+`* Hello, world!
 * Goodbyte, world!`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -50,8 +49,7 @@ describe('Consecutive bulleted lines', () => {
 describe('Bulleted lines separated by a single blank line', () => {
   it('produce a bulleted list node containing bulleted list item nodes', () => {
     const text =
-      `
-* Hello, world!
+`* Hello, world!
 
 * Goodbyte, world!`
     expect(Up.ast(text)).to.be.eql(
@@ -76,8 +74,7 @@ describe('Bulleted lines separated by a single blank line', () => {
 describe('Bulleted lines separated by a 2 blank lines', () => {
   it('produce two separate bulleted lists', () => {
     const text =
-      `
-* Hello, world!
+      `* Hello, world!
 
 
 * Goodbyte, world!`
@@ -105,8 +102,7 @@ describe('Bulleted lines separated by a 2 blank lines', () => {
 describe('Bulleted lines separated by a 3 blank lines', () => {
   it('produce two separate bulleted lists separated by a section separator node', () => {
     const text =
-      `
-* Hello, world!
+`* Hello, world!
 
 
 
@@ -154,8 +150,7 @@ describe('A single bulleted line', () => {
 describe('A bulleted line followed by an indented line', () => {
   it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
-      `
-* Hello, world!
+`* Hello, world!
   ============
 * Roses are red
   Violets are blue`
@@ -186,8 +181,7 @@ describe('A bulleted line followed by an indented line', () => {
 describe('A bulleted line followed by indented lines and single blank lines', () => {
   it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
-      `
-* Hello, world!
+`* Hello, world!
   ============
 
   It is really late, and I am really tired.
@@ -213,5 +207,25 @@ describe('A bulleted line followed by indented lines and single blank lines', ()
         ])
       ])
     )
+  })
+
+  it('does not need a blank line to separate it from other list items', () => {
+    const textWithoutSeparator =
+`* Hello, world!
+  ============
+
+  It is really late, and I am really tired.
+
+* Goodbye, world!
+  ---------------`
+
+    const textWithSeparator =
+`* Hello, world!
+  ============
+
+  It is really late, and I am really tired.
+* Goodbye, world!
+  ---------------`
+    expect(Up.ast(textWithoutSeparator)).to.be.eql(Up.ast(textWithSeparator))
   })
 })
