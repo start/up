@@ -217,3 +217,24 @@ describe('A bulleted line followed by indented lines and single blank lines', ()
     expect(Up.ast(textWithoutSeparator)).to.be.eql(Up.ast(textWithSeparator))
   })
 })
+
+
+describe('A bullet list item with an asterisk bullet', () => {
+  it('Can start with emphasized text', () => {
+    const text = '* *Hello*, world!'
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new EmphasisNode([
+                new PlainTextNode('Hello')
+              ]),
+              new PlainTextNode(', world!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
