@@ -21,6 +21,7 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
 import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
+import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
 describe('Consecutive bulleted lines', () => {
@@ -285,6 +286,25 @@ describe('A bullet list item with an asterisk bullet', () => {
               ]),
               new PlainTextNode(', world!')
             ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('A bulleted list item containing a properly indented code block', () => {
+  it('produces a list item node containing a code block node with unintented content', () => {
+    const text =
+`
+* \`\`\`
+  const x = 0
+  \`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new CodeBlockNode('const x = 0')
           ])
         ])
       ])
