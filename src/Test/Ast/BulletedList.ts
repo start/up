@@ -26,7 +26,8 @@ import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 describe('Consecutive bulleted lines', () => {
   it('produce a bulleted list node containing bulleted list item nodes', () => {
     const text =
-`* Hello, world!
+`
+* Hello, world!
 * Goodbyte, world!`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -48,12 +49,14 @@ describe('Consecutive bulleted lines', () => {
   
   it('can be separated by a single optional blank line', () => {
     const textWithSeparator =
-`* Hello, world!
+`
+* Hello, world!
 
 * Goodbyte, world!`
 
     const textWithoutSeparator =
-`* Hello, world!
+`
+* Hello, world!
 * Goodbyte, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
@@ -62,7 +65,8 @@ describe('Consecutive bulleted lines', () => {
 describe('Bulleted lines separated by a 2 blank lines', () => {
   it('produce two separate bulleted lists', () => {
     const text =
-`* Hello, world!
+`
+* Hello, world!
 
 
 * Goodbyte, world!`
@@ -90,7 +94,8 @@ describe('Bulleted lines separated by a 2 blank lines', () => {
 describe('Bulleted lines separated by a 3 blank lines', () => {
   it('produce two separate bulleted lists separated by a section separator node', () => {
     const text =
-`* Hello, world!
+`
+* Hello, world!
 
 
 
@@ -138,7 +143,8 @@ describe('A single bulleted line', () => {
 describe('A bulleted line followed by an indented line', () => {
   it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
-`* Hello, world!
+`
+* Hello, world!
   ============
 * Roses are red
   Violets are blue`
@@ -169,7 +175,8 @@ describe('A bulleted line followed by an indented line', () => {
 describe('A bulleted line followed by indented lines and single blank lines', () => {
   it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
-`* Hello, world!
+`
+* Hello, world!
   ============
 
   It is really late, and I am really tired.
@@ -215,6 +222,52 @@ describe('A bulleted line followed by indented lines and single blank lines', ()
 * Goodbye, world!
   ---------------`
     expect(Up.ast(textWithoutSeparator)).to.be.eql(Up.ast(textWithSeparator))
+  })
+  
+    it('can contain a nested list, even when using the same bullet type', () => {
+    const text =
+`
+* Hello, world!
+  ============
+
+  Upcoming features:
+  
+  * Code blocks in list items
+  * Definition lists
+
+* Goodbye, world!
+  ---------------`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new HeadingNode([
+              new PlainTextNode('Hello, world!')
+            ], 2),
+            new ParagraphNode([
+              new PlainTextNode('Upcoming features:')
+            ]),
+            new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Code blocks in list items')
+            ])
+          ]),
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Definition lists')
+            ])
+          ])
+        ])
+          ]),
+          new BulletedListItemNode([
+            new HeadingNode([
+              new PlainTextNode('Goodbye, world!')
+            ], 3)
+          ])
+        ])
+      ])
+    )
   })
 })
 
