@@ -18,15 +18,13 @@ const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, char 
 
 const lineStartingWith = (pattern: string) => '^' + pattern
 
-const BLANK_LINE = new RegExp(
-  lineOf('')
-)
+const BLANK_LINE = lineOf('')
 
 const INDENT = either('  ', '\t')
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
-const NON_BLANK_LINE = /\S/
+const NON_BLANK_LINE = '\\S'
 
 export {
   NON_BLANK_LINE,
