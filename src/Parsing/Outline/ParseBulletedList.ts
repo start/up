@@ -14,12 +14,12 @@ const BULLET_PATTERN = new RegExp(
   )
 )
 
-const INDENT_PATTERN = new RegExp(
-  lineStartingWith(INDENT)
-)
 
-const BLANK_LINE_PATTERN = new RegExp(
-  BLANK_LINE
+const INDENTED_OR_BLANK_LINE_PATTERN = new RegExp(
+  either(
+    lineStartingWith(INDENT),
+    BLANK_LINE
+  )
 )
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -27,65 +27,40 @@ const BLANK_LINE_PATTERN = new RegExp(
 // List items can contain any kind of convention, even other lists!  In list items
 // with multiple lines, all subsequent lines are indented.
 //
-// List items can be separated by an optional blank line. Two consecutive blank lines
-// indicates the end of the whole list.
+// List items can be separated by an optional blank line.
 export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
 
   const consumer = new TextConsumer(text)
 
   const listItems: string[] = []
-  let currentListItem: string
+  let listItemLines: string[] = []
 
   list_item_collector_loop:
   while (!consumer.done()) {
 
-    const isBulletedLine = consumer.consumeLineIf(BULLET_PATTERN, (line) => {
-      currentListItem = line.replace(BULLET_PATTERN, '') + '\n'
-    })
-
-    if (!isBulletedLine) {
+    if (!consumer.consumeLineIf(BULLET_PATTERN, (line) => { listItemLines.push(line.replace(BULLET_PATTERN, '')) })) {
       break
     }
 
-    // Okay, we're dealing with a list item. Now let's collect the rest of this list item's lines.
+    // Okay, we're dealing with a list item. Now let's collect the rest of this list item.
     while (!consumer.done()) {
-      if (consumer.consumeLineIf(INDENT_PATTERN, (line) => {
-        currentListItem += line.replace(INDENT_PATTERN, '') + '\n'
-      })) {
-        continue
-      }
-
-      if (isListTerminator(consumer.remainingText())) {
-        // Dang, the list is over. Let's include the current list item...
-        listItems.push(currentListItem)
-        
-        // ...and bail! We don't consume the list terminator, because we need to leave those blank
-        // lines for the outline parser to deal figure out.
-        break list_item_collector_loop
-      }
-
-      if (consumer.consumeLineIf(BLANK_LINE_PATTERN)) {
-        // Since we know we aren't dealing with a list terminator (2+ consecutive blank lines),
-        // it's safe to consume this single blank line and continue parsing the list item. To be
-        // clear, any blank lines in a list item do *not* need to be indented.        
-        currentListItem += '\n'
-        continue
-      }
       
-      // If we've made it this far, that means the current line is neither blank nor indented.
-      // It could be the start of another bulleted list item, or it could indicate the end of
-      // the list (e.g. a paragraph after the list). We're done with list item, so let's see
-      // whether we have time for the next one
-      break
+      // Include the next block of indented or blank lines
+      //
+      // TODO: Do not include trailing blank lines. They should be parsed outside of the list.
+      if (!consumer.consumeLineIf(INDENTED_OR_BLANK_LINE_PATTERN, (line) => listItemLines.push(line))) {
+        break
+      }
     }
-    
-      listItems.push(currentListItem)
+
+    listItems.push(listItemLines.join('\n'))
+    listItemLines = []
   }
 
   if (!listItems.length) {
     return false
   }
-  
+
   const listNode = new BulletedListNode(parseArgs.parentNode)
 
   // Parse each list item like its own mini-document
@@ -96,16 +71,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
         listNode.addChild(listItemNode)
       })
   }
-  
+
   onParse([listNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
-  return true 
-}
-
-function isListTerminator(text: string) {
-  const consumer = new TextConsumer(text)
-
-  return (
-    consumer.consumeLineIf(BLANK_LINE_PATTERN)
-    && consumer.consumeLineIf(BLANK_LINE_PATTERN)
-  )
+  return true
 }
