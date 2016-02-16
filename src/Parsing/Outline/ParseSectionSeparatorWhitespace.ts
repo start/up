@@ -3,6 +3,10 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK_LINE } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
+const BLANK_LINE_PATTERN = new RegExp(
+  BLANK_LINE
+) 
+
 // 3 or more consecutive blank lines indicates separation between sections.
 export function parseSectionSeparatorWhitespace (text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
@@ -11,7 +15,7 @@ export function parseSectionSeparatorWhitespace (text: string, parseArgs: ParseA
   
   let count = 0
   
-  while (consumer.consumeLineIf(BLANK_LINE)) {
+  while (consumer.consumeLineIf(BLANK_LINE_PATTERN)) {
     count += 1
   }
   

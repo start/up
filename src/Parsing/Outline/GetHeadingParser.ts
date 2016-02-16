@@ -4,6 +4,10 @@ import { ParseArgs, OnParse, Parser } from '../Parser'
 import { NON_BLANK_LINE } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 
+const NON_BLANK_LINE_PATTERN = new RegExp(
+  NON_BLANK_LINE
+) 
+
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
 export function getHeadingParser(underlinePattern: string, level: number): Parser {
   let underlineOrOverline = new RegExp(underlinePattern)
@@ -17,7 +21,7 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
     let content: string
 
     const hasContentAndUnderline =
-      consumer.consumeLineIf(NON_BLANK_LINE,
+      consumer.consumeLineIf(NON_BLANK_LINE_PATTERN,
         (line) => {
           content = line
         })

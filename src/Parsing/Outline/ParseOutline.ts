@@ -3,7 +3,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { parseInline } from '../Inline/ParseInline'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
+import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
 import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
 import { parseLineBlock } from './ParseLineBlock'
@@ -13,6 +13,10 @@ import { parseBulletedList } from './ParseBulletedList'
 import { ParseArgs, OnParse } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
 
+
+const NON_BLANK_LINE_PATTERN = new RegExp(
+  NON_BLANK_LINE
+) 
 
 const conventionParsers = [
   getHeadingParser(streakOf('#'), 1),
@@ -49,7 +53,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
 
     // Alright, none of the other conventions applied. If the current line isn't blank,
     // we're going to treat it as a regular paragraph.
-    if (consumer.consumeLineIf(NON_BLANK_LINE, (line) => {
+    if (consumer.consumeLineIf(NON_BLANK_LINE_PATTERN, (line) => {
       parseInline(line, { parentNode: new ParagraphNode(parseArgs.parentNode) },
         (inlineNodes, countCharsAdvanced, paragraphNode) => {
           paragraphNode.addChildren(inlineNodes)

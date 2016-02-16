@@ -8,14 +8,18 @@ import { optional, lineStartingWith, either, WHITESPACE_CHAR, BLANK_LINE, INDENT
 import { ParseArgs, OnParse } from '../Parser'
 
 
-const BULLETED_LINE_START = new RegExp(
+const BULLET_PATTERN = new RegExp(
   lineStartingWith(
     optional(' ') + either('\\*', '-', '\\+') + WHITESPACE_CHAR
   )
 )
 
-const INDENTED_LINE_START = new RegExp(
+const INDENT_PATTERN = new RegExp(
   lineStartingWith(INDENT)
+)
+
+const BLANK_LINE_PATTERN = new RegExp(
+  BLANK_LINE
 )
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -35,8 +39,8 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
   list_item_collector_loop:
   while (!consumer.done()) {
 
-    const isBulletedLine = consumer.consumeLineIf(BULLETED_LINE_START, (line) => {
-      currentListItem = line.replace(BULLETED_LINE_START, '') + '\n'
+    const isBulletedLine = consumer.consumeLineIf(BULLET_PATTERN, (line) => {
+      currentListItem = line.replace(BULLET_PATTERN, '') + '\n'
     })
 
     if (!isBulletedLine) {
@@ -45,8 +49,8 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
 
     // Okay, we're dealing with a list item. Now let's collect the rest of this list item's lines.
     while (!consumer.done()) {
-      if (consumer.consumeLineIf(INDENTED_LINE_START, (line) => {
-        currentListItem += line.replace(INDENTED_LINE_START, '') + '\n'
+      if (consumer.consumeLineIf(INDENT_PATTERN, (line) => {
+        currentListItem += line.replace(INDENT_PATTERN, '') + '\n'
       })) {
         continue
       }
@@ -60,7 +64,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
         break list_item_collector_loop
       }
 
-      if (consumer.consumeLineIf(BLANK_LINE)) {
+      if (consumer.consumeLineIf(BLANK_LINE_PATTERN)) {
         // Since we know we aren't dealing with a list terminator (2+ consecutive blank lines),
         // it's safe to consume this single blank line and continue parsing the list item. To be
         // clear, any blank lines in a list item do *not* need to be indented.        
@@ -101,7 +105,7 @@ function isListTerminator(text: string) {
   const consumer = new TextConsumer(text)
 
   return (
-    consumer.consumeLineIf(BLANK_LINE)
-    && consumer.consumeLineIf(BLANK_LINE)
+    consumer.consumeLineIf(BLANK_LINE_PATTERN)
+    && consumer.consumeLineIf(BLANK_LINE_PATTERN)
   )
 }

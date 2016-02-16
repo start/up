@@ -12,7 +12,7 @@ const WHITESPACE_CHAR = '[^\\S\\n]'
 
 const lineOf = (pattern: string) => '^' + pattern + all(WHITESPACE_CHAR) + '$'
 
-const streakOf = (char: string) => lineOf(atLeast(3, char))
+const streakOf = (charPattern: string) => lineOf(atLeast(3, charPattern))
 
 const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, char + ' ') + char)
 

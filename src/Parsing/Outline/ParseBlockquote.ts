@@ -6,7 +6,7 @@ import { parseOutline } from './ParseOutline'
 import { lineStartingWith, optional, WHITESPACE_CHAR } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
-const QUOTE_DELIMITER = new RegExp(
+const QUOTE_DELIMITER_PATTERN = new RegExp(
   lineStartingWith('>' + optional(WHITESPACE_CHAR))
 )
 
@@ -18,7 +18,7 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
   const lines: string[] = []
 
   // Collect all consecutive lines starting with "> "
-  while (consumer.consumeLineIf(QUOTE_DELIMITER, (line) => { lines.push(line) })) { }
+  while (consumer.consumeLineIf(QUOTE_DELIMITER_PATTERN, (line) => { lines.push(line) })) { }
 
   if (!lines.length) {
     return false
@@ -26,7 +26,7 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
   
   // Strip "> " from each line, then stick them all back together. See where this is going?
   let blockquoteContent = lines
-    .map((line) => line.replace(QUOTE_DELIMITER, ''))
+    .map((line) => line.replace(QUOTE_DELIMITER_PATTERN, ''))
     .join('\n')
 
   // Parse the contents of the blockquote as though it's a mini-document. Because it is!

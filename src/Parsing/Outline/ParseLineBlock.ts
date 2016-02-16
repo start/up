@@ -5,6 +5,10 @@ import { parseInline } from '../Inline/ParseInline'
 import { NON_BLANK_LINE } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
+const NON_BLANK_LINE_PATTERN = new RegExp(
+  NON_BLANK_LINE
+) 
+
 // 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs!
 export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
@@ -12,7 +16,7 @@ export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
   const nonBlankLines: string[] = []
 
   // Collect all consecutive non-blank lines
-  while (consumer.consumeLineIf(NON_BLANK_LINE, (line) => { nonBlankLines.push(line) })) { }
+  while (consumer.consumeLineIf(NON_BLANK_LINE_PATTERN, (line) => { nonBlankLines.push(line) })) { }
 
   if (nonBlankLines.length <= 1) {
     return false
