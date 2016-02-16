@@ -27,7 +27,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 describe('Consecutive bulleted lines', () => {
   it('produce a bulleted list node containing bulleted list item nodes', () => {
     const text =
-`
+      `
 * Hello, world!
 * Goodbyte, world!`
     expect(Up.ast(text)).to.be.eql(
@@ -45,33 +45,33 @@ describe('Consecutive bulleted lines', () => {
           ])
         ])
       ])
-      )
+    )
   })
-  
+
   it('can optionally be separated by 1 blank line', () => {
     const textWithSeparator =
-`
+      `
 * Hello, world!
 
 * Goodbyte, world!`
 
     const textWithoutSeparator =
-`
+      `
 * Hello, world!
 * Goodbyte, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
-  
+
   it('can optionally be separated by 2 blank lines', () => {
     const textWithSeparator =
-`
+      `
 * Hello, world!
 
 
 * Goodbyte, world!`
 
     const textWithoutSeparator =
-`
+      `
 * Hello, world!
 * Goodbyte, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
@@ -79,9 +79,9 @@ describe('Consecutive bulleted lines', () => {
 })
 
 describe('Bulleted lines separated by 3 blank lines', () => {
-  it('produce two separate bulleted lists separated by a section separator node', () => {
+  it('produce a single bulleted list with a section separator node in its first list item', () => {
     const text =
-`
+      `
 * Hello, world!
 
 
@@ -93,16 +93,14 @@ describe('Bulleted lines separated by 3 blank lines', () => {
           new BulletedListItemNode([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
+            ]),
+            new SectionSeparatorNode()
+          ]),
+            new BulletedListItemNode([
+              new ParagraphNode([
+                new PlainTextNode('Goodbyte, world!')
+              ])
             ])
-          ])
-        ]),
-        new SectionSeparatorNode(),
-        new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Goodbyte, world!')
-            ])
-          ])
         ])
       ])
     )
@@ -130,7 +128,7 @@ describe('A single bulleted line', () => {
 describe('A bulleted line followed by an indented line', () => {
   it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
-`
+      `
 * Hello, world!
   ============
 * Roses are red
@@ -162,7 +160,7 @@ describe('A bulleted line followed by an indented line', () => {
 describe('A bulleted line followed by an indented block of text', () => {
   it('are parsed like a mini-document and placed in the a bulleted list item node', () => {
     const text =
-`
+      `
 * Hello, world!
   ============
 
@@ -193,7 +191,7 @@ describe('A bulleted line followed by an indented block of text', () => {
 
   it('does not need any blank lines to separate it from the following list item', () => {
     const textWithoutSeparator =
-`* Hello, world!
+      `* Hello, world!
   ============
 
   It is really late, and I am really tired.
@@ -202,7 +200,7 @@ describe('A bulleted line followed by an indented block of text', () => {
   ---------------`
 
     const textWithSeparator =
-`* Hello, world!
+      `* Hello, world!
   ============
 
   It is really late, and I am really tired.
@@ -210,10 +208,10 @@ describe('A bulleted line followed by an indented block of text', () => {
   ---------------`
     expect(Up.ast(textWithoutSeparator)).to.be.eql(Up.ast(textWithSeparator))
   })
-  
-    it('can contain a nested list, even when using the same bullet type', () => {
+
+  it('can contain a nested list, even when using the same bullet type', () => {
     const text =
-`
+      `
 * Hello, world!
   ============
 
@@ -235,17 +233,17 @@ describe('A bulleted line followed by an indented block of text', () => {
               new PlainTextNode('Upcoming features:')
             ]),
             new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Code blocks in list items')
+              new BulletedListItemNode([
+                new ParagraphNode([
+                  new PlainTextNode('Code blocks in list items')
+                ])
+              ]),
+              new BulletedListItemNode([
+                new ParagraphNode([
+                  new PlainTextNode('Definition lists')
+                ])
+              ])
             ])
-          ]),
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Definition lists')
-            ])
-          ])
-        ])
           ]),
           new BulletedListItemNode([
             new HeadingNode([
@@ -261,7 +259,7 @@ describe('A bulleted line followed by an indented block of text', () => {
 describe('A code block in a list item', () => {
   it('produces a code block node with unindented content', () => {
     const text =
-`
+      `
 * \`\`\`
   const x = 0
   \`\`\``
@@ -275,10 +273,10 @@ describe('A code block in a list item', () => {
       ])
     )
   })
-  
+
   it('can have 3 consecutive blank lines', () => {
     const text =
-`
+      `
 * \`\`\`
   const x = 0
 
