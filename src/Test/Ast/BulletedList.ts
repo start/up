@@ -276,11 +276,12 @@ describe('A code block in a list item', () => {
     )
   })
   
-  it('can have multiple consecutive blank lines', () => {
+  it('can have 3 consecutive blank lines', () => {
     const text =
 `
 * \`\`\`
   const x = 0
+
 
 
   const y = 0
@@ -289,7 +290,7 @@ describe('A code block in a list item', () => {
       new DocumentNode([
         new BulletedListNode([
           new BulletedListItemNode([
-            new CodeBlockNode('const x = 0\n\n\nconst y = 0')
+            new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
           ])
         ])
       ])

@@ -14,20 +14,12 @@ const BULLET_PATTERN = new RegExp(
   )
 )
 
-
 const BLANK_LINE_PATTERN = new RegExp(
   BLANK_LINE
 )
 
-const INDENTED_LINE_PATTERN = new RegExp(
+const LINE_INDENT = new RegExp(
   lineStartingWith(INDENT)
-)
-
-const INDENTED_OR_BLANK_LINE_PATTERN = new RegExp(
-  either(
-    lineStartingWith(INDENT),
-    BLANK_LINE
-  )
 )
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -45,26 +37,32 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
 
   while (!consumer.done()) {
     listItemLines = []
-
-    // If this is a bulleted line, we're dealing with a list item. Let's save the line for later parsing.
-    if (!consumer.consumeLineIf(BULLET_PATTERN,
+    
+    const isLineBulleted = consumer.consumeLineIf(BULLET_PATTERN,
       (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
-    )) {
+    )
+
+    // If this is a bulleted line, we're dealing with a list item.
+    if (!isLineBulleted) {
       break
     }
 
     // Let's collect the rest of this list item (the next block of indented or blank lines).
     while (!consumer.done()) {
-
-      if (!consumer.consumeLineIf(INDENTED_LINE_PATTERN,
-        (line) => listItemLines.push(line.replace(INDENTED_OR_BLANK_LINE_PATTERN, ''))
-      )) {
-        break
+      
+      const isLineIndented = consumer.consumeLineIf(LINE_INDENT,
+        (line) => listItemLines.push(line.replace(LINE_INDENT, ''))
+      )
+      
+      if (isLineIndented) {
+        continue
       }
-
-      if (!consumer.consumeLineIf(BLANK_LINE_PATTERN,
+      
+      const isLineBlank = consumer.consumeLineIf(BLANK_LINE_PATTERN,
         (line) => listItemLines.push(line)
-      )) {
+      )
+      
+      if (!isLineBlank) {
         break
       }
     }
