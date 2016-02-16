@@ -15,6 +15,14 @@ const BULLET_PATTERN = new RegExp(
 )
 
 
+const BLANK_LINE_PATTERN = new RegExp(
+  BLANK_LINE
+)
+
+const INDENTED_LINE_PATTERN = new RegExp(
+  lineStartingWith(INDENT)
+)
+
 const INDENTED_OR_BLANK_LINE_PATTERN = new RegExp(
   either(
     lineStartingWith(INDENT),
@@ -27,30 +35,36 @@ const INDENTED_OR_BLANK_LINE_PATTERN = new RegExp(
 // List items can contain any kind of convention, even other lists!  In list items
 // with multiple lines, all subsequent lines are indented.
 //
-// List items can be separated by an optional blank line.
+// List items can be separated by optional blank lines.
 export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
 
   const consumer = new TextConsumer(text)
 
-  const listItems: string[] = []
-  
-  // This would be included
+  const listItems: string[] = [] 
   let listItemLines: string[] = []
-  
+
   while (!consumer.done()) {
+    listItemLines = []
 
     // If this is a bulleted line, we're dealing with a list item. Let's save the line for later parsing.
-    if (!consumer.consumeLineIf(BULLET_PATTERN, (line) => { listItemLines.push(line.replace(BULLET_PATTERN, '')) })) {
+    if (!consumer.consumeLineIf(BULLET_PATTERN,
+      (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
+    )) {
       break
     }
 
-    // Let's collect the rest of this list item.
+    // Let's collect the rest of this list item (the next block of indented or blank lines).
     while (!consumer.done()) {
-      
-      // Include the next block of indented or blank lines.
-      //
-      // TODO: Do not include trailing blank lines. They should be parsed outside of the list.
-      if (!consumer.consumeLineIf(INDENTED_OR_BLANK_LINE_PATTERN, (line) => listItemLines.push(line))) {
+
+      if (!consumer.consumeLineIf(INDENTED_LINE_PATTERN,
+        (line) => listItemLines.push(line.replace(INDENTED_OR_BLANK_LINE_PATTERN, ''))
+      )) {
+        break
+      }
+
+      if (!consumer.consumeLineIf(BLANK_LINE_PATTERN,
+        (line) => listItemLines.push(line)
+      )) {
         break
       }
     }
@@ -58,7 +72,6 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
     // We've reached the end of the current list item. Let's include it in our collection, then
     // try to parse the next list item.
     listItems.push(listItemLines.join('\n'))
-    listItemLines = []
   }
 
   if (!listItems.length) {
