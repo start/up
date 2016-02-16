@@ -48,7 +48,7 @@ describe('Consecutive bulleted lines', () => {
       )
   })
   
-  it('can optionally be separated by a 1 blank line', () => {
+  it('can optionally be separated by 1 blank line', () => {
     const textWithSeparator =
 `
 * Hello, world!
@@ -62,7 +62,7 @@ describe('Consecutive bulleted lines', () => {
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
   
-  it('can optionally be separated by a 2 blank lines', () => {
+  it('can optionally be separated by 2 blank lines', () => {
     const textWithSeparator =
 `
 * Hello, world!
@@ -78,7 +78,7 @@ describe('Consecutive bulleted lines', () => {
   })
 })
 
-describe('Bulleted lines separated by a 3 blank lines', () => {
+describe('Bulleted lines separated by 3 blank lines', () => {
   it('produce two separate bulleted lists separated by a section separator node', () => {
     const text =
 `
@@ -259,7 +259,7 @@ describe('A bulleted line followed by an indented block of text', () => {
 })
 
 describe('A code block in a list item', () => {
-  it('produces a code block node with unintented content', () => {
+  it('produces a code block node with unindented content', () => {
     const text =
 `
 * \`\`\`
