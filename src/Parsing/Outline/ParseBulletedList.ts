@@ -33,19 +33,21 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
   const consumer = new TextConsumer(text)
 
   const listItems: string[] = []
+  
+  // This would be included
   let listItemLines: string[] = []
-
-  list_item_collector_loop:
+  
   while (!consumer.done()) {
 
+    // If this is a bulleted line, we're dealing with a list item. Let's save the line for later parsing.
     if (!consumer.consumeLineIf(BULLET_PATTERN, (line) => { listItemLines.push(line.replace(BULLET_PATTERN, '')) })) {
       break
     }
 
-    // Okay, we're dealing with a list item. Now let's collect the rest of this list item.
+    // Let's collect the rest of this list item.
     while (!consumer.done()) {
       
-      // Include the next block of indented or blank lines
+      // Include the next block of indented or blank lines.
       //
       // TODO: Do not include trailing blank lines. They should be parsed outside of the list.
       if (!consumer.consumeLineIf(INDENTED_OR_BLANK_LINE_PATTERN, (line) => listItemLines.push(line))) {
@@ -53,6 +55,8 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
       }
     }
 
+    // We've reached the end of the current list item. Let's include it in our collection, then
+    // try to parse the next list item.
     listItems.push(listItemLines.join('\n'))
     listItemLines = []
   }

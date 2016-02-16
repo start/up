@@ -48,7 +48,7 @@ describe('Consecutive bulleted lines', () => {
       )
   })
   
-  it('can be separated by a single optional blank line', () => {
+  it('can optionally be separated by a 1 blank line', () => {
     const textWithSeparator =
 `
 * Hello, world!
@@ -61,34 +61,20 @@ describe('Consecutive bulleted lines', () => {
 * Goodbyte, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
-})
-
-describe('Bulleted lines separated by a 2 blank lines', () => {
-  it('produce two separate bulleted lists', () => {
-    const text =
+  
+  it('can optionally be separated by a 2 blank lines', () => {
+    const textWithSeparator =
 `
 * Hello, world!
 
 
 * Goodbyte, world!`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
-            ])
-          ])
-        ]),
-        new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Goodbyte, world!')
-            ])
-          ])
-        ])
-      ])
-    )
+
+    const textWithoutSeparator =
+`
+* Hello, world!
+* Goodbyte, world!`
+    expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
 })
 
@@ -173,8 +159,8 @@ describe('A bulleted line followed by an indented line', () => {
   })
 })
 
-describe('A bulleted line followed by indented lines and single blank lines', () => {
-  it('are parsed like a document and placed in the same bulleted list item node', () => {
+describe('A bulleted line followed by an indented block of text', () => {
+  it('are parsed like a mini-document and placed in the a bulleted list item node', () => {
     const text =
 `
 * Hello, world!
@@ -205,7 +191,7 @@ describe('A bulleted line followed by indented lines and single blank lines', ()
     )
   })
 
-  it('does not need a blank line to separate it from other list items', () => {
+  it('does not need any blank lines to separate it from the following list item', () => {
     const textWithoutSeparator =
 `* Hello, world!
   ============
@@ -272,27 +258,6 @@ describe('A bulleted line followed by indented lines and single blank lines', ()
   })
 })
 
-
-describe('A bullet list item with an asterisk bullet', () => {
-  it('Can start with emphasized text', () => {
-    const text = '* *Hello*, world!'
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new EmphasisNode([
-                new PlainTextNode('Hello')
-              ]),
-              new PlainTextNode(', world!')
-            ])
-          ])
-        ])
-      ])
-    )
-  })
-})
-
 describe('A code block in a list item', () => {
   it('produces a code block node with unintented content', () => {
     const text =
@@ -325,6 +290,26 @@ describe('A code block in a list item', () => {
         new BulletedListNode([
           new BulletedListItemNode([
             new CodeBlockNode('const x = 0\n\n\nconst y = 0')
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('A bullet list item with an asterisk bullet', () => {
+  it('Can start with emphasized text', () => {
+    const text = '* *Hello*, world!'
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new BulletedListNode([
+          new BulletedListItemNode([
+            new ParagraphNode([
+              new EmphasisNode([
+                new PlainTextNode('Hello')
+              ]),
+              new PlainTextNode(', world!')
+            ])
           ])
         ])
       ])
