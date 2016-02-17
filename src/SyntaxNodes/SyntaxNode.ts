@@ -11,8 +11,6 @@ export abstract class SyntaxNode {
   constructor();
   constructor(public parentNode?: RichSyntaxNode) {
   }
-  
-  abstract text(): string
 
   ancestors(): RichSyntaxNode[] {
     if (this.parentNode === null) {
@@ -29,9 +27,4 @@ export abstract class SyntaxNode {
   orAnyAncestor(predicate: (node: SyntaxNode) => boolean) {
     return this.plusAllAncestors().some(predicate)
   }
-}
-
-
-function top<T>(items: T[]): T {
-  return items[items.length - 1]
 }

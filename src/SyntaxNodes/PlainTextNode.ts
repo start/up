@@ -5,9 +5,5 @@ export class PlainTextNode extends SyntaxNode {
     super()
   }
   
-  text(): string {
-    return this.content
-  }
-  
   private PLAIN_TEXT: any = null
 }

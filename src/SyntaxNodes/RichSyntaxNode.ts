@@ -28,11 +28,7 @@ export abstract class RichSyntaxNode extends SyntaxNode {
     
     return [this.parentNode].concat(this.parentNode.ancestors())
   }
-
-  text(): string {
-    return this.children.reduce((text, child) => text + child.text(), '')
-  }
-
+  
   addChildren(nodes: SyntaxNode[]) {
     for (var node of nodes) {
       this.addChild(node)
