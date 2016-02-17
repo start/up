@@ -76,35 +76,24 @@ describe('Consecutive bulleted lines', () => {
 * Goodbyte, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
-})
-
-describe('Bulleted lines separated by 3 blank lines', () => {
-  it('produce a single bulleted list with a section separator node in its first list item', () => {
-    const text =
+  
+    it('can optionally be separated by 3 or more blank lines without producing a section separator node', () => {
+    const textWithSeparator =
       `
 * Hello, world!
 
 
 
+
 * Goodbyte, world!`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new BulletedListNode([
-          new BulletedListItemNode([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
-            ]),
-            new SectionSeparatorNode()
-          ]),
-            new BulletedListItemNode([
-              new ParagraphNode([
-                new PlainTextNode('Goodbyte, world!')
-              ])
-            ])
-        ])
-      ])
-    )
+
+    const textWithoutSeparator =
+      `
+* Hello, world!
+* Goodbyte, world!`
+    expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
+  
 })
 
 
