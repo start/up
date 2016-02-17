@@ -166,7 +166,7 @@ describe('A line consisting solely of a streak of characters', () => {
     const text = `
 ---
 hi`
-    expect(Up.ast(text)).to.not.eql(
+    expect(Up.ast(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new ParagraphNode([
