@@ -1,10 +1,6 @@
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
-export interface SyntaxNodeType {
-  new (parentNode?: RichSyntaxNode): SyntaxNode
-}
-
 export abstract class SyntaxNode {
   children: SyntaxNode[]
   
