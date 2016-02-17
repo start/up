@@ -42,7 +42,7 @@ Goodbye, world!`
       ]))
   })
 
-  it('3 blank lines produces a section separator node', function() {
+  it('3 or more blank lines produces a section separator node', function() {
     const text = `Hello, world!
 
 
@@ -56,9 +56,10 @@ Goodbye, world!`
       ]))
   })
 
-  it('more than 3 blank lines produces a single section separator node', function() {
+  it('6 or more blank lines produces only a single section separator node', function() {
     const text = `Hello, world!
  \t
+
 
 
 
@@ -154,7 +155,7 @@ describe('A line consisting solely of a streak of characters', function() {
   })
 
   it('can have a space between each character and start with a space', function() {
-    const text = `= = =`
+    const text = ` = = =`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
