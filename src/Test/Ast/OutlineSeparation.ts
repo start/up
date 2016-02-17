@@ -175,7 +175,7 @@ hi`
       ]))
   })
 
-  it('can be immediately followed by any number of blank lines', () => {
+  it('can be immediately followed by any number of blank lines and still produce a single node', () => {
     const text = `===
     
 
@@ -188,7 +188,7 @@ hi`
       ]))
   })
 
-  it('can be immediately preceeded by any number of blank lines', () => {
+  it('can be immediately preceeded by any number of blank lines and still produce a single node', () => {
     const text = `
 
 
