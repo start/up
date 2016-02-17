@@ -18,8 +18,8 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Between paragraphs', function() {
-  it('1 blank line simply provides separation, producing no syntax node itself', function() {
+describe('Between paragraphs', () => {
+  it('1 blank line simply provides separation, producing no syntax node itself', () => {
     const text = `Hello, world!
 
 Goodbye, world!`
@@ -30,7 +30,7 @@ Goodbye, world!`
       ]))
   })
 
-  it('2 blank lines simply provide separation, producing no syntax nodes themselves', function() {
+  it('2 blank lines simply provide separation, producing no syntax nodes themselves', () => {
     const text = `Hello, world!
 
   \t 
@@ -42,7 +42,7 @@ Goodbye, world!`
       ]))
   })
 
-  it('3 or more blank lines produces a section separator node', function() {
+  it('3 or more blank lines produces a section separator node', () => {
     const text = `Hello, world!
 
 
@@ -56,7 +56,7 @@ Goodbye, world!`
       ]))
   })
 
-  it('6 or more blank lines produces only a single section separator node', function() {
+  it('6 or more blank lines produces only a single section separator node', () => {
     const text = `Hello, world!
  \t
 
@@ -113,8 +113,8 @@ describe('A document that ends with 3 blank lines', () => {
 })
 
 
-describe('A line consisting solely of a streak of characters', function() {
-  it('produces a section separator node when comprised of at least 3 hyphens', function() {
+describe('A line consisting solely of a streak of characters', () => {
+  it('produces a section separator node when comprised of at least 3 hyphens', () => {
     const text = `---`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -122,7 +122,7 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
-  it('can be comprised of equal signs', function() {
+  it('can be comprised of equal signs', () => {
     const text = `===`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -130,7 +130,7 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
-  it('can be comprised of number signs', function() {
+  it('can be comprised of number signs', () => {
     const text = `###`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -138,7 +138,7 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
-  it('can be comprised of more than 3 characters', function() {
+  it('can be comprised of more than 3 characters', () => {
     const text = `##########`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -146,7 +146,7 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
-  it('can have a space between each character', function() {
+  it('can have a space between each character', () => {
     const text = `= = =`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -154,7 +154,7 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
-  it('can have a space between each character and start with a space', function() {
+  it('can have a space between each character and start with a space', () => {
     const text = ` = = =`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -162,7 +162,7 @@ describe('A line consisting solely of a streak of characters', function() {
       ]))
   })
 
-  it('must not be immediately followed by a non-blank line', function() {
+  it('must not be immediately followed by a non-blank line', () => {
     const text = `---
 hi`
     expect(Up.ast(text)).to.not.eql(
@@ -174,7 +174,7 @@ hi`
       ]))
   })
 
-  it('can be immediately followed by any number of blank lines', function() {
+  it('can be immediately followed by any number of blank lines', () => {
     const text = `===
     
 
@@ -187,7 +187,7 @@ hi`
       ]))
   })
 
-  it('can be immediately preceeded by any number of blank lines', function() {
+  it('can be immediately preceeded by any number of blank lines', () => {
     const text = `
 
 
