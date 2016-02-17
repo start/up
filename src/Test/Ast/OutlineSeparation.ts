@@ -204,3 +204,41 @@ hi`
   })
 })
 
+
+
+
+describe('Consecutive lines consisting solely of streaks of characters', () => {
+  it('produces a single section separator node', () => {
+    const text = `
+--------
+--------
+********
+`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+})
+
+
+describe('Lines consisting solely of streaks of characters separated only by blank lines', () => {
+  it('produces a single section separator node', () => {
+    const text = `
+--------
+
+--------
+
+
+
+
+
+********
+`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+})
+
