@@ -1,7 +1,7 @@
 import { SyntaxNode } from './SyntaxNode'
 
 export class CodeBlockNode extends SyntaxNode {
-  constructor(private plainText: string) {
+  constructor(private text: string) {
     super()
   }
   

@@ -1,7 +1,7 @@
 import { SyntaxNode } from './SyntaxNode'
 
 export class PlainTextNode extends SyntaxNode {
-  constructor(public content: string) {
+  constructor(public text: string) {
     super()
   }
   

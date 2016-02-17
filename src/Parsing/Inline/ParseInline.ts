@@ -53,7 +53,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     const currentChar = consumer.currentChar()
     
     if (lastNode instanceof PlainTextNode) {
-      lastNode.content += currentChar  
+      lastNode.text += currentChar  
     } else {
       nodes.push(new PlainTextNode(currentChar))
     }
