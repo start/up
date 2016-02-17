@@ -49,7 +49,15 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
       return true
     }
 
-    nodes.push(new PlainTextNode(consumer.currentChar()))
+    const lastNode = nodes[nodes.length - 1]
+    const currentChar = consumer.currentChar()
+    
+    if (lastNode instanceof PlainTextNode) {
+      lastNode.content += currentChar  
+    } else {
+      nodes.push(new PlainTextNode(currentChar))
+    }
+    
     consumer.moveNext()
   }
 

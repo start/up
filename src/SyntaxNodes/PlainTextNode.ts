@@ -1,16 +1,16 @@
 import { SyntaxNode } from './SyntaxNode'
 
 export class PlainTextNode extends SyntaxNode {
-  constructor(private plainText: string) {
+  constructor(public content: string) {
     super()
   }
   
   text(): string {
-    return this.plainText
+    return this.content
   }
   
   absorb(plainTextNode: PlainTextNode) {
-    this.plainText += plainTextNode.text()
+    this.content += plainTextNode.text()
   }
   
   private PLAIN_TEXT: any = null
