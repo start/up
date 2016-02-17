@@ -11,15 +11,15 @@ import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseBulletedList } from './ParseBulletedList'
 import { ParseArgs, OnParse } from '../Parser'
-import { streakOf, dottedStreakOf, BLANK_LINE, NON_BLANK_LINE, WHITESPACE_CHAR } from './Patterns'
+import { streakOf, dottedStreakOf, BLANK, NON_BLANK, WHITESPACE_CHAR } from './Patterns'
 
 
-const BLANK_LINE_PATTERN = new RegExp(
-  BLANK_LINE
+const BLANK_PATTERN = new RegExp(
+  BLANK
 )
 
-const NON_BLANK_LINE_PATTERN = new RegExp(
-  NON_BLANK_LINE
+const NON_BLANK_PATTERN = new RegExp(
+  NON_BLANK
 ) 
 
 const conventionParsers = [
@@ -43,7 +43,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
   const consumer = new TextConsumer(text)
   
   // Leading blank lines are ignored
-  while (consumer.consumeLineIf(BLANK_LINE_PATTERN)) { }
+  while (consumer.consumeLineIf(BLANK_PATTERN)) { }
 
   main_parser_loop:
   while (!consumer.done()) {
@@ -60,7 +60,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
 
     // Alright, none of the other conventions applied. If the current line isn't blank,
     // we're going to treat it as a regular paragraph.
-    if (consumer.consumeLineIf(NON_BLANK_LINE_PATTERN, (line) => {
+    if (consumer.consumeLineIf(NON_BLANK_PATTERN, (line) => {
       parseInline(line, { parentNode: new ParagraphNode(parseArgs.parentNode) },
         (inlineNodes, countCharsAdvanced, paragraphNode) => {
           paragraphNode.addChildren(inlineNodes)

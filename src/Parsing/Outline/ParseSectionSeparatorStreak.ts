@@ -1,10 +1,10 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { ParseArgs, OnParse } from '../Parser'
-import { streakOf, dottedStreakOf, either, BLANK_LINE } from './Patterns'
+import { streakOf, dottedStreakOf, either, BLANK } from './Patterns'
 
-const BLANK_LINE_PATTERN = new RegExp(
-  BLANK_LINE
+const BLANK_PATTERN = new RegExp(
+  BLANK
 ) 
 
 const STREAK_PATTERN = new RegExp(
@@ -25,7 +25,7 @@ export function parseSectionSeparatorStreak(text: string, parseArgs: ParseArgs, 
   const consumer = new TextConsumer(text)
 
   // Happily consume any leading blank lines
-  while (consumer.consumeLineIf(BLANK_LINE_PATTERN)) { }
+  while (consumer.consumeLineIf(BLANK_PATTERN)) { }
 
   if (!consumer.consumeLineIf(STREAK_PATTERN)) {
     return false
@@ -34,12 +34,12 @@ export function parseSectionSeparatorStreak(text: string, parseArgs: ParseArgs, 
   // If there are any lines left...
   if (!consumer.done()) {
     // ...the next one needs to be blank
-    if (!consumer.consumeLineIf(BLANK_LINE_PATTERN)) {
+    if (!consumer.consumeLineIf(BLANK_PATTERN)) {
       return false
     }
     
     // Consume any remaining blank lines
-    while (consumer.consumeLineIf(BLANK_LINE_PATTERN)) { }
+    while (consumer.consumeLineIf(BLANK_PATTERN)) { }
   }
 
   onParse([new SectionSeparatorNode()], consumer.countCharsAdvanced(), parseArgs.parentNode)

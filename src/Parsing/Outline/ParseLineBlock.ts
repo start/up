@@ -2,11 +2,11 @@ import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
-import { NON_BLANK_LINE } from './Patterns'
+import { NON_BLANK } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
-  NON_BLANK_LINE
+  NON_BLANK
 ) 
 
 // 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs!

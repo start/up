@@ -4,22 +4,22 @@ import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
-import { optional, lineStartingWith, either, WHITESPACE_CHAR, BLANK_LINE, INDENT } from './Patterns'
+import { optional, startingWith, either, WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
 
 const BULLET_PATTERN = new RegExp(
-  lineStartingWith(
+  startingWith(
     optional(' ') + either('\\*', '-', '\\+') + WHITESPACE_CHAR
   )
 )
 
 const BLANK_LINE_PATTERN = new RegExp(
-  BLANK_LINE
+  BLANK
 )
 
-const LINE_INDENT = new RegExp(
-  lineStartingWith(INDENT)
+const INDENTED_PATTERN = new RegExp(
+  startingWith(INDENT)
 )
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -50,8 +50,8 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
     // Let's collect the rest of this list item (the next block of indented or blank lines).
     while (!consumer.done()) {
       
-      const isLineIndented = consumer.consumeLineIf(LINE_INDENT,
-        (line) => listItemLines.push(line.replace(LINE_INDENT, ''))
+      const isLineIndented = consumer.consumeLineIf(INDENTED_PATTERN,
+        (line) => listItemLines.push(line.replace(INDENTED_PATTERN, ''))
       )
       
       if (isLineIndented) {

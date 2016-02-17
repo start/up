@@ -3,11 +3,11 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
-import { lineStartingWith, optional, WHITESPACE_CHAR } from './Patterns'
+import { startingWith, optional, WHITESPACE_CHAR } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
 const QUOTE_DELIMITER_PATTERN = new RegExp(
-  lineStartingWith('>' + optional(WHITESPACE_CHAR))
+  startingWith('>' + optional(WHITESPACE_CHAR))
 )
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,

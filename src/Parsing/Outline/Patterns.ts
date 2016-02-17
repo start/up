@@ -10,31 +10,31 @@ const either = (...patterns: string[]) => group(patterns.join('|'))
 
 const WHITESPACE_CHAR = '[^\\S\\n]'
 
-const lineOf = (pattern: string) => '^' + pattern + all(WHITESPACE_CHAR) + '$'
+const solely = (pattern: string) => '^' + pattern + all(WHITESPACE_CHAR) + '$'
 
-const streakOf = (charPattern: string) => lineOf(atLeast(3, charPattern))
+const streakOf = (charPattern: string) => solely(atLeast(3, charPattern))
 
-const dottedStreakOf = (char: string) => lineOf(optional(' ') + atLeast(2, char + ' ') + char)
+const dottedStreakOf = (char: string) => solely(optional(' ') + atLeast(2, char + ' ') + char)
 
-const lineStartingWith = (pattern: string) => '^' + pattern
+const startingWith = (pattern: string) => '^' + pattern
 
-const BLANK_LINE = lineOf('')
+const BLANK = solely('')
 
 const INDENT = either('  ', '\t')
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
-const NON_BLANK_LINE = '\\S'
+const NON_BLANK = '\\S'
 
 export {
-  NON_BLANK_LINE,
-  BLANK_LINE,
+  NON_BLANK,
+  BLANK,
   WHITESPACE_CHAR,
   INDENT,
   optional,
   either,
-  lineOf,
+  solely,
   streakOf,
   dottedStreakOf,
-  lineStartingWith
+  startingWith
 }

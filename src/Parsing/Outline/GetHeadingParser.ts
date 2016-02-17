@@ -1,11 +1,11 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseArgs, OnParse, Parser } from '../Parser'
-import { NON_BLANK_LINE } from './Patterns'
+import { NON_BLANK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
-  NON_BLANK_LINE
+  NON_BLANK
 ) 
 
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
