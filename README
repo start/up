@@ -89,12 +89,10 @@ Any heading can have an *optional* overline
 > > This is a heading within a nested blockquote
 > > =====================================
 > >
-> > Blockquotes can contain any convention.
+> > Blockquotes can contain any convention
 
 
 ````````````
-const summary = "Code blocks are sandwiched by lines of backticks."
-
 const description = "The content and formatting of code blocks are preserved completely."
 
 const funFact = "Even backslashes are preserved.\n\nExciting!"
@@ -111,5 +109,4 @@ const funFact = "Even backslashes are preserved.\n\nExciting!"
   - List items can contain any convention
   - Including other lists
   
-* The blank line between list items is optional
- 
+* The blank lines between list items are optional
