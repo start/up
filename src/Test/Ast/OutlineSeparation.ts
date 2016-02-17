@@ -75,6 +75,42 @@ Goodbye, world!`
 })
 
 
+describe('A document that starts with 3 blank lines', () => {
+  it('does not produce a leading section separator node', () => {
+    const text =
+      `
+
+
+Hello, world!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Hello, world!')
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('A document that ends with 3 blank lines', () => {
+  it('does not produce a trailing section separator node', () => {
+    const text =
+      `Hello, world!
+
+
+
+`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Hello, world!')
+        ])
+      ])
+    )
+  })
+})
+
 
 describe('A line consisting solely of a streak of characters', function() {
   it('produces a section separator node when comprised of at least 3 hyphens', function() {

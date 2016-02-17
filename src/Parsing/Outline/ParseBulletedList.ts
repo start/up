@@ -67,8 +67,8 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
       }
     }
 
-    // We've reached the end of the current list item. Let's include it in our collection, then
-    // try to parse the next list item.
+    // We lose the final newline, but trailing blank linesare always ignored when outline
+    // parsing, which is exactly what we're going to do next. 
     listItems.push(listItemLines.join('\n'))
   }
 

@@ -11,8 +11,12 @@ import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseBulletedList } from './ParseBulletedList'
 import { ParseArgs, OnParse } from '../Parser'
-import { streakOf, dottedStreakOf, either, NON_BLANK_LINE } from './Patterns'
+import { streakOf, dottedStreakOf, BLANK_LINE, NON_BLANK_LINE, WHITESPACE_CHAR } from './Patterns'
 
+
+const BLANK_LINE_PATTERN = new RegExp(
+  BLANK_LINE
+)
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
   NON_BLANK_LINE
@@ -37,6 +41,9 @@ const conventionParsers = [
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const outlineNodes: SyntaxNode[] = []
   const consumer = new TextConsumer(text)
+  
+  // Leading blank lines are ignored
+  while (consumer.consumeLineIf(BLANK_LINE_PATTERN)) { }
 
   main_parser_loop:
   while (!consumer.done()) {
