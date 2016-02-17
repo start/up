@@ -2,21 +2,27 @@ const group = (pattern: string) => `(?:${pattern})`
 
 const optional = (pattern: string) => group(pattern) + '?'
 
-const all = (pattern: string) => group(pattern) + '*'
+const any = (pattern: string) => group(pattern) + '*'
 
 const atLeast = (count: number, pattern: string) => group(pattern) + `{${count},}`
 
 const either = (...patterns: string[]) => group(patterns.join('|'))
 
-const WHITESPACE_CHAR = '[^\\S\\n]'
+const INLINE_WHITESPACE_CHAR = '[^\\S\\n]'
 
-const solely = (pattern: string) => '^' + pattern + all(WHITESPACE_CHAR) + '$'
+const ANY_WHITESPACE = any('\\s')
+
+const INLINE_WHITESPACE = any('[^\\S\\n]')
+
+const solely = (pattern: string) => '^' + pattern + INLINE_WHITESPACE + '$'
 
 const streakOf = (charPattern: string) => solely(atLeast(3, charPattern))
 
 const dottedStreakOf = (char: string) => solely(optional(' ') + atLeast(2, char + ' ') + char)
 
-const startingWith = (pattern: string) => '^' + pattern
+const startsWith = (pattern: string) => '^' + pattern
+
+const endsWith = (pattern: string) => pattern + '$'
 
 const BLANK = solely('')
 
@@ -29,12 +35,14 @@ const NON_BLANK = '\\S'
 export {
   NON_BLANK,
   BLANK,
-  WHITESPACE_CHAR,
+  INLINE_WHITESPACE_CHAR,
   INDENT,
+  ANY_WHITESPACE,
   optional,
   either,
   solely,
   streakOf,
   dottedStreakOf,
-  startingWith
+  startsWith,
+  endsWith
 }

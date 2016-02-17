@@ -11,11 +11,19 @@ import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseBulletedList } from './ParseBulletedList'
 import { ParseArgs, OnParse } from '../Parser'
-import { streakOf, dottedStreakOf, BLANK, NON_BLANK, WHITESPACE_CHAR } from './Patterns'
+import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, NON_BLANK, INLINE_WHITESPACE_CHAR, ANY_WHITESPACE} from './Patterns'
 
 
 const BLANK_PATTERN = new RegExp(
   BLANK
+)
+
+const TRAILING_WHITESPACE_PATTERN = new RegExp(
+	endsWith(ANY_WHITESPACE)
+)
+
+const LEADING_BLANK_LINES_PATTERN = new RegExp(
+	startsWith(ANY_WHITESPACE + '\n')
 )
 
 const NON_BLANK_PATTERN = new RegExp(
@@ -40,9 +48,22 @@ const conventionParsers = [
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const outlineNodes: SyntaxNode[] = []
-  const consumer = new TextConsumer(text)
   
-  // Leading blank lines are ignored
+  const originalTextLength = text.length
+  
+  // Leading and trailing blank lines are ignored.
+  //
+  // This also trims trailing whitespace from the last non-blank line, but that won't affect parsing.
+  const trimmedText = text
+    .replace(LEADING_BLANK_LINES_PATTERN, '')
+    .replace(TRAILING_WHITESPACE_PATTERN, '')
+  
+  const countCharsTrimmed = text.length - trimmedText.length
+  
+  const consumer = new TextConsumer(trimmedText)
+  
+  // Leading blank lines are ignored. We can't blindly trim leading all whitespace, because indentation
+  // 
   while (consumer.consumeLineIf(BLANK_PATTERN)) { }
 
   main_parser_loop:
@@ -74,6 +95,6 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
     consumer.consumeLine()
   }
 
-  onParse(outlineNodes, consumer.countCharsAdvanced(), parseArgs.parentNode)
+  onParse(outlineNodes, countCharsTrimmed + consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true
 }

@@ -4,13 +4,13 @@ import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
-import { optional, startingWith, either, WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
+import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
 
 
 const BULLET_PATTERN = new RegExp(
-  startingWith(
-    optional(' ') + either('\\*', '-', '\\+') + WHITESPACE_CHAR
+  startsWith(
+    optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
   )
 )
 
@@ -19,7 +19,7 @@ const BLANK_LINE_PATTERN = new RegExp(
 )
 
 const INDENTED_PATTERN = new RegExp(
-  startingWith(INDENT)
+  startsWith(INDENT)
 )
 
 // Bulleted lists are simply collections of bulleted list items.
