@@ -9,9 +9,5 @@ export class PlainTextNode extends SyntaxNode {
     return this.content
   }
   
-  absorb(plainTextNode: PlainTextNode) {
-    this.content += plainTextNode.text()
-  }
-  
   private PLAIN_TEXT: any = null
 }

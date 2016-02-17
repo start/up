@@ -40,14 +40,6 @@ export abstract class RichSyntaxNode extends SyntaxNode {
   }
   
   addChild(syntaxNode: SyntaxNode) {
-    const topChild = this.children[this.children.length - 1]
-    
-    // It's much easier to debug and test when consecutive PlainTextNodes are consensed into one.
-    if ((syntaxNode instanceof PlainTextNode) && (topChild instanceof PlainTextNode)) {
-      topChild.absorb(syntaxNode)
-      return 
-    }
-    
     syntaxNode.parentNode = this
     this.children.push(syntaxNode)
   }
