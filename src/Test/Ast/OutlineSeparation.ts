@@ -115,7 +115,7 @@ describe('A document that ends with 3 blank lines', () => {
 
 describe('A line consisting solely of a streak of characters', () => {
   it('produces a section separator node when comprised of at least 3 hyphens', () => {
-    const text = `---`
+    const text = '---'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -123,7 +123,7 @@ describe('A line consisting solely of a streak of characters', () => {
   })
 
   it('can be comprised of equal signs', () => {
-    const text = `===`
+    const text = '==='
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -131,7 +131,7 @@ describe('A line consisting solely of a streak of characters', () => {
   })
 
   it('can be comprised of number signs', () => {
-    const text = `###`
+    const text = '###'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -139,7 +139,7 @@ describe('A line consisting solely of a streak of characters', () => {
   })
 
   it('can be comprised of more than 3 characters', () => {
-    const text = `##########`
+    const text = '##########'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -147,7 +147,7 @@ describe('A line consisting solely of a streak of characters', () => {
   })
 
   it('can have a space between each character', () => {
-    const text = `= = =`
+    const text = '= = ='
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -155,15 +155,16 @@ describe('A line consisting solely of a streak of characters', () => {
   })
 
   it('can have a space between each character and start with a space', () => {
-    const text = ` = = =`
+    const text = ' = = ='
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
 
-  it('must not be immediately followed by a non-blank line', () => {
-    const text = `---
+  it('can be immediately followed by a non-blank line', () => {
+    const text = `
+---
 hi`
     expect(Up.ast(text)).to.not.eql(
       new DocumentNode([
