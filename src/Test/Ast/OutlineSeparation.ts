@@ -175,32 +175,28 @@ hi`
       ]))
   })
 
-  it('can be immediately followed by any number of blank lines and still produce a single node', () => {
-    const text = `===
-    
-
-
-    
-`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode()
-      ]))
-  })
-
-  it('can be immediately preceeded by any number of blank lines and still produce a single node', () => {
+  it('can be surrounded by any number of blank lines and still produce a single separator node', () => {
     const text = `
+Hello.
 
 
-  \t
-   
-###
-    
-\t   
-`
+
+
+===
+
+
+
+
+Goodbye.`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new ParagraphNode([
+          new PlainTextNode('Hello.')
+        ]),
+        new SectionSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode('Goodbye.')
+        ]),
       ]))
   })
 })
@@ -213,8 +209,7 @@ describe('Consecutive lines consisting solely of streaks of characters', () => {
     const text = `
 --------
 --------
-********
-`
+********`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -223,7 +218,7 @@ describe('Consecutive lines consisting solely of streaks of characters', () => {
 })
 
 
-describe('Lines consisting solely of streaks of characters separated only by blank lines', () => {
+describe('Lines consisting solely of streaks of characters separated by blank lines', () => {
   it('produces a single section separator node', () => {
     const text = `
 --------
