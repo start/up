@@ -5,7 +5,7 @@ import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
-import { parseSectionSeparatorWhitespace } from './ParseSectionSeparatorWhitespace'
+import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
 import { parseLineBlock } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
@@ -14,7 +14,8 @@ import { parseParagraph } from './ParseParagraph'
 import { ParseArgs, OnParse } from '../Parser'
 import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, ANY_WHITESPACE} from './Patterns'
 
-const conventionParsers = [
+const outlineParsers = [
+  parseBlankLineSeparation,
   getHeadingParser(streakOf('#'), 1),
   getHeadingParser(streakOf('='), 2),
   getHeadingParser(streakOf('-'), 3),
@@ -26,7 +27,6 @@ const conventionParsers = [
   parseBlockquote,
   parseBulletedList,
   parseLineBlock,
-  parseSectionSeparatorWhitespace,
   parseParagraph
 ]
 
@@ -57,7 +57,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
   while (!consumer.done()) {
     const remainingText = consumer.remainingText()
 
-    for (let parser of conventionParsers) {
+    for (let parser of outlineParsers) {
       const parsedSuccessfully =
         parser(remainingText, parseArgs,
           (parsedNodes, countCharsParsed) => {
@@ -70,9 +70,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
       }
     }
 
-    // The current line is blank, but it's not a section separator! Let's skip it and
-    // move on to the next line.
-    consumer.consumeLine()
+    throw new Error(`Unrecognized outline convention. Remaining text: ${remainingText}`)
   }
   
   onParse(nodes, countCharsTrimmed + consumer.countCharsAdvanced(), parseArgs.parentNode)
