@@ -12,20 +12,7 @@ import { parseBlockquote } from './ParseBlockquote'
 import { parseBulletedList } from './ParseBulletedList'
 import { parseParagraph } from './ParseParagraph'
 import { ParseArgs, OnParse } from '../Parser'
-import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, NON_BLANK, INLINE_WHITESPACE_CHAR, ANY_WHITESPACE} from './Patterns'
-
-
-const BLANK_PATTERN = new RegExp(
-  BLANK
-)
-
-const TRAILING_WHITESPACE_PATTERN = new RegExp(
-	endsWith(ANY_WHITESPACE)
-)
-
-const LEADING_BLANK_LINES_PATTERN = new RegExp(
-	startsWith(ANY_WHITESPACE + '\n')
-)
+import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, ANY_WHITESPACE} from './Patterns'
 
 const conventionParsers = [
   getHeadingParser(streakOf('#'), 1),
@@ -43,33 +30,42 @@ const conventionParsers = [
   parseParagraph
 ]
 
+const TRAILING_WHITESPACE_PATTERN = new RegExp(
+  endsWith(ANY_WHITESPACE)
+)
+
+const LEADING_BLANK_LINES_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE + '\n')
+)
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
-  const outlineNodes: SyntaxNode[] = []
-  
+  const nodes: SyntaxNode[] = []
+
   const originalTextLength = text.length
   
-  // Leading and trailing blank lines are ignored.
-  //
-  // This also trims trailing whitespace from the last non-blank line, but that won't affect parsing.
+  // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
+  // last non-blank line, but that won't affect parsing.
   const trimmedText = text
     .replace(LEADING_BLANK_LINES_PATTERN, '')
     .replace(TRAILING_WHITESPACE_PATTERN, '')
-  
+
   const countCharsTrimmed = text.length - trimmedText.length
-  
+
   const consumer = new TextConsumer(trimmedText)
-  
+
   main_parser_loop:
   while (!consumer.done()) {
     const remainingText = consumer.remainingText()
-    
+
     for (let parser of conventionParsers) {
-      if (parser(remainingText, parseArgs,
-        (parsedNodes, countCharsAdvanced) => {
-          outlineNodes.push.apply(outlineNodes, parsedNodes)
-          consumer.skip(countCharsAdvanced)
-        })) {
+      const parsedSuccessfully =
+        parser(remainingText, parseArgs,
+          (parsedNodes, countCharsParsed) => {
+            nodes.push.apply(nodes, parsedNodes)
+            consumer.skip(countCharsParsed)
+          })
+
+      if (parsedSuccessfully) {
         continue main_parser_loop
       }
     }
@@ -78,7 +74,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
     // move on to the next line.
     consumer.consumeLine()
   }
-
-  onParse(outlineNodes, countCharsTrimmed + consumer.countCharsAdvanced(), parseArgs.parentNode)
+  
+  onParse(nodes, countCharsTrimmed + consumer.countCharsAdvanced(), parseArgs.parentNode)
   return true
 }
