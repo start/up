@@ -39,10 +39,6 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
 )
 
 export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
-  const nodes: SyntaxNode[] = []
-
-  const originalTextLength = text.length
-  
   // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
   // last non-blank line, but that won't affect parsing.
   const trimmedText = text
@@ -50,7 +46,8 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
     .replace(TRAILING_WHITESPACE_PATTERN, '')
 
   const countCharsTrimmed = text.length - trimmedText.length
-
+  
+  const nodes: SyntaxNode[] = []
   const consumer = new TextConsumer(trimmedText)
 
   main_parser_loop:
@@ -73,6 +70,27 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
     throw new Error(`Unrecognized outline convention. Remaining text: ${remainingText}`)
   }
   
-  onParse(nodes, countCharsTrimmed + consumer.countCharsAdvanced(), parseArgs.parentNode)
+  
+  onParse(
+    withoutConsecutiveDuplicateSeparatorNodes(nodes),
+    countCharsTrimmed + consumer.countCharsAdvanced(),
+    parseArgs.parentNode)
+    
   return true
+}
+
+function withoutConsecutiveDuplicateSeparatorNodes(nodes: SyntaxNode[]): SyntaxNode[] {
+  const resultNodes: SyntaxNode[] = []
+  
+  for (let node of nodes) {
+    const isConsecutiveSectionSeparatorNodes =
+      node instanceof SectionSeparatorNode
+      && resultNodes[resultNodes.length - 1] instanceof SectionSeparatorNode
+      
+    if (!isConsecutiveSectionSeparatorNodes) {
+      resultNodes.push(node)
+    }
+  }
+  
+  return resultNodes
 }
