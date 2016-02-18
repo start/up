@@ -10,6 +10,7 @@ import { parseLineBlock } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseBulletedList } from './ParseBulletedList'
+import { parseParagraph } from './ParseParagraph'
 import { ParseArgs, OnParse } from '../Parser'
 import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, NON_BLANK, INLINE_WHITESPACE_CHAR, ANY_WHITESPACE} from './Patterns'
 
@@ -26,10 +27,6 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
 	startsWith(ANY_WHITESPACE + '\n')
 )
 
-const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK
-) 
-
 const conventionParsers = [
   getHeadingParser(streakOf('#'), 1),
   getHeadingParser(streakOf('='), 2),
@@ -42,7 +39,8 @@ const conventionParsers = [
   parseBlockquote,
   parseBulletedList,
   parseLineBlock,
-  parseSectionSeparatorWhitespace
+  parseSectionSeparatorWhitespace,
+  parseParagraph
 ]
 
 
@@ -62,15 +60,12 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
   
   const consumer = new TextConsumer(trimmedText)
   
-  // Leading blank lines are ignored. We can't blindly trim leading all whitespace, because indentation
-  // 
-  while (consumer.consumeLineIf(BLANK_PATTERN)) { }
-
   main_parser_loop:
   while (!consumer.done()) {
-
+    const remainingText = consumer.remainingText()
+    
     for (let parser of conventionParsers) {
-      if (parser(consumer.remainingText(), parseArgs,
+      if (parser(remainingText, parseArgs,
         (parsedNodes, countCharsAdvanced) => {
           outlineNodes.push.apply(outlineNodes, parsedNodes)
           consumer.skip(countCharsAdvanced)
@@ -79,19 +74,8 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
       }
     }
 
-    // Alright, none of the other conventions applied. If the current line isn't blank,
-    // we're going to treat it as a regular paragraph.
-    if (consumer.consumeLineIf(NON_BLANK_PATTERN, (line) => {
-      parseInline(line, { parentNode: new ParagraphNode(parseArgs.parentNode) },
-        (inlineNodes, countCharsAdvanced, paragraphNode) => {
-          paragraphNode.addChildren(inlineNodes)
-          outlineNodes.push(paragraphNode)
-        })
-    })) {
-      continue
-    }
-
-    // The current line is blank! Let's skip it and move on to the next one.
+    // The current line is blank, but it's not a section separator! Let's skip it and
+    // move on to the next line.
     consumer.consumeLine()
   }
 
