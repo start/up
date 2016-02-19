@@ -49,7 +49,6 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
       && !STREAK_PATTERN.test(content)
       && consumer.consumeLineIf(underlineOrOverline)
       
-
     return (
       hasContentAndUnderline
       // The heading's content should never fail to parse

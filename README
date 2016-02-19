@@ -54,40 +54,57 @@ Lyrics have lines
 And addresses do too
 
 
-
 This is a top-level heading
-###########################
+#=#=#=#=#=#=#=#=#=#=#=#=#=#
+
+The first heading in a document is always a top-level heading.
+
+Use any underline! Any combination of the following characters is okay: `# = - + ~ * ^ - : _`
+
+Spaces can be interperced if you want.
+
+All subsequent headings with underlines consisting of the same characters are considered top-level.
 
 
 This is a second-level heading
 ==============================
 
+The same principle applies for second-level headings.
+
+You can use any underline, as long as it doesn't consist of the all same characters used in top-level heading's underline.
+ 
 
 This is a third-level heading
------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+
+Every heading level follows that same principle:
+
+You can use any underline, as long as it consists of a unique combination of characters.
+
+When creating a third-level heading, this means the underline must not consist of all the same characters used in the top-level and second-level headings. 
 
 
 This is a fourth-level heading
-# # # # # # # # # # # # # # #
+# = = = = = = = = = = = = = = #
+
+If an underline includes spaces, it's considered distinct from a similar underline that does not use spaces.
+
+Otherwise, underlines consisting of the same characters are considered the same, even if the characters are arranged in a different order.
 
 
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 This is a fifth-level heading
-= = = = = = = = = = = = = = =
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
 
+Any heading can have an optional overline.
 
-This is a sixth-level heading
-- - - - - - - - - - - - - - -
-
-
-###########################################
-Any heading can have an *optional* overline
-###########################################
+Documents can contain an unlimited number of heading levels, but some output formats (e.g. HTML) support a limited number.
 
 
 > This is a blockquote
 >
 > > This is a heading within a nested blockquote
-> > =====================================
+> > ============================================
 > >
 > > Blockquotes can contain any convention
 
