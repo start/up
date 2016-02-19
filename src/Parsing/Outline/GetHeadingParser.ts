@@ -1,7 +1,7 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseArgs, OnParse, Parser } from '../Parser'
-import { streakOf, dottedStreakOf, either, NON_BLANK } from './Patterns'
+import { streakOf, dottedStreakOf, either, NON_BLANK, STREAK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
@@ -17,6 +17,10 @@ const STREAK_PATTERN = new RegExp(
     dottedStreakOf('='),
     dottedStreakOf('#')
   )
+)
+
+const SEPARATOR_STREAK_PATTERN = new RegExp(
+  STREAK
 )
 
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
@@ -37,16 +41,16 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
     // -----------------------
     // -----------------------
     //
-    // And...
+    // Or...
     //
-    // =======================
+    // =~=~=~=~=~=~=~=~=~=~=~=
     // # # # # # # # # # # # #
     //
     // The author almost certainly intended those lines to serve as a section separator,
     // not as a heading.
     const hasContentAndUnderline =
       consumer.consumeLineIf(NON_BLANK_LINE_PATTERN, (line) => content = line)
-      && !STREAK_PATTERN.test(content)
+      && !SEPARATOR_STREAK_PATTERN.test(content)
       && consumer.consumeLineIf(underlineOrOverline)
       
     return (
