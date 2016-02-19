@@ -30,7 +30,7 @@ const INDENT = either('  ', '\t')
 
 const STREAK_CHAR = either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
 
-const STREAK = atLeast(3, STREAK_CHAR + ANY_WHITESPACE)
+const STREAK = solely(ANY_WHITESPACE + atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.

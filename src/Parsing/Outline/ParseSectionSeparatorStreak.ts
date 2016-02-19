@@ -1,17 +1,10 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { ParseArgs, OnParse } from '../Parser'
-import { streakOf, dottedStreakOf, either, BLANK } from './Patterns'
+import { STREAK, either, BLANK } from './Patterns'
 
 const STREAK_PATTERN = new RegExp(
-  either(
-    streakOf('-'),
-    streakOf('='),
-    streakOf('#'),
-    dottedStreakOf('-'),
-    dottedStreakOf('='),
-    dottedStreakOf('#')
-  )
+  STREAK
 )
 
 // A line consisting solely of a streak of '-', '=', or '#' characters indicates separation between
