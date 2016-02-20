@@ -28,9 +28,9 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
    
   // The content must not be a streak! Why not? Take a look:
   //
-  // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~
   // ===***===***===***===***===***===***===***===*
   // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~
+  // ===***===***===***===***===***===***===***===*
   //
   // The author almost certainly intended those lines to serve as a section separator,
   // not as a heading.
