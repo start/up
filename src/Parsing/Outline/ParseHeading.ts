@@ -1,5 +1,5 @@
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
-import { HeadingNodeWithUndeterminedLevel } from '../../SyntaxNodes/HeadingNodeWithUndeterminedLevel'
+import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseArgs, OnParse, Parser } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK, STREAK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
@@ -52,7 +52,7 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
     return false
   }
 
-  parseInline(content, { parentNode: new HeadingNodeWithUndeterminedLevel(parseArgs.parentNode) },
+  parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, 1) },
     (inlineNodes, countCharsParsed, headingNode) => {
       headingNode.addChildren(inlineNodes)
       onParse([headingNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
