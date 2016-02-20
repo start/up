@@ -13,11 +13,12 @@ const STREAK_PATTERN = new RegExp(
   STREAK
 )
 
-// TODO: Provide as an argument!
-const headingLeveler = new HeadingLeveler()
-
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
 export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+    
+  // TODO: Provide as an argument!
+  const headingLeveler = new HeadingLeveler()
+
   const consumer = new TextConsumer(text)
 
   // First, let's consume the optional overline.
