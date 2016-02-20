@@ -4,7 +4,7 @@ import { ParseArgs, OnParse, Parser } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK, STREAK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 
-const NON_BLANK_LINE_PATTERN = new RegExp(
+const NON_BLANK_PATTERN = new RegExp(
   NON_BLANK
 )
 
@@ -25,8 +25,8 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   let content: string
   let underlineChars: string
   
-  // Now, let's consume the content and the required underline. The content itself must
-  // not be a streak. Why? Take a look:
+  // Now, let's consume the content and the underline. The content itself must not be a streak.
+  // Why not? Take a look:
   //
   // =~=~=~=~=~=~=~=~=~=~=~=
   // # # # # # # # # # # # #
@@ -34,7 +34,7 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   // The author almost certainly intended those lines to serve as a section separator,
   // not as a heading.
   const hasContentAndUnderline = (
-    consumer.consumeLineIf(NON_BLANK_LINE_PATTERN,
+    consumer.consumeLineIf(NON_BLANK_PATTERN,
       (contentLine) => content = contentLine)
       
     && !STREAK_PATTERN.test(content)

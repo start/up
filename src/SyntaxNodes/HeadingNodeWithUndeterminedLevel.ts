@@ -6,5 +6,5 @@ export class HeadingNodeWithUndeterminedLevel extends RichSyntaxNode {
     super(parentOrChildren)
   }
   
-  private HEADING: any = null
+  private HEADING_WITH_UNDETERMINED_LEVEL: any = null
 }
