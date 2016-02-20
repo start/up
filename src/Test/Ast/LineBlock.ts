@@ -70,6 +70,66 @@ And addresses do, too
         ]),
       ]))
   })
+  
+  it('are separated by a streak, even when there are no blank lines', () => {
+    const text =
+      `
+Roses are red
+Violets are blue
+#~#~#~#~#~#~#~#~#
+Lyrics have lines
+And addresses do, too`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new LineNode([
+            new PlainTextNode('Roses are red')
+          ]),
+          new LineNode([
+            new PlainTextNode('Violets are blue')
+          ]),
+        ]),
+        new SectionSeparatorNode(),
+        new LineBlockNode([
+          new LineNode([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new LineNode([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ]),
+      ]))
+  })
+  
+  it('are not separated by a streak if the streak is escaped', () => {
+    const text =
+      `
+Roses are red
+Violets are blue
+\\#~#~#~#~#~#~#~#~#
+Lyrics have lines
+And addresses do, too`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new LineNode([
+            new PlainTextNode('Roses are red')
+          ]),
+          new LineNode([
+            new PlainTextNode('Violets are blue')
+          ]),
+          new LineNode([
+            new PlainTextNode('#~#~#~#~#~#~#~#~#')
+          ]),
+          new LineNode([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new LineNode([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ]),
+      ]))
+  })
 })
 
 describe('Non-blank lines separated by escaped blank lines', () => {
