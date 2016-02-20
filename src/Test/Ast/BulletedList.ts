@@ -128,7 +128,7 @@ describe('A bulleted line followed by an indented line', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
-            ], 2)
+            ], 1)
           ]),
           new BulletedListItemNode([
             new LineBlockNode([
@@ -147,7 +147,7 @@ describe('A bulleted line followed by an indented line', () => {
 })
 
 describe('A bulleted line followed by an indented block of text', () => {
-  it('are parsed like a mini-document and placed in the a bulleted list item node', () => {
+  it('are parsed like a mini-document and placed in a bulleted list item node', () => {
     const text =
       `
 * Hello, world!
@@ -163,7 +163,7 @@ describe('A bulleted line followed by an indented block of text', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
-            ], 2),
+            ], 1),
             new ParagraphNode([
               new PlainTextNode('It is really late, and I am really tired.')
             ])
@@ -171,7 +171,7 @@ describe('A bulleted line followed by an indented block of text', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
-            ], 3)
+            ], 2)
           ])
         ])
       ])
@@ -217,7 +217,7 @@ describe('A bulleted line followed by an indented block of text', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
-            ], 2),
+            ], 1),
             new ParagraphNode([
               new PlainTextNode('Upcoming features:')
             ]),
@@ -237,7 +237,7 @@ describe('A bulleted line followed by an indented block of text', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
-            ], 3)
+            ], 2)
           ])
         ])
       ])

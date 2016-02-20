@@ -16,6 +16,7 @@ import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, ANY_WHITESPACE} 
 
 const outlineParsers = [
   parseBlankLineSeparation,
+  parseBulletedList,
   getHeadingParser(streakOf('#'), 1),
   getHeadingParser(streakOf('='), 2),
   getHeadingParser(streakOf('-'), 3),
@@ -25,7 +26,6 @@ const outlineParsers = [
   parseSectionSeparatorStreak,
   parseCodeBlock,
   parseBlockquote,
-  parseBulletedList,
   parseLineBlock,
   parseParagraph
 ]
