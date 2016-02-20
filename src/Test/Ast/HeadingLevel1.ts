@@ -21,7 +21,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 describe('A document\'s first text underlined by any combination or arrangement of # = - + ~ * ^ @ : _', () => {
   it('produces a level-1 heading node', () => {
-      const text =
+    const text =
       `
 Hello, world!
 #=-+~*^@:_+**###=~=~=~--~~~~`
@@ -31,7 +31,7 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
+
   it('can have whitespace interspersed throughout the underline in any manner', () => {
     const text =
       `
@@ -42,7 +42,7 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
+
   it('can use as few as 1 one of those characters in its underline', () => {
     const text =
       `
@@ -77,7 +77,7 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
-  
+
   it('does not need to be the first convention in the document', () => {
     const text =
       `
@@ -91,4 +91,18 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
       ]))
   })
+
+  it('can contain inline conventions', () => {
+    const text =
+      `
+**Hello**, world!
+~~~~~~~~~~~~`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([
+          new StressNode([new PlainTextNode('Hello')]),
+          new PlainTextNode(', world!'),
+        ], 1)
+      ])
+    )})
 })
