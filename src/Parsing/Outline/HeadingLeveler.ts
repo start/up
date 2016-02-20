@@ -14,8 +14,8 @@ export class HeadingLeveler {
     return this.getLevel(underlineChars)
   }
 
-  doesUnderlineMatchOverline(underline: string, overline: string): boolean {
-    return !overline || (getDistinctStreakChars(underline) !== getDistinctStreakChars(overline))
+  doesOverlineConflictWithUnderline(underline: string, overline: string): boolean {
+    return overline && (getDistinctStreakChars(overline) !== getDistinctStreakChars(underline))
   }
   
   private getLevel(underlineChars: string): number {

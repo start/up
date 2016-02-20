@@ -51,8 +51,8 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
     return false
   }
       
-  // If there is an overline, it must consist of the same chars as the underline.
-  if (headingLeveler.doesUnderlineMatchOverline(underline, overline)) {
+  // The overline must not conflict with the underline.
+  if (headingLeveler.doesOverlineConflictWithUnderline(underline, overline)) {
     return false
   }
   
