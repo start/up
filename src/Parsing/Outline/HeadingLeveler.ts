@@ -1,5 +1,5 @@
-export class HeadingLevelProvider {
-  private registeredUnderlineChars: string[];
+export class HeadingLeveler {
+  private registeredUnderlineChars: string[] = []
   
   registerAndGetLevel(underline: string): number {
     const underlineChars = getDistinctStreakChars(underline)
