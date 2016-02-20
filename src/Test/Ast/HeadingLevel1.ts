@@ -20,6 +20,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
 describe('A document\'s first text underlined by any combination or arrangement of # = - + ~ * ^ @ : _', () => {
+  
   it('produces a level-1 heading node', () => {
     const text =
       `
@@ -66,18 +67,6 @@ Hello, world!
       ]))
   })
 
-  it('can have an optional overline consisting of the same characters as its underline, but in a different arrangement and length', () => {
-    const text =
-      `
-=*+:_~#^@-
-Hello, world!
-#=-+~*^@:_`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-      ]))
-  })
-
   it('does not need to be the first convention in the document', () => {
     const text =
       `
@@ -105,4 +94,55 @@ Goodbye, world!
         ], 1)
       ])
     )})
+})
+
+describe("A heading's optional overline", () => {
+  
+  it('must not contain spaces if the underline does not contains spaces', () => {
+    const text =
+      `
+- - - - - - -
+Hello, world!
+-------------`
+    expect(Up.ast(text)).to.not.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+  
+  it('must contain spaces if the underline does not contains spaces', () => {
+    const text =
+      `
+-------------
+Hello, world!
+- - - - - - -`
+    expect(Up.ast(text)).to.not.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+  
+  it('does not need to be the same length as the underline', () => {
+    const text =
+      `
+--------
+Hello, world!
+----------`
+    expect(Up.ast(text)).to.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+
+  it('can have its characters arranged differently than in the underline', () => {
+    const text =
+      `
+= - = - = - = - = - = - =
+Hello, world!
+==  --  ==  --  ==  --  ==`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
 })
