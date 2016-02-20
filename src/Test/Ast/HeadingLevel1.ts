@@ -20,8 +20,6 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
 describe('A document\'s first text underlined by any combination or arrangement of # = - + ~ * ^ @ : _', () => {
-
-
   it('produces a level-1 heading node', () => {
       const text =
       `
@@ -77,6 +75,20 @@ Hello, world!
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+      ]))
+  })
+  
+  it('does not need to be the first convention in the document', () => {
+    const text =
+      `
+Hello, world!
+      
+Goodbye, world!
+~~~~~~~~~~~~`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
       ]))
   })
 })
