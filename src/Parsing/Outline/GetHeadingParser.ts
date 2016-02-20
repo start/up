@@ -9,17 +9,6 @@ const NON_BLANK_LINE_PATTERN = new RegExp(
 )
 
 const STREAK_PATTERN = new RegExp(
-  either(
-    streakOf('-'),
-    streakOf('='),
-    streakOf('#'),
-    dottedStreakOf('-'),
-    dottedStreakOf('='),
-    dottedStreakOf('#')
-  )
-)
-
-const SEPARATOR_STREAK_PATTERN = new RegExp(
   STREAK
 )
 
@@ -31,7 +20,7 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
     const consumer = new TextConsumer(text)
 
     // First, let's consume the optional overline
-    consumer.consumeLineIf(underlineOrOverline)
+    consumer.consumeLineIf(STREAK_PATTERN)
 
     let content: string
 
@@ -50,8 +39,8 @@ export function getHeadingParser(underlinePattern: string, level: number): Parse
     // not as a heading.
     const hasContentAndUnderline =
       consumer.consumeLineIf(NON_BLANK_LINE_PATTERN, (line) => content = line)
-      && !SEPARATOR_STREAK_PATTERN.test(content)
-      && consumer.consumeLineIf(underlineOrOverline)
+      && !STREAK_PATTERN.test(content)
+      && consumer.consumeLineIf(STREAK_PATTERN)
       
     return (
       hasContentAndUnderline
