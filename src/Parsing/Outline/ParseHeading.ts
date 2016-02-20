@@ -16,38 +16,38 @@ const STREAK_PATTERN = new RegExp(
 export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
-  let overlineChars: string
 
   // First, let's consume the optional overline.
-  consumer.consumeLineIf(STREAK_PATTERN,
-    (overline) => overlineChars = getDistinctStreakChars(overline))
-
-  let content: string
-  let underlineChars: string
+  let overlineChars: string
+  consumer.consumeLineIf(STREAK_PATTERN, (overline) => overlineChars = getDistinctStreakChars(overline))
   
-  // Now, let's consume the content and the underline. The content itself must not be a streak.
-  // Why not? Take a look:
+  // Next, let's consume the content.
+  let content: string
+  consumer.consumeLineIf(NON_BLANK_PATTERN, (contentLine) => content = contentLine)
+    
+  // The content must not be a streak! Why not? Take a look:
   //
-  // =~=~=~=~=~=~=~=~=~=~=~=
-  // # # # # # # # # # # # #
+  // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+  // ===============================================
+  // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
   //
   // The author almost certainly intended those lines to serve as a section separator,
   // not as a heading.
-  const hasContentAndUnderline = (
-    consumer.consumeLineIf(NON_BLANK_PATTERN,
-      (contentLine) => content = contentLine)
+  if (!content || STREAK_PATTERN.test(content)) {
+    return false
+  }
+  
+  // Finally, we consume the underline
+  let underlineChars: string
+  consumer.consumeLineIf(STREAK_PATTERN,
+    (underline) => underlineChars = getDistinctStreakChars(underline))
+
+  if (!underlineChars) {
+    return false
+  }
       
-    && !STREAK_PATTERN.test(content)
-    
-    && consumer.consumeLineIf(STREAK_PATTERN,
-      (underline) => underlineChars = getDistinctStreakChars(underline))
-  )
-
-  //  If there is an overline, it must consist of the same chars as the underline.
-  const doesOverlineMatchUnderline =
-    !overlineChars || (overlineChars === underlineChars)
-
-  if (!hasContentAndUnderline || !doesOverlineMatchUnderline) {
+  //  If there was an overline, it must consist of the same chars as the underline.
+  if (!overlineChars || (overlineChars === underlineChars)) {
     return false
   }
 
