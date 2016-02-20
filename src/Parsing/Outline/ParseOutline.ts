@@ -4,7 +4,7 @@ import { parseInline } from '../Inline/ParseInline'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../../TextConsumption/TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
-import { getHeadingParser } from './GetHeadingParser'
+import { parseHeading } from './parseHeading'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
 import { parseLineBlock } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
@@ -17,12 +17,7 @@ import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, ANY_WHITESPACE} 
 const outlineParsers = [
   parseBlankLineSeparation,
   parseBulletedList,
-  getHeadingParser(streakOf('#'), 1),
-  getHeadingParser(streakOf('='), 2),
-  getHeadingParser(streakOf('-'), 3),
-  getHeadingParser(dottedStreakOf('#'), 4),
-  getHeadingParser(dottedStreakOf('='), 5),
-  getHeadingParser(dottedStreakOf('-'), 6),
+  parseHeading,
   parseSectionSeparatorStreak,
   parseCodeBlock,
   parseBlockquote,
