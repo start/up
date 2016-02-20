@@ -104,8 +104,9 @@ describe("A heading's optional overline", () => {
 - - - - - - -
 Hello, world!
 -------------`
-    expect(Up.ast(text)).to.not.eql(
+    expect(Up.ast(text)).to.eql(
       new DocumentNode([
+        new SectionSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -116,8 +117,9 @@ Hello, world!
 -------------
 Hello, world!
 - - - - - - -`
-    expect(Up.ast(text)).to.not.eql(
+    expect(Up.ast(text)).to.eql(
       new DocumentNode([
+        new SectionSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
