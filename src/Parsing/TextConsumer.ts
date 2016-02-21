@@ -64,26 +64,26 @@ export class TextConsumer {
 
     const consumer = new TextConsumer(this.remainingText())
 
-    let rawLine: string
+    let line: string
 
     const didConsumeUpToLineBreak =
       consumer.consumeUpTo('\n', (upToLineBreak) => {
-        rawLine = upToLineBreak
+        line = upToLineBreak
       })
 
     if (!didConsumeUpToLineBreak) {
-      rawLine = consumer.remainingText()
+      line = consumer.remainingText()
       consumer.skipToEnd()
     }
 
-    if (pattern && !pattern.test(rawLine)) {
+    if (pattern && !pattern.test(line)) {
       return false
     }
 
     this.skip(consumer.countCharsConsumed())
 
     if (onLineConsumption) {
-      onLineConsumption(rawLine)
+      onLineConsumption(line)
     }
 
     return true
@@ -97,8 +97,8 @@ export class TextConsumer {
         this.skip(consumer.countCharsConsumed())
 
         if (onConsumingUpTo) {
-          const rawConsumedText = consumer.consumedText()
-          const beforeNeedle = rawConsumedText.substr(0, rawConsumedText.length - needle.length)
+          const consumedText = consumer.consumedText()
+          const beforeNeedle = consumedText.substr(0, consumedText.length - needle.length)
           onConsumingUpTo(beforeNeedle)
         }
 
@@ -119,8 +119,8 @@ export class TextConsumer {
     this.skip((this.isCurrentCharEscaped() ? 2 : 1))
   }
 
-  skip(countRawCharacters: number): void {
-    this.index += countRawCharacters
+  skip(count: number): void {
+    this.index += count
   }
 
   countCharsConsumed(): number {
