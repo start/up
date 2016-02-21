@@ -62,7 +62,7 @@ export class TextConsumer {
       return false
     }
 
-    const consumer = this.getConsumerForRemainingText()
+    const consumer = new TextConsumer(this.remainingText())
 
     let rawLine: string
 
@@ -90,7 +90,7 @@ export class TextConsumer {
   }
 
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
-    const consumer = this.getConsumerForRemainingText()
+    const consumer = new TextConsumer(this.remainingText())
 
     while (!consumer.done()) {
       if (consumer.consumeIf(needle)) {
@@ -164,12 +164,6 @@ export class TextConsumer {
 
   private skipToEnd(): void {
     this.index = this.text.length
-  }
-
-  private getConsumerForRemainingText(): TextConsumer {
-    const clone = new TextConsumer(this.remainingText())
-
-    return clone
   }
 
   private updateUnclosedBracketCounts(): void {
