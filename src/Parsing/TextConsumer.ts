@@ -1,4 +1,9 @@
-interface OnLineConsumption {
+interface ConsumeLineArgs{
+  if?: ShouldConsumeLine,
+  then?: OnConsumeLine 
+}
+
+interface OnConsumeLine {
   (line: string): void
 }
 
@@ -6,7 +11,7 @@ interface ShouldConsumeLine {
   (line: string): boolean
 }
 
-interface OnConsumingUpTo {
+interface OnConsumeUpTo {
   (beforeNeedle: string): void
 }
 
@@ -37,15 +42,15 @@ export class TextConsumer {
     return true
   }
 
-  consumeLine(onLineConsumption?: OnLineConsumption): boolean {
-    return this.consumeLineIf((line) => true, onLineConsumption)
+  consumeLine(args: ConsumeLineArgs): boolean {
+    return this.consumeLineIf(args.if || ((line) => true), args.then)
   }
 
-  consumeLineIfMatches(pattern: RegExp, onLineConsumption?: OnLineConsumption): boolean {
+  consumeLineIfMatches(pattern: RegExp, onLineConsumption?: OnConsumeLine): boolean {
     return this.consumeLineIf((line) => pattern.test(line), onLineConsumption)
   }
 
-  consumeLineIf(shouldConsumeLine: ShouldConsumeLine, onLineConsumption?: OnLineConsumption): boolean {
+  private consumeLineIf(shouldConsumeLine: ShouldConsumeLine, onLineConsumption?: OnConsumeLine): boolean {
     if (this.done()) {
       return false
     }
@@ -77,7 +82,7 @@ export class TextConsumer {
     return true
   }
 
-  consumeUpTo(needle: string, onConsumingUpTo?: OnConsumingUpTo): boolean {
+  consumeUpTo(needle: string, onConsumingUpTo?: OnConsumeUpTo): boolean {
     const consumer = new TextConsumer(this.remainingText())
 
     while (!consumer.done()) {

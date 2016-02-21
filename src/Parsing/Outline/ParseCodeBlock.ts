@@ -27,8 +27,8 @@ export function parseCodeBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
       return true
     }
 
-    consumer.consumeLine((line) => {
-      codeLines.push(line)
+    consumer.consumeLine({
+      then: (line) => codeLines.push(line)
     })
   }
 
