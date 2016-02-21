@@ -1,5 +1,6 @@
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
-import { TextConsumer, applyBackslashEscaping } from '../TextConsumer'
+import { TextConsumer } from '../TextConsumer'
+import { applyBackslashEscaping } from '../TextHelpers'
 import { ParseArgs, OnParse } from '../Parser'
 
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'

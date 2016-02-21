@@ -1,10 +1,11 @@
 import { parseInline } from './ParseInline'
-import { TextConsumer, applyBackslashEscaping } from '../TextConsumer'
+import { TextConsumer } from '../TextConsumer'
+import { applyBackslashEscaping } from '../TextHelpers'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParseArgs, OnParse } from '../Parser'
 
-// Todo: Handle parent node's terminator?
+// Todo: Handle parent node's inline terminator?
 
 export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)

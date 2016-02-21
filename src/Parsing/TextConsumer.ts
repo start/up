@@ -6,26 +6,6 @@ interface OnConsumingUpTo {
   (beforeNeedle: string): void
 }
 
-// During parsing, a backslash "escapes" (disables) any special meaning the following character
-// might have. Instead, that character is treated as plain text.
-//
-// When using TextConsumer's `moveNext`, `consumeIf`, and `currentChar` methods, this occurs
-// completely transparently to the caller. They never have to deal with backslashes, unless
-// the backslash has been escaped into plain text. 
-//
-// On the other hand, TextConsumer's `consumeLine` and `consumeUpTo` methods provide callers
-// with a raw string, backslashes and all. In some cases, the caller will subsequently parse
-// that raw string, like when parsing a paragraph for inline conventions. In other cases, the
-// caller will immediately put the raw string into a syntax node, like when parsing a block of
-// code (in code blocks, all backslashes are preserved).
-//
-// However, sometimes, the caller just wants a string with the backslash escaping already
-// applied, like when parsing inline code or a link's URL. This could be accomplished by using
-// the `moveNext` and `currentChar` methods, but the following function makes it much easier.
-export function applyBackslashEscaping(text: string) {
-  return text.replace(/\\(.?)/g, '$1')
-}
-
 export class TextConsumer {
   private index = 0;
   private countUnclosedParen = 0;
