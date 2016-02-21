@@ -35,6 +35,6 @@ export function parseBlankLineSeparation(text: string, parseArgs: ParseArgs, onP
       : []
   )
 
-  onParse(nodes, consumer.countRawCharsConsumed(), parseArgs.parentNode)
+  onParse(nodes, consumer.countCharsConsumed(), parseArgs.parentNode)
   return true
 }

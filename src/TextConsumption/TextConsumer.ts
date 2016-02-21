@@ -64,26 +64,26 @@ export class TextConsumer {
 
     const consumer = this.getConsumerForRemainingText()
 
-    let line: string
+    let rawLine: string
 
     const didConsumeUpToLineBreak =
       consumer.consumeUpTo('\n', (upToLineBreak) => {
-        line = upToLineBreak
+        rawLine = upToLineBreak
       })
 
     if (!didConsumeUpToLineBreak) {
-      line = consumer.rawRemainingText()
+      rawLine = consumer.remainingText()
       consumer.skipToEnd()
     }
 
-    if (pattern && !pattern.test(line)) {
+    if (pattern && !pattern.test(rawLine)) {
       return false
     }
 
-    this.skip(consumer.countRawCharsConsumed())
+    this.skip(consumer.countCharsConsumed())
 
     if (onLineConsumption) {
-      onLineConsumption(line)
+      onLineConsumption(rawLine)
     }
 
     return true
@@ -94,11 +94,11 @@ export class TextConsumer {
 
     while (!consumer.done()) {
       if (consumer.consumeIf(needle)) {
-        this.skip(consumer.countRawCharsConsumed())
+        this.skip(consumer.countCharsConsumed())
 
         if (onConsumingUpTo) {
-          const consumedText = consumer.rawConsumedText()
-          const beforeNeedle = consumedText.substr(0, consumedText.length - needle.length)
+          const rawConsumedText = consumer.consumedText()
+          const beforeNeedle = rawConsumedText.substr(0, rawConsumedText.length - needle.length)
           onConsumingUpTo(beforeNeedle)
         }
 
@@ -112,29 +112,30 @@ export class TextConsumer {
   }
 
   moveNext(): void {
-    // Only non-escaped brackets that weren't part of a match should affect the opened/closed counts we're keeping.
+    // As a rule, we only count brackets found in plain, regular text. We ignore any brackets that are
+    // consumed as part of a text match (i.e. delimiters for syntax rules). That's why we call
+    // `updateUnclosedBracketCounts` here rather than in `skip`. 
     this.updateUnclosedBracketCounts()
-
     this.skip((this.isCurrentCharEscaped() ? 2 : 1))
   }
 
-  skip(count: number): void {
-    this.index += count
+  skip(countRawCharacters: number): void {
+    this.index += countRawCharacters
   }
 
-  countRawCharsConsumed(): number {
+  countCharsConsumed(): number {
     return this.index
   }
 
-  rawRemainingText(): string {
+  remainingText(): string {
     return this.text.slice(this.index)
   }
 
-  rawConsumedText(): string {
+  consumedText(): string {
     return this.text.substr(0, this.index)
   }
 
-  currentChar(): string {
+  escapedCurrentChar(): string {
     if (this.done()) {
       throw new Error('There is no more text!')
     }
@@ -142,15 +143,15 @@ export class TextConsumer {
     return (
       this.isCurrentCharEscaped()
         ? this.text[this.index + 1]
-        : this.rawCurrentChar()
+        : this.currentChar()
     )
   }
 
   private isCurrentCharEscaped(): boolean {
-    return this.rawCurrentChar() === '\\'
+    return this.currentChar() === '\\'
   }
 
-  private rawCurrentChar(): string {
+  private currentChar(): string {
     return this.text[this.index]
   }
 
@@ -166,13 +167,13 @@ export class TextConsumer {
   }
 
   private getConsumerForRemainingText(): TextConsumer {
-    const clone = new TextConsumer(this.rawRemainingText())
+    const clone = new TextConsumer(this.remainingText())
 
     return clone
   }
 
   private updateUnclosedBracketCounts(): void {
-    switch (this.rawCurrentChar()) {
+    switch (this.currentChar()) {
       case '(':
         this.countUnclosedParen += 1
         break

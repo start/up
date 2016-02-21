@@ -33,6 +33,6 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
   return parseOutline(blockquoteContent, { parentNode: new BlockquoteNode(parseArgs.parentNode) },
     (contentNodes, countCharsParsed, blockquoteNode) => {
       blockquoteNode.addChildren(contentNodes)
-      onParse([blockquoteNode], consumer.countRawCharsConsumed(), parseArgs.parentNode)
+      onParse([blockquoteNode], consumer.countCharsConsumed(), parseArgs.parentNode)
     })
 }

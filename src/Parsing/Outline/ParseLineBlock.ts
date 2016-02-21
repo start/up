@@ -32,6 +32,6 @@ export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
       })
   }
 
-  onParse([lineBlockNode], consumer.countRawCharsConsumed(), parseArgs.parentNode)
+  onParse([lineBlockNode], consumer.countCharsConsumed(), parseArgs.parentNode)
   return true
 }

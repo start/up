@@ -47,7 +47,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
 
   main_parser_loop:
   while (!consumer.done()) {
-    const remainingText = consumer.rawRemainingText()
+    const remainingText = consumer.remainingText()
 
     for (let parser of outlineParsers) {
       const parsedSuccessfully =
@@ -68,7 +68,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
   
   onParse(
     withoutConsecutiveDuplicateSeparatorNodes(nodes),
-    countCharsTrimmed + consumer.countRawCharsConsumed(),
+    countCharsTrimmed + consumer.countCharsConsumed(),
     parseArgs.parentNode)
     
   return true
