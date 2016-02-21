@@ -42,16 +42,10 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
   while (!consumer.done()) {
     listItemLines = []
     
-    const isLineBulleted = consumer.consumeLineIfMatches(BULLET_PATTERN,
+    const isLineBulleted = consumer.consumeLineIf(
+      (line) => BULLET_PATTERN.test(line) && !STREAK_PATTERN.test(line),
       (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
     )
-    
-    const isLineActuallyAStreak = STREAK_PATTERN.test(listItemLines[0])
-    
-    if (isLineActuallyAStreak) {
-      listItemLines = []
-      break
-    }
 
     if (!isLineBulleted) {
       break
