@@ -20,7 +20,7 @@ export class TextConsumer {
     )
   }
 
-  consumeIf(needle: string): boolean {
+  consumeIfMatches(needle: string): boolean {
     const isMatch =
       needle === this.text.substr(this.index, needle.length)
       && this.areRelevantBracketsClosed(needle)
@@ -34,10 +34,10 @@ export class TextConsumer {
   }
 
   consumeLine(onLineConsumption?: OnLineConsumption): boolean {
-    return this.consumeLineIf(null, onLineConsumption)
+    return this.consumeLineIfMatches(null, onLineConsumption)
   }
 
-  consumeLineIf(pattern: RegExp, onLineConsumption?: OnLineConsumption): boolean {
+  consumeLineIfMatches(pattern: RegExp, onLineConsumption?: OnLineConsumption): boolean {
     if (this.done()) {
       return false
     }
@@ -73,7 +73,7 @@ export class TextConsumer {
     const consumer = new TextConsumer(this.remainingText())
 
     while (!consumer.done()) {
-      if (consumer.consumeIf(needle)) {
+      if (consumer.consumeIfMatches(needle)) {
         this.skip(consumer.countCharsConsumed())
 
         if (onConsumingUpTo) {

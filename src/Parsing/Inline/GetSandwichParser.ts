@@ -24,7 +24,7 @@ export function getSandwichParser(
     const consumer = new TextConsumer(text)
 
     return (
-      consumer.consumeIf(startingBun)
+      consumer.consumeIfMatches(startingBun)
       && parseInline(
         consumer.remainingText(), {
           parentNode: new NodeType(parseArgs.parentNode),

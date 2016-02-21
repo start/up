@@ -45,7 +45,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
       }
     }
 
-    if (parseArgs.inlineTerminator && consumer.consumeIf(parseArgs.inlineTerminator)) {
+    if (parseArgs.inlineTerminator && consumer.consumeIfMatches(parseArgs.inlineTerminator)) {
       onParse(nodes, consumer.countCharsConsumed(), parseArgs.parentNode)
       return true
     }

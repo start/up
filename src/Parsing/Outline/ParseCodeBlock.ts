@@ -14,14 +14,14 @@ const FENCE_PATTERN = new RegExp(
 export function parseCodeBlock(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
-  if (!consumer.consumeLineIf(FENCE_PATTERN)) {
+  if (!consumer.consumeLineIfMatches(FENCE_PATTERN)) {
     return false
   }
 
   const codeLines: string[] = []
 
   while (!consumer.done()) {
-    if (consumer.consumeLineIf(FENCE_PATTERN)) {
+    if (consumer.consumeLineIfMatches(FENCE_PATTERN)) {
       const codeBlockNode = new CodeBlockNode(codeLines.join('\n'))
       onParse([codeBlockNode], consumer.countCharsConsumed(), parseArgs.parentNode)
       return true

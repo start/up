@@ -18,7 +18,7 @@ export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnP
   const lines: string[] = []
 
   // Collect all consecutive lines starting with "> "
-  while (consumer.consumeLineIf(QUOTE_DELIMITER_PATTERN, (line) => { lines.push(line) })) { }
+  while (consumer.consumeLineIfMatches(QUOTE_DELIMITER_PATTERN, (line) => { lines.push(line) })) { }
 
   if (!lines.length) {
     return false

@@ -42,7 +42,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
   while (!consumer.done()) {
     listItemLines = []
     
-    const isLineBulleted = consumer.consumeLineIf(BULLET_PATTERN,
+    const isLineBulleted = consumer.consumeLineIfMatches(BULLET_PATTERN,
       (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
     )
     
@@ -60,7 +60,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
     // Let's collect the rest of this list item (the next block of indented or blank lines).
     while (!consumer.done()) {
       
-      const isLineIndented = consumer.consumeLineIf(INDENTED_PATTERN,
+      const isLineIndented = consumer.consumeLineIfMatches(INDENTED_PATTERN,
         (line) => listItemLines.push(line.replace(INDENTED_PATTERN, ''))
       )
       
@@ -68,7 +68,7 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
         continue
       }
       
-      const isLineBlank = consumer.consumeLineIf(BLANK_LINE_PATTERN,
+      const isLineBlank = consumer.consumeLineIfMatches(BLANK_LINE_PATTERN,
         (line) => listItemLines.push(line)
       )
       

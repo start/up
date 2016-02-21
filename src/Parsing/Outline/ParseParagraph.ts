@@ -12,7 +12,7 @@ const NON_BLANK_PATTERN = new RegExp(
 export function parseParagraph(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
-  return consumer.consumeLineIf(NON_BLANK_PATTERN,
+  return consumer.consumeLineIfMatches(NON_BLANK_PATTERN,
     (line) => {
       parseInline(line, { parentNode: new ParagraphNode(parseArgs.parentNode) },
         (inlineNodes, countCharsAdvanced, paragraphNode) => {

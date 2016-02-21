@@ -16,7 +16,7 @@ export function parseLineBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
   const nonBlankLines: string[] = []
 
   // Collect all consecutive non-blank lines
-  while (consumer.consumeLineIf(NON_BLANK_LINE_PATTERN, (line) => { nonBlankLines.push(line) })) { }
+  while (consumer.consumeLineIfMatches(NON_BLANK_LINE_PATTERN, (line) => { nonBlankLines.push(line) })) { }
 
   if (nonBlankLines.length <= 1) {
     return false

@@ -18,7 +18,7 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
   const linkNode = new LinkNode(parseArgs.parentNode)
 
   const didParseOpeningBracketAndContent =
-    consumer.consumeIf('[')
+    consumer.consumeIfMatches('[')
     && parseInline(consumer.remainingText(), { parentNode: linkNode, inlineTerminator: ' -> ' },
       (nodes, countChars) => {
         consumer.skip(countChars)

@@ -23,11 +23,11 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
 
   // First, let's consume the optional overline.
   let overline: string
-  consumer.consumeLineIf(STREAK_PATTERN, (line) => overline = line)
+  consumer.consumeLineIfMatches(STREAK_PATTERN, (line) => overline = line)
   
   // Next, let's consume the content.
   let content: string
-  if (!consumer.consumeLineIf(NON_BLANK_PATTERN, (line) => content = line)) {
+  if (!consumer.consumeLineIfMatches(NON_BLANK_PATTERN, (line) => content = line)) {
     return false
   }
    
@@ -48,7 +48,7 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   
   // Finally, we consume the underline.
   let underline: string
-  if (!consumer.consumeLineIf(STREAK_PATTERN, (line) => underline = line)) {
+  if (!consumer.consumeLineIfMatches(STREAK_PATTERN, (line) => underline = line)) {
     return false
   }
       
