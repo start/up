@@ -1,4 +1,4 @@
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { ParseArgs, OnParse } from '../Parser'
 import { STREAK, either, BLANK } from './Patterns'

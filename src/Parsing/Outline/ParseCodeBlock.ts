@@ -1,4 +1,4 @@
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'

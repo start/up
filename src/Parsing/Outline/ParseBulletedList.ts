@@ -1,4 +1,4 @@
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
 import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'

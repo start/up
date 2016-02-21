@@ -1,4 +1,4 @@
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { ParseArgs, Parser, OnParse } from '../Parser'
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'

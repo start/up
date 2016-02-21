@@ -1,4 +1,4 @@
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { ParseArgs, OnParse } from '../Parser'
 import { parseInline } from '../Inline/ParseInline'

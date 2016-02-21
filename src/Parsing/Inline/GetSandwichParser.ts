@@ -1,7 +1,7 @@
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { ParseArgs, Parser } from '../Parser'
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { parseInline } from './ParseInline'
 
 

@@ -1,4 +1,4 @@
-import { TextConsumer } from '../../TextConsumption/TextConsumer'
+import { TextConsumer } from '../TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseArgs, OnParse, Parser } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK, STREAK } from './Patterns'

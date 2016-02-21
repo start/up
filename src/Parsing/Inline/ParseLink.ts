@@ -1,5 +1,5 @@
 import { parseInline } from './ParseInline'
-import { TextConsumer, applyBackslashEscaping } from '../../TextConsumption/TextConsumer'
+import { TextConsumer, applyBackslashEscaping } from '../TextConsumer'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParseArgs, OnParse } from '../Parser'
