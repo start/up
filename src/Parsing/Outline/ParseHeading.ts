@@ -29,8 +29,8 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
     then: (line) => overline = line
   })
   
-  // Next, let's consume the content.
- //
+  // Next, let's consume the content and underline.
+  //
   // The content must not be a streak! Why not? Take a look:
   //
   // =============================================
@@ -43,24 +43,22 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   // This wouldn't be necessary if we could parse separator streaks before headings, but we can't.
   // That's because the separator streak parser would always consume a heading's overline.
   let content: string
-
-  if (!consumer.consumeLine({
+  let underline: string
+  
+  const hasContentAndUnderline = 
+  consumer.consumeLine({
     if: (line) => NON_BLANK_PATTERN.test(line) && !STREAK_PATTERN.test(line),
     then: (line) => content = line
-  })) {
+  })
+    && consumer.consumeLineIfMatches({
+      pattern: STREAK_PATTERN,
+      then: (line) => underline = line
+    })
+
+  if (!hasContentAndUnderline) {
     return false
   }
   
-  // Finally, we consume the underline.
-  let underline: string
-
-  if (!consumer.consumeLineIfMatches({
-    pattern: STREAK_PATTERN,
-    then: (line) => underline = line
-  })) {
-    return false
-  }
-      
   // The overline must not conflict with the underline.
   if (headingLeveler.doesOverlineConflictWithUnderline(underline, overline)) {
     return false
