@@ -20,5 +20,5 @@ export function parseParagraph(text: string, parseArgs: ParseArgs, onParse: OnPa
           paragraphNode.addChildren(inlineNodes)
           onParse([paragraphNode], consumer.countCharsConsumed(), parseArgs.parentNode)
         })
-    })
+  })
 }

@@ -13,14 +13,14 @@ export class HeadingLeveler {
     
     return this.getLevel(underlineChars)
   }
-
-  doesOverlineConflictWithUnderline(underline: string, overline: string): boolean {
-    return overline && (getDistinctStreakChars(overline) !== getDistinctStreakChars(underline))
-  }
   
   private getLevel(underlineChars: string): number {
     return this.registeredUnderlineChars.indexOf(underlineChars) + 1
   }
+}
+
+export function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
+    return !overline || (getDistinctStreakChars(overline) === getDistinctStreakChars(underline))
 }
 
 function getDistinctStreakChars(streak: string): string {

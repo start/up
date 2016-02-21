@@ -3,7 +3,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseArgs, OnParse, Parser } from '../Parser'
 import { streakOf, dottedStreakOf, either, NON_BLANK, STREAK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
-import { HeadingLeveler } from './HeadingLeveler'
+import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
 const NON_BLANK_PATTERN = new RegExp(
   NON_BLANK
@@ -22,11 +22,11 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   const consumer = new TextConsumer(text)
 
   // First, let's consume the optional overline.
-  let overline: string
+  let optionalOverline: string
 
   consumer.consumeLineIfMatches({
     pattern: STREAK_PATTERN,
-    then: (line) => overline = line
+    then: (line) => optionalOverline = line
   })
   
   // Next, let's consume the content and underline.
@@ -44,14 +44,16 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   // That's because the separator streak parser would always consume a heading's overline.
   let content: string
   let underline: string
-  
-  const hasContentAndUnderline = 
-  consumer.consumeLine({
-    if: (line) => NON_BLANK_PATTERN.test(line) && !STREAK_PATTERN.test(line),
-    then: (line) => content = line
-  })
-    && consumer.consumeLineIfMatches({
-      pattern: STREAK_PATTERN,
+
+  const hasContentAndUnderline =
+    consumer.consumeLine({
+      if: (line) => NON_BLANK_PATTERN.test(line) && !STREAK_PATTERN.test(line),
+      then: (line) => content = line
+    })
+    && consumer.consumeLine({
+      if: (line) => (
+        STREAK_PATTERN.test(line)
+        && isUnderlineConsistentWithOverline(optionalOverline, line)),
       then: (line) => underline = line
     })
 
@@ -59,11 +61,6 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
     return false
   }
   
-  // The overline must not conflict with the underline.
-  if (headingLeveler.doesOverlineConflictWithUnderline(underline, overline)) {
-    return false
-  }
-
   const headingLevel = headingLeveler.registerAndGetLevel(underline)
 
   parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, headingLevel) },
