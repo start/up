@@ -218,6 +218,17 @@ describe('Consecutive lines consisting solely of streaks of characters', () => {
 })
 
 
+describe('A streak of asterisks with spaces between', () => {
+  it('produces a single section separator node rather than a heavily nested list', () => {
+    const text = '* * * * * *'
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+})
+
+
 describe('Lines consisting solely of streaks of characters separated by blank lines', () => {
   it('produces a single section separator node', () => {
     const text = `
