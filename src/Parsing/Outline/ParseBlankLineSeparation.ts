@@ -18,7 +18,7 @@ export function parseBlankLineSeparation(text: string, parseArgs: ParseArgs, onP
 
   let count = 0
 
-  while (consumer.consumeLineIfMatches(BLANK_PATTERN)) {
+  while (consumer.consumeLineIfMatches({pattern: BLANK_PATTERN})) {
     count += 1
   }
   

@@ -23,11 +23,19 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
 
   // First, let's consume the optional overline.
   let overline: string
-  consumer.consumeLineIfMatches(STREAK_PATTERN, (line) => overline = line)
+
+  consumer.consumeLineIfMatches({
+    pattern: STREAK_PATTERN,
+    then: (line) => overline = line
+  })
   
   // Next, let's consume the content.
   let content: string
-  if (!consumer.consumeLineIfMatches(NON_BLANK_PATTERN, (line) => content = line)) {
+
+  if (!consumer.consumeLineIfMatches({
+    pattern: NON_BLANK_PATTERN,
+    then: (line) => content = line
+  })) {
     return false
   }
    
@@ -48,7 +56,11 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   
   // Finally, we consume the underline.
   let underline: string
-  if (!consumer.consumeLineIfMatches(STREAK_PATTERN, (line) => underline = line)) {
+
+  if (!consumer.consumeLineIfMatches({
+    pattern: STREAK_PATTERN,
+    then: (line) => underline = line
+  })) {
     return false
   }
       
@@ -56,7 +68,7 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   if (headingLeveler.doesOverlineConflictWithUnderline(underline, overline)) {
     return false
   }
-  
+
   const headingLevel = headingLeveler.registerAndGetLevel(underline)
 
   parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, headingLevel) },

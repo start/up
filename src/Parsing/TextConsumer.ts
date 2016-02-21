@@ -1,14 +1,19 @@
-interface ConsumeLineArgs{
+interface ConsumeLineArgs {
   if?: ShouldConsumeLine,
-  then?: OnConsumeLine 
+  then?: OnConsumeLine
 }
 
-interface OnConsumeLine {
-  (line: string): void
+interface ConsumeLineByPatternArgs {
+  pattern: RegExp,
+  then?: OnConsumeLine
 }
 
 interface ShouldConsumeLine {
   (line: string): boolean
+}
+
+interface OnConsumeLine {
+  (line: string): void
 }
 
 interface OnConsumeUpTo {
@@ -43,7 +48,7 @@ export class TextConsumer {
   }
 
   consumeLine(args: ConsumeLineArgs): boolean {
-        if (this.done()) {
+    if (this.done()) {
       return false
     }
 
@@ -74,10 +79,10 @@ export class TextConsumer {
     return true
   }
 
-  consumeLineIfMatches(pattern: RegExp, onLineConsumption?: OnConsumeLine): boolean {
+  consumeLineIfMatches(args: ConsumeLineByPatternArgs): boolean {
     return this.consumeLine({
-      if: (line) => pattern.test(line),
-      then: onLineConsumption
+      if: (line) => args.pattern.test(line),
+      then: args.then
     })
   }
 
