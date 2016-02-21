@@ -28,22 +28,21 @@ export function applyBackslashEscaping(text: string) {
 
 export class TextConsumer {
   private index = 0;
-  private isCurrentCharEscaped = false;
   private countUnclosedParen = 0;
   private countUnclosedSquareBracket = 0;
 
-  constructor(private text: string) {
-    this.handleEscaping()
-  }
+  constructor(private text: string) { }
 
   done(): boolean {
-    return this.index >= this.text.length
+    return (
+      this.index >= this.text.length
+      || this.isOnTrailingBackslash()
+    )
   }
 
   consumeIf(needle: string): boolean {
     const isMatch =
-      !this.isCurrentCharEscaped
-      && (needle === this.text.substr(this.index, needle.length))
+      needle === this.text.substr(this.index, needle.length)
       && this.areRelevantBracketsClosed(needle)
 
     if (!isMatch) {
@@ -62,9 +61,9 @@ export class TextConsumer {
     if (this.done()) {
       return false
     }
-    
+
     const consumer = this.getConsumerForRemainingText()
-    
+
     let line: string
 
     const didConsumeUpToLineBreak =
@@ -82,7 +81,7 @@ export class TextConsumer {
     }
 
     this.skip(consumer.countRawCharsConsumed())
-    
+
     if (onLineConsumption) {
       onLineConsumption(line)
     }
@@ -114,16 +113,13 @@ export class TextConsumer {
 
   moveNext(): void {
     // Only non-escaped brackets that weren't part of a match should affect the opened/closed counts we're keeping.
-    if (!this.isCurrentCharEscaped) {
-      this.updateUnclosedBracketCounts()
-    }
+    this.updateUnclosedBracketCounts()
 
-    this.skip(1)
+    this.skip((this.isCurrentCharEscaped() ? 2 : 1))
   }
 
   skip(count: number): void {
     this.index += count
-    this.handleEscaping()
   }
 
   countRawCharsConsumed(): number {
@@ -139,7 +135,30 @@ export class TextConsumer {
   }
 
   currentChar(): string {
+    if (this.done()) {
+      throw new Error('There is no more text!')
+    }
+
+    return (
+      this.isCurrentCharEscaped()
+        ? this.text[this.index + 1]
+        : this.rawCurrentChar()
+    )
+  }
+
+  private isCurrentCharEscaped(): boolean {
+    return this.rawCurrentChar() === '\\'
+  }
+
+  private rawCurrentChar(): string {
     return this.text[this.index]
+  }
+
+  private isOnTrailingBackslash(): boolean {
+    return (
+      this.index === this.text.length - 1
+      && this.isCurrentCharEscaped()
+    )
   }
 
   private skipToEnd(): void {
@@ -149,22 +168,11 @@ export class TextConsumer {
   private getConsumerForRemainingText(): TextConsumer {
     const clone = new TextConsumer(this.rawRemainingText())
 
-    clone.isCurrentCharEscaped = this.isCurrentCharEscaped
-
     return clone
   }
 
-  private handleEscaping(): void {
-    this.isCurrentCharEscaped = false
-
-    if (this.currentChar() === '\\') {
-      this.index += 1
-      this.isCurrentCharEscaped = true
-    }
-  }
-
   private updateUnclosedBracketCounts(): void {
-    switch (this.currentChar()) {
+    switch (this.rawCurrentChar()) {
       case '(':
         this.countUnclosedParen += 1
         break
