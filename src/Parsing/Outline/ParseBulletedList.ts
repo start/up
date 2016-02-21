@@ -4,9 +4,9 @@ import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
-import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
+import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
 import { ParseArgs, OnParse } from '../Parser'
-
+import { last } from '../CollectionHelpers'
 
 const BULLET_PATTERN = new RegExp(
   startsWith(
@@ -20,6 +20,10 @@ const BLANK_LINE_PATTERN = new RegExp(
 
 const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
+)
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
 )
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -41,8 +45,14 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
     const isLineBulleted = consumer.consumeLineIf(BULLET_PATTERN,
       (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
     )
+    
+    const isLineActuallyAStreak = STREAK_PATTERN.test(listItemLines[0])
+    
+    if (isLineActuallyAStreak) {
+      listItemLines = []
+      break
+    }
 
-    // If this is a bulleted line, we're dealing with a list item.
     if (!isLineBulleted) {
       break
     }
