@@ -153,3 +153,23 @@ Violets are blue`
       ]))
   })
 })
+
+describe('A line with escaped characters in a line block', () => {
+  it('does not impact the parsing of the next line', () => {
+    const text =
+      `
+\\Roses \\are \\red
+Violets are blue`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new LineNode([
+            new PlainTextNode('Roses are red')
+          ]),
+          new LineNode([
+            new PlainTextNode('Violets are blue')
+          ]),
+        ]),
+      ]))
+  })
+})
