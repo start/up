@@ -146,7 +146,7 @@ describe('A bulleted line followed by an indented line', () => {
   })
 })
 
-describe('A bulleted line followed by an indented block of text', () => {
+describe('Each bulleted line followed by an indented block of text', () => {
   it('are parsed like a mini-document and placed in a bulleted list item node', () => {
     const text =
       `
@@ -156,7 +156,7 @@ describe('A bulleted line followed by an indented block of text', () => {
   It is really late, and I am really tired.
 
 * Goodbye, world!
-  ---------------`
+  ===============`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new BulletedListNode([
@@ -171,7 +171,7 @@ describe('A bulleted line followed by an indented block of text', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
-            ], 2)
+            ], 1)
           ])
         ])
       ])
@@ -186,7 +186,7 @@ describe('A bulleted line followed by an indented block of text', () => {
   It is really late, and I am really tired.
 
 * Goodbye, world!
-  ---------------`
+  ===============`
 
     const textWithSeparator =
       `* Hello, world!
@@ -194,7 +194,7 @@ describe('A bulleted line followed by an indented block of text', () => {
 
   It is really late, and I am really tired.
 * Goodbye, world!
-  ---------------`
+  ==============`
     expect(Up.ast(textWithoutSeparator)).to.be.eql(Up.ast(textWithSeparator))
   })
 
@@ -202,7 +202,7 @@ describe('A bulleted line followed by an indented block of text', () => {
     const text =
       `
 * Hello, world!
-  ============
+  =============
 
   Upcoming features:
   
@@ -210,7 +210,7 @@ describe('A bulleted line followed by an indented block of text', () => {
   * Definition lists
 
 * Goodbye, world!
-  ---------------`
+  ===============`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new BulletedListNode([
@@ -237,7 +237,7 @@ describe('A bulleted line followed by an indented block of text', () => {
           new BulletedListItemNode([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
-            ], 2)
+            ], 1)
           ])
         ])
       ])
