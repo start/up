@@ -14,6 +14,7 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { parseCode } from './parseCode'
 import { getSandwichParser } from './GetSandwichParser'
 import { parseLink } from './ParseLink'
+import { last } from '../CollectionHelpers'
 
 
 const conventionParsers = [
@@ -49,7 +50,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
       return true
     }
 
-    const lastNode = nodes[nodes.length - 1]
+    const lastNode = last(nodes)
     const currentChar = consumer.escapedCurrentChar()
     
     if (lastNode instanceof PlainTextNode) {

@@ -13,6 +13,7 @@ import { parseBulletedList } from './ParseBulletedList'
 import { parseParagraph } from './ParseParagraph'
 import { ParseArgs, OnParse } from '../Parser'
 import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, ANY_WHITESPACE} from './Patterns'
+import { last } from '../CollectionHelpers'
 
 const outlineParsers = [
   parseBlankLineSeparation,
@@ -67,22 +68,22 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
   
   
   onParse(
-    withoutConsecutiveDuplicateSeparatorNodes(nodes),
+    withoutExtraConsecutiveSeparatorNodes(nodes),
     countCharsTrimmed + consumer.countCharsConsumed(),
     parseArgs.parentNode)
     
   return true
 }
 
-function withoutConsecutiveDuplicateSeparatorNodes(nodes: SyntaxNode[]): SyntaxNode[] {
+function withoutExtraConsecutiveSeparatorNodes(nodes: SyntaxNode[]): SyntaxNode[] {
   const resultNodes: SyntaxNode[] = []
   
   for (let node of nodes) {
-    const isConsecutiveSectionSeparatorNodes =
+    const isExtraConsecutiveSectionSeparatorNode =
       node instanceof SectionSeparatorNode
-      && resultNodes[resultNodes.length - 1] instanceof SectionSeparatorNode
+      && last(resultNodes) instanceof SectionSeparatorNode
       
-    if (!isConsecutiveSectionSeparatorNodes) {
+    if (!isExtraConsecutiveSectionSeparatorNode) {
       resultNodes.push(node)
     }
   }
