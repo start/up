@@ -43,15 +43,7 @@ export class TextConsumer {
   }
 
   consumeLine(args: ConsumeLineArgs): boolean {
-    return this.consumeLineIf(args.if || ((line) => true), args.then)
-  }
-
-  consumeLineIfMatches(pattern: RegExp, onLineConsumption?: OnConsumeLine): boolean {
-    return this.consumeLineIf((line) => pattern.test(line), onLineConsumption)
-  }
-
-  private consumeLineIf(shouldConsumeLine: ShouldConsumeLine, onLineConsumption?: OnConsumeLine): boolean {
-    if (this.done()) {
+        if (this.done()) {
       return false
     }
 
@@ -69,17 +61,24 @@ export class TextConsumer {
       consumer.skipToEnd()
     }
 
-    if (!shouldConsumeLine(line)) {
+    if (args.if && !args.if(line)) {
       return false
     }
 
     this.skip(consumer.countCharsConsumed())
 
-    if (onLineConsumption) {
-      onLineConsumption(line)
+    if (args.then) {
+      args.then(line)
     }
 
     return true
+  }
+
+  consumeLineIfMatches(pattern: RegExp, onLineConsumption?: OnConsumeLine): boolean {
+    return this.consumeLine({
+      if: (line) => pattern.test(line),
+      then: onLineConsumption
+    })
   }
 
   consumeUpTo(needle: string, onConsumingUpTo?: OnConsumeUpTo): boolean {

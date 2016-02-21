@@ -66,7 +66,7 @@ export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnPars
     throw new Error(`Unrecognized outline convention. Remaining text: ${remainingText}`)
   }
   
-  
+
   onParse(
     withoutExtraConsecutiveSeparatorNodes(nodes),
     countCharsTrimmed + consumer.countCharsConsumed(),
