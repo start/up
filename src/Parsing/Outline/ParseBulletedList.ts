@@ -87,6 +87,6 @@ export function parseBulletedList(text: string, parseArgs: ParseArgs, onParse: O
       })
   }
 
-  onParse([listNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
+  onParse([listNode], consumer.countRawCharsConsumed(), parseArgs.parentNode)
   return true
 }

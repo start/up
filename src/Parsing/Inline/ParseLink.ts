@@ -18,7 +18,7 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
 
   const didParseOpeningBracketAndContent =
     consumer.consumeIf('[')
-    && parseInline(consumer.remainingText(), { parentNode: linkNode, inlineTerminator: ' -> ' },
+    && parseInline(consumer.rawRemainingText(), { parentNode: linkNode, inlineTerminator: ' -> ' },
       (nodes, countChars) => {
         consumer.skip(countChars)
         linkNode.addChildren(nodes)
@@ -27,6 +27,6 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
   return didParseOpeningBracketAndContent
     && consumer.consumeUpTo(']', (url) => {
       linkNode.url = applyBackslashEscaping(url)
-      onParse([linkNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
+      onParse([linkNode], consumer.countRawCharsConsumed(), parseArgs.parentNode)
     })
 }

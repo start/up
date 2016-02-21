@@ -35,7 +35,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
   while (!consumer.done()) {
 
     for (let parser of conventionParsers) {
-      if (parser(consumer.remainingText(), parseArgs,
+      if (parser(consumer.rawRemainingText(), parseArgs,
         (resultNodes, countCharsParsed) => {
           nodes.push.apply(nodes, resultNodes)
           consumer.skip(countCharsParsed)
@@ -45,7 +45,7 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     }
 
     if (parseArgs.inlineTerminator && consumer.consumeIf(parseArgs.inlineTerminator)) {
-      onParse(nodes, consumer.countCharsAdvanced(), parseArgs.parentNode)
+      onParse(nodes, consumer.countRawCharsConsumed(), parseArgs.parentNode)
       return true
     }
 
@@ -65,6 +65,6 @@ export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse
     return false
   }
 
-  onParse(nodes, consumer.countCharsAdvanced(), parseArgs.parentNode)
+  onParse(nodes, consumer.countRawCharsConsumed(), parseArgs.parentNode)
   return true
 }

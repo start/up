@@ -21,7 +21,7 @@ interface OnConsumingUpTo {
 //
 // However, sometimes, the caller just wants a string with the backslash escaping already
 // applied, like when parsing inline code or a link's URL. This could be accomplished by using
-// the `moveNext` and `currentChar` methods, but the following function makes it much easier. 
+// the `moveNext` and `currentChar` methods, but the following function makes it much easier.
 export function applyBackslashEscaping(text: string) {
   return text.replace(/\\(.?)/g, '$1')
 }
@@ -73,7 +73,7 @@ export class TextConsumer {
       })
 
     if (!didConsumeUpToLineBreak) {
-      line = consumer.remainingText()
+      line = consumer.rawRemainingText()
       consumer.skipToEnd()
     }
 
@@ -81,7 +81,7 @@ export class TextConsumer {
       return false
     }
 
-    this.skip(consumer.countCharsAdvanced())
+    this.skip(consumer.countRawCharsConsumed())
     
     if (onLineConsumption) {
       onLineConsumption(line)
@@ -95,10 +95,10 @@ export class TextConsumer {
 
     while (!consumer.done()) {
       if (consumer.consumeIf(needle)) {
-        this.skip(consumer.countCharsAdvanced())
+        this.skip(consumer.countRawCharsConsumed())
 
         if (onConsumingUpTo) {
-          const consumedText = consumer.consumed()
+          const consumedText = consumer.rawConsumedText()
           const beforeNeedle = consumedText.substr(0, consumedText.length - needle.length)
           onConsumingUpTo(beforeNeedle)
         }
@@ -126,15 +126,15 @@ export class TextConsumer {
     this.handleEscaping()
   }
 
-  countCharsAdvanced(): number {
+  countRawCharsConsumed(): number {
     return this.index
   }
 
-  remainingText(): string {
+  rawRemainingText(): string {
     return this.text.slice(this.index)
   }
 
-  consumed(): string {
+  rawConsumedText(): string {
     return this.text.substr(0, this.index)
   }
 
@@ -147,7 +147,7 @@ export class TextConsumer {
   }
 
   private getConsumerForRemainingText(): TextConsumer {
-    const clone = new TextConsumer(this.remainingText())
+    const clone = new TextConsumer(this.rawRemainingText())
 
     clone.isCurrentCharEscaped = this.isCurrentCharEscaped
 

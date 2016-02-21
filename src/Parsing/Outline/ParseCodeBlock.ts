@@ -23,7 +23,7 @@ export function parseCodeBlock(text: string, parseArgs: ParseArgs, onParse: OnPa
   while (!consumer.done()) {
     if (consumer.consumeLineIf(FENCE_PATTERN)) {
       const codeBlockNode = new CodeBlockNode(codeLines.join('\n'))
-      onParse([codeBlockNode], consumer.countCharsAdvanced(), parseArgs.parentNode)
+      onParse([codeBlockNode], consumer.countRawCharsConsumed(), parseArgs.parentNode)
       return true
     }
 
