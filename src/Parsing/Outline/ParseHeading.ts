@@ -30,15 +30,7 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   })
   
   // Next, let's consume the content.
-  let content: string
-
-  if (!consumer.consumeLineIfMatches({
-    pattern: NON_BLANK_PATTERN,
-    then: (line) => content = line
-  })) {
-    return false
-  }
-   
+ //
   // The content must not be a streak! Why not? Take a look:
   //
   // =============================================
@@ -49,8 +41,13 @@ export function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnPars
   // not as a heading.
   //
   // This wouldn't be necessary if we could parse separator streaks before headings, but we can't.
-  // That's because the separator streak parser would also consume a heading's overline.
-  if (STREAK_PATTERN.test(content)) {
+  // That's because the separator streak parser would always consume a heading's overline.
+  let content: string
+
+  if (!consumer.consumeLine({
+    if: (line) => NON_BLANK_PATTERN.test(line) && !STREAK_PATTERN.test(line),
+    then: (line) => content = line
+  })) {
     return false
   }
   
