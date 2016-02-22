@@ -27,7 +27,7 @@ export function parseBlockquote(text: string, parseArgs: ParseContextArgs, onPar
     return false
   }
   
-  // Strip "> " from each line, then stick them all back together. See where this is going?
+  // Strip "> " from each line, then stick all the lines back together
   let blockquoteContent = lines
     .map((line) => line.replace(QUOTE_DELIMITER_PATTERN, ''))
     .join('\n')

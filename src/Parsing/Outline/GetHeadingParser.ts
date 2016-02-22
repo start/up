@@ -1,7 +1,7 @@
 import { TextConsumer } from '../TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParseContextArgs, OnParse, Parser } from '../Parser'
-import { streakOf, dottedStreakOf, either, NON_BLANK, STREAK } from './Patterns'
+import { either, NON_BLANK, STREAK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 

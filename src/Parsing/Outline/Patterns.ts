@@ -18,8 +18,6 @@ const solely = (pattern: string) => '^' + pattern + INLINE_WHITESPACE + '$'
 
 const streakOf = (charPattern: string) => solely(atLeast(3, charPattern))
 
-const dottedStreakOf = (char: string) => solely(optional(' ') + atLeast(2, char + ' ') + char)
-
 const startsWith = (pattern: string) => '^' + pattern
 
 const endsWith = (pattern: string) => pattern + '$'
@@ -48,6 +46,5 @@ export {
   solely,
   startsWith,
   endsWith,
-  streakOf,
-  dottedStreakOf
+  streakOf
 }
