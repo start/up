@@ -11,7 +11,7 @@ import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseBulletedList } from './ParseBulletedList'
 import { parseParagraph } from './ParseParagraph'
-import { ParseArgs, OnParse } from '../Parser'
+import { ParseContextArgs, OnParse } from '../Parser'
 import { startsWith, endsWith, streakOf, dottedStreakOf, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
@@ -24,7 +24,7 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '\n')
 )
 
-export function parseOutline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+export function parseOutline(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
 
   // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
   // last non-blank line, but that won't affect parsing.

@@ -1,9 +1,9 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
-export interface ParseArgs {
+export interface ParseContextArgs {
   parentNode?: RichSyntaxNode,
-  // TODO: Add an outline equivalent, or make this field work applicable for both
+  // TODO: Add an outline equivalent, or make this field applicable for both
   inlineTerminator?: string
 }
 
@@ -12,5 +12,5 @@ export interface OnParse {
 }
 
 export interface Parser {
-  (text: string, parseArgs: ParseArgs, onParse: OnParse): boolean
+  (text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean
 }

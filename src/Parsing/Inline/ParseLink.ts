@@ -3,11 +3,11 @@ import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ParseArgs, OnParse } from '../Parser'
+import { ParseContextArgs, OnParse } from '../Parser'
 
 // Todo: Handle parent node's inline terminator?
 
-export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+export function parseLink(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
   // Links cannot be nested within other links
@@ -25,9 +25,14 @@ export function parseLink(text: string, parseArgs: ParseArgs, onParse: OnParse):
         linkNode.addChildren(nodes)
       })
 
-  return didParseOpeningBracketAndContent
-    && consumer.consumeUpTo(']', (url) => {
-      linkNode.url = applyBackslashEscaping(url)
-      onParse([linkNode], consumer.countCharsConsumed(), parseArgs.parentNode)
+  return (
+    didParseOpeningBracketAndContent
+    && consumer.consumeUpTo({
+      needle: ']',
+      then: (url) => {
+        linkNode.url = applyBackslashEscaping(url)
+        onParse([linkNode], consumer.countCharsConsumed(), parseArgs.parentNode)
+      }
     })
+  )
 }

@@ -8,6 +8,11 @@ interface ConsumeLineByPatternArgs {
   then?: OnConsumeLine
 }
 
+interface ConsumeUpToArgs {
+  needle: string,
+  then?: OnConsumeLine
+}
+
 interface ShouldConsumeLine {
   (line: string): boolean
 }
@@ -57,8 +62,9 @@ export class TextConsumer {
     let line: string
 
     const didConsumeUpToLineBreak =
-      consumer.consumeUpTo('\n', (upToLineBreak) => {
-        line = upToLineBreak
+      consumer.consumeUpTo({
+        needle: '\n',
+        then: (upToLineBreak) => { line = upToLineBreak }
       })
 
     if (!didConsumeUpToLineBreak) {
@@ -86,17 +92,17 @@ export class TextConsumer {
     })
   }
 
-  consumeUpTo(needle: string, onConsumingUpTo?: OnConsumeUpTo): boolean {
+  consumeUpTo(args: ConsumeUpToArgs): boolean {
     const consumer = new TextConsumer(this.remainingText())
 
     while (!consumer.done()) {
-      if (consumer.consumeIfMatches(needle)) {
+      if (consumer.consumeIfMatches(args.needle)) {
         this.skip(consumer.countCharsConsumed())
 
-        if (onConsumingUpTo) {
+        if (args.then) {
           const consumedText = consumer.consumedText()
-          const beforeNeedle = consumedText.substr(0, consumedText.length - needle.length)
-          onConsumingUpTo(beforeNeedle)
+          const beforeNeedle = consumedText.substr(0, consumedText.length - args.needle.length)
+          args.then(beforeNeedle)
         }
 
         return true

@@ -1,17 +1,21 @@
-import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { ParseArgs, OnParse } from '../Parser'
+import { ParseContextArgs, OnParse } from '../Parser'
 
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
-export function parseCode(text: string, parseArgs: ParseArgs, onParse: OnParse) {
+export function parseCode(text: string, parseArgs: ParseContextArgs, onParse: OnParse) {
   const consumer = new TextConsumer(text)
-  
-  return consumer.consumeIfMatches('`')
-    && consumer.consumeUpTo('`', (code) => {
-      const escapedCode = applyBackslashEscaping(code)
-      onParse([new InlineCodeNode(escapedCode)], consumer.countCharsConsumed(), parseArgs.parentNode)
-    })
+
+  return (
+    consumer.consumeIfMatches('`')
+    && consumer.consumeUpTo({
+      needle: '`',
+      then: (code) =>
+        onParse(
+          [new InlineCodeNode(applyBackslashEscaping(code))],
+          consumer.countCharsConsumed(),
+          parseArgs.parentNode)
+    }))
 }

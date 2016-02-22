@@ -4,7 +4,7 @@ import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
 import { startsWith, optional, INLINE_WHITESPACE_CHAR } from './Patterns'
-import { ParseArgs, OnParse } from '../Parser'
+import { ParseContextArgs, OnParse } from '../Parser'
 
 const QUOTE_DELIMITER_PATTERN = new RegExp(
   startsWith('>' + optional(INLINE_WHITESPACE_CHAR))
@@ -12,7 +12,7 @@ const QUOTE_DELIMITER_PATTERN = new RegExp(
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,
 // even other blockquotes! They're like mini-documents.
-export function parseBlockquote(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+export function parseBlockquote(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
   const lines: string[] = []

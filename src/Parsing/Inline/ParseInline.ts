@@ -1,5 +1,5 @@
 import { TextConsumer } from '../TextConsumer'
-import { ParseArgs, Parser, OnParse } from '../Parser'
+import { ParseContextArgs, Parser, OnParse } from '../Parser'
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
@@ -28,7 +28,7 @@ const conventionParsers = [
   getSandwichParser(InlineAsideNode, '((', '))')
 ]
 
-export function parseInline(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
+export function parseInline(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
 
