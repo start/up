@@ -31,13 +31,12 @@ const STREAK_PATTERN = new RegExp(
 // List items can contain any kind of convention, even other lists!  In list items
 // with multiple lines, all subsequent lines are indented.
 //
-// List items can be separated by optional blank lines.
+// List items don't need to be separated by blank lines.
 export function parseBulletedList(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
-
   const consumer = new TextConsumer(text)
 
   const listItems: string[] = []
-  let listItemLines: string[] = []
+  let listItemLines: string[]
 
   while (!consumer.done()) {
     listItemLines = []
@@ -51,7 +50,7 @@ export function parseBulletedList(text: string, parseArgs: ParseContextArgs, onP
       break
     }
 
-    // Let's collect the rest of this list item (the next block of indented or blank lines).
+    // Let's collect the rest of this list item (i.e. the next block of indented or blank lines).
     while (!consumer.done()) {
 
       const isLineIndented = consumer.consumeLineIfMatches({
@@ -69,12 +68,15 @@ export function parseBulletedList(text: string, parseArgs: ParseContextArgs, onP
       })
 
       if (!isLineBlank) {
+        // Well, the line was neither indented nor blank. That means it's either the start of
+        // another list item, or it's the first line following the list. Let's leave this loop
+        // and find out which.
         break
       }
     }
 
-    // We lose the final newline, but trailing blank linesare always ignored when outline
-    // parsing, which is exactly what we're going to do next. 
+    // This loses the final newline, but trailing blank lines are always ignored when parsing for
+    // outline conventions, which is exactly what we're going to do next. 
     listItems.push(listItemLines.join('\n'))
   }
 
