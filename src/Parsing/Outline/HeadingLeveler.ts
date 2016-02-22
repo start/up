@@ -1,7 +1,7 @@
 export class HeadingLeveler {
   private registeredUnderlineChars: string[] = []
   
-  registerAndGetLevel(underline: string): number {
+  registerUnderlineAndGetLevel(underline: string): number {
     const underlineChars = getDistinctStreakChars(underline)
     
     const isAlreadyRegistered = 

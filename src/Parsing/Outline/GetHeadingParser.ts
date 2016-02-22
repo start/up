@@ -19,7 +19,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): Parser {
   return function parseHeading(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
     const consumer = new TextConsumer(text)
 
-    // First, let's consume the optional overline.
+    // First, let's parse the optional overline.
     let optionalOverline: string
 
     consumer.consumeLineIfMatches({
@@ -27,7 +27,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): Parser {
       then: (line) => optionalOverline = line
     })
   
-    // Next, let's consume the content and underline.
+    // Next, let's parse the content and underline.
     //
     // The content must not be a streak! Why not? Take a look:
     //
@@ -35,31 +35,35 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): Parser {
     // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
     // =============================================
     //
-    // The author almost certainly intended those lines to serve as a section separator,
-    // not as a heading.
+    // The author almost certainly included those lines to separate sections, not as a heading.
     //
-    // This wouldn't be necessary if we could parse separator streaks before headings, but we can't.
-    // That's because the separator streak parser would always consume a heading's overline.
+    // We wouldn't need to care about this if we could parse separator streaks before headings,
+    // but that would introduce its own complications: The separator streak parser would always
+    // want to consume every heading's overline.
     let content: string
     let underline: string
 
-    const hasContentAndUnderline =
+    const hasContentAndUnderline = (
+      // Parse the content
       consumer.consumeLine({
         if: (line) => NON_BLANK_PATTERN.test(line) && !STREAK_PATTERN.test(line),
         then: (line) => content = line
       })
+      
+      // Parse the underline
       && consumer.consumeLine({
         if: (line) => (
           STREAK_PATTERN.test(line)
           && isUnderlineConsistentWithOverline(optionalOverline, line)),
         then: (line) => underline = line
       })
+    )
 
     if (!hasContentAndUnderline) {
       return false
     }
 
-    const headingLevel = headingLeveler.registerAndGetLevel(underline)
+    const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
 
     parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, headingLevel) },
       (inlineNodes, countCharsParsed, headingNode) => {
