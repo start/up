@@ -112,56 +112,36 @@ describe('A document that ends with 3 blank lines', () => {
   })
 })
 
+describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
+  
+  it('produces a section separator node', () => {
+    const text = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
-describe('A line consisting solely of a streak of characters', () => {
-  it('produces a section separator node when comprised of at least 3 hyphens', () => {
-    const text = '---'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
 
-  it('can be comprised of equal signs', () => {
-    const text = '==='
+  it('can have whitespace interspersed throughout the line in any manner', () => {
+    const text = ' +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_ '
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
 
-  it('can be comprised of number signs', () => {
-    const text = '###'
+  it('can contain as few as 3 non-whitespace characters', () => {
+    const text = '= - ~'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
   })
+})
 
-  it('can be comprised of more than 3 characters', () => {
-    const text = '##########'
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode()
-      ]))
-  })
-
-  it('can have a space between each character', () => {
-    const text = '= = ='
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode()
-      ]))
-  })
-
-  it('can have a space between each character and start with a space', () => {
-    const text = ' = = ='
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode()
-      ]))
-  })
-
+describe('A section separator streak', () => {
+  
   it('can be immediately followed by a non-blank line', () => {
     const text = `
 ---
@@ -201,26 +181,12 @@ Goodbye.`
   })
 })
 
-
-
-
 describe('Consecutive lines consisting solely of streaks of characters', () => {
   it('produces a single section separator node', () => {
     const text = `
---------
---------
-========`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode()
-      ]))
-  })
-})
-
-
-describe('A streak of asterisks with spaces between', () => {
-  it('produces a single section separator node rather than a heavily nested list', () => {
-    const text = '* * * * * *'
+=============================================
+#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+=============================================`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -249,3 +215,12 @@ describe('Lines consisting solely of streaks of characters separated by blank li
   })
 })
 
+describe('A streak of asterisks with spaces between', () => {
+  it('produces a single section separator node rather than a heavily nested list', () => {
+    const text = '* * * * * *'
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+})
