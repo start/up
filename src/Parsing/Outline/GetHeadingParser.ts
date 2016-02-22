@@ -17,8 +17,6 @@ const STREAK_PATTERN = new RegExp(
 export function getHeadingParser(headingLeveler: HeadingLeveler): Parser {
   
   return function parseHeading(text: string, parseArgs: ParseArgs, onParse: OnParse): boolean {
-    headingLeveler = new HeadingLeveler()
-
     const consumer = new TextConsumer(text)
 
     // First, let's consume the optional overline.
