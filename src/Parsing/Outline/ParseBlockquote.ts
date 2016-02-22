@@ -14,19 +14,19 @@ const QUOTE_DELIMITER_PATTERN = new RegExp(
 // even other blockquotes! They're like mini-documents.
 export function parseBlockquote(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
-  const lines: string[] = []
+  const blockquoteLines: string[] = []
 
   // Collect all consecutive blockquoted lines
   while (consumer.consumeLineIfMatches({
     pattern: QUOTE_DELIMITER_PATTERN,
-    then: (line) => lines.push(line.replace(QUOTE_DELIMITER_PATTERN, ''))
+    then: (line) => blockquoteLines.push(line.replace(QUOTE_DELIMITER_PATTERN, ''))
   })) { }
 
-  if (!lines.length) {
+  if (!blockquoteLines.length) {
     return false
   }
   
-  const blockquoteContent = lines.join('\n')
+  const blockquoteContent = blockquoteLines.join('\n')
 
   // Parse the contents of the blockquote as though it's a mini-document. Because it is!
   return parseOutline(blockquoteContent, { parentNode: new BlockquoteNode(parseArgs.parentNode) },

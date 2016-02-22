@@ -6,7 +6,7 @@ import { parseInline } from '../Inline/ParseInline'
 import { streakOf } from './Patterns'
 import { ParseContextArgs, OnParse } from '../Parser'
 
-const FENCE_PATTERN = new RegExp(
+const CODE_FENCE_PATTERN = new RegExp(
   streakOf('`')
 )
 
@@ -14,14 +14,15 @@ const FENCE_PATTERN = new RegExp(
 export function parseCodeBlock(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
-  if (!consumer.consumeLineIfMatches({ pattern: FENCE_PATTERN })) {
+  if (!consumer.consumeLineIfMatches({ pattern: CODE_FENCE_PATTERN })) {
     return false
   }
 
   const codeLines: string[] = []
 
   while (!consumer.done()) {
-    if (consumer.consumeLineIfMatches({ pattern: FENCE_PATTERN })) {
+    
+    if (consumer.consumeLineIfMatches({ pattern: CODE_FENCE_PATTERN })) {
       onParse(
         [new CodeBlockNode(codeLines.join('\n'))],
         consumer.countCharsConsumed(),

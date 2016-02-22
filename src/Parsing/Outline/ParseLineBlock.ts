@@ -9,7 +9,6 @@ const NON_BLANK_LINE_PATTERN = new RegExp(
   NON_BLANK
 )
 
-
 const STREAK_PATTERN = new RegExp(
   STREAK
 )
@@ -17,16 +16,15 @@ const STREAK_PATTERN = new RegExp(
 // 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs!
 export function parseLineBlock(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
-
   const nonBlankLines: string[] = []
-
+  
   // Collect all consecutive non-blank lines
   while (consumer.consumeLine({
     if: (line) => NON_BLANK_LINE_PATTERN.test(line) && !STREAK_PATTERN.test(line),
     then: (line) => nonBlankLines.push(line)
   })) { }
 
-  if (nonBlankLines.length <= 1) {
+  if (nonBlankLines.length < 2) {
     return false
   }
 
