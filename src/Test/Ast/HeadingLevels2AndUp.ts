@@ -36,4 +36,24 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
       ]))
   })
+  
+  it('produces a level-2 heading node even when it is not the second heading in a document', () => {
+    const text =
+      `
+Hello, world!
+=============
+
+Goodbye, world!
+=============
+
+Goodbye again, world!
+=-=-=-=-=-=-=-=`
+
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
+        new HeadingNode([new PlainTextNode('Goodbye again, world!')], 2)
+      ]))
+  })
 })
