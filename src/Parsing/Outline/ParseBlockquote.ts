@@ -25,11 +25,13 @@ export function parseBlockquote(text: string, parseArgs: ParseContext, onParse: 
   if (!blockquoteLines.length) {
     return false
   }
-  
+
   const blockquoteContent = blockquoteLines.join('\n')
 
-    onParse(
-      [new BlockquoteNode(getOutlineNodes(blockquoteContent))],
-      consumer.lengthConsumed(),
-      parseArgs.parentNode)
+  onParse(
+    [new BlockquoteNode(getOutlineNodes(blockquoteContent))],
+    consumer.lengthConsumed(),
+    parseArgs.parentNode)
+
+  return true
 }
