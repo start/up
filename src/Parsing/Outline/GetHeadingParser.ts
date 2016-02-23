@@ -68,7 +68,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): Parser {
     parseInline(content, { parentNode: new HeadingNode(parseArgs.parentNode, headingLevel) },
       (inlineNodes, countCharsParsed, headingNode) => {
         headingNode.addChildren(inlineNodes)
-        onParse([headingNode], consumer.countCharsConsumed(), parseArgs.parentNode)
+        onParse([headingNode], consumer.lengthConsumed(), parseArgs.parentNode)
       })
 
     return true

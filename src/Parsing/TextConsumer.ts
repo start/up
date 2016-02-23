@@ -76,7 +76,7 @@ export class TextConsumer {
       return false
     }
 
-    this.skip(consumer.countCharsConsumed())
+    this.skip(consumer.lengthConsumed())
 
     if (args.then) {
       args.then(line)
@@ -97,7 +97,7 @@ export class TextConsumer {
 
     while (!consumer.done()) {
       if (consumer.consumeIfMatches(args.needle)) {
-        this.skip(consumer.countCharsConsumed())
+        this.skip(consumer.lengthConsumed())
 
         if (args.then) {
           const consumedText = consumer.consumedText()
@@ -126,7 +126,7 @@ export class TextConsumer {
     this.index += count
   }
 
-  countCharsConsumed(): number {
+  lengthConsumed(): number {
     return this.index
   }
 

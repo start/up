@@ -18,7 +18,7 @@ export function parseParagraph(text: string, parseArgs: ParseContext, onParse: O
       parseInline(line, { parentNode: new ParagraphNode(parseArgs.parentNode) },
         (inlineNodes, countCharsAdvanced, paragraphNode) => {
           paragraphNode.addChildren(inlineNodes)
-          onParse([paragraphNode], consumer.countCharsConsumed(), parseArgs.parentNode)
+          onParse([paragraphNode], consumer.lengthConsumed(), parseArgs.parentNode)
         })
   })
 }

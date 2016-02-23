@@ -70,9 +70,9 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
     for (let parser of outlineParsers) {
       const parsedSuccessfully =
         parser(remainingText, {},
-          (resultNodes, countCharsParsed) => {
+          (resultNodes, lengthParsed) => {
             nodes.push(...resultNodes)
-            consumer.skip(countCharsParsed)
+            consumer.skip(lengthParsed)
           })
 
       if (parsedSuccessfully) {

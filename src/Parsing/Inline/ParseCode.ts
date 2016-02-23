@@ -15,7 +15,7 @@ export function parseCode(text: string, parseArgs: ParseContext, onParse: OnPars
       then: (code) =>
         onParse(
           [new InlineCodeNode(applyBackslashEscaping(code))],
-          consumer.countCharsConsumed(),
+          consumer.lengthConsumed(),
           parseArgs.parentNode)
     }))
 }

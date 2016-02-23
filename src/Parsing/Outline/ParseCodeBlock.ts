@@ -25,7 +25,7 @@ export function parseCodeBlock(text: string, parseArgs: ParseContext, onParse: O
     if (consumer.consumeLineIfMatches({ pattern: CODE_FENCE_PATTERN })) {
       onParse(
         [new CodeBlockNode(codeLines.join('\n'))],
-        consumer.countCharsConsumed(),
+        consumer.lengthConsumed(),
         parseArgs.parentNode)
 
       return true

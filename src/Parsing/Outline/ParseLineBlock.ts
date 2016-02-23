@@ -38,6 +38,6 @@ export function parseLineBlock(text: string, parseArgs: ParseContext, onParse: O
       })
   }
 
-  onParse([lineBlockNode], consumer.countCharsConsumed(), parseArgs.parentNode)
+  onParse([lineBlockNode], consumer.lengthConsumed(), parseArgs.parentNode)
   return true
 }

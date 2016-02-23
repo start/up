@@ -30,6 +30,6 @@ export function parseBlockquote(text: string, parseArgs: ParseContext, onParse: 
 
     onParse(
       [new BlockquoteNode(getOutlineNodes(blockquoteContent))],
-      consumer.countCharsConsumed(),
+      consumer.lengthConsumed(),
       parseArgs.parentNode)
 }

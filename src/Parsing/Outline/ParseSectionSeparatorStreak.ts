@@ -15,6 +15,6 @@ export function parseSectionSeparatorStreak(text: string, parseArgs: ParseContex
     return false
   }
 
-  onParse([new SectionSeparatorNode()], consumer.countCharsConsumed(), parseArgs.parentNode)
+  onParse([new SectionSeparatorNode()], consumer.lengthConsumed(), parseArgs.parentNode)
   return true
 }

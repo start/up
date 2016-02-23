@@ -31,7 +31,7 @@ export function parseLink(text: string, parseArgs: ParseContext, onParse: OnPars
       needle: ']',
       then: (url) => {
         linkNode.url = applyBackslashEscaping(url)
-        onParse([linkNode], consumer.countCharsConsumed(), parseArgs.parentNode)
+        onParse([linkNode], consumer.lengthConsumed(), parseArgs.parentNode)
       }
     })
   )

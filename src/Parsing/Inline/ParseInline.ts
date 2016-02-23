@@ -37,16 +37,16 @@ export function parseInline(text: string, parseArgs: ParseContext, onParse: OnPa
 
     for (let parser of conventionParsers) {
       if (parser(consumer.remainingText(), parseArgs,
-        (resultNodes, countCharsParsed) => {
+        (resultNodes, lengthParsed) => {
           nodes.push(...resultNodes)
-          consumer.skip(countCharsParsed)
+          consumer.skip(lengthParsed)
         })) {
         continue main_parser_loop
       }
     }
 
     if (parseArgs.inlineTerminator && consumer.consumeIfMatches(parseArgs.inlineTerminator)) {
-      onParse(nodes, consumer.countCharsConsumed(), parseArgs.parentNode)
+      onParse(nodes, consumer.lengthConsumed(), parseArgs.parentNode)
       return true
     }
 
@@ -66,6 +66,6 @@ export function parseInline(text: string, parseArgs: ParseContext, onParse: OnPa
     return false
   }
 
-  onParse(nodes, consumer.countCharsConsumed(), parseArgs.parentNode)
+  onParse(nodes, consumer.lengthConsumed(), parseArgs.parentNode)
   return true
 }
