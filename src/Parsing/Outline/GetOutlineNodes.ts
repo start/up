@@ -24,7 +24,7 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '\n')
 )
 
-export function parseOutline(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
+export function getOutlineNodes(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
 
   // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
   // last non-blank line, but that won't affect parsing.

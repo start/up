@@ -1,10 +1,10 @@
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
-import { parseOutline } from './Parsing/Outline/ParseOutline'
+import { getOutlineNodes } from './Parsing/Outline/GetOutlineNodes'
 
 export function ast(text: string): DocumentNode {
   const documentNode = new DocumentNode()
   
-  parseOutline(text, { parentNode: documentNode }, (nodes) => {
+  getOutlineNodes(text, { parentNode: documentNode }, (nodes) => {
     documentNode.addChildren(nodes)
   })
   

@@ -3,7 +3,7 @@ import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
 import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
-import { parseOutline } from './ParseOutline'
+import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
 import { ParseContext, OnParse } from '../Parser'
 import { last } from '../CollectionHelpers'
@@ -88,7 +88,7 @@ export function parseBulletedList(text: string, parseArgs: ParseContext, onParse
 
   // Parse each list item like its own mini-document
   for (var listItem of listItems) {
-    parseOutline(listItem, { parentNode: new BulletedListItemNode(listNode) },
+    getOutlineNodes(listItem, { parentNode: new BulletedListItemNode(listNode) },
       (outlineNodes, countCharsAdvanced, listItemNode) => {
         listItemNode.addChildren(outlineNodes)
         listNode.addChild(listItemNode)
