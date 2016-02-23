@@ -2,7 +2,7 @@ import { TextConsumer } from '../TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 import { either, NON_BLANK, STREAK } from './Patterns'
-import { parseInlineConventions } from '../Inline/ParseInlineConventions'
+import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
 const NON_BLANK_PATTERN = new RegExp(
@@ -65,12 +65,10 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 
     const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
 
-    parseInlineConventions(content, { parentNode: new HeadingNode(null, headingLevel) },
-      (inlineNodes, countCharsParsed, headingNode) => {
-        headingNode.addChildren(inlineNodes)
-        args.then([headingNode], consumer.lengthConsumed())
-      })
-
+    args.then(
+      [new HeadingNode(getInlineNodes(content), headingLevel)],
+      consumer.lengthConsumed())
+    
     return true
   }
 }
