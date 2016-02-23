@@ -3,17 +3,18 @@ import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParseContext, OnParse } from '../Parser'
+import { InlineParserArgs, InlineParser } from './InlineParser'
 
-// TODO: Handle parent node's inline terminator?
-
-export function parseLink(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {  
-  const consumer = new TextConsumer(text)
-  const linkNode = new LinkNode(parseArgs.parentNode)
+export function parseLink(args: InlineParserArgs): boolean {  
+  const consumer = new TextConsumer(args.text)
+  const linkNode = new LinkNode(args.parentNode)
   
-  // Links be nested within other links
+  // Links cannot be nested within other links
   if (linkNode.ancestors().some(ancestor => ancestor instanceof LinkNode)) {
     return false
   }
+  
+  // TODO: Handle  terminator?
 
   return (
     // Parse the opening bracket
@@ -31,7 +32,7 @@ export function parseLink(text: string, parseArgs: ParseContext, onParse: OnPars
       needle: ']',
       then: (url) => {
         linkNode.url = applyBackslashEscaping(url)
-        onParse([linkNode], consumer.lengthConsumed(), parseArgs.parentNode)
+        args.then([linkNode], consumer.lengthConsumed())
       }
     })
   )

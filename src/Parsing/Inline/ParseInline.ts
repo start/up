@@ -11,14 +11,14 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
-import { parseCode } from './parseCode'
+import { parseInlineCode } from './ParseInlineCode'
 import { getSandwichParser } from './GetSandwichParser'
 import { parseLink } from './ParseLink'
 import { last } from '../CollectionHelpers'
 
 
-const conventionParsers = [
-  parseCode,
+const inlineParsers = [
+  parseInlineCode,
   parseLink,
   getSandwichParser(StressNode, '**', '**'),
   getSandwichParser(EmphasisNode, '*', '*'),
@@ -35,12 +35,20 @@ export function parseInline(text: string, parseArgs: ParseContext, onParse: OnPa
   main_parser_loop:
   while (!consumer.done()) {
 
-    for (let parser of conventionParsers) {
-      if (parser(consumer.remainingText(), parseArgs,
-        (resultNodes, lengthParsed) => {
-          nodes.push(...resultNodes)
-          consumer.skip(lengthParsed)
-        })) {
+    for (let parse of inlineParsers) {
+
+      const didConventionParseSuccessfully =
+        parse({
+          text: consumer.remainingText(),
+          parentNode: parseArgs.parentNode,
+          terminator: parseArgs.inlineTerminator,
+          then: (resultNodes, lengthParsed) => {
+            nodes.push(...resultNodes)
+            consumer.skip(lengthParsed)
+          }
+        })
+
+      if (didConventionParseSuccessfully) {
         continue main_parser_loop
       }
     }
@@ -52,13 +60,13 @@ export function parseInline(text: string, parseArgs: ParseContext, onParse: OnPa
 
     const lastNode = last(nodes)
     const currentChar = consumer.escapedCurrentChar()
-    
+
     if (lastNode instanceof PlainTextNode) {
-      lastNode.text += currentChar  
+      lastNode.text += currentChar
     } else {
       nodes.push(new PlainTextNode(currentChar))
     }
-    
+
     consumer.moveNext()
   }
 

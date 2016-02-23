@@ -1,11 +1,11 @@
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 
-export interface OutlineParser {
-  (args: OutlineParserArgs): boolean
+export interface InlineParser {
+  (args: InlineParserArgs): boolean
 }
 
-export interface OutlineParserArgs {
+export interface InlineParserArgs {
   text: string,
   parentNode?: RichSyntaxNode,
   terminator?: string
