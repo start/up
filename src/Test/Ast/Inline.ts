@@ -425,6 +425,17 @@ describe('Bracketed text pointing to a URL', () => {
         new PlainTextNode('!!')
       ]))
   })
+
+  it('can be inside bracketed text', () => {
+    expect(Up.ast("[I use [Google -> https://google.com]]")).to.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('[I use '),
+        new LinkNode([
+          new PlainTextNode('Google')
+        ], 'https://google.com'),
+        new PlainTextNode(']')
+      ]))
+  })
 })
 
 
