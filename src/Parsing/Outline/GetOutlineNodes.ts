@@ -34,18 +34,9 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
 // The getOutlineNodes satisfies neither criteria: It will always successfully parses the entire string.
 // It's simpler simply to return the result nodes.
 //
-// Furthermore, the parent node never matters when parsing any outline node, so getOutlineNodes doesn't
-// even need to accept a parent node parameter.
+// Furthermore, getOutlineNodes doesn't accept a parentNode parameter, because the parent node never
+// matters when parsing any outline nodes.
 export function getOutlineNodes(text: string): SyntaxNode[] {
-
-  // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
-  // last non-blank line, but that won't affect parsing.
-  const trimmedText = text
-    .replace(LEADING_BLANK_LINES_PATTERN, '')
-    .replace(TRAILING_WHITESPACE_PATTERN, '')
-
-  const consumer = new TextConsumer(trimmedText)
-  const nodes: SyntaxNode[] = []
   
   // Within each call to parseOutline, we reset the underlines associated with each heading level. 
   // This means blockquotes and list items are their own mini-documents with their own heading
@@ -62,6 +53,15 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
     parseLineBlock,
     parseParagraph
   ]
+
+  // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
+  // last non-blank line, but that won't affect parsing.
+  const trimmedText = text
+    .replace(LEADING_BLANK_LINES_PATTERN, '')
+    .replace(TRAILING_WHITESPACE_PATTERN, '')
+    
+  const consumer = new TextConsumer(trimmedText)
+  const nodes: SyntaxNode[] = []
 
   main_parser_loop:
   while (!consumer.done()) {
