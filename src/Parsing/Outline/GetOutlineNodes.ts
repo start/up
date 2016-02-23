@@ -41,7 +41,7 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
   // Within each call to parseOutline, we reset the underlines associated with each heading level. 
   // This means blockquotes and list items are their own mini-documents with their own heading
   // outline structures. This behavior is subject to change.
-  const headingParser =  getHeadingParser(new HeadingLeveler())
+  const headingParser = getHeadingParser(new HeadingLeveler())
 
   const outlineParsers = [
     parseBlankLineSeparation,
@@ -59,28 +59,20 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
   const trimmedText = text
     .replace(LEADING_BLANK_LINES_PATTERN, '')
     .replace(TRAILING_WHITESPACE_PATTERN, '')
-    
+
   const consumer = new TextConsumer(trimmedText)
   const nodes: SyntaxNode[] = []
 
-  main_parser_loop:
   while (!consumer.done()) {
-    const remainingText = consumer.remainingText()
-
-    for (let parser of outlineParsers) {
-      const parsedSuccessfully =
-        parser(remainingText, {},
-          (resultNodes, lengthParsed) => {
-            nodes.push(...resultNodes)
-            consumer.skip(lengthParsed)
-          })
-
-      if (parsedSuccessfully) {
-        continue main_parser_loop
+    for (let parse of outlineParsers) {
+      if (parse(consumer.remainingText(), {},
+        (resultNodes, lengthParsed) => {
+          nodes.push(...resultNodes)
+          consumer.skip(lengthParsed)
+        })) {
+        break
       }
     }
-
-    throw new Error(`Unrecognized outline convention. Remaining text: ${remainingText}`)
   }
 
   return withoutExtraConsecutiveSeparatorNodes(nodes)
