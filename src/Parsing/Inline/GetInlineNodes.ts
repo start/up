@@ -4,8 +4,10 @@ import { parseInlineConventions } from './ParseInlineConventions'
 export function getInlineNodes(text: string): SyntaxNode[] {
   let resultNodes: SyntaxNode[] = []
 
-  parseInlineConventions(text, {},
-    (inlineNodes) => resultNodes = inlineNodes)
+  parseInlineConventions({
+    text: text,
+    then: (inlineNodes) => resultNodes = inlineNodes
+  })
 
   return resultNodes
 }

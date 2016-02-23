@@ -2,10 +2,9 @@ import { parseInlineConventions } from './ParseInlineConventions'
 import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ParseContext, OnParse } from '../Parser'
 import { InlineParserArgs, InlineParser } from './InlineParser'
 
-export function parseLink(args: InlineParserArgs): boolean {  
+export function parseLink(args: InlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
   const linkNode = new LinkNode(args.parentNode)
   
@@ -21,12 +20,16 @@ export function parseLink(args: InlineParserArgs): boolean {
     consumer.consumeIfMatches('[')
     
     // Parse the link's content and the URL arrow
-    && parseInlineConventions(consumer.remainingText(), { parentNode: linkNode, inlineTerminator: ' -> ' },
-      (nodes, countChars) => {
-        consumer.skip(countChars)
-        linkNode.addChildren(nodes)
-      })
-    
+    && parseInlineConventions({
+      text: consumer.remainingText(),
+      parentNode: linkNode,
+      terminator: ' -> ',
+      then: (resultNodes, lengthParsed) => {
+        consumer.skip(lengthParsed)
+        linkNode.addChildren(resultNodes)
+      }
+    })
+      
     // Parse the URL and the closing bracket
     && consumer.consumeUpTo({
       needle: ']',

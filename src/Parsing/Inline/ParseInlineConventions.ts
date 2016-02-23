@@ -1,5 +1,4 @@
 import { TextConsumer } from '../TextConsumer'
-import { ParseContext, Parser, OnParse } from '../Parser'
 import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
@@ -15,6 +14,7 @@ import { parseInlineCode } from './ParseInlineCode'
 import { getSandwichParser } from './GetSandwichParser'
 import { parseLink } from './ParseLink'
 import { last } from '../CollectionHelpers'
+import { InlineParserArgs, InlineParser } from './InlineParser'
 
 
 const inlineParsers = [
@@ -28,7 +28,9 @@ const inlineParsers = [
   getSandwichParser(InlineAsideNode, '((', '))')
 ]
 
-export function parseInlineConventions(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
+export function parseInlineConventions(args: InlineParserArgs): boolean {
+  const { text, terminator, parentNode, then } = args
+    
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
 
@@ -40,8 +42,8 @@ export function parseInlineConventions(text: string, parseArgs: ParseContext, on
       const didConventionParseSuccessfully =
         parse({
           text: consumer.remainingText(),
-          parentNode: parseArgs.parentNode,
-          terminator: parseArgs.inlineTerminator,
+          parentNode: parentNode,
+          terminator: terminator,
           then: (resultNodes, lengthParsed) => {
             nodes.push(...resultNodes)
             consumer.skip(lengthParsed)
@@ -53,8 +55,8 @@ export function parseInlineConventions(text: string, parseArgs: ParseContext, on
       }
     }
 
-    if (parseArgs.inlineTerminator && consumer.consumeIfMatches(parseArgs.inlineTerminator)) {
-      onParse(nodes, consumer.lengthConsumed(), parseArgs.parentNode)
+    if (terminator && consumer.consumeIfMatches(terminator)) {
+      then(nodes, consumer.lengthConsumed())
       return true
     }
 
@@ -70,10 +72,10 @@ export function parseInlineConventions(text: string, parseArgs: ParseContext, on
     consumer.moveNext()
   }
 
-  if (parseArgs.inlineTerminator) {
+  if (terminator) {
     return false
   }
 
-  onParse(nodes, consumer.lengthConsumed(), parseArgs.parentNode)
+  then(nodes, consumer.lengthConsumed())
   return true
 }

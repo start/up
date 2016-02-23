@@ -3,7 +3,6 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from './Patterns'
-import { ParseContext, OnParse } from '../Parser'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(

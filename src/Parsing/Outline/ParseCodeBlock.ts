@@ -3,7 +3,6 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { streakOf } from './Patterns'
-import { ParseContext, OnParse } from '../Parser'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
 const CODE_FENCE_PATTERN = new RegExp(

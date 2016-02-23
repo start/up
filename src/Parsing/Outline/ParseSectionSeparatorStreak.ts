@@ -1,6 +1,5 @@
 import { TextConsumer } from '../TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { ParseContext, OnParse } from '../Parser'
 import { STREAK, either, BLANK } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 

@@ -4,7 +4,6 @@ import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
-import { ParseContext, OnParse } from '../Parser'
 import { last } from '../CollectionHelpers'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
