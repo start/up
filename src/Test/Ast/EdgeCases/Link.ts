@@ -32,3 +32,38 @@ describe('Bracketed text followed  by " -> " followed by a closing bracket', () 
       ]))
   })
 })
+
+describe('A link', () => {
+  it('starts with the final opening left bracket if there are more than one', () => {
+    expect(Up.ast('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Go to [this '),
+        new LinkNode([
+          new PlainTextNode('site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('!!')
+      ]))
+  })
+
+  it('can follow bracketed text', () => {
+    expect(Up.ast("I [usually] use [Google -> https://google.com]!!")).to.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I [usually] use '),
+        new LinkNode([
+          new PlainTextNode('Google')
+        ], 'https://google.com'),
+        new PlainTextNode('!!')
+      ]))
+  })
+
+  it('can be inside bracketed text', () => {
+    expect(Up.ast("[I use [Google -> https://google.com]]")).to.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('[I use '),
+        new LinkNode([
+          new PlainTextNode('Google')
+        ], 'https://google.com'),
+        new PlainTextNode(']')
+      ]))
+  })
+})

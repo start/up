@@ -403,39 +403,6 @@ describe('Bracketed text pointing to a URL', () => {
         new PlainTextNode('. I bet you do, too.')
       ]))
   })
-
-  it('starts with the final opening left bracket', () => {
-    expect(Up.ast('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Go to [this '),
-        new LinkNode([
-          new PlainTextNode('site')
-        ], 'https://stackoverflow.com'),
-        new PlainTextNode('!!')
-      ]))
-  })
-
-  it('can follow bracketed text', () => {
-    expect(Up.ast("I [usually] use [Google -> https://google.com]!!")).to.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I [usually] use '),
-        new LinkNode([
-          new PlainTextNode('Google')
-        ], 'https://google.com'),
-        new PlainTextNode('!!')
-      ]))
-  })
-
-  it('can be inside bracketed text', () => {
-    expect(Up.ast("[I use [Google -> https://google.com]]")).to.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('[I use '),
-        new LinkNode([
-          new PlainTextNode('Google')
-        ], 'https://google.com'),
-        new PlainTextNode(']')
-      ]))
-  })
 })
 
 
