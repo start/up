@@ -35,7 +35,7 @@ const STREAK_PATTERN = new RegExp(
 export function parseBulletedList(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
-  const listItems: string[] = []
+  const listItemsContents: string[] = []
   let listItemLines: string[]
 
   while (!consumer.done()) {
@@ -77,22 +77,20 @@ export function parseBulletedList(text: string, parseArgs: ParseContext, onParse
 
     // This loses the final newline, but trailing blank lines are always ignored when parsing for
     // outline conventions, which is exactly what we're going to do next. 
-    listItems.push(listItemLines.join('\n'))
+    listItemsContents.push(listItemLines.join('\n'))
   }
 
-  if (!listItems.length) {
+  if (!listItemsContents.length) {
     return false
   }
 
   const listNode = new BulletedListNode(parseArgs.parentNode)
 
   // Parse each list item like its own mini-document
-  for (var listItem of listItems) {
-    getOutlineNodes(listItem, { parentNode: new BulletedListItemNode(listNode) },
-      (outlineNodes, countCharsAdvanced, listItemNode) => {
-        listItemNode.addChildren(outlineNodes)
-        listNode.addChild(listItemNode)
-      })
+  for (var listItemContents of listItemsContents) {
+    listNode.addChild(
+      new BulletedListItemNode(getOutlineNodes(listItemContents))
+    )
   }
 
   onParse([listNode], consumer.countCharsConsumed(), parseArgs.parentNode)

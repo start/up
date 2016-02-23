@@ -28,10 +28,8 @@ export function parseBlockquote(text: string, parseArgs: ParseContext, onParse: 
   
   const blockquoteContent = blockquoteLines.join('\n')
 
-  // Parse the contents of the blockquote as though it's a mini-document. Because it is!
-  return getOutlineNodes(blockquoteContent, { parentNode: new BlockquoteNode(parseArgs.parentNode) },
-    (contentNodes, countCharsParsed, blockquoteNode) => {
-      blockquoteNode.addChildren(contentNodes)
-      onParse([blockquoteNode], consumer.countCharsConsumed(), parseArgs.parentNode)
-    })
+    onParse(
+      [new BlockquoteNode(getOutlineNodes(blockquoteContent))],
+      consumer.countCharsConsumed(),
+      parseArgs.parentNode)
 }

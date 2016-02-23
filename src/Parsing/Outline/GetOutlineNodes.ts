@@ -24,7 +24,19 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '\n')
 )
 
-export function getOutlineNodes(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
+// Why doesn't the getOutlineNodes function accept a callback like all the other parsers?
+//
+// Well, that callback is helpful when:
+//
+// 1. The parser might fail
+// 2. The parser might consume an unknown number of characters 
+//
+// The getOutlineNodes satisfies neither criteria: It will always successfully parses the entire string.
+// It's simpler simply to return the result nodes.
+//
+// Furthermore, the parent node never matters when parsing any outline node, so getOutlineNodes doesn't
+// even need to accept a parent node parameter.
+export function getOutlineNodes(text: string): SyntaxNode[] {
 
   // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
   // last non-blank line, but that won't affect parsing.
@@ -32,10 +44,8 @@ export function getOutlineNodes(text: string, parseArgs: ParseContext, onParse: 
     .replace(LEADING_BLANK_LINES_PATTERN, '')
     .replace(TRAILING_WHITESPACE_PATTERN, '')
 
-  const countCharsTrimmed = text.length - trimmedText.length
-
-  const nodes: SyntaxNode[] = []
   const consumer = new TextConsumer(trimmedText)
+  const nodes: SyntaxNode[] = []
   
   // Within each call to parseOutline, we reset the underlines associated with each heading level. 
   // This means blockquotes and list items are their own mini-documents with their own heading
@@ -59,7 +69,7 @@ export function getOutlineNodes(text: string, parseArgs: ParseContext, onParse: 
 
     for (let parser of outlineParsers) {
       const parsedSuccessfully =
-        parser(remainingText, parseArgs,
+        parser(remainingText, {},
           (resultNodes, countCharsParsed) => {
             nodes.push(...resultNodes)
             consumer.skip(countCharsParsed)
@@ -73,13 +83,7 @@ export function getOutlineNodes(text: string, parseArgs: ParseContext, onParse: 
     throw new Error(`Unrecognized outline convention. Remaining text: ${remainingText}`)
   }
 
-
-  onParse(
-    withoutExtraConsecutiveSeparatorNodes(nodes),
-    countCharsTrimmed + consumer.countCharsConsumed(),
-    parseArgs.parentNode)
-
-  return true
+  return nodes
 }
 
 function withoutExtraConsecutiveSeparatorNodes(nodes: SyntaxNode[]): SyntaxNode[] {
