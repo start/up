@@ -6,14 +6,14 @@ import { ParseContext, OnParse } from '../Parser'
 
 // TODO: Handle parent node's inline terminator?
 
-export function parseLink(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
-  // Links cannot be nested within other links
-  if (parseArgs.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
-    return false
-  }
-  
+export function parseLink(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {  
   const consumer = new TextConsumer(text)
   const linkNode = new LinkNode(parseArgs.parentNode)
+  
+  // Links be nested within other links
+  if (linkNode.ancestors().some(ancestor => ancestor instanceof LinkNode)) {
+    return false
+  }
 
   return (
     // Parse the opening bracket

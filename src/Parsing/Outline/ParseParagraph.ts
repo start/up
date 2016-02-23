@@ -2,6 +2,7 @@ import { TextConsumer } from '../TextConsumer'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { ParseContext, OnParse } from '../Parser'
 import { parseInline } from '../Inline/ParseInline'
+import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
@@ -16,10 +17,6 @@ export function parseParagraph(args: OutlineParserArgs): boolean {
   return consumer.consumeLineIfMatches({
     pattern: NON_BLANK_PATTERN,
     then: (line) =>
-      parseInline(line, { parentNode: new ParagraphNode() },
-        (inlineNodes, countCharsAdvanced, paragraphNode) => {
-          paragraphNode.addChildren(inlineNodes)
-          args.then([paragraphNode], consumer.lengthConsumed())
-        })
+      args.then([new ParagraphNode(getInlineNodes(line))], consumer.lengthConsumed())
   })
 }
