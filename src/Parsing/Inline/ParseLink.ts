@@ -2,11 +2,11 @@ import { parseInline } from './ParseInline'
 import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ParseContextArgs, OnParse } from '../Parser'
+import { ParseContext, OnParse } from '../Parser'
 
 // TODO: Handle parent node's inline terminator?
 
-export function parseLink(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
+export function parseLink(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   // Links cannot be nested within other links
   if (parseArgs.parentNode.orAnyAncestor(ancestor => ancestor instanceof LinkNode)) {
     return false

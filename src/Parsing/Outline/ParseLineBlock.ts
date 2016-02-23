@@ -3,7 +3,7 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { NON_BLANK, STREAK } from './Patterns'
-import { ParseContextArgs, OnParse } from '../Parser'
+import { ParseContext, OnParse } from '../Parser'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
   NON_BLANK
@@ -14,7 +14,7 @@ const STREAK_PATTERN = new RegExp(
 )
 
 // 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs!
-export function parseLineBlock(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
+export function parseLineBlock(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
   const nonBlankLines: string[] = []
   

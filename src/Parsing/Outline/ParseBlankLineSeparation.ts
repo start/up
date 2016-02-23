@@ -1,7 +1,7 @@
 import { TextConsumer } from '../TextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK } from './Patterns'
-import { ParseContextArgs, OnParse } from '../Parser'
+import { ParseContext, OnParse } from '../Parser'
 
 const BLANK_PATTERN = new RegExp(
   BLANK
@@ -12,7 +12,7 @@ const BLANK_PATTERN = new RegExp(
 //
 // However, 3 or more consecutive blank lines indicates meaningful, deliberate separation between sections.
 // We represent that separation with a SectionSeparatorNode.
-export function parseBlankLineSeparation(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
+export function parseBlankLineSeparation(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
 

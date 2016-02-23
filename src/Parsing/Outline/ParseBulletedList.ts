@@ -5,7 +5,7 @@ import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { parseOutline } from './ParseOutline'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
-import { ParseContextArgs, OnParse } from '../Parser'
+import { ParseContext, OnParse } from '../Parser'
 import { last } from '../CollectionHelpers'
 
 const BULLET_PATTERN = new RegExp(
@@ -32,7 +32,7 @@ const STREAK_PATTERN = new RegExp(
 // with multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines.
-export function parseBulletedList(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
+export function parseBulletedList(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
   const listItems: string[] = []

@@ -1,6 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { ParseContextArgs, OnParse, Parser } from '../Parser'
+import { ParseContext, OnParse, Parser } from '../Parser'
 import { either, NON_BLANK, STREAK } from './Patterns'
 import { parseInline } from '../Inline/ParseInline'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
@@ -16,7 +16,7 @@ const STREAK_PATTERN = new RegExp(
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
 export function getHeadingParser(headingLeveler: HeadingLeveler): Parser {
   
-  return function parseHeading(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
+  return function parseHeading(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
     const consumer = new TextConsumer(text)
 
     // First, let's parse the optional overline.

@@ -1,11 +1,11 @@
 import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { ParseContextArgs, OnParse } from '../Parser'
+import { ParseContext, OnParse } from '../Parser'
 
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
-export function parseCode(text: string, parseArgs: ParseContextArgs, onParse: OnParse) {
+export function parseCode(text: string, parseArgs: ParseContext, onParse: OnParse) {
   const consumer = new TextConsumer(text)
 
   return (

@@ -1,6 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { ParseContextArgs, OnParse } from '../Parser'
+import { ParseContext, OnParse } from '../Parser'
 import { parseInline } from '../Inline/ParseInline'
 import { NON_BLANK } from './Patterns'
 
@@ -9,7 +9,7 @@ const NON_BLANK_PATTERN = new RegExp(
 )
 
 // A paragraph is a non-blank line that doesn't satisfy any other outline convention.
-export function parseParagraph(text: string, parseArgs: ParseContextArgs, onParse: OnParse): boolean {
+export function parseParagraph(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   const consumer = new TextConsumer(text)
 
   return consumer.consumeLineIfMatches({
