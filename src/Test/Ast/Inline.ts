@@ -393,17 +393,6 @@ describe('Bracketed text pointing to a URL', () => {
       ]))
   })
 
-  it('does not try to match brackets in the link text with brackets in the URL', () => {
-    expect(Up.ast('I like [you [: -> https://stackoverflow.com]!!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('you [:')
-        ], 'https://stackoverflow.com'),
-        new PlainTextNode('!!')
-      ]))
-  })
-
   it('can have an escaped, unmatched closing bracket in the URL', () => {
     expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -412,6 +401,17 @@ describe('Bracketed text pointing to a URL', () => {
           new PlainTextNode('this site')
         ], 'https://google.com/?fake=]query'),
         new PlainTextNode('. I bet you do, too.')
+      ]))
+  })
+
+  it('starts with the final opening left bracket', () => {
+    expect(Up.ast('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Go to [this '),
+        new LinkNode([
+          new PlainTextNode('site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('!!')
       ]))
   })
 })
