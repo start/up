@@ -1,7 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { ParseContext, OnParse } from '../Parser'
-import { parseInline } from '../Inline/ParseInline'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'

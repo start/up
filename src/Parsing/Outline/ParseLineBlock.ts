@@ -1,7 +1,7 @@
 import { TextConsumer } from '../TextConsumer'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
-import { parseInline } from '../Inline/ParseInline'
+import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from './Patterns'
 import { ParseContext, OnParse } from '../Parser'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
@@ -29,15 +29,9 @@ export function parseLineBlock(args: OutlineParserArgs): boolean {
     return false
   }
 
-  let lineBlockNode = new LineBlockNode()
-
-  for (let line of nonBlankLines) {
-    parseInline(line, { parentNode: new LineNode(lineBlockNode) },
-      (inlineNodes, countCharsAdvanced, lineNode) => {
-        lineNode.addChildren(inlineNodes)
-        lineBlockNode.addChild(lineNode)
-      })
-  }
+  let lineBlockNode = new LineBlockNode(
+    nonBlankLines.map((line) => new LineNode(getInlineNodes(line)))
+  )
 
   args.then([lineBlockNode], consumer.lengthConsumed())
   return true
