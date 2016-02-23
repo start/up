@@ -4,7 +4,7 @@ import { LineNode } from '../../SyntaxNodes/LineNode'
 import { parseInline } from '../Inline/ParseInline'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { startsWith, optional, INLINE_WHITESPACE_CHAR } from './Patterns'
-import { ParseContext, OnParse } from '../Parser'
+import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
 const QUOTE_DELIMITER_PATTERN = new RegExp(
   startsWith('>' + optional(INLINE_WHITESPACE_CHAR))
@@ -12,8 +12,8 @@ const QUOTE_DELIMITER_PATTERN = new RegExp(
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,
 // even other blockquotes! They're like mini-documents.
-export function parseBlockquote(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
-  const consumer = new TextConsumer(text)
+export function parseBlockquote(args: OutlineParserArgs): boolean {
+  const consumer = new TextConsumer(args.text)
   const blockquoteLines: string[] = []
 
   // Collect all consecutive blockquoted lines
@@ -28,10 +28,6 @@ export function parseBlockquote(text: string, parseArgs: ParseContext, onParse: 
 
   const blockquoteContent = blockquoteLines.join('\n')
 
-  onParse(
-    [new BlockquoteNode(getOutlineNodes(blockquoteContent))],
-    consumer.lengthConsumed(),
-    parseArgs.parentNode)
-
+  args.then([new BlockquoteNode(getOutlineNodes(blockquoteContent))], consumer.lengthConsumed())
   return true
 }

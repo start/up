@@ -64,12 +64,17 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
   const nodes: SyntaxNode[] = []
 
   while (!consumer.done()) {
-    for (let parse of outlineParsers) {
-      if (parse(consumer.remainingText(), {},
-        (resultNodes, lengthParsed) => {
+    for (let parseOutlineConvention of outlineParsers) {
+
+      const didConventionParseSuccessfully = parseOutlineConvention({
+        text: consumer.remainingText(),
+        then: (resultNodes, lengthParsed) => {
           nodes.push(...resultNodes)
           consumer.skip(lengthParsed)
-        })) {
+        }
+      })
+
+      if (didConventionParseSuccessfully) {
         break
       }
     }

@@ -1,9 +1,10 @@
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
 export interface OutlineParser {
-  (args: OutlineParseArgs): boolean
+  (args: OutlineParserArgs): boolean
 }
 
-export interface OutlineParseArgs {
-  then: (resultNodes: SyntaxNode[]) => void
+export interface OutlineParserArgs {
+  text: string,
+  then: (resultNodes: SyntaxNode[], lengthParsed: number) => void
 }

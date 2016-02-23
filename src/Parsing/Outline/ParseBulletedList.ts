@@ -7,6 +7,7 @@ import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
 import { ParseContext, OnParse } from '../Parser'
 import { last } from '../CollectionHelpers'
+import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
 const BULLET_PATTERN = new RegExp(
   startsWith(
@@ -32,8 +33,8 @@ const STREAK_PATTERN = new RegExp(
 // with multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines.
-export function parseBulletedList(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
-  const consumer = new TextConsumer(text)
+export function parseBulletedList(args: OutlineParserArgs): boolean {
+  const consumer = new TextConsumer(args.text)
 
   const listItemsContents: string[] = []
   let listItemLines: string[]
@@ -84,7 +85,7 @@ export function parseBulletedList(text: string, parseArgs: ParseContext, onParse
     return false
   }
 
-  const listNode = new BulletedListNode(parseArgs.parentNode)
+  const listNode = new BulletedListNode()
 
   // Parse each list item like its own mini-document
   for (var listItemContents of listItemsContents) {
@@ -93,6 +94,6 @@ export function parseBulletedList(text: string, parseArgs: ParseContext, onParse
     )
   }
 
-  onParse([listNode], consumer.lengthConsumed(), parseArgs.parentNode)
+  args.then([listNode], consumer.lengthConsumed())
   return true
 }
