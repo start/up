@@ -2,7 +2,7 @@ import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { ParseContext, Parser } from '../Parser'
 import { TextConsumer } from '../TextConsumer'
-import { parseInline } from './ParseInline'
+import { parseInlineConventions } from './ParseInlineConventions'
 import { InlineParserArgs, InlineParser } from './InlineParser'
 
 
@@ -27,7 +27,7 @@ export function getSandwichParser(
 
     return (
       consumer.consumeIfMatches(startingBun)
-      && parseInline(
+      && parseInlineConventions(
         consumer.remainingText(),
         {
           parentNode: new NodeType(parentNode),

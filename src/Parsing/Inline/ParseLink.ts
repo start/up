@@ -1,4 +1,4 @@
-import { parseInline } from './ParseInline'
+import { parseInlineConventions } from './ParseInlineConventions'
 import { TextConsumer } from '../TextConsumer'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
@@ -21,7 +21,7 @@ export function parseLink(args: InlineParserArgs): boolean {
     consumer.consumeIfMatches('[')
     
     // Parse the link's content and the URL arrow
-    && parseInline(consumer.remainingText(), { parentNode: linkNode, inlineTerminator: ' -> ' },
+    && parseInlineConventions(consumer.remainingText(), { parentNode: linkNode, inlineTerminator: ' -> ' },
       (nodes, countChars) => {
         consumer.skip(countChars)
         linkNode.addChildren(nodes)

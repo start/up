@@ -28,7 +28,7 @@ const inlineParsers = [
   getSandwichParser(InlineAsideNode, '((', '))')
 ]
 
-export function parseInline(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
+export function parseInlineConventions(text: string, parseArgs: ParseContext, onParse: OnParse): boolean {
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
 

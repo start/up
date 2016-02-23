@@ -1,10 +1,10 @@
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
-import { parseInline } from './ParseInline'
+import { parseInlineConventions } from './ParseInlineConventions'
 
 export function getInlineNodes(text: string): SyntaxNode[] {
   let resultNodes: SyntaxNode[] = []
 
-  parseInline(text, {},
+  parseInlineConventions(text, {},
     (inlineNodes) => resultNodes = inlineNodes)
 
   return resultNodes

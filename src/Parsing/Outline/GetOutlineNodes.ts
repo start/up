@@ -1,6 +1,5 @@
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { parseInline } from '../Inline/ParseInline'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
