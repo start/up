@@ -8,11 +8,6 @@ export function parseLink(args: InlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
   const linkNode = new LinkNode(args.parentNode)
   
-  // Links cannot be nested within other links
-  if (linkNode.ancestors().some(ancestor => ancestor instanceof LinkNode)) {
-    return false
-  }
-  
   // TODO: Handle  terminator?
 
   return (
