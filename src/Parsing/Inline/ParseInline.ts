@@ -38,7 +38,7 @@ export function parseInline(text: string, parseArgs: ParseContext, onParse: OnPa
     for (let parser of conventionParsers) {
       if (parser(consumer.remainingText(), parseArgs,
         (resultNodes, countCharsParsed) => {
-          nodes.push.apply(nodes, resultNodes)
+          nodes.push(...resultNodes)
           consumer.skip(countCharsParsed)
         })) {
         continue main_parser_loop

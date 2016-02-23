@@ -60,8 +60,8 @@ export function parseOutline(text: string, parseArgs: ParseContext, onParse: OnP
     for (let parser of outlineParsers) {
       const parsedSuccessfully =
         parser(remainingText, parseArgs,
-          (parsedNodes, countCharsParsed) => {
-            nodes.push.apply(nodes, parsedNodes)
+          (resultNodes, countCharsParsed) => {
+            nodes.push(...resultNodes)
             consumer.skip(countCharsParsed)
           })
 
