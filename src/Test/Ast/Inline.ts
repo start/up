@@ -414,6 +414,17 @@ describe('Bracketed text pointing to a URL', () => {
         new PlainTextNode('!!')
       ]))
   })
+
+  it('can follow bracketed text', () => {
+    expect(Up.ast("I [usually] use [Google -> https://google.com]!!")).to.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I [usually] use '),
+        new LinkNode([
+          new PlainTextNode('Google')
+        ], 'https://google.com'),
+        new PlainTextNode('!!')
+      ]))
+  })
 })
 
 
