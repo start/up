@@ -83,7 +83,7 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
     throw new Error(`Unrecognized outline convention. Remaining text: ${remainingText}`)
   }
 
-  return nodes
+  return withoutExtraConsecutiveSeparatorNodes(nodes)
 }
 
 function withoutExtraConsecutiveSeparatorNodes(nodes: SyntaxNode[]): SyntaxNode[] {
