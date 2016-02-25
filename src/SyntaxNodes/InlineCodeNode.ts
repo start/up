@@ -1,9 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { TextSyntaxNode } from './TextSyntaxNode'
 
-export class InlineCodeNode extends SyntaxNode {
-  constructor(private text: string) {
-    super()
-  }
-  
+export class InlineCodeNode extends TextSyntaxNode {
   private INLINE_CODE: any = null
 }

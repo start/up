@@ -13,6 +13,7 @@ import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { BulletedListNode } from '../SyntaxNodes/BulletedListNode'
+import { BulletedListItemNode } from '../SyntaxNodes/BulletedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -22,6 +23,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 export abstract class Writer {
   
   write(node: SyntaxNode) {
+    
     // TypeScript lacks multiple dispatch. Rather than polluting every single SyntaxNode class
     // with the visitor pattern, it's cleaner to perform the dispatch ourselves here.
      
@@ -35,6 +37,10 @@ export abstract class Writer {
     
     if (node instanceof BulletedListNode) {
       return this.writeBulletedList(node)
+    }
+    
+    if (node instanceof BulletedListItemNode) {
+      return this.writeBulletedListItem(node)
     }
     
     if (node instanceof LineBlockNode) {
@@ -89,6 +95,7 @@ export abstract class Writer {
   abstract writeDocument(node: DocumentNode): string;
   abstract writeBlockquote(node: BlockquoteNode): string;
   abstract writeBulletedList(node: BulletedListNode): string;
+  abstract writeBulletedListItem(node: BulletedListItemNode): string;
   abstract writeLineBlock(node: LineBlockNode): string;
   abstract writeCodeBlock(node: CodeBlockNode): string;
   abstract writeParagraph(node: ParagraphNode): string;
