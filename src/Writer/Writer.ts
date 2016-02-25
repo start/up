@@ -48,7 +48,7 @@ export abstract class Writer {
     }
     
     if (node instanceof LineNode) {
-      return this.writeLineNode(node)
+      return this.writeLine(node)
     }
     
     if (node instanceof ParagraphNode) {
@@ -97,9 +97,9 @@ export abstract class Writer {
   abstract writeBulletedList(node: BulletedListNode): string;
   abstract writeBulletedListItem(node: BulletedListItemNode): string;
   abstract writeLineBlock(node: LineBlockNode): string;
+  abstract writeLine(node: LineNode): string;
   abstract writeCodeBlock(node: CodeBlockNode): string;
   abstract writeParagraph(node: ParagraphNode): string;
-  abstract writeLineNode(node: LineNode): string;
   abstract writeHeading(node: HeadingNode): string;
   abstract writeEmphasis(node: EmphasisNode): string;
   abstract writeStress(node: StressNode): string;
