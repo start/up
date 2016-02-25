@@ -6,8 +6,9 @@ export interface InlineParser {
 }
 
 export interface InlineParserArgs {
-  text: string,
-  parentNode?: RichSyntaxNode,
+  text: string
+  parentNode?: RichSyntaxNode
   endsWith?: string
+  doesNotHave?: string
   then: (resultNodes: SyntaxNode[], lengthParsed: number) => void
 }
