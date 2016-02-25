@@ -29,10 +29,12 @@ const inlineParsers = [
 ]
 
 export function parseInlineConventions(args: InlineParserArgs): boolean {
-  const { text, endsWith, doesNotHave, parentNode, then } = args
+  const { text, endsWith, doesNotHave, parentNode, onlyIf, then } = args
     
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
+  
+  let stillNeedsTerminator = !!endsWith
 
   main_parser_loop:
   while (!consumer.done()) {
@@ -56,8 +58,8 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
     }
 
     if (endsWith && consumer.consumeIfMatches(endsWith)) {
-      then(nodes, consumer.lengthConsumed())
-      return true
+      stillNeedsTerminator = false
+      break
     }
 
     if (doesNotHave && consumer.consumeIfMatches(doesNotHave)) {
@@ -76,10 +78,10 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
     consumer.moveNext()
   }
 
-  if (endsWith) {
+  if (stillNeedsTerminator || (onlyIf && !onlyIf(consumer))) {
     return false
   }
-
+  
   then(nodes, consumer.lengthConsumed())
   return true
 }

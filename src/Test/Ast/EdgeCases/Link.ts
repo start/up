@@ -56,7 +56,7 @@ describe('A link', () => {
       ]))
   })
   
-  it('starts witih the final of multiple opening brackets even when there is just one closing bracket', () => {
+  it('starts with the final of multiple opening brackets even when there is just one closing bracket', () => {
     expect(Up.ast('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Go to [this '),

@@ -149,6 +149,14 @@ export class TextConsumer {
         : this.currentChar()
     )
   }
+  
+  areSquareBracketsBalanced(): boolean {
+    return this.countUnclosedSquareBracket === 0
+  }
+  
+  areParentsBalanced(): boolean {
+    return this.countUnclosedParen === 0
+  }
 
   private isCurrentCharEscaped(): boolean {
     return this.currentChar() === '\\'
