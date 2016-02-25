@@ -41,6 +41,7 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
 
     for (let parse of inlineParsers) {
 
+      // TODO: Pass on all inline parser parameters
       const didConventionParseSuccessfully =
         parse({
           text: consumer.remainingText(),

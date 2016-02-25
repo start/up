@@ -25,6 +25,7 @@ export function parseLink(args: InlineParserArgs): boolean {
       parentNode: linkNode,
       endsWith: ' -> ',
       doesNotHave: ']',
+      onlyIf: (inlineConsumer) => inlineConsumer.areSquareBracketsBalanced(),
       then: (resultNodes, lengthParsed) => {
         consumer.skip(lengthParsed)
         linkNode.addChildren(resultNodes)

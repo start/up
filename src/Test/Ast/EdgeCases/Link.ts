@@ -28,7 +28,7 @@ describe('Bracketed text followed  by " -> " followed by a closing bracket', () 
   it('does not produce a link node', () => {
     expect(Up.ast('[Try to] do this -> smile :]')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('[Try to] do this -> :]')
+        new PlainTextNode('[Try to] do this -> smile :]')
       ]))
   })
 })

@@ -8,7 +8,7 @@ import { InlineParserArgs, InlineParser } from './InlineParser'
 export function getSandwichParser(
   NodeType: RichSyntaxNodeType,
   openingBun: string,
-  closingBUn: string
+  closingBun: string
 ): InlineParser {
   return (args: InlineParserArgs): boolean => {
     const { text, endsWith, parentNode, then } = args
@@ -33,7 +33,7 @@ export function getSandwichParser(
       && parseInlineConventions({
         text: consumer.remainingText(),
         parentNode: sandwichNode,
-        endsWith: closingBUn,
+        endsWith: closingBun,
         then: (resultNodes, lengthParsed) => {
           consumer.skip(lengthParsed)
           sandwichNode.addChildren(resultNodes)
