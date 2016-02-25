@@ -8,6 +8,6 @@ export interface InlineParser {
 export interface InlineParserArgs {
   text: string,
   parentNode?: RichSyntaxNode,
-  terminator?: string
+  endsWith?: string
   then: (resultNodes: SyntaxNode[], lengthParsed: number) => void
 }

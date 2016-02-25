@@ -29,7 +29,7 @@ const inlineParsers = [
 ]
 
 export function parseInlineConventions(args: InlineParserArgs): boolean {
-  const { text, terminator, parentNode, then } = args
+  const { text, endsWith, parentNode, then } = args
     
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
@@ -43,7 +43,7 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
         parse({
           text: consumer.remainingText(),
           parentNode: parentNode,
-          terminator: terminator,
+          endsWith: endsWith,
           then: (resultNodes, lengthParsed) => {
             nodes.push(...resultNodes)
             consumer.skip(lengthParsed)
@@ -55,7 +55,7 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
       }
     }
 
-    if (terminator && consumer.consumeIfMatches(terminator)) {
+    if (endsWith && consumer.consumeIfMatches(endsWith)) {
       then(nodes, consumer.lengthConsumed())
       return true
     }
@@ -72,7 +72,7 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
     consumer.moveNext()
   }
 
-  if (terminator) {
+  if (endsWith) {
     return false
   }
 

@@ -11,7 +11,7 @@ export function getSandwichParser(
   closingBUn: string
 ): InlineParser {
   return (args: InlineParserArgs): boolean => {
-    const { text, terminator, parentNode, then } = args
+    const { text, endsWith, parentNode, then } = args
     
     // If the text starts with the terminator, and the terminator itself starts with
     // this sandwich's opening "bun", then we'd normally *always* start parsing this
@@ -19,7 +19,7 @@ export function getSandwichParser(
     //
     // To avoid that, we check for those two conditions. If both are true, we decline
     // to parse this sandwich, allowing the parent node to close.
-    if (startsWith(text, terminator) && startsWith(terminator, openingBun)) {
+    if (startsWith(text, endsWith) && startsWith(endsWith, openingBun)) {
       return false
     }
     const consumer = new TextConsumer(text)
@@ -33,7 +33,7 @@ export function getSandwichParser(
       && parseInlineConventions({
         text: consumer.remainingText(),
         parentNode: sandwichNode,
-        terminator: closingBUn,
+        endsWith: closingBUn,
         then: (resultNodes, lengthParsed) => {
           consumer.skip(lengthParsed)
           sandwichNode.addChildren(resultNodes)

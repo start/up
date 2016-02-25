@@ -23,7 +23,7 @@ export function parseLink(args: InlineParserArgs): boolean {
     && parseInlineConventions({
       text: consumer.remainingText(),
       parentNode: linkNode,
-      terminator: ' -> ',
+      endsWith: ' -> ',
       then: (resultNodes, lengthParsed) => {
         consumer.skip(lengthParsed)
         linkNode.addChildren(resultNodes)
