@@ -24,6 +24,7 @@ export function parseLink(args: InlineParserArgs): boolean {
       text: consumer.remainingText(),
       parentNode: linkNode,
       endsWith: ' -> ',
+      doesNotHave: ']',
       then: (resultNodes, lengthParsed) => {
         consumer.skip(lengthParsed)
         linkNode.addChildren(resultNodes)
