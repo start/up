@@ -24,59 +24,59 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { Writer } from './Writer'
 
 export class HtmlWriter extends Writer{
-  writeDocument(node: DocumentNode): string {
+  document(node: DocumentNode): string {
     return this.htmlNodes(node.children)
   }
   
-  writeBlockquote(node: BlockquoteNode): string {
+  blockquote(node: BlockquoteNode): string {
     return this.htmlNode('blockquote', node)
   }
   
-  writeBulletedList(node: BulletedListNode): string {
+  bulletedList(node: BulletedListNode): string {
     return this.htmlNode('ul', node)
   }
   
-  writeBulletedListItem(node: BulletedListItemNode): string {
+  bulletedListItem(node: BulletedListItemNode): string {
     return this.htmlNode('li', node)
   }
   
-  writeLineBlock(node: LineBlockNode): string {
+  lineBlock(node: LineBlockNode): string {
     return this.htmlNodes(node.children)
   }
   
-  writeLine(node: LineNode): string {
+  line(node: LineNode): string {
     return this.htmlNode('div', node)
   }
   
-  writeCodeBlock(node: CodeBlockNode): string {
+  codeBlock(node: CodeBlockNode): string {
     return htmlNode('pre', htmlNode('code', node.text))
   }
   
-  writeParagraph(node: ParagraphNode): string {
+  paragraph(node: ParagraphNode): string {
     return this.htmlNode('p', node)
   }
   
-  writeHeading(node: HeadingNode): string{
+  heading(node: HeadingNode): string{
     return this.htmlNode('h' + node.level, node)
   }
   
-  writeEmphasis(node: EmphasisNode): string {
+  emphasis(node: EmphasisNode): string {
     return this.htmlNode('em', node)
   }
   
-  writeStress(node: StressNode): string {
+  stress(node: StressNode): string {
     return this.htmlNode('strong', node)
   }
   
-  writeInlineCode(node: InlineCodeNode): string {
+  inlineCode(node: InlineCodeNode): string {
     return htmlNode('code', node.text)
   }
   
-  writeRevisionInsertion(node: RevisionInsertionNode): string {
+  revisionInsertion(node: RevisionInsertionNode): string {
     return this.htmlNode('ins', node)
   }
   
-  writeRevisionDeletion(node: RevisionDeletionNode): string {
+  revisionDeletion(node: RevisionDeletionNode): string {
     return this.htmlNode('del', node)
   }
   
@@ -84,15 +84,15 @@ export class HtmlWriter extends Writer{
     return this.htmlNode('span', node, { class: 'spoiler' })
   }
   
-  writeInlineAside(node: InlineAsideNode): string {
+  inlineAside(node: InlineAsideNode): string {
     return this.htmlNode('small', node)
   }
   
-  writeLink(node: LinkNode): string {
+  link(node: LinkNode): string {
     return this.htmlNode('a', node, { href: node.url })
   }
   
-  writePlainText(node: PlainTextNode): string {
+  plainText(node: PlainTextNode): string {
     return node.text
   }
   

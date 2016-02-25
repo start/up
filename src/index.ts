@@ -10,7 +10,7 @@ export function ast(text: string): DocumentNode {
 const htmlWriter = new HtmlWriter()
 
 export function html(text: string): string {
-  return htmlWriter.writeDocument(ast(text))
+  return htmlWriter.document(ast(text))
 }
 
 export function htmlFromSyntaxNode(node: SyntaxNode): string {

@@ -28,92 +28,92 @@ export abstract class Writer {
     // with the visitor pattern, it's cleaner to perform the dispatch ourselves here.
      
     if (node instanceof DocumentNode) {
-      return this.writeDocument(node)
+      return this.document(node)
     }
     
     if (node instanceof BlockquoteNode) {
-      return this.writeBlockquote(node)
+      return this.blockquote(node)
     }
     
     if (node instanceof BulletedListNode) {
-      return this.writeBulletedList(node)
+      return this.bulletedList(node)
     }
     
     if (node instanceof BulletedListItemNode) {
-      return this.writeBulletedListItem(node)
+      return this.bulletedListItem(node)
     }
     
     if (node instanceof LineBlockNode) {
-      return this.writeLineBlock(node)
+      return this.lineBlock(node)
     }
     
     if (node instanceof LineNode) {
-      return this.writeLine(node)
+      return this.line(node)
     }
     
     if (node instanceof ParagraphNode) {
-      return this.writeParagraph(node)
+      return this.paragraph(node)
     }
     
     if (node instanceof CodeBlockNode) {
-      return this.writeCodeBlock(node)
+      return this.codeBlock(node)
     }
     
     if (node instanceof HeadingNode) {
-      return this.writeHeading(node)
+      return this.heading(node)
     }
     
     if (node instanceof EmphasisNode) {
-      return this.writeEmphasis(node)
+      return this.emphasis(node)
     }
     
     if (node instanceof StressNode) {
-      return this.writeStress(node)
+      return this.stress(node)
     }
     
     if (node instanceof InlineCodeNode) {
-      return this.writeInlineCode(node)
+      return this.inlineCode(node)
     }
     
     if (node instanceof InlineAsideNode) {
-      return this.writeInlineAside(node)
+      return this.inlineAside(node)
     }
     
     if (node instanceof LinkNode) {
-      return this.writeLink(node)
+      return this.link(node)
     }
     
     if (node instanceof RevisionDeletionNode) {
-      return this.writeRevisionDeletion(node)
+      return this.revisionDeletion(node)
     }
     
     if (node instanceof RevisionInsertionNode) {
-      return this.writeRevisionInsertion(node)
+      return this.revisionInsertion(node)
     }
     
     if (node instanceof PlainTextNode) {
-      return this.writePlainText(node)
+      return this.plainText(node)
     }
     
     throw new Error("Unrecognized syntax node")
   }
   
-  abstract writeDocument(node: DocumentNode): string;
-  abstract writeBlockquote(node: BlockquoteNode): string;
-  abstract writeBulletedList(node: BulletedListNode): string;
-  abstract writeBulletedListItem(node: BulletedListItemNode): string;
-  abstract writeLineBlock(node: LineBlockNode): string;
-  abstract writeLine(node: LineNode): string;
-  abstract writeCodeBlock(node: CodeBlockNode): string;
-  abstract writeParagraph(node: ParagraphNode): string;
-  abstract writeHeading(node: HeadingNode): string;
-  abstract writeEmphasis(node: EmphasisNode): string;
-  abstract writeStress(node: StressNode): string;
-  abstract writeInlineCode(node: InlineCodeNode): string;
-  abstract writeRevisionInsertion(node: RevisionInsertionNode): string;
-  abstract writeRevisionDeletion(node: RevisionDeletionNode): string;
+  abstract document(node: DocumentNode): string;
+  abstract blockquote(node: BlockquoteNode): string;
+  abstract bulletedList(node: BulletedListNode): string;
+  abstract bulletedListItem(node: BulletedListItemNode): string;
+  abstract lineBlock(node: LineBlockNode): string;
+  abstract line(node: LineNode): string;
+  abstract codeBlock(node: CodeBlockNode): string;
+  abstract paragraph(node: ParagraphNode): string;
+  abstract heading(node: HeadingNode): string;
+  abstract emphasis(node: EmphasisNode): string;
+  abstract stress(node: StressNode): string;
+  abstract inlineCode(node: InlineCodeNode): string;
+  abstract revisionInsertion(node: RevisionInsertionNode): string;
+  abstract revisionDeletion(node: RevisionDeletionNode): string;
   abstract writeSpoiler(node: SpoilerNode): string;
-  abstract writeInlineAside(node: InlineAsideNode): string;
-  abstract writeLink(node: LinkNode): string;
-  abstract writePlainText(node: PlainTextNode): string;
+  abstract inlineAside(node: InlineAsideNode): string;
+  abstract link(node: LinkNode): string;
+  abstract plainText(node: PlainTextNode): string;
 }
