@@ -92,6 +92,10 @@ export class HtmlWriter extends Writer{
     return this.htmlNode('a', node, { href: node.url })
   }
   
+  writePlainText(node: PlainTextNode): string {
+    return node.text
+  }
+  
   htmlNode(tagName: string, node: RichSyntaxNode, attrs: any = {}): string {
     return htmlNode(tagName, this.htmlNodes(node.children), attrs)
   }

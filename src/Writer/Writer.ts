@@ -90,6 +90,12 @@ export abstract class Writer {
     if (node instanceof RevisionInsertionNode) {
       return this.writeRevisionInsertion(node)
     }
+    
+    if (node instanceof PlainTextNode) {
+      return this.writePlainText(node)
+    }
+    
+    throw new Error("Unrecognized syntax node")
   }
   
   abstract writeDocument(node: DocumentNode): string;
@@ -109,4 +115,5 @@ export abstract class Writer {
   abstract writeSpoiler(node: SpoilerNode): string;
   abstract writeInlineAside(node: InlineAsideNode): string;
   abstract writeLink(node: LinkNode): string;
+  abstract writePlainText(node: PlainTextNode): string;
 }

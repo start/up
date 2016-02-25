@@ -27,8 +27,15 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import * as Up from '../../index'
 
-describe('A document node', () => {
+describe('An empty document node', () => {
   it('does not produce any HTML on its own', () => {
     expect(Up.htmlFromSyntaxNode(new DocumentNode())).to.be.eql('')
+  })
+})
+
+describe('An paragraph node containing text', () => {
+  it('produces a p tag with the text contents', () => {
+    const node = new ParagraphNode([new PlainTextNode('Hello.')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<p>Hello.</p>')
   })
 })
