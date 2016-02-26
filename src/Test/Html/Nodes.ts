@@ -116,3 +116,24 @@ describe('A level 6 heading node', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h6>Charizard</h6>')
   })
 })
+
+describe('A level 7 heading node', () => {
+  it('produces an h6 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Squirtle')], 7)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h6>Squirtle</h6>')
+  })
+})
+
+describe('A level 8 heading node', () => {
+  it('produces an h6 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Wartortle')], 8)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h6>Wartortle</h6>')
+  })
+})
+
+describe('A level 9 heading node', () => {
+  it('produces an h6 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Blastoise')], 9)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h6>Blastoise</h6>')
+  })
+})
