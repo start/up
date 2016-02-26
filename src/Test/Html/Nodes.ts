@@ -67,3 +67,10 @@ describe('A line block node with line nodes', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<div>Hello</div><div>Goodbye</div>')
   })
 })
+
+describe('A code block node', () => {
+  it('produces a pre element containing a code element', () => {
+    const node = new CodeBlockNode('Hello.')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<pre><code>Hello.</code></pre>')
+  })
+})
