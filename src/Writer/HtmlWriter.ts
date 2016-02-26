@@ -57,7 +57,7 @@ export class HtmlWriter extends Writer{
   }
   
   heading(node: HeadingNode): string{
-    return this.htmlElement('h' + node.level, node)
+    return this.htmlElement('h' + Math.min(6, node.level), node)
   }
   
   emphasis(node: EmphasisNode): string {
