@@ -75,6 +75,13 @@ describe('A code block node', () => {
   })
 })
 
+describe('A blockquote node', () => {
+  it('produces a blockquote element', () => {
+    const node = new BlockquoteNode([new PlainTextNode('Centipede')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<blockquote>Centipede</blockquote>')
+  })
+})
+
 describe('A level 1 heading node', () => {
   it('produces an h1 element', () => {
     const node = new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
