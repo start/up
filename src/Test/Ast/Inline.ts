@@ -208,36 +208,6 @@ describe('Text surrounded by 2 asterisks', () => {
   })
 })
 
-describe('Text starting with 3 asterisks', () => {
-  it('can have its emphasis node closed first', () => {
-    expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new StressNode([
-          new EmphasisNode([
-            new PlainTextNode('my'),
-          ]),
-          new PlainTextNode(' world')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
-
-  it('can have its stress node closed first', () => {
-    expect(Up.ast('Hello, ***my** world*!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new EmphasisNode([
-          new StressNode([
-            new PlainTextNode('my'),
-          ]),
-          new PlainTextNode(' world')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
-})
-
 describe('An unmatched asterisk', () => {
   it('does not create an emphasis node', () => {
     expect(Up.ast('Hello, *world!')).to.be.eql(
