@@ -33,9 +33,23 @@ describe('An empty document node', () => {
   })
 })
 
-describe('An paragraph node containing text', () => {
-  it('produces a p tag with the text contents', () => {
+describe('A paragraph node', () => {
+  it('produces a p tag', () => {
     const node = new ParagraphNode([new PlainTextNode('Hello.')])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<p>Hello.</p>')
+  })
+})
+
+describe('A bulleted list node with list items', () => {
+  it('produces a ul tag with li children', () => {
+    const node = new BulletedListNode([
+      new BulletedListItemNode([
+        new PlainTextNode('Hello')
+      ]),
+      new BulletedListItemNode([
+        new PlainTextNode('Goodbye')
+      ])
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li>Hello</li><li>Goodbye</li></ul>')
   })
 })
