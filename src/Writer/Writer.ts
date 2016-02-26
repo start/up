@@ -112,7 +112,7 @@ export abstract class Writer {
   abstract inlineCode(node: InlineCodeNode): string;
   abstract revisionInsertion(node: RevisionInsertionNode): string;
   abstract revisionDeletion(node: RevisionDeletionNode): string;
-  abstract writeSpoiler(node: SpoilerNode): string;
+  abstract spoiler(node: SpoilerNode): string;
   abstract inlineAside(node: InlineAsideNode): string;
   abstract link(node: LinkNode): string;
   abstract plainText(node: PlainTextNode): string;

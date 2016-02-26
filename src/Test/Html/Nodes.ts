@@ -181,8 +181,15 @@ describe('An inline aside node', () => {
 })
 
 describe('A link node', () => {
-  it('produces an a element with an href attribute', () => {
+  it('produces an a (anchor) element with an href attribute', () => {
     const node = new LinkNode([new PlainTextNode('Google')], 'https://google.com')
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<a href="https://google.com">Google</a>')
+  })
+})
+
+describe('A spoiler node', () => {
+  it('produces a span element with a spoiler class', () => {
+    const node = new SpoilerNode([new PlainTextNode('45.9%')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<span class="spoiler">45.9%</a>')
   })
 })

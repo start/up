@@ -80,7 +80,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('del', node)
   }
 
-  writeSpoiler(node: SpoilerNode): string {
+  spoiler(node: SpoilerNode): string {
     return this.htmlElement('span', node, { class: 'spoiler' })
   }
 
