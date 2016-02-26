@@ -25,89 +25,89 @@ import { Writer } from './Writer'
 
 export class HtmlWriter extends Writer{
   document(node: DocumentNode): string {
-    return this.htmlNodes(node.children)
+    return this.htmlElements(node.children)
   }
   
   blockquote(node: BlockquoteNode): string {
-    return this.htmlNode('blockquote', node)
+    return this.htmlElement('blockquote', node)
   }
   
   bulletedList(node: BulletedListNode): string {
-    return this.htmlNode('ul', node)
+    return this.htmlElement('ul', node)
   }
   
   bulletedListItem(node: BulletedListItemNode): string {
-    return this.htmlNode('li', node)
+    return this.htmlElement('li', node)
   }
   
   lineBlock(node: LineBlockNode): string {
-    return this.htmlNodes(node.children)
+    return this.htmlElements(node.children)
   }
   
   line(node: LineNode): string {
-    return this.htmlNode('div', node)
+    return this.htmlElement('div', node)
   }
   
   codeBlock(node: CodeBlockNode): string {
-    return htmlNode('pre', htmlNode('code', node.text))
+    return htmlElement('pre', htmlElement('code', node.text))
   }
   
   paragraph(node: ParagraphNode): string {
-    return this.htmlNode('p', node)
+    return this.htmlElement('p', node)
   }
   
   heading(node: HeadingNode): string{
-    return this.htmlNode('h' + node.level, node)
+    return this.htmlElement('h' + node.level, node)
   }
   
   emphasis(node: EmphasisNode): string {
-    return this.htmlNode('em', node)
+    return this.htmlElement('em', node)
   }
   
   stress(node: StressNode): string {
-    return this.htmlNode('strong', node)
+    return this.htmlElement('strong', node)
   }
   
   inlineCode(node: InlineCodeNode): string {
-    return htmlNode('code', node.text)
+    return htmlElement('code', node.text)
   }
   
   revisionInsertion(node: RevisionInsertionNode): string {
-    return this.htmlNode('ins', node)
+    return this.htmlElement('ins', node)
   }
   
   revisionDeletion(node: RevisionDeletionNode): string {
-    return this.htmlNode('del', node)
+    return this.htmlElement('del', node)
   }
   
   writeSpoiler(node: SpoilerNode): string {
-    return this.htmlNode('span', node, { class: 'spoiler' })
+    return this.htmlElement('span', node, { class: 'spoiler' })
   }
   
   inlineAside(node: InlineAsideNode): string {
-    return this.htmlNode('small', node)
+    return this.htmlElement('small', node)
   }
   
   link(node: LinkNode): string {
-    return this.htmlNode('a', node, { href: node.url })
+    return this.htmlElement('a', node, { href: node.url })
   }
   
   plainText(node: PlainTextNode): string {
     return node.text
   }
   
-  htmlNode(tagName: string, node: RichSyntaxNode, attrs: any = {}): string {
-    return htmlNode(tagName, this.htmlNodes(node.children), attrs)
+  htmlElement(tagName: string, node: RichSyntaxNode, attrs: any = {}): string {
+    return htmlElement(tagName, this.htmlElements(node.children), attrs)
   }
   
-  htmlNodes(nodes: SyntaxNode[]): string {
+  htmlElements(nodes: SyntaxNode[]): string {
     return nodes.reduce(
       (html, child) => html + this.write(child),
       '')
   }
 }
 
-function htmlNode(tagName: string, content: string, attrs: any = {}): string {
+function htmlElement(tagName: string, content: string, attrs: any = {}): string {
   const unrolledAttrs =
     Object.keys(attrs)
       .map((key) => `${key}="${attrs[key]}"`)
