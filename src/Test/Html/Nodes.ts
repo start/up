@@ -151,3 +151,10 @@ describe('An emphasis node', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<em>Always</em>')
   })
 })
+
+describe('A stress node', () => {
+  it('produces a strong element', () => {
+    const node = new StressNode([new PlainTextNode('Ness')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<strong>Ness</strong>')
+  })
+})
