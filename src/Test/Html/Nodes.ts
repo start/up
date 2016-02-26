@@ -158,3 +158,17 @@ describe('A stress node', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<strong>Ness</strong>')
   })
 })
+
+describe('A revision insertion node', () => {
+  it('produces an ins element', () => {
+    const node = new RevisionInsertionNode([new PlainTextNode('Wario')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ins>Wario</ins>')
+  })
+})
+
+describe('A revision deletion node', () => {
+  it('produces a del element', () => {
+    const node = new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<del>Koopa Tropa</del>')
+  })
+})
