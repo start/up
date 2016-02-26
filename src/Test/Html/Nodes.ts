@@ -190,6 +190,6 @@ describe('A link node', () => {
 describe('A spoiler node', () => {
   it('produces a span element with a spoiler class', () => {
     const node = new SpoilerNode([new PlainTextNode('45.9%')])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<span class="spoiler">45.9%</a>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<span class="spoiler">45.9%</span>')
   })
 })

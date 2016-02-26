@@ -91,6 +91,10 @@ export abstract class Writer {
       return this.revisionInsertion(node)
     }
     
+    if (node instanceof SpoilerNode) {
+      return this.spoiler(node)
+    }
+    
     if (node instanceof PlainTextNode) {
       return this.plainText(node)
     }
