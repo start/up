@@ -77,7 +77,42 @@ describe('A code block node', () => {
 
 describe('A level 1 heading node', () => {
   it('produces an h1 element', () => {
-    const node = new HeadingNode([new PlainTextNode('Charmander')], 1)
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h1>Charmander</h1>')
+    const node = new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h1>Bulbasaur</h1>')
+  })
+})
+
+describe('A level 2 heading node', () => {
+  it('produces an h2 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Ivysaur')], 2)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h2>Ivysaur</h2>')
+  })
+})
+
+describe('A level 3 heading node', () => {
+  it('produces an h3 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Venusaur')], 3)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h3>Venusaur</h3>')
+  })
+})
+
+describe('A level 4 heading node', () => {
+  it('produces an h4 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Charmander')], 4)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h4>Charmander</h4>')
+  })
+})
+
+describe('A level 5 heading node', () => {
+  it('produces an h5 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Charmeleon')], 5)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h5>Charmeleon</h5>')
+  })
+})
+
+describe('A level 6 heading node', () => {
+  it('produces an h6 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Charizard')], 6)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h6>Charizard</h6>')
   })
 })
