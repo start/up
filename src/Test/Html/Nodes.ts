@@ -193,3 +193,10 @@ describe('A spoiler node', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<span class="spoiler">45.9%</span>')
   })
 })
+
+describe('A plain text node', () => {
+  it('produces text, not an html element', () => {
+    const node = new PlainTextNode('Kokiri Forest')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('Kokiri Forest')
+  })
+})
