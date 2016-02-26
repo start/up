@@ -144,3 +144,10 @@ describe('A level 9 heading node', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h6>Blastoise</h6>')
   })
 })
+
+describe('An emphasis node', () => {
+  it('produces an em element', () => {
+    const node = new EmphasisNode([new PlainTextNode('Always')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<em>Always</em>')
+  })
+})
