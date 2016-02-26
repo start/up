@@ -35,8 +35,8 @@ describe('An empty document node', () => {
 
 describe('A paragraph node', () => {
   it('produces a p element', () => {
-    const node = new ParagraphNode([new PlainTextNode('Hello.')])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<p>Hello.</p>')
+    const node = new ParagraphNode([new PlainTextNode('Nimble navigator')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<p>Nimble navigator</p>')
   })
 })
 
@@ -44,13 +44,13 @@ describe('A bulleted list node with list item nodes', () => {
   it('produces a ul element with li elements for each list item', () => {
     const node = new BulletedListNode([
       new BulletedListItemNode([
-        new PlainTextNode('Hello')
+        new PlainTextNode('Tropical')
       ]),
       new BulletedListItemNode([
-        new PlainTextNode('Goodbye')
+        new PlainTextNode('Territories')
       ])
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li>Hello</li><li>Goodbye</li></ul>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li>Tropical</li><li>Territories</li></ul>')
   })
 })
 
@@ -58,19 +58,26 @@ describe('A line block node with line nodes', () => {
   it('produces no outer element and a div element for each node', () => {
     const node = new LineBlockNode([
       new LineNode([
-        new PlainTextNode('Hello')
+        new PlainTextNode('Hollow')
       ]),
       new LineNode([
-        new PlainTextNode('Goodbye')
+        new PlainTextNode('Fangs')
       ])
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<div>Hello</div><div>Goodbye</div>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<div>Hollow</div><div>Fangs</div>')
   })
 })
 
 describe('A code block node', () => {
   it('produces a pre element containing a code element', () => {
-    const node = new CodeBlockNode('Hello.')
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<pre><code>Hello.</code></pre>')
+    const node = new CodeBlockNode('color = Color.Green')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
+  })
+})
+
+describe('A level 1 heading node', () => {
+  it('produces an h1 element', () => {
+    const node = new HeadingNode([new PlainTextNode('Charmander')], 1)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<h1>Charmander</h1>')
   })
 })
