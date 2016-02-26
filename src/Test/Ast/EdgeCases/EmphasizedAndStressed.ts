@@ -67,4 +67,20 @@ describe('Text starting with 3 asterisks', () => {
         ])
       ]))
   })
+  
+  it('can have its emphasis node closed first even when followed by emphasized text', () => {
+    expect(Up.ast('***Nimble* navigators?** *Tropical.*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
+          new EmphasisNode([
+            new PlainTextNode('Nimble'),
+          ]),
+          new PlainTextNode(' navigators?')
+        ]),
+        new PlainTextNode(' '),
+        new EmphasisNode([
+          new PlainTextNode('Tropical.')
+        ])
+      ]))
+  })
 })
