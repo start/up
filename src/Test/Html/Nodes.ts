@@ -172,3 +172,17 @@ describe('A revision deletion node', () => {
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<del>Koopa Tropa</del>')
   })
 })
+
+describe('An inline aside node', () => {
+  it('produces a small element', () => {
+    const node = new InlineAsideNode([new PlainTextNode('Probably')])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<small>Probably</small>')
+  })
+})
+
+describe('A link node', () => {
+  it('produces an a element with an href attribute', () => {
+    const node = new LinkNode([new PlainTextNode('Google')], 'https://google.com')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<a href="https://google.com">Google</a>')
+  })
+})
