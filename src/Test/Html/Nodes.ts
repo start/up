@@ -34,14 +34,14 @@ describe('An empty document node', () => {
 })
 
 describe('A paragraph node', () => {
-  it('produces a p tag', () => {
+  it('produces a p element', () => {
     const node = new ParagraphNode([new PlainTextNode('Hello.')])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<p>Hello.</p>')
   })
 })
 
-describe('A bulleted list node with list items', () => {
-  it('produces a ul tag with li children', () => {
+describe('A bulleted list node with list item nodes', () => {
+  it('produces a ul element with li elements for each list item', () => {
     const node = new BulletedListNode([
       new BulletedListItemNode([
         new PlainTextNode('Hello')
@@ -51,5 +51,19 @@ describe('A bulleted list node with list items', () => {
       ])
     ])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li>Hello</li><li>Goodbye</li></ul>')
+  })
+})
+
+describe('A line block node with line nodes', () => {
+  it('produces no outer element and a div element for each node', () => {
+    const node = new LineBlockNode([
+      new LineNode([
+        new PlainTextNode('Hello')
+      ]),
+      new LineNode([
+        new PlainTextNode('Goodbye')
+      ])
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<div>Hello</div><div>Goodbye</div>')
   })
 })
