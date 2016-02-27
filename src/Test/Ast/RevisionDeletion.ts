@@ -24,7 +24,6 @@ function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
   ])
 }
 
-
 describe('Text surrounded by 2 tildes', () => {
   it('is put inside a revision deletion node', () => {
     expect(Up.ast('I like ~~certain types of~~ pizza')).to.be.eql(
