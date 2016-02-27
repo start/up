@@ -19,12 +19,12 @@ import { InlineParserArgs, InlineParser } from './InlineParser'
 
 const inlineParsers = [
   parseInlineCode,
+  getSandwichParser(SpoilerNode, '[<_<]', '[>_>]'),
   parseLink,
   getSandwichParser(StressNode, '**', '**'),
   getSandwichParser(EmphasisNode, '*', '*'),
   getSandwichParser(RevisionInsertionNode, '++', '++'),
   getSandwichParser(RevisionDeletionNode, '~~', '~~'),
-  getSandwichParser(SpoilerNode, '[<_<]', '[>_>]'),
   getSandwichParser(InlineAsideNode, '((', '))')
 ]
 
