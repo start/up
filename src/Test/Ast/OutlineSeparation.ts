@@ -142,18 +142,6 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
 
 describe('A section separator streak', () => {
   
-  it('can be immediately followed by a non-blank line', () => {
-    const text = `
----
-hi`
-    expect(Up.ast(text)).to.eql(
-      new DocumentNode([
-        new SectionSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('hi')
-        ])
-      ]))
-  })
 
   it('can be surrounded by any number of blank lines and still produce a single separator node', () => {
     const text = `
@@ -208,16 +196,6 @@ describe('Lines consisting solely of streaks of characters separated by blank li
 
 --------
 `
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode()
-      ]))
-  })
-})
-
-describe('A streak of asterisks with spaces between', () => {
-  it('produces a single section separator node rather than a heavily nested list', () => {
-    const text = '* * * * * *'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
