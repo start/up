@@ -3,6 +3,7 @@
 
 import { expect } from 'chai'
 import * as Up from '../../index'
+import { insideDocumentAndParagraph } from './Helpers'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
@@ -16,13 +17,6 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-
-
-function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode([
-    new ParagraphNode(syntaxNodes)
-  ])
-}
 
 
 describe('Text surrounded by 2 parentheses', () => {
