@@ -19,7 +19,6 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
 
-
 describe('A section separator streak', () => {
   
   it('can be immediately followed by a paragraph', () => {
