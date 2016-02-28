@@ -18,27 +18,29 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Between paragraphs', () => {
-  it('1 blank line simply provides separation, producing no syntax node itself', () => {
-    const text = `Hello, world!
+describe('1 blank line between paragraphs', () => {
+  it('simply provides separation, producing no syntax node itself', () => {
+    const text = `Pokemon Moon has a Mew under a truck.
 
-Goodbye, world!`
+Pokemon Sun is a truck.`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Hello, world!')]),
-        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
+        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))
   })
+})
 
-  it('2 blank lines simply provide separation, producing no syntax nodes themselves', () => {
-    const text = `Hello, world!
+describe('2 blank lines between paragraphs', () => {
+  it('simply provides separation, producing no syntax node itself', () => {
+    const text = `Pokemon Moon has a Mew under a truck.
 
-  \t 
-Goodbye, world!`
+\t
+Pokemon Sun is a truck.`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Hello, world!')]),
-        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
+        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))
   })
 })
