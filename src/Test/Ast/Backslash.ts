@@ -3,6 +3,7 @@
 
 import { expect } from 'chai'
 import * as Up from '../../index'
+import { insideDocumentAndParagraph } from './Helpers'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
@@ -17,12 +18,6 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
-
-function insideDocumentAndParagraph(syntaxNodes: SyntaxNode[]): DocumentNode {
-  return new DocumentNode([
-    new ParagraphNode(syntaxNodes)
-  ])
-}
 
 describe('A backslash', () => {
   it('causes the following character to be treated as plain text', () => {
