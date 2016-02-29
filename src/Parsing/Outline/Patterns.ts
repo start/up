@@ -28,6 +28,8 @@ const INDENT = either('  ', '\t')
 
 const STREAK_CHAR = either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
 
+const INTEGER = '\\d+'
+
 // TODO: Allow flexible indentation for all conventions, not just this one
 const STREAK = solely(ANY_WHITESPACE + atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
 
