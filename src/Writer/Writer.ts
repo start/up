@@ -14,6 +14,8 @@ import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { BulletedListNode } from '../SyntaxNodes/BulletedListNode'
 import { BulletedListItemNode } from '../SyntaxNodes/BulletedListItemNode'
+import { NumberedListNode } from '../SyntaxNodes/NumberedListNode'
+import { NumberedListItemNode } from '../SyntaxNodes/NumberedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -41,6 +43,14 @@ export abstract class Writer {
     
     if (node instanceof BulletedListItemNode) {
       return this.bulletedListItem(node)
+    }
+    
+    if (node instanceof NumberedListNode) {
+      return this.numberedList(node)
+    }
+    
+    if (node instanceof NumberedListItemNode) {
+      return this.numberedListItem(node)
     }
     
     if (node instanceof LineBlockNode) {
@@ -106,6 +116,8 @@ export abstract class Writer {
   abstract blockquote(node: BlockquoteNode): string;
   abstract bulletedList(node: BulletedListNode): string;
   abstract bulletedListItem(node: BulletedListItemNode): string;
+  abstract numberedList(node: NumberedListNode): string;
+  abstract numberedListItem(node: NumberedListItemNode): string;
   abstract lineBlock(node: LineBlockNode): string;
   abstract line(node: LineNode): string;
   abstract codeBlock(node: CodeBlockNode): string;

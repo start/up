@@ -16,6 +16,8 @@ import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { BulletedListNode } from '../SyntaxNodes/BulletedListNode'
 import { BulletedListItemNode } from '../SyntaxNodes/BulletedListItemNode'
+import { NumberedListNode } from '../SyntaxNodes/NumberedListNode'
+import { NumberedListItemNode } from '../SyntaxNodes/NumberedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -37,6 +39,14 @@ export class HtmlWriter extends Writer {
   }
 
   bulletedListItem(node: BulletedListItemNode): string {
+    return this.htmlElement('li', node)
+  }
+
+  numberedList(node: NumberedListNode): string {
+    return this.htmlElement('ol', node)
+  }
+
+  numberedListItem(node: NumberedListItemNode): string {
     return this.htmlElement('li', node)
   }
 
