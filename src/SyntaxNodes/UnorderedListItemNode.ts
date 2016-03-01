@@ -1,5 +1,5 @@
 import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class BulletedListItemNode extends RichSyntaxNode {
+export class UnorderedListItemNode extends RichSyntaxNode {
   private BULLETED_LIST_ITEM: any = null
 }

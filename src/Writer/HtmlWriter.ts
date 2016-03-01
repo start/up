@@ -14,8 +14,8 @@ import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
-import { BulletedListNode } from '../SyntaxNodes/BulletedListNode'
-import { BulletedListItemNode } from '../SyntaxNodes/BulletedListItemNode'
+import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
 import { NumberedListNode } from '../SyntaxNodes/NumberedListNode'
 import { NumberedListItemNode } from '../SyntaxNodes/NumberedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
@@ -34,11 +34,11 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('blockquote', node)
   }
 
-  bulletedList(node: BulletedListNode): string {
+  unorderedList(node: UnorderedListNode): string {
     return this.htmlElement('ul', node)
   }
 
-  bulletedListItem(node: BulletedListItemNode): string {
+  unorderedListItem(node: UnorderedListItemNode): string {
     return this.htmlElement('li', node)
   }
 

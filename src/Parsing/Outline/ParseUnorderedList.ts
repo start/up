@@ -1,6 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
-import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
-import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
@@ -31,7 +31,7 @@ const STREAK_PATTERN = new RegExp(
 // with multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines.
-export function parseBulletedList(args: OutlineParserArgs): boolean {
+export function parseUnorderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
   const listItemsContents: string[] = []
@@ -83,12 +83,12 @@ export function parseBulletedList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const listNode = new BulletedListNode()
+  const listNode = new UnorderedListNode()
 
   // Parse each list item like its own mini-document
   for (var listItemContents of listItemsContents) {
     listNode.addChild(
-      new BulletedListItemNode(getOutlineNodes(listItemContents))
+      new UnorderedListItemNode(getOutlineNodes(listItemContents))
     )
   }
 

@@ -12,8 +12,8 @@ import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
-import { BulletedListNode } from '../SyntaxNodes/BulletedListNode'
-import { BulletedListItemNode } from '../SyntaxNodes/BulletedListItemNode'
+import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
 import { NumberedListNode } from '../SyntaxNodes/NumberedListNode'
 import { NumberedListItemNode } from '../SyntaxNodes/NumberedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
@@ -37,12 +37,12 @@ export abstract class Writer {
       return this.blockquote(node)
     }
     
-    if (node instanceof BulletedListNode) {
-      return this.bulletedList(node)
+    if (node instanceof UnorderedListNode) {
+      return this.unorderedList(node)
     }
     
-    if (node instanceof BulletedListItemNode) {
-      return this.bulletedListItem(node)
+    if (node instanceof UnorderedListItemNode) {
+      return this.unorderedListItem(node)
     }
     
     if (node instanceof NumberedListNode) {
@@ -114,8 +114,8 @@ export abstract class Writer {
   
   abstract document(node: DocumentNode): string;
   abstract blockquote(node: BlockquoteNode): string;
-  abstract bulletedList(node: BulletedListNode): string;
-  abstract bulletedListItem(node: BulletedListItemNode): string;
+  abstract unorderedList(node: UnorderedListNode): string;
+  abstract unorderedListItem(node: UnorderedListItemNode): string;
   abstract numberedList(node: NumberedListNode): string;
   abstract numberedListItem(node: NumberedListItemNode): string;
   abstract lineBlock(node: LineBlockNode): string;

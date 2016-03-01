@@ -18,8 +18,8 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
-import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -40,13 +40,13 @@ describe('A paragraph node', () => {
   })
 })
 
-describe('A bulleted list node with list item nodes', () => {
+describe('An unordered list node with list item nodes', () => {
   it('produces a ul element with li elements for each list item', () => {
-    const node = new BulletedListNode([
-      new BulletedListItemNode([
+    const node = new UnorderedListNode([
+      new UnorderedListItemNode([
         new PlainTextNode('Tropical')
       ]),
-      new BulletedListItemNode([
+      new UnorderedListItemNode([
         new PlainTextNode('Territories')
       ])
     ])
