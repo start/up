@@ -1,16 +1,25 @@
 import { TextConsumer } from '../TextConsumer'
-import { BulletedListNode } from '../../SyntaxNodes/BulletedListNode'
-import { BulletedListItemNode } from '../../SyntaxNodes/BulletedListItemNode'
+import { NumberedListNode } from '../../SyntaxNodes/NumberedListNode'
+import { NumberedListItemNode } from '../../SyntaxNodes/NumberedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
+import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
-const BULLET_PATTERN = new RegExp(
+
+const BULLETED_PATTERN = new RegExp(
   startsWith(
-    optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
+    optional(' ') + either(INTEGER, '#') + either('\\.', '\\)') + INLINE_WHITESPACE_CHAR
   )
+)
+
+const NUMERIC_BULLET_PATTERN = new RegExp(
+  INTEGER + '\\.'
+)
+
+const INTEGER_PATTERN = new RegExp(
+  INTEGER
 )
 
 const BLANK_LINE_PATTERN = new RegExp(
@@ -19,10 +28,6 @@ const BLANK_LINE_PATTERN = new RegExp(
 
 const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
-)
-
-const STREAK_PATTERN = new RegExp(
-  STREAK
 )
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -40,9 +45,9 @@ export function parseNumberedList(args: OutlineParserArgs): boolean {
   while (!consumer.done()) {
     listItemLines = []
 
-    const isLineBulleted = consumer.consumeLine({
-      if: (line) => BULLET_PATTERN.test(line) && !STREAK_PATTERN.test(line),
-      then: (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
+    const isLineBulleted = consumer.consumeLineIfMatches({
+      pattern: BULLETED_PATTERN,
+      then: (line) => listItemLines.push(line.replace(BULLETED_PATTERN, ''))
     })
 
     if (!isLineBulleted) {
@@ -83,12 +88,16 @@ export function parseNumberedList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const listNode = new BulletedListNode()
+  let confidenceAuthorIntendedThisToBeNumberedList = 0
+
+  const MIN_REQUIRED_CONFIDENCE = 6
+
+  const listNode = new NumberedListNode()
 
   // Parse each list item like its own mini-document
   for (var listItemContents of listItemsContents) {
     listNode.addChild(
-      new BulletedListItemNode(getOutlineNodes(listItemContents))
+      new NumberedListItemNode(getOutlineNodes(listItemContents))
     )
   }
 

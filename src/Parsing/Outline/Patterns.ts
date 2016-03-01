@@ -44,6 +44,7 @@ export {
   INDENT,
   ANY_WHITESPACE,
   STREAK,
+  INTEGER,
   optional,
   either,
   solely,
