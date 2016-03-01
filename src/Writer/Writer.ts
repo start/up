@@ -14,8 +14,8 @@ import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
-import { NumberedListNode } from '../SyntaxNodes/NumberedListNode'
-import { NumberedListItemNode } from '../SyntaxNodes/NumberedListItemNode'
+import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
+import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -45,12 +45,12 @@ export abstract class Writer {
       return this.unorderedListItem(node)
     }
     
-    if (node instanceof NumberedListNode) {
-      return this.numberedList(node)
+    if (node instanceof OrderedListNode) {
+      return this.orderedList(node)
     }
     
-    if (node instanceof NumberedListItemNode) {
-      return this.numberedListItem(node)
+    if (node instanceof OrderedListItemNode) {
+      return this.orderedListItem(node)
     }
     
     if (node instanceof LineBlockNode) {
@@ -116,8 +116,8 @@ export abstract class Writer {
   abstract blockquote(node: BlockquoteNode): string;
   abstract unorderedList(node: UnorderedListNode): string;
   abstract unorderedListItem(node: UnorderedListItemNode): string;
-  abstract numberedList(node: NumberedListNode): string;
-  abstract numberedListItem(node: NumberedListItemNode): string;
+  abstract orderedList(node: OrderedListNode): string;
+  abstract orderedListItem(node: OrderedListItemNode): string;
   abstract lineBlock(node: LineBlockNode): string;
   abstract line(node: LineNode): string;
   abstract codeBlock(node: CodeBlockNode): string;

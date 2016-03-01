@@ -1,6 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
-import { NumberedListNode } from '../../SyntaxNodes/NumberedListNode'
-import { NumberedListItemNode } from '../../SyntaxNodes/NumberedListItemNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListItemNode } from '../../SyntaxNodes/OrderedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER } from './Patterns'
@@ -36,7 +36,7 @@ const INDENTED_PATTERN = new RegExp(
 // with multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines.
-export function parseNumberedList(args: OutlineParserArgs): boolean {
+export function parseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
   const listItemsContents: string[] = []
@@ -88,16 +88,16 @@ export function parseNumberedList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  let confidenceAuthorIntendedThisToBeNumberedList = 0
+  let confidenceAuthorIntendedThisToBeOrderedList = 0
 
   const MIN_REQUIRED_CONFIDENCE = 6
 
-  const listNode = new NumberedListNode()
+  const listNode = new OrderedListNode()
 
   // Parse each list item like its own mini-document
   for (var listItemContents of listItemsContents) {
     listNode.addChild(
-      new NumberedListItemNode(getOutlineNodes(listItemContents))
+      new OrderedListItemNode(getOutlineNodes(listItemContents))
     )
   }
 

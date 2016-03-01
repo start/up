@@ -1,5 +1,5 @@
 import { RichSyntaxNode } from './RichSyntaxNode'
 
-export class NumberedListNode extends RichSyntaxNode {
+export class OrderedListNode extends RichSyntaxNode {
   private NUMBERED_LIST: any = null
 }

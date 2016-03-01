@@ -16,8 +16,8 @@ import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
-import { NumberedListNode } from '../SyntaxNodes/NumberedListNode'
-import { NumberedListItemNode } from '../SyntaxNodes/NumberedListItemNode'
+import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
+import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -42,11 +42,11 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('li', node)
   }
 
-  numberedList(node: NumberedListNode): string {
+  orderedList(node: OrderedListNode): string {
     return this.htmlElement('ol', node)
   }
 
-  numberedListItem(node: NumberedListItemNode): string {
+  orderedListItem(node: OrderedListItemNode): string {
     return this.htmlElement('li', node)
   }
 
