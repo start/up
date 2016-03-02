@@ -33,7 +33,6 @@ const STREAK_PATTERN = new RegExp(
 // List items don't need to be separated by blank lines.
 export function parseUnorderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-
   const listItemsContents: string[] = []
 
   while (!consumer.done()) {
@@ -68,8 +67,8 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
 
       if (!isLineBlank) {
         // Well, the line was neither indented nor blank. That means it's either the start of
-        // another list item, or it's the first line following the list. Let's leave this loop
-        // and find out which.
+        // another list item, or it's the first line following the list. Let's leave this inner
+        // loop and find out which.
         break
       }
     }
