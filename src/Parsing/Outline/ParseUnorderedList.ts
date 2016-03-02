@@ -40,7 +40,8 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
     let listItemLines: string[] = []
 
     const isLineBulleted = consumer.consumeLine({
-      if: (line) => BULLET_PATTERN.test(line) && !STREAK_PATTERN.test(line),
+      pattern: BULLET_PATTERN,
+      if: (line) => !STREAK_PATTERN.test(line),
       then: (line) => listItemLines.push(line.replace(BULLET_PATTERN, ''))
     })
 
