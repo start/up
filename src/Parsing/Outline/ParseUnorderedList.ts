@@ -51,7 +51,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
     // Let's collect the rest of this list item (i.e. the next block of indented or blank lines).
     while (!consumer.done()) {
 
-      const isLineIndented = consumer.consumeLineIfMatches({
+      const isLineIndented = consumer.consumeLine({
         pattern: INDENTED_PATTERN,
         then: (line) => listItemLines.push(line.replace(INDENTED_PATTERN, ''))
       })
@@ -60,7 +60,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
         continue
       }
 
-      const isLineBlank = consumer.consumeLineIfMatches({
+      const isLineBlank = consumer.consumeLine({
         pattern: BLANK_LINE_PATTERN,
         then: (line) => listItemLines.push(line)
       })

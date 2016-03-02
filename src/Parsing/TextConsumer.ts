@@ -1,10 +1,6 @@
 interface ConsumeLineArgs {
+  pattern?: RegExp,
   if?: ShouldConsumeLine,
-  then?: OnConsumeLine
-}
-
-interface ConsumeLineByPatternArgs {
-  pattern: RegExp,
   then?: OnConsumeLine
 }
 
@@ -18,7 +14,7 @@ interface ShouldConsumeLine {
 }
 
 interface OnConsumeLine {
-  (line: string): void
+  (line: string, ...captures: string[]): void
 }
 
 interface OnConsumeUpTo {
@@ -52,7 +48,7 @@ export class TextConsumer {
     return true
   }
 
-  consumeLine(args: ConsumeLineArgs): boolean {
+  consumeLine(args: ConsumeLineArgs): boolean {    
     if (this.done()) {
       return false
     }
@@ -61,15 +57,27 @@ export class TextConsumer {
 
     let line: string
 
-    const didConsumeUpToLineBreak =
+    const wasAbleToConsumeUpToLineBreak =
       consumer.consumeUpTo({
         needle: '\n',
         then: (upToLineBreak) => { line = upToLineBreak }
       })
 
-    if (!didConsumeUpToLineBreak) {
+    if (!wasAbleToConsumeUpToLineBreak) {
       line = consumer.remainingText()
       consumer.skipToEnd()
+    }
+    
+    let captures: string[] = []
+    
+    if (args.pattern) {
+      var results = args.pattern.exec(line)
+      
+      if (!results) {
+        return false
+      }
+      
+      captures = results.slice(1)   
     }
 
     if (args.if && !args.if(line)) {
@@ -79,17 +87,10 @@ export class TextConsumer {
     this.skip(consumer.lengthConsumed())
 
     if (args.then) {
-      args.then(line)
+      args.then(line, ...captures)
     }
 
     return true
-  }
-
-  consumeLineIfMatches(args: ConsumeLineByPatternArgs): boolean {
-    return this.consumeLine({
-      if: (line) => args.pattern.test(line),
-      then: args.then
-    })
   }
 
   consumeUpTo(args: ConsumeUpToArgs): boolean {

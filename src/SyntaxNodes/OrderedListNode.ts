@@ -1,7 +1,7 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
-export enum Order {
+export enum ListOrder {
   Ascending,
   Descrending
 }
@@ -9,7 +9,7 @@ export enum Order {
 export class OrderedListNode extends RichSyntaxNode {
   constructor(
     parentOrChildren?: RichSyntaxNode | SyntaxNode[],
-    public order = Order.Ascending,
+    public order = ListOrder.Ascending,
     public start = 1
   ) {
     super(parentOrChildren)

@@ -13,7 +13,7 @@ const CODE_FENCE_PATTERN = new RegExp(
 export function parseCodeBlock(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
-  if (!consumer.consumeLineIfMatches({ pattern: CODE_FENCE_PATTERN })) {
+  if (!consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
     return false
   }
 
@@ -21,7 +21,7 @@ export function parseCodeBlock(args: OutlineParserArgs): boolean {
 
   // Keep consuming lines until we get to the closing code fence
   while (!consumer.done()) {
-    if (consumer.consumeLineIfMatches({ pattern: CODE_FENCE_PATTERN })) {
+    if (consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
       args.then([new CodeBlockNode(codeLines.join('\n'))], consumer.lengthConsumed())
       return true
     }

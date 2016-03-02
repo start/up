@@ -22,7 +22,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     // First, let's parse the optional overline.
     let optionalOverline: string
 
-    consumer.consumeLineIfMatches({
+    consumer.consumeLine({
       pattern: STREAK_PATTERN,
       then: (line) => optionalOverline = line
     })

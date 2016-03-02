@@ -11,7 +11,7 @@ const STREAK_PATTERN = new RegExp(
 export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
-  if (!consumer.consumeLineIfMatches({ pattern: STREAK_PATTERN })) {
+  if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
     return false
   }
 

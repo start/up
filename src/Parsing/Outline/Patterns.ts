@@ -1,5 +1,7 @@
 const group = (pattern: string) => `(?:${pattern})`
 
+const capture = (pattern: string) => `(${pattern})`
+
 const optional = (pattern: string) => group(pattern) + '?'
 
 const any = (pattern: string) => group(pattern) + '*'
@@ -45,6 +47,7 @@ export {
   ANY_WHITESPACE,
   STREAK,
   INTEGER,
+  capture,
   optional,
   either,
   solely,

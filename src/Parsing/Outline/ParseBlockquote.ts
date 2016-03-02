@@ -16,7 +16,7 @@ export function parseBlockquote(args: OutlineParserArgs): boolean {
   const blockquoteLines: string[] = []
 
   // Collect all consecutive blockquoted lines
-  while (consumer.consumeLineIfMatches({
+  while (consumer.consumeLine({
     pattern: QUOTE_DELIMITER_PATTERN,
     then: (line) => blockquoteLines.push(line.replace(QUOTE_DELIMITER_PATTERN, ''))
   })) { }
