@@ -16,7 +16,7 @@ const BULLETED_PATTERN = new RegExp(
   )
 )
 
-const INTEGER_THEN_PERIOD_PATTERN = new RegExp(
+const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
   optional(' ') + INTEGER + '\\.' + INLINE_WHITESPACE_CHAR
 )
 
@@ -27,7 +27,7 @@ const BLANK_LINE_PATTERN = new RegExp(
 const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
 )
-/*
+
 // Bulleted lists are simply collections of bulleted list items.
 //
 // List items can contain any kind of convention, even other lists!  In list items
@@ -36,19 +36,15 @@ const INDENTED_PATTERN = new RegExp(
 // List items don't need to be separated by blank lines.
 export function parseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-
   const rawListItems: RawListItem[] = []
-
-  let didAuthorIntendThisToBeAnOrderedList = false
-  let order = ListOrder.Ascending
 
   while (!consumer.done()) {
     let rawListItem = new RawListItem()
 
-    const isLineBulleted = consumer.consumeLineIfMatches({
+    const isLineBulleted = consumer.consumeLine({
       pattern: BULLETED_PATTERN,
       then: (line, bullet) => {
-        rawListItem.bullet = bullet 
+        rawListItem.bullet = bullet
         rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''))
       }
     })
@@ -60,7 +56,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     // Let's collect the rest of this list item (i.e. the next block of indented or blank lines).
     while (!consumer.done()) {
 
-      const isLineIndented = consumer.consumeLineIfMatches({
+      const isLineIndented = consumer.consumeLine({
         pattern: INDENTED_PATTERN,
         then: (line) => rawListItem.lines.push(line.replace(INDENTED_PATTERN, ''))
       })
@@ -69,7 +65,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
         continue
       }
 
-      const isLineBlank = consumer.consumeLineIfMatches({
+      const isLineBlank = consumer.consumeLine({
         pattern: BLANK_LINE_PATTERN,
         then: (line) => rawListItem.lines.push(line)
       })
@@ -81,16 +77,39 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
         break
       }
     }
- 
+
     rawListItems.push(rawListItem)
   }
 
-  if (!didAuthorIntendThisToBeAnOrderedList) {
+  if (!rawListItems.length) {
+    return false
+  }
+  
+  // There are four ways to bullet an ordered list:
+  //
+  // 1. An integer followed by a period
+  // 2) An integer followed by a right parenthesis 
+  // #. A number sign followed by a period
+  // #) A number sign followed by a right parenthesis
+  //
+  // The first one is potentially unclear. Look at the following paragraph:
+  //
+  // 1783. Not a good year for Great Britain.
+  // 
+  // Did the author intend the paragraph be an ordered list with a single item? Probably not.
+  //
+  // Therefore, if the first bullet style is used, there must be more than one list item.
+  if (
+    rawListItems.length === 1
+    && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet)
+  ) {
     return false
   }
 
-  const listNode = new OrderedListNode()
+  let order = ListOrder.Ascending
 
+  const listNode = new OrderedListNode()
+/*
   // Parse each list item like its own mini-document
   for (var listItemContents of contentsOfListItems) {
     listNode.addChild(
@@ -98,7 +117,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     )
   }
 
-  args.then([listNode], consumer.lengthConsumed())
+  args.then([listNode], consumer.lengthConsumed())*/
   return true
 }
 
@@ -106,30 +125,3 @@ class RawListItem {
   public bullet: string;
   public lines: string[] = [];
 }
-
-        */
-/*
-
-        // There are four ways to bullet an ordered list:
-        //
-        // 1. An integer followed by a period
-        // 2) An integer followed by a right parenthesis 
-        // #. A number sign followed by a period
-        // #) A number sign followed by a right parenthesis
-        //
-        // The first one is potentially unclear. Look at the following paragraph:
-        //
-        // 1783. Not a good year for Great Britain.
-        // 
-        // Did the author intend the paragraph be an ordered list with a single item? Probably not.
-        //
-        // Therefore, if the first bullet style is used, there must be more than one list item.
-        const isThereAlreadyAnotherListItem = (contentsOfListItems.length > 0)
-
-        didAuthorIntendThisToBeAnOrderedList = (
-          isThereAlreadyAnotherListItem
-          || !BULLETED_BY_INTEGER_THEN_PERIOD_PATTERN.test(line)
-        )
-        
-        */
-        
