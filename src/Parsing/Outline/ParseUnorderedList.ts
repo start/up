@@ -25,7 +25,7 @@ const STREAK_PATTERN = new RegExp(
   STREAK
 )
 
-// Bulleted lists are simply collections of bulleted list items.
+// Unordered lists are simply collections of bulleted list items.
 //
 // List items can contain any kind of convention, even other lists!  In list items
 // with multiple lines, all subsequent lines are indented.

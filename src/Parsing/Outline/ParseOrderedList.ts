@@ -17,7 +17,7 @@ const BULLETED_PATTERN = new RegExp(
 )
 
 const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
-  optional(' ') + INTEGER + '\\.' + INLINE_WHITESPACE_CHAR
+  INTEGER + '\\.'
 )
 
 const BLANK_LINE_PATTERN = new RegExp(
@@ -81,10 +81,32 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     rawListItems.push(rawListItem)
   }
 
-  if (!rawListItems.length) {
+  if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
     return false
   }
+
+  let listOrder = getListOrder(rawListItems)
+
+  const listNode = new OrderedListNode()
+  /*
+    // Parse each list item like its own mini-document
+    for (var listItemContents of contentsOfListItems) {
+      listNode.addChild(
+        new OrderedListItemNode(getOutlineNodes(listItemContents))
+      )
+    }
   
+    args.then([listNode], consumer.lengthConsumed())*/
+  return true
+}
+
+class RawListItem {
+  public bullet: string;
+  public lines: string[] = [];
+}
+
+
+function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
   // There are four ways to bullet an ordered list:
   //
   // 1. An integer followed by a period
@@ -99,29 +121,34 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   // Did the author intend the paragraph be an ordered list with a single item? Probably not.
   //
   // Therefore, if the first bullet style is used, there must be more than one list item.
-  if (
+  return (
     rawListItems.length === 1
     && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet)
-  ) {
-    return false
-  }
-
-  let order = ListOrder.Ascending
-
-  const listNode = new OrderedListNode()
-/*
-  // Parse each list item like its own mini-document
-  for (var listItemContents of contentsOfListItems) {
-    listNode.addChild(
-      new OrderedListItemNode(getOutlineNodes(listItemContents))
-    )
-  }
-
-  args.then([listNode], consumer.lengthConsumed())*/
-  return true
+  )
 }
 
-class RawListItem {
-  public bullet: string;
-  public lines: string[] = [];
+function getListOrder(rawListItems: RawListItem[]): ListOrder {
+  let listOrder = ListOrder.Ascending
+
+  if (rawListItems.length === 1) {
+    return listOrder
+  }
+
+  const firstNumber = getExplicitBulletNumber(rawListItems[0]) || 1
+  let secondNumber = getExplicitBulletNumber(rawListItems[1]) || (firstNumber + 1)
+
+  if (firstNumber > secondNumber) {
+    listOrder = ListOrder.Descrending
+  }
+
+  return listOrder
+}
+
+const INTEGER_PATTERN = new RegExp(
+  capture(INTEGER)
+)
+
+function getExplicitBulletNumber(rawListItem: RawListItem): number {
+  const result = INTEGER_PATTERN.exec(rawListItem.bullet)
+  return (result ? parseInt(result[1]) : null)
 }
