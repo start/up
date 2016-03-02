@@ -35,10 +35,9 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
   const listItemsContents: string[] = []
-  let listItemLines: string[]
 
   while (!consumer.done()) {
-    listItemLines = []
+    let listItemLines: string[] = []
 
     const isLineBulleted = consumer.consumeLine({
       if: (line) => BULLET_PATTERN.test(line) && !STREAK_PATTERN.test(line),

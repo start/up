@@ -36,15 +36,12 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
   const contentsOfListItems: string[] = []
-  // This should be declared inside the following `while` loop, but 
-  let listItemLines: string[]
 
   let didAuthorIntendThisToBeAnOrderedList = false
 
-
   while (!consumer.done()) {
-    
-    
+    let listItemLines: string[] = []
+
     const isLineBulleted = consumer.consumeLineIfMatches({
       pattern: BULLETED_PATTERN,
       then: (line) => {
