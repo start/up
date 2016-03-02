@@ -18,10 +18,6 @@ const NUMERIC_BULLET_PATTERN = new RegExp(
   INTEGER + '\\.'
 )
 
-const INTEGER_PATTERN = new RegExp(
-  INTEGER
-)
-
 const BLANK_LINE_PATTERN = new RegExp(
   BLANK
 )
@@ -39,15 +35,21 @@ const INDENTED_PATTERN = new RegExp(
 export function parseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
 
-  const listItemsContents: string[] = []
+  const contentsOfListItems: string[] = []
+  // This should be declared inside the following `while` loop, but 
   let listItemLines: string[]
 
-  while (!consumer.done()) {
-    listItemLines = []
+  let didAuthorIntendThisToBeAnOrderedList = false
 
+
+  while (!consumer.done()) {
+    
+    
     const isLineBulleted = consumer.consumeLineIfMatches({
       pattern: BULLETED_PATTERN,
-      then: (line) => listItemLines.push(line.replace(BULLETED_PATTERN, ''))
+      then: (line) => {
+        listItemLines.push(line.replace(BULLETED_PATTERN, ''))
+      }
     })
 
     if (!isLineBulleted) {
@@ -81,21 +83,17 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 
     // This loses the final newline, but trailing blank lines are always ignored when parsing for
     // outline conventions, which is exactly what we're going to do next. 
-    listItemsContents.push(listItemLines.join('\n'))
+    contentsOfListItems.push(listItemLines.join('\n'))
   }
 
-  if (!listItemsContents.length) {
+  if (!didAuthorIntendThisToBeAnOrderedList) {
     return false
   }
-
-  let confidenceAuthorIntendedThisToBeOrderedList = 0
-
-  const MIN_REQUIRED_CONFIDENCE = 6
 
   const listNode = new OrderedListNode()
 
   // Parse each list item like its own mini-document
-  for (var listItemContents of listItemsContents) {
+  for (var listItemContents of contentsOfListItems) {
     listNode.addChild(
       new OrderedListItemNode(getOutlineNodes(listItemContents))
     )
