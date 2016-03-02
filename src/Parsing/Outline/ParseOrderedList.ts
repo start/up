@@ -14,8 +14,10 @@ const BULLETED_PATTERN = new RegExp(
   )
 )
 
-const NUMERIC_BULLET_PATTERN = new RegExp(
-  INTEGER + '\\.'
+const BULLETED_BY_INTEGER_THEN_PERIOD_PATTERN = new RegExp(
+  startsWith(
+    optional(' ') + INTEGER + '\\.' + INLINE_WHITESPACE_CHAR
+  )
 )
 
 const BLANK_LINE_PATTERN = new RegExp(
@@ -41,18 +43,39 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 
   while (!consumer.done()) {
     let listItemLines: string[] = []
+    let bulletedLine: string
 
     const isLineBulleted = consumer.consumeLineIfMatches({
       pattern: BULLETED_PATTERN,
-      then: (line) => {
-        listItemLines.push(line.replace(BULLETED_PATTERN, ''))
-      }
+      then: (line) => bulletedLine = line
     })
 
     if (!isLineBulleted) {
       break
     }
+    
+    // There are four ways to bullet an ordered list:
+    //
+    // 1. An integer followed by a period
+    // 2) An integer followed by a right parenthesis 
+    // #. A number sign followed by a period
+    // #) A number sign followed by a right parenthesis
+    //
+    // The first one is potentially unclear. Look at the following paragraph:
+    //
+    // 1783. Not a good year for Great Britain.
+    // 
+    // Did the author intend the paragraph be an ordered list with a single item? Probably not.
+    //
+    // Therefore, if the first bullet style is used, there must be more than one list item.
+    
+    const isThereAlreadyAnotherListItem = (contentsOfListItems.length > 0)
 
+    didAuthorIntendThisToBeAnOrderedList = (
+      isThereAlreadyAnotherListItem
+      || !BULLETED_BY_INTEGER_THEN_PERIOD_PATTERN.test(bulletedLine)
+    )
+  
     // Let's collect the rest of this list item (i.e. the next block of indented or blank lines).
     while (!consumer.done()) {
 
