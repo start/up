@@ -122,3 +122,24 @@ describe('A streak of number signs with spaces between', () => {
       ]))
   })
 })
+
+describe('A streak of number signs with spaces between', () => {
+  it('can directly follow an ordered list', () => {
+    const text = `
+# # # # # #
+# Gloves
+# # # # # #`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode(),
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Mittens')
+            ])
+          ])
+        ]),
+        new SectionSeparatorNode()
+      ]))
+  })
+})
