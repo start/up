@@ -84,21 +84,17 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
     return false
   }
-
-  let listOrder = getListOrder(rawListItems)
-
-  const listNode = new OrderedListNode()
   
+  let listItems = rawListItems.map((rawListItem) => {
+    return new OrderedListItemNode(
+      getOutlineNodes(rawListItem.content()),
+      getExplicitOrdinal(rawListItem)
+    )
+  })
   
-  /*
-    // Parse each list item like its own mini-document
-    for (var listItemContents of contentsOfListItems) {
-      listNode.addChild(
-        new OrderedListItemNode(getOutlineNodes(listItemContents))
-      )
-    }
+  const listNode = new OrderedListNode(listItems, getListOrder(rawListItems))
   
-    args.then([listNode], consumer.lengthConsumed())*/
+  args.then([listNode], consumer.lengthConsumed())
   return true
 }
 
@@ -106,6 +102,12 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 class RawListItem {
   public bullet: string;
   public lines: string[] = [];
+  
+  content(): string {
+    // This loses the final line break, but trailing blank lines are always ignored when parsing
+    // for outline conventions.
+    return this.lines.join('\n')
+  }
 }
 
 
@@ -138,8 +140,8 @@ function getListOrder(rawListItems: RawListItem[]): ListOrder {
     return listOrder
   }
 
-  const firstNumber = getExplicitBulletNumber(rawListItems[0]) || 1
-  let secondNumber = getExplicitBulletNumber(rawListItems[1]) || (firstNumber + 1)
+  const firstNumber = getExplicitOrdinal(rawListItems[0]) || 1
+  let secondNumber = getExplicitOrdinal(rawListItems[1]) || (firstNumber + 1)
 
   if (firstNumber > secondNumber) {
     listOrder = ListOrder.Descrending
@@ -153,7 +155,7 @@ const INTEGER_PATTERN = new RegExp(
   capture(INTEGER)
 )
 
-function getExplicitBulletNumber(rawListItem: RawListItem): number {
+function getExplicitOrdinal(rawListItem: RawListItem): number {
   const result = INTEGER_PATTERN.exec(rawListItem.bullet)
   return (result ? parseInt(result[1]) : null)
 }
