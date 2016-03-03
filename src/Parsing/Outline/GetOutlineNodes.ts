@@ -9,6 +9,7 @@ import { parseLineBlock } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
+import { parseOrderedList } from './ParseOrderedList'
 import { parseParagraph } from './ParseParagraph'
 import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
@@ -44,6 +45,7 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
   const outlineParsers = [
     parseBlankLineSeparation,
     parseUnorderedList,
+    parseOrderedList,
     headingParser,
     parseSectionSeparatorStreak,
     parseCodeBlock,
