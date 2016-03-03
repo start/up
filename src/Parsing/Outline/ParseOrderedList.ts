@@ -92,9 +92,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     )
   })
   
-  const listNode = new OrderedListNode(listItems, getListOrder(rawListItems))
-  
-  args.then([listNode], consumer.lengthConsumed())
+  args.then([new OrderedListNode(listItems)], consumer.lengthConsumed())
   return true
 }
 
@@ -130,24 +128,6 @@ function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
     rawListItems.length === 1
     && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet)
   )
-}
-
-
-function getListOrder(rawListItems: RawListItem[]): ListOrder {
-  let listOrder = ListOrder.Ascending
-
-  if (rawListItems.length === 1) {
-    return listOrder
-  }
-
-  const firstNumber = getExplicitOrdinal(rawListItems[0]) || 1
-  let secondNumber = getExplicitOrdinal(rawListItems[1]) || (firstNumber + 1)
-
-  if (firstNumber > secondNumber) {
-    listOrder = ListOrder.Descrending
-  }
-
-  return listOrder
 }
 
 
