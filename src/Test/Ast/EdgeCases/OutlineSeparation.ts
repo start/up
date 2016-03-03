@@ -15,6 +15,10 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItemNode } from '../../../SyntaxNodes/UnorderedListItemNode'
+import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
+import { OrderedListItemNode } from '../../../SyntaxNodes/OrderedListItemNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
@@ -64,6 +68,31 @@ describe('A streak of number signs with spaces between', () => {
     const text = '# # # # # #'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+})
+
+describe('A streak of asterisks with spaces between', () => {
+  it('can directly follow an unordered list', () => {
+    const text = `
+* Mittens
+* Gloves
+* * * * * *`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Mittens')
+            ])
+          ]),
+          new UnorderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Gloves')
+            ])
+          ])
+        ]),
         new SectionSeparatorNode()
       ]))
   })
