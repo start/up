@@ -31,5 +31,5 @@ export class OrderedListNode extends RichSyntaxNode {
     return <OrderedListItemNode[]>this.children
   }
 
-  private NUMBERED_LIST: any = null
+  private ORDERED_LIST: any = null
 }

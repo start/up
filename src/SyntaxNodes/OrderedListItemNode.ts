@@ -8,5 +8,5 @@ export class OrderedListItemNode extends RichSyntaxNode {
     super(parentOrChildren)
   }
   
-  private NUMBERED_LIST_ITEM: any = null
+  private ORDERED_LIST_ITEM: any = null
 }
