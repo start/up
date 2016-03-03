@@ -58,3 +58,13 @@ describe('A streak of asterisks with spaces between', () => {
       ]))
   })
 })
+
+describe('A streak of number signs with spaces between', () => {
+  it('produces a single section separator node rather than a heavily nested list', () => {
+    const text = '# # # # # #'
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+})
