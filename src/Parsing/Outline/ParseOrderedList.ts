@@ -11,7 +11,10 @@ import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 const BULLETED_PATTERN = new RegExp(
   startsWith(
     optional(' ')
-    + capture(either(INTEGER, '#') + either('\\.', '\\)'))
+    + either(
+      '#',
+      capture(either(INTEGER, '#') + either('\\.', '\\)'))
+    )
     + INLINE_WHITESPACE_CHAR
   )
 )
@@ -110,10 +113,11 @@ class RawListItem {
 
 
 function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
-  // There are four ways to bullet an ordered list:
+  // There are five ways to bullet an ordered list:
   //
   // 1. An integer followed by a period
   // 2) An integer followed by a right parenthesis 
+  // # A number sign (this and all other bullets must be followed by a space)
   // #. A number sign followed by a period
   // #) A number sign followed by a right parenthesis
   //
