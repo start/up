@@ -25,7 +25,7 @@ import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
 describe('A section separator streak', () => {
   
-  it('can be immediately followed by a paragraph', () => {
+  it('can be directly followed by a paragraph', () => {
     const text = `
 ~-~-~-~-~
 60.4%`
@@ -38,7 +38,7 @@ describe('A section separator streak', () => {
       ]))
   })
   
-  it('can be immediately followed by a heading with a different underline', () => {
+  it('can be directly followed by a heading with a different underline', () => {
     const text = `
 - - - - - - - - - - - 
 Not me. Us!
