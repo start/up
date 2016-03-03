@@ -85,7 +85,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
   const listNode = new UnorderedListNode()
 
   // Parse each list item like its own mini-document
-  for (var listItemContents of listItemsContents) {
+  for (const listItemContents of listItemsContents) {
     listNode.addChild(
       new UnorderedListItemNode(getOutlineNodes(listItemContents))
     )

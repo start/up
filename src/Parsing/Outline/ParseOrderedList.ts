@@ -88,6 +88,8 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   let listOrder = getListOrder(rawListItems)
 
   const listNode = new OrderedListNode()
+  
+  
   /*
     // Parse each list item like its own mini-document
     for (var listItemContents of contentsOfListItems) {
@@ -99,6 +101,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     args.then([listNode], consumer.lengthConsumed())*/
   return true
 }
+
 
 class RawListItem {
   public bullet: string;
@@ -127,6 +130,7 @@ function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
   )
 }
 
+
 function getListOrder(rawListItems: RawListItem[]): ListOrder {
   let listOrder = ListOrder.Ascending
 
@@ -143,6 +147,7 @@ function getListOrder(rawListItems: RawListItem[]): ListOrder {
 
   return listOrder
 }
+
 
 const INTEGER_PATTERN = new RegExp(
   capture(INTEGER)

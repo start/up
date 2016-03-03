@@ -71,7 +71,7 @@ export class TextConsumer {
     let captures: string[] = []
     
     if (args.pattern) {
-      var results = args.pattern.exec(line)
+      const results = args.pattern.exec(line)
       
       if (!results) {
         return false
