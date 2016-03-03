@@ -3,7 +3,7 @@ import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItemNode } from '../../SyntaxNodes/OrderedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER } from './Patterns'
+import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
@@ -21,6 +21,10 @@ const BULLETED_PATTERN = new RegExp(
 
 const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
   INTEGER + '\\.'
+)
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
 )
 
 const BLANK_LINE_PATTERN = new RegExp(
@@ -46,6 +50,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 
     const isLineBulleted = consumer.consumeLine({
       pattern: BULLETED_PATTERN,
+      if: (line) => !STREAK_PATTERN.test(line),
       then: (line, bullet) => {
         rawListItem.bullet = bullet
         rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''))
