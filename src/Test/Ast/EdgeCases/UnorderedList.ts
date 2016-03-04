@@ -27,7 +27,7 @@ describe('An unordered list with a single item', () => {
   it('can be sandwched by section separator streaks', () => {
     const text = `
 -----------
-* Gloves
+* Mittens
 -----------`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
