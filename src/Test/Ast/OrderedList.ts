@@ -24,12 +24,12 @@ import { OrderedListItemNode } from '../../SyntaxNodes/OrderedListItemNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
-describe('Consecutive lines bulleted by number signs followed by periods', () => {
+describe('Consecutive lines bulleted by number signs', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
     const text =
       `
-#. Hello, world!
-#. Goodbye, world!`
+# Hello, world!
+# Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
@@ -41,6 +41,31 @@ describe('Consecutive lines bulleted by number signs followed by periods', () =>
           new OrderedListItemNode([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('Consecutive lines bulleted by number signs followed by periods', () => {
+  it('produce an ordered list node containing ordered list item nodes', () => {
+    const text =
+      `
+#. Hello, Lavender Town!
+#. Goodbye, Lavender Town!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Lavender Town!')
+            ])
+          ]),
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Lavender Town!')
             ])
           ])
         ])
