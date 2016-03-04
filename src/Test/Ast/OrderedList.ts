@@ -49,6 +49,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
   })
 })
 
+
 describe('Consecutive lines each bulleted by a number sign followed by a period', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
     const text =
@@ -73,6 +74,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
     )
   })
 })
+
 
 describe('Consecutive lines each bulleted by a number sign followed by a right paren', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
@@ -99,6 +101,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a right p
   })
 })
 
+
 describe('Consecutive lines each bulleted by an integer followed by a period', () => {
   it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
     const text =
@@ -123,6 +126,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
     )
   })
 })
+
 
 describe('Consecutive lines each bulleted by an integer followed by a right paren', () => {
   it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
@@ -169,6 +173,7 @@ describe('A single line bulleted by a number sign', () => {
   })
 })
 
+
 describe('A single line bulleted by a number sign followed by a period', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
     const text =
@@ -187,6 +192,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
     )
   })
 })
+
 
 describe('A single line bulleted by a number sign followed by a right paren', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
@@ -207,6 +213,7 @@ describe('A single line bulleted by a number sign followed by a right paren', ()
   })
 })
 
+
 describe('A single line bulleted by an integer followed by a period', () => {
   it('produces a paragraph, not an ordered list', () => {
     const text =
@@ -222,6 +229,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
   })
 })
 
+
 describe('A single line bulleted by an integer followed by a right paren', () => {
   it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
     const text =
@@ -235,6 +243,50 @@ describe('A single line bulleted by an integer followed by a right paren', () =>
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1)
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('The 5 different bullet types', () => {
+  it('can be combined in the same ordered list', () => {
+    const text =
+      `
+1. Hello, Celadon City!
+2) Hello, Couriway Town!
+#) Hello, Cinnabar Island!
+#. Hello, Cherrygrove City!
+# Hello, Camphrier Town!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], 1),    
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Couriway Town!')
+            ])
+          ], 2),
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Cinnabar Island!')
+            ])
+          ]),
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Cherrygrove City!')
+            ])
+          ]),
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Camphrier Town!')
+            ])
+          ])
         ])
       ])
     )
