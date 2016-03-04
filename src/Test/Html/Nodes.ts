@@ -70,6 +70,16 @@ describe('An ordered list node with list item nodes', () => {
   })
 })
 
+describe('An ordered list item having an explicit ordinal', () => {
+  it('a li element with an explicit ordinal', () => {
+    const node = 
+      new OrderedListItemNode([
+        new PlainTextNode('Territories')
+      ], 12)
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<li value="12">Territories</li>')
+  })
+})
+
 describe('A line block node with line nodes', () => {
   it('produces no outer element and a div element for each node', () => {
     const node = new LineBlockNode([
