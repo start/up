@@ -58,7 +58,7 @@ describe('An unordered list node with list item nodes', () => {
 
 describe('An ordered list node with list item nodes', () => {
   it('produces a ol element with li elements for each list item', () => {
-    const node = new UnorderedListNode([
+    const node = new OrderedListNode([
       new OrderedListItemNode([
         new PlainTextNode('Tropical')
       ]),
