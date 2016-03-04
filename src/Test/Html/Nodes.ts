@@ -20,6 +20,8 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListItemNode } from '../../SyntaxNodes/OrderedListItemNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -51,6 +53,20 @@ describe('An unordered list node with list item nodes', () => {
       ])
     ])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li>Tropical</li><li>Territories</li></ul>')
+  })
+})
+
+describe('An ordered list node with list item nodes', () => {
+  it('produces a ol element with li elements for each list item', () => {
+    const node = new UnorderedListNode([
+      new OrderedListItemNode([
+        new PlainTextNode('Tropical')
+      ]),
+      new OrderedListItemNode([
+        new PlainTextNode('Territories')
+      ])
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol><li>Tropical</li><li>Territories</li></ol>')
   })
 })
 
