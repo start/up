@@ -44,9 +44,9 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
 
   const outlineParsers = [
     parseBlankLineSeparation,
+    headingParser,
     parseUnorderedList,
     parseOrderedList,
-    headingParser,
     parseSectionSeparatorStreak,
     parseCodeBlock,
     parseBlockquote,

@@ -103,7 +103,6 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
 
 describe('A section separator streak', () => {
   
-
   it('can have whitespace interspersed throughout the line in any manner', () => {
     const text = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
     expect(Up.ast(text)).to.be.eql(
@@ -145,6 +144,7 @@ Goodbye.`
       ]))
   })
 })
+
 
 describe('Consecutive separator streaks', () => {
   it('produce a single section separator node', () => {

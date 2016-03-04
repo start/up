@@ -1,8 +1,10 @@
 import { TextConsumer } from '../TextConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 import { either, NON_BLANK, STREAK } from './Patterns'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
+import { getOutlineNodes } from './GetOutlineNodes'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
 const NON_BLANK_PATTERN = new RegExp(
@@ -26,27 +28,15 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
       pattern: STREAK_PATTERN,
       then: (line) => optionalOverline = line
     })
-  
-    // Next, let's parse the content and underline.
-    //
-    // The content must not be a streak! Why not? Take a look:
-    //
-    // =============================================
-    // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
-    // =============================================
-    //
-    // The author almost certainly included those lines to separate sections, not as a heading.
-    //
-    // We wouldn't need to care about this if we could parse separator streaks before headings,
-    // but that would introduce its own complications: The separator streak parser would always
-    // want to consume every heading's overline.
+
+    // Next, save the content and parse the underline.
     let content: string
     let underline: string
 
     const hasContentAndUnderline = (
       // Parse the content
       consumer.consumeLine({
-        if: (line) => NON_BLANK_PATTERN.test(line) && !STREAK_PATTERN.test(line),
+        pattern: NON_BLANK_PATTERN,
         then: (line) => content = line
       })
       
@@ -62,12 +52,37 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     if (!hasContentAndUnderline) {
       return false
     }
-
+    
+    
+    // We're still not convinced this is actually a heading. Why's that?
+    //
+    // What if the content is a streak? Example:
+    //
+    // =============================================
+    // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+    // =============================================
+    //
+    // Or what if the content is a list with a single item? Example:
+    //
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // * Buy milk
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    //
+    // Neither of those should be parsed as headings. We only accept the heading's content if it would
+    // would otherwise be parsed as a regular paragraph.
+    
+    const outlineNodeFromContent = getOutlineNodes(content)[0]
+    
+    if (!(outlineNodeFromContent instanceof ParagraphNode)) {
+      return false
+    }
+    
+    // Okay, we can use the content. Even better, because it was parsed as a paragraph, we've already
+    // have all its inline nodes!
+    const inlineNodes = (<ParagraphNode>outlineNodeFromContent).children
     const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
 
-    args.then(
-      [new HeadingNode(getInlineNodes(content), headingLevel)],
-      consumer.lengthConsumed())
+    args.then([new HeadingNode(inlineNodes, headingLevel)], consumer.lengthConsumed())
     
     return true
   }
