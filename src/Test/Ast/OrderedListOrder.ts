@@ -38,3 +38,38 @@ describe('An ordered list with non-numeral bullets', () => {
     expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
   })
 })
+
+describe('An ordered list with non-numeral bullets and a single numeral bullet', () => {
+  it('is automatically in ascending order', () => {
+    const text =
+      `
+# Hello, world!
+2. Goodbye, world!
+#) Goodbye, world!`
+    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+  })
+})
+
+describe('An ordered list with non-numeral bullets and two single numeral bullet', () => {
+  it('is ascending if the two numeral bullets are ascending', () => {
+    const text =
+      `
+# Hello, world!
+2. Goodbye, world!
+#) Goodbye, world!
+4) Goodbye, world!`
+    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+  })
+})
+
+describe('An ordered list with non-numeral bullets and two single numeral bullet', () => {
+  it('is ascending if the two numeral bullets are ascending', () => {
+    const text =
+      `
+# Hello, world!
+5. Goodbye, world!
+#) Goodbye, world!
+1) Goodbye, world!`
+    expect(listOrder(text)).to.be.eql(ListOrder.Descrending)
+  })
+})
