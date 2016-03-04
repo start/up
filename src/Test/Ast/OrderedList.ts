@@ -148,3 +148,95 @@ describe('Consecutive lines each bulleted by an integer followed by a right pare
     )
   })
 })
+
+
+describe('A single line bulleted by a number sign', () => {
+  it('produces an ordered list node containing ordered list item nodes', () => {
+    const text =
+      `
+# Hello, world!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('A single line bulleted by a number sign followed by a period', () => {
+  it('produces an ordered list node containing ordered list item nodes', () => {
+    const text =
+      `
+#. Hello, Lavender Town!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Lavender Town!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('A single line bulleted by a number sign followed by a right paren', () => {
+  it('produces an ordered list node containing ordered list item nodes', () => {
+    const text =
+      `
+#) Hello, Celadon City!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+describe('A single line bulleted by an integer followed by a period', () => {
+  it('produces a paragraph, not an ordered list', () => {
+    const text =
+      `
+1783. Not a good year for Great Britain.`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('1783. Not a good year for Great Britain.')
+        ])
+      ])
+    )
+  })
+})
+
+describe('A single line bulleted by an integer followed by a right paren', () => {
+  it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
+    const text =
+      `
+1) Hello, Celadon City!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], 1)
+        ])
+      ])
+    )
+  })
+})
