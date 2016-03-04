@@ -50,8 +50,8 @@ describe('An ordered list with non-numeral bullets and a single numeral bullet',
   })
 })
 
-describe('An ordered list with non-numeral bullets and two single numeral bullet', () => {
-  it('is ascending if the two numeral bullets are ascending', () => {
+describe('An ordered list with non-numeral bullets and 2 single numeral bullet', () => {
+  it('is ascending if the 2 numeral bullets are ascending', () => {
     const text =
       `
 # Hello, world!
@@ -60,10 +60,8 @@ describe('An ordered list with non-numeral bullets and two single numeral bullet
 4) Goodbye, world!`
     expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
   })
-})
-
-describe('An ordered list with non-numeral bullets and two single numeral bullet', () => {
-  it('is ascending if the two numeral bullets are ascending', () => {
+  
+  it('is ascending if the 2 numeral bullets are ascending', () => {
     const text =
       `
 # Hello, world!
