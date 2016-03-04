@@ -43,7 +43,7 @@ describe('A paragraph node', () => {
 })
 
 describe('An unordered list node with list item nodes', () => {
-  it('produces a ul element with li elements for each list item', () => {
+  it('produces a ul element containing li elements for each list item', () => {
     const node = new UnorderedListNode([
       new UnorderedListItemNode([
         new PlainTextNode('Tropical')
@@ -57,7 +57,7 @@ describe('An unordered list node with list item nodes', () => {
 })
 
 describe('An ordered list node with list item nodes', () => {
-  it('produces a ol element with li elements for each list item', () => {
+  it('produces a ol element containing li elements for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListItemNode([
         new PlainTextNode('Tropical')
@@ -70,13 +70,27 @@ describe('An ordered list node with list item nodes', () => {
   })
 })
 
-describe('An ordered list item having an explicit ordinal', () => {
+describe('An ordered list item with an explicit ordinal', () => {
   it('a li element with an explicit ordinal', () => {
     const node = 
       new OrderedListItemNode([
         new PlainTextNode('Territories')
       ], 12)
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<li value="12">Territories</li>')
+  })
+})
+
+describe('An ordered list node whose first list item node has an explicit ordinal', () => {
+  it('produces a ol element with an explicit starting ordinal, containing li elements for each list item', () => {
+    const node = new OrderedListNode([
+      new OrderedListItemNode([
+        new PlainTextNode('Tropical')
+      ], 3),
+      new OrderedListItemNode([
+        new PlainTextNode('Territories')
+      ])
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol start="3"><li value="3">Tropical</li><li>Territories</li></ol>')
   })
 })
 
