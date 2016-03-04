@@ -98,3 +98,53 @@ describe('Consecutive lines each bulleted by a number sign followed by a right p
     )
   })
 })
+
+describe('Consecutive lines each bulleted by an integer followed by a period', () => {
+  it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
+    const text =
+      `
+1. Hello, Celadon City!
+2. Goodbye, Celadon City!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], 1),
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ], 2)
+        ])
+      ])
+    )
+  })
+})
+
+describe('Consecutive lines each bulleted by an integer followed by a right paren', () => {
+  it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
+    const text =
+      `
+1) Hello, Celadon City!
+2) Goodbye, Celadon City!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], 1),
+          new OrderedListItemNode([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ], 2)
+        ])
+      ])
+    )
+  })
+})
