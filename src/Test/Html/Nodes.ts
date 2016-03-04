@@ -80,7 +80,7 @@ describe('An ordered list item with an explicit ordinal', () => {
   })
 })
 
-describe('An ordered list node whose first list item node has an explicit ordinal', () => {
+describe('An ordered list node with an explicit starting ordinal', () => {
   it('produces a ol element with an explicit starting ordinal, containing li elements for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListItemNode([
@@ -91,6 +91,20 @@ describe('An ordered list node whose first list item node has an explicit ordina
       ])
     ])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol start="3"><li value="3">Tropical</li><li>Territories</li></ol>')
+  })
+})
+
+describe('An ordered list node in descending order', () => {
+  it('produces a ol element with the reversed attribute, containing li elements for each list item', () => {
+    const node = new OrderedListNode([
+      new OrderedListItemNode([
+        new PlainTextNode('Tropical')
+      ], 2),
+      new OrderedListItemNode([
+        new PlainTextNode('Territories')
+      ], 1)
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol reversed start="2"><li value="2">Tropical</li><li value="1">Territories</li></ol>')
   })
 })
 
