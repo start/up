@@ -99,9 +99,13 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
         new SectionSeparatorNode()
       ]))
   })
+})
+
+describe('A section separator streak', () => {
+  
 
   it('can have whitespace interspersed throughout the line in any manner', () => {
-    const text = ' +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_ '
+    const text = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -115,10 +119,6 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
         new SectionSeparatorNode()
       ]))
   })
-})
-
-describe('A section separator streak', () => {
-  
 
   it('can be surrounded by any number of blank lines and still produce a single separator node', () => {
     const text = `

@@ -32,8 +32,7 @@ const STREAK_CHAR = either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_
 
 const INTEGER = '\\d+'
 
-// TODO: Allow flexible indentation for all conventions, not just this one
-const STREAK = solely(ANY_WHITESPACE + atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
+const STREAK = solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.

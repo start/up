@@ -37,7 +37,7 @@ Hello, world!
     const text =
       `
 Hello, world!
- +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
++**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
