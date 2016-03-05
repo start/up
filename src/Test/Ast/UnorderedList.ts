@@ -29,7 +29,7 @@ describe('Consecutive bulleted lines', () => {
     const text =
       `
 * Hello, world!
-* Goodbyte, world!`
+* Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -40,7 +40,7 @@ describe('Consecutive bulleted lines', () => {
           ]),
           new UnorderedListItemNode([
             new ParagraphNode([
-              new PlainTextNode('Goodbyte, world!')
+              new PlainTextNode('Goodbye, world!')
             ])
           ])
         ])
@@ -53,12 +53,12 @@ describe('Consecutive bulleted lines', () => {
       `
 * Hello, world!
 
-* Goodbyte, world!`
+* Goodbye, world!`
 
     const textWithoutSeparator =
       `
 * Hello, world!
-* Goodbyte, world!`
+* Goodbye, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
 
@@ -68,12 +68,12 @@ describe('Consecutive bulleted lines', () => {
 * Hello, world!
 
 
-* Goodbyte, world!`
+* Goodbye, world!`
 
     const textWithoutSeparator =
       `
 * Hello, world!
-* Goodbyte, world!`
+* Goodbye, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
   
@@ -85,12 +85,12 @@ describe('Consecutive bulleted lines', () => {
 
 
 
-* Goodbyte, world!`
+* Goodbye, world!`
 
     const textWithoutSeparator =
       `
 * Hello, world!
-* Goodbyte, world!`
+* Goodbye, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
   
