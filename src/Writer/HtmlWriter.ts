@@ -47,7 +47,13 @@ export class HtmlWriter extends Writer {
   }
 
   orderedListItem(node: OrderedListItemNode): string {
-    return this.htmlElement('li', node)
+    const attrs: any = {}
+    
+    if (node.ordinal != null) {
+      attrs.value = node.ordinal
+    }
+    
+    return this.htmlElement('li', node, attrs)
   }
 
   lineBlock(node: LineBlockNode): string {
