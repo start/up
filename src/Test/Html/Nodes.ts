@@ -104,7 +104,7 @@ describe('An ordered list node in descending order', () => {
         new PlainTextNode('Territories')
       ], 1)
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol reversed start="2"><li value="2">Tropical</li><li value="1">Territories</li></ol>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol start="2" reversed><li value="2">Tropical</li><li value="1">Territories</li></ol>')
   })
 })
 

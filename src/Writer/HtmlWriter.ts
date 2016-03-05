@@ -43,16 +43,16 @@ export class HtmlWriter extends Writer {
   }
 
   orderedList(node: OrderedListNode): string {
-    const attrs: { reversed?: any, start?: number } = {}
-    
-    const order = node.order()
-    if (order === ListOrder.Descrending) {
-      attrs.reversed = null
-    }
+    const attrs: { start?: number, reversed?: any } = {}
     
     const start = node.start()
     if (start != null) {
       attrs.start = start
+    }
+
+    const order = node.order()
+    if (order === ListOrder.Descrending) {
+      attrs.reversed = null
     }
 
     return this.htmlElement('ol', node, attrs)
