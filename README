@@ -116,9 +116,9 @@ const funFact = "Even backslashes are preserved.\n\nExciting!"
 ````````````
 
 
-* This is list item
+* This is a list item
 
-* This another list item
+* This is the second list item
   
   This is a heading
   --------------------------
@@ -127,3 +127,24 @@ const funFact = "Even backslashes are preserved.\n\nExciting!"
   - Including other lists
   
 * The blank lines between list items are optional
+
+
+
+Ordered lists can start and stop at any ordinal:
+
+3. Nintendo 64
+4. GameCube
+
+
+And ordered list can even be reversed:
+
+3. Game Boy Advance
+2. Game Boy Color
+1. Game Boy
+
+
+Ordered lists don't need numerals:
+
+# You can use number signs instead
+# Alternatively, you can mix numerals with number signs
+# This allows you to specify a list's direction or starting ordinal without having to manually count each item
