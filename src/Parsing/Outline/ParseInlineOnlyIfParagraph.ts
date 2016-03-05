@@ -18,7 +18,8 @@ const NON_BLANK_PATTERN = new RegExp(
   NON_BLANK
 )
 
-// `parseInlineOnlyIfParagraph` only succeeds if the text would otherwise be parsed as a plain paragraph.
+// `parseInlineOnlyIfParagraph` only succeeds if the text would otherwise be parsed as a regular
+// paragraph.
 //
 // The following three inputs would fail: 
 //
