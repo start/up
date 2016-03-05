@@ -28,7 +28,7 @@ const NON_BLANK_PATTERN = new RegExp(
 // =-=-=-=-=-=
 //
 // * Drink milk
-export function parseInlineOnlyIfParagraph(args: ParseInlineOnlyIfParagraphArgs): boolean {
+export function parseInlineOnlyIfRegularParagraph(args: ParseInlineOnlyIfParagraphArgs): boolean {
   const outlineNodeFromContent = getOutlineNodes(args.text)[0]
 
   if (outlineNodeFromContent instanceof ParagraphNode) {
