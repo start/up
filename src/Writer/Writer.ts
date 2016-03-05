@@ -16,6 +16,9 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
+import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
+import { DescriptionTermNode } from '../SyntaxNodes/DescriptionTermNode'
+import { DescriptionNode } from '../SyntaxNodes/DescriptionNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -118,6 +121,9 @@ export abstract class Writer {
   abstract unorderedListItem(node: UnorderedListItemNode): string;
   abstract orderedList(node: OrderedListNode): string;
   abstract orderedListItem(node: OrderedListItemNode): string;
+  abstract descriptionList(node: DescriptionListNode): string;
+  abstract descriptionTerm(node: DescriptionTermNode): string;
+  abstract description(node: DescriptionNode): string;
   abstract lineBlock(node: LineBlockNode): string;
   abstract line(node: LineNode): string;
   abstract codeBlock(node: CodeBlockNode): string;
