@@ -16,7 +16,7 @@ import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
-import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
+import { OrderedListNode, ListOrder } from '../SyntaxNodes/OrderedListNode'
 import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
@@ -43,16 +43,28 @@ export class HtmlWriter extends Writer {
   }
 
   orderedList(node: OrderedListNode): string {
-    return this.htmlElement('ol', node)
+    const attrs: { reversed?: any, start?: number } = {}
+    
+    const order = node.order()
+    if (order === ListOrder.Descrending) {
+      attrs.reversed = null
+    }
+    
+    const start = node.start()
+    if (start != null) {
+      attrs.start = start
+    }
+
+    return this.htmlElement('ol', node, attrs)
   }
 
   orderedListItem(node: OrderedListItemNode): string {
-    const attrs: any = {}
-    
+    const attrs: { value?: number } = {}
+
     if (node.ordinal != null) {
       attrs.value = node.ordinal
     }
-    
+
     return this.htmlElement('li', node, attrs)
   }
 
@@ -124,8 +136,12 @@ export class HtmlWriter extends Writer {
 }
 
 function htmlElement(tagName: string, content: string, attrs: any = {}): string {
-  const htmlAttrs =
-    Object.keys(attrs).map((key) => `${key}="${attrs[key]}"`)
+  const htmlAttrs = (
+    Object.keys(attrs).map((key) => {
+      const value = attrs[key]
+      return (value == null ? key : `${key}="${value}"`)
+    })
+  )
 
   const openingTagContents =
     [tagName].concat(htmlAttrs).join(' ')
