@@ -79,10 +79,10 @@ And addresses do, too`
         ]),
         new LineBlockNode([
           new LineNode([
-            new PlainTextNode('Roses are red')
+            new PlainTextNode('Lyrics have lines')
           ]),
           new LineNode([
-            new PlainTextNode('Violets are blue')
+            new PlainTextNode('And addresses do, too')
           ])
         ]),
       ])
