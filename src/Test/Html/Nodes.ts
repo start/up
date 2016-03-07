@@ -76,15 +76,21 @@ describe('An ordered list node with list item nodes', () => {
   })
 })
 
-describe('An ordered list item with an explicit ordinal', () => {
-  it('a li element with an explicit ordinal', () => {
-    const node =
+describe('An ordered list node with an item with an explicit ordinal', () => {
+  it('produces a ol element containing li elements, with an explicit ordinal for the appropriate li element', () => {
+    const node = new OrderedListNode([
+      new OrderedListItemNode([
+        new ParagraphNode([
+          new PlainTextNode('Tropical')
+        ])
+      ]),
       new OrderedListItemNode([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])
-      ], 12)
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<li value="12"><p>Territories</p></li>')
+      ], 5)
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol><li><p>Tropical</p></li><li value="5"><p>Territories</p></li></ol>')
   })
 })
 

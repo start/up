@@ -45,36 +45,12 @@ export abstract class Writer {
       return this.unorderedList(node)
     }
     
-    if (node instanceof UnorderedListItemNode) {
-      return this.unorderedListItem(node)
-    }
-    
     if (node instanceof OrderedListNode) {
       return this.orderedList(node)
     }
     
-    if (node instanceof OrderedListItemNode) {
-      return this.orderedListItem(node)
-    }
-    
     if (node instanceof DescriptionListNode) {
       return this.descriptionList(node)
-    }
-    
-    if (node instanceof DescriptionListItemNode) {
-      return this.descriptionListItem(node)
-    }
-    
-    if (node instanceof DescriptionTermNode) {
-      return this.descriptionTerm(node)
-    }
-    
-    if (node instanceof DescriptionNode) {
-      return this.description(node)
-    }
-    
-    if (node instanceof OrderedListItemNode) {
-      return this.orderedListItem(node)
     }
     
     if (node instanceof LineBlockNode) {
@@ -139,13 +115,8 @@ export abstract class Writer {
   abstract document(node: DocumentNode): string;
   abstract blockquote(node: BlockquoteNode): string;
   abstract unorderedList(node: UnorderedListNode): string;
-  abstract unorderedListItem(node: UnorderedListItemNode): string;
   abstract orderedList(node: OrderedListNode): string;
-  abstract orderedListItem(node: OrderedListItemNode): string;
   abstract descriptionList(node: DescriptionListNode): string;
-  abstract descriptionListItem(node: DescriptionListItemNode): string;
-  abstract descriptionTerm(node: DescriptionTermNode): string;
-  abstract description(node: DescriptionNode): string;
   abstract lineBlock(node: LineBlockNode): string;
   abstract line(node: LineNode): string;
   abstract codeBlock(node: CodeBlockNode): string;
