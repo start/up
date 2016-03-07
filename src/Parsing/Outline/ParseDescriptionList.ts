@@ -1,10 +1,12 @@
 import { TextConsumer } from '../TextConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
+import { DescriptionListItemNode } from '../../SyntaxNodes/DescriptionListItemNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionTermNode } from '../../SyntaxNodes/DescriptionTermNode'
 import { DescriptionNode } from '../../SyntaxNodes/DescriptionNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
+import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from './Patterns'
@@ -23,7 +25,6 @@ const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
 )
 
-/*
 
 // Description lists are collections of terms and descriptions.
 //
@@ -32,7 +33,7 @@ const INDENTED_PATTERN = new RegExp(
 // A single description can be associated with multiple terms.
 export function parseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-  const listItemsContents: string[] = []
+  const listItemNodes: DescriptionListItemNode[] = []
 
   while (!consumer.done()) {
     let terms: string[] = []
@@ -83,27 +84,23 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     if (!descriptionContents.length) {
       break
     }
+    
+    const termNodes =
+      terms.map((termLine) => new DescriptionTermNode(getInlineNodes(termLine)))
 
-    // This loses the final newline, but trailing blank lines are always ignored when parsing for
-    // outline conventions, which is exactly what we're going to do next. 
-    listItemsContents.push(terms.join('\n'))
+    const descriptionNode =
+      new DescriptionNode(
+        getOutlineNodes(descriptionContents.join('\n')))
+         
+    listItemNodes.push(new DescriptionListItemNode(termNodes, descriptionNode))
   }
 
-  if (!listItemsContents.length) {
+  if (!listItemNodes.length) {
     return false
   }
 
-  const listNode = new UnorderedListNode()
-
-  // Parse each list item like its own mini-document
-  for (const listItemContents of listItemsContents) {
-    listNode.addChild(
-      new UnorderedListItemNode(getOutlineNodes(listItemContents))
-    )
-  }
+  const listNode = new DescriptionListNode(listItemNodes)
 
   args.then([listNode], consumer.lengthConsumed())
   return true
 }
-
-*/
