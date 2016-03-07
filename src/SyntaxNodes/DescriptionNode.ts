@@ -2,7 +2,7 @@ import { SyntaxNode } from './SyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class DescriptionNode extends SyntaxNode {
-  constructor(children: OutlineSyntaxNode[]) {
+  constructor(public children: OutlineSyntaxNode[]) {
     super()
   }
   
