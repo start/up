@@ -24,18 +24,7 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '\n')
 )
 
-// Why doesn't the getOutlineNodes function accept a callback like all the other parsers?
-//
-// Well, that callback is helpful when:
-//
-// 1. The parser might fail
-// 2. The parser might consume an unknown number of characters 
-//
-// The getOutlineNodes satisfies neither criteria: It will always successfully parses the entire string.
-// It's simpler simply to return the result nodes.
-//
-// Furthermore, getOutlineNodes doesn't accept a parentNode parameter, because the parent node never
-// matters when parsing any outline nodes.
+
 export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
   
   // Within each call to parseOutline, we reset the underlines associated with each heading level. 
