@@ -84,7 +84,7 @@ describe("A term in a description list", () => {
     const text =
       `
 Ash *"Little Marco"* Ketchum
-  A famous Pokemon Trainer`
+  A famous Pokemon Trainer from Pallet Town`
 
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -97,7 +97,34 @@ Ash *"Little Marco"* Ketchum
             ])
           ], new DescriptionNode([
             new ParagraphNode([
-              new PlainTextNode('A famous Pokemon Trainer')
+              new PlainTextNode('A famous Pokemon Trainer from Pallet Town')
+            ])
+          ]))
+        ])
+      ])
+    )
+  })
+})
+
+describe("A description in a description list", () => {
+  it('can contain inline conventions', () => {
+    const text =
+      `
+Ash Ketchum
+  A famous Pokemon Trainer *probably* from Pallet Town`
+
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItemNode([
+            new DescriptionTermNode([
+              new PlainTextNode('Ash Ketchum')
+            ])
+          ], new DescriptionNode([
+            new ParagraphNode([
+              new PlainTextNode('A famous Pokemon Trainer '),
+              new EmphasisNode([new PlainTextNode('probably')]),
+              new PlainTextNode(' from Pallet Town')
             ])
           ]))
         ])
