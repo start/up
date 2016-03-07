@@ -18,17 +18,17 @@ const STREAK_PATTERN = new RegExp(
 export function parseLineBlock(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
   
-  // Not all consecutive non-blank lines should be included in a line block.
+  // Even if there are multiple consecutive non-blank lines, they shouldn't necessariliy all be
+  // included in the line block.
   //
   // For example:
   //
   // Roses are red
   // Violets are blue
-  // =*=*=*=*=*=*=*=*
+  // =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
   // Anyway, poetry is pretty fun.
   //
-  // The first two lines should be parsed as a line block, but the second two lines should not
-  // be included.
+  // Only the first 2 lines should be included.
   const lineNodes: LineNode[] = []
   
   while (consumer.consumeLine({
