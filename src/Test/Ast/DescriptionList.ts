@@ -52,8 +52,8 @@ Charmander
 })
 
 
-describe('Multiple non-indented lines followed by an indented line', () => {
-  it('produce a description list node containing a multiple terms and their description', () => {
+describe('Multiple non-indented lines followed by one indented line', () => {
+  it('produce a description list node containing multiple terms and their single description', () => {
     const text =
       `
 Charmander
@@ -71,6 +71,33 @@ Torchic
           ], new DescriptionNode([
             new ParagraphNode([
               new PlainTextNode('Starter Fire Pokemon')
+            ])
+          ]))
+        ])
+      ])
+    )
+  })
+})
+
+describe("A term in a description list", () => {
+  it('can contain inline conventions', () => {
+    const text =
+      `
+Ash *"Little Marco"* Ketchum
+  A famous Pokemon Trainer`
+
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItemNode([
+            new DescriptionTermNode([
+              new PlainTextNode('Ash '),
+              new EmphasisNode([new PlainTextNode('"Little Marco"')]),
+              new PlainTextNode(' Ketchum')
+            ])
+          ], new DescriptionNode([
+            new ParagraphNode([
+              new PlainTextNode('A famous Pokemon Trainer')
             ])
           ]))
         ])
