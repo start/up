@@ -55,14 +55,25 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       break
     }
 
-    // Next, we collect every line in the description
+    // Next, the description's first line
     const descriptionContents: string[] = []
 
+    const hasDescription = consumer.consumeLine({
+      pattern: INDENTED_PATTERN,
+      if: (line) => !BLANK_PATTERN.test(line),
+      then: (line) => descriptionContents.push(line.replace(INDENTED_PATTERN, ''))
+    })
+
+    if (hasDescription) {
+      break
+    }
+    
+    // Finally, we collect the rest of the lines in the description
     while (!consumer.done()) {
 
       const isLineIndented = consumer.consumeLine({
         pattern: INDENTED_PATTERN,
-        then: (line) => terms.push(line.replace(INDENTED_PATTERN, ''))
+        then: (line) => descriptionContents.push(line.replace(INDENTED_PATTERN, ''))
       })
 
       if (isLineIndented) {
@@ -86,7 +97,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     }
 
     const termNodes =
-      terms.map((termLine) => new DescriptionTermNode(getInlineNodes(termLine)))
+      terms.map((term) => new DescriptionTermNode(getInlineNodes(term)))
 
     const descriptionNode =
       new DescriptionNode(
