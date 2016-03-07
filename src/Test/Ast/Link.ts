@@ -33,8 +33,8 @@ describe('Bracketed text pointing to a URL', () => {
 })
 
 
-describe('Link node contents', () => {
-  it('are evaluated for other conventions', () => {
+describe("A link's contents", () => {
+  it('is evaluated for other conventions', () => {
     expect(Up.ast('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -50,7 +50,7 @@ describe('Link node contents', () => {
 })
 
 
-describe('Link URLs', () => {
+describe("A link's URLs", () => {
   it('can contain matching unescaped brackets', () => {
     expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
