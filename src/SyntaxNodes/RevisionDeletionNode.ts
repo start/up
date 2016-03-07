@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 export class RevisionDeletionNode extends InlineSyntaxNode {
-  constructor(children: InlineSyntaxNode[] = []) {
+  constructor(public children: InlineSyntaxNode[] = []) {
     super()  
   }
   

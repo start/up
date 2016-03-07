@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 export class StressNode extends InlineSyntaxNode {
-  constructor(children: InlineSyntaxNode[] = []) {
+  constructor(public children: InlineSyntaxNode[] = []) {
     super()  
   }
   
