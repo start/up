@@ -29,7 +29,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
 describe('A non-indented line followed by an indented line', () => {
-  it('produce a bulleted list node containing bulleted list item nodes', () => {
+  it('produce a description list node containing a single term and its description', () => {
     const text =
       `
 Charmander
@@ -43,6 +43,34 @@ Charmander
           ], new DescriptionNode([
             new ParagraphNode([
               new PlainTextNode('A flame burns on the tip of its tail from birth. It is said that a Charmander dies if its flame ever goes out.')
+            ])
+          ]))
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Multiple non-indented lines followed by an indented line', () => {
+  it('produce a description list node containing a multiple terms and their description', () => {
+    const text =
+      `
+Charmander
+Cyndaquil
+Torchic
+  Starter Fire Pokemon`
+
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItemNode([
+            new DescriptionTermNode([new PlainTextNode('Charmander')]),
+            new DescriptionTermNode([new PlainTextNode('Cyndaquil')]),
+            new DescriptionTermNode([new PlainTextNode('Torchic')])
+          ], new DescriptionNode([
+            new ParagraphNode([
+              new PlainTextNode('Starter Fire Pokemon')
             ])
           ]))
         ])
