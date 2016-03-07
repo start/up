@@ -1,6 +1,7 @@
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
+import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
@@ -35,7 +36,7 @@ const LEADING_BLANK_LINES_PATTERN = new RegExp(
 //
 // Furthermore, getOutlineNodes doesn't accept a parentNode parameter, because the parent node never
 // matters when parsing any outline nodes.
-export function getOutlineNodes(text: string): SyntaxNode[] {
+export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
   
   // Within each call to parseOutline, we reset the underlines associated with each heading level. 
   // This means blockquotes and list items are their own mini-documents with their own heading
@@ -61,7 +62,7 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
     .replace(TRAILING_WHITESPACE_PATTERN, '')
 
   const consumer = new TextConsumer(trimmedText)
-  const nodes: SyntaxNode[] = []
+  const nodes: OutlineSyntaxNode[] = []
 
   while (!consumer.done()) {
     for (let parseOutlineConvention of outlineParsers) {
@@ -83,8 +84,8 @@ export function getOutlineNodes(text: string): SyntaxNode[] {
   return withoutExtraConsecutiveSeparatorNodes(nodes)
 }
 
-function withoutExtraConsecutiveSeparatorNodes(nodes: SyntaxNode[]): SyntaxNode[] {
-  const resultNodes: SyntaxNode[] = []
+function withoutExtraConsecutiveSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+  const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
     const isExtraConsecutiveSectionSeparatorNode =
