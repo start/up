@@ -39,7 +39,7 @@ export class HtmlWriter extends Writer {
   unorderedList(node: UnorderedListNode): string {
     return htmlElement(
       'ul',
-      node.listItems.reduce((html, listItem) => html + this.unorderedListItem(listItem), '')
+      node.listItems.map((listItem) => this.unorderedListItem(listItem)).join('')
     )
   }
 
@@ -55,14 +55,13 @@ export class HtmlWriter extends Writer {
       attrs.start = start
     }
 
-    const order = node.order()
-    if (order === ListOrder.Descrending) {
+    if (node.order() === ListOrder.Descrending) {
       attrs.reversed = null
     }
 
     return htmlElement(
       'ol',
-      node.listItems.reduce((html, listItem) => html + this.orderedListItem(listItem), ''),
+      node.listItems.map((listItem) => this.orderedListItem(listItem)).join(''),
       attrs
     )
   }
