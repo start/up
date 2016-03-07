@@ -30,8 +30,11 @@ describe('Bracketed text pointing to a URL', () => {
         new PlainTextNode('. I bet you do, too.')
       ]))
   })
+})
 
-  it('is evaluated for other conventions', () => {
+
+describe('Link node contents', () => {
+  it('are evaluated for other conventions', () => {
     expect(Up.ast('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -44,8 +47,11 @@ describe('Bracketed text pointing to a URL', () => {
         new PlainTextNode('.')
       ]))
   })
+})
 
-  it('can contain matching unescaped brackets in the URL', () => {
+
+describe('Link URLs', () => {
+  it('can contain matching unescaped brackets', () => {
     expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Here is a '),
@@ -56,7 +62,7 @@ describe('Bracketed text pointing to a URL', () => {
       ]))
   })
 
-  it('can have an escaped, unmatched closing bracket in the URL', () => {
+  it('can have an escaped, unmatched closing bracket', () => {
     expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
