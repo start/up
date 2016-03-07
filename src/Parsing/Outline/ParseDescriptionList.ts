@@ -64,7 +64,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       then: (line) => descriptionContents.push(line.replace(INDENTED_PATTERN, ''))
     })
 
-    if (hasDescription) {
+    if (!hasDescription) {
       break
     }
     
