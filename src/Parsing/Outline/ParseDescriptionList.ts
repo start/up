@@ -23,6 +23,7 @@ const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
 )
 
+/*
 
 // Description lists are collections of terms and descriptions.
 //
@@ -104,3 +105,5 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
   args.then([listNode], consumer.lengthConsumed())
   return true
 }
+
+*/

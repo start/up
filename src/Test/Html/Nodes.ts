@@ -131,8 +131,12 @@ describe('A code block node', () => {
 
 describe('A blockquote node', () => {
   it('produces a blockquote element', () => {
-    const node = new BlockquoteNode([new PlainTextNode('Centipede')])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<blockquote>Centipede</blockquote>')
+    const node = new BlockquoteNode([
+      new ParagraphNode([
+        new PlainTextNode('Centipede')
+      ])
+    ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<blockquote><p>Centipede</p></blockquote>')
   })
 })
 
