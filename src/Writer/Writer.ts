@@ -17,6 +17,7 @@ import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItemNode } from '../SyntaxNodes/DescriptionListItemNode'
 import { DescriptionTermNode } from '../SyntaxNodes/DescriptionTermNode'
 import { DescriptionNode } from '../SyntaxNodes/DescriptionNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
@@ -50,6 +51,26 @@ export abstract class Writer {
     
     if (node instanceof OrderedListNode) {
       return this.orderedList(node)
+    }
+    
+    if (node instanceof OrderedListItemNode) {
+      return this.orderedListItem(node)
+    }
+    
+    if (node instanceof DescriptionListNode) {
+      return this.descriptionList(node)
+    }
+    
+    if (node instanceof DescriptionListItemNode) {
+      return this.descriptionListItem(node)
+    }
+    
+    if (node instanceof DescriptionTermNode) {
+      return this.descriptionTerm(node)
+    }
+    
+    if (node instanceof DescriptionNode) {
+      return this.description(node)
     }
     
     if (node instanceof OrderedListItemNode) {
@@ -122,6 +143,7 @@ export abstract class Writer {
   abstract orderedList(node: OrderedListNode): string;
   abstract orderedListItem(node: OrderedListItemNode): string;
   abstract descriptionList(node: DescriptionListNode): string;
+  abstract descriptionListItem(node: DescriptionListItemNode): string;
   abstract descriptionTerm(node: DescriptionTermNode): string;
   abstract description(node: DescriptionNode): string;
   abstract lineBlock(node: LineBlockNode): string;

@@ -3,7 +3,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { DescriptionNode } from './DescriptionNode'
 import { DescriptionTermNode } from './DescriptionTermNode'
 
-export class DescriptionListItem extends SyntaxNode {
+export class DescriptionListItemNode extends SyntaxNode {
   constructor(terms: DescriptionTermNode[], description: DescriptionTermNode) {
     super()
   }

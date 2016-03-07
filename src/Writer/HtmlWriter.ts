@@ -17,6 +17,7 @@ import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode, ListOrder } from '../SyntaxNodes/OrderedListNode'
 import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItemNode } from '../SyntaxNodes/DescriptionListItemNode'
 import { DescriptionTermNode } from '../SyntaxNodes/DescriptionTermNode'
 import { DescriptionNode } from '../SyntaxNodes/DescriptionNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
@@ -70,6 +71,10 @@ export class HtmlWriter extends Writer {
   }
 
   descriptionList(node: DescriptionListNode): string {
+    return '' //this.htmlElement('dl', node.children)
+  }
+
+  descriptionListItem(node: DescriptionListItemNode): string {
     return '' //this.htmlElement('dl', node.children)
   }
 
