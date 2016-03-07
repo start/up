@@ -1,10 +1,8 @@
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 
-export abstract class SyntaxNode {  
-  constructor();
-  constructor(public parentNode?: RichSyntaxNode) {
-  }
+export abstract class SyntaxNode {
+  public parentNode: RichSyntaxNode
 
   ancestors(): RichSyntaxNode[] {
     if (this.parentNode === null) {

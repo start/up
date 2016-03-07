@@ -6,7 +6,9 @@ import { InlineParserArgs, InlineParser } from './InlineParser'
 
 export function parseLink(args: InlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-  const linkNode = new LinkNode(args.parentNode)
+  
+  const linkNode = new LinkNode()
+  linkNode.parentNode = args.parentNode
   
   if (linkNode.ancestors().some(ancestor => ancestor instanceof LinkNode)) {
     // Links cannot be nested within other links
