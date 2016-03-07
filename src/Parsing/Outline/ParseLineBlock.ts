@@ -3,7 +3,7 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from './Patterns'
-import { parseInlineOnlyIfRegularParagraph } from './ParseInlineOnlyIfRegularParagraph'
+import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
@@ -17,20 +17,8 @@ const STREAK_PATTERN = new RegExp(
 // 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs!
 export function parseLineBlock(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-  const nonBlankLines: string[] = []
   
-  // Collect all consecutive non-blank lines
-  while (consumer.consumeLine({
-    pattern: NON_BLANK_LINE_PATTERN,
-    then: (line) => nonBlankLines.push(line)
-  })) { }
-
-  if (nonBlankLines.length < 2) {
-    return false
-  }
-  
-  
-  // However, some of the blank lines might not be regular lines.
+  // Not all consecutive non-blank lines should be included in a line block.
   //
   // For example:
   //
@@ -42,19 +30,13 @@ export function parseLineBlock(args: OutlineParserArgs): boolean {
   // The first two lines should be parsed as a line block, but the second two lines should not
   // be included.
   const lineNodes: LineNode[] = []
-   
-  for (const nonBlankLine of nonBlankLines) {
-    const lineWouldOtherwiseBeARegularParagraph =
-      parseInlineOnlyIfRegularParagraph({
-        text: nonBlankLine,
-        then: (inlineNodes) => lineNodes.push(new LineNode(inlineNodes))
-      })
-      
-    if (!lineWouldOtherwiseBeARegularParagraph) {
-      break
-    }
-  }
   
+  while (consumer.consumeLine({
+    pattern: NON_BLANK_LINE_PATTERN,
+    if: (line) => !isLineFancyOutlineConvention(line),
+    then: (line) => lineNodes.push(new LineNode(getInlineNodes(line)))
+  })) { }
+
   if (lineNodes.length < 2) {
     return false
   }

@@ -5,7 +5,6 @@ import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 import { either, NON_BLANK, STREAK } from './Patterns'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { parseInlineOnlyIfRegularParagraph } from './ParseInlineOnlyIfRegularParagraph'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
