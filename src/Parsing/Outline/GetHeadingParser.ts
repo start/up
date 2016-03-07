@@ -6,6 +6,7 @@ import { either, NON_BLANK, STREAK } from './Patterns'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { parseInlineOnlyIfRegularParagraph } from './ParseInlineOnlyIfRegularParagraph'
+import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
 const NON_BLANK_PATTERN = new RegExp(
@@ -71,12 +72,14 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     //
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
-    return parseInlineOnlyIfRegularParagraph({
-      text: content,
-      then: (inlineNodes) => {
-        const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
-        args.then([new HeadingNode(inlineNodes, headingLevel)], consumer.lengthConsumed())
-      }
-    })
+    
+    if (isLineFancyOutlineConvention(content)) {
+      return false
+    }
+
+    const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
+    args.then(
+      [new HeadingNode(getInlineNodes(content), headingLevel)],
+      consumer.lengthConsumed())
   }
 }
