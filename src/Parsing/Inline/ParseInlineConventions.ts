@@ -1,6 +1,4 @@
 import { TextConsumer } from '../TextConsumer'
-import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
-import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
@@ -29,7 +27,7 @@ const inlineParsers = [
 ]
 
 export function parseInlineConventions(args: InlineParserArgs): boolean {
-  const { text, endsWith, doesNotHave, parentNode, onlyIf, then } = args
+  const { text, endsWith, doesNotHave, parentNodeTypes, onlyIf, then } = args
     
   const nodes: SyntaxNode[] = [];
   const consumer = new TextConsumer(text)
@@ -45,7 +43,7 @@ export function parseInlineConventions(args: InlineParserArgs): boolean {
       const didConventionParseSuccessfully =
         parse({
           text: consumer.remainingText(),
-          parentNode: parentNode,
+          parentNodeTypes: parentNodeTypes,
           endsWith: endsWith,
           then: (resultNodes, lengthParsed) => {
             nodes.push(...resultNodes)

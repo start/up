@@ -2,10 +2,8 @@
 /// <reference path="../../../typings/chai/chai.d.ts" />
 
 import { expect } from 'chai'
- 
+
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
-import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode' 
-import { TextSyntaxNode } from '../../SyntaxNodes/TextSyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -46,13 +44,17 @@ describe('An unordered list node with list item nodes', () => {
   it('produces a ul element containing li elements for each list item', () => {
     const node = new UnorderedListNode([
       new UnorderedListItemNode([
-        new PlainTextNode('Tropical')
+        new ParagraphNode([
+          new PlainTextNode('Tropical')
+        ])
       ]),
       new UnorderedListItemNode([
-        new PlainTextNode('Territories')
+        new ParagraphNode([
+          new PlainTextNode('Territories')
+        ])
       ])
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li>Tropical</li><li>Territories</li></ul>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ul><li><p>Tropical</p></li><li><p>Territories</p></li></ul>')
   })
 })
 
@@ -60,23 +62,29 @@ describe('An ordered list node with list item nodes', () => {
   it('produces a ol element containing li elements for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListItemNode([
-        new PlainTextNode('Tropical')
+        new ParagraphNode([
+          new PlainTextNode('Tropical')
+        ])
       ]),
       new OrderedListItemNode([
-        new PlainTextNode('Territories')
+        new ParagraphNode([
+          new PlainTextNode('Territories')
+        ])
       ])
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol><li>Tropical</li><li>Territories</li></ol>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol><li><p>Tropical</p></li><li><p>Territories</p></li></ol>')
   })
 })
 
 describe('An ordered list item with an explicit ordinal', () => {
   it('a li element with an explicit ordinal', () => {
-    const node = 
+    const node =
       new OrderedListItemNode([
-        new PlainTextNode('Territories')
+        new ParagraphNode([
+          new PlainTextNode('Territories')
+        ])
       ], 12)
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<li value="12">Territories</li>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<li value="12"><p>Territories</p></li>')
   })
 })
 
@@ -84,13 +92,17 @@ describe('An ordered list node with an explicit starting ordinal', () => {
   it('produces a ol element with an explicit starting ordinal, containing li elements for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListItemNode([
-        new PlainTextNode('Tropical')
+        new ParagraphNode([
+          new PlainTextNode('Tropical')
+        ])
       ], 3),
       new OrderedListItemNode([
-        new PlainTextNode('Territories')
+        new ParagraphNode([
+          new PlainTextNode('Territories')
+        ])
       ])
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol start="3"><li value="3">Tropical</li><li>Territories</li></ol>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol start="3"><li value="3"><p>Tropical</p></li><li><p>Territories</p></li></ol>')
   })
 })
 
@@ -98,10 +110,14 @@ describe('An ordered list node in descending order', () => {
   it('produces a ol element with the reversed attribute, containing li elements for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListItemNode([
-        new PlainTextNode('Tropical')
+        new ParagraphNode([
+          new PlainTextNode('Tropical')
+        ])
       ], 2),
       new OrderedListItemNode([
-        new PlainTextNode('Territories')
+        new ParagraphNode([
+          new PlainTextNode('Territories')
+        ])
       ], 1)
     ])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<ol start="2" reversed><li value="2">Tropical</li><li value="1">Territories</li></ol>')

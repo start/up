@@ -1,9 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
-export class StressNode extends InlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[] = []) {
-    super()  
-  }
-  
+export class StressNode extends RichInlineSyntaxNode {
   STRESS: any = null
 }

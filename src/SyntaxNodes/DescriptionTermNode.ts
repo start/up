@@ -1,5 +1,5 @@
-import { RichSyntaxNode } from './RichSyntaxNode'
+import { SyntaxNode } from './SyntaxNode'
 
-export class DescriptionTermNode extends RichSyntaxNode {
+export class DescriptionTermNode extends SyntaxNode {
   private DESCRIPTION_TERM: any = null
 }

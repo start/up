@@ -1,5 +1,6 @@
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
-import { RichSyntaxNode } from '../../SyntaxNodes/RichSyntaxNode'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 
 export interface InlineParser {
@@ -8,8 +9,8 @@ export interface InlineParser {
 
 export interface InlineParserArgs {
   text: string
-  then: (resultNodes: SyntaxNode[], lengthParsed: number) => void
-  parentNode?: RichSyntaxNode
+  then: (resultNodes: InlineSyntaxNode[], lengthParsed: number) => void
+  parentNodeTypes?: RichInlineSyntaxNodeType[]
   endsWith?: string
   doesNotHave?: string
   onlyIf?: (consumer: TextConsumer) => boolean

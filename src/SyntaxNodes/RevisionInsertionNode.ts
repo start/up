@@ -1,9 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
-export class RevisionInsertionNode extends InlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[] = []) {
-    super()  
-  }
-  
+export class RevisionInsertionNode extends RichInlineSyntaxNode {
   private REVISION_INSERTION: any = null
 }

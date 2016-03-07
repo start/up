@@ -1,17 +1,17 @@
-import { RichSyntaxNodeType } from '../../SyntaxNodes/RichSyntaxNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { RichInlineSyntaxNode, RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 import { parseInlineConventions } from './ParseInlineConventions'
 import { InlineParserArgs, InlineParser } from './InlineParser'
 
-
 export function getSandwichParser(
-  NodeType: RichSyntaxNodeType,
+  SandwichNodeType: RichInlineSyntaxNodeType,
   openingBun: string,
   closingBun: string
 ): InlineParser {
   return (args: InlineParserArgs): boolean => {
-    const { text, endsWith, parentNode, then } = args
+    const { text, endsWith, parentNodeTypes, then } = args
     
     // If the text starts with the terminator, and the terminator itself starts with
     // this sandwich's opening "bun", then we'd normally *always* start parsing this
@@ -23,7 +23,6 @@ export function getSandwichParser(
       return false
     }
     const consumer = new TextConsumer(text)
-    const sandwichNode = new NodeType(parentNode)
 
     return (
       // Parse the opening bun
@@ -32,12 +31,11 @@ export function getSandwichParser(
       // Parse the content and the closing bun
       && parseInlineConventions({
         text: consumer.remainingText(),
-        parentNode: sandwichNode,
+        parentNodeTypes: args.parentNodeTypes.concat([SandwichNodeType]),
         endsWith: closingBun,
         then: (resultNodes, lengthParsed) => {
           consumer.skip(lengthParsed)
-          sandwichNode.addChildren(resultNodes)
-          then([sandwichNode], consumer.lengthConsumed())
+          then([new SandwichNodeType(resultNodes)], consumer.lengthConsumed())
         }
       })
     )

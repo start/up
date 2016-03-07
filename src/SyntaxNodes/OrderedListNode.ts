@@ -1,5 +1,4 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 

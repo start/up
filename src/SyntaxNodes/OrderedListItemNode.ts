@@ -1,11 +1,10 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
+import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 
-export class OrderedListItemNode extends RichSyntaxNode {
+export class OrderedListItemNode extends SyntaxNode {
   // During parsing, `ordinal` can be either `null` or a number. Defaulting `ordinal` to `null`
   // rather than `undefined` allows our unit tests to be cleaner.
-  constructor(children?: SyntaxNode[], public ordinal: number = null) {
-    super(children)
+  constructor(public children?: OutlineSyntaxNode[], public ordinal: number = null) {
   }
   
   private ORDERED_LIST_ITEM: any = null

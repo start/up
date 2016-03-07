@@ -1,9 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
-export class EmphasisNode extends InlineSyntaxNode {
-  constructor(children: InlineSyntaxNode[] = []) {
-    super()  
-  }
-  
+export class EmphasisNode extends RichInlineSyntaxNode {
   private EMPHASIS: any = null
 }

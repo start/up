@@ -1,7 +1,5 @@
 
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
-import { TextSyntaxNode } from '../SyntaxNodes/TextSyntaxNode'
 import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
@@ -72,15 +70,15 @@ export class HtmlWriter extends Writer {
   }
 
   descriptionList(node: DescriptionListNode): string {
-    return this.htmlElement('dl', node.children)
+    return '' //this.htmlElement('dl', node.children)
   }
 
   descriptionTerm(node: DescriptionTermNode): string {
-    return this.htmlElement('dt', node.children)
+    return '' //this.htmlElement('dt', node.children)
   }
 
   description(node: DescriptionNode): string {
-    return this.htmlElement('dd', node.children)
+    return '' //this.htmlElement('dd', node.children)
   }
 
   lineBlock(node: LineBlockNode): string {

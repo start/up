@@ -1,9 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
-export class SpoilerNode extends InlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[] = []) {
-    super()  
-  }
-  
+export class SpoilerNode extends RichInlineSyntaxNode {
   private SPOILER: any = null
 }

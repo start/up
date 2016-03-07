@@ -1,5 +1,4 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { RichSyntaxNode } from '../SyntaxNodes/RichSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class HeadingNode extends OutlineSyntaxNode {

@@ -1,6 +1,10 @@
-import { RichSyntaxNode } from './RichSyntaxNode'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { SyntaxNode } from './SyntaxNode'
 
-export class LineNode extends RichSyntaxNode {
+export class LineNode extends SyntaxNode {
+  constructor(public children: InlineSyntaxNode[]) {
+    super()
+  }
+  
   private LINE: any = null
 }

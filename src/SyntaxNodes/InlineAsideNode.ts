@@ -1,9 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
-export class InlineAsideNode extends InlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[] = []) {
-    super()  
-  }
-  
+export class InlineAsideNode extends RichInlineSyntaxNode {
   private INLINE_ASIDE: any = null
 }
