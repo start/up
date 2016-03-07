@@ -92,10 +92,6 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       }
     }
 
-    if (!descriptionContents.length) {
-      break
-    }
-
     const termNodes =
       terms.map((term) => new DescriptionTermNode(getInlineNodes(term)))
 
