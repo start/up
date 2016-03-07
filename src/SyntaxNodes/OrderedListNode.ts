@@ -8,17 +8,17 @@ export enum ListOrder {
 }
 
 export class OrderedListNode extends OutlineSyntaxNode {
-  constructor(public children: OrderedListItemNode[] = []) {
+  constructor(public listItems: OrderedListItemNode[] = []) {
     super()
   }
   
   start(): number {
-    return this.children[0].ordinal
+    return this.listItems[0].ordinal
   }
 
   order(): ListOrder {
     const withExplicitOrdinals =
-      this.children.filter((listItem) => listItem.ordinal != null)
+      this.listItems.filter((listItem) => listItem.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
       return ListOrder.Ascending

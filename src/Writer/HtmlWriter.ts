@@ -36,7 +36,7 @@ export class HtmlWriter extends Writer {
   }
 
   unorderedList(node: UnorderedListNode): string {
-    return this.htmlElement('ul', node.children)
+    return this.htmlElement('ul', node.listItems)
   }
 
   unorderedListItem(node: UnorderedListItemNode): string {
@@ -56,7 +56,7 @@ export class HtmlWriter extends Writer {
       attrs.reversed = null
     }
 
-    return this.htmlElement('ol', node.children, attrs)
+    return this.htmlElement('ol', node.listItems, attrs)
   }
 
   orderedListItem(node: OrderedListItemNode): string {
