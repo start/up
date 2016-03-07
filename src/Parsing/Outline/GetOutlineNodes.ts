@@ -11,6 +11,7 @@ import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
+import { parseDescriptionList } from './ParseDescriptionList'
 import { parseParagraph } from './ParseParagraph'
 import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
@@ -40,6 +41,7 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
     parseSectionSeparatorStreak,
     parseCodeBlock,
     parseBlockquote,
+    parseDescriptionList,
     parseLineBlock,
     parseParagraph
   ]

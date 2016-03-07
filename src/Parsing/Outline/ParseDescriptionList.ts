@@ -40,13 +40,13 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
 
     // First, we collect every term for the next description
     while (!consumer.done()) {
-      const isValidTerm = consumer.consumeLine({
+      const isTerm = consumer.consumeLine({
         pattern: NON_BLANK_PATTERN,
         if: (line) => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line),
         then: (line) => terms.push(line)
       })
-      
-      if (!isValidTerm) {
+
+      if (!isTerm) {
         break
       }
     }
@@ -57,7 +57,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
 
     // Next, we collect every line in the description
     const descriptionContents: string[] = []
-    
+
     while (!consumer.done()) {
 
       const isLineIndented = consumer.consumeLine({
@@ -80,18 +80,18 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
         break
       }
     }
-    
+
     if (!descriptionContents.length) {
       break
     }
-    
+
     const termNodes =
       terms.map((termLine) => new DescriptionTermNode(getInlineNodes(termLine)))
 
     const descriptionNode =
       new DescriptionNode(
         getOutlineNodes(descriptionContents.join('\n')))
-         
+
     listItemNodes.push(new DescriptionListItemNode(termNodes, descriptionNode))
   }
 
@@ -99,8 +99,6 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const listNode = new DescriptionListNode(listItemNodes)
-
-  args.then([listNode], consumer.lengthConsumed())
+  args.then([new DescriptionListNode(listItemNodes)], consumer.lengthConsumed())
   return true
 }
