@@ -10,7 +10,7 @@ export interface InlineParser {
 export interface InlineParserArgs {
   text: string
   then: (resultNodes: InlineSyntaxNode[], lengthParsed: number) => void
-  parentNodeTypes?: RichInlineSyntaxNodeType[]
+  parentNodeTypes: RichInlineSyntaxNodeType[]
   endsWith?: string
   doesNotHave?: string
   onlyIf?: (consumer: TextConsumer) => boolean

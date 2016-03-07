@@ -5,12 +5,11 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { InlineParserArgs, InlineParser } from './InlineParser'
 
 export function parseLink(args: InlineParserArgs): boolean {
+  const { parentNodeTypes } = args
   const consumer = new TextConsumer(args.text)
   
   const linkNode = new LinkNode()
-  linkNode.parentNode = args.parentNode
-  
-  if (linkNode.ancestors().some(ancestor => ancestor instanceof LinkNode)) {
+  if (parentNodeTypes.some(type => type === LinkNode)) {
     // Links cannot be nested within other links
     return false
   }
@@ -24,13 +23,13 @@ export function parseLink(args: InlineParserArgs): boolean {
     // Parse the link's content and the URL arrow
     && parseInlineConventions({
       text: consumer.remainingText(),
-      parentNode: linkNode,
+      parentNodeTypes: parentNodeTypes.concat([LinkNode]),
       endsWith: ' -> ',
       doesNotHave: ']',
       onlyIf: (inlineConsumer) => inlineConsumer.areSquareBracketsBalanced(),
       then: (resultNodes, lengthParsed) => {
         consumer.skip(lengthParsed)
-        linkNode.addChildren(resultNodes)
+        linkNode.children.push(...resultNodes)
       }
     })
       

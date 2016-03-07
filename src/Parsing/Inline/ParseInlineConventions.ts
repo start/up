@@ -1,5 +1,5 @@
 import { TextConsumer } from '../TextConsumer'
-import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -29,7 +29,7 @@ const inlineParsers = [
 export function parseInlineConventions(args: InlineParserArgs): boolean {
   const { text, endsWith, doesNotHave, parentNodeTypes, onlyIf, then } = args
     
-  const nodes: SyntaxNode[] = [];
+  const nodes: InlineSyntaxNode[] = [];
   const consumer = new TextConsumer(text)
   
   let stillNeedsTerminator = !!endsWith
