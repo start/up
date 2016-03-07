@@ -34,15 +34,15 @@ export class HtmlWriter extends Writer {
   }
 
   blockquote(node: BlockquoteNode): string {
-    return this.htmlElement('blockquote', node)
+    return this.htmlElement('blockquote', node.children)
   }
 
   unorderedList(node: UnorderedListNode): string {
-    return this.htmlElement('ul', node)
+    return this.htmlElement('ul', node.children)
   }
 
   unorderedListItem(node: UnorderedListItemNode): string {
-    return this.htmlElement('li', node)
+    return this.htmlElement('li', node.children)
   }
 
   orderedList(node: OrderedListNode): string {
@@ -58,7 +58,7 @@ export class HtmlWriter extends Writer {
       attrs.reversed = null
     }
 
-    return this.htmlElement('ol', node, attrs)
+    return this.htmlElement('ol', node.children, attrs)
   }
 
   orderedListItem(node: OrderedListItemNode): string {
@@ -68,19 +68,19 @@ export class HtmlWriter extends Writer {
       attrs.value = node.ordinal
     }
 
-    return this.htmlElement('li', node, attrs)
+    return this.htmlElement('li', node.children, attrs)
   }
 
   descriptionList(node: DescriptionListNode): string {
-    return this.htmlElement('dl', node)
+    return this.htmlElement('dl', node.children)
   }
 
   descriptionTerm(node: DescriptionTermNode): string {
-    return this.htmlElement('dt', node)
+    return this.htmlElement('dt', node.children)
   }
 
   description(node: DescriptionNode): string {
-    return this.htmlElement('dd', node)
+    return this.htmlElement('dd', node.children)
   }
 
   lineBlock(node: LineBlockNode): string {
@@ -88,7 +88,7 @@ export class HtmlWriter extends Writer {
   }
 
   line(node: LineNode): string {
-    return this.htmlElement('div', node)
+    return this.htmlElement('div', node.children)
   }
 
   codeBlock(node: CodeBlockNode): string {
@@ -96,19 +96,19 @@ export class HtmlWriter extends Writer {
   }
 
   paragraph(node: ParagraphNode): string {
-    return this.htmlElement('p', node)
+    return this.htmlElement('p', node.children)
   }
 
   heading(node: HeadingNode): string {
-    return this.htmlElement('h' + Math.min(6, node.level), node)
+    return this.htmlElement('h' + Math.min(6, node.level), node.children)
   }
 
   emphasis(node: EmphasisNode): string {
-    return this.htmlElement('em', node)
+    return this.htmlElement('em', node.children)
   }
 
   stress(node: StressNode): string {
-    return this.htmlElement('strong', node)
+    return this.htmlElement('strong', node.children)
   }
 
   inlineCode(node: InlineCodeNode): string {
@@ -116,31 +116,31 @@ export class HtmlWriter extends Writer {
   }
 
   revisionInsertion(node: RevisionInsertionNode): string {
-    return this.htmlElement('ins', node)
+    return this.htmlElement('ins', node.children)
   }
 
   revisionDeletion(node: RevisionDeletionNode): string {
-    return this.htmlElement('del', node)
+    return this.htmlElement('del', node.children)
   }
 
   spoiler(node: SpoilerNode): string {
-    return this.htmlElement('span', node, { class: 'spoiler' })
+    return this.htmlElement('span', node.children, { class: 'spoiler' })
   }
 
   inlineAside(node: InlineAsideNode): string {
-    return this.htmlElement('small', node)
+    return this.htmlElement('small', node.children)
   }
 
   link(node: LinkNode): string {
-    return this.htmlElement('a', node, { href: node.url })
+    return this.htmlElement('a', node.children, { href: node.url })
   }
 
   plainText(node: PlainTextNode): string {
     return node.text
   }
 
-  htmlElement(tagName: string, node: RichSyntaxNode, attrs: any = {}): string {
-    return htmlElement(tagName, this.htmlElements(node.children), attrs)
+  htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
+    return htmlElement(tagName, this.htmlElements(children), attrs)
   }
 
   htmlElements(nodes: SyntaxNode[]): string {

@@ -1,9 +1,5 @@
-import { SyntaxNode } from './SyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
-export class SectionSeparatorNode extends SyntaxNode {
-  text(): string {
-    return ''
-  }
-  
+export class SectionSeparatorNode extends OutlineSyntaxNode {
   private SECTION_SEPARATOR: any = null
 }
