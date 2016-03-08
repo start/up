@@ -1,4 +1,4 @@
-import { UnorderedListItem } from './UnorderedListItemNode'
+import { UnorderedListItem } from './UnorderedListItem'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class UnorderedListNode extends OutlineSyntaxNode {

@@ -1,4 +1,3 @@
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
@@ -17,12 +16,12 @@ import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
-const TRAILING_WHITESPACE_PATTERN = new RegExp(
-  endsWith(ANY_WHITESPACE)
-)
-
 const LEADING_BLANK_LINES_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '\n')
+)
+
+const TRAILING_WHITESPACE_PATTERN = new RegExp(
+  endsWith(ANY_WHITESPACE)
 )
 
 

@@ -20,7 +20,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { ListOrder, OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 function listOrder(text: string): ListOrder {

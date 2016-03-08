@@ -1,6 +1,6 @@
 import { SyntaxNode } from './SyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { DescriptionListItem } from './DescriptionListItemNode'
+import { DescriptionListItem } from './DescriptionListItem'
 
 export class DescriptionListNode extends OutlineSyntaxNode {
   constructor(public listItems: DescriptionListItem[]) {

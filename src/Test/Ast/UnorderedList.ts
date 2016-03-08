@@ -20,7 +20,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
