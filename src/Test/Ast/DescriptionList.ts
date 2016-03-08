@@ -33,7 +33,7 @@ describe('A non-indented line followed by an indented line', () => {
     const text =
       `
 Charmander
-  A flame burns on the tip of its tail from birth. It is said that a Charmander dies if its flame ever goes out.`
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -42,7 +42,7 @@ Charmander
             new DescriptionTermNode([new PlainTextNode('Charmander')])
           ], new DescriptionNode([
             new ParagraphNode([
-              new PlainTextNode('A flame burns on the tip of its tail from birth. It is said that a Charmander dies if its flame ever goes out.')
+              new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -59,7 +59,7 @@ describe('Multiple non-indented lines followed by one indented line', () => {
 Charmander
 Cyndaquil
 Torchic
-  Starter Fire Pokemon`
+  The first three starter Fire Pokemon`
 
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -70,7 +70,7 @@ Torchic
             new DescriptionTermNode([new PlainTextNode('Torchic')])
           ], new DescriptionNode([
             new ParagraphNode([
-              new PlainTextNode('Starter Fire Pokemon')
+              new PlainTextNode('The first three starter Fire Pokemon')
             ])
           ]))
         ])
@@ -78,13 +78,14 @@ Torchic
     )
   })
 })
+ 
 
 describe("A term in a description list", () => {
   it('can contain inline conventions', () => {
     const text =
       `
 Ash *"Little Marco"* Ketchum
-  A famous Pokemon Trainer from Pallet Town`
+  A famous Pokemon Trainer from Pallet Town.`
 
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -97,7 +98,7 @@ Ash *"Little Marco"* Ketchum
             ])
           ], new DescriptionNode([
             new ParagraphNode([
-              new PlainTextNode('A famous Pokemon Trainer from Pallet Town')
+              new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
             ])
           ]))
         ])
@@ -105,6 +106,7 @@ Ash *"Little Marco"* Ketchum
     )
   })
 })
+
 
 describe("A description in a description list", () => {
   it('can contain inline conventions', () => {
@@ -125,6 +127,57 @@ Ash Ketchum
               new PlainTextNode('A famous Pokemon Trainer '),
               new EmphasisNode([new PlainTextNode('probably')]),
               new PlainTextNode(' from Pallet Town')
+            ])
+          ]))
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Consecutive terms and descriptions', () => {
+  it('produce a single description list node', () => {
+    const text =
+      `
+Bulbasaur
+  A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
+
+Confuse Ray
+Lick
+Night Shade
+  Ghost type moves.
+  
+Gary
+  A young man with a great sense of smell.
+`
+
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItemNode([
+            new DescriptionTermNode([new PlainTextNode('Bulbasaur')])
+          ], new DescriptionNode([
+            new ParagraphNode([
+              new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+            ])
+          ])),
+          
+          new DescriptionListItemNode([
+            new DescriptionTermNode([new PlainTextNode('Confuse Ray')]),
+            new DescriptionTermNode([new PlainTextNode('Lick')]),
+            new DescriptionTermNode([new PlainTextNode('Night Shade')])
+          ], new DescriptionNode([
+            new ParagraphNode([
+              new PlainTextNode('Ghost type moves.')
+            ])
+          ])),
+          
+          new DescriptionListItemNode([
+            new DescriptionTermNode([new PlainTextNode('Gary')])
+          ], new DescriptionNode([
+            new ParagraphNode([
+              new PlainTextNode('A young man with a great sense of smell.')
             ])
           ]))
         ])
