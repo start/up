@@ -77,12 +77,15 @@ export class HtmlWriter extends Writer {
   }
 
   descriptionList(node: DescriptionListNode): string {
-    return this.htmlElement('dl', node.listItems)
+    return htmlElement(
+      'dl',
+      node.listItems.map((listItem) => this.descriptionListItem(listItem)).join('')
+    )
   }
 
   descriptionListItem(node: DescriptionListItemNode): string {
     return (
-      this.htmlElements(node.terms)
+      node.terms.map((listItem) => this.descriptionTerm(listItem)).join('')
       + this.description(node.description) 
     )
   }

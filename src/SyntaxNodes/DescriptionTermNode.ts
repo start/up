@@ -1,10 +1,7 @@
-import { SyntaxNode } from './SyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
-export class DescriptionTermNode extends SyntaxNode {
-  constructor(public children: InlineSyntaxNode[]) {
-    super()
-  }
+export class DescriptionTermNode {
+  constructor(public children: InlineSyntaxNode[]) { }
   
   private DESCRIPTION_TERM: any = null
 }
