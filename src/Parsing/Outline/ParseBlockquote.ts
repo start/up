@@ -1,6 +1,5 @@
 import { TextConsumer } from '../TextConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { startsWith, optional, INLINE_WHITESPACE_CHAR } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'

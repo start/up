@@ -1,6 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../../SyntaxNodes/LineNode'
+import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from './Patterns'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
@@ -29,12 +29,12 @@ export function parseLineBlock(args: OutlineParserArgs): boolean {
   // Anyway, poetry is pretty fun.
   //
   // Only the first 2 lines should be included.
-  const lineNodes: LineNode[] = []
+  const lineNodes: Line[] = []
   
   while (consumer.consumeLine({
     pattern: NON_BLANK_LINE_PATTERN,
     if: (line) => !isLineFancyOutlineConvention(line),
-    then: (line) => lineNodes.push(new LineNode(getInlineNodes(line)))
+    then: (line) => lineNodes.push(new Line(getInlineNodes(line)))
   })) { }
 
   if (lineNodes.length < 2) {

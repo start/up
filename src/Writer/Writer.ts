@@ -20,7 +20,7 @@ import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../SyntaxNodes/DescriptionTerm'
 import { Description } from '../SyntaxNodes/Description'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../SyntaxNodes/LineNode'
+import { Line } from '../SyntaxNodes/Line'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
@@ -54,10 +54,6 @@ export abstract class Writer {
     
     if (node instanceof LineBlockNode) {
       return this.lineBlock(node)
-    }
-    
-    if (node instanceof LineNode) {
-      return this.line(node)
     }
     
     if (node instanceof ParagraphNode) {
@@ -117,7 +113,6 @@ export abstract class Writer {
   abstract orderedList(node: OrderedListNode): string;
   abstract descriptionList(node: DescriptionListNode): string;
   abstract lineBlock(node: LineBlockNode): string;
-  abstract line(node: LineNode): string;
   abstract codeBlock(node: CodeBlockNode): string;
   abstract paragraph(node: ParagraphNode): string;
   abstract heading(node: HeadingNode): string;

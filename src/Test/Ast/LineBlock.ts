@@ -18,7 +18,7 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../../SyntaxNodes/LineNode'
+import { Line } from '../../SyntaxNodes/Line'
 
 
 
@@ -31,10 +31,10 @@ Violets are blue`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -52,19 +52,19 @@ And addresses do, too
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are '),
             new StressNode([
               new PlainTextNode('blue')
             ])
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ]),
@@ -82,19 +82,19 @@ And addresses do, too`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
         new SectionSeparatorNode(),
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ]),
@@ -112,19 +112,19 @@ And addresses do, too`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('#~#~#~#~#~#~#~#~#')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ]),
@@ -143,10 +143,10 @@ Violets are blue`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red\n\n')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -163,10 +163,10 @@ Violets are blue`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -181,10 +181,10 @@ Roses are red
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),

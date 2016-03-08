@@ -22,7 +22,7 @@ import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../../../SyntaxNodes/LineNode'
+import { Line } from '../../../SyntaxNodes/Line'
 
 
 describe('An unordered list with a single item', () => {
@@ -58,10 +58,10 @@ And addresses do, too`
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Roses are red')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('Violets are blue')
           ])
         ]),
@@ -78,10 +78,10 @@ And addresses do, too`
           ])
         ]),
         new LineBlockNode([
-          new LineNode([
+          new Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new LineNode([
+          new Line([
             new PlainTextNode('And addresses do, too')
           ])
         ]),

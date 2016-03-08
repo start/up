@@ -1,8 +1,8 @@
-import { LineNode } from './LineNode'
+import { Line } from './Line'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class LineBlockNode extends OutlineSyntaxNode {
-  constructor(public children: LineNode[] = []) {
+  constructor(public lines: Line[] = []) {
     super()
   }
   

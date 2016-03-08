@@ -20,7 +20,7 @@ import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../SyntaxNodes/DescriptionTerm'
 import { Description } from '../SyntaxNodes/Description'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../SyntaxNodes/LineNode'
+import { Line } from '../SyntaxNodes/Line'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
@@ -98,10 +98,10 @@ export class HtmlWriter extends Writer {
   }
 
   lineBlock(node: LineBlockNode): string {
-    return this.htmlElements(node.children)
+    return node.lines.map((line) => this.line(line)).join('')
   }
 
-  line(node: LineNode): string {
+  line(node: Line): string {
     return this.htmlElement('div', node.children)
   }
 

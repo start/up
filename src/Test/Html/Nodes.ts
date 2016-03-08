@@ -21,7 +21,7 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../../SyntaxNodes/LineNode'
+import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
@@ -134,10 +134,10 @@ describe('An ordered list node in descending order', () => {
 describe('A line block node with line nodes', () => {
   it('produces no outer element and a div element for each node', () => {
     const node = new LineBlockNode([
-      new LineNode([
+      new Line([
         new PlainTextNode('Hollow')
       ]),
-      new LineNode([
+      new Line([
         new PlainTextNode('Fangs')
       ])
     ])

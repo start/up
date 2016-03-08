@@ -18,7 +18,7 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { LineNode } from '../../SyntaxNodes/LineNode'
+import { Line } from '../../SyntaxNodes/Line'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
@@ -132,10 +132,10 @@ describe('A bulleted line followed by an indented line', () => {
           ]),
           new UnorderedListItem([
             new LineBlockNode([
-              new LineNode([
+              new Line([
                 new PlainTextNode('Roses are red')
               ]),
-              new LineNode([
+              new Line([
                 new PlainTextNode('Violets are blue')
               ])
             ])
