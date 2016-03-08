@@ -1,6 +1,6 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
-export class DescriptionTermNode {
+export class DescriptionTerm {
   constructor(public children: InlineSyntaxNode[]) { }
   
   private DESCRIPTION_TERM: any = null

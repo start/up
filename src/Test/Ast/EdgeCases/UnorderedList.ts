@@ -16,9 +16,9 @@ import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { OrderedListItemNode } from '../../../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItemNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
@@ -35,7 +35,7 @@ describe('An unordered list with a single item', () => {
       new DocumentNode([
         new SectionSeparatorNode(),
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode('Mittens')
             ])
@@ -66,12 +66,12 @@ And addresses do, too`
           ])
         ]),
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode('Kansas')
             ])
           ]),
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode('Nebraska')
             ])

@@ -1,8 +1,8 @@
-import { DescriptionNode } from './DescriptionNode'
-import { DescriptionTermNode } from './DescriptionTermNode'
+import { Description } from './DescriptionNode'
+import { DescriptionTerm } from './DescriptionTermNode'
 
-export class DescriptionListItemNode {
-  constructor(public terms: DescriptionTermNode[], public description: DescriptionNode) { }
+export class DescriptionListItem {
+  constructor(public terms: DescriptionTerm[], public description: Description) { }
   
   private DESCRIPTION_LIST_ITEM: any = null
 }

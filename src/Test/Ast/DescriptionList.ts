@@ -20,11 +20,11 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItemNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItemNode } from '../../SyntaxNodes/DescriptionListItemNode'
-import { DescriptionTermNode } from '../../SyntaxNodes/DescriptionTermNode'
-import { DescriptionNode } from '../../SyntaxNodes/DescriptionNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItemNode'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTermNode'
+import { Description } from '../../SyntaxNodes/DescriptionNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
@@ -38,9 +38,9 @@ Charmander
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItemNode([
-            new DescriptionTermNode([new PlainTextNode('Charmander')])
-          ], new DescriptionNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Charmander')])
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
@@ -64,11 +64,11 @@ Torchic
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItemNode([
-            new DescriptionTermNode([new PlainTextNode('Charmander')]),
-            new DescriptionTermNode([new PlainTextNode('Cyndaquil')]),
-            new DescriptionTermNode([new PlainTextNode('Torchic')])
-          ], new DescriptionNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Charmander')]),
+            new DescriptionTerm([new PlainTextNode('Cyndaquil')]),
+            new DescriptionTerm([new PlainTextNode('Torchic')])
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('The first three starter Fire Pokemon')
             ])
@@ -90,13 +90,13 @@ Ash *"Little Marco"* Ketchum
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItemNode([
-            new DescriptionTermNode([
+          new DescriptionListItem([
+            new DescriptionTerm([
               new PlainTextNode('Ash '),
               new EmphasisNode([new PlainTextNode('"Little Marco"')]),
               new PlainTextNode(' Ketchum')
             ])
-          ], new DescriptionNode([
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
             ])
@@ -118,11 +118,11 @@ Ash Ketchum
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItemNode([
-            new DescriptionTermNode([
+          new DescriptionListItem([
+            new DescriptionTerm([
               new PlainTextNode('Ash Ketchum')
             ])
-          ], new DescriptionNode([
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('A famous Pokemon Trainer '),
               new EmphasisNode([new PlainTextNode('probably')]),
@@ -155,27 +155,27 @@ Gary
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItemNode([
-            new DescriptionTermNode([new PlainTextNode('Bulbasaur')])
-          ], new DescriptionNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Bulbasaur')])
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
           
-          new DescriptionListItemNode([
-            new DescriptionTermNode([new PlainTextNode('Confuse Ray')]),
-            new DescriptionTermNode([new PlainTextNode('Lick')]),
-            new DescriptionTermNode([new PlainTextNode('Night Shade')])
-          ], new DescriptionNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
+            new DescriptionTerm([new PlainTextNode('Lick')]),
+            new DescriptionTerm([new PlainTextNode('Night Shade')])
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('Ghost type moves.')
             ])
           ])),
           
-          new DescriptionListItemNode([
-            new DescriptionTermNode([new PlainTextNode('Gary')])
-          ], new DescriptionNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Gary')])
+          ], new Description([
             new ParagraphNode([
               new PlainTextNode('A young man with a great sense of smell.')
             ])

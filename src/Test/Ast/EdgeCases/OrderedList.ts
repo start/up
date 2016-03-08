@@ -16,9 +16,9 @@ import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { OrderedListItemNode } from '../../../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItemNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
@@ -33,7 +33,7 @@ describe('An ordered list with a single item', () => {
       new DocumentNode([
         new SectionSeparatorNode(),
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Mittens')
             ])

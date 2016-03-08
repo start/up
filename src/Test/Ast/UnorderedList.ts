@@ -20,7 +20,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItemNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
@@ -33,12 +33,12 @@ describe('Consecutive bulleted lines', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -103,7 +103,7 @@ describe('A single bulleted line', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
@@ -125,12 +125,12 @@ describe('A bulleted line followed by an indented line', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1)
           ]),
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new LineBlockNode([
               new LineNode([
                 new PlainTextNode('Roses are red')
@@ -160,7 +160,7 @@ describe('Each bulleted line followed by an indented block of text', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1),
@@ -168,7 +168,7 @@ describe('Each bulleted line followed by an indented block of text', () => {
               new PlainTextNode('It is really late, and I am really tired.')
             ])
           ]),
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
             ], 1)
@@ -214,7 +214,7 @@ describe('Each bulleted line followed by an indented block of text', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1),
@@ -222,19 +222,19 @@ describe('Each bulleted line followed by an indented block of text', () => {
               new PlainTextNode('Upcoming features:')
             ]),
             new UnorderedListNode([
-              new UnorderedListItemNode([
+              new UnorderedListItem([
                 new ParagraphNode([
                   new PlainTextNode('Code blocks in list items')
                 ])
               ]),
-              new UnorderedListItemNode([
+              new UnorderedListItem([
                 new ParagraphNode([
                   new PlainTextNode('Definition lists')
                 ])
               ])
             ])
           ]),
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
             ], 1)
@@ -255,7 +255,7 @@ describe('A code block in a list item', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new CodeBlockNode('const x = 0')
           ])
         ])
@@ -276,7 +276,7 @@ describe('A code block in a list item', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
           ])
         ])
@@ -291,7 +291,7 @@ describe('A bullet list item with an asterisk bullet', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItemNode([
+          new UnorderedListItem([
             new ParagraphNode([
               new EmphasisNode([
                 new PlainTextNode('Hello')

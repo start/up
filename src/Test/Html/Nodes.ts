@@ -17,9 +17,9 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItemNode } from '../../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItemNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -43,12 +43,12 @@ describe('A paragraph node', () => {
 describe('An unordered list node with list item nodes', () => {
   it('produces a ul element containing li elements for each list item', () => {
     const node = new UnorderedListNode([
-      new UnorderedListItemNode([
+      new UnorderedListItem([
         new ParagraphNode([
           new PlainTextNode('Tropical')
         ])
       ]),
-      new UnorderedListItemNode([
+      new UnorderedListItem([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])
@@ -61,12 +61,12 @@ describe('An unordered list node with list item nodes', () => {
 describe('An ordered list node with list item nodes', () => {
   it('produces a ol element containing li elements for each list item', () => {
     const node = new OrderedListNode([
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Tropical')
         ])
       ]),
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])
@@ -79,12 +79,12 @@ describe('An ordered list node with list item nodes', () => {
 describe('An ordered list node with an item with an explicit ordinal', () => {
   it('produces a ol element containing li elements, with an explicit ordinal for the appropriate li element', () => {
     const node = new OrderedListNode([
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Tropical')
         ])
       ]),
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])
@@ -97,12 +97,12 @@ describe('An ordered list node with an item with an explicit ordinal', () => {
 describe('An ordered list node with an explicit starting ordinal', () => {
   it('produces a ol element with an explicit starting ordinal, containing li elements for each list item', () => {
     const node = new OrderedListNode([
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Tropical')
         ])
       ], 3),
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])
@@ -115,12 +115,12 @@ describe('An ordered list node with an explicit starting ordinal', () => {
 describe('An ordered list node in descending order', () => {
   it('produces a ol element with the reversed attribute, containing li elements for each list item', () => {
     const node = new OrderedListNode([
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Tropical')
         ])
       ], 2),
-      new OrderedListItemNode([
+      new OrderedListItem([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])

@@ -20,7 +20,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItemNode } from '../../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItemNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
@@ -33,12 +33,12 @@ describe('Consecutive lines each bulleted by a number sign', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -59,12 +59,12 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Lavender Town!')
             ])
           ]),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Lavender Town!')
             ])
@@ -85,12 +85,12 @@ describe('Consecutive lines each bulleted by a number sign followed by a right p
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ]),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
@@ -111,12 +111,12 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
@@ -137,12 +137,12 @@ describe('Consecutive lines each bulleted by an integer followed by a right pare
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
@@ -162,7 +162,7 @@ describe('A single line bulleted by a number sign', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
@@ -182,7 +182,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Lavender Town!')
             ])
@@ -202,7 +202,7 @@ describe('A single line bulleted by a number sign followed by a right paren', ()
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
@@ -238,7 +238,7 @@ describe('A single line bulleted by an integer followed by a right paren', () =>
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
@@ -262,27 +262,27 @@ describe('The 5 different bullet types', () => {
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1),    
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Couriway Town!')
             ])
           ], 2),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Cinnabar Island!')
             ])
           ]),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Cherrygrove City!')
             ])
           ]),
-          new OrderedListItemNode([
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Camphrier Town!')
             ])

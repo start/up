@@ -1,6 +1,6 @@
 import { TextConsumer } from '../TextConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItemNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
@@ -84,7 +84,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
 
   const listItemNodes =
     listItemsContents.map((listItemContents) =>
-      new UnorderedListItemNode(getOutlineNodes(listItemContents)))
+      new UnorderedListItem(getOutlineNodes(listItemContents)))
  
   args.then([new UnorderedListNode(listItemNodes)], consumer.lengthConsumed())
   return true

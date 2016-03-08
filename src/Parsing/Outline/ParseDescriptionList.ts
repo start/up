@@ -1,10 +1,10 @@
 import { TextConsumer } from '../TextConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../../SyntaxNodes/UnorderedListItemNode'
-import { DescriptionListItemNode } from '../../SyntaxNodes/DescriptionListItemNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItemNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItemNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTermNode } from '../../SyntaxNodes/DescriptionTermNode'
-import { DescriptionNode } from '../../SyntaxNodes/DescriptionNode'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTermNode'
+import { Description } from '../../SyntaxNodes/DescriptionNode'
 import { LineNode } from '../../SyntaxNodes/LineNode'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './GetOutlineNodes'
@@ -33,7 +33,7 @@ const INDENTED_PATTERN = new RegExp(
 // A single description can be associated with multiple terms.
 export function parseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-  const listItemNodes: DescriptionListItemNode[] = []
+  const listItemNodes: DescriptionListItem[] = []
 
   while (!consumer.done()) {
     let terms: string[] = []
@@ -93,13 +93,13 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     }
 
     const termNodes =
-      terms.map((term) => new DescriptionTermNode(getInlineNodes(term)))
+      terms.map((term) => new DescriptionTerm(getInlineNodes(term)))
 
     const descriptionNode =
-      new DescriptionNode(
+      new Description(
         getOutlineNodes(descriptionContents.join('\n')))
 
-    listItemNodes.push(new DescriptionListItemNode(termNodes, descriptionNode))
+    listItemNodes.push(new DescriptionListItem(termNodes, descriptionNode))
   }
 
   if (!listItemNodes.length) {

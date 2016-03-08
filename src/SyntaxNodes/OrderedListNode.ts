@@ -1,5 +1,5 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../SyntaxNodes/OrderedListItemNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export enum ListOrder {
@@ -8,7 +8,7 @@ export enum ListOrder {
 }
 
 export class OrderedListNode extends OutlineSyntaxNode {
-  constructor(public listItems: OrderedListItemNode[] = []) {
+  constructor(public listItems: OrderedListItem[] = []) {
     super()
   }
   

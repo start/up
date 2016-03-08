@@ -1,8 +1,8 @@
-import { UnorderedListItemNode } from './UnorderedListItemNode'
+import { UnorderedListItem } from './UnorderedListItemNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class UnorderedListNode extends OutlineSyntaxNode {
-  constructor(public listItems: UnorderedListItemNode[] = []) {
+  constructor(public listItems: UnorderedListItem[] = []) {
     super()
   }
   

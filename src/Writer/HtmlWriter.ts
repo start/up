@@ -13,13 +13,13 @@ import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItemNode } from '../SyntaxNodes/UnorderedListItemNode'
+import { UnorderedListItem } from '../SyntaxNodes/UnorderedListItemNode'
 import { OrderedListNode, ListOrder } from '../SyntaxNodes/OrderedListNode'
-import { OrderedListItemNode } from '../SyntaxNodes/OrderedListItemNode'
+import { OrderedListItem } from '../SyntaxNodes/OrderedListItemNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItemNode } from '../SyntaxNodes/DescriptionListItemNode'
-import { DescriptionTermNode } from '../SyntaxNodes/DescriptionTermNode'
-import { DescriptionNode } from '../SyntaxNodes/DescriptionNode'
+import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItemNode'
+import { DescriptionTerm } from '../SyntaxNodes/DescriptionTermNode'
+import { Description } from '../SyntaxNodes/DescriptionNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { LineNode } from '../SyntaxNodes/LineNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
@@ -43,7 +43,7 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  unorderedListItem(node: UnorderedListItemNode): string {
+  unorderedListItem(node: UnorderedListItem): string {
     return this.htmlElement('li', node.children)
   }
 
@@ -66,7 +66,7 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  orderedListItem(node: OrderedListItemNode): string {
+  orderedListItem(node: OrderedListItem): string {
     const attrs: { value?: number } = {}
 
     if (node.ordinal != null) {
@@ -83,18 +83,18 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  descriptionListItem(node: DescriptionListItemNode): string {
+  descriptionListItem(node: DescriptionListItem): string {
     return (
       node.terms.map((listItem) => this.descriptionTerm(listItem)).join('')
       + this.description(node.description) 
     )
   }
 
-  descriptionTerm(node: DescriptionTermNode): string {
+  descriptionTerm(node: DescriptionTerm): string {
     return this.htmlElement('dt', node.children)
   }
 
-  description(node: DescriptionNode): string {
+  description(node: Description): string {
     return this.htmlElement('dd', node.children)
   }
 
