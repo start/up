@@ -107,6 +107,32 @@ And addresses do, too
       ]))
   })
   
+  it('can be blank if escaped', () => {
+    const text =
+      `
+Roses are red
+\\ \t
+\\ \t
+Violets are blue`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode(' \t')
+          ]),
+          new Line([
+            new PlainTextNode(' \t')
+          ]),
+          new Line([
+            new PlainTextNode('Violets are blue')
+          ]),
+        ]),
+      ]))
+  })
+  
   it('can contain an escaped section separator streak', () => {
     const text =
       `
@@ -132,72 +158,6 @@ And addresses do, too`
           ]),
           new Line([
             new PlainTextNode('And addresses do, too')
-          ]),
-        ]),
-      ]))
-  })
-})
-
-
-describe('A line with an escaped line break followed by another line', () => {
-  it('do not produce a line block node', () => {
-    const text =
-      `
-Roses are red\\
-Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-            new PlainTextNode('Roses are red\nViolets are blue')
-        ]),
-      ]))
-  })
-})
-
-
-describe('Within a line block, a line with an escaped line break followed by another line', () => {
-  it('are considered part of the same line', () => {
-    const text =
-      `
-Roses are red\\
-Violets are blue
-Lyrics have lines
-And addresses do, too`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red\nViolets are blue')
-          ]),
-          new Line([
-            new PlainTextNode('Lyrics have lines')
-          ]),
-          new Line([
-            new PlainTextNode('And addresses do, too')
-          ]),
-        ])
-      ]))
-  })
-})
-
-
-
-describe('Non-blank lines separated by escaped blank lines', () => {
-  it('are still considered consecutive and still produce a line block node', () => {
-    const text =
-      `
-Roses are red\\
-\\
-
-Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red\n\n')
-          ]),
-          new Line([
-            new PlainTextNode('Violets are blue')
           ]),
         ]),
       ]))
