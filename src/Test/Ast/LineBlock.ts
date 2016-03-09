@@ -139,6 +139,22 @@ And addresses do, too`
 })
 
 
+describe('A line with an escaped line break followed by another line', () => {
+  it('does not produce a line block node', () => {
+    const text =
+      `
+Roses are red\\
+Violets are blue`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+            new PlainTextNode('Roses are red\nViolets are blue')
+        ]),
+      ]))
+  })
+})
+
+
 describe('Non-blank lines separated by escaped blank lines', () => {
   it('are still considered consecutive and still produce a line block node', () => {
     const text =
