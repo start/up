@@ -92,11 +92,11 @@ And addresses do, too`
 })
 
 
-describe('Non-blank lines separated by escaped blank lines', () => {
-  it('are still considered consecutive and still produce a line block node', () => {
+describe('An empty line with an escaped line break followed by another empty line', () => {  
+  it('are considered part of the same line can be included in a line break', () => {
     const text =
       `
-Roses are red\\
+Roses are red
 \\
 
 Violets are blue`
@@ -104,7 +104,10 @@ Violets are blue`
       new DocumentNode([
         new LineBlockNode([
           new Line([
-            new PlainTextNode('Roses are red\n\n')
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('\n')
           ]),
           new Line([
             new PlainTextNode('Violets are blue')
