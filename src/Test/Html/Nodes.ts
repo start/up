@@ -161,8 +161,8 @@ describe('A description list', () => {
   })
 })
 
-describe('A line block node with line nodes', () => {
-  it('produces no outer element and a div element for each node', () => {
+describe('A line block node', () => {
+  it('produces a div element with an empty data-lines attribute, containing a div element for each line', () => {
     const node = new LineBlockNode([
       new Line([
         new PlainTextNode('Hollow')
@@ -171,7 +171,7 @@ describe('A line block node with line nodes', () => {
         new PlainTextNode('Fangs')
       ])
     ])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<div>Hollow</div><div>Fangs</div>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<div data-lines><div>Hollow</div><div>Fangs</div></div>')
   })
 })
 

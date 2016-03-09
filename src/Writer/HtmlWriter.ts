@@ -98,7 +98,11 @@ export class HtmlWriter extends Writer {
   }
 
   lineBlock(node: LineBlockNode): string {
-    return node.lines.map((line) => this.line(line)).join('')
+    return htmlElement(
+      'div',
+      node.lines.map((line) => this.line(line)).join(''),
+      { 'data-lines': null }
+    )
   }
 
   line(line: Line): string {
