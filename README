@@ -129,7 +129,6 @@ const funFact = "Even backslashes are preserved.\n\nExciting!"
 * The blank lines between list items are optional
 
 
-
 Ordered lists can start and stop at any ordinal:
 
 3. Nintendo 64
@@ -146,5 +145,22 @@ And ordered list can even be reversed:
 Ordered lists don't need numerals:
 
 # You can use number signs instead
-# Alternatively, you can mix numerals with number signs
+# You can even mix numerals with number signs
 # This allows you to specify a list's direction or starting ordinal without having to manually count each item
+
+
+This is a term
+  And this is its definition or description
+  
+Bulbasaur
+  A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
+  
+  Height
+    0.71m
+  Weight
+    6.9kg
+    
+Donut
+Doughnut
+  The favorite dessert of hedgehogs. A single description can have multiple terms.
+  
