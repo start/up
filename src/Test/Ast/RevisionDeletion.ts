@@ -30,7 +30,10 @@ describe('Text surrounded by 2 tildes', () => {
         new PlainTextNode(' pizza')
       ]))
   })
+})
 
+
+describe('A revision deletion', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.ast('I like ~~certain *types* of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
