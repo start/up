@@ -42,8 +42,8 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  unorderedListItem(node: UnorderedListItem): string {
-    return this.htmlElement('li', node.children)
+  unorderedListItem(listItem: UnorderedListItem): string {
+    return this.htmlElement('li', listItem.children)
   }
 
   orderedList(node: OrderedListNode): string {
@@ -65,14 +65,14 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  orderedListItem(node: OrderedListItem): string {
+  orderedListItem(listItem: OrderedListItem): string {
     const attrs: { value?: number } = {}
 
-    if (node.ordinal != null) {
-      attrs.value = node.ordinal
+    if (listItem.ordinal != null) {
+      attrs.value = listItem.ordinal
     }
 
-    return this.htmlElement('li', node.children, attrs)
+    return this.htmlElement('li', listItem.children, attrs)
   }
 
   descriptionList(node: DescriptionListNode): string {
@@ -82,27 +82,27 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  descriptionListItem(node: DescriptionListItem): string {
+  descriptionListItem(listItem: DescriptionListItem): string {
     return (
-      node.terms.map((listItem) => this.descriptionTerm(listItem)).join('')
-      + this.description(node.description) 
+      listItem.terms.map((term) => this.descriptionTerm(term)).join('')
+      + this.description(listItem.description) 
     )
   }
 
-  descriptionTerm(node: DescriptionTerm): string {
-    return this.htmlElement('dt', node.children)
+  descriptionTerm(term: DescriptionTerm): string {
+    return this.htmlElement('dt', term.children)
   }
 
-  description(node: Description): string {
-    return this.htmlElement('dd', node.children)
+  description(description: Description): string {
+    return this.htmlElement('dd', description.children)
   }
 
   lineBlock(node: LineBlockNode): string {
     return node.lines.map((line) => this.line(line)).join('')
   }
 
-  line(node: Line): string {
-    return this.htmlElement('div', node.children)
+  line(line: Line): string {
+    return this.htmlElement('div', line.children)
   }
 
   codeBlock(node: CodeBlockNode): string {
