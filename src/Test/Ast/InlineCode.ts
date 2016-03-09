@@ -26,7 +26,10 @@ describe('Text surrounded by backticks', () => {
         new InlineCodeNode('gabe.attack(james)'),
       ]))
   })
-  
+})
+
+
+describe('Inline code ', () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.ast('Hello, `*Bruno*`!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -36,6 +39,7 @@ describe('Text surrounded by backticks', () => {
       ]))
   })
 })
+
 
 describe('Backslashes inside inline code', () => {
   it('escape the following character', () => {
