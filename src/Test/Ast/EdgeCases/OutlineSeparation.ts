@@ -24,7 +24,6 @@ import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
 
 describe('A section separator streak', () => {
-  
   it('can be directly followed by a paragraph', () => {
     const text = `
 ~-~-~-~-~

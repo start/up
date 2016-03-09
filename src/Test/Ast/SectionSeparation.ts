@@ -89,6 +89,7 @@ describe('A document that ends with 3 blank lines', () => {
   })
 })
 
+
 describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
   
   it('produces a section separator node', () => {
@@ -100,6 +101,7 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
       ]))
   })
 })
+
 
 describe('A section separator streak', () => {
   

@@ -28,6 +28,7 @@ function listStart(text: string): number {
   return list.start()
 }
 
+
 describe('An ordered list that does not start with a numeral bullet', () => {
   it('does not have an explicit starting ordinal', () => {
     const text =

@@ -114,6 +114,7 @@ describe('A single bulleted line', () => {
   })
 })
 
+
 describe('A bulleted line followed by an indented line', () => {
   it('are parsed like a document and placed in the same bulleted list item node', () => {
     const text =
@@ -145,6 +146,7 @@ describe('A bulleted line followed by an indented line', () => {
     )
   })
 })
+
 
 describe('Each bulleted line followed by an indented block of text', () => {
   it('are parsed like a mini-document and placed in a bulleted list item node', () => {
@@ -245,6 +247,7 @@ describe('Each bulleted line followed by an indented block of text', () => {
   })
 })
 
+
 describe('A code block in a list item', () => {
   it('produces a code block node with unindented content', () => {
     const text =
@@ -284,6 +287,7 @@ describe('A code block in a list item', () => {
     )
   })
 })
+
 
 describe('A bullet list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
