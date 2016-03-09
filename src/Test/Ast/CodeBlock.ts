@@ -20,8 +20,11 @@ const pie = 3.5
         new CodeBlockNode('const pie = 3.5'),
       ]))
   })
+})
 
-  it('can have multiple lines', () => {
+
+describe("A code block node", () => {
+  it('can contain multiple lines', () => {
     const text = `
 \`\`\`
 // Escaping backticks in typescript...
@@ -34,8 +37,10 @@ const pie = 3.5
 // Such a pain!`),
       ]))
   })
+})
 
-  it('preserves indentation', () => {
+describe("A code block node's contents", () => {
+  it('has its indentation preserved', () => {
     const text =
       `
 \`\`\`
@@ -52,7 +57,7 @@ if (x < 0) {
       ]))
   })
 
-  it('preserves backslashes', () => {
+  it('has its backslashes preserved', () => {
     const text = `
 \`\`\`
 const lineBreak = "\\n"
@@ -60,18 +65,6 @@ const lineBreak = "\\n"
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const lineBreak = "\\n"'),
-      ]))
-  })
-
-  it('can contain a streak of backticks if the streak is preceeded by whitespace', () => {
-    const text =
-      `
-\`\`\`
- \`\`\`
-\`\`\``
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new CodeBlockNode(' ```'),
       ]))
   })
 })
