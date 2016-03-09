@@ -20,6 +20,10 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
+import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
+import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -128,6 +132,32 @@ describe('An ordered list node in descending order', () => {
     ])
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql(
       '<ol start="2" reversed><li value="2"><p>Tropical</p></li><li value="1"><p>Territories</p></li></ol>')
+  })
+})
+
+describe('A description list', () => {
+  it('produces a dl element containing dt elements for each term, and dd elements for each description', () => {
+    const node = new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Bulbasaur')])
+          ], new Description([
+            new ParagraphNode([
+              new PlainTextNode('A grass type Pokemon')
+            ])
+          ])),          
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
+            new DescriptionTerm([new PlainTextNode('Lick')]),
+          ], new Description([
+            new ParagraphNode([
+              new PlainTextNode('Ghost type moves')
+            ])
+          ]))
+        ])
+      ])
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql(
+      '<dl><dt>Bulbasaur</dt><dd><p>A grass type Pokemon</p></dd><dt>Confuse Ray</dt><dt>Lick</dt><dd><p>Ghost type moves</p></dd></dl>')
   })
 })
 
