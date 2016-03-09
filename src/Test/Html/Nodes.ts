@@ -44,7 +44,7 @@ describe('A paragraph node', () => {
   })
 })
 
-describe('An unordered list node with list item nodes', () => {
+describe('An unordered list node', () => {
   it('produces a ul element containing li elements for each list item', () => {
     const node = new UnorderedListNode([
       new UnorderedListItem([
@@ -62,7 +62,7 @@ describe('An unordered list node with list item nodes', () => {
   })
 })
 
-describe('An ordered list node with list item nodes', () => {
+describe('An ordered list node', () => {
   it('produces a ol element containing li elements for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListItem([
