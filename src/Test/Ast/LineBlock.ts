@@ -40,36 +40,6 @@ Violets are blue`
         ]),
       ]))
   })
-
-  it('can contain inline conventions', () => {
-    const text =
-      `
-Roses are red
-Violets are **blue**
-Lyrics have lines
-And addresses do, too
-`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new Line([
-            new PlainTextNode('Violets are '),
-            new StressNode([
-              new PlainTextNode('blue')
-            ])
-          ]),
-          new Line([
-            new PlainTextNode('Lyrics have lines')
-          ]),
-          new Line([
-            new PlainTextNode('And addresses do, too')
-          ]),
-        ]),
-      ]))
-  })
   
   it('are separated by a streak, even when there are no blank lines', () => {
     const text =
@@ -132,6 +102,40 @@ And addresses do, too`
   })
 })
 
+
+describe('Lines in a line block', () => {
+  it('can contain inline conventions', () => {
+    const text =
+      `
+Roses are red
+Violets are **blue**
+Lyrics have lines
+And addresses do, too
+`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Violets are '),
+            new StressNode([
+              new PlainTextNode('blue')
+            ])
+          ]),
+          new Line([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new Line([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ]),
+      ]))
+  })
+})
+
+
 describe('Non-blank lines separated by escaped blank lines', () => {
   it('are still considered consecutive and still produce a line block node', () => {
     const text =
@@ -145,44 +149,6 @@ Violets are blue`
         new LineBlockNode([
           new Line([
             new PlainTextNode('Roses are red\n\n')
-          ]),
-          new Line([
-            new PlainTextNode('Violets are blue')
-          ]),
-        ]),
-      ]))
-  })
-})
-
-describe('A line starting with an escaped character in a line block', () => {
-  it('does not impact the parsing of the next line', () => {
-    const text =
-      `
-\\Roses are red
-Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new Line([
-            new PlainTextNode('Violets are blue')
-          ]),
-        ]),
-      ]))
-  })
-  
-  it('does not impact the parsing of the previous line', () => {
-    const text =
-      `
-Roses are red
-\\Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red')
           ]),
           new Line([
             new PlainTextNode('Violets are blue')
