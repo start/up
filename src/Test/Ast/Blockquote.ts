@@ -26,6 +26,7 @@ function expectBlockquoteContentsToEqualDocumentContents(blockquotedText: string
     ]))
 }
 
+
 describe('Consecutive lines starting with "> "', () => {
   it('are parsed like a document and then placed in a blockquote node', () => {
     const blockquotedText =
@@ -38,8 +39,10 @@ describe('Consecutive lines starting with "> "', () => {
 Goodbye, world!`
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
+})
 
 
+describe('A blockquote', () => {
   it('can contain inline conventions', () => {
     const blockquotedText =
 `> Hello, world!
@@ -87,16 +90,11 @@ Goodbye, world!`
   })
 })
 
-describe('A single line starting with "> "', () => {
+
+describe('A single line blockquote', () => {
   it('can contain nested blockquotes', () => {
     const blockquotedText = '> > > Hello, *world*!!'
     const text = '> > Hello, *world*!!'
-    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
-  })
-  
-  it('is placed in a blockquote node even when the line is empty', () => {
-    const blockquotedText = '> '
-    const text = ''
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 })
