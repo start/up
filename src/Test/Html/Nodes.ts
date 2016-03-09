@@ -299,9 +299,9 @@ describe('A link node', () => {
 })
 
 describe('A spoiler node', () => {
-  it('produces a span element with a spoiler class', () => {
+  it('produces a span element with an empty data-spoiler attribute', () => {
     const node = new SpoilerNode([new PlainTextNode('45.9%')])
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<span class="spoiler">45.9%</span>')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<span data-spoiler>45.9%</span>')
   })
 })
 

@@ -138,7 +138,7 @@ export class HtmlWriter extends Writer {
   }
 
   spoiler(node: SpoilerNode): string {
-    return this.htmlElement('span', node.children, { class: 'spoiler' })
+    return this.htmlElement('span', node.children, { 'data-spoiler': null })
   }
 
   inlineAside(node: InlineAsideNode): string {
