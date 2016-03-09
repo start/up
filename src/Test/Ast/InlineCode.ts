@@ -29,7 +29,7 @@ describe('Text surrounded by backticks', () => {
 })
 
 
-describe('Inline code ', () => {
+describe('Inline code', () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.ast('Hello, `*Bruno*`!')).to.be.eql(
       insideDocumentAndParagraph([

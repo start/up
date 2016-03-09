@@ -9,7 +9,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
-describe('Text surrounded (underlined and overlined) by streaks of backticks', () => {
+describe('Text surrounded by (underlined and overlined) streaks of backticks', () => {
   it('produces a code block node containing the surrounded text', () => {
     const text = `
 \`\`\`
@@ -23,7 +23,7 @@ const pie = 3.5
 })
 
 
-describe("A code block node", () => {
+describe('A code block node', () => {
   it('can contain multiple lines', () => {
     const text = `
 \`\`\`

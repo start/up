@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('Bracketed text pointing to a URL', () => {
-  it('is put inside a link node', () => {
+  it('produce a link node', () => {
     expect(Up.ast('I like [this site -> https://stackoverflow.com]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
