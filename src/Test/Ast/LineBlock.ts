@@ -40,13 +40,16 @@ Violets are blue`
         ]),
       ]))
   })
-  
-  it('are separated by a streak, even when there are no blank lines', () => {
+})
+
+
+describe('A section separator streak', () => {
+  it('can separate two line blocks', () => {
     const text =
       `
 Roses are red
 Violets are blue
-#~#~#~#~#~#~#~#~#
+#~#~#~#~#~#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
     expect(Up.ast(text)).to.be.eql(
@@ -61,36 +64,6 @@ And addresses do, too`
         ]),
         new SectionSeparatorNode(),
         new LineBlockNode([
-          new Line([
-            new PlainTextNode('Lyrics have lines')
-          ]),
-          new Line([
-            new PlainTextNode('And addresses do, too')
-          ]),
-        ]),
-      ]))
-  })
-  
-  it('are not separated by a streak if the streak is escaped', () => {
-    const text =
-      `
-Roses are red
-Violets are blue
-\\#~#~#~#~#~#~#~#~#
-Lyrics have lines
-And addresses do, too`
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new Line([
-            new PlainTextNode('Violets are blue')
-          ]),
-          new Line([
-            new PlainTextNode('#~#~#~#~#~#~#~#~#')
-          ]),
           new Line([
             new PlainTextNode('Lyrics have lines')
           ]),
@@ -123,6 +96,36 @@ And addresses do, too
             new StressNode([
               new PlainTextNode('blue')
             ])
+          ]),
+          new Line([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new Line([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ]),
+      ]))
+  })
+  
+  it('can contain an escaped section separator streak', () => {
+    const text =
+      `
+Roses are red
+Violets are blue
+\\#~#~#~#~#~#~#~#~#
+Lyrics have lines
+And addresses do, too`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Violets are blue')
+          ]),
+          new Line([
+            new PlainTextNode('#~#~#~#~#~#~#~#~#')
           ]),
           new Line([
             new PlainTextNode('Lyrics have lines')
