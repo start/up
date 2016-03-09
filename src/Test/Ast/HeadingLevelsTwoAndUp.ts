@@ -20,7 +20,6 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
-  
   it('produces a level-2 heading node', () => {
     const text =
       `
@@ -93,7 +92,6 @@ Goodbye again, world!
       ]))
   })
 })
-
 
 
 describe('7 headings with different heading underlines', () => {

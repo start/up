@@ -30,7 +30,10 @@ describe('Text surrounded by 2 plus signs', () => {
         new PlainTextNode(' my teeth')
       ]))
   })
+})
 
+
+describe('A revision insertion', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.ast('I like ++to *regularly* brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([

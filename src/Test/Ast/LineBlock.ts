@@ -21,7 +21,6 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 
 
-
 describe('Consecutive non-blank lines', () => {
   it('produce a line block node containing line nodes', () => {
     const text =
