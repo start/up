@@ -4,7 +4,6 @@ import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
-import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
 
 const BULLETED_PATTERN = new RegExp(
@@ -26,7 +25,7 @@ const STREAK_PATTERN = new RegExp(
   STREAK
 )
 
-const BLANK_LINE_PATTERN = new RegExp(
+const BLANK_PATTERN = new RegExp(
   BLANK
 )
 
@@ -34,11 +33,11 @@ const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
 )
 
-enum IndentedBlockTerminator {
-  ReachedEndOfText,
+enum ReasonIndentedBlockEnded {
+  EndOfText,
   NonIndentedLine,
-  MinorSeparation,
-  SectionSeparation
+  TwoBlankLines,
+  ThreeOrMoreBlankLines
 }
 
 interface Args {
@@ -47,42 +46,29 @@ interface Args {
 }
 
 interface OnSuccess {
-  (block: string, lengthParsed: number, ender: IndentedBlockTerminator): void
+  (block: string, lengthParsed: number, reasonEnded: ReasonIndentedBlockEnded): void
 }
 
 
 export function parseIndentedBlock(args: Args): boolean {
   const consumer = new TextConsumer(args.text)
   const lines: string[] = []
-  let terminator = IndentedBlockTerminator.ReachedEndOfText
-  
+  let terminator = ReasonIndentedBlockEnded.EndOfText
+
   while (!consumer.done()) {
-      const isLineBlank = consumer.consumeLine({
-        pattern: BLANK_LINE_PATTERN,
-        then: (line) => lines.push(line)
-      })
+    const wasLineConsumed = consumer.consumeLine({
+      if: (line) => BLANK_PATTERN.test(line) || INDENTED_PATTERN.test(line)
+    })
 
-      if (!isLineBlank) {
-        // Well, the line was neither indented nor blank. That means it's either the start of
-        // another list item, or it's the first line following the list. Let's leave this inner
-        // loop and find out which.
-        break
-      }
-      
-      const isLineIndented = consumer.consumeLine({
-        pattern: INDENTED_PATTERN,
-        then: (line) => lines.push(line.replace(INDENTED_PATTERN, ''))
-      })
+    if (!wasLineConsumed) {
+      break
+    }
+  }
 
-      if (isLineIndented) {
-        continue
-      }
-    }
-    
-    if (!consumer.lengthConsumed()) {
-      return false
-    }
-    
-    args.then(lines.join('\n'), consumer.lengthConsumed(), terminator)
-    return true
+  if (!consumer.lengthConsumed()) {
+    return false
+  }
+
+  args.then(lines.join('\n'), consumer.lengthConsumed(), terminator)
+  return true
 }
