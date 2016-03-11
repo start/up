@@ -5,6 +5,7 @@ import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
+import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 
 
 const BULLETED_PATTERN = new RegExp(
@@ -60,32 +61,22 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
       break
     }
     
-    // Let's collect the rest of this list item (i.e. the next block of indented or blank lines).
-    while (!consumer.done()) {
-
-      const isLineIndented = consumer.consumeLine({
-        pattern: INDENTED_PATTERN,
-        then: (line) => rawListItem.lines.push(line.replace(INDENTED_PATTERN, ''))
-      })
-
-      if (isLineIndented) {
-        continue
+    let isListTerminated = false
+    
+    getRemainingLinesOfListItem({
+      text: consumer.remainingText(),
+      then: (lines, lengthParsed, shouldTerminateList) => {
+        rawListItem.lines.push(...lines)
+        consumer.skip(lengthParsed)
+        isListTerminated = shouldTerminateList
       }
-
-      const isLineBlank = consumer.consumeLine({
-        pattern: BLANK_LINE_PATTERN,
-        then: (line) => rawListItem.lines.push(line)
-      })
-
-      if (!isLineBlank) {
-        // Well, the line was neither indented nor blank. That means it's either the start of
-        // another list item, or it's the first line following the list. Let's leave this inner
-        // loop and find out which.
-        break
-      }
-    }
+    })
 
     rawListItems.push(rawListItem)
+    
+    if (isListTerminated) {
+      break
+    }
   }
 
   if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
