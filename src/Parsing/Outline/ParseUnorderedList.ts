@@ -58,14 +58,12 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
         isListTerminated = shouldTerminateList
       }
     })
+
+    listItemsContents.push(listItemLines.join('\n'))
     
     if (isListTerminated) {
       break
     }
-
-    // This loses the final newline, but trailing blank lines are always ignored when parsing for
-    // outline conventions, which is exactly what we're going to do next. 
-    listItemsContents.push(listItemLines.join('\n'))
   }
 
   if (!listItemsContents.length) {
