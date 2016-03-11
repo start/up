@@ -47,8 +47,11 @@ describe('Consecutive bulleted lines', () => {
       ])
     )
   })
+})
 
-  it('can optionally be separated by 1 blank line', () => {
+
+describe('List items in a bulleted list', () => {
+  it('can be separated by 1 blank line', () => {
     const textWithSeparator =
       `
 * Hello, world!
@@ -62,7 +65,7 @@ describe('Consecutive bulleted lines', () => {
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
 
-  it('can optionally be separated by 2 blank lines', () => {
+  it('can be separated by 2 blank lines', () => {
     const textWithSeparator =
       `
 * Hello, world!
@@ -76,24 +79,6 @@ describe('Consecutive bulleted lines', () => {
 * Goodbye, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
-  
-    it('can optionally be separated by 3 or more blank lines without producing a section separator node', () => {
-    const textWithSeparator =
-      `
-* Hello, world!
-
-
-
-
-* Goodbye, world!`
-
-    const textWithoutSeparator =
-      `
-* Hello, world!
-* Goodbye, world!`
-    expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
-  })
-  
 })
 
 
