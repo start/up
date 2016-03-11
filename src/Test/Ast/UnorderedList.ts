@@ -238,3 +238,33 @@ describe('A bullet list item with an asterisk bullet', () => {
     )
   })
 })
+
+
+describe('A bulleted list', () => {
+  it('can be directly followed by a paragraph', () => {
+    const text =
+      `
+* Hello, world!
+* Goodbye, world!
+Hello, World 1-2!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ]),
+            new ParagraphNode([
+              new PlainTextNode('Hello, World 1-2!')
+            ])
+      ])
+    )
+  })
+})
