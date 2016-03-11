@@ -9,6 +9,7 @@ import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
+import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 
 const NON_BLANK_PATTERN = new RegExp(
   NON_BLANK
@@ -53,50 +54,41 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     }
 
     // Next, the description's first line
-    const descriptionContents: string[] = []
+    const descriptionLines: string[] = []
 
     const hasDescription = consumer.consumeLine({
       pattern: INDENTED_PATTERN,
       if: (line) => !BLANK_PATTERN.test(line),
-      then: (line) => descriptionContents.push(line.replace(INDENTED_PATTERN, ''))
+      then: (line) => descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
     })
 
     if (!hasDescription) {
       break
     }
     
-    // Finally, we collect the rest of the lines in the description
-    while (!consumer.done()) {
-
-      const isLineIndented = consumer.consumeLine({
-        pattern: INDENTED_PATTERN,
-        then: (line) => descriptionContents.push(line.replace(INDENTED_PATTERN, ''))
-      })
-
-      if (isLineIndented) {
-        continue
+    let isListTerminated = false
+    
+    getRemainingLinesOfListItem({
+      text: consumer.remainingText(),
+      then: (lines, lengthParsed, shouldTerminateList) => {
+        descriptionLines.push(...lines)
+        consumer.skip(lengthParsed)
+        isListTerminated = shouldTerminateList
       }
-
-      const isLineBlank = consumer.consumeLine({
-        pattern: BLANK_PATTERN,
-        then: (line) => descriptionContents.push(line)
-      })
-
-      if (!isLineBlank) {
-        // Well, the line was neither indented nor blank. That means it's either another term, or it's
-        // the first line following the description list. Let's leave this inner loop and find out which.
-        break
-      }
-    }
+    })
 
     const termNodes =
       terms.map((term) => new DescriptionTerm(getInlineNodes(term)))
 
     const descriptionNode =
       new Description(
-        getOutlineNodes(descriptionContents.join('\n')))
+        getOutlineNodes(descriptionLines.join('\n')))
 
     listItemNodes.push(new DescriptionListItem(termNodes, descriptionNode))
+    
+    if (isListTerminated) {
+      break
+    }
   }
 
   if (!listItemNodes.length) {
