@@ -248,47 +248,6 @@ describe('Each bulleted line followed by an indented block of text', () => {
 })
 
 
-describe('A code block in a list item', () => {
-  it('produces a code block node with unindented content', () => {
-    const text =
-      `
-* \`\`\`
-  const x = 0
-  \`\`\``
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new UnorderedListNode([
-          new UnorderedListItem([
-            new CodeBlockNode('const x = 0')
-          ])
-        ])
-      ])
-    )
-  })
-
-  it('can have 3 consecutive blank lines', () => {
-    const text =
-      `
-* \`\`\`
-  const x = 0
-
-
-
-  const y = 0
-  \`\`\``
-    expect(Up.ast(text)).to.be.eql(
-      new DocumentNode([
-        new UnorderedListNode([
-          new UnorderedListItem([
-            new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
-          ])
-        ])
-      ])
-    )
-  })
-})
-
-
 describe('A bullet list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
     const text = '* *Hello*, world!'

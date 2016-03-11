@@ -22,6 +22,7 @@ import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
+import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
 
 
@@ -131,5 +132,46 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
           ])
         ]),
       ]))
+  })
+})
+
+
+describe('A code block in a list item', () => {
+  it('produces a code block node with unindented content', () => {
+    const text =
+      `
+* \`\`\`
+  const x = 0
+  \`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new CodeBlockNode('const x = 0')
+          ])
+        ])
+      ])
+    )
+  })
+
+  it('can have 3 consecutive blank lines', () => {
+    const text =
+      `
+* \`\`\`
+  const x = 0
+
+
+
+  const y = 0
+  \`\`\``
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
+          ])
+        ])
+      ])
+    )
   })
 })
