@@ -29,18 +29,18 @@ export function parseLineBlock(args: OutlineParserArgs): boolean {
   // Anyway, poetry is pretty fun.
   //
   // Only the first 2 lines should be included.
-  const lineNodes: Line[] = []
+  const lines: Line[] = []
   
   while (consumer.consumeLine({
     pattern: NON_BLANK_LINE_PATTERN,
     if: (line) => !isLineFancyOutlineConvention(line),
-    then: (line) => lineNodes.push(new Line(getInlineNodes(line)))
+    then: (line) => lines.push(new Line(getInlineNodes(line)))
   })) { }
 
-  if (lineNodes.length < 2) {
+  if (lines.length < 2) {
     return false
   }
 
-  args.then([new LineBlockNode(lineNodes)], consumer.lengthConsumed())
+  args.then([new LineBlockNode(lines)], consumer.lengthConsumed())
   return true
 }

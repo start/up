@@ -35,14 +35,14 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
   let lengthParsed = 0
 
   while (!consumer.done()) {
-    let terms: string[] = []
+    let rawTerms: string[] = []
 
     // First, we collect every term for the next description
     while (!consumer.done()) {
       const isTerm = consumer.consumeLine({
         pattern: NON_BLANK_PATTERN,
         if: (line) => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line),
-        then: (line) => terms.push(line)
+        then: (line) => rawTerms.push(line)
       })
 
       if (!isTerm) {
@@ -50,7 +50,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       }
     }
 
-    if (!terms.length) {
+    if (!rawTerms.length) {
       break
     }
 
@@ -82,14 +82,13 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     // Alright, we have our description! Let's update our length parsed accordingly .
     lengthParsed = consumer.lengthConsumed()
 
-    const termNodes =
-      terms.map((term) => new DescriptionTerm(getInlineNodes(term)))
+    const terms =
+      rawTerms.map((term) => new DescriptionTerm(getInlineNodes(term)))
+    
+    const description =
+      new Description(getOutlineNodes(descriptionLines.join('\n')))
 
-    const descriptionNode =
-      new Description(
-        getOutlineNodes(descriptionLines.join('\n')))
-
-    listItemNodes.push(new DescriptionListItem(termNodes, descriptionNode))
+    listItemNodes.push(new DescriptionListItem(terms, description))
     
     if (isListTerminated) {
       break
