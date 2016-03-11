@@ -92,6 +92,47 @@ And addresses do, too`
   })
 })
 
+describe('An unordered list followed by 2 blank lines followed by another unordered list', () => {
+  it('produce 2 separate unordered lists', () => {
+    const text = `
+- Iowa
+- New Hampshire
+
+
+- Clinton
+- Sanders 
+`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Iowa')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('New Hampshire')
+            ])
+          ])
+        ]),
+        new SectionSeparatorNode(),
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Clinton')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Sanders')
+            ])
+          ])
+        ]),
+      ]))
+  })
+})
+
 
 describe('An unordered list followed by 3 blank lines followed by another unordered list', () => {
   it('produce an unordered list, a section separator, and another unordered list', () => {

@@ -64,21 +64,6 @@ describe('List items in a bulleted list', () => {
 * Goodbye, world!`
     expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
   })
-
-  it('can be separated by 2 blank lines', () => {
-    const textWithSeparator =
-      `
-* Hello, world!
-
-
-* Goodbye, world!`
-
-    const textWithoutSeparator =
-      `
-* Hello, world!
-* Goodbye, world!`
-    expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
-  })
 })
 
 
@@ -167,7 +152,8 @@ describe('Each bulleted line followed by an indented block of text', () => {
 
   it('does not need any blank lines to separate it from the following list item', () => {
     const textWithoutSeparator =
-      `* Hello, world!
+      `
+* Hello, world!
   ============
 
   It is really late, and I am really tired.
