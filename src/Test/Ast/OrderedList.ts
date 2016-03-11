@@ -292,3 +292,33 @@ describe('The 5 different bullet types', () => {
     )
   })
 })
+
+
+describe('A numbered list', () => {
+  it('can be directly followed by a paragraph', () => {
+    const text =
+      `
+# Hello, world!
+# Goodbye, world!
+Hello, World 1-2!`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ]),
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('Hello, World 1-2!')
+        ])
+      ])
+    )
+  })
+})
