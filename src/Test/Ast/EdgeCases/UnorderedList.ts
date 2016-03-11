@@ -116,7 +116,6 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
             ])
           ])
         ]),
-        new SectionSeparatorNode(),
         new UnorderedListNode([
           new UnorderedListItem([
             new ParagraphNode([
