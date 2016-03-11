@@ -43,7 +43,7 @@ export function getRemainingLinesOfListItem(args: Args): boolean {
     })
 
     if (wasLineBlank) {
-      // The line was blank, so we don't know whether we should include it yet.  
+      // The line was blank, so we don't know whether we should include it yet
       continue
     }
 
@@ -52,26 +52,25 @@ export function getRemainingLinesOfListItem(args: Args): boolean {
       then: (line) => lines.push(line)
     })
 
-    if (wasLineIndented) {
-      // The line was both non-blank and indented, so we know we need to include this line.
-      countLinesIncluded = lines.length
-      lengthParsed = consumer.lengthConsumed()
-      continue
-    } else {
+    if (!wasLineIndented) {
       // The line was neither blank nor indented. Bail!
       break
     }
+
+    // The line was indented and non-blank, so we know we need to include it
+    countLinesIncluded = lines.length
+    lengthParsed = consumer.lengthConsumed()
   }
 
   if (!lines.length) {
     return false
   }
 
-  const countLinesOfTrailingWhitespace = lines.length - countLinesIncluded
-  const shouldTerminateList = countLinesOfTrailingWhitespace >= 2
+  const countTrailingBlankLines = lines.length - countLinesIncluded
+  const shouldTerminateList = countTrailingBlankLines >= 2
 
   if (!shouldTerminateList) {
-    // If we aren't terminating the list, we should  return everything we consumed
+    // If we aren't terminating the list, we should return everything we consumed
     countLinesIncluded = lines.length
     lengthParsed = consumer.lengthConsumed()
   }
@@ -81,6 +80,5 @@ export function getRemainingLinesOfListItem(args: Args): boolean {
     .map((line) => line.replace(INDENTED_PATTERN, ''))
 
   args.then(resultLines, lengthParsed, shouldTerminateList)
-
   return true
 }
