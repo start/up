@@ -78,7 +78,7 @@ Torchic
     )
   })
 })
- 
+
 
 describe("A term in a description list", () => {
   it('can contain inline conventions', () => {
@@ -162,7 +162,7 @@ Gary
               new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
-          
+
           new DescriptionListItem([
             new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
             new DescriptionTerm([new PlainTextNode('Lick')]),
@@ -172,7 +172,7 @@ Gary
               new PlainTextNode('Ghost type moves.')
             ])
           ])),
-          
+
           new DescriptionListItem([
             new DescriptionTerm([new PlainTextNode('Gary')])
           ], new Description([
@@ -180,6 +180,35 @@ Gary
               new PlainTextNode('A young man with a great sense of smell.')
             ])
           ]))
+        ])
+      ])
+    )
+  })
+})
+
+
+describe("A description list", () => {
+  it('can be directly followed by a paragraph', () => {
+    const text =
+      `
+Ash Ketchum
+  A famous Pokemon Trainer from Pallet Town.
+The secret to eternal youth is to join a cartoon.`
+    expect(Up.ast(text)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItem([
+            new DescriptionTerm([
+              new PlainTextNode('Ash Ketchum')
+            ])
+          ], new Description([
+            new ParagraphNode([
+              new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
+            ])
+          ]))
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('The secret to eternal youth is to join a cartoon.')
         ])
       ])
     )
