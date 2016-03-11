@@ -2,6 +2,7 @@ import { TextConsumer } from '../TextConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
+import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
@@ -46,30 +47,20 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
     if (!isLineBulleted) {
       break
     }
-
-    // Let's collect the rest of this list item (i.e. the next block of indented or blank lines).
-    while (!consumer.done()) {
-
-      const isLineIndented = consumer.consumeLine({
-        pattern: INDENTED_PATTERN,
-        then: (line) => listItemLines.push(line.replace(INDENTED_PATTERN, ''))
-      })
-
-      if (isLineIndented) {
-        continue
+    
+    let isListTerminated = false
+    
+    getRemainingLinesOfListItem({
+      text: consumer.remainingText(),
+      then: (lines, lengthParsed, shouldTerminateList) => {
+        listItemLines.push(...lines)
+        consumer.skip(lengthParsed)
+        isListTerminated = shouldTerminateList
       }
-
-      const isLineBlank = consumer.consumeLine({
-        pattern: BLANK_LINE_PATTERN,
-        then: (line) => listItemLines.push(line)
-      })
-
-      if (!isLineBlank) {
-        // Well, the line was neither indented nor blank. That means it's either the start of
-        // another list item, or it's the first line following the list. Let's leave this inner
-        // loop and find out which.
-        break
-      }
+    })
+    
+    if (isListTerminated) {
+      break
     }
 
     // This loses the final newline, but trailing blank lines are always ignored when parsing for
