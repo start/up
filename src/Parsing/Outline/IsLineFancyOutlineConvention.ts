@@ -14,7 +14,7 @@ import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
-const SINGLE_LINE_OUTLINE_CONVENTIONS = [
+const SINGLE_LINE_OUTLINE_PARSERS = [
   parseUnorderedList,
   parseOrderedList,
   parseSectionSeparatorStreak,
@@ -23,11 +23,7 @@ const SINGLE_LINE_OUTLINE_CONVENTIONS = [
 
 // If `line` would be considered anything but a regular paragraph, it's considered fancy. 
 export function isLineFancyOutlineConvention(line: string): boolean {
-  for (const parser of SINGLE_LINE_OUTLINE_CONVENTIONS) {
-    if (parser({ text: line, then: () => { } })) {
-      return true
-    }
-  }
-
-  return false
+  return SINGLE_LINE_OUTLINE_PARSERS.some(
+    (parse) => parse({ text: line, then: () => { } })
+  )
 }
