@@ -25,6 +25,10 @@ interface OnSuccess {
   (block: string, lengthParsed: number, didListTerminate: boolean): void
 }
 
+// All indented and/or blank lines should be included in a list item.
+//
+// However, if there are 2 or more trailing blank lines, they should *not* be included. Instead,
+// they indicate the end of the list.
 export function getRestOfListItem(args: Args): boolean {
   const consumer = new TextConsumer(args.text)
   const lines: string[] = []
@@ -66,6 +70,6 @@ export function getRestOfListItem(args: Args): boolean {
   const countLinesOfTrailingWhitespace = lines.length - countLinesToInclude
   const didListTerminate = countLinesOfTrailingWhitespace >= 2
   
-  args.then(lines.join('\n'), consumer.lengthConsumed(), didListTerminate)
+  args.then(lines.join('\n'), lengthParsed, didListTerminate)
   return true
 }
