@@ -28,11 +28,11 @@ const INDENTED_PATTERN = new RegExp(
 //
 // Terms are left-aligned; descriptions are indented and directly follow the corresponding terms.
 //
-// A single description can be associated with multiple terms.
+// Multiple terms can be associated with a single description.
 export function parseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
   const listItemNodes: DescriptionListItem[] = []
-  let lengthConsumed = 0
+  let lengthParsed = 0
 
   while (!consumer.done()) {
     let terms: string[] = []
@@ -53,9 +53,6 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     if (!terms.length) {
       break
     }
-    
-    // We have a potential term, but we won't know it's a term until we parse its description.
-    // For all we know, it's a regular paragraph following the description list.
 
     const descriptionLines: string[] = []
 
@@ -67,6 +64,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     })
 
     if (!hasDescription) {
+      // There wasn't a description, so our "term" was just a regular paragraph following the list.
       break
     }
     
@@ -81,8 +79,8 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       }
     })
     
-    // Alright, have our description! Let's update out length consumed accordingly. 
-    lengthConsumed = consumer.lengthConsumed()
+    // Alright, we have our description! Let's update our length parsed accordingly .
+    lengthParsed = consumer.lengthConsumed()
 
     const termNodes =
       terms.map((term) => new DescriptionTerm(getInlineNodes(term)))
@@ -102,6 +100,6 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  args.then([new DescriptionListNode(listItemNodes)], lengthConsumed)
+  args.then([new DescriptionListNode(listItemNodes)], lengthParsed)
   return true
 }
