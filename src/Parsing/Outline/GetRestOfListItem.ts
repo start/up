@@ -5,22 +5,6 @@ import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 
-
-const BULLETED_PATTERN = new RegExp(
-  startsWith(
-    optional(' ')
-    + either(
-      '#',
-      capture(either(INTEGER, '#') + either('\\.', '\\)'))
-    )
-    + INLINE_WHITESPACE_CHAR
-  )
-)
-
-const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
-  INTEGER + '\\.'
-)
-
 const STREAK_PATTERN = new RegExp(
   STREAK
 )
@@ -29,19 +13,9 @@ const BLANK_PATTERN = new RegExp(
   BLANK
 )
 
-const INDENTED = startsWith(INDENT)
-
 const INDENTED_PATTERN = new RegExp(
-  INDENTED
+  startsWith(INDENT)
 )
-
-const INDENTED_OR_BLANK_PATTERN = new RegExp(
-  either(
-    INDENTED,
-    BLANK
-  )
-)
-
 interface Args {
   text: string,
   then: OnSuccess
@@ -54,6 +28,7 @@ interface OnSuccess {
 export function getRestOfListItem(args: Args): boolean {
   const consumer = new TextConsumer(args.text)
   const lines: string[] = []
+  
   let countLinesToInclude = 0
   let lengthParsed = 0
 
