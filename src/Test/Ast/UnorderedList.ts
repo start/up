@@ -261,9 +261,9 @@ Hello, World 1-2!`
             ])
           ])
         ]),
-            new ParagraphNode([
-              new PlainTextNode('Hello, World 1-2!')
-            ])
+        new ParagraphNode([
+          new PlainTextNode('Hello, World 1-2!')
+        ])
       ])
     )
   })

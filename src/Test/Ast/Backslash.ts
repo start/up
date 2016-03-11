@@ -56,7 +56,8 @@ describe('A backslash', () => {
   })
 
   it('disables any special meaning of the following line break', () => {
-    const text = `Hello, world!\\
+    const text = `
+Hello, world!\\
 \\
 Goodbye, world!`
     expect(Up.ast(text)).to.be.eql(
