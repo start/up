@@ -32,6 +32,7 @@ const INDENTED_PATTERN = new RegExp(
 export function parseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
   const listItemNodes: DescriptionListItem[] = []
+  let lengthConsumed = 0
 
   while (!consumer.done()) {
     let terms: string[] = []
@@ -52,10 +53,13 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     if (!terms.length) {
       break
     }
+    
+    // We have a potential term, but we won't know it's a term until we parse its description.
+    // For all we know, it's a regular paragraph following the description list.
 
-    // Next, the description's first line
     const descriptionLines: string[] = []
 
+    // Let's parse the desription's first line
     const hasDescription = consumer.consumeLine({
       pattern: INDENTED_PATTERN,
       if: (line) => !BLANK_PATTERN.test(line),
@@ -76,6 +80,9 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
         isListTerminated = shouldTerminateList
       }
     })
+    
+    // Alright, have our description! Let's update out length consumed accordingly. 
+    lengthConsumed = consumer.lengthConsumed()
 
     const termNodes =
       terms.map((term) => new DescriptionTerm(getInlineNodes(term)))
@@ -95,6 +102,6 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  args.then([new DescriptionListNode(listItemNodes)], consumer.lengthConsumed())
+  args.then([new DescriptionListNode(listItemNodes)], lengthConsumed)
   return true
 }
