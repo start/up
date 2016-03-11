@@ -22,21 +22,8 @@ import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
-
-describe('A section separator streak', () => {
-  it('can be directly followed by a paragraph', () => {
-    const text = `
-~-~-~-~-~
-60.4%`
-    expect(Up.ast(text)).to.eql(
-      new DocumentNode([
-        new SectionSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('60.4%')
-        ])
-      ]))
-  })
   
+describe('A section separator streak', () => {
   it('can be directly followed by a heading with a different underline', () => {
     const text = `
 - - - - - - - - - - - 

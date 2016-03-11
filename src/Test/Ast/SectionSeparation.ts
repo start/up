@@ -91,7 +91,6 @@ describe('A document that ends with 3 blank lines', () => {
 
 
 describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
-  
   it('produces a section separator node', () => {
     const text = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
@@ -104,6 +103,18 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
 
 
 describe('A section separator streak', () => {
+  it('can be directly followed by a paragraph', () => {
+    const text = `
+~-~-~-~-~
+60.4%`
+    expect(Up.ast(text)).to.eql(
+      new DocumentNode([
+        new SectionSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode('60.4%')
+        ])
+      ]))
+  })
   
   it('can have whitespace interspersed throughout the line in any manner', () => {
     const text = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
