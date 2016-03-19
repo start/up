@@ -30,7 +30,10 @@ describe('Text surrounded by asterisks', () => {
         new PlainTextNode('!!')
       ]))
   })
+})
 
+
+describe('Emphasized text', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.ast('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -50,25 +53,6 @@ describe('Text surrounded by asterisks', () => {
           new PlainTextNode('my '),
           new StressNode([
             new PlainTextNode('little')
-          ]),
-          new PlainTextNode(' world')
-        ]),
-        new PlainTextNode('!')
-      ]))
-  })
-
-  it('can be indirectly nested inside another emphasis node', () => {
-    expect(Up.ast('Hello, *my **very, *very* little** world*!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new EmphasisNode([
-          new PlainTextNode('my '),
-          new StressNode([
-            new PlainTextNode('very, '),
-            new EmphasisNode([
-              new PlainTextNode("very")
-            ]),
-            new PlainTextNode(' little')
           ]),
           new PlainTextNode(' world')
         ]),
