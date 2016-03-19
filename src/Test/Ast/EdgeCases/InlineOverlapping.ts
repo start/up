@@ -37,3 +37,22 @@ describe('Overlapped stressed and deleted text', () => {
       ]))
   })
 })
+
+describe('Overlapped emphasized and linked text', () => {
+  it('produces an emphasis node, followed by a link node containing another emphasis node', () => {
+    expect(Up.ast('I do *not [care* at](https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I do '),
+        new EmphasisNode([
+          new PlainTextNode('not '),
+        ]),
+        new LinkNode([
+          new EmphasisNode([
+            new PlainTextNode('care'),
+          ]),
+          new PlainTextNode(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainTextNode(' all.')
+      ]))
+  })
+})
