@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('Overlapped stressed and deleted text', () => {
-  it('produces a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
+  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
     expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -38,8 +38,36 @@ describe('Overlapped stressed and deleted text', () => {
   })
 })
 
+
+describe('Overlapped stressed, deleted, and "asided" text', () => {
+  it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
+    expect(Up.ast('I **love ~~((drinking** whole~~ milk)) all the time.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new InlineAsideNode([
+              new PlainTextNode('drinking')
+            ])
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new InlineAsideNode([
+            new PlainTextNode(' whole')
+          ])
+        ]),
+        new InlineAsideNode([
+          new PlainTextNode(' nukj')
+        ]),
+        new PlainTextNode(' all the time.')
+      ]))
+  })
+})
+
+
 describe('Overlapped emphasized and linked text', () => {
-  it('produces an emphasis node, followed by a link node containing another emphasis node', () => {
+  it('produce an emphasis node, followed by a link node containing another emphasis node. The link node is unbroken', () => {
     expect(Up.ast('I do *not [care* at](https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
