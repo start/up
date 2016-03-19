@@ -19,6 +19,13 @@ This is [<_<]an important spoiler[>_>].
 This is a regular sentence. ((And this is an aside.))
 
 
+Styles can overlap!
+
+I **love ~~drinking** whole~~ milk.
+
+I do *not [care* at](https://en.wikipedia.org/wiki/Carrot) all.
+
+
 Within an inline code snippet, other conventions do not apply. This `*is not emphasized*`.
 
 
@@ -32,6 +39,7 @@ This text is not \*emphasized\*.
 Link URLs can easily contain [matching brackets -> https://google.com/search?q=[hi]].
 
 If you need to include a non-matching bracket, escape it using a backslash.
+
 
 
 This is a paragraph.
