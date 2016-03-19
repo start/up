@@ -1,14 +1,6 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { parseInlineConventions } from './ParseInlineConventions'
+import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 export function getInlineNodes(text: string): InlineSyntaxNode[] {
-  let resultNodes: InlineSyntaxNode[] = []
-
-  parseInlineConventions({
-    text: text,
-    parentNodeTypes: [],
-    then: (inlineNodes) => resultNodes = inlineNodes
-  })
-
-  return resultNodes
+  return [new PlainTextNode(text)]
 }
