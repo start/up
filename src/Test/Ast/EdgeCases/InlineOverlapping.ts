@@ -39,6 +39,26 @@ describe('Overlapped stressed and deleted text', () => {
 })
 
 
+describe('Overlapped emphasized and deleted text', () => {
+  it('produce an emphasis node, a nested revision deletion node, then a non-nested revision deletion node', () => {
+    expect(Up.ast('I *love ~~drinking* whole~~ milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new EmphasisNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
 describe('Overlapped stressed, deleted, and "asided" text', () => {
   it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
     expect(Up.ast('I **love ~~((drinking** whole~~ milk)) all the time.')).to.be.eql(
