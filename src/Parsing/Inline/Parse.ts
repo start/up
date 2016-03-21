@@ -2,6 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
+import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
@@ -55,6 +56,13 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       case TokenMeaning.RevisionDeletionStart: {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.RevisionDeletionEnd)
         nodes.push(new RevisionDeletionNode(result.nodes))
+        index += result.countTokensParsed
+        continue
+      }
+
+      case TokenMeaning.SpoilerStart: {
+        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.SpoilerEnd)
+        nodes.push(new SpoilerNode(result.nodes))
         index += result.countTokensParsed
         continue
       }

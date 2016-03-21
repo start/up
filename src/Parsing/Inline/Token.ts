@@ -6,6 +6,8 @@ export enum TokenMeaning {
   StressEnd,
   RevisionDeletionStart,
   RevisionDeletionEnd,
+  SpoilerStart,
+  SpoilerEnd
 }
 
 export class Token {

@@ -27,6 +27,7 @@ export function tokenize(text: string): Token[] {
 
       tokens.push(new Token(meaning, index, consumer.escapedCurrentChar()))
       isStressed = !isStressed
+      continue
     }
     
     // Emphasis
@@ -39,6 +40,7 @@ export function tokenize(text: string): Token[] {
 
       tokens.push(new Token(meaning, index, consumer.escapedCurrentChar()))
       isEmphasized = !isEmphasized
+      continue
     }
     
     // Revision deletion
@@ -51,6 +53,17 @@ export function tokenize(text: string): Token[] {
 
       tokens.push(new Token(meaning, index, consumer.escapedCurrentChar()))
       isRevisionDeleted = !isRevisionDeleted
+      continue
+    }
+    
+    if (consumer.consumeIfMatches('[<_<]')) {
+      tokens.push(new Token(TokenMeaning.SpoilerStart, index, consumer.escapedCurrentChar()))
+      continue
+    }
+    
+    if (consumer.consumeIfMatches('[>_>]')) {
+      tokens.push(new Token(TokenMeaning.SpoilerEnd, index, consumer.escapedCurrentChar()))
+      continue
     }
 
     tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
