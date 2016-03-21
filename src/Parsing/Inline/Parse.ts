@@ -3,6 +3,7 @@ import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
@@ -28,7 +29,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   for (let index = 0; index < tokens.length; index++) {
     const token = tokens[index]
     countParsed = index + 1
-    
+
     if (token.meaning === terminator) {
       stillNeedsTerminator = false
       break
@@ -38,6 +39,13 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       case TokenMeaning.Text:
         nodes.push(new PlainTextNode(token.value))
         continue
+
+      case TokenMeaning.InlineCodeStart: {
+        const result = parseInlineCode(tokens.slice(countParsed))
+        nodes.push(...result.nodes)
+        index += result.countTokensParsed
+        continue
+      }
 
       case TokenMeaning.StressStart: {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.StressEnd)
@@ -74,4 +82,18 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   }
 
   return new ParseResult(nodes, countParsed)
+}
+
+function parseInlineCode(tokens: Token[]): ParseResult {
+  let text = ''
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i]
+    
+    if (token.meaning === TokenMeaning.InlineCodeEnd) {
+      return new ParseResult([new InlineCodeNode(text)], i + 1)
+    }
+
+    text += token.value
+  }
 }

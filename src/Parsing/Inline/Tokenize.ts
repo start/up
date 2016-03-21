@@ -13,9 +13,30 @@ export function tokenize(text: string): Token[] {
   let isStressed = false
   let isEmphasized = false
   let isRevisionDeleted = false
+  let isInlineCode = false
 
   while (!consumer.done()) {
     const index = consumer.lengthConsumed()
+    
+
+    // Inline code
+    if (consumer.consumeIfMatches('`')) {
+      const meaning = (
+        isInlineCode
+          ? TokenMeaning.InlineCodeEnd
+          : TokenMeaning.InlineCodeStart
+      )
+
+      tokens.push(new Token(meaning, index))
+      isInlineCode = !isInlineCode
+      continue
+    }
+    
+    if (isInlineCode) {
+      tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
+      consumer.moveNext()
+      continue
+    }
 
     // Stress
     if (consumer.consumeIfMatches('**')) {
@@ -67,7 +88,6 @@ export function tokenize(text: string): Token[] {
     }
 
     tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
-
     consumer.moveNext()
   }
 
