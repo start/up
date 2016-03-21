@@ -1,6 +1,7 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Sandwich } from './Sandwich'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -9,7 +10,7 @@ import { Token, TokenMeaning } from './Token'
 export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
   const tokens: Token[] = []
-
+  
   let isStressed = false
   let isEmphasized = false
   let isRevisionDeleted = false
