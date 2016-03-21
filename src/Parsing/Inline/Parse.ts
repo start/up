@@ -1,4 +1,5 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -36,6 +37,13 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       case TokenMeaning.Text:
         nodes.push(new PlainTextNode(token.value))
         continue
+
+      case TokenMeaning.StressStart: {
+        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.StressEnd)
+        nodes.push(new StressNode(result.nodes))
+        index += result.countTokensParsed
+        continue
+      }
 
       case TokenMeaning.EmphasisStart: {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.EmphasisEnd)

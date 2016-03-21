@@ -2,6 +2,8 @@ export enum TokenMeaning {
   Text,
   EmphasisStart,
   EmphasisEnd,
+  StressStart,
+  StressEnd,
   RevisionDeletionStart,
   RevisionDeletionEnd,
 }

@@ -10,12 +10,25 @@ export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
   const tokens: Token[] = []
 
+  let isStressed = false
   let isEmphasized = false
   let isRevisionDeleted = false
 
   while (!consumer.done()) {
     const index = consumer.lengthConsumed()
 
+    // Stress
+    if (consumer.consumeIfMatches('**')) {
+      const meaning = (
+        isStressed
+          ? TokenMeaning.StressEnd
+          : TokenMeaning.StressStart
+      )
+
+      tokens.push(new Token(meaning, index, consumer.escapedCurrentChar()))
+      isStressed = !isStressed
+    }
+    
     // Emphasis
     if (consumer.consumeIfMatches('*')) {
       const meaning = (
