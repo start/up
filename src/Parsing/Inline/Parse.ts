@@ -1,5 +1,6 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
@@ -22,10 +23,14 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   let stillNeedsTerminator = !!terminator
   let countParsed = 0
 
-  ParserLoop:
   for (let index = 0; index < tokens.length; index++) {
     const token = tokens[index]
     countParsed = index + 1
+    
+    if (token.meaning === terminator) {
+      stillNeedsTerminator = false
+      break
+    }
 
     switch (token.meaning) {
       case TokenMeaning.Text:
@@ -39,12 +44,12 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         continue
       }
 
-      case TokenMeaning.EmphasisEnd:
-        stillNeedsTerminator = false
-        break ParserLoop
-
-      default:
-        throw new Error('Unexpected token type')
+      case TokenMeaning.RevisionDeletionStart: {
+        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.RevisionDeletionEnd)
+        nodes.push(new RevisionDeletionNode(result.nodes))
+        index += result.countTokensParsed
+        continue
+      }
     }
   }
 

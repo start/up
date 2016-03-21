@@ -11,10 +11,12 @@ export function tokenize(text: string): Token[] {
   const tokens: Token[] = []
 
   let isEmphasized = false
+  let isRevisionDeleted = false
 
   while (!consumer.done()) {
     const index = consumer.lengthConsumed()
 
+    // Emphasis
     if (consumer.consumeIfMatches('*')) {
       const meaning = (
         isEmphasized
@@ -24,6 +26,18 @@ export function tokenize(text: string): Token[] {
 
       tokens.push(new Token(meaning, index, consumer.escapedCurrentChar()))
       isEmphasized = !isEmphasized
+    }
+    
+    // Revision deletion
+    if (consumer.consumeIfMatches('~~')) {
+      const meaning = (
+        isRevisionDeleted
+          ? TokenMeaning.RevisionDeletionEnd
+          : TokenMeaning.RevisionDeletionStart
+      )
+
+      tokens.push(new Token(meaning, index, consumer.escapedCurrentChar()))
+      isRevisionDeleted = !isRevisionDeleted
     }
 
     tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
