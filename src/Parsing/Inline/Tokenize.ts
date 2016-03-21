@@ -2,20 +2,26 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Sandwich } from './Sandwich'
+import { SandwichMaker } from './SandwichMaker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 
+const STRESS = new Sandwich('**', TokenMeaning.StressStart, TokenMeaning.StressEnd)
+const EMPHASIS = new Sandwich('*', TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd)
+const REVISION_DELETION = new Sandwich('~~', TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd)
 
 export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
   const tokens: Token[] = []
   
-  let isStressed = false
-  let isEmphasized = false
-  let isRevisionDeleted = false
+  const SANDWICHES_MAKERS = [
+    STRESS, EMPHASIS, REVISION_DELETION
+  ].map(sandwich => new SandwichMaker(sandwich))
+  
   let isInlineCode = false
 
+  MainParserLoop:
   while (!consumer.done()) {
     const index = consumer.lengthConsumed()
     
@@ -38,46 +44,16 @@ export function tokenize(text: string): Token[] {
       consumer.moveNext()
       continue
     }
-
-    // Stress
-    if (consumer.consumeIfMatches('**')) {
-      const meaning = (
-        isStressed
-          ? TokenMeaning.StressEnd
-          : TokenMeaning.StressStart
-      )
-
-      tokens.push(new Token(meaning, index))
-      isStressed = !isStressed
-      continue
+    
+    for (const maker of SANDWICHES_MAKERS) {
+      if (consumer.consumeIfMatches(maker.sandwich.bun)) {
+        const meaning = maker.registerBunAndGetMeaning(index)
+        tokens.push(new Token(meaning, index))
+        continue MainParserLoop
+      }
     }
     
-    // Emphasis
-    if (consumer.consumeIfMatches('*')) {
-      const meaning = (
-        isEmphasized
-          ? TokenMeaning.EmphasisEnd
-          : TokenMeaning.EmphasisStart
-      )
-
-      tokens.push(new Token(meaning, index))
-      isEmphasized = !isEmphasized
-      continue
-    }
-    
-    // Revision deletion
-    if (consumer.consumeIfMatches('~~')) {
-      const meaning = (
-        isRevisionDeleted
-          ? TokenMeaning.RevisionDeletionEnd
-          : TokenMeaning.RevisionDeletionStart
-      )
-
-      tokens.push(new Token(meaning, index))
-      isRevisionDeleted = !isRevisionDeleted
-      continue
-    }
-    
+    // Spoiler
     if (consumer.consumeIfMatches('[<_<]')) {
       tokens.push(new Token(TokenMeaning.SpoilerStart, index))
       continue
