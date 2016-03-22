@@ -59,11 +59,13 @@ export function tokenize(text: string): Token[] {
     for (const tracker of RUSSIAN_DOLL_TRACKERS) {
       if (consumer.consumeIfMatches(tracker.russianDoll.start)) {
         tokens.push(new Token(tracker.russianDoll.meaningStart, index))
+        tracker.registerStart(index)
         continue MainTokenizerLoop
       }
 
       if (consumer.consumeIfMatches(tracker.russianDoll.end)) {
         tokens.push(new Token(tracker.russianDoll.meaningEnd, index))
+        tracker.registerEnd()
         continue MainTokenizerLoop
       }
     }
