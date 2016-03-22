@@ -63,7 +63,7 @@ export function tokenize(text: string): Token[] {
         continue MainTokenizerLoop
       }
 
-      if (consumer.consumeIfMatches(tracker.russianDoll.end)) {
+      if (tracker.hasAnyOpen() && consumer.consumeIfMatches(tracker.russianDoll.end)) {
         tokens.push(new Token(tracker.russianDoll.meaningEnd, index))
         tracker.registerEnd()
         continue MainTokenizerLoop

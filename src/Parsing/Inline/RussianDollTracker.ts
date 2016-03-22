@@ -15,7 +15,7 @@ export class RussianDollTracker {
     this.unclosedStartIndexes.pop()
   }
   
-  hasAnyUnclosed(): boolean {
+  hasAnyOpen(): boolean {
     return this.unclosedStartIndexes.length > 0
   }
   
