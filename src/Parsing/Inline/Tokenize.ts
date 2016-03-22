@@ -3,25 +3,32 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Sandwich } from './Sandwich'
 import { SandwichTracker } from './SandwichTracker'
+import { RussianDoll } from './RussianDoll'
+import { RussianDollTracker } from './RussianDollTracker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
+import { SPOILER, INLINE_ASIDE } from './RussianDolls'
 
 export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
   const tokens: Token[] = []
-  
+
   const SANDWICHES_TRACKERS = [
     STRESS, EMPHASIS, REVISION_DELETION
   ].map(sandwich => new SandwichTracker(sandwich))
-  
+
+  const RUSSIAN_DOLL_TRACKERS = [
+    SPOILER, INLINE_ASIDE
+  ].map(russianDoll => new RussianDollTracker(russianDoll))
+
   let isInlineCode = false
 
   MainTokenizerLoop:
   while (!consumer.done()) {
     const index = consumer.lengthConsumed()
-    
+
     // Inline code
     if (consumer.consumeIfMatches('`')) {
       const meaning = (
@@ -34,13 +41,13 @@ export function tokenize(text: string): Token[] {
       isInlineCode = !isInlineCode
       continue
     }
-    
+
     if (isInlineCode) {
       tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
       consumer.moveNext()
       continue
     }
-    
+
     for (const tracker of SANDWICHES_TRACKERS) {
       if (consumer.consumeIfMatches(tracker.sandwich.bun)) {
         const meaning = tracker.registerBunAndGetMeaning(index)
@@ -48,27 +55,17 @@ export function tokenize(text: string): Token[] {
         continue MainTokenizerLoop
       }
     }
-    
-    // Spoiler
-    if (consumer.consumeIfMatches('[<_<]')) {
-      tokens.push(new Token(TokenMeaning.SpoilerStart, index))
-      continue
-    }
-    
-    if (consumer.consumeIfMatches('[>_>]')) {
-      tokens.push(new Token(TokenMeaning.SpoilerEnd, index))
-      continue
-    }
-    
-    // Inline aside
-    if (consumer.consumeIfMatches('((')) {
-      tokens.push(new Token(TokenMeaning.InlineAsideStart, index))
-      continue
-    }
-    
-    if (consumer.consumeIfMatches('))')) {
-      tokens.push(new Token(TokenMeaning.InlineAsideEnd, index))
-      continue
+
+    for (const tracker of RUSSIAN_DOLL_TRACKERS) {
+      if (consumer.consumeIfMatches(tracker.russianDoll.start)) {
+        tokens.push(new Token(tracker.russianDoll.meaningStart, index))
+        continue MainTokenizerLoop
+      }
+
+      if (consumer.consumeIfMatches(tracker.russianDoll.end)) {
+        tokens.push(new Token(tracker.russianDoll.meaningEnd, index))
+        continue MainTokenizerLoop
+      }
     }
 
     tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
