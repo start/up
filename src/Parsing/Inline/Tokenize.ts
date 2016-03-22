@@ -8,19 +8,14 @@ import { RussianDollTracker } from './RussianDollTracker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
-import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
-import { SPOILER, INLINE_ASIDE } from './RussianDolls'
+import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RussianDolls'
 
 export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
   const tokens: Token[] = []
 
-  const SANDWICHES_TRACKERS = [
-    STRESS, EMPHASIS, REVISION_DELETION
-  ].map(sandwich => new SandwichTracker(sandwich))
-
   const RUSSIAN_DOLL_TRACKERS = [
-    SPOILER, INLINE_ASIDE
+    STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
   ].map(russianDoll => new RussianDollTracker(russianDoll))
 
   let isInlineCode = false
@@ -47,25 +42,17 @@ export function tokenize(text: string): Token[] {
       consumer.moveNext()
       continue
     }
-
-    for (const tracker of SANDWICHES_TRACKERS) {
-      if (consumer.consumeIfMatches(tracker.sandwich.bun)) {
-        const meaning = tracker.registerBunAndGetMeaning(index)
-        tokens.push(new Token(meaning, index))
-        continue MainTokenizerLoop
-      }
-    }
-
+    
     for (const tracker of RUSSIAN_DOLL_TRACKERS) {
-      if (consumer.consumeIfMatches(tracker.russianDoll.start)) {
-        tokens.push(new Token(tracker.russianDoll.meaningStart, index))
-        tracker.registerStart(index)
-        continue MainTokenizerLoop
-      }
-
       if (tracker.hasAnyOpen() && consumer.consumeIfMatches(tracker.russianDoll.end)) {
         tokens.push(new Token(tracker.russianDoll.meaningEnd, index))
         tracker.registerEnd()
+        continue MainTokenizerLoop
+      }
+      
+      if (consumer.consumeIfMatches(tracker.russianDoll.start)) {
+        tokens.push(new Token(tracker.russianDoll.meaningStart, index))
+        tracker.registerStart(index)
         continue MainTokenizerLoop
       }
     }

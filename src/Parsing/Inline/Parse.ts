@@ -11,8 +11,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
-import { SPOILER, INLINE_ASIDE } from './RussianDolls'
+import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RussianDolls'
 
 
 export class ParseResult {
@@ -33,14 +32,12 @@ class TypicalRichConvention {
 }
 
 const TYPICAL_RICH_CONVENTION = [
-  STRESS,
-  EMPHASIS,
-  REVISION_DELETION
-].map(sandwich => new TypicalRichConvention(sandwich.NodeType, sandwich.meaningStart, sandwich.meaningEnd))
-  .concat([
+    STRESS,
+    EMPHASIS,
+    REVISION_DELETION,
     SPOILER,
     INLINE_ASIDE
-  ].map((russianDoll) => new TypicalRichConvention(russianDoll.NodeType, russianDoll.meaningStart, russianDoll.meaningEnd)))
+  ].map((russianDoll) => new TypicalRichConvention(russianDoll.NodeType, russianDoll.meaningStart, russianDoll.meaningEnd))
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []
