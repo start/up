@@ -1,8 +1,6 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { Sandwich } from './Sandwich'
-import { SandwichTracker } from './SandwichTracker'
 import { RussianDoll } from './RussianDoll'
 import { RussianDollTracker } from './RussianDollTracker'
 import { TextConsumer } from '../TextConsumer'
