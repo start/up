@@ -6,10 +6,7 @@ import { SandwichMaker } from './SandwichMaker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
-
-const STRESS = new Sandwich('**', TokenMeaning.StressStart, TokenMeaning.StressEnd)
-const EMPHASIS = new Sandwich('*', TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd)
-const REVISION_DELETION = new Sandwich('~~', TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd)
+import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
 
 export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
@@ -21,11 +18,10 @@ export function tokenize(text: string): Token[] {
   
   let isInlineCode = false
 
-  MainParserLoop:
+  MainTokenizerLoop:
   while (!consumer.done()) {
     const index = consumer.lengthConsumed()
     
-
     // Inline code
     if (consumer.consumeIfMatches('`')) {
       const meaning = (
@@ -49,7 +45,7 @@ export function tokenize(text: string): Token[] {
       if (consumer.consumeIfMatches(maker.sandwich.bun)) {
         const meaning = maker.registerBunAndGetMeaning(index)
         tokens.push(new Token(meaning, index))
-        continue MainParserLoop
+        continue MainTokenizerLoop
       }
     }
     

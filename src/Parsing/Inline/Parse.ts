@@ -10,6 +10,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
+import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
 
 
 export class ParseResult {
@@ -21,12 +22,14 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
 
+const SANDWICHES = [STRESS, EMPHASIS, REVISION_DELETION]
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []
   let stillNeedsTerminator = !!terminator
   let countParsed = 0
 
+  MainParserLoop:
   for (let index = 0; index < tokens.length; index++) {
     const token = tokens[index]
     countParsed = index + 1
@@ -48,27 +51,6 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         continue
       }
 
-      case TokenMeaning.StressStart: {
-        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.StressEnd)
-        nodes.push(new StressNode(result.nodes))
-        index += result.countTokensParsed
-        continue
-      }
-
-      case TokenMeaning.EmphasisStart: {
-        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.EmphasisEnd)
-        nodes.push(new EmphasisNode(result.nodes))
-        index += result.countTokensParsed
-        continue
-      }
-
-      case TokenMeaning.RevisionDeletionStart: {
-        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.RevisionDeletionEnd)
-        nodes.push(new RevisionDeletionNode(result.nodes))
-        index += result.countTokensParsed
-        continue
-      }
-
       case TokenMeaning.SpoilerStart: {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.SpoilerEnd)
         nodes.push(new SpoilerNode(result.nodes))
@@ -81,6 +63,16 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         nodes.push(new InlineAsideNode(result.nodes))
         index += result.countTokensParsed
         continue
+      }
+    }
+
+    for (const sandwich of SANDWICHES) {
+      if (token.meaning === sandwich.start) {
+        const result = parseUntil(tokens.slice(countParsed), sandwich.end)
+        nodes.push(new sandwich.nodeType(result.nodes))
+        index += result.countTokensParsed
+        
+        continue MainParserLoop
       }
     }
   }
@@ -97,7 +89,7 @@ function parseInlineCode(tokens: Token[]): ParseResult {
 
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
-    
+
     if (token.meaning === TokenMeaning.InlineCodeEnd) {
       return new ParseResult([new InlineCodeNode(text)], i + 1)
     }
