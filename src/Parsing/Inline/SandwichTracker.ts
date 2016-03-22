@@ -1,7 +1,7 @@
 import { Sandwich } from './Sandwich'
 import { Token, TokenMeaning } from './Token'
 
-export class SandwichMaker {
+export class SandwichTracker {
   public lastStartIndex: number
   public isUnclosed = false
   

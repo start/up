@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Sandwich } from './Sandwich'
-import { SandwichMaker } from './SandwichMaker'
+import { SandwichTracker } from './SandwichTracker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -12,9 +12,9 @@ export function tokenize(text: string): Token[] {
   const consumer = new TextConsumer(text)
   const tokens: Token[] = []
   
-  const SANDWICHES_MAKERS = [
+  const SANDWICHES_TRACKERS = [
     STRESS, EMPHASIS, REVISION_DELETION
-  ].map(sandwich => new SandwichMaker(sandwich))
+  ].map(sandwich => new SandwichTracker(sandwich))
   
   let isInlineCode = false
 
@@ -41,9 +41,9 @@ export function tokenize(text: string): Token[] {
       continue
     }
     
-    for (const maker of SANDWICHES_MAKERS) {
-      if (consumer.consumeIfMatches(maker.sandwich.bun)) {
-        const meaning = maker.registerBunAndGetMeaning(index)
+    for (const tracker of SANDWICHES_TRACKERS) {
+      if (consumer.consumeIfMatches(tracker.sandwich.bun)) {
+        const meaning = tracker.registerBunAndGetMeaning(index)
         tokens.push(new Token(meaning, index))
         continue MainTokenizerLoop
       }
