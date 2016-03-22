@@ -9,7 +9,7 @@ export class SandwichMaker {
   
   registerBunAndGetMeaning(index: number): TokenMeaning {
     this.lastStartIndex = index
-    let meaning = (this.isUnclosed ? this.sandwich.end : this.sandwich.start)
+    let meaning = (this.isUnclosed ? this.sandwich.meaningEnd : this.sandwich.meaningStart)
     this.isUnclosed = !this.isUnclosed
     
     return meaning

@@ -27,15 +27,15 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
 class TypicalRichConvention {
   constructor(
     public NodeType: RichInlineSyntaxNodeType,
-    public start: TokenMeaning,
-    public end: TokenMeaning) { }
+    public meaningStart: TokenMeaning,
+    public meaningEnd: TokenMeaning) { }
 }
 
 const TYPICAL_RICH_CONVENTION = [
     STRESS,
     EMPHASIS,
     REVISION_DELETION
-  ].map(sandwich => new TypicalRichConvention(sandwich.NodeType, sandwich.start, sandwich.end))
+  ].map(sandwich => new TypicalRichConvention(sandwich.NodeType, sandwich.meaningStart, sandwich.meaningEnd))
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []
@@ -80,8 +80,8 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     }
 
     for (const convention of TYPICAL_RICH_CONVENTION) {
-      if (token.meaning === convention.start) {
-        const result = parseUntil(tokens.slice(countParsed), convention.end)
+      if (token.meaning === convention.meaningStart) {
+        const result = parseUntil(tokens.slice(countParsed), convention.meaningEnd)
         nodes.push(new convention.NodeType(result.nodes))
         index += result.countTokensParsed
         

@@ -1,9 +1,10 @@
 import { Token, TokenMeaning } from './Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 
-export class Sandwich {
+export class RussianDoll {
   constructor (
-    public bun: string,
+    public start: string,
+    public end: string,
     public NodeType: RichInlineSyntaxNodeType,
     public meaningStart: TokenMeaning,
     public meaningEnd: TokenMeaning) { }
