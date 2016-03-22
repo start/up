@@ -12,6 +12,7 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
 import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
+import { SPOILER, INLINE_ASIDE } from './RussianDolls'
 
 
 export class ParseResult {
@@ -32,10 +33,14 @@ class TypicalRichConvention {
 }
 
 const TYPICAL_RICH_CONVENTION = [
-    STRESS,
-    EMPHASIS,
-    REVISION_DELETION
-  ].map(sandwich => new TypicalRichConvention(sandwich.NodeType, sandwich.meaningStart, sandwich.meaningEnd))
+  STRESS,
+  EMPHASIS,
+  REVISION_DELETION
+].map(sandwich => new TypicalRichConvention(sandwich.NodeType, sandwich.meaningStart, sandwich.meaningEnd))
+  .concat([
+    SPOILER,
+    INLINE_ASIDE
+  ].map((russianDoll) => new TypicalRichConvention(russianDoll.NodeType, russianDoll.meaningStart, russianDoll.meaningEnd)))
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []
@@ -63,20 +68,6 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         index += result.countTokensParsed
         continue
       }
-
-      case TokenMeaning.SpoilerStart: {
-        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.SpoilerEnd)
-        nodes.push(new SpoilerNode(result.nodes))
-        index += result.countTokensParsed
-        continue
-      }
-
-      case TokenMeaning.InlineAsideStart: {
-        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.InlineAsideEnd)
-        nodes.push(new InlineAsideNode(result.nodes))
-        index += result.countTokensParsed
-        continue
-      }
     }
 
     for (const convention of TYPICAL_RICH_CONVENTION) {
@@ -84,7 +75,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         const result = parseUntil(tokens.slice(countParsed), convention.meaningEnd)
         nodes.push(new convention.NodeType(result.nodes))
         index += result.countTokensParsed
-        
+
         continue MainParserLoop
       }
     }
