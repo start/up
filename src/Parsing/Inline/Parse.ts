@@ -11,7 +11,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RussianDolls'
+import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
 export class ParseResult {

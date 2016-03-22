@@ -1,11 +1,11 @@
 import { Token, TokenMeaning } from './Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
-import { RussianDoll } from './RussianDoll'
+import { Sandwich } from './Sandwich'
 
-export class RussianDollTracker {
+export class SandwichTracker {
   private unclosedStartIndexes: number[] = []
   
-  constructor (public russianDoll: RussianDoll) { }
+  constructor (public sandwich: Sandwich) { }
   
   registerStart(index: number): void {
     this.unclosedStartIndexes.push(index)  
