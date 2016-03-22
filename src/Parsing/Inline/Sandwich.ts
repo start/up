@@ -4,7 +4,7 @@ import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode
 export class Sandwich {
   constructor (
     public bun: string,
-    public nodeType: RichInlineSyntaxNodeType,
+    public NodeType: RichInlineSyntaxNodeType,
     public start: TokenMeaning,
     public end: TokenMeaning) { }
 }

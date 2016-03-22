@@ -1,4 +1,5 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
@@ -14,15 +15,27 @@ import { STRESS, EMPHASIS, REVISION_DELETION } from './Sandwiches'
 
 
 export class ParseResult {
-  constructor(public nodes: InlineSyntaxNode[], public countTokensParsed: number) { }
+  constructor(
+    public nodes: InlineSyntaxNode[],
+    public countTokensParsed: number) { }
 }
-
 
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
 
-const SANDWICHES = [STRESS, EMPHASIS, REVISION_DELETION]
+class TypicalRichConvention {
+  constructor(
+    public NodeType: RichInlineSyntaxNodeType,
+    public start: TokenMeaning,
+    public end: TokenMeaning) { }
+}
+
+const TYPICAL_RICH_CONVENTION = [
+    STRESS,
+    EMPHASIS,
+    REVISION_DELETION
+  ].map(sandwich => new TypicalRichConvention(sandwich.NodeType, sandwich.start, sandwich.end))
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []
@@ -66,10 +79,10 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       }
     }
 
-    for (const sandwich of SANDWICHES) {
-      if (token.meaning === sandwich.start) {
-        const result = parseUntil(tokens.slice(countParsed), sandwich.end)
-        nodes.push(new sandwich.nodeType(result.nodes))
+    for (const convention of TYPICAL_RICH_CONVENTION) {
+      if (token.meaning === convention.start) {
+        const result = parseUntil(tokens.slice(countParsed), convention.end)
+        nodes.push(new convention.NodeType(result.nodes))
         index += result.countTokensParsed
         
         continue MainParserLoop
