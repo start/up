@@ -14,7 +14,7 @@ export function tokenize(text: string): Token[] {
 
   const SANDWICH_TRACKERS = [
     STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
-  ].map(russianDoll => new SandwichTracker(russianDoll))
+  ].map(sandwich => new SandwichTracker(sandwich))
 
   let isInlineCode = false
 
