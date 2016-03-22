@@ -9,7 +9,9 @@ export enum TokenMeaning {
   RevisionDeletionStart,
   RevisionDeletionEnd,
   SpoilerStart,
-  SpoilerEnd
+  SpoilerEnd,
+  InlineAsideStart,
+  InlineAsideEnd
 }
 
 export class Token {

@@ -3,6 +3,7 @@ import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TextConsumer } from '../TextConsumer'
@@ -71,6 +72,13 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       case TokenMeaning.SpoilerStart: {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.SpoilerEnd)
         nodes.push(new SpoilerNode(result.nodes))
+        index += result.countTokensParsed
+        continue
+      }
+
+      case TokenMeaning.InlineAsideStart: {
+        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.InlineAsideEnd)
+        nodes.push(new InlineAsideNode(result.nodes))
         index += result.countTokensParsed
         continue
       }

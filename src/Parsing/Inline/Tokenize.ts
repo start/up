@@ -63,6 +63,17 @@ export function tokenize(text: string): Token[] {
       tokens.push(new Token(TokenMeaning.SpoilerEnd, index))
       continue
     }
+    
+    // Inline aside
+    if (consumer.consumeIfMatches('((')) {
+      tokens.push(new Token(TokenMeaning.InlineAsideStart, index))
+      continue
+    }
+    
+    if (consumer.consumeIfMatches('))')) {
+      tokens.push(new Token(TokenMeaning.InlineAsideEnd, index))
+      continue
+    }
 
     tokens.push(new Token(TokenMeaning.Text, index, consumer.escapedCurrentChar()))
     consumer.moveNext()
