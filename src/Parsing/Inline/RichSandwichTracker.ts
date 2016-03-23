@@ -23,11 +23,4 @@ export class RichSandwichTracker {
   stateBeforeFirstIncompleteSandwich(): TokenizerState {
     return this.stateBeforeIncompleteSandwich[0]
   }
-  
-  clone() {
-    const clone = new RichSandwichTracker(this.sandwich)
-    clone.stateBeforeIncompleteSandwich = this.stateBeforeIncompleteSandwich.slice()
-    
-    return clone
-  }
 }

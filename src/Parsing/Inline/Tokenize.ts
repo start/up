@@ -12,12 +12,13 @@ import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './Ri
 
 export function tokenize(text: string): Token[] {
   let state = new TokenizerState({
-    consumer: new TextConsumer(text).clone(),
-    tokens: [],
-    richSandwichTrackers: [
-      STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
-    ].map(sandwich => new RichSandwichTracker(sandwich))
+    consumer: new TextConsumer(text),
+    tokens: []
   })
+  
+  const RICH_SANDWICH_TRACKERS = [
+    STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
+  ].map(sandwich => new RichSandwichTracker(sandwich))
 
   MainTokenizerLoop:
   while (!state.consumer.done()) {
@@ -35,7 +36,7 @@ export function tokenize(text: string): Token[] {
       continue
     }
 
-    for (const tracker of state.richSandwichTrackers) {
+    for (const tracker of RICH_SANDWICH_TRACKERS) {
       if (tracker.isAnySandwichOpen() && state.consumer.consumeIfMatches(tracker.sandwich.end)) {
         state.tokens.push(new Token(tracker.sandwich.meaningEnd, indexBeforeToken))
         tracker.registerCompleteSandwich()

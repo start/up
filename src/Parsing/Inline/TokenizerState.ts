@@ -5,13 +5,11 @@ import { Token } from './Token'
 interface Args {
   consumer?: TextConsumer,
   tokens?: Token[],
-  richSandwichTrackers?: RichSandwichTracker[]
 }
 
 export class TokenizerState {
   public consumer: TextConsumer
   public tokens: Token[]
-  public richSandwichTrackers: RichSandwichTracker[]
 
   constructor(args?: Args) {
     if (!args) {
@@ -20,7 +18,6 @@ export class TokenizerState {
 
     this.consumer = args.consumer
     this.tokens = args.tokens
-    this.richSandwichTrackers = args.richSandwichTrackers
   }
   
   index(): number {
@@ -30,8 +27,7 @@ export class TokenizerState {
   clone(): TokenizerState {
     return new TokenizerState({
       consumer: this.consumer.clone(),
-      tokens: this.tokens.slice(),
-      richSandwichTrackers: this.richSandwichTrackers.map(tracker => tracker.clone())
+      tokens: this.tokens.slice()
     })
   }
 }
