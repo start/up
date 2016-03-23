@@ -1,21 +1,21 @@
 interface ConsumeArgs {
   from?: string
   upTo: string,
-  then?: OnConsumeLine
+  then?: OnConsume
 }
 
 interface ConsumeLineArgs {
   pattern?: RegExp,
   if?: ShouldConsumeLine,
-  then?: OnConsumeLine
+  then?: OnConsume
 }
 
 interface ShouldConsumeLine {
   (line: string): boolean
 }
 
-interface OnConsumeLine {
-  (line: string, ...captures: string[]): void
+interface OnConsume {
+  (text: string, ...captures: string[]): void
 }
 
 interface OnConsumeUpTo {

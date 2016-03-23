@@ -35,7 +35,7 @@ const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
 )
 
-// Bulleted lists are simply collections of bulleted list items.
+// Ordered lists are simply collections of ordered list items.
 //
 // List items can contain any kind of convention, even other lists!  In list items
 // with multiple lines, all subsequent lines are indented.
