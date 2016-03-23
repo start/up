@@ -4,6 +4,7 @@ export enum TokenMeaning {
   EmphasisEnd,
   StressStart,
   StressEnd,
+  InlineCode,
   InlineCodeStart,
   InlineCodeEnd,
   RevisionDeletionStart,

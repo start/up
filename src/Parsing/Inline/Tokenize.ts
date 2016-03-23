@@ -7,6 +7,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { TokenizerState } from './TokenizerState'
+import { applyBackslashEscaping } from '../TextHelpers'
 import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 export function tokenize(text: string): Token[] {
@@ -24,15 +25,14 @@ export function tokenize(text: string): Token[] {
     const index = state.consumer.lengthConsumed()
 
     // Inline code
-    if (state.consumer.consumeIfMatches('`')) {
-      const meaning = (
-        state.isInlineCode
-          ? TokenMeaning.InlineCodeEnd
-          : TokenMeaning.InlineCodeStart
-      )
-
-      state.tokens.push(new Token(meaning, index))
-      state.isInlineCode = !state.isInlineCode
+    if (state.consumer.consume({
+      from: '`',
+      upTo: '`',
+      then: (rawText) => {
+        const code = applyBackslashEscaping(rawText)
+        state.tokens.push(new Token(TokenMeaning.InlineCode, index, code))
+      }
+    })) {
       continue
     }
 

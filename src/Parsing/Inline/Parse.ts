@@ -59,10 +59,8 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         nodes.push(new PlainTextNode(token.value))
         continue
 
-      case TokenMeaning.InlineCodeStart: {
-        const result = parseInlineCode(tokens.slice(countParsed))
-        nodes.push(...result.nodes)
-        index += result.countTokensParsed
+      case TokenMeaning.InlineCode: {
+        nodes.push(new InlineCodeNode(token.value))
         continue
       }
     }
@@ -83,18 +81,4 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   }
 
   return new ParseResult(nodes, countParsed)
-}
-
-function parseInlineCode(tokens: Token[]): ParseResult {
-  let text = ''
-
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i]
-
-    if (token.meaning === TokenMeaning.InlineCodeEnd) {
-      return new ParseResult([new InlineCodeNode(text)], i + 1)
-    }
-
-    text += token.value
-  }
 }

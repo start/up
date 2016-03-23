@@ -105,9 +105,8 @@ export class TextConsumer {
         this.skip(consumer.lengthConsumed())
 
         if (then) {
-          const consumedText = consumer.consumedText()
-          const beforeNeedle = consumedText.substr(0, consumedText.length - from.length - upTo.length)
-          then(beforeNeedle)
+          const text = consumer.consumedText().slice(from.length, -upTo.length)
+          then(text)
         }
 
         return true
