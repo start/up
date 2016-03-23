@@ -22,4 +22,11 @@ export class SandwichTracker {
   firstUnclosedStartIndex(): number {
     return this.unclosedStartIndexes[0]
   }
+  
+  clone() {
+    const clone = new SandwichTracker(this.sandwich)
+    clone.unclosedStartIndexes = this.unclosedStartIndexes.slice()
+    
+    return clone
+  }
 }

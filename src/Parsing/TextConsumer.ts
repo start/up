@@ -158,6 +158,17 @@ export class TextConsumer {
   areParentsBalanced(): boolean {
     return this.countUnclosedParen === 0
   }
+  
+  clone(): TextConsumer {
+    const clone = new TextConsumer('')
+
+    clone.text = this.text
+    clone.index = this.index
+    clone.countUnclosedParen = this.countUnclosedParen
+    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
+    
+    return clone
+  }
 
   private isCurrentCharEscaped(): boolean {
     return this.currentChar() === '\\'
