@@ -22,6 +22,10 @@ export class TokenizerState {
     this.tokens = args.tokens
     this.richSandwichTrackers = args.richSandwichTrackers
   }
+  
+  index(): number {
+    return this.consumer.lengthConsumed()
+  }
 
   clone(): TokenizerState {
     return new TokenizerState({
