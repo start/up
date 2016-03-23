@@ -1,17 +1,17 @@
-import { SandwichTracker } from './SandwichTracker'
+import { RichSandwichTracker } from './RichSandwichTracker'
 import { TextConsumer } from '../TextConsumer'
 import { Token } from './Token'
 
 interface Args {
     consumer?: TextConsumer,
      tokens?: Token[],
-     sandwichTrackers?: SandwichTracker[]
+     sandwichTrackers?: RichSandwichTracker[]
 }
 
 export class TokenizerState {
   public consumer: TextConsumer
     public tokens: Token[]
-    public sandwichTrackers: SandwichTracker[]
+    public sandwichTrackers: RichSandwichTracker[]
     
   constructor(args?: Args) {
     if (!args) {

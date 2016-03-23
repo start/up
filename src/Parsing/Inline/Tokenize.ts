@@ -1,14 +1,14 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { Sandwich } from './Sandwich'
-import { SandwichTracker } from './SandwichTracker'
+import { RichSandwich } from './RichSandwich'
+import { RichSandwichTracker } from './RichSandwichTracker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { TokenizerState } from './TokenizerState'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './Sandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
 export function tokenize(text: string): Token[] {
   const state = new TokenizerState({
@@ -16,7 +16,7 @@ export function tokenize(text: string): Token[] {
     tokens: [],
     sandwichTrackers: [
       STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
-    ].map(sandwich => new SandwichTracker(sandwich))
+    ].map(sandwich => new RichSandwichTracker(sandwich))
   })
 
   MainTokenizerLoop:

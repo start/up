@@ -1,11 +1,11 @@
 import { Token, TokenMeaning } from './Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
-import { Sandwich } from './Sandwich'
+import { RichSandwich } from './RichSandwich'
 
-export class SandwichTracker {
+export class RichSandwichTracker {
   private unclosedStartIndexes: number[] = []
   
-  constructor (public sandwich: Sandwich) { }
+  constructor (public sandwich: RichSandwich) { }
   
   registerStart(index: number): void {
     this.unclosedStartIndexes.push(index)  
@@ -24,7 +24,7 @@ export class SandwichTracker {
   }
   
   clone() {
-    const clone = new SandwichTracker(this.sandwich)
+    const clone = new RichSandwichTracker(this.sandwich)
     clone.unclosedStartIndexes = this.unclosedStartIndexes.slice()
     
     return clone
