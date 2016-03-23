@@ -34,7 +34,7 @@ export function tokenize(text: string): Token[] {
       const trackerWithEarliestFailure =
         getTrackerWithEarliestFailure(trackersWithFailedSandwiches)
       
-      state = trackerWithEarliestFailure.stateBeforeFirstIncompleteSandwich()
+      state = trackerWithEarliestFailure.stateBeforeFirstIncompleteSandwich().clone()
       failedSandwiches.push(trackerWithEarliestFailure.sandwich.meaningStart)
     }
 
