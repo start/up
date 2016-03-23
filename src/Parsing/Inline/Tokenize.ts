@@ -58,15 +58,18 @@ export function tokenize(text: string): Token[] {
 
 
 function mergeConsecutiveTextTokens(tokens: Token[]): Token[] {
-  return tokens.reduce((withMergeTokens, token) => {
-    const lastToken = last(withMergeTokens)
+  const resultTokens: Token[] = []
+  
+  for (const token of tokens) {
+    const lastToken = last(resultTokens)
 
     if (lastToken && (lastToken.meaning === TokenMeaning.Text) && (token.meaning === TokenMeaning.Text)) {
       lastToken.value += token.value
-      return withMergeTokens
+    } else {
+      resultTokens.push(token)
     }
-
-    return withMergeTokens.concat([token])
-  }, [])
+  }
+  
+  return resultTokens
 }
 
