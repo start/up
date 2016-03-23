@@ -12,7 +12,7 @@ import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './Ri
 
 export function tokenize(text: string): Token[] {
   let state = new TokenizerState({
-    consumer: new TextConsumer(text),
+    consumer: new TextConsumer(text).clone(),
     tokens: [],
     richSandwichTrackers: [
       STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
