@@ -20,24 +20,7 @@ export function tokenize(text: string): Token[] {
   })
 
   MainTokenizerLoop:
-  while (true) {
-    let failedSandwiches: TokenMeaning[] = []
-    
-    if (state.consumer.done()) {
-      const trackersWithFailedSandwiches =
-        state.richSandwichTrackers.filter((tracker) => tracker.isAnySandwichOpen())
-
-      if (!trackersWithFailedSandwiches.length) {
-        break
-      }
-
-      const trackerWithEarliestFailure =
-        getTrackerWithEarliestFailure(trackersWithFailedSandwiches)
-      
-      state = trackerWithEarliestFailure.stateBeforeFirstIncompleteSandwich().clone()
-      failedSandwiches.push(trackerWithEarliestFailure.sandwich.meaningStart)
-    }
-
+  while (!state.consumer.done()) {
     const indexBeforeToken = state.index()
 
     // Inline code
@@ -51,12 +34,8 @@ export function tokenize(text: string): Token[] {
     })) {
       continue
     }
-    
-    const potentialSandwichTrackers =
-      state.richSandwichTrackers.filter(
-        tracker => !failedSandwiches.some(failure => failure === tracker.sandwich.meaningStart))
 
-    for (const tracker of potentialSandwichTrackers) {
+    for (const tracker of state.richSandwichTrackers) {
       if (tracker.isAnySandwichOpen() && state.consumer.consumeIfMatches(tracker.sandwich.end)) {
         state.tokens.push(new Token(tracker.sandwich.meaningEnd, indexBeforeToken))
         tracker.registerCompleteSandwich()
