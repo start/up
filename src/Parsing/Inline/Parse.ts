@@ -24,20 +24,13 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
 
-class TypicalRichConvention {
-  constructor(
-    public NodeType: RichInlineSyntaxNodeType,
-    public meaningStart: TokenMeaning,
-    public meaningEnd: TokenMeaning) { }
-}
-
-const TYPICAL_RICH_CONVENTION = [
-    STRESS,
-    EMPHASIS,
-    REVISION_DELETION,
-    SPOILER,
-    INLINE_ASIDE
-  ].map((sandwich) => new TypicalRichConvention(sandwich.NodeType, sandwich.meaningStart, sandwich.meaningEnd))
+const RICH_SANDWICHES = [
+  STRESS,
+  EMPHASIS,
+  REVISION_DELETION,
+  SPOILER,
+  INLINE_ASIDE
+]
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []
@@ -65,10 +58,10 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       }
     }
 
-    for (const convention of TYPICAL_RICH_CONVENTION) {
-      if (token.meaning === convention.meaningStart) {
-        const result = parseUntil(tokens.slice(countParsed), convention.meaningEnd)
-        nodes.push(new convention.NodeType(result.nodes))
+    for (const sandwich of RICH_SANDWICHES) {
+      if (token.meaning === sandwich.meaningStart) {
+        const result = parseUntil(tokens.slice(countParsed), sandwich.meaningEnd)
+        nodes.push(new sandwich.NodeType(result.nodes))
         index += result.countTokensParsed
 
         continue MainParserLoop
