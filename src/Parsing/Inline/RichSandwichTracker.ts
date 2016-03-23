@@ -4,29 +4,29 @@ import { RichSandwich } from './RichSandwich'
 import { TokenizerState } from './TokenizerState'
 
 export class RichSandwichTracker {
-  private unsatisfiedStates: TokenizerState[] = []
+  private stateBeforeIncompleteSandwich: TokenizerState[] = []
   
   constructor (public sandwich: RichSandwich) { }
   
-  registerSandwichStart(state: TokenizerState): void {
-    this.unsatisfiedStates.push(state)  
+  registerPotentialSandwich(state: TokenizerState): void {
+    this.stateBeforeIncompleteSandwich.push(state)  
   }
   
-  registerSandwichEnd(): void {
-    this.unsatisfiedStates.pop()
+  registerCompleteSandwich(): void {
+    this.stateBeforeIncompleteSandwich.pop()
   }
   
   isAnySandwichOpen(): boolean {
-    return this.unsatisfiedStates.length > 0
+    return this.stateBeforeIncompleteSandwich.length > 0
   }
   
-  firstUnsatisfiedState(): TokenizerState {
-    return this.unsatisfiedStates[0]
+  stateBeforeFirstIncompleteSandwich(): TokenizerState {
+    return this.stateBeforeIncompleteSandwich[0]
   }
   
   clone() {
     const clone = new RichSandwichTracker(this.sandwich)
-    clone.unsatisfiedStates = this.unsatisfiedStates.slice()
+    clone.stateBeforeIncompleteSandwich = this.stateBeforeIncompleteSandwich.slice()
     
     return clone
   }

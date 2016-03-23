@@ -38,13 +38,13 @@ export function tokenize(text: string): Token[] {
     for (const tracker of state.richSandwichTrackers) {
       if (tracker.isAnySandwichOpen() && state.consumer.consumeIfMatches(tracker.sandwich.end)) {
         state.tokens.push(new Token(tracker.sandwich.meaningEnd, index))
-        tracker.registerSandwichEnd()
+        tracker.registerCompleteSandwich()
         continue MainTokenizerLoop
       }
 
       if (state.consumer.consumeIfMatches(tracker.sandwich.start)) {
         state.tokens.push(new Token(tracker.sandwich.meaningStart, index))
-        tracker.registerSandwichStart(state)
+        tracker.registerPotentialSandwich(state)
         continue MainTokenizerLoop
       }
     }
