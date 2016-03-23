@@ -34,13 +34,6 @@ export class TextConsumer {
       || this.isOnTrailingBackslash()
     )
   }
-  
-  match(needle: string) {
-    return (
-      needle === this.text.substr(this.index, needle.length)
-      && this.areRelevantBracketsClosed(needle)
-    ) 
-  }
 
   consumeIfMatches(needle: string): boolean {
     if (!this.match(needle)) {
@@ -51,7 +44,7 @@ export class TextConsumer {
     return true
   }
 
-  consumeLine(args: ConsumeLineArgs): boolean {    
+  consumeLine(args: ConsumeLineArgs): boolean {
     if (this.done()) {
       return false
     }
@@ -70,17 +63,17 @@ export class TextConsumer {
       line = consumer.remainingText()
       consumer.skipToEnd()
     }
-    
+
     let captures: string[] = []
-    
+
     if (args.pattern) {
       const results = args.pattern.exec(line)
-      
+
       if (!results) {
         return false
       }
-      
-      captures = results.slice(1)   
+
+      captures = results.slice(1)
     }
 
     if (args.if && !args.if(line)) {
@@ -153,15 +146,15 @@ export class TextConsumer {
         : this.currentChar()
     )
   }
-  
+
   areSquareBracketsBalanced(): boolean {
     return this.countUnclosedSquareBracket === 0
   }
-  
+
   areParentsBalanced(): boolean {
     return this.countUnclosedParen === 0
   }
-  
+
   clone(): TextConsumer {
     const clone = new TextConsumer('')
 
@@ -169,8 +162,15 @@ export class TextConsumer {
     clone.index = this.index
     clone.countUnclosedParen = this.countUnclosedParen
     clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
-    
+
     return clone
+  }
+
+  private match(needle: string) {
+    return (
+      needle === this.text.substr(this.index, needle.length)
+      && this.areRelevantBracketsClosed(needle)
+    )
   }
 
   private isCurrentCharEscaped(): boolean {
