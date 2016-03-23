@@ -1,31 +1,32 @@
 import { Token, TokenMeaning } from './Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { RichSandwich } from './RichSandwich'
+import { TokenizerState } from './TokenizerState'
 
 export class RichSandwichTracker {
-  private unclosedStartIndexes: number[] = []
+  private unsatisfiedStates: TokenizerState[] = []
   
   constructor (public sandwich: RichSandwich) { }
   
-  registerStart(index: number): void {
-    this.unclosedStartIndexes.push(index)  
+  registerSandwichStart(state: TokenizerState): void {
+    this.unsatisfiedStates.push(state)  
   }
   
-  registerEnd(): void {
-    this.unclosedStartIndexes.pop()
+  registerSandwichEnd(): void {
+    this.unsatisfiedStates.pop()
   }
   
-  hasAnyOpen(): boolean {
-    return this.unclosedStartIndexes.length > 0
+  isAnySandwichOpen(): boolean {
+    return this.unsatisfiedStates.length > 0
   }
   
-  firstUnclosedStartIndex(): number {
-    return this.unclosedStartIndexes[0]
+  firstUnsatisfiedState(): TokenizerState {
+    return this.unsatisfiedStates[0]
   }
   
   clone() {
     const clone = new RichSandwichTracker(this.sandwich)
-    clone.unclosedStartIndexes = this.unclosedStartIndexes.slice()
+    clone.unsatisfiedStates = this.unsatisfiedStates.slice()
     
     return clone
   }
