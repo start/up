@@ -14,7 +14,6 @@ export function tokenize(text: string): Token[] {
   const state = new TokenizerState({
     consumer: new TextConsumer(text),
     tokens: [],
-    isInlineCode: false,
     sandwichTrackers: [
       STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
     ].map(sandwich => new SandwichTracker(sandwich))
@@ -33,12 +32,6 @@ export function tokenize(text: string): Token[] {
         state.tokens.push(new Token(TokenMeaning.InlineCode, index, code))
       }
     })) {
-      continue
-    }
-
-    if (state.isInlineCode) {
-      state.tokens.push(new Token(TokenMeaning.Text, index, state.consumer.escapedCurrentChar()))
-      state.consumer.moveNext()
       continue
     }
 
