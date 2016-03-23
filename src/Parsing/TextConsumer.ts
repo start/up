@@ -34,13 +34,16 @@ export class TextConsumer {
       || this.isOnTrailingBackslash()
     )
   }
-
-  consumeIfMatches(needle: string): boolean {
-    const isMatch =
+  
+  match(needle: string) {
+    return (
       needle === this.text.substr(this.index, needle.length)
       && this.areRelevantBracketsClosed(needle)
+    ) 
+  }
 
-    if (!isMatch) {
+  consumeIfMatches(needle: string): boolean {
+    if (!this.match(needle)) {
       return false
     }
 
