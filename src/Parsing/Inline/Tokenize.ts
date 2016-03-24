@@ -25,7 +25,6 @@ export function tokenize(text: string): Token[] {
 
   MainTokenizerLoop:
   while (!state.consumer.done()) {
-    const indexBeforeToken = state.index()
 
     // Inline code
     if (state.consumer.consume({
@@ -33,7 +32,7 @@ export function tokenize(text: string): Token[] {
       upTo: '`',
       then: (rawText) => {
         const code = applyBackslashEscaping(rawText)
-        state.tokens.push(new Token(TokenMeaning.InlineCode, indexBeforeToken, code))
+        state.tokens.push(new Token(TokenMeaning.InlineCode, code))
       }
     })) {
       continue
@@ -46,7 +45,7 @@ export function tokenize(text: string): Token[] {
       )
       
       if (couldSandwichEndHere) {
-        state.tokens.push(new Token(sandwich.meaningEnd, indexBeforeToken))
+        state.tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
 
@@ -55,12 +54,12 @@ export function tokenize(text: string): Token[] {
       )
        
       if (couldSandwichStartHere) {
-        state.tokens.push(new Token(sandwich.meaningStart, indexBeforeToken))
+        state.tokens.push(new Token(sandwich.meaningStart))
         continue MainTokenizerLoop
       }
     }
 
-    state.tokens.push(new Token(TokenMeaning.Text, indexBeforeToken, state.consumer.escapedCurrentChar()))
+    state.tokens.push(new Token(TokenMeaning.Text, state.consumer.escapedCurrentChar()))
     state.consumer.moveNext()
   }
 
