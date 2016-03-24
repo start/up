@@ -58,13 +58,23 @@ export function tokenize(text: string): Token[] {
     }
 
     for (const tracker of RICH_SANDWICH_TRACKERS) {
-      if (tracker.isAnySandwichOpen() && state.consumer.consumeIfMatches(tracker.sandwich.end)) {
+      const couldSandwichEndHere = (
+        tracker.isAnySandwichOpen()
+        && state.consumer.consumeIfMatches(tracker.sandwich.end)
+      )
+      
+      if (couldSandwichEndHere) {
         state.tokens.push(new Token(tracker.sandwich.meaningEnd, indexBeforeToken))
         tracker.registerCompleteSandwich()
         continue MainTokenizerLoop
       }
 
-      if (!failureTracker.hasSandwichFailed(tracker.sandwich, indexBeforeToken) && state.consumer.consumeIfMatches(tracker.sandwich.start)) {
+      const couldSandwichStartHere = (
+        !failureTracker.wasSandwichAlreadyTried(tracker.sandwich, indexBeforeToken)
+        && state.consumer.consumeIfMatches(tracker.sandwich.start)
+      )
+       
+      if (couldSandwichStartHere) {
         state.tokens.push(new Token(tracker.sandwich.meaningStart, indexBeforeToken))
         tracker.registerPotentialSandwich(state)
         continue MainTokenizerLoop

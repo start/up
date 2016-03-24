@@ -12,7 +12,7 @@ export class FailureTracker {
     )
   }
   
-  hasSandwichFailed(sandwich: RichSandwich, index: number): boolean {
+  wasSandwichAlreadyTried(sandwich: RichSandwich, index: number): boolean {
     return this.hasFailed(sandwich.meaningStart, index)
   }
   
