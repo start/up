@@ -5,9 +5,7 @@ import { RichSandwich } from './RichSandwich'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
-import { TokenizerState } from './TokenizerState'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { TentativeToken } from './TentativeToken'
 import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
 
@@ -16,52 +14,41 @@ const RICH_SANDWICHES = [
 ]
   
 export function tokenize(text: string): Token[] {
-  let state = new TokenizerState({
-    consumer: new TextConsumer(text),
-    tokens: []
-  })
+  
+    const consumer = new TextConsumer(text)
+  const  tokens: Token[] = []
+  
 
   MainTokenizerLoop:
-  while (!state.consumer.done()) {
+  while (!consumer.done()) {
 
     // Inline code
-    if (state.consumer.consume({
-      from: '`',
-      upTo: '`',
-      then: (rawText) => {
+    if (consumer.consume({
+      from: '`', upTo: '`', then: (rawText) => {
         const code = applyBackslashEscaping(rawText)
-        state.tokens.push(new Token(TokenMeaning.InlineCode, code))
+        tokens.push(new Token(TokenMeaning.InlineCode, code))
       }
     })) {
       continue
     }
 
     for (const sandwich of RICH_SANDWICHES) {
-      const couldSandwichEndHere = (
-        hasAnyOpen(sandwich, state.tokens)
-        && state.consumer.consumeIfMatches(sandwich.end)
-      )
-      
-      if (couldSandwichEndHere) {
-        state.tokens.push(new Token(sandwich.meaningEnd))
+      if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
+        tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
-
-      const couldSandwichStartHere = (
-        state.consumer.consumeIfMatches(sandwich.start)
-      )
        
-      if (couldSandwichStartHere) {
-        state.tokens.push(new Token(sandwich.meaningStart))
+      if (consumer.consumeIfMatches(sandwich.start)) {
+        tokens.push(new Token(sandwich.meaningStart))
         continue MainTokenizerLoop
       }
     }
 
-    state.tokens.push(new Token(TokenMeaning.Text, state.consumer.escapedCurrentChar()))
-    state.consumer.moveNext()
+    tokens.push(new Token(TokenMeaning.Text, consumer.escapedCurrentChar()))
+    consumer.moveNext()
   }
 
-  return mergeConsecutiveTextTokens(state.tokens)
+  return mergeConsecutiveTextTokens(tokens)
 }
 
 
