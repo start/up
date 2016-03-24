@@ -106,7 +106,31 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     throw new Error('Unexpected token)')
   }
   
-  return false
+  return isSandwichAtIndexOpen(sandwich, index, tokens)
+}
+
+function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number,  tokens: Token[]) {
+  // We know that token[index] is a sandwich start token, so we'll start checking tokens
+  // at index + 1, and we'll start our countOpen at 1
+  const startIndex = index + 1
+  let countOpen = 1
+  
+  for (let i = startIndex; i < tokens.length; i++) {
+    const meaning = tokens[i].meaning
+
+    if (meaning === sandwich.meaningStart) {
+      countOpen += 1
+    } else if (meaning === sandwich.meaningEnd) {
+      countOpen -= 1
+    }
+    
+    // We've closed the current sandwich! We don't care if others might be open.
+    if (countOpen === 0) {
+      return false
+    }
+  }
+  
+  return true
 }
 
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
