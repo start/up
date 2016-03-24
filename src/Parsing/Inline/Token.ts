@@ -9,6 +9,8 @@ export enum TokenMeaning {
   InlineCode,
   RevisionDeletionStart,
   RevisionDeletionEnd,
+  RevisionInserionStart,
+  RevisionInsertionEnd,
   SpoilerStart,
   SpoilerEnd,
   InlineAsideStart,

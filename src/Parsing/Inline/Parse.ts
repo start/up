@@ -11,7 +11,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
 
 export class ParseResult {
@@ -28,6 +28,7 @@ const RICH_SANDWICHES = [
   STRESS,
   EMPHASIS,
   REVISION_DELETION,
+  REVISION_INSERTION,
   SPOILER,
   INLINE_ASIDE
 ]

@@ -7,11 +7,11 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
 
 const RICH_SANDWICHES = [
-  STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
+  STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE
 ]
 
 export function tokenize(text: string): Token[] {
@@ -95,6 +95,7 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     case TokenMeaning.InlineAsideEnd:
     case TokenMeaning.InlineCode:
     case TokenMeaning.RevisionDeletionEnd:
+    case TokenMeaning.RevisionInsertionEnd:
     case TokenMeaning.SpoilerEnd:
     case TokenMeaning.StressEnd:
       return false;
@@ -105,7 +106,7 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.meaningStart)[0]
 
   if (!sandwich) {
-    throw new Error('Unexpected token)')
+    throw new Error('Unexpected token')
   }
   
   return isSandwichAtIndexOpen(sandwich, index, tokens)
