@@ -7,7 +7,7 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { TokenizerState } from './TokenizerState'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { FailureTracker } from './FailureTracker'
+import { TentativeToken } from './TentativeToken'
 import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
 
@@ -20,8 +20,6 @@ export function tokenize(text: string): Token[] {
     consumer: new TextConsumer(text),
     tokens: []
   })
-  
-  const failureTracker = new FailureTracker()
 
   MainTokenizerLoop:
   while (!state.consumer.done()) {
