@@ -5,6 +5,7 @@ import { RichSandwich } from './RichSandwich'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
+import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
@@ -16,7 +17,7 @@ const RICH_SANDWICHES = [
 export function tokenize(text: string): Token[] {
   let consumer = new TextConsumer(text)
   const tokens: Token[] = []
-
+  const failureTracker = new FailureTracker()
 
   MainTokenizerLoop:
   while (true) {
@@ -25,8 +26,12 @@ export function tokenize(text: string): Token[] {
       // Should we backtrack, or did everything parse correctly?
       for (let i = 0; i < tokens.length; i++) {
         if (isTokenUnmatched(i, tokens)) {
-          consumer = tokens[i].consumerBefore
+          const token = tokens[i]
+          
+          failureTracker.registerFailure(token.meaning, token.index())
+          consumer = token.consumerBefore
           tokens.splice(i)
+          
           continue MainTokenizerLoop
         }
       }
@@ -46,14 +51,20 @@ export function tokenize(text: string): Token[] {
 
     // TODO: Don't do this for every single character
     const consumerBeforeToken = consumer.clone()
+    const currentIndex = consumer.lengthConsumed()
 
     for (const sandwich of RICH_SANDWICHES) {
       if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
+      
+      const wasStartTokenFound = (
+        !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
+        && consumer.consumeIfMatches(sandwich.start)
+      )
 
-      if (consumer.consumeIfMatches(sandwich.start)) {
+      if (wasStartTokenFound) {
         tokens.push(new Token(sandwich.meaningStart, consumerBeforeToken))
         continue MainTokenizerLoop
       }

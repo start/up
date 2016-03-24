@@ -18,11 +18,16 @@ export enum TokenMeaning {
 export class Token {
   public value: string
   public consumerBefore: TextConsumer
+  
   constructor(public meaning: TokenMeaning, valueOrConsumerBefore?: string|TextConsumer) {
     if (typeof valueOrConsumerBefore === 'string') {
       this.value = valueOrConsumerBefore
     } else {
       this.consumerBefore = valueOrConsumerBefore
     }
+  }
+  
+  index(): number {
+    return this.consumerBefore.lengthConsumed()
   }
 }
