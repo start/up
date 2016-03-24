@@ -59,39 +59,30 @@ export function tokenize(text: string): Token[] {
         continue MainTokenizerLoop
       }
       
-      const wasStartTokenFound = (
+      const wasStartToken = (
         !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
         && consumer.consumeIfMatches(sandwich.start)
       )
 
-      if (wasStartTokenFound) {
+      if (wasStartToken) {
         tokens.push(new Token(sandwich.meaningStart, consumerBeforeToken))
         continue MainTokenizerLoop
       }
     }
 
-    tokens.push(new Token(TokenMeaning.Text, consumer.escapedCurrentChar()))
+    const currentChar = consumer.escapedCurrentChar()
+    const lastToken = last(tokens)
+    
+    if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
+      lastToken.value += currentChar
+    } else {
+      tokens.push(new Token(TokenMeaning.Text, currentChar))
+    }
+    
     consumer.moveNext()
   }
 
-  return mergeConsecutiveTextTokens(tokens)
-}
-
-
-function mergeConsecutiveTextTokens(tokens: Token[]): Token[] {
-  const resultTokens: Token[] = []
-
-  for (const token of tokens) {
-    const lastToken = last(resultTokens)
-
-    if (lastToken && (lastToken.meaning === TokenMeaning.Text) && (token.meaning === TokenMeaning.Text)) {
-      lastToken.value += token.value
-    } else {
-      resultTokens.push(token)
-    }
-  }
-
-  return resultTokens
+  return tokens
 }
 
 function isTokenUnmatched(index: number, tokens: Token[]): boolean {
