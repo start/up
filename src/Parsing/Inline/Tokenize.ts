@@ -15,7 +15,7 @@ const RICH_SANDWICHES = [
   
 export function tokenize(text: string): Token[] {
   
-    const consumer = new TextConsumer(text)
+  const consumer = new TextConsumer(text)
   const  tokens: Token[] = []
   
 
@@ -31,6 +31,9 @@ export function tokenize(text: string): Token[] {
     })) {
       continue
     }
+    
+    // TODO: Don't do this for every single character
+    const consumerBeforeToken = consumer.clone()
 
     for (const sandwich of RICH_SANDWICHES) {
       if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
@@ -39,7 +42,7 @@ export function tokenize(text: string): Token[] {
       }
        
       if (consumer.consumeIfMatches(sandwich.start)) {
-        tokens.push(new Token(sandwich.meaningStart))
+        tokens.push(new Token(sandwich.meaningStart, consumerBeforeToken))
         continue MainTokenizerLoop
       }
     }

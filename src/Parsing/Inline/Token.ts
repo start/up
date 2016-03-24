@@ -1,3 +1,5 @@
+import { TextConsumer } from '../TextConsumer'
+
 export enum TokenMeaning {
   Text,
   EmphasisStart,
@@ -14,7 +16,13 @@ export enum TokenMeaning {
 }
 
 export class Token {
-  constructor(
-    public meaning: TokenMeaning,
-    public value?: string) { }
+  public value: string
+  public consumerBefore: TextConsumer
+  constructor(public meaning: TokenMeaning, valueOrConsumerBefore?: string|TextConsumer) {
+    if (typeof valueOrConsumerBefore === 'string') {
+      this.value = valueOrConsumerBefore
+    } else {
+      this.consumerBefore = valueOrConsumerBefore
+    }
+  }
 }
