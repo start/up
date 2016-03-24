@@ -161,16 +161,22 @@ export class TextConsumer {
   areParentsBalanced(): boolean {
     return this.countUnclosedParen === 0
   }
+  
+  // This method is a bit hackish.
+  //
+  // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.  
+  //
+  // Unfortunately, the returned TextConsumer is only guaranteed to have correct unclosed bracket counts
+  // if this object hasn't advanced since its last match.
+  asBeforeMatch(matchLength: number): TextConsumer {
+    const copy = new TextConsumer('')
 
-  clone(): TextConsumer {
-    const clone = new TextConsumer('')
+    copy.text = this.text
+    copy.index = this.index - matchLength
+    copy.countUnclosedParen = this.countUnclosedParen
+    copy.countUnclosedSquareBracket = this.countUnclosedSquareBracket
 
-    clone.text = this.text
-    clone.index = this.index
-    clone.countUnclosedParen = this.countUnclosedParen
-    clone.countUnclosedSquareBracket = this.countUnclosedSquareBracket
-
-    return clone
+    return copy
   }
 
   private match(needle: string) {
