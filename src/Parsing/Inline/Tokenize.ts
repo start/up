@@ -58,19 +58,15 @@ export function tokenize(text: string): Token[] {
     }
 
     for (const tracker of RICH_SANDWICH_TRACKERS) {
-      if (
-        tracker.isAnySandwichOpen()
-        && !failureTracker.hasSandwichFailed(tracker.sandwich, indexBeforeToken)
-        && state.consumer.consumeIfMatches(tracker.sandwich.end)
-      ) {
+      if (tracker.isAnySandwichOpen() && state.consumer.consumeIfMatches(tracker.sandwich.end)) {
         state.tokens.push(new Token(tracker.sandwich.meaningEnd, indexBeforeToken))
         tracker.registerCompleteSandwich()
         continue MainTokenizerLoop
       }
 
-      if (state.consumer.consumeIfMatches(tracker.sandwich.start)) {
+      if (!failureTracker.hasSandwichFailed(tracker.sandwich, indexBeforeToken) && state.consumer.consumeIfMatches(tracker.sandwich.start)) {
         state.tokens.push(new Token(tracker.sandwich.meaningStart, indexBeforeToken))
-        tracker.registerPotentialSandwich(state.clone())
+        tracker.registerPotentialSandwich(state)
         continue MainTokenizerLoop
       }
     }

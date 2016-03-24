@@ -9,7 +9,7 @@ export class RichSandwichTracker {
   constructor (public sandwich: RichSandwich) { }
   
   registerPotentialSandwich(state: TokenizerState): void {
-    this.statesBeforeIncompleteSandwich.push(state)  
+    this.statesBeforeIncompleteSandwich.push(state.clone())  
   }
   
   registerCompleteSandwich(): void {
