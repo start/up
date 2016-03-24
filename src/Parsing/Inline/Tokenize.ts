@@ -15,13 +15,29 @@ export function tokenize(text: string): Token[] {
     consumer: new TextConsumer(text),
     tokens: []
   })
-  
+
   const RICH_SANDWICH_TRACKERS = [
     STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
   ].map(sandwich => new RichSandwichTracker(sandwich))
 
   MainTokenizerLoop:
-  while (!state.consumer.done()) {
+  while (true) {
+
+    if (state.consumer.done()) {
+      const trackerWithEarliestFailure = getTrackerWithEarliestFailure(RICH_SANDWICH_TRACKERS)
+
+      if (true || !trackerWithEarliestFailure) {
+        break
+      }
+
+      state = trackerWithEarliestFailure.stateBeforeFirstFailure().clone()
+
+      for (const tracker of RICH_SANDWICH_TRACKERS) {
+        tracker.reset()
+      }
+    }
+
+
     const indexBeforeToken = state.index()
 
     // Inline code
@@ -75,8 +91,14 @@ function mergeConsecutiveTextTokens(tokens: Token[]): Token[] {
 }
 
 function getTrackerWithEarliestFailure(trackers: RichSandwichTracker[]): RichSandwichTracker {
-  return trackers.reduce((prev, current) =>
-    prev.stateBeforeFirstIncompleteSandwich().index() < current.stateBeforeFirstIncompleteSandwich().index()
+  const trackersWithFailures = trackers.filter(tracker => tracker.isAnySandwichOpen())
+
+  if (!trackersWithFailures.length) {
+    return null
+  }
+
+  return trackersWithFailures.reduce((prev, current) =>
+    prev.stateBeforeFirstFailure().index() < current.stateBeforeFirstFailure().index()
       ? prev
       : current
   )
