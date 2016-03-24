@@ -84,6 +84,28 @@ function mergeConsecutiveTextTokens(tokens: Token[]): Token[] {
 }
 
 function isTokenUnmatched(index: number, tokens: Token[]): boolean {
+  const token = tokens[index]
+
+  // Text, inline code, and sandwich end tokens cannot be unmatched.
+  switch (token.meaning) {
+    case TokenMeaning.Text:
+    case TokenMeaning.EmphasisEnd:
+    case TokenMeaning.InlineAsideEnd:
+    case TokenMeaning.InlineCode:
+    case TokenMeaning.RevisionDeletionEnd:
+    case TokenMeaning.SpoilerEnd:
+    case TokenMeaning.StressEnd:
+      return false;
+  }
+  
+  // Okay, so this is a sandwich start token. Let's find which sandwich.
+  const sandwich =
+    RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.meaningStart)[0]
+
+  if (!sandwich) {
+    throw new Error('Unexpected token)')
+  }
+  
   return false
 }
 
