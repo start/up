@@ -12,15 +12,27 @@ import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './Ri
 const RICH_SANDWICHES = [
   STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
 ]
-  
+
 export function tokenize(text: string): Token[] {
-  
-  const consumer = new TextConsumer(text)
-  const  tokens: Token[] = []
-  
+  let consumer = new TextConsumer(text)
+  const tokens: Token[] = []
+
 
   MainTokenizerLoop:
-  while (!consumer.done()) {
+  while (true) {
+
+    if (consumer.done()) {
+      // Should we backtrack, or did everything parse correctly?
+      for (let i = 0; i < tokens.length; i++) {
+        if (isTokenUnmatched(i, tokens)) {
+          consumer = tokens[i].consumerBefore
+          tokens.splice(i)
+          continue MainTokenizerLoop
+        }
+      }
+
+      break
+    }
 
     // Inline code
     if (consumer.consume({
@@ -31,7 +43,7 @@ export function tokenize(text: string): Token[] {
     })) {
       continue
     }
-    
+
     // TODO: Don't do this for every single character
     const consumerBeforeToken = consumer.clone()
 
@@ -40,7 +52,7 @@ export function tokenize(text: string): Token[] {
         tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
-       
+
       if (consumer.consumeIfMatches(sandwich.start)) {
         tokens.push(new Token(sandwich.meaningStart, consumerBeforeToken))
         continue MainTokenizerLoop
@@ -71,20 +83,24 @@ function mergeConsecutiveTextTokens(tokens: Token[]): Token[] {
   return resultTokens
 }
 
+function isTokenUnmatched(index: number, tokens: Token[]): boolean {
+  return false
+}
+
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
   let countOpen = 0
-  
+
   // We can safely assume the tokens are in order. We don't need to worry about an end token
   // appearing before a start token.
   for (const token of tokens) {
     const meaning = token.meaning
-    
+
     if (meaning === sandwich.meaningStart) {
       countOpen += 1
     } else if (meaning === sandwich.meaningEnd) {
       countOpen -= 1
     }
   }
-  
+
   return countOpen > 0
 }
