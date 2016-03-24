@@ -1,4 +1,3 @@
-import { RichSandwichTracker } from './RichSandwichTracker'
 import { TextConsumer } from '../TextConsumer'
 import { Token } from './Token'
 

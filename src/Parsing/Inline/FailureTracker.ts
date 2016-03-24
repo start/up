@@ -1,17 +1,9 @@
 import { RichSandwich } from './RichSandwich'
-import { RichSandwichTracker } from './RichSandwichTracker'
 import { Token, TokenMeaning } from './Token'
 
 export class FailureTracker {
   failures: TokenMeaning[][] = []
-  
-  registerSandwichTrackerFailure(tracker: RichSandwichTracker) {
-    this.registerFailure(
-      tracker.sandwich.meaningStart,
-      tracker.stateBeforeFirstFailure().index()
-    )
-  }
-  
+    
   wasSandwichAlreadyTried(sandwich: RichSandwich, index: number): boolean {
     return this.hasFailed(sandwich.meaningStart, index)
   }

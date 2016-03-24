@@ -2,7 +2,6 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { RichSandwich } from './RichSandwich'
-import { RichSandwichTracker } from './RichSandwichTracker'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -11,38 +10,21 @@ import { applyBackslashEscaping } from '../TextHelpers'
 import { FailureTracker } from './FailureTracker'
 import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
+
+const RICH_SANDWICHES = [
+  STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
+]
+  
 export function tokenize(text: string): Token[] {
   let state = new TokenizerState({
     consumer: new TextConsumer(text),
     tokens: []
   })
-
-  const RICH_SANDWICH_TRACKERS = [
-    STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
-  ].map(sandwich => new RichSandwichTracker(sandwich))
   
   const failureTracker = new FailureTracker()
 
   MainTokenizerLoop:
-  while (true) {
-
-    if (state.consumer.done()) {
-      const trackerWithEarliestFailure = getTrackerWithEarliestFailure(RICH_SANDWICH_TRACKERS)
-
-      if (!trackerWithEarliestFailure) {
-        break
-      }
-      
-      failureTracker.registerSandwichTrackerFailure(trackerWithEarliestFailure)
-
-      state = trackerWithEarliestFailure.stateBeforeFirstFailure().clone()
-
-      for (const tracker of RICH_SANDWICH_TRACKERS) {
-        tracker.reset()
-      }
-    }
-
-
+  while (!state.consumer.done()) {
     const indexBeforeToken = state.index()
 
     // Inline code
@@ -57,26 +39,23 @@ export function tokenize(text: string): Token[] {
       continue
     }
 
-    for (const tracker of RICH_SANDWICH_TRACKERS) {
+    for (const sandwich of RICH_SANDWICHES) {
       const couldSandwichEndHere = (
-        hasAnyOpen(tracker.sandwich, state.tokens)
-        && state.consumer.consumeIfMatches(tracker.sandwich.end)
+        hasAnyOpen(sandwich, state.tokens)
+        && state.consumer.consumeIfMatches(sandwich.end)
       )
       
       if (couldSandwichEndHere) {
-        state.tokens.push(new Token(tracker.sandwich.meaningEnd, indexBeforeToken))
-        tracker.registerCompleteSandwich()
+        state.tokens.push(new Token(sandwich.meaningEnd, indexBeforeToken))
         continue MainTokenizerLoop
       }
 
       const couldSandwichStartHere = (
-        !failureTracker.wasSandwichAlreadyTried(tracker.sandwich, indexBeforeToken)
-        && state.consumer.consumeIfMatches(tracker.sandwich.start)
+        state.consumer.consumeIfMatches(sandwich.start)
       )
        
       if (couldSandwichStartHere) {
-        state.tokens.push(new Token(tracker.sandwich.meaningStart, indexBeforeToken))
-        tracker.registerPotentialSandwich(state)
+        state.tokens.push(new Token(sandwich.meaningStart, indexBeforeToken))
         continue MainTokenizerLoop
       }
     }
@@ -103,20 +82,6 @@ function mergeConsecutiveTextTokens(tokens: Token[]): Token[] {
   }
 
   return resultTokens
-}
-
-function getTrackerWithEarliestFailure(trackers: RichSandwichTracker[]): RichSandwichTracker {
-  const trackersWithFailures = trackers.filter(tracker => tracker.isAnySandwichOpen())
-
-  if (!trackersWithFailures.length) {
-    return null
-  }
-
-  return trackersWithFailures.reduce((prev, current) =>
-    prev.stateBeforeFirstFailure().index() < current.stateBeforeFirstFailure().index()
-      ? prev
-      : current
-  )
 }
 
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
