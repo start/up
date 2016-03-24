@@ -8,6 +8,7 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { TokenizerState } from './TokenizerState'
 import { applyBackslashEscaping } from '../TextHelpers'
+import { FailureTracker } from './FailureTracker'
 import { STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
 
 export function tokenize(text: string): Token[] {
@@ -19,6 +20,8 @@ export function tokenize(text: string): Token[] {
   const RICH_SANDWICH_TRACKERS = [
     STRESS, EMPHASIS, REVISION_DELETION, SPOILER, INLINE_ASIDE
   ].map(sandwich => new RichSandwichTracker(sandwich))
+  
+  const failureTracker = new FailureTracker()
 
   MainTokenizerLoop:
   while (true) {
@@ -26,9 +29,11 @@ export function tokenize(text: string): Token[] {
     if (state.consumer.done()) {
       const trackerWithEarliestFailure = getTrackerWithEarliestFailure(RICH_SANDWICH_TRACKERS)
 
-      if (true || !trackerWithEarliestFailure) {
+      if (!trackerWithEarliestFailure) {
         break
       }
+      
+      failureTracker.registerSandwichTrackerFailure(trackerWithEarliestFailure)
 
       state = trackerWithEarliestFailure.stateBeforeFirstFailure().clone()
 
@@ -53,7 +58,11 @@ export function tokenize(text: string): Token[] {
     }
 
     for (const tracker of RICH_SANDWICH_TRACKERS) {
-      if (tracker.isAnySandwichOpen() && state.consumer.consumeIfMatches(tracker.sandwich.end)) {
+      if (
+        tracker.isAnySandwichOpen()
+        && !failureTracker.hasSandwichFailed(tracker.sandwich, indexBeforeToken)
+        && state.consumer.consumeIfMatches(tracker.sandwich.end)
+      ) {
         state.tokens.push(new Token(tracker.sandwich.meaningEnd, indexBeforeToken))
         tracker.registerCompleteSandwich()
         continue MainTokenizerLoop
@@ -61,7 +70,7 @@ export function tokenize(text: string): Token[] {
 
       if (state.consumer.consumeIfMatches(tracker.sandwich.start)) {
         state.tokens.push(new Token(tracker.sandwich.meaningStart, indexBeforeToken))
-        tracker.registerPotentialSandwich(state)
+        tracker.registerPotentialSandwich(state.clone())
         continue MainTokenizerLoop
       }
     }
