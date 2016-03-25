@@ -14,7 +14,10 @@ export enum TokenMeaning {
   SpoilerStart,
   SpoilerEnd,
   InlineAsideStart,
-  InlineAsideEnd
+  InlineAsideEnd,
+  LinkAndLinkContentStart,
+  LinkContentEndAndLinkUrlStart,
+  LinkAndLinkUrlEnd
 }
 
 export class Token {

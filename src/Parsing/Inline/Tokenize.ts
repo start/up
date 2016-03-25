@@ -23,11 +23,11 @@ export function tokenize(text: string): Token[] {
       for (let i = 0; i < tokens.length; i++) {
         if (isTokenUnmatched(i, tokens)) {
           const token = tokens[i]
-          
+
           failureTracker.registerFailure(token.meaning, token.index())
           consumer = token.consumerBefore
           tokens.splice(i)
-          
+
           continue MainTokenizerLoop
         }
       }
@@ -47,14 +47,16 @@ export function tokenize(text: string): Token[] {
 
     const currentIndex = consumer.lengthConsumed()
 
+
+
     for (const sandwich of RICH_SANDWICHES) {
       if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
-      
+
       const sandwichStart = sandwich.start
-      
+
       const wasStartToken = (
         !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
         && consumer.consumeIfMatches(sandwichStart)
@@ -68,13 +70,13 @@ export function tokenize(text: string): Token[] {
 
     const currentChar = consumer.escapedCurrentChar()
     const lastToken = last(tokens)
-    
+
     if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
       lastToken.value += currentChar
     } else {
       tokens.push(new Token(TokenMeaning.Text, currentChar))
     }
-    
+
     consumer.moveNext()
   }
 
@@ -96,7 +98,7 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     case TokenMeaning.StressEnd:
       return false;
   }
-  
+
   // Okay, so this is a sandwich start token. Let's find which sandwich.
   const sandwich =
     RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.meaningStart)[0]
@@ -104,16 +106,16 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
   if (!sandwich) {
     throw new Error('Unexpected token')
   }
-  
+
   return isSandwichAtIndexOpen(sandwich, index, tokens)
 }
 
-function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number,  tokens: Token[]) {
+function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number, tokens: Token[]) {
   // We know that token[index] is a sandwich start token, so we'll start checking tokens
   // at index + 1, and we'll start our countOpen at 1
   const startIndex = index + 1
   let countOpen = 1
-  
+
   for (let i = startIndex; i < tokens.length; i++) {
     const meaning = tokens[i].meaning
 
@@ -122,13 +124,13 @@ function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number,  tokens: T
     } else if (meaning === sandwich.meaningEnd) {
       countOpen -= 1
     }
-    
+
     // We've closed the current sandwich! We don't care if others might be open.
     if (countOpen === 0) {
       return false
     }
   }
-  
+
   return true
 }
 
@@ -148,4 +150,23 @@ function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
   }
 
   return countOpen > 0
+}
+
+function isParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
+  // We can safely assume the tokens appear in order.
+  //
+  // Because of that, we actually only need to verify that each token appears 
+  // an equal number of times
+  const counts: number[] = new Array(meanings.length)
+
+
+  for (const token of tokens) {
+    for (let i = 0; i < meanings.length; i++) {
+      if (token.meaning === meanings[i]) {
+        counts[i] = (counts[i] || 0) + 1
+      }
+    }
+  }
+
+  return counts.every(count => counts[0] === count)
 }
