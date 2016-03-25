@@ -11,7 +11,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
+import { RICH_SANDWICHES } from './RichSandwiches'
 
 
 export class ParseResult {
@@ -20,18 +20,11 @@ export class ParseResult {
     public countTokensParsed: number) { }
 }
 
+
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
 
-const RICH_SANDWICHES = [
-  STRESS,
-  EMPHASIS,
-  REVISION_DELETION,
-  REVISION_INSERTION,
-  SPOILER,
-  INLINE_ASIDE
-]
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   const nodes: InlineSyntaxNode[] = []

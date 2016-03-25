@@ -7,12 +7,8 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './RichSandwiches'
+import { RICH_SANDWICHES } from './RichSandwiches'
 
-
-const RICH_SANDWICHES = [
-  STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE
-]
 
 export function tokenize(text: string): Token[] {
   let consumer = new TextConsumer(text)
