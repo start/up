@@ -152,14 +152,13 @@ function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
   return countOpen > 0
 }
 
-function isParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
-  // We can safely assume the tokens appear in order.
+function isInTheMiddleOfParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
+  // We can safely assume the tokens appear in proper order.
   //
-  // Because of that, we actually only need to verify that each token appears 
-  // an equal number of times
+  // Because of that, we know that we are "in the middle of parsing" unless all meanings appear
+  // an equal number of times.
   const counts: number[] = new Array(meanings.length)
-
-
+  
   for (const token of tokens) {
     for (let i = 0; i < meanings.length; i++) {
       if (token.meaning === meanings[i]) {
@@ -168,5 +167,5 @@ function isParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
     }
   }
 
-  return counts.every(count => counts[0] === count)
+  return counts.some(count => counts[0] !== count)
 }
