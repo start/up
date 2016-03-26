@@ -66,7 +66,7 @@ export function tokenize(text: string): Token[] {
         continue MainTokenizerLoop
       }
     }
-    
+
     // Links
     if (!isInsideLink(tokens)) {
       const LINK_START = '['
@@ -124,9 +124,9 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     case TokenMeaning.StressEnd:
     case TokenMeaning.LinkUrlAndEnd:
       return false;
-    
+
     case TokenMeaning.LinkStart:
-      
+
   }
 
   // Okay, so this is a sandwich start token. Let's find which sandwich.
@@ -137,10 +137,10 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     throw new Error('Unexpected token')
   }
 
-  return isSandwichAtIndexOpen(sandwich, index, tokens)
+  return isSandwichAtIndexUnclosed(sandwich, index, tokens)
 }
 
-function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number, tokens: Token[]) {
+function isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number, tokens: Token[]) {
   // We know that token[index] is a sandwich start token, so we'll start checking tokens
   // at index + 1, and we'll start our countOpen at 1
   const startIndex = index + 1
@@ -180,18 +180,43 @@ function isInside(meanings: TokenMeaning[], tokens: Token[]): boolean {
   //
   // Because of that, we know that we are "in the middle of tokenizing" unless all meanings appear
   // an equal number of times.
-  const counts: number[] = new Array(meanings.length)
+  const meaningCounts: number[] = new Array(meanings.length)
 
   for (const token of tokens) {
     for (let i = 0; i < meanings.length; i++) {
-      counts[i] = counts[i] || 0
+      meaningCounts[i] = meaningCounts[i] || 0
 
       if (token.meaning === meanings[i]) {
-        counts[i] += 1
+        meaningCounts[i] += 1
         break
       }
     }
   }
 
-  return counts.some(count => counts[0] !== count)
+  return meaningCounts.some(count => meaningCounts[0] !== count)
+}
+
+function isConventionAtIndexUnclosed(meanings: TokenMeaning[], index: number, tokens: Token[]): boolean {
+  const meaningCounts: number[] = new Array(meanings.length)
+  
+  // We know that token[index] is the start token. 
+  const startIndex = index + 1
+  meaningCounts[0] = 1
+
+  for (const token of tokens) {
+    for (let i = startIndex; i < meanings.length; i++) {
+      meaningCounts[i] = meaningCounts[i] || 0
+
+      if (token.meaning === meanings[i]) {
+        meaningCounts[i] += 1
+        break
+      }
+    }
+    
+    if (meaningCounts.every(count => meaningCounts[0] === count)) {
+      return true
+    }
+  }
+
+  return false
 }
