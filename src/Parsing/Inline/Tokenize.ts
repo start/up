@@ -49,7 +49,7 @@ export function tokenize(text: string): Token[] {
 
 
     for (const sandwich of RICH_SANDWICHES) {
-      if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
+      if (areAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
@@ -141,30 +141,10 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
 }
 
 function isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number, tokens: Token[]) {
-  // We know that token[index] is a sandwich start token, so we'll start checking tokens
-  // at index + 1, and we'll start our countOpen at 1
-  const startIndex = index + 1
-  let countOpen = 1
-
-  for (let i = startIndex; i < tokens.length; i++) {
-    const meaning = tokens[i].meaning
-
-    if (meaning === sandwich.meaningStart) {
-      countOpen += 1
-    } else if (meaning === sandwich.meaningEnd) {
-      countOpen -= 1
-    }
-
-    // We've closed the current sandwich! We don't care if others might be open.
-    if (countOpen === 0) {
-      return false
-    }
-  }
-
-  return true
+  return isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index, tokens)
 }
 
-function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
+function areAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
   return isInside([sandwich.meaningStart, sandwich.meaningEnd], tokens)
 }
 
@@ -196,27 +176,27 @@ function isInside(meanings: TokenMeaning[], tokens: Token[]): boolean {
   return meaningCounts.some(count => meaningCounts[0] !== count)
 }
 
-function isConventionAtIndexUnclosed(meanings: TokenMeaning[], index: number, tokens: Token[]): boolean {
-  const meaningCounts: number[] = new Array(meanings.length)
+function isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: number, tokens: Token[]): boolean {
+  const meaningCounts: number[] = new Array(conventionMeanings.length)
   
-  // We know that token[index] is the start token. 
-  const startIndex = index + 1
-  meaningCounts[0] = 1
+  for (let i = 0; i < conventionMeanings.length; i++) {
+    meaningCounts[i] =  0
+  }
 
-  for (const token of tokens) {
-    for (let i = startIndex; i < meanings.length; i++) {
-      meaningCounts[i] = meaningCounts[i] || 0
-
-      if (token.meaning === meanings[i]) {
-        meaningCounts[i] += 1
+  for (let tokenIndex = index; tokenIndex < tokens.length; tokenIndex++) {
+    const token = tokens[tokenIndex]
+    
+    for (let meaningIndex = 0; meaningIndex < conventionMeanings.length; meaningIndex++) {
+      if (token.meaning === conventionMeanings[meaningIndex]) {
+        meaningCounts[meaningIndex] += 1
         break
       }
     }
     
-    if (meaningCounts.every(count => meaningCounts[0] === count)) {
-      return true
+    if (meaningCounts.every(count => count === meaningCounts[0])) {
+      return false
     }
   }
 
-  return false
+  return true
 }
