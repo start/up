@@ -47,8 +47,6 @@ export function tokenize(text: string): Token[] {
 
     const currentIndex = consumer.lengthConsumed()
 
-
-
     for (const sandwich of RICH_SANDWICHES) {
       if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
@@ -136,6 +134,13 @@ function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number, tokens: To
 
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
   return isInTheMiddleOfParsing([sandwich.meaningStart, sandwich.meaningEnd], tokens)
+}
+
+function isParsingLink(tokens: Token[]) {
+  return isInTheMiddleOfParsing(
+    [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndEnd],
+    tokens
+  )
 }
 
 function isInTheMiddleOfParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
