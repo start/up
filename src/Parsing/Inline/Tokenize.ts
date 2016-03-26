@@ -133,20 +133,20 @@ function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number, tokens: To
 }
 
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
-  return isInTheMiddleOfParsing([sandwich.meaningStart, sandwich.meaningEnd], tokens)
+  return isInTheMiddleOfTokenizing([sandwich.meaningStart, sandwich.meaningEnd], tokens)
 }
 
-function isParsingLink(tokens: Token[]) {
-  return isInTheMiddleOfParsing(
+function isTokenizingLink(tokens: Token[]) {
+  return isInTheMiddleOfTokenizing(
     [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndEnd],
     tokens
   )
 }
 
-function isInTheMiddleOfParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
+function isInTheMiddleOfTokenizing(meanings: TokenMeaning[], tokens: Token[]): boolean {
   // We can safely assume the tokens appear in proper order.
   //
-  // Because of that, we know that we are "in the middle of parsing" unless all meanings appear
+  // Because of that, we know that we are "in the middle of tokenizing" unless all meanings appear
   // an equal number of times.
   const counts: number[] = new Array(meanings.length)
   
