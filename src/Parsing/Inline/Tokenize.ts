@@ -49,7 +49,7 @@ export function tokenize(text: string): Token[] {
 
 
     for (const sandwich of RICH_SANDWICHES) {
-      if (areAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
+      if (isInside(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
@@ -79,7 +79,7 @@ export function tokenize(text: string): Token[] {
       if (consumer.consumeIfMatches(' -> ')) {
         const didFindEnd = consumer.consume({
           upTo: ']',
-          then: url => tokens.push(new Token(TokenMeaning.LinkUrlAndEnd, applyBackslashEscaping(url)))
+          then: url => tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
         })
 
         if (didFindEnd) {
@@ -109,6 +109,8 @@ export function tokenize(text: string): Token[] {
   return tokens
 }
 
+const LINK_CONVENTIONS = [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd]
+
 function isTokenUnmatched(index: number, tokens: Token[]): boolean {
   const token = tokens[index]
 
@@ -122,11 +124,11 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     case TokenMeaning.RevisionInsertionEnd:
     case TokenMeaning.SpoilerEnd:
     case TokenMeaning.StressEnd:
-    case TokenMeaning.LinkUrlAndEnd:
+    case TokenMeaning.LinkUrlAndLinkEnd:
       return false;
 
     case TokenMeaning.LinkStart:
-
+      return isLinkAtIndexUnClosed(index, tokens)
   }
 
   // Okay, so this is a sandwich start token. Let's find which sandwich.
@@ -144,18 +146,19 @@ function isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number, tokens
   return isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index, tokens)
 }
 
-function areAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
-  return isInside([sandwich.meaningStart, sandwich.meaningEnd], tokens)
+function isLinkAtIndexUnClosed(index: number, tokens: Token[]) {
+  return isConventionAtIndexUnclosed(LINK_CONVENTIONS, index, tokens)
+}
+
+function isInside(sandwich: RichSandwich, tokens: Token[]): boolean {
+  return isInsideConvention([sandwich.meaningStart, sandwich.meaningEnd], tokens)
 }
 
 function isInsideLink(tokens: Token[]) {
-  return isInside(
-    [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndEnd],
-    tokens
-  )
+  return isInsideConvention(LINK_CONVENTIONS, tokens)
 }
 
-function isInside(conventionMeanings: TokenMeaning[], tokens: Token[]): boolean {
+function isInsideConvention(conventionMeanings: TokenMeaning[], tokens: Token[]): boolean {
   // We can safely assume the tokens appear in proper order.
   //
   // Because of that, we know that we are "in the middle of tokenizing" unless all meanings appear
