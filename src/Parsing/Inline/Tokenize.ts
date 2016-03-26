@@ -47,6 +47,7 @@ export function tokenize(text: string): Token[] {
 
     const currentIndex = consumer.lengthConsumed()
 
+
     for (const sandwich of RICH_SANDWICHES) {
       if (hasAnyOpen(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
@@ -63,6 +64,33 @@ export function tokenize(text: string): Token[] {
       if (wasStartToken) {
         tokens.push(new Token(sandwich.meaningStart, consumer.asBeforeMatch(sandwichStart.length)))
         continue MainTokenizerLoop
+      }
+    }
+    
+    // Links
+    if (!isInsideLink(tokens)) {
+      const LINK_START = '['
+
+      if (consumer.consumeIfMatches(LINK_START)) {
+        tokens.push(new Token(TokenMeaning.LinkStart, consumer.asBeforeMatch(LINK_START.length)))
+        continue
+      }
+    } else {
+      if (consumer.consumeIfMatches(' -> ')) {
+        const didFindEnd = consumer.consume({
+          upTo: ']',
+          then: url => tokens.push(new Token(TokenMeaning.LinkUrlAndEnd, applyBackslashEscaping(url)))
+        })
+
+        if (didFindEnd) {
+          continue
+        } else {
+          throw Error('TODO: Fail link because it lacks a closing bracket')
+        }
+      }
+
+      if (consumer.consumeIfMatches(']')) {
+        throw Error('TODO: Fail link because it is simply bracketed text')
       }
     }
 
@@ -94,7 +122,11 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
     case TokenMeaning.RevisionInsertionEnd:
     case TokenMeaning.SpoilerEnd:
     case TokenMeaning.StressEnd:
+    case TokenMeaning.LinkUrlAndEnd:
       return false;
+    
+    case TokenMeaning.LinkStart:
+      
   }
 
   // Okay, so this is a sandwich start token. Let's find which sandwich.
@@ -133,27 +165,27 @@ function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number, tokens: To
 }
 
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
-  return isInTheMiddleOfTokenizing([sandwich.meaningStart, sandwich.meaningEnd], tokens)
+  return isInside([sandwich.meaningStart, sandwich.meaningEnd], tokens)
 }
 
-function isTokenizingLink(tokens: Token[]) {
-  return isInTheMiddleOfTokenizing(
+function isInsideLink(tokens: Token[]) {
+  return isInside(
     [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndEnd],
     tokens
   )
 }
 
-function isInTheMiddleOfTokenizing(meanings: TokenMeaning[], tokens: Token[]): boolean {
+function isInside(meanings: TokenMeaning[], tokens: Token[]): boolean {
   // We can safely assume the tokens appear in proper order.
   //
   // Because of that, we know that we are "in the middle of tokenizing" unless all meanings appear
   // an equal number of times.
   const counts: number[] = new Array(meanings.length)
-  
+
   for (const token of tokens) {
     for (let i = 0; i < meanings.length; i++) {
       counts[i] = counts[i] || 0
-      
+
       if (token.meaning === meanings[i]) {
         counts[i] += 1
         break
