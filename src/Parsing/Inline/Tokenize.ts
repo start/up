@@ -155,18 +155,20 @@ function isInsideLink(tokens: Token[]) {
   )
 }
 
-function isInside(meanings: TokenMeaning[], tokens: Token[]): boolean {
+function isInside(conventionMeanings: TokenMeaning[], tokens: Token[]): boolean {
   // We can safely assume the tokens appear in proper order.
   //
   // Because of that, we know that we are "in the middle of tokenizing" unless all meanings appear
   // an equal number of times.
-  const meaningCounts: number[] = new Array(meanings.length)
+  const meaningCounts: number[] = new Array(conventionMeanings.length)
 
+  for (let i = 0; i < conventionMeanings.length; i++) {
+    meaningCounts[i] =  0
+  }
+  
   for (const token of tokens) {
-    for (let i = 0; i < meanings.length; i++) {
-      meaningCounts[i] = meaningCounts[i] || 0
-
-      if (token.meaning === meanings[i]) {
+    for (let i = 0; i < conventionMeanings.length; i++) {
+      if (token.meaning === conventionMeanings[i]) {
         meaningCounts[i] += 1
         break
       }

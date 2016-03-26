@@ -29,3 +29,12 @@ describe('A spoiler with " -> " inside', () => {
       ]))
   })
 })
+
+describe('A single spoiler start face', () => {
+  it ('remains plain text', () => {
+    expect(Up.ast('[<_<]')).to.be.eql(
+      insideDocumentAndParagraph([
+          new PlainTextNode('[<_<]')
+      ]))
+  })
+})
