@@ -135,21 +135,7 @@ function isSandwichAtIndexOpen(sandwich: RichSandwich, index: number, tokens: To
 }
 
 function hasAnyOpen(sandwich: RichSandwich, tokens: Token[]): boolean {
-  let countOpen = 0
-
-  // We can safely assume the tokens are in order. We don't need to worry about an end token
-  // appearing before a start token.
-  for (const token of tokens) {
-    const meaning = token.meaning
-
-    if (meaning === sandwich.meaningStart) {
-      countOpen += 1
-    } else if (meaning === sandwich.meaningEnd) {
-      countOpen -= 1
-    }
-  }
-
-  return countOpen > 0
+  return isInTheMiddleOfParsing([sandwich.meaningStart, sandwich.meaningEnd], tokens)
 }
 
 function isInTheMiddleOfParsing(meanings: TokenMeaning[], tokens: Token[]): boolean {
@@ -161,8 +147,11 @@ function isInTheMiddleOfParsing(meanings: TokenMeaning[], tokens: Token[]): bool
   
   for (const token of tokens) {
     for (let i = 0; i < meanings.length; i++) {
+      counts[i] = counts[i] || 0
+      
       if (token.meaning === meanings[i]) {
-        counts[i] = (counts[i] || 0) + 1
+        counts[i] += 1
+        break
       }
     }
   }
