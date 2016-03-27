@@ -157,7 +157,7 @@ class Tokenizer {
   }
 
   undoLatest(meaning: TokenMeaning): void {
-    this.backtrack(indexOfLastTokenWithMeaning(meaning, this.tokens))
+    this.backtrack(this.indexOfLastTokenWithMeaning(meaning))
   }
 
   backtrack(indexOfEarliestTokenToUndo: number): void {
@@ -201,11 +201,11 @@ class Tokenizer {
 
 
   isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number) {
-    return isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index, this.tokens)
+    return this.isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index)
   }
 
   isLinkAtIndexUnClosed(index: number) {
-    return isConventionAtIndexUnclosed(LINK_CONVENTIONS, index, this.tokens)
+    return this.isConventionAtIndexUnclosed(LINK_CONVENTIONS, index)
   }
 
   isInsideSandwich(sandwich: RichSandwich): boolean {
@@ -238,47 +238,47 @@ class Tokenizer {
 
     return meaningCounts.some(count => meaningCounts[0] !== count)
   }
-}
 
-function isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: number, tokens: Token[]): boolean {
-  const meaningCounts: number[] = new Array(conventionMeanings.length)
+  isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: number): boolean {
+    const meaningCounts: number[] = new Array(conventionMeanings.length)
 
-  // We haven't found any of the convention's meanings so far...
-  for (let i = 0; i < conventionMeanings.length; i++) {
-    meaningCounts[i] = 0
-  }
+    // We haven't found any of the convention's meanings so far...
+    for (let i = 0; i < conventionMeanings.length; i++) {
+      meaningCounts[i] = 0
+    }
 
-  // Well, actually, we sort of have. We know the the token at `index` will have the convention's first meaning.
-  // Let's skip that token, and let's say we've seen the convention's first meaning once.
-  const tokenStartIndex = index + 1
-  meaningCounts[0] = 1
+    // Well, actually, we sort of have. We know the the token at `index` will have the convention's first meaning.
+    // Let's skip that token, and let's say we've seen the convention's first meaning once.
+    const tokenStartIndex = index + 1
+    meaningCounts[0] = 1
 
-  for (let tokenIndex = tokenStartIndex; tokenIndex < tokens.length; tokenIndex++) {
-    const token = tokens[tokenIndex]
+    for (let tokenIndex = tokenStartIndex; tokenIndex < this.tokens.length; tokenIndex++) {
+      const token = this.tokens[tokenIndex]
 
-    for (let meaningIndex = 0; meaningIndex < conventionMeanings.length; meaningIndex++) {
-      if (token.meaning === conventionMeanings[meaningIndex]) {
-        meaningCounts[meaningIndex] += 1
-        break
+      for (let meaningIndex = 0; meaningIndex < conventionMeanings.length; meaningIndex++) {
+        if (token.meaning === conventionMeanings[meaningIndex]) {
+          meaningCounts[meaningIndex] += 1
+          break
+        }
+      }
+
+      if (meaningCounts.every(count => count === meaningCounts[0])) {
+        // We've seen every token in this convention an equal number of times! That guarantees the one we started
+        // with is closed. We don't care if there are unclosed ones later on, so our work here is done.
+        return false
       }
     }
 
-    if (meaningCounts.every(count => count === meaningCounts[0])) {
-      // We've seen every token in this convention an equal number of times! That guarantees the one we started
-      // with is closed. We don't care if there are unclosed ones later on, so our work here is done.
-      return false
-    }
+    return true
   }
 
-  return true
-}
-
-function indexOfLastTokenWithMeaning(meaning: TokenMeaning, tokens: Token[]): number {
-  for (let i = tokens.length - 1; i >= 0; i--) {
-    if (tokens[i].meaning === meaning) {
-      return i
+  indexOfLastTokenWithMeaning(meaning: TokenMeaning): number {
+    for (let i = this.tokens.length - 1; i >= 0; i--) {
+      if (this.tokens[i].meaning === meaning) {
+        return i
+      }
     }
-  }
 
-  throw new Error('Token not found')
+    throw new Error('Token not found')
+  }
 }
