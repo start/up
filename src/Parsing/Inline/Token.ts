@@ -16,9 +16,7 @@ export enum TokenMeaning {
   InlineAsideStart,
   InlineAsideEnd,
   LinkStart,
-  LinkUrlAndLinkEnd,
-  EmphasisStartAndStressStart,
-  EmphasisEndAndStressEnd
+  LinkUrlAndLinkEnd
 }
 
 export class Token {
