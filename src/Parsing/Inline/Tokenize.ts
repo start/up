@@ -137,21 +137,12 @@ class Tokenizer {
   constructor(text: string) {
     this.consumer = new TextConsumer(text)
 
-    MainTokenizerLoop:
     while (true) {
 
       if (this.consumer.done()) {
         // Should we backtrack, or did everything parse correctly?
-        for (let i = 0; i < this.tokens.length; i++) {
-          if (isTokenUnmatched(i, this.tokens)) {
-            const token = this.tokens[i]
-
-            this.failureTracker.registerFailure(token.meaning, token.textIndex())
-            this.consumer = token.consumerBefore
-            this.tokens.splice(i)
-
-            continue MainTokenizerLoop
-          }
+        if (this.backtrackIfAnyConventionsAreUnclosed()) {
+          continue
         }
 
         break
@@ -171,6 +162,20 @@ class Tokenizer {
 
       this.treatCurrentCharAsPlainText()
       this.consumer.moveNext()
+    }
+  }
+
+  backtrackIfAnyConventionsAreUnclosed(): boolean {
+    for (let i = 0; i < this.tokens.length; i++) {
+      if (isTokenUnmatched(i, this.tokens)) {
+        const token = this.tokens[i]
+
+        this.failureTracker.registerFailure(token.meaning, token.textIndex())
+        this.consumer = token.consumerBefore
+        this.tokens.splice(i)
+
+        return true
+      }
     }
   }
 
@@ -230,7 +235,7 @@ class Tokenizer {
 
     // We're insied a link! Are we looking at the URL arrow?
     if (this.consumer.consumeIfMatches(' -> ')) {
-      
+
       // Great! We found the URL arrow. Is the closing bracket there?
       const didFindLinkEnd = this.consumer.consume({
         upTo: ']',
