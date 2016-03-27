@@ -138,7 +138,6 @@ class Tokenizer {
     this.consumer = new TextConsumer(text)
 
     while (true) {
-
       if (this.consumer.done()) {
         if (this.backtrackIfAnyConventionsAreUnclosed()) {
           continue
@@ -209,6 +208,7 @@ class Tokenizer {
     }
   }
 
+
   handleLink(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
@@ -225,36 +225,35 @@ class Tokenizer {
         return true
       }
 
-      // ... Nope. We didn't find anything. Since we're not inside a link, let's bail
+      // ... Nope. We didn't find anything. Since we're not inside a link, let's bail.
       return false
     }
 
     // We're insied a link! Are we looking at the URL arrow?
     if (this.consumer.consumeIfMatches(' -> ')) {
 
-      // Great! We found the URL arrow. Is the closing bracket there?
+      // Great! We found the URL arrow. Let's try to find the closing bracket.
       const didFindLinkEnd = this.consumer.consume({
         upTo: ']',
         then: url => this.tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
       })
 
       if (!didFindLinkEnd) {
-        // No, the closing bracket is nowehere to be found. Oops!
+        // No, the closing bracket is nowehere to be found. This wasn't a link. Oops!
         this.undoLatest(TokenMeaning.LinkStart)
       }
 
       return true
     }
 
-    // We're not looking at the URL arrow, which means we're still tokenizing link's contents.
-
+    // We haven't found the URL arrow yet, which means we're still tokenizing link's contents.
+    //
+    // If we find a closing brace before finding any URL arrow, that means we're actually looking at regular
+    // bracketed text.
     if (this.consumer.consumeIfMatches(']')) {
-      // Uh-oh! The link's opening brace was closed before finding any URL arrow. That means we were looking
-      // at regular bracketed text all along. Oops!
       this.undoLatest(TokenMeaning.LinkStart)
       return true
     }
-
 
     return false
   }
