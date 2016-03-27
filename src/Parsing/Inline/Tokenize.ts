@@ -71,7 +71,7 @@ class Tokenizer {
     const textIndex = this.consumer.lengthConsumed()
 
     for (const sandwich of RICH_SANDWICHES) {
-      if (isInsideSandwich(sandwich, this.tokens) && this.consumer.consumeIfMatches(sandwich.end)) {
+      if (this.isInsideSandwich(sandwich) && this.consumer.consumeIfMatches(sandwich.end)) {
         this.addToken(sandwich.meaningEnd)
         return true
       }
@@ -98,7 +98,7 @@ class Tokenizer {
       return false
     }
 
-    if (!isInsideLink(this.tokens)) {
+    if (!this.isInsideLink()) {
       // If we're not inside a link, that means we can potentially start one. Let's see whether we should...
       const LINK_START = '['
 
@@ -185,7 +185,7 @@ class Tokenizer {
         return false;
 
       case TokenMeaning.LinkStart:
-        return isLinkAtIndexUnClosed(index, this.tokens)
+        return this.isLinkAtIndexUnClosed(index)
     }
 
     // Okay, so this is a sandwich start token. Let's find which sandwich.
@@ -196,24 +196,25 @@ class Tokenizer {
       throw new Error('Unexpected token')
     }
 
-    return isSandwichAtIndexUnclosed(sandwich, index, this.tokens)
+    return this.isSandwichAtIndexUnclosed(sandwich, index)
   }
-}
 
-function isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number, tokens: Token[]) {
-  return isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index, tokens)
-}
 
-function isLinkAtIndexUnClosed(index: number, tokens: Token[]) {
-  return isConventionAtIndexUnclosed(LINK_CONVENTIONS, index, tokens)
-}
+  isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number) {
+    return isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index, this.tokens)
+  }
 
-function isInsideSandwich(sandwich: RichSandwich, tokens: Token[]): boolean {
-  return isInsideConvention([sandwich.meaningStart, sandwich.meaningEnd], tokens)
-}
+  isLinkAtIndexUnClosed(index: number) {
+    return isConventionAtIndexUnclosed(LINK_CONVENTIONS, index, this.tokens)
+  }
 
-function isInsideLink(tokens: Token[]) {
-  return isInsideConvention(LINK_CONVENTIONS, tokens)
+  isInsideSandwich(sandwich: RichSandwich): boolean {
+    return isInsideConvention([sandwich.meaningStart, sandwich.meaningEnd], this.tokens)
+  }
+
+  isInsideLink() {
+    return isInsideConvention(LINK_CONVENTIONS, this.tokens)
+  }
 }
 
 function isInsideConvention(conventionMeanings: TokenMeaning[], tokens: Token[]): boolean {
