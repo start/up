@@ -145,16 +145,14 @@ class Tokenizer {
 
         break
       }
-
-      if (this.tokenizeInlineCode()) {
-        continue
-      }
-
-      if (this.handleSandwiches()) {
-        continue
-      }
-
-      if (this.handleLink()) {
+      
+      const wasAnythingDiscovered = (
+        this.handleInlineCode()
+        || this.handleSandwiches()
+        || this.handleLink()
+      )
+      
+      if (wasAnythingDiscovered) {
         continue
       }
 
@@ -174,7 +172,7 @@ class Tokenizer {
     return false
   }
 
-  tokenizeInlineCode(): boolean {
+  handleInlineCode(): boolean {
     return this.consumer.consume({
       from: '`',
       upTo: '`',
