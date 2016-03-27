@@ -165,19 +165,11 @@ class Tokenizer {
         continue
       }
 
-      // Links
       if (this.handleLink()) {
         continue
       }
 
-      const currentChar = this.consumer.escapedCurrentChar()
-      const lastToken = last(this.tokens)
-
-      if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
-        lastToken.value += currentChar
-      } else {
-        this.tokens.push(new Token(TokenMeaning.Text, currentChar))
-      }
+      this.treatCurrentCharAsText()
 
       this.consumer.moveNext()
     }
@@ -239,12 +231,15 @@ class Tokenizer {
 
     // We're insied a link! Are we looking at the URL arrow?
     if (this.consumer.consumeIfMatches(' -> ')) {
+      
+      // Great! We found the URL arrow. Is the closing bracket there?
       const didFindLinkEnd = this.consumer.consume({
         upTo: ']',
         then: url => this.tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
       })
 
       if (!didFindLinkEnd) {
+        // No, the closing bracket is nowehere to be found. Oops!
         this.undoLatest(TokenMeaning.LinkStart)
       }
 
@@ -254,14 +249,25 @@ class Tokenizer {
     // We're not looking at the URL arrow, which means we're still tokenizing link's contents.
 
     if (this.consumer.consumeIfMatches(']')) {
-      // Uh-oh! The link's opening brace was just closed. That means we were looking at regular bracketed text
-      // all along. Oops!
+      // Uh-oh! The link's opening brace was closed before finding any URL arrow. That means we were looking
+      // at regular bracketed text all along. Oops!
       this.undoLatest(TokenMeaning.LinkStart)
       return true
     }
 
 
     return false
+  }
+
+  treatCurrentCharAsText(): void {
+    const currentChar = this.consumer.escapedCurrentChar()
+    const lastToken = last(this.tokens)
+
+    if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
+      lastToken.value += currentChar
+    } else {
+      this.tokens.push(new Token(TokenMeaning.Text, currentChar))
+    }
   }
 
   undoLatest(meaning: TokenMeaning): void {
