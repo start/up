@@ -140,7 +140,6 @@ class Tokenizer {
     while (true) {
 
       if (this.consumer.done()) {
-        // Should we backtrack, or did everything parse correctly?
         if (this.backtrackIfAnyConventionsAreUnclosed()) {
           continue
         }
@@ -168,15 +167,12 @@ class Tokenizer {
   backtrackIfAnyConventionsAreUnclosed(): boolean {
     for (let i = 0; i < this.tokens.length; i++) {
       if (isTokenUnmatched(i, this.tokens)) {
-        const token = this.tokens[i]
-
-        this.failureTracker.registerFailure(token.meaning, token.textIndex())
-        this.consumer = token.consumerBefore
-        this.tokens.splice(i)
-
+        this.backtrack(i)
         return true
       }
     }
+    
+    return false
   }
 
   tokenizeInlineCode(): boolean {
