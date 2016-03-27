@@ -21,7 +21,7 @@ function isTokenUnmatched(index: number, tokens: Token[]): boolean {
 
   // Text, inline code, and sandwich end tokens cannot be unmatched.
   switch (token.meaning) {
-    case TokenMeaning.Text:
+    case TokenMeaning.PlainText:
     case TokenMeaning.EmphasisEnd:
     case TokenMeaning.InlineAsideEnd:
     case TokenMeaning.InlineCode:
@@ -169,8 +169,7 @@ class Tokenizer {
         continue
       }
 
-      this.treatCurrentCharAsText()
-
+      this.treatCurrentCharAsPlainText()
       this.consumer.moveNext()
     }
   }
@@ -259,14 +258,14 @@ class Tokenizer {
     return false
   }
 
-  treatCurrentCharAsText(): void {
+  treatCurrentCharAsPlainText(): void {
     const currentChar = this.consumer.escapedCurrentChar()
     const lastToken = last(this.tokens)
 
-    if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
+    if (lastToken && (lastToken.meaning === TokenMeaning.PlainText)) {
       lastToken.value += currentChar
     } else {
-      this.tokens.push(new Token(TokenMeaning.Text, currentChar))
+      this.tokens.push(new Token(TokenMeaning.PlainText, currentChar))
     }
   }
 

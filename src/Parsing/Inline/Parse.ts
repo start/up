@@ -43,7 +43,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     }
 
     switch (token.meaning) {
-      case TokenMeaning.Text:
+      case TokenMeaning.PlainText:
         nodes.push(new PlainTextNode(token.value))
         continue
 

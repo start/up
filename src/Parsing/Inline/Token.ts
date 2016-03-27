@@ -1,7 +1,7 @@
 import { TextConsumer } from '../TextConsumer'
 
 export enum TokenMeaning {
-  Text,
+  PlainText,
   EmphasisStart,
   EmphasisEnd,
   StressStart,
