@@ -131,11 +131,11 @@ function indexOfLastToken(meaning: TokenMeaning, tokens: Token[]): number {
 
 class Tokenizer {
   public tokens: Token[] = []
+  private failureTracker = new FailureTracker()
   private consumer: TextConsumer
 
   constructor(text: string) {
     this.consumer = new TextConsumer(text)
-    const failureTracker = new FailureTracker()
 
     MainTokenizerLoop:
     while (true) {
@@ -146,7 +146,7 @@ class Tokenizer {
           if (isTokenUnmatched(i, this.tokens)) {
             const token = this.tokens[i]
 
-            failureTracker.registerFailure(token.meaning, token.textIndex())
+            this.failureTracker.registerFailure(token.meaning, token.textIndex())
             this.consumer = token.consumerBefore
             this.tokens.splice(i)
 
@@ -179,7 +179,7 @@ class Tokenizer {
         const sandwichStart = sandwich.start
 
         const foundStartToken = (
-          !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
+          !this.failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
           && this.consumer.consumeIfMatches(sandwichStart)
         )
 
@@ -190,7 +190,7 @@ class Tokenizer {
       }
 
       // Links
-      if (!(failureTracker.hasFailed(TokenMeaning.LinkStart, currentIndex) || isInsideLink(this.tokens))) {
+      if (!(this.failureTracker.hasFailed(TokenMeaning.LinkStart, currentIndex) || isInsideLink(this.tokens))) {
         const LINK_START = '['
 
         if (this.consumer.consumeIfMatches(LINK_START)) {
@@ -205,25 +205,14 @@ class Tokenizer {
           })
 
           if (!didFindLinkEnd) {
-            const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, this.tokens)
-            const linkStartToken = this.tokens[failedLinkIndex]
-
-            failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
-            this.consumer = linkStartToken.consumerBefore
-            this.tokens.splice(failedLinkIndex)
+            this.undoLatest(TokenMeaning.LinkStart)
           }
 
           continue
         }
 
         if (this.consumer.consumeIfMatches(']')) {
-          const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, this.tokens)
-          const linkStartToken = this.tokens[failedLinkIndex]
-
-          failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
-          this.consumer = linkStartToken.consumerBefore
-          this.tokens.splice(failedLinkIndex)
-
+          this.undoLatest(TokenMeaning.LinkStart)
           continue
         }
       }
@@ -239,5 +228,17 @@ class Tokenizer {
 
       this.consumer.moveNext()
     }
+  }
+
+  undoLatest(meaning: TokenMeaning): void {
+    this.backtrack(indexOfLastToken(meaning, this.tokens))
+  }
+
+  backtrack(indexOfEarliestTokenToUndo: number): void {
+    const token = this.tokens[indexOfEarliestTokenToUndo]
+
+    this.failureTracker.registerFailure(token.meaning, token.textIndex())
+    this.consumer = token.consumerBefore
+    this.tokens.splice(indexOfEarliestTokenToUndo)
   }
 }

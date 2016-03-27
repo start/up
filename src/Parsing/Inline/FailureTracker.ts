@@ -4,27 +4,27 @@ import { Token, TokenMeaning } from './Token'
 export class FailureTracker {
   failures: TokenMeaning[][] = []
   
-  registerFailure(meaningStart: TokenMeaning, index: number) {
-    if (this.hasNoFailuresAtIndex(index)) {
-      this.failures[index] = [meaningStart]
+  registerFailure(meaningStart: TokenMeaning, textIndex: number) {
+    if (this.hasNoFailuresAt(textIndex)) {
+      this.failures[textIndex] = [meaningStart]
     } else {
-      this.failures[index].push(meaningStart)
+      this.failures[textIndex].push(meaningStart)
     }
   }
   
-  wasSandwichAlreadyTried(sandwich: RichSandwich, index: number): boolean {
-    return this.hasFailed(sandwich.meaningStart, index)
+  wasSandwichAlreadyTried(sandwich: RichSandwich, textIndex: number): boolean {
+    return this.hasFailed(sandwich.meaningStart, textIndex)
   }
   
-  hasFailed(meaningStart: TokenMeaning, index: number): boolean {
-    if (this.hasNoFailuresAtIndex(index)) {
+  hasFailed(meaningStart: TokenMeaning, textIndex: number): boolean {
+    if (this.hasNoFailuresAt(textIndex)) {
       return false
     }
     
-    return -1 !== this.failures[index].indexOf(meaningStart)
+    return -1 !== this.failures[textIndex].indexOf(meaningStart)
   }
   
-  private hasNoFailuresAtIndex(index: number): boolean {
-    return !this.failures[index]
+  private hasNoFailuresAt(textIndex: number): boolean {
+    return !this.failures[textIndex]
   }
 }
