@@ -161,26 +161,8 @@ class Tokenizer {
         continue
       }
 
-      const currentIndex = this.consumer.lengthConsumed()
-
-
-      for (const sandwich of RICH_SANDWICHES) {
-        if (isInsideSandwich(sandwich, this.tokens) && this.consumer.consumeIfMatches(sandwich.end)) {
-          this.tokens.push(new Token(sandwich.meaningEnd))
-          continue MainTokenizerLoop
-        }
-
-        const sandwichStart = sandwich.start
-
-        const foundStartToken = (
-          !this.failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
-          && this.consumer.consumeIfMatches(sandwichStart)
-        )
-
-        if (foundStartToken) {
-          this.tokens.push(new Token(sandwich.meaningStart, this.consumer.asBeforeMatch(sandwichStart.length)))
-          continue MainTokenizerLoop
-        }
+      if (this.handleSandwiches()) {
+        continue
       }
 
       // Links
@@ -210,6 +192,29 @@ class Tokenizer {
         this.tokens.push(new Token(TokenMeaning.InlineCode, code))
       }
     })
+  }
+
+  handleSandwiches(): boolean {
+    const textIndex = this.consumer.lengthConsumed()
+
+    for (const sandwich of RICH_SANDWICHES) {
+      if (isInsideSandwich(sandwich, this.tokens) && this.consumer.consumeIfMatches(sandwich.end)) {
+        this.tokens.push(new Token(sandwich.meaningEnd))
+        return true
+      }
+
+      const sandwichStart = sandwich.start
+
+      const foundStartToken = (
+        !this.failureTracker.wasSandwichAlreadyTried(sandwich, textIndex)
+        && this.consumer.consumeIfMatches(sandwichStart)
+      )
+
+      if (foundStartToken) {
+        this.tokens.push(new Token(sandwich.meaningStart, this.consumer.asBeforeMatch(sandwichStart.length)))
+        return true
+      }
+    }
   }
 
   handleLink(): boolean {
