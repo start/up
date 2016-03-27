@@ -50,7 +50,7 @@ class Tokenizer {
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
     for (let i = 0; i < this.tokens.length; i++) {
-      if (this.isTokenUnmatched(i)) {
+      if (this.isTokenStartOfUnclosedConvention(i)) {
         this.backtrack(i)
         return true
       }
@@ -168,10 +168,9 @@ class Tokenizer {
     this.tokens.splice(indexOfEarliestTokenToUndo)
   }
 
-  isTokenUnmatched(index: number): boolean {
+  isTokenStartOfUnclosedConvention(index: number): boolean {
     const token = this.tokens[index]
-
-    // Text, inline code, and sandwich end tokens cannot be unmatched.
+    
     switch (token.meaning) {
       case TokenMeaning.PlainText:
       case TokenMeaning.EmphasisEnd:
