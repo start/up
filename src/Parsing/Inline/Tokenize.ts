@@ -214,37 +214,47 @@ class Tokenizer {
 
   handleLink(): boolean {
     const textIndex = this.consumer.lengthConsumed()
-    
+
     if (this.failureTracker.hasFailed(TokenMeaning.LinkStart, textIndex)) {
       return false
     }
-    
+
     if (!isInsideLink(this.tokens)) {
+      // If we're not inside a link, that means we can potentially start one. Let's see whether we should...
       const LINK_START = '['
 
       if (this.consumer.consumeIfMatches(LINK_START)) {
         this.tokens.push(new Token(TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length)))
         return true
       }
-    } else {
-      if (this.consumer.consumeIfMatches(' -> ')) {
-        const didFindLinkEnd = this.consumer.consume({
-          upTo: ']',
-          then: url => this.tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
-        })
 
-        if (!didFindLinkEnd) {
-          this.undoLatest(TokenMeaning.LinkStart)
-        }
-
-        return true
-      }
-
-      if (this.consumer.consumeIfMatches(']')) {
-        this.undoLatest(TokenMeaning.LinkStart)
-        return true
-      }
+      // ... Nope. We didn't find anything. Since we're not inside a link, let's bail
+      return false
     }
+
+    // We're insied a link! Are we looking at the URL arrow?
+    if (this.consumer.consumeIfMatches(' -> ')) {
+      const didFindLinkEnd = this.consumer.consume({
+        upTo: ']',
+        then: url => this.tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
+      })
+
+      if (!didFindLinkEnd) {
+        this.undoLatest(TokenMeaning.LinkStart)
+      }
+
+      return true
+    }
+
+    // We're not looking at the URL arrow, which means we're still tokenizing link's contents.
+
+    if (this.consumer.consumeIfMatches(']')) {
+      // Uh-oh! The link's opening brace was just closed. That means we were looking at regular bracketed text
+      // all along. Oops!
+      this.undoLatest(TokenMeaning.LinkStart)
+      return true
+    }
+
 
     return false
   }
