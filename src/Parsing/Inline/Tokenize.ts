@@ -46,6 +46,14 @@ class Tokenizer {
       this.treatCurrentCharAsPlainText()
       this.consumer.moveNext()
     }
+    
+    this.rearrangeTokensToProduceTree()
+  }
+  
+  // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
+  // the tokens to make that process simpler.
+  rearrangeTokensToProduceTree(): void {
+    
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
