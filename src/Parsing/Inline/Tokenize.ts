@@ -32,13 +32,13 @@ class Tokenizer {
 
         break
       }
-      
+
       const wasAnythingDiscovered = (
         this.handleInlineCode()
         || this.handleSandwiches()
         || this.handleLink()
       )
-      
+
       if (wasAnythingDiscovered) {
         continue
       }
@@ -50,12 +50,12 @@ class Tokenizer {
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
     for (let i = 0; i < this.tokens.length; i++) {
-      if (isTokenUnmatched(i, this.tokens)) {
+      if (this.isTokenUnmatched(i)) {
         this.backtrack(i)
         return true
       }
     }
-    
+
     return false
   }
 
@@ -103,7 +103,7 @@ class Tokenizer {
       const LINK_START = '['
 
       if (this.consumer.consumeIfMatches(LINK_START)) {
-         this.addToken(TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length))
+        this.addToken(TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length))
         return true
       }
 
@@ -140,8 +140,8 @@ class Tokenizer {
 
     return false
   }
-  
-  addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string|TextConsumer): void {
+
+  addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | TextConsumer): void {
     this.tokens.push(new Token(meaning, valueOrConsumerBefore))
   }
 
@@ -157,7 +157,7 @@ class Tokenizer {
   }
 
   undoLatest(meaning: TokenMeaning): void {
-    this.backtrack(indexOfLastToken(meaning, this.tokens))
+    this.backtrack(indexOfLastTokenWithMeaning(meaning, this.tokens))
   }
 
   backtrack(indexOfEarliestTokenToUndo: number): void {
@@ -167,37 +167,37 @@ class Tokenizer {
     this.consumer = token.consumerBefore
     this.tokens.splice(indexOfEarliestTokenToUndo)
   }
-}
 
-function isTokenUnmatched(index: number, tokens: Token[]): boolean {
-  const token = tokens[index]
+  isTokenUnmatched(index: number): boolean {
+    const token = this.tokens[index]
 
-  // Text, inline code, and sandwich end tokens cannot be unmatched.
-  switch (token.meaning) {
-    case TokenMeaning.PlainText:
-    case TokenMeaning.EmphasisEnd:
-    case TokenMeaning.InlineAsideEnd:
-    case TokenMeaning.InlineCode:
-    case TokenMeaning.RevisionDeletionEnd:
-    case TokenMeaning.RevisionInsertionEnd:
-    case TokenMeaning.SpoilerEnd:
-    case TokenMeaning.StressEnd:
-    case TokenMeaning.LinkUrlAndLinkEnd:
-      return false;
+    // Text, inline code, and sandwich end tokens cannot be unmatched.
+    switch (token.meaning) {
+      case TokenMeaning.PlainText:
+      case TokenMeaning.EmphasisEnd:
+      case TokenMeaning.InlineAsideEnd:
+      case TokenMeaning.InlineCode:
+      case TokenMeaning.RevisionDeletionEnd:
+      case TokenMeaning.RevisionInsertionEnd:
+      case TokenMeaning.SpoilerEnd:
+      case TokenMeaning.StressEnd:
+      case TokenMeaning.LinkUrlAndLinkEnd:
+        return false;
 
-    case TokenMeaning.LinkStart:
-      return isLinkAtIndexUnClosed(index, tokens)
+      case TokenMeaning.LinkStart:
+        return isLinkAtIndexUnClosed(index, this.tokens)
+    }
+
+    // Okay, so this is a sandwich start token. Let's find which sandwich.
+    const sandwich =
+      RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.meaningStart)[0]
+
+    if (!sandwich) {
+      throw new Error('Unexpected token')
+    }
+
+    return isSandwichAtIndexUnclosed(sandwich, index, this.tokens)
   }
-
-  // Okay, so this is a sandwich start token. Let's find which sandwich.
-  const sandwich =
-    RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.meaningStart)[0]
-
-  if (!sandwich) {
-    throw new Error('Unexpected token')
-  }
-
-  return isSandwichAtIndexUnclosed(sandwich, index, tokens)
 }
 
 function isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number, tokens: Token[]) {
@@ -272,7 +272,7 @@ function isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: 
   return true
 }
 
-function indexOfLastToken(meaning: TokenMeaning, tokens: Token[]): number {
+function indexOfLastTokenWithMeaning(meaning: TokenMeaning, tokens: Token[]): number {
   for (let i = tokens.length - 1; i >= 0; i--) {
     if (tokens[i].meaning === meaning) {
       return i
