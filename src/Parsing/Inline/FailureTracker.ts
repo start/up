@@ -16,7 +16,7 @@ export class FailureTracker {
     return this.hasFailed(sandwich.meaningStart, index)
   }
   
-  private hasFailed(meaningStart: TokenMeaning, index: number): boolean {
+  hasFailed(meaningStart: TokenMeaning, index: number): boolean {
     if (this.hasNoFailuresAtIndex(index)) {
       return false
     }

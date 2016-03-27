@@ -68,7 +68,7 @@ export function tokenize(text: string): Token[] {
     }
 
     // Links
-    if (!isInsideLink(tokens)) {
+    if (!(failureTracker.hasFailed(TokenMeaning.LinkStart, currentIndex) || isInsideLink(tokens))) {
       const LINK_START = '['
 
       if (consumer.consumeIfMatches(LINK_START)) {
