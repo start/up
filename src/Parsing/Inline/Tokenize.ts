@@ -11,114 +11,7 @@ import { RICH_SANDWICHES } from './RichSandwiches'
 
 
 export function tokenize(text: string): Token[] {
-  let consumer = new TextConsumer(text)
-  const tokens: Token[] = []
-  const failureTracker = new FailureTracker()
-
-  MainTokenizerLoop:
-  while (true) {
-
-    if (consumer.done()) {
-      // Should we backtrack, or did everything parse correctly?
-      for (let i = 0; i < tokens.length; i++) {
-        if (isTokenUnmatched(i, tokens)) {
-          const token = tokens[i]
-
-          failureTracker.registerFailure(token.meaning, token.textIndex())
-          consumer = token.consumerBefore
-          tokens.splice(i)
-
-          continue MainTokenizerLoop
-        }
-      }
-
-      break
-    }
-
-    // Inline code
-    if (consumer.consume({
-      from: '`', upTo: '`', then: (rawText) => {
-        const code = applyBackslashEscaping(rawText)
-        tokens.push(new Token(TokenMeaning.InlineCode, code))
-      }
-    })) {
-      continue
-    }
-
-    const currentIndex = consumer.lengthConsumed()
-
-
-    for (const sandwich of RICH_SANDWICHES) {
-      if (isInsideSandwich(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
-        tokens.push(new Token(sandwich.meaningEnd))
-        continue MainTokenizerLoop
-      }
-
-      const sandwichStart = sandwich.start
-
-      const foundStartToken = (
-        !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
-        && consumer.consumeIfMatches(sandwichStart)
-      )
-
-      if (foundStartToken) {
-        tokens.push(new Token(sandwich.meaningStart, consumer.asBeforeMatch(sandwichStart.length)))
-        continue MainTokenizerLoop
-      }
-    }
-
-    // Links
-    if (!(failureTracker.hasFailed(TokenMeaning.LinkStart, currentIndex) || isInsideLink(tokens))) {
-      const LINK_START = '['
-
-      if (consumer.consumeIfMatches(LINK_START)) {
-        tokens.push(new Token(TokenMeaning.LinkStart, consumer.asBeforeMatch(LINK_START.length)))
-        continue
-      }
-    } else {
-      if (consumer.consumeIfMatches(' -> ')) {
-        const didFindLinkEnd = consumer.consume({
-          upTo: ']',
-          then: url => tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
-        })
-
-        if (!didFindLinkEnd) {
-          const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, tokens)
-          const linkStartToken = tokens[failedLinkIndex]
-          
-          failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
-          consumer = linkStartToken.consumerBefore
-          tokens.splice(failedLinkIndex)
-        }
-          
-          continue
-      }
-
-      if (consumer.consumeIfMatches(']')) {
-          const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, tokens)
-          const linkStartToken = tokens[failedLinkIndex]
-          
-          failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
-          consumer = linkStartToken.consumerBefore
-          tokens.splice(failedLinkIndex)
-          
-          continue
-      }
-    }
-
-    const currentChar = consumer.escapedCurrentChar()
-    const lastToken = last(tokens)
-
-    if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
-      lastToken.value += currentChar
-    } else {
-      tokens.push(new Token(TokenMeaning.Text, currentChar))
-    }
-
-    consumer.moveNext()
-  }
-
-  return tokens
+  return new Tokenizer(text).tokens
 }
 
 const LINK_CONVENTIONS = [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd]
@@ -232,6 +125,119 @@ function indexOfLastToken(meaning: TokenMeaning, tokens: Token[]): number {
       return i
     }
   }
-  
+
   throw new Error('Token not found')
+}
+
+class Tokenizer {
+  public tokens: Token[] = []
+  private consumer: TextConsumer
+
+  constructor(text: string) {
+    this.consumer = new TextConsumer(text)
+    const failureTracker = new FailureTracker()
+
+    MainTokenizerLoop:
+    while (true) {
+
+      if (this.consumer.done()) {
+        // Should we backtrack, or did everything parse correctly?
+        for (let i = 0; i < this.tokens.length; i++) {
+          if (isTokenUnmatched(i, this.tokens)) {
+            const token = this.tokens[i]
+
+            failureTracker.registerFailure(token.meaning, token.textIndex())
+            this.consumer = token.consumerBefore
+            this.tokens.splice(i)
+
+            continue MainTokenizerLoop
+          }
+        }
+
+        break
+      }
+
+      // Inline code
+      if (this.consumer.consume({
+        from: '`', upTo: '`', then: (rawText) => {
+          const code = applyBackslashEscaping(rawText)
+          this.tokens.push(new Token(TokenMeaning.InlineCode, code))
+        }
+      })) {
+        continue
+      }
+
+      const currentIndex = this.consumer.lengthConsumed()
+
+
+      for (const sandwich of RICH_SANDWICHES) {
+        if (isInsideSandwich(sandwich, this.tokens) && this.consumer.consumeIfMatches(sandwich.end)) {
+          this.tokens.push(new Token(sandwich.meaningEnd))
+          continue MainTokenizerLoop
+        }
+
+        const sandwichStart = sandwich.start
+
+        const foundStartToken = (
+          !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
+          && this.consumer.consumeIfMatches(sandwichStart)
+        )
+
+        if (foundStartToken) {
+          this.tokens.push(new Token(sandwich.meaningStart, this.consumer.asBeforeMatch(sandwichStart.length)))
+          continue MainTokenizerLoop
+        }
+      }
+
+      // Links
+      if (!(failureTracker.hasFailed(TokenMeaning.LinkStart, currentIndex) || isInsideLink(this.tokens))) {
+        const LINK_START = '['
+
+        if (this.consumer.consumeIfMatches(LINK_START)) {
+          this.tokens.push(new Token(TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length)))
+          continue
+        }
+      } else {
+        if (this.consumer.consumeIfMatches(' -> ')) {
+          const didFindLinkEnd = this.consumer.consume({
+            upTo: ']',
+            then: url => this.tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
+          })
+
+          if (!didFindLinkEnd) {
+            const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, this.tokens)
+            const linkStartToken = this.tokens[failedLinkIndex]
+
+            failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
+            this.consumer = linkStartToken.consumerBefore
+            this.tokens.splice(failedLinkIndex)
+          }
+
+          continue
+        }
+
+        if (this.consumer.consumeIfMatches(']')) {
+          const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, this.tokens)
+          const linkStartToken = this.tokens[failedLinkIndex]
+
+          failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
+          this.consumer = linkStartToken.consumerBefore
+          this.tokens.splice(failedLinkIndex)
+
+          continue
+        }
+      }
+
+      const currentChar = this.consumer.escapedCurrentChar()
+      const lastToken = last(this.tokens)
+
+      if (lastToken && (lastToken.meaning === TokenMeaning.Text)) {
+        lastToken.value += currentChar
+      } else {
+        this.tokens.push(new Token(TokenMeaning.Text, currentChar))
+      }
+
+      this.consumer.moveNext()
+    }
+  }
 }
