@@ -16,7 +16,7 @@ export enum TokenMeaning {
   InlineAsideStart,
   InlineAsideEnd,
   LinkStart,
-  LinkUrlAndEnd
+  LinkUrlAndLinkEnd
 }
 
 export class Token {
@@ -31,7 +31,7 @@ export class Token {
     }
   }
   
-  index(): number {
+  textIndex(): number {
     return this.consumerBefore.lengthConsumed()
   }
 }

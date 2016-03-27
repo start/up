@@ -53,7 +53,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       }
       
       case TokenMeaning.LinkStart: {
-        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.LinkUrlAndEnd)
+        const result = parseUntil(tokens.slice(countParsed), TokenMeaning.LinkUrlAndLinkEnd)
         index += result.countTokensParsed
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed

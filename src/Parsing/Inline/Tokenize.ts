@@ -24,7 +24,7 @@ export function tokenize(text: string): Token[] {
         if (isTokenUnmatched(i, tokens)) {
           const token = tokens[i]
 
-          failureTracker.registerFailure(token.meaning, token.index())
+          failureTracker.registerFailure(token.meaning, token.textIndex())
           consumer = token.consumerBefore
           tokens.splice(i)
 
@@ -49,19 +49,19 @@ export function tokenize(text: string): Token[] {
 
 
     for (const sandwich of RICH_SANDWICHES) {
-      if (isInside(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
+      if (isInsideSandwich(sandwich, tokens) && consumer.consumeIfMatches(sandwich.end)) {
         tokens.push(new Token(sandwich.meaningEnd))
         continue MainTokenizerLoop
       }
 
       const sandwichStart = sandwich.start
 
-      const wasStartToken = (
+      const foundStartToken = (
         !failureTracker.wasSandwichAlreadyTried(sandwich, currentIndex)
         && consumer.consumeIfMatches(sandwichStart)
       )
 
-      if (wasStartToken) {
+      if (foundStartToken) {
         tokens.push(new Token(sandwich.meaningStart, consumer.asBeforeMatch(sandwichStart.length)))
         continue MainTokenizerLoop
       }
@@ -77,20 +77,32 @@ export function tokenize(text: string): Token[] {
       }
     } else {
       if (consumer.consumeIfMatches(' -> ')) {
-        const didFindEnd = consumer.consume({
+        const didFindLinkEnd = consumer.consume({
           upTo: ']',
           then: url => tokens.push(new Token(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url)))
         })
 
-        if (didFindEnd) {
-          continue
-        } else {
-          throw Error('TODO: Fail link because it lacks a closing bracket')
+        if (!didFindLinkEnd) {
+          const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, tokens)
+          const linkStartToken = tokens[failedLinkIndex]
+          
+          failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
+          consumer = linkStartToken.consumerBefore
+          tokens.splice(failedLinkIndex)
         }
+          
+          continue
       }
 
       if (consumer.consumeIfMatches(']')) {
-        throw Error('TODO: Fail link because it is simply bracketed text')
+          const failedLinkIndex = indexOfLastToken(TokenMeaning.LinkStart, tokens)
+          const linkStartToken = tokens[failedLinkIndex]
+          
+          failureTracker.registerFailure(TokenMeaning.LinkStart, linkStartToken.textIndex())
+          consumer = linkStartToken.consumerBefore
+          tokens.splice(failedLinkIndex)
+          
+          continue
       }
     }
 
@@ -150,7 +162,7 @@ function isLinkAtIndexUnClosed(index: number, tokens: Token[]) {
   return isConventionAtIndexUnclosed(LINK_CONVENTIONS, index, tokens)
 }
 
-function isInside(sandwich: RichSandwich, tokens: Token[]): boolean {
+function isInsideSandwich(sandwich: RichSandwich, tokens: Token[]): boolean {
   return isInsideConvention([sandwich.meaningStart, sandwich.meaningEnd], tokens)
 }
 
@@ -159,16 +171,16 @@ function isInsideLink(tokens: Token[]) {
 }
 
 function isInsideConvention(conventionMeanings: TokenMeaning[], tokens: Token[]): boolean {
-  // We can safely assume the tokens appear in proper order.
+  // We know the tokens appear in proper order.
   //
-  // Because of that, we know that we are "in the middle of tokenizing" unless all meanings appear
+  // Because of that, we can assume we are "in the middle of tokenizing" unless all meanings appear
   // an equal number of times.
   const meaningCounts: number[] = new Array(conventionMeanings.length)
 
   for (let i = 0; i < conventionMeanings.length; i++) {
-    meaningCounts[i] =  0
+    meaningCounts[i] = 0
   }
-  
+
   for (const token of tokens) {
     for (let i = 0; i < conventionMeanings.length; i++) {
       if (token.meaning === conventionMeanings[i]) {
@@ -183,25 +195,43 @@ function isInsideConvention(conventionMeanings: TokenMeaning[], tokens: Token[])
 
 function isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: number, tokens: Token[]): boolean {
   const meaningCounts: number[] = new Array(conventionMeanings.length)
-  
+
+  // We haven't seen any of the convention's meanings so far...
   for (let i = 0; i < conventionMeanings.length; i++) {
-    meaningCounts[i] =  0
+    meaningCounts[i] = 0
   }
 
-  for (let tokenIndex = index; tokenIndex < tokens.length; tokenIndex++) {
+  // Well, actually, we sort of have. We know the the token at `index` will have the convention's first meaning.
+  // Let's skip that token, and let's say we've seen the convention's first meaning once.
+  const tokenStartIndex = index + 1
+  meaningCounts[0] = 1
+
+  for (let tokenIndex = tokenStartIndex; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
-    
+
     for (let meaningIndex = 0; meaningIndex < conventionMeanings.length; meaningIndex++) {
       if (token.meaning === conventionMeanings[meaningIndex]) {
         meaningCounts[meaningIndex] += 1
         break
       }
     }
-    
+
     if (meaningCounts.every(count => count === meaningCounts[0])) {
+      // We've seen every token in this convention an equal number of times! That guarantees the one we started
+      // with is closed. We don't care if there are unclosed ones later on, so our work here is done.
       return false
     }
   }
 
   return true
+}
+
+function indexOfLastToken(meaning: TokenMeaning, tokens: Token[]): number {
+  for (let i = tokens.length - 1; i >= 0; i--) {
+    if (tokens[i].meaning === meaning) {
+      return i
+    }
+  }
+  
+  throw new Error('Token not found')
 }
