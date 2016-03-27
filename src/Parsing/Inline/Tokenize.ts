@@ -35,6 +35,7 @@ class Tokenizer {
 
       const wasAnythingDiscovered = (
         this.handleInlineCode()
+        || this.handleSimultaneousEmphasisAndStress()
         || this.handleSandwiches()
         || this.handleLink()
       )
@@ -66,6 +67,13 @@ class Tokenizer {
       then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
     })
   }
+  
+  // Both emphasis and stress are indicated using asterisks. When three (TODO: or more) asterisks appear
+  // in a row, it's not always clear which convention should start first (or end first). We produce special 
+  // tokens for this case. 
+  handleSimultaneousEmphasisAndStress(): boolean {
+    return false   
+  }
 
   handleSandwiches(): boolean {
     const textIndex = this.consumer.lengthConsumed()
@@ -76,18 +84,18 @@ class Tokenizer {
         return true
       }
 
-      const sandwichStart = sandwich.start
-
       const foundStartToken = (
         !this.failureTracker.wasSandwichAlreadyTried(sandwich, textIndex)
-        && this.consumer.consumeIfMatches(sandwichStart)
+        && this.consumer.consumeIfMatches(sandwich.start)
       )
 
       if (foundStartToken) {
-        this.addToken(sandwich.meaningStart, this.consumer.asBeforeMatch(sandwichStart.length))
+        this.addToken(sandwich.meaningStart, this.consumer.asBeforeMatch(sandwich.start.length))
         return true
       }
     }
+    
+    return false
   }
 
 
