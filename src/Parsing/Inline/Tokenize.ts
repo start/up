@@ -157,13 +157,7 @@ class Tokenizer {
         break
       }
 
-      // Inline code
-      if (this.consumer.consume({
-        from: '`', upTo: '`', then: (rawText) => {
-          const code = applyBackslashEscaping(rawText)
-          this.tokens.push(new Token(TokenMeaning.InlineCode, code))
-        }
-      })) {
+      if (this.tokenizeInlineCode()) {
         continue
       }
 
@@ -228,6 +222,17 @@ class Tokenizer {
 
       this.consumer.moveNext()
     }
+  }
+
+  tokenizeInlineCode(): boolean {
+    return this.consumer.consume({
+      from: '`',
+      upTo: '`',
+      then: (rawText) => {
+        const code = applyBackslashEscaping(rawText)
+        this.tokens.push(new Token(TokenMeaning.InlineCode, code))
+      }
+    })
   }
 
   undoLatest(meaning: TokenMeaning): void {
