@@ -35,7 +35,6 @@ class Tokenizer {
 
       const wasAnythingDiscovered = (
         this.handleInlineCode()
-        || this.handleSimultaneousEmphasisAndStress()
         || this.handleSandwiches()
         || this.handleLink()
       )
@@ -66,13 +65,6 @@ class Tokenizer {
       upTo: '`',
       then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
     })
-  }
-  
-  // Both emphasis and stress are indicated using asterisks. When three (TODO: or more) asterisks appear
-  // in a row, it's not always clear which convention should start first (or end first). We produce special 
-  // tokens for this case. 
-  handleSimultaneousEmphasisAndStress(): boolean {
-    return false   
   }
 
   handleSandwiches(): boolean {
