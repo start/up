@@ -79,7 +79,7 @@ class Tokenizer {
     const textIndex = this.consumer.lengthConsumed()
 
     for (const sandwich of RICH_SANDWICHES) {
-      if (this.isInsideSandwich(sandwich) && this.consumer.consumeIfMatches(sandwich.end)) {
+      if (this.isInside(sandwich.convention) && this.consumer.consumeIfMatches(sandwich.end)) {
         this.addToken(sandwich.convention.endTokenMeaning())
         return true
       }
@@ -106,7 +106,7 @@ class Tokenizer {
       return false
     }
 
-    if (!this.isInsideLink()) {
+    if (!this.isInside(LINK)) {
       // If we're not inside a link, that means we can potentially start one. Let's see whether we should...
       const LINK_START = '['
 
@@ -192,7 +192,7 @@ class Tokenizer {
         return false;
 
       case TokenMeaning.LinkStart:
-        return this.isLinkAtIndexUnClosed(index)
+        return this.isConventionAtIndexUnclosed(LINK, index)
     }
 
     // Okay, so this is a sandwich start token. Let's find which sandwich.
@@ -203,27 +203,10 @@ class Tokenizer {
       throw new Error('Unexpected token')
     }
 
-    return this.isSandwichAtIndexUnclosed(sandwich, index)
-  }
-
-
-  isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number) {
     return this.isConventionAtIndexUnclosed(sandwich.convention, index)
   }
 
-  isLinkAtIndexUnClosed(index: number) {
-    return this.isConventionAtIndexUnclosed(LINK, index)
-  }
-
-  isInsideSandwich(sandwich: RichSandwich): boolean {
-    return this.isInsideConvention(sandwich.convention)
-  }
-
-  isInsideLink() {
-    return this.isInsideConvention(LINK)
-  }
-
-  isInsideConvention(convention: Convention): boolean {
+  isInside(convention: Convention): boolean {
     // We know we're inside a convention if there are more start tokens than end tokens.
 
     let excessStartTokens = 0
