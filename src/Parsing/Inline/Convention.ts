@@ -3,17 +3,17 @@ import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode
 import { last } from '../CollectionHelpers'
 
 export class Convention {
-  public meanings: TokenMeaning[]
+  public tokenMeanings: TokenMeaning[]
   
   constructor(public NodeType: RichInlineSyntaxNodeType, ...meanings: TokenMeaning[]) {
-    this.meanings = meanings
+    this.tokenMeanings = meanings
   }
   
-  startMeaning(): TokenMeaning {
-    return this.meanings[0]
+  startTokenMeaning(): TokenMeaning {
+    return this.tokenMeanings[0]
   }
   
-  endMeaning(): TokenMeaning {
-    return last(this.meanings)
+  endTokenMeaning(): TokenMeaning {
+    return last(this.tokenMeanings)
   }
 }

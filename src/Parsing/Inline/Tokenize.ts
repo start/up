@@ -80,7 +80,7 @@ class Tokenizer {
 
     for (const sandwich of RICH_SANDWICHES) {
       if (this.isInsideSandwich(sandwich) && this.consumer.consumeIfMatches(sandwich.end)) {
-        this.addToken(sandwich.convention.endMeaning())
+        this.addToken(sandwich.convention.endTokenMeaning())
         return true
       }
 
@@ -90,7 +90,7 @@ class Tokenizer {
       )
 
       if (foundStartToken) {
-        this.addToken(sandwich.convention.startMeaning(), this.consumer.asBeforeMatch(sandwich.start.length))
+        this.addToken(sandwich.convention.startTokenMeaning(), this.consumer.asBeforeMatch(sandwich.start.length))
         return true
       }
     }
@@ -197,7 +197,7 @@ class Tokenizer {
 
     // Okay, so this is a sandwich start token. Let's find which sandwich.
     const sandwich =
-      RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.convention.startMeaning())[0]
+      RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.convention.startTokenMeaning())[0]
 
     if (!sandwich) {
       throw new Error('Unexpected token')
@@ -209,21 +209,21 @@ class Tokenizer {
 
   isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number) {
     return this.isConventionAtIndexUnclosed(
-      [sandwich.convention.startMeaning(), sandwich.convention.endMeaning()],
+      [sandwich.convention.startTokenMeaning(), sandwich.convention.endTokenMeaning()],
       index
     )
   }
 
   isLinkAtIndexUnClosed(index: number) {
-    return this.isConventionAtIndexUnclosed(LINK.meanings, index)
+    return this.isConventionAtIndexUnclosed(LINK.tokenMeanings, index)
   }
 
   isInsideSandwich(sandwich: RichSandwich): boolean {
-    return this.isInsideConvention([sandwich.convention.startMeaning(), sandwich.convention.endMeaning()])
+    return this.isInsideConvention([sandwich.convention.startTokenMeaning(), sandwich.convention.endTokenMeaning()])
   }
 
   isInsideLink() {
-    return this.isInsideConvention(LINK.meanings)
+    return this.isInsideConvention(LINK.tokenMeanings)
   }
 
   isInsideConvention(conventionMeanings: TokenMeaning[]): boolean {
