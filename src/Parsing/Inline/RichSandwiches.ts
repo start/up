@@ -16,7 +16,7 @@ function sandwich(
   startMeaning: TokenMeaning,
   endMeaning: TokenMeaning
 ): RichSandwich {
-  return new RichSandwich(start, end, NodeType, new Convention(NodeType, startMeaning, endMeaning))
+  return new RichSandwich(start, end, NodeType, new Convention(startMeaning, endMeaning))
 }
 
 const RICH_SANDWICHES = [

@@ -5,7 +5,7 @@ import { last } from '../CollectionHelpers'
 export class Convention {
   public tokenMeanings: TokenMeaning[]
   
-  constructor(public NodeType: RichInlineSyntaxNodeType, ...meanings: TokenMeaning[]) {
+  constructor(...meanings: TokenMeaning[]) {
     this.tokenMeanings = meanings
   }
   
