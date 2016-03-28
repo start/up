@@ -2,13 +2,13 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
-import { RichSandwich } from './RichSandwich'
+import { Sandwich } from './Sandwich'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { RICH_SANDWICHES } from './RichSandwiches'
+import { SANDWICHES } from './Sandwiches'
 
 
 export function tokenize(text: string): Token[] {
@@ -54,7 +54,11 @@ class Tokenizer {
   // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
   // the tokens to make that process simpler.
   rearrangeTokensToProduceTree(): void {
-
+    const openConventions: Convention[] = []
+    
+    for (let i = 0; i < this.tokens.length; i++) {
+        
+    }
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
@@ -79,7 +83,7 @@ class Tokenizer {
   handleSandwiches(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
-    for (const sandwich of RICH_SANDWICHES) {
+    for (const sandwich of SANDWICHES) {
       if (this.isInside(sandwich.convention) && this.consumer.consumeIfMatches(sandwich.end)) {
         this.addToken(sandwich.convention.endTokenMeaning())
         return true
@@ -198,7 +202,7 @@ class Tokenizer {
 
     // Okay, so this is a sandwich start token. Let's find which sandwich.
     const sandwich =
-      RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.convention.startTokenMeaning())[0]
+      SANDWICHES.filter(sandwich => token.meaning === sandwich.convention.startTokenMeaning())[0]
 
     if (!sandwich) {
       throw new Error('Unexpected token')

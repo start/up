@@ -1,4 +1,4 @@
-import { RichSandwich } from './RichSandwich'
+import { Sandwich } from './Sandwich'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TokenMeaning } from './Token'
 import { Convention } from './Convention'
@@ -15,11 +15,11 @@ function sandwich(
   NodeType: RichInlineSyntaxNodeType,
   startMeaning: TokenMeaning,
   endMeaning: TokenMeaning
-): RichSandwich {
-  return new RichSandwich(start, end, NodeType, new Convention(startMeaning, endMeaning))
+): Sandwich {
+  return new Sandwich(start, end, NodeType, new Convention(startMeaning, endMeaning))
 }
 
-const RICH_SANDWICHES = [
+const SANDWICHES = [
   sandwich('**', '**', StressNode, TokenMeaning.StressStart, TokenMeaning.StressEnd),
   sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd),
   sandwich('~~', '~~', RevisionDeletionNode, TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd),
@@ -29,5 +29,5 @@ const RICH_SANDWICHES = [
 ]
   
 export {
-  RICH_SANDWICHES
+  SANDWICHES
 }

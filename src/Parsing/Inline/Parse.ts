@@ -12,7 +12,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { RICH_SANDWICHES } from './RichSandwiches'
+import { SANDWICHES } from './Sandwiches'
 
 
 export class ParseResult {
@@ -64,7 +64,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       }
     }
 
-    for (const sandwich of RICH_SANDWICHES) {
+    for (const sandwich of SANDWICHES) {
       if (token.meaning === sandwich.convention.startTokenMeaning()) {
         const result = parseUntil(tokens.slice(countParsed), sandwich.convention.endTokenMeaning())
         index += result.countTokensParsed
