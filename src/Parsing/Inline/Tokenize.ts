@@ -1,7 +1,9 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Convention } from './Convention'
 import { RichSandwich } from './RichSandwich'
+import { LINK } from './Link'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -13,8 +15,6 @@ import { RICH_SANDWICHES } from './RichSandwiches'
 export function tokenize(text: string): Token[] {
   return new Tokenizer(text).tokens
 }
-
-const LINK_CONVENTIONS = [TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd]
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -215,7 +215,7 @@ class Tokenizer {
   }
 
   isLinkAtIndexUnClosed(index: number) {
-    return this.isConventionAtIndexUnclosed(LINK_CONVENTIONS, index)
+    return this.isConventionAtIndexUnclosed(LINK.meanings, index)
   }
 
   isInsideSandwich(sandwich: RichSandwich): boolean {
@@ -223,7 +223,7 @@ class Tokenizer {
   }
 
   isInsideLink() {
-    return this.isInsideConvention(LINK_CONVENTIONS)
+    return this.isInsideConvention(LINK.meanings)
   }
 
   isInsideConvention(conventionMeanings: TokenMeaning[]): boolean {
