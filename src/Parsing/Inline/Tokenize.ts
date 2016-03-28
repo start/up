@@ -55,9 +55,9 @@ class Tokenizer {
   // the tokens to make that process simpler.
   rearrangeTokensToProduceTree(): void {
     const openConventions: Convention[] = []
-    
+
     for (let i = 0; i < this.tokens.length; i++) {
-        
+      const token = this.tokens[i]
     }
   }
 
@@ -201,8 +201,7 @@ class Tokenizer {
     }
 
     // Okay, so this is a sandwich start token. Let's find which sandwich.
-    const sandwich =
-      SANDWICHES.filter(sandwich => token.meaning === sandwich.convention.startTokenMeaning())[0]
+    const sandwich = getSandwichStartedByThisToken(token)
 
     if (!sandwich) {
       throw new Error('Unexpected token')
@@ -261,4 +260,10 @@ class Tokenizer {
 
     throw new Error('Token not found')
   }
+}
+
+function getSandwichStartedByThisToken(token: Token): Sandwich {
+  return SANDWICHES.filter(sandwich =>
+    sandwich.convention.startTokenMeaning() === token.meaning
+  )[0]
 }
