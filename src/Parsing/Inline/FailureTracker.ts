@@ -1,27 +1,33 @@
-import { RichSandwich } from './RichSandwich'
+import { Convention } from './Convention'
 import { Token, TokenMeaning } from './Token'
 
 export class FailureTracker {
   failures: TokenMeaning[][] = []
   
-  registerFailure(meaningStart: TokenMeaning, textIndex: number) {
+  registerConventionFailure(convention: Convention, textIndex: number) {
+    const startTokenMeaning = convention.startTokenMeaning()
+    
     if (this.hasNoFailuresAt(textIndex)) {
-      this.failures[textIndex] = [meaningStart]
+      this.failures[textIndex] = [startTokenMeaning]
     } else {
-      this.failures[textIndex].push(meaningStart)
+      this.failures[textIndex].push(startTokenMeaning)
     }
   }
   
-  wasSandwichAlreadyTried(sandwich: RichSandwich, textIndex: number): boolean {
-    return this.hasFailed(sandwich.convention.startTokenMeaning(), textIndex)
+  registerFailure(startTokenMeaning: TokenMeaning, textIndex: number) {
+    if (this.hasNoFailuresAt(textIndex)) {
+      this.failures[textIndex] = [startTokenMeaning]
+    } else {
+      this.failures[textIndex].push(startTokenMeaning)
+    }
   }
   
-  hasFailed(meaningStart: TokenMeaning, textIndex: number): boolean {
+  hasConventionFailed(convention: Convention, textIndex: number): boolean {
     if (this.hasNoFailuresAt(textIndex)) {
       return false
     }
     
-    return -1 !== this.failures[textIndex].indexOf(meaningStart)
+    return -1 !== this.failures[textIndex].indexOf(convention.startTokenMeaning())
   }
   
   private hasNoFailuresAt(textIndex: number): boolean {

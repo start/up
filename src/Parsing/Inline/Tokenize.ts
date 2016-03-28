@@ -85,7 +85,7 @@ class Tokenizer {
       }
 
       const foundStartToken = (
-        !this.failureTracker.wasSandwichAlreadyTried(sandwich, textIndex)
+        !this.failureTracker.hasConventionFailed(sandwich.convention, textIndex)
         && this.consumer.consumeIfMatches(sandwich.start)
       )
 
@@ -102,7 +102,7 @@ class Tokenizer {
   handleLink(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
-    if (this.failureTracker.hasFailed(TokenMeaning.LinkStart, textIndex)) {
+    if (this.failureTracker.hasConventionFailed(LINK, textIndex)) {
       return false
     }
 
