@@ -58,6 +58,30 @@ class Tokenizer {
 
     for (let i = 0; i < this.tokens.length; i++) {
       const token = this.tokens[i]
+
+      switch (token.meaning) {
+        case TokenMeaning.LinkStart:
+          openConventions.push(LINK)
+          continue
+          
+        case TokenMeaning.LinkUrlAndLinkEnd:
+          // TODO
+          continue
+      }
+
+      const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
+
+      if (sandwichStartedByThisToken) {
+        openConventions.push(sandwichStartedByThisToken.convention)
+        continue
+      }
+
+      const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
+
+      if (sandwichEndedByThisToken) {
+        // TODO
+        continue
+      }
     }
   }
 
@@ -265,5 +289,11 @@ class Tokenizer {
 function getSandwichStartedByThisToken(token: Token): Sandwich {
   return SANDWICHES.filter(sandwich =>
     sandwich.convention.startTokenMeaning() === token.meaning
+  )[0]
+}
+
+function getSandwichEndedByThisToken(token: Token): Sandwich {
+  return SANDWICHES.filter(sandwich =>
+    sandwich.convention.endTokenMeaning() === token.meaning
   )[0]
 }
