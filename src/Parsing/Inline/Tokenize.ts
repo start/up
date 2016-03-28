@@ -46,14 +46,14 @@ class Tokenizer {
       this.treatCurrentCharAsPlainText()
       this.consumer.moveNext()
     }
-    
+
     this.rearrangeTokensToProduceTree()
   }
-  
+
   // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
   // the tokens to make that process simpler.
   rearrangeTokensToProduceTree(): void {
-    
+
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
@@ -94,7 +94,7 @@ class Tokenizer {
         return true
       }
     }
-    
+
     return false
   }
 
@@ -178,7 +178,7 @@ class Tokenizer {
 
   isTokenStartOfUnclosedConvention(index: number): boolean {
     const token = this.tokens[index]
-    
+
     switch (token.meaning) {
       case TokenMeaning.PlainText:
       case TokenMeaning.EmphasisEnd:
@@ -208,14 +208,11 @@ class Tokenizer {
 
 
   isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number) {
-    return this.isConventionAtIndexUnclosed(
-      [sandwich.convention.startTokenMeaning(), sandwich.convention.endTokenMeaning()],
-      index
-    )
+    return this.isConventionAtIndexUnclosed(sandwich.convention, index)
   }
 
   isLinkAtIndexUnClosed(index: number) {
-    return this.isConventionAtIndexUnclosed(LINK.tokenMeanings, index)
+    return this.isConventionAtIndexUnclosed(LINK, index)
   }
 
   isInsideSandwich(sandwich: RichSandwich): boolean {
@@ -228,7 +225,7 @@ class Tokenizer {
 
   isInsideConvention(convention: Convention): boolean {
     // We know we're inside a convention if there are more start tokens than end tokens.
-    
+
     let excessStartTokens = 0
 
     for (const token of this.tokens) {
@@ -242,32 +239,24 @@ class Tokenizer {
     return excessStartTokens > 0
   }
 
-  isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: number): boolean {
-    const meaningCounts: number[] = new Array(conventionMeanings.length)
+  isConventionAtIndexUnclosed(convention: Convention, index: number): boolean {
+    // We know the token at `index` is the start token
+    let excessStartTokens = 1
+    const startIndex = index + 1
 
-    // We haven't found any of the convention's meanings so far...
-    for (let i = 0; i < conventionMeanings.length; i++) {
-      meaningCounts[i] = 0
-    }
+    for (let i = startIndex; i < this.tokens.length; i++) {
+      const token = this.tokens[i]
 
-    // Well, actually, we sort of have. We know the the token at `index` will have the convention's first meaning.
-    // Let's skip that token, and let's say we've seen the convention's first meaning once.
-    const tokenStartIndex = index + 1
-    meaningCounts[0] = 1
-
-    for (let tokenIndex = tokenStartIndex; tokenIndex < this.tokens.length; tokenIndex++) {
-      const token = this.tokens[tokenIndex]
-
-      for (let meaningIndex = 0; meaningIndex < conventionMeanings.length; meaningIndex++) {
-        if (token.meaning === conventionMeanings[meaningIndex]) {
-          meaningCounts[meaningIndex] += 1
-          break
-        }
+      if (token.meaning === convention.startTokenMeaning()) {
+        excessStartTokens += 1
+      } else if (token.meaning === convention.endTokenMeaning()) {
+        excessStartTokens -= 1
       }
 
-      if (meaningCounts.every(count => count === meaningCounts[0])) {
-        // We've seen every token in this convention an equal number of times! That guarantees the one we started
-        // with is closed. We don't care if there are unclosed ones later on, so our work here is done.
+      if (excessStartTokens === 0) {
+        // We've reached a point where there is an end token for every start token. This means the convention
+        // starting at `index` is complete. For this function, it doesn't matter whether there are any other
+        // unclosed instances of this convention later on.
         return false
       }
     }
