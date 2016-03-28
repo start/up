@@ -219,34 +219,27 @@ class Tokenizer {
   }
 
   isInsideSandwich(sandwich: RichSandwich): boolean {
-    return this.isInsideConvention([sandwich.convention.startTokenMeaning(), sandwich.convention.endTokenMeaning()])
+    return this.isInsideConvention(sandwich.convention)
   }
 
   isInsideLink() {
-    return this.isInsideConvention(LINK.tokenMeanings)
+    return this.isInsideConvention(LINK)
   }
 
-  isInsideConvention(conventionMeanings: TokenMeaning[]): boolean {
-    // We know the tokens appear in proper order.
-    //
-    // Because of that, we can assume we are "in the middle of tokenizing" unless all meanings appear
-    // an equal number of times.
-    const meaningCounts: number[] = new Array(conventionMeanings.length)
-
-    for (let i = 0; i < conventionMeanings.length; i++) {
-      meaningCounts[i] = 0
-    }
+  isInsideConvention(convention: Convention): boolean {
+    // We know we're inside a convention if there are more start tokens than end tokens.
+    
+    let excessStartTokens = 0
 
     for (const token of this.tokens) {
-      for (let i = 0; i < conventionMeanings.length; i++) {
-        if (token.meaning === conventionMeanings[i]) {
-          meaningCounts[i] += 1
-          break
-        }
+      if (token.meaning === convention.startTokenMeaning()) {
+        excessStartTokens += 1
+      } else if (token.meaning === convention.endTokenMeaning()) {
+        excessStartTokens -= 1
       }
     }
 
-    return meaningCounts.some(count => meaningCounts[0] !== count)
+    return excessStartTokens > 0
   }
 
   isConventionAtIndexUnclosed(conventionMeanings: TokenMeaning[], index: number): boolean {
