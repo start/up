@@ -131,7 +131,7 @@ class Tokenizer {
 
       if (!didFindClosingBracket) {
         // No, the closing bracket is nowehere to be found. This wasn't a link. Oops!
-        this.undoLatest(TokenMeaning.LinkStart)
+        this.undoLatest(LINK)
       }
 
       return true
@@ -142,7 +142,7 @@ class Tokenizer {
     // If we find a closing brace before finding any URL arrow, that means we're actually looking at regular
     // bracketed text.
     if (this.consumer.consumeIfMatches(']')) {
-      this.undoLatest(TokenMeaning.LinkStart)
+      this.undoLatest(LINK)
       return true
     }
 
@@ -164,8 +164,8 @@ class Tokenizer {
     }
   }
 
-  undoLatest(meaning: TokenMeaning): void {
-    this.backtrack(this.indexOfLastTokenWithMeaning(meaning))
+  undoLatest(convention: Convention): void {
+    this.backtrack(this.indexOfLastTokenWithMeaning(convention.startTokenMeaning()))
   }
 
   backtrack(indexOfEarliestTokenToUndo: number): void {
