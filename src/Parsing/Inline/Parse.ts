@@ -65,8 +65,8 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     }
 
     for (const sandwich of RICH_SANDWICHES) {
-      if (token.meaning === sandwich.meaningStart) {
-        const result = parseUntil(tokens.slice(countParsed), sandwich.meaningEnd)
+      if (token.meaning === sandwich.convention.startMeaning()) {
+        const result = parseUntil(tokens.slice(countParsed), sandwich.convention.endMeaning())
         index += result.countTokensParsed
         nodes.push(new sandwich.NodeType(result.nodes))
 

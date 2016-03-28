@@ -80,7 +80,7 @@ class Tokenizer {
 
     for (const sandwich of RICH_SANDWICHES) {
       if (this.isInsideSandwich(sandwich) && this.consumer.consumeIfMatches(sandwich.end)) {
-        this.addToken(sandwich.meaningEnd)
+        this.addToken(sandwich.convention.endMeaning())
         return true
       }
 
@@ -90,7 +90,7 @@ class Tokenizer {
       )
 
       if (foundStartToken) {
-        this.addToken(sandwich.meaningStart, this.consumer.asBeforeMatch(sandwich.start.length))
+        this.addToken(sandwich.convention.startMeaning(), this.consumer.asBeforeMatch(sandwich.start.length))
         return true
       }
     }
@@ -197,7 +197,7 @@ class Tokenizer {
 
     // Okay, so this is a sandwich start token. Let's find which sandwich.
     const sandwich =
-      RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.meaningStart)[0]
+      RICH_SANDWICHES.filter(sandwich => token.meaning === sandwich.convention.startMeaning())[0]
 
     if (!sandwich) {
       throw new Error('Unexpected token')
@@ -208,7 +208,10 @@ class Tokenizer {
 
 
   isSandwichAtIndexUnclosed(sandwich: RichSandwich, index: number) {
-    return this.isConventionAtIndexUnclosed([sandwich.meaningStart, sandwich.meaningEnd], index)
+    return this.isConventionAtIndexUnclosed(
+      [sandwich.convention.startMeaning(), sandwich.convention.endMeaning()],
+      index
+    )
   }
 
   isLinkAtIndexUnClosed(index: number) {
@@ -216,7 +219,7 @@ class Tokenizer {
   }
 
   isInsideSandwich(sandwich: RichSandwich): boolean {
-    return this.isInsideConvention([sandwich.meaningStart, sandwich.meaningEnd])
+    return this.isInsideConvention([sandwich.convention.startMeaning(), sandwich.convention.endMeaning()])
   }
 
   isInsideLink() {

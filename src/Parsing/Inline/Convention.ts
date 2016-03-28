@@ -2,7 +2,7 @@ import { TokenMeaning } from './Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { last } from '../CollectionHelpers'
 
-class Convention {
+export class Convention {
   public meanings: TokenMeaning[]
   
   constructor(public NodeType: RichInlineSyntaxNodeType, ...meanings: TokenMeaning[]) {

@@ -13,7 +13,7 @@ export class FailureTracker {
   }
   
   wasSandwichAlreadyTried(sandwich: RichSandwich, textIndex: number): boolean {
-    return this.hasFailed(sandwich.meaningStart, textIndex)
+    return this.hasFailed(sandwich.convention.startMeaning(), textIndex)
   }
   
   hasFailed(meaningStart: TokenMeaning, textIndex: number): boolean {
