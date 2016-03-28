@@ -3,7 +3,6 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { RichSandwich } from './RichSandwich'
-import { LINK } from './Link'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -15,6 +14,8 @@ import { RICH_SANDWICHES } from './RichSandwiches'
 export function tokenize(text: string): Token[] {
   return new Tokenizer(text).tokens
 }
+
+const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
 class Tokenizer {
   public tokens: Token[] = []
