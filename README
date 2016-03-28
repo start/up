@@ -23,7 +23,7 @@ Styles can overlap!
 
 I **love ~~drinking** whole~~ milk.
 
-I do *not [care* at](https://en.wikipedia.org/wiki/Carrot) all.
+I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.
 
 
 Within an inline code snippet, other conventions do not apply. This `*is not emphasized*`.
@@ -31,7 +31,7 @@ Within an inline code snippet, other conventions do not apply. This `*is not emp
 
 A backslash "escapes" the following character, removing any special meaning:
 
-This is not a \[link -> https://stackoverflow.com].
+This is not a [link \-> https://stackoverflow.com].
 
 This text is not \*emphasized\*.
 

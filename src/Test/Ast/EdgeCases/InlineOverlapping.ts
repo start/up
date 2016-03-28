@@ -88,7 +88,7 @@ describe('Overlapped stressed, deleted, and "asided" text', () => {
 
 describe('Overlapped emphasized and linked text', () => {
   it('produce an emphasis node, followed by a link node containing another emphasis node. The link node is unbroken', () => {
-    expect(Up.ast('I do *not [care* at](https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.ast('I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
@@ -101,6 +101,26 @@ describe('Overlapped emphasized and linked text', () => {
           new PlainTextNode(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new PlainTextNode(' all.')
+      ]))
+  })
+})
+
+
+describe('Overlapped linked and emphasized text', () => {
+  it('produce a link node containing an emphasis node, followed by an empahsis node. The link node is unbroken', () => {
+    expect(Up.ast('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('This '),
+        new LinkNode([
+          new PlainTextNode('trash '),
+          new EmphasisNode([
+            new PlainTextNode(' can'),
+          ]),
+        ], 'https://en.wikipedia.org/wiki/Waste_container'),
+        new EmphasisNode([
+          new PlainTextNode(' not'),
+        ]),
+        new PlainTextNode(' stay here.')
       ]))
   })
 })
