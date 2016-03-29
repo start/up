@@ -48,12 +48,16 @@ class Tokenizer {
       this.consumer.moveNext()
     }
 
-    this.rearrangeTokensToProduceTree()
+    this.massageTokensIntoTreeStructure()
   }
 
   // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
-  // the tokens to make that process simpler.
-  rearrangeTokensToProduceTree(): void {
+  // and adds tokens to make that process simpler.
+  //
+  // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent Links,
+  // however, must not be split into multiple pieces, which means any convention that overlaps with a link must
+  // be split instead.
+  massageTokensIntoTreeStructure(): void {
     const openConventions: Convention[] = []
 
     for (let i = 0; i < this.tokens.length; i++) {
@@ -61,7 +65,7 @@ class Tokenizer {
 
       switch (token.meaning) {
         case TokenMeaning.LinkStart:
-          openConventions.push(LINK)
+          // TODO
           continue
           
         case TokenMeaning.LinkUrlAndLinkEnd:
@@ -79,8 +83,15 @@ class Tokenizer {
       const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
 
       if (sandwichEndedByThisToken) {
-        // TODO
-        continue
+        const currentOpenConvention = last(openConventions)
+        
+        if (currentOpenConvention === sandwichEndedByThisToken.convention) {
+          // Perfect! The author closed the current convention. Let's mark it as closed and move on.
+          openConventions.pop()
+          continue
+        }
+        
+        
       }
     }
   }
@@ -194,7 +205,7 @@ class Tokenizer {
   }
 
   undoLatest(convention: Convention): void {
-    this.backtrack(this.indexOfLastTokenWithMeaning(convention.startTokenMeaning()))
+    this.backtrack(this.indexOfStartOfLatestConvention(convention))
   }
 
   backtrack(indexOfEarliestTokenToUndo: number): void {
@@ -273,6 +284,10 @@ class Tokenizer {
     }
 
     return true
+  }
+  
+  indexOfStartOfLatestConvention(convention: Convention): number {
+    return this.indexOfLastTokenWithMeaning(convention.startTokenMeaning())
   }
 
   indexOfLastTokenWithMeaning(meaning: TokenMeaning): number {
