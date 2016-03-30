@@ -17,6 +17,10 @@ export function tokenize(text: string): Token[] {
 
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
+class ConventionStart {
+  constructor(public index: number, public convention: Convention) { }
+}
+
 class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
@@ -58,26 +62,29 @@ class Tokenizer {
   // however, must not be split into multiple pieces, which means any convention that overlaps with a link must
   // be split instead.
   massageTokensIntoTreeStructure(): void {
-    for (let i = 0; i < this.tokens.length; i++) {
-      const token = this.tokens[i]
+    const unclosedConventionStarts: ConventionStart[] = []
+    
+    for (let index = 0; index < this.tokens.length; index++) {
+      const token = this.tokens[index]
       
-      if (token.meaning === TokenMeaning.LinkStart) {
-        this.massageLinkEndedAtIndexIntoTreeStructure(i)
+      const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
+      
+      if (sandwichStartedByThisToken) {
+        unclosedConventionStarts.push(new ConventionStart(index, sandwichStartedByThisToken.convention))
       }
 
       const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
+      
       if (sandwichEndedByThisToken) {
-        this.massageSandwichEndedAtIndexIntoTreeStructure(i, sandwichEndedByThisToken)
+        const lastUnclosedConvention = last(unclosedConventionStarts)
+        if (lastUnclosedConvention.convention === sandwichEndedByThisToken.convention) {
+          // The current convention was closed. We don't need to do anything other than mark the convention as
+          // closed.
+          unclosedConventionStarts.pop()
+          continue
+        }
       }
     }
-  }
-  
-  massageLinkEndedAtIndexIntoTreeStructure(index: number): void {
-    
-  }
-  
-  massageSandwichEndedAtIndexIntoTreeStructure(index: number, sandwich: Sandwich): void {
-    
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
