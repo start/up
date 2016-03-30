@@ -63,25 +63,29 @@ class Tokenizer {
   // be split instead.
   massageTokensIntoTreeStructure(): void {
     const unclosedConventionStarts: ConventionStart[] = []
-    
-    for (let index = 0; index < this.tokens.length; index++) {
-      const token = this.tokens[index]
-      
+
+    for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+      const token = this.tokens[tokenIndex]
+
       const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
-      
+
       if (sandwichStartedByThisToken) {
-        unclosedConventionStarts.push(new ConventionStart(index, sandwichStartedByThisToken.convention))
+        unclosedConventionStarts.push(
+          new ConventionStart(tokenIndex, sandwichStartedByThisToken.convention))
       }
 
       const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
-      
+
       if (sandwichEndedByThisToken) {
-        const lastUnclosedConvention = last(unclosedConventionStarts)
-        if (lastUnclosedConvention.convention === sandwichEndedByThisToken.convention) {
-          // The current convention was closed. We don't need to do anything other than mark the convention as
-          // closed.
-          unclosedConventionStarts.pop()
-          continue
+        
+        for (let conventionIndex = unclosedConventionStarts.length - 1; conventionIndex >= 0; conventionIndex--) {
+          const conventionStart = unclosedConventionStarts[conventionIndex]
+          
+          if (conventionStart.convention === sandwichEndedByThisToken.convention) {
+            // We've reached start of this token, so there's nothing more we need to do.
+            unclosedConventionStarts.splice(conventionIndex, 1)
+            continue   
+          }
         }
       }
     }
@@ -276,7 +280,7 @@ class Tokenizer {
 
     return true
   }
-  
+
   indexOfStartOfLatestConvention(convention: Convention): number {
     return this.indexOfLastTokenWithMeaning(convention.startTokenMeaning())
   }
