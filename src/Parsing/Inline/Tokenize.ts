@@ -77,7 +77,7 @@ class Tokenizer {
         // opened between this closing token and its corresponding start token, those sandwiches overlap this one.
         //
         // Before we can deal with those overlapping sandwiches, we need to find them. Let's do that:
-        let overlappingUnclosedSandwiches: Sandwich[] = []
+        let overlappingUnclosedSandwichesFromMostRecentToLeast: Sandwich[] = []
 
         // We check the unclosed sandwiches from most recent to least recent.
         for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
@@ -89,8 +89,33 @@ class Tokenizer {
             break
           }
           
-          overlappingUnclosedSandwiches.push(unclosedSandwich)
+          overlappingUnclosedSandwichesFromMostRecentToLeast.push(unclosedSandwich)
         }
+        
+        // Now we know which sandwiches overlap. To preserve overlapping while we make it easier to produce an
+        // abstract syntax tree, we will:
+        //
+        // 1. Close each unclosed sandwich (from most to least recent) before the close of the current sandwich
+        // 2. Reopen each unclosed sandwich (from least to most recent) after the close of the current sandwich
+        
+        const endingTokensToAdd =
+          overlappingUnclosedSandwichesFromMostRecentToLeast
+            .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
+              
+        this.insertTokens(tokenIndex, endingTokensToAdd)
+        
+        // Update the current token index to reflect the fact we just added tokens after it
+        tokenIndex += endingTokensToAdd.length
+        
+        const startTokensToAdd =
+          overlappingUnclosedSandwichesFromMostRecentToLeast
+            .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
+            .reverse()
+          
+        this.insertTokens(tokenIndex + 1, startTokensToAdd)
+        
+        // Update the current token index to reflect the fact we just added tokens after it
+        tokenIndex += endingTokensToAdd.length
       }
     }
   }
@@ -297,6 +322,10 @@ class Tokenizer {
     }
 
     throw new Error('Token not found')
+  }
+  
+  insertTokens(index: number, tokens: Token[]): void {
+        this.tokens.splice(index, 0, ...tokens)
   }
 }
 
