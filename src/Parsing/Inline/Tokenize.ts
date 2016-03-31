@@ -65,6 +65,11 @@ class Tokenizer {
   // however, must not be split into multiple pieces, which means any convention that overlaps with a link must
   // be split instead.
   massageTokensIntoTreeStructure(): void {
+    this.massageSandwichesIntoTreeStructure()
+    this.splitAnyConventionThatOverlapsWithLinks()
+  }
+  
+  massageSandwichesIntoTreeStructure(): void {
     const unclosedSandwiches: Sandwich[] = []
 
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
@@ -128,6 +133,9 @@ class Tokenizer {
       // Advance index to reflect the fact that we just added tokens
       tokenIndex += (2 * countOverlapping)
     }
+  }
+  
+  splitAnyConventionThatOverlapsWithLinks(): void {
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
