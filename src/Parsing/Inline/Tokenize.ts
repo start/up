@@ -210,9 +210,14 @@ class Tokenizer {
       if (this.consumer.countUnclosedSquareBracket !== this.countUnclosedSquareBracketsAtLinkStart) {        
         // Nope. We're probably looking at either:
         //
-        // 1. A bracketed link, which should start with the second bracket: [[Google -> https://google.com]]
-        // 2. Some contrived situation like this: [Try to] do this -> smile :]
-
+        // 1. A bracketed link, which should start with the second opening bracket:
+        //  
+        //    [I use [Google -> https://google.com]]
+        //
+        // 2. A bracketed link missing the second closing bracket, which should still start with the second
+        //    opening bracket:
+        //   
+        //    Go to [this [site -> https://stackoverflow.com]!
         this.undoLatest(LINK)
         return true
       }
