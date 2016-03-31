@@ -78,7 +78,7 @@ describe('Overlapped stressed, deleted, and "asided" text', () => {
           ])
         ]),
         new InlineAsideNode([
-          new PlainTextNode(' nukj')
+          new PlainTextNode(' milk')
         ]),
         new PlainTextNode(' all the time.')
       ]))
