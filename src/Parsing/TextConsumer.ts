@@ -23,9 +23,10 @@ interface OnConsumeUpTo {
 }
 
 export class TextConsumer {
+  public countUnclosedParen = 0;
+  public countUnclosedSquareBracket = 0;
+  
   private index = 0;
-  private countUnclosedParen = 0;
-  private countUnclosedSquareBracket = 0;
 
   constructor(private text: string) { }
 
@@ -152,14 +153,6 @@ export class TextConsumer {
         ? this.text[this.index + 1]
         : this.currentChar()
     )
-  }
-
-  areSquareBracketsBalanced(): boolean {
-    return this.countUnclosedSquareBracket === 0
-  }
-
-  areParentsBalanced(): boolean {
-    return this.countUnclosedParen === 0
   }
   
   // This method is a bit hackish.

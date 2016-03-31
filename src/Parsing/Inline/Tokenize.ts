@@ -21,6 +21,13 @@ class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
   private consumer: TextConsumer
+  
+  
+  // Square brackets must be perfectly balanced within the contents of a link, and this is how we track that.
+  //
+  // Links cannot be nested, so we'll never be tokenizing more than one link at a time. That's why we can get away with
+  // using a single, hackigh vartiable like this.
+  private countUnclosedSquareBracketsAtLinkStart: number
 
   constructor(text: string) {
     this.consumer = new TextConsumer(text)
@@ -179,6 +186,7 @@ class Tokenizer {
 
       if (this.consumer.consumeIfMatches(LINK_START)) {
         this.addToken(TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length))
+        this.countUnclosedSquareBracketsAtLinkStart = this.consumer.countUnclosedSquareBracket
         return true
       }
 
@@ -189,7 +197,18 @@ class Tokenizer {
     // We're inside a link! Are we looking at the URL arrow?
     if (this.consumer.consumeIfMatches(' -> ')) {
       // Okay, we found the URL arrow.
-      //
+      
+      // Before we go on, let's make sure this link's contents have balanced square brackets.
+      if (this.consumer.countUnclosedSquareBracket !== this.countUnclosedSquareBracketsAtLinkStart) {        
+        // Nope. We're probably looking at either:
+        //
+        // 1. A bracketed link, which should start with the second bracket: [[Google -> https://google.com]]
+        // 2. Some contrived situation like this: [Try to] do this -> smile :]
+
+        this.undoLatest(LINK)
+        return true
+      }
+      
       // Now, let's find the closing bracket and finish up.
       const didFindClosingBracket = this.consumer.consume({
         upTo: ']',
