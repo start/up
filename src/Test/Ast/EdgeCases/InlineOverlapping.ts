@@ -114,7 +114,7 @@ describe('Overlapped linked and emphasized text', () => {
         new LinkNode([
           new PlainTextNode('trash '),
           new EmphasisNode([
-            new PlainTextNode(' can'),
+            new PlainTextNode('can'),
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new EmphasisNode([

@@ -118,7 +118,7 @@ class Tokenizer {
       //  
       // 2. Just after the end token of the current sandwich, we add a start token for each unclosed sandwich.
       //    To avoid producing a surprising syntax tree, we re-open the sandwiches in their original order.
-      this.closeAndReopenSandwichesAroundIndex(tokenIndex, overlappingFromMostRecentToLeast)
+      this.closeAndReopenSandwichesAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast)
 
       const countOverlapping = overlappingFromMostRecentToLeast.length
 
@@ -175,6 +175,14 @@ class Tokenizer {
             overlappingStartingBefore.push(sandwichEndedByThisToken)
           }
         }
+        
+        this.closeAndReopenSandwichesAroundTokenAtIndex(linkEndIndex, overlappingStartingInside)
+        this.closeAndReopenSandwichesAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore)
+        
+        // Each sandwich we split in two generates two new additional tokens
+        const countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length)
+        
+        tokenIndex = linkEndIndex + countTokensAdded
       }
     }
   }
@@ -185,7 +193,7 @@ class Tokenizer {
   //
   // Functionally, this method does exactly what its name implies: it adds sandwich end tokens before `index`
   // and sandwich start tokens after `index`.
-  closeAndReopenSandwichesAroundIndex(index: number, sandwichesInTheOrderTheyShouldClose: Sandwich[]): void {
+  closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: Sandwich[]): void {
       const startTokensToAdd =
         sandwichesInTheOrderTheyShouldClose
           .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
