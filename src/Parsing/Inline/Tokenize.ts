@@ -22,11 +22,10 @@ class Tokenizer {
   private failureTracker = new FailureTracker()
   private consumer: TextConsumer
 
-
   // Square brackets must be perfectly balanced within the contents of a link, and this is how we track that.
   //
   // Links cannot be nested, so we'll never be tokenizing more than one link at a time. That's why we can get away with
-  // using a single, hackigh vartiable like this.
+  // using a single, hackish vartiable like this.
   private countUnclosedSquareBracketsAtLinkStart: number
 
   constructor(text: string) {
@@ -66,9 +65,10 @@ class Tokenizer {
   // be split instead.
   massageTokensIntoTreeStructure(): void {
     this.massageSandwichesIntoTreeStructure()
-    this.splitAnyConventionThatOverlapsWithLinks()
+    this.splitAnySandwichThatOverlapsWithLinks()
   }
 
+  // Nests sandwich tokens into a tree structure. This function completely ignores link tokens.
   massageSandwichesIntoTreeStructure(): void {
     const unclosedSandwiches: Sandwich[] = []
 
@@ -100,10 +100,10 @@ class Tokenizer {
         const unclosedSandwich = unclosedSandwiches[sandwichIndex]
 
         if (unclosedSandwich === sandwichEndedByThisToken) {
-          // This is the sandwich that the current token closes. 
+          // We've reached the sandwich that is closed by the current token!
           unclosedSandwiches.splice(sandwichIndex, 1)
 
-          // Any sandwiches opened before this one don't overlap with the current sandwich.
+          // Any sandwiches opened before this one don't overlap with the current sandwich, so we can bail.
           break
         }
 
@@ -138,19 +138,54 @@ class Tokenizer {
     }
   }
 
-  splitAnyConventionThatOverlapsWithLinks(): void {
+  // This function assumes that any sandwich conventions are already properly nested into a tree structure.
+  splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       if (this.tokens[tokenIndex].meaning === TokenMeaning.LinkStart) {
-        let linkStartIndex = tokenIndex
+        const linkStartIndex = tokenIndex
         let linkEndIndex: number
-        
+
         for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
           if (this.tokens[i].meaning === TokenMeaning.LinkUrlAndLinkEnd) {
             linkEndIndex = i
           }
         }
+
+        // Alright, we now know where this link starts and ends. Any overlapping sandwiches will either:
         
-        // Alright, now we know where this link starts and ends.
+        // 1. Start before the link and end inside the link
+        // 2. Start inside the link and end after the link
+
+        const overlappingStartingBefore: Sandwich[] = []
+        const overlappingStartingInside: Sandwich[] = []
+
+        for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex - 1; ++insideLinkIndex) {
+          const token = this.tokens[insideLinkIndex]
+
+          const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
+
+          if (sandwichStartedByThisToken) {
+            // Until we encounter the end token, we'll assume this sandwich overlaps.
+            overlappingStartingInside.push(sandwichStartedByThisToken)
+            continue
+          }
+
+          const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
+
+          if (sandwichEndedByThisToken) {
+            // This function assumes any sandwich conventions are already properly nested into a treee
+            // structure. Therefore, if there are any sandwich sonventions that started inside the link,
+            // this one must be the most recent.
+            if (overlappingStartingInside.length) {
+              overlappingStartingInside.pop()
+              continue
+            }
+            
+            // Ahhh, so there were no sandwiches started inside this link! That means this one must have
+            // started before it.
+            overlappingStartingBefore.push(sandwichEndedByThisToken)
+          }
+        }
       }
     }
   }
