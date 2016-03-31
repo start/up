@@ -57,7 +57,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         index += result.countTokensParsed
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
-        const url = tokens[index - 1].value
+        const url = tokens[index].value
         nodes.push(new LinkNode(result.nodes, url))
         
         continue
