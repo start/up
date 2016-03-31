@@ -118,18 +118,7 @@ class Tokenizer {
       //  
       // 2. Just after the end token of the current sandwich, we add a start token for each unclosed sandwich.
       //    To avoid producing a surprising syntax tree, we re-open the sandwiches in their original order.
-
-      const startTokensToAdd =
-        overlappingFromMostRecentToLeast
-          .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
-          .reverse()
-
-      const endingTokensToAdd =
-        overlappingFromMostRecentToLeast
-          .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
-
-      this.insertTokens(tokenIndex + 1, startTokensToAdd)
-      this.insertTokens(tokenIndex, endingTokensToAdd)
+      this.closeAndReopenSandwichesAroundIndex(tokenIndex, overlappingFromMostRecentToLeast)
 
       const countOverlapping = overlappingFromMostRecentToLeast.length
 
@@ -188,6 +177,26 @@ class Tokenizer {
         }
       }
     }
+  }
+  
+  // The purpose of this method is best explained in the `massageSandwichesIntoTreeStructure` method.
+  // In short, it chops sandwiches in two around the token at `index`, allowing sandwiches to be nested
+  // properly (in a tree structure) while preserving the overlapping intended by the author.
+  //
+  // Functionally, this method does exactly what its name implies: it adds sandwich end tokens before `index`
+  // and sandwich start tokens after `index`.
+  closeAndReopenSandwichesAroundIndex(index: number, sandwichesInTheOrderTheyShouldClose: Sandwich[]): void {
+      const startTokensToAdd =
+        sandwichesInTheOrderTheyShouldClose
+          .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
+          .reverse()
+
+      const endTokensToAdd =
+        sandwichesInTheOrderTheyShouldClose
+          .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
+
+      this.insertTokens(index + 1, startTokensToAdd)
+      this.insertTokens(index, endTokensToAdd)
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
