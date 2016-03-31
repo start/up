@@ -68,10 +68,18 @@ class Tokenizer {
     this.splitAnySandwichThatOverlapsWithLinks()
   }
 
-  // Nests sandwich tokens into a tree structure. This function completely ignores link tokens.
+  // Massages sandwich tokens into a tree structure while preserving any overlapping conveyed by the author. This
+  // method completely ignores link tokens, and it assumes no tokens are missing.
   massageSandwichesIntoTreeStructure(): void {
     const unclosedSandwiches: Sandwich[] = []
 
+    // Here's our overall strategy:
+    //
+    // We'll to traverse our token array, keeping track of which sandwiches are still unclosed as of the current
+    // position. Once we reach a sandwich end token, we check whether any still-unclosed sandwhiches were opened
+    // inside the current sandwich. If so, we essentially chop those sandwiches in half: We add end tokens
+    // immediately before the end of the current sandwich, and we add corresponding start tokens immediately
+    // after the end of the current sandwich.
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       const token = this.tokens[tokenIndex]
 
@@ -89,18 +97,17 @@ class Tokenizer {
       }
 
       // Alright, we've found a token that closes one of our unclosed sandwiches. If any other sandwiches were
-      // opened between this token and its corresponding start token, those sandwiches overlap this one.
-      //
-      // Before we can deal with those overlapping sandwiches, we need to find them.
-
+      // opened between this token and its corresponding start token, those sandwiches overlap this one and will
+      // need to be chopped in half.
+      
       let overlappingFromMostRecentToLeast: Sandwich[] = []
 
-      // Let's check the unclosed sandwiches from most recent to least recent.
+      // We'll check the unclosed sandwiches from most recently opened to least recently opened.
       for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
         const unclosedSandwich = unclosedSandwiches[sandwichIndex]
 
         if (unclosedSandwich === sandwichEndedByThisToken) {
-          // We've reached the sandwich that is closed by the current token!
+          // Hooray! We've reached the sandwich that is closed by the current token.
           unclosedSandwiches.splice(sandwichIndex, 1)
 
           // Any sandwiches opened before this one don't overlap with the current sandwich, so we can bail.
@@ -110,8 +117,8 @@ class Tokenizer {
         overlappingFromMostRecentToLeast.push(unclosedSandwich)
       }
 
-      // Okay, now we know which sandwiches overlap. To preserve overlapping while making it easier to produce
-      // an abstract syntax tree, we make the following changes:
+      // Okay, now we know which sandwiches overlap the one that's about to close. To preserve overlapping
+      // while making it easier to produce an abstract syntax tree, we make the following changes:
       //
       // 1. Just before the end token of the current sandwich, we add a closing token for each unclosed
       //    sandwich. To preserve proper nesting, we close the sandwiches in order of most to least recent.
@@ -127,7 +134,7 @@ class Tokenizer {
     }
   }
 
-  // This function assumes that any sandwich conventions are already properly nested into a tree structure.
+  // This function assumes that any sandwich tokens are already properly nested.
   splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       if (this.tokens[tokenIndex].meaning === TokenMeaning.LinkStart) {
@@ -179,7 +186,7 @@ class Tokenizer {
         this.closeAndReopenSandwichesAroundTokenAtIndex(linkEndIndex, overlappingStartingInside)
         this.closeAndReopenSandwichesAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore)
         
-        // Each sandwich we split in two generates two new additional tokens
+        // Each sandwich we split in half generates two new additional tokens.
         const countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length)
         
         tokenIndex = linkEndIndex + countTokensAdded
