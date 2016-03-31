@@ -17,10 +17,6 @@ export function tokenize(text: string): Token[] {
 
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
-class ConventionStart {
-  constructor(public index: number, public convention: Convention) { }
-}
-
 class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
@@ -62,7 +58,7 @@ class Tokenizer {
   // however, must not be split into multiple pieces, which means any convention that overlaps with a link must
   // be split instead.
   massageTokensIntoTreeStructure(): void {
-    const unclosedConventionStarts: ConventionStart[] = []
+    const unclosedSandwiches: Sandwich[] = []
 
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       const token = this.tokens[tokenIndex]
@@ -70,22 +66,30 @@ class Tokenizer {
       const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
 
       if (sandwichStartedByThisToken) {
-        unclosedConventionStarts.push(
-          new ConventionStart(tokenIndex, sandwichStartedByThisToken.convention))
+        unclosedSandwiches.push(sandwichStartedByThisToken)
+        continue
       }
 
       const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
 
       if (sandwichEndedByThisToken) {
-        
-        for (let conventionIndex = unclosedConventionStarts.length - 1; conventionIndex >= 0; conventionIndex--) {
-          const conventionStart = unclosedConventionStarts[conventionIndex]
-          
-          if (conventionStart.convention === sandwichEndedByThisToken.convention) {
-            // We've reached start of this token, so there's nothing more we need to do.
-            unclosedConventionStarts.splice(conventionIndex, 1)
-            continue   
+        // Alright, we've found a token that closes one of our unclosed sandwiches. If any other sandwiches were
+        // opened between this closing token and its corresponding start token, those sandwiches overlap this one.
+        //
+        // Before we can deal with those overlapping sandwiches, we need to find them. Let's do that:
+        let overlappingUnclosedSandwiches: Sandwich[] = []
+
+        // We check the unclosed sandwiches from most recent to least recent.
+        for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
+          const unclosedSandwich = unclosedSandwiches[sandwichIndex]
+
+          if (unclosedSandwich === sandwichEndedByThisToken) {
+            // This is the sandwich that the current token closes. Any sandwiches opened before this one don't
+            // overlap.
+            break
           }
+          
+          overlappingUnclosedSandwiches.push(unclosedSandwich)
         }
       }
     }
