@@ -72,46 +72,50 @@ class Tokenizer {
 
       const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
 
-      if (sandwichEndedByThisToken) {
-        // Alright, we've found a token that closes one of our unclosed sandwiches. If any other sandwiches were
-        // opened between this closing token and its corresponding start token, those sandwiches overlap this one.
-        //
-        // Before we can deal with those overlapping sandwiches, we need to find them. Let's do that:
-        let overlappingFromMostRecentToLeast: Sandwich[] = []
-
-        // We check the unclosed sandwiches from most recent to least recent.
-        for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
-          const unclosedSandwich = unclosedSandwiches[sandwichIndex]
-
-          if (unclosedSandwich === sandwichEndedByThisToken) {
-            // This is the sandwich that the current token closes. Any sandwiches opened before this one don't
-            // overlap.
-            break
-          }
-          
-          overlappingFromMostRecentToLeast.push(unclosedSandwich)
-        }
-        
-        // Now we know which sandwiches overlap. To preserve overlapping while we make it easier to produce an
-        // abstract syntax tree, we will:
-        //
-        // 1. Close each unclosed sandwich (from most to least recent) before the close of the current sandwich
-        // 2. Reopen each unclosed sandwich (from least to most recent) after the close of the current sandwich
-        
-        const startTokensToAdd =
-          overlappingFromMostRecentToLeast
-            .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
-            .reverse()
-            
-        const endingTokensToAdd =
-          overlappingFromMostRecentToLeast
-            .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
-          
-        this.insertTokens(tokenIndex + 1, startTokensToAdd)      
-        this.insertTokens(tokenIndex, endingTokensToAdd)
-        
-        tokenIndex += (2 * overlappingFromMostRecentToLeast.length)
+      if (!sandwichEndedByThisToken) {
+        continue
       }
+      
+      // Alright, we've found a token that closes one of our unclosed sandwiches. If any other sandwiches were
+      // opened between this token and its corresponding start token, those sandwiches overlap this one.
+      //
+      // Before we can deal with those overlapping sandwiches, we need to find them.
+      
+      let overlappingFromMostRecentToLeast: Sandwich[] = []
+
+      // We check the unclosed sandwiches from most recent to least recent.
+      for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
+        const unclosedSandwich = unclosedSandwiches[sandwichIndex]
+
+        if (unclosedSandwich === sandwichEndedByThisToken) {
+          // This is the sandwich that the current token closes. Any sandwiches opened before this one don't
+          // overlap.
+          break
+        }
+
+        overlappingFromMostRecentToLeast.push(unclosedSandwich)
+      }
+
+      // Now we know which sandwiches overlap. To preserve overlapping while we make it easier to produce an
+      // abstract syntax tree, we will:
+      //
+      // 1. Close each unclosed sandwich (from most to least recent) before the close of the current sandwich
+      // 2. Reopen each unclosed sandwich (from least to most recent) after the close of the current sandwich
+
+      const startTokensToAdd =
+        overlappingFromMostRecentToLeast
+          .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
+          .reverse()
+
+      const endingTokensToAdd =
+        overlappingFromMostRecentToLeast
+          .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
+
+      this.insertTokens(tokenIndex + 1, startTokensToAdd)
+      this.insertTokens(tokenIndex, endingTokensToAdd)
+
+      // Advance index to reflect the fact that we just added tokens
+      tokenIndex += (2 * overlappingFromMostRecentToLeast.length)
     }
   }
 
@@ -318,9 +322,9 @@ class Tokenizer {
 
     throw new Error('Token not found')
   }
-  
+
   insertTokens(index: number, tokens: Token[]): void {
-        this.tokens.splice(index, 0, ...tokens)
+    this.tokens.splice(index, 0, ...tokens)
   }
 }
 
