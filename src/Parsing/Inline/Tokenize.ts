@@ -88,8 +88,10 @@ class Tokenizer {
         const unclosedSandwich = unclosedSandwiches[sandwichIndex]
 
         if (unclosedSandwich === sandwichEndedByThisToken) {
-          // This is the sandwich that the current token closes. Any sandwiches opened before this one don't
-          // overlap.
+          // This is the sandwich that the current token closes. 
+          unclosedSandwiches.splice(sandwichIndex, 1)
+          
+          // Any sandwiches opened before this one don't overlap with the current sandwich.
           break
         }
 
@@ -113,9 +115,11 @@ class Tokenizer {
 
       this.insertTokens(tokenIndex + 1, startTokensToAdd)
       this.insertTokens(tokenIndex, endingTokensToAdd)
+      
+      const countOverlapping = overlappingFromMostRecentToLeast.length
 
       // Advance index to reflect the fact that we just added tokens
-      tokenIndex += (2 * overlappingFromMostRecentToLeast.length)
+      tokenIndex += (2 * countOverlapping)
     }
   }
 
