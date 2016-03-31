@@ -77,7 +77,7 @@ class Tokenizer {
         // opened between this closing token and its corresponding start token, those sandwiches overlap this one.
         //
         // Before we can deal with those overlapping sandwiches, we need to find them. Let's do that:
-        let overlappingUnclosedSandwichesFromMostRecentToLeast: Sandwich[] = []
+        let overlappingFromMostRecentToLeast: Sandwich[] = []
 
         // We check the unclosed sandwiches from most recent to least recent.
         for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
@@ -89,7 +89,7 @@ class Tokenizer {
             break
           }
           
-          overlappingUnclosedSandwichesFromMostRecentToLeast.push(unclosedSandwich)
+          overlappingFromMostRecentToLeast.push(unclosedSandwich)
         }
         
         // Now we know which sandwiches overlap. To preserve overlapping while we make it easier to produce an
@@ -98,24 +98,19 @@ class Tokenizer {
         // 1. Close each unclosed sandwich (from most to least recent) before the close of the current sandwich
         // 2. Reopen each unclosed sandwich (from least to most recent) after the close of the current sandwich
         
-        const endingTokensToAdd =
-          overlappingUnclosedSandwichesFromMostRecentToLeast
-            .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
-              
-        this.insertTokens(tokenIndex, endingTokensToAdd)
-        
-        // Update the current token index to reflect the fact we just added tokens after it
-        tokenIndex += endingTokensToAdd.length
-        
         const startTokensToAdd =
-          overlappingUnclosedSandwichesFromMostRecentToLeast
+          overlappingFromMostRecentToLeast
             .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
             .reverse()
+            
+        const endingTokensToAdd =
+          overlappingFromMostRecentToLeast
+            .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
           
-        this.insertTokens(tokenIndex + 1, startTokensToAdd)
+        this.insertTokens(tokenIndex + 1, startTokensToAdd)      
+        this.insertTokens(tokenIndex, endingTokensToAdd)
         
-        // Update the current token index to reflect the fact we just added tokens after it
-        tokenIndex += endingTokensToAdd.length
+        tokenIndex += (2 * overlappingFromMostRecentToLeast.length)
       }
     }
   }
