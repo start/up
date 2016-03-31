@@ -21,8 +21,8 @@ class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
   private consumer: TextConsumer
-  
-  
+
+
   // Square brackets must be perfectly balanced within the contents of a link, and this is how we track that.
   //
   // Links cannot be nested, so we'll never be tokenizing more than one link at a time. That's why we can get away with
@@ -68,7 +68,7 @@ class Tokenizer {
     this.massageSandwichesIntoTreeStructure()
     this.splitAnyConventionThatOverlapsWithLinks()
   }
-  
+
   massageSandwichesIntoTreeStructure(): void {
     const unclosedSandwiches: Sandwich[] = []
 
@@ -87,12 +87,12 @@ class Tokenizer {
       if (!sandwichEndedByThisToken) {
         continue
       }
-      
+
       // Alright, we've found a token that closes one of our unclosed sandwiches. If any other sandwiches were
       // opened between this token and its corresponding start token, those sandwiches overlap this one.
       //
       // Before we can deal with those overlapping sandwiches, we need to find them.
-      
+
       let overlappingFromMostRecentToLeast: Sandwich[] = []
 
       // Let's check the unclosed sandwiches from most recent to least recent.
@@ -102,7 +102,7 @@ class Tokenizer {
         if (unclosedSandwich === sandwichEndedByThisToken) {
           // This is the sandwich that the current token closes. 
           unclosedSandwiches.splice(sandwichIndex, 1)
-          
+
           // Any sandwiches opened before this one don't overlap with the current sandwich.
           break
         }
@@ -130,17 +130,28 @@ class Tokenizer {
 
       this.insertTokens(tokenIndex + 1, startTokensToAdd)
       this.insertTokens(tokenIndex, endingTokensToAdd)
-      
+
       const countOverlapping = overlappingFromMostRecentToLeast.length
 
       // Advance index to reflect the fact that we just added tokens
       tokenIndex += (2 * countOverlapping)
     }
   }
-  
+
   splitAnyConventionThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      const token = this.tokens[tokenIndex]
+      if (this.tokens[tokenIndex].meaning === TokenMeaning.LinkStart) {
+        let linkStartIndex = tokenIndex
+        let linkEndIndex: number
+        
+        for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
+          if (this.tokens[i].meaning === TokenMeaning.LinkUrlAndLinkEnd) {
+            linkEndIndex = i
+          }
+        }
+        
+        // Alright, now we know where this link starts and ends.
+      }
     }
   }
 
@@ -211,9 +222,9 @@ class Tokenizer {
     // We're inside a link! Are we looking at the URL arrow?
     if (this.consumer.consumeIfMatches(' -> ')) {
       // Okay, we found the URL arrow.
-      
+
       // Before we go on, let's make sure this link's contents have balanced square brackets.
-      if (this.consumer.countUnclosedSquareBracket !== this.countUnclosedSquareBracketsAtLinkStart) {        
+      if (this.consumer.countUnclosedSquareBracket !== this.countUnclosedSquareBracketsAtLinkStart) {
         // Nope. We're probably looking at either:
         //
         // 1. A bracketed link, which should start with the second opening bracket:
@@ -227,7 +238,7 @@ class Tokenizer {
         this.undoLatest(LINK)
         return true
       }
-      
+
       // Now, let's find the closing bracket and finish up.
       const didFindClosingBracket = this.consumer.consume({
         upTo: ']',
@@ -362,7 +373,7 @@ class Tokenizer {
       }
     }
 
-    throw new Error('Token not found')
+    throw new Error('Missing token')
   }
 
   insertTokens(index: number, tokens: Token[]): void {
