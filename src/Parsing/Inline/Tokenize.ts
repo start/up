@@ -61,7 +61,7 @@ class Tokenizer {
   // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
   // and adds tokens to make that process simpler.
   //
-  // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent Links,
+  // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent. Links,
   // however, must not be split into multiple pieces, which means any convention that overlaps with a link must
   // be split instead.
   massageTokensIntoTreeStructure(): void {
@@ -95,7 +95,7 @@ class Tokenizer {
       
       let overlappingFromMostRecentToLeast: Sandwich[] = []
 
-      // We check the unclosed sandwiches from most recent to least recent.
+      // Let's check the unclosed sandwiches from most recent to least recent.
       for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
         const unclosedSandwich = unclosedSandwiches[sandwichIndex]
 
@@ -110,11 +110,14 @@ class Tokenizer {
         overlappingFromMostRecentToLeast.push(unclosedSandwich)
       }
 
-      // Now we know which sandwiches overlap. To preserve overlapping while we make it easier to produce an
-      // abstract syntax tree, we will:
+      // Okay, now we know which sandwiches overlap. To preserve overlapping while making it easier to produce
+      // an abstract syntax tree, we make the following changes:
       //
-      // 1. Close each unclosed sandwich (from most to least recent) before the close of the current sandwich
-      // 2. Reopen each unclosed sandwich (from least to most recent) after the close of the current sandwich
+      // 1. Just before the end token of the current sandwich, we add a closing token for each unclosed
+      //    sandwich. To preserve proper nesting, we close the sandwiches in order of most to least recent.
+      //  
+      // 2. Just after the end token of the current sandwich, we add a start token for each unclosed sandwich.
+      //    To avoid producing a surprising syntax tree, we re-open the sandwiches in their original order.
 
       const startTokensToAdd =
         overlappingFromMostRecentToLeast
@@ -136,6 +139,9 @@ class Tokenizer {
   }
   
   splitAnyConventionThatOverlapsWithLinks(): void {
+    for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+      const token = this.tokens[tokenIndex]
+    }
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
