@@ -1,8 +1,6 @@
 /// <reference path="../../../typings/mocha/mocha.d.ts" />
 /// <reference path="../../../typings/chai/chai.d.ts" />
 
-// NOTE: "Shouting" is simply emphasized and stressed text.
-
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
@@ -23,7 +21,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('Text surrounded by 3 asterisks', () => {
-  it('is shouted, and produces nested stress and emphasis nodes containing the text', () => {
+  it('is shouted, and produces stress node containing an emphasis node containing the text', () => {
     expect(Up.ast('Xamarin is now ***free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
@@ -38,8 +36,8 @@ describe('Text surrounded by 3 asterisks', () => {
 })
 
 
-describe('Text surrounded by more than 3 asterisks', () => {
-  it('is shouted, and produces nested stress and emphasis nodes containing the text', () => {
+describe('Shouted text', () => {
+  it('can be surrounded by more than 3 asterisks', () => {
     expect(Up.ast('Koopas! ******Mario is on his way!****** Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
@@ -51,10 +49,7 @@ describe('Text surrounded by more than 3 asterisks', () => {
         new PlainTextNode(' Grab your shells!')
       ]))
   })
-})
 
-
-describe('Shouted text', () => {
   it('does not need to have an equal number of asterisks on either side', () => {
     expect(Up.ast('Koopas! ******Mario is on his way!********* Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -71,7 +66,7 @@ describe('Shouted text', () => {
 
 
 describe('Shouted text', () => {
-  it('can have its emphasis node ended first, with the remaining text being stressed', () => {
+  it('can have its emphasis node ended first (and thus starting second), with the remaining text being stressed', () => {
     expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -85,7 +80,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its emphasis node ended first, with the remaining text being emphasized', () => {
+  it('can have its emphasis node ended first (and thus starting second), with the remaining text being emphasized', () => {
     expect(Up.ast('Hello, ***my** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -96,6 +91,80 @@ describe('Shouted text', () => {
           new PlainTextNode(' world')
         ]),
         new PlainTextNode('!')
+      ]))
+  })
+})
+
+
+describe('Shouted text inside of emphasized text', () => {
+  it('produces the typical shouted syntax nodes nested with another emphasis node', () => {
+    expect(Up.ast('*Please ***stop eating the cardboard*** immediately*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Please '),
+          new StressNode([
+            new EmphasisNode([
+              new PlainTextNode('stop eating the cardboard'),
+            ]),
+          ]),
+          new PlainTextNode(' immediately')
+        ])
+      ]))
+  })
+})
+
+
+describe('Shouted text inside of stressed text', () => {
+  it('produces the typical shouted syntax nodes nested with another stress node', () => {
+    expect(Up.ast('**Please ***stop eating the cardboard*** immediately**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Please '),
+          new StressNode([
+            new EmphasisNode([
+              new PlainTextNode('stop eating the cardboard'),
+            ]),
+          ]),
+          new PlainTextNode(' immediately')
+        ])
+      ]))
+  })
+})
+
+
+describe('Shouted text inside of emphasized text', () => {
+  it('can have its inner stress text closed early', () => {
+    expect(Up.ast('*Please ***stop** eating the cardboard* immediately*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Please '),
+          new EmphasisNode([
+            new StressNode([
+              new PlainTextNode('stop'),
+            ]),
+            new PlainTextNode(' eating the cardboard'),
+          ]),
+          new PlainTextNode(' immediately')
+        ])
+      ]))
+  })
+})
+
+
+describe('Shouted text inside of emphasized text', () => {
+  it('can have its inner stress text closed early', () => {
+    expect(Up.ast('*Please ***stop* eating the cardboard** immediately*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Please '),
+          new StressNode([
+            new EmphasisNode([
+              new PlainTextNode('stop'),
+            ]),
+            new PlainTextNode(' eating the cardboard'),
+          ]),
+          new PlainTextNode(' immediately')
+        ])
       ]))
   })
 })

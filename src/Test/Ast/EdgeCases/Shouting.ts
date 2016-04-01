@@ -18,7 +18,7 @@ import { InlineAsideNode } from '../../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
-describe('Text starting with 3 asterisks', () => {
+describe('Shouted text', () => {
   it('can have its emphasis node closed first even when followed by stressed text', () => {
     expect(Up.ast('***Nimble* navigators?** **Tropical.**')).to.be.eql(
       insideDocumentAndParagraph([
