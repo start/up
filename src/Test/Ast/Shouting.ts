@@ -23,7 +23,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('Text surrounded by 3 asterisks', () => {
-  it('produces nested stress and emphasis nodes containing the text', () => {
+  it('is shouted, and produces nested stress and emphasis nodes containing the text', () => {
     expect(Up.ast('Xamarin is now ***free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
@@ -33,6 +33,38 @@ describe('Text surrounded by 3 asterisks', () => {
           ]),
         ]),
         new PlainTextNode('!')
+      ]))
+  })
+})
+
+
+describe('Text surrounded by more than 3 asterisks', () => {
+  it('is shouted, and produces nested stress and emphasis nodes containing the text', () => {
+    expect(Up.ast('Koopas! ******Mario is on his way!****** Grab your shells!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Koopas! '),
+        new StressNode([
+          new EmphasisNode([
+            new PlainTextNode('Mario is on his way!'),
+          ]),
+        ]),
+        new PlainTextNode(' Grab your shells!')
+      ]))
+  })
+})
+
+
+describe('Shouted text', () => {
+  it('does not need to have an equal number of asterisks on either side', () => {
+    expect(Up.ast('Koopas! ******Mario is on his way!********* Grab your shells!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Koopas! '),
+        new StressNode([
+          new EmphasisNode([
+            new PlainTextNode('Mario is on his way!'),
+          ]),
+        ]),
+        new PlainTextNode(' Grab your shells!')
       ]))
   })
 })
