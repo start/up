@@ -124,3 +124,16 @@ describe('Overlapped linked and emphasized text', () => {
       ]))
   })
 })
+
+describe('Conventions that completely overlap', () => {
+  it('are nested in the order they started, and do not create an empty node at the end', () => {
+    expect(Up.ast('++**Why would you do this?++**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new StressNode([
+            new PlainTextNode('Why would you do this?')
+          ])
+        ])
+      ]))
+  })
+})
