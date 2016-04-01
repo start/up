@@ -70,8 +70,8 @@ describe('Shouted text', () => {
 })
 
 
-describe('Text starting with 3 asterisks', () => {
-  it('can have its emphasis node closed first', () => {
+describe('Shouted text', () => {
+  it('can have its emphasis node ended first, with the remaining text being stressed', () => {
     expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -85,7 +85,7 @@ describe('Text starting with 3 asterisks', () => {
       ]))
   })
 
-  it('can have its stress node closed first', () => {
+  it('can have its emphasis node ended first, with the remaining text being emphasized', () => {
     expect(Up.ast('Hello, ***my** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
