@@ -263,7 +263,7 @@ class Tokenizer {
       // Interestingly, we don't need to care which convention started first. We already handle
       // overlapping conventions perfectly, including conventions that overlap completely:
       //
-      // ++**Why would you do this?++**
+      // Example: ++**Why would you do this?++**
       //
       // In those situations, we produce syntax nodes that are nested in the order they are started.
       // No stray, empty syntax nodes are left anywhere.

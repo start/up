@@ -126,3 +126,19 @@ describe('Shouted text inside of stressed text', () => {
       ]))
   })
 })
+
+describe('Text that is both emphasized and stressed', () => {
+  it('can have both nodes closed with 3 asterisks', () => {
+    expect(Up.ast('Xamarin is **now *free***!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Xamarin is '),
+        new StressNode([
+          new PlainTextNode('now '),
+          new EmphasisNode([
+            new PlainTextNode('free')
+          ]),
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
