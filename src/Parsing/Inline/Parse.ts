@@ -48,7 +48,10 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         continue
 
       case TokenMeaning.InlineCode: {
-        nodes.push(new InlineCodeNode(token.value))
+        // An empty inline code node isn't meaningul, so we discard it
+        if (token.value) {
+          nodes.push(new InlineCodeNode(token.value))
+        }
         continue
       }
       
@@ -57,8 +60,10 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         index += result.countTokensParsed
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
-        const url = tokens[index].value
-        nodes.push(new LinkNode(result.nodes, url))
+        let url = tokens[index].value
+        const contents = result.nodes
+
+        nodes.push(new LinkNode(contents, url))
         
         continue
       }
@@ -68,7 +73,11 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       if (token.meaning === sandwich.convention.startTokenMeaning()) {
         const result = parseUntil(tokens.slice(countParsed), sandwich.convention.endTokenMeaning())
         index += result.countTokensParsed
-        nodes.push(new sandwich.NodeType(result.nodes))
+        
+        if (result.nodes.length) {
+          // Like empty inline code, we discard any empty sandwich convention
+          nodes.push(new sandwich.NodeType(result.nodes))
+        }
 
         continue MainParserLoop
       }
