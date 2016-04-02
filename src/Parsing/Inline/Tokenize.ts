@@ -8,7 +8,7 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { SANDWICHES } from './Sandwiches'
+import { SANDWICHES, EMPHASIS, STRESS } from './Sandwiches'
 
 
 export function tokenize(text: string): Token[] {
@@ -254,6 +254,27 @@ class Tokenizer {
       return false
     }
     
+    // If the text is currently emphasized and stressed, then this delimiter indicates the end of both
+    // conventions, not the beginning of a shout. In case there are extra asterisks, we'll handle that
+    // here instead of relying on the emphasis/stress tokenizers.
+    if (this.isInside(EMPHASIS.convention) && this.isInside(STRESS.convention)) {
+      // Okay! It's time to close both conventions.
+      //
+      // Interestingly, we don't need to care which convention started first. We already handle
+      // overlapping conventions perfectly, including conventions that overlap completely:
+      //
+      // ++**Why would you do this?++**
+      //
+      // In those situations, we produce syntax nodes that are nested in the order they are started.
+      // No stray, empty syntax nodes are left anywhere.
+      this.addToken(TokenMeaning.EmphasisEnd)
+      this.addToken(TokenMeaning.StressEnd)
+      
+      return true
+    }
+      
+    
+    
     return false
   }
 
@@ -289,7 +310,7 @@ class Tokenizer {
     }
 
     if (!this.isInside(LINK)) {
-      // If we're not inside a link, that means we can potentially start one. Let's see whether we should...
+      // Since we're not inside a link, we can potentially start one. Let's see whether we should...
       const LINK_START = '['
 
       if (this.consumer.consumeIfMatches(LINK_START)) {
