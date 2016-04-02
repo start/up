@@ -17,8 +17,10 @@ export function tokenize(text: string): Token[] {
 
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
-const RICH_CONVENTIONS =
-  SANDWICHES.map(sandwich => sandwich.convention).concat([LINK])
+const POTENTIALLY_UNCLOSED_CONVENTIONS =
+  SANDWICHES
+    .map(sandwich => sandwich.convention)
+    .concat([LINK])
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -357,31 +359,14 @@ class Tokenizer {
 
   isTokenStartOfUnclosedConvention(index: number): boolean {
     const token = this.tokens[index]
-
-    switch (token.meaning) {
-      case TokenMeaning.PlainText:
-      case TokenMeaning.EmphasisEnd:
-      case TokenMeaning.InlineAsideEnd:
-      case TokenMeaning.InlineCode:
-      case TokenMeaning.RevisionDeletionEnd:
-      case TokenMeaning.RevisionInsertionEnd:
-      case TokenMeaning.SpoilerEnd:
-      case TokenMeaning.StressEnd:
-      case TokenMeaning.LinkUrlAndLinkEnd:
-        return false;
-
-      case TokenMeaning.LinkStart:
-        return this.isConventionAtIndexUnclosed(LINK, index)
+    
+    for (let convention of POTENTIALLY_UNCLOSED_CONVENTIONS) {
+       if (token.meaning === convention.startTokenMeaning()) {
+         return this.isConventionAtIndexUnclosed(convention, index)
+       }  
     }
-
-    // Okay, so this is a sandwich start token. Let's find which sandwich.
-    const sandwich = getSandwichStartedByThisToken(token)
-
-    if (!sandwich) {
-      throw new Error('Unexpected token')
-    }
-
-    return this.isConventionAtIndexUnclosed(sandwich.convention, index)
+    
+    return false
   }
 
   isInside(convention: Convention): boolean {
