@@ -142,61 +142,62 @@ class Tokenizer {
   // This function assumes that any sandwich tokens are already properly nested.
   splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      if (this.tokens[tokenIndex].meaning === TokenMeaning.LinkStart) {
-        const linkStartIndex = tokenIndex
-        let linkEndIndex: number
-
-        for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
-          if (this.tokens[i].meaning === TokenMeaning.LinkUrlAndLinkEnd) {
-            linkEndIndex = i
-            continue
-          }
-        }
-
-        // Alright, we now know where this link starts and ends. Any overlapping sandwiches will either:
-
-        // 1. Start before the link and end inside the link
-        // 2. Start inside the link and end after the link
-
-        const overlappingStartingBefore: Sandwich[] = []
-        const overlappingStartingInside: Sandwich[] = []
-
-        for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
-          const token = this.tokens[insideLinkIndex]
-
-          const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
-
-          if (sandwichStartedByThisToken) {
-            // Until we encounter the end token, we'll assume this sandwich overlaps.
-            overlappingStartingInside.push(sandwichStartedByThisToken)
-            continue
-          }
-
-          const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
-
-          if (sandwichEndedByThisToken) {
-            // This function assumes any sandwich conventions are already properly nested into a treee
-            // structure. Therefore, if there are any sandwich sonventions that started inside the link,
-            // this one must be the most recent.
-            if (overlappingStartingInside.length) {
-              overlappingStartingInside.pop()
-              continue
-            }
-
-            // Ahhh, but there were no sandwiches started inside this link! That means this one must have
-            // started before it.
-            overlappingStartingBefore.push(sandwichEndedByThisToken)
-          }
-        }
-
-        this.closeAndReopenSandwichesAroundTokenAtIndex(linkEndIndex, overlappingStartingInside)
-        this.closeAndReopenSandwichesAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore)
-
-        // Each sandwich we split in half generates two new additional tokens.
-        const countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length)
-
-        tokenIndex = linkEndIndex + countTokensAdded
+      if (this.tokens[tokenIndex].meaning !== TokenMeaning.LinkStart) {
+        continue
       }
+      
+      const linkStartIndex = tokenIndex
+      let linkEndIndex: number
+
+      for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
+        if (this.tokens[i].meaning === TokenMeaning.LinkUrlAndLinkEnd) {
+          linkEndIndex = i
+          break
+        }
+      }
+
+      // Alright, we now know where this link starts and ends. Any overlapping sandwiches will either:
+
+      // 1. Start before the link and end inside the link
+      // 2. Start inside the link and end after the link
+
+      const overlappingStartingBefore: Sandwich[] = []
+      const overlappingStartingInside: Sandwich[] = []
+
+      for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
+        const token = this.tokens[insideLinkIndex]
+        const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
+
+        if (sandwichStartedByThisToken) {
+          // Until we encounter the end token, we'll assume this sandwich overlaps.
+          overlappingStartingInside.push(sandwichStartedByThisToken)
+          continue
+        }
+
+        const sandwichEndedByThisToken = getSandwichEndedByThisToken(token)
+
+        if (sandwichEndedByThisToken) {
+          // This function assumes any sandwich conventions are already properly nested into a treee
+          // structure. Therefore, if there are any sandwich sonventions that started inside the link,
+          // this one must be the most recent.
+          if (overlappingStartingInside.length) {
+            overlappingStartingInside.pop()
+            continue
+          }
+
+          // Ahhh, but there were no sandwiches started inside this link! That means this one must have
+          // started before it.
+          overlappingStartingBefore.push(sandwichEndedByThisToken)
+        }
+      }
+
+      this.closeAndReopenSandwichesAroundTokenAtIndex(linkEndIndex, overlappingStartingInside)
+      this.closeAndReopenSandwichesAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore)
+
+      // Each sandwich we split in half generates two new additional tokens.
+      const countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length)
+
+      tokenIndex = linkEndIndex + countTokensAdded
     }
   }
 
@@ -359,13 +360,13 @@ class Tokenizer {
 
   isTokenStartOfUnclosedConvention(index: number): boolean {
     const token = this.tokens[index]
-    
+
     for (let convention of POTENTIALLY_UNCLOSED_CONVENTIONS) {
-       if (token.meaning === convention.startTokenMeaning()) {
-         return this.isConventionAtIndexUnclosed(convention, index)
-       }  
+      if (token.meaning === convention.startTokenMeaning()) {
+        return this.isConventionAtIndexUnclosed(convention, index)
+      }
     }
-    
+
     return false
   }
 
