@@ -28,6 +28,34 @@ describe('Bracketed text followed  by " -> " followed by a closing bracket', () 
   })
 })
 
+describe('A link with no URL', () => {
+  it('does not produce a link node, but its contents are included directly', () => {
+    expect(Up.ast('[*Yggdra Union* -> ]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Yggdra Union')
+        ])
+      ]))
+  })
+})
+
+describe('A link with no content', () => {
+  it('produces a link node with its URL for its content', () => {
+    expect(Up.ast('[ -> https://google.com]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('https://google.com')
+        ], 'https://google.com'
+        )]))
+  })
+})
+
+describe('A link with no content and no URL', () => {
+  it('produces no syntax nodes', () => {
+    expect(Up.ast('[ -> ]')).to.be.eql(insideDocumentAndParagraph([]))
+  })
+})
+
 describe('A link', () => {
   it('can follow bracketed text', () => {
     expect(Up.ast("I [usually] use [Google -> https://google.com]!!")).to.eql(
@@ -50,7 +78,7 @@ describe('A link', () => {
         new PlainTextNode(']')
       ]))
   })
-  
+
   it('starts with the final of multiple opening brackets even when there is just one closing bracket', () => {
     expect(Up.ast('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
       insideDocumentAndParagraph([
