@@ -183,7 +183,7 @@ class Tokenizer {
               continue
             }
 
-            // Ahhh, so there were no sandwiches started inside this link! That means this one must have
+            // Ahhh, but there were no sandwiches started inside this link! That means this one must have
             // started before it.
             overlappingStartingBefore.push(sandwichEndedByThisToken)
           }

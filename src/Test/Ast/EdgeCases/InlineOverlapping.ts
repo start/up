@@ -38,12 +38,41 @@ describe('Overlapped stressed and deleted text', () => {
   })
 })
 
-
-describe('Overlapped emphasized and deleted text', () => {
-  it('produce an emphasis node, a nested revision deletion node, then a non-nested revision deletion node', () => {
-    expect(Up.ast('I *love ~~drinking* whole~~ milk.')).to.be.eql(
+describe('Overlapped stressed and deleted text', () => {
+  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
+    expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('A paragraph with 2 instances of overlapped conventions', () => {
+  it('prorduce the correct nodes for each', () => {
+    expect(Up.ast('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new EmphasisNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk. I '),
         new EmphasisNode([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
