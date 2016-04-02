@@ -10,6 +10,12 @@ interface ConsumeLineArgs {
   then?: OnConsume
 }
 
+interface ConsumeIfMatchesPatternArgs {
+  pattern: string,
+  then?: OnConsume
+}
+
+
 interface ShouldConsumeLine {
   (line: string): boolean
 }
@@ -115,6 +121,12 @@ export class TextConsumer {
 
       consumer.moveNext()
     }
+
+    return false
+  }
+
+  consumeIfMatchesPattern(args: ConsumeIfMatchesPatternArgs): boolean {
+    const consumer = new TextConsumer(this.remainingText())
 
     return false
   }
