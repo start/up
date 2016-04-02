@@ -11,7 +11,7 @@ interface ConsumeLineArgs {
 }
 
 interface ConsumeIfMatchesPatternArgs {
-  pattern: string,
+  pattern: RegExp,
   then?: OnConsume
 }
 
@@ -31,7 +31,7 @@ interface OnConsumeUpTo {
 export class TextConsumer {
   public countUnclosedParen = 0;
   public countUnclosedSquareBracket = 0;
-  
+
   private index = 0;
 
   constructor(private text: string) { }
@@ -98,10 +98,10 @@ export class TextConsumer {
   }
 
   consume(args: ConsumeArgs): boolean {
-    const consumer = new TextConsumer(this.remainingText())
-
     const { upTo, then } = args
     const from = args.from || ''
+
+    const consumer = new TextConsumer(this.remainingText())
 
     if (from && !consumer.consumeIfMatches(from)) {
       return false
@@ -126,7 +126,20 @@ export class TextConsumer {
   }
 
   consumeIfMatchesPattern(args: ConsumeIfMatchesPatternArgs): boolean {
-    const consumer = new TextConsumer(this.remainingText())
+    const { pattern, then } = args
+
+    const result = pattern.exec(this.remainingText())
+
+    if (!result) {
+      return false
+    }
+
+    const match = result[0]
+    const captures = result.slice(1)
+
+    if (then) {
+      then(match, ...captures)
+    }
 
     return false
   }
@@ -166,7 +179,7 @@ export class TextConsumer {
         : this.currentChar()
     )
   }
-  
+
   // This method is a bit hackish.
   //
   // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.  
