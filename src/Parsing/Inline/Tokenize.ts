@@ -145,7 +145,7 @@ class Tokenizer {
       if (this.tokens[tokenIndex].meaning !== TokenMeaning.LinkStart) {
         continue
       }
-      
+
       const linkStartIndex = tokenIndex
       let linkEndIndex: number
 
@@ -238,6 +238,10 @@ class Tokenizer {
       upTo: '`',
       then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
     })
+  }
+  
+  handleShouting(): boolean {
+    return false
   }
 
   handleSandwiches(): boolean {
