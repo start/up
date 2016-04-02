@@ -136,12 +136,14 @@ export class TextConsumer {
 
     const match = result[0]
     const captures = result.slice(1)
+    
+    this.skip(match.length)
 
     if (then) {
       then(match, ...captures)
     }
 
-    return false
+    return true
   }
 
   moveNext(): void {

@@ -29,8 +29,8 @@ class Tokenizer {
 
   // Square brackets must be perfectly balanced within the contents of a link, and this is how we track that.
   //
-  // Links cannot be nested, so we'll never be tokenizing more than one link at a time. That's why we can get away with
-  // using a single, hackish vartiable like this.
+  // Links cannot be nested, so we'll never be tokenizing more than one link at a time. That's why we can get
+  // away with using a single, hackish vartiable like this.
   private countUnclosedSquareBracketsAtLinkStart: number
 
   constructor(text: string) {
@@ -47,6 +47,7 @@ class Tokenizer {
 
       const wasAnythingDiscovered = (
         this.handleInlineCode()
+        || this.handleShouting()
         || this.handleSandwiches()
         || this.handleLink()
       )
@@ -244,7 +245,7 @@ class Tokenizer {
     let consumerBeforeMatch: TextConsumer
     
     const isMatch = this.consumer.consumeIfMatchesPattern({
-      pattern: /\*{3,}/,
+      pattern: /^\*{3,}/,
       then: delimiter =>  {
         consumerBeforeMatch = this.consumer.asBeforeMatch(delimiter.length)
       }
