@@ -60,7 +60,6 @@ class Tokenizer {
     }
 
     this.massageTokensIntoTreeStructure()
-    this.removeEmptyConventions()
   }
 
   // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
@@ -426,41 +425,6 @@ class Tokenizer {
 
   insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
-  }
-
-
-  removeEmptyConventions(): void {
-    /*
-    let emptyConventions = [
-
-    ]
-    for (let i = 0; i < this.tokens.length; i++) {
-
-      const token = this.tokens[i]
-      const tokenMeaning = token.meaning
-
-      // Inline code doesn't have any inner tokens, so check its value instead/
-      if (tokenMeaning === TokenMeaning.InlineCode) {
-        if (token.value === '') {
-          this.tokens.splice(i, 1)
-        }
-        continue
-      }
-
-
-      const removeBackToBackTokensIfNextIs = (meaning: TokenMeaning) => {
-        if (this.tokens[i + 1].meaning === meaning) {
-          this.tokens.splice(i, 1)
-        }
-      }
-
-      switch (this.tokens[i].meaning) {
-        case TokenMeaning.EmphasisStart:
-          removeBackToBackTokensIfNextIs(TokenMeaning.EmphasisEnd)
-          break:
-      }
-    }
-  */
   }
 }
 
