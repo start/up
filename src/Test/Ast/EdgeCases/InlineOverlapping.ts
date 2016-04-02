@@ -106,6 +106,39 @@ describe('Overlapped emphasized and linked text', () => {
 })
 
 
+describe('A paragraph with 2 overlapped links', () => {
+  it('produces the correct nodes for each', () => {
+    const text = 'I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.'
+    
+    expect(Up.ast(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I do '),
+        new EmphasisNode([
+          new PlainTextNode('not '),
+        ]),
+        new LinkNode([
+          new EmphasisNode([
+            new PlainTextNode('care'),
+          ]),
+          new PlainTextNode(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainTextNode(' all. I do '),
+        new EmphasisNode([
+          new PlainTextNode('not '),
+        ]),
+        new LinkNode([
+          new EmphasisNode([
+            new PlainTextNode('care'),
+          ]),
+          new PlainTextNode(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainTextNode(' all.')
+      ]))
+  })
+})
+
+
+
 describe('Overlapped linked and emphasized text', () => {
   it('produce a link node containing an emphasis node, followed by an empahsis node. The link node is unbroken', () => {
     expect(Up.ast('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
