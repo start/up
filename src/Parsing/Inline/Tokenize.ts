@@ -17,6 +17,9 @@ export function tokenize(text: string): Token[] {
 
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
+const RICH_CONVENTIONS =
+  SANDWICHES.map(sandwich => sandwich.convention).concat([LINK])
+
 class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
@@ -55,6 +58,7 @@ class Tokenizer {
     }
 
     this.massageTokensIntoTreeStructure()
+    this.removeEmptyConventions()
   }
 
   // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This method rearranges
@@ -99,7 +103,7 @@ class Tokenizer {
       // Alright, we've found a token that closes one of our unclosed sandwiches. If any other sandwiches were
       // opened between this token and its corresponding start token, those sandwiches overlap this one and will
       // need to be chopped in half.
-      
+
       let overlappingFromMostRecentToLeast: Sandwich[] = []
 
       // We'll check the unclosed sandwiches from most recently opened to least recently opened.
@@ -148,7 +152,7 @@ class Tokenizer {
         }
 
         // Alright, we now know where this link starts and ends. Any overlapping sandwiches will either:
-        
+
         // 1. Start before the link and end inside the link
         // 2. Start inside the link and end after the link
 
@@ -176,24 +180,24 @@ class Tokenizer {
               overlappingStartingInside.pop()
               continue
             }
-            
+
             // Ahhh, so there were no sandwiches started inside this link! That means this one must have
             // started before it.
             overlappingStartingBefore.push(sandwichEndedByThisToken)
           }
         }
-        
+
         this.closeAndReopenSandwichesAroundTokenAtIndex(linkEndIndex, overlappingStartingInside)
         this.closeAndReopenSandwichesAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore)
-        
+
         // Each sandwich we split in half generates two new additional tokens.
         const countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length)
-        
+
         tokenIndex = linkEndIndex + countTokensAdded
       }
     }
   }
-  
+
   // The purpose of this method is best explained in the `massageSandwichesIntoTreeStructure` method.
   // In short, it chops sandwiches in two around the token at `index`, allowing sandwiches to be nested
   // properly (in a tree structure) while preserving the overlapping intended by the author.
@@ -201,17 +205,17 @@ class Tokenizer {
   // Functionally, this method does exactly what its name implies: it adds sandwich end tokens before `index`
   // and sandwich start tokens after `index`.
   closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: Sandwich[]): void {
-      const startTokensToAdd =
-        sandwichesInTheOrderTheyShouldClose
-          .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
-          .reverse()
+    const startTokensToAdd =
+      sandwichesInTheOrderTheyShouldClose
+        .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
+        .reverse()
 
-      const endTokensToAdd =
-        sandwichesInTheOrderTheyShouldClose
-          .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
+    const endTokensToAdd =
+      sandwichesInTheOrderTheyShouldClose
+        .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
 
-      this.insertTokens(index + 1, startTokensToAdd)
-      this.insertTokens(index, endTokensToAdd)
+    this.insertTokens(index + 1, startTokensToAdd)
+    this.insertTokens(index, endTokensToAdd)
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {
@@ -437,6 +441,41 @@ class Tokenizer {
 
   insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
+  }
+
+
+  removeEmptyConventions(): void {
+    /*
+    let emptyConventions = [
+
+    ]
+    for (let i = 0; i < this.tokens.length; i++) {
+
+      const token = this.tokens[i]
+      const tokenMeaning = token.meaning
+
+      // Inline code doesn't have any inner tokens, so check its value instead/
+      if (tokenMeaning === TokenMeaning.InlineCode) {
+        if (token.value === '') {
+          this.tokens.splice(i, 1)
+        }
+        continue
+      }
+
+
+      const removeBackToBackTokensIfNextIs = (meaning: TokenMeaning) => {
+        if (this.tokens[i + 1].meaning === meaning) {
+          this.tokens.splice(i, 1)
+        }
+      }
+
+      switch (this.tokens[i].meaning) {
+        case TokenMeaning.EmphasisStart:
+          removeBackToBackTokensIfNextIs(TokenMeaning.EmphasisEnd)
+          break:
+      }
+    }
+  */
   }
 }
 
