@@ -141,4 +141,18 @@ describe('Text that is both emphasized and stressed', () => {
         new PlainTextNode('!')
       ]))
   })
+  
+  it('can have both nodes closed with 4 or more asterisks', () => {
+    expect(Up.ast('Xamarin is **now *free****!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Xamarin is '),
+        new StressNode([
+          new PlainTextNode('now '),
+          new EmphasisNode([
+            new PlainTextNode('free')
+          ]),
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
 })
