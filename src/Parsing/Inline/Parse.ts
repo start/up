@@ -48,23 +48,39 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         continue
 
       case TokenMeaning.InlineCode: {
-        // An empty inline code node isn't meaningul, so we discard it
+        // Empty inline code isn't meaningful, so we discard it
         if (token.value) {
           nodes.push(new InlineCodeNode(token.value))
         }
         continue
       }
-      
+
       case TokenMeaning.LinkStart: {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.LinkUrlAndLinkEnd)
         index += result.countTokensParsed
-        
+
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
         let url = tokens[index].value
         const contents = result.nodes
 
+        if (!contents.length && !url) {
+          // If there's no content and no URL, there's nothing meaninful to include in the document
+          continue
+        }
+
+        if (contents.length && !url) {
+          // If there's content but no URL, we include the content directly in the document without producing
+          // a link node
+          nodes.push(...contents)
+          continue
+        }
+
+        if (!contents.length && url) {
+          // If there's no content but we have a URL, we'll use the URL for the content
+          contents.push(new PlainTextNode(url))
+        }
+
         nodes.push(new LinkNode(contents, url))
-        
         continue
       }
     }
@@ -73,7 +89,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
       if (token.meaning === sandwich.convention.startTokenMeaning()) {
         const result = parseUntil(tokens.slice(countParsed), sandwich.convention.endTokenMeaning())
         index += result.countTokensParsed
-        
+
         if (result.nodes.length) {
           // Like empty inline code, we discard any empty sandwich convention
           nodes.push(new sandwich.NodeType(result.nodes))
