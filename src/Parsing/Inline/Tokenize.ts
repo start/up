@@ -149,6 +149,7 @@ class Tokenizer {
         for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
           if (this.tokens[i].meaning === TokenMeaning.LinkUrlAndLinkEnd) {
             linkEndIndex = i
+            continue
           }
         }
 
@@ -160,7 +161,7 @@ class Tokenizer {
         const overlappingStartingBefore: Sandwich[] = []
         const overlappingStartingInside: Sandwich[] = []
 
-        for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex - 1; ++insideLinkIndex) {
+        for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
           const token = this.tokens[insideLinkIndex]
 
           const sandwichStartedByThisToken = getSandwichStartedByThisToken(token)
