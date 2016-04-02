@@ -21,7 +21,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('Text surrounded by 3 asterisks', () => {
-  it('is shouted, and produces stress node containing an emphasis node containing the text', () => {
+  it('is shouted, and produces a stress node containing an emphasis node containing the text', () => {
     expect(Up.ast('Xamarin is now ***free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
@@ -34,7 +34,6 @@ describe('Text surrounded by 3 asterisks', () => {
       ]))
   })
 })
-
 
 describe('Shouted text', () => {
   it('can be surrounded by more than 3 asterisks', () => {
@@ -49,8 +48,8 @@ describe('Shouted text', () => {
         new PlainTextNode(' Grab your shells!')
       ]))
   })
-
-  it('does not need to have an equal number of asterisks on either side', () => {
+  
+  it('can be surrounded by an uneven number of asterisks, as long as there are at least 3', () => {
     expect(Up.ast('Koopas! ******Mario is on his way!********* Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
@@ -62,10 +61,7 @@ describe('Shouted text', () => {
         new PlainTextNode(' Grab your shells!')
       ]))
   })
-})
-
-
-describe('Shouted text', () => {
+  
   it('can have its emphasis node ended first (and thus starting second), with the remaining text being stressed', () => {
     expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
       insideDocumentAndParagraph([
