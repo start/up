@@ -8,7 +8,7 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { SANDWICHES, EMPHASIS, STRESS } from './Sandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
 export function tokenize(text: string): Token[] {
@@ -17,9 +17,17 @@ export function tokenize(text: string): Token[] {
 
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
+const REGULAR_SANDWICHES = [
+    STRESS,
+    EMPHASIS,
+    REVISION_DELETION,
+    REVISION_INSERTION,
+    SPOILER,
+    INLINE_ASIDE
+]
+
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
-  SANDWICHES
-    .map(sandwich => sandwich.convention)
+  REGULAR_SANDWICHES.map(sandwich => sandwich.convention)
     .concat([LINK])
 
 class Tokenizer {
@@ -240,21 +248,27 @@ class Tokenizer {
       then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
     })
   }
-  
+
   handleShouting(): boolean {
+    if ('1') {
+      return false
+    }
+
     let consumerBeforeMatch: TextConsumer
-    
+
     const isMatch = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*{3,}/,
-      then: delimiter =>  {
+      then: delimiter => {
         consumerBeforeMatch = this.consumer.asBeforeMatch(delimiter.length)
       }
     })
-   
+
     if (!isMatch) {
       return false
     }
-    
+
+
+
     // If the text is currently emphasized and stressed, then this delimiter indicates the end of both
     // conventions, not the beginning of a shout. In case there are extra asterisks, we'll handle that
     // here instead of relying on the emphasis/stress tokenizers.
@@ -270,19 +284,19 @@ class Tokenizer {
       // No stray, empty syntax nodes are left anywhere.
       this.addToken(TokenMeaning.EmphasisEnd)
       this.addToken(TokenMeaning.StressEnd)
-      
+
       return true
     }
-      
-    
-    
+
+
+
     return false
   }
 
   handleSandwiches(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
-    for (const sandwich of SANDWICHES) {
+    for (const sandwich of REGULAR_SANDWICHES) {
       if (this.isInside(sandwich.convention) && this.consumer.consumeIfMatches(sandwich.end)) {
         this.addToken(sandwich.convention.endTokenMeaning())
         return true
@@ -470,13 +484,13 @@ class Tokenizer {
 }
 
 function getSandwichStartedByThisToken(token: Token): Sandwich {
-  return SANDWICHES.filter(sandwich =>
+  return REGULAR_SANDWICHES.filter(sandwich =>
     sandwich.convention.startTokenMeaning() === token.meaning
   )[0]
 }
 
 function getSandwichEndedByThisToken(token: Token): Sandwich {
-  return SANDWICHES.filter(sandwich =>
+  return REGULAR_SANDWICHES.filter(sandwich =>
     sandwich.convention.endTokenMeaning() === token.meaning
   )[0]
 }

@@ -12,7 +12,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { SANDWICHES } from './Sandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
 export class ParseResult {
@@ -25,6 +25,16 @@ export class ParseResult {
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
+
+
+const SANDWICHES = [
+  STRESS,
+  EMPHASIS,
+  REVISION_DELETION,
+  REVISION_INSERTION,
+  SPOILER,
+  INLINE_ASIDE
+]
 
 
 function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {

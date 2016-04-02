@@ -25,18 +25,8 @@ const REVISION_DELETION = sandwich('~~', '~~', RevisionDeletionNode, TokenMeanin
 const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd)
 const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
 const INLINE_ASIDE = sandwich('((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
-
-const SANDWICHES = [
-  STRESS,
-  EMPHASIS,
-  REVISION_DELETION,
-  REVISION_INSERTION,
-  SPOILER,
-  INLINE_ASIDE
-]
   
 export {
-  SANDWICHES,
   STRESS,
   EMPHASIS,
   REVISION_DELETION,
