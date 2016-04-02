@@ -19,15 +19,28 @@ function sandwich(
   return new Sandwich(start, end, NodeType, new Convention(startMeaning, endMeaning))
 }
 
+const STRESS = sandwich('**', '**', StressNode, TokenMeaning.StressStart, TokenMeaning.StressEnd)
+const EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd)
+const REVISION_DELETION = sandwich('~~', '~~', RevisionDeletionNode, TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd)
+const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd)
+const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
+const INLINE_ASIDE = sandwich('((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
+
 const SANDWICHES = [
-  sandwich('**', '**', StressNode, TokenMeaning.StressStart, TokenMeaning.StressEnd),
-  sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd),
-  sandwich('~~', '~~', RevisionDeletionNode, TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd),
-  sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd),
-  sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd),
-  sandwich('((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
+  STRESS,
+  EMPHASIS,
+  REVISION_DELETION,
+  REVISION_INSERTION,
+  SPOILER,
+  INLINE_ASIDE
 ]
   
 export {
-  SANDWICHES
+  SANDWICHES,
+  STRESS,
+  EMPHASIS,
+  REVISION_DELETION,
+  REVISION_INSERTION,
+  SPOILER,
+  INLINE_ASIDE
 }
