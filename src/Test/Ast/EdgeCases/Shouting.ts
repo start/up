@@ -118,6 +118,24 @@ describe('Shouted text inside of emphasized text', () => {
         ])
       ]))
   })
+
+  it('can have both the emphasis nodes closed before the stress node', () => {
+    expect(Up.ast('*Please ***stop* eating the cardboard* immediately**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Please '),
+          new StressNode([
+            new EmphasisNode([
+              new PlainTextNode('stop'),
+            ]),
+            new PlainTextNode(' eating the cardboard'),
+          ]),
+          new StressNode([
+            new PlainTextNode(' immediately')
+          ]),
+        ])
+      ]))
+  })
 })
 
 
