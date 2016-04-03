@@ -162,11 +162,12 @@ describe('Shouted text with its emphasis ended early', () => {
   it('can have its stress closed with the standard 3 asterisks', () => {
     expect(Up.ast('Well, ***Xamarin* is now free***!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Xamarin is now '),
+        new PlainTextNode('Well, '),
         new StressNode([
           new EmphasisNode([
-            new PlainTextNode('free'),
+            new PlainTextNode('Xamarin')
           ]),
+          new PlainTextNode(' is now free')
         ]),
         new PlainTextNode('!')
       ]))
@@ -175,11 +176,12 @@ describe('Shouted text with its emphasis ended early', () => {
   it('can have its stress closed with 4 or more asterisks', () => {
     expect(Up.ast('Well, ******Xamarin* is now free******!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Xamarin is now '),
+        new PlainTextNode('Well, '),
         new StressNode([
           new EmphasisNode([
-            new PlainTextNode('free'),
+            new PlainTextNode('Xamarin')
           ]),
+          new PlainTextNode(' is now free')
         ]),
         new PlainTextNode('!')
       ]))
