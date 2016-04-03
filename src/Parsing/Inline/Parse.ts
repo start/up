@@ -64,6 +64,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         if (token.value) {
           nodes.push(new InlineCodeNode(token.value))
         }
+        
         continue
       }
 

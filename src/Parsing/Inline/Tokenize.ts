@@ -4,7 +4,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { Sandwich } from './Sandwich'
 import { TextConsumer } from '../TextConsumer'
-import { last } from '../CollectionHelpers'
+import { last, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
@@ -58,7 +58,7 @@ class Tokenizer {
       const wasAnythingDiscovered = (
         this.handleInlineCode()
         || this.handleShouting()
-        || this.handleSandwiches()
+        || this.handleRegularSandwiches()
         || this.handleLink()
       )
 
@@ -262,21 +262,53 @@ class Tokenizer {
     })
 
     if (!didMatchShoutDelimiter) {
-      // Okay, we didn't match the shout delimiter, but we might still have work to do.
+      // We didn't match the shout delimiter, so let's check whether the author is individually
+      // closing the "shouting-emphasis" or "shouting-stress" conventions started by a 
       //
-      // Let's see whether we need to close either the emphasis or stress produced by shouting. Our
-      // regular sandwich handler only deals with stress and emphasis not produced by shouting.
-      for (const shoutingSandwich of SHOUTING_SANDWICHES) {
-        if (this.isInside(shoutingSandwich.convention) && this.consumer.consumeIfMatches(shoutingSandwich.end)) {
-          this.addToken(shoutingSandwich.convention.endTokenMeaning())
-          return true
+      // Let's check
+      // The regular sandwich handler only deals with stress and emphasis not produced by shouting.
+      //
+      // When shouting, we initially put the stress token before the emphasis token.  We swap these
+      // tokens if the author closes the stress convention first.
+      const isInsideShoutingStress = this.isInside(SHOUTING_STRESS.convention)
+      const isInsideShoutingEmphasis = this.isInside(SHOUTING_EMPHASIS.convention)
+
+      if (isInsideShoutingStress && this.consumer.consumeIfMatches(SHOUTING_STRESS.end)) {
+        // We've found the end of the shouting stress convention.
+        //
+        // Now, is it closing before the shouting emphasis convention? 
+        if (isInsideShoutingEmphasis) {
+          // Yep. As mentioned above, to keep our AST pretty, let's swap the shouting stress and
+          // emphasis start tokens.
+          
+          const indexOfShoutingStressStart = this.indexOfStartOfLatestInstanceOfConvention(SHOUTING_STRESS.convention)
+          // The shouting emphasis start token will always be next
+          const indexOfShoutingEmphasisStart = indexOfShoutingStressStart + 1
+
+          swap(this.tokens, indexOfShoutingStressStart, indexOfShoutingEmphasisStart)
         }
+        
+        this.addToken(TokenMeaning.ShoutingStressEnd)
+        return true
+      }
+
+      // Okay, we didn't match the end of shouting stress. Let's check for shouting emphasis. 
+      if (isInsideShoutingEmphasis && this.consumer.consumeIfMatches(SHOUTING_EMPHASIS.end)) {
+        this.addToken(TokenMeaning.ShoutingEmphasisEnd)
+        return true
       }
       
+      // Nope, not that either. Nothing left to check!
       return false
     }
 
-    // When shouting, you can close either the stress or emphasis portion early. For example:
+
+    // Alright! We've matched the shout delimiter.
+    //
+    // If the text is still either "shouted-emphasized" or "shouted-stressed", then the shout delimiter
+    // will close whichever is open. Why?
+    //
+    // Well, when shouting, you can close either the stress or emphasis portion early. For example:
     //
     // ***Please stop* eating the cardboard.** Okay?
     //
@@ -284,22 +316,12 @@ class Tokenizer {
     //
     // ***Please stop* eating the cardboard.*** Okay?
     //
-    // To be faithful to the author's likely intent, and to prevent a ton of weird edge cases, we parse it
-    // exactly the same way that we parsed the first example.
-    //
-    // In other words, if the text is still either "shouted-emphasized" or "shouted-stressed", then 3+
-    // asterisks will close whichever is open.
+    // To be faithful to the author's likely intent, and to prevent a ton of weird edge cases, we parse
+    // it exactly the same way that we parsed the first example.
     let wasAlreadyShouting = false
 
     for (const shoutingSandwich of SHOUTING_SANDWICHES) {
       if (this.isInside(shoutingSandwich.convention)) {
-        // Interestingly, we don't need to care which convention started first. We already handle
-        // overlapping conventions perfectly, including conventions that overlap completely:
-        //
-        // Example: ++**Why would you do this?++**
-        //
-        // In those situations, we produce syntax nodes that are nested in the order they are started.
-        // No stray, empty syntax nodes are left anywhere.
         this.addToken(shoutingSandwich.convention.endTokenMeaning())
         wasAlreadyShouting = true
       }
@@ -309,11 +331,18 @@ class Tokenizer {
       return true
     }
 
-    // If the text is currently emphasized and stressed, then 3+ asterisks indicates the end of both
-    // conventions, not the beginning of a shout.
+    // If the text is currently emphasized and stressed (the regular kind), then the shout delimieter
+    // indicates the end of both conventions, not the beginning of a shout.
     if (this.isInside(EMPHASIS.convention) && this.isInside(STRESS.convention)) {
-      // Okay! It's time to close both conventions. As mentioned above, we don't need to care which
-      // convention started first
+      // Okay! It's time to close both conventions.
+      //
+      // Interestingly, we don't need to care which convention started first. We already handle
+      // overlapping conventions perfectly, including conventions that overlap completely:
+      //
+      // Example: ++**Why would you do this?++**
+      //
+      // In those situations, we produce syntax nodes that are nested in the order they are started.
+      // No stray, empty syntax nodes are left anywhere.
       this.addToken(TokenMeaning.EmphasisEnd)
       this.addToken(TokenMeaning.StressEnd)
 
@@ -321,14 +350,13 @@ class Tokenizer {
     }
 
     // Okay! We've made it through the gauntlet. Let's start shouting!
-    for (const shoutingSandwich of SHOUTING_SANDWICHES) {
-      this.addToken(shoutingSandwich.convention.startTokenMeaning())
-    }
+    this.addToken(TokenMeaning.ShoutingStressStart)
+    this.addToken(TokenMeaning.ShoutingEmphasisStart)
 
     return true
   }
 
-  handleSandwiches(): boolean {
+  handleRegularSandwiches(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
     for (const sandwich of REGULAR_SANDWICHES) {
@@ -435,7 +463,7 @@ class Tokenizer {
   }
 
   undoLatest(convention: Convention): void {
-    this.backtrack(this.indexOfStartOfLatestConvention(convention))
+    this.backtrack(this.indexOfStartOfLatestInstanceOfConvention(convention))
   }
 
   backtrack(indexOfEarliestTokenToUndo: number): void {
@@ -499,7 +527,7 @@ class Tokenizer {
     return true
   }
 
-  indexOfStartOfLatestConvention(convention: Convention): number {
+  indexOfStartOfLatestInstanceOfConvention(convention: Convention): number {
     return this.indexOfLastTokenWithMeaning(convention.startTokenMeaning())
   }
 
