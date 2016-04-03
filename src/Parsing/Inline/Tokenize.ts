@@ -268,9 +268,8 @@ class Tokenizer {
 
     if (!didMatchShoutDelimiter) {
       // We didn't match the shout delimiter, so let's check whether the author is individually
-      // closing the "shouting-emphasis" or "shouting-stress" conventions started by a 
+      // closing "shouting-emphasis" or "shouting-stress" conventions. 
       //
-      // Let's check
       // The regular sandwich handler only deals with stress and emphasis not produced by shouting.
       //
       // When shouting, we initially put the stress token before the emphasis token.  We swap these
