@@ -130,10 +130,10 @@ describe('Shouted text inside of emphasized text', () => {
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
+        ]),
           new StressNode([
             new PlainTextNode(' immediately')
-          ]),
-        ])
+          ])
       ]))
   })
 })
