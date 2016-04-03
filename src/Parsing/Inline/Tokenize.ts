@@ -30,7 +30,7 @@ const POTENTIALLY_UNCLOSED_CONVENTIONS =
   REGULAR_SANDWICHES.map(sandwich => sandwich.convention)
     .concat([LINK])
 
-const SHOUTING_SANDWICHES = [SHOUTING_EMPHASIS, SHOUTING_STRESS]
+const SHOUTING_SANDWICHES = [SHOUTING_STRESS, SHOUTING_EMPHASIS]
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -265,7 +265,7 @@ class Tokenizer {
       // Okay, we didn't match the shout delimiter, but we might still have work to do.
       //
       // Let's see whether we need to close either the emphasis or stress produced by shouting. Our
-      // regular sandwich handler only deals with "regular" stress or emphasis.
+      // regular sandwich handler only deals with stress and emphasis not produced by shouting.
       for (const shoutingSandwich of SHOUTING_SANDWICHES) {
         if (this.isInside(shoutingSandwich.convention) && this.consumer.consumeIfMatches(shoutingSandwich.end)) {
           this.addToken(shoutingSandwich.convention.endTokenMeaning())
