@@ -318,7 +318,7 @@ class Tokenizer {
       this.addToken(sandwich.convention.startTokenMeaning())
     }
 
-    return false
+    return true
   }
 
   handleSandwiches(): boolean {
