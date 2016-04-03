@@ -114,7 +114,7 @@ describe('Shouted text inside of stressed text', () => {
   it('produces the typical shouted syntax nodes nested within another stress node', () => {
     expect(Up.ast('**Please ***stop eating the cardboard*** immediately**')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new StressNode([
           new PlainTextNode('Please '),
           new StressNode([
             new EmphasisNode([
