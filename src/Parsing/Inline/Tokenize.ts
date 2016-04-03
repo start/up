@@ -34,7 +34,7 @@ const SHOUTING_SANDWICHES = [
 const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SHOUTING_SANDWICHES)
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
-  ALL_SANDWICHES.map(sandwich => sandwich.convention).concat([LINK])
+  [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
 
 
 class Tokenizer {
