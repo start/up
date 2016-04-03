@@ -262,6 +262,17 @@ class Tokenizer {
     })
 
     if (!didMatchShoutDelimiter) {
+      // Okay, we didn't match the shout delimiter, but we might still have work to do.
+      //
+      // Let's see whether we need to close either the emphasis or stress produced by shouting. Our
+      // regular sandwich handler only deals with "regular" stress or emphasis.
+      for (const shoutingSandwich of SHOUTING_SANDWICHES) {
+        if (this.isInside(shoutingSandwich.convention) && this.consumer.consumeIfMatches(shoutingSandwich.end)) {
+          this.addToken(shoutingSandwich.convention.endTokenMeaning())
+          return true
+        }
+      }
+      
       return false
     }
 
@@ -280,8 +291,8 @@ class Tokenizer {
     // asterisks will close whichever is open.
     let wasAlreadyShouting = false
 
-    for (const sandwich of SHOUTING_SANDWICHES) {
-      if (this.isInside(sandwich.convention)) {
+    for (const shoutingSandwich of SHOUTING_SANDWICHES) {
+      if (this.isInside(shoutingSandwich.convention)) {
         // Interestingly, we don't need to care which convention started first. We already handle
         // overlapping conventions perfectly, including conventions that overlap completely:
         //
@@ -289,7 +300,7 @@ class Tokenizer {
         //
         // In those situations, we produce syntax nodes that are nested in the order they are started.
         // No stray, empty syntax nodes are left anywhere.
-        this.addToken(sandwich.convention.endTokenMeaning())
+        this.addToken(shoutingSandwich.convention.endTokenMeaning())
         wasAlreadyShouting = true
       }
     }
@@ -310,8 +321,8 @@ class Tokenizer {
     }
 
     // Okay! We've made it through the gauntlet. Let's start shouting!
-    for (const sandwich of SHOUTING_SANDWICHES) {
-      this.addToken(sandwich.convention.startTokenMeaning())
+    for (const shoutingSandwich of SHOUTING_SANDWICHES) {
+      this.addToken(shoutingSandwich.convention.startTokenMeaning())
     }
 
     return true
