@@ -224,3 +224,38 @@ describe('Inside of stressed text, shouted text with its inner emphasis node clo
       ]))
   })
 })
+
+describe('Inside of emphasized text, shouted text with its inner stress node closed early', () => {
+  it('can have the reamining two emphasis nodes closed by 3 or more asterisks', () => {
+    expect(Up.ast('*Please ***stop** eating the cardboard immediately***')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('Please '),
+          new EmphasisNode([
+            new StressNode([
+              new PlainTextNode('stop'),
+            ]),
+            new PlainTextNode(' eating the cardboard immediately'),
+          ]),
+        ])
+      ]))
+  })
+})
+
+
+describe('Inside of emphasized text, shouted text with its inner emphasis node closed early', () => {
+  it('can have the reamining stress node and emphasis node closed by 3 or more asterisks', () => {
+    expect(Up.ast('*Please ***stop* eating the cardboard immediately***')).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
+          new PlainTextNode('Please '),
+          new EmphasisNode([
+            new StressNode([
+              new PlainTextNode('stop'),
+            ]),
+            new PlainTextNode(' eating the cardboard immediately'),
+          ])
+        ])
+      ]))
+  })
+})
