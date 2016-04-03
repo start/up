@@ -29,7 +29,7 @@ const INLINE_ASIDE = sandwich('((', '))', InlineAsideNode, TokenMeaning.InlineAs
 // These two sandwiches are created only inside of shouted text (text surrounded by with 3+ asterisks).
 // Using different tokens allows us to more easily handle edge cases.
 const SHOUTING_STRESS = sandwich('**', '**', StressNode, TokenMeaning.ShoutingStressStart, TokenMeaning.ShoutingStressEnd)
-const SHOUTING_EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd)
+const SHOUTING_EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.ShoutingEmphasisStart, TokenMeaning.ShoutingEmphasisEnd)
 
 export {
   EMPHASIS,

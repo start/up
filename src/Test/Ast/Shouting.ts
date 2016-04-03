@@ -93,7 +93,7 @@ describe('Shouted text', () => {
 
 
 describe('Shouted text inside of emphasized text', () => {
-  it('produces the typical shouted syntax nodes nested with another emphasis node', () => {
+  it('produces the typical shouted syntax nodes nested within another emphasis node', () => {
     expect(Up.ast('*Please ***stop eating the cardboard*** immediately*')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
@@ -111,7 +111,7 @@ describe('Shouted text inside of emphasized text', () => {
 
 
 describe('Shouted text inside of stressed text', () => {
-  it('produces the typical shouted syntax nodes nested with another stress node', () => {
+  it('produces the typical shouted syntax nodes nested within another stress node', () => {
     expect(Up.ast('**Please ***stop eating the cardboard*** immediately**')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([

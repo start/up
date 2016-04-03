@@ -279,10 +279,10 @@ class Tokenizer {
         // Now, is it closing before the shouting emphasis convention? 
         if (isInsideShoutingEmphasis) {
           // Yep. As mentioned above, to keep our AST pretty, let's swap the shouting stress and
-          // emphasis start tokens.
-          
+          // emphasis start tokens.          
           const indexOfShoutingStressStart = this.indexOfStartOfLatestInstanceOfConvention(SHOUTING_STRESS.convention)
-          // The shouting emphasis start token will always be next
+          
+          // The shouting emphasis start token will always be next.
           const indexOfShoutingEmphasisStart = indexOfShoutingStressStart + 1
 
           swap(this.tokens, indexOfShoutingStressStart, indexOfShoutingEmphasisStart)
