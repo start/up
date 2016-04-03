@@ -18,8 +18,8 @@ export enum TokenMeaning {
   LinkStart,
   LinkUrlAndLinkEnd,
   ShoutingEmphasisStart,
-  ShoutingStressStart,
   ShoutingEmphasisEnd,
+  ShoutingStressStart,
   ShoutingStressEnd
 }
 
