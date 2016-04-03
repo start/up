@@ -252,20 +252,16 @@ class Tokenizer {
   }
 
   handleShouting(): boolean {
-    if ('1') {
-      return false
-    }
-
     let consumerBeforeMatch: TextConsumer
 
-    const isMatch = this.consumer.consumeIfMatchesPattern({
+    const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*{3,}/,
       then: delimiter => {
         consumerBeforeMatch = this.consumer.asBeforeMatch(delimiter.length)
       }
     })
 
-    if (!isMatch) {
+    if (!didMatchShoutDelimiter) {
       return false
     }
 
