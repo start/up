@@ -26,11 +26,16 @@ const REGULAR_SANDWICHES = [
   INLINE_ASIDE
 ]
 
-const POTENTIALLY_UNCLOSED_CONVENTIONS =
-  REGULAR_SANDWICHES.map(sandwich => sandwich.convention)
-    .concat([LINK])
+const SHOUTING_SANDWICHES = [
+  SHOUTING_STRESS,
+  SHOUTING_EMPHASIS
+]
 
-const SHOUTING_SANDWICHES = [SHOUTING_STRESS, SHOUTING_EMPHASIS]
+const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SHOUTING_SANDWICHES)
+
+const POTENTIALLY_UNCLOSED_CONVENTIONS =
+  ALL_SANDWICHES.map(sandwich => sandwich.convention).concat([LINK])
+
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -281,13 +286,13 @@ class Tokenizer {
           // Yep. As mentioned above, to keep our AST pretty, let's swap the shouting stress and
           // emphasis start tokens.          
           const indexOfShoutingStressStart = this.indexOfStartOfLatestInstanceOfConvention(SHOUTING_STRESS.convention)
-          
+
           // The shouting emphasis start token will always be next.
           const indexOfShoutingEmphasisStart = indexOfShoutingStressStart + 1
 
           swap(this.tokens, indexOfShoutingStressStart, indexOfShoutingEmphasisStart)
         }
-        
+
         this.addToken(TokenMeaning.ShoutingStressEnd)
         return true
       }
@@ -297,7 +302,7 @@ class Tokenizer {
         this.addToken(TokenMeaning.ShoutingEmphasisEnd)
         return true
       }
-      
+
       // Nope, not that either. Nothing left to check!
       return false
     }
@@ -350,8 +355,8 @@ class Tokenizer {
     }
 
     // Okay! We've made it through the gauntlet. Let's start shouting!
-    this.addToken(TokenMeaning.ShoutingStressStart)
-    this.addToken(TokenMeaning.ShoutingEmphasisStart)
+    this.addToken(TokenMeaning.ShoutingStressStart, consumerBeforeMatch)
+    this.addToken(TokenMeaning.ShoutingEmphasisStart, consumerBeforeMatch)
 
     return true
   }
@@ -547,13 +552,13 @@ class Tokenizer {
 }
 
 function getSandwichStartedByThisToken(token: Token): Sandwich {
-  return REGULAR_SANDWICHES.filter(sandwich =>
+  return ALL_SANDWICHES.filter(sandwich =>
     sandwich.convention.startTokenMeaning() === token.meaning
   )[0]
 }
 
 function getSandwichEndedByThisToken(token: Token): Sandwich {
-  return REGULAR_SANDWICHES.filter(sandwich =>
+  return ALL_SANDWICHES.filter(sandwich =>
     sandwich.convention.endTokenMeaning() === token.meaning
   )[0]
 }
