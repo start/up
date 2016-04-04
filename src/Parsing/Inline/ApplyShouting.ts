@@ -21,7 +21,7 @@ class ShoutingApplier {
           new TokenAndIndex(token, index))
   }
 
-  // For the purposes of shouting, the beginning and end of the string count as whitespace. 
+  // For the purposes of shouting, the beginning and end of the string both count as whitespace. 
   surroundedByWhitespace(index: number) {
     return this.preceededByWhitespace(index) && this.followedByWhitespace(index)
   }
@@ -31,11 +31,11 @@ class ShoutingApplier {
       return true
     }
 
-    const nextToken = this.tokens[index + 1]
+    const {meaning, value} = this.tokens[index + 1]
 
     return (
-      nextToken.meaning === TokenMeaning.PlainText
-      && /^\s/.test(nextToken.value)
+      meaning === TokenMeaning.PlainText
+      && /^\s/.test(value)
     )
   }
 
@@ -44,11 +44,11 @@ class ShoutingApplier {
       return true
     }
 
-    const nextToken = this.tokens[index + 1]
+    const {meaning, value} = this.tokens[index + 1]
 
     return (
-      nextToken.meaning === TokenMeaning.PlainText
-      && /\s$/.test(nextToken.value)
+      meaning === TokenMeaning.PlainText
+      && /\s$/.test(value)
     )
   }
 }
