@@ -18,20 +18,13 @@ export function tokenize(text: string): Token[] {
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
 const REGULAR_SANDWICHES = [
-  STRESS,
-  EMPHASIS,
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
   INLINE_ASIDE
 ]
 
-const SHOUTING_SANDWICHES = [
-  SHOUTING_STRESS,
-  SHOUTING_EMPHASIS
-]
-
-const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SHOUTING_SANDWICHES)
+const ALL_SANDWICHES = REGULAR_SANDWICHES.concat([STRESS, EMPHASIS])
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
@@ -257,107 +250,16 @@ class Tokenizer {
   }
 
   handleShouting(): boolean {
-    let consumerBeforeMatch: TextConsumer
-
+    // Our handling of stress/emphasis/shouting is most easily done after everything else is tokenized.
+    // For now, let's just store a placeholder token along with the original text.
     const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
-      pattern: /^\*{3,}/,
-      then: delimiter => {
-        consumerBeforeMatch = this.consumer.asBeforeMatch(delimiter.length)
+      pattern: /^\*+/,
+      then: shoutDelimiter => {
+        this.addToken(TokenMeaning.ShoutingPlaceholder, shoutDelimiter)
       }
     })
-
-    if (!didMatchShoutDelimiter) {
-      // We didn't match the shout delimiter, so let's check whether the author is individually
-      // closing "shouting-emphasis" or "shouting-stress" conventions. 
-      //
-      // The regular sandwich handler only deals with stress and emphasis not produced by shouting.
-      //
-      // When shouting, we initially put the stress token before the emphasis token.  We swap these
-      // tokens if the author closes the stress convention first.
-      const isInsideShoutingStress = this.isInside(SHOUTING_STRESS.convention)
-      const isInsideShoutingEmphasis = this.isInside(SHOUTING_EMPHASIS.convention)
-
-      if (isInsideShoutingStress && this.consumer.consumeIfMatches(SHOUTING_STRESS.end)) {
-        // We've found the end of the shouting stress convention.
-        //
-        // Now, is it closing before the shouting emphasis convention? 
-        if (isInsideShoutingEmphasis) {
-          // Yep. As mentioned above, to keep our AST pretty, let's swap the shouting stress and
-          // emphasis start tokens.          
-          const indexOfShoutingStressStart = this.indexOfStartOfLatestInstanceOfConvention(SHOUTING_STRESS.convention)
-
-          // The shouting emphasis start token will always be next.
-          const indexOfShoutingEmphasisStart = indexOfShoutingStressStart + 1
-
-          swap(this.tokens, indexOfShoutingStressStart, indexOfShoutingEmphasisStart)
-        }
-
-        this.addToken(TokenMeaning.ShoutingStressEnd)
-        return true
-      }
-
-      // Okay, we didn't match the end of shouting stress. Let's check for shouting emphasis. 
-      if (isInsideShoutingEmphasis && this.consumer.consumeIfMatches(SHOUTING_EMPHASIS.end)) {
-        this.addToken(TokenMeaning.ShoutingEmphasisEnd)
-        return true
-      }
-
-      // Nope, not that either. Nothing left to check!
-      return false
-    }
-
-
-    // Alright! We've matched the shout delimiter.
-    //
-    // If the text is still either "shouted-emphasized" or "shouted-stressed", then the shout delimiter
-    // will close whichever is open. Why?
-    //
-    // Well, when shouting, you can close either the stress or emphasis portion early. For example:
-    //
-    // ***Please stop* eating the cardboard.** Okay?
-    //
-    // No surprise there. But how should the following be parsed?
-    //
-    // ***Please stop* eating the cardboard.*** Okay?
-    //
-    // To be faithful to the author's likely intent, and to prevent a ton of weird edge cases, we parse
-    // it exactly the same way that we parsed the first example.
-    let wasAlreadyShouting = false
-
-    for (const shoutingSandwich of SHOUTING_SANDWICHES) {
-      if (this.isInside(shoutingSandwich.convention)) {
-        this.addToken(shoutingSandwich.convention.endTokenMeaning())
-        wasAlreadyShouting = true
-      }
-    }
-
-    if (wasAlreadyShouting) {
-      return true
-    }
-
-    // If the text is currently emphasized and stressed (the regular kind), then the shout delimieter
-    // indicates the end of both conventions, not the beginning of a shout.
-    if (this.isInside(EMPHASIS.convention) && this.isInside(STRESS.convention)) {
-      // Okay! It's time to close both conventions.
-      //
-      // Interestingly, we don't need to care which convention started first. We already handle
-      // overlapping conventions perfectly, including conventions that overlap completely:
-      //
-      // Example: ++**Why would you do this?++**
-      //
-      // In those situations, we produce syntax nodes that are nested in the order they are started.
-      // No stray, empty syntax nodes are left anywhere.
-      this.addToken(TokenMeaning.EmphasisEnd)
-      this.addToken(TokenMeaning.StressEnd)
-
-      return true
-    }
-
-    // Okay! We've made it through the gauntlet. Let's start shouting!
-    this.addToken(TokenMeaning.ShoutingStressStart, consumerBeforeMatch)
-    this.addToken(TokenMeaning.ShoutingEmphasisStart, consumerBeforeMatch)
-
-    return true
+    
+    return didMatchShoutDelimiter
   }
 
   handleRegularSandwiches(): boolean {

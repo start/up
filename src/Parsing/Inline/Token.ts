@@ -20,7 +20,8 @@ export enum TokenMeaning {
   ShoutingEmphasisStart,
   ShoutingEmphasisEnd,
   ShoutingStressStart,
-  ShoutingStressEnd
+  ShoutingStressEnd,
+  ShoutingPlaceholder
 }
 
 export class Token {
