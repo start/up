@@ -31,12 +31,7 @@ class ShoutingApplier {
       return true
     }
 
-    const {meaning, value} = this.tokens[index + 1]
-
-    return (
-      meaning === TokenMeaning.PlainText
-      && /^\s/.test(value)
-    )
+    return this.isTokenTextAndDoesTextMatchPattern(/^\s/, index + 1)
   }
 
   preceededByWhitespace(index: number): boolean {
@@ -44,11 +39,15 @@ class ShoutingApplier {
       return true
     }
 
-    const {meaning, value} = this.tokens[index + 1]
+    return this.isTokenTextAndDoesTextMatchPattern(/\s$/, index)
+  }
+
+  isTokenTextAndDoesTextMatchPattern(pattern: RegExp, index: number): boolean {
+    const {meaning, value} = this.tokens[index]
 
     return (
       meaning === TokenMeaning.PlainText
-      && /\s$/.test(value)
+      && pattern.test(value)
     )
   }
 }
