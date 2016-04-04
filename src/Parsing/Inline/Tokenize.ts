@@ -8,6 +8,7 @@ import { last, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
+import { applyShouting } from './ApplyShouting'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE, SHOUTING_EMPHASIS, SHOUTING_STRESS } from './Sandwiches'
 
 
@@ -54,8 +55,8 @@ class Tokenizer {
       }
 
       const wasAnythingDiscovered = (
-        this.handleInlineCode()
-        || this.handleShouting()
+        this.tokenizeInlineCode()
+        || this.tokenizeShoutingPlaceholder()
         || this.handleRegularSandwiches()
         || this.handleLink()
       )
@@ -68,6 +69,7 @@ class Tokenizer {
       this.consumer.moveNext()
     }
 
+    this.tokens = applyShouting(this.tokens)
     this.massageTokensIntoTreeStructure()
   }
 
@@ -241,7 +243,7 @@ class Tokenizer {
     return false
   }
 
-  handleInlineCode(): boolean {
+  tokenizeInlineCode(): boolean {
     return this.consumer.consume({
       from: '`',
       upTo: '`',
@@ -249,8 +251,8 @@ class Tokenizer {
     })
   }
 
-  handleShouting(): boolean {
-    // Our handling of stress/emphasis/shouting is most easily done after everything else is tokenized.
+  tokenizeShoutingPlaceholder(): boolean {
+    // Our handling of shouting (emphasis/stress) is most easily done after everything else is tokenized.
     // For now, let's just store a placeholder token along with the original text.
     const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*+/,
