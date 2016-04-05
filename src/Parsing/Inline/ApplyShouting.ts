@@ -8,7 +8,7 @@ class IndexedToken {
 enum PotentialPurpose {
   OpenConvention,
   CloseConvention,
-  OpenOrCloseConvention  
+  OpenOrCloseConvention
 }
 
 class PotentialShoutingToken {
@@ -38,18 +38,20 @@ const RELEVANT_TOKEN_MEANINGS = [
 export function applyShouting(tokens: Token[]): Token[] {
   tokens = tokens.slice()
   
-  // As implied above, we only care about plain text tokens, shouting placeholder tokens, and inline code
-  // tokens. 
+  // As mentioned above, we can ignore most token types.
   const relevantIndexedTokens =
       tokens
         .filter(token => RELEVANT_TOKEN_MEANINGS.indexOf(token.meaning) !== -1)
         .map((token, index) => new IndexedToken(token, index))
         
+  // Let's collect the potential shouting tokens, as well as the potential purpose of each
+  const potentialShoutingTokens: PotentialShoutingToken[] = []
+        
   for (let i = 0; i < relevantIndexedTokens.length; i++) {
     const indexedToken = relevantIndexedTokens[i]
     
     if (indexedToken.token.meaning !== TokenMeaning.ShoutingPlaceholder) {
-      // We only need to analyze the placeholder tokens
+      // We only need to analyze the placeholder tokens themselves (though ) 
       continue  
     }
     
@@ -65,67 +67,30 @@ export function applyShouting(tokens: Token[]): Token[] {
         // The`relevantIndexedTokens` collection actually stores references to the original tokens, so
         // we've modified the contents of the original collection.
         indexedToken.token.meaning = TokenMeaning.PlainText
+        continue
     }
     
-    
     let potentialPurpose: PotentialPurpose
+    
+    if (!isPrecededByWhitespace && !isFollowedByWhitespace) {
+      potentialPurpose = PotentialPurpose.OpenOrCloseConvention
+    } else if (!isPrecededByWhitespace) {
+      potentialPurpose = PotentialPurpose.CloseConvention
+    } else {
+      potentialPurpose = PotentialPurpose.OpenConvention
+    }
+    
+    potentialShoutingTokens.push(
+      new PotentialShoutingToken(indexedToken.token.value, potentialPurpose)) 
   }
   
   return tokens
 }
 
+function getIndexedShoutingTokens(potentialShoutingTokens: PotentialShoutingToken[]): IndexedToken[] {
+  return null
+}
+
 function tokenCouldHaveWhitespace(indexedToken: IndexedToken): boolean {
   return indexedToken && (indexedToken.token.meaning === TokenMeaning.PlainText)
-}
-
-class ShoutingApplier {
-  public relevantTokensAndOriginalIndexes: IndexedToken[]
-  public tokens: Token[]
-
-  constructor(tokens: Token[]) {
-    this.relevantTokensAndOriginalIndexes =
-      tokens
-        .filter(token => RELEVANT_TOKEN_MEANINGS.indexOf(token.meaning) !== -1)
-        .map((token, index) => new IndexedToken(token, index))
-
-    let isEmphasized = false
-    let isStressed = false
-
-    for (let i = 0; i < this.relevantTokensAndOriginalIndexes.length; i++) {
-      const canStartConvention = this.doesTokenPreceedNonWhitespace(i)
-      const canEndConvention = this.doesTokenFollowNonWhitespace(i)
-    }
-
-    this.tokens = tokens
-  }
-
-  doesTokenPreceedNonWhitespace(index: number): boolean {
-    return !this.doesTokenMatchWhitespacePattern(index + 1, /^\s/)
-  }
-
-  doesTokenFollowNonWhitespace(index: number): boolean {
-    return !this.doesTokenMatchWhitespacePattern(index - 1, /\s$/)
-  }
-
-  doesTokenMatchWhitespacePattern(index: number, pattern: RegExp): boolean {
-    if ((index < 0) || (index >= this.relevantTokensAndOriginalIndexes.length)) {
-      return false
-    }
-
-    const {meaning, value} = this.relevantTokensAndOriginalIndexes[index].token
-
-    return (meaning === TokenMeaning.PlainText) && pattern.test(value)
-  }
-}
-
-function placeholderRepresentsEmphasis(token: Token): boolean {
-  return token.value.length === 1
-}
-
-function placeholderRepresentsStress(token: Token): boolean {
-  return token.value.length === 2
-}
-
-function placeholderRepresentsStressAndEmphasis(token: Token): boolean {
-  return token.value.length > 2
 }
