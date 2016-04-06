@@ -12,7 +12,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE, SHOUTING_STRESS, SHOUTING_EMPHASIS } from './Sandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
 export class ParseResult {
@@ -33,9 +33,7 @@ const SANDWICHES = [
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  INLINE_ASIDE,
-  SHOUTING_EMPHASIS,
-  SHOUTING_STRESS
+  INLINE_ASIDE
 ]
 
 

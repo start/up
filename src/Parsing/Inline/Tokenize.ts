@@ -8,7 +8,7 @@ import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE, SHOUTING_EMPHASIS, SHOUTING_STRESS } from './Sandwiches'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
 export function tokenize(text: string): Token[] {
@@ -267,8 +267,8 @@ class Tokenizer {
     }
 
     // TODO: Differentiate between 2 asterisks and 3+ asterisks
-    
-    
+
+
 
     // If the previous character in the raw source text was whitespace, we cannot end any shouting conventions.
     // Otherwise, we potentially can end one (assuming one is open).
@@ -330,26 +330,32 @@ class Tokenizer {
     //
     // The next character can even be a backslash. As long as the asterisk looks like it's hugging the beginning of
     // something, it can open a convention.
-    
+
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
-    
+
     // An important rule: Shouting delimiters are atomic. It'll never be split into multiple pieces and interpereted
-    // different ways. If a shouting delimiter fails to parse from its start, we'll treat the whole thing as plain text.
+    // different ways.
+    //
+    // Also, as a result of all the rules described above, if a shouting delimiter fails to parse as emphasis, it'll
+    // also fail to parse as stress (and vice-versa).
     const canOpenConvention = (
-      NON_WHITESPACE.test(nextRawChar)
-      && this.failureTracker.hasFailed(TokenMeaning.AnyShoutingStart, originalTextIndex)
+      NON_WHITESPACE.test(nextRawChar) && (
+        this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
+        || this.failureTracker.hasConventionFailed(STRESS.convention, originalTextIndex)
+      )
     )
 
     if (canOpenConvention) {
-      const consumerBeforeDelimiter = this.consumer.asBeforeMatch(shoutDelimiter.length)
+      const meaning = (
+        isEmphasisDelimiter ? TokenMeaning.EmphasisStart : TokenMeaning.StressStart
+      )
 
-      if (isStressDelimiter) {
-
-      }
+      this.addToken(meaning, this.consumer.asBeforeMatch(shoutDelimiter.length))
+      return true
     }
 
-    // We could neither open nor close a convention with these asterisks, so we'll treat them as plain text.
+    // The delimiter could neither open nore close any conventions. Let's treat it as plain text.
     this.addPlainTextToken(shoutDelimiter)
     return true
   }
@@ -465,6 +471,8 @@ class Tokenizer {
 
   backtrack(indexOfEarliestTokenToUndo: number): void {
     const token = this.tokens[indexOfEarliestTokenToUndo]
+
+    let meaning = token.meaning
 
     this.failureTracker.registerFailure(token.meaning, token.textIndex())
     this.consumer = token.consumerBefore

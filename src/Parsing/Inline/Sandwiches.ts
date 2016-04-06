@@ -26,18 +26,11 @@ const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMean
 const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
 const INLINE_ASIDE = sandwich('((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
 
-// These two sandwiches are created only inside of shouted text (text surrounded by with 3+ asterisks).
-// Using different tokens allows us to more easily handle edge cases.
-const SHOUTING_STRESS = sandwich('**', '**', StressNode, TokenMeaning.ShoutingStressStart, TokenMeaning.ShoutingStressEnd)
-const SHOUTING_EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.ShoutingEmphasisStart, TokenMeaning.ShoutingEmphasisEnd)
-
 export {
   EMPHASIS,
   STRESS,
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  INLINE_ASIDE,
-  SHOUTING_EMPHASIS,
-  SHOUTING_STRESS
+  INLINE_ASIDE
 }
