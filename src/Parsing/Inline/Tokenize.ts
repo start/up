@@ -266,25 +266,33 @@ class Tokenizer {
 
     switch (shoutDelimiter.length) {
       case 1:
-        const canEndConvention = this.wasPrevCharNotWhitespace()
-        if (canEndConvention && this.isInside(EMPHASIS.convention)) {
-          this.addToken(TokenMeaning.EmphasisEnd)
-          return true
-        }
-
-        if (!this.failureTracker.hasConventionFailed(EMPHASIS.convention, textIndex)) {
-          this.addToken(TokenMeaning.EmphasisStart, this.consumer.asBeforeMatch(shoutDelimiter.length))
-          return true
-        }
-        break;
+        return this.handleShoutingSandwwich(EMPHASIS, textIndex)
+        
       case 2:
         break;
+        
       default:
         // 3+ charaters long
         break;
     }
 
     return false
+  }
+  
+  handleShoutingSandwwich(sandwich: Sandwich, textIndex: number): boolean {
+        const canEndConvention = this.wasPrevCharNotWhitespace()
+        
+        if (canEndConvention && this.isInside(sandwich.convention)) {
+          this.addToken(sandwich.convention.endTokenMeaning())
+          return true
+        }
+
+        if (!this.failureTracker.hasConventionFailed(sandwich.convention, textIndex)) {
+          this.addToken(TokenMeaning.EmphasisStart, this.consumer.asBeforeMatch(sandwich.start.length))
+          return true
+        }
+        
+        return false
   }
 
   handleRegularSandwiches(): boolean {
