@@ -34,6 +34,7 @@ const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(RAISED_VOICE_SANDWICHES)
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
 
+
 class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
@@ -278,8 +279,8 @@ class Tokenizer {
     const NON_WHITESPACE = /\S/
     const canCloseConvention = NON_WHITESPACE.test(lastConsumedRawChar)
 
-    // Opening conventions is straightforward! 2 asterisks opens a stress convention, 1 asterisk opens an emphasis
-    // convention, and 3 or more asterisks opens both.
+    // Opening conventions is straightforward! 1 asterisk opens an emphasis convention, 2 asterisks opens a stress
+    // convention, and 3 or more asterisks (referred to as "shouting") opens both conventions.
     //
     // Closing conventions is a bit more complicated. 2 asterisks closes a stress convention, but if there aren't
     // any open stress conventions, those 2 asterisks will happily close an open emphasis conveniton. 1 asterisk
@@ -296,32 +297,50 @@ class Tokenizer {
     // of our regular sandwiches.
 
     const isEmphasisDelimiter = raisedVoiceDelimiter.length === 1
-    const isStressDelimiter = !isEmphasisDelimiter
+    const isStressDelimiter = raisedVoiceDelimiter.length === 2
+    const isShoutingDelimiter = !isEmphasisDelimiter && !isStressDelimiter
 
     if (canCloseConvention) {
-      const isInsideEmphasis = this.isInside(EMPHASIS.convention)
-      const isInsideStress = this.isInside(STRESS.convention)
+      if (isShoutingDelimiter) {
+        const indexedOpenEmphasisConventions =
+          this.indexesUnclosedInstancesOfConvention(EMPHASIS.convention)
+            .map(index => new IndexedConvention(EMPHASIS.convention, index))
 
-      const shouldCloseStress = (
-        isInsideStress && (
-          isStressDelimiter || !isInsideEmphasis
+        const indexedOpenStressConventions =
+          this.indexesUnclosedInstancesOfConvention(STRESS.convention)
+            .map(index => new IndexedConvention(STRESS.convention, index))
+
+        const indexedOpenConventions =
+          indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
+          
+        if (indexedOpenConventions.length) {
+        indexedOpenConventions.sort(compareIndexedConventionsDescending) 
+        } 
+      } else {
+        const isInsideEmphasis = this.isInside(EMPHASIS.convention)
+        const isInsideStress = this.isInside(STRESS.convention)
+
+        const shouldCloseStress = (
+          isInsideStress && (
+            isStressDelimiter || !isInsideEmphasis
+          )
         )
-      )
 
-      const shouldCloseEmphasis = (
-        isInsideEmphasis && (
-          isEmphasisDelimiter || !isInsideStress
+        const shouldCloseEmphasis = (
+          isInsideEmphasis && (
+            isEmphasisDelimiter || !isInsideStress
+          )
         )
-      )
 
-      if (shouldCloseStress) {
-        this.addToken(TokenMeaning.StressEnd)
-        return true
-      }
+        if (shouldCloseStress) {
+          this.addToken(TokenMeaning.StressEnd)
+          return true
+        }
 
-      if (shouldCloseEmphasis) {
-        this.addToken(TokenMeaning.EmphasisEnd)
-        return true
+        if (shouldCloseEmphasis) {
+          this.addToken(TokenMeaning.EmphasisEnd)
+          return true
+        }
       }
     }
 
@@ -504,19 +523,19 @@ class Tokenizer {
 
     return excessStartTokens > 0
   }
-  
+
   indexesUnclosedInstancesOfConvention(convention: Convention): number[] {
     const indexes: number[] = []
-    
+
     for (let i = 0; i < this.tokens.length; i++) {
-      const meaning = this.tokens[i].meaning 
+      const meaning = this.tokens[i].meaning
       if (meaning === convention.startTokenMeaning()) {
         indexes.push(i)
       } else if (meaning === convention.endTokenMeaning()) {
-        indexes.pop()      
+        indexes.pop()
       }
     }
-    
+
     return indexes
   }
 
@@ -574,4 +593,13 @@ function getSandwichEndedByThisToken(token: Token): Sandwich {
   return ALL_SANDWICHES.filter(sandwich =>
     sandwich.convention.endTokenMeaning() === token.meaning
   )[0]
+}
+
+
+class IndexedConvention {
+  constructor(public convention: Convention, public index: number) { }
+}
+
+function compareIndexedConventionsDescending(a: IndexedConvention, b: IndexedConvention): number {
+  return b.index - a.index
 }
