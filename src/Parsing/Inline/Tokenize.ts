@@ -8,7 +8,6 @@ import { last, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { applyShouting } from './ApplyShouting'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE, SHOUTING_EMPHASIS, SHOUTING_STRESS } from './Sandwiches'
 
 
@@ -56,7 +55,7 @@ class Tokenizer {
 
       const wasAnythingDiscovered = (
         this.tokenizeInlineCode()
-        || this.tokenizeShoutingPlaceholder()
+        || this.handleShouting()
         || this.handleRegularSandwiches()
         || this.handleLink()
       )
@@ -69,7 +68,6 @@ class Tokenizer {
       this.consumer.moveNext()
     }
 
-    this.tokens = applyShouting(this.tokens)
     this.massageTokensIntoTreeStructure()
   }
 
@@ -251,17 +249,21 @@ class Tokenizer {
     })
   }
 
-  tokenizeShoutingPlaceholder(): boolean {
-    // Our handling of shouting (emphasis/stress) is most easily done after everything else is tokenized.
-    // For now, let's just store a placeholder token along with the original text.
+  handleShouting(): boolean {
+    let shoutDelimiter: string
+    
     const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*+/,
-      then: shoutDelimiter => {
-        this.addToken(TokenMeaning.ShoutingPlaceholder, shoutDelimiter)
-      }
+      then: match => { shoutDelimiter =  match }
     })
     
-    return didMatchShoutDelimiter
+    if (!didMatchShoutDelimiter) {
+      return false
+    }
+    
+    const canEndConvention = this.wasPrevCharNotWhitespace()
+    
+    return false && didMatchShoutDelimiter
   }
 
   handleRegularSandwiches(): boolean {
@@ -451,6 +453,21 @@ class Tokenizer {
 
   insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
+  }
+  
+  wasPrevCharNotWhitespace(): boolean {
+    if (!this.tokens.length) {
+      return false
+    }
+    
+    const lastToken = last(this.tokens)
+    
+    // Anything other than a plain text token is not considered whitespace 
+    if (lastToken.meaning !== TokenMeaning.PlainText) {
+      return true
+    }
+    
+    return /\S$/.test(lastToken.value)
   }
 }
 
