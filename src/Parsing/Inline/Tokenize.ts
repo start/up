@@ -272,8 +272,10 @@ class Tokenizer {
           return true
         }
 
-        if (!this.failureTracker.hasConventionFailed(EMPHASIS.convention, textIndex))
+        if (!this.failureTracker.hasConventionFailed(EMPHASIS.convention, textIndex)) {
           this.addToken(TokenMeaning.EmphasisStart, this.consumer.asBeforeMatch(shoutDelimiter.length))
+          return true
+        }
         break;
       case 2:
         break;
@@ -282,7 +284,7 @@ class Tokenizer {
         break;
     }
 
-    return false && didMatchShoutDelimiter
+    return false
   }
 
   handleRegularSandwiches(): boolean {
