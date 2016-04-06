@@ -250,19 +250,38 @@ class Tokenizer {
   }
 
   handleShouting(): boolean {
+    const textIndex = this.consumer.lengthConsumed()
+
     let shoutDelimiter: string
-    
+
     const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*+/,
-      then: match => { shoutDelimiter =  match }
+      then: match => { shoutDelimiter = match }
     })
-    
+
     if (!didMatchShoutDelimiter) {
       return false
     }
-    
-    const canEndConvention = this.wasPrevCharNotWhitespace()
-    
+
+
+    switch (shoutDelimiter.length) {
+      case 1:
+        const canEndConvention = this.wasPrevCharNotWhitespace()
+        if (canEndConvention && this.isInside(EMPHASIS.convention)) {
+          this.addToken(TokenMeaning.EmphasisEnd)
+          return true
+        }
+
+        if (!this.failureTracker.hasConventionFailed(EMPHASIS.convention, textIndex))
+          this.addToken(TokenMeaning.EmphasisStart, this.consumer.asBeforeMatch(shoutDelimiter.length))
+        break;
+      case 2:
+        break;
+      default:
+        // 3+ charaters long
+        break;
+    }
+
     return false && didMatchShoutDelimiter
   }
 
@@ -454,19 +473,19 @@ class Tokenizer {
   insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
   }
-  
+
   wasPrevCharNotWhitespace(): boolean {
     if (!this.tokens.length) {
       return false
     }
-    
+
     const lastToken = last(this.tokens)
-    
+
     // Anything other than a plain text token is not considered whitespace 
     if (lastToken.meaning !== TokenMeaning.PlainText) {
       return true
     }
-    
+
     return /\S$/.test(lastToken.value)
   }
 }
