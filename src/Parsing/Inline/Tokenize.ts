@@ -302,13 +302,8 @@ class Tokenizer {
 
     if (canCloseConvention) {
       if (isShoutingDelimiter) {
-        const indexedOpenEmphasisConventions =
-          this.indexesOfUnclosedInstancesOfConvention(EMPHASIS.convention)
-            .map(index => new IndexedConvention(EMPHASIS.convention, index))
-
-        const indexedOpenStressConventions =
-          this.indexesOfUnclosedInstancesOfConvention(STRESS.convention)
-            .map(index => new IndexedConvention(STRESS.convention, index))
+        const indexedOpenEmphasisConventions = this.indexedOpenConventionsOfType(EMPHASIS.convention)
+        const indexedOpenStressConventions = this.indexedOpenConventionsOfType(STRESS.convention)
 
         const indexedOpenConventionsInDescendingOrder =
           indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
@@ -545,6 +540,13 @@ class Tokenizer {
     }
 
     return indexes
+  }
+
+  indexedOpenConventionsOfType(convention: Convention): IndexedConvention[] {
+    return (
+      this.indexesOfUnclosedInstancesOfConvention(convention)
+        .map(index => new IndexedConvention(convention, index))
+    )
   }
 
   isConventionAtIndexUnclosed(convention: Convention, index: number): boolean {
