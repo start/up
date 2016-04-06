@@ -383,7 +383,6 @@ class Tokenizer {
     return false
   }
 
-
   handleLink(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 

@@ -54,7 +54,22 @@ describe('Emphasized text', () => {
       ]))
   })
 
-  it('can even hold stressed text', () => {
+  it('can even contain further emphasized text', () => {
+    expect(Up.ast('Hello, *my *little* world*!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new EmphasisNode([
+          new PlainTextNode('my '),
+          new EmphasisNode([
+            new PlainTextNode('little')
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+
+  it('can even contain stressed text', () => {
     expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
