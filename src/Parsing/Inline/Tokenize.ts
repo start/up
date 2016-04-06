@@ -24,12 +24,12 @@ const REGULAR_SANDWICHES = [
   INLINE_ASIDE
 ]
 
-const SHOUT_SANDWICHES = [
+const RAISED_VOICE_SANDWICHES = [
   STRESS,
   EMPHASIS
 ]
 
-const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SHOUT_SANDWICHES)
+const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(RAISED_VOICE_SANDWICHES)
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
@@ -59,7 +59,7 @@ class Tokenizer {
 
       const wasAnythingDiscovered = (
         this.tokenizeInlineCode()
-        || this.handleShouting()
+        || this.handleRaisedVoice()
         || this.handleRegularSandwiches()
         || this.handleLink()
       )
@@ -253,16 +253,17 @@ class Tokenizer {
     })
   }
 
-  handleShouting(): boolean {
+  // Handle emphasis and stress conventions
+  handleRaisedVoice(): boolean {
     const originalTextIndex = this.consumer.lengthConsumed()
 
-    let shoutDelimiter: string
-    const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
+    let raisedVoiceDelimiter: string
+    const didMatchRaisedVoiceDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*+/,
-      then: match => { shoutDelimiter = match }
+      then: match => { raisedVoiceDelimiter = match }
     })
 
-    if (!didMatchShoutDelimiter) {
+    if (!didMatchRaisedVoiceDelimiter) {
       return false
     }
 
@@ -270,7 +271,7 @@ class Tokenizer {
 
 
 
-    // If the previous character in the raw source text was whitespace, we cannot end any shouting conventions.
+    // If the previous character in the raw source text was whitespace, we cannot end any raised-voice conventions.
     // Otherwise, we potentially can end one (assuming one is open).
     //
     // If the previous character was indeed whitespace, we don't care whether it was escaped or not! Disqualified.
@@ -295,7 +296,7 @@ class Tokenizer {
     // close a convention. In these cases, we initially try to close a convention, which is consistent with the
     // behavior of our regular sandwiches.
 
-    const isEmphasisDelimiter = shoutDelimiter.length === 1
+    const isEmphasisDelimiter = raisedVoiceDelimiter.length === 1
     const isStressDelimiter = !isEmphasisDelimiter
 
     if (canCloseConvention) {
@@ -325,7 +326,7 @@ class Tokenizer {
       }
     }
 
-    // As alluded to above, we cannot open any shouting conventions if the next character in the raw source text is 
+    // As alluded to above, we cannot open any raised-voice conventions if the next character in the raw source text is 
     // whitespace. Otherwise, we're good!
     //
     // The next character can even be a backslash. As long as the asterisk looks like it's hugging the beginning of
@@ -334,28 +335,28 @@ class Tokenizer {
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
 
-    // An important rule: Shouting delimiters are atomic. They'll never be split into multiple pieces and interpereted
-    // different ways.
+    // An important rule: Raised voice delimiters are atomic. They'll never be split into multiple pieces and
+    // interpereted different ways.
     //
-    // Also, as a result of all the rules described above, if a shouting delimiter fails to parse as emphasis, it'll
+    // Also, as a result of all the rules described above, if a raised-voice delimiter fails to parse as emphasis, it'll
     // also fail to parse as stress (and vice-versa).
     const canOpenConvention = (
       NON_WHITESPACE.test(nextRawChar)
-        && !this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
-        && !this.failureTracker.hasConventionFailed(STRESS.convention, originalTextIndex)
-      )
+      && !this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
+      && !this.failureTracker.hasConventionFailed(STRESS.convention, originalTextIndex)
+    )
 
     if (canOpenConvention) {
       const meaning = (
         isEmphasisDelimiter ? TokenMeaning.EmphasisStart : TokenMeaning.StressStart
       )
 
-      this.addToken(meaning, this.consumer.asBeforeMatch(shoutDelimiter.length))
+      this.addToken(meaning, this.consumer.asBeforeMatch(raisedVoiceDelimiter.length))
       return true
     }
 
     // The delimiter could neither open nore close any conventions. Let's treat it as plain text.
-    this.addPlainTextToken(shoutDelimiter)
+    this.addPlainTextToken(raisedVoiceDelimiter)
     return true
   }
 
