@@ -256,7 +256,7 @@ class Tokenizer {
 
   handleShouting(): boolean {
     const originalTextIndex = this.consumer.lengthConsumed()
-    
+
     let shoutDelimiter: string
     const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*+/,
@@ -266,48 +266,73 @@ class Tokenizer {
     if (!didMatchShoutDelimiter) {
       return false
     }
-    
+
     // TODO: Differentiate between 2 asterisks and 3+ asterisks
-    
+
     // If the previous character in the raw source text was whitespace, we cannot end any shouting sandwiches.
     // Otherwise, we potentially can (assuming one is open).
     //
     // If there is a preceding whitespace character, we don't care whether it's escaped or not! We only care about
     // the how the asterisks appears in the raw text.
-    
+
     const lastConsumedRawChar = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
     const canEndSandwich = NON_WHITESPACE.test(lastConsumedRawChar)
-    
+
     // If the next character in the raw source text is whitespace, we cannot start any shouting sandwiches.
     // Otherwise, we can try. The next character can even be a backslash! Again, we only care about how the
     // asterisk appears in the raw text.
-    
+
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
     const canStartSandwich = NON_WHITESPACE.test(nextRawChar)
-    
+
     if (!canEndSandwich && !canStartSandwich) {
       this.addPlainTextToken(shoutDelimiter)
       return true
     }
-    
-    // Opening conventions is straightforward. 2 asterisks opens a stress convention; 1 asterisk opens an emphasis
+
+    // Opening conventions is straightforward! 2 asterisks opens a stress convention; 1 asterisk opens an emphasis
     // convention.
     //
-    // Closing conventions is a bit more complicated. 2 asterisks closes a stress convention, but if there isn't
-    // an open stress convention, it'll happily close an open emphasis conveniton. 1 asterisk can also close either
-    // convention, but it defaults to closing emphasis instead of stress.
-    
-    const countAsterisks = shoutDelimiter.length
-    
+    // Closing conventions is a bit more complicated. 2 asterisks closes a stress convention, but if there aren't
+    // any open stress convention, it'll happily close an open emphasis conveniton. 1 asterisk can also close
+    // either convention, but it defaults to closing emphasis instead of stress.
+    //
+    // In other words, 1 or 2 asterisks can close either emphasis or stress, but each delimiter defaults to the same
+    // kind of convention that it opens.  
+
+    const isEmphasisDelimiter = shoutDelimiter.length === 1
+    const isStressDelimiter = !isEmphasisDelimiter
+
     if (canEndSandwich) {
       const isInsideEmphasis = this.isInside(EMPHASIS.convention)
       const isInsideStress = this.isInside(STRESS.convention)
-      
-      
+
+      const shouldCloseStress = (
+        isInsideStress && (
+          isStressDelimiter || !isInsideEmphasis
+        )
+      )
+
+      const shouldCloseEmphasis = (
+        isInsideEmphasis && (
+          isEmphasisDelimiter || !isInsideStress
+        )
+      )
+
+      if (shouldCloseStress) {
+        this.addToken(TokenMeaning.StressEnd)
+        return true
+      }
+
+      if (shouldCloseEmphasis) {
+        this.addToken(TokenMeaning.EmphasisEnd)
+        return true
+      }
+
     }
-    
+
     return false
   }
 
