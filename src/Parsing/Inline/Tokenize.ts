@@ -303,19 +303,27 @@ class Tokenizer {
     if (canCloseConvention) {
       if (isShoutingDelimiter) {
         const indexedOpenEmphasisConventions =
-          this.indexesUnclosedInstancesOfConvention(EMPHASIS.convention)
+          this.indexesOfUnclosedInstancesOfConvention(EMPHASIS.convention)
             .map(index => new IndexedConvention(EMPHASIS.convention, index))
 
         const indexedOpenStressConventions =
-          this.indexesUnclosedInstancesOfConvention(STRESS.convention)
+          this.indexesOfUnclosedInstancesOfConvention(STRESS.convention)
             .map(index => new IndexedConvention(STRESS.convention, index))
 
-        const indexedOpenConventions =
+        const indexedOpenConventionsInDescendingOrder =
           indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
+            .sort(compareIndexedConventionsDescending)
+
+        if (indexedOpenConventionsInDescendingOrder.length) {
+          const COUNT_MAX_CONVENTIONS_TO_CLOSE = 2
+          const countConventionsToClose = Math.min(indexedOpenConventionsInDescendingOrder.length, COUNT_MAX_CONVENTIONS_TO_CLOSE)
+
+          for (let i = 0; i < countConventionsToClose; i++) {
+            this.addToken(indexedOpenConventionsInDescendingOrder[i].convention.endTokenMeaning())
+          }
           
-        if (indexedOpenConventions.length) {
-        indexedOpenConventions.sort(compareIndexedConventionsDescending) 
-        } 
+          return true
+        }
       } else {
         const isInsideEmphasis = this.isInside(EMPHASIS.convention)
         const isInsideStress = this.isInside(STRESS.convention)
@@ -524,7 +532,7 @@ class Tokenizer {
     return excessStartTokens > 0
   }
 
-  indexesUnclosedInstancesOfConvention(convention: Convention): number[] {
+  indexesOfUnclosedInstancesOfConvention(convention: Convention): number[] {
     const indexes: number[] = []
 
     for (let i = 0; i < this.tokens.length; i++) {
