@@ -31,7 +31,22 @@ describe('Text surrounded by 2 asterisks', () => {
       ]))
   })
 
-  it('can even hold emphasized text', () => {
+  it('can even contain further stressed text', () => {
+    expect(Up.ast('Hello, **my **little** world**!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new StressNode([
+          new PlainTextNode('my '),
+          new StressNode([
+            new PlainTextNode('little')
+          ]),
+          new PlainTextNode(' world')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+
+  it('can even contain emphasized text', () => {
     expect(Up.ast('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
