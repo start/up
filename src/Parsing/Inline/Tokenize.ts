@@ -285,13 +285,13 @@ class Tokenizer {
     // convention.
     //
     // Closing conventions is a bit more complicated. 2 asterisks closes a stress convention, but if there aren't
-    // any open stress convention, it'll happily close an open emphasis conveniton. 1 asterisk can also close
-    // either convention, but it defaults to closing emphasis instead of stress.
+    // any open stress conventions, those 2 asterisks will happily close an open emphasis conveniton. 1 asterisk
+    // can also close either convention, but it defaults to closing emphasis instead of stress.
     //
     // In other words, 1 or 2 asterisks can close either emphasis or stress, but each delimiter defaults to the same
     // kind of convention that it opens.  
     //
-    // If a shouting delimiter is surrounded on both sides by non-whitespace, it can potentially open or close a
+    // If a shouting delimiter is surrounded on *both* sides by non-whitespace, it can potentially open or close a
     // close a convention. In these cases, we initially try to close a convention, which is consistent with the
     // behavior of our regular sandwiches.
 
