@@ -267,10 +267,6 @@ class Tokenizer {
       return false
     }
 
-    // TODO: Differentiate between 2 asterisks and 3+ asterisks
-
-
-
     // If the previous character in the raw source text was whitespace, we cannot end any raised-voice conventions.
     // Otherwise, we potentially can end one (assuming one is open).
     //
@@ -282,19 +278,22 @@ class Tokenizer {
     const NON_WHITESPACE = /\S/
     const canCloseConvention = NON_WHITESPACE.test(lastConsumedRawChar)
 
-    // Opening conventions is straightforward! 2 asterisks opens a stress convention; 1 asterisk opens an emphasis
-    // convention.
+    // Opening conventions is straightforward! 2 asterisks opens a stress convention, 1 asterisk opens an emphasis
+    // convention, and 3 or more asterisks opens both.
     //
     // Closing conventions is a bit more complicated. 2 asterisks closes a stress convention, but if there aren't
     // any open stress conventions, those 2 asterisks will happily close an open emphasis conveniton. 1 asterisk
     // can also close either convention, but it defaults to closing emphasis instead of stress.
     //
     // In other words, 1 or 2 asterisks can close either emphasis or stress, but each delimiter defaults to the same
-    // kind of convention that it opens.  
+    // kind of convention that it opens.
     //
-    // If a shouting delimiter is surrounded on *both* sides by non-whitespace, it can potentially open or close a
-    // close a convention. In these cases, we initially try to close a convention, which is consistent with the
-    // behavior of our regular sandwiches.
+    // 3 or more asterisks closes the two most recent raised-voice conventions, no matter what they are. If there
+    // is only one open raised-voide convention, it alone is closed.
+    //
+    // If a shouting delimiter is surrounded on *both* sides by non-whitespace, it can potentially open *or* close
+    // conventions. In that situation, we initially try to close conventions, which is consistent with the behavior
+    // of our regular sandwiches.
 
     const isEmphasisDelimiter = raisedVoiceDelimiter.length === 1
     const isStressDelimiter = !isEmphasisDelimiter
@@ -504,6 +503,21 @@ class Tokenizer {
     }
 
     return excessStartTokens > 0
+  }
+  
+  indexesUnclosedInstancesOfConvention(convention: Convention): number[] {
+    const indexes: number[] = []
+    
+    for (let i = 0; i < this.tokens.length; i++) {
+      const meaning = this.tokens[i].meaning 
+      if (meaning === convention.startTokenMeaning()) {
+        indexes.push(i)
+      } else if (meaning === convention.endTokenMeaning()) {
+        indexes.pop()      
+      }
+    }
+    
+    return indexes
   }
 
   isConventionAtIndexUnclosed(convention: Convention, index: number): boolean {
