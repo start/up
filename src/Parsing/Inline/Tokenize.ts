@@ -69,7 +69,7 @@ class Tokenizer {
         continue
       }
 
-      this.treatCurrentCharAsPlainText()
+      this.addPlainTextToken(this.consumer.escapedCurrentChar())
       this.consumer.moveNext()
     }
 
@@ -255,7 +255,7 @@ class Tokenizer {
   }
 
   handleShouting(): boolean {
-    const textIndex = this.consumer.lengthConsumed()
+    const originalTextIndex = this.consumer.lengthConsumed()
     
     let shoutDelimiter: string
 
@@ -274,8 +274,8 @@ class Tokenizer {
     // Otherwise, we potentially can (assuming one is open). We don't care whether the whitespace character
     // was escaped or not! We only care about the appearance of the raw text.
     
+    const lastConsumedRawChar = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
-    const lastConsumedRawChar = lastChar(this.consumer.consumedText())
     const canEndSandwich = NON_WHITESPACE.test(lastConsumedRawChar)
     
     // If the next character in the raw source text is whitespace, we cannot start any shouting sandwiches.
@@ -287,7 +287,8 @@ class Tokenizer {
     const canStartSandwich = NON_WHITESPACE.test(nextRawChar)
     
     if (!canEndSandwich && !canStartSandwich) {
-      this.addToken(TokenMeaning.PlainText, shoutDelimiter)
+      this.addPlainTextToken(shoutDelimiter)
+      return true
     }
     
     return false
@@ -388,14 +389,13 @@ class Tokenizer {
     this.tokens.push(new Token(meaning, valueOrConsumerBefore))
   }
 
-  treatCurrentCharAsPlainText(): void {
-    const currentChar = this.consumer.escapedCurrentChar()
+  addPlainTextToken(text: string): void {
     const lastToken = last(this.tokens)
 
     if (lastToken && (lastToken.meaning === TokenMeaning.PlainText)) {
-      lastToken.value += currentChar
+      lastToken.value += text
     } else {
-      this.tokens.push(new Token(TokenMeaning.PlainText, currentChar))
+      this.tokens.push(new Token(TokenMeaning.PlainText, text))
     }
   }
 

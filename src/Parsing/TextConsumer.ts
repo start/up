@@ -177,13 +177,17 @@ export class TextConsumer {
 
     return (
       this.isCurrentCharEscaped()
-        ? this.text[this.index + 1]
+        ? this.at(this.index + 1)
         : this.currentChar()
     )
   }
 
   currentChar(): string {
-    return this.text[this.index]
+    return this.at(this.index)
+  }
+
+  at(index: number): string {
+    return this.text[index]
   }
   
   // This method is a bit hackish.
