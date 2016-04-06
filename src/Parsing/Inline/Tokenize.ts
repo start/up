@@ -4,7 +4,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { Sandwich } from './Sandwich'
 import { TextConsumer } from '../TextConsumer'
-import { last, swap } from '../CollectionHelpers'
+import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
@@ -24,7 +24,12 @@ const REGULAR_SANDWICHES = [
   INLINE_ASIDE
 ]
 
-const ALL_SANDWICHES = REGULAR_SANDWICHES.concat([STRESS, EMPHASIS])
+const SHOUT_SANDWICHES = [
+  STRESS,
+  EMPHASIS
+]
+
+const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SHOUT_SANDWICHES)
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
@@ -251,48 +256,19 @@ class Tokenizer {
 
   handleShouting(): boolean {
     const textIndex = this.consumer.lengthConsumed()
+    
+    const lastConsumedChar = lastChar(this.consumer.consumedText())
 
-    let shoutDelimiter: string
-
-    const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
-      pattern: /^\*+/,
-      then: match => { shoutDelimiter = match }
-    })
-
-    if (!didMatchShoutDelimiter) {
-      return false
-    }
-
-
-    switch (shoutDelimiter.length) {
-      case 1:
-        return this.handleShoutingSandwwich(EMPHASIS, textIndex)
-        
-      case 2:
-        break;
-        
-      default:
-        // 3+ charaters long
-        break;
-    }
-
+    
+    // If the previous character in the raw source text was whitespace, we cannot end any shouting sandwiches.
+    // Otherwise, we potentially can (assuming one is open). We don't care whether the whitespace character
+    // was escaped or not! We only care about the appearance of the raw text.
+    
+    // If the next character in the raw source text is whitespace, we cannot start any shouting sandwiches.
+    // Otherwise, we can. The next character can even be a backslash! Again, we only care about the appearance
+    // of the raw text.
+    
     return false
-  }
-  
-  handleShoutingSandwwich(sandwich: Sandwich, textIndex: number): boolean {
-        const canEndConvention = this.wasPrevCharNotWhitespace()
-        
-        if (canEndConvention && this.isInside(sandwich.convention)) {
-          this.addToken(sandwich.convention.endTokenMeaning())
-          return true
-        }
-
-        if (!this.failureTracker.hasConventionFailed(sandwich.convention, textIndex)) {
-          this.addToken(TokenMeaning.EmphasisStart, this.consumer.asBeforeMatch(sandwich.start.length))
-          return true
-        }
-        
-        return false
   }
 
   handleRegularSandwiches(): boolean {
