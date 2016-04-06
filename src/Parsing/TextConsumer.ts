@@ -182,6 +182,10 @@ export class TextConsumer {
     )
   }
 
+  currentChar(): string {
+    return this.text[this.index]
+  }
+  
   // This method is a bit hackish.
   //
   // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.  
@@ -210,9 +214,6 @@ export class TextConsumer {
     return this.currentChar() === '\\'
   }
 
-  private currentChar(): string {
-    return this.text[this.index]
-  }
 
   private isOnTrailingBackslash(): boolean {
     return (

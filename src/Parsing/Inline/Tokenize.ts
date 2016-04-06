@@ -257,16 +257,38 @@ class Tokenizer {
   handleShouting(): boolean {
     const textIndex = this.consumer.lengthConsumed()
     
-    const lastConsumedChar = lastChar(this.consumer.consumedText())
+    let shoutDelimiter: string
 
+    const didMatchShoutDelimiter = this.consumer.consumeIfMatchesPattern({
+      pattern: /^\*+/,
+      then: match => { shoutDelimiter = match }
+    })
+
+    if (!didMatchShoutDelimiter) {
+      return false
+    }
+    
+    // TODO: Differentiate between 2 asterisks and 3+ asterisks
     
     // If the previous character in the raw source text was whitespace, we cannot end any shouting sandwiches.
     // Otherwise, we potentially can (assuming one is open). We don't care whether the whitespace character
     // was escaped or not! We only care about the appearance of the raw text.
     
+    const NON_WHITESPACE = /\S/
+    const lastConsumedRawChar = lastChar(this.consumer.consumedText())
+    const canEndSandwich = NON_WHITESPACE.test(lastConsumedRawChar)
+    
     // If the next character in the raw source text is whitespace, we cannot start any shouting sandwiches.
     // Otherwise, we can. The next character can even be a backslash! Again, we only care about the appearance
     // of the raw text.
+    
+    // The text consumer's current char is the next char after the delimiter we just consumed
+    const nextRawChar = this.consumer.currentChar()
+    const canStartSandwich = NON_WHITESPACE.test(nextRawChar)
+    
+    if (!canEndSandwich && !canStartSandwich) {
+      this.addToken(TokenMeaning.PlainText, shoutDelimiter)
+    }
     
     return false
   }
@@ -458,21 +480,6 @@ class Tokenizer {
 
   insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
-  }
-
-  wasPrevCharNotWhitespace(): boolean {
-    if (!this.tokens.length) {
-      return false
-    }
-
-    const lastToken = last(this.tokens)
-
-    // Anything other than a plain text token is not considered whitespace 
-    if (lastToken.meaning !== TokenMeaning.PlainText) {
-      return true
-    }
-
-    return /\S$/.test(lastToken.value)
   }
 }
 
