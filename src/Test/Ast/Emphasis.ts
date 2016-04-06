@@ -32,6 +32,15 @@ describe('Text surrounded by asterisks', () => {
   })
 })
 
+describe('Text separated from surrounding asterisks by whitespace', () => {
+  it('is not put inside an emphasis node', () => {
+    expect(Up.ast('Birdie Sanders * won * Wisconsin')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Birdie Sanders * won * Wisconsin'),
+      ]))
+  })
+})
+
 
 describe('Emphasized text', () => {
   it('is evaluated for other conventions', () => {
