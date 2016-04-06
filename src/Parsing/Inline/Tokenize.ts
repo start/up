@@ -334,17 +334,16 @@ class Tokenizer {
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
 
-    // An important rule: Shouting delimiters are atomic. It'll never be split into multiple pieces and interpereted
+    // An important rule: Shouting delimiters are atomic. They'll never be split into multiple pieces and interpereted
     // different ways.
     //
     // Also, as a result of all the rules described above, if a shouting delimiter fails to parse as emphasis, it'll
     // also fail to parse as stress (and vice-versa).
     const canOpenConvention = (
-      NON_WHITESPACE.test(nextRawChar) && (
-        this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
-        || this.failureTracker.hasConventionFailed(STRESS.convention, originalTextIndex)
+      NON_WHITESPACE.test(nextRawChar)
+        && !this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
+        && !this.failureTracker.hasConventionFailed(STRESS.convention, originalTextIndex)
       )
-    )
 
     if (canOpenConvention) {
       const meaning = (
