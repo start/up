@@ -17,11 +17,9 @@ export enum TokenMeaning {
   InlineAsideEnd,
   LinkStart,
   LinkUrlAndLinkEnd,
-  ShoutingEmphasisStart,
-  ShoutingEmphasisEnd,
-  ShoutingStressStart,
-  ShoutingStressEnd,
-  ShoutingPlaceholder
+  // Hack: This  only exists for the purpose of backtracking shouting conventions. The actual tokens created
+  // when shouting are given the more specific meanings corresponding to stress or emphasis.
+  AnyKindOfShouting,
 }
 
 export class Token {

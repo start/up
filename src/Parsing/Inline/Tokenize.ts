@@ -34,7 +34,6 @@ const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SHOUT_SANDWICHES)
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
 
-
 class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
@@ -268,29 +267,19 @@ class Tokenizer {
     }
 
     // TODO: Differentiate between 2 asterisks and 3+ asterisks
+    
+    
 
-    // If the previous character in the raw source text was whitespace, we cannot end any shouting sandwiches.
-    // Otherwise, we potentially can (assuming one is open).
+    // If the previous character in the raw source text was whitespace, we cannot end any shouting conventions.
+    // Otherwise, we potentially can end one (assuming one is open).
     //
-    // If there is a preceding whitespace character, we don't care whether it's escaped or not! We only care about
-    // the how the asterisks appears in the raw text.
+    // If the previous character was indeed whitespace, we don't care whether it was escaped or not! Disqualified.
+    // We only care about how the asterisks look in the surrounding raw text. If it looks like they're not hugging
+    // the end of something, they can't end a convention.
 
     const lastConsumedRawChar = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
-    const canEndSandwich = NON_WHITESPACE.test(lastConsumedRawChar)
-
-    // If the next character in the raw source text is whitespace, we cannot start any shouting sandwiches.
-    // Otherwise, we can try. The next character can even be a backslash! Again, we only care about how the
-    // asterisk appears in the raw text.
-
-    // The text consumer's current char is actually the next char after the delimiter we just consumed.
-    const nextRawChar = this.consumer.currentChar()
-    const canStartSandwich = NON_WHITESPACE.test(nextRawChar)
-
-    if (!canEndSandwich && !canStartSandwich) {
-      this.addPlainTextToken(shoutDelimiter)
-      return true
-    }
+    const canCloseConvention = NON_WHITESPACE.test(lastConsumedRawChar)
 
     // Opening conventions is straightforward! 2 asterisks opens a stress convention; 1 asterisk opens an emphasis
     // convention.
@@ -301,11 +290,15 @@ class Tokenizer {
     //
     // In other words, 1 or 2 asterisks can close either emphasis or stress, but each delimiter defaults to the same
     // kind of convention that it opens.  
+    //
+    // If a shouting delimiter is surrounded on both sides by non-whitespace, it can potentially open or close a
+    // close a convention. In these cases, we initially try to close a convention, which is consistent with the
+    // behavior of our regular sandwiches.
 
     const isEmphasisDelimiter = shoutDelimiter.length === 1
     const isStressDelimiter = !isEmphasisDelimiter
 
-    if (canEndSandwich) {
+    if (canCloseConvention) {
       const isInsideEmphasis = this.isInside(EMPHASIS.convention)
       const isInsideStress = this.isInside(STRESS.convention)
 
@@ -330,10 +323,35 @@ class Tokenizer {
         this.addToken(TokenMeaning.EmphasisEnd)
         return true
       }
-
     }
 
-    return false
+    // As alluded to above, we cannot open any shouting conventions if the next character in the raw source text is 
+    // whitespace. Otherwise, we're good!
+    //
+    // The next character can even be a backslash. As long as the asterisk looks like it's hugging the beginning of
+    // something, it can open a convention.
+    
+    // The text consumer's current char is actually the next char after the delimiter we just consumed.
+    const nextRawChar = this.consumer.currentChar()
+    
+    // An important rule: Shouting delimiters are atomic. It'll never be split into multiple pieces and interpereted
+    // different ways. If a shouting delimiter fails to parse from its start, we'll treat the whole thing as plain text.
+    const canOpenConvention = (
+      NON_WHITESPACE.test(nextRawChar)
+      && this.failureTracker.hasFailed(TokenMeaning.AnyShoutingStart, originalTextIndex)
+    )
+
+    if (canOpenConvention) {
+      const consumerBeforeDelimiter = this.consumer.asBeforeMatch(shoutDelimiter.length)
+
+      if (isStressDelimiter) {
+
+      }
+    }
+
+    // We could neither open nor close a convention with these asterisks, so we'll treat them as plain text.
+    this.addPlainTextToken(shoutDelimiter)
+    return true
   }
 
   handleRegularSandwiches(): boolean {

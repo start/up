@@ -30,6 +30,14 @@ export class FailureTracker {
     return -1 !== this.failures[textIndex].indexOf(convention.startTokenMeaning())
   }
   
+  hasFailed(startTokenMeaning: TokenMeaning, textIndex: number): boolean {
+    if (this.hasNoFailuresAt(textIndex)) {
+      return false
+    }
+    
+    return -1 !== this.failures[textIndex].indexOf(startTokenMeaning)
+  }
+  
   private hasNoFailuresAt(textIndex: number): boolean {
     return !this.failures[textIndex]
   }
