@@ -308,15 +308,8 @@ class Tokenizer {
     const isShoutingDelimiter = !isEmphasisDelimiter && !isStressDelimiter
 
     if (canCloseConvention) {
-      const indexedOpenEmphasisConventions = this.indexedOpenSandwichesOfType(EMPHASIS)
-      const indexedOpenStressConventions = this.indexedOpenSandwichesOfType(STRESS)
-
-      const indexedOpenRaisedVoiceSandwiches =
-        indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
-          .sort(compareIndexedSandwichesDescending)
-
       if (isShoutingDelimiter) {
-        if (this.spendAsterisksToCloseRaisedVoiceConventions(raisedVoiceDelimiter)) {
+        if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
           return true
         }
       } else {
@@ -381,7 +374,7 @@ class Tokenizer {
     return true
   }
 
-  spendAsterisksToCloseRaisedVoiceConventions(raisedVoiceDelimiter: string): boolean {
+  spendAsterisksToLowerVoice(raisedVoiceDelimiter: string): boolean {
     const indexedOpenEmphasisConventions = this.indexedOpenSandwichesOfType(EMPHASIS)
     const indexedOpenStressConventions = this.indexedOpenSandwichesOfType(STRESS)
 
