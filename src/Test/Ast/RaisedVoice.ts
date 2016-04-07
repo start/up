@@ -48,7 +48,7 @@ describe('Shouted text', () => {
         new PlainTextNode(' Grab your shells!')
       ]))
   })
-  
+
   it('can be surrounded by an uneven number of asterisks, as long as there are at least 3', () => {
     expect(Up.ast('Koopas! ******Mario is on his way!********* Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -61,7 +61,7 @@ describe('Shouted text', () => {
         new PlainTextNode(' Grab your shells!')
       ]))
   })
-  
+
   it('can have its emphasis node ended first (and thus starting second), with the remaining text being stressed', () => {
     expect(Up.ast('Hello, ***my* world**!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -141,7 +141,7 @@ describe('Text that is both emphasized and stressed', () => {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can have both nodes closed with 4 or more asterisks', () => {
     expect(Up.ast('Xamarin is **now *free****!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -172,7 +172,7 @@ describe('Shouted text with its emphasis ended early', () => {
         new PlainTextNode('!')
       ]))
   })
-  
+
   it('can have its stress closed with 4 or more asterisks', () => {
     expect(Up.ast('Well, ******Xamarin* is now free******!')).to.be.eql(
       insideDocumentAndParagraph([
@@ -200,7 +200,7 @@ describe('Emphasized and stressed text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 4 or more asterisks', () => {
     expect(Up.ast('*He has won **six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
@@ -226,7 +226,7 @@ describe('Stressed and emphasized text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 4 or more asterisks', () => {
     expect(Up.ast('**He has won *six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
@@ -252,7 +252,7 @@ describe('Doubly emphasized text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 3 asterisks', () => {
     expect(Up.ast('*He has won *six in a row!***')).to.be.eql(
       insideDocumentAndParagraph([
@@ -264,7 +264,7 @@ describe('Doubly emphasized text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 4 or more asterisks', () => {
     expect(Up.ast('*He has won *six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
@@ -290,7 +290,7 @@ describe('Doubly stressed text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 4 asterisks', () => {
     expect(Up.ast('**He has won **six in a row!****')).to.be.eql(
       insideDocumentAndParagraph([
@@ -302,7 +302,7 @@ describe('Doubly stressed text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 5 or more asterisks', () => {
     expect(Up.ast('**He has won **six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
@@ -311,6 +311,37 @@ describe('Doubly stressed text', () => {
           new StressNode([
             new PlainTextNode('six in a row!')
           ]),
+        ])
+      ]))
+  })
+})
+
+describe('Triply emphasized text', () => {
+  it('can be closed by 3 asterisks', () => {
+    expect(Up.ast('*He has *won *six in a row!***')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('He has '),
+          new EmphasisNode([
+            new PlainTextNode('won '),
+            new EmphasisNode([
+              new PlainTextNode('six in a row!')
+            ])
+          ])
+        ])
+      ]))
+  })
+  it('can be closed by 4 or more asterisks', () => {
+    expect(Up.ast('*He has *won *six in a row!*****')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('He has '),
+          new EmphasisNode([
+            new PlainTextNode('won '),
+            new EmphasisNode([
+              new PlainTextNode('six in a row!')
+            ])
+          ])
         ])
       ]))
   })

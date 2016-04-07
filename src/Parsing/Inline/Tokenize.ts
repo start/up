@@ -324,6 +324,22 @@ class Tokenizer {
             this.addToken(indexedOpenConventionsInDescendingOrder[i].convention.endTokenMeaning())
           }
           
+          let unspentAsterisks = raisedVoiceDelimiter.length
+          
+          for (const indexedOpenConvention of indexedOpenConventionsInDescendingOrder) {
+            if (unspentAsterisks <= 0) {
+              break
+            }
+            
+            const convention = indexedOpenConvention.convention
+            this.addToken(convention.endTokenMeaning())
+            
+            // TODO: Use sandwich start/end here
+            unspentAsterisks -= (
+              convention === EMPHASIS.convention ? 1 : 2 
+            )
+          }
+          
           return true
         }
       } else {
