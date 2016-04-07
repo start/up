@@ -303,23 +303,27 @@ class Tokenizer {
     // conventions. In that situation, we initially try to close conventions, which is consistent with the behavior
     // of our regular sandwiches.
 
-    const isEmphasisDelimiter = raisedVoiceDelimiter.length === 1
-    const isStressDelimiter = raisedVoiceDelimiter.length === 2
-    const isShoutingDelimiter = !isEmphasisDelimiter && !isStressDelimiter
+    const raisedVoiceDelimiterType = getRaisedVoiceDelimiterType(raisedVoiceDelimiter)
 
     if (canCloseConvention) {
-      if (isShoutingDelimiter) {
-        if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
-          return true
-        }
-      } else if (isStressDelimiter) {
-        if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(STRESS, raisedVoiceDelimiter)) {
-          return true
-        }
-      } else if (isEmphasisDelimiter) {
-        if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(EMPHASIS, raisedVoiceDelimiter)) {
-          return true
-        }
+      switch (raisedVoiceDelimiterType) {
+        case RaisedVoiceDelimiterType.Emphasis:
+          if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(EMPHASIS, raisedVoiceDelimiter)) {
+            return true
+          }
+          break
+
+        case RaisedVoiceDelimiterType.Stress:
+          if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(STRESS, raisedVoiceDelimiter)) {
+            return true
+          }
+          break
+
+        case RaisedVoiceDelimiterType.Shouting:
+          if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
+            return true
+          }
+          break
       }
     }
 
@@ -345,7 +349,7 @@ class Tokenizer {
 
     if (canOpenConvention) {
       const meaning = (
-        isEmphasisDelimiter ? TokenMeaning.EmphasisStart : TokenMeaning.StressStart
+        raisedVoiceDelimiterType === RaisedVoiceDelimiterType.Emphasis ? TokenMeaning.EmphasisStart : TokenMeaning.StressStart
       )
 
       this.addToken(meaning, this.consumer.asBeforeMatch(raisedVoiceDelimiter.length))
