@@ -282,15 +282,22 @@ class Tokenizer {
     // Opening conventions is straightforward! 1 asterisk opens an emphasis convention, 2 asterisks opens a stress
     // convention, and 3 or more asterisks (referred to as "shouting") opens both conventions.
     //
-    // Closing conventions is a bit more complicated. 2 asterisks closes a stress convention, but if there aren't
-    // any open stress conventions, those 2 asterisks will happily close an open emphasis conveniton. 1 asterisk
-    // can also close either convention, but it defaults to closing emphasis instead of stress.
+    // Closing conventions is a bit more complicated.
     //
-    // In other words, 1 or 2 asterisks can close either emphasis or stress, but each delimiter defaults to the same
-    // kind of convention that it opens.
+    // 1 asterisk
+    //   Closes an open emphasis convention, assuming there is one. Otherwise, it closes an open stress convnetion.
     //
-    // 3 or more asterisks closes the two most recent raised-voice conventions, no matter what they are. If there
-    // is only one open raised-voide convention, it alone is closed.
+    // 2 asterisks
+    //   Closes an open stress convnetion, assuming there is one. Otherwise, it closes up to 2 open emphasis
+    //   conventions.
+    //
+    // 3 or more asterisks (the most complicated)
+    //   Closes multiple emphasis and stress conventions, from innermost to outermost, until all asterisks are
+    //   "exhausted". Closing a stress convention "costs" 2 asterisk, and closing an emphasis convention "costs"
+    //   1 asterisk. Any "un-spent" asterisks at the end are silently consumed.
+    //
+    //   As long as there is least 1 "un-spent" asterisk, that last asterisk will happily close either stress or
+    //   emphasis. This means that 3 asterisks will close 2 stress conventions.
     //
     // If a shouting delimiter is surrounded on *both* sides by non-whitespace, it can potentially open *or* close
     // conventions. In that situation, we initially try to close conventions, which is consistent with the behavior
