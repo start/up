@@ -311,30 +311,17 @@ class Tokenizer {
       const indexedOpenEmphasisConventions = this.indexedOpenSandwichesOfType(EMPHASIS)
       const indexedOpenStressConventions = this.indexedOpenSandwichesOfType(STRESS)
 
+      const indexedOpenRaisedVoiceSandwiches =
+        indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
+          .sort(compareIndexedSandwichesDescending)
+
       if (isShoutingDelimiter) {
-        const indexedOpenConventionsInDescendingOrder =
-          indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
-            .sort(compareIndexedSandwichesDescending)
-
-        if (indexedOpenConventionsInDescendingOrder.length) {
-          let unspentAsterisks = raisedVoiceDelimiter.length
-
-          for (const indexedOpenSandwich of indexedOpenConventionsInDescendingOrder) {
-            if (unspentAsterisks <= 0) {
-              break
-            }
-
-            const sandwich = indexedOpenSandwich.sandwich
-            
-            this.addToken(sandwich.convention.endTokenMeaning())
-            unspentAsterisks -= sandwich.end.length
-          }
-
+        if (this.spendAsterisksToCloseRaisedVoiceConventions(raisedVoiceDelimiter)) {
           return true
         }
       } else {
-        const isInsideEmphasis = !!indexedOpenEmphasisConventions.length
-        const isInsideStress = !!indexedOpenStressConventions.length
+        const isInsideEmphasis = this.isInside(EMPHASIS.convention)
+        const isInsideStress = this.isInside(STRESS.convention)
 
         const shouldCloseStress = (
           isInsideStress && (
@@ -391,6 +378,34 @@ class Tokenizer {
 
     // The delimiter could neither open nore close any conventions. Let's treat it as plain text.
     this.addPlainTextToken(raisedVoiceDelimiter)
+    return true
+  }
+
+  spendAsterisksToCloseRaisedVoiceConventions(raisedVoiceDelimiter: string): boolean {
+    const indexedOpenEmphasisConventions = this.indexedOpenSandwichesOfType(EMPHASIS)
+    const indexedOpenStressConventions = this.indexedOpenSandwichesOfType(STRESS)
+
+    const indexedOpenRaisedVoiceSandwiches =
+      indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
+        .sort(compareIndexedSandwichesDescending)
+
+    if (!indexedOpenRaisedVoiceSandwiches.length) {
+      return false
+    }
+
+    let unspentAsterisks = raisedVoiceDelimiter.length
+
+    for (const indexedOpenSandwich of indexedOpenRaisedVoiceSandwiches) {
+      if (unspentAsterisks <= 0) {
+        break
+      }
+
+      const sandwich = indexedOpenSandwich.sandwich
+
+      this.addToken(sandwich.convention.endTokenMeaning())
+      unspentAsterisks -= sandwich.end.length
+    }
+
     return true
   }
 
