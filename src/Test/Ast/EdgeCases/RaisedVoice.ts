@@ -84,6 +84,7 @@ describe('Shouted text', () => {
   })
 })
 
+
 describe('Shouted text inside of emphasized text', () => {
   it('can have its inner stress node closed early', () => {
     expect(Up.ast('*Please ***stop** eating the cardboard* immediately*')).to.be.eql(
@@ -224,6 +225,7 @@ describe('Inside of stressed text, shouted text with its inner emphasis node clo
       ]))
   })
 })
+
 
 describe('Inside of emphasized text, shouted text with its inner stress node closed early', () => {
   it('can have the reamining two emphasis nodes closed by 3 or more asterisks', () => {
