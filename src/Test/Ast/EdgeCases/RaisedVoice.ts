@@ -214,8 +214,8 @@ describe('Inside of stressed text, shouted text with its inner emphasis node clo
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode('Please '),
-          new EmphasisNode([
-            new StressNode([
+          new StressNode([
+            new EmphasisNode([
               new PlainTextNode('stop'),
             ]),
             new PlainTextNode(' eating the cardboard immediately'),
