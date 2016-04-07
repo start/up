@@ -249,10 +249,10 @@ describe('Inside of emphasized text, shouted text with its inner emphasis node c
   it('can have the reamining stress node and emphasis node closed by 3 or more asterisks', () => {
     expect(Up.ast('*Please ***stop* eating the cardboard immediately***')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new EmphasisNode([
           new PlainTextNode('Please '),
-          new EmphasisNode([
-            new StressNode([
+          new StressNode([
+            new EmphasisNode([
               new PlainTextNode('stop'),
             ]),
             new PlainTextNode(' eating the cardboard immediately'),
