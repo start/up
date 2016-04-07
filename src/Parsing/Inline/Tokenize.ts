@@ -282,7 +282,7 @@ class Tokenizer {
     // Opening conventions is straightforward! 1 asterisk opens an emphasis convention, 2 asterisks opens a stress
     // convention, and 3 or more asterisks (referred to as "shouting") opens both conventions.
     //
-    // Closing conventions is a bit more complicated.
+    // Closing conventions is a bit more complicated:
     //
     // 1 asterisk
     //   Closes an open emphasis convention, assuming there is one. Otherwise, it closes an open stress convnetion.
@@ -296,7 +296,7 @@ class Tokenizer {
     //   "exhausted". Closing a stress convention "costs" 2 asterisk, and closing an emphasis convention "costs"
     //   1 asterisk. Any "un-spent" asterisks at the end are silently consumed.
     //
-    //   As long as there is least 1 "un-spent" asterisk, that last asterisk will happily close either stress or
+    //   Even once there is just 1 "un-spent" asterisk, that last asterisk will happily close either stress or
     //   emphasis. This means that 3 asterisks will close 2 stress conventions.
     //
     // If a shouting delimiter is surrounded on *both* sides by non-whitespace, it can potentially open *or* close
@@ -308,31 +308,28 @@ class Tokenizer {
     const isShoutingDelimiter = !isEmphasisDelimiter && !isStressDelimiter
 
     if (canCloseConvention) {
-      if (isShoutingDelimiter) {
-        const indexedOpenEmphasisConventions = this.indexedOpenConventionsOfType(EMPHASIS.convention)
-        const indexedOpenStressConventions = this.indexedOpenConventionsOfType(STRESS.convention)
+      const indexedOpenEmphasisConventions = this.indexedOpenSandwichesOfType(EMPHASIS)
+      const indexedOpenStressConventions = this.indexedOpenSandwichesOfType(STRESS)
 
+      if (isShoutingDelimiter) {
         const indexedOpenConventionsInDescendingOrder =
           indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
-            .sort(compareIndexedConventionsDescending)
+            .sort(compareIndexedSandwichesDescending)
 
         if (indexedOpenConventionsInDescendingOrder.length) {
           let unspentAsterisks = raisedVoiceDelimiter.length
-          
-          for (const indexedOpenConvention of indexedOpenConventionsInDescendingOrder) {
+
+          for (const indexedOpenSandwich of indexedOpenConventionsInDescendingOrder) {
             if (unspentAsterisks <= 0) {
               break
             }
-            
-            const convention = indexedOpenConvention.convention
-            this.addToken(convention.endTokenMeaning())
-            
-            // TODO: Use sandwich start/end here
-            unspentAsterisks -= (
-              convention === EMPHASIS.convention ? 1 : 2 
-            )
+
+            const sandwich = indexedOpenSandwich.sandwich
+            this.addToken(sandwich.convention.endTokenMeaning())
+
+            unspentAsterisks -= sandwich.end.length
           }
-          
+
           return true
         }
       } else {
@@ -558,10 +555,10 @@ class Tokenizer {
     return indexes
   }
 
-  indexedOpenConventionsOfType(convention: Convention): IndexedConvention[] {
+  indexedOpenSandwichesOfType(sandwich: Sandwich): IndexedSandwich[] {
     return (
-      this.indexesOfUnclosedInstancesOfConvention(convention)
-        .map(index => new IndexedConvention(convention, index))
+      this.indexesOfUnclosedInstancesOfConvention(sandwich.convention)
+        .map(index => new IndexedSandwich(sandwich, index))
     )
   }
 
@@ -622,10 +619,10 @@ function getSandwichEndedByThisToken(token: Token): Sandwich {
 }
 
 
-class IndexedConvention {
-  constructor(public convention: Convention, public index: number) { }
+class IndexedSandwich {
+  constructor(public sandwich: Sandwich, public index: number) { }
 }
 
-function compareIndexedConventionsDescending(a: IndexedConvention, b: IndexedConvention): number {
+function compareIndexedSandwichesDescending(a: IndexedSandwich, b: IndexedSandwich): number {
   return b.index - a.index
 }
