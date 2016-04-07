@@ -312,22 +312,12 @@ class Tokenizer {
         if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
           return true
         }
-      } if (isStressDelimiter) {
-        if (this.isInside(STRESS.convention)) {
-          this.addToken(TokenMeaning.StressEnd)
-          return true
-        }
-        
-        if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
+      } else if (isStressDelimiter) {
+        if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(STRESS, raisedVoiceDelimiter)) {
           return true
         }
       } else if (isEmphasisDelimiter) {
-        if (this.isInside(EMPHASIS.convention)) {
-          this.addToken(TokenMeaning.EmphasisEnd)
-          return true
-        }
-        
-        if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
+        if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(EMPHASIS, raisedVoiceDelimiter)) {
           return true
         }
       }
@@ -365,6 +355,15 @@ class Tokenizer {
     // The delimiter could neither open nore close any conventions. Let's treat it as plain text.
     this.addPlainTextToken(raisedVoiceDelimiter)
     return true
+  }
+
+  spendAsterisksToLowerVoiceAfterFirstTryingToClose(sandwich: Sandwich, raisedVoiceDelimiter: string): boolean {
+    if (this.isInside(sandwich.convention)) {
+      this.addToken(sandwich.convention.endTokenMeaning())
+      return true
+    }
+
+    return this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)
   }
 
   spendAsterisksToLowerVoice(raisedVoiceDelimiter: string): boolean {
