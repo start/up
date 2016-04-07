@@ -239,3 +239,41 @@ describe('Stressed and emphasized text', () => {
       ]))
   })
 })
+
+describe('Doubly stressed text', () => {
+  it('can be closed by 2 asterisks', () => {
+    expect(Up.ast('*He has won *six in a row!**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('He has won '),
+          new EmphasisNode([
+            new PlainTextNode('six in a row!')
+          ]),
+        ])
+      ]))
+  })
+  
+  it('can be closed by 3 asterisks', () => {
+    expect(Up.ast('*He has won *six in a row!***')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('He has won '),
+          new EmphasisNode([
+            new PlainTextNode('six in a row!')
+          ]),
+        ])
+      ]))
+  })
+  
+  it('can be closed by 4 or more asterisks', () => {
+    expect(Up.ast('*He has won *six in a row!*****')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('He has won '),
+          new EmphasisNode([
+            new PlainTextNode('six in a row!')
+          ]),
+        ])
+      ]))
+  })
+})
