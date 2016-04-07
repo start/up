@@ -325,16 +325,16 @@ class Tokenizer {
             }
 
             const sandwich = indexedOpenSandwich.sandwich
+            
             this.addToken(sandwich.convention.endTokenMeaning())
-
             unspentAsterisks -= sandwich.end.length
           }
 
           return true
         }
       } else {
-        const isInsideEmphasis = this.isInside(EMPHASIS.convention)
-        const isInsideStress = this.isInside(STRESS.convention)
+        const isInsideEmphasis = !!indexedOpenEmphasisConventions.length
+        const isInsideStress = !!indexedOpenStressConventions.length
 
         const shouldCloseStress = (
           isInsideStress && (
