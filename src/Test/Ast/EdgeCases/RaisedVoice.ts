@@ -318,9 +318,9 @@ describe('Double asterisks followed by whitespace with matching closing double a
 
 describe('3+ asterisks followed by whitespace with matching 3+ asterisks', () => {
   it('do not produce a stress node or an emphasis node, and are preserved as plain text', () => {
-    expect(Up.ast('I believe*** my spelling*** was wrong.')).to.be.eql(
+    expect(Up.ast('I believe**** my spelling**** was wrong.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I believe*** my spelling*** was wrong.')
+        new PlainTextNode('I believe**** my spelling**** was wrong.')
       ])
     )
   })
