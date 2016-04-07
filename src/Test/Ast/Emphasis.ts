@@ -98,23 +98,3 @@ describe('Double asterisks followed by two separate single closing asterisks', (
       ]))
   })
 })
-
-describe('Quadruple asterisks followed by 4 separate single closing asterisks', () => {
-  it('produces 4 nested emphasis nodes', () => {
-    expect(Up.ast('****Warning:* never* feed* this tarantula*')).to.be.eql(
-      insideDocumentAndParagraph([
-        new EmphasisNode([
-          new EmphasisNode([
-            new EmphasisNode([
-              new EmphasisNode([
-                new PlainTextNode('Warning:'),
-              ]),
-              new PlainTextNode(' never')
-            ]),
-            new PlainTextNode('feed')
-          ]),
-          new PlainTextNode(' this tarantula')
-        ])
-      ]))
-  })
-})

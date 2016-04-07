@@ -279,10 +279,7 @@ class Tokenizer {
     const NON_WHITESPACE = /\S/
     const canCloseConvention = NON_WHITESPACE.test(prevRawCharacter)
 
-    // Opening conventions is straightforward! 1 asterisk opens an emphasis convention, 2 asterisks opens a stress
-    // convention, and 3 or more asterisks (referred to as "shouting") opens both conventions.
-    //
-    // Closing conventions is a bit more complicated:
+    // Here are the rules for closing conventions:
     //
     // 1 asterisk
     //   Closes an open emphasis convention, assuming there is one. Otherwise, it closes an open stress convnetion.
@@ -333,11 +330,8 @@ class Tokenizer {
     // The next character can even be a backslash. As long as the asterisk looks like it's hugging the beginning of
     // something, it can open a convention.
 
-    // An important rule: Raised voice delimiters are atomic. They'll never be split into multiple pieces and
-    // interpereted different ways.
-    //
-    // Also, as a result of all the rules described above, if a raised-voice delimiter fails to parse as emphasis, it'll
-    // also fail to parse as stress (and vice-versa).
+    // An important rule: A given raised voice delimiter will either only open conventions, only close conventions, or 
+    // only be interpreted as plain text.
 
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
