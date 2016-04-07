@@ -187,3 +187,17 @@ describe('Shouted text with its emphasis ended early', () => {
       ]))
   })
 })
+
+describe('Emphasized and stressed text', () => {
+  it('can be closed by 3 asterisks', () => {
+    expect(Up.ast('*He has won **six in a row!***')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('He has won '),
+          new StressNode([
+            new PlainTextNode('six in a row!')
+          ]),
+        ])
+      ]))
+  })
+})
