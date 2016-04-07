@@ -312,7 +312,16 @@ class Tokenizer {
         if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
           return true
         }
-      } else {
+      } if (isStressDelimiter) {
+        if (this.isInside(STRESS.convention)) {
+          this.addToken(TokenMeaning.StressEnd)
+          return true
+        }
+        
+        if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
+          return true
+        }
+      } else if (isEmphasisDelimiter) {
         const isInsideEmphasis = this.isInside(EMPHASIS.convention)
         const isInsideStress = this.isInside(STRESS.convention)
 
