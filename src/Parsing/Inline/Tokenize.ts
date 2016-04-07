@@ -275,9 +275,9 @@ class Tokenizer {
     // We only care about how the asterisks look in the surrounding raw text. If it looks like they're not hugging
     // the end of something, they can't end a convention.
 
-    const lastConsumedRawChar = this.consumer.at(originalTextIndex - 1)
+    const prevRawCharacter = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
-    const canCloseConvention = NON_WHITESPACE.test(lastConsumedRawChar)
+    const canCloseConvention = NON_WHITESPACE.test(prevRawCharacter)
 
     // Opening conventions is straightforward! 1 asterisk opens an emphasis convention, 2 asterisks opens a stress
     // convention, and 3 or more asterisks (referred to as "shouting") opens both conventions.
@@ -348,11 +348,23 @@ class Tokenizer {
     )
 
     if (canOpenConvention) {
-      const meaning = (
-        raisedVoiceDelimiterType === RaisedVoiceDelimiterType.Emphasis ? TokenMeaning.EmphasisStart : TokenMeaning.StressStart
-      )
+      const consumerAsBeforeMatch = this.consumer.asBeforeMatch(raisedVoiceDelimiter.length)
+      
+      switch (raisedVoiceDelimiterType) {
+        case RaisedVoiceDelimiterType.Emphasis:
+          this.addToken(TokenMeaning.EmphasisStart, consumerAsBeforeMatch)
+          break
 
-      this.addToken(meaning, this.consumer.asBeforeMatch(raisedVoiceDelimiter.length))
+        case RaisedVoiceDelimiterType.Stress:
+          this.addToken(TokenMeaning.StressStart, consumerAsBeforeMatch)
+          break
+
+        case RaisedVoiceDelimiterType.Shouting:
+          this.addToken(TokenMeaning.StressStart, consumerAsBeforeMatch)
+          this.addToken(TokenMeaning.EmphasisStart)
+          break
+      }
+      
       return true
     }
 
