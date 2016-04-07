@@ -333,14 +333,15 @@ class Tokenizer {
     // The next character can even be a backslash. As long as the asterisk looks like it's hugging the beginning of
     // something, it can open a convention.
 
-    // The text consumer's current char is actually the next char after the delimiter we just consumed.
-    const nextRawChar = this.consumer.currentChar()
-
     // An important rule: Raised voice delimiters are atomic. They'll never be split into multiple pieces and
     // interpereted different ways.
     //
     // Also, as a result of all the rules described above, if a raised-voice delimiter fails to parse as emphasis, it'll
     // also fail to parse as stress (and vice-versa).
+
+    // The text consumer's current char is actually the next char after the delimiter we just consumed.
+    const nextRawChar = this.consumer.currentChar()
+    
     const canOpenConvention = (
       NON_WHITESPACE.test(nextRawChar)
       && !this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
