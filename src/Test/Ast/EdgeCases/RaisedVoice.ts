@@ -129,9 +129,9 @@ describe('Shouted text inside of emphasized text', () => {
             new PlainTextNode(' eating the cardboard'),
           ]),
         ]),
-          new StressNode([
-            new PlainTextNode(' immediately')
-          ])
+        new StressNode([
+          new PlainTextNode(' immediately')
+        ])
       ]))
   })
 })
@@ -257,5 +257,38 @@ describe('Inside of emphasized text, shouted text with its inner emphasis node c
           ])
         ])
       ]))
+  })
+})
+
+
+describe('Matching single asterisks each surrounded by whitespace', () => {
+  it('are preserved as plain text', () => {
+    expect(Up.ast('I believe * will win the primary in * easily.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I believe * will win the primary in * easily.')
+      ])
+    )
+  })
+})
+
+
+describe('Matching clusters of 2 asterisks each surrounded by whitespace', () => {
+  it('are preserved as plain text', () => {
+    expect(Up.ast('I believe ** will win the primary in ** easily.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I believe ** will win the primary in ** easily.')
+      ])
+    )
+  })
+})
+
+
+describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () => {
+  it('are preserved as plain text', () => {
+    expect(Up.ast('I believe ***** will win the primary in ***** easily.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I believe ***** will win the primary in ***** easily.')
+      ])
+    )
   })
 })

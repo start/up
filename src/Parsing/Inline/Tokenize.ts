@@ -541,8 +541,7 @@ class Tokenizer {
   }
 
   isInside(convention: Convention): boolean {
-    // We know we're inside a convention if there are more start tokens than end tokens.
-
+    // We guaranteed to be inside a convention if there are more start tokens than end tokens.
     let excessStartTokens = 0
 
     for (const token of this.tokens) {
