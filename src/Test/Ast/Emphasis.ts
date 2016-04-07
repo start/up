@@ -54,7 +54,7 @@ describe('Emphasized text', () => {
       ]))
   })
 
-  it('can even contain further emphasized text', () => {
+  it('can contain further emphasized text', () => {
     expect(Up.ast('Hello, *my *little* world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -69,7 +69,7 @@ describe('Emphasized text', () => {
       ]))
   })
 
-  it('can even contain stressed text', () => {
+  it('can contain stressed text', () => {
     expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
@@ -81,6 +81,40 @@ describe('Emphasized text', () => {
           new PlainTextNode(' world')
         ]),
         new PlainTextNode('!')
+      ]))
+  })
+})
+
+describe('Double asterisks followed by two separate single closing asterisks', () => {
+  it('produces 2 nested emphasis nodes', () => {
+    expect(Up.ast('**Warning:* never feed this tarantula*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new EmphasisNode([
+            new PlainTextNode('Warning:'),
+          ]),
+          new PlainTextNode(' never feed this tarantula')
+        ])
+      ]))
+  })
+})
+
+describe('Quadruple asterisks followed by 4 separate single closing asterisks', () => {
+  it('produces 4 nested emphasis nodes', () => {
+    expect(Up.ast('****Warning:* never* feed* this tarantula*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new EmphasisNode([
+            new EmphasisNode([
+              new EmphasisNode([
+                new PlainTextNode('Warning:'),
+              ]),
+              new PlainTextNode(' never')
+            ]),
+            new PlainTextNode('feed')
+          ]),
+          new PlainTextNode(' this tarantula')
+        ])
       ]))
   })
 })
