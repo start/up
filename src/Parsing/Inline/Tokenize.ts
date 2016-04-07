@@ -322,28 +322,12 @@ class Tokenizer {
           return true
         }
       } else if (isEmphasisDelimiter) {
-        const isInsideEmphasis = this.isInside(EMPHASIS.convention)
-        const isInsideStress = this.isInside(STRESS.convention)
-
-        const shouldCloseStress = (
-          isInsideStress && (
-            isStressDelimiter || !isInsideEmphasis
-          )
-        )
-
-        const shouldCloseEmphasis = (
-          isInsideEmphasis && (
-            isEmphasisDelimiter || !isInsideStress
-          )
-        )
-
-        if (shouldCloseStress) {
-          this.addToken(TokenMeaning.StressEnd)
+        if (this.isInside(EMPHASIS.convention)) {
+          this.addToken(TokenMeaning.EmphasisEnd)
           return true
         }
-
-        if (shouldCloseEmphasis) {
-          this.addToken(TokenMeaning.EmphasisEnd)
+        
+        if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
           return true
         }
       }
