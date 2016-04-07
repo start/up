@@ -261,99 +261,11 @@ describe('Inside of emphasized text, shouted text with its inner emphasis node c
 })
 
 
-describe('Matching single asterisks each surrounded by whitespace', () => {
-  it('are preserved as plain text', () => {
-    expect(Up.ast('I believe * will win the primary in * easily.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I believe * will win the primary in * easily.')
-      ])
-    )
-  })
-})
-
-
-describe('Matching clusters of dpuble asterisks each surrounded by whitespace', () => {
-  it('are preserved as plain text', () => {
-    expect(Up.ast('I believe ** will win the primary in ** easily.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I believe ** will win the primary in ** easily.')
-      ])
-    )
-  })
-})
-
-
 describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () => {
   it('are preserved as plain text', () => {
     expect(Up.ast('I believe ***** will win the primary in ***** easily.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe ***** will win the primary in ***** easily.')
-      ])
-    )
-  })
-})
-
-
-describe('An asterisk followed by whitespace with a matching asterisk touching the end of a word', () => {
-  it('does not produce an emphasis node and is preserved as plain text', () => {
-    expect(Up.ast('I believe* my spelling* was wrong.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I believe* my spelling* was wrong.')
-      ])
-    )
-  })
-})
-
-
-describe('An asterisk touching the beginning of a word with a matching asterisk preceded by whitespace', () => {
-  it('does not produce an emphasis node and is preserved as plain text', () => {
-    expect(Up.ast('I *believe my *spelling was wrong.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I *believe my *spelling was wrong.')
-      ])
-    )
-  })
-})
-
-
-describe('Double asterisks followed by whitespace with matching double asterisks touching the end of a word', () => {
-  it('do not produce a stress node and are preserved as plain text', () => {
-    expect(Up.ast('I believe** my spelling** was wrong.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I believe** my spelling** was wrong.')
-      ])
-    )
-  })
-})
-
-
-describe('Double asterisks touching the beginning of a word with matching double asterisks preceded by whitespace', () => {
-  it('do not produce an emphasis node and are preserved as plain text', () => {
-    expect(Up.ast('I **believe my **spelling was wrong.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I **believe my **spelling was wrong.')
-      ])
-    )
-  })
-})
-
-
-describe('3+ asterisks followed by whitespace with matching 3+ asterisks touching the end of a word', () => {
-  it('do not produce a stress node or an emphasis node, and are preserved as plain text', () => {
-    expect(Up.ast('I believe**** my spelling**** was wrong.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I believe**** my spelling**** was wrong.')
-      ])
-    )
-  })
-})
-
-
-describe('3+ asterisks touching the beginning of a word with matching 3+ asterisks preceded by whitespace', () => {
-  it('do not produce a stress node or an emphasis node, and are preserved as plain text', () => {
-    expect(Up.ast('I ****believe my ****spelling was wrong.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I ****believe my ****spelling was wrong.')
       ])
     )
   })
