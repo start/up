@@ -316,11 +316,44 @@ describe('Double asterisks followed by whitespace with matching closing double a
 })
 
 
-describe('3+ consecutive asterisks followed by whitespace with matching 3+ consecutive asterisks', () => {
+describe('3+ asterisks followed by whitespace with matching 3+ asterisks', () => {
   it('do not produce a stress node or an emphasis node, and are preserved as plain text', () => {
     expect(Up.ast('I believe*** my spelling*** was wrong.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe*** my spelling*** was wrong.')
+      ])
+    )
+  })
+})
+
+
+describe('An asterisk touching the beginning of a word with a matching closing asterisk which is preceded by whitespace', () => {
+  it('does not produce an emphasis node and is preserved as plain text', () => {
+    expect(Up.ast('I *believe my *spelling was wrong.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I *believe my *spelling was wrong.')
+      ])
+    )
+  })
+})
+
+
+describe('Double asterisks touching the beginning of a word with matching closing double asterisks which are preceded by whitespace', () => {
+  it('do not produce an emphasis node and are preserved as plain text', () => {
+    expect(Up.ast('I **believe my **spelling was wrong.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I **believe my **spelling was wrong.')
+      ])
+    )
+  })
+})
+
+
+describe('3+ asterisks touching the beginning of a word with matching closing 3+ asterisks which are preceded by whitespace', () => {
+  it('do not produce a stress node or an emphasis node, and are preserved as plain text', () => {
+    expect(Up.ast('I ****believe my ****spelling was wrong.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I ****believe my ****spelling was wrong.')
       ])
     )
   })
