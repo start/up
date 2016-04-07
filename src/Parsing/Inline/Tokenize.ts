@@ -626,3 +626,23 @@ class IndexedSandwich {
 function compareIndexedSandwichesDescending(a: IndexedSandwich, b: IndexedSandwich): number {
   return b.index - a.index
 }
+
+enum RaisedVoiceDelimiterType {
+  Emphasis,
+  Stress,
+  Shouting
+}
+
+function getRaisedVoiceDelimiterType(raisedVoiceDelimiter: string): RaisedVoiceDelimiterType {
+  switch (raisedVoiceDelimiter.length) {
+    case 1:
+      return RaisedVoiceDelimiterType.Emphasis
+
+    case 2:
+      return RaisedVoiceDelimiterType.Stress
+
+    default:
+      // We assume the delimiter won't be empty
+      return RaisedVoiceDelimiterType.Shouting
+  }
+}
