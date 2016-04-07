@@ -317,13 +317,6 @@ class Tokenizer {
             .sort(compareIndexedConventionsDescending)
 
         if (indexedOpenConventionsInDescendingOrder.length) {
-          const COUNT_MAX_CONVENTIONS_TO_CLOSE = 2
-          const countConventionsToClose = Math.min(indexedOpenConventionsInDescendingOrder.length, COUNT_MAX_CONVENTIONS_TO_CLOSE)
-
-          for (let i = 0; i < countConventionsToClose; i++) {
-            this.addToken(indexedOpenConventionsInDescendingOrder[i].convention.endTokenMeaning())
-          }
-          
           let unspentAsterisks = raisedVoiceDelimiter.length
           
           for (const indexedOpenConvention of indexedOpenConventionsInDescendingOrder) {
