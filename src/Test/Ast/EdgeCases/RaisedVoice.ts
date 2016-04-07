@@ -272,7 +272,7 @@ describe('Matching single asterisks each surrounded by whitespace', () => {
 })
 
 
-describe('Matching clusters of 2 asterisks each surrounded by whitespace', () => {
+describe('Matching clusters of dpuble asterisks each surrounded by whitespace', () => {
   it('are preserved as plain text', () => {
     expect(Up.ast('I believe ** will win the primary in ** easily.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -288,6 +288,39 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
     expect(Up.ast('I believe ***** will win the primary in ***** easily.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe ***** will win the primary in ***** easily.')
+      ])
+    )
+  })
+})
+
+
+describe('An asterisk followed by whitespace with a matching closing asterisk', () => {
+  it('does not produce an emphasis node and is preserved as plain text', () => {
+    expect(Up.ast('I believe* my spelling* was wrong.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I believe* my spelling* was wrong.')
+      ])
+    )
+  })
+})
+
+
+describe('Double asterisks followed by whitespace with matching closing double asterisks', () => {
+  it('do not produce a stress node and are preserved as plain text', () => {
+    expect(Up.ast('I believe** my spelling** was wrong.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I believe** my spelling** was wrong.')
+      ])
+    )
+  })
+})
+
+
+describe('3+ consecutive asterisks followed by whitespace with matching 3+ consecutive asterisks', () => {
+  it('do not produce a stress node or an emphasis node, and are preserved as plain text', () => {
+    expect(Up.ast('I believe*** my spelling*** was wrong.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I believe*** my spelling*** was wrong.')
       ])
     )
   })
