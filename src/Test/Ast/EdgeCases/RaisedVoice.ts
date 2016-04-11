@@ -311,3 +311,17 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
     )
   })
 })
+
+
+describe('Text surrounded by 2 asterisks to its left and 1 asterisk to its right', () => {
+  it('is emphasized, and the extra asterisk on the left does not appear in the final document as plain text', () => {
+    expect(Up.ast('Xamarin is now **free*!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Xamarin is now '),
+        new EmphasisNode([
+          new PlainTextNode('free'),
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
