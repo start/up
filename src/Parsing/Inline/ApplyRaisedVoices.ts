@@ -12,39 +12,44 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
-  return applyIntentions(getIntentions(tokens), tokens)
+  return applyIntentions(tokens, getIntentions(tokens))
 }
 
 const POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS = [
-    TokenMeaning.PotentialRaisedVoiceStart,
-    TokenMeaning.PotentialRaisedVoiceEnd,
-    TokenMeaning.PotentialRaisedVoiceStartOrEnd
-  ]
+  TokenMeaning.PotentialRaisedVoiceStart,
+  TokenMeaning.PotentialRaisedVoiceEnd,
+  TokenMeaning.PotentialRaisedVoiceStartOrEnd
+]
 
 function getIntentions(tokens: Token[]): RaisedVoiceTokenIntention[] {
-    const intents: RaisedVoiceTokenIntention[] = []
-  
+  const intentions: RaisedVoiceTokenIntention[] = []
+
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
-    const tokenMeaning = tokens[tokenIndex].meaning
-    
+
     if (-1 !== POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS.indexOf(token.meaning)) {
-      intents.push(new RaisedVoiceTokenIntention(tokenIndex, token))
+      let intention = new RaisedVoiceTokenIntention(tokenIndex, token)
+      
+      if (intention.canEndConventions()) {
+        
+      }
+      
+      intentions.push(intention)
     }
   }
-  
-  return intents
+
+  return intentions
 }
 
 
-function applyIntentions(intentions: RaisedVoiceTokenIntention[], tokens: Token[]): Token[] {
+function applyIntentions(tokens: Token[], intentions: RaisedVoiceTokenIntention[]): Token[] {
   // We could probably be naughty and modify the `tokens` collection directly.
   const resultTokens = tokens.slice()
-  
+
   for (const intention of intentions.sort(compareIntentionsDecending)) {
     tokens.splice(intention.originalTokenIndex, 1, ...intention.finalTokens())
   }
-  
+
   return resultTokens
 }
 
@@ -52,45 +57,68 @@ function applyIntentions(intentions: RaisedVoiceTokenIntention[], tokens: Token[
 class RaisedVoiceTokenIntention {
   private startTokenMeanings: TokenMeaning[] = []
   private endTokenMeanings: TokenMeaning[] = []
-  
+
   constructor(public originalTokenIndex: number, private originalToken: Token) { }
-  
+
   finalTokens(): Token[] {
-    if (this.startTokenMeanings.length && this.endTokenMeanings.length) {
-      throw new Error(`Delimiter serving multiple roles at index ${this.originalTokenIndex}`)
-    }
-    
+    this.assertThisIntentionBreaksNoRules()
+
     if (this.startTokenMeanings.length) {
       // We indicate the intent to end emphasis/stress conventions in order, which means we're implicitly
       // indicating the intent to start emphasis/stress in reverse order 
       return this.startTokenMeanings.reverse().map(toToken)
     }
-    
-    if (this.endTokenMeanings.length) { 
+
+    if (this.endTokenMeanings.length) {
       return this.endTokenMeanings.map(toToken)
     }
-    
+
     return [new Token(TokenMeaning.PlainText, this.originalToken.value)]
   }
-  
+
+  canStartConventions(): boolean {
+    return this.originalToken.meaning != TokenMeaning.PotentialRaisedVoiceEnd
+  }
+
+  canEndConventions(): boolean {
+    return this.originalToken.meaning != TokenMeaning.PotentialRaisedVoiceStart
+  }
+
   endEmphasis(startDelimiterIntention: RaisedVoiceTokenIntention): void {
     this.endTokenMeanings.push(TokenMeaning.EmphasisEnd)
-    
+
     startDelimiterIntention.startEmphasis()
   }
-  
+
   endStress(startDelimiterIntention: RaisedVoiceTokenIntention): void {
     this.endTokenMeanings.push(TokenMeaning.StressEnd)
-    
+
     startDelimiterIntention.startStress()
   }
-  
+
   private startEmphasis(): void {
     this.startTokenMeanings.push(TokenMeaning.EmphasisStart)
   }
-  
+
   private startStress() {
     this.startTokenMeanings.push(TokenMeaning.StressStart)
+  }
+
+  private assertThisIntentionBreaksNoRules(): void {
+    const hasStartTokens = !!this.startTokenMeanings.length
+    const hasEndTokens = !!this.endTokenMeanings.length
+
+    if (hasStartTokens && hasEndTokens) {
+      throw new Error(`Delimiter serving multiple roles at index ${this.originalTokenIndex}`)
+    }
+
+    if (!this.canStartConventions() && hasStartTokens) {
+      throw new Error(`End delimiter starting conventions at ${this.originalTokenIndex}`)
+    }
+
+    if (!this.canEndConventions() && hasEndTokens) {
+      throw new Error(`Start delimiter ending conventions at ${this.originalTokenIndex}`)
+    }
   }
 }
 
