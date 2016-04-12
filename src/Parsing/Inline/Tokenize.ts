@@ -278,7 +278,6 @@ class Tokenizer {
     
     const prevRawCharacter = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
-    
     const canCloseConvention = NON_WHITESPACE.test(prevRawCharacter)
 
     // Likewise, a delimiter cannot begin any raised-voice conventions if the next character in the raw source text 
@@ -287,7 +286,6 @@ class Tokenizer {
 
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
-    
     const canOpenConvention = NON_WHITESPACE.test(nextRawChar)
     
     let meaning: TokenMeaning

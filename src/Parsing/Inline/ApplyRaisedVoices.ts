@@ -10,16 +10,25 @@ import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
-export function applyRaisedVoices(tokens: Token[]): Token[] {
-  const POTENTIAL_RAISED_VOICE_TOKENS = [
+const POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS = [
     TokenMeaning.PotentialRaisedVoiceStart,
     TokenMeaning.PotentialRaisedVoiceEnd,
     TokenMeaning.PotentialRaisedVoiceStartOrEnd
   ]
-
+  
+export function applyRaisedVoices(tokens: Token[]): Token[] {
+  const intents =
+    tokens
+      .filter(token => -1 !== POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS.indexOf(token.meaning))
+      .map(token => new RaisedVoiceTokenIntent(token.meaning))
+    
   return tokens.map(token =>
-    (POTENTIAL_RAISED_VOICE_TOKENS.indexOf(token.meaning) !== -1)
+    (POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS.indexOf(token.meaning) !== -1)
       ? new Token(TokenMeaning.PlainText, token.value)
       : token
   )
+}
+
+class RaisedVoiceTokenIntent {
+  constructor(public meaning: TokenMeaning) { }
 }
