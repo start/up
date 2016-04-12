@@ -13,43 +13,27 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 import { STRESS_COST, EMPHASIS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } from './ConventionCosts'
 
 export class StartDelimiter extends RaisedVoiceDelimiter {
-  private startTokenMeanings: TokenMeaning[] = []
-  private countSurplusAsterisks: number
-
   constructor(originalTokenIndex: number, originalValue: string) {
     super(originalTokenIndex, originalValue)
-    this.countSurplusAsterisks = originalValue.length
   }
 
   tokens(): Token[] {
-    // Why do we reverse our tokens?
+    // Why reverse these tokens?
     //
     // We determine the ends of conventions in proper order, which means we're implicitly determining the
     // beginnings of conventions in reverse order. 
     return (
-      this.startTokenMeanings
+      this.tokenMeanings
         .map(meaning => new Token(meaning))
         .reverse()
     )
   }
-
-  canStartEmphasisAndStressTogether(): boolean {
-    return this.countSurplusAsterisks >= STRESS_AND_EMPHASIS_TOGETHER_COST
-  }
-
-  canStartEphasis(): boolean {
-    return this.countSurplusAsterisks >= EMPHASIS_COST
-  }
-  
-  canStartStress(): boolean {
-    return this.countSurplusAsterisks >= STRESS_COST
-  }
   
   startEmphasis(): void {
-    this.startTokenMeanings.push(TokenMeaning.EmphasisStart)
+    this.tokenMeanings.push(TokenMeaning.EmphasisStart)
   }
 
   startStress(): void {
-    this.startTokenMeanings.push(TokenMeaning.StressStart)
+    this.tokenMeanings.push(TokenMeaning.StressStart)
   }
 }

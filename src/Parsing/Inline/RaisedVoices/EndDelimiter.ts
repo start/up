@@ -14,15 +14,12 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 
 export class EndDelimiter extends RaisedVoiceDelimiter {
-  private endTokenMeanings: TokenMeaning[] = []
-  private countSurplusAsterisks: number
-
   constructor(originalTokenIndex: number, originalValue: string) {
     super(originalTokenIndex, originalValue)
   }
 
   tokens(): Token[] {
-    return this.endTokenMeanings.map(meaning => new Token(meaning))
+    return this.tokenMeanings.map(meaning => new Token(meaning))
   }
 
   matchAnyApplicableStartDelimiters(delimiters: RaisedVoiceDelimiter[]): void {
@@ -39,13 +36,13 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
   }
 
   private endEmphasis(startDelimiter: StartDelimiter): void {
-    this.endTokenMeanings.push(TokenMeaning.EmphasisEnd)
+    this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
 
     startDelimiter.startEmphasis()
   }
 
   private endStress(startDeilmeter: StartDelimiter): void {
-    this.endTokenMeanings.push(TokenMeaning.StressEnd)
+    this.tokenMeanings.push(TokenMeaning.StressEnd)
 
     startDeilmeter.startStress()
   }

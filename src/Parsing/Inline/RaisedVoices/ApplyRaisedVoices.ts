@@ -39,6 +39,10 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
       || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
     )
     
+    if (!canStartConvention && !canEndConvention) {
+      continue
+    }
+    
     // A given raised voice delimiter will serve only 1 of 3 roles:
     //
     // 1. End 1 or more conventions
