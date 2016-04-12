@@ -268,103 +268,38 @@ class Tokenizer {
       return false
     }
 
-    // If the previous character in the raw source text was whitespace, we cannot end any raised-voice conventions.
-    // Otherwise, we potentially can end one (assuming one is open).
+    // If the previous character in the raw source text was whitespace, this delimiter cannot end any raised-voice
+    // conventions. That's because delimiter needs to look like it's touching the end of the text it's affecting.
     //
-    // If the previous character was indeed whitespace, we don't care whether it was escaped or not! Disqualified.
-    // We only care about how the asterisks look in the surrounding raw text. If it looks like they're not hugging
-    // the end of something, they can't end a convention.
-
+    // We're only concerned with how the asterisks appear in the surrounding raw text. Therefore, at least for now,
+    // we don't care whether any preceding whitespace is escaped or not.
+    
     const prevRawCharacter = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
+    
     const canCloseConvention = NON_WHITESPACE.test(prevRawCharacter)
 
-    // Here are the rules for closing conventions:
-    //
-    // 1 asterisk
-    //   Closes an open emphasis convention, assuming there is one. Otherwise, it closes an open stress convnetion.
-    //
-    // 2 asterisks
-    //   Closes an open stress convnetion, assuming there is one. Otherwise, it closes up to 2 open emphasis
-    //   conventions.
-    //
-    // 3 or more asterisks (the most complicated)
-    //   Closes multiple emphasis and stress conventions, from innermost to outermost, until all asterisks are
-    //   "exhausted". Closing a stress convention "costs" 2 asterisk, and closing an emphasis convention "costs"
-    //   1 asterisk. Any "un-spent" asterisks at the end are silently consumed.
-    //
-    //   Even once there is just 1 "un-spent" asterisk, that last asterisk will happily close either stress or
-    //   emphasis. This means that 3 asterisks will close 2 stress conventions.
-    //
-    // If a shouting delimiter is surrounded on *both* sides by non-whitespace, it can potentially open *or* close
-    // conventions. In that situation, we initially try to close conventions, which is consistent with the behavior
-    // of our regular sandwiches.
-
-    const raisedVoiceDelimiterType = getRaisedVoiceDelimiterType(raisedVoiceDelimiter)
-
-    if (canCloseConvention) {
-      switch (raisedVoiceDelimiterType) {
-        case RaisedVoiceDelimiterType.Emphasis:
-          if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(EMPHASIS, raisedVoiceDelimiter)) {
-            return true
-          }
-          break
-
-        case RaisedVoiceDelimiterType.Stress:
-          if (this.spendAsterisksToLowerVoiceAfterFirstTryingToClose(STRESS, raisedVoiceDelimiter)) {
-            return true
-          }
-          break
-
-        case RaisedVoiceDelimiterType.Shouting:
-          if (this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)) {
-            return true
-          }
-          break
-      }
-    }
-
-    // As alluded to above, we cannot open any raised-voice conventions if the next character in the raw source text is 
-    // whitespace. Otherwise, we're good!
-    //
-    // The next character can even be a backslash. As long as the asterisk looks like it's hugging the beginning of
-    // something, it can open a convention.
-
-    // An important rule: A given raised voice delimiter will either only open conventions, only close conventions, or 
-    // only be interpreted as plain text.
+    // Likewise, a delimiter cannot begin any raised-voice conventions if the next character in the raw source text 
+    // is whitespace. That's because the delimiter must look like it's touching the beginning of the text it's
+    // affecting. At least for now, the next raw character can even be a backslash!
 
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
     
-    const canOpenConvention = (
-      NON_WHITESPACE.test(nextRawChar)
-      && !this.failureTracker.hasConventionFailed(EMPHASIS.convention, originalTextIndex)
-      && !this.failureTracker.hasConventionFailed(STRESS.convention, originalTextIndex)
-    )
-
-    if (canOpenConvention) {
-      const consumerAsBeforeMatch = this.consumer.asBeforeMatch(raisedVoiceDelimiter.length)
-      
-      switch (raisedVoiceDelimiterType) {
-        case RaisedVoiceDelimiterType.Emphasis:
-          this.addToken(TokenMeaning.EmphasisStart, consumerAsBeforeMatch)
-          break
-
-        case RaisedVoiceDelimiterType.Stress:
-          this.addToken(TokenMeaning.StressStart, consumerAsBeforeMatch)
-          break
-
-        case RaisedVoiceDelimiterType.Shouting:
-          this.addToken(TokenMeaning.StressStart, consumerAsBeforeMatch)
-          this.addToken(TokenMeaning.EmphasisStart)
-          break
-      }
-      
-      return true
+    const canOpenConvention = NON_WHITESPACE.test(nextRawChar)
+    
+    let meaning: TokenMeaning
+    
+    if (canOpenConvention && canCloseConvention) {
+      meaning = TokenMeaning.PotentialRaisedVoiceStartOrEnd
+    } else if (canOpenConvention) {
+      meaning = TokenMeaning.PotentialRaisedVoiceStart
+    } else if (canCloseConvention) {
+      meaning = TokenMeaning.PotentialRaisedVoiceEnd
     }
-
-    // The delimiter could neither open nore close any conventions. Let's treat it as plain text.
-    this.addPlainTextToken(raisedVoiceDelimiter)
+    
+    this.addToken(meaning)
+    
     return true
   }
 
