@@ -89,7 +89,6 @@ describe('Text surrounded by 1 asterisk to its left and 3 asterisks to its right
 })
 
 
-
 describe('Text surrounded by 2 asterisk to its left and 3 asterisks to its right', () => {
   it('is stressed, and the extra asterisk on the right does not appear in the final document as plain text', () => {
     expect(Up.ast('Xamarin is now **free***!')).to.be.eql(

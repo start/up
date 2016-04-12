@@ -16,7 +16,10 @@ export enum TokenMeaning {
   InlineAsideStart,
   InlineAsideEnd,
   LinkStart,
-  LinkUrlAndLinkEnd
+  LinkUrlAndLinkEnd,
+  PotentialRaisedVoiceStart,
+  PotentialRaisedVoiceEnd,
+  PotentialRaisedVoiceStartOrEnd
 }
 
 export class Token {
