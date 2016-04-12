@@ -15,20 +15,29 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 export class EndDelimiter extends RaisedVoiceDelimiter {
   private endTokenMeanings: TokenMeaning[] = []
-  private countRemainingAsterisksToSpend: number
-  
+  private countSurplusAsterisks: number
+
   constructor(originalTokenIndex: number, originalValue: string) {
     super(originalTokenIndex, originalValue)
   }
 
   tokens(): Token[] {
-      return this.endTokenMeanings.map(meaning => new Token(meaning))    
+    return this.endTokenMeanings.map(meaning => new Token(meaning))
   }
-  
+
   matchAnyApplicableStartDelimiters(delimiters: RaisedVoiceDelimiter[]): void {
-    
+    const startDelimitersFromMostToLeastRecent = <StartDelimiter[]>(
+      delimiters
+        .filter(delimiter => delimiter instanceof StartDelimiter)
+        .reverse()
+    )
+
+    for (const startDelimiter of startDelimitersFromMostToLeastRecent) {
+      // If the start delimiter can afford both stress and emphasis together, that means it has at least
+      // 3 asterisks.
+    }
   }
-  
+
   private endEmphasis(startDelimiter: StartDelimiter): void {
     this.endTokenMeanings.push(TokenMeaning.EmphasisEnd)
 

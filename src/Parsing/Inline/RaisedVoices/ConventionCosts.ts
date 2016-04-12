@@ -1,4 +1,12 @@
-import { EMPHASIS, STRESS } from '../Sandwiches'
 
-const EMPHASIS_ASTERISK_COST = EMPHASIS.start.length
-const STRESS_ASTERISK_COST = STRESS.start.length
+import { STRESS, EMPHASIS } from '../Sandwiches'
+
+const STRESS_COST = STRESS.start.length
+const EMPHASIS_COST = EMPHASIS.start.length
+const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
+
+export {
+  STRESS_COST,
+  EMPHASIS_COST,
+  STRESS_AND_EMPHASIS_TOGETHER_COST
+}

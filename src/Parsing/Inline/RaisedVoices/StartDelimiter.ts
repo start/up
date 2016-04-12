@@ -10,21 +10,39 @@ import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
 import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
-
+import { STRESS_COST, EMPHASIS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } from './ConventionCosts'
 
 export class StartDelimiter extends RaisedVoiceDelimiter {
   private startTokenMeanings: TokenMeaning[] = []
-  private unsatisfiedAsteriskDebt: number
-  
+  private countSurplusAsterisks: number
+
   constructor(originalTokenIndex: number, originalValue: string) {
     super(originalTokenIndex, originalValue)
-    this.unsatisfiedAsteriskDebt = originalValue.length
+    this.countSurplusAsterisks = originalValue.length
   }
 
   tokens(): Token[] {
-      // We determine the ends emphasis/stress conventions in proper order, which means we're implicitly
-      //determining the beginnings of emphasis/stress in reverse order.
-      return this.startTokenMeanings.reverse().map(meaning => new Token(meaning))    
+    // Why do we reverse our tokens?
+    //
+    // We determine the ends of conventions in proper order, which means we're implicitly determining the
+    // beginnings of conventions in reverse order. 
+    return (
+      this.startTokenMeanings
+        .map(meaning => new Token(meaning))
+        .reverse()
+    )
+  }
+
+  canStartEmphasisAndStressTogether(): boolean {
+    return this.countSurplusAsterisks >= STRESS_AND_EMPHASIS_TOGETHER_COST
+  }
+
+  canStartEphasis(): boolean {
+    return this.countSurplusAsterisks >= EMPHASIS_COST
+  }
+  
+  canStartStress(): boolean {
+    return this.countSurplusAsterisks >= STRESS_COST
   }
   
   startEmphasis(): void {
