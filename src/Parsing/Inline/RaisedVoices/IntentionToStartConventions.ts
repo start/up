@@ -14,14 +14,16 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 export class IntentionToStartConventions extends RaisedVoiceDelimiterIntention {
   private startTokenMeanings: TokenMeaning[] = []
+  private unsatisfiedAsteriskDebt: number
   
   constructor(originalTokenIndex: number, originalValue: string) {
     super(originalTokenIndex, originalValue)
+    this.unsatisfiedAsteriskDebt = originalValue.length
   }
 
   tokens(): Token[] {
       // We indicate the intent to end emphasis/stress conventions in order, which means we're implicitly
-      // indicating the intent to start emphasis/stress in reverse order 
+      // indicating the intent to start emphasis/stress in reverse order.
       return this.startTokenMeanings.reverse().map(meaning => new Token(meaning))    
   }
   

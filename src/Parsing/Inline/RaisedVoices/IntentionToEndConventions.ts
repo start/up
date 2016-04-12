@@ -16,6 +16,7 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 export class IntentionToEndConventions extends RaisedVoiceDelimiterIntention {
   private endTokenMeanings: TokenMeaning[] = []
+  private countRemainingAsterisksToSpend: number
   
   constructor(originalTokenIndex: number, originalValue: string) {
     super(originalTokenIndex, originalValue)
@@ -25,13 +26,17 @@ export class IntentionToEndConventions extends RaisedVoiceDelimiterIntention {
       return this.endTokenMeanings.map(meaning => new Token(meaning))    
   }
   
-  endEmphasis(startDelimiterIntention: IntentionToStartConventions): void {
+  matchAnyApplicableStartDelimiters(intentions: RaisedVoiceDelimiterIntention[]): void {
+    
+  }
+  
+  private endEmphasis(startDelimiterIntention: IntentionToStartConventions): void {
     this.endTokenMeanings.push(TokenMeaning.EmphasisEnd)
 
     startDelimiterIntention.startEmphasis()
   }
 
-  endStress(startDelimiterIntention: IntentionToStartConventions): void {
+  private endStress(startDelimiterIntention: IntentionToStartConventions): void {
     this.endTokenMeanings.push(TokenMeaning.StressEnd)
 
     startDelimiterIntention.startStress()

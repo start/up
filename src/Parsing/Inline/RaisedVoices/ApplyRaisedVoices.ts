@@ -38,10 +38,12 @@ function getIntentions(tokens: Token[]): RaisedVoiceDelimiterIntention[] {
     )
 
     if (canEndConvention) {
-      const intention = new IntentionToEndConventions(tokenIndex, value)
+      const intentionToEndConventions = new IntentionToEndConventions(tokenIndex, value)
+      
+      intentionToEndConventions.matchAnyApplicableStartDelimiters(intentions)
 
-      if (!intention.providesNoTokens()) {
-        intentions.push(intention)
+      if (!intentionToEndConventions.providesNoTokens()) {
+        intentions.push(intentionToEndConventions)
         continue
       }
     }
