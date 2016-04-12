@@ -39,7 +39,9 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
       || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
     )
     
-    if (!canStartConvention && !canEndConvention) {
+    const isTokenRelevant = canStartConvention || canEndConvention 
+        
+    if (!isTokenRelevant) { 
       continue
     }
     
@@ -49,7 +51,7 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
     // 2. Start 1 or more conventions
     // 3. Be treated as plain text (as a last resort)
     //
-    
+    //
     // If a delimiter has the potential to either start *or* end conventions (represented by a token with the meaning 
     // TokenMeaning.PotentialRaisedVoiceStartOrEnd), we initially treat it as an end delimiter. If we fail to match
     // it with any start delimiters, we then treat it as a start delimiter, hoping we can subsequently match it to at
