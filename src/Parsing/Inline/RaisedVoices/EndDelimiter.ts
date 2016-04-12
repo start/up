@@ -14,10 +14,6 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 
 export class EndDelimiter extends RaisedVoiceDelimiter {
-  constructor(originalTokenIndex: number, originalValue: string) {
-    super(originalTokenIndex, originalValue)
-  }
-
   tokens(): Token[] {
     return this.tokenMeanings.map(meaning => new Token(meaning))
   }

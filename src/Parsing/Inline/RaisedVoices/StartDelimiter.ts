@@ -13,10 +13,6 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 import { STRESS_COST, EMPHASIS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } from './ConventionCosts'
 
 export class StartDelimiter extends RaisedVoiceDelimiter {
-  constructor(originalTokenIndex: number, originalValue: string) {
-    super(originalTokenIndex, originalValue)
-  }
-
   tokens(): Token[] {
     // Why reverse these tokens?
     //
