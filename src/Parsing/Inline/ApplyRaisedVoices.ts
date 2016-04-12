@@ -28,11 +28,7 @@ function getIntentions(tokens: Token[]): RaisedVoiceTokenIntention[] {
     const token = tokens[tokenIndex]
 
     if (-1 !== POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS.indexOf(token.meaning)) {
-      let intention = new RaisedVoiceTokenIntention(tokenIndex, token)
-      
-      if (intention.canEndConventions()) {
-        
-      }
+      let intention = new IntentionForPlainText(tokenIndex, token.value)
       
       intentions.push(intention)
     }
@@ -47,78 +43,73 @@ function applyIntentions(tokens: Token[], intentions: RaisedVoiceTokenIntention[
   const resultTokens = tokens.slice()
 
   for (const intention of intentions.sort(compareIntentionsDecending)) {
-    tokens.splice(intention.originalTokenIndex, 1, ...intention.finalTokens())
+    tokens.splice(intention.originalTokenIndex, 1, ...intention.tokens())
   }
 
   return resultTokens
 }
 
 
-class RaisedVoiceTokenIntention {
+abstract class RaisedVoiceTokenIntention {
+  constructor(public originalTokenIndex: number, protected originalValue: string) { }
+
+  abstract tokens(): Token[]
+}
+
+
+class IntentionToStartConventions extends RaisedVoiceTokenIntention {
   private startTokenMeanings: TokenMeaning[] = []
-  private endTokenMeanings: TokenMeaning[] = []
+  
+  constructor(originalTokenIndex: number, originalValue: string) {
+    super(originalTokenIndex, originalValue)
+  }
 
-  constructor(public originalTokenIndex: number, private originalToken: Token) { }
-
-  finalTokens(): Token[] {
-    this.assertThisIntentionBreaksNoRules()
-
-    if (this.startTokenMeanings.length) {
+  tokens(): Token[] {
       // We indicate the intent to end emphasis/stress conventions in order, which means we're implicitly
       // indicating the intent to start emphasis/stress in reverse order 
-      return this.startTokenMeanings.reverse().map(toToken)
-    }
-
-    if (this.endTokenMeanings.length) {
-      return this.endTokenMeanings.map(toToken)
-    }
-
-    return [new Token(TokenMeaning.PlainText, this.originalToken.value)]
+      return this.startTokenMeanings.reverse().map(toToken)    
+  }
+  
+  startEmphasis(): void {
+    this.startTokenMeanings.push(TokenMeaning.EmphasisStart)
   }
 
-  canStartConventions(): boolean {
-    return this.originalToken.meaning != TokenMeaning.PotentialRaisedVoiceEnd
+  startStress(): void {
+    this.startTokenMeanings.push(TokenMeaning.StressStart)
+  }
+}
+
+
+class IntentionToEndConventions extends RaisedVoiceTokenIntention {
+  private endTokenMeanings: TokenMeaning[] = []
+  
+  constructor(originalTokenIndex: number, originalValue: string) {
+    super(originalTokenIndex, originalValue)
   }
 
-  canEndConventions(): boolean {
-    return this.originalToken.meaning != TokenMeaning.PotentialRaisedVoiceStart
+  tokens(): Token[] {
+      // We indicate the intent to end emphasis/stress conventions in order, which means we're implicitly
+      // indicating the intent to end emphasis/stress in reverse order 
+      return this.endTokenMeanings.reverse().map(toToken)    
   }
-
-  endEmphasis(startDelimiterIntention: RaisedVoiceTokenIntention): void {
+  
+  endEmphasis(startDelimiterIntention: IntentionToStartConventions): void {
     this.endTokenMeanings.push(TokenMeaning.EmphasisEnd)
 
     startDelimiterIntention.startEmphasis()
   }
 
-  endStress(startDelimiterIntention: RaisedVoiceTokenIntention): void {
+  endStress(startDelimiterIntention: IntentionToStartConventions): void {
     this.endTokenMeanings.push(TokenMeaning.StressEnd)
 
     startDelimiterIntention.startStress()
   }
+}
 
-  private startEmphasis(): void {
-    this.startTokenMeanings.push(TokenMeaning.EmphasisStart)
-  }
 
-  private startStress() {
-    this.startTokenMeanings.push(TokenMeaning.StressStart)
-  }
-
-  private assertThisIntentionBreaksNoRules(): void {
-    const hasStartTokens = !!this.startTokenMeanings.length
-    const hasEndTokens = !!this.endTokenMeanings.length
-
-    if (hasStartTokens && hasEndTokens) {
-      throw new Error(`Delimiter serving multiple roles at index ${this.originalTokenIndex}`)
-    }
-
-    if (!this.canStartConventions() && hasStartTokens) {
-      throw new Error(`End delimiter starting conventions at ${this.originalTokenIndex}`)
-    }
-
-    if (!this.canEndConventions() && hasEndTokens) {
-      throw new Error(`Start delimiter ending conventions at ${this.originalTokenIndex}`)
-    }
+class IntentionForPlainText extends RaisedVoiceTokenIntention {
+  tokens(): Token[] {
+    return [new Token(TokenMeaning.PlainText, this.originalValue)]
   }
 }
 
