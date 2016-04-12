@@ -40,19 +40,23 @@ function getIntentions(tokens: Token[]): RaisedVoiceDelimiterIntention[] {
     if (canEndConvention) {
       const intention = new IntentionToEndConventions(tokenIndex, value)
 
-      intentions.push(intention)
+      if (!intention.providesNoTokens()) {
+        intentions.push(intention)
+        continue
+      }
     }
 
     if (canStartConvention) {
       intentions.push(new IntentionToStartConventions(tokenIndex, value))
     } else {
-      // Well, we could neither start nor end any conventions using this delimiter. We have no other option but to
-      // assume it should be plain text.
+      // Well, we could neither start nor end any conventions using this delimiter, so we'll assume it was meant to
+      // be plain text.
       intentions.push(new PlainTextIntention(tokenIndex, value))
     }
   }
 
-  // Finally, if any of our intentions failed to pan out, we convert them to plain text
+  // If any of our intentions failed to pan out (i.e. fail to provide any tokens), we have no choice but to assume
+  // the associated delimiters were meant to be plain text.
   const withFailedIntentionsTreatedAsPlainText =
     intentions.map(intention =>
       intention.providesNoTokens()
