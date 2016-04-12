@@ -8,13 +8,13 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceTokenIntention } from './RaisedVoiceTokenIntention'
+import { RaisedVoiceDelimiterIntention } from './RaisedVoiceDelimiterIntention'
 import { IntentionToStartConventions } from './IntentionToStartConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
 
-export class IntentionToEndConventions extends RaisedVoiceTokenIntention {
+export class IntentionToEndConventions extends RaisedVoiceDelimiterIntention {
   private endTokenMeanings: TokenMeaning[] = []
   
   constructor(originalTokenIndex: number, originalValue: string) {
@@ -39,7 +39,7 @@ export class IntentionToEndConventions extends RaisedVoiceTokenIntention {
 }
 
 
-class IntentionForPlainText extends RaisedVoiceTokenIntention {
+class IntentionForPlainText extends RaisedVoiceDelimiterIntention {
   tokens(): Token[] {
     return [new Token(TokenMeaning.PlainText, this.originalValue)]
   }

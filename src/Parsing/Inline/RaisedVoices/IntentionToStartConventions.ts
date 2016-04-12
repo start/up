@@ -8,11 +8,11 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceTokenIntention } from './RaisedVoiceTokenIntention'
+import { RaisedVoiceDelimiterIntention } from './RaisedVoiceDelimiterIntention'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
-export class IntentionToStartConventions extends RaisedVoiceTokenIntention {
+export class IntentionToStartConventions extends RaisedVoiceDelimiterIntention {
   private startTokenMeanings: TokenMeaning[] = []
   
   constructor(originalTokenIndex: number, originalValue: string) {

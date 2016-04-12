@@ -8,10 +8,10 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceTokenIntention, compareIntentionsDecending } from './RaisedVoiceTokenIntention'
+import { RaisedVoiceDelimiterIntention, compareIntentionsDecending } from './RaisedVoiceDelimiterIntention'
 import { IntentionToStartConventions } from './IntentionToStartConventions'
 import { IntentionToEndConventions } from './IntentionToEndConventions'
-import { IntentionForPlainText } from './IntentionForPlainText'
+import { PlainTextIntention } from './PlainTextIntention'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
@@ -19,31 +19,53 @@ export function applyRaisedVoices(tokens: Token[]): Token[] {
   return applyIntentions(tokens, getIntentions(tokens))
 }
 
-const POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS = [
-  TokenMeaning.PotentialRaisedVoiceStart,
-  TokenMeaning.PotentialRaisedVoiceEnd,
-  TokenMeaning.PotentialRaisedVoiceStartOrEnd
-]
 
-function getIntentions(tokens: Token[]): RaisedVoiceTokenIntention[] {
-  const intentions: RaisedVoiceTokenIntention[] = []
+function getIntentions(tokens: Token[]): RaisedVoiceDelimiterIntention[] {
+  const intentions: RaisedVoiceDelimiterIntention[] = []
 
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
+    const {meaning, value} = token
 
-    if (-1 !== POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS.indexOf(token.meaning)) {
-      let intention = new IntentionForPlainText(tokenIndex, token.value)
-      
+    const canStartConvention = (
+      meaning === TokenMeaning.PotentialRaisedVoiceStart
+      || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
+    )
+
+    const canEndConvention = (
+      meaning === TokenMeaning.PotentialRaisedVoiceEnd
+      || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
+    )
+
+    if (canEndConvention) {
+      const intention = new IntentionToEndConventions(tokenIndex, value)
+
       intentions.push(intention)
+    }
+
+    if (canStartConvention) {
+      intentions.push(new IntentionToStartConventions(tokenIndex, value))
+    } else {
+      // Well, we could neither start nor end any conventions using this delimiter. We have no other option but to
+      // assume it should be plain text.
+      intentions.push(new PlainTextIntention(tokenIndex, value))
     }
   }
 
-  return intentions
+  // Finally, if any of our intentions failed to pan out, we convert them to plain text
+  const withFailedIntentionsTreatedAsPlainText =
+    intentions.map(intention =>
+      intention.providesNoTokens()
+        ? new PlainTextIntention(intention.originalTokenIndex, intention.originalValue)
+        : intention
+    )
+
+  return withFailedIntentionsTreatedAsPlainText
 }
 
 
-function applyIntentions(tokens: Token[], intentions: RaisedVoiceTokenIntention[]): Token[] {
-  // We could probably be naughty and modify the `tokens` collection directly.
+function applyIntentions(tokens: Token[], intentions: RaisedVoiceDelimiterIntention[]): Token[] {
+  // We could probably be naughty and modify the `tokens` collection directly without anyone noticing.
   const resultTokens = tokens.slice()
 
   for (const intention of intentions.sort(compareIntentionsDecending)) {
