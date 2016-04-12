@@ -100,7 +100,7 @@ function replacePlaceholderTokens(tokens: Token[], delimiters: RaisedVoiceDelimi
   const resultTokens = tokens.slice()
 
   for (const delimiter of delimiters.sort(compareDelimitersDecending)) {
-    tokens.splice(delimiter.originalTokenIndex, 1, ...delimiter.tokens())
+    resultTokens.splice(delimiter.originalTokenIndex, 1, ...delimiter.tokens())
   }
 
   return resultTokens
