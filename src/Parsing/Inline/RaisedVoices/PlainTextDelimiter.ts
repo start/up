@@ -8,18 +8,12 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
+import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
+import { StartDelimiter } from './StartDelimiter'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
-export abstract class RaisedVoiceDelimiterIntention {
-  constructor(public originalTokenIndex: number, public originalValue: string) { }
-
-  abstract tokens(): Token[]
-  
-  providesNoTokens(): boolean {
-    return !this.tokens().length
+export class PlainTextDelimiter extends RaisedVoiceDelimiter {
+  tokens(): Token[] {
+    return [new Token(TokenMeaning.PlainText, this.originalValue)]
   }
-}
-
-export function compareIntentionsDecending(a: RaisedVoiceDelimiterIntention, b: RaisedVoiceDelimiterIntention): number {
-  return b.originalTokenIndex - a.originalTokenIndex
 }

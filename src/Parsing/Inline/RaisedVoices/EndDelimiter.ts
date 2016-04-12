@@ -8,13 +8,12 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiterIntention } from './RaisedVoiceDelimiterIntention'
-import { IntentionToStartConventions } from './IntentionToStartConventions'
+import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
+import { StartDelimiter } from './StartDelimiter'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
-
-export class IntentionToEndConventions extends RaisedVoiceDelimiterIntention {
+export class EndDelimiter extends RaisedVoiceDelimiter {
   private endTokenMeanings: TokenMeaning[] = []
   private countRemainingAsterisksToSpend: number
   
@@ -26,26 +25,19 @@ export class IntentionToEndConventions extends RaisedVoiceDelimiterIntention {
       return this.endTokenMeanings.map(meaning => new Token(meaning))    
   }
   
-  matchAnyApplicableStartDelimiters(intentions: RaisedVoiceDelimiterIntention[]): void {
+  matchAnyApplicableStartDelimiters(delimiters: RaisedVoiceDelimiter[]): void {
     
   }
   
-  private endEmphasis(startDelimiterIntention: IntentionToStartConventions): void {
+  private endEmphasis(startDelimiter: StartDelimiter): void {
     this.endTokenMeanings.push(TokenMeaning.EmphasisEnd)
 
-    startDelimiterIntention.startEmphasis()
+    startDelimiter.startEmphasis()
   }
 
-  private endStress(startDelimiterIntention: IntentionToStartConventions): void {
+  private endStress(startDeilmeter: StartDelimiter): void {
     this.endTokenMeanings.push(TokenMeaning.StressEnd)
 
-    startDelimiterIntention.startStress()
-  }
-}
-
-
-class IntentionForPlainText extends RaisedVoiceDelimiterIntention {
-  tokens(): Token[] {
-    return [new Token(TokenMeaning.PlainText, this.originalValue)]
+    startDeilmeter.startStress()
   }
 }

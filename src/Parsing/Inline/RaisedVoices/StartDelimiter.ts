@@ -8,11 +8,11 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiterIntention } from './RaisedVoiceDelimiterIntention'
+import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
-export class IntentionToStartConventions extends RaisedVoiceDelimiterIntention {
+export class StartDelimiter extends RaisedVoiceDelimiter {
   private startTokenMeanings: TokenMeaning[] = []
   private unsatisfiedAsteriskDebt: number
   
@@ -22,8 +22,8 @@ export class IntentionToStartConventions extends RaisedVoiceDelimiterIntention {
   }
 
   tokens(): Token[] {
-      // We indicate the intent to end emphasis/stress conventions in order, which means we're implicitly
-      // indicating the intent to start emphasis/stress in reverse order.
+      // We determine the ends emphasis/stress conventions in proper order, which means we're implicitly
+      //determining the beginnings of emphasis/stress in reverse order.
       return this.startTokenMeanings.reverse().map(meaning => new Token(meaning))    
   }
   

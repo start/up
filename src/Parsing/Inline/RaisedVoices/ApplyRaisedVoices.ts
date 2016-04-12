@@ -8,20 +8,22 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiterIntention, compareIntentionsDecending } from './RaisedVoiceDelimiterIntention'
-import { IntentionToStartConventions } from './IntentionToStartConventions'
-import { IntentionToEndConventions } from './IntentionToEndConventions'
-import { PlainTextIntention } from './PlainTextIntention'
+import { RaisedVoiceDelimiter, compareDelimitersDecending } from './RaisedVoiceDelimiter'
+import { StartDelimiter } from './StartDelimiter'
+import { EndDelimiter } from './EndDelimiter'
+import { PlainTextDelimiter } from './PlainTextDelimiter'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
-  return applyIntentions(tokens, getIntentions(tokens))
+  const delimiters = getDelimiters(tokens)
+  
+  return replacePlaceholderTokens(tokens, delimiters)
 }
 
 
-function getIntentions(tokens: Token[]): RaisedVoiceDelimiterIntention[] {
-  const intentions: RaisedVoiceDelimiterIntention[] = []
+function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
+  const delimiters: RaisedVoiceDelimiter[] = []
 
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
@@ -38,44 +40,44 @@ function getIntentions(tokens: Token[]): RaisedVoiceDelimiterIntention[] {
     )
 
     if (canEndConvention) {
-      const intentionToEndConventions = new IntentionToEndConventions(tokenIndex, value)
+      const endDelimiter = new EndDelimiter(tokenIndex, value)
       
-      intentionToEndConventions.matchAnyApplicableStartDelimiters(intentions)
+      endDelimiter.matchAnyApplicableStartDelimiters(delimiters)
 
-      if (!intentionToEndConventions.providesNoTokens()) {
-        intentions.push(intentionToEndConventions)
+      if (!endDelimiter.providesNoTokens()) {
+        delimiters.push(endDelimiter)
         continue
       }
     }
 
     if (canStartConvention) {
-      intentions.push(new IntentionToStartConventions(tokenIndex, value))
+      delimiters.push(new StartDelimiter(tokenIndex, value))
     } else {
       // Well, we could neither start nor end any conventions using this delimiter, so we'll assume it was meant to
       // be plain text.
-      intentions.push(new PlainTextIntention(tokenIndex, value))
+      delimiters.push(new PlainTextDelimiter(tokenIndex, value))
     }
   }
 
-  // If any of our intentions failed to pan out (i.e. fail to provide any tokens), we have no choice but to assume
-  // the associated delimiters were meant to be plain text.
-  const withFailedIntentionsTreatedAsPlainText =
-    intentions.map(intention =>
-      intention.providesNoTokens()
-        ? new PlainTextIntention(intention.originalTokenIndex, intention.originalValue)
-        : intention
+  // If any of our delimiters failed to pan out (i.e. fail to provide any tokens), we have no choice but to assume
+  // they were meant to be plain text.
+  const withFailedDelimitersTreatedAsPlainText =
+    delimiters.map(delimiter =>
+      delimiter.providesNoTokens()
+        ? new PlainTextDelimiter(delimiter.originalTokenIndex, delimiter.originalValue)
+        : delimiter
     )
 
-  return withFailedIntentionsTreatedAsPlainText
+  return withFailedDelimitersTreatedAsPlainText
 }
 
 
-function applyIntentions(tokens: Token[], intentions: RaisedVoiceDelimiterIntention[]): Token[] {
+function replacePlaceholderTokens(tokens: Token[], delimiters: RaisedVoiceDelimiter[]): Token[] {
   // We could probably be naughty and modify the `tokens` collection directly without anyone noticing.
   const resultTokens = tokens.slice()
 
-  for (const intention of intentions.sort(compareIntentionsDecending)) {
-    tokens.splice(intention.originalTokenIndex, 1, ...intention.tokens())
+  for (const delimiter of delimiters.sort(compareDelimitersDecending)) {
+    tokens.splice(delimiter.originalTokenIndex, 1, ...delimiter.tokens())
   }
 
   return resultTokens
