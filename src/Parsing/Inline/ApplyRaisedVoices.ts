@@ -12,8 +12,7 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
-  const intentions = getEmptyIntentions(tokens)
-  return applyIntentions(intentions, tokens)
+  return applyIntentions(getIntentions(tokens), tokens)
 }
 
 const POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS = [
@@ -22,7 +21,7 @@ const POTENTIAL_RAISED_VOICE_TOKEN_MEANINGS = [
     TokenMeaning.PotentialRaisedVoiceStartOrEnd
   ]
 
-function getEmptyIntentions(tokens: Token[]): RaisedVoiceTokenIntention[] {
+function getIntentions(tokens: Token[]): RaisedVoiceTokenIntention[] {
     const intents: RaisedVoiceTokenIntention[] = []
   
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
@@ -70,7 +69,6 @@ class RaisedVoiceTokenIntention {
     if (this.endTokenMeanings.length) { 
       return this.endTokenMeanings.map(toToken)
     }
-    
     
     return [new Token(TokenMeaning.PlainText, this.originalToken.value)]
   }
