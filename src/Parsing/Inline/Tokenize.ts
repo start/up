@@ -8,6 +8,7 @@ import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
+import { applyRaisedVoices }  from './ApplyRaisedVoices'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
@@ -73,6 +74,7 @@ class Tokenizer {
       this.consumer.moveNext()
     }
 
+    this.tokens = applyRaisedVoices(this.tokens)
     this.massageTokensIntoTreeStructure()
   }
 
@@ -296,10 +298,12 @@ class Tokenizer {
       meaning = TokenMeaning.PotentialRaisedVoiceStart
     } else if (canCloseConvention) {
       meaning = TokenMeaning.PotentialRaisedVoiceEnd
+    } else {
+      this.addPlainTextToken(raisedVoiceDelimiter)
+      return true
     }
     
-    this.addToken(meaning)
-    
+    this.addToken(meaning, raisedVoiceDelimiter)
     return true
   }
 
