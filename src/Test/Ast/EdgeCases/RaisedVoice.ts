@@ -82,19 +82,6 @@ describe('Shouted text', () => {
         ])
       ]))
   })
-
-  it('can be closed by double asterisks if no other subsequent asterisks close it', () => {
-    expect(Up.ast('A ***bread** to believe in')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('A '),
-        new StressNode([
-          new EmphasisNode([
-            new PlainTextNode('bread'),
-          ]),
-        ]),
-        new PlainTextNode(' to believe in?')
-      ]))
-  })
 })
 
 
@@ -151,11 +138,24 @@ describe('Shouted text inside of emphasized text', () => {
 })
 
 describe('A raised voice convention starting with 3 asterisks', () => {
-  it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text', () => {
+  it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
     expect(Up.ast('A ***bread* to believe in')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('A '),
         new EmphasisNode([
+          new PlainTextNode('bread'),
+        ]),
+        new PlainTextNode(' to believe in')
+      ]))
+  })
+})
+
+describe('A raised voice convention starting with 3 asterisks', () => {
+  it('can be closed by double asterisks if no other subsequent asterisks close it, resulting in stressed text and no stray asterisks in the document', () => {
+    expect(Up.ast('A ***bread** to believe in')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('A '),
+        new StressNode([
           new PlainTextNode('bread'),
         ]),
         new PlainTextNode(' to believe in')
