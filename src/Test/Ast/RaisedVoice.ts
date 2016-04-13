@@ -158,13 +158,30 @@ describe('Text that is both emphasized and stressed', () => {
 })
 
 
-describe('Shouted text with its emphasis ended early', () => {
-  it('can have its stress closed with the standard 3 asterisks', () => {
+describe('Shouted text starting with 3 asterisks with its emphasis ended early', () => {
+  it('can have its stress closed with 3 asterisks', () => {
     expect(Up.ast('Well, ***Xamarin* is now free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well, '),
         new StressNode([
           new EmphasisNode([
+            new PlainTextNode('Xamarin')
+          ]),
+          new PlainTextNode(' is now free')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
+
+
+describe('Shouted text starting with 3 asterisks with its stress ended early', () => {
+  it('can have its emphasis closed with 3 asterisks', () => {
+    expect(Up.ast('Well, ***Xamarin** is now free***!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Well, '),
+        new EmphasisNode([
+          new StressNode([
             new PlainTextNode('Xamarin')
           ]),
           new PlainTextNode(' is now free')
