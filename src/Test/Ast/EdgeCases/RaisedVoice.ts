@@ -319,3 +319,19 @@ describe('Shouted text starting with 4+ asterisks, with an emphasis convention e
       ]))
   })
 })
+
+describe('Shouted text starting with 4 asterisks, with a stress convention ended early, subsequently ending in 3 additional asterisks', () => {
+  it('produces nested stress nodes', () => {
+    expect(Up.ast('Well, ****Xamarin** is now free***!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Well, '),
+        new StressNode([
+            new StressNode([
+              new PlainTextNode('Xamarin')
+            ]),
+            new PlainTextNode(' is now free')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
