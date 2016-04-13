@@ -303,7 +303,7 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
 
 
 describe('Shouted text starting with 4+ asterisks, with an emphasis convention ended early, subsequently ending in 3+ additional asterisks', () => {
-  it('produces an emphasis node nested with stress and emphasis nodes', () => {
+  it('produces an emphasis node nested within stress and emphasis nodes', () => {
     expect(Up.ast('Well, ****Xamarin* is now free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well, '),
@@ -320,16 +320,36 @@ describe('Shouted text starting with 4+ asterisks, with an emphasis convention e
   })
 })
 
+
 describe('Shouted text starting with 4 asterisks, with a stress convention ended early, subsequently ending in 3 additional asterisks', () => {
   it('produces nested stress nodes', () => {
     expect(Up.ast('Well, ****Xamarin** is now free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well, '),
         new StressNode([
+          new StressNode([
+            new PlainTextNode('Xamarin')
+          ]),
+          new PlainTextNode(' is now free')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+})
+
+
+describe('Shouted text starting with 5+ asterisks, with an emphasis convention ended early, subsequently ending in 3+ additional asterisks', () => {
+  it('produces a stress node nested within stress and emphasis nodes', () => {
+    expect(Up.ast('Well, *****Xamarin** is now free***!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Well, '),
+        new StressNode([
+          new EmphasisNode([
             new StressNode([
               new PlainTextNode('Xamarin')
             ]),
             new PlainTextNode(' is now free')
+          ]),
         ]),
         new PlainTextNode('!')
       ]))
