@@ -38,20 +38,20 @@ export abstract class RaisedVoiceDelimiter {
     return this.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)
   }
 
-  canAffordEmphasis(): boolean {
+  canIndicateEmphasis(): boolean {
     return this.canAfford(EMPHASIS_COST)
   }
   
-  canAffordStress(): boolean {
+  canIndicateStress(): boolean {
     return this.canAfford(STRESS_COST)
   }
   
   canOnlyIndicateEmphasis(): boolean {
-   return this.canAffordEmphasis && !this.canAffordStress() 
+   return this.canIndicateEmphasis && !this.canIndicateStress() 
   }
   
   canIndicateStressButNotBothTogether(): boolean {
-   return this.canAffordStress && !this.canIndicateStressAndEmphasisTogether() 
+   return this.canIndicateStress && !this.canIndicateStressAndEmphasisTogether() 
   }
   
   payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {

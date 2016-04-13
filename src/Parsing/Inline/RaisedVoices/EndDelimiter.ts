@@ -60,7 +60,7 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
       // fallback happens later.
       
       for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
-        if (startDelimiter.canAffordStress()) {
+        if (startDelimiter.canIndicateStress()) {
           this.endStress(startDelimiter)
           
           // Considering we could only afford to indicate stress, we have nothing left to do.
@@ -81,12 +81,13 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
         continue
       }
 
-      if (this.canAffordStress() && startDelimiter.canAffordStress()) {
+      if (this.canIndicateStress() && startDelimiter.canIndicateStress()) {
         this.endStress(startDelimiter)
         continue
       }
 
-      if (this.canAffordEmphasis() && startDelimiter.canAffordEmphasis()) {
+      if (this.canIndicateEmphasis() && startDelimiter.canIndicateEmphasis()) {
+        this.endEmphasis(startDelimiter)
         continue
       }
     }
