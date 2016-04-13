@@ -157,15 +157,19 @@ export class HtmlWriter extends Writer {
   }
 
   image(node: ImageNode): string {
-    throw new Error('Not implemented')
+    return htmlElementWithNoEndTag('img', { href: node.url, title: node.description })
   }
 
   audio(node: AudioNode): string {
-    throw new Error('Not implemented')
+    const { description, url } = node
+    
+    return this.htmlElement('audio', this.mediaFallback(description, url), { href: url, title: description })
   }
 
   video(node: VideoNode): string {
-    throw new Error('Not implemented')
+    const { description, url } = node
+
+    return this.htmlElement('video', this.mediaFallback(description, url), { href: url, title: description })
   }
 
   plainText(node: PlainTextNode): string {
@@ -180,6 +184,10 @@ export class HtmlWriter extends Writer {
     return nodes.reduce(
       (html, child) => html + this.write(child),
       '')
+  }
+  
+  private mediaFallback(content: string, url: string): LinkNode[] {
+    return [new LinkNode([new PlainTextNode(content)], url)]
   }
 }
 
