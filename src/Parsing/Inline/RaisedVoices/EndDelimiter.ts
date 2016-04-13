@@ -40,7 +40,8 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
         //
         // To be clear, any unmatched asterisks are *not* canceled, and they remain available to be subsequently matched
         // with other delimiters.
-        const cost = Math.min(this.countSurplusAsterisks, startDelimiter.countSurplusAsterisks)
+        const countAsterisksDelimitersHaveInCommon =
+          Math.min(this.countSurplusAsterisks, startDelimiter.countSurplusAsterisks)
         
         continue
       }
@@ -56,12 +57,14 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
   }
 
   private endEmphasis(startDelimiter: StartDelimiter): void {
+    this.payForEmphasis()
     this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
 
     startDelimiter.startEmphasis()
   }
 
   private endStress(startDeilmeter: StartDelimiter): void {
+    this.payForStress()
     this.tokenMeanings.push(TokenMeaning.StressEnd)
 
     startDeilmeter.startStress()

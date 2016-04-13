@@ -25,11 +25,17 @@ export class StartDelimiter extends RaisedVoiceDelimiter {
     )
   }
   
+  startEmphasisAndStress(): void {
+    
+  }
+  
   startEmphasis(): void {
+    this.payForEmphasis()
     this.tokenMeanings.push(TokenMeaning.EmphasisStart)
   }
 
   startStress(): void {
+    this.payForStress()
     this.tokenMeanings.push(TokenMeaning.StressStart)
   }
 }
