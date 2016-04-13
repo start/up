@@ -1,5 +1,8 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../SyntaxNodes/LinkNode'
+import { ImageNode } from '../SyntaxNodes/ImageNode'
+import { AudioNode } from '../SyntaxNodes/AudioNode'
+import { VideoNode } from '../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
@@ -153,6 +156,18 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('a', node.children, { href: node.url })
   }
 
+  image(node: ImageNode): string {
+    throw new Error('Not implemented')
+  }
+
+  audio(node: AudioNode): string {
+    throw new Error('Not implemented')
+  }
+
+  video(node: VideoNode): string {
+    throw new Error('Not implemented')
+  }
+
   plainText(node: PlainTextNode): string {
     return node.text
   }
@@ -181,3 +196,4 @@ function htmlElement(tagName: string, content: string, attrs: any = {}): string 
 
   return `<${openingTagContents}>${content}</${tagName}>`
 }
+

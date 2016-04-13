@@ -1,5 +1,8 @@
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../SyntaxNodes/LinkNode'
+import { ImageNode } from '../SyntaxNodes/ImageNode'
+import { AudioNode } from '../SyntaxNodes/AudioNode'
+import { VideoNode } from '../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
@@ -30,7 +33,7 @@ export abstract class Writer {
   write(node: SyntaxNode) {
     
     // TypeScript lacks multiple dispatch. Rather than polluting every single SyntaxNode class
-    // with the visitor pattern, it's cleaner to perform the dispatch ourselves here.
+    // with the visitor pattern, we perform the dispatch ourselves here.
      
     if (node instanceof DocumentNode) {
       return this.document(node)
@@ -88,6 +91,18 @@ export abstract class Writer {
       return this.link(node)
     }
     
+    if (node instanceof ImageNode) {
+      return this.image(node)
+    }
+    
+    if (node instanceof AudioNode) {
+      return this.audio(node)
+    }
+    
+    if (node instanceof VideoNode) {
+      return this.video(node)
+    }
+    
     if (node instanceof RevisionDeletionNode) {
       return this.revisionDeletion(node)
     }
@@ -124,5 +139,8 @@ export abstract class Writer {
   abstract spoiler(node: SpoilerNode): string;
   abstract inlineAside(node: InlineAsideNode): string;
   abstract link(node: LinkNode): string;
+  abstract image(node: ImageNode): string;
+  abstract audio(node: AudioNode): string;
+  abstract video(node: VideoNode): string;
   abstract plainText(node: PlainTextNode): string;
 }
