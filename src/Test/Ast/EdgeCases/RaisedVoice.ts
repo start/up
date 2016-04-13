@@ -302,9 +302,9 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
 })
 
 
-describe('Shouted text with its emphasis ended early', () => {
-  it('can have its stress closed with 4 or more asterisks', () => {
-    expect(Up.ast('Well, ******Xamarin* is now free******!')).to.be.eql(
+describe('Shouted text starting with 4 or more asterisks with its emphasis ended early', () => {
+  it('can have its stress closed with 3 asterisks', () => {
+    expect(Up.ast('Well, ****Xamarin* is now free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well, '),
         new StressNode([
