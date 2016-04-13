@@ -137,6 +137,7 @@ describe('Shouted text inside of emphasized text', () => {
   })
 })
 
+
 describe('A raised voice convention starting with 3 asterisks', () => {
   it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
     expect(Up.ast('A ***bread* to believe in')).to.be.eql(
@@ -150,6 +151,7 @@ describe('A raised voice convention starting with 3 asterisks', () => {
   })
 })
 
+
 describe('A raised voice convention starting with 3 asterisks', () => {
   it('can be closed by double asterisks if no other subsequent asterisks close it, resulting in stressed text and no stray asterisks in the document', () => {
     expect(Up.ast('A ***bread** to believe in')).to.be.eql(
@@ -162,6 +164,7 @@ describe('A raised voice convention starting with 3 asterisks', () => {
       ]))
   })
 })
+
 
 describe('Shouted text inside of stressed text', () => {
   it('can have its inner stress node closed early', () => {
@@ -235,8 +238,8 @@ describe('Inside of stressed text, shouted text with its inner stress node close
 
 
 describe('Inside of stressed text, shouted text with its inner emphasis node closed early', () => {
-  it('can have the reamining two stress nodes closed by 3 or more asterisks', () => {
-    expect(Up.ast('**Please ***stop* eating the cardboard immediately***')).to.be.eql(
+  it('can have the reamining two stress nodes closed by 4 or more asterisks', () => {
+    expect(Up.ast('**Please ***stop* eating the cardboard immediately****')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode('Please '),
