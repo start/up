@@ -305,43 +305,6 @@ class Tokenizer {
     return true
   }
 
-  spendAsterisksToLowerVoiceAfterFirstTryingToClose(sandwich: Sandwich, raisedVoiceDelimiter: string): boolean {
-    if (this.isInside(sandwich.convention)) {
-      this.addToken(sandwich.convention.endTokenMeaning())
-      return true
-    }
-
-    return this.spendAsterisksToLowerVoice(raisedVoiceDelimiter)
-  }
-
-  spendAsterisksToLowerVoice(raisedVoiceDelimiter: string): boolean {
-    const indexedOpenEmphasisConventions = this.indexedOpenSandwichesOfType(EMPHASIS)
-    const indexedOpenStressConventions = this.indexedOpenSandwichesOfType(STRESS)
-
-    const indexedOpenRaisedVoiceSandwiches =
-      indexedOpenEmphasisConventions.concat(indexedOpenStressConventions)
-        .sort(compareIndexedSandwichesDescending)
-
-    if (!indexedOpenRaisedVoiceSandwiches.length) {
-      return false
-    }
-
-    let unspentAsterisks = raisedVoiceDelimiter.length
-
-    for (const indexedOpenSandwich of indexedOpenRaisedVoiceSandwiches) {
-      if (unspentAsterisks <= 0) {
-        break
-      }
-
-      const sandwich = indexedOpenSandwich.sandwich
-
-      this.addToken(sandwich.convention.endTokenMeaning())
-      unspentAsterisks -= sandwich.end.length
-    }
-
-    return true
-  }
-
   handleRegularSandwiches(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
@@ -502,13 +465,6 @@ class Tokenizer {
     return indexes
   }
 
-  indexedOpenSandwichesOfType(sandwich: Sandwich): IndexedSandwich[] {
-    return (
-      this.indexesOfUnclosedInstancesOfConvention(sandwich.convention)
-        .map(index => new IndexedSandwich(sandwich, index))
-    )
-  }
-
   isConventionAtIndexUnclosed(convention: Convention, index: number): boolean {
     // We know the token at `index` is the start token
     let excessStartTokens = 1
@@ -563,33 +519,4 @@ function getSandwichEndedByThisToken(token: Token): Sandwich {
   return ALL_SANDWICHES.filter(sandwich =>
     sandwich.convention.endTokenMeaning() === token.meaning
   )[0]
-}
-
-
-class IndexedSandwich {
-  constructor(public sandwich: Sandwich, public index: number) { }
-}
-
-function compareIndexedSandwichesDescending(a: IndexedSandwich, b: IndexedSandwich): number {
-  return b.index - a.index
-}
-
-enum RaisedVoiceDelimiterType {
-  Emphasis,
-  Stress,
-  Shouting
-}
-
-function getRaisedVoiceDelimiterType(raisedVoiceDelimiter: string): RaisedVoiceDelimiterType {
-  switch (raisedVoiceDelimiter.length) {
-    case 1:
-      return RaisedVoiceDelimiterType.Emphasis
-
-    case 2:
-      return RaisedVoiceDelimiterType.Stress
-
-    default:
-      // We assume the delimiter won't be empty
-      return RaisedVoiceDelimiterType.Shouting
-  }
 }
