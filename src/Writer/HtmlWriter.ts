@@ -51,7 +51,7 @@ export class HtmlWriter extends Writer {
 
   orderedList(node: OrderedListNode): string {
     const attrs: { start?: number, reversed?: any } = {}
-    
+
     const start = node.start()
     if (start != null) {
       attrs.start = start
@@ -88,7 +88,7 @@ export class HtmlWriter extends Writer {
   descriptionListItem(listItem: DescriptionListItem): string {
     return (
       listItem.terms.map((term) => this.descriptionTerm(term)).join('')
-      + this.description(listItem.description) 
+      + this.description(listItem.description)
     )
   }
 
@@ -184,16 +184,26 @@ export class HtmlWriter extends Writer {
 }
 
 function htmlElement(tagName: string, content: string, attrs: any = {}): string {
-  const htmlAttrs = (
-    Object.keys(attrs).map((key) => {
-      const value = attrs[key]
-      return (value == null ? key : `${key}="${value}"`)
-    })
-  )
-
-  const openingTagContents =
-    [tagName].concat(htmlAttrs).join(' ')
-
-  return `<${openingTagContents}>${content}</${tagName}>`
+  return `${htmlTag(tagName, attrs)}${content}</${tagName}>`
 }
 
+function htmlElementWithNoEndTag(tagName: string, attrs: any = {}): string {
+  return htmlTag(tagName, attrs)
+}
+
+function htmlTag(tagName: string, attrs: any): string {
+  const tagNameWithAttrs =
+    [tagName].concat(htmlAttrs(attrs)).join(' ')
+
+  return `<${tagNameWithAttrs}>`
+}
+
+function htmlAttrs(attrs: any): string[] {
+  return (
+    Object.keys(attrs)
+      .map(key => {
+        const value = attrs[key]
+        return (value == null ? key : `${key}="${value}"`)
+      })
+  )
+}
