@@ -46,11 +46,11 @@ export abstract class RaisedVoiceDelimiter {
     return this.canAfford(STRESS_COST)
   }
   
-  canOnlyAffordEmphasis(): boolean {
+  canOnlyIndicateEmphasis(): boolean {
    return this.canAffordEmphasis && !this.canAffordStress() 
   }
   
-  canAffordStressAtMost(): boolean {
+  canOnlyAffordEmphasisOrStress(): boolean {
    return this.canAffordEmphasis && !this.canAffordStress() 
   }
   

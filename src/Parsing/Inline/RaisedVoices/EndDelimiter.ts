@@ -19,13 +19,29 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
   }
 
   matchAnyApplicableStartDelimiters(delimiters: RaisedVoiceDelimiter[]): void {
-    const availableStartDelimitersFromMostToLeastRecent = <StartDelimiter[]>(
+    const availableStartDelimitersFromMostRecentToLeast = <StartDelimiter[]>(
       delimiters
         .filter(delimiter => (delimiter instanceof StartDelimiter) && !delimiter.isFullyMatched())
         .reverse()
     )
     
-    for (const startDelimiter of availableStartDelimitersFromMostToLeastRecent) {
+    if (this.canOnlyIndicateEmphasis()) {
+      // If this ending delimiter can only indicate (i.e. afford) emphasis, we want to prioritize matching with a
+      // starting delimiter than can also only indicate emphasis. Only if we can't find one will we try matching
+      // with other starting delimiters.
+      
+      for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
+        if (startDelimiter.canOnlyIndicateEmphasis()) {
+          this.endEmphasis(startDelimiter)
+          
+          // Considering we could only afford to indicate emphasis, our work is clearly done
+          return
+        }
+      }
+    }
+    
+    
+    for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
       if (this.isFullyMatched()) {
         // Once this delimiter has matched all of its asterisks, its work is done. Let's bail.
         break
