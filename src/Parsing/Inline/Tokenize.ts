@@ -450,21 +450,6 @@ class Tokenizer {
     return excessStartTokens > 0
   }
 
-  indexesOfUnclosedInstancesOfConvention(convention: Convention): number[] {
-    const indexes: number[] = []
-
-    for (let i = 0; i < this.tokens.length; i++) {
-      const meaning = this.tokens[i].meaning
-      if (meaning === convention.startTokenMeaning()) {
-        indexes.push(i)
-      } else if (meaning === convention.endTokenMeaning()) {
-        indexes.pop()
-      }
-    }
-
-    return indexes
-  }
-
   isConventionAtIndexUnclosed(convention: Convention, index: number): boolean {
     // We know the token at `index` is the start token
     let excessStartTokens = 1
