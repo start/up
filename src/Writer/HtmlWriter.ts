@@ -163,13 +163,13 @@ export class HtmlWriter extends Writer {
   audio(node: AudioNode): string {
     const { description, url } = node
     
-    return this.htmlElement('audio', this.mediaFallback(description, url), { href: url, title: description })
+    return this.htmlElement('audio', this.mediaFallback(description, url), { src: url, title: description })
   }
 
   video(node: VideoNode): string {
     const { description, url } = node
 
-    return this.htmlElement('video', this.mediaFallback(description, url), { href: url, title: description })
+    return this.htmlElement('video', this.mediaFallback(description, url), { src: url, title: description })
   }
 
   plainText(node: PlainTextNode): string {

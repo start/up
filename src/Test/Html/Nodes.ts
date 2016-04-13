@@ -302,9 +302,17 @@ describe('A link node', () => {
 })
 
 describe('An image node', () => {
-  it('produces an img element with a src and title attribute', () => {
+  it('produces an img element with src and title attributes', () => {
     const node = new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<img src="http://example.com/hauntedhouse.svg" title="haunted house">')
+  })
+})
+
+describe('An audio node', () => {
+  it('produces an audio element with src and title attributes, containing a fallback anchor element', () => {
+    const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql(
+      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling"><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
   })
 })
 
