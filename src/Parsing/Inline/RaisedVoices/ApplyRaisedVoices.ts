@@ -17,8 +17,9 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
   const delimiters = getDelimiters(tokens)
-  
-  return replacePlaceholderTokens(tokens, delimiters)
+  const resulTokens = replacePlaceholderTokens(tokens, delimiters)
+
+  return resulTokens.reduce(combineConsecutivePlainTextTokens, [])
 }
 
 
@@ -38,13 +39,13 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
       meaning === TokenMeaning.PotentialRaisedVoiceEnd
       || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
     )
-    
-    const isTokenRelevant = canStartConvention || canEndConvention 
-        
-    if (!isTokenRelevant) { 
+
+    const isTokenRelevant = canStartConvention || canEndConvention
+
+    if (!isTokenRelevant) {
       continue
     }
-    
+
     // A given raised voice delimiter will serve only 1 of 3 roles:
     //
     // 1. End 1 or more conventions
@@ -64,7 +65,7 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
 
     if (canEndConvention) {
       const endDelimiter = new EndDelimiter(tokenIndex, value)
-      
+
       endDelimiter.matchAnyApplicableStartDelimiters(delimiters)
 
       if (!endDelimiter.providesNoTokens()) {
@@ -106,3 +107,18 @@ function replacePlaceholderTokens(tokens: Token[], delimiters: RaisedVoiceDelimi
   return resultTokens
 }
 
+
+function combineConsecutivePlainTextTokens(tokens: Token[], token: Token): Token[] {
+  const lastToken = last(tokens)
+
+  const areBothLastTokenAndThisTokenPlainText =
+    lastToken && (lastToken.meaning === TokenMeaning.PlainText) && token.meaning === TokenMeaning.PlainText
+
+  if (areBothLastTokenAndThisTokenPlainText) {
+    lastToken.value += token.value
+  } else {
+    tokens.push(token)
+  }
+  
+  return tokens
+}
