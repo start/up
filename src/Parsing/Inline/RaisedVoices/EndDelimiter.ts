@@ -27,7 +27,7 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
     
     for (const startDelimiter of availableStartDelimitersFromMostToLeastRecent) {
       if (this.isFullyMatched()) {
-        // Once this delimiter has matched all of its asterisks, its work is done. Let's bail. 
+        // Once this delimiter has matched all of its asterisks, its work is done. Let's bail.
         break
       }
 

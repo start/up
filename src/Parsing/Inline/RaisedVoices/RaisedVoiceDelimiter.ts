@@ -46,6 +46,14 @@ export abstract class RaisedVoiceDelimiter {
     return this.canAfford(STRESS_COST)
   }
   
+  canOnlyAffordEmphasis(): boolean {
+   return this.canAffordEmphasis && !this.canAffordStress() 
+  }
+  
+  canAffordStressAtMost(): boolean {
+   return this.canAffordEmphasis && !this.canAffordStress() 
+  }
+  
   payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {
     if (countAsterisksMatchingDelimiterHasInCommon < STRESS_AND_EMPHASIS_TOGETHER_COST) {
       throw new Error(`Delimiter at index ${this.originalTokenIndex} only spent ${countAsterisksMatchingDelimiterHasInCommon} to open stress and emphasis`)
