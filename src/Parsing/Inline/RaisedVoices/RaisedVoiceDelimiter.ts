@@ -29,6 +29,10 @@ export abstract class RaisedVoiceDelimiter {
   providesNoTokens(): boolean {
     return !this.tokens().length
   }
+  
+  isFullyMatched(): boolean {
+    return this.countSurplusAsterisks <= 0
+  }
 
   canAffordStressAndEmphasisTogether(): boolean {
     return this.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)
@@ -42,8 +46,8 @@ export abstract class RaisedVoiceDelimiter {
     return this.canAfford(STRESS_COST)
   }
   
-  payForStressAndEmphasisTogether(countAsterisksInCommonWithMatchingDelimiter: number): void {
-    this.pay(countAsterisksInCommonWithMatchingDelimiter)
+  payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {
+    this.pay(countAsterisksMatchingDelimiterHasInCommon)
   }
   
   payForStress(): void {

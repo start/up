@@ -19,48 +19,50 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
   }
 
   matchAnyApplicableStartDelimiters(delimiters: RaisedVoiceDelimiter[]): void {
-    const startDelimitersFromMostToLeastRecent = <StartDelimiter[]>(
+    const availableStartDelimitersFromMostToLeastRecent = <StartDelimiter[]>(
       delimiters
-        .filter(delimiter => delimiter instanceof StartDelimiter)
+        .filter(delimiter => (delimiter instanceof StartDelimiter) && !delimiter.isFullyMatched())
         .reverse()
     )
     
-
-    for (const startDelimiter of startDelimitersFromMostToLeastRecent) {
-      // We keep looping until we're out of start delimiters or out of asterisks to spend
-      if (this.countSurplusAsterisks <= 0) {
+    for (const startDelimiter of availableStartDelimitersFromMostToLeastRecent) {
+      if (this.isFullyMatched()) {
+        // Once this delimiter has matched all of its asterisks, its work is done. Let's bail. 
         break
       }
-      
+
       if (this.canAffordStressAndEmphasisTogether() && startDelimiter.canAffordStressAndEmphasisTogether()) {
-        // When matching delimiters each have 3 or more asterisks to spend, their contents become stressed and emphasized,
-        // and they cancel out as many of each other's asterisks as possible.
-        //
-        // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
-        //
-        // To be clear, any unmatched asterisks are *not* canceled, and they remain available to be subsequently matched
-        // with other delimiters.
-        const countAsterisksDelimitersHaveInCommon =
-          Math.min(this.countSurplusAsterisks, startDelimiter.countSurplusAsterisks)
-        
+        this.startStressAndEmphasisTogether(startDelimiter)
         continue
       }
-      
+
       if (this.canAffordStress() && startDelimiter.canAffordStress()) {
+        this.endStress(startDelimiter)
         continue
       }
-      
+
       if (this.canAffordEmphasis() && startDelimiter.canAffordEmphasis()) {
         continue
       }
     }
   }
 
-  private endEmphasis(startDelimiter: StartDelimiter): void {
-    this.payForEmphasis()
-    this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
+  private startStressAndEmphasisTogether(startDelimiter: StartDelimiter): void {
+    // When matching delimiters each have 3 or more asterisks to spend, their contents become stressed and emphasized,
+    // and they cancel out as many of each other's asterisks as possible.
+    //
+    // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
+    //
+    // To be clear, any unmatched asterisks are *not* canceled, and they remain available to be subsequently matched
+    // with other delimiters.
+    const countAsterisksDelimitersHaveInCommon =
+      Math.min(this.countSurplusAsterisks, startDelimiter.countSurplusAsterisks)
 
-    startDelimiter.startEmphasis()
+    this.payForStressAndEmphasisTogether(countAsterisksDelimitersHaveInCommon)
+    this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
+    this.tokenMeanings.push(TokenMeaning.StressEnd)
+
+    startDelimiter.startStressAndEmphasisTogether(countAsterisksDelimitersHaveInCommon)
   }
 
   private endStress(startDeilmeter: StartDelimiter): void {
@@ -68,5 +70,12 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
     this.tokenMeanings.push(TokenMeaning.StressEnd)
 
     startDeilmeter.startStress()
+  }
+
+  private endEmphasis(startDelimiter: StartDelimiter): void {
+    this.payForEmphasis()
+    this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
+
+    startDelimiter.startEmphasis()
   }
 }
