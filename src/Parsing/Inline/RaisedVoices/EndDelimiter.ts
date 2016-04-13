@@ -24,10 +24,34 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
         .filter(delimiter => delimiter instanceof StartDelimiter)
         .reverse()
     )
+    
 
     for (const startDelimiter of startDelimitersFromMostToLeastRecent) {
-      // If the start delimiter can afford both stress and emphasis together, that means it has at least
-      // 3 asterisks.
+      // We keep looping until we're out of start delimiters or out of asterisks to spend
+      if (this.countSurplusAsterisks <= 0) {
+        break
+      }
+      
+      if (this.canAffordStressAndEmphasisTogether() && startDelimiter.canAffordStressAndEmphasisTogether()) {
+        // When matching delimiters each have 3 or more asterisks to spend, their contents become stressed and emphasized,
+        // and they cancel out as many of each other's asterisks as possible.
+        //
+        // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
+        //
+        // To be clear, any unmatched asterisks are *not* canceled, and they remain available to be subsequently matched
+        // with other delimiters.
+        const cost = Math.min(this.countSurplusAsterisks, startDelimiter.countSurplusAsterisks)
+        
+        continue
+      }
+      
+      if (this.canAffordStress() && startDelimiter.canAffordStress()) {
+        continue
+      }
+      
+      if (this.canAffordEmphasis() && startDelimiter.canAffordEmphasis()) {
+        continue
+      }
     }
   }
 

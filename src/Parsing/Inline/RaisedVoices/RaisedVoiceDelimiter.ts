@@ -13,7 +13,7 @@ import { STRESS_COST, EMPHASIS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } from '.
 
 export abstract class RaisedVoiceDelimiter {
   protected tokenMeanings: TokenMeaning[] = []
-  protected countSurplusAsterisks: number
+  public countSurplusAsterisks: number
   
   constructor(public originalTokenIndex: number, public originalValue: string) {
     this.countSurplusAsterisks = originalValue.length
@@ -25,7 +25,7 @@ export abstract class RaisedVoiceDelimiter {
     return !this.tokens().length
   }
 
-  canAffordtEmphasisAndStressTogether(): boolean {
+  canAffordStressAndEmphasisTogether(): boolean {
     return this.countSurplusAsterisks >= STRESS_AND_EMPHASIS_TOGETHER_COST
   }
 
@@ -34,7 +34,27 @@ export abstract class RaisedVoiceDelimiter {
   }
   
   canAffordStress(): boolean {
-    return this.countSurplusAsterisks >= STRESS_COST
+    return this.canAfford(STRESS_COST)
+  }
+  
+  payForStressAndEmphasisTogether(countAsterisksInCommonWithMatchingDelimiter: number): void {
+    this.pay(countAsterisksInCommonWithMatchingDelimiter)
+  }
+  
+  payForStress(): void {
+    this.pay(STRESS_COST)
+  }
+  
+  payForEmphasis(): void {
+    this.pay(EMPHASIS_COST)
+  }
+  
+  pay(cost: number): void {
+    this.countSurplusAsterisks -= cost
+  }
+  
+  private canAfford(cost: number): boolean {
+    return this.countSurplusAsterisks >= cost
   }
 }
 
