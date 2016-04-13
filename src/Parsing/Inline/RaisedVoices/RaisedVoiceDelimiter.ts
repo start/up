@@ -34,7 +34,7 @@ export abstract class RaisedVoiceDelimiter {
     return this.countSurplusAsterisks <= 0
   }
 
-  canAffordStressAndEmphasisTogether(): boolean {
+  canIndicateStressAndEmphasisTogether(): boolean {
     return this.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)
   }
 
@@ -51,7 +51,7 @@ export abstract class RaisedVoiceDelimiter {
   }
   
   canIndicateStressButNotBothTogether(): boolean {
-   return this.canAffordStress && !this.canAffordStressAndEmphasisTogether() 
+   return this.canAffordStress && !this.canIndicateStressAndEmphasisTogether() 
   }
   
   payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {

@@ -25,40 +25,45 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
         .reverse()
     )
     
+    // TODO: Use nested loops
+    
     if (this.canOnlyIndicateEmphasis()) {
-      // If an end delimiter has only 1 asterisk, it can only indicate (i.e. afford) emphasis.
+      
+      // If an end delimiter has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
       //
-      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that also can only
-      // indicate emphasis. Only if we can't find one will we try matching with other start delimiters.
+      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
+      //
+      // 1. Can also only indicate emphasis (1 asterisk to spend)
+      // 2. Can indicate both emphasis and stress together (3+ asterisks to spend)
+      //
+      // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
+      // that has 2 asterisks to spend. But this fallback happens later.
       
       for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
-        if (startDelimiter.canOnlyIndicateEmphasis()) {
+        if (startDelimiter.canOnlyIndicateEmphasis() || startDelimiter.canIndicateStressAndEmphasisTogether()) {
           this.endEmphasis(startDelimiter)
-          
+
           // Considering we could only afford to indicate emphasis, we have nothing left to do.
           return
         }
       }
     } else if (this.canIndicateStressButNotBothTogether()) {
-      // If an end delimiter has only 2 asterisks, it can indicate stress, but it can't indicate both stress and
-      // emphasis at the saem time.
+      
+      // If an end delimiter has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
+      // and emphasis at the saem time.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
       // stress. It's okay if that start delimiter can indicate both stress and emphasis at the same time! As long
-      // as it can indicate stress, it's okay.
+      // as it can indicate stress, we're good. 
       //
-      // But if possible, we want to avoid matching it with a delimiter that can only indicate emphasis.
-      //
-      // For these delimiters, we want to prioritize matching with the nearest start delimiter that can also indicate stress.
-      // If this ending delimiter can only indicate (i.e. afford) emphasis, we want to prioritize matching with a
-      // starting delimiter than can also only indicate emphasis. Only if we can't find one will we try matching
-      // with other starting delimiters.
+      // Only if we can't find one, then we'll match with a delimiter that has just 1 asterisk to spend. But this
+      // fallback happens later.
       
       for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
         if (startDelimiter.canAffordStress()) {
           this.endStress(startDelimiter)
           
-          // Considering we could only afford to indicate emphasis, our work is clearly done.
+          // Considering we could only afford to indicate stress, we have nothing left to do.
           return
         }
       }
@@ -71,7 +76,7 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
         break
       }
 
-      if (this.canAffordStressAndEmphasisTogether() && startDelimiter.canAffordStressAndEmphasisTogether()) {
+      if (this.canIndicateStressAndEmphasisTogether() && startDelimiter.canIndicateStressAndEmphasisTogether()) {
         this.startStressAndEmphasisTogether(startDelimiter)
         continue
       }
