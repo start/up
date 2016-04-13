@@ -83,8 +83,8 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can be closed by a single asterisk if no other subsequent asterisks close it', () => {
-    expect(Up.ast('A ***bread* to believe in')).to.be.eql(
+  it('can be closed by double asterisks if no other subsequent asterisks close it', () => {
+    expect(Up.ast('A ***bread** to believe in')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('A '),
         new StressNode([
@@ -95,32 +95,6 @@ describe('Shouted text', () => {
         new PlainTextNode(' to believe in?')
       ]))
   })
-})
-
-it('can be closed by a single asterisk if no other subsequent asterisks close it', () => {
-  expect(Up.ast('A ***bread* to believe in')).to.be.eql(
-    insideDocumentAndParagraph([
-      new PlainTextNode('A '),
-      new StressNode([
-        new EmphasisNode([
-          new PlainTextNode('bread'),
-        ]),
-      ]),
-      new PlainTextNode(' to believe in?')
-    ]))
-})
-
-it('can be closed by double asterisks if no other subsequent asterisks close it', () => {
-  expect(Up.ast('A ***bread** to believe in')).to.be.eql(
-    insideDocumentAndParagraph([
-      new PlainTextNode('A '),
-      new StressNode([
-        new EmphasisNode([
-          new PlainTextNode('bread'),
-        ]),
-      ]),
-      new PlainTextNode(' to believe in?')
-    ]))
 })
 
 
@@ -176,6 +150,18 @@ describe('Shouted text inside of emphasized text', () => {
   })
 })
 
+describe('A raised voice convention starting with 3 asterisks', () => {
+  it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text', () => {
+    expect(Up.ast('A ***bread* to believe in')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('A '),
+        new EmphasisNode([
+          new PlainTextNode('bread'),
+        ]),
+        new PlainTextNode(' to believe in')
+      ]))
+  })
+})
 
 describe('Shouted text inside of stressed text', () => {
   it('can have its inner stress node closed early', () => {
