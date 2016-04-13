@@ -25,8 +25,6 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
         .reverse()
     )
     
-    // TODO: Use nested loops
-    
     if (this.canOnlyIndicateEmphasis()) {
       
       // If an end delimiter has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
@@ -69,6 +67,8 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
       }
     }
     
+    // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
+    // many asterisks at once as it can.
     
     for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
       if (this.isFullyMatched()) {
