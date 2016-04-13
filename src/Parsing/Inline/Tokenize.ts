@@ -25,16 +25,11 @@ const REGULAR_SANDWICHES = [
   INLINE_ASIDE
 ]
 
-const RAISED_VOICE_SANDWICHES = [
-  STRESS,
-  EMPHASIS
-]
-
-const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(RAISED_VOICE_SANDWICHES)
+const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
-  [LINK].concat(ALL_SANDWICHES.map(sandwich => sandwich.convention))
-
+  [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
+  
 
 class Tokenizer {
   public tokens: Token[] = []
