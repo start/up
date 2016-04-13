@@ -316,6 +316,14 @@ describe('An audio node', () => {
   })
 })
 
+describe('A video node', () => {
+  it('produces a video element with src and title attributes, containing a fallback anchor element', () => {
+    const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql(
+      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage"><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
+  })
+})
+
 describe('A spoiler node', () => {
   it('produces a span element with an empty data-spoiler attribute', () => {
     const node = new SpoilerNode([new PlainTextNode('45.9%')])
