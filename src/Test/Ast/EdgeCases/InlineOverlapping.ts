@@ -38,6 +38,7 @@ describe('Overlapped stressed and deleted text', () => {
   })
 })
 
+
 describe('Overlapped emphasized and stressed text', () => {
   it('produce an emphasis node, a nested stress node, then a non-nested stress node', () => {
     expect(Up.ast('I *love **drinking* whole** milk.')).to.be.eql(
@@ -57,6 +58,7 @@ describe('Overlapped emphasized and stressed text', () => {
   })
 })
 
+
 describe('Overlapped stressed and deleted text', () => {
   it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
     expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
@@ -69,6 +71,46 @@ describe('Overlapped stressed and deleted text', () => {
           ])
         ]),
         new RevisionDeletionNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed and emphasized text', () => {
+  it('produce a stress node, a nested emphasis node, then a non-nested emphasis node', () => {
+    expect(Up.ast('I **love *drinking** whole* milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new EmphasisNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new EmphasisNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped emphasized and stressed text', () => {
+  it('produce a emphasis node, a nested stress node, then a non-nested stress node', () => {
+    expect(Up.ast('I **love *drinking** whole* milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new EmphasisNode([
+          new PlainTextNode('love '),
+          new StressNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new StressNode([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -154,7 +196,7 @@ describe('Overlapped emphasized and linked text', () => {
 })
 
 
-describe('A paragraph with 2 overlapped links', () => {
+describe('A paragraph with 2 (separately!) overlapped links', () => {
   it('produces the correct nodes for each', () => {
     const text = 'I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.'
     
@@ -186,7 +228,6 @@ describe('A paragraph with 2 overlapped links', () => {
 })
 
 
-
 describe('Overlapped linked and emphasized text', () => {
   it('produce a link node containing an emphasis node, followed by an empahsis node. The link node is unbroken', () => {
     expect(Up.ast('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
@@ -205,6 +246,7 @@ describe('Overlapped linked and emphasized text', () => {
       ]))
   })
 })
+
 
 describe('Conventions that completely overlap', () => {
   it('are nested in the order they started, and do not create an empty node at the end', () => {
