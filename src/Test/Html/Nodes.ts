@@ -304,7 +304,7 @@ describe('A link node', () => {
 describe('An image node', () => {
   it('produces an img element with src and title attributes', () => {
     const node = new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
-    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<img src="http://example.com/hauntedhouse.svg" title="haunted house">')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
   })
 })
 
