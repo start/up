@@ -7,6 +7,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -20,12 +21,12 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Bracketed text containing open eyes, reading a description, both of which point to a URL', () => {
-  it('producs an image node', () => {
-    expect(Up.ast('I would never stay here. [o_o: haunted house -> http://example.com/hauntedhouse.svg] Would you?')).to.be.eql(
+describe('Bracketed text containing a face with closed eyes, listening to a description, both of which point to a URL', () => {
+  it('producs an audio node with the description and URL', () => {
+    expect(Up.ast('I would never stay in a house with these sounds. [-_-: ghostly howling -> http://example.com/ghosts.ogg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I would never stay here. '),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new PlainTextNode('I would never stay in a house with these sounds. '),
+        new AudioNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new PlainTextNode(' Would you?')
       ]))
   })
