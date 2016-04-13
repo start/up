@@ -157,7 +157,7 @@ export class HtmlWriter extends Writer {
   }
 
   image(node: ImageNode): string {
-    return htmlElementWithNoEndTag('img', { href: node.url, title: node.description })
+    return htmlElementWithNoEndTag('img', { src: node.url, title: node.description })
   }
 
   audio(node: AudioNode): string {

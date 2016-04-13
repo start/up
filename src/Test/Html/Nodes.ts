@@ -5,6 +5,9 @@ import { expect } from 'chai'
 
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -295,6 +298,13 @@ describe('A link node', () => {
   it('produces an a (anchor) element with an href attribute', () => {
     const node = new LinkNode([new PlainTextNode('Google')], 'https://google.com')
     expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<a href="https://google.com">Google</a>')
+  })
+})
+
+describe('An image node', () => {
+  it('produces an img element with a src and title attribute', () => {
+    const node = new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+    expect(Up.htmlFromSyntaxNode(node)).to.be.eql('<img src="http://example.com/hauntedhouse.svg" title="haunted house">')
   })
 })
 
