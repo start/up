@@ -279,18 +279,6 @@ describe('Doubly emphasized text', () => {
 })
 
 describe('Doubly stressed text', () => {
-  it('can be closed by 3 asterisks', () => {
-    expect(Up.ast('**He has won **six in a row!***')).to.be.eql(
-      insideDocumentAndParagraph([
-        new StressNode([
-          new PlainTextNode('He has won '),
-          new StressNode([
-            new PlainTextNode('six in a row!')
-          ]),
-        ])
-      ]))
-  })
-
   it('can be closed by 4 asterisks', () => {
     expect(Up.ast('**He has won **six in a row!****')).to.be.eql(
       insideDocumentAndParagraph([
@@ -307,6 +295,20 @@ describe('Doubly stressed text', () => {
     expect(Up.ast('**He has won **six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
+          new PlainTextNode('He has won '),
+          new StressNode([
+            new PlainTextNode('six in a row!')
+          ]),
+        ])
+      ]))
+  })
+})
+
+describe('Two nested raised-voice conventions, both starting with 2 asterisks', () => {
+  it('can be closed by 3 asterisks, resulting in the inner text being stressed and the outer text emphasized', () => {
+    expect(Up.ast('**He has won **six in a row!***')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
           new PlainTextNode('He has won '),
           new StressNode([
             new PlainTextNode('six in a row!')
