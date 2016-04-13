@@ -47,6 +47,10 @@ export abstract class RaisedVoiceDelimiter {
   }
   
   payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {
+    if (countAsterisksMatchingDelimiterHasInCommon < STRESS_AND_EMPHASIS_TOGETHER_COST) {
+      throw new Error(`Delimiter at index ${this.originalTokenIndex} only spent ${countAsterisksMatchingDelimiterHasInCommon} to open stress and emphasis`)
+    }
+    
     this.pay(countAsterisksMatchingDelimiterHasInCommon)
   }
   
