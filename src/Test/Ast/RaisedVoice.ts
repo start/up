@@ -360,7 +360,7 @@ describe('Quadruple asterisks followed by 4 separate single closing asterisks', 
               ]),
               new PlainTextNode(' never')
             ]),
-            new PlainTextNode('feed')
+            new PlainTextNode(' feed')
           ]),
           new PlainTextNode(' this tarantula')
         ])
