@@ -9,7 +9,12 @@ import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
-import { STRESS_COST, EMPHASIS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } from './ConventionCosts'
+
+
+const STRESS_COST = STRESS.start.length
+const EMPHASIS_COST = EMPHASIS.start.length
+const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
+
 
 export abstract class RaisedVoiceDelimiter {
   protected tokenMeanings: TokenMeaning[] = []
@@ -26,11 +31,11 @@ export abstract class RaisedVoiceDelimiter {
   }
 
   canAffordStressAndEmphasisTogether(): boolean {
-    return this.countSurplusAsterisks >= STRESS_AND_EMPHASIS_TOGETHER_COST
+    return this.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)
   }
 
   canAffordEmphasis(): boolean {
-    return this.countSurplusAsterisks >= EMPHASIS_COST
+    return this.canAfford(EMPHASIS_COST)
   }
   
   canAffordStress(): boolean {
