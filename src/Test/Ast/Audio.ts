@@ -26,7 +26,7 @@ describe('Bracketed text containing a face with closed eyes, listening to a desc
     expect(Up.ast('I would never stay in a house with these sounds. [-_-: ghostly howling -> http://example.com/ghosts.ogg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I would never stay in a house with these sounds. '),
-        new AudioNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new PlainTextNode(' Would you?')
       ]))
   })
