@@ -26,15 +26,39 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
     )
     
     if (this.canOnlyIndicateEmphasis()) {
-      // If this ending delimiter can only indicate (i.e. afford) emphasis, we want to prioritize matching with a
-      // starting delimiter than can also only indicate emphasis. Only if we can't find one will we try matching
-      // with other starting delimiters.
+      // If an end delimiter has only 1 asterisk, it can only indicate (i.e. afford) emphasis.
+      //
+      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that also can only
+      // indicate emphasis. Only if we can't find one will we try matching with other start delimiters.
       
       for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
         if (startDelimiter.canOnlyIndicateEmphasis()) {
           this.endEmphasis(startDelimiter)
           
-          // Considering we could only afford to indicate emphasis, our work is clearly done
+          // Considering we could only afford to indicate emphasis, we have nothing left to do.
+          return
+        }
+      }
+    } else if (this.canIndicateStressButNotBothTogether()) {
+      // If an end delimiter has only 2 asterisks, it can indicate stress, but it can't indicate both stress and
+      // emphasis at the saem time.
+      //
+      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
+      // stress. It's okay if that start delimiter can indicate both stress and emphasis at the same time! As long
+      // as it can indicate stress, it's okay.
+      //
+      // But if possible, we want to avoid matching it with a delimiter that can only indicate emphasis.
+      //
+      // For these delimiters, we want to prioritize matching with the nearest start delimiter that can also indicate stress.
+      // If this ending delimiter can only indicate (i.e. afford) emphasis, we want to prioritize matching with a
+      // starting delimiter than can also only indicate emphasis. Only if we can't find one will we try matching
+      // with other starting delimiters.
+      
+      for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
+        if (startDelimiter.canAffordStress()) {
+          this.endStress(startDelimiter)
+          
+          // Considering we could only afford to indicate emphasis, our work is clearly done.
           return
         }
       }

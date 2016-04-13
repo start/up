@@ -59,26 +59,6 @@ describe('Overlapped emphasized and stressed text', () => {
 })
 
 
-describe('Overlapped stressed and deleted text', () => {
-  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
-    expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I '),
-        new StressNode([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('drinking')
-          ])
-        ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' whole')
-        ]),
-        new PlainTextNode(' milk.')
-      ]))
-  })
-})
-
-
 describe('Overlapped stressed and emphasized text', () => {
   it('produce a stress node, a nested emphasis node, then a non-nested emphasis node', () => {
     expect(Up.ast('I **love *drinking** whole* milk.')).to.be.eql(
@@ -99,18 +79,18 @@ describe('Overlapped stressed and emphasized text', () => {
 })
 
 
-describe('Overlapped emphasized and stressed text', () => {
-  it('produce a emphasis node, a nested stress node, then a non-nested stress node', () => {
-    expect(Up.ast('I **love *drinking** whole* milk.')).to.be.eql(
+describe('Overlapped stressed and deleted text', () => {
+  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
+    expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new EmphasisNode([
+        new StressNode([
           new PlainTextNode('love '),
-          new StressNode([
+          new RevisionDeletionNode([
             new PlainTextNode('drinking')
           ])
         ]),
-        new StressNode([
+        new RevisionDeletionNode([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
