@@ -62,8 +62,8 @@ export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) 
     }
     
     const tokens = [
-      new Token(tokenMeaningForStartAndDescription),
-      new Token(tokenMeaningForUrlAndEnd)
+      new Token(tokenMeaningForStartAndDescription, description),
+      new Token(tokenMeaningForUrlAndEnd, url)
     ]
     
     args.then(consumer.lengthConsumed(), tokens)
