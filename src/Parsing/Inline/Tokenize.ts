@@ -10,6 +10,7 @@ import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
+import { AUDIO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './SandwichConventions'
 
 
@@ -31,11 +32,7 @@ const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
 
-const tokenizeAudio = getMediaTokenizer({
-  facePattern: '-_-',
-  tokenMeaningForStartAndDescription: TokenMeaning.AudioStartAndAudioDescription,
-  tokenMeaningForUrlAndEnd: TokenMeaning.AudioUrlAndAudioEnd
-})
+const tokenizeAudio = getMediaTokenizer(AUDIO)
 
 class Tokenizer {
   public tokens: Token[] = []

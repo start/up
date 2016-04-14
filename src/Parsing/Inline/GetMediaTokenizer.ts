@@ -8,6 +8,8 @@ import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
+import { MediaConvention } from './MediaConvention'
+import { AUDIO } from './MediaConventions'
 
 interface GetMediaTokenizerArgs {
   facePattern: string,
@@ -20,13 +22,17 @@ interface TokenizeMediaArgs {
   then: (lengthConsumed: number, tokens: Token[]) => void
 }
 
-export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) {
-  const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = getMediaTokenizerArgs
+export function getMediaTokenizer(mediaConvention: MediaConvention) {
+  const { convention } = mediaConvention
+  
+  const tokenMeaningForStartAndDescription = convention.startTokenMeaning()
+  const tokenMeaningForUrlAndEnd = convention.endTokenMeaning()
+  
   
   // Media conventions start with an opening bracket, a face, and a colon:
   //
   // [-_-: ...
-  const mediaStartPattern = new RegExp(`^\\[${getMediaTokenizerArgs.facePattern}: `)
+  const mediaStartPattern = new RegExp(`^\\[${mediaConvention.facePattern}: `)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
     const consumer = new TextConsumer(args.text)
