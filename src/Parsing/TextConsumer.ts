@@ -16,7 +16,7 @@ interface ConsumeIfMatchesPatternArgs {
 }
 
 interface ShouldConsumeLine {
-  (line: string): boolean
+  (line: string, ...captures: string[]): boolean
 }
 
 interface OnConsume {
@@ -84,7 +84,7 @@ export class TextConsumer {
       captures = results.slice(1)
     }
 
-    if (args.if && !args.if(line)) {
+    if (args.if && !args.if(line, ...captures)) {
       return false
     }
 
