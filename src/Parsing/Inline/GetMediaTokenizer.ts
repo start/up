@@ -25,7 +25,7 @@ interface TokenizeMediaArgs {
 export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) {
   const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = getMediaTokenizerArgs
   
-  const mediaStartPattern = new RegExp(`\\[${getMediaTokenizerArgs.facePattern}: `)
+  const mediaStartPattern = new RegExp(`^\\[${getMediaTokenizerArgs.facePattern}: `)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
     const consumer = new TextConsumer(args.text)
