@@ -11,17 +11,23 @@ import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
-interface Args {
+interface GetMediaTokenizerArgs {
   facePattern: string,
   mediaStartAndMediaDescription: TokenMeaning,
-  mediaEndAndMediaUrl: TokenMeaning,
+  mediaEndAndMediaUrl: TokenMeaning
 }
 
-export function getMediaTokenizer(args: Args) {
-  const facePattern = new RegExp(args.facePattern + ': ')
+interface TokenizeMediaArgs {
+  text: string,
+  then: (lengthConsumed: number, tokens: Token[]) => void
+}
 
-  return function tokenizeMedia(remainingText: string): boolean {
-    const consumer = new TextConsumer(remainingText)
+export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) {
+  const { mediaStartAndMediaDescription, mediaEndAndMediaUrl } = getMediaTokenizerArgs
+  const facePattern = new RegExp(getMediaTokenizerArgs.facePattern + ': ')
+
+  return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
+    const consumer = new TextConsumer(args.text)
 
     const hasOpeningBracketAndFace =
       consumer.consumeIfMatches('[')
@@ -30,32 +36,39 @@ export function getMediaTokenizer(args: Args) {
     if (!hasOpeningBracketAndFace) {
       return false
     }
-    
+
     // We've found the opening bracket and the face. Now, let's get the media's description.
     let description: string
+
+    // TODO: Check square bracket balance
+    const didFindDescription = consumer.consume({
+      upTo: ' -> ',
+      then: match => description = applyBackslashEscaping(match)
+    })
+
+    if (!didFindDescription) {
+      return false
+    }
+
+    // Finally, let's get the URL and go home.
+    let url: string
+
+    const didFindClosingBracket = consumer.consume({
+      upTo: ' -> ',
+      then: match => description = applyBackslashEscaping(match)
+    })
+
+    if (!didFindClosingBracket) {
+      return false
+    }
     
-      const didFindDescription = consumer.consume({
-        upTo: ' -> ',
-        then: match => description = applyBackslashEscaping(match)
-      })
-      
-      if (!didFindDescription) {
-        return false
-      }
-      
-   // Finally, let's find the closing bracket and go home.
-          let url: string
+    const tokens = [
+      new Token(mediaStartAndMediaDescription),
+      new Token(mediaEndAndMediaUrl)
+    ]    
     
-      const didFindClosingBracket = consumer.consume({
-        upTo: ' -> ',
-        then: match => description = applyBackslashEscaping(match)
-      })
-      
-      if (!didFindClosingBracket) {
-        return false
-      }
-      
-      
+    args.then(consumer.lengthConsumed(), tokens)
+
     return true
   }
 }
