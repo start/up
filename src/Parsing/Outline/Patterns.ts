@@ -36,12 +36,17 @@ const STREAK = solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
-const NON_BLANK = '\\S'
+const NON_WHITESPACE_CHAR = '\\S'
+
+// We don't need to check for the start or end of the string, because if a line
+// contains a non-whitespace character anywhere in it, it's not blank.
+const NON_BLANK = NON_WHITESPACE_CHAR
 
 export {
   NON_BLANK,
   BLANK,
   INLINE_WHITESPACE_CHAR,
+  NON_WHITESPACE_CHAR,
   INDENT,
   ANY_WHITESPACE,
   STREAK,
