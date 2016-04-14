@@ -25,27 +25,32 @@ interface TokenizeMediaArgs {
 export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) {
   const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = getMediaTokenizerArgs
   
+  // Media conventions start with an opening bracket, a face, and a colon:
+  //
+  // [-_-: ...
   const mediaStartPattern = new RegExp(`^\\[${getMediaTokenizerArgs.facePattern}: `)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
     const consumer = new TextConsumer(args.text)
 
-    const hasOpeningBracketAndFace = consumer.consumeIfMatchesPattern({ pattern: mediaStartPattern })
+    const doesSatisfyStartPattern = consumer.consumeIfMatchesPattern({ pattern: mediaStartPattern })
 
-    if (!hasOpeningBracketAndFace) {
+    if (!doesSatisfyStartPattern) {
       return false
     }
 
-    // We've found the opening bracket and the face. Now, let's get the media's description.
+    // We've made it this far, so it's likely that we're dealing with a media convention.
+    //
+    // Let's determine the media's description.
     let description: string
 
     // TODO: Check square bracket balance
-    const didFindDescription = consumer.consume({
+    const didFindUrlArrow = consumer.consume({
       upTo: ' -> ',
       then: match => description = applyBackslashEscaping(match)
     })
 
-    if (!didFindDescription) {
+    if (!didFindUrlArrow) {
       return false
     }
 
