@@ -17,6 +17,8 @@ export enum TokenMeaning {
   InlineAsideEnd,
   LinkStart,
   LinkUrlAndLinkEnd,
+  AudioStartAndAudioDescription,
+  AudioUrlAndAudioEnd,
   PotentialRaisedVoiceStart,
   PotentialRaisedVoiceEnd,
   PotentialRaisedVoiceStartOrEnd

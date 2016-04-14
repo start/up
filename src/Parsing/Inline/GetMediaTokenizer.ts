@@ -13,8 +13,8 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLIN
 
 interface GetMediaTokenizerArgs {
   facePattern: string,
-  mediaStartAndMediaDescription: TokenMeaning,
-  mediaEndAndMediaUrl: TokenMeaning
+  tokenMeaningForStartAndDescription: TokenMeaning,
+  tokenMeaningForUrlAndEnd: TokenMeaning
 }
 
 interface TokenizeMediaArgs {
@@ -23,7 +23,7 @@ interface TokenizeMediaArgs {
 }
 
 export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) {
-  const { mediaStartAndMediaDescription, mediaEndAndMediaUrl } = getMediaTokenizerArgs
+  const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = getMediaTokenizerArgs
   const facePattern = new RegExp(getMediaTokenizerArgs.facePattern + ': ')
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
@@ -63,9 +63,9 @@ export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) 
     }
     
     const tokens = [
-      new Token(mediaStartAndMediaDescription),
-      new Token(mediaEndAndMediaUrl)
-    ]    
+      new Token(tokenMeaningForStartAndDescription),
+      new Token(tokenMeaningForUrlAndEnd)
+    ]
     
     args.then(consumer.lengthConsumed(), tokens)
 

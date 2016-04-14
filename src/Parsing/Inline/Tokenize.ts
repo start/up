@@ -9,6 +9,7 @@ import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
+import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './Sandwiches'
 
 
@@ -29,7 +30,12 @@ const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
-  
+
+const tokenizeAudio = getMediaTokenizer({
+  facePattern: '-_-',
+  tokenMeaningForStartAndDescription: TokenMeaning.AudioStartAndAudioDescription,
+  tokenMeaningForUrlAndEnd: TokenMeaning.AudioUrlAndAudioEnd
+})
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -250,6 +256,16 @@ class Tokenizer {
       then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
     })
   }
+  
+  tokenizeAudio(): boolean {
+    return tokenizeAudio({
+      text: this.consumer.remainingText(),
+      then: (lengthConsumed, tokens) => {
+        this.consumer.skip(lengthConsumed)
+        this.tokens.push(...tokens)
+      }
+    })
+  }
 
   // Handle emphasis and stress conventions
   handleRaisedVoice(): boolean {
@@ -270,7 +286,7 @@ class Tokenizer {
     //
     // We're only concerned with how the asterisks appear in the surrounding raw text. Therefore, at least for now,
     // we don't care whether any preceding whitespace is escaped or not.
-    
+
     const prevRawCharacter = this.consumer.at(originalTextIndex - 1)
     const NON_WHITESPACE = /\S/
     const canCloseConvention = NON_WHITESPACE.test(prevRawCharacter)
@@ -282,9 +298,9 @@ class Tokenizer {
     // The text consumer's current char is actually the next char after the delimiter we just consumed.
     const nextRawChar = this.consumer.currentChar()
     const canOpenConvention = NON_WHITESPACE.test(nextRawChar)
-    
+
     let meaning: TokenMeaning
-    
+
     if (canOpenConvention && canCloseConvention) {
       meaning = TokenMeaning.PotentialRaisedVoiceStartOrEnd
     } else if (canOpenConvention) {
@@ -295,7 +311,7 @@ class Tokenizer {
       this.addPlainTextToken(raisedVoiceDelimiter)
       return true
     }
-    
+
     this.addToken(meaning, raisedVoiceDelimiter)
     return true
   }
