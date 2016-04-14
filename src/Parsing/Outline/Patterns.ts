@@ -52,5 +52,6 @@ export {
   solely,
   startsWith,
   endsWith,
-  streakOf
+  streakOf,
+  atLeast
 }

@@ -1,11 +1,18 @@
 import { TextConsumer } from '../TextConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { startsWith, optional, INLINE_WHITESPACE_CHAR } from './Patterns'
+import { startsWith, optional, atLeast, INLINE_WHITESPACE_CHAR } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
 
-const QUOTE_DELIMITER_PATTERN = new RegExp(
-  startsWith('>' + optional(INLINE_WHITESPACE_CHAR))
+const BLOCKQUOTE_DELIMITER = '>' + optional(INLINE_WHITESPACE_CHAR)
+
+// On a given line, only the final blockquote delimiter is required to have a trailing space.  
+const BLOCKQUOTED_TEXT_PATTERN = new RegExp(
+  startsWith(atLeast(1, BLOCKQUOTE_DELIMITER) + INLINE_WHITESPACE_CHAR)
+)
+
+const FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(
+  startsWith(BLOCKQUOTE_DELIMITER)
 )
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,
@@ -16,8 +23,8 @@ export function parseBlockquote(args: OutlineParserArgs): boolean {
 
   // Collect all consecutive blockquoted lines
   while (consumer.consumeLine({
-    pattern: QUOTE_DELIMITER_PATTERN,
-    then: (line) => blockquoteLines.push(line.replace(QUOTE_DELIMITER_PATTERN, ''))
+    pattern: BLOCKQUOTED_TEXT_PATTERN,
+    then: (line) => blockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, ''))
   })) { }
 
   if (!blockquoteLines.length) {
