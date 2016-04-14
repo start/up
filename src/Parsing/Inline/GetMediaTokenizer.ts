@@ -19,7 +19,6 @@ interface TokenizeMediaArgs {
 export function getMediaTokenizer(mediaConvention: MediaConvention) {
   const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = mediaConvention
   
-  
   // Media conventions start with an opening bracket, a face, and a colon:
   //
   // [-_-: ...

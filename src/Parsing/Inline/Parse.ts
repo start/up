@@ -13,6 +13,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
+import { AUDIO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './SandwichConventions'
 
 
@@ -35,6 +36,10 @@ const SANDWICHES = [
   REVISION_INSERTION,
   SPOILER,
   INLINE_ASIDE
+]
+
+const MEDIA_CONVENTIONS = [
+  AUDIO
 ]
 
 
@@ -95,8 +100,10 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         nodes.push(new LinkNode(contents, url))
         continue
       }
-
-      case TokenMeaning.AudioStartAndAudioDescription: {
+    }
+    
+    for (const media of MEDIA_CONVENTIONS) {
+      if (token.meaning === media.tokenMeaningForStartAndDescription) {
         let description = token.value
         
         // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
@@ -105,7 +112,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document
-          continue
+          continue MainParserLoop
         }
         
         if (!description) {
@@ -114,7 +121,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         }
         
         nodes.push(new AudioNode(description, url))
-        continue
+        continue MainParserLoop
       }
     }
 
