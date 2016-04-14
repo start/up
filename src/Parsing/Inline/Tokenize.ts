@@ -62,8 +62,9 @@ class Tokenizer {
 
       const wasAnythingDiscovered = (
         this.tokenizeInlineCode()
-        || this.handleRaisedVoice()
+        || this.tokenizeRaisedVoicePlaceholders()
         || this.handleRegularSandwiches()
+        || this.tokenizeAudio()
         || this.handleLink()
       )
 
@@ -268,7 +269,7 @@ class Tokenizer {
   }
 
   // Handle emphasis and stress conventions
-  handleRaisedVoice(): boolean {
+  tokenizeRaisedVoicePlaceholders(): boolean {
     const originalTextIndex = this.consumer.lengthConsumed()
 
     let raisedVoiceDelimiter: string
