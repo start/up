@@ -15,7 +15,6 @@ interface ConsumeIfMatchesPatternArgs {
   then?: OnConsume
 }
 
-
 interface ShouldConsumeLine {
   (line: string): boolean
 }
@@ -27,6 +26,7 @@ interface OnConsume {
 interface OnConsumeUpTo {
   (beforeNeedle: string): void
 }
+
 
 export class TextConsumer {
   public countUnclosedParen = 0;
