@@ -13,7 +13,7 @@ import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
-import { AUDIO } from './MediaConventions'
+import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './SandwichConventions'
 
 
@@ -39,7 +39,9 @@ const SANDWICHES = [
 ]
 
 const MEDIA_CONVENTIONS = [
-  AUDIO
+  AUDIO,
+  IMAGE,
+  VIDEO
 ]
 
 

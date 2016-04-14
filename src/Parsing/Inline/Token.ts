@@ -19,6 +19,10 @@ export enum TokenMeaning {
   LinkUrlAndLinkEnd,
   AudioStartAndAudioDescription,
   AudioUrlAndAudioEnd,
+  ImageStartAndAudioDescription,
+  ImageUrlAndAudioEnd,
+  VideoStartAndAudioDescription,
+  VideoUrlAndAudioEnd,
   PotentialRaisedVoiceStart,
   PotentialRaisedVoiceEnd,
   PotentialRaisedVoiceStartOrEnd
