@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
-import { Sandwich } from './Sandwich'
+import { SandwichConvention } from './SandwichConvention'
 import { TextConsumer } from '../TextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -94,7 +94,7 @@ class Tokenizer {
   // Massages sandwich tokens into a tree structure while preserving any overlapping conveyed by the author. This
   // method completely ignores link tokens, and it assumes no tokens are missing.
   massageSandwichesIntoTreeStructure(): void {
-    const unclosedSandwiches: Sandwich[] = []
+    const unclosedSandwiches: SandwichConvention[] = []
 
     // Here's our overall strategy:
     //
@@ -123,7 +123,7 @@ class Tokenizer {
       // opened between this token and its corresponding start token, those sandwiches overlap this one and will
       // need to be chopped in half.
 
-      let overlappingFromMostRecentToLeast: Sandwich[] = []
+      let overlappingFromMostRecentToLeast: SandwichConvention[] = []
 
       // We'll check the unclosed sandwiches from most recently opened to least recently opened.
       for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
@@ -179,8 +179,8 @@ class Tokenizer {
       // 1. Start before the link and end inside the link
       // 2. Start inside the link and end after the link
 
-      const overlappingStartingBefore: Sandwich[] = []
-      const overlappingStartingInside: Sandwich[] = []
+      const overlappingStartingBefore: SandwichConvention[] = []
+      const overlappingStartingInside: SandwichConvention[] = []
 
       for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
         const token = this.tokens[insideLinkIndex]
@@ -225,7 +225,7 @@ class Tokenizer {
   //
   // Functionally, this method does exactly what its name implies: it adds sandwich end tokens before `index`
   // and sandwich start tokens after `index`.
-  closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: Sandwich[]): void {
+  closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: SandwichConvention[]): void {
     const startTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
         .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
@@ -506,13 +506,13 @@ class Tokenizer {
   }
 }
 
-function getSandwichStartedByThisToken(token: Token): Sandwich {
+function getSandwichStartedByThisToken(token: Token): SandwichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
     sandwich.convention.startTokenMeaning() === token.meaning
   )[0]
 }
 
-function getSandwichEndedByThisToken(token: Token): Sandwich {
+function getSandwichEndedByThisToken(token: Token): SandwichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
     sandwich.convention.endTokenMeaning() === token.meaning
   )[0]

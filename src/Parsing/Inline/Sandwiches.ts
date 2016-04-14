@@ -1,4 +1,4 @@
-import { Sandwich } from './Sandwich'
+import { SandwichConvention } from './SandwichConvention'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TokenMeaning } from './Token'
 import { Convention } from './Convention'
@@ -15,8 +15,8 @@ function sandwich(
   NodeType: RichInlineSyntaxNodeType,
   startMeaning: TokenMeaning,
   endMeaning: TokenMeaning
-): Sandwich {
-  return new Sandwich(start, end, NodeType, new Convention(startMeaning, endMeaning))
+): SandwichConvention {
+  return new SandwichConvention(start, end, NodeType, new Convention(startMeaning, endMeaning))
 }
 
 const STRESS = sandwich('**', '**', StressNode, TokenMeaning.StressStart, TokenMeaning.StressEnd)
