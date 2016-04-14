@@ -1,10 +1,5 @@
-import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { MediaSyntaxNode } from './MediaSyntaxNode'
 
-export class VideoNode extends InlineSyntaxNode {
-  constructor(public description: string, public url: string = '') {
-    super()
-  }
-  
+export class VideoNode extends MediaSyntaxNode {
   private VIDEO: any = null
 }

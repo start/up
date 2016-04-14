@@ -8,11 +8,11 @@ import { Token, TokenMeaning } from './Token'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
-import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
+import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 export class MediaConvention {
   constructor(
     public facePattern: string,
-    public MediaNodeType: RichInlineSyntaxNodeType,
+    public NodeType: MediaSyntaxNodeType,
     public convention: Convention) { }
 }
