@@ -92,7 +92,7 @@ describe('A single blockquote delimiter missing its trailing space', () => {
   it('does not produce a blockquote note', () => {
     expect(Up.ast('>Hello, taxes!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, taxes!')
+        new PlainTextNode('>Hello, taxes!')
       ]))
   })
 })
