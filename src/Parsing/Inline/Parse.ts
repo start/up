@@ -7,6 +7,7 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
@@ -92,6 +93,27 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         }
 
         nodes.push(new LinkNode(contents, url))
+        continue
+      }
+
+      case TokenMeaning.AudioStartAndAudioDescription: {
+        let description = token.value
+        
+        // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
+        index += 1
+        const url = tokens[index].value
+        
+        if (!url) {
+          // If there's no URL, there's nothing meaningful to include in the document
+          continue
+        }
+        
+        if (!description) {
+          // If there's no description, we treat the URL as the description
+          description = url
+        }
+        
+        nodes.push(new AudioNode(description, url))
         continue
       }
     }
