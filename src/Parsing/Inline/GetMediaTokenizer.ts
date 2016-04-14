@@ -30,7 +30,32 @@ export function getMediaTokenizer(args: Args) {
     if (!hasOpeningBracketAndFace) {
       return false
     }
-
-    return false
+    
+    // We've found the opening bracket and the face. Now, let's get the media's description.
+    let description: string
+    
+      const didFindDescription = consumer.consume({
+        upTo: ' -> ',
+        then: match => description = applyBackslashEscaping(match)
+      })
+      
+      if (!didFindDescription) {
+        return false
+      }
+      
+   // Finally, let's find the closing bracket and go home.
+          let url: string
+    
+      const didFindClosingBracket = consumer.consume({
+        upTo: ' -> ',
+        then: match => description = applyBackslashEscaping(match)
+      })
+      
+      if (!didFindClosingBracket) {
+        return false
+      }
+      
+      
+    return true
   }
 }
