@@ -24,14 +24,13 @@ interface TokenizeMediaArgs {
 
 export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) {
   const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = getMediaTokenizerArgs
-  const facePattern = new RegExp(getMediaTokenizerArgs.facePattern + ': ')
+  
+  const mediaStartPattern = new RegExp(`\\[${getMediaTokenizerArgs.facePattern}: `)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
     const consumer = new TextConsumer(args.text)
 
-    const hasOpeningBracketAndFace =
-      consumer.consumeIfMatches('[')
-      && consumer.consumeIfMatchesPattern({ pattern: facePattern })
+    const hasOpeningBracketAndFace = consumer.consumeIfMatchesPattern({ pattern: mediaStartPattern })
 
     if (!hasOpeningBracketAndFace) {
       return false
@@ -54,8 +53,8 @@ export function getMediaTokenizer(getMediaTokenizerArgs: GetMediaTokenizerArgs) 
     let url: string
 
     const didFindClosingBracket = consumer.consume({
-      upTo: ' -> ',
-      then: match => description = applyBackslashEscaping(match)
+      upTo: ']',
+      then: match => url = applyBackslashEscaping(match)
     })
 
     if (!didFindClosingBracket) {
