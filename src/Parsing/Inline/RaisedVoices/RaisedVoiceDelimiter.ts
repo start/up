@@ -7,7 +7,7 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
+import { STRESS, EMPHASIS } from '../SandwichConventions'
 
 
 const STRESS_COST = STRESS.start.length

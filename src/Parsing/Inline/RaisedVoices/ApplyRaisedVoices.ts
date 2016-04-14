@@ -11,7 +11,6 @@ import { RaisedVoiceDelimiter, compareDelimitersDecending } from './RaisedVoiceD
 import { StartDelimiter } from './StartDelimiter'
 import { EndDelimiter } from './EndDelimiter'
 import { PlainTextDelimiter } from './PlainTextDelimiter'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {

@@ -9,7 +9,6 @@ import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
 import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
 import { StartDelimiter } from './StartDelimiter'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from '../Sandwiches'
 
 
 export class EndDelimiter extends RaisedVoiceDelimiter {
