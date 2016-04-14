@@ -3,6 +3,7 @@
 
 import { expect } from 'chai'
 import * as Up from '../../index'
+import { insideDocumentAndParagraph } from './Helpers'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
@@ -29,14 +30,16 @@ function expectBlockquoteContentsToEqualDocumentContents(blockquotedText: string
 
 describe('Consecutive lines starting with "> "', () => {
   it('are parsed like a document and then placed in a blockquote node', () => {
-    const blockquotedText =
-`> Hello, world!
+    const blockquotedText = `
+> Hello, world!
 >
 > Goodbye, world!`
-    const text =
-`Hello, world!
+
+    const text = `
+Hello, world!
 
 Goodbye, world!`
+
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 })
@@ -44,49 +47,71 @@ Goodbye, world!`
 
 describe('A blockquote', () => {
   it('can contain inline conventions', () => {
-    const blockquotedText =
-`> Hello, world!
+    const blockquotedText = `
+> Hello, world!
 >
 > Goodbye, *world*!`
-    const text =
-`Hello, world!
+
+    const text = `
+Hello, world!
 
 Goodbye, *world*!`
+
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
   it('can contain headings', () => {
-    const blockquotedText =
-`> Hello, world!
+    const blockquotedText = `
+> Hello, world!
 > ===========`
-    const text =
-`Hello, world!
+
+    const text = `
+Hello, world!
 ===========`
+
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 
   it('can contain nested blockquotes', () => {
-    const blockquotedText =
-`> Hello, world!
+    const blockquotedText = `
+> Hello, world!
 >
 > > Hello, mantle!`
-    const text =
-`Hello, world!
+
+    const text = `
+Hello, world!
 
 > Hello, mantle!`
+
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
-  
-  it('treat the space after the ">" as optional', () => {
-    const blockquotedText =
-`>Hello, world!
->
-> Goodbye, world!`
-    const text =
-`Hello, world!
+})
 
-Goodbye, world!`
-    expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
+
+describe('A single blockquote delimiter missing its trailing space', () => {
+  it('does not produce a blockquote note', () => {
+    expect(Up.ast('>Hello, taxes!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, taxes!')
+      ]))
+  })
+})
+
+
+describe('Multiple blockquote delimiters each missing their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
+  it('produce nested blockquote nodes, one for each delimiter', () => {
+    expect(Up.ast(`>>> Hello, world!`)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new BlockquoteNode([
+            new BlockquoteNode([
+              new ParagraphNode([
+                new PlainTextNode('Hello, world!')
+              ])
+            ])
+          ])
+        ])
+      ]))
   })
 })
 
