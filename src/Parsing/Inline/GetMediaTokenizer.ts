@@ -11,22 +11,13 @@ import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { MediaConvention } from './MediaConvention'
 import { AUDIO } from './MediaConventions'
 
-interface GetMediaTokenizerArgs {
-  facePattern: string,
-  tokenMeaningForStartAndDescription: TokenMeaning,
-  tokenMeaningForUrlAndEnd: TokenMeaning
-}
-
 interface TokenizeMediaArgs {
   text: string,
   then: (lengthConsumed: number, tokens: Token[]) => void
 }
 
 export function getMediaTokenizer(mediaConvention: MediaConvention) {
-  const { convention } = mediaConvention
-  
-  const tokenMeaningForStartAndDescription = convention.startTokenMeaning()
-  const tokenMeaningForUrlAndEnd = convention.endTokenMeaning()
+  const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = mediaConvention
   
   
   // Media conventions start with an opening bracket, a face, and a colon:

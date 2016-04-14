@@ -14,5 +14,6 @@ export class MediaConvention {
   constructor(
     public facePattern: string,
     public NodeType: MediaSyntaxNodeType,
-    public convention: Convention) { }
+    public tokenMeaningForStartAndDescription: TokenMeaning,
+    public tokenMeaningForUrlAndEnd: TokenMeaning) { }
 }

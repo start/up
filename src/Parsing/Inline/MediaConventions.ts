@@ -12,20 +12,7 @@ import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 import { MediaConvention } from './MediaConvention'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 
-function media(
-  facePattern: string,
-  NodeType: MediaSyntaxNodeType,
-  tokenMeaningForStartAndDescription: TokenMeaning,
-  tokenMeaningForUrlAndEnd: TokenMeaning
-): MediaConvention {
-  return new MediaConvention(
-    facePattern,
-    NodeType,
-    new Convention(tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd)
-  )
-}
-
-const AUDIO = media('-_-', AudioNode, TokenMeaning.AudioStartAndAudioDescription, TokenMeaning.AudioUrlAndAudioEnd)
+const AUDIO = new MediaConvention('-_-', AudioNode, TokenMeaning.AudioStartAndAudioDescription, TokenMeaning.AudioUrlAndAudioEnd)
 
 export {
   AUDIO
