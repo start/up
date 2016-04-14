@@ -123,3 +123,10 @@ describe('A single line blockquote', () => {
     expectBlockquoteContentsToEqualDocumentContents(blockquotedText, text)
   })
 })
+
+
+describe('A blank blockquoted line', () => {
+  it('does not require a trailing space after the blockquote delimiter', () => {
+    expectBlockquoteContentsToEqualDocumentContents('>', '')
+  })
+})
