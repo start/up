@@ -32,7 +32,12 @@ const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
 
-const tokenizeAudio = getMediaTokenizer(AUDIO)
+
+const MEDIA_TOKENIZERS = [
+  AUDIO,
+  IMAGE,
+  VIDEO
+].map(mediaConvention => getMediaTokenizer(mediaConvention))
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -61,7 +66,7 @@ class Tokenizer {
         this.tokenizeInlineCode()
         || this.tokenizeRaisedVoicePlaceholders()
         || this.handleRegularSandwiches()
-        || this.tokenizeAudio()
+        || this.tokenizeMedia()
         || this.handleLink()
       )
 
@@ -254,15 +259,23 @@ class Tokenizer {
       then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
     })
   }
-  
-  tokenizeAudio(): boolean {
-    return tokenizeAudio({
-      text: this.consumer.remainingText(),
-      then: (lengthConsumed, tokens) => {
-        this.consumer.skip(lengthConsumed)
-        this.tokens.push(...tokens)
+
+  tokenizeMedia(): boolean {
+    for (const tokenizeMedia of MEDIA_TOKENIZERS) {
+      const wasMediaFound = tokenizeMedia({
+        text: this.consumer.remainingText(),
+        then: (lengthConsumed, tokens) => {
+          this.consumer.skip(lengthConsumed)
+          this.tokens.push(...tokens)
+        }
+      })
+      
+      if (wasMediaFound) {
+        return true
       }
-    })
+    }
+
+    return false
   }
 
   // Handle emphasis and stress conventions

@@ -9,7 +9,6 @@ import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { MediaConvention } from './MediaConvention'
-import { AUDIO } from './MediaConventions'
 
 interface TokenizeMediaArgs {
   text: string,

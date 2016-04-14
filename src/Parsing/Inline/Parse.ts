@@ -122,7 +122,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
           description = url
         }
         
-        nodes.push(new AudioNode(description, url))
+        nodes.push(new media.NodeType(description, url))
         continue MainParserLoop
       }
     }
