@@ -30,3 +30,14 @@ describe('Bracketed text containing a face with closed eyes, listening to a desc
       ]))
   })
 })
+
+
+describe('An audio reference that is the only convention on its line', () => {
+  it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
+    expect(Up.ast('[-_-: ghostly howling -> http://example.com/ghosts.ogg]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+      ]))
+  })
+})
+
