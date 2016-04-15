@@ -27,6 +27,7 @@ import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { Writer } from './Writer'
+import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 
 export class HtmlWriter extends Writer {
   document(node: DocumentNode): string {

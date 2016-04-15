@@ -28,10 +28,11 @@ import { Line } from '../SyntaxNodes/Line'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
+import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 
 export abstract class Writer {
   
-  write(node: DocumentNode|OutlineSyntaxNode|InlineSyntaxNode) {
+  write(node: SyntaxNode) {
     
     // TypeScript lacks multiple dispatch. Rather than polluting every single SyntaxNode class
     // with the visitor pattern, we perform the dispatch ourselves here.
