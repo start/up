@@ -22,7 +22,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('Bracketed text containing a face with closed eyes, listening to a description, both of which point to a URL', () => {
-  it('producs an audio node with the description and URL', () => {
+  it('produces an audio node with the description and URL', () => {
     expect(Up.ast('I would never stay in a house with these sounds. [-_-: ghostly howling -> http://example.com/ghosts.ogg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I would never stay in a house with these sounds. '),
