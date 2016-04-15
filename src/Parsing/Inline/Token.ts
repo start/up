@@ -40,10 +40,6 @@ export class Token {
     }
   }
   
-  trimmedValue(): string {
-    return this.value.trim()
-  }
-  
   textIndex(): number {
     return this.consumerBefore.lengthConsumed()
   }

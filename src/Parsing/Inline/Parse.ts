@@ -82,7 +82,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         const hasContents = isNotPureWhitespace(contents)
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
-        let url = tokens[index].trimmedValue()
+        let url = tokens[index].value.trim()
         const hasUrl = !!url
 
         if (!hasContents && !hasUrl) {
@@ -109,11 +109,11 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     
     for (const media of MEDIA_CONVENTIONS) {
       if (token.meaning === media.tokenMeaningForStartAndDescription) {
-        let description = token.trimmedValue()
+        let description = token.value.trim()
         
         // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
         index += 1
-        const url = tokens[index].trimmedValue()
+        const url = tokens[index].value.trim()
         
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document
