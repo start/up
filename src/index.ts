@@ -1,5 +1,4 @@
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
-import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 import { getOutlineNodes } from './Parsing/Outline/GetOutlineNodes'
 import { HtmlWriter } from './Writer/HtmlWriter'
 

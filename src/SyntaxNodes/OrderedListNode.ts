@@ -1,4 +1,3 @@
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 

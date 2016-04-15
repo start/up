@@ -1,4 +1,3 @@
-import { SyntaxNode } from './SyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { DescriptionListItem } from './DescriptionListItem'
 

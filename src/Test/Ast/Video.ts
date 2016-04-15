@@ -4,7 +4,6 @@
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'

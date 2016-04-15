@@ -1,5 +1,4 @@
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'

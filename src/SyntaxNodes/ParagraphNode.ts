@@ -1,8 +1,8 @@
-import { SyntaxNode } from './SyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 export class ParagraphNode extends OutlineSyntaxNode {
-  constructor(public children: SyntaxNode[] = []) {
+  constructor(public children: InlineSyntaxNode[] = []) {
     super()
   }
   
