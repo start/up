@@ -62,13 +62,13 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
 
     switch (token.meaning) {
       case TokenMeaning.PlainText:
-        nodes.push(new PlainTextNode(token.rawValue))
+        nodes.push(new PlainTextNode(token.value))
         continue
 
       case TokenMeaning.InlineCode: {
         // Empty inline code isn't meaningful, so we discard it
-        if (token.rawValue) {
-          nodes.push(new InlineCodeNode(token.rawValue))
+        if (token.value) {
+          nodes.push(new InlineCodeNode(token.value))
         }
         
         continue
@@ -82,7 +82,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         const hasContents = !!result.nodes.length
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
-        let url = tokens[index].value()
+        let url = tokens[index].trimmedValue()
         const hasUrl = !!url
 
         if (!hasContents && !hasUrl) {
@@ -109,11 +109,11 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     
     for (const media of MEDIA_CONVENTIONS) {
       if (token.meaning === media.tokenMeaningForStartAndDescription) {
-        let description = token.value()
+        let description = token.trimmedValue()
         
         // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
         index += 1
-        const url = tokens[index].value()
+        const url = tokens[index].trimmedValue()
         
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document

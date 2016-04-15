@@ -26,7 +26,7 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
 
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
-    const {meaning, rawValue} = token
+    const {meaning, value} = token
 
     const canStartConvention = (
       meaning === TokenMeaning.PotentialRaisedVoiceStart
@@ -62,7 +62,7 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
     // delimiters, we immediately treat the dlimiter as plain text.    
 
     if (canEndConvention) {
-      const endDelimiter = new EndDelimiter(tokenIndex, rawValue)
+      const endDelimiter = new EndDelimiter(tokenIndex, value)
 
       endDelimiter.matchAnyApplicableStartDelimiters(delimiters)
 
@@ -73,11 +73,11 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
     }
 
     if (canStartConvention) {
-      delimiters.push(new StartDelimiter(tokenIndex, rawValue))
+      delimiters.push(new StartDelimiter(tokenIndex, value))
     } else {
       // Well, we could neither start nor end any conventions using this delimiter, so we'll assume it was meant to
       // be plain text.
-      delimiters.push(new PlainTextDelimiter(tokenIndex, rawValue))
+      delimiters.push(new PlainTextDelimiter(tokenIndex, value))
     }
   }
 
@@ -113,7 +113,7 @@ function combineConsecutivePlainTextTokens(tokens: Token[], token: Token): Token
     lastToken && (lastToken.meaning === TokenMeaning.PlainText) && token.meaning === TokenMeaning.PlainText
 
   if (areBothLastTokenAndThisTokenPlainText) {
-    lastToken.rawValue += token.rawValue
+    lastToken.value += token.value
   } else {
     tokens.push(token)
   }

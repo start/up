@@ -29,19 +29,19 @@ export enum TokenMeaning {
 }
 
 export class Token {
-  public rawValue: string
+  public value: string
   public consumerBefore: TextConsumer
   
   constructor(public meaning: TokenMeaning, valueOrConsumerBefore?: string|TextConsumer) {
     if (typeof valueOrConsumerBefore === 'string') {
-      this.rawValue = valueOrConsumerBefore
+      this.value = valueOrConsumerBefore
     } else {
       this.consumerBefore = valueOrConsumerBefore
     }
   }
   
-  value(): string {
-    return this.rawValue.trim()
+  trimmedValue(): string {
+    return this.value.trim()
   }
   
   textIndex(): number {
