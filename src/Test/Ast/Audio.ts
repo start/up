@@ -41,3 +41,12 @@ describe('An audio reference that is the only convention on its line', () => {
   })
 })
 
+
+describe('An audio reference without a description', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.ast('[-_-: -> http://example.com/ghosts.ogg]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('http://example.com/ghosts.ogg', 'http://example.com/ghosts.ogg'),
+      ]))
+  })
+})

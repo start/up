@@ -38,3 +38,12 @@ describe('An image that is the only convention on its line', () => {
       ]))
   })
 })
+
+describe('An image without a description', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.ast('[o_o: -> http://example.com/hauntedhouse.svg]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
+      ]))
+  })
+})
