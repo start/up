@@ -425,7 +425,7 @@ class Tokenizer {
     const lastToken = last(this.tokens)
 
     if (lastToken && (lastToken.meaning === TokenMeaning.PlainText)) {
-      lastToken.value += text
+      lastToken.rawValue += text
     } else {
       this.tokens.push(new Token(TokenMeaning.PlainText, text))
     }

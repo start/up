@@ -21,7 +21,7 @@ export function getMediaTokenizer(mediaConvention: MediaConvention) {
   // Media conventions start with an opening bracket, a face, and a colon:
   //
   // [-_-: ...
-  const mediaStartPattern = new RegExp(`^\\[${mediaConvention.facePattern}: `)
+  const mediaStartPattern = new RegExp(`^\\[${mediaConvention.facePattern}:`)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
     const consumer = new TextConsumer(args.text)

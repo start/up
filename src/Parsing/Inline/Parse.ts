@@ -62,13 +62,13 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
 
     switch (token.meaning) {
       case TokenMeaning.PlainText:
-        nodes.push(new PlainTextNode(token.value))
+        nodes.push(new PlainTextNode(token.rawValue))
         continue
 
       case TokenMeaning.InlineCode: {
         // Empty inline code isn't meaningful, so we discard it
-        if (token.value) {
-          nodes.push(new InlineCodeNode(token.value))
+        if (token.rawValue) {
+          nodes.push(new InlineCodeNode(token.rawValue))
         }
         
         continue
@@ -78,23 +78,26 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.LinkUrlAndLinkEnd)
         index += result.countTokensParsed
 
-        // The URL was in the LinkUrlAndEnd token, the last token we parsed
-        let url = tokens[index].value
         const contents = result.nodes
+        const hasContents = !!result.nodes.length
+        
+        // The URL was in the LinkUrlAndEnd token, the last token we parsed
+        let url = tokens[index].value()
+        const hasUrl = !!url
 
-        if (!contents.length && !url) {
+        if (!hasContents && !hasUrl) {
           // If there's no content and no URL, there's nothing meaninful to include in the document
           continue
         }
 
-        if (contents.length && !url) {
+        if (hasContents && !hasUrl) {
           // If there's content but no URL, we include the content directly in the document without producing
           // a link node
           nodes.push(...contents)
           continue
         }
 
-        if (!contents.length && url) {
+        if (!hasContents && hasUrl) {
           // If there's no content but we have a URL, we'll use the URL for the content
           contents.push(new PlainTextNode(url))
         }
@@ -106,11 +109,11 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     
     for (const media of MEDIA_CONVENTIONS) {
       if (token.meaning === media.tokenMeaningForStartAndDescription) {
-        let description = token.value
+        let description = token.value()
         
         // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
         index += 1
-        const url = tokens[index].value
+        const url = tokens[index].value()
         
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document
