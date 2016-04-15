@@ -9,5 +9,5 @@ export abstract class RichInlineSyntaxNode extends InlineSyntaxNode {
     super()
   }
   
-  private RICH_INLINE_SYNTAX_NODE: any = null
+  richInlineSyntaxNode(): void { }
 }

@@ -78,8 +78,8 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         const result = parseUntil(tokens.slice(countParsed), TokenMeaning.LinkUrlAndLinkEnd)
         index += result.countTokensParsed
 
-        const contents = result.nodes
-        const hasContents = isNotOnlyWhitespace(contents)
+        let contents = result.nodes
+        const hasContents = isNotPureWhitespace(contents)
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
         let url = tokens[index].trimmedValue()
@@ -99,7 +99,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
 
         if (!hasContents && hasUrl) {
           // If there's no content but we have a URL, we'll use the URL for the content
-          contents.push(new PlainTextNode(url))
+          contents = [new PlainTextNode(url)]
         }
 
         nodes.push(new LinkNode(contents, url))
@@ -152,10 +152,10 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   return new ParseResult(nodes, countParsed)
 }
 
-function isNotOnlyWhitespace(nodes: InlineSyntaxNode[]): boolean {
+function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
 }
 
 function isWhitespace(node: InlineSyntaxNode): boolean {
-  return node instanceof PlainTextNode && !node.text
+  return (node instanceof PlainTextNode) && !node.text.trim()
 }
