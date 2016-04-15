@@ -79,7 +79,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         index += result.countTokensParsed
 
         const contents = result.nodes
-        const hasContents = !!result.nodes.length
+        const hasContents = isNotOnlyWhitespace(contents)
         
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
         let url = tokens[index].trimmedValue()
@@ -150,4 +150,12 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
   }
 
   return new ParseResult(nodes, countParsed)
+}
+
+function isNotOnlyWhitespace(nodes: InlineSyntaxNode[]): boolean {
+  return !nodes.every(isWhitespace)
+}
+
+function isWhitespace(node: InlineSyntaxNode): boolean {
+  return node instanceof PlainTextNode && !node.text
 }
