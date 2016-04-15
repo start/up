@@ -30,7 +30,7 @@ describe('Bracketed text containing open eyes, reading a description, both of wh
   })
 })
 
-describe('An image that is the only convention in a paragraph', () => {
+describe('An image that is the only convention on its line', () => {
   it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
     expect(Up.ast('[o_o: haunted house -> http://example.com/hauntedhouse.svg]')).to.be.eql(
       new DocumentNode([
