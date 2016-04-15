@@ -4,10 +4,11 @@ export interface MediaSyntaxNodeType {
   new(description: string, url: string): MediaSyntaxNode
 }
 
-export abstract class MediaSyntaxNode extends InlineSyntaxNode {
-  constructor(public description: string, public url: string) {
-    super()
-  }
+export abstract class MediaSyntaxNode {
+  mediaSyntaxNode(): void { }
+  outlineSyntaxNode(): void { }
+  inlineSyntaxNode(): void { }
   
-  private MEDIA_SYNTAX_NODE: any = null
+  constructor(public description: string, public url: string) { }
+  
 }
