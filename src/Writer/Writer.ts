@@ -1,4 +1,5 @@
-import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
+import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { ImageNode } from '../SyntaxNodes/ImageNode'
 import { AudioNode } from '../SyntaxNodes/AudioNode'
@@ -30,7 +31,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 
 export abstract class Writer {
   
-  write(node: SyntaxNode) {
+  write(node: DocumentNode|OutlineSyntaxNode|InlineSyntaxNode) {
     
     // TypeScript lacks multiple dispatch. Rather than polluting every single SyntaxNode class
     // with the visitor pattern, we perform the dispatch ourselves here.
