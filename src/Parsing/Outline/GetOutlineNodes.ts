@@ -1,5 +1,7 @@
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 import { TextConsumer } from '../TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
@@ -25,7 +27,7 @@ const TRAILING_WHITESPACE_PATTERN = new RegExp(
 
 
 export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
-  
+
   // Within each call to parseOutline, we reset the underlines associated with each heading level. 
   // This means blockquotes and list items are their own mini-documents with their own heading
   // outline structures. This behavior is subject to change.
@@ -70,20 +72,36 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
     }
   }
 
-  return withoutExtraConsecutiveSeparatorNodes(nodes)
+  return cleanUpAst(nodes)
 }
 
-function withoutExtraConsecutiveSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+function cleanUpAst(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
-    const isExtraConsecutiveSectionSeparatorNode =
+    // To produce a cleaner AST, we condense multiple consecutive section separator nodes into one.
+    const isConsecutiveSectionSeparatorNode = (
       node instanceof SectionSeparatorNode
       && last(resultNodes) instanceof SectionSeparatorNode
+    )
 
-    if (!isExtraConsecutiveSectionSeparatorNode) {
-      resultNodes.push(node)
+    if (isConsecutiveSectionSeparatorNode) {
+      continue
     }
+
+    // Media nodes are unique in that they can serve as both inline and outline nodes.
+    //
+    // Whenever a media node (e.g. image, audio, or video) is a paragraph's only child, we replace
+    // the paragraph node with the media node.     
+    if (node instanceof ParagraphNode && (node.children.length === 1)) {
+      const onlyChild = node.children[0]
+      if (onlyChild instanceof MediaSyntaxNode) {
+        resultNodes.push(onlyChild)
+        continue
+      }
+    }
+
+    resultNodes.push(node)
   }
 
   return resultNodes
