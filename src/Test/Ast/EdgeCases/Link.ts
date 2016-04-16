@@ -79,7 +79,11 @@ describe('A link with blank content', () => {
 
 describe('A link with no content and no URL', () => {
   it('produces no syntax nodes', () => {
-    expect(Up.ast('[ -> ]')).to.be.eql(insideDocumentAndParagraph([]))
+    expect(Up.ast('Hello, [ -> ]!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, !')
+      ])
+    )
   })
 })
 

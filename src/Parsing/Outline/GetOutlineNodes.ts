@@ -28,7 +28,7 @@ const TRAILING_WHITESPACE_PATTERN = new RegExp(
 
 export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
 
-  // Within each call to parseOutline, we reset the underlines associated with each heading level. 
+  // Within each call to parseOutline, we reset the underlines associated with each heading level.
   // This means blockquotes and list items are their own mini-documents with their own heading
   // outline structures. This behavior is subject to change.
   const headingParser = getHeadingParser(new HeadingLeveler())
@@ -89,15 +89,33 @@ function cleanUpAst(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
       continue
     }
 
-    // Media nodes are unique in that they can serve as both inline and outline nodes.
-    //
-    // Whenever a media node (e.g. image, audio, or video) is a paragraph's only child, we replace
-    // the paragraph node with the media node.     
-    if (node instanceof ParagraphNode && (node.children.length === 1)) {
-      const onlyChild = node.children[0]
-      if (onlyChild instanceof MediaSyntaxNode) {
-        resultNodes.push(onlyChild)
-        continue
+    if (node instanceof ParagraphNode) {
+      switch (node.children.length) {
+
+        case 0:
+          // Media conventions do not produce any syntax nodes if they're missing their URL.
+          //
+          // Links do not produce any syntax nodes if they're missing both their content and their URL
+          //
+          // Consequently, If a paragraph contains only those "dud" conventions, the paragraph itself
+          // will be empty. We discard those empty paragraphs.
+          continue
+
+        case 1: {
+          // Media nodes are unique in that they can serve as both inline and outline nodes.
+          //
+          // Whenever a media node (e.g. image, audio, or video) is a paragraph's only child, we replace
+          // the paragraph node with the media node.
+          //
+          // TODO: Do the same thing if a paragraph contains multiple media conventions?
+          const onlyChild = node.children[0]
+          if (onlyChild instanceof MediaSyntaxNode) {
+            resultNodes.push(onlyChild)
+            continue
+          }
+
+          break
+        }
       }
     }
 
