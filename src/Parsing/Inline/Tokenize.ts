@@ -423,7 +423,18 @@ class Tokenizer {
 
   addPlainTextToken(text: string): void {
     const lastToken = last(this.tokens)
-
+ 
+    // We combine consecutive plain-text tokens (i.e. plain text characters) during parsing into a single
+    // PlainTextNode.
+    //
+    // Certain tokens ultimately produce no syntax nodes. Plain-text tokens surrounding those "dud" tokens need
+    // to be combined, so we have no choice but to perform that task once tokenization is completed.
+    //
+    // So why do we spend time doing it tokenization, too?
+    //  
+    // Every single time `isInside` is called, we have to iterate through every token. And we call `isInside`
+    // frequently. Until we reduce the frequency of iteration, we'll try to minimize the number of tokens we
+    // have. 
     if (lastToken && (lastToken.meaning === TokenMeaning.PlainText)) {
       lastToken.value += text
     } else {
