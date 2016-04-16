@@ -15,7 +15,7 @@ const EMPHASIS_COST = EMPHASIS.start.length
 const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
 
 
-export abstract class RaisedVoiceDelimiter {
+export abstract class RaisedVoiceMarker {
   protected tokenMeanings: TokenMeaning[] = []
   public countSurplusAsterisks: number
   
@@ -78,6 +78,6 @@ export abstract class RaisedVoiceDelimiter {
   }
 }
 
-export function compareDelimitersDecending(a: RaisedVoiceDelimiter, b: RaisedVoiceDelimiter): number {
+export function comapreMarkersDescending(a: RaisedVoiceMarker, b: RaisedVoiceMarker): number {
   return b.originalTokenIndex - a.originalTokenIndex
 }

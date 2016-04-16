@@ -7,22 +7,21 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiter, compareDelimitersDecending } from './RaisedVoiceDelimiter'
-import { StartDelimiter } from './StartDelimiter'
-import { EndDelimiter } from './EndDelimiter'
-import { PlainTextDelimiter } from './PlainTextDelimiter'
+import { RaisedVoiceMarker, comapreMarkersDescending } from './RaisedVoiceDelimiter'
+import { StartMarker } from './StartDelimiter'
+import { EndMarker } from './EndDelimiter'
+import { PlainTextMarker } from './PlainTextDelimiter'
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
-  const delimiters = getDelimiters(tokens)
-  const resulTokens = replacePlaceholderTokens(tokens, delimiters)
-
-  return resulTokens
+  const markers = getMarkers(tokens)
+  
+  return replacePlaceholderTokens(tokens, markers)
 }
 
 
-function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
-  const delimiters: RaisedVoiceDelimiter[] = []
+function getMarkers(tokens: Token[]): RaisedVoiceMarker[] {
+  const markers: RaisedVoiceMarker[] = []
 
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
@@ -44,62 +43,62 @@ function getDelimiters(tokens: Token[]): RaisedVoiceDelimiter[] {
       continue
     }
 
-    // A given raised voice delimiter will serve only 1 of 3 roles:
+    // A given raised voice marker will serve only 1 of 3 roles:
     //
     // 1. End 1 or more conventions
     // 2. Start 1 or more conventions
     // 3. Be treated as plain text (as a last resort)
     //
-    // If a delimiter has the potential to either start *or* end conventions (represented by a token with the meaning 
-    // TokenMeaning.PotentialRaisedVoiceStartOrEnd), we initially treat it as an end delimiter. If we fail to match
-    // it with any start delimiters, we then treat it as a start delimiter, hoping we can subsequently match it with
-    // at least one end delimiter. If this fails, we then treat the delimiter as plain text.
+    // If a marker has the potential to either start *or* end conventions (represented by a token with the meaning 
+    // TokenMeaning.PotentialRaisedVoiceStartOrEnd), we initially treat it as an end marker. If we fail to match
+    // it with any start markers, we then treat it as a start marker, hoping we can subsequently match it with
+    // at least one end marker. If this fails, we then treat the marker as plain text.
     //
-    // On the other hand, if we fail to match a regular end delimiter (TokenMeaning.PotentialRaisedVoiceEnd) to any
-    // start delimiters, we immediately treat the delimiter as plain text.
+    // On the other hand, if we fail to match a regular end marker (TokenMeaning.PotentialRaisedVoiceEnd) to any
+    // start markers, we immediately treat the marker as plain text.
     //
-    // LAstly, if we fail to match a regular start delimiter (TokenMeaning.PotentialRaisedVoiceStart) to any end
-    // delimiters, we immediately treat the dlimiter as plain text.    
+    // LAstly, if we fail to match a regular start marker (TokenMeaning.PotentialRaisedVoiceStart) to any end
+    // markers, we immediately treat the dlimiter as plain text.    
 
     if (canEndConvention) {
-      const endDelimiter = new EndDelimiter(tokenIndex, value)
+      const endMarker = new EndMarker(tokenIndex, value)
 
-      endDelimiter.matchAnyApplicableStartDelimiters(delimiters)
+      endMarker.matchAnyApplicableStartMarkers(markers)
 
-      if (!endDelimiter.providesNoTokens()) {
-        delimiters.push(endDelimiter)
+      if (!endMarker.providesNoTokens()) {
+        markers.push(endMarker)
         continue
       }
     }
 
     if (canStartConvention) {
-      delimiters.push(new StartDelimiter(tokenIndex, value))
+      markers.push(new StartMarker(tokenIndex, value))
     } else {
-      // Well, we could neither start nor end any conventions using this delimiter, so we'll assume it was meant to
+      // Well, we could neither start nor end any conventions using this marker, so we'll assume it was meant to
       // be plain text.
-      delimiters.push(new PlainTextDelimiter(tokenIndex, value))
+      markers.push(new PlainTextMarker(tokenIndex, value))
     }
   }
 
-  // If any of our delimiters failed to pan out (i.e. fail to provide any tokens), we have no choice but to assume
+  // If any of our markers failed to pan out (i.e. fail to provide any tokens), we have no choice but to assume
   // they were meant to be plain text.
-  const withFailedDelimitersTreatedAsPlainText =
-    delimiters.map(delimiter =>
-      delimiter.providesNoTokens()
-        ? new PlainTextDelimiter(delimiter.originalTokenIndex, delimiter.originalValue)
-        : delimiter
+  const withFailedMarkersTreatedAsPlainText =
+    markers.map(marker =>
+      marker.providesNoTokens()
+        ? new PlainTextMarker(marker.originalTokenIndex, marker.originalValue)
+        : marker
     )
 
-  return withFailedDelimitersTreatedAsPlainText
+  return withFailedMarkersTreatedAsPlainText
 }
 
 
-function replacePlaceholderTokens(tokens: Token[], delimiters: RaisedVoiceDelimiter[]): Token[] {
+function replacePlaceholderTokens(tokens: Token[], markers: RaisedVoiceMarker[]): Token[] {
   // We could probably be naughty and modify the `tokens` collection directly without anyone noticing.
   const resultTokens = tokens.slice()
 
-  for (const delimiter of delimiters.sort(compareDelimitersDecending)) {
-    resultTokens.splice(delimiter.originalTokenIndex, 1, ...delimiter.tokens())
+  for (const marker of markers.sort(comapreMarkersDescending)) {
+    resultTokens.splice(marker.originalTokenIndex, 1, ...marker.tokens())
   }
 
   return resultTokens

@@ -7,37 +7,37 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
-import { StartDelimiter } from './StartDelimiter'
+import { RaisedVoiceMarker } from './RaisedVoiceDelimiter'
+import { StartMarker } from './StartDelimiter'
 
 
-export class EndDelimiter extends RaisedVoiceDelimiter {
+export class EndMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
     return this.tokenMeanings.map(meaning => new Token(meaning))
   }
 
-  matchAnyApplicableStartDelimiters(delimiters: RaisedVoiceDelimiter[]): void {
-    const availableStartDelimitersFromMostRecentToLeast = <StartDelimiter[]>(
-      delimiters
-        .filter(delimiter => (delimiter instanceof StartDelimiter) && !delimiter.isFullyMatched())
+  matchAnyApplicableStartMarkers(markers: RaisedVoiceMarker[]): void {
+    const availableStartMarkersFromMostRecentToLeast = <StartMarker[]>(
+      markers
+        .filter(marker => (marker instanceof StartMarker) && !marker.isFullyMatched())
         .reverse()
     )
     
     if (this.canOnlyIndicateEmphasis()) {
       
-      // If an end delimiter has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
+      // If an end marker has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
       //
-      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
+      // For these end markers, we want to prioritize matching with the nearest start marker that either:
       //
       // 1. Can also only indicate emphasis (1 asterisk to spend)
       // 2. Can indicate both emphasis and stress together (3+ asterisks to spend)
       //
-      // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
+      // If we can't find any start markers that satisfy the above criteria, then we'll settle for a start marker
       // that has 2 asterisks to spend. But this fallback happens later.
       
-      for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
-        if (startDelimiter.canOnlyIndicateEmphasis() || startDelimiter.canIndicateStressAndEmphasisTogether()) {
-          this.endEmphasis(startDelimiter)
+      for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
+        if (startMarker.canOnlyIndicateEmphasis() || startMarker.canIndicateStressAndEmphasisTogether()) {
+          this.endEmphasis(startMarker)
 
           // Considering we could only afford to indicate emphasis, we have nothing left to do.
           return
@@ -45,19 +45,19 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
       }
     } else if (this.canIndicateStressButNotBothTogether()) {
       
-      // If an end delimiter has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
+      // If an end marker has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
       // and emphasis at the saem time.
       //
-      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
-      // stress. It's okay if that start delimiter can indicate both stress and emphasis at the same time! As long
+      // For these end markers, we want to prioritize matching with the nearest start marker that can indicate
+      // stress. It's okay if that start marker can indicate both stress and emphasis at the same time! As long
       // as it can indicate stress, we're good. 
       //
-      // Only if we can't find one, then we'll match with a delimiter that has just 1 asterisk to spend. But this
+      // Only if we can't find one, then we'll match with a marker that has just 1 asterisk to spend. But this
       // fallback happens later.
       
-      for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
-        if (startDelimiter.canIndicateStress()) {
-          this.endStress(startDelimiter)
+      for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
+        if (startMarker.canIndicateStress()) {
+          this.endStress(startMarker)
           
           // Considering we could only afford to indicate stress, we have nothing left to do.
           return
@@ -65,61 +65,61 @@ export class EndDelimiter extends RaisedVoiceDelimiter {
       }
     }
     
-    // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
+    // From here on out, if this end marker can match with a start marker, it will. It'll try to match as
     // many asterisks at once as it can.
     
-    for (const startDelimiter of availableStartDelimitersFromMostRecentToLeast) {
+    for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
       if (this.isFullyMatched()) {
-        // Once this delimiter has matched all of its asterisks, its work is done. Let's bail.
+        // Once this marker has matched all of its asterisks, its work is done. Let's bail.
         break
       }
 
-      if (this.canIndicateStressAndEmphasisTogether() && startDelimiter.canIndicateStressAndEmphasisTogether()) {
-        this.startStressAndEmphasisTogether(startDelimiter)
+      if (this.canIndicateStressAndEmphasisTogether() && startMarker.canIndicateStressAndEmphasisTogether()) {
+        this.startStressAndEmphasisTogether(startMarker)
         continue
       }
 
-      if (this.canIndicateStress() && startDelimiter.canIndicateStress()) {
-        this.endStress(startDelimiter)
+      if (this.canIndicateStress() && startMarker.canIndicateStress()) {
+        this.endStress(startMarker)
         continue
       }
 
-      if (this.canIndicateEmphasis() && startDelimiter.canIndicateEmphasis()) {
-        this.endEmphasis(startDelimiter)
+      if (this.canIndicateEmphasis() && startMarker.canIndicateEmphasis()) {
+        this.endEmphasis(startMarker)
         continue
       }
     }
   }
 
-  private startStressAndEmphasisTogether(startDelimiter: StartDelimiter): void {
-    // When matching delimiters each have 3 or more asterisks to spend, their contents become stressed and emphasized,
+  private startStressAndEmphasisTogether(startMarker: StartMarker): void {
+    // When matching markers each have 3 or more asterisks to spend, their contents become stressed and emphasized,
     // and they cancel out as many of each other's asterisks as possible.
     //
     // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
     //
     // To be clear, any unmatched asterisks are *not* canceled, and they remain available to be subsequently matched
-    // with other delimiters.
-    const countAsterisksDelimitersHaveInCommon =
-      Math.min(this.countSurplusAsterisks, startDelimiter.countSurplusAsterisks)
+    // with other markers.
+    const countAsterisksStartMarkerHasInCommon =
+      Math.min(this.countSurplusAsterisks, startMarker.countSurplusAsterisks)
 
-    this.payForStressAndEmphasisTogether(countAsterisksDelimitersHaveInCommon)
+    this.payForStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon)
     this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
     this.tokenMeanings.push(TokenMeaning.StressEnd)
 
-    startDelimiter.startStressAndEmphasisTogether(countAsterisksDelimitersHaveInCommon)
+    startMarker.startStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon)
   }
 
-  private endStress(startDeilmeter: StartDelimiter): void {
+  private endStress(startMarker: StartMarker): void {
     this.payForStress()
     this.tokenMeanings.push(TokenMeaning.StressEnd)
 
-    startDeilmeter.startStress()
+    startMarker.startStress()
   }
 
-  private endEmphasis(startDelimiter: StartDelimiter): void {
+  private endEmphasis(startMarker: StartMarker): void {
     this.payForEmphasis()
     this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
 
-    startDelimiter.startEmphasis()
+    startMarker.startEmphasis()
   }
 }

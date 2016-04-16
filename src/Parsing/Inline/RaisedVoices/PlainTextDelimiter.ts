@@ -7,10 +7,10 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
-import { StartDelimiter } from './StartDelimiter'
+import { RaisedVoiceMarker } from './RaisedVoiceDelimiter'
+import { StartMarker } from './StartDelimiter'
 
-export class PlainTextDelimiter extends RaisedVoiceDelimiter {
+export class PlainTextMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
     return [new Token(TokenMeaning.PlainText, this.originalValue)]
   }

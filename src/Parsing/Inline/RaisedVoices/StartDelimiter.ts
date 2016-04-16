@@ -7,9 +7,9 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceDelimiter } from './RaisedVoiceDelimiter'
+import { RaisedVoiceMarker } from './RaisedVoiceDelimiter'
 
-export class StartDelimiter extends RaisedVoiceDelimiter {
+export class StartMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
     // Why reverse these tokens?
     //
@@ -22,8 +22,8 @@ export class StartDelimiter extends RaisedVoiceDelimiter {
     )
   }
   
-  startStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {
-    this.payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon)
+  startStressAndEmphasisTogether(countAsterisksEndMarkerHasInCommon: number): void {
+    this.payForStressAndEmphasisTogether(countAsterisksEndMarkerHasInCommon)
     this.tokenMeanings.push(TokenMeaning.EmphasisStart)
     this.tokenMeanings.push(TokenMeaning.StressStart)
   }
