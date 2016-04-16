@@ -26,3 +26,11 @@ describe('Audio with a blank description', () => {
       ]))
   })
 })
+
+
+describe('Audio with a blank URL', () => {
+  it('is not included in the document', () => {
+    expect(Up.ast('[-_-: ghostly howling -> \t   ')).to.be.eql(
+      new DocumentNode([]))
+  })
+})

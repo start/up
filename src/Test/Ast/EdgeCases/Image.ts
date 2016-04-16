@@ -27,3 +27,11 @@ describe('An image with a blank description', () => {
       ]))
   })
 })
+
+
+describe('An image with a blank URL', () => {
+  it('is not included in the document', () => {
+    expect(Up.ast('[o_o: haunted house ->    \t]')).to.be.eql(
+      new DocumentNode([]))
+  })
+})

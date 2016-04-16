@@ -26,3 +26,11 @@ describe('A video with a blank description', () => {
       ]))
   })
 })
+
+
+describe('A video with a blank URL', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.ast('[-_o: ghosts eating luggage ->    \t  ]')).to.be.eql(
+      new DocumentNode([]))
+  })
+})
