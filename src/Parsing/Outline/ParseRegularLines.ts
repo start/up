@@ -1,5 +1,8 @@
 import { TextConsumer } from '../TextConsumer'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from './Patterns'
@@ -25,7 +28,7 @@ const STREAK_PATTERN = new RegExp(
 
 export function parseRegularLines(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
-  
+
   // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
   //
   // For example:
@@ -45,18 +48,29 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   // line blocks only examine each line individually, the line is accepted.
   //
   // TODO: Handle code blocks and description lists?
-  const lines: Line[] = []
-  
+  const inlineNodesPerLine: InlineSyntaxNode[][] = []
+
   while (consumer.consumeLine({
     pattern: NON_BLANK_LINE_PATTERN,
     if: (line) => !isLineFancyOutlineConvention(line),
-    then: (line) => lines.push(new Line(getInlineNodes(line)))
+    then: (line) => inlineNodesPerLine.push(getInlineNodes(line))
   })) { }
 
-  if (lines.length < 2) {
-    return false
+  const lengthConsumed = consumer.lengthConsumed()
+  let nodes: OutlineSyntaxNode[]
+
+  switch (inlineNodesPerLine.length) {
+    case 1:
+      nodes = [new ParagraphNode(inlineNodesPerLine[0])]
+      break
+
+    default: {
+      const lineBlockLines = inlineNodesPerLine.map(inlineNodes => new Line(inlineNodes))
+      nodes = [new LineBlockNode(lineBlockLines)]
+      break
+    }
   }
 
-  args.then([new LineBlockNode(lines)], consumer.lengthConsumed())
+  args.then(nodes, consumer.lengthConsumed())
   return true
 }

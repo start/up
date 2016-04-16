@@ -6,13 +6,12 @@ import { TextConsumer } from '../TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
-import { parseRegularLines } from './ParseLineBlock'
+import { parseRegularLines } from './ParseRegularLines'
 import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
 import { parseDescriptionList } from './ParseDescriptionList'
-import { parseParagraph } from './ParseParagraph'
 import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
@@ -43,7 +42,6 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
     parseBlockquote,
     parseDescriptionList,
     parseRegularLines,
-    parseParagraph
   ]
 
   // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
