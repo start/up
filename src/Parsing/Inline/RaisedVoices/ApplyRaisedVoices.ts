@@ -17,7 +17,7 @@ export function applyRaisedVoices(tokens: Token[]): Token[] {
   const delimiters = getDelimiters(tokens)
   const resulTokens = replacePlaceholderTokens(tokens, delimiters)
 
-  return resulTokens.reduce(combineConsecutivePlainTextTokens, [])
+  return resulTokens
 }
 
 
@@ -103,20 +103,4 @@ function replacePlaceholderTokens(tokens: Token[], delimiters: RaisedVoiceDelimi
   }
 
   return resultTokens
-}
-
-
-function combineConsecutivePlainTextTokens(tokens: Token[], token: Token): Token[] {
-  const lastToken = last(tokens)
-
-  const areBothLastTokenAndThisTokenPlainText =
-    lastToken && (lastToken.meaning === TokenMeaning.PlainText) && token.meaning === TokenMeaning.PlainText
-
-  if (areBothLastTokenAndThisTokenPlainText) {
-    lastToken.value += token.value
-  } else {
-    tokens.push(token)
-  }
-  
-  return tokens
 }
