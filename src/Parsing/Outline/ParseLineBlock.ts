@@ -14,18 +14,19 @@ const STREAK_PATTERN = new RegExp(
   STREAK
 )
 
-// 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs!
+// A single non-blank line is treated as a paragraph.
+//
+// 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs! For example:
 //
 // Roses are red
 // Violets are blue
 // Lyrics have line
 // And address do, too
 
-export function parseLineBlock(args: OutlineParserArgs): boolean {
+export function parseRegularLines(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
   
-  // Even if there are multiple consecutive non-blank lines, they shouldn't necessariliy all be
-  // included in the line block.
+  // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
   //
   // For example:
   //
@@ -34,16 +35,16 @@ export function parseLineBlock(args: OutlineParserArgs): boolean {
   // =*=*=*=*=*=*=*=*=*=*=*=
   // Anyway, poetry is pretty fun.
   //
-  // Only the first 2 lines are included in the line block.
-  //
-  // Line blocks are interrupted by a line if it wouldn't be parsed as a regular paragraph. That's
-  // why the section separator streak ended it.
+  // Only the first two lines are included in the line block, because the third line is parsed as
+  // a section separator streak.
   //
   // However, line blocks are *not* interupted by a line if it is merely the beginning of another
   // outline convention. This distinction is actually demonstrated in the example above!
   //
   // "Violets are blue" would be interepreted as a heading due to the following line. But because
   // line blocks only examine each line individually, the line is accepted.
+  //
+  // TODO: Handle code blocks and description lists?
   const lines: Line[] = []
   
   while (consumer.consumeLine({

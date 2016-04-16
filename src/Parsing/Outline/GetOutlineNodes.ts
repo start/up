@@ -6,7 +6,7 @@ import { TextConsumer } from '../TextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
-import { parseLineBlock } from './ParseLineBlock'
+import { parseRegularLines } from './ParseLineBlock'
 import { parseCodeBlock } from './ParseCodeBlock'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
@@ -42,7 +42,7 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
     parseCodeBlock,
     parseBlockquote,
     parseDescriptionList,
-    parseLineBlock,
+    parseRegularLines,
     parseParagraph
   ]
 
