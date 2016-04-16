@@ -53,23 +53,3 @@ describe('A video that is the only convention on its line', () => {
       ]))
   })
 })
-
-
-describe('A video without a description', () => {
-  it('has its URL treated as its description', () => {
-    expect(Up.ast('[-_o: -> http://example.com/poltergeists.webm]')).to.be.eql(
-      new DocumentNode([
-        new VideoNode('http://example.com/poltergeists.webm', 'http://example.com/poltergeists.webm')
-      ]))
-  })
-})
-
-
-describe('A video with a blank description', () => {
-  it('has its URL treated as its description', () => {
-    expect(Up.ast('[-_o:  \t  -> http://example.com/poltergeists.webm]')).to.be.eql(
-      new DocumentNode([
-        new VideoNode('http://example.com/poltergeists.webm', 'http://example.com/poltergeists.webm')
-      ]))
-  })
-})
