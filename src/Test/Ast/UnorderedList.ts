@@ -24,7 +24,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
 describe('Consecutive bulleted lines', () => {
-  it('produce a bulleted list node containing bulleted list item nodes', () => {
+  it('produce an unordered list node containing unordered list item nodes', () => {
     const text =
       `
 * Hello, world!
@@ -49,7 +49,7 @@ describe('Consecutive bulleted lines', () => {
 })
 
 
-describe('List items in a bulleted list', () => {
+describe('List items in an unordered list', () => {
   it('can be separated by 1 blank line', () => {
     const textWithSeparator =
       `
@@ -67,7 +67,7 @@ describe('List items in a bulleted list', () => {
 
 
 describe('A single bulleted line', () => {
-  it('produces a bulleted list node containing a single bulleted list item', () => {
+  it('produces an unordered list node containing a single unordered list item', () => {
     const text = '* Hello, world!'
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
@@ -85,7 +85,7 @@ describe('A single bulleted line', () => {
 
 
 describe('A bulleted line followed by an indented line', () => {
-  it('are parsed like a document and placed in the same bulleted list item node', () => {
+  it('are parsed like a document and placed in the same unordered list item node', () => {
     const text =
       `
 * Hello, world!
@@ -117,8 +117,8 @@ describe('A bulleted line followed by an indented line', () => {
 })
 
 
-describe('Each bulleted line followed by an indented block of text', () => {
-  it('are parsed like a mini-document and placed in a bulleted list item node', () => {
+describe('A bulleted line followed by multiple indented lines', () => {
+  it('are placed the same bulleted list item node', () => {
     const text =
       `
 * Hello, world!
@@ -148,9 +148,20 @@ describe('Each bulleted line followed by an indented block of text', () => {
       ])
     )
   })
+})
 
-  it('does not need any blank lines to separate it from the following list item', () => {
-    const textWithoutSeparator =
+
+describe('An unordered list item containing multiple indented lines', () => {
+  it('does not need a blank line to separate it from the following list item', () => {
+    const itemsWithSeparator =
+      `* Hello, world!
+  ============
+
+  It is really late, and I am really tired.
+* Goodbye, world!
+  ==============`
+  
+    const itemsWithoutSeparator =
       `
 * Hello, world!
   ============
@@ -159,18 +170,10 @@ describe('Each bulleted line followed by an indented block of text', () => {
 
 * Goodbye, world!
   ===============`
-
-    const textWithSeparator =
-      `* Hello, world!
-  ============
-
-  It is really late, and I am really tired.
-* Goodbye, world!
-  ==============`
-    expect(Up.ast(textWithoutSeparator)).to.be.eql(Up.ast(textWithSeparator))
+    expect(Up.ast(itemsWithoutSeparator)).to.be.eql(Up.ast(itemsWithSeparator))
   })
 
-  it('can contain a nested list, even when using the same bullet type', () => {
+  it('can contain a nested unordered list that uses the same type of bullet as the top-level list item', () => {
     const text =
       `
 * Hello, world!
@@ -218,7 +221,7 @@ describe('Each bulleted line followed by an indented block of text', () => {
 })
 
 
-describe('A bullet list item with an asterisk bullet', () => {
+describe('An unordered list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
     const text = '* *Hello*, world!'
     expect(Up.ast(text)).to.be.eql(
@@ -239,7 +242,7 @@ describe('A bullet list item with an asterisk bullet', () => {
 })
 
 
-describe('A bulleted list', () => {
+describe('An unordered list', () => {
   it('can be directly followed by a paragraph', () => {
     const text =
       `
