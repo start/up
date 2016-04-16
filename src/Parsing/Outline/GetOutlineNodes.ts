@@ -95,7 +95,9 @@ function cleanUpAst(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
         case 0:
           // Media conventions do not produce any syntax nodes if they're missing their URL.
           //
-          // Links do not produce any syntax nodes if they're missing both their content and their URL
+          // Links do not produce any syntax nodes if they're missing both their content and their URL.
+          //
+          // Inline code doesn't produce a syntax node if it's totally empty.
           //
           // Consequently, If a paragraph contains only those "dud" conventions, the paragraph itself
           // will be empty. We discard those empty paragraphs.

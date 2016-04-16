@@ -61,16 +61,25 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
     }
 
     switch (token.meaning) {
-      case TokenMeaning.PlainText:
-        nodes.push(new PlainTextNode(token.value))
+      
+      case TokenMeaning.PlainText: {
+        const lastNode = last(nodes)
+        
+        if (lastNode instanceof PlainTextNode) {
+          lastNode.text += token.value
+        } else {
+          nodes.push(new PlainTextNode(token.value))
+        }
+        
         continue
+      }
 
       case TokenMeaning.InlineCode: {
         // Empty inline code isn't meaningful, so we discard it
         if (token.value) {
           nodes.push(new InlineCodeNode(token.value))
         }
-        
+
         continue
       }
 
@@ -80,7 +89,7 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
 
         let contents = result.nodes
         const hasContents = isNotPureWhitespace(contents)
-        
+
         // The URL was in the LinkUrlAndEnd token, the last token we parsed
         let url = tokens[index].value.trim()
         const hasUrl = !!url
@@ -106,25 +115,25 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
         continue
       }
     }
-    
+
     for (const media of MEDIA_CONVENTIONS) {
       if (token.meaning === media.tokenMeaningForStartAndDescription) {
         let description = token.value.trim()
-        
+
         // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
         index += 1
         const url = tokens[index].value.trim()
-        
+
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document
           continue MainParserLoop
         }
-        
+
         if (!description) {
           // If there's no description, we treat the URL as the description
           description = url
         }
-        
+
         nodes.push(new media.NodeType(description, url))
         continue MainParserLoop
       }
