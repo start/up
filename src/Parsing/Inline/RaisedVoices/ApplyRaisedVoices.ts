@@ -7,10 +7,10 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceMarker, comapreMarkersDescending } from './RaisedVoiceDelimiter'
-import { StartMarker } from './StartDelimiter'
-import { EndMarker } from './EndDelimiter'
-import { PlainTextMarker } from './PlainTextDelimiter'
+import { RaisedVoiceMarker, comapreMarkersDescending } from './RaisedVoiceMarker'
+import { StartMarker } from './StartMarker'
+import { EndMarker } from './EndMarker'
+import { PlainTextMarker } from './PlainTextMarker'
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {

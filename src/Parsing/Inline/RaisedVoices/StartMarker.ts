@@ -7,7 +7,7 @@ import { last, lastChar, swap } from '../../CollectionHelpers'
 import { Token, TokenMeaning } from '.././Token'
 import { FailureTracker } from '../FailureTracker'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { RaisedVoiceMarker } from './RaisedVoiceDelimiter'
+import { RaisedVoiceMarker } from './RaisedVoiceMarker'
 
 export class StartMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
