@@ -88,6 +88,13 @@ describe('A link with no content and no URL', () => {
 })
 
 
+describe('A paragraph containing a link with no content and no URL', () => {
+  it('produces no syntax nodes', () => {
+    expect(Up.ast('[ -> ]')).to.be.eql(new DocumentNode([]))
+  })
+})
+
+
 describe('A link', () => {
   it('can follow bracketed text', () => {
     expect(Up.ast("I [usually] use [Google -> https://google.com]!!")).to.eql(
