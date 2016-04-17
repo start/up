@@ -1,4 +1,5 @@
 import { TextConsumer } from '../TextConsumer'
+import { isWhitespace } from '../../SyntaxNodes/PlainTextNode'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -52,7 +53,7 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   const inlineNodesPerLine: InlineSyntaxNode[][] = []
 
   let nodes: OutlineSyntaxNode[] = []
-  let terminatingNodes: OutlineSyntaxNode[] = []
+  let terminatingOutlineNodes: OutlineSyntaxNode[] = []
 
   while (true) {
     let inlineNodes: InlineSyntaxNode[]
@@ -72,12 +73,14 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     //
     // If an outline media convention directly follows or precedes a paragraph, the two don't
     // produce a line block. Likewise, if an outline media convention directly follows or precedes a
-    // line block, it the media convention is not included in the line block 
+    // line block, the media convention is not included in the line block 
     //
     // Similarly, if a line consists solely of multiple media conventions, we outline all of them.
     
-    const doesLineConsistSolelyOfMediaConventions =
-      inlineNodes.every(node => node instanceof MediaSyntaxNode)
+    const doesLineConsistSolelyOfMediaConventions = (
+      inlineNodes.every(node => isWhitespace(node) || (node instanceof MediaSyntaxNode))
+      && inlineNodes.some(node => node instanceof MediaSyntaxNode)
+    )
     
     // Oh, one more thing! Sometimes, a non-blank line can produce no syntax nodes. The following
     // non-blank conventions produce no syntax nodes:
@@ -97,7 +100,10 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     // afterward.
     
     if (doesLineConsistSolelyOfMediaConventions) {
-      terminatingNodes = <MediaSyntaxNode[]>inlineNodes
+      terminatingOutlineNodes = <MediaSyntaxNode[]>(
+        inlineNodes.filter(node => node instanceof MediaSyntaxNode)
+      )
+      
       break
     }
     
@@ -124,6 +130,6 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     }
   }
 
-  args.then(nodes.concat(terminatingNodes), consumer.lengthConsumed())
+  args.then(nodes.concat(terminatingOutlineNodes), consumer.lengthConsumed())
   return true
 }
