@@ -78,8 +78,8 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     // Similarly, if a line consists solely of multiple media conventions, we outline all of them.
     
     const doesLineConsistSolelyOfMediaConventions = (
-      inlineNodes.every(node => isWhitespace(node) || (node instanceof MediaSyntaxNode))
-      && inlineNodes.some(node => node instanceof MediaSyntaxNode)
+      inlineNodes.every(node => isWhitespace(node) || isMediaSyntaxNode(node))
+      && inlineNodes.some(isMediaSyntaxNode)
     )
     
     // Oh, one more thing! Sometimes, a non-blank line can produce no syntax nodes. The following
@@ -100,9 +100,7 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     // afterward.
     
     if (doesLineConsistSolelyOfMediaConventions) {
-      terminatingOutlineNodes = <MediaSyntaxNode[]>(
-        inlineNodes.filter(node => node instanceof MediaSyntaxNode)
-      )
+      terminatingOutlineNodes = <MediaSyntaxNode[]>inlineNodes.filter(isMediaSyntaxNode)
       
       break
     }
@@ -132,4 +130,8 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
 
   args.then(nodes.concat(terminatingOutlineNodes), consumer.lengthConsumed())
   return true
+}
+
+function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
+  return node instanceof MediaSyntaxNode
 }
