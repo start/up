@@ -69,7 +69,7 @@ The first heading in a document is always a top-level heading.
 
 Use any underline! Any combination of the following characters is okay: `# = - + ~ * ^ @ : _`
 
-Spaces can be interperced if you want.
+Spaces can be interspersed if you want.
 
 All subsequent headings with underlines consisting of the same characters are considered top-level.
 
