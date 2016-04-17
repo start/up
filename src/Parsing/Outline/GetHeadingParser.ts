@@ -40,7 +40,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
         pattern: NON_BLANK_PATTERN,
         then: (line) => content = line
       })
-      
+
       // Parse the underline
       && consumer.consumeLine({
         if: (line) => (
@@ -53,8 +53,8 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     if (!hasContentAndUnderline) {
       return false
     }
-    
-    
+
+
     // We're still not convinced this is actually a heading. Why's that?
     //
     // What if the content is a streak? Example:
@@ -71,14 +71,17 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     //
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
-    
+
     if (isLineFancyOutlineConvention(content)) {
       return false
     }
 
     const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
+    
     args.then(
       [new HeadingNode(getInlineNodes(content), headingLevel)],
       consumer.lengthConsumed())
+
+    return true
   }
 }
