@@ -15,10 +15,10 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
 
-describe('A line consisting solely of media conventions', () => {
+describe('A line consisting solely of media conventions (and optional whitespace)', () => {
   it('produces a node for each convention and includes each directly into the outline, rather than squeezing them all into a paragraph', () => {
     const text =
-      '[-_-: ghostly howling -> http://example.com/ghosts.ogg][o_o: haunted house -> http://example.com/hauntedhouse.svg][o_-: ghosts eating luggage -> http://example.com/poltergeists.webm]'
+      '[-_-: ghostly howling -> http://example.com/ghosts.ogg] [o_o: haunted house -> http://example.com/hauntedhouse.svg] [o_-: ghosts eating luggage -> http://example.com/poltergeists.webm] '
 
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
