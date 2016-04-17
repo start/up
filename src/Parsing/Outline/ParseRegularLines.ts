@@ -51,7 +51,8 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   // TODO: Handle code blocks and description lists?
   const inlineNodesPerLine: InlineSyntaxNode[][] = []
 
-  let nodes: OutlineSyntaxNode[]
+  let nodes: OutlineSyntaxNode[] = []
+  let terminatingNodes: OutlineSyntaxNode[] = []
 
   while (true) {
     let inlineNodes: InlineSyntaxNode[]
@@ -77,9 +78,27 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     
     const doesLineConsistSolelyOfMediaConventions =
       inlineNodes.every(node => node instanceof MediaSyntaxNode)
-      
+    
+    // Oh, one more thing! Sometimes, a non-blank line can produce no syntax nodes. The following
+    // non-blank conventions produce no syntax nodes:
+    //
+    // 1. Empty sandwich conventions
+    // 2. Empty inline code
+    // 3. Media conventions missing their URL
+    // 4. Links missing their content and their URL
+    //
+    // If we're bizarrely dealing with a line consisting solely of those "dud" conventions, then
+    // `inlineNodes` will be empty. Consequently, `doesLineConsistSolelyOfMediaConventions` will be
+    // true. And that's okay! We don't want to produce empty paragraphs for these lines, and we're
+    // happy to have these lines terminate a preceeding line block.
+    //
+    // In the future, we might change this behavior. A line producing no syntax nodes might simply
+    // be ignored, which means it would not terminate a line block if the block continues immediately
+    // afterward.
+    
     if (doesLineConsistSolelyOfMediaConventions) {
-      
+      terminatingNodes = <MediaSyntaxNode[]>inlineNodes
+      break
     }
     
     inlineNodesPerLine.push(inlineNodes)
@@ -105,6 +124,6 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     }
   }
 
-  args.then(nodes, consumer.lengthConsumed())
+  args.then(nodes.concat(terminatingNodes), consumer.lengthConsumed())
   return true
 }
