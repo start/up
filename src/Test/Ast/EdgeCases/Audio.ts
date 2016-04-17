@@ -46,7 +46,7 @@ Do not pour the spiders into your sister's cereal.
     expect(Up.ast(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('Do not pour the spiders into your milk.')
+          new PlainTextNode("Do not pour the spiders into your sister's cereal.")
         ]),
         new AudioNode('six seconds of screaming', 'http://example.com/screaming.ogg'),
       ]))
