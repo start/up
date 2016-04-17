@@ -50,10 +50,10 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   // line blocks only examine each line individually, the line is accepted.
   //
   // TODO: Handle code blocks and description lists?
-  const inlineNodesPerLine: InlineSyntaxNode[][] = []
+  const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
 
-  let nodes: OutlineSyntaxNode[] = []
-  let terminatingOutlineNodes: OutlineSyntaxNode[] = []
+  let regularLineNodes: OutlineSyntaxNode[] = []
+  let terminatingNodes: OutlineSyntaxNode[] = []
 
   while (true) {
     let inlineNodes: InlineSyntaxNode[]
@@ -100,17 +100,17 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     // afterward.
     
     if (doesLineConsistSolelyOfMediaConventions) {
-      terminatingOutlineNodes = <MediaSyntaxNode[]>inlineNodes.filter(isMediaSyntaxNode)
+      terminatingNodes = <MediaSyntaxNode[]>inlineNodes.filter(isMediaSyntaxNode)
       
       break
     }
     
-    inlineNodesPerLine.push(inlineNodes)
+    inlineNodesPerRegularLine.push(inlineNodes)
   }
 
   const lengthConsumed = consumer.lengthConsumed()
 
-  switch (inlineNodesPerLine.length) {
+  switch (inlineNodesPerRegularLine.length) {
     case 0:
       // If we only consumed only 1 line, and if that single line either produced no syntax nodes or
       // consisted solely of a media node, then there aren't any other lines left over to produce a
@@ -118,17 +118,17 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
       break;
 
     case 1:
-      nodes = [new ParagraphNode(inlineNodesPerLine[0])]
+      regularLineNodes = [new ParagraphNode(inlineNodesPerRegularLine[0])]
       break
 
     default: {
-      const lineBlockLines = inlineNodesPerLine.map(inlineNodes => new Line(inlineNodes))
-      nodes = [new LineBlockNode(lineBlockLines)]
+      const lineBlockLines = inlineNodesPerRegularLine.map(inlineNodes => new Line(inlineNodes))
+      regularLineNodes = [new LineBlockNode(lineBlockLines)]
       break
     }
   }
 
-  args.then(nodes.concat(terminatingOutlineNodes), consumer.lengthConsumed())
+  args.then(regularLineNodes.concat(terminatingNodes), consumer.lengthConsumed())
   return true
 }
 
