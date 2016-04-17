@@ -50,6 +50,8 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   // TODO: Handle code blocks and description lists?
   const inlineNodesPerLine: InlineSyntaxNode[][] = []
 
+  let nodes: OutlineSyntaxNode[]
+  
   while (consumer.consumeLine({
     pattern: NON_BLANK_LINE_PATTERN,
     if: (line) => !isLineFancyOutlineConvention(line),
@@ -57,9 +59,14 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   })) { }
 
   const lengthConsumed = consumer.lengthConsumed()
-  let nodes: OutlineSyntaxNode[]
 
-  switch (inlineNodesPerLine.length) {
+  switch (inlineNodesPerLine.length) { 
+    case 0:
+      // If we only consumed only 1 line, and if that single line either produced no syntax nodes or
+      // consisted solely of a media node, then there aren't any other lines left over to produce a
+      // a paragraph or a line block.
+      break;
+      
     case 1:
       nodes = [new ParagraphNode(inlineNodesPerLine[0])]
       break
