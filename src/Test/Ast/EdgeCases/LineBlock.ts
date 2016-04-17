@@ -12,8 +12,7 @@ import { Line } from '../../../SyntaxNodes/Line'
 
 describe('A line starting with an escaped character in a line block', () => {
   it('does not impact the parsing of the next line', () => {
-    const text =
-      `
+    const text = `
 \\Roses are red
 Violets are blue`
     expect(Up.ast(text)).to.be.eql(
@@ -30,8 +29,7 @@ Violets are blue`
   })
   
   it('does not impact the parsing of the previous line', () => {
-    const text =
-      `
+    const text = `
 Roses are red
 \\Violets are blue`
     expect(Up.ast(text)).to.be.eql(
@@ -51,8 +49,7 @@ Roses are red
 
 describe('A line with an escaped line break followed by another line', () => {
   it('do not produce a line block node', () => {
-    const text =
-      `
+    const text = `
 Roses are red\\
 Violets are blue`
     expect(Up.ast(text)).to.be.eql(
@@ -67,8 +64,7 @@ Violets are blue`
 
 describe('Within a line block, a line with an escaped line break followed by another line', () => {
   it('are considered part of the same line', () => {
-    const text =
-      `
+    const text = `
 Roses are red\\
 Violets are blue
 Lyrics have lines
@@ -92,9 +88,8 @@ And addresses do, too`
 
 
 describe('An empty line with an escaped line break followed by another empty line', () => {  
-  it('are considered part of the same line can be included in a line break', () => {
-    const text =
-      `
+  it('are considered part of the same line and can be included in a line block', () => {
+    const text = `
 Roses are red
 \\
 
