@@ -2,7 +2,7 @@
   "private": true,
   "name": "up",
   "version": "0.0.0",
-  "description": "Conventions for writing documents in plain text",
+  "description": "Up is a lightweight markup language for writing in plain text",
   "main": "built/index.js",
   "scripts": {
     "test": "mocha --recursive ./built/Test"

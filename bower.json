@@ -1,6 +1,6 @@
 {
   "name": "up",
-  "description": "Conventions for writing documents in plain text",
+  "description": "Up is a lightweight markup language for writing in plain text",
   "main": "built/index.js",
   "authors": [
     "Daniel Miller <daniel@wants.email>"
