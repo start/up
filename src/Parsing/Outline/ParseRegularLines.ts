@@ -26,7 +26,7 @@ const STREAK_PATTERN = new RegExp(
 // Roses are red
 // Violets are blue
 // Lyrics have line
-// And address do, too
+// And addresses do, too
 
 export function parseRegularLines(args: OutlineParserArgs): boolean {
   const consumer = new TextConsumer(args.text)
@@ -43,10 +43,10 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   // Only the first two lines are included in the line block, because the third line is parsed as
   // a section separator streak.
   //
-  // However, line blocks are *not* interupted by a line if it is merely the beginning of another
+  // However, line blocks are *not* interrupted  by a line if it is merely the beginning of another
   // outline convention. This distinction is actually demonstrated in the example above!
   //
-  // "Violets are blue" would be interepreted as a heading due to the following line. But because
+  // "Violets are blue" would be interpreted  as a heading due to the following line. But because
   // line blocks only examine each line individually, the line is accepted.
   //
   // TODO: Handle code blocks and description lists?
