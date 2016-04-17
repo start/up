@@ -1,4 +1,5 @@
 import { TextConsumer } from '../TextConsumer'
+import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
@@ -51,22 +52,48 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   const inlineNodesPerLine: InlineSyntaxNode[][] = []
 
   let nodes: OutlineSyntaxNode[]
-  
-  while (consumer.consumeLine({
-    pattern: NON_BLANK_LINE_PATTERN,
-    if: (line) => !isLineFancyOutlineConvention(line),
-    then: (line) => inlineNodesPerLine.push(getInlineNodes(line))
-  })) { }
+
+  while (true) {
+    let inlineNodes: InlineSyntaxNode[]
+    
+    const wasLineConsumed = consumer.consumeLine({
+      pattern: NON_BLANK_LINE_PATTERN,
+      if: (line) => !isLineFancyOutlineConvention(line),
+      then: (line) => inlineNodes = getInlineNodes(line)
+    })
+
+    if (!wasLineConsumed) {
+      break
+    }
+    
+    // If a media convention is the only convention on a line, we treat it as an outline convention
+    // rather than pretending it's a paragraph.
+    //
+    // If an outline media convention directly follows or precedes a paragraph, the two don't
+    // produce a line block. Likewise, if an outline media convention directly follows or precedes a
+    // line block, it the media convention is not included in the line block 
+    //
+    // Similarly, if a line consists solely of multiple media conventions, we outline all of them.
+    
+    const doesLineConsistSolelyOfMediaConventions =
+      inlineNodes.every(node => node instanceof MediaSyntaxNode)
+      
+    if (doesLineConsistSolelyOfMediaConventions) {
+      
+    }
+    
+    inlineNodesPerLine.push(inlineNodes)
+  }
 
   const lengthConsumed = consumer.lengthConsumed()
 
-  switch (inlineNodesPerLine.length) { 
+  switch (inlineNodesPerLine.length) {
     case 0:
       // If we only consumed only 1 line, and if that single line either produced no syntax nodes or
       // consisted solely of a media node, then there aren't any other lines left over to produce a
       // a paragraph or a line block.
       break;
-      
+
     case 1:
       nodes = [new ParagraphNode(inlineNodesPerLine[0])]
       break
