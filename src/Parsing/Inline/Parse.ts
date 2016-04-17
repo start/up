@@ -8,7 +8,7 @@ import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainTextNode, isWhitespace } from '../../SyntaxNodes/PlainTextNode'
 import { TextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
@@ -163,8 +163,4 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
 
 function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
-}
-
-function isWhitespace(node: InlineSyntaxNode): boolean {
-  return (node instanceof PlainTextNode) && !node.text.trim()
 }

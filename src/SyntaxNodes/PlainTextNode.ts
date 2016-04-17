@@ -7,3 +7,8 @@ export class PlainTextNode extends InlineSyntaxNode {
   
   private PLAIN_TEXT: any = null
 }
+
+
+export function isWhitespace(node: InlineSyntaxNode): boolean {
+  return (node instanceof PlainTextNode) && !node.text.trim()
+}
