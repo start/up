@@ -1,0 +1,24 @@
+{
+  "name": "up",
+  "description": "Conventions for writing documents in plain text",
+  "main": "built/index.js",
+  "authors": [
+    "Daniel Miller <daniel@wants.email>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "markup",
+    "markdown",
+    "writing",
+    "formatting"
+  ],
+  "homepage": "https://github.com/start/up",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
