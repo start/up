@@ -3,11 +3,12 @@
 all: test
 
 clean:
-	rm -rf built
+	rm -rf built dist
 
 install: clean
-	mkdir built
+	mkdir -p built dist
 	tsc
+	browserify built/for-browser.js --outfile dist/up.js
 
 test: install
 	npm test
