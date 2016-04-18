@@ -15,7 +15,7 @@ describe('A line starting with an escaped character in a line block', () => {
     const text = `
 \\Roses are red
 Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -32,7 +32,7 @@ Violets are blue`
     const text = `
 Roses are red
 \\Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -52,7 +52,7 @@ describe('A line with an escaped line break followed by another line', () => {
     const text = `
 Roses are red\\
 Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
             new PlainTextNode('Roses are red\nViolets are blue')
@@ -69,7 +69,7 @@ Roses are red\\
 Violets are blue
 Lyrics have lines
 And addresses do, too`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -94,7 +94,7 @@ Roses are red
 \\
 
 Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([

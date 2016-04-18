@@ -14,7 +14,7 @@ describe('Text surrounded by (underlined and overlined) streaks of backticks', (
 \`\`\`
 const pie = 3.5
 \`\`\``
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const pie = 3.5'),
       ]))
@@ -29,7 +29,7 @@ describe('A code block node', () => {
 // Escaping backticks in typescript...
 // Such a pain!
 \`\`\``
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
 `// Escaping backticks in typescript...
@@ -47,7 +47,7 @@ if (x < 0) {
   return false
 }
 \`\`\``
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
 `if (x < 0) {
@@ -61,7 +61,7 @@ if (x < 0) {
 \`\`\`
 const lineBreak = "\\n"
 \`\`\``
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const lineBreak = "\\n"'),
       ]))

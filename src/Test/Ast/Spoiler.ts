@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by faces looking away', () => {
   it('is put inside a spoiler node', () => {
-    expect(Up.ast('After you beat the Elite Four, [<_<]you fight Gary[>_>].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [<_<]you fight Gary[>_>].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
@@ -31,7 +31,7 @@ describe('Text surrounded by faces looking away', () => {
   })
 
   it('is evaluated for other conventions', () => {
-    expect(Up.ast('After you beat the Elite Four, [<_<]you fight *Gary*[>_>].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [<_<]you fight *Gary*[>_>].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
@@ -45,7 +45,7 @@ describe('Text surrounded by faces looking away', () => {
   })
 
   it('can be nested within another spoiler node', () => {
-    expect(Up.ast('After you beat the Elite Four, [<_<]you fight [<_<]Gary[>_>][>_>].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [<_<]you fight [<_<]Gary[>_>][>_>].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([

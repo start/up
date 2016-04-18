@@ -29,7 +29,7 @@ describe('Consecutive bulleted lines', () => {
       `
 * Hello, world!
 * Goodbye, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -61,7 +61,7 @@ describe('List items in an unordered list', () => {
       `
 * Hello, world!
 * Goodbye, world!`
-    expect(Up.ast(textWithSeparator)).to.be.eql(Up.ast(textWithoutSeparator))
+    expect(Up.toAst(textWithSeparator)).to.be.eql(Up.toAst(textWithoutSeparator))
   })
 })
 
@@ -69,7 +69,7 @@ describe('List items in an unordered list', () => {
 describe('A single bulleted line', () => {
   it('produces an unordered list node containing a single unordered list item', () => {
     const text = '* Hello, world!'
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -92,7 +92,7 @@ describe('A bulleted line followed by an indented line', () => {
   ============
 * Roses are red
   Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -128,7 +128,7 @@ describe('A bulleted line followed by multiple indented lines', () => {
 
 * Goodbye, world!
   ===============`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -170,7 +170,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 
 * Goodbye, world!
   ===============`
-    expect(Up.ast(itemsWithoutSeparator)).to.be.eql(Up.ast(itemsWithSeparator))
+    expect(Up.toAst(itemsWithoutSeparator)).to.be.eql(Up.toAst(itemsWithSeparator))
   })
 
   it('can contain a nested unordered list that uses the same type of bullet as the top-level list item', () => {
@@ -186,7 +186,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 
 * Goodbye, world!
   ===============`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -224,7 +224,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 describe('An unordered list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
     const text = '* *Hello*, world!'
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -249,7 +249,7 @@ describe('An unordered list', () => {
 * Hello, world!
 * Goodbye, world!
 Hello, World 1-2!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([

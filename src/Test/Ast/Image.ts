@@ -21,7 +21,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Bracketed text containing open eyes, reading a description, both of which point to a URL', () => {
   it('produces an image node with the description and URL', () => {
-    expect(Up.ast('I would never stay here. [o_o: haunted house -> http://example.com/hauntedhouse.svg] Would you?')).to.be.eql(
+    expect(Up.toAst('I would never stay here. [o_o: haunted house -> http://example.com/hauntedhouse.svg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I would never stay here. '),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -33,7 +33,7 @@ describe('Bracketed text containing open eyes, reading a description, both of wh
 
 describe('An image that is the only convention on its line', () => {
   it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
-    expect(Up.ast('[o_o: haunted house -> http://example.com/hauntedhouse.svg]')).to.be.eql(
+    expect(Up.toAst('[o_o: haunted house -> http://example.com/hauntedhouse.svg]')).to.be.eql(
       new DocumentNode([
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
       ]))

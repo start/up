@@ -22,7 +22,7 @@ describe('1 blank line between paragraphs', () => {
     const text = `Pokemon Moon has a Mew under a truck.
 
 Pokemon Sun is a truck.`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
@@ -36,7 +36,7 @@ describe('2 blank lines between paragraphs', () => {
 
 \t
 Pokemon Sun is a truck.`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),

@@ -22,7 +22,7 @@ import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 
 describe('A single line consisting solely of "> "', () => {
   it('produces an empty blockquote node', () => {
-    expect(Up.ast('> ')).to.be.eql(
+    expect(Up.toAst('> ')).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([])
       ])

@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by asterisks', () => {
   it('is put inside an emphasis node', () => {
-    expect(Up.ast('Hello, *world*!!')).to.be.eql(
+    expect(Up.toAst('Hello, *world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
@@ -33,7 +33,7 @@ describe('Text surrounded by asterisks', () => {
 
 describe('Text separated from surrounding asterisks by whitespace', () => {
   it('is not put inside an emphasis node', () => {
-    expect(Up.ast('Birdie Sanders * won * Wisconsin')).to.be.eql(
+    expect(Up.toAst('Birdie Sanders * won * Wisconsin')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Birdie Sanders * won * Wisconsin'),
       ]))
@@ -43,7 +43,7 @@ describe('Text separated from surrounding asterisks by whitespace', () => {
 
 describe('Emphasized text', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.ast('Hello, *`world`*!')).to.be.eql(
+    expect(Up.toAst('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
@@ -54,7 +54,7 @@ describe('Emphasized text', () => {
   })
 
   it('can contain further emphasized text', () => {
-    expect(Up.ast('Hello, *my *little* world*!')).to.be.eql(
+    expect(Up.toAst('Hello, *my *little* world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
@@ -69,7 +69,7 @@ describe('Emphasized text', () => {
   })
 
   it('can contain stressed text', () => {
-    expect(Up.ast('Hello, *my **little** world*!')).to.be.eql(
+    expect(Up.toAst('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
@@ -86,7 +86,7 @@ describe('Emphasized text', () => {
 
 describe('Double asterisks followed by two separate single closing asterisks', () => {
   it('produces 2 nested emphasis nodes', () => {
-    expect(Up.ast('**Warning:* never feed this tarantula*')).to.be.eql(
+    expect(Up.toAst('**Warning:* never feed this tarantula*')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new EmphasisNode([

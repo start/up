@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by 2 tildes', () => {
   it('is put inside a revision deletion node', () => {
-    expect(Up.ast('I like ~~certain types of~~ pizza')).to.be.eql(
+    expect(Up.toAst('I like ~~certain types of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionDeletionNode([
@@ -34,7 +34,7 @@ describe('Text surrounded by 2 tildes', () => {
 
 describe('A revision deletion', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.ast('I like ~~certain *types* of~~ pizza')).to.be.eql(
+    expect(Up.toAst('I like ~~certain *types* of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionDeletionNode([

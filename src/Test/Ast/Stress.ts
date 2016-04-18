@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by 2 asterisks', () => {
   it('is put inside a stress node', () => {
-    expect(Up.ast('Hello, **world**!')).to.be.eql(
+    expect(Up.toAst('Hello, **world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([
@@ -31,7 +31,7 @@ describe('Text surrounded by 2 asterisks', () => {
   })
 
   it('can even contain further stressed text', () => {
-    expect(Up.ast('Hello, **my **little** world**!')).to.be.eql(
+    expect(Up.toAst('Hello, **my **little** world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([
@@ -46,7 +46,7 @@ describe('Text surrounded by 2 asterisks', () => {
   })
 
   it('can even contain emphasized text', () => {
-    expect(Up.ast('Hello, **my *little* world**!')).to.be.eql(
+    expect(Up.toAst('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([

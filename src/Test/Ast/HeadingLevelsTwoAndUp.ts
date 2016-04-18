@@ -28,7 +28,7 @@ Hello, world!
 Goodbye, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -44,7 +44,7 @@ Hello, world!
 Goodbye, world!
 = = = = = = = =`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -63,7 +63,7 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -83,7 +83,7 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -128,7 +128,7 @@ Real-Time Strategy Game Boy Games Published By Nintendo
 Warlocked
 - - - - -`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Interactive Software')], 1),
         new HeadingNode([new PlainTextNode('Video Games')], 2),

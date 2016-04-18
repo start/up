@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('An inline aside', () => {
   it('can be the last convention in a paragraph', () => {
-    expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
+    expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I don't eat cereal. "),
         new InlineAsideNode([

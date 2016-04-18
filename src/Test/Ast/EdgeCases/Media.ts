@@ -20,7 +20,7 @@ describe('A line consisting solely of media conventions (and optional whitespace
     const text =
       '[-_-: ghostly howling -> http://example.com/ghosts.ogg] [o_o: haunted house -> http://example.com/hauntedhouse.svg] [o_-: ghosts eating luggage -> http://example.com/poltergeists.webm] '
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -36,7 +36,7 @@ describe('A paragraph followed by a line consisting solely of media conventions'
 You'll never believe this fake evidence!
 [-_-: ghostly howling -> http://example.com/ghosts.ogg][o_o: haunted house -> http://example.com/hauntedhouse.svg][o_-: ghosts eating luggage -> http://example.com/poltergeists.webm]`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("You'll never believe this fake evidence!")
@@ -60,7 +60,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([

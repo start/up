@@ -15,7 +15,7 @@ describe('A code block', () => {
 \`\`\`
  \`\`\`
 \`\`\``
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(' ```'),
       ]))

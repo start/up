@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by 2 plus signs', () => {
   it('is put inside a revision insertion node', () => {
-    expect(Up.ast('I like ++to brush++ my teeth')).to.be.eql(
+    expect(Up.toAst('I like ++to brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionInsertionNode([
@@ -34,7 +34,7 @@ describe('Text surrounded by 2 plus signs', () => {
 
 describe('A revision insertion', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.ast('I like ++to *regularly* brush++ my teeth')).to.be.eql(
+    expect(Up.toAst('I like ++to *regularly* brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionInsertionNode([

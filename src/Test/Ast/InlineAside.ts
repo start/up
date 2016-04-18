@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by 2 parentheses', () => {
   it('is put inside an inline aside node', () => {
-    expect(Up.ast("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
+    expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I don't eat cereal. "),
         new InlineAsideNode([
@@ -31,7 +31,7 @@ describe('Text surrounded by 2 parentheses', () => {
   })
 
   it('is evaluated for other conventions', () => {
-    expect(Up.ast("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.")).to.be.eql(
+    expect(Up.toAst("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I don't eat cereal. "),
         new InlineAsideNode([
@@ -46,7 +46,7 @@ describe('Text surrounded by 2 parentheses', () => {
   })
 
   it('can be nested inside other inline aside nodes', () => {
-    expect(Up.ast("((I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.))")).to.be.eql(
+    expect(Up.toAst("((I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.))")).to.be.eql(
       insideDocumentAndParagraph([
         new InlineAsideNode([
           new PlainTextNode("I don't eat cereal. "),

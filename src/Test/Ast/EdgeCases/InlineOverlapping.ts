@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Overlapped stressed and deleted text', () => {
   it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
-    expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
+    expect(Up.toAst('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
@@ -40,7 +40,7 @@ describe('Overlapped stressed and deleted text', () => {
 
 describe('Overlapped emphasized and stressed text', () => {
   it('produce an emphasis node, a nested stress node, then a non-nested stress node', () => {
-    expect(Up.ast('I *love **drinking* whole** milk.')).to.be.eql(
+    expect(Up.toAst('I *love **drinking* whole** milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new EmphasisNode([
@@ -60,7 +60,7 @@ describe('Overlapped emphasized and stressed text', () => {
 
 describe('Overlapped stressed and emphasized text', () => {
   it('produce a stress node, a nested emphasis node, then a non-nested emphasis node', () => {
-    expect(Up.ast('I **love *drinking** whole* milk.')).to.be.eql(
+    expect(Up.toAst('I **love *drinking** whole* milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
@@ -80,7 +80,7 @@ describe('Overlapped stressed and emphasized text', () => {
 
 describe('Overlapped stressed and deleted text', () => {
   it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
-    expect(Up.ast('I **love ~~drinking** whole~~ milk.')).to.be.eql(
+    expect(Up.toAst('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
@@ -100,7 +100,7 @@ describe('Overlapped stressed and deleted text', () => {
 
 describe('A paragraph with 2 instances of overlapped conventions', () => {
   it('prorduce the correct nodes for each', () => {
-    expect(Up.ast('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
+    expect(Up.toAst('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new EmphasisNode([
@@ -130,7 +130,7 @@ describe('A paragraph with 2 instances of overlapped conventions', () => {
 
 describe('Overlapped stressed, deleted, and "asided" text', () => {
   it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
-    expect(Up.ast('I **love ~~((drinking** whole~~ milk)) all the time.')).to.be.eql(
+    expect(Up.toAst('I **love ~~((drinking** whole~~ milk)) all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
@@ -157,7 +157,7 @@ describe('Overlapped stressed, deleted, and "asided" text', () => {
 
 describe('Overlapped emphasized and linked text', () => {
   it('produce an emphasis node, followed by a link node containing another emphasis node. The link node is unbroken', () => {
-    expect(Up.ast('I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
+    expect(Up.toAst('I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
@@ -179,7 +179,7 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
   it('produces the correct nodes for each', () => {
     const text = 'I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.'
     
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
@@ -209,7 +209,7 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
 
 describe('Overlapped linked and emphasized text', () => {
   it('produce a link node containing an emphasis node, followed by an empahsis node. The link node is unbroken', () => {
-    expect(Up.ast('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
+    expect(Up.toAst('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -229,7 +229,7 @@ describe('Overlapped linked and emphasized text', () => {
 
 describe('Conventions that completely overlap', () => {
   it('are nested in the order they started, and do not create an empty node at the end', () => {
-    expect(Up.ast('++**Why would you do this?++**')).to.be.eql(
+    expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new StressNode([

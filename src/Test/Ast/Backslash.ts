@@ -20,35 +20,35 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('A backslash', () => {
   it('causes the following character to be treated as plain text', () => {
-    expect(Up.ast('Hello, \\world!')).to.be.eql(
+    expect(Up.toAst('Hello, \\world!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, world!')
       ]))
   })
 
   it('causes the following backslash to be treated as plain text', () => {
-    expect(Up.ast('Hello, \\\\!')).to.be.eql(
+    expect(Up.toAst('Hello, \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\!')
       ]))
   })
 
   it('disables any special meaning of the following character', () => {
-    expect(Up.ast('Hello, \\*world\\*!')).to.be.eql(
+    expect(Up.toAst('Hello, \\*world\\*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, *world*!')
       ]))
   })
 
   it('causes only the following character to be treated as plain text', () => {
-    expect(Up.ast('Hello, \\\\, meet \\\\!')).to.be.eql(
+    expect(Up.toAst('Hello, \\\\, meet \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\, meet \\!')
       ]))
   })
 
   it('is ignored if it is the final character of the text', () => {
-    expect(Up.ast('Hello, \\')).to.be.eql(
+    expect(Up.toAst('Hello, \\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, ')
       ]))
@@ -59,7 +59,7 @@ describe('A backslash', () => {
 Hello, world!\\
 \\
 Goodbye, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, world!\n\nGoodbye, world!')
       ]))

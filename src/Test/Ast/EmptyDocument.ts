@@ -19,7 +19,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('An empty document', () => {
   it('produces an empty document node', () => {
-    expect(Up.ast('')).to.eql(new DocumentNode())
+    expect(Up.toAst('')).to.eql(new DocumentNode())
   })
 })
 
@@ -32,6 +32,6 @@ describe('A document with only blank lines', () => {
       
       
 `
-    expect(Up.ast(text)).to.eql(new DocumentNode())
+    expect(Up.toAst(text)).to.eql(new DocumentNode())
   })
 })

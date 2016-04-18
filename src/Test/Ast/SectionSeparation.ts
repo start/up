@@ -24,7 +24,7 @@ describe('Between paragraphs', () => {
 
 
 Goodbye, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new SectionSeparatorNode(),
@@ -42,7 +42,7 @@ Goodbye, world!`
 
 
 Goodbye, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new SectionSeparatorNode(),
@@ -59,7 +59,7 @@ describe('A document that starts with 3 blank lines', () => {
 
 
 Hello, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
@@ -78,7 +78,7 @@ describe('A document that ends with 3 blank lines', () => {
 
 
 `
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
@@ -93,7 +93,7 @@ describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
   it('produces a section separator node', () => {
     const text = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -106,7 +106,7 @@ describe('A section separator streak', () => {
     const text = `
 ~-~-~-~-~
 60.4%`
-    expect(Up.ast(text)).to.eql(
+    expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new ParagraphNode([
@@ -117,7 +117,7 @@ describe('A section separator streak', () => {
   
   it('can have whitespace interspersed throughout the line in any manner', () => {
     const text = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -125,7 +125,7 @@ describe('A section separator streak', () => {
 
   it('can contain as few as 3 non-whitespace characters', () => {
     const text = '= - ~'
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -144,7 +144,7 @@ Hello.
 
 
 Goodbye.`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello.')
@@ -164,7 +164,7 @@ describe('Consecutive separator streaks', () => {
 =============================================
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 =============================================`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -185,7 +185,7 @@ describe('Section separator streaks with blank lines in between', () => {
 
 --------
 `
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))

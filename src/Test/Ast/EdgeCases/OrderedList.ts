@@ -28,7 +28,7 @@ describe('An ordered list with a single item', () => {
 -----------
 # Mittens
 -----------`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new OrderedListNode([
@@ -54,7 +54,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 # Clinton
 # Sanders 
 `
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -96,7 +96,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 # Clinton
 # Sanders 
 `
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([

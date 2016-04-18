@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {
-    expect(Up.ast('\\\\\\\\')).to.be.eql(
+    expect(Up.toAst('\\\\\\\\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('\\\\')
       ]))

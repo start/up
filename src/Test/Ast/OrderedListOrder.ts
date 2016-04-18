@@ -23,7 +23,7 @@ import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 function listOrder(text: string): ListOrder {
-  const list = <OrderedListNode>Up.ast(text).children[0]
+  const list = <OrderedListNode>Up.toAst(text).children[0]
   return list.order()
 }
 

@@ -20,9 +20,9 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 function expectBlockquoteContentsToEqualDocumentContents(blockquotedText: string, text: string): void {
-  expect(Up.ast(blockquotedText)).to.be.eql(
+  expect(Up.toAst(blockquotedText)).to.be.eql(
     new DocumentNode([
-      new BlockquoteNode(Up.ast(text).children)
+      new BlockquoteNode(Up.toAst(text).children)
     ]))
 }
 
@@ -89,7 +89,7 @@ Hello, world!
 
 describe('A single blockquote delimiter missing its trailing space', () => {
   it('does not produce a blockquote note', () => {
-    expect(Up.ast('>Hello, taxes!')).to.be.eql(
+    expect(Up.toAst('>Hello, taxes!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('>Hello, taxes!')
       ]))
@@ -99,7 +99,7 @@ describe('A single blockquote delimiter missing its trailing space', () => {
 
 describe('Multiple blockquote delimiters each missing their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
-    expect(Up.ast(`>>> Hello, world!`)).to.be.eql(
+    expect(Up.toAst(`>>> Hello, world!`)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new BlockquoteNode([

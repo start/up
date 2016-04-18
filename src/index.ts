@@ -3,16 +3,18 @@ import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 import { getOutlineNodes } from './Parsing/Outline/GetOutlineNodes'
 import { HtmlWriter } from './Writer/HtmlWriter'
 
-export function ast(text: string): DocumentNode {
+export function toAst(text: string): DocumentNode {
   return new DocumentNode(getOutlineNodes(text))
 }
 
 const htmlWriter = new HtmlWriter()
 
-export function html(text: string): string {
-  return htmlWriter.document(ast(text))
-}
+export function toHtml(textOrNode: string | SyntaxNode): string {
+  const node = (
+    typeof textOrNode === 'string'
+      ? toAst(textOrNode)
+      : textOrNode
+  )
 
-export function htmlFromSyntaxNode(node: SyntaxNode): string {
   return htmlWriter.write(node)
 }

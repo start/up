@@ -34,7 +34,7 @@ describe('A non-indented line followed by an indented line', () => {
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListItem([
@@ -60,7 +60,7 @@ Cyndaquil
 Torchic
   The first three starter Fire Pokemon`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListItem([
@@ -86,7 +86,7 @@ describe("A term in a description list", () => {
 Ash *"Little Marco"* Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListItem([
@@ -114,7 +114,7 @@ describe("A description in a description list", () => {
 Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListItem([
@@ -151,7 +151,7 @@ Gary
   A young man with a great sense of smell.
 `
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListItem([
@@ -193,7 +193,7 @@ describe("A description list", () => {
 Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListItem([

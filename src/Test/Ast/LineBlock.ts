@@ -26,7 +26,7 @@ describe('Consecutive non-blank lines', () => {
       `
 Roses are red
 Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -50,7 +50,7 @@ Violets are blue
 #~#~#~#~#~#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -83,7 +83,7 @@ Violets are **blue**
 Lyrics have lines
 And addresses do, too
 `
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -112,7 +112,7 @@ Roses are red
 \\ \t
 \\ \t
 Violets are blue`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([
@@ -139,7 +139,7 @@ Violets are blue
 \\#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([

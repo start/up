@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Text surrounded by backticks', () => {
   it('is put into an inline code node', () => {
-    expect(Up.ast('`gabe.attack(james)`')).to.be.eql(
+    expect(Up.toAst('`gabe.attack(james)`')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineCodeNode('gabe.attack(james)'),
       ]))
@@ -30,7 +30,7 @@ describe('Text surrounded by backticks', () => {
 
 describe('Inline code', () => {
   it('is not evaluated for other conventions', () => {
-    expect(Up.ast('Hello, `*Bruno*`!')).to.be.eql(
+    expect(Up.toAst('Hello, `*Bruno*`!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new InlineCodeNode('*Bruno*'),
@@ -42,7 +42,7 @@ describe('Inline code', () => {
 
 describe('Backslashes inside inline code', () => {
   it('escape the following character', () => {
-    expect(Up.ast('Whiteboard `pro\\p`')).to.be.eql(
+    expect(Up.toAst('Whiteboard `pro\\p`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Whiteboard '),
         new InlineCodeNode('prop')
@@ -50,7 +50,7 @@ describe('Backslashes inside inline code', () => {
   })
   
   it('escape backticks', () => {
-    expect(Up.ast('Funny quotes: `"\\``')).to.be.eql(
+    expect(Up.toAst('Funny quotes: `"\\``')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Funny quotes: '),
         new InlineCodeNode('"`')

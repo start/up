@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('Bracketed text pointing to a URL', () => {
   it('produce a link node', () => {
-    expect(Up.ast('I like [this site -> https://stackoverflow.com]. I bet you do, too.')).to.be.eql(
+    expect(Up.toAst('I like [this site -> https://stackoverflow.com]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
@@ -34,7 +34,7 @@ describe('Bracketed text pointing to a URL', () => {
 
 describe("A link's contents", () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.ast('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(
+    expect(Up.toAst('I like [*this* site -> https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
@@ -51,7 +51,7 @@ describe("A link's contents", () => {
 
 describe("A link's URLs", () => {
   it('can contain matching unescaped brackets', () => {
-    expect(Up.ast('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
+    expect(Up.toAst('Here is a [strange URL -> https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Here is a '),
         new LinkNode([
@@ -62,7 +62,7 @@ describe("A link's URLs", () => {
   })
 
   it('can have an escaped, unmatched closing bracket', () => {
-    expect(Up.ast('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
+    expect(Up.toAst('I like [this site -> https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([

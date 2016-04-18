@@ -26,7 +26,7 @@ describe('A document\'s first text underlined by any combination or arrangement 
 Hello, world!
 #=-+~*^@:_+**###=~=~=~--~~~~`
 
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -37,7 +37,7 @@ Hello, world!
       `
 Hello, world!
 +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -48,7 +48,7 @@ Hello, world!
       `
 Hello, world!
 ~~~~~~~~~~~~`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -60,7 +60,7 @@ Hello, world!
 #=-+~*^@:_
 Hello, world!
 #=-+~*^@:_`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -73,7 +73,7 @@ Hello, world!
       
 Goodbye, world!
 ~~~~~~~~~~~~`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -85,7 +85,7 @@ Goodbye, world!
       `
 **Hello**, world!
 ~~~~~~~~~~~~`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([
           new StressNode([new PlainTextNode('Hello')]),
@@ -103,7 +103,7 @@ describe("A heading's optional overline", () => {
 - - - - - - -
 Hello, world!
 -------------`
-    expect(Up.ast(text)).to.eql(
+    expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -116,7 +116,7 @@ Hello, world!
 -------------
 Hello, world!
 - - - - - - -`
-    expect(Up.ast(text)).to.eql(
+    expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -129,7 +129,7 @@ Hello, world!
 --------
 Hello, world!
 ----------`
-    expect(Up.ast(text)).to.eql(
+    expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -141,7 +141,7 @@ Hello, world!
 = - = - = - = - = - = - =
 Hello, world!
 ==  --  ==  --  ==  --  ==`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))

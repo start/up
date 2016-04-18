@@ -28,7 +28,7 @@ describe('A section separator streak', () => {
 - - - - - - - - - - - 
 Not me. Us!
 @---------@`
-    expect(Up.ast(text)).to.eql(
+    expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([
@@ -41,7 +41,7 @@ Not me. Us!
 describe('A streak of asterisks with spaces between', () => {
   it('produces a single section separator node rather than a heavily nested list', () => {
     const text = '* * * * * *'
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -51,7 +51,7 @@ describe('A streak of asterisks with spaces between', () => {
 describe('A streak of number signs with spaces between', () => {
   it('produces a single section separator node rather than a heavily nested list', () => {
     const text = '# # # # # #'
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -64,7 +64,7 @@ describe('A streak of asterisks with spaces between', () => {
 * Mittens
 * Gloves
 * * * * * *`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -89,7 +89,7 @@ describe('A streak of number signs with spaces between', () => {
 # Mittens
 # Gloves
 # # # # # #`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([

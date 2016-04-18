@@ -20,7 +20,7 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('An opening bracket followed by " -> " followed by a closing bracket', () => {
   it('does not produce a link node', () => {
-    expect(Up.ast('[Try to] do this -> smile :]')).to.be.eql(
+    expect(Up.toAst('[Try to] do this -> smile :]')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('[Try to] do this -> smile :]')
       ]))
@@ -30,7 +30,7 @@ describe('An opening bracket followed by " -> " followed by a closing bracket', 
 
 describe('A link with no URL', () => {
   it('does not produce a link node, but its contents are included directly', () => {
-    expect(Up.ast('[*Yggdra Union* -> ]')).to.be.eql(
+    expect(Up.toAst('[*Yggdra Union* -> ]')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('Yggdra Union')
@@ -42,7 +42,7 @@ describe('A link with no URL', () => {
 
 describe('A link with a blank URL', () => {
   it('does not produce a link node, but its contents are included directly', () => {
-    expect(Up.ast('[*Yggdra Union* ->   \t  ]')).to.be.eql(
+    expect(Up.toAst('[*Yggdra Union* ->   \t  ]')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('Yggdra Union')
@@ -54,7 +54,7 @@ describe('A link with a blank URL', () => {
 
 describe('A link with no content', () => {
   it('produces a link node with its URL for its content', () => {
-    expect(Up.ast('[ -> https://google.com]')).to.be.eql(
+    expect(Up.toAst('[ -> https://google.com]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('https://google.com')
@@ -67,7 +67,7 @@ describe('A link with no content', () => {
 
 describe('A link with blank content', () => {
   it('produces a link node with its URL for its content', () => {
-    expect(Up.ast('[   \t   -> https://google.com]')).to.be.eql(
+    expect(Up.toAst('[   \t   -> https://google.com]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('https://google.com')
@@ -79,7 +79,7 @@ describe('A link with blank content', () => {
 
 describe('A link with no content and no URL', () => {
   it('produces no syntax nodes', () => {
-    expect(Up.ast('Hello, [ -> ]!')).to.be.eql(
+    expect(Up.toAst('Hello, [ -> ]!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, !')
       ])
@@ -90,14 +90,14 @@ describe('A link with no content and no URL', () => {
 
 describe('A paragraph containing a link with no content and no URL', () => {
   it('produces no syntax nodes', () => {
-    expect(Up.ast('[ -> ]')).to.be.eql(new DocumentNode([]))
+    expect(Up.toAst('[ -> ]')).to.be.eql(new DocumentNode([]))
   })
 })
 
 
 describe('A link', () => {
   it('can follow bracketed text', () => {
-    expect(Up.ast("I [usually] use [Google -> https://google.com]!!")).to.eql(
+    expect(Up.toAst("I [usually] use [Google -> https://google.com]!!")).to.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I [usually] use '),
         new LinkNode([
@@ -109,7 +109,7 @@ describe('A link', () => {
 
 
   it('can be inside bracketed text', () => {
-    expect(Up.ast("[I use [Google -> https://google.com]]")).to.eql(
+    expect(Up.toAst("[I use [Google -> https://google.com]]")).to.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('[I use '),
         new LinkNode([
@@ -121,7 +121,7 @@ describe('A link', () => {
 
 
   it('starts with the final of multiple opening brackets even when there is just one closing bracket', () => {
-    expect(Up.ast('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
+    expect(Up.toAst('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Go to [this '),
         new LinkNode([

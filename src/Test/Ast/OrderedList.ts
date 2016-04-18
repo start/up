@@ -29,7 +29,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
       `
 # Hello, world!
 # Goodbye, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -55,7 +55,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
       `
 #. Hello, Lavender Town!
 #. Goodbye, Lavender Town!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -81,7 +81,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a right p
       `
 #) Hello, Celadon City!
 #) Goodbye, Celadon City!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -107,7 +107,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
       `
 1. Hello, Celadon City!
 2. Goodbye, Celadon City!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -133,7 +133,7 @@ describe('Consecutive lines each bulleted by an integer followed by a right pare
       `
 1) Hello, Celadon City!
 2) Goodbye, Celadon City!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -158,7 +158,7 @@ describe('A single line bulleted by a number sign', () => {
     const text =
       `
 # Hello, world!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -178,7 +178,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
     const text =
       `
 #. Hello, Lavender Town!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -198,7 +198,7 @@ describe('A single line bulleted by a number sign followed by a right paren', ()
     const text =
       `
 #) Hello, Celadon City!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -218,7 +218,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
     const text =
       `
 1783. Not a good year for Great Britain.`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('1783. Not a good year for Great Britain.')
@@ -234,7 +234,7 @@ describe('A single line bulleted by an integer followed by a right paren', () =>
     const text =
       `
 1) Hello, Celadon City!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -258,7 +258,7 @@ describe('The 5 different bullet types', () => {
 #) Hello, Cinnabar Island!
 #. Hello, Cherrygrove City!
 # Hello, Camphrier Town!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
@@ -300,7 +300,7 @@ describe('A numbered list', () => {
 # Hello, world!
 # Goodbye, world!
 Hello, World 1-2!`
-    expect(Up.ast(text)).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
