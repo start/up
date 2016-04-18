@@ -2406,6 +2406,9 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.heading = function (node) {
         return this.htmlElement('h' + Math.min(6, node.level), node.children);
     };
+    HtmlWriter.prototype.sectionSeparator = function (node) {
+        return htmlElementWithNoEndTag('hr');
+    };
     HtmlWriter.prototype.emphasis = function (node) {
         return this.htmlElement('em', node.children);
     };
@@ -2501,6 +2504,7 @@ var DescriptionListNode_1 = require('../SyntaxNodes/DescriptionListNode');
 var LineBlockNode_1 = require('../SyntaxNodes/LineBlockNode');
 var HeadingNode_1 = require('../SyntaxNodes/HeadingNode');
 var CodeBlockNode_1 = require('../SyntaxNodes/CodeBlockNode');
+var SectionSeparatorNode_1 = require('../SyntaxNodes/SectionSeparatorNode');
 var Writer = (function () {
     function Writer() {
     }
@@ -2531,6 +2535,9 @@ var Writer = (function () {
         }
         if (node instanceof HeadingNode_1.HeadingNode) {
             return this.heading(node);
+        }
+        if (node instanceof SectionSeparatorNode_1.SectionSeparatorNode) {
+            return this.sectionSeparator(node);
         }
         if (node instanceof EmphasisNode_1.EmphasisNode) {
             return this.emphasis(node);
@@ -2574,7 +2581,7 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/AudioNode":34,"../SyntaxNodes/BlockquoteNode":35,"../SyntaxNodes/CodeBlockNode":36,"../SyntaxNodes/DescriptionListNode":39,"../SyntaxNodes/DocumentNode":41,"../SyntaxNodes/EmphasisNode":42,"../SyntaxNodes/HeadingNode":43,"../SyntaxNodes/ImageNode":44,"../SyntaxNodes/InlineAsideNode":45,"../SyntaxNodes/InlineCodeNode":46,"../SyntaxNodes/LineBlockNode":49,"../SyntaxNodes/LinkNode":50,"../SyntaxNodes/OrderedListNode":53,"../SyntaxNodes/ParagraphNode":55,"../SyntaxNodes/PlainTextNode":56,"../SyntaxNodes/RevisionDeletionNode":57,"../SyntaxNodes/RevisionInsertionNode":58,"../SyntaxNodes/SpoilerNode":61,"../SyntaxNodes/StressNode":62,"../SyntaxNodes/UnorderedListNode":64,"../SyntaxNodes/VideoNode":65}],68:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":34,"../SyntaxNodes/BlockquoteNode":35,"../SyntaxNodes/CodeBlockNode":36,"../SyntaxNodes/DescriptionListNode":39,"../SyntaxNodes/DocumentNode":41,"../SyntaxNodes/EmphasisNode":42,"../SyntaxNodes/HeadingNode":43,"../SyntaxNodes/ImageNode":44,"../SyntaxNodes/InlineAsideNode":45,"../SyntaxNodes/InlineCodeNode":46,"../SyntaxNodes/LineBlockNode":49,"../SyntaxNodes/LinkNode":50,"../SyntaxNodes/OrderedListNode":53,"../SyntaxNodes/ParagraphNode":55,"../SyntaxNodes/PlainTextNode":56,"../SyntaxNodes/RevisionDeletionNode":57,"../SyntaxNodes/RevisionInsertionNode":58,"../SyntaxNodes/SectionSeparatorNode":60,"../SyntaxNodes/SpoilerNode":61,"../SyntaxNodes/StressNode":62,"../SyntaxNodes/UnorderedListNode":64,"../SyntaxNodes/VideoNode":65}],68:[function(require,module,exports){
 "use strict";
 var DocumentNode_1 = require('./SyntaxNodes/DocumentNode');
 var GetOutlineNodes_1 = require('./Parsing/Outline/GetOutlineNodes');

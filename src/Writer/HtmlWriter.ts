@@ -124,6 +124,10 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('h' + Math.min(6, node.level), node.children)
   }
 
+  sectionSeparator(node: SectionSeparatorNode): string {
+    return htmlElementWithNoEndTag('hr')
+  }
+
   emphasis(node: EmphasisNode): string {
     return this.htmlElement('em', node.children)
   }

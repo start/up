@@ -277,6 +277,14 @@ describe('A level 9 heading node', () => {
 })
 
 
+describe('A section separator node', () => {
+  it('produces an hr element', () => {
+    const node = new SectionSeparatorNode()
+    expect(Up.toHtml(node)).to.be.eql('<hr>')
+  })
+})
+
+
 describe('An emphasis node', () => {
   it('produces an em element', () => {
     const node = new EmphasisNode([new PlainTextNode('Always')])

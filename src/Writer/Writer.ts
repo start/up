@@ -73,6 +73,10 @@ export abstract class Writer {
       return this.heading(node)
     }
     
+    if (node instanceof SectionSeparatorNode) {
+      return this.sectionSeparator(node)
+    }
+    
     if (node instanceof EmphasisNode) {
       return this.emphasis(node)
     }
@@ -133,6 +137,7 @@ export abstract class Writer {
   abstract codeBlock(node: CodeBlockNode): string;
   abstract paragraph(node: ParagraphNode): string;
   abstract heading(node: HeadingNode): string;
+  abstract sectionSeparator(node: SectionSeparatorNode): string;
   abstract emphasis(node: EmphasisNode): string;
   abstract stress(node: StressNode): string;
   abstract inlineCode(node: InlineCodeNode): string;
