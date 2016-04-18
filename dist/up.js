@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Up = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 function last(items) {
     return items[items.length - 1];
@@ -2576,11 +2576,6 @@ exports.Writer = Writer;
 
 },{"../SyntaxNodes/AudioNode":34,"../SyntaxNodes/BlockquoteNode":35,"../SyntaxNodes/CodeBlockNode":36,"../SyntaxNodes/DescriptionListNode":39,"../SyntaxNodes/DocumentNode":41,"../SyntaxNodes/EmphasisNode":42,"../SyntaxNodes/HeadingNode":43,"../SyntaxNodes/ImageNode":44,"../SyntaxNodes/InlineAsideNode":45,"../SyntaxNodes/InlineCodeNode":46,"../SyntaxNodes/LineBlockNode":49,"../SyntaxNodes/LinkNode":50,"../SyntaxNodes/OrderedListNode":53,"../SyntaxNodes/ParagraphNode":55,"../SyntaxNodes/PlainTextNode":56,"../SyntaxNodes/RevisionDeletionNode":57,"../SyntaxNodes/RevisionInsertionNode":58,"../SyntaxNodes/SpoilerNode":61,"../SyntaxNodes/StressNode":62,"../SyntaxNodes/UnorderedListNode":64,"../SyntaxNodes/VideoNode":65}],68:[function(require,module,exports){
 "use strict";
-var Up = require('./index');
-this.Up = Up;
-
-},{"./index":69}],69:[function(require,module,exports){
-"use strict";
 var DocumentNode_1 = require('./SyntaxNodes/DocumentNode');
 var GetOutlineNodes_1 = require('./Parsing/Outline/GetOutlineNodes');
 var HtmlWriter_1 = require('./Writer/HtmlWriter');
@@ -2597,4 +2592,5 @@ function toHtml(textOrNode) {
 }
 exports.toHtml = toHtml;
 
-},{"./Parsing/Outline/GetOutlineNodes":19,"./SyntaxNodes/DocumentNode":41,"./Writer/HtmlWriter":66}]},{},[68]);
+},{"./Parsing/Outline/GetOutlineNodes":19,"./SyntaxNodes/DocumentNode":41,"./Writer/HtmlWriter":66}]},{},[68])(68)
+});
