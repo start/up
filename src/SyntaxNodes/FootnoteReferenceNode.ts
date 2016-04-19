@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 export class FootnoteReferenceNode extends InlineSyntaxNode {
-  constructor(public referenceNumber: number) {
+  constructor(public referenceOrdinal: number) {
     super()
   }
   

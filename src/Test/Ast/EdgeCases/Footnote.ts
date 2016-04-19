@@ -12,17 +12,25 @@ import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNod
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { InlineAsideNode } from '../../../SyntaxNodes/InlineAsideNode'
+import { FootnoteReferenceNode } from '../../../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('An inline aside', () => {
-  it('can be the last convention in a paragraph', () => {
+describe('A footnote reference at the end of a paragraph', () => {
+  it('produces the expected syntax nodes', () => {
     expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode("I don't eat cereal. "),
-        new InlineAsideNode([
-          new PlainTextNode('Well, I do, but I pretend not to.')
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal. "),
+          new FootnoteReferenceNode(1)
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode('Well, I do, but I pretend not to.')
+          ], 1)
         ])
       ]))
   })
