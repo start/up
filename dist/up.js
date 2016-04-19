@@ -127,7 +127,7 @@ function getMediaTokenizer(mediaConvention) {
 }
 exports.getMediaTokenizer = getMediaTokenizer;
 
-},{"../TextConsumer":32,"../TextHelpers":33,"./Token":16}],6:[function(require,module,exports){
+},{"../TextConsumer":33,"../TextHelpers":34,"./Token":16}],6:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
     function MediaConvention(facePattern, NodeType, tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd) {
@@ -154,7 +154,7 @@ exports.IMAGE = IMAGE;
 var VIDEO = new MediaConvention_1.MediaConvention('(?:-_o|o_-)', VideoNode_1.VideoNode, Token_1.TokenMeaning.VideoStartAndAudioDescription, Token_1.TokenMeaning.VideoUrlAndAudioEnd);
 exports.VIDEO = VIDEO;
 
-},{"../../SyntaxNodes/AudioNode":34,"../../SyntaxNodes/ImageNode":44,"../../SyntaxNodes/VideoNode":65,"./MediaConvention":6,"./Token":16}],8:[function(require,module,exports){
+},{"../../SyntaxNodes/AudioNode":35,"../../SyntaxNodes/ImageNode":45,"../../SyntaxNodes/VideoNode":66,"./MediaConvention":6,"./Token":16}],8:[function(require,module,exports){
 "use strict";
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
@@ -274,7 +274,7 @@ function isNotPureWhitespace(nodes) {
     return !nodes.every(PlainTextNode_1.isWhitespace);
 }
 
-},{"../../SyntaxNodes/InlineCodeNode":46,"../../SyntaxNodes/LinkNode":50,"../../SyntaxNodes/PlainTextNode":56,"../CollectionHelpers":1,"./MediaConventions":7,"./SandwichConventions":15,"./Token":16}],9:[function(require,module,exports){
+},{"../../SyntaxNodes/InlineCodeNode":47,"../../SyntaxNodes/LinkNode":51,"../../SyntaxNodes/PlainTextNode":57,"../CollectionHelpers":1,"./MediaConventions":7,"./SandwichConventions":15,"./Token":16}],9:[function(require,module,exports){
 "use strict";
 var Token_1 = require('.././Token');
 var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
@@ -567,7 +567,7 @@ exports.SPOILER = SPOILER;
 var INLINE_ASIDE = sandwich(' ((', '))', InlineAsideNode_1.InlineAsideNode, Token_1.TokenMeaning.InlineAsideStart, Token_1.TokenMeaning.InlineAsideEnd);
 exports.INLINE_ASIDE = INLINE_ASIDE;
 
-},{"../../SyntaxNodes/EmphasisNode":42,"../../SyntaxNodes/InlineAsideNode":45,"../../SyntaxNodes/RevisionDeletionNode":57,"../../SyntaxNodes/RevisionInsertionNode":58,"../../SyntaxNodes/SpoilerNode":61,"../../SyntaxNodes/StressNode":62,"./Convention":2,"./SandwichConvention":14,"./Token":16}],16:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":43,"../../SyntaxNodes/InlineAsideNode":46,"../../SyntaxNodes/RevisionDeletionNode":58,"../../SyntaxNodes/RevisionInsertionNode":59,"../../SyntaxNodes/SpoilerNode":62,"../../SyntaxNodes/StressNode":63,"./Convention":2,"./SandwichConvention":14,"./Token":16}],16:[function(require,module,exports){
 "use strict";
 (function (TokenMeaning) {
     TokenMeaning[TokenMeaning["PlainText"] = 0] = "PlainText";
@@ -956,7 +956,7 @@ function getSandwichEndedByThisToken(token) {
     })[0];
 }
 
-},{"../CollectionHelpers":1,"../TextConsumer":32,"../TextHelpers":33,"./Convention":2,"./FailureTracker":3,"./GetMediaTokenizer":5,"./MediaConventions":7,"./RaisedVoices/ApplyRaisedVoices":9,"./SandwichConventions":15,"./Token":16}],18:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../TextConsumer":33,"../TextHelpers":34,"./Convention":2,"./FailureTracker":3,"./GetMediaTokenizer":5,"./MediaConventions":7,"./RaisedVoices/ApplyRaisedVoices":9,"./SandwichConventions":15,"./Token":16}],18:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var HeadingNode_1 = require('../../SyntaxNodes/HeadingNode');
@@ -998,7 +998,7 @@ function getHeadingParser(headingLeveler) {
 }
 exports.getHeadingParser = getHeadingParser;
 
-},{"../../SyntaxNodes/HeadingNode":43,"../Inline/GetInlineNodes":4,"../TextConsumer":32,"./HeadingLeveler":21,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],19:[function(require,module,exports){
+},{"../../SyntaxNodes/HeadingNode":44,"../Inline/GetInlineNodes":4,"../TextConsumer":33,"./HeadingLeveler":21,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],19:[function(require,module,exports){
 "use strict";
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var TextConsumer_1 = require('../TextConsumer');
@@ -1065,7 +1065,7 @@ function condenseConsecutiveSectionSeparatorNodes(nodes) {
     return resultNodes;
 }
 
-},{"../../SyntaxNodes/SectionSeparatorNode":60,"../CollectionHelpers":1,"../TextConsumer":32,"./GetHeadingParser":18,"./HeadingLeveler":21,"./ParseBlankLineSeparation":23,"./ParseBlockquote":24,"./ParseCodeBlock":25,"./ParseDescriptionList":26,"./ParseOrderedList":27,"./ParseRegularLines":28,"./ParseSectionSeparatorStreak":29,"./ParseUnorderedList":30,"./Patterns":31}],20:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":61,"../CollectionHelpers":1,"../TextConsumer":33,"./GetHeadingParser":18,"./HeadingLeveler":21,"./ParseBlankLineSeparation":23,"./ParseBlockquote":24,"./ParseCodeBlock":25,"./ParseDescriptionList":26,"./ParseOrderedList":27,"./ParseRegularLines":28,"./ParseSectionSeparatorStreak":29,"./ParseUnorderedList":30,"./Patterns":31}],20:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var Patterns_1 = require('./Patterns');
@@ -1112,7 +1112,7 @@ function getRemainingLinesOfListItem(args) {
 }
 exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
 
-},{"../TextConsumer":32,"./Patterns":31}],21:[function(require,module,exports){
+},{"../TextConsumer":33,"./Patterns":31}],21:[function(require,module,exports){
 "use strict";
 var HeadingLeveler = (function () {
     function HeadingLeveler() {
@@ -1189,7 +1189,7 @@ function parseBlankLineSeparation(args) {
 }
 exports.parseBlankLineSeparation = parseBlankLineSeparation;
 
-},{"../../SyntaxNodes/SectionSeparatorNode":60,"../TextConsumer":32,"./Patterns":31}],24:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":61,"../TextConsumer":33,"./Patterns":31}],24:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var BlockquoteNode_1 = require('../../SyntaxNodes/BlockquoteNode');
@@ -1219,7 +1219,7 @@ function isLineProperlyBlockquoted(line, delimiters) {
     return TRAILING_SPACE_PATTERN.test(delimiters) || (line === delimiters);
 }
 
-},{"../../SyntaxNodes/BlockquoteNode":35,"../TextConsumer":32,"./GetOutlineNodes":19,"./Patterns":31}],25:[function(require,module,exports){
+},{"../../SyntaxNodes/BlockquoteNode":36,"../TextConsumer":33,"./GetOutlineNodes":19,"./Patterns":31}],25:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var CodeBlockNode_1 = require('../../SyntaxNodes/CodeBlockNode');
@@ -1244,7 +1244,7 @@ function parseCodeBlock(args) {
 }
 exports.parseCodeBlock = parseCodeBlock;
 
-},{"../../SyntaxNodes/CodeBlockNode":36,"../TextConsumer":32,"./Patterns":31}],26:[function(require,module,exports){
+},{"../../SyntaxNodes/CodeBlockNode":37,"../TextConsumer":33,"./Patterns":31}],26:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var DescriptionListItem_1 = require('../../SyntaxNodes/DescriptionListItem');
@@ -1316,7 +1316,7 @@ function parseDescriptionList(args) {
 }
 exports.parseDescriptionList = parseDescriptionList;
 
-},{"../../SyntaxNodes/Description":37,"../../SyntaxNodes/DescriptionListItem":38,"../../SyntaxNodes/DescriptionListNode":39,"../../SyntaxNodes/DescriptionTerm":40,"../Inline/GetInlineNodes":4,"../TextConsumer":32,"./GetOutlineNodes":19,"./GetRemainingLinesOfListItem":20,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],27:[function(require,module,exports){
+},{"../../SyntaxNodes/Description":38,"../../SyntaxNodes/DescriptionListItem":39,"../../SyntaxNodes/DescriptionListNode":40,"../../SyntaxNodes/DescriptionTerm":41,"../Inline/GetInlineNodes":4,"../TextConsumer":33,"./GetOutlineNodes":19,"./GetRemainingLinesOfListItem":20,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],27:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
@@ -1395,7 +1395,7 @@ function getExplicitOrdinal(rawListItem) {
     return (result ? parseInt(result[1]) : null);
 }
 
-},{"../../SyntaxNodes/OrderedListItem":52,"../../SyntaxNodes/OrderedListNode":53,"../TextConsumer":32,"./GetOutlineNodes":19,"./GetRemainingLinesOfListItem":20,"./Patterns":31}],28:[function(require,module,exports){
+},{"../../SyntaxNodes/OrderedListItem":53,"../../SyntaxNodes/OrderedListNode":54,"../TextConsumer":33,"./GetOutlineNodes":19,"./GetRemainingLinesOfListItem":20,"./Patterns":31}],28:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
@@ -1456,7 +1456,7 @@ function isMediaSyntaxNode(node) {
     return node instanceof MediaSyntaxNode_1.MediaSyntaxNode;
 }
 
-},{"../../SyntaxNodes/Line":48,"../../SyntaxNodes/LineBlockNode":49,"../../SyntaxNodes/MediaSyntaxNode":51,"../../SyntaxNodes/ParagraphNode":55,"../../SyntaxNodes/PlainTextNode":56,"../Inline/GetInlineNodes":4,"../TextConsumer":32,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],29:[function(require,module,exports){
+},{"../../SyntaxNodes/Line":49,"../../SyntaxNodes/LineBlockNode":50,"../../SyntaxNodes/MediaSyntaxNode":52,"../../SyntaxNodes/ParagraphNode":56,"../../SyntaxNodes/PlainTextNode":57,"../Inline/GetInlineNodes":4,"../TextConsumer":33,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],29:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -1472,7 +1472,7 @@ function parseSectionSeparatorStreak(args) {
 }
 exports.parseSectionSeparatorStreak = parseSectionSeparatorStreak;
 
-},{"../../SyntaxNodes/SectionSeparatorNode":60,"../TextConsumer":32,"./Patterns":31}],30:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":61,"../TextConsumer":33,"./Patterns":31}],30:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var UnorderedListNode_1 = require('../../SyntaxNodes/UnorderedListNode');
@@ -1526,7 +1526,7 @@ function parseUnorderedList(args) {
 }
 exports.parseUnorderedList = parseUnorderedList;
 
-},{"../../SyntaxNodes/UnorderedListItem":63,"../../SyntaxNodes/UnorderedListNode":64,"../TextConsumer":32,"./GetOutlineNodes":19,"./GetRemainingLinesOfListItem":20,"./Patterns":31}],31:[function(require,module,exports){
+},{"../../SyntaxNodes/UnorderedListItem":64,"../../SyntaxNodes/UnorderedListNode":65,"../TextConsumer":33,"./GetOutlineNodes":19,"./GetRemainingLinesOfListItem":20,"./Patterns":31}],31:[function(require,module,exports){
 "use strict";
 var group = function (pattern) { return ("(?:" + pattern + ")"); };
 var capture = function (pattern) { return ("(" + pattern + ")"); };
@@ -1572,6 +1572,16 @@ var NON_BLANK = NON_WHITESPACE_CHAR;
 exports.NON_BLANK = NON_BLANK;
 
 },{}],32:[function(require,module,exports){
+"use strict";
+var GetOutlineNodes_1 = require('./Outline/GetOutlineNodes');
+var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
+function parseDocument(text) {
+    var outlineNodes = GetOutlineNodes_1.getOutlineNodes(text);
+    return new DocumentNode_1.DocumentNode(outlineNodes);
+}
+exports.parseDocument = parseDocument;
+
+},{"../SyntaxNodes/DocumentNode":42,"./Outline/GetOutlineNodes":19}],33:[function(require,module,exports){
 "use strict";
 var TextConsumer = (function () {
     function TextConsumer(text) {
@@ -1750,14 +1760,14 @@ function appearsToCloseAnyPreceedingBrackets(text, openingBracketChar, closingBr
     return false;
 }
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 function applyBackslashEscaping(text) {
     return text.replace(/\\(.?)/g, '$1');
 }
 exports.applyBackslashEscaping = applyBackslashEscaping;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1775,7 +1785,7 @@ var AudioNode = (function (_super) {
 }(MediaSyntaxNode_1.MediaSyntaxNode));
 exports.AudioNode = AudioNode;
 
-},{"./MediaSyntaxNode":51}],35:[function(require,module,exports){
+},{"./MediaSyntaxNode":52}],36:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1795,7 +1805,7 @@ var BlockquoteNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.BlockquoteNode = BlockquoteNode;
 
-},{"./OutlineSyntaxNode":54}],36:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],37:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1814,7 +1824,7 @@ var CodeBlockNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.CodeBlockNode = CodeBlockNode;
 
-},{"./OutlineSyntaxNode":54}],37:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],38:[function(require,module,exports){
 "use strict";
 var Description = (function () {
     function Description(children) {
@@ -1825,7 +1835,7 @@ var Description = (function () {
 }());
 exports.Description = Description;
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 var DescriptionListItem = (function () {
     function DescriptionListItem(terms, description) {
@@ -1837,7 +1847,7 @@ var DescriptionListItem = (function () {
 }());
 exports.DescriptionListItem = DescriptionListItem;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1856,7 +1866,7 @@ var DescriptionListNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.DescriptionListNode = DescriptionListNode;
 
-},{"./OutlineSyntaxNode":54}],40:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],41:[function(require,module,exports){
 "use strict";
 var DescriptionTerm = (function () {
     function DescriptionTerm(children) {
@@ -1867,7 +1877,7 @@ var DescriptionTerm = (function () {
 }());
 exports.DescriptionTerm = DescriptionTerm;
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 "use strict";
 var DocumentNode = (function () {
     function DocumentNode(children) {
@@ -1879,7 +1889,7 @@ var DocumentNode = (function () {
 }());
 exports.DocumentNode = DocumentNode;
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1897,7 +1907,7 @@ var EmphasisNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.EmphasisNode = EmphasisNode;
 
-},{"./RichInlineSyntaxNode":59}],43:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],44:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1917,7 +1927,7 @@ var HeadingNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.HeadingNode = HeadingNode;
 
-},{"./OutlineSyntaxNode":54}],44:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],45:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1935,7 +1945,7 @@ var ImageNode = (function (_super) {
 }(MediaSyntaxNode_1.MediaSyntaxNode));
 exports.ImageNode = ImageNode;
 
-},{"./MediaSyntaxNode":51}],45:[function(require,module,exports){
+},{"./MediaSyntaxNode":52}],46:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1953,7 +1963,7 @@ var InlineAsideNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.InlineAsideNode = InlineAsideNode;
 
-},{"./RichInlineSyntaxNode":59}],46:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],47:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1972,7 +1982,7 @@ var InlineCodeNode = (function (_super) {
 }(InlineSyntaxNode_1.InlineSyntaxNode));
 exports.InlineCodeNode = InlineCodeNode;
 
-},{"./InlineSyntaxNode":47}],47:[function(require,module,exports){
+},{"./InlineSyntaxNode":48}],48:[function(require,module,exports){
 "use strict";
 var InlineSyntaxNode = (function () {
     function InlineSyntaxNode() {
@@ -1982,7 +1992,7 @@ var InlineSyntaxNode = (function () {
 }());
 exports.InlineSyntaxNode = InlineSyntaxNode;
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 "use strict";
 var Line = (function () {
     function Line(children) {
@@ -1993,7 +2003,7 @@ var Line = (function () {
 }());
 exports.Line = Line;
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2013,7 +2023,7 @@ var LineBlockNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.LineBlockNode = LineBlockNode;
 
-},{"./OutlineSyntaxNode":54}],50:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],51:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2035,7 +2045,7 @@ var LinkNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.LinkNode = LinkNode;
 
-},{"./RichInlineSyntaxNode":59}],51:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],52:[function(require,module,exports){
 "use strict";
 var MediaSyntaxNode = (function () {
     function MediaSyntaxNode(description, url) {
@@ -2049,7 +2059,7 @@ var MediaSyntaxNode = (function () {
 }());
 exports.MediaSyntaxNode = MediaSyntaxNode;
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 var OrderedListItem = (function () {
     function OrderedListItem(children, ordinal) {
@@ -2062,7 +2072,7 @@ var OrderedListItem = (function () {
 }());
 exports.OrderedListItem = OrderedListItem;
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2099,7 +2109,7 @@ var OrderedListNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.OrderedListNode = OrderedListNode;
 
-},{"./OutlineSyntaxNode":54}],54:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],55:[function(require,module,exports){
 "use strict";
 var OutlineSyntaxNode = (function () {
     function OutlineSyntaxNode() {
@@ -2109,7 +2119,7 @@ var OutlineSyntaxNode = (function () {
 }());
 exports.OutlineSyntaxNode = OutlineSyntaxNode;
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2129,7 +2139,7 @@ var ParagraphNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.ParagraphNode = ParagraphNode;
 
-},{"./OutlineSyntaxNode":54}],56:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],57:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2152,7 +2162,7 @@ function isWhitespace(node) {
 }
 exports.isWhitespace = isWhitespace;
 
-},{"./InlineSyntaxNode":47}],57:[function(require,module,exports){
+},{"./InlineSyntaxNode":48}],58:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2170,7 +2180,7 @@ var RevisionDeletionNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.RevisionDeletionNode = RevisionDeletionNode;
 
-},{"./RichInlineSyntaxNode":59}],58:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],59:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2188,7 +2198,7 @@ var RevisionInsertionNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.RevisionInsertionNode = RevisionInsertionNode;
 
-},{"./RichInlineSyntaxNode":59}],59:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],60:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2207,7 +2217,7 @@ var RichInlineSyntaxNode = (function (_super) {
 }(InlineSyntaxNode_1.InlineSyntaxNode));
 exports.RichInlineSyntaxNode = RichInlineSyntaxNode;
 
-},{"../SyntaxNodes/InlineSyntaxNode":47}],60:[function(require,module,exports){
+},{"../SyntaxNodes/InlineSyntaxNode":48}],61:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2225,7 +2235,7 @@ var SectionSeparatorNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.SectionSeparatorNode = SectionSeparatorNode;
 
-},{"./OutlineSyntaxNode":54}],61:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],62:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2243,7 +2253,7 @@ var SpoilerNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.SpoilerNode = SpoilerNode;
 
-},{"./RichInlineSyntaxNode":59}],62:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],63:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2261,7 +2271,7 @@ var StressNode = (function (_super) {
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.StressNode = StressNode;
 
-},{"./RichInlineSyntaxNode":59}],63:[function(require,module,exports){
+},{"./RichInlineSyntaxNode":60}],64:[function(require,module,exports){
 "use strict";
 var UnorderedListItem = (function () {
     function UnorderedListItem(children) {
@@ -2272,7 +2282,7 @@ var UnorderedListItem = (function () {
 }());
 exports.UnorderedListItem = UnorderedListItem;
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2292,7 +2302,7 @@ var UnorderedListNode = (function (_super) {
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.UnorderedListNode = UnorderedListNode;
 
-},{"./OutlineSyntaxNode":54}],65:[function(require,module,exports){
+},{"./OutlineSyntaxNode":55}],66:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2310,7 +2320,7 @@ var VideoNode = (function (_super) {
 }(MediaSyntaxNode_1.MediaSyntaxNode));
 exports.VideoNode = VideoNode;
 
-},{"./MediaSyntaxNode":51}],66:[function(require,module,exports){
+},{"./MediaSyntaxNode":52}],67:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2464,7 +2474,7 @@ function htmlAttrs(attrs) {
     }));
 }
 
-},{"../SyntaxNodes/LinkNode":50,"../SyntaxNodes/OrderedListNode":53,"../SyntaxNodes/PlainTextNode":56,"./Writer":67}],67:[function(require,module,exports){
+},{"../SyntaxNodes/LinkNode":51,"../SyntaxNodes/OrderedListNode":54,"../SyntaxNodes/PlainTextNode":57,"./Writer":68}],68:[function(require,module,exports){
 "use strict";
 var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var ImageNode_1 = require('../SyntaxNodes/ImageNode');
@@ -2564,13 +2574,12 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/AudioNode":34,"../SyntaxNodes/BlockquoteNode":35,"../SyntaxNodes/CodeBlockNode":36,"../SyntaxNodes/DescriptionListNode":39,"../SyntaxNodes/DocumentNode":41,"../SyntaxNodes/EmphasisNode":42,"../SyntaxNodes/HeadingNode":43,"../SyntaxNodes/ImageNode":44,"../SyntaxNodes/InlineAsideNode":45,"../SyntaxNodes/InlineCodeNode":46,"../SyntaxNodes/LineBlockNode":49,"../SyntaxNodes/LinkNode":50,"../SyntaxNodes/OrderedListNode":53,"../SyntaxNodes/ParagraphNode":55,"../SyntaxNodes/PlainTextNode":56,"../SyntaxNodes/RevisionDeletionNode":57,"../SyntaxNodes/RevisionInsertionNode":58,"../SyntaxNodes/SectionSeparatorNode":60,"../SyntaxNodes/SpoilerNode":61,"../SyntaxNodes/StressNode":62,"../SyntaxNodes/UnorderedListNode":64,"../SyntaxNodes/VideoNode":65}],68:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":35,"../SyntaxNodes/BlockquoteNode":36,"../SyntaxNodes/CodeBlockNode":37,"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/EmphasisNode":43,"../SyntaxNodes/HeadingNode":44,"../SyntaxNodes/ImageNode":45,"../SyntaxNodes/InlineAsideNode":46,"../SyntaxNodes/InlineCodeNode":47,"../SyntaxNodes/LineBlockNode":50,"../SyntaxNodes/LinkNode":51,"../SyntaxNodes/OrderedListNode":54,"../SyntaxNodes/ParagraphNode":56,"../SyntaxNodes/PlainTextNode":57,"../SyntaxNodes/RevisionDeletionNode":58,"../SyntaxNodes/RevisionInsertionNode":59,"../SyntaxNodes/SectionSeparatorNode":61,"../SyntaxNodes/SpoilerNode":62,"../SyntaxNodes/StressNode":63,"../SyntaxNodes/UnorderedListNode":65,"../SyntaxNodes/VideoNode":66}],69:[function(require,module,exports){
 "use strict";
-var DocumentNode_1 = require('./SyntaxNodes/DocumentNode');
-var GetOutlineNodes_1 = require('./Parsing/Outline/GetOutlineNodes');
+var ParseDocument_1 = require('./Parsing/ParseDocument');
 var HtmlWriter_1 = require('./Writer/HtmlWriter');
 function toAst(text) {
-    return new DocumentNode_1.DocumentNode(GetOutlineNodes_1.getOutlineNodes(text));
+    return ParseDocument_1.parseDocument(text);
 }
 exports.toAst = toAst;
 var htmlWriter = new HtmlWriter_1.HtmlWriter();
@@ -2582,5 +2591,5 @@ function toHtml(textOrNode) {
 }
 exports.toHtml = toHtml;
 
-},{"./Parsing/Outline/GetOutlineNodes":19,"./SyntaxNodes/DocumentNode":41,"./Writer/HtmlWriter":66}]},{},[68])(68)
+},{"./Parsing/ParseDocument":32,"./Writer/HtmlWriter":67}]},{},[69])(69)
 });

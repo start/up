@@ -1,10 +1,11 @@
+import { parseDocument } from './Parsing/ParseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 import { getOutlineNodes } from './Parsing/Outline/GetOutlineNodes'
 import { HtmlWriter } from './Writer/HtmlWriter'
 
 export function toAst(text: string): DocumentNode {
-  return new DocumentNode(getOutlineNodes(text))
+  return parseDocument(text)
 }
 
 const htmlWriter = new HtmlWriter()
