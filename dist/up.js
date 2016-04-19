@@ -564,7 +564,7 @@ var REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode_1.RevisionIn
 exports.REVISION_INSERTION = REVISION_INSERTION;
 var SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode_1.SpoilerNode, Token_1.TokenMeaning.SpoilerStart, Token_1.TokenMeaning.SpoilerEnd);
 exports.SPOILER = SPOILER;
-var INLINE_ASIDE = sandwich('((', '))', InlineAsideNode_1.InlineAsideNode, Token_1.TokenMeaning.InlineAsideStart, Token_1.TokenMeaning.InlineAsideEnd);
+var INLINE_ASIDE = sandwich(' ((', '))', InlineAsideNode_1.InlineAsideNode, Token_1.TokenMeaning.InlineAsideStart, Token_1.TokenMeaning.InlineAsideEnd);
 exports.INLINE_ASIDE = INLINE_ASIDE;
 
 },{"../../SyntaxNodes/EmphasisNode":42,"../../SyntaxNodes/InlineAsideNode":45,"../../SyntaxNodes/RevisionDeletionNode":57,"../../SyntaxNodes/RevisionInsertionNode":58,"../../SyntaxNodes/SpoilerNode":61,"../../SyntaxNodes/StressNode":62,"./Convention":2,"./SandwichConvention":14,"./Token":16}],16:[function(require,module,exports){

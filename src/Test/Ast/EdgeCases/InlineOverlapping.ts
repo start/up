@@ -126,25 +126,25 @@ describe('A paragraph with 2 instances of overlapped conventions', () => {
 })
 
 
-describe('Overlapped stressed, deleted, and "asided" text', () => {
+describe('Overlapped stressed, deleted, and inserted text', () => {
   it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
-    expect(Up.toAst('I **love ~~((drinking** whole~~ milk)) all the time.')).to.be.eql(
+    expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
-            new InlineAsideNode([
+            new RevisionInsertionNode([
               new PlainTextNode('drinking')
             ])
           ])
         ]),
         new RevisionDeletionNode([
-          new InlineAsideNode([
+          new RevisionInsertionNode([
             new PlainTextNode(' whole')
           ])
         ]),
-        new InlineAsideNode([
+        new RevisionInsertionNode([
           new PlainTextNode(' milk')
         ]),
         new PlainTextNode(' all the time.')

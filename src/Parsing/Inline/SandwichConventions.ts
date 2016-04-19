@@ -24,7 +24,11 @@ const EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, To
 const REVISION_DELETION = sandwich('~~', '~~', RevisionDeletionNode, TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd)
 const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd)
 const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
-const INLINE_ASIDE = sandwich('((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
+
+// These are converted to footnote references later.
+//
+// TODO: Better handle leading space hack
+const INLINE_ASIDE = sandwich(' ((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
 
 export {
   EMPHASIS,
