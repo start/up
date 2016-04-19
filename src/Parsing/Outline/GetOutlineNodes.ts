@@ -70,56 +70,22 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
     }
   }
 
-  return cleanUpAst(nodes)
+  return condenseConsecutiveSectionSeparatorNodes(nodes)
 }
 
-function cleanUpAst(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+// To produce a cleaner AST, we condense multiple consecutive section separator nodes into one.
+function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
-    // To produce a cleaner AST, we condense multiple consecutive section separator nodes into one.
     const isConsecutiveSectionSeparatorNode = (
       node instanceof SectionSeparatorNode
       && last(resultNodes) instanceof SectionSeparatorNode
     )
 
-    if (isConsecutiveSectionSeparatorNode) {
-      continue
+    if (!isConsecutiveSectionSeparatorNode) {
+      resultNodes.push(node)
     }
-
-    if (node instanceof ParagraphNode) {
-      switch (node.children.length) {
-
-        case 0:
-          // Media conventions do not produce any syntax nodes if they're missing their URL.
-          //
-          // Links do not produce any syntax nodes if they're missing both their content and their URL.
-          //
-          // Inline code doesn't produce a syntax node if it's totally empty.
-          //
-          // Consequently, If a paragraph contains only those "dud" conventions, the paragraph itself
-          // will be empty. We discard those empty paragraphs.
-          continue
-
-        case 1: {
-          // Media nodes are unique in that they can serve as both inline and outline nodes.
-          //
-          // Whenever a media node (e.g. image, audio, or video) is a paragraph's only child, we replace
-          // the paragraph node with the media node.
-          //
-          // TODO: Do the same thing if a paragraph contains multiple media conventions?
-          const onlyChild = node.children[0]
-          if (onlyChild instanceof MediaSyntaxNode) {
-            resultNodes.push(onlyChild)
-            continue
-          }
-
-          break
-        }
-      }
-    }
-
-    resultNodes.push(node)
   }
 
   return resultNodes

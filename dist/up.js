@@ -1001,8 +1001,6 @@ exports.getHeadingParser = getHeadingParser;
 },{"../../SyntaxNodes/HeadingNode":43,"../Inline/GetInlineNodes":4,"../TextConsumer":32,"./HeadingLeveler":21,"./IsLineFancyOutlineConvention":22,"./Patterns":31}],19:[function(require,module,exports){
 "use strict";
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
-var ParagraphNode_1 = require('../../SyntaxNodes/ParagraphNode');
-var MediaSyntaxNode_1 = require('../../SyntaxNodes/MediaSyntaxNode');
 var TextConsumer_1 = require('../TextConsumer');
 var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
 var GetHeadingParser_1 = require('./GetHeadingParser');
@@ -1051,38 +1049,23 @@ function getOutlineNodes(text) {
             }
         }
     }
-    return cleanUpAst(nodes);
+    return condenseConsecutiveSectionSeparatorNodes(nodes);
 }
 exports.getOutlineNodes = getOutlineNodes;
-function cleanUpAst(nodes) {
+function condenseConsecutiveSectionSeparatorNodes(nodes) {
     var resultNodes = [];
     for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
         var node = nodes_1[_i];
         var isConsecutiveSectionSeparatorNode = (node instanceof SectionSeparatorNode_1.SectionSeparatorNode
             && CollectionHelpers_1.last(resultNodes) instanceof SectionSeparatorNode_1.SectionSeparatorNode);
-        if (isConsecutiveSectionSeparatorNode) {
-            continue;
+        if (!isConsecutiveSectionSeparatorNode) {
+            resultNodes.push(node);
         }
-        if (node instanceof ParagraphNode_1.ParagraphNode) {
-            switch (node.children.length) {
-                case 0:
-                    continue;
-                case 1: {
-                    var onlyChild = node.children[0];
-                    if (onlyChild instanceof MediaSyntaxNode_1.MediaSyntaxNode) {
-                        resultNodes.push(onlyChild);
-                        continue;
-                    }
-                    break;
-                }
-            }
-        }
-        resultNodes.push(node);
     }
     return resultNodes;
 }
 
-},{"../../SyntaxNodes/MediaSyntaxNode":51,"../../SyntaxNodes/ParagraphNode":55,"../../SyntaxNodes/SectionSeparatorNode":60,"../CollectionHelpers":1,"../TextConsumer":32,"./GetHeadingParser":18,"./HeadingLeveler":21,"./ParseBlankLineSeparation":23,"./ParseBlockquote":24,"./ParseCodeBlock":25,"./ParseDescriptionList":26,"./ParseOrderedList":27,"./ParseRegularLines":28,"./ParseSectionSeparatorStreak":29,"./ParseUnorderedList":30,"./Patterns":31}],20:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":60,"../CollectionHelpers":1,"../TextConsumer":32,"./GetHeadingParser":18,"./HeadingLeveler":21,"./ParseBlankLineSeparation":23,"./ParseBlockquote":24,"./ParseCodeBlock":25,"./ParseDescriptionList":26,"./ParseOrderedList":27,"./ParseRegularLines":28,"./ParseSectionSeparatorStreak":29,"./ParseUnorderedList":30,"./Patterns":31}],20:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('../TextConsumer');
 var Patterns_1 = require('./Patterns');
@@ -1437,7 +1420,7 @@ function parseRegularLines(args) {
             if: function (line) { return !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line); },
             then: function (line) { return inlineNodes = GetInlineNodes_1.getInlineNodes(line); }
         });
-        if (!wasLineConsumed) {
+        if (!wasLineConsumed || !inlineNodes.length) {
             return "break";
         }
         var doesLineConsistSolelyOfMediaConventions = (inlineNodes.every(function (node) { return PlainTextNode_1.isWhitespace(node) || isMediaSyntaxNode(node); })

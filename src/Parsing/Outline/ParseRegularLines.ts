@@ -63,8 +63,24 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
       if: (line) => !isLineFancyOutlineConvention(line),
       then: (line) => inlineNodes = getInlineNodes(line)
     })
+    
+    // Sometimes, a non-blank line can produce no syntax nodes. The following non-blank conventions
+    // produce no syntax nodes:
+    //
+    // 1. Empty sandwich conventions
+    // 2. Empty inline code
+    // 3. Media conventions missing their URL
+    // 4. Links missing their content and their URL
+    //
+    // If we're bizarrely dealing with a line consisting solely of those "dud" conventions, then
+    // `inlineNodes` will be empty. We don't want to produce empty paragraphs for these lines, and
+    // we're happy to have these lines terminate a preceeding line block.
+    //
+    // In the future, we might change this behavior. A line producing no syntax nodes might simply
+    // be ignored, which means it would not terminate a line block if the block continues immediately
+    // afterward.
 
-    if (!wasLineConsumed) {
+    if (!wasLineConsumed || !inlineNodes.length) {
       break
     }
     
@@ -81,23 +97,6 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
       inlineNodes.every(node => isWhitespace(node) || isMediaSyntaxNode(node))
       && inlineNodes.some(isMediaSyntaxNode)
     )
-    
-    // Oh, one more thing! Sometimes, a non-blank line can produce no syntax nodes. The following
-    // non-blank conventions produce no syntax nodes:
-    //
-    // 1. Empty sandwich conventions
-    // 2. Empty inline code
-    // 3. Media conventions missing their URL
-    // 4. Links missing their content and their URL
-    //
-    // If we're bizarrely dealing with a line consisting solely of those "dud" conventions, then
-    // `inlineNodes` will be empty. Consequently, `doesLineConsistSolelyOfMediaConventions` will be
-    // true. And that's okay! We don't want to produce empty paragraphs for these lines, and we're
-    // happy to have these lines terminate a preceeding line block.
-    //
-    // In the future, we might change this behavior. A line producing no syntax nodes might simply
-    // be ignored, which means it would not terminate a line block if the block continues immediately
-    // afterward.
     
     if (doesLineConsistSolelyOfMediaConventions) {
       terminatingNodes = <MediaSyntaxNode[]>inlineNodes.filter(isMediaSyntaxNode)
