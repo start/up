@@ -12,6 +12,8 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
@@ -32,6 +34,50 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
           new Footnote([
             new PlainTextNode('Well, I do, but I pretend not to.')
           ], 1)
+        ])
+      ]))
+  })
+})
+
+
+
+describe('Footnote references in unordered list items', () => {
+  it('produce a footnote block node that appears after the entire list, not after the paragraph containing the reference', () => {
+    const text = `
+* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+
+  It's too expensive.
+
+* I don't eat ((Or touch.)) pumpkins.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat cereal."),
+              new FootnoteReferenceNode(1),
+              new PlainTextNode(" Never have."),
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expnsive.")
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat"),
+              new FootnoteReferenceNode(2),
+              new PlainTextNode(" pumpkins."),
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("Well, I do, but I pretend not to."),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("Or touch."),
+          ], 2)
         ])
       ]))
   })
@@ -118,7 +164,10 @@ describe('Nested footnote references', () => {
 
 
   it('produce footnotes that appear after any footnotes produced by less nested references', () => {
-    expect(Up.toAst("Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do* ((Only on Mondays...)) but I pretend not to.)) Never have. ((At least you've never seen me.)))) Really. ((Probably.))")).to.be.eql(
+    const text =
+      "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do* ((Only on Mondays...)) but I pretend not to.)) Never have. ((At least you've never seen me.)))) Really. ((Probably.))"
+
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
