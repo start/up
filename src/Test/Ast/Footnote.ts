@@ -42,7 +42,7 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 
 
 describe('Footnote references in unordered list items', () => {
-  it('produce a footnote block node that appears after the entire list, not after the paragraph containing the reference', () => {
+  it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
@@ -60,7 +60,7 @@ describe('Footnote references in unordered list items', () => {
               new PlainTextNode(" Never have."),
             ]),
             new ParagraphNode([
-              new PlainTextNode("It's too expnsive.")
+              new PlainTextNode("It's too expensive.")
             ])
           ]),
           new UnorderedListItem([
