@@ -26,7 +26,7 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           new FootnoteReferenceNode(1),
-          new PlainTextNode("I haven't for years"),
+          new PlainTextNode(" I haven't for years."),
         ]),
         new FootnoteBlockNode([
           new Footnote([
@@ -45,7 +45,7 @@ describe('A footnote reference', () => {
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           new FootnoteReferenceNode(1),
-          new PlainTextNode("I haven't for years"),
+          new PlainTextNode(" I haven't for years."),
         ]),
         new FootnoteBlockNode([
           new Footnote([
@@ -71,7 +71,7 @@ describe('A footnote reference', () => {
           new Footnote([
             new PlainTextNode("I don't eat cereal."),
             new FootnoteReferenceNode(2),
-            new PlainTextNode("I haven't for years"),
+            new PlainTextNode(" I haven't for years."),
           ], 1),
           new Footnote([
             new PlainTextNode('Well, I '),

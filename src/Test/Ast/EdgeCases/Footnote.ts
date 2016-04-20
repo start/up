@@ -24,7 +24,7 @@ describe('A footnote reference at the end of a paragraph', () => {
     expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode("I don't eat cereal. "),
+          new PlainTextNode("I don't eat cereal."),
           new FootnoteReferenceNode(1)
         ]),
         new FootnoteBlockNode([
