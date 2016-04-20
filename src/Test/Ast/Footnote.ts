@@ -40,50 +40,6 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 })
 
 
-
-describe('Footnote references in unordered list items', () => {
-  it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
-    const text = `
-* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
-
-  It's too expensive.
-
-* I don't eat ((Or touch.)) pumpkins.`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new UnorderedListNode([
-          new UnorderedListItem([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat cereal."),
-              new FootnoteReferenceNode(1),
-              new PlainTextNode(" Never have."),
-            ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
-            ])
-          ]),
-          new UnorderedListItem([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat"),
-              new FootnoteReferenceNode(2),
-              new PlainTextNode(" pumpkins."),
-            ])
-          ])
-        ]),
-        new FootnoteBlockNode([
-          new Footnote([
-            new PlainTextNode("Well, I do, but I pretend not to."),
-          ], 1),
-          new Footnote([
-            new PlainTextNode("Or touch."),
-          ], 2)
-        ])
-      ]))
-  })
-})
-
-
 describe('A footnote reference', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toAst("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.")).to.be.eql(
@@ -130,6 +86,111 @@ describe('A footnote reference', () => {
       ]))
   })
 })
+
+
+
+describe('Footnote references in unordered list items', () => {
+  it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
+    const text = `
+* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+
+  It's too expensive.
+
+* I don't eat ((Or touch.)) pumpkins.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat cereal."),
+              new FootnoteReferenceNode(1),
+              new PlainTextNode(" Never have."),
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expensive.")
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat"),
+              new FootnoteReferenceNode(2),
+              new PlainTextNode(" pumpkins."),
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("Well, I do, but I pretend not to."),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("Or touch."),
+          ], 2)
+        ])
+      ]))
+  })
+})
+
+
+describe('The reference numbers in a document', () => {
+  it('are always sequential, even across multiple outline conventions.', () => {
+    const text = `
+* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+
+  It's too expensive.
+
+* I don't eat ((Or touch.)) pumpkins.
+
+------------------------
+
+I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.
+`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat cereal."),
+              new FootnoteReferenceNode(1),
+              new PlainTextNode(" Never have."),
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expensive.")
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat"),
+              new FootnoteReferenceNode(2),
+              new PlainTextNode(" pumpkins."),
+            ])
+          ])
+        ]),
+        
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("Well, I do, but I pretend not to."),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("Or touch."),
+          ], 2)
+        ]),
+        new SectionSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode("I wear glasses"),
+          new FootnoteReferenceNode(3),
+          new PlainTextNode(" even while working out."),
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+          ], 3)
+        ])
+      ]))
+  })
+})
+
 
 
 describe('Nested footnote references', () => {
