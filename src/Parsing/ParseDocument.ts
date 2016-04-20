@@ -3,7 +3,7 @@ import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
-import { PlaceholderFootnoteReferenceNode } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { PlaceholderFootnoteReferenceNode, addReferencesAndGetFootnotes } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -39,24 +39,4 @@ function addReferencesToOutlineNodeAndGetFootnotes(outlineNode: OutlineSyntaxNod
   }
   
   return []
-}
-
-// This function mutates the `nodes` array, replacing any `PlaceholderFootnoteReferenceNodes`
-// with `FootnoteReferenceNodes`.
-//
-// The contents of all the (replaced) `PlaceholderFootnoteReferenceNode` are then returned.
-function addReferencesAndGetFootnotes(nodes: InlineSyntaxNode[], nextFootnoteOrdinal: number): Footnote[] {
-  const footnotes: Footnote[] = []
-  
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i]
-    
-    if (node instanceof PlaceholderFootnoteReferenceNode) {
-      footnotes.push(new Footnote(node.children, nextFootnoteOrdinal))
-      nodes[i] = new FootnoteReferenceNode(nextFootnoteOrdinal)
-      nextFootnoteOrdinal += 1
-    }
-  }
-  
-  return footnotes
 }
