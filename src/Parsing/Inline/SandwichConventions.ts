@@ -5,7 +5,7 @@ import { Convention } from './Convention'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
+import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/InlineAsideNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 
@@ -28,7 +28,7 @@ const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStar
 // These are converted to footnote references later.
 //
 // TODO: Better handle leading space hack
-const INLINE_ASIDE = sandwich(' ((', '))', InlineAsideNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
+const INLINE_ASIDE = sandwich(' ((', '))', PlaceholderFootnoteReferenceNode, TokenMeaning.InlineAsideStart, TokenMeaning.InlineAsideEnd)
 
 export {
   EMPHASIS,

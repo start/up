@@ -12,7 +12,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
+import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 

@@ -13,7 +13,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { InlineAsideNode } from '../../SyntaxNodes/InlineAsideNode'
+import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/InlineAsideNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
@@ -319,7 +319,7 @@ describe('A revision deletion node', () => {
 
 describe('An inline aside node', () => {
   it('produces a small element', () => {
-    const node = new InlineAsideNode([new PlainTextNode('Probably')])
+    const node = new PlaceholderFootnoteReferenceNode([new PlainTextNode('Probably')])
     expect(Up.toHtml(node)).to.be.eql('<small>Probably</small>')
   })
 })

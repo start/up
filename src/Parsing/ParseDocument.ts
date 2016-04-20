@@ -3,7 +3,7 @@ import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
-import { InlineAsideNode } from '../SyntaxNodes/InlineAsideNode'
+import { PlaceholderFootnoteReferenceNode } from '../SyntaxNodes/InlineAsideNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -50,7 +50,7 @@ function addReferencesAndGetFootnotes(nodes: InlineSyntaxNode[], nextFootnoteOrd
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i]
     
-    if (node instanceof InlineAsideNode) {
+    if (node instanceof PlaceholderFootnoteReferenceNode) {
       footnotes.push(new Footnote(node.children, nextFootnoteOrdinal))
       nodes[i] = new FootnoteReferenceNode(nextFootnoteOrdinal)
       nextFootnoteOrdinal += 1

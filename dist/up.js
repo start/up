@@ -564,7 +564,7 @@ var REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode_1.RevisionIn
 exports.REVISION_INSERTION = REVISION_INSERTION;
 var SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode_1.SpoilerNode, Token_1.TokenMeaning.SpoilerStart, Token_1.TokenMeaning.SpoilerEnd);
 exports.SPOILER = SPOILER;
-var INLINE_ASIDE = sandwich(' ((', '))', InlineAsideNode_1.InlineAsideNode, Token_1.TokenMeaning.InlineAsideStart, Token_1.TokenMeaning.InlineAsideEnd);
+var INLINE_ASIDE = sandwich(' ((', '))', InlineAsideNode_1.FutureFootnoteReference, Token_1.TokenMeaning.InlineAsideStart, Token_1.TokenMeaning.InlineAsideEnd);
 exports.INLINE_ASIDE = INLINE_ASIDE;
 
 },{"../../SyntaxNodes/EmphasisNode":43,"../../SyntaxNodes/InlineAsideNode":49,"../../SyntaxNodes/RevisionDeletionNode":61,"../../SyntaxNodes/RevisionInsertionNode":62,"../../SyntaxNodes/SpoilerNode":65,"../../SyntaxNodes/StressNode":66,"./Convention":2,"./SandwichConvention":14,"./Token":16}],16:[function(require,module,exports){
@@ -1605,7 +1605,7 @@ function addReferencesAndGetFootnotes(nodes, nextFootnoteOrdinal) {
     var footnotes = [];
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
-        if (node instanceof InlineAsideNode_1.InlineAsideNode) {
+        if (node instanceof InlineAsideNode_1.FutureFootnoteReference) {
             footnotes.push(new Footnote_1.Footnote(node.children, nextFootnoteOrdinal));
             nodes[i] = new FootnoteReferenceNode_1.FootnoteReferenceNode(nextFootnoteOrdinal);
             nextFootnoteOrdinal += 1;
@@ -2037,15 +2037,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var RichInlineSyntaxNode_1 = require('./RichInlineSyntaxNode');
-var InlineAsideNode = (function (_super) {
-    __extends(InlineAsideNode, _super);
-    function InlineAsideNode() {
+var FutureFootnoteReference = (function (_super) {
+    __extends(FutureFootnoteReference, _super);
+    function FutureFootnoteReference() {
         _super.apply(this, arguments);
         this.INLINE_ASIDE = null;
     }
-    return InlineAsideNode;
+    return FutureFootnoteReference;
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
-exports.InlineAsideNode = InlineAsideNode;
+exports.FutureFootnoteReference = FutureFootnoteReference;
 
 },{"./RichInlineSyntaxNode":63}],50:[function(require,module,exports){
 "use strict";
@@ -2625,7 +2625,7 @@ var Writer = (function () {
         if (node instanceof InlineCodeNode_1.InlineCodeNode) {
             return this.inlineCode(node);
         }
-        if (node instanceof InlineAsideNode_1.InlineAsideNode) {
+        if (node instanceof InlineAsideNode_1.FutureFootnoteReference) {
             return this.inlineAside(node);
         }
         if (node instanceof LinkNode_1.LinkNode) {
