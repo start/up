@@ -84,3 +84,34 @@ describe('A footnote reference', () => {
       ]))
   })
 })
+
+describe('Nested footnote references', () => {
+  it('produce footnotes that appear after any footnotes produced by non-nested references', () => {
+    expect(Up.toAst("Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("Me? I'm totally normal."),
+          new FootnoteReferenceNode(1),
+          new PlainTextNode(" Really."),
+          new FootnoteReferenceNode(2),
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("That said, I don't eat cereal."),
+            new FootnoteReferenceNode(3),
+            new PlainTextNode(" Never have."),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("Probably."),
+          ], 2),
+          new Footnote([
+            new PlainTextNode('Well, I '),
+            new EmphasisNode([
+              new PlainTextNode('do')
+            ]),
+            new PlainTextNode(', but I pretend not to.'),
+          ], 3),
+        ])
+      ]))
+  })
+})
