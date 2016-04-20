@@ -21,12 +21,12 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 
 describe('In a paragraph, text surrounded by 2 parentheses', () => {
   it('produces a footnote reference node. This node references a footnote within a footnote block node after the paragraph', () => {
-    expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.)) I haven't for years.")).to.be.eql(
+    expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           new FootnoteReferenceNode(1),
-          new PlainTextNode(" I haven't for years."),
+          new PlainTextNode(" Never have."),
         ]),
         new FootnoteBlockNode([
           new Footnote([
@@ -40,12 +40,12 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 
 describe('A footnote reference', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.")).to.be.eql(
+    expect(Up.toAst("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           new FootnoteReferenceNode(1),
-          new PlainTextNode(" I haven't for years."),
+          new PlainTextNode(" Never have."),
         ]),
         new FootnoteBlockNode([
           new Footnote([
@@ -60,18 +60,18 @@ describe('A footnote reference', () => {
   })
 
   it('can contain other footnote references, which produce additional footnotes in the same footnote block', () => {
-    expect(Up.toAst("Me? I'm not crazy. ((I don't eat cereal. ((Well, I *do*, but I pretend not to.)) I haven't for years.)) Really.")).to.be.eql(
+    expect(Up.toAst("Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode("Me? I'm not crazy."),
+          new PlainTextNode("Me? I'm totally normal."),
           new FootnoteReferenceNode(1),
           new PlainTextNode(" Really."),
         ]),
         new FootnoteBlockNode([
           new Footnote([
-            new PlainTextNode("I don't eat cereal."),
+            new PlainTextNode("That said, I don't eat cereal."),
             new FootnoteReferenceNode(2),
-            new PlainTextNode(" I haven't for years."),
+            new PlainTextNode(" Never have."),
           ], 1),
           new Footnote([
             new PlainTextNode('Well, I '),
