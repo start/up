@@ -1592,10 +1592,10 @@ function parseDocument(text) {
     return new DocumentNode_1.DocumentNode(outlineNodesWithFootnotes);
 }
 exports.parseDocument = parseDocument;
-function addReferencesToOutlineNodeAndGetFootnotes(outlineNode, nextFootnoteOrdinal) {
-    if (nextFootnoteOrdinal === void 0) { nextFootnoteOrdinal = 1; }
+function addReferencesToOutlineNodeAndGetFootnotes(outlineNode, nextFootnoteReferenceOrdinal) {
+    if (nextFootnoteReferenceOrdinal === void 0) { nextFootnoteReferenceOrdinal = 1; }
     if (outlineNode instanceof ParagraphNode_1.ParagraphNode) {
-        return PlaceholderFootnoteReferenceNode_1.addReferencesAndGetFootnotes(outlineNode.children, nextFootnoteOrdinal);
+        return PlaceholderFootnoteReferenceNode_1.getFootnotesAndMutateToAddReferences(outlineNode.children, nextFootnoteReferenceOrdinal);
     }
     return [];
 }
@@ -1932,6 +1932,7 @@ var Footnote = (function () {
     function Footnote(children, referenceNumber) {
         if (children === void 0) { children = []; }
         this.children = children;
+        this.referenceNumber = referenceNumber;
         this.FOOTNOTE = null;
     }
     return Footnote;
@@ -1946,6 +1947,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var OutlineSyntaxNode_1 = require('./OutlineSyntaxNode');
+var PlaceholderFootnoteReferenceNode_1 = require('./PlaceholderFootnoteReferenceNode');
+var CollectionHelpers_1 = require('../Parsing/CollectionHelpers');
 var FootnoteBlockNode = (function (_super) {
     __extends(FootnoteBlockNode, _super);
     function FootnoteBlockNode(children) {
@@ -1953,12 +1956,20 @@ var FootnoteBlockNode = (function (_super) {
         _super.call(this);
         this.children = children;
         this.FOOTNOTE_BLOCK = null;
+        var nextFootnoteReferenceOrdinal = CollectionHelpers_1.last(this.children).referenceNumber + 1;
+        for (var footnoteIndex = 0; footnoteIndex < this.children.length; footnoteIndex++) {
+            var footnote = this.children[footnoteIndex];
+            var nestedFootnotes = PlaceholderFootnoteReferenceNode_1.getFootnotesAndMutateToAddReferences(footnote.children, nextFootnoteReferenceOrdinal);
+            (_a = this.children).push.apply(_a, nestedFootnotes);
+            nextFootnoteReferenceOrdinal += nestedFootnotes.length;
+        }
+        var _a;
     }
     return FootnoteBlockNode;
 }(OutlineSyntaxNode_1.OutlineSyntaxNode));
 exports.FootnoteBlockNode = FootnoteBlockNode;
 
-},{"./OutlineSyntaxNode":57}],46:[function(require,module,exports){
+},{"../Parsing/CollectionHelpers":1,"./OutlineSyntaxNode":57,"./PlaceholderFootnoteReferenceNode":59}],46:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2210,19 +2221,19 @@ var PlaceholderFootnoteReferenceNode = (function (_super) {
     return PlaceholderFootnoteReferenceNode;
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
 exports.PlaceholderFootnoteReferenceNode = PlaceholderFootnoteReferenceNode;
-function addReferencesAndGetFootnotes(inlineNodes, nextFootnoteOrdinal) {
+function getFootnotesAndMutateToAddReferences(inlineNodes, nextFootnoteReferenceOrdinal) {
     var footnotes = [];
     for (var i = 0; i < inlineNodes.length; i++) {
         var node = inlineNodes[i];
         if (node instanceof PlaceholderFootnoteReferenceNode) {
-            footnotes.push(new Footnote_1.Footnote(node.children, nextFootnoteOrdinal));
-            inlineNodes[i] = new FootnoteReferenceNode_1.FootnoteReferenceNode(nextFootnoteOrdinal);
-            nextFootnoteOrdinal += 1;
+            footnotes.push(new Footnote_1.Footnote(node.children, nextFootnoteReferenceOrdinal));
+            inlineNodes[i] = new FootnoteReferenceNode_1.FootnoteReferenceNode(nextFootnoteReferenceOrdinal);
+            nextFootnoteReferenceOrdinal += 1;
         }
     }
     return footnotes;
 }
-exports.addReferencesAndGetFootnotes = addReferencesAndGetFootnotes;
+exports.getFootnotesAndMutateToAddReferences = getFootnotesAndMutateToAddReferences;
 
 },{"./Footnote":44,"./FootnoteReferenceNode":46,"./RichInlineSyntaxNode":63}],60:[function(require,module,exports){
 "use strict";

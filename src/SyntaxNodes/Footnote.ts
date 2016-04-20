@@ -1,8 +1,7 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 export class Footnote {
-  constructor(public children: InlineSyntaxNode[] = [], referenceNumber: number) { }
+  constructor(public children: InlineSyntaxNode[] = [], public referenceNumber: number) { }
   
   private FOOTNOTE: any = null
 }

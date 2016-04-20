@@ -3,7 +3,7 @@ import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
-import { PlaceholderFootnoteReferenceNode, addReferencesAndGetFootnotes } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { PlaceholderFootnoteReferenceNode, getFootnotesAndMutateToAddReferences } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -33,9 +33,9 @@ export function parseDocument(text: string): DocumentNode {
   return new DocumentNode(outlineNodesWithFootnotes)
 }
 
-function addReferencesToOutlineNodeAndGetFootnotes(outlineNode: OutlineSyntaxNode, nextFootnoteOrdinal = 1): Footnote[] {
+function addReferencesToOutlineNodeAndGetFootnotes(outlineNode: OutlineSyntaxNode, nextFootnoteReferenceOrdinal = 1): Footnote[] {
   if (outlineNode instanceof ParagraphNode) {
-   return addReferencesAndGetFootnotes(outlineNode.children, nextFootnoteOrdinal)
+   return getFootnotesAndMutateToAddReferences(outlineNode.children, nextFootnoteReferenceOrdinal)
   }
   
   return []
