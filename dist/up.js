@@ -1599,7 +1599,9 @@ function getFootnotesAndAddReferencesToNodes(outlineNodes, nextFootnoteReference
     var footnotes = [];
     for (var _i = 0, outlineNodes_2 = outlineNodes; _i < outlineNodes_2.length; _i++) {
         var node = outlineNodes_2[_i];
-        footnotes.push.apply(footnotes, getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal));
+        var footnotesForThisNode = getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal);
+        footnotes.push.apply(footnotes, footnotesForThisNode);
+        nextFootnoteReferenceOrdinal += footnotesForThisNode.length;
     }
     return footnotes;
 }
@@ -1611,7 +1613,9 @@ function getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal) 
         var footnotes = [];
         for (var _i = 0, _a = node.listItems; _i < _a.length; _i++) {
             var listItem = _a[_i];
-            footnotes.push.apply(footnotes, getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal));
+            var footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal);
+            footnotes.push.apply(footnotes, footnotesForThisNode);
+            nextFootnoteReferenceOrdinal += footnotesForThisNode.length;
         }
         return footnotes;
     }

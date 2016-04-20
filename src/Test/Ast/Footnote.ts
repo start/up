@@ -143,8 +143,7 @@ describe('The reference numbers in a document', () => {
 
 ------------------------
 
-I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.
-`
+I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -166,8 +165,7 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
               new PlainTextNode(" pumpkins."),
             ])
           ])
-        ]),
-        
+        ]),        
         new FootnoteBlockNode([
           new Footnote([
             new PlainTextNode("Well, I do, but I pretend not to."),

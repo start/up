@@ -41,7 +41,10 @@ function getFootnotesAndAddReferencesToNodes(outlineNodes: OutlineSyntaxNode[], 
   const footnotes: Footnote[] = []
 
   for (const node of outlineNodes) {
-    footnotes.push(...getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal))
+    const footnotesForThisNode = getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal)
+    
+    footnotes.push(...footnotesForThisNode)
+    nextFootnoteReferenceOrdinal += footnotesForThisNode.length
   }
 
   return footnotes
@@ -56,7 +59,10 @@ function getFootnotesAndAddReferencesToNode(node: OutlineSyntaxNode, nextFootnot
     const footnotes: Footnote[] = []
 
     for (const listItem of node.listItems) {
-      footnotes.push(...getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal))
+      const footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal)
+      
+      footnotes.push(...footnotesForThisNode)
+      nextFootnoteReferenceOrdinal += footnotesForThisNode.length
     }
 
     return footnotes
