@@ -12,6 +12,7 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
@@ -193,6 +194,67 @@ describe('Footnote references in unordered list items', () => {
 })
 
 
+describe('Footnote references in a blockquote', () => {
+  it('produce footnote blocks within the blockquote after each appropriate convention.', () => {
+    const text = `
+> * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+>
+> It's too expensive.
+>
+> * I don't eat ((Or touch.)) pumpkins.
+>
+> ------------------------
+> 
+> I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new UnorderedListNode([
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat cereal."),
+                new FootnoteReferenceNode(1),
+                new PlainTextNode(" Never have."),
+              ]),
+              new ParagraphNode([
+                new PlainTextNode("It's too expensive.")
+              ])
+            ]),
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat"),
+                new FootnoteReferenceNode(2),
+                new PlainTextNode(" pumpkins."),
+              ])
+            ])
+          ]),
+          new FootnoteBlockNode([
+            new Footnote([
+              new PlainTextNode("Well, I do, but I pretend not to."),
+            ], 1),
+            new Footnote([
+              new PlainTextNode("Or touch."),
+            ], 2)
+          ]),
+          new SectionSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode("I wear glasses"),
+            new FootnoteReferenceNode(3),
+            new PlainTextNode(" even while working out."),
+          ]),
+          new FootnoteBlockNode([
+            new Footnote([
+              new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+            ], 3)
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+
 describe('Footnote references in ordered list items', () => {
   it('produce a footnote block node that appears after the entire list', () => {
     const text = `
@@ -285,7 +347,7 @@ Gary
             ])
           ]))
         ]),
-        
+
         new FootnoteBlockNode([
           new Footnote([
             new PlainTextNode("What happens to the creature if the seed is never planted?"),
@@ -359,7 +421,6 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
       ]))
   })
 })
-
 
 
 describe('Nested footnote references', () => {
