@@ -2,6 +2,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
+import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
@@ -14,7 +15,8 @@ import { TextConsumer } from './TextConsumer'
 import { getOutlineNodes } from './Outline/GetOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 
-// TODO: Fix names
+
+// TODO: Refactor duplicate functionality
 
 export function parseDocument(text: string): DocumentNode {
   const outlineNodes = getOutlineNodes(text)
@@ -58,7 +60,11 @@ function getFootnotesAndAddReferencesToNode(node: OutlineSyntaxNode, nextFootnot
   }
 
   if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-    return getFootnesAndAddReferencesToAll(node.listItems, nextFootnoteReferenceOrdinal)
+    return getFootnesAndAddReferencesToAllOutlineContainers(node.listItems, nextFootnoteReferenceOrdinal)
+  }
+  
+  if (node instanceof LineBlockNode) {
+    return getFootnesAndAddReferencesToAllInlineContainers(node.lines, nextFootnoteReferenceOrdinal)
   }
 
   return []
@@ -72,11 +78,24 @@ interface InlineNodeContainer {
   children: InlineSyntaxNode[]
 }
 
-function getFootnesAndAddReferencesToAll(items: OutlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+function getFootnesAndAddReferencesToAllOutlineContainers(containers: OutlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
   const footnotes: Footnote[] = []
 
-  for (const listItem of items) {
-    const footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal)
+  for (const container of containers) {
+    const footnotesForThisNode = getFootnotesAndAddReferencesToNodes(container.children, nextFootnoteReferenceOrdinal)
+
+    footnotes.push(...footnotesForThisNode)
+    nextFootnoteReferenceOrdinal += footnotesForThisNode.length
+  }
+
+  return footnotes
+}
+
+function getFootnesAndAddReferencesToAllInlineContainers(items: InlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+  const footnotes: Footnote[] = []
+
+  for (const container of items) {
+    const footnotesForThisNode = getFootnotesAndMutateToAddReferences(container.children, nextFootnoteReferenceOrdinal)
 
     footnotes.push(...footnotesForThisNode)
     nextFootnoteReferenceOrdinal += footnotesForThisNode.length
