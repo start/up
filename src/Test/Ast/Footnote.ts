@@ -18,6 +18,8 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -107,6 +109,37 @@ I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
           new Footnote([
             new PlainTextNode('Well, I do, but I pretend not to.')
           ], 1)
+        ])
+      ]))
+  })
+})
+
+
+describe('Footnote references in a line block', () => {
+  it('produce a footnote block node after the line block', () => {
+    const text = `
+Roses are red ((This is not my line.))
+Violets are blue ((Neither is this line. I think my mom made it up.))`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode("Roses are red"),
+            new FootnoteReferenceNode(1),
+          ]),
+          new Line([
+            new PlainTextNode("Violets are blue"),
+            new FootnoteReferenceNode(2),
+          ])
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode('This is not my line.')
+          ], 1),
+          new Footnote([
+            new PlainTextNode('Neither is this line. I think my mom made it up.')
+          ], 2)
         ])
       ]))
   })
