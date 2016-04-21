@@ -1,6 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { Footnote } from './Footnote'
-import { getFootnotesAndMutateToAddReferences } from './PlaceholderFootnoteReferenceNode'
+import { getFootnotesAndMutateCollectionToAddReferences } from './PlaceholderFootnoteReferenceNode'
 import { last } from '../Parsing/CollectionHelpers'
 
 export class FootnoteBlockNode extends OutlineSyntaxNode {
@@ -25,7 +25,7 @@ export class FootnoteBlockNode extends OutlineSyntaxNode {
       const footnote = this.children[footnoteIndex]
 
       const nestedFootnotes =
-        getFootnotesAndMutateToAddReferences(footnote.children, nextFootnoteReferenceOrdinal)
+        getFootnotesAndMutateCollectionToAddReferences(footnote.children, nextFootnoteReferenceOrdinal)
 
       this.children.push(...nestedFootnotes)
       nextFootnoteReferenceOrdinal += nestedFootnotes.length

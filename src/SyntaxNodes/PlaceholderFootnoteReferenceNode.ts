@@ -17,7 +17,7 @@ export class PlaceholderFootnoteReferenceNode extends RichInlineSyntaxNode {
 //
 // It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
 // (replaced) `PlaceholderFootnoteReferenceNode`.
-export function getFootnotesAndMutateToAddReferences(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+export function getFootnotesAndMutateCollectionToAddReferences(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): Footnote[] {
   const footnotes: Footnote[] = []
   
   for (let i = 0; i < inlineNodes.length; i++) {
