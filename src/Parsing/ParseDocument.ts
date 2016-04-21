@@ -6,7 +6,8 @@ import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
-import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
+import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { PlaceholderFootnoteReferenceNode, getFootnotesAndMutateCollectionToAddReferences } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
@@ -16,7 +17,7 @@ import { getOutlineNodes } from './Outline/GetOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 
 
-// TODO: Refactor duplicate functionality
+// TODO: Refactor tons of duplicate functionality
 
 export function parseDocument(text: string): DocumentNode {
   const outlineNodes = getOutlineNodes(text)
@@ -27,9 +28,6 @@ export function parseDocument(text: string): DocumentNode {
   for (const outlineNode of outlineNodes) {
     outlineNodesWithFootnotes.push(outlineNode)
 
-    // This mutates `outlineNode`
-    //
-    // TODO: Add it to OutlineSyntaxNode directly
     const footnotes = getFootnotesAndAddReferencesToOutlineNode(outlineNode, nextFootnoteReferenceOrdinal)
 
     if (footnotes.length) {
@@ -40,6 +38,7 @@ export function parseDocument(text: string): DocumentNode {
 
   return new DocumentNode(outlineNodesWithFootnotes)
 }
+
 
 function getFootnotesAndAddReferencesToOutlineNodes(outlineNodes: OutlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): Footnote[] {
   const footnotes: Footnote[] = []
@@ -54,6 +53,7 @@ function getFootnotesAndAddReferencesToOutlineNodes(outlineNodes: OutlineSyntaxN
   return footnotes
 }
 
+
 function getFootnotesAndAddReferencesToOutlineNode(node: OutlineSyntaxNode, nextFootnoteReferenceOrdinal: number): Footnote[] {
   if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
     return getFootnotesAndMutateCollectionToAddReferences(node.children, nextFootnoteReferenceOrdinal)
@@ -66,17 +66,23 @@ function getFootnotesAndAddReferencesToOutlineNode(node: OutlineSyntaxNode, next
   if (node instanceof LineBlockNode) {
     return getFootnesAndAddReferencesToAllInlineContainers(node.lines, nextFootnoteReferenceOrdinal)
   }
-
+  
+  if (node instanceof DescriptionListNode) {
+    return getFootnesAndAddReferencesToAllDescriptionListItems(node.listItems, nextFootnoteReferenceOrdinal)
+  }
   return []
 }
+
 
 interface OutlineNodeContainer {
   children: OutlineSyntaxNode[]
 }
 
+
 interface InlineNodeContainer {
   children: InlineSyntaxNode[]
 }
+
 
 function getFootnesAndAddReferencesToAllOutlineContainers(containers: OutlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
   const footnotes: Footnote[] = []
@@ -91,6 +97,7 @@ function getFootnesAndAddReferencesToAllOutlineContainers(containers: OutlineNod
   return footnotes
 }
 
+
 function getFootnesAndAddReferencesToAllInlineContainers(items: InlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
   const footnotes: Footnote[] = []
 
@@ -99,6 +106,25 @@ function getFootnesAndAddReferencesToAllInlineContainers(items: InlineNodeContai
 
     footnotes.push(...footnotesForThisNode)
     nextFootnoteReferenceOrdinal += footnotesForThisNode.length
+  }
+
+  return footnotes
+}
+
+
+function getFootnesAndAddReferencesToAllDescriptionListItems(listItems: DescriptionListItem[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+  const footnotes: Footnote[] = []
+
+  for (const listItem of listItems) {
+    const footnotesForTerms = getFootnesAndAddReferencesToAllInlineContainers(listItem.terms, nextFootnoteReferenceOrdinal)
+
+    footnotes.push(...footnotesForTerms)
+    nextFootnoteReferenceOrdinal += footnotesForTerms.length
+    
+    const footnotesForDescription = getFootnotesAndAddReferencesToOutlineNodes(listItem.description.children, nextFootnoteReferenceOrdinal)
+
+    footnotes.push(...footnotesForDescription)
+    nextFootnoteReferenceOrdinal += footnotesForDescription.length
   }
 
   return footnotes
