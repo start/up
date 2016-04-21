@@ -154,14 +154,14 @@ describe('Footnote references in ordered list items', () => {
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
             ])
-          ]),
+          ], 1),
           new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               new FootnoteReferenceNode(2),
               new PlainTextNode(" pumpkins."),
             ])
-          ])
+          ], 2)
         ]),
         new FootnoteBlockNode([
           new Footnote([

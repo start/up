@@ -3,6 +3,7 @@ import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
+import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
 import { PlaceholderFootnoteReferenceNode, getFootnotesAndMutateToAddReferences } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
@@ -55,7 +56,7 @@ function getFootnotesAndAddReferencesToNode(node: OutlineSyntaxNode, nextFootnot
     return getFootnotesAndMutateToAddReferences(node.children, nextFootnoteReferenceOrdinal)
   }
 
-  if (node instanceof UnorderedListNode) {
+  if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
     return getFootnesAndAddReferencesToAll(node.listItems, nextFootnoteReferenceOrdinal)
   }
 

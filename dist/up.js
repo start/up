@@ -1575,6 +1575,7 @@ exports.NON_BLANK = NON_BLANK;
 "use strict";
 var ParagraphNode_1 = require('../SyntaxNodes/ParagraphNode');
 var UnorderedListNode_1 = require('../SyntaxNodes/UnorderedListNode');
+var OrderedListNode_1 = require('../SyntaxNodes/OrderedListNode');
 var PlaceholderFootnoteReferenceNode_1 = require('../SyntaxNodes/PlaceholderFootnoteReferenceNode');
 var FootnoteBlockNode_1 = require('../SyntaxNodes/FootnoteBlockNode');
 var GetOutlineNodes_1 = require('./Outline/GetOutlineNodes');
@@ -1609,7 +1610,7 @@ function getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal) 
     if (node instanceof ParagraphNode_1.ParagraphNode) {
         return PlaceholderFootnoteReferenceNode_1.getFootnotesAndMutateToAddReferences(node.children, nextFootnoteReferenceOrdinal);
     }
-    if (node instanceof UnorderedListNode_1.UnorderedListNode) {
+    if ((node instanceof UnorderedListNode_1.UnorderedListNode) || (node instanceof OrderedListNode_1.OrderedListNode)) {
         return getFootnesAndAddReferencesToAll(node.listItems, nextFootnoteReferenceOrdinal);
     }
     return [];
@@ -1625,7 +1626,7 @@ function getFootnesAndAddReferencesToAll(items, nextFootnoteReferenceOrdinal) {
     return footnotes;
 }
 
-},{"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlaceholderFootnoteReferenceNode":59,"../SyntaxNodes/UnorderedListNode":68,"./Outline/GetOutlineNodes":19}],33:[function(require,module,exports){
+},{"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlaceholderFootnoteReferenceNode":59,"../SyntaxNodes/UnorderedListNode":68,"./Outline/GetOutlineNodes":19}],33:[function(require,module,exports){
 "use strict";
 var TextConsumer = (function () {
     function TextConsumer(text) {
