@@ -2,6 +2,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
+import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
@@ -52,7 +53,7 @@ function getFootnotesAndAddReferencesToNodes(outlineNodes: OutlineSyntaxNode[], 
 }
 
 function getFootnotesAndAddReferencesToNode(node: OutlineSyntaxNode, nextFootnoteReferenceOrdinal: number): Footnote[] {
-  if (node instanceof ParagraphNode) {
+  if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
     return getFootnotesAndMutateToAddReferences(node.children, nextFootnoteReferenceOrdinal)
   }
 

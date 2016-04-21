@@ -91,7 +91,8 @@ describe('A footnote reference', () => {
 })
 
 describe('Footnote references in a heading', () => {
-  it('produce a footnote block node after the heading', () => {    const text = `
+  it('produce a footnote block node after the heading', () => {
+    const text = `
 I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 ------`
 
@@ -101,7 +102,7 @@ I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
           new PlainTextNode("I don't eat cereal."),
           new FootnoteReferenceNode(1),
           new PlainTextNode(" Never have."),
-        ], 2),
+        ], 1),
         new FootnoteBlockNode([
           new Footnote([
             new PlainTextNode('Well, I do, but I pretend not to.')
