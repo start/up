@@ -16,6 +16,10 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
+import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
+import { Description } from '../../SyntaxNodes/Description'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -147,7 +151,7 @@ Violets are blue ((Neither is this line. I think my mom made it up.))`
 
 
 describe('Footnote references in unordered list items', () => {
-  it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
+  it('produce a footnote block node that appears after the entire list', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
@@ -190,7 +194,7 @@ describe('Footnote references in unordered list items', () => {
 
 
 describe('Footnote references in ordered list items', () => {
-  it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
+  it('produce a footnote block node that appears after the entire list', () => {
     const text = `
 1) I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
@@ -228,6 +232,73 @@ describe('Footnote references in ordered list items', () => {
           ], 2)
         ])
       ]))
+  })
+})
+
+
+describe('Footnote references in description list terms and definitions', () => {
+  it('produce a footnote block node that appears after the entire description list', () => {
+    const text = `
+Bulbasaur
+  A strange seed was planted on its back at birth. ((What happens to the creature if the seed is never planted?)) The plant sprouts and grows with this Pokémon.
+
+Confuse Ray
+Lick
+Night Shade ((This probably wasn't a reference to the family of plants.))
+  Ghost type moves.
+  
+Gary
+  A young man with a great sense of smell. ((Or maybe Ash simply smelled really good.))`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Bulbasaur')])
+          ], new Description([
+            new ParagraphNode([
+              new PlainTextNode('A strange seed was planted on its back at birth.'),
+              new FootnoteReferenceNode(1),
+              new PlainTextNode(' The plant sprouts and grows with this Pokémon.')
+            ])
+          ])),
+
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
+            new DescriptionTerm([new PlainTextNode('Lick')]),
+            new DescriptionTerm([
+              new PlainTextNode('Night Shade'),
+              new FootnoteReferenceNode(2)
+            ])
+          ], new Description([
+            new ParagraphNode([
+              new PlainTextNode('Ghost type moves.')
+            ])
+          ])),
+
+          new DescriptionListItem([
+            new DescriptionTerm([new PlainTextNode('Gary')])
+          ], new Description([
+            new ParagraphNode([
+              new PlainTextNode('A young man with a great sense of smell.'),
+              new FootnoteReferenceNode(3)
+            ])
+          ]))
+        ]),
+        
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("What happens to the creature if the seed is never planted?"),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("This probably wasn't a reference to the family of plants."),
+          ], 2),
+          new Footnote([
+            new PlainTextNode("Or maybe Ash simply smelled really good."),
+          ], 3)
+        ])
+      ])
+    )
   })
 })
 
