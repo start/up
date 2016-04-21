@@ -2,6 +2,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
+import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
@@ -70,6 +71,7 @@ function getFootnotesAndAddReferencesToOutlineNode(node: OutlineSyntaxNode, next
   if (node instanceof DescriptionListNode) {
     return getFootnesAndAddReferencesToAllDescriptionListItems(node.listItems, nextFootnoteReferenceOrdinal)
   }
+  
   return []
 }
 

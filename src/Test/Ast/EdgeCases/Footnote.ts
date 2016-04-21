@@ -15,7 +15,10 @@ import { PlaceholderFootnoteReferenceNode } from '../../../SyntaxNodes/Placehold
 import { FootnoteReferenceNode } from '../../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
@@ -31,6 +34,54 @@ describe('A footnote reference at the end of a paragraph', () => {
           new Footnote([
             new PlainTextNode('Well, I do, but I pretend not to.')
           ], 1)
+        ])
+      ]))
+  })
+})
+
+
+describe('Footnote references inside a blockquote nested inside another outline convention', () => {
+  it('produce a footnote block after the outer outline convention. Being inside a blockquote changes nothing', () => {
+    const text = `
+* > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+
+  It's too expensive.
+
+* I don't eat ((Or touch.)) pumpkins.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+
+          new UnorderedListItem([
+            new BlockquoteNode([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat cereal."),
+                new FootnoteReferenceNode(1),
+                new PlainTextNode(" Never have."),
+              ])
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expensive.")
+            ])
+          ]),
+
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat"),
+              new FootnoteReferenceNode(2),
+              new PlainTextNode(" pumpkins."),
+            ])
+          ])
+        ]),
+
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("Well, I do, but I pretend not to."),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("Or touch."),
+          ], 2),
         ])
       ]))
   })

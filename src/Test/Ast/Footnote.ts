@@ -32,7 +32,7 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 
 
 describe('In a paragraph, text surrounded by 2 parentheses', () => {
-  it('produces a footnote reference node. This node references a footnote within a footnote block node after the paragraph', () => {
+  it('produces a footnote reference node. This node references a footnote node within a footnote block node after the paragraph', () => {
     expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
@@ -97,8 +97,9 @@ describe('A footnote reference', () => {
   })
 })
 
+
 describe('Footnote references in a heading', () => {
-  it('produce a footnote block node after the heading', () => {
+  it('produce a footnote block after the heading', () => {
     const text = `
 I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 ------`
@@ -121,7 +122,7 @@ I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
 
 describe('Footnote references in a line block', () => {
-  it('produce a footnote block node after the line block', () => {
+  it('produce a footnote block after the line block', () => {
     const text = `
 Roses are red ((This is not my line.))
 Violets are blue ((Neither is this line. I think my mom made it up.))`
@@ -152,17 +153,21 @@ Violets are blue ((Neither is this line. I think my mom made it up.))`
 
 
 describe('Footnote references in unordered list items', () => {
-  it('produce a footnote block node that appears after the entire list', () => {
+  it('produce a footnote block that appears after the entire list', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
   It's too expensive.
 
-* I don't eat ((Or touch.)) pumpkins.`
+* I don't eat ((Or touch.)) pumpkins.
+
+* Roses are red ((This is not my line.))
+  Violets are blue ((Neither is this line. I think my mom made it up.))`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
+
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
@@ -173,21 +178,42 @@ describe('Footnote references in unordered list items', () => {
               new PlainTextNode("It's too expensive.")
             ])
           ]),
+
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               new FootnoteReferenceNode(2),
               new PlainTextNode(" pumpkins."),
             ])
+          ]),
+
+          new UnorderedListItem([
+            new LineBlockNode([
+              new Line([
+                new PlainTextNode("Roses are red"),
+                new FootnoteReferenceNode(3),
+              ]),
+              new Line([
+                new PlainTextNode("Violets are blue"),
+                new FootnoteReferenceNode(4),
+              ])
+            ]),
           ])
         ]),
+
         new FootnoteBlockNode([
           new Footnote([
             new PlainTextNode("Well, I do, but I pretend not to."),
           ], 1),
           new Footnote([
             new PlainTextNode("Or touch."),
-          ], 2)
+          ], 2),
+          new Footnote([
+            new PlainTextNode('This is not my line.')
+          ], 3),
+          new Footnote([
+            new PlainTextNode('Neither is this line. I think my mom made it up.')
+          ], 4)
         ])
       ]))
   })
@@ -195,7 +221,7 @@ describe('Footnote references in unordered list items', () => {
 
 
 describe('Footnote references in a blockquote', () => {
-  it('produce footnote blocks within the blockquote after each appropriate convention.', () => {
+  it('produce footnote blocks within the blockquote after each appropriate convention. Being inside a blockquote changes nothing.', () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
@@ -256,7 +282,7 @@ describe('Footnote references in a blockquote', () => {
 
 
 describe('Footnote references in ordered list items', () => {
-  it('produce a footnote block node that appears after the entire list', () => {
+  it('produce a footnote block that appears after the entire list', () => {
     const text = `
 1) I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
@@ -299,7 +325,7 @@ describe('Footnote references in ordered list items', () => {
 
 
 describe('Footnote references in description list terms and definitions', () => {
-  it('produce a footnote block node that appears after the entire description list', () => {
+  it('produce a footnote block that appears after the entire description list', () => {
     const text = `
 Bulbasaur
   A strange seed was planted on its back at birth. ((What happens to the creature if the seed is never planted?)) The plant sprouts and grows with this Pokémon.
