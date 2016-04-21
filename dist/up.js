@@ -1610,16 +1610,19 @@ function getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal) 
         return PlaceholderFootnoteReferenceNode_1.getFootnotesAndMutateToAddReferences(node.children, nextFootnoteReferenceOrdinal);
     }
     if (node instanceof UnorderedListNode_1.UnorderedListNode) {
-        var footnotes = [];
-        for (var _i = 0, _a = node.listItems; _i < _a.length; _i++) {
-            var listItem = _a[_i];
-            var footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal);
-            footnotes.push.apply(footnotes, footnotesForThisNode);
-            nextFootnoteReferenceOrdinal += footnotesForThisNode.length;
-        }
-        return footnotes;
+        return getFootnesAndAddReferencesToAll(node.listItems, nextFootnoteReferenceOrdinal);
     }
     return [];
+}
+function getFootnesAndAddReferencesToAll(items, nextFootnoteReferenceOrdinal) {
+    var footnotes = [];
+    for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
+        var listItem = items_1[_i];
+        var footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal);
+        footnotes.push.apply(footnotes, footnotesForThisNode);
+        nextFootnoteReferenceOrdinal += footnotesForThisNode.length;
+    }
+    return footnotes;
 }
 
 },{"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlaceholderFootnoteReferenceNode":59,"../SyntaxNodes/UnorderedListNode":68,"./Outline/GetOutlineNodes":19}],33:[function(require,module,exports){

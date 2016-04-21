@@ -42,7 +42,7 @@ function getFootnotesAndAddReferencesToNodes(outlineNodes: OutlineSyntaxNode[], 
 
   for (const node of outlineNodes) {
     const footnotesForThisNode = getFootnotesAndAddReferencesToNode(node, nextFootnoteReferenceOrdinal)
-    
+
     footnotes.push(...footnotesForThisNode)
     nextFootnoteReferenceOrdinal += footnotesForThisNode.length
   }
@@ -56,17 +56,29 @@ function getFootnotesAndAddReferencesToNode(node: OutlineSyntaxNode, nextFootnot
   }
 
   if (node instanceof UnorderedListNode) {
-    const footnotes: Footnote[] = []
-
-    for (const listItem of node.listItems) {
-      const footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal)
-      
-      footnotes.push(...footnotesForThisNode)
-      nextFootnoteReferenceOrdinal += footnotesForThisNode.length
-    }
-
-    return footnotes
+    return getFootnesAndAddReferencesToAll(node.listItems, nextFootnoteReferenceOrdinal)
   }
 
   return []
+}
+
+interface OutlineNodeContainer {
+  children: OutlineSyntaxNode[]
+}
+
+interface InlineNodeContainer {
+  children: InlineSyntaxNode[]
+}
+
+function getFootnesAndAddReferencesToAll(items: OutlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+  const footnotes: Footnote[] = []
+
+  for (const listItem of items) {
+    const footnotesForThisNode = getFootnotesAndAddReferencesToNodes(listItem.children, nextFootnoteReferenceOrdinal)
+
+    footnotes.push(...footnotesForThisNode)
+    nextFootnoteReferenceOrdinal += footnotesForThisNode.length
+  }
+
+  return footnotes
 }

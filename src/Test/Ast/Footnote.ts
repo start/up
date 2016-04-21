@@ -14,6 +14,8 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
@@ -88,7 +90,6 @@ describe('A footnote reference', () => {
 })
 
 
-
 describe('Footnote references in unordered list items', () => {
   it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
     const text = `
@@ -112,6 +113,49 @@ describe('Footnote references in unordered list items', () => {
             ])
           ]),
           new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat"),
+              new FootnoteReferenceNode(2),
+              new PlainTextNode(" pumpkins."),
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode("Well, I do, but I pretend not to."),
+          ], 1),
+          new Footnote([
+            new PlainTextNode("Or touch."),
+          ], 2)
+        ])
+      ]))
+  })
+})
+
+
+describe('Footnote references in ordered list items', () => {
+  it('produce a footnote block node that appears after the entire list, not after the paragraphs containing the references', () => {
+    const text = `
+1) I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+
+  It's too expensive.
+
+2) I don't eat ((Or touch.)) pumpkins.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat cereal."),
+              new FootnoteReferenceNode(1),
+              new PlainTextNode(" Never have."),
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expensive.")
+            ])
+          ]),
+          new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               new FootnoteReferenceNode(2),
