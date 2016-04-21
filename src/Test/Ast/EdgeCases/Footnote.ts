@@ -41,13 +41,9 @@ describe('A footnote reference at the end of a paragraph', () => {
 
 
 describe('Footnote references inside a blockquote nested inside another outline convention', () => {
-  it('produce a footnote block after the outer outline convention. Being inside a blockquote changes nothing', () => {
+  it('produce footnote blocks within the blockquote after each appropriate convention', () => {
     const text = `
-* > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
-
-  It's too expensive.
-
-* I don't eat ((Or touch.)) pumpkins.`
+* > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -59,29 +55,17 @@ describe('Footnote references inside a blockquote nested inside another outline 
                 new PlainTextNode("I don't eat cereal."),
                 new FootnoteReferenceNode(1),
                 new PlainTextNode(" Never have."),
+              ]),
+              new FootnoteBlockNode([
+                new Footnote([
+                  new PlainTextNode("Well, I do, but I pretend not to."),
+                ], 1),
               ])
             ]),
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
             ])
-          ]),
-
-          new UnorderedListItem([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat"),
-              new FootnoteReferenceNode(2),
-              new PlainTextNode(" pumpkins."),
-            ])
           ])
-        ]),
-
-        new FootnoteBlockNode([
-          new Footnote([
-            new PlainTextNode("Well, I do, but I pretend not to."),
-          ], 1),
-          new Footnote([
-            new PlainTextNode("Or touch."),
-          ], 2),
         ])
       ]))
   })

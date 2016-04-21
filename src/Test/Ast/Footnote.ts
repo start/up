@@ -221,7 +221,7 @@ describe('Footnote references in unordered list items', () => {
 
 
 describe('Footnote references in a blockquote', () => {
-  it('produce footnote blocks within the blockquote after each appropriate convention. Being inside a blockquote changes nothing.', () => {
+  it('produce footnote blocks within the blockquote after each appropriate convention', () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
