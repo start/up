@@ -17,6 +17,7 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -84,6 +85,27 @@ describe('A footnote reference', () => {
             ]),
             new PlainTextNode(', but I pretend not to.'),
           ], 2)
+        ])
+      ]))
+  })
+})
+
+describe('Footnote references in a heading', () => {
+  it('produce a footnote block node after the heading', () => {    const text = `
+I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+------`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([
+          new PlainTextNode("I don't eat cereal."),
+          new FootnoteReferenceNode(1),
+          new PlainTextNode(" Never have."),
+        ], 2),
+        new FootnoteBlockNode([
+          new Footnote([
+            new PlainTextNode('Well, I do, but I pretend not to.')
+          ], 1)
         ])
       ]))
   })
@@ -209,7 +231,7 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
               new PlainTextNode(" pumpkins."),
             ])
           ])
-        ]),        
+        ]),
         new FootnoteBlockNode([
           new Footnote([
             new PlainTextNode("Well, I do, but I pretend not to."),
