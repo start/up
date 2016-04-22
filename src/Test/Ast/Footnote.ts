@@ -221,7 +221,28 @@ describe('Footnote references in unordered list items', () => {
 
 
 describe('Footnote references in a blockquote', () => {
-  it('produce footnote blocks within the blockquote after each appropriate convention', () => {
+  it('produce footnote blocks within the blockquote', () => {
+    const text = "> I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode("I don't eat cereal."),
+            new FootnoteReferenceNode(1),
+            new PlainTextNode(" Never have."),
+          ]),
+          new FootnoteBlockNode([
+            new Footnote([
+              new PlainTextNode("Well, I do, but I pretend not to."),
+            ], 1)
+          ]),
+        ])
+      ])
+    )
+  })
+  
+   it("produce footnote blocks within the blockquote exactly where they would if the content weren't blockquoted", () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
@@ -236,6 +257,7 @@ describe('Footnote references in a blockquote', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
+
           new UnorderedListNode([
             new UnorderedListItem([
               new ParagraphNode([
@@ -247,6 +269,7 @@ describe('Footnote references in a blockquote', () => {
                 new PlainTextNode("It's too expensive.")
               ])
             ]),
+
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
@@ -255,6 +278,7 @@ describe('Footnote references in a blockquote', () => {
               ])
             ])
           ]),
+
           new FootnoteBlockNode([
             new Footnote([
               new PlainTextNode("Well, I do, but I pretend not to."),
@@ -263,17 +287,21 @@ describe('Footnote references in a blockquote', () => {
               new PlainTextNode("Or touch."),
             ], 2)
           ]),
+
           new SectionSeparatorNode(),
+
           new ParagraphNode([
             new PlainTextNode("I wear glasses"),
             new FootnoteReferenceNode(3),
             new PlainTextNode(" even while working out."),
           ]),
+
           new FootnoteBlockNode([
             new Footnote([
               new PlainTextNode("It's actually been a dream of mine ever since I was young."),
             ], 3)
           ])
+
         ])
       ])
     )
