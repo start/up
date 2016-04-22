@@ -18,7 +18,9 @@ import { getOutlineNodes } from './Outline/GetOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 
 
+// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 // TODO: Refactor tons of duplicate functionality
+// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 
 export function parseDocument(text: string): DocumentNode {
   const outlineNodes = getOutlineNodes(text)
@@ -63,15 +65,20 @@ function getFootnotesAndAddReferencesToOutlineNode(node: OutlineSyntaxNode, next
   if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
     return getFootnesAndAddReferencesToAllOutlineContainers(node.listItems, nextFootnoteReferenceOrdinal)
   }
-  
+
   if (node instanceof LineBlockNode) {
     return getFootnesAndAddReferencesToAllInlineContainers(node.lines, nextFootnoteReferenceOrdinal)
   }
-  
+
   if (node instanceof DescriptionListNode) {
     return getFootnesAndAddReferencesToAllDescriptionListItems(node.listItems, nextFootnoteReferenceOrdinal)
   }
   
+  if (node instanceof BlockquoteNode) {
+    applyBlocknoteReferencesAndGetCount(node, nextFootnoteReferenceOrdinal)
+    return []
+  }
+
   return []
 }
 
@@ -122,7 +129,7 @@ function getFootnesAndAddReferencesToAllDescriptionListItems(listItems: Descript
 
     footnotes.push(...footnotesForTerms)
     nextFootnoteReferenceOrdinal += footnotesForTerms.length
-    
+
     const footnotesForDescription = getFootnotesAndAddReferencesToOutlineNodes(listItem.description.children, nextFootnoteReferenceOrdinal)
 
     footnotes.push(...footnotesForDescription)
@@ -130,4 +137,23 @@ function getFootnesAndAddReferencesToAllDescriptionListItems(listItems: Descript
   }
 
   return footnotes
+}
+
+function applyBlocknoteReferencesAndGetCount(blockquote: BlockquoteNode, nextFootnoteReferenceOrdinal: number): number {
+  const childrenWithFootnotes: OutlineSyntaxNode[] = []
+
+  for (const outlineNode of blockquote.children) {
+    childrenWithFootnotes.push(outlineNode)
+
+    const footnotes = getFootnotesAndAddReferencesToOutlineNode(outlineNode, nextFootnoteReferenceOrdinal)
+
+    if (footnotes.length) {
+      childrenWithFootnotes.push(new FootnoteBlockNode(footnotes))
+      nextFootnoteReferenceOrdinal += footnotes.length
+    }
+  }
+
+  blockquote.children = childrenWithFootnotes
+
+  return childrenWithFootnotes.length
 }

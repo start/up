@@ -60,9 +60,6 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
                   new PlainTextNode("Well, I do, but I pretend not to."),
                 ], 1),
               ])
-            ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
             ])
           ])
         ])

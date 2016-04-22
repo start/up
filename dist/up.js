@@ -1574,6 +1574,7 @@ exports.NON_BLANK = NON_BLANK;
 },{}],32:[function(require,module,exports){
 "use strict";
 var ParagraphNode_1 = require('../SyntaxNodes/ParagraphNode');
+var BlockquoteNode_1 = require('../SyntaxNodes/BlockquoteNode');
 var LineBlockNode_1 = require('../SyntaxNodes/LineBlockNode');
 var HeadingNode_1 = require('../SyntaxNodes/HeadingNode');
 var UnorderedListNode_1 = require('../SyntaxNodes/UnorderedListNode');
@@ -1622,6 +1623,10 @@ function getFootnotesAndAddReferencesToOutlineNode(node, nextFootnoteReferenceOr
     if (node instanceof DescriptionListNode_1.DescriptionListNode) {
         return getFootnesAndAddReferencesToAllDescriptionListItems(node.listItems, nextFootnoteReferenceOrdinal);
     }
+    if (node instanceof BlockquoteNode_1.BlockquoteNode) {
+        applyBlocknoteReferencesAndGetCount(node, nextFootnoteReferenceOrdinal);
+        return [];
+    }
     return [];
 }
 function getFootnesAndAddReferencesToAllOutlineContainers(containers, nextFootnoteReferenceOrdinal) {
@@ -1657,8 +1662,22 @@ function getFootnesAndAddReferencesToAllDescriptionListItems(listItems, nextFoot
     }
     return footnotes;
 }
+function applyBlocknoteReferencesAndGetCount(blockquote, nextFootnoteReferenceOrdinal) {
+    var childrenWithFootnotes = [];
+    for (var _i = 0, _a = blockquote.children; _i < _a.length; _i++) {
+        var outlineNode = _a[_i];
+        childrenWithFootnotes.push(outlineNode);
+        var footnotes = getFootnotesAndAddReferencesToOutlineNode(outlineNode, nextFootnoteReferenceOrdinal);
+        if (footnotes.length) {
+            childrenWithFootnotes.push(new FootnoteBlockNode_1.FootnoteBlockNode(footnotes));
+            nextFootnoteReferenceOrdinal += footnotes.length;
+        }
+    }
+    blockquote.children = childrenWithFootnotes;
+    return childrenWithFootnotes.length;
+}
 
-},{"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlaceholderFootnoteReferenceNode":59,"../SyntaxNodes/UnorderedListNode":68,"./Outline/GetOutlineNodes":19}],33:[function(require,module,exports){
+},{"../SyntaxNodes/BlockquoteNode":36,"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlaceholderFootnoteReferenceNode":59,"../SyntaxNodes/UnorderedListNode":68,"./Outline/GetOutlineNodes":19}],33:[function(require,module,exports){
 "use strict";
 var TextConsumer = (function () {
     function TextConsumer(text) {
