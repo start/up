@@ -241,24 +241,23 @@ describe('Footnote references in a blockquote', () => {
       ])
     )
   })
-  
-   it("produce footnote blocks within the blockquote exactly where they would if the content weren't blockquoted", () => {
+})
+
+describe('Footnote references nested inside 2 or more outline conventions nested inside a blockquote', () => {
+   it("produce footnote blocks inside the blockquote after all the appropriate outline conventions. The only difference is that everything is inside a blockquote", () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
 > It's too expensive.
 >
-> * I don't eat ((Or touch.)) pumpkins.
->
-> ------------------------
-> 
-> I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+> * I don't eat ((Or touch.)) pumpkins.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
 
           new UnorderedListNode([
+            
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
@@ -277,6 +276,7 @@ describe('Footnote references in a blockquote', () => {
                 new PlainTextNode(" pumpkins."),
               ])
             ])
+            
           ]),
 
           new FootnoteBlockNode([
@@ -286,22 +286,8 @@ describe('Footnote references in a blockquote', () => {
             new Footnote([
               new PlainTextNode("Or touch."),
             ], 2)
-          ]),
-
-          new SectionSeparatorNode(),
-
-          new ParagraphNode([
-            new PlainTextNode("I wear glasses"),
-            new FootnoteReferenceNode(3),
-            new PlainTextNode(" even while working out."),
-          ]),
-
-          new FootnoteBlockNode([
-            new Footnote([
-              new PlainTextNode("It's actually been a dream of mine ever since I was young."),
-            ], 3)
           ])
-
+          
         ])
       ])
     )
