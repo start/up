@@ -9,13 +9,14 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
-import { PlaceholderFootnoteReferenceNode, replacePotentialReferencesAndGetFootnotes } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { PlaceholderFootnoteReferenceNode } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { TextConsumer } from './TextConsumer'
 import { getOutlineNodes } from './Outline/GetOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
+import { last } from './CollectionHelpers'
 
 
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -35,7 +36,7 @@ export function parseDocument(text: string): DocumentNode {
     const result = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal)
 
     if (result.footnotesToPlaceInNextBlock.length) {
-      outlineNodesWithFootnotes.push(new FootnoteBlockNode(result.footnotesToPlaceInNextBlock))
+      outlineNodesWithFootnotes.push(getFootnoteBlockAndProcessNestedReferences(result.footnotesToPlaceInNextBlock))
     }
 
     nextFootnoteReferenceOrdinal += result.counAlltFootnotes()
@@ -183,14 +184,14 @@ function processBlockquoteFootnotesAndgetCount(blockquote: BlockquoteNode, nextF
 
     if (outlineNodeResult.footnotesToPlaceInNextBlock.length) {
       outlineNodesWithFootnotes.push(
-        new FootnoteBlockNode(outlineNodeResult.footnotesToPlaceInNextBlock))
+        getFootnoteBlockAndProcessNestedReferences(outlineNodeResult.footnotesToPlaceInNextBlock))
     }
 
     nextFootnoteReferenceOrdinal += outlineNodeResult.counAlltFootnotes()
   }
 
   blockquote.children = outlineNodesWithFootnotes
-  
+
   return nextFootnoteReferenceOrdinal - originalFootnoteReferenceOrdinal
 }
 
@@ -206,4 +207,57 @@ function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContain
   }
 
   return footnotes
+}
+
+
+// This function mutates the `inlineNodes` array, replacing any of its `PlaceholderFootnoteReferenceNodes`
+// with `FootnoteReferenceNodes`.
+//
+// It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
+// (replaced) `PlaceholderFootnoteReferenceNode`.
+function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+  const footnotes: Footnote[] = []
+
+  for (let i = 0; i < inlineNodes.length; i++) {
+    const node = inlineNodes[i]
+
+    if (node instanceof PlaceholderFootnoteReferenceNode) {
+      footnotes.push(new Footnote(node.children, nextFootnoteReferenceOrdinal))
+      inlineNodes[i] = new FootnoteReferenceNode(nextFootnoteReferenceOrdinal)
+      nextFootnoteReferenceOrdinal += 1
+    }
+  }
+
+  return footnotes
+}
+
+
+function getFootnoteBlockAndProcessNestedReferences(footnotes: Footnote[]): FootnoteBlockNode {
+  // It's contrived, but footnotes can reference other footnotes.
+  //
+  // For example:
+  //
+  // Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.)) Really.
+  //
+  // The nesting can be arbitrarily deep.
+  //
+  // Any nested footnotes are added to end of the footnote block, after all of the original footnotes. Then, any (doubly)
+  // nested footnotes inside of *those* footnotes are added to the end, and the process repeats until no more nested
+  // footnotes are found.
+  
+  const block = new FootnoteBlockNode(footnotes)
+
+  let nextFootnoteReferenceOrdinal = last(block.children).referenceNumber + 1
+
+  for (let footnoteIndex = 0; footnoteIndex < block.children.length; footnoteIndex++) {
+    const footnote = block.children[footnoteIndex]
+
+    const nestedFootnotes =
+      replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceOrdinal)
+
+    block.children.push(...nestedFootnotes)
+    nextFootnoteReferenceOrdinal += nestedFootnotes.length
+  }
+
+  return block
 }

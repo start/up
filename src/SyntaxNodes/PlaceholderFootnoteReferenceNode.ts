@@ -10,25 +10,3 @@ import { Footnote } from './Footnote'
 export class PlaceholderFootnoteReferenceNode extends RichInlineSyntaxNode {
   private PLACEHOLDER_FOOTNOTE_REFERENCE: any = null
 }
-
-
-// This function mutates the `inlineNodes` array, replacing any of its `PlaceholderFootnoteReferenceNodes`
-// with `FootnoteReferenceNodes`.
-//
-// It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
-// (replaced) `PlaceholderFootnoteReferenceNode`.
-export function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): Footnote[] {
-  const footnotes: Footnote[] = []
-  
-  for (let i = 0; i < inlineNodes.length; i++) {
-    const node = inlineNodes[i]
-    
-    if (node instanceof PlaceholderFootnoteReferenceNode) {
-      footnotes.push(new Footnote(node.children, nextFootnoteReferenceOrdinal))
-      inlineNodes[i] = new FootnoteReferenceNode(nextFootnoteReferenceOrdinal)
-      nextFootnoteReferenceOrdinal += 1
-    }
-  }
-  
-  return footnotes
-}
