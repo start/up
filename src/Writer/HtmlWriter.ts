@@ -10,7 +10,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
-import { PlaceholderFootnoteReferenceNode } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
@@ -152,8 +152,8 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('span', node.children, { 'data-spoiler': null })
   }
 
-  inlineAside(node: PlaceholderFootnoteReferenceNode): string {
-    return this.htmlElement('small', node.children)
+  footnoteBlock(node: FootnoteBlockNode): string {
+    throw new Error("Not implemented!")
   }
 
   link(node: LinkNode): string {

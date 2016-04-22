@@ -2625,8 +2625,8 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.spoiler = function (node) {
         return this.htmlElement('span', node.children, { 'data-spoiler': null });
     };
-    HtmlWriter.prototype.inlineAside = function (node) {
-        return this.htmlElement('small', node.children);
+    HtmlWriter.prototype.footnoteBlock = function (node) {
+        throw new Error("Not implemented!");
     };
     HtmlWriter.prototype.link = function (node) {
         return this.htmlElement('a', node.children, { href: node.url });
@@ -2693,7 +2693,7 @@ var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
 var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
 var SpoilerNode_1 = require('../SyntaxNodes/SpoilerNode');
-var PlaceholderFootnoteReferenceNode_1 = require('../SyntaxNodes/PlaceholderFootnoteReferenceNode');
+var FootnoteBlockNode_1 = require('../SyntaxNodes/FootnoteBlockNode');
 var ParagraphNode_1 = require('../SyntaxNodes/ParagraphNode');
 var BlockquoteNode_1 = require('../SyntaxNodes/BlockquoteNode');
 var UnorderedListNode_1 = require('../SyntaxNodes/UnorderedListNode');
@@ -2746,8 +2746,8 @@ var Writer = (function () {
         if (node instanceof InlineCodeNode_1.InlineCodeNode) {
             return this.inlineCode(node);
         }
-        if (node instanceof PlaceholderFootnoteReferenceNode_1.PlaceholderFootnoteReferenceNode) {
-            return this.inlineAside(node);
+        if (node instanceof FootnoteBlockNode_1.FootnoteBlockNode) {
+            return this.footnoteBlock(node);
         }
         if (node instanceof LinkNode_1.LinkNode) {
             return this.link(node);
@@ -2779,7 +2779,7 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/AudioNode":35,"../SyntaxNodes/BlockquoteNode":36,"../SyntaxNodes/CodeBlockNode":37,"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/EmphasisNode":43,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/ImageNode":48,"../SyntaxNodes/InlineCodeNode":49,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/LinkNode":53,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlaceholderFootnoteReferenceNode":59,"../SyntaxNodes/PlainTextNode":60,"../SyntaxNodes/RevisionDeletionNode":61,"../SyntaxNodes/RevisionInsertionNode":62,"../SyntaxNodes/SectionSeparatorNode":64,"../SyntaxNodes/SpoilerNode":65,"../SyntaxNodes/StressNode":66,"../SyntaxNodes/UnorderedListNode":68,"../SyntaxNodes/VideoNode":69}],72:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":35,"../SyntaxNodes/BlockquoteNode":36,"../SyntaxNodes/CodeBlockNode":37,"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/EmphasisNode":43,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/ImageNode":48,"../SyntaxNodes/InlineCodeNode":49,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/LinkNode":53,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlainTextNode":60,"../SyntaxNodes/RevisionDeletionNode":61,"../SyntaxNodes/RevisionInsertionNode":62,"../SyntaxNodes/SectionSeparatorNode":64,"../SyntaxNodes/SpoilerNode":65,"../SyntaxNodes/StressNode":66,"../SyntaxNodes/UnorderedListNode":68,"../SyntaxNodes/VideoNode":69}],72:[function(require,module,exports){
 "use strict";
 var ParseDocument_1 = require('./Parsing/ParseDocument');
 var HtmlWriter_1 = require('./Writer/HtmlWriter');

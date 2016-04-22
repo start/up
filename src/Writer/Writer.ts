@@ -12,7 +12,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
-import { PlaceholderFootnoteReferenceNode } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
@@ -89,8 +89,8 @@ export abstract class Writer {
       return this.inlineCode(node)
     }
     
-    if (node instanceof PlaceholderFootnoteReferenceNode) {
-      return this.inlineAside(node)
+    if (node instanceof FootnoteBlockNode) {
+      return this.footnoteBlock(node)
     }
     
     if (node instanceof LinkNode) {
@@ -144,7 +144,7 @@ export abstract class Writer {
   abstract revisionInsertion(node: RevisionInsertionNode): string;
   abstract revisionDeletion(node: RevisionDeletionNode): string;
   abstract spoiler(node: SpoilerNode): string;
-  abstract inlineAside(node: PlaceholderFootnoteReferenceNode): string;
+  abstract footnoteBlock(node: FootnoteBlockNode): string;
   abstract link(node: LinkNode): string;
   abstract image(node: ImageNode): string;
   abstract audio(node: AudioNode): string;
