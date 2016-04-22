@@ -248,7 +248,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
-> It's too expensive.
+>   It's too expensive.
 >
 > * I don't eat ((Or touch.)) pumpkins.`
 
