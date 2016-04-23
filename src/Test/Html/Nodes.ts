@@ -328,7 +328,7 @@ describe('A link node', () => {
 })
 
 
-describe('Using default configuration settings, a footnote reference node', () => {
+describe('A footnote reference node', () => {
   it("produces a sup element with a data-footnote-reference attribute and an id indicating its reference number, containing a link that contains the reference number and points to the footnote", () => {
     const node = new FootnoteReferenceNode(3)
     const writer = new HtmlWriter()
@@ -338,8 +338,29 @@ describe('Using default configuration settings, a footnote reference node', () =
 
 
 describe('A footnote block node', () => {
-  
+  it("produces a dl element with a data-footnotes attribute", () => {
+    const node = new FootnoteBlockNode([])
+    expect(Up.toHtml(node)).to.be.eql('<dl data-footnotes></dl>')
+  })
 })
+
+
+/*describe('A footnote block node', () => {  
+  it("produces a dl element with a data-footnotes attribute. For each footnote, a dt element and dd element contains the reference number and footnote contents respectively", () => {
+  const node =
+    new FootnoteBlockNode([
+      new Footnote([
+        new PlainTextNode("Help."),
+      ], 2),
+      new Footnote([
+        new PlainTextNode("I'm trapped in a footnote block."),
+      ], 3),
+    ])
+    
+  const writer = new HtmlWriter()
+  expect(writer.write(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
+  })
+})*/
 
 
 describe('An image node', () => {
