@@ -10,6 +10,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
+import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
@@ -155,6 +156,10 @@ export class HtmlWriter extends Writer {
 
   spoiler(node: SpoilerNode): string {
     return this.htmlElement('span', node.children, { 'data-spoiler': null })
+  }
+
+  footnoteReference(node: FootnoteReferenceNode): string {
+    throw new Error("Not implemented!")
   }
 
   footnoteBlock(node: FootnoteBlockNode): string {
