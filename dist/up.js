@@ -2703,6 +2703,28 @@ var LineBlockNode_1 = require('../SyntaxNodes/LineBlockNode');
 var HeadingNode_1 = require('../SyntaxNodes/HeadingNode');
 var CodeBlockNode_1 = require('../SyntaxNodes/CodeBlockNode');
 var SectionSeparatorNode_1 = require('../SyntaxNodes/SectionSeparatorNode');
+var WriterConfig = (function () {
+    function WriterConfig(args) {
+        this.documentId = args.documentId || '';
+        this.termForFootnote = args.termForFootnote || 'footnote';
+        this.idDelimiter = '-';
+    }
+    WriterConfig.prototype.id = function () {
+        var parts = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            parts[_i - 0] = arguments[_i];
+        }
+        return ([this.documentId]
+            .concat(parts)
+            .filter(function (part) { return !!part; })
+            .join(this.idDelimiter));
+    };
+    WriterConfig.prototype.footnoteId = function (ordinal) {
+        return this.id(this.termForFootnote, ordinal.toString());
+    };
+    return WriterConfig;
+}());
+exports.WriterConfig = WriterConfig;
 var Writer = (function () {
     function Writer() {
     }

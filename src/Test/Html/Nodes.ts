@@ -13,7 +13,9 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { PlaceholderFootnoteReferenceNode } from '../../SyntaxNodes/PlaceholderFootnoteReferenceNode'
+import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { Footnote } from '../../SyntaxNodes/Footnote'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
@@ -146,24 +148,24 @@ describe('An ordered list node in descending order', () => {
 describe('A description list', () => {
   it('produces a dl element containing dt elements for each term, and dd elements for each description', () => {
     const node = new DocumentNode([
-        new DescriptionListNode([
-          new DescriptionListItem([
-            new DescriptionTerm([new PlainTextNode('Bulbasaur')])
-          ], new Description([
-            new ParagraphNode([
-              new PlainTextNode('A grass type Pokemon')
-            ])
-          ])),          
-          new DescriptionListItem([
-            new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
-            new DescriptionTerm([new PlainTextNode('Lick')]),
-          ], new Description([
-            new ParagraphNode([
-              new PlainTextNode('Ghost type moves')
-            ])
-          ]))
-        ])
+      new DescriptionListNode([
+        new DescriptionListItem([
+          new DescriptionTerm([new PlainTextNode('Bulbasaur')])
+        ], new Description([
+          new ParagraphNode([
+            new PlainTextNode('A grass type Pokemon')
+          ])
+        ])),
+        new DescriptionListItem([
+          new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
+          new DescriptionTerm([new PlainTextNode('Lick')]),
+        ], new Description([
+          new ParagraphNode([
+            new PlainTextNode('Ghost type moves')
+          ])
+        ]))
       ])
+    ])
     expect(Up.toHtml(node)).to.be.eql(
       '<dl><dt>Bulbasaur</dt><dd><p>A grass type Pokemon</p></dd><dt>Confuse Ray</dt><dt>Lick</dt><dd><p>Ghost type moves</p></dd></dl>')
   })
@@ -317,11 +319,13 @@ describe('A revision deletion node', () => {
 })
 
 
-describe('An inline aside node', () => {
-  it('produces a small element', () => {
-    const node = new PlaceholderFootnoteReferenceNode([new PlainTextNode('Probably')])
-    expect(Up.toHtml(node)).to.be.eql('<small>Probably</small>')
-  })
+describe('A footnote reference node', () => {
+  
+})
+
+
+describe('A footnote block node', () => {
+  
 })
 
 

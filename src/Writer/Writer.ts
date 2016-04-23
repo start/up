@@ -30,104 +30,135 @@ import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 
+
+interface WriterConfigArgs {
+  documentId?: string,
+  termForFootnote?: string,
+  idDelimiter?: string
+}
+
+export class WriterConfig {
+  public documentId: string
+  public termForFootnote: string
+  public idDelimiter: string
+
+  constructor(args: WriterConfigArgs) {
+    this.documentId = args.documentId || ''
+    this.termForFootnote = args.termForFootnote || 'footnote'
+    this.idDelimiter = '-'
+  }
+
+  private id(...parts: string[]): string {
+    return (
+      [this.documentId]
+        .concat(parts)
+        .filter(part => !!part)
+        .join(this.idDelimiter)
+    )
+  }
+
+  private footnoteId(ordinal: number): string {
+    return this.id(this.termForFootnote, ordinal.toString())
+  }
+}
+
 export abstract class Writer {
-  
   write(node: SyntaxNode) {
-    
+
     // TypeScript lacks multiple dispatch. Rather than polluting every single SyntaxNode class
     // with the visitor pattern, we perform the dispatch ourselves here.
-     
+
     if (node instanceof DocumentNode) {
       return this.document(node)
     }
-    
+
     if (node instanceof BlockquoteNode) {
       return this.blockquote(node)
     }
-    
+
     if (node instanceof UnorderedListNode) {
       return this.unorderedList(node)
     }
-    
+
     if (node instanceof OrderedListNode) {
       return this.orderedList(node)
     }
-    
+
     if (node instanceof DescriptionListNode) {
       return this.descriptionList(node)
     }
-    
+
     if (node instanceof LineBlockNode) {
       return this.lineBlock(node)
     }
-    
+
     if (node instanceof ParagraphNode) {
       return this.paragraph(node)
     }
-    
+
     if (node instanceof CodeBlockNode) {
       return this.codeBlock(node)
     }
-    
+
     if (node instanceof HeadingNode) {
       return this.heading(node)
     }
-    
+
     if (node instanceof SectionSeparatorNode) {
       return this.sectionSeparator(node)
     }
-    
+
     if (node instanceof EmphasisNode) {
       return this.emphasis(node)
     }
-    
+
     if (node instanceof StressNode) {
       return this.stress(node)
     }
-    
+
     if (node instanceof InlineCodeNode) {
       return this.inlineCode(node)
     }
-    
+
     if (node instanceof FootnoteBlockNode) {
       return this.footnoteBlock(node)
     }
-    
+
     if (node instanceof LinkNode) {
       return this.link(node)
     }
-    
+
     if (node instanceof ImageNode) {
       return this.image(node)
     }
-    
+
     if (node instanceof AudioNode) {
       return this.audio(node)
     }
-    
+
     if (node instanceof VideoNode) {
       return this.video(node)
     }
-    
+
     if (node instanceof RevisionDeletionNode) {
       return this.revisionDeletion(node)
     }
-    
+
     if (node instanceof RevisionInsertionNode) {
       return this.revisionInsertion(node)
     }
-    
+
     if (node instanceof SpoilerNode) {
       return this.spoiler(node)
     }
-    
+
     if (node instanceof PlainTextNode) {
       return this.plainText(node)
     }
-    
+
     throw new Error("Unrecognized syntax node")
   }
-  
+
   abstract document(node: DocumentNode): string;
   abstract blockquote(node: BlockquoteNode): string;
   abstract unorderedList(node: UnorderedListNode): string;
