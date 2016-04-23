@@ -5,26 +5,26 @@ interface WriterConfigArgs {
 }
 
 export class WriterConfig {
-  public documentId: string
-  public termForFootnote: string
-  public idDelimiter: string
+  private config: WriterConfigArgs
 
   constructor(args: WriterConfigArgs) {
-    this.documentId = args.documentId || ''
-    this.termForFootnote = args.termForFootnote || 'footnote'
-    this.idDelimiter = '-'
+    this.config = {
+      documentId: args.documentId || '',
+      termForFootnote: args.termForFootnote || 'footnote',
+      idDelimiter: args.idDelimiter || '-'
+    }
   }
 
   private id(...parts: string[]): string {
     return (
-      [this.documentId]
+      [this.config.documentId]
         .concat(parts)
         .filter(part => !!part)
-        .join(this.idDelimiter)
+        .join(this.config.idDelimiter)
     )
   }
 
   private footnoteId(ordinal: number): string {
-    return this.id(this.termForFootnote, ordinal.toString())
+    return this.id(this.config.termForFootnote, ordinal.toString())
   }
 }
