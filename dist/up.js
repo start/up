@@ -1723,11 +1723,11 @@ function replacePotentialReferencesAndGetFootnotes(inlineNodes, nextFootnoteRefe
 }
 function getFootnoteBlockAndProcessNestedReferences(footnotes) {
     var block = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
-    var nextFootnoteReferenceOrdinal = CollectionHelpers_1.last(block.children).referenceNumber + 1;
-    for (var footnoteIndex = 0; footnoteIndex < block.children.length; footnoteIndex++) {
-        var footnote = block.children[footnoteIndex];
+    var nextFootnoteReferenceOrdinal = CollectionHelpers_1.last(block.footnotes).referenceNumber + 1;
+    for (var footnoteIndex = 0; footnoteIndex < block.footnotes.length; footnoteIndex++) {
+        var footnote = block.footnotes[footnoteIndex];
         var nestedFootnotes = replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceOrdinal);
-        (_a = block.children).push.apply(_a, nestedFootnotes);
+        (_a = block.footnotes).push.apply(_a, nestedFootnotes);
         nextFootnoteReferenceOrdinal += nestedFootnotes.length;
     }
     return block;
@@ -2083,10 +2083,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var OutlineSyntaxNode_1 = require('./OutlineSyntaxNode');
 var FootnoteBlockNode = (function (_super) {
     __extends(FootnoteBlockNode, _super);
-    function FootnoteBlockNode(children) {
-        if (children === void 0) { children = []; }
+    function FootnoteBlockNode(footnotes) {
+        if (footnotes === void 0) { footnotes = []; }
         _super.call(this);
-        this.children = children;
+        this.footnotes = footnotes;
         this.FOOTNOTE_BLOCK = null;
     }
     return FootnoteBlockNode;
