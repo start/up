@@ -2108,9 +2108,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var InlineSyntaxNode_1 = require('./InlineSyntaxNode');
 var FootnoteReferenceNode = (function (_super) {
     __extends(FootnoteReferenceNode, _super);
-    function FootnoteReferenceNode(referenceOrdinal) {
+    function FootnoteReferenceNode(referenceNumber) {
         _super.call(this);
-        this.referenceOrdinal = referenceOrdinal;
+        this.referenceNumber = referenceNumber;
         this.FOOTNOTE_REFERENCE = null;
     }
     return FootnoteReferenceNode;
@@ -2607,9 +2607,8 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('span', node.children, { 'data-spoiler': null });
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
-        var ordinal = node.referenceOrdinal;
-        var innerLinkNode = new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(ordinal.toString())], this.config.getFootnoteId(ordinal));
-        return this.htmlElement('sup', [innerLinkNode], { id: 'todo' });
+        var innerLinkNode = this.footnoteReferenceInnerLink(node);
+        return this.htmlElement('sup', [innerLinkNode], { id: this.config.footnoteReferenceId(node.referenceNumber) });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
@@ -2656,9 +2655,18 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.line = function (line) {
         return this.htmlElement('div', line.children);
     };
+    HtmlWriter.prototype.footnoteReferenceInnerLink = function (footnoteReference) {
+        var referenceNumber = footnoteReference.referenceNumber;
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.config.footnoteId(referenceNumber)));
+    };
     HtmlWriter.prototype.footnote = function (footnote) {
-        return (htmlElement('dt', 'todo', { id: 'todo' })
-            + this.htmlElement('dd', footnote.children));
+        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.config.footnoteId(footnote.referenceNumber) });
+        var descriptionHtml = this.htmlElement('dd', footnote.children);
+        return termHtml + descriptionHtml;
+    };
+    HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
+        var referenceNumber = footnote.referenceNumber;
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.config.footnoteReferenceId(referenceNumber)));
     };
     HtmlWriter.prototype.mediaFallback = function (content, url) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
@@ -2692,6 +2700,9 @@ function htmlAttrs(attrs) {
         var value = attrs[key];
         return (value == null ? key : key + "=\"" + value + "\"");
     }));
+}
+function internalUrl(id) {
+    return '#' + id;
 }
 
 },{"../SyntaxNodes/LinkNode":53,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/PlainTextNode":60,"./Writer":71}],71:[function(require,module,exports){
@@ -2829,8 +2840,11 @@ var WriterConfig = (function () {
             .trim()
             .replace(/\s+/, this.config.i18n.idWordDelimiter));
     };
-    WriterConfig.prototype.getFootnoteId = function (ordinal) {
-        return this.getId(this.config.i18n.terms.footnote, ordinal.toString());
+    WriterConfig.prototype.footnoteId = function (referenceNumber) {
+        return this.getId(this.config.i18n.terms.footnote, referenceNumber.toString());
+    };
+    WriterConfig.prototype.footnoteReferenceId = function (referenceNumber) {
+        return this.getId(this.config.i18n.terms.footnoteReference, referenceNumber.toString());
     };
     return WriterConfig;
 }());

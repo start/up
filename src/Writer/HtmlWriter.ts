@@ -127,14 +127,12 @@ export class HtmlWriter extends Writer {
   }
 
   footnoteReference(node: FootnoteReferenceNode): string {
-    const ordinal = node.referenceOrdinal
+    const innerLinkNode = this.footnoteReferenceInnerLink(node)
 
-    const innerLinkNode =
-      new LinkNode(
-        [new PlainTextNode(ordinal.toString())],
-        this.config.getFootnoteId(ordinal))
-
-    return this.htmlElement('sup', [innerLinkNode], { id: 'todo' })
+    return this.htmlElement(
+      'sup',
+      [innerLinkNode],
+      { id: this.config.footnoteReferenceId(node.referenceNumber) })
   }
 
   footnoteBlock(node: FootnoteBlockNode): string {
@@ -201,10 +199,33 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('div', line.children)
   }
 
+  private footnoteReferenceInnerLink(footnoteReference: FootnoteReferenceNode): LinkNode {
+    const referenceNumber = footnoteReference.referenceNumber
+
+    return new LinkNode(
+      [new PlainTextNode(referenceNumber.toString())],
+      internalUrl(this.config.footnoteId(referenceNumber)))
+  }
+
   private footnote(footnote: Footnote): string {
-    return (
-      htmlElement('dt', 'todo', { id: 'todo' })
-      + this.htmlElement('dd', footnote.children)
+    const termHtml =
+      this.htmlElement(
+        'dt',
+        [this.footnoteLinkBackToReference(footnote)],
+        { id: this.config.footnoteId(footnote.referenceNumber) })
+
+    const descriptionHtml =
+      this.htmlElement('dd', footnote.children)
+
+    return termHtml + descriptionHtml
+  }
+
+  private footnoteLinkBackToReference(footnote: Footnote): LinkNode {
+    const referenceNumber = footnote.referenceNumber
+
+    return new LinkNode(
+      [new PlainTextNode(referenceNumber.toString())],
+      internalUrl(this.config.footnoteReferenceId(referenceNumber))
     )
   }
 
@@ -246,4 +267,8 @@ function htmlAttrs(attrs: any): string[] {
         return (value == null ? key : `${key}="${value}"`)
       })
   )
+}
+
+function internalUrl(id: string): string {
+  return '#' + id
 }

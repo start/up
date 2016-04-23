@@ -43,7 +43,11 @@ export class WriterConfig {
         .replace(/\s+/, this.config.i18n.idWordDelimiter))
   }
 
-  getFootnoteId(ordinal: number): string {
-    return this.getId(this.config.i18n.terms.footnote, ordinal.toString())
+  footnoteId(referenceNumber: number): string {
+    return this.getId(this.config.i18n.terms.footnote, referenceNumber.toString())
+  }
+
+  footnoteReferenceId(referenceNumber: number): string {
+    return this.getId(this.config.i18n.terms.footnoteReference, referenceNumber.toString())
   }
 }
