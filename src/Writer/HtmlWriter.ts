@@ -159,7 +159,14 @@ export class HtmlWriter extends Writer {
   }
 
   footnoteReference(node: FootnoteReferenceNode): string {
-    throw new Error("Not implemented!")
+    const ordinal = node.referenceOrdinal
+    
+    const innerLinkNode =
+      new LinkNode(
+        [new PlainTextNode(ordinal.toString())],
+        this.config.getFootnoteId(ordinal))
+        
+    return this.htmlElement('sup', [innerLinkNode], { id: 'todo' })
   }
 
   footnoteBlock(node: FootnoteBlockNode): string {

@@ -4,7 +4,8 @@ interface I18nArgs {
 }
 
 interface I18nTerms {
-  footnote?: string
+  footnote?: string,
+  footnoteReference?: string
 }
 
 export interface WriterConfigArgs {
@@ -28,12 +29,13 @@ export class WriterConfig {
         
         terms: {
           footnote: terms.footnote || 'footnote',
+          footnoteReference: terms.footnoteReference || 'footnote-reference',
         }
       }
     }
   }
 
-  private id(...parts: string[]): string {
+  private getId(...parts: string[]): string {
     return (
       [this.config.documentId]
         .concat(parts)
@@ -42,7 +44,7 @@ export class WriterConfig {
     )
   }
 
-  private footnoteId(ordinal: number): string {
-    return this.id(this.config.i18n.terms.footnote, ordinal.toString())
+  getFootnoteId(ordinal: number): string {
+    return this.getId(this.config.i18n.terms.footnote, ordinal.toString())
   }
 }

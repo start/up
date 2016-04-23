@@ -2626,7 +2626,9 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('span', node.children, { 'data-spoiler': null });
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
-        throw new Error("Not implemented!");
+        var ordinal = node.referenceOrdinal;
+        var innerLinkNode = new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(ordinal.toString())], this.config.getFootnoteId(ordinal));
+        return this.htmlElement('sup', [innerLinkNode], { id: 'todo' });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         throw new Error("Not implemented!");
@@ -2801,11 +2803,12 @@ var WriterConfig = (function () {
                 idDelimiter: i18n.idDelimiter || '-',
                 terms: {
                     footnote: terms.footnote || 'footnote',
+                    footnoteReference: terms.footnoteReference || 'footnote-reference',
                 }
             }
         };
     }
-    WriterConfig.prototype.id = function () {
+    WriterConfig.prototype.getId = function () {
         var parts = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             parts[_i - 0] = arguments[_i];
@@ -2815,8 +2818,8 @@ var WriterConfig = (function () {
             .filter(function (part) { return !!part; })
             .join(this.config.i18n.idDelimiter));
     };
-    WriterConfig.prototype.footnoteId = function (ordinal) {
-        return this.id(this.config.i18n.terms.footnote, ordinal.toString());
+    WriterConfig.prototype.getFootnoteId = function (ordinal) {
+        return this.getId(this.config.i18n.terms.footnote, ordinal.toString());
     };
     return WriterConfig;
 }());
