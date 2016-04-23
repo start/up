@@ -28,8 +28,13 @@ import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { WriterConfig, WriterConfigArgs } from './WriterConfig'
 
 export class HtmlWriter extends Writer {
+  constructor(config?: WriterConfigArgs) {
+    super(config)
+  }
+  
   document(node: DocumentNode): string {
     return this.htmlElements(node.children)
   }

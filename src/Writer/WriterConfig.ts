@@ -1,13 +1,13 @@
 interface I18nArgs {
   idDelimiter?: string,
-  terms: I18nTerms,
+  terms?: I18nTerms,
 }
 
 interface I18nTerms {
-  footnote: string
+  footnote?: string
 }
 
-interface WriterConfigArgs {
+export interface WriterConfigArgs {
   documentId?: string,
   i18n?: I18nArgs
 }
@@ -16,14 +16,18 @@ export class WriterConfig {
   private config: WriterConfigArgs
 
   constructor(args: WriterConfigArgs) {
+    args = args || { }
+    const i18n: I18nArgs = args.i18n || { }
+    const terms: I18nTerms = i18n.terms || { }
+    
     this.config = {
       documentId: args.documentId || '',
       
       i18n: {
-        idDelimiter: args.i18n.idDelimiter || '-',
+        idDelimiter: i18n.idDelimiter || '-',
         
         terms: {
-          footnote: args.i18n.terms.footnote || 'footnote',
+          footnote: terms.footnote || 'footnote',
         }
       }
     }

@@ -29,43 +29,17 @@ import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-
-
-interface WriterConfigArgs {
-  documentId?: string,
-  termForFootnote?: string,
-  idDelimiter?: string
-}
-
-export class WriterConfig {
-  public documentId: string
-  public termForFootnote: string
-  public idDelimiter: string
-
-  constructor(args: WriterConfigArgs) {
-    this.documentId = args.documentId || ''
-    this.termForFootnote = args.termForFootnote || 'footnote'
-    this.idDelimiter = '-'
-  }
-
-  private id(...parts: string[]): string {
-    return (
-      [this.documentId]
-        .concat(parts)
-        .filter(part => !!part)
-        .join(this.idDelimiter)
-    )
-  }
-
-  private footnoteId(ordinal: number): string {
-    return this.id(this.termForFootnote, ordinal.toString())
-  }
-}
+import { WriterConfig, WriterConfigArgs } from './WriterConfig'
 
 export abstract class Writer {
+  public config: WriterConfig
+  
+  constructor(config: WriterConfigArgs) {
+    this.config = new WriterConfig(config)
+  }
+  
   write(node: SyntaxNode) {
-
-    // TypeScript lacks multiple dispatch. Rather than polluting every single SyntaxNode class
+    // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
 
     if (node instanceof DocumentNode) {

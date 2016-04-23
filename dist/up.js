@@ -2538,8 +2538,8 @@ var OrderedListNode_1 = require('../SyntaxNodes/OrderedListNode');
 var Writer_1 = require('./Writer');
 var HtmlWriter = (function (_super) {
     __extends(HtmlWriter, _super);
-    function HtmlWriter() {
-        _super.apply(this, arguments);
+    function HtmlWriter(config) {
+        _super.call(this, config);
     }
     HtmlWriter.prototype.document = function (node) {
         return this.htmlElements(node.children);
@@ -2703,30 +2703,10 @@ var LineBlockNode_1 = require('../SyntaxNodes/LineBlockNode');
 var HeadingNode_1 = require('../SyntaxNodes/HeadingNode');
 var CodeBlockNode_1 = require('../SyntaxNodes/CodeBlockNode');
 var SectionSeparatorNode_1 = require('../SyntaxNodes/SectionSeparatorNode');
-var WriterConfig = (function () {
-    function WriterConfig(args) {
-        this.documentId = args.documentId || '';
-        this.termForFootnote = args.termForFootnote || 'footnote';
-        this.idDelimiter = '-';
-    }
-    WriterConfig.prototype.id = function () {
-        var parts = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            parts[_i - 0] = arguments[_i];
-        }
-        return ([this.documentId]
-            .concat(parts)
-            .filter(function (part) { return !!part; })
-            .join(this.idDelimiter));
-    };
-    WriterConfig.prototype.footnoteId = function (ordinal) {
-        return this.id(this.termForFootnote, ordinal.toString());
-    };
-    return WriterConfig;
-}());
-exports.WriterConfig = WriterConfig;
+var WriterConfig_1 = require('./WriterConfig');
 var Writer = (function () {
-    function Writer() {
+    function Writer(config) {
+        this.config = new WriterConfig_1.WriterConfig(config);
     }
     Writer.prototype.write = function (node) {
         if (node instanceof DocumentNode_1.DocumentNode) {
@@ -2801,7 +2781,41 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/AudioNode":35,"../SyntaxNodes/BlockquoteNode":36,"../SyntaxNodes/CodeBlockNode":37,"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/EmphasisNode":43,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/ImageNode":48,"../SyntaxNodes/InlineCodeNode":49,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/LinkNode":53,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlainTextNode":60,"../SyntaxNodes/RevisionDeletionNode":61,"../SyntaxNodes/RevisionInsertionNode":62,"../SyntaxNodes/SectionSeparatorNode":64,"../SyntaxNodes/SpoilerNode":65,"../SyntaxNodes/StressNode":66,"../SyntaxNodes/UnorderedListNode":68,"../SyntaxNodes/VideoNode":69}],72:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":35,"../SyntaxNodes/BlockquoteNode":36,"../SyntaxNodes/CodeBlockNode":37,"../SyntaxNodes/DescriptionListNode":40,"../SyntaxNodes/DocumentNode":42,"../SyntaxNodes/EmphasisNode":43,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/ImageNode":48,"../SyntaxNodes/InlineCodeNode":49,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/LinkNode":53,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/PlainTextNode":60,"../SyntaxNodes/RevisionDeletionNode":61,"../SyntaxNodes/RevisionInsertionNode":62,"../SyntaxNodes/SectionSeparatorNode":64,"../SyntaxNodes/SpoilerNode":65,"../SyntaxNodes/StressNode":66,"../SyntaxNodes/UnorderedListNode":68,"../SyntaxNodes/VideoNode":69,"./WriterConfig":72}],72:[function(require,module,exports){
+"use strict";
+var WriterConfig = (function () {
+    function WriterConfig(args) {
+        args = args || {};
+        var i18n = args.i18n || {};
+        var terms = i18n.terms || {};
+        this.config = {
+            documentId: args.documentId || '',
+            i18n: {
+                idDelimiter: i18n.idDelimiter || '-',
+                terms: {
+                    footnote: terms.footnote || 'footnote',
+                }
+            }
+        };
+    }
+    WriterConfig.prototype.id = function () {
+        var parts = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            parts[_i - 0] = arguments[_i];
+        }
+        return ([this.config.documentId]
+            .concat(parts)
+            .filter(function (part) { return !!part; })
+            .join(this.config.i18n.idDelimiter));
+    };
+    WriterConfig.prototype.footnoteId = function (ordinal) {
+        return this.id(this.config.i18n.terms.footnote, ordinal.toString());
+    };
+    return WriterConfig;
+}());
+exports.WriterConfig = WriterConfig;
+
+},{}],73:[function(require,module,exports){
 "use strict";
 var ParseDocument_1 = require('./Parsing/ParseDocument');
 var HtmlWriter_1 = require('./Writer/HtmlWriter');
@@ -2818,5 +2832,5 @@ function toHtml(textOrNode) {
 }
 exports.toHtml = toHtml;
 
-},{"./Parsing/ParseDocument":32,"./Writer/HtmlWriter":70}]},{},[72])(72)
+},{"./Parsing/ParseDocument":32,"./Writer/HtmlWriter":70}]},{},[73])(73)
 });
