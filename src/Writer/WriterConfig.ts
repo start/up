@@ -18,8 +18,8 @@ export class WriterConfig {
 
   constructor(args: WriterConfigArgs) {
     args = args || { }
-    const i18n: I18nArgs = args.i18n || { }
-    const terms: I18nTerms = i18n.terms || { }
+    const i18n = args.i18n || { }
+    const i18nTerms = i18n.terms || { }
     
     this.config = {
       documentId: args.documentId || '',
@@ -28,8 +28,8 @@ export class WriterConfig {
         idDelimiter: i18n.idDelimiter || '-',
         
         terms: {
-          footnote: terms.footnote || 'footnote',
-          footnoteReference: terms.footnoteReference || 'footnote-reference',
+          footnote: i18nTerms.footnote || 'footnote',
+          footnoteReference: i18nTerms.footnoteReference || 'footnote-reference',
         }
       }
     }

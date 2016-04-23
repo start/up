@@ -2806,14 +2806,14 @@ var WriterConfig = (function () {
     function WriterConfig(args) {
         args = args || {};
         var i18n = args.i18n || {};
-        var terms = i18n.terms || {};
+        var i18nTerms = i18n.terms || {};
         this.config = {
             documentId: args.documentId || '',
             i18n: {
                 idDelimiter: i18n.idDelimiter || '-',
                 terms: {
-                    footnote: terms.footnote || 'footnote',
-                    footnoteReference: terms.footnoteReference || 'footnote-reference',
+                    footnote: i18nTerms.footnote || 'footnote',
+                    footnoteReference: i18nTerms.footnoteReference || 'footnote-reference',
                 }
             }
         };
