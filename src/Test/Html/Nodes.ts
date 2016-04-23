@@ -329,12 +329,10 @@ describe('A link node', () => {
 
 
 describe('Using default configuration settings, a footnote reference node', () => {
-  const writer = new HtmlWriter()
-  const node = new FootnoteReferenceNode(3)
-  
-  
-  it("produces a sup element with a data-footnote-reference attribute, containing a link to the footnote's ID containing the reference ordinal", () => {
-    
+  it("produces a sup element with a data-footnote-reference attribute and an id indicating its reference number, containing a link that contains the reference number and points to the footnote", () => {
+    const node = new FootnoteReferenceNode(3)
+    const writer = new HtmlWriter()
+    expect(writer.write(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
   })
 })
 

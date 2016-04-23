@@ -131,8 +131,10 @@ export class HtmlWriter extends Writer {
 
     return this.htmlElement(
       'sup',
-      [innerLinkNode],
-      { id: this.config.footnoteReferenceId(node.referenceNumber) })
+      [innerLinkNode], {
+        id: this.config.footnoteReferenceId(node.referenceNumber),
+        'data-footnote-reference': null
+      })
   }
 
   footnoteBlock(node: FootnoteBlockNode): string {
@@ -211,8 +213,10 @@ export class HtmlWriter extends Writer {
     const termHtml =
       this.htmlElement(
         'dt',
-        [this.footnoteLinkBackToReference(footnote)],
-        { id: this.config.footnoteId(footnote.referenceNumber) })
+        [this.footnoteLinkBackToReference(footnote)], {
+          id: this.config.footnoteId(footnote.referenceNumber),
+          'data-footnote': null
+        })
 
     const descriptionHtml =
       this.htmlElement('dd', footnote.children)

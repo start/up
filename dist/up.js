@@ -2608,7 +2608,10 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
-        return this.htmlElement('sup', [innerLinkNode], { id: this.config.footnoteReferenceId(node.referenceNumber) });
+        return this.htmlElement('sup', [innerLinkNode], {
+            id: this.config.footnoteReferenceId(node.referenceNumber),
+            'data-footnote-reference': null
+        });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
@@ -2660,7 +2663,10 @@ var HtmlWriter = (function (_super) {
         return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.config.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
-        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.config.footnoteId(footnote.referenceNumber) });
+        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], {
+            id: this.config.footnoteId(footnote.referenceNumber),
+            'data-footnote': null
+        });
         var descriptionHtml = this.htmlElement('dd', footnote.children);
         return termHtml + descriptionHtml;
     };
