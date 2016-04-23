@@ -2551,9 +2551,6 @@ var HtmlWriter = (function (_super) {
         var _this = this;
         return htmlElement('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }).join(''));
     };
-    HtmlWriter.prototype.unorderedListItem = function (listItem) {
-        return this.htmlElement('li', listItem.children);
-    };
     HtmlWriter.prototype.orderedList = function (node) {
         var _this = this;
         var attrs = {};
@@ -2566,34 +2563,13 @@ var HtmlWriter = (function (_super) {
         }
         return htmlElement('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }).join(''), attrs);
     };
-    HtmlWriter.prototype.orderedListItem = function (listItem) {
-        var attrs = {};
-        if (listItem.ordinal != null) {
-            attrs.value = listItem.ordinal;
-        }
-        return this.htmlElement('li', listItem.children, attrs);
-    };
     HtmlWriter.prototype.descriptionList = function (node) {
         var _this = this;
         return htmlElement('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }).join(''));
     };
-    HtmlWriter.prototype.descriptionListItem = function (listItem) {
-        var _this = this;
-        return (listItem.terms.map(function (term) { return _this.descriptionTerm(term); }).join('')
-            + this.description(listItem.description));
-    };
-    HtmlWriter.prototype.descriptionTerm = function (term) {
-        return this.htmlElement('dt', term.children);
-    };
-    HtmlWriter.prototype.description = function (description) {
-        return this.htmlElement('dd', description.children);
-    };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
         return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), { 'data-lines': null });
-    };
-    HtmlWriter.prototype.line = function (line) {
-        return this.htmlElement('div', line.children);
     };
     HtmlWriter.prototype.codeBlock = function (node) {
         return htmlElement('pre', htmlElement('code', node.text));
@@ -2649,6 +2625,33 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.plainText = function (node) {
         return node.text;
+    };
+    HtmlWriter.prototype.unorderedListItem = function (listItem) {
+        return this.htmlElement('li', listItem.children);
+    };
+    HtmlWriter.prototype.orderedListItem = function (listItem) {
+        var attrs = {};
+        if (listItem.ordinal != null) {
+            attrs.value = listItem.ordinal;
+        }
+        return this.htmlElement('li', listItem.children, attrs);
+    };
+    HtmlWriter.prototype.descriptionListItem = function (listItem) {
+        var _this = this;
+        return (listItem.terms.map(function (term) { return _this.descriptionTerm(term); }).join('')
+            + this.description(listItem.description));
+    };
+    HtmlWriter.prototype.descriptionTerm = function (term) {
+        return this.htmlElement('dt', term.children);
+    };
+    HtmlWriter.prototype.description = function (description) {
+        return this.htmlElement('dd', description.children);
+    };
+    HtmlWriter.prototype.line = function (line) {
+        return this.htmlElement('div', line.children);
+    };
+    HtmlWriter.prototype.footnote = function (footnote) {
+        throw new Error("Not implemented!");
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }

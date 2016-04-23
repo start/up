@@ -12,6 +12,7 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
+import { Footnote } from '../SyntaxNodes/Footnote'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
@@ -51,10 +52,6 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  unorderedListItem(listItem: UnorderedListItem): string {
-    return this.htmlElement('li', listItem.children)
-  }
-
   orderedList(node: OrderedListNode): string {
     const attrs: { start?: number, reversed?: any } = {}
 
@@ -74,36 +71,11 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  orderedListItem(listItem: OrderedListItem): string {
-    const attrs: { value?: number } = {}
-
-    if (listItem.ordinal != null) {
-      attrs.value = listItem.ordinal
-    }
-
-    return this.htmlElement('li', listItem.children, attrs)
-  }
-
   descriptionList(node: DescriptionListNode): string {
     return htmlElement(
       'dl',
       node.listItems.map((listItem) => this.descriptionListItem(listItem)).join('')
     )
-  }
-
-  descriptionListItem(listItem: DescriptionListItem): string {
-    return (
-      listItem.terms.map((term) => this.descriptionTerm(term)).join('')
-      + this.description(listItem.description)
-    )
-  }
-
-  descriptionTerm(term: DescriptionTerm): string {
-    return this.htmlElement('dt', term.children)
-  }
-
-  description(description: Description): string {
-    return this.htmlElement('dd', description.children)
   }
 
   lineBlock(node: LineBlockNode): string {
@@ -112,10 +84,6 @@ export class HtmlWriter extends Writer {
       node.lines.map((line) => this.line(line)).join(''),
       { 'data-lines': null }
     )
-  }
-
-  line(line: Line): string {
-    return this.htmlElement('div', line.children)
   }
 
   codeBlock(node: CodeBlockNode): string {
@@ -197,11 +165,48 @@ export class HtmlWriter extends Writer {
     return node.text
   }
 
-  htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
+  private unorderedListItem(listItem: UnorderedListItem): string {
+    return this.htmlElement('li', listItem.children)
+  }
+
+  private orderedListItem(listItem: OrderedListItem): string {
+    const attrs: { value?: number } = {}
+
+    if (listItem.ordinal != null) {
+      attrs.value = listItem.ordinal
+    }
+
+    return this.htmlElement('li', listItem.children, attrs)
+  }
+
+  private descriptionListItem(listItem: DescriptionListItem): string {
+    return (
+      listItem.terms.map((term) => this.descriptionTerm(term)).join('')
+      + this.description(listItem.description)
+    )
+  }
+
+  private descriptionTerm(term: DescriptionTerm): string {
+    return this.htmlElement('dt', term.children)
+  }
+
+  private description(description: Description): string {
+    return this.htmlElement('dd', description.children)
+  }
+
+  private line(line: Line): string {
+    return this.htmlElement('div', line.children)
+  }
+  
+  private footnote(footnote: Footnote): string {
+    throw new Error("Not implemented!")
+  }
+
+  private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
     return htmlElement(tagName, this.htmlElements(children), attrs)
   }
 
-  htmlElements(nodes: SyntaxNode[]): string {
+  private htmlElements(nodes: SyntaxNode[]): string {
     return nodes.reduce(
       (html, child) => html + this.write(child),
       '')
