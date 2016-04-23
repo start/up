@@ -329,10 +329,9 @@ describe('A link node', () => {
 
 
 describe('A footnote reference node', () => {
-  it("produces a sup element with a data-footnote-reference attribute and an id indicating its reference number, containing a link that contains the reference number and points to the footnote", () => {
+  it("produces a sup element with a data-footnote-reference attribute and an ID indicating its reference number, containing a link that contains the reference number and points to the footnote", () => {
     const node = new FootnoteReferenceNode(3)
-    const writer = new HtmlWriter()
-    expect(writer.write(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
+    expect(Up.toHtml(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
   })
 })
 
@@ -345,22 +344,27 @@ describe('A footnote block node', () => {
 })
 
 
-/*describe('A footnote block node', () => {  
-  it("produces a dl element with a data-footnotes attribute. For each footnote, a dt element and dd element contains the reference number and footnote contents respectively", () => {
-  const node =
-    new FootnoteBlockNode([
-      new Footnote([
-        new PlainTextNode("Help."),
-      ], 2),
-      new Footnote([
-        new PlainTextNode("I'm trapped in a footnote block."),
-      ], 3),
-    ])
-    
-  const writer = new HtmlWriter()
-  expect(writer.write(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
+describe("Each footnote in a footnote block", () => {
+  it("produce a dt element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference, and a dd element containing the footnote contents", () => {
+    const node =
+      new FootnoteBlockNode([
+        new Footnote([
+          new PlainTextNode("Arwings"),
+        ], 2),
+        new Footnote([
+          new PlainTextNode("Killer Bees"),
+        ], 3),
+      ])
+
+    const html =
+      '<dl data-footnotes>'
+      + '<dt id="footnote-2" data-footnote><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote-3" data-footnote><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      + '</dl>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
   })
-})*/
+})
 
 
 describe('An image node', () => {

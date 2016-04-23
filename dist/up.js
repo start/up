@@ -2615,7 +2615,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(' '), { 'data-footnotes': null });
+        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-footnotes': null });
     };
     HtmlWriter.prototype.link = function (node) {
         return this.htmlElement('a', node.children, { href: node.url });
