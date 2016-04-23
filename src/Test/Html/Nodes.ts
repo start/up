@@ -32,6 +32,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import * as Up from '../../index'
+import { HtmlWriter } from '../../Writer/HtmlWriter'
 
 
 describe('An empty document node', () => {
@@ -319,21 +320,27 @@ describe('A revision deletion node', () => {
 })
 
 
-describe('A footnote reference node', () => {
-  
-})
-
-
-describe('A footnote block node', () => {
-  
-})
-
-
 describe('A link node', () => {
   it('produces an a (anchor) element with an href attribute', () => {
     const node = new LinkNode([new PlainTextNode('Google')], 'https://google.com')
     expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google</a>')
   })
+})
+
+
+describe('Using default configuration settings, a footnote reference node', () => {
+  const writer = new HtmlWriter()
+  const node = new FootnoteReferenceNode(3)
+  
+  
+  it("produces a sup element with a data-footnote-reference attribute, containing a link to the footnote's ID containing the reference ordinal", () => {
+    
+  })
+})
+
+
+describe('A footnote block node', () => {
+  
 })
 
 
