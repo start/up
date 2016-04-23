@@ -2844,7 +2844,7 @@ var WriterConfig = (function () {
         var rawId = allParts.join(' ');
         return (rawId
             .trim()
-            .replace(/\s+/, this.config.i18n.idWordDelimiter));
+            .replace(/\s+/g, this.config.i18n.idWordDelimiter));
     };
     WriterConfig.prototype.footnoteId = function (referenceNumber) {
         return this.getId(this.config.i18n.terms.footnote, referenceNumber.toString());

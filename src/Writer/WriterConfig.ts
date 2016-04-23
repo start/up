@@ -40,7 +40,7 @@ export class WriterConfig {
     return (
       rawId
         .trim()
-        .replace(/\s+/, this.config.i18n.idWordDelimiter))
+        .replace(/\s+/g, this.config.i18n.idWordDelimiter))
   }
 
   footnoteId(referenceNumber: number): string {
