@@ -14,6 +14,11 @@ function swap(items, firstIndex, secondIndex) {
     items[secondIndex] = firstItem;
 }
 exports.swap = swap;
+function concat(collections) {
+    return (_a = []).concat.apply(_a, [[]].concat(collections));
+    var _a;
+}
+exports.concat = concat;
 
 },{}],2:[function(require,module,exports){
 "use strict";
@@ -2607,7 +2612,8 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('sup', [innerLinkNode], { id: 'todo' });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
-        throw new Error("Not implemented!");
+        var _this = this;
+        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(' '), { 'data-footnotes': null });
     };
     HtmlWriter.prototype.link = function (node) {
         return this.htmlElement('a', node.children, { href: node.url });
@@ -2651,7 +2657,11 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('div', line.children);
     };
     HtmlWriter.prototype.footnote = function (footnote) {
-        throw new Error("Not implemented!");
+        return (htmlElement('dt', 'todo', { id: 'todo' })
+            + this.htmlElement('dd', footnote.children));
+    };
+    HtmlWriter.prototype.mediaFallback = function (content, url) {
+        return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }
@@ -2660,9 +2670,6 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.htmlElements = function (nodes) {
         var _this = this;
         return nodes.reduce(function (html, child) { return html + _this.write(child); }, '');
-    };
-    HtmlWriter.prototype.mediaFallback = function (content, url) {
-        return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
     };
     return HtmlWriter;
 }(Writer_1.Writer));

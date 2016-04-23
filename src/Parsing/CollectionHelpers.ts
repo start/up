@@ -14,3 +14,7 @@ export function swap<T>(items: T[], firstIndex: number, secondIndex: number): vo
   items[firstIndex] = items[secondIndex]
   items[secondIndex] = firstItem
 }
+
+export function concat<T>(collections: T[][]): T[] {
+  return [].concat([], ...collections)
+}
