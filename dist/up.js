@@ -1593,21 +1593,27 @@ var GetOutlineNodes_1 = require('./Outline/GetOutlineNodes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var CollectionHelpers_1 = require('./CollectionHelpers');
 function parseDocument(text) {
-    var outlineNodes = GetOutlineNodes_1.getOutlineNodes(text);
-    var outlineNodesWithFootnotes = [];
-    var nextFootnoteReferenceOrdinal = 1;
-    for (var _i = 0, outlineNodes_1 = outlineNodes; _i < outlineNodes_1.length; _i++) {
-        var outlineNode = outlineNodes_1[_i];
-        outlineNodesWithFootnotes.push(outlineNode);
-        var result = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal);
-        if (result.footnotesToPlaceInNextBlock.length) {
-            outlineNodesWithFootnotes.push(getFootnoteBlockAndProcessNestedReferences(result.footnotesToPlaceInNextBlock));
-        }
-        nextFootnoteReferenceOrdinal += result.counAlltFootnotes();
-    }
-    return new DocumentNode_1.DocumentNode(outlineNodesWithFootnotes);
+    var documentNode = new DocumentNode_1.DocumentNode(GetOutlineNodes_1.getOutlineNodes(text));
+    var initialFootnoteReferenceNumber = 1;
+    processFootnotesIntoBlocksAndGetCount(documentNode, initialFootnoteReferenceNumber);
+    return documentNode;
 }
 exports.parseDocument = parseDocument;
+function processFootnotesIntoBlocksAndGetCount(outlineNodeContainer, nextFootnoteReferenceNumber) {
+    var originalFootnoteReferenceOrdinal = nextFootnoteReferenceNumber;
+    var outlineNodesWithFootnotes = [];
+    for (var _i = 0, _a = outlineNodeContainer.children; _i < _a.length; _i++) {
+        var outlineNode = _a[_i];
+        outlineNodesWithFootnotes.push(outlineNode);
+        var outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceNumber);
+        if (outlineNodeResult.footnotesToPlaceInNextBlock.length) {
+            outlineNodesWithFootnotes.push(getFootnoteBlockAndProcessNestedReferences(outlineNodeResult.footnotesToPlaceInNextBlock));
+        }
+        nextFootnoteReferenceNumber += outlineNodeResult.counAlltFootnotes();
+    }
+    outlineNodeContainer.children = outlineNodesWithFootnotes;
+    return nextFootnoteReferenceNumber - originalFootnoteReferenceOrdinal;
+}
 var ProcessOutlineContainerFootnotesResult = (function () {
     function ProcessOutlineContainerFootnotesResult(args) {
         if (args) {
@@ -1632,108 +1638,93 @@ var ProcessOutlineContainerFootnotesResult = (function () {
     };
     return ProcessOutlineContainerFootnotesResult;
 }());
-function processFootnotesForOutlineNodes(outlineNodes, nextFootnoteReferenceOrdinal) {
+function processFootnotesForOutlineNodes(outlineNodes, nextFootnoteReferenceNumber) {
     var result = new ProcessOutlineContainerFootnotesResult();
-    for (var _i = 0, outlineNodes_2 = outlineNodes; _i < outlineNodes_2.length; _i++) {
-        var outlineNode = outlineNodes_2[_i];
-        var outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal);
-        nextFootnoteReferenceOrdinal += outlineNodeResult.counAlltFootnotes();
+    for (var _i = 0, outlineNodes_1 = outlineNodes; _i < outlineNodes_1.length; _i++) {
+        var outlineNode = outlineNodes_1[_i];
+        var outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceNumber);
+        nextFootnoteReferenceNumber += outlineNodeResult.counAlltFootnotes();
         result.include(outlineNodeResult);
     }
     return result;
 }
-function processFootnotes(node, nextFootnoteReferenceOrdinal) {
+function processFootnotes(node, nextFootnoteReferenceNumber) {
     if ((node instanceof ParagraphNode_1.ParagraphNode) || (node instanceof HeadingNode_1.HeadingNode)) {
         return new ProcessOutlineContainerFootnotesResult({
-            footnotesToPlaceInNextBlock: replacePotentialReferencesAndGetFootnotes(node.children, nextFootnoteReferenceOrdinal)
+            footnotesToPlaceInNextBlock: replacePotentialReferencesAndGetFootnotes(node.children, nextFootnoteReferenceNumber)
         });
     }
     if ((node instanceof UnorderedListNode_1.UnorderedListNode) || (node instanceof OrderedListNode_1.OrderedListNode)) {
-        return processOutlineContainersFootnotes(node.listItems, nextFootnoteReferenceOrdinal);
+        return processOutlineContainersFootnotes(node.listItems, nextFootnoteReferenceNumber);
     }
     if (node instanceof LineBlockNode_1.LineBlockNode) {
         return new ProcessOutlineContainerFootnotesResult({
-            footnotesToPlaceInNextBlock: replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines, nextFootnoteReferenceOrdinal)
+            footnotesToPlaceInNextBlock: replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines, nextFootnoteReferenceNumber)
         });
     }
     if (node instanceof DescriptionListNode_1.DescriptionListNode) {
-        return processDescriptionListItemFootnotes(node.listItems, nextFootnoteReferenceOrdinal);
+        return processDescriptionListItemFootnotes(node.listItems, nextFootnoteReferenceNumber);
     }
     if (node instanceof BlockquoteNode_1.BlockquoteNode) {
         return new ProcessOutlineContainerFootnotesResult({
-            countFootnotesInBlockquotes: processBlockquoteFootnotesAndgetCount(node, nextFootnoteReferenceOrdinal)
+            countFootnotesInBlockquotes: processFootnotesIntoBlocksAndGetCount(node, nextFootnoteReferenceNumber)
         });
     }
     return new ProcessOutlineContainerFootnotesResult();
 }
-function processOutlineContainersFootnotes(containers, nextFootnoteReferenceOrdinal) {
+function processOutlineContainersFootnotes(containers, nextFootnoteReferenceNumber) {
     var result = new ProcessOutlineContainerFootnotesResult();
     for (var _i = 0, containers_1 = containers; _i < containers_1.length; _i++) {
         var container = containers_1[_i];
-        var resultForThisOutlineContainer = processFootnotesForOutlineNodes(container.children, nextFootnoteReferenceOrdinal);
-        nextFootnoteReferenceOrdinal += resultForThisOutlineContainer.counAlltFootnotes();
+        var resultForThisOutlineContainer = processFootnotesForOutlineNodes(container.children, nextFootnoteReferenceNumber);
+        nextFootnoteReferenceNumber += resultForThisOutlineContainer.counAlltFootnotes();
         result.include(resultForThisOutlineContainer);
     }
     return result;
 }
-function processDescriptionListItemFootnotes(listItems, nextFootnoteReferenceOrdinal) {
+function processDescriptionListItemFootnotes(listItems, nextFootnoteReferenceNumber) {
     var result = new ProcessOutlineContainerFootnotesResult();
     for (var _i = 0, listItems_1 = listItems; _i < listItems_1.length; _i++) {
         var listItem = listItems_1[_i];
-        var footnotesForTerms = replaceInlineContainersPotentialReferencesAndGetFootnotes(listItem.terms, nextFootnoteReferenceOrdinal);
+        var footnotesForTerms = replaceInlineContainersPotentialReferencesAndGetFootnotes(listItem.terms, nextFootnoteReferenceNumber);
         result.includeFootnotesToPlaceInNextBlock(footnotesForTerms);
-        nextFootnoteReferenceOrdinal += footnotesForTerms.length;
-        var descriptionResult = processFootnotesForOutlineNodes(listItem.description.children, nextFootnoteReferenceOrdinal);
-        nextFootnoteReferenceOrdinal += descriptionResult.counAlltFootnotes();
+        nextFootnoteReferenceNumber += footnotesForTerms.length;
+        var descriptionResult = processFootnotesForOutlineNodes(listItem.description.children, nextFootnoteReferenceNumber);
+        nextFootnoteReferenceNumber += descriptionResult.counAlltFootnotes();
         result.include(descriptionResult);
     }
     return result;
 }
-function processBlockquoteFootnotesAndgetCount(blockquote, nextFootnoteReferenceOrdinal) {
-    var originalFootnoteReferenceOrdinal = nextFootnoteReferenceOrdinal;
-    var outlineNodesWithFootnotes = [];
-    for (var _i = 0, _a = blockquote.children; _i < _a.length; _i++) {
-        var outlineNode = _a[_i];
-        outlineNodesWithFootnotes.push(outlineNode);
-        var outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal);
-        if (outlineNodeResult.footnotesToPlaceInNextBlock.length) {
-            outlineNodesWithFootnotes.push(getFootnoteBlockAndProcessNestedReferences(outlineNodeResult.footnotesToPlaceInNextBlock));
-        }
-        nextFootnoteReferenceOrdinal += outlineNodeResult.counAlltFootnotes();
-    }
-    blockquote.children = outlineNodesWithFootnotes;
-    return nextFootnoteReferenceOrdinal - originalFootnoteReferenceOrdinal;
-}
-function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers, nextFootnoteReferenceOrdinal) {
+function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers, nextFootnoteReferenceNumber) {
     var footnotes = [];
     for (var _i = 0, inlineContainers_1 = inlineContainers; _i < inlineContainers_1.length; _i++) {
         var container = inlineContainers_1[_i];
-        var containerFootnotes = replacePotentialReferencesAndGetFootnotes(container.children, nextFootnoteReferenceOrdinal);
+        var containerFootnotes = replacePotentialReferencesAndGetFootnotes(container.children, nextFootnoteReferenceNumber);
         footnotes.push.apply(footnotes, containerFootnotes);
-        nextFootnoteReferenceOrdinal += containerFootnotes.length;
+        nextFootnoteReferenceNumber += containerFootnotes.length;
     }
     return footnotes;
 }
-function replacePotentialReferencesAndGetFootnotes(inlineNodes, nextFootnoteReferenceOrdinal) {
+function replacePotentialReferencesAndGetFootnotes(inlineNodes, nextFootnoteReferenceNumber) {
     var footnotes = [];
     for (var i = 0; i < inlineNodes.length; i++) {
         var node = inlineNodes[i];
         if (node instanceof PlaceholderFootnoteReferenceNode_1.PlaceholderFootnoteReferenceNode) {
-            footnotes.push(new Footnote_1.Footnote(node.children, nextFootnoteReferenceOrdinal));
-            inlineNodes[i] = new FootnoteReferenceNode_1.FootnoteReferenceNode(nextFootnoteReferenceOrdinal);
-            nextFootnoteReferenceOrdinal += 1;
+            footnotes.push(new Footnote_1.Footnote(node.children, nextFootnoteReferenceNumber));
+            inlineNodes[i] = new FootnoteReferenceNode_1.FootnoteReferenceNode(nextFootnoteReferenceNumber);
+            nextFootnoteReferenceNumber += 1;
         }
     }
     return footnotes;
 }
 function getFootnoteBlockAndProcessNestedReferences(footnotes) {
     var block = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
-    var nextFootnoteReferenceOrdinal = CollectionHelpers_1.last(block.footnotes).referenceNumber + 1;
+    var nextFootnoteReferenceNumber = CollectionHelpers_1.last(block.footnotes).referenceNumber + 1;
     for (var footnoteIndex = 0; footnoteIndex < block.footnotes.length; footnoteIndex++) {
         var footnote = block.footnotes[footnoteIndex];
-        var nestedFootnotes = replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceOrdinal);
+        var nestedFootnotes = replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceNumber);
         (_a = block.footnotes).push.apply(_a, nestedFootnotes);
-        nextFootnoteReferenceOrdinal += nestedFootnotes.length;
+        nextFootnoteReferenceNumber += nestedFootnotes.length;
     }
     return block;
     var _a;

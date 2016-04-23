@@ -23,26 +23,36 @@ import { last } from './CollectionHelpers'
 // TODO: Refactor tons of duplicate functionality
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 
-
 export function parseDocument(text: string): DocumentNode {
-  const outlineNodes = getOutlineNodes(text)
+  const documentNode = new DocumentNode(getOutlineNodes(text))
+  
+  const initialFootnoteReferenceNumber = 1
+
+  processFootnotesIntoBlocksAndGetCount(documentNode, initialFootnoteReferenceNumber)
+  
+  return documentNode
+}
+
+function processFootnotesIntoBlocksAndGetCount(outlineNodeContainer: OutlineNodeContainer, nextFootnoteReferenceNumber: number): number {
+  const originalFootnoteReferenceOrdinal = nextFootnoteReferenceNumber
   const outlineNodesWithFootnotes: OutlineSyntaxNode[] = []
 
-  let nextFootnoteReferenceOrdinal = 1
-
-  for (const outlineNode of outlineNodes) {
+  for (const outlineNode of outlineNodeContainer.children) {
     outlineNodesWithFootnotes.push(outlineNode)
 
-    const result = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal)
+    const outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceNumber)
 
-    if (result.footnotesToPlaceInNextBlock.length) {
-      outlineNodesWithFootnotes.push(getFootnoteBlockAndProcessNestedReferences(result.footnotesToPlaceInNextBlock))
+    if (outlineNodeResult.footnotesToPlaceInNextBlock.length) {
+      outlineNodesWithFootnotes.push(
+        getFootnoteBlockAndProcessNestedReferences(outlineNodeResult.footnotesToPlaceInNextBlock))
     }
 
-    nextFootnoteReferenceOrdinal += result.counAlltFootnotes()
+    nextFootnoteReferenceNumber += outlineNodeResult.counAlltFootnotes()
   }
 
-  return new DocumentNode(outlineNodesWithFootnotes)
+  outlineNodeContainer.children = outlineNodesWithFootnotes
+
+  return nextFootnoteReferenceNumber - originalFootnoteReferenceOrdinal
 }
 
 
@@ -85,13 +95,13 @@ class ProcessOutlineContainerFootnotesResult {
 }
 
 
-function processFootnotesForOutlineNodes(outlineNodes: OutlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): ProcessOutlineContainerFootnotesResult {
+function processFootnotesForOutlineNodes(outlineNodes: OutlineSyntaxNode[], nextFootnoteReferenceNumber: number): ProcessOutlineContainerFootnotesResult {
   const result = new ProcessOutlineContainerFootnotesResult()
 
   for (const outlineNode of outlineNodes) {
-    const outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal)
+    const outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceNumber)
 
-    nextFootnoteReferenceOrdinal += outlineNodeResult.counAlltFootnotes()
+    nextFootnoteReferenceNumber += outlineNodeResult.counAlltFootnotes()
     result.include(outlineNodeResult)
   }
 
@@ -99,30 +109,30 @@ function processFootnotesForOutlineNodes(outlineNodes: OutlineSyntaxNode[], next
 }
 
 
-function processFootnotes(node: OutlineSyntaxNode, nextFootnoteReferenceOrdinal: number): ProcessOutlineContainerFootnotesResult {
+function processFootnotes(node: OutlineSyntaxNode, nextFootnoteReferenceNumber: number): ProcessOutlineContainerFootnotesResult {
   if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
     return new ProcessOutlineContainerFootnotesResult({
-      footnotesToPlaceInNextBlock: replacePotentialReferencesAndGetFootnotes(node.children, nextFootnoteReferenceOrdinal)
+      footnotesToPlaceInNextBlock: replacePotentialReferencesAndGetFootnotes(node.children, nextFootnoteReferenceNumber)
     })
   }
 
   if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-    return processOutlineContainersFootnotes(node.listItems, nextFootnoteReferenceOrdinal)
+    return processOutlineContainersFootnotes(node.listItems, nextFootnoteReferenceNumber)
   }
 
   if (node instanceof LineBlockNode) {
     return new ProcessOutlineContainerFootnotesResult({
-      footnotesToPlaceInNextBlock: replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines, nextFootnoteReferenceOrdinal)
+      footnotesToPlaceInNextBlock: replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines, nextFootnoteReferenceNumber)
     })
   }
 
   if (node instanceof DescriptionListNode) {
-    return processDescriptionListItemFootnotes(node.listItems, nextFootnoteReferenceOrdinal)
+    return processDescriptionListItemFootnotes(node.listItems, nextFootnoteReferenceNumber)
   }
 
   if (node instanceof BlockquoteNode) {
     return new ProcessOutlineContainerFootnotesResult({
-      countFootnotesInBlockquotes: processBlockquoteFootnotesAndgetCount(node, nextFootnoteReferenceOrdinal)
+      countFootnotesInBlockquotes: processFootnotesIntoBlocksAndGetCount(node, nextFootnoteReferenceNumber)
     })
   }
 
@@ -140,13 +150,13 @@ interface InlineNodeContainer {
 }
 
 
-function processOutlineContainersFootnotes(containers: OutlineNodeContainer[], nextFootnoteReferenceOrdinal: number): ProcessOutlineContainerFootnotesResult {
+function processOutlineContainersFootnotes(containers: OutlineNodeContainer[], nextFootnoteReferenceNumber: number): ProcessOutlineContainerFootnotesResult {
   const result = new ProcessOutlineContainerFootnotesResult()
 
   for (const container of containers) {
-    const resultForThisOutlineContainer = processFootnotesForOutlineNodes(container.children, nextFootnoteReferenceOrdinal)
+    const resultForThisOutlineContainer = processFootnotesForOutlineNodes(container.children, nextFootnoteReferenceNumber)
 
-    nextFootnoteReferenceOrdinal += resultForThisOutlineContainer.counAlltFootnotes()
+    nextFootnoteReferenceNumber += resultForThisOutlineContainer.counAlltFootnotes()
     result.include(resultForThisOutlineContainer)
   }
 
@@ -154,18 +164,18 @@ function processOutlineContainersFootnotes(containers: OutlineNodeContainer[], n
 }
 
 
-function processDescriptionListItemFootnotes(listItems: DescriptionListItem[], nextFootnoteReferenceOrdinal: number): ProcessOutlineContainerFootnotesResult {
+function processDescriptionListItemFootnotes(listItems: DescriptionListItem[], nextFootnoteReferenceNumber: number): ProcessOutlineContainerFootnotesResult {
   const result = new ProcessOutlineContainerFootnotesResult()
 
   for (const listItem of listItems) {
-    const footnotesForTerms = replaceInlineContainersPotentialReferencesAndGetFootnotes(listItem.terms, nextFootnoteReferenceOrdinal)
+    const footnotesForTerms = replaceInlineContainersPotentialReferencesAndGetFootnotes(listItem.terms, nextFootnoteReferenceNumber)
 
     result.includeFootnotesToPlaceInNextBlock(footnotesForTerms)
-    nextFootnoteReferenceOrdinal += footnotesForTerms.length
+    nextFootnoteReferenceNumber += footnotesForTerms.length
 
-    const descriptionResult = processFootnotesForOutlineNodes(listItem.description.children, nextFootnoteReferenceOrdinal)
+    const descriptionResult = processFootnotesForOutlineNodes(listItem.description.children, nextFootnoteReferenceNumber)
 
-    nextFootnoteReferenceOrdinal += descriptionResult.counAlltFootnotes()
+    nextFootnoteReferenceNumber += descriptionResult.counAlltFootnotes()
     result.include(descriptionResult)
   }
 
@@ -173,37 +183,14 @@ function processDescriptionListItemFootnotes(listItems: DescriptionListItem[], n
 }
 
 
-function processBlockquoteFootnotesAndgetCount(blockquote: BlockquoteNode, nextFootnoteReferenceOrdinal: number): number {
-  const originalFootnoteReferenceOrdinal = nextFootnoteReferenceOrdinal
-  const outlineNodesWithFootnotes: OutlineSyntaxNode[] = []
-
-  for (const outlineNode of blockquote.children) {
-    outlineNodesWithFootnotes.push(outlineNode)
-
-    const outlineNodeResult = processFootnotes(outlineNode, nextFootnoteReferenceOrdinal)
-
-    if (outlineNodeResult.footnotesToPlaceInNextBlock.length) {
-      outlineNodesWithFootnotes.push(
-        getFootnoteBlockAndProcessNestedReferences(outlineNodeResult.footnotesToPlaceInNextBlock))
-    }
-
-    nextFootnoteReferenceOrdinal += outlineNodeResult.counAlltFootnotes()
-  }
-
-  blockquote.children = outlineNodesWithFootnotes
-
-  return nextFootnoteReferenceOrdinal - originalFootnoteReferenceOrdinal
-}
-
-
-function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers: InlineNodeContainer[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers: InlineNodeContainer[], nextFootnoteReferenceNumber: number): Footnote[] {
   const footnotes: Footnote[] = []
 
   for (const container of inlineContainers) {
-    const containerFootnotes = replacePotentialReferencesAndGetFootnotes(container.children, nextFootnoteReferenceOrdinal)
+    const containerFootnotes = replacePotentialReferencesAndGetFootnotes(container.children, nextFootnoteReferenceNumber)
 
     footnotes.push(...containerFootnotes)
-    nextFootnoteReferenceOrdinal += containerFootnotes.length
+    nextFootnoteReferenceNumber += containerFootnotes.length
   }
 
   return footnotes
@@ -215,16 +202,16 @@ function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContain
 //
 // It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
 // (replaced) `PlaceholderFootnoteReferenceNode`.
-function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceOrdinal: number): Footnote[] {
+function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceNumber: number): Footnote[] {
   const footnotes: Footnote[] = []
 
   for (let i = 0; i < inlineNodes.length; i++) {
     const node = inlineNodes[i]
 
     if (node instanceof PlaceholderFootnoteReferenceNode) {
-      footnotes.push(new Footnote(node.children, nextFootnoteReferenceOrdinal))
-      inlineNodes[i] = new FootnoteReferenceNode(nextFootnoteReferenceOrdinal)
-      nextFootnoteReferenceOrdinal += 1
+      footnotes.push(new Footnote(node.children, nextFootnoteReferenceNumber))
+      inlineNodes[i] = new FootnoteReferenceNode(nextFootnoteReferenceNumber)
+      nextFootnoteReferenceNumber += 1
     }
   }
 
@@ -244,19 +231,19 @@ function getFootnoteBlockAndProcessNestedReferences(footnotes: Footnote[]): Foot
   // Any nested footnotes are added to end of the footnote block, after all of the original footnotes. Then, any (doubly)
   // nested footnotes inside of *those* footnotes are added to the end, and the process repeats until no more nested
   // footnotes are found.
-  
+
   const block = new FootnoteBlockNode(footnotes)
 
-  let nextFootnoteReferenceOrdinal = last(block.footnotes).referenceNumber + 1
+  let nextFootnoteReferenceNumber = last(block.footnotes).referenceNumber + 1
 
   for (let footnoteIndex = 0; footnoteIndex < block.footnotes.length; footnoteIndex++) {
     const footnote = block.footnotes[footnoteIndex]
 
     const nestedFootnotes =
-      replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceOrdinal)
+      replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceNumber)
 
     block.footnotes.push(...nestedFootnotes)
-    nextFootnoteReferenceOrdinal += nestedFootnotes.length
+    nextFootnoteReferenceNumber += nestedFootnotes.length
   }
 
   return block
