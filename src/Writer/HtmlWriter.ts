@@ -36,7 +36,7 @@ export class HtmlWriter extends Writer {
   constructor(config?: WriterConfigArgs) {
     super(config)
   }
-  
+
   document(node: DocumentNode): string {
     return this.htmlElements(node.children)
   }
@@ -128,17 +128,20 @@ export class HtmlWriter extends Writer {
 
   footnoteReference(node: FootnoteReferenceNode): string {
     const ordinal = node.referenceOrdinal
-    
+
     const innerLinkNode =
       new LinkNode(
         [new PlainTextNode(ordinal.toString())],
         this.config.getFootnoteId(ordinal))
-        
+
     return this.htmlElement('sup', [innerLinkNode], { id: 'todo' })
   }
 
   footnoteBlock(node: FootnoteBlockNode): string {
-    throw new Error("Not implemented!")
+    return htmlElement(
+      'dl',
+      node.footnotes.map(footnote => this.footnote(footnote)).join(' '),
+      { 'data-footnotes': null })
   }
 
   link(node: LinkNode): string {
@@ -151,7 +154,7 @@ export class HtmlWriter extends Writer {
 
   audio(node: AudioNode): string {
     const { description, url } = node
-    
+
     return this.htmlElement('audio', this.mediaFallback(description, url), { src: url, title: description })
   }
 
@@ -197,9 +200,16 @@ export class HtmlWriter extends Writer {
   private line(line: Line): string {
     return this.htmlElement('div', line.children)
   }
-  
+
   private footnote(footnote: Footnote): string {
-    throw new Error("Not implemented!")
+    return (
+      htmlElement('dt', 'todo', { id: 'todo' })
+      + this.htmlElement('dd', footnote.children)
+    )
+  }
+
+  private mediaFallback(content: string, url: string): LinkNode[] {
+    return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
   private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
@@ -210,10 +220,6 @@ export class HtmlWriter extends Writer {
     return nodes.reduce(
       (html, child) => html + this.write(child),
       '')
-  }
-  
-  private mediaFallback(content: string, url: string): LinkNode[] {
-    return [new LinkNode([new PlainTextNode(content)], url)]
   }
 }
 
