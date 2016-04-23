@@ -2808,12 +2808,12 @@ var WriterConfig = (function () {
         var i18n = args.i18n || {};
         var i18nTerms = i18n.terms || {};
         this.config = {
-            documentId: args.documentId || '',
+            documentName: args.documentName || '',
             i18n: {
-                idDelimiter: i18n.idDelimiter || '-',
+                idWordDelimiter: i18n.idWordDelimiter || '-',
                 terms: {
                     footnote: i18nTerms.footnote || 'footnote',
-                    footnoteReference: i18nTerms.footnoteReference || 'footnote-reference',
+                    footnoteReference: i18nTerms.footnoteReference || 'footnote reference',
                 }
             }
         };
@@ -2823,10 +2823,11 @@ var WriterConfig = (function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             parts[_i - 0] = arguments[_i];
         }
-        return ([this.config.documentId]
-            .concat(parts)
-            .filter(function (part) { return !!part; })
-            .join(this.config.i18n.idDelimiter));
+        var allParts = [this.config.documentName].concat(parts);
+        var rawId = allParts.join(' ');
+        return (rawId
+            .trim()
+            .replace(/\s+/, this.config.i18n.idWordDelimiter));
     };
     WriterConfig.prototype.getFootnoteId = function (ordinal) {
         return this.getId(this.config.i18n.terms.footnote, ordinal.toString());

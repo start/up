@@ -1,9 +1,9 @@
 export interface WriterConfigArgs {
-  documentId?: string,
-  
-  i18n?: {    
-    idDelimiter?: string,
-    
+  documentName?: string,
+
+  i18n?: {
+    idWordDelimiter?: string,
+
     terms?: {
       footnote?: string,
       footnoteReference?: string
@@ -20,26 +20,27 @@ export class WriterConfig {
     const i18nTerms = i18n.terms || {}
 
     this.config = {
-      documentId: args.documentId || '',
+      documentName: args.documentName || '',
 
       i18n: {
-        idDelimiter: i18n.idDelimiter || '-',
+        idWordDelimiter: i18n.idWordDelimiter || '-',
 
         terms: {
           footnote: i18nTerms.footnote || 'footnote',
-          footnoteReference: i18nTerms.footnoteReference || 'footnote-reference',
+          footnoteReference: i18nTerms.footnoteReference || 'footnote reference',
         }
       }
     }
   }
 
   private getId(...parts: string[]): string {
+    const allParts = [this.config.documentName].concat(parts)
+    const rawId = allParts.join(' ')
+
     return (
-      [this.config.documentId]
-        .concat(parts)
-        .filter(part => !!part)
-        .join(this.config.i18n.idDelimiter)
-    )
+      rawId
+        .trim()
+        .replace(/\s+/, this.config.i18n.idWordDelimiter))
   }
 
   getFootnoteId(ordinal: number): string {
