@@ -390,7 +390,7 @@ Gary
           ], new Description([
             new ParagraphNode([
               new PlainTextNode('A strange seed was planted on its back at birth.'),
-              footnotes[1],
+              footnotes[0],
               new PlainTextNode(' The plant sprouts and grows with this Pokémon.')
             ])
           ])),
@@ -400,7 +400,7 @@ Gary
             new DescriptionTerm([new PlainTextNode('Lick')]),
             new DescriptionTerm([
               new PlainTextNode('Night Shade'),
-              footnotes[2]
+              footnotes[1]
             ])
           ], new Description([
             new ParagraphNode([
@@ -413,7 +413,7 @@ Gary
           ], new Description([
             new ParagraphNode([
               new PlainTextNode('A young man with a great sense of smell.'),
-              footnotes[3]
+              footnotes[2]
             ])
           ]))
         ]),
