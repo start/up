@@ -33,15 +33,6 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { WriterConfig, WriterConfigArgs } from './WriterConfig'
 
 
-class Sequence {
-  constructor(public nextValue: number) { }
-
-  next(): number {
-    return this.nextValue++
-  }
-}
-
-
 export abstract class Writer {
   public config: WriterConfig
 

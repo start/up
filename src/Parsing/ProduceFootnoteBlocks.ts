@@ -21,10 +21,34 @@ import { last } from './CollectionHelpers'
 // TODO: Refactor tons of duplicate functionality
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 
-export function produceFootnoteBlocks(documentNode: DocumentNode): void {  
+
+
+export function produceFootnoteBlocks(documentNode: DocumentNode): void {
   const initialFootnoteReferenceNumber = 1
-  
+
   produceFootnoteBlocksAndGetFootnoteCount(documentNode, initialFootnoteReferenceNumber)
+}
+
+
+class Sequence {
+  public nextValue: number
+
+  constructor(args: { start: number }) {
+    this.nextValue = args.start
+  }
+
+  next(): number {
+    return this.nextValue++
+  }
+}
+
+
+class FootnoteBlockProducer {
+  private footnoteReferenceNumberSequence = new Sequence({ start: 1 })
+
+  constructor(documentNode: DocumentNode) {
+    
+  }
 }
 
 function produceFootnoteBlocksAndGetFootnoteCount(outlineNodeContainer: OutlineNodeContainer, nextFootnoteReferenceNumber: number): number {
