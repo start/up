@@ -31,12 +31,13 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 describe('In a paragraph, text surrounded by 2 parentheses', () => {
   it('produces a footnote reference node. This node references a footnote node within a footnote block node after the paragraph', () => {
-
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
+    
     const footnote = new FootnoteReferenceNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.")).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -72,6 +73,7 @@ describe('A footnote reference', () => {
   })
 
   it('can contain other footnote references, which produce additional footnotes in the same footnote block', () => {
+const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really."
 
     const innerFootnote = new FootnoteReferenceNode([
       new PlainTextNode('Well, I '),
@@ -87,7 +89,7 @@ describe('A footnote reference', () => {
       new PlainTextNode(" Never have."),
     ], 1)
 
-    expect(Up.toAst("Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really.")).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),

@@ -13,7 +13,6 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { FootnoteReferenceNode } from '../../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
@@ -23,17 +22,19 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
-    expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.))")).to.be.eql(
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))"
+
+    const footnote = new FootnoteReferenceNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          new FootnoteReferenceNode(1)
+          footnote
         ]),
-        new FootnoteBlockNode([
-          new Footnote([
-            new PlainTextNode('Well, I do, but I pretend not to.')
-          ], 1)
-        ])
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
@@ -44,6 +45,10 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
     const text = `
 * > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.`
 
+    const footnote = new FootnoteReferenceNode([
+      new PlainTextNode("Well, I do, but I pretend not to."),
+    ], 1)
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -51,14 +56,10 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
             new BlockquoteNode([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
-                new FootnoteReferenceNode(1),
+                footnote,
                 new PlainTextNode(" Never have."),
               ]),
-              new FootnoteBlockNode([
-                new Footnote([
-                  new PlainTextNode("Well, I do, but I pretend not to."),
-                ], 1),
-              ])
+              new FootnoteBlockNode([footnote])
             ])
           ])
         ])
@@ -73,35 +74,35 @@ describe('Within an outline convention, a blockquoted footnote reference that fo
 
 * > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.`
 
+    const footnoteInFirstListItem = new FootnoteReferenceNode([
+      new PlainTextNode("When it's in other beverages."),
+    ], 1)
+
+    const footnoteInBlockquote = new FootnoteReferenceNode([
+      new PlainTextNode("Well, I do, but I pretend not to."),
+    ], 2)
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I regularly drink water."),
-              new FootnoteReferenceNode(1)
+              footnoteInFirstListItem
             ])
           ]),
           new UnorderedListItem([
             new BlockquoteNode([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
-                new FootnoteReferenceNode(2),
+                footnoteInBlockquote,
                 new PlainTextNode(" Never have."),
               ]),
-              new FootnoteBlockNode([
-                new Footnote([
-                  new PlainTextNode("Well, I do, but I pretend not to."),
-                ], 2),
-              ])
+              new FootnoteBlockNode([footnoteInBlockquote])
             ]),
           ]),
         ]),
-        new FootnoteBlockNode([
-          new Footnote([
-            new PlainTextNode("When it's in other beverages."),
-          ], 1),
-        ])
+        new FootnoteBlockNode([footnoteInFirstListItem])
       ]))
   })
 })
