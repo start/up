@@ -15,7 +15,6 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-import { Footnote } from '../../SyntaxNodes/Footnote'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
@@ -330,7 +329,7 @@ describe('A link node', () => {
 
 describe('A footnote reference node', () => {
   it("produces a sup element with a data-footnote-reference attribute and an ID indicating its reference number, containing a link that contains the reference number and points to the footnote", () => {
-    const node = new FootnoteReferenceNode(3)
+    const node = new FootnoteReferenceNode([], 3)
     expect(Up.toHtml(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
   })
 })
@@ -348,10 +347,10 @@ describe("Each footnote in a footnote block", () => {
   it("produce a dt element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference, and a dd element containing the footnote contents", () => {
     const node =
       new FootnoteBlockNode([
-        new Footnote([
+        new FootnoteReferenceNode([
           new PlainTextNode("Arwings"),
         ], 2),
-        new Footnote([
+        new FootnoteReferenceNode([
           new PlainTextNode("Killer Bees"),
         ], 3),
       ])
