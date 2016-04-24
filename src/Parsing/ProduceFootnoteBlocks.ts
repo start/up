@@ -88,12 +88,12 @@ class FootnoteBlockProducer {
     }
 
     if (node instanceof DescriptionListNode) {
-      return this.getBlocklessFootnotesFromDescriptionListItems(node.listItems)
+      return this.getBlocklessFootnotesFromDescriptionList(node)
     }
 
     if (node instanceof BlockquoteNode) {
       this.produceFootnoteBlocks(node)
-      
+
       // Footnotes within a blockquote produce footnote blocks inside of that blockquote. We won't need to worry
       // about placing any in the next footnote block.
       return []
@@ -160,18 +160,14 @@ class FootnoteBlockProducer {
     return concat(outlineNodes.map(node => this.getBlocklessFootnotes(node)))
   }
 
-  getBlocklessFootnotesFromDescriptionListItems(listItems: DescriptionListItem[]): FootnoteNode[] {
-    const footnotes: FootnoteNode[] = []
-
-    for (const listItem of listItems) {
-      const footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms)
-      footnotes.push(...footnotesForTerms)
-
-      const descriptionResult = this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children)
-      footnotes.push(...descriptionResult)
-    }
-
-    return footnotes
+  getBlocklessFootnotesFromDescriptionList(descriptionList: DescriptionListNode): FootnoteNode[] {
+    return concat(
+      descriptionList.listItems.map(listItem => {
+        const footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms)
+        const footnotesForDescription = this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children)
+        return footnotesForTerms.concat(footnotesForDescription)
+      })
+    )
   }
 }
 

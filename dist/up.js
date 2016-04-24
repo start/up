@@ -1641,7 +1641,7 @@ var FootnoteBlockProducer = (function () {
             return this.getFootnotesFromInlineContainers(node.lines);
         }
         if (node instanceof DescriptionListNode_1.DescriptionListNode) {
-            return this.getBlocklessFootnotesFromDescriptionListItems(node.listItems);
+            return this.getBlocklessFootnotesFromDescriptionList(node);
         }
         if (node instanceof BlockquoteNode_1.BlockquoteNode) {
             this.produceFootnoteBlocks(node);
@@ -1687,16 +1687,13 @@ var FootnoteBlockProducer = (function () {
         var _this = this;
         return CollectionHelpers_1.concat(outlineNodes.map(function (node) { return _this.getBlocklessFootnotes(node); }));
     };
-    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionListItems = function (listItems) {
-        var footnotes = [];
-        for (var _i = 0, listItems_1 = listItems; _i < listItems_1.length; _i++) {
-            var listItem = listItems_1[_i];
-            var footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms);
-            footnotes.push.apply(footnotes, footnotesForTerms);
-            var descriptionResult = this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children);
-            footnotes.push.apply(footnotes, descriptionResult);
-        }
-        return footnotes;
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionList = function (descriptionList) {
+        var _this = this;
+        return CollectionHelpers_1.concat(descriptionList.listItems.map(function (listItem) {
+            var footnotesForTerms = _this.getFootnotesFromInlineContainers(listItem.terms);
+            var footnotesForDescription = _this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children);
+            return footnotesForTerms.concat(footnotesForDescription);
+        }));
     };
     return FootnoteBlockProducer;
 }());
