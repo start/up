@@ -40,6 +40,16 @@ class Sequence {
   }
 }
 
+// Here are the rules!
+//
+// 1. Any footnotes within a top-level outline convention (which naturally includes any footnotes within any nested
+//    outline conventions) are placed into a footnote block directly following that top-level outline convention.
+//    The only exception to this rule is blockquotes, because...
+//
+// 2. Blocknotes are considere mini-documents! Therefore, that first rule also applies to all top-level outline
+//    conventions inside any blockquote.
+//
+// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed ib a footnote block. 
 
 class FootnoteBlockProducer {
   private footnoteReferenceNumberSequence = new Sequence({ start: 1 })
@@ -49,48 +59,50 @@ class FootnoteBlockProducer {
   }
 
   produceFootnoteBlocks(outlineNodeContainer: OutlineNodeContainer): void {
-    const outlineNodesWithFootnotes: OutlineSyntaxNode[] = []
+    const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
 
     for (const outlineNode of outlineNodeContainer.children) {
-      outlineNodesWithFootnotes.push(outlineNode)
+      outlineNodesWithFootnoteBlocks.push(outlineNode)
 
       const footnotes = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode)
 
       if (footnotes.length) {
-        outlineNodesWithFootnotes.push(
-          this.getFootnoteBlockAndProcessNestedFootnotes(footnotes))
+        outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotes))
       }
     }
 
-    outlineNodeContainer.children = outlineNodesWithFootnotes
+    outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
   }
 
   processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-      return this.setFootnoteReferenceNumbersAndGetFootnotes(node.children)
+      return this.getFootnotes(node.children)
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.processOutlineContainersAndGetFootnotesToPlaceInNextBlock(node.listItems)
+      return this.getBlocklessFootnotesFromOutlineContainers(node.listItems)
     }
 
     if (node instanceof LineBlockNode) {
-      return this.replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines)
+      return this.getFootnotesFromInlineContainers(node.lines)
     }
 
     if (node instanceof DescriptionListNode) {
-      return this.processDescriptionListItemsAndGetFootnotesForNextBlock(node.listItems)
+      return this.getBlocklessFootnotesFromDescriptionListItems(node.listItems)
     }
 
     if (node instanceof BlockquoteNode) {
       this.produceFootnoteBlocks(node)
+      
+      // Footnotes within a blockquote produce footnote blocks inside of that blockquote. We won't need to worry
+      // about placing any in the next footnote block.
       return []
     }
 
     return []
   }
 
-  setFootnoteReferenceNumbersAndGetFootnotes(inlineNodes: InlineSyntaxNode[]): FootnoteNode[] {
+  getFootnotes(inlineNodes: InlineSyntaxNode[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (let i = 0; i < inlineNodes.length; i++) {
@@ -105,7 +117,7 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  processOutlineContainersAndGetFootnotesToPlaceInNextBlock(containers: OutlineNodeContainer[]): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (const container of containers) {
@@ -117,11 +129,11 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers: InlineNodeContainer[]): FootnoteNode[] {
+  getFootnotesFromInlineContainers(inlineContainers: InlineNodeContainer[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (const container of inlineContainers) {
-      const containerFootnotes = this.setFootnoteReferenceNumbersAndGetFootnotes(container.children)
+      const containerFootnotes = this.getFootnotes(container.children)
 
       footnotes.push(...containerFootnotes)
     }
@@ -129,7 +141,7 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  getFootnoteBlockAndProcessNestedFootnotes(footnotes: FootnoteNode[]): FootnoteBlockNode {
+  getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
     // It's contrived, but footnotes can reference other footnotes.
     //
     // For example:
@@ -147,8 +159,7 @@ class FootnoteBlockProducer {
     for (let footnoteIndex = 0; footnoteIndex < block.footnoteReferences.length; footnoteIndex++) {
       const footnote = block.footnoteReferences[footnoteIndex]
 
-      const nestedFootnotes =
-        this.setFootnoteReferenceNumbersAndGetFootnotes(footnote.children)
+      const nestedFootnotes = this.getFootnotes(footnote.children)
 
       block.footnoteReferences.push(...nestedFootnotes)
     }
@@ -168,11 +179,11 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  processDescriptionListItemsAndGetFootnotesForNextBlock(listItems: DescriptionListItem[]): FootnoteNode[] {
+  getBlocklessFootnotesFromDescriptionListItems(listItems: DescriptionListItem[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (const listItem of listItems) {
-      const footnotesForTerms = this.replaceInlineContainersPotentialReferencesAndGetFootnotes(listItem.terms)
+      const footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms)
       footnotes.push(...footnotesForTerms)
 
       const descriptionResult = this.processOutlineNodesAndGetFootnotesForNextBlock(listItem.description.children)
