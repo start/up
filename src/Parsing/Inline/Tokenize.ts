@@ -11,7 +11,7 @@ import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, INLINE_ASIDE } from './SandwichConventions'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE_REFERENCE } from './SandwichConventions'
 
 
 export function tokenize(text: string): Token[] {
@@ -24,7 +24,7 @@ const REGULAR_SANDWICHES = [
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  INLINE_ASIDE
+  FOOTNOTE_REFERENCE
 ]
 
 const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
