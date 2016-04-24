@@ -459,7 +459,7 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
-              footnotesInUnorderedList[1],
+              footnotesInUnorderedList[0],
               new PlainTextNode(" Never have."),
             ]),
             new ParagraphNode([
@@ -469,7 +469,7 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
-              footnotesInUnorderedList[2],
+              footnotesInUnorderedList[1],
               new PlainTextNode(" pumpkins."),
             ])
           ])
