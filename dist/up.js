@@ -186,7 +186,7 @@ var SANDWICHES = [
     SandwichConventions_1.REVISION_DELETION,
     SandwichConventions_1.REVISION_INSERTION,
     SandwichConventions_1.SPOILER,
-    SandwichConventions_1.FOOTNOTE_REFERENCE
+    SandwichConventions_1.FOOTNOTE
 ];
 var MEDIA_CONVENTIONS = [
     MediaConventions_1.AUDIO,
@@ -569,8 +569,8 @@ var REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode_1.RevisionIn
 exports.REVISION_INSERTION = REVISION_INSERTION;
 var SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode_1.SpoilerNode, Token_1.TokenMeaning.SpoilerStart, Token_1.TokenMeaning.SpoilerEnd);
 exports.SPOILER = SPOILER;
-var FOOTNOTE_REFERENCE = sandwich(' ((', '))', FootnoteNode_1.FootnoteNode, Token_1.TokenMeaning.FootnoteReferenceStart, Token_1.TokenMeaning.FootnoteReferenceEnd);
-exports.FOOTNOTE_REFERENCE = FOOTNOTE_REFERENCE;
+var FOOTNOTE = sandwich(' ((', '))', FootnoteNode_1.FootnoteNode, Token_1.TokenMeaning.FootnoteReferenceStart, Token_1.TokenMeaning.FootnoteReferenceEnd);
+exports.FOOTNOTE = FOOTNOTE;
 
 },{"../../SyntaxNodes/EmphasisNode":44,"../../SyntaxNodes/FootnoteNode":46,"../../SyntaxNodes/RevisionDeletionNode":60,"../../SyntaxNodes/RevisionInsertionNode":61,"../../SyntaxNodes/SpoilerNode":64,"../../SyntaxNodes/StressNode":65,"./Convention":2,"./SandwichConvention":14,"./Token":16}],16:[function(require,module,exports){
 "use strict";
@@ -640,7 +640,7 @@ var REGULAR_SANDWICHES = [
     SandwichConventions_1.REVISION_DELETION,
     SandwichConventions_1.REVISION_INSERTION,
     SandwichConventions_1.SPOILER,
-    SandwichConventions_1.FOOTNOTE_REFERENCE
+    SandwichConventions_1.FOOTNOTE
 ];
 var ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SandwichConventions_1.STRESS, SandwichConventions_1.EMPHASIS);
 var POTENTIALLY_UNCLOSED_CONVENTIONS = [LINK].concat(REGULAR_SANDWICHES.map(function (sandwich) { return sandwich.convention; }));

@@ -28,7 +28,7 @@ const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStar
 // These are converted to footnote references later.
 //
 // TODO: Better handle leading space hack
-const FOOTNOTE_REFERENCE = sandwich(' ((', '))', FootnoteNode, TokenMeaning.FootnoteReferenceStart, TokenMeaning.FootnoteReferenceEnd)
+const FOOTNOTE = sandwich(' ((', '))', FootnoteNode, TokenMeaning.FootnoteReferenceStart, TokenMeaning.FootnoteReferenceEnd)
 
 
 export {
@@ -37,5 +37,5 @@ export {
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  FOOTNOTE_REFERENCE
+  FOOTNOTE
 }

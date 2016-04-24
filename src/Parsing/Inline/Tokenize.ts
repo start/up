@@ -11,7 +11,7 @@ import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE_REFERENCE } from './SandwichConventions'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
 
 
 export function tokenize(text: string): Token[] {
@@ -24,7 +24,7 @@ const REGULAR_SANDWICHES = [
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  FOOTNOTE_REFERENCE
+  FOOTNOTE
 ]
 
 const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
@@ -32,12 +32,12 @@ const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
 
-
 const MEDIA_TOKENIZERS = [
   AUDIO,
   IMAGE,
   VIDEO
 ].map(mediaConvention => getMediaTokenizer(mediaConvention))
+
 
 class Tokenizer {
   public tokens: Token[] = []

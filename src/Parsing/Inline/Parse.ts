@@ -13,7 +13,7 @@ import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE_REFERENCE } from './SandwichConventions'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
 
 
 export class ParseResult {
@@ -34,7 +34,7 @@ const SANDWICHES = [
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  FOOTNOTE_REFERENCE
+  FOOTNOTE
 ]
 
 const MEDIA_CONVENTIONS = [
