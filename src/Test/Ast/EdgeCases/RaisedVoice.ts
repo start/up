@@ -11,7 +11,6 @@ import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-import { PlaceholderFootnoteReferenceNode } from '../../../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 

@@ -9,7 +9,6 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
-import { PlaceholderFootnoteReferenceNode } from '../SyntaxNodes/PlaceholderFootnoteReferenceNode'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -193,20 +192,23 @@ function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContain
 }
 
 
-// This function mutates the `inlineNodes` array, replacing any of its `PlaceholderFootnoteReferenceNodes`
-// with `FootnoteReferenceNodes`.
+// This function mutates the `FootnoteReferenceNodes` in the `inlineNodes` array, assigning them reference numbers. 
 //
 // It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
-// (replaced) `PlaceholderFootnoteReferenceNode`.
+// `FootnoteReferenceNodes`.
 function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceNumber: number): Footnote[] {
   const footnotes: Footnote[] = []
 
   for (let i = 0; i < inlineNodes.length; i++) {
     const node = inlineNodes[i]
 
-    if (node instanceof PlaceholderFootnoteReferenceNode) {
+    if (node instanceof FootnoteReferenceNode) {
       footnotes.push(new Footnote(node.children, nextFootnoteReferenceNumber))
-      inlineNodes[i] = new FootnoteReferenceNode(nextFootnoteReferenceNumber)
+      node.referenceNumber = nextFootnoteReferenceNumber
+      
+      // Don't worry: This is a temporary hack
+      node.children = []
+      
       nextFootnoteReferenceNumber += 1
     }
   }
