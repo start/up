@@ -335,7 +335,7 @@ describe('Footnote references in ordered list items', () => {
           new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
-              footnotes[1],
+              footnotes[0],
               new PlainTextNode(" Never have."),
             ]),
             new ParagraphNode([
@@ -345,7 +345,7 @@ describe('Footnote references in ordered list items', () => {
           new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
-              footnotes[2],
+              footnotes[1],
               new PlainTextNode(" pumpkins."),
             ])
           ], 2)
