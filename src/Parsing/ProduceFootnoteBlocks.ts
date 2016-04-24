@@ -21,7 +21,7 @@ import { last } from './CollectionHelpers'
 // TODO: Refactor tons of duplicate functionality
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 
-export function applyFootnotes(documentNode: DocumentNode): void {  
+export function produceFootnoteBlocks(documentNode: DocumentNode): void {  
   const initialFootnoteReferenceNumber = 1
   
   produceFootnoteBlocksAndGetFootnoteCount(documentNode, initialFootnoteReferenceNumber)
