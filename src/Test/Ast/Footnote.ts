@@ -284,7 +284,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
-                footnotes[1],
+                footnotes[0],
                 new PlainTextNode(" Never have."),
               ]),
               new ParagraphNode([
@@ -295,7 +295,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
-                footnotes[2],
+                footnotes[1],
                 new PlainTextNode(" pumpkins."),
               ])
             ])
