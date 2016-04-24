@@ -27,22 +27,24 @@ import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-import { Footnote } from '../../SyntaxNodes/Footnote'
 
 
 describe('In a paragraph, text surrounded by 2 parentheses', () => {
   it('produces a footnote reference node. This node references a footnote node within a footnote block node after the paragraph', () => {
+
+    const footnote = new FootnoteReferenceNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
     expect(Up.toAst("I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          new FootnoteReferenceNode(1),
+          footnote,
           new PlainTextNode(" Never have."),
         ]),
         new FootnoteBlockNode([
-          new Footnote([
-            new PlainTextNode('Well, I do, but I pretend not to.')
-          ], 1)
+          footnote
         ])
       ]))
   })
@@ -51,21 +53,24 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 
 describe('A footnote reference', () => {
   it('is evaluated for other conventions', () => {
+    
+    const footnote = new FootnoteReferenceNode([
+      new PlainTextNode('Well, I '),
+      new EmphasisNode([
+        new PlainTextNode('do')
+      ]),
+      new PlainTextNode(', but I pretend not to.')
+    ], 1)
+
     expect(Up.toAst("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          new FootnoteReferenceNode(1),
+          footnote,
           new PlainTextNode(" Never have."),
         ]),
         new FootnoteBlockNode([
-          new Footnote([
-            new PlainTextNode('Well, I '),
-            new EmphasisNode([
-              new PlainTextNode('do')
-            ]),
-            new PlainTextNode(', but I pretend not to.')
-          ], 1)
+          footnote
         ])
       ]))
   })
@@ -243,7 +248,7 @@ describe('Footnote references in a blockquote', () => {
 })
 
 describe('Footnote references nested inside 2 or more outline conventions nested inside a blockquote', () => {
-   it("produce footnote blocks inside the blockquote after all the appropriate outline conventions. The only difference is that everything is inside a blockquote", () => {
+  it("produce footnote blocks inside the blockquote after all the appropriate outline conventions. The only difference is that everything is inside a blockquote", () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
@@ -256,7 +261,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
         new BlockquoteNode([
 
           new UnorderedListNode([
-            
+
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
@@ -275,7 +280,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
                 new PlainTextNode(" pumpkins."),
               ])
             ])
-            
+
           ]),
 
           new FootnoteBlockNode([
@@ -286,7 +291,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
               new PlainTextNode("Or touch."),
             ], 2)
           ])
-          
+
         ])
       ])
     )

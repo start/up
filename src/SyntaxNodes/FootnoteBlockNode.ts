@@ -1,8 +1,8 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Footnote } from './Footnote'
+import { FootnoteReferenceNode } from './FootnoteReferenceNode'
 
 export class FootnoteBlockNode extends OutlineSyntaxNode {
-  constructor(public footnoteReferences: Footnote[] = []) {
+  constructor(public footnoteReferences: FootnoteReferenceNode[] = []) {
     super()
   }
 

@@ -9,7 +9,6 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
-import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { TextConsumer } from './TextConsumer'
@@ -52,13 +51,13 @@ function produceFootnoteBlocksAndGetFootnoteCount(outlineNodeContainer: OutlineN
 
 
 interface ProcessOutlineContainerFootnotesResultArgs {
-  footnotesToPlaceInNextBlock?: Footnote[]
+  footnotesToPlaceInNextBlock?: FootnoteReferenceNode[]
   countFootnotesInBlockquotes?: number
 }
 
 
 class ProcessOutlineContainerFootnotesResult {
-  public footnotesToPlaceInNextBlock: Footnote[]
+  public footnotesToPlaceInNextBlock: FootnoteReferenceNode[]
   private countFootnotesInBlockquotes: number
 
   constructor(args?: ProcessOutlineContainerFootnotesResultArgs) {
@@ -79,7 +78,7 @@ class ProcessOutlineContainerFootnotesResult {
     this.countFootnotesInBlockquotes += count
   }
 
-  includeFootnotesToPlaceInNextBlock(footnotes: Footnote[]): void {
+  includeFootnotesToPlaceInNextBlock(footnotes: FootnoteReferenceNode[]): void {
     this.footnotesToPlaceInNextBlock = this.footnotesToPlaceInNextBlock.concat(footnotes)
   }
 
@@ -178,8 +177,8 @@ function processDescriptionListItemFootnotes(listItems: DescriptionListItem[], n
 }
 
 
-function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers: InlineNodeContainer[], nextFootnoteReferenceNumber: number): Footnote[] {
-  const footnotes: Footnote[] = []
+function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers: InlineNodeContainer[], nextFootnoteReferenceNumber: number): FootnoteReferenceNode[] {
+  const footnotes: FootnoteReferenceNode[] = []
 
   for (const container of inlineContainers) {
     const containerFootnotes = replacePotentialReferencesAndGetFootnotes(container.children, nextFootnoteReferenceNumber)
@@ -196,20 +195,15 @@ function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContain
 //
 // It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
 // `FootnoteReferenceNodes`.
-function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceNumber: number): Footnote[] {
-  const footnotes: Footnote[] = []
+function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceNumber: number): FootnoteReferenceNode[] {
+  const footnotes: FootnoteReferenceNode[] = []
 
   for (let i = 0; i < inlineNodes.length; i++) {
     const node = inlineNodes[i]
 
     if (node instanceof FootnoteReferenceNode) {
-      footnotes.push(new Footnote(node.children, nextFootnoteReferenceNumber))
-      node.referenceNumber = nextFootnoteReferenceNumber
-      
-      // Don't worry: This is a temporary hack
-      node.children = []
-      
-      nextFootnoteReferenceNumber += 1
+      node.referenceNumber = nextFootnoteReferenceNumber++
+      footnotes.push(node)
     }
   }
 
@@ -217,7 +211,7 @@ function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode
 }
 
 
-function getFootnoteBlockAndProcessNestedReferences(footnotes: Footnote[]): FootnoteBlockNode {
+function getFootnoteBlockAndProcessNestedReferences(footnotes: FootnoteReferenceNode[]): FootnoteBlockNode {
   // It's contrived, but footnotes can reference other footnotes.
   //
   // For example:

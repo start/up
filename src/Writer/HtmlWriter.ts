@@ -12,7 +12,6 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
-import { Footnote } from '../SyntaxNodes/Footnote'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
@@ -209,7 +208,7 @@ export class HtmlWriter extends Writer {
       internalUrl(this.config.footnoteId(referenceNumber)))
   }
 
-  private footnote(footnote: Footnote): string {
+  private footnote(footnote: FootnoteReferenceNode): string {
     const termHtml =
       this.htmlElement(
         'dt',
@@ -224,7 +223,7 @@ export class HtmlWriter extends Writer {
     return termHtml + descriptionHtml
   }
 
-  private footnoteLinkBackToReference(footnote: Footnote): LinkNode {
+  private footnoteLinkBackToReference(footnote: FootnoteReferenceNode): LinkNode {
     const referenceNumber = footnote.referenceNumber
 
     return new LinkNode(
