@@ -2736,6 +2736,15 @@ var HeadingNode_1 = require('../SyntaxNodes/HeadingNode');
 var CodeBlockNode_1 = require('../SyntaxNodes/CodeBlockNode');
 var SectionSeparatorNode_1 = require('../SyntaxNodes/SectionSeparatorNode');
 var WriterConfig_1 = require('./WriterConfig');
+var Sequence = (function () {
+    function Sequence(nextValue) {
+        this.nextValue = nextValue;
+    }
+    Sequence.prototype.next = function () {
+        return this.nextValue++;
+    };
+    return Sequence;
+}());
 var Writer = (function () {
     function Writer(config) {
         this.config = new WriterConfig_1.WriterConfig(config);

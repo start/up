@@ -32,6 +32,16 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { WriterConfig, WriterConfigArgs } from './WriterConfig'
 
+
+class Sequence {
+  constructor(public nextValue: number) { }
+  
+  next(): number {
+    return this.nextValue++
+  }
+}
+
+
 export abstract class Writer {
   public config: WriterConfig
   
@@ -40,6 +50,7 @@ export abstract class Writer {
   }
   
   write(node: SyntaxNode) {
+    
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
 
