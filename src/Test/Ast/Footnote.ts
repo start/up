@@ -25,7 +25,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { FootnoteReferenceNode } from '../../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
@@ -33,7 +33,7 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
   it('produces a footnote reference node. This node references a footnote node within a footnote block node after the paragraph', () => {
     const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
 
-    const footnote = new FootnoteReferenceNode([
+    const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
@@ -53,7 +53,7 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 describe('A footnote reference', () => {
   it('is evaluated for other conventions', () => {
 
-    const footnote = new FootnoteReferenceNode([
+    const footnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
       new EmphasisNode([
         new PlainTextNode('do')
@@ -75,7 +75,7 @@ describe('A footnote reference', () => {
   it('can contain other footnote references, which produce additional footnotes in the same footnote block', () => {
     const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really."
 
-    const innerFootnote = new FootnoteReferenceNode([
+    const innerFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
       new EmphasisNode([
         new PlainTextNode('do')
@@ -83,7 +83,7 @@ describe('A footnote reference', () => {
       new PlainTextNode(', but I pretend not to.'),
     ], 2)
 
-    const outerFootnote = new FootnoteReferenceNode([
+    const outerFootnote = new FootnoteNode([
       new PlainTextNode("That said, I don't eat cereal."),
       innerFootnote,
       new PlainTextNode(" Never have."),
@@ -111,7 +111,7 @@ describe('Footnote references in a heading', () => {
 I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 ------`
 
-    const footnote = new FootnoteReferenceNode([
+    const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
@@ -137,10 +137,10 @@ Roses are red ((This is not my line.))
 Violets are blue ((Neither is this line. I think my mom made it up.))`
 
     const footnotes = [
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode('This is not my line.')
       ], 1),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode('Neither is this line. I think my mom made it up.')
       ], 2)
     ]
@@ -176,16 +176,16 @@ describe('Footnote references in unordered list items', () => {
   Violets are blue ((Neither is this line. I think my mom made it up.))`
 
     const footnotes = [
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Well, I do, but I pretend not to."),
       ], 1),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Or touch."),
       ], 2),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode('This is not my line.')
       ], 3),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode('Neither is this line. I think my mom made it up.')
       ], 4)
     ]
@@ -238,7 +238,7 @@ describe('Footnote references in a blockquote', () => {
     const text = "> I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
 
     const footnote =
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Well, I do, but I pretend not to."),
       ], 1)
 
@@ -267,10 +267,10 @@ describe('Footnote references nested inside 2 or more outline conventions nested
 > * I don't eat ((Or touch.)) pumpkins.`
 
     const footnotes = [
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Well, I do, but I pretend not to."),
       ], 1),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Or touch."),
       ], 2)
     ]
@@ -321,10 +321,10 @@ describe('Footnote references in ordered list items', () => {
 2) I don't eat ((Or touch.)) pumpkins.`
 
     const footnotes = [
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Well, I do, but I pretend not to."),
       ], 1),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Or touch."),
       ], 2)
     ]
@@ -371,13 +371,13 @@ Gary
   A young man with a great sense of smell. ((Or maybe Ash simply smelled really good.))`
 
     const footnotes = [
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("What happens to the creature if the seed is never planted?"),
       ], 1),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("This probably wasn't a reference to the family of plants."),
       ], 2),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Or maybe Ash simply smelled really good."),
       ], 3)
     ]
@@ -439,16 +439,16 @@ describe('The reference numbers in a document', () => {
 I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
 
     const footnotesInUnorderedList = [
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Well, I do, but I pretend not to."),
       ], 1),
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Or touch."),
       ], 2)
     ]
 
     const footnoteInParagraph =
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("It's actually been a dream of mine ever since I was young."),
       ], 3)
 
@@ -492,7 +492,7 @@ describe('Nested footnote references', () => {
     const text =
       "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))"
 
-    const footnoteInsideFirstFootnote = new FootnoteReferenceNode([
+    const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
       new EmphasisNode([
         new PlainTextNode('do')
@@ -500,13 +500,13 @@ describe('Nested footnote references', () => {
       new PlainTextNode(', but I pretend not to.'),
     ], 3)
 
-    const firstFootnote = new FootnoteReferenceNode([
+    const firstFootnote = new FootnoteNode([
       new PlainTextNode("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
       new PlainTextNode(" Never have."),
     ], 1)
 
-    const secondFootnote = new FootnoteReferenceNode([
+    const secondFootnote = new FootnoteNode([
       new PlainTextNode("Probably."),
     ], 2)
 
@@ -532,15 +532,15 @@ describe('Nested footnote references', () => {
       "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do* ((Only on Mondays...)) but I pretend not to.)) Never have. ((At least you've never seen me.)))) Really. ((Probably.))"
 
     const footnoteInsideFirstInnerFootnote =
-      new FootnoteReferenceNode([
+      new FootnoteNode([
         new PlainTextNode("Only on Mondays..."),
       ], 5)
 
-    const secondInnerFootnote = new FootnoteReferenceNode([
+    const secondInnerFootnote = new FootnoteNode([
       new PlainTextNode("At least you've never seen me."),
     ], 4)
 
-    const firstInnerFootnote = new FootnoteReferenceNode([
+    const firstInnerFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
       new EmphasisNode([
         new PlainTextNode('do'),
@@ -549,14 +549,14 @@ describe('Nested footnote references', () => {
       new PlainTextNode(' but I pretend not to.'),
     ], 3)
 
-    const firstFootnote = new FootnoteReferenceNode([
+    const firstFootnote = new FootnoteNode([
       new PlainTextNode("That said, I don't eat cereal."),
       firstInnerFootnote,
       new PlainTextNode(" Never have."),
       secondInnerFootnote,
     ], 1)
 
-    const secondFootnote = new FootnoteReferenceNode([
+    const secondFootnote = new FootnoteNode([
       new PlainTextNode("Probably."),
     ], 2)
 

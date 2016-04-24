@@ -10,7 +10,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
-import { FootnoteReferenceNode } from '../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteNode } from '../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
@@ -125,7 +125,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('span', node.children, { 'data-spoiler': null })
   }
 
-  footnoteReference(node: FootnoteReferenceNode): string {
+  footnoteReference(node: FootnoteNode): string {
     const innerLinkNode = this.footnoteReferenceInnerLink(node)
 
     return this.htmlElement(
@@ -200,7 +200,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElement('div', line.children)
   }
 
-  private footnoteReferenceInnerLink(footnoteReference: FootnoteReferenceNode): LinkNode {
+  private footnoteReferenceInnerLink(footnoteReference: FootnoteNode): LinkNode {
     const referenceNumber = footnoteReference.referenceNumber
 
     return new LinkNode(
@@ -208,7 +208,7 @@ export class HtmlWriter extends Writer {
       internalUrl(this.config.footnoteId(referenceNumber)))
   }
 
-  private footnote(footnote: FootnoteReferenceNode): string {
+  private footnote(footnote: FootnoteNode): string {
     const termHtml =
       this.htmlElement(
         'dt',
@@ -223,7 +223,7 @@ export class HtmlWriter extends Writer {
     return termHtml + descriptionHtml
   }
 
-  private footnoteLinkBackToReference(footnote: FootnoteReferenceNode): LinkNode {
+  private footnoteLinkBackToReference(footnote: FootnoteNode): LinkNode {
     const referenceNumber = footnote.referenceNumber
 
     return new LinkNode(

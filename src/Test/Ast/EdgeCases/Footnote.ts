@@ -11,7 +11,7 @@ import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-import { FootnoteReferenceNode } from '../../../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteReferenceNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
@@ -24,7 +24,7 @@ describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))"
 
-    const footnote = new FootnoteReferenceNode([
+    const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
@@ -45,7 +45,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
     const text = `
 * > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.`
 
-    const footnote = new FootnoteReferenceNode([
+    const footnote = new FootnoteNode([
       new PlainTextNode("Well, I do, but I pretend not to."),
     ], 1)
 
@@ -74,11 +74,11 @@ describe('Within an outline convention, a blockquoted footnote reference that fo
 
 * > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.`
 
-    const footnoteInFirstListItem = new FootnoteReferenceNode([
+    const footnoteInFirstListItem = new FootnoteNode([
       new PlainTextNode("When it's in other beverages."),
     ], 1)
 
-    const footnoteInBlockquote = new FootnoteReferenceNode([
+    const footnoteInBlockquote = new FootnoteNode([
       new PlainTextNode("Well, I do, but I pretend not to."),
     ], 2)
 
