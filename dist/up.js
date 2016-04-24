@@ -1623,14 +1623,14 @@ var FootnoteBlockProducer = (function () {
         for (var _i = 0, _a = outlineNodeContainer.children; _i < _a.length; _i++) {
             var outlineNode = _a[_i];
             outlineNodesWithFootnoteBlocks.push(outlineNode);
-            var footnotes = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode);
+            var footnotes = this.getBlocklessFootnotes(outlineNode);
             if (footnotes.length) {
                 outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotes));
             }
         }
         outlineNodeContainer.children = outlineNodesWithFootnoteBlocks;
     };
-    FootnoteBlockProducer.prototype.processOutlineNodeAndGetFootnotesToPlaceInNextBlock = function (node) {
+    FootnoteBlockProducer.prototype.getBlocklessFootnotes = function (node) {
         if ((node instanceof ParagraphNode_1.ParagraphNode) || (node instanceof HeadingNode_1.HeadingNode)) {
             return this.getFootnotes(node.children);
         }
@@ -1651,8 +1651,8 @@ var FootnoteBlockProducer = (function () {
     };
     FootnoteBlockProducer.prototype.getFootnotes = function (inlineNodes) {
         var footnotes = [];
-        for (var i = 0; i < inlineNodes.length; i++) {
-            var node = inlineNodes[i];
+        for (var _i = 0, inlineNodes_1 = inlineNodes; _i < inlineNodes_1.length; _i++) {
+            var node = inlineNodes_1[_i];
             if (node instanceof FootnoteNode_1.FootnoteNode) {
                 node.referenceNumber = this.footnoteReferenceNumberSequence.next();
                 footnotes.push(node);
@@ -1674,18 +1674,18 @@ var FootnoteBlockProducer = (function () {
         return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getFootnotes(container.children); }));
     };
     FootnoteBlockProducer.prototype.getFootnoteBlock = function (footnotes) {
-        var block = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
-        for (var footnoteIndex = 0; footnoteIndex < block.footnoteReferences.length; footnoteIndex++) {
-            var footnote = block.footnoteReferences[footnoteIndex];
-            var nestedFootnotes = this.getFootnotes(footnote.children);
-            (_a = block.footnoteReferences).push.apply(_a, nestedFootnotes);
+        var footnoteBlock = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
+        for (var footnoteIndex = 0; footnoteIndex < footnoteBlock.footnoteReferences.length; footnoteIndex++) {
+            var footnote = footnoteBlock.footnoteReferences[footnoteIndex];
+            var nestedFootnotes = this.getFootnotes(footnoteBlock.footnoteReferences[footnoteIndex].children);
+            (_a = footnoteBlock.footnoteReferences).push.apply(_a, nestedFootnotes);
         }
-        return block;
+        return footnoteBlock;
         var _a;
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (outlineNodes) {
         var _this = this;
-        return CollectionHelpers_1.concat(outlineNodes.map(function (node) { return _this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node); }));
+        return CollectionHelpers_1.concat(outlineNodes.map(function (node) { return _this.getBlocklessFootnotes(node); }));
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionListItems = function (listItems) {
         var footnotes = [];

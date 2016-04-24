@@ -64,7 +64,7 @@ class FootnoteBlockProducer {
     for (const outlineNode of outlineNodeContainer.children) {
       outlineNodesWithFootnoteBlocks.push(outlineNode)
 
-      const footnotes = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode)
+      const footnotes = this.getBlocklessFootnotes(outlineNode)
 
       if (footnotes.length) {
         outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotes))
@@ -74,7 +74,7 @@ class FootnoteBlockProducer {
     outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
   }
 
-  processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node: OutlineSyntaxNode): FootnoteNode[] {
+  getBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
       return this.getFootnotes(node.children)
     }
@@ -105,9 +105,7 @@ class FootnoteBlockProducer {
   getFootnotes(inlineNodes: InlineSyntaxNode[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
-    for (let i = 0; i < inlineNodes.length; i++) {
-      const node = inlineNodes[i]
-
+    for (const node of inlineNodes) {
       if (node instanceof FootnoteNode) {
         node.referenceNumber = this.footnoteReferenceNumberSequence.next()
         footnotes.push(node)
@@ -146,21 +144,20 @@ class FootnoteBlockProducer {
     // nested footnotes inside of *those* footnotes are added to the end, and the process repeats until no more nested
     // footnotes are found.
 
-    const block = new FootnoteBlockNode(footnotes)
+    const footnoteBlock = new FootnoteBlockNode(footnotes)
 
-    for (let footnoteIndex = 0; footnoteIndex < block.footnoteReferences.length; footnoteIndex++) {
-      const footnote = block.footnoteReferences[footnoteIndex]
+    for (let footnoteIndex = 0; footnoteIndex < footnoteBlock.footnoteReferences.length; footnoteIndex++) {
+      const footnote = footnoteBlock.footnoteReferences[footnoteIndex]
+      const nestedFootnotes = this.getFootnotes(footnoteBlock.footnoteReferences[footnoteIndex].children)
 
-      const nestedFootnotes = this.getFootnotes(footnote.children)
-
-      block.footnoteReferences.push(...nestedFootnotes)
+      footnoteBlock.footnoteReferences.push(...nestedFootnotes)
     }
 
-    return block
+    return footnoteBlock
   }
 
   getBlocklessFootnotesFromOutlineNodes(outlineNodes: OutlineSyntaxNode[]): FootnoteNode[] {
-    return concat(outlineNodes.map(node => this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node)))
+    return concat(outlineNodes.map(node => this.getBlocklessFootnotes(node)))
   }
 
   getBlocklessFootnotesFromDescriptionListItems(listItems: DescriptionListItem[]): FootnoteNode[] {
