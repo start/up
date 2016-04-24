@@ -139,7 +139,7 @@ export class HtmlWriter extends Writer {
   footnoteBlock(node: FootnoteBlockNode): string {
     return htmlElement(
       'dl',
-      node.footnoteReferences.map(footnote => this.footnote(footnote)).join(''),
+      node.footnotes.map(footnote => this.footnote(footnote)).join(''),
       { 'data-footnotes': null })
   }
 

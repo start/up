@@ -70,7 +70,7 @@ class FootnoteBlockProducer {
 
   getBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-      return this.getFootnotes(node.children)
+      return this.getFootnotesAndAssignReferenceNumbers(node.children)
     }
 
     if (node instanceof LineBlockNode) {
@@ -96,10 +96,10 @@ class FootnoteBlockProducer {
     return []
   }
 
-  getFootnotes(inlineNodes: InlineSyntaxNode[]): FootnoteNode[] {
+  getFootnotesAndAssignReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
-    for (const node of inlineNodes) {
+    for (const node of nodes) {
       if (node instanceof FootnoteNode) {
         node.referenceNumber = this.footnoteReferenceNumberSequence.next()
         footnotes.push(node)
@@ -110,36 +110,13 @@ class FootnoteBlockProducer {
   }
 
   getBlocklessFootnotesFromOutlineContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
-    return concat(containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
+    return concat(
+      containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
   }
 
   getFootnotesFromInlineContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
-    return concat(containers.map(container => this.getFootnotes(container.children)))
-  }
-
-  getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
-    // It's contrived, but footnotes can reference other footnotes.
-    //
-    // For example:
-    //
-    // Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.)) Really.
-    //
-    // The nesting can be arbitrarily deep.
-    //
-    // Any nested footnotes are added to end of the footnote block, after all of the original footnotes. Then, any (doubly)
-    // nested footnotes inside of *those* footnotes are added to the end, and the process repeats until no more nested
-    // footnotes are found.
-
-    const footnoteBlock = new FootnoteBlockNode(footnotes)
-
-    for (let footnoteIndex = 0; footnoteIndex < footnoteBlock.footnoteReferences.length; footnoteIndex++) {
-      const footnote = footnoteBlock.footnoteReferences[footnoteIndex]
-      const nestedFootnotes = this.getFootnotes(footnoteBlock.footnoteReferences[footnoteIndex].children)
-
-      footnoteBlock.footnoteReferences.push(...nestedFootnotes)
-    }
-
-    return footnoteBlock
+    return concat(
+      containers.map(container => this.getFootnotesAndAssignReferenceNumbers(container.children)))
   }
 
   getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
@@ -160,6 +137,32 @@ class FootnoteBlockProducer {
       this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
     
     return footnotesFromTerms.concat(footnotesFromDescription)
+  }
+
+  getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
+    // It's contrived, but footnotes can reference other footnotes.
+    //
+    // For example:
+    //
+    // Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.)) Really.
+    //
+    // The nesting can be arbitrarily deep.
+    //
+    // Any nested footnotes are added to end of the footnote block, after all of the original footnotes. Then, any (doubly)
+    // nested footnotes inside of *those* footnotes are added to the end, and the process repeats until no more nested
+    // footnotes are found.
+
+    const footnoteBlock = new FootnoteBlockNode(footnotes)
+
+    for (let footnoteIndex = 0; footnoteIndex < footnoteBlock.footnotes.length; footnoteIndex++) {
+      const footnote = footnoteBlock.footnotes[footnoteIndex]
+      const innerFootnotes = this.getFootnotesAndAssignReferenceNumbers(footnote.children)
+
+      // Note: This appends items to the collection we're currently looping through.
+      footnoteBlock.footnotes.push(...innerFootnotes)
+    }
+
+    return footnoteBlock
   }
 }
 

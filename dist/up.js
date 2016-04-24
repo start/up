@@ -1632,7 +1632,7 @@ var FootnoteBlockProducer = (function () {
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotes = function (node) {
         if ((node instanceof ParagraphNode_1.ParagraphNode) || (node instanceof HeadingNode_1.HeadingNode)) {
-            return this.getFootnotes(node.children);
+            return this.getFootnotesAndAssignReferenceNumbers(node.children);
         }
         if (node instanceof LineBlockNode_1.LineBlockNode) {
             return this.getFootnotesFromInlineContainers(node.lines);
@@ -1649,10 +1649,10 @@ var FootnoteBlockProducer = (function () {
         }
         return [];
     };
-    FootnoteBlockProducer.prototype.getFootnotes = function (inlineNodes) {
+    FootnoteBlockProducer.prototype.getFootnotesAndAssignReferenceNumbers = function (nodes) {
         var footnotes = [];
-        for (var _i = 0, inlineNodes_1 = inlineNodes; _i < inlineNodes_1.length; _i++) {
-            var node = inlineNodes_1[_i];
+        for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
+            var node = nodes_1[_i];
             if (node instanceof FootnoteNode_1.FootnoteNode) {
                 node.referenceNumber = this.footnoteReferenceNumberSequence.next();
                 footnotes.push(node);
@@ -1666,17 +1666,7 @@ var FootnoteBlockProducer = (function () {
     };
     FootnoteBlockProducer.prototype.getFootnotesFromInlineContainers = function (containers) {
         var _this = this;
-        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getFootnotes(container.children); }));
-    };
-    FootnoteBlockProducer.prototype.getFootnoteBlock = function (footnotes) {
-        var footnoteBlock = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
-        for (var footnoteIndex = 0; footnoteIndex < footnoteBlock.footnoteReferences.length; footnoteIndex++) {
-            var footnote = footnoteBlock.footnoteReferences[footnoteIndex];
-            var nestedFootnotes = this.getFootnotes(footnoteBlock.footnoteReferences[footnoteIndex].children);
-            (_a = footnoteBlock.footnoteReferences).push.apply(_a, nestedFootnotes);
-        }
-        return footnoteBlock;
-        var _a;
+        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getFootnotesAndAssignReferenceNumbers(container.children); }));
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (nodes) {
         var _this = this;
@@ -1690,6 +1680,16 @@ var FootnoteBlockProducer = (function () {
         var footnotesFromTerms = this.getFootnotesFromInlineContainers(item.terms);
         var footnotesFromDescription = this.getBlocklessFootnotesFromOutlineNodes(item.description.children);
         return footnotesFromTerms.concat(footnotesFromDescription);
+    };
+    FootnoteBlockProducer.prototype.getFootnoteBlock = function (footnotes) {
+        var footnoteBlock = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
+        for (var footnoteIndex = 0; footnoteIndex < footnoteBlock.footnotes.length; footnoteIndex++) {
+            var footnote = footnoteBlock.footnotes[footnoteIndex];
+            var innerFootnotes = this.getFootnotesAndAssignReferenceNumbers(footnote.children);
+            (_a = footnoteBlock.footnotes).push.apply(_a, innerFootnotes);
+        }
+        return footnoteBlock;
+        var _a;
     };
     return FootnoteBlockProducer;
 }());
@@ -2030,10 +2030,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var OutlineSyntaxNode_1 = require('./OutlineSyntaxNode');
 var FootnoteBlockNode = (function (_super) {
     __extends(FootnoteBlockNode, _super);
-    function FootnoteBlockNode(footnoteReferences) {
-        if (footnoteReferences === void 0) { footnoteReferences = []; }
+    function FootnoteBlockNode(footnotes) {
+        if (footnotes === void 0) { footnotes = []; }
         _super.call(this);
-        this.footnoteReferences = footnoteReferences;
+        this.footnotes = footnotes;
         this.FOOTNOTE_BLOCK = null;
     }
     return FootnoteBlockNode;
@@ -2539,7 +2539,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnoteReferences.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-footnotes': null });
+        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-footnotes': null });
     };
     HtmlWriter.prototype.link = function (node) {
         return this.htmlElement('a', node.children, { href: node.url });
