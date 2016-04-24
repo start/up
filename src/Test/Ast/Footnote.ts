@@ -197,7 +197,7 @@ describe('Footnote references in unordered list items', () => {
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
-              footnotes[1],
+              footnotes[0],
               new PlainTextNode(" Never have."),
             ]),
             new ParagraphNode([
@@ -208,7 +208,7 @@ describe('Footnote references in unordered list items', () => {
           new UnorderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
-              footnotes[2],
+              footnotes[1],
               new PlainTextNode(" pumpkins."),
             ])
           ]),
@@ -217,11 +217,11 @@ describe('Footnote references in unordered list items', () => {
             new LineBlockNode([
               new Line([
                 new PlainTextNode("Roses are red"),
-                footnotes[3],
+                footnotes[2],
               ]),
               new Line([
                 new PlainTextNode("Violets are blue"),
-                footnotes[4],
+                footnotes[3],
               ])
             ]),
           ])
