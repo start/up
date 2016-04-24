@@ -16,12 +16,16 @@ import { getOutlineNodes } from './Outline/GetOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { concat } from './CollectionHelpers'
 
-
-// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-// TODO: Refactor tons of duplicate functionality
-// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-
-
+// Here are the rules!
+//
+// 1. Any footnotes within a top-level outline convention (which naturally includes any footnotes within any nested
+//    outline conventions) are placed into a footnote block directly following that top-level outline convention.
+//    The only exception to this rule is blockquotes, because...
+//
+// 2. Blocknotes are considere mini-documents! Therefore, that first rule also applies to all top-level outline
+//    conventions inside any blockquote.
+//
+// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block. 
 
 export function produceFootnoteBlocks(documentNode: DocumentNode): void {
   new FootnoteBlockProducer(documentNode)
@@ -40,16 +44,6 @@ class Sequence {
   }
 }
 
-// Here are the rules!
-//
-// 1. Any footnotes within a top-level outline convention (which naturally includes any footnotes within any nested
-//    outline conventions) are placed into a footnote block directly following that top-level outline convention.
-//    The only exception to this rule is blockquotes, because...
-//
-// 2. Blocknotes are considere mini-documents! Therefore, that first rule also applies to all top-level outline
-//    conventions inside any blockquote.
-//
-// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed ib a footnote block. 
 
 class FootnoteBlockProducer {
   private footnoteReferenceNumberSequence = new Sequence({ start: 1 })
@@ -79,12 +73,12 @@ class FootnoteBlockProducer {
       return this.getFootnotes(node.children)
     }
 
-    if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.getBlocklessFootnotesFromOutlineContainers(node.listItems)
-    }
-
     if (node instanceof LineBlockNode) {
       return this.getFootnotesFromInlineContainers(node.lines)
+    }
+
+    if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
+      return this.getBlocklessFootnotesFromOutlineContainers(node.listItems)
     }
 
     if (node instanceof DescriptionListNode) {
@@ -156,18 +150,24 @@ class FootnoteBlockProducer {
     return footnoteBlock
   }
 
-  getBlocklessFootnotesFromOutlineNodes(outlineNodes: OutlineSyntaxNode[]): FootnoteNode[] {
-    return concat(outlineNodes.map(node => this.getBlocklessFootnotes(node)))
+  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
+    return concat(nodes.map(node => this.getBlocklessFootnotes(node)))
   }
 
-  getBlocklessFootnotesFromDescriptionList(descriptionList: DescriptionListNode): FootnoteNode[] {
+  getBlocklessFootnotesFromDescriptionList(list: DescriptionListNode): FootnoteNode[] {
     return concat(
-      descriptionList.listItems.map(listItem => {
-        const footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms)
-        const footnotesForDescription = this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children)
-        return footnotesForTerms.concat(footnotesForDescription)
-      })
+      list.listItems.map(item => this.getBlocklessFootnotesFromDescriptionListItem(item))
     )
+  }
+
+  getBlocklessFootnotesFromDescriptionListItem(item: DescriptionListItem): FootnoteNode[] {
+    const footnotesFromTerms = 
+      this.getFootnotesFromInlineContainers(item.terms)
+    
+    const footnotesFromDescription =
+      this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
+    
+    return footnotesFromTerms.concat(footnotesFromDescription)
   }
 }
 
