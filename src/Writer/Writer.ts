@@ -35,7 +35,7 @@ import { WriterConfig, WriterConfigArgs } from './WriterConfig'
 
 class Sequence {
   constructor(public nextValue: number) { }
-  
+
   next(): number {
     return this.nextValue++
   }
@@ -44,13 +44,16 @@ class Sequence {
 
 export abstract class Writer {
   public config: WriterConfig
-  
+
   constructor(config: WriterConfigArgs) {
     this.config = new WriterConfig(config)
   }
-  
-  write(node: SyntaxNode) {
-    
+
+  write(node: SyntaxNode): string {
+    return this.dispatchWrite(node)
+  }
+
+  private dispatchWrite(node: SyntaxNode): string {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
 

@@ -2750,6 +2750,9 @@ var Writer = (function () {
         this.config = new WriterConfig_1.WriterConfig(config);
     }
     Writer.prototype.write = function (node) {
+        return this.dispatchWrite(node);
+    };
+    Writer.prototype.dispatchWrite = function (node) {
         if (node instanceof DocumentNode_1.DocumentNode) {
             return this.document(node);
         }
