@@ -232,15 +232,15 @@ function getFootnoteBlockAndProcessNestedReferences(footnotes: Footnote[]): Foot
 
   const block = new FootnoteBlockNode(footnotes)
 
-  let nextFootnoteReferenceNumber = last(block.footnotes).referenceNumber + 1
+  let nextFootnoteReferenceNumber = last(block.footnoteReferences).referenceNumber + 1
 
-  for (let footnoteIndex = 0; footnoteIndex < block.footnotes.length; footnoteIndex++) {
-    const footnote = block.footnotes[footnoteIndex]
+  for (let footnoteIndex = 0; footnoteIndex < block.footnoteReferences.length; footnoteIndex++) {
+    const footnote = block.footnoteReferences[footnoteIndex]
 
     const nestedFootnotes =
       replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceNumber)
 
-    block.footnotes.push(...nestedFootnotes)
+    block.footnoteReferences.push(...nestedFootnotes)
     nextFootnoteReferenceNumber += nestedFootnotes.length
   }
 

@@ -137,11 +137,11 @@ function replacePotentialReferencesAndGetFootnotes(inlineNodes, nextFootnoteRefe
 }
 function getFootnoteBlockAndProcessNestedReferences(footnotes) {
     var block = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
-    var nextFootnoteReferenceNumber = CollectionHelpers_1.last(block.footnotes).referenceNumber + 1;
-    for (var footnoteIndex = 0; footnoteIndex < block.footnotes.length; footnoteIndex++) {
-        var footnote = block.footnotes[footnoteIndex];
+    var nextFootnoteReferenceNumber = CollectionHelpers_1.last(block.footnoteReferences).referenceNumber + 1;
+    for (var footnoteIndex = 0; footnoteIndex < block.footnoteReferences.length; footnoteIndex++) {
+        var footnote = block.footnoteReferences[footnoteIndex];
         var nestedFootnotes = replacePotentialReferencesAndGetFootnotes(footnote.children, nextFootnoteReferenceNumber);
-        (_a = block.footnotes).push.apply(_a, nestedFootnotes);
+        (_a = block.footnoteReferences).push.apply(_a, nestedFootnotes);
         nextFootnoteReferenceNumber += nestedFootnotes.length;
     }
     return block;
@@ -2087,10 +2087,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var OutlineSyntaxNode_1 = require('./OutlineSyntaxNode');
 var FootnoteBlockNode = (function (_super) {
     __extends(FootnoteBlockNode, _super);
-    function FootnoteBlockNode(footnotes) {
-        if (footnotes === void 0) { footnotes = []; }
+    function FootnoteBlockNode(footnoteReferences) {
+        if (footnoteReferences === void 0) { footnoteReferences = []; }
         _super.call(this);
-        this.footnotes = footnotes;
+        this.footnoteReferences = footnoteReferences;
         this.FOOTNOTE_BLOCK = null;
     }
     return FootnoteBlockNode;
@@ -2601,7 +2601,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-footnotes': null });
+        return htmlElement('dl', node.footnoteReferences.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-footnotes': null });
     };
     HtmlWriter.prototype.link = function (node) {
         return this.htmlElement('a', node.children, { href: node.url });
