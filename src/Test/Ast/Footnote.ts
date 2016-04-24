@@ -25,7 +25,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 

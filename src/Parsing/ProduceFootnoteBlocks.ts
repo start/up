@@ -9,7 +9,7 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
-import { FootnoteNode } from '../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { TextConsumer } from './TextConsumer'
 import { getOutlineNodes } from './Outline/GetOutlineNodes'
@@ -191,10 +191,10 @@ function replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContain
 }
 
 
-// This function mutates the `FootnoteReferenceNodes` in the `inlineNodes` array, assigning them reference numbers. 
+// This function mutates the `FootnoteNodes` in the `inlineNodes` array, assigning them reference numbers. 
 //
 // It returns a collection of `Footnotes`, each of which contain the contents of the corresponding
-// `FootnoteReferenceNodes`.
+// `FootnoteNodes`.
 function replacePotentialReferencesAndGetFootnotes(inlineNodes: InlineSyntaxNode[], nextFootnoteReferenceNumber: number): FootnoteNode[] {
   const footnotes: FootnoteNode[] = []
 

@@ -5,7 +5,7 @@ import { Convention } from './Convention'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteReferenceNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 
