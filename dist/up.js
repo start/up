@@ -1664,7 +1664,7 @@ var FootnoteBlockProducer = (function () {
         var footnotes = [];
         for (var _i = 0, containers_1 = containers; _i < containers_1.length; _i++) {
             var container = containers_1[_i];
-            var footnotesForThisContainer = this.processOutlineNodesAndGetFootnotesForNextBlock(container.children);
+            var footnotesForThisContainer = this.getBlocklessFootnotesFromOutlineNodes(container.children);
             footnotes.push.apply(footnotes, footnotesForThisContainer);
         }
         return footnotes;
@@ -1683,14 +1683,9 @@ var FootnoteBlockProducer = (function () {
         return block;
         var _a;
     };
-    FootnoteBlockProducer.prototype.processOutlineNodesAndGetFootnotesForNextBlock = function (outlineNodes) {
-        var footnotes = [];
-        for (var _i = 0, outlineNodes_1 = outlineNodes; _i < outlineNodes_1.length; _i++) {
-            var outlineNode = outlineNodes_1[_i];
-            var footnotesForThisNode = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode);
-            footnotes.push.apply(footnotes, footnotesForThisNode);
-        }
-        return footnotes;
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (outlineNodes) {
+        var _this = this;
+        return CollectionHelpers_1.concat(outlineNodes.map(function (node) { return _this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node); }));
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionListItems = function (listItems) {
         var footnotes = [];
@@ -1698,7 +1693,7 @@ var FootnoteBlockProducer = (function () {
             var listItem = listItems_1[_i];
             var footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms);
             footnotes.push.apply(footnotes, footnotesForTerms);
-            var descriptionResult = this.processOutlineNodesAndGetFootnotesForNextBlock(listItem.description.children);
+            var descriptionResult = this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children);
             footnotes.push.apply(footnotes, descriptionResult);
         }
         return footnotes;

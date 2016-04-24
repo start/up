@@ -121,7 +121,7 @@ class FootnoteBlockProducer {
     const footnotes: FootnoteNode[] = []
 
     for (const container of containers) {
-      const footnotesForThisContainer = this.processOutlineNodesAndGetFootnotesForNextBlock(container.children)
+      const footnotesForThisContainer = this.getBlocklessFootnotesFromOutlineNodes(container.children)
 
       footnotes.push(...footnotesForThisContainer)
     }
@@ -159,16 +159,8 @@ class FootnoteBlockProducer {
     return block
   }
 
-  processOutlineNodesAndGetFootnotesForNextBlock(outlineNodes: OutlineSyntaxNode[]): FootnoteNode[] {
-    const footnotes: FootnoteNode[] = []
-
-    for (const outlineNode of outlineNodes) {
-      const footnotesForThisNode = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode)
-
-      footnotes.push(...footnotesForThisNode)
-    }
-
-    return footnotes
+  getBlocklessFootnotesFromOutlineNodes(outlineNodes: OutlineSyntaxNode[]): FootnoteNode[] {
+    return concat(outlineNodes.map(node => this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node)))
   }
 
   getBlocklessFootnotesFromDescriptionListItems(listItems: DescriptionListItem[]): FootnoteNode[] {
@@ -178,7 +170,7 @@ class FootnoteBlockProducer {
       const footnotesForTerms = this.getFootnotesFromInlineContainers(listItem.terms)
       footnotes.push(...footnotesForTerms)
 
-      const descriptionResult = this.processOutlineNodesAndGetFootnotesForNextBlock(listItem.description.children)
+      const descriptionResult = this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children)
       footnotes.push(...descriptionResult)
     }
 
