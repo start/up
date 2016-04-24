@@ -1599,6 +1599,7 @@ var OrderedListNode_1 = require('../SyntaxNodes/OrderedListNode');
 var DescriptionListNode_1 = require('../SyntaxNodes/DescriptionListNode');
 var FootnoteNode_1 = require('../SyntaxNodes/FootnoteNode');
 var FootnoteBlockNode_1 = require('../SyntaxNodes/FootnoteBlockNode');
+var CollectionHelpers_1 = require('./CollectionHelpers');
 function produceFootnoteBlocks(documentNode) {
     new FootnoteBlockProducer(documentNode);
 }
@@ -1668,14 +1669,9 @@ var FootnoteBlockProducer = (function () {
         }
         return footnotes;
     };
-    FootnoteBlockProducer.prototype.getFootnotesFromInlineContainers = function (inlineContainers) {
-        var footnotes = [];
-        for (var _i = 0, inlineContainers_1 = inlineContainers; _i < inlineContainers_1.length; _i++) {
-            var container = inlineContainers_1[_i];
-            var containerFootnotes = this.getFootnotes(container.children);
-            footnotes.push.apply(footnotes, containerFootnotes);
-        }
-        return footnotes;
+    FootnoteBlockProducer.prototype.getFootnotesFromInlineContainers = function (containers) {
+        var _this = this;
+        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getFootnotes(container.children); }));
     };
     FootnoteBlockProducer.prototype.getFootnoteBlock = function (footnotes) {
         var block = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
@@ -1710,7 +1706,7 @@ var FootnoteBlockProducer = (function () {
     return FootnoteBlockProducer;
 }());
 
-},{"../SyntaxNodes/BlockquoteNode":37,"../SyntaxNodes/DescriptionListNode":41,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/FootnoteNode":46,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/UnorderedListNode":67}],34:[function(require,module,exports){
+},{"../SyntaxNodes/BlockquoteNode":37,"../SyntaxNodes/DescriptionListNode":41,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/FootnoteNode":46,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/UnorderedListNode":67,"./CollectionHelpers":1}],34:[function(require,module,exports){
 "use strict";
 var TextConsumer = (function () {
     function TextConsumer(text) {

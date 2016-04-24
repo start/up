@@ -14,7 +14,7 @@ import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { TextConsumer } from './TextConsumer'
 import { getOutlineNodes } from './Outline/GetOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
-import { last } from './CollectionHelpers'
+import { concat } from './CollectionHelpers'
 
 
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -129,16 +129,8 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  getFootnotesFromInlineContainers(inlineContainers: InlineNodeContainer[]): FootnoteNode[] {
-    const footnotes: FootnoteNode[] = []
-
-    for (const container of inlineContainers) {
-      const containerFootnotes = this.getFootnotes(container.children)
-
-      footnotes.push(...containerFootnotes)
-    }
-
-    return footnotes
+  getFootnotesFromInlineContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
+    return concat(containers.map(container => this.getFootnotes(container.children)))
   }
 
   getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
