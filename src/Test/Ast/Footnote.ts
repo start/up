@@ -150,11 +150,11 @@ Violets are blue ((Neither is this line. I think my mom made it up.))`
         new LineBlockNode([
           new Line([
             new PlainTextNode("Roses are red"),
-            footnotes[1],
+            footnotes[0],
           ]),
           new Line([
             new PlainTextNode("Violets are blue"),
-            footnotes[2]
+            footnotes[1]
           ])
         ]),
         new FootnoteBlockNode(footnotes)
