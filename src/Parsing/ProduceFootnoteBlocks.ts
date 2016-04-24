@@ -54,44 +54,40 @@ class FootnoteBlockProducer {
     for (const outlineNode of outlineNodeContainer.children) {
       outlineNodesWithFootnotes.push(outlineNode)
 
-      const outlineNodeResult = this.processFootnotes(outlineNode)
+      const footnotes = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode)
 
-      if (outlineNodeResult.footnotesToPlaceInNextBlock.length) {
+      if (footnotes.length) {
         outlineNodesWithFootnotes.push(
-          this.getFootnoteBlockAndProcessNestedFootnotes(outlineNodeResult.footnotesToPlaceInNextBlock))
+          this.getFootnoteBlockAndProcessNestedFootnotes(footnotes))
       }
     }
 
     outlineNodeContainer.children = outlineNodesWithFootnotes
   }
 
-  processFootnotes(node: OutlineSyntaxNode): ProcessOutlineContainerFootnotesResult {
+  processOutlineNodeAndGetFootnotesToPlaceInNextBlock(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-      return new ProcessOutlineContainerFootnotesResult({
-        footnotesToPlaceInNextBlock: this.setFootnoteReferenceNumbersAndGetFootnotes(node.children)
-      })
+      return this.setFootnoteReferenceNumbersAndGetFootnotes(node.children)
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.processOutlineContainersFootnotes(node.listItems)
+      return this.processOutlineContainersAndGetFootnotesToPlaceInNextBlock(node.listItems)
     }
 
     if (node instanceof LineBlockNode) {
-      return new ProcessOutlineContainerFootnotesResult({
-        footnotesToPlaceInNextBlock: this.replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines)
-      })
+      return this.replaceInlineContainersPotentialReferencesAndGetFootnotes(node.lines)
     }
 
     if (node instanceof DescriptionListNode) {
-      return this.processDescriptionListItemFootnotes(node.listItems)
+      return this.processDescriptionListItemsAndGetFootnotesForNextBlock(node.listItems)
     }
 
     if (node instanceof BlockquoteNode) {
       this.produceFootnoteBlocks(node)
-      return new ProcessOutlineContainerFootnotesResult()
+      return []
     }
 
-    return new ProcessOutlineContainerFootnotesResult()
+    return []
   }
 
   setFootnoteReferenceNumbersAndGetFootnotes(inlineNodes: InlineSyntaxNode[]): FootnoteNode[] {
@@ -109,16 +105,16 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  processOutlineContainersFootnotes(containers: OutlineNodeContainer[]): ProcessOutlineContainerFootnotesResult {
-    const result = new ProcessOutlineContainerFootnotesResult()
+  processOutlineContainersAndGetFootnotesToPlaceInNextBlock(containers: OutlineNodeContainer[]): FootnoteNode[] {
+    const footnotes: FootnoteNode[] = []
 
     for (const container of containers) {
-      const resultForThisOutlineContainer = this.processFootnotesForOutlineNodes(container.children)
+      const footnotesForThisContainer = this.processOutlineNodesAndGetFootnotesForNextBlock(container.children)
 
-      result.include(resultForThisOutlineContainer)
+      footnotes.push(...footnotesForThisContainer)
     }
 
-    return result
+    return footnotes
   }
 
   replaceInlineContainersPotentialReferencesAndGetFootnotes(inlineContainers: InlineNodeContainer[]): FootnoteNode[] {
@@ -160,58 +156,32 @@ class FootnoteBlockProducer {
     return block
   }
 
-  processFootnotesForOutlineNodes(outlineNodes: OutlineSyntaxNode[]): ProcessOutlineContainerFootnotesResult {
-    const result = new ProcessOutlineContainerFootnotesResult()
+  processOutlineNodesAndGetFootnotesForNextBlock(outlineNodes: OutlineSyntaxNode[]): FootnoteNode[] {
+    const footnotes: FootnoteNode[] = []
 
     for (const outlineNode of outlineNodes) {
-      const outlineNodeResult = this.processFootnotes(outlineNode)
+      const footnotesForThisNode = this.processOutlineNodeAndGetFootnotesToPlaceInNextBlock(outlineNode)
 
-      result.include(outlineNodeResult)
+      footnotes.push(...footnotesForThisNode)
     }
 
-    return result
+    return footnotes
   }
 
-  processDescriptionListItemFootnotes(listItems: DescriptionListItem[]): ProcessOutlineContainerFootnotesResult {
-    const result = new ProcessOutlineContainerFootnotesResult()
+  processDescriptionListItemsAndGetFootnotesForNextBlock(listItems: DescriptionListItem[]): FootnoteNode[] {
+    const footnotes: FootnoteNode[] = []
 
     for (const listItem of listItems) {
       const footnotesForTerms = this.replaceInlineContainersPotentialReferencesAndGetFootnotes(listItem.terms)
-      result.includeFootnotesToPlaceInNextBlock(footnotesForTerms)
+      footnotes.push(...footnotesForTerms)
 
-      const descriptionResult = this.processFootnotesForOutlineNodes(listItem.description.children)
-      result.include(descriptionResult)
+      const descriptionResult = this.processOutlineNodesAndGetFootnotesForNextBlock(listItem.description.children)
+      footnotes.push(...descriptionResult)
     }
 
-    return result
+    return footnotes
   }
 }
-
-
-interface ProcessOutlineContainerFootnotesResultArgs {
-  footnotesToPlaceInNextBlock?: FootnoteNode[]
-}
-
-class ProcessOutlineContainerFootnotesResult {
-  public footnotesToPlaceInNextBlock: FootnoteNode[]
-
-  constructor(args?: ProcessOutlineContainerFootnotesResultArgs) {
-    if (args) {
-      this.footnotesToPlaceInNextBlock = args.footnotesToPlaceInNextBlock
-    }
-
-    this.footnotesToPlaceInNextBlock = this.footnotesToPlaceInNextBlock || []
-  }
-
-  includeFootnotesToPlaceInNextBlock(footnotes: FootnoteNode[]): void {
-    this.footnotesToPlaceInNextBlock = this.footnotesToPlaceInNextBlock.concat(footnotes)
-  }
-
-  include(other: ProcessOutlineContainerFootnotesResult): void {
-    this.includeFootnotesToPlaceInNextBlock(other.footnotesToPlaceInNextBlock)
-  }
-}
-
 
 
 interface OutlineNodeContainer {
