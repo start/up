@@ -32,19 +32,6 @@ export function produceFootnoteBlocks(documentNode: DocumentNode): void {
 }
 
 
-class Sequence {
-  public nextValue: number
-
-  constructor(args: { start: number }) {
-    this.nextValue = args.start
-  }
-
-  next(): number {
-    return this.nextValue++
-  }
-}
-
-
 class FootnoteBlockProducer {
   private footnoteReferenceNumberSequence = new Sequence({ start: 1 })
 
@@ -109,24 +96,19 @@ class FootnoteBlockProducer {
     return footnotes
   }
 
-  getBlocklessFootnotesFromOutlineContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
-    return concat(
-      containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
-  }
-
   getFootnotesFromInlineContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
     return concat(
       containers.map(container => this.getFootnotesAndAssignReferenceNumbers(container.children)))
   }
 
-  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
-    return concat(nodes.map(node => this.getBlocklessFootnotes(node)))
+  getBlocklessFootnotesFromOutlineContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
+    return concat(
+      containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
   }
 
   getBlocklessFootnotesFromDescriptionList(list: DescriptionListNode): FootnoteNode[] {
     return concat(
-      list.listItems.map(item => this.getBlocklessFootnotesFromDescriptionListItem(item))
-    )
+      list.listItems.map(item => this.getBlocklessFootnotesFromDescriptionListItem(item)))
   }
 
   getBlocklessFootnotesFromDescriptionListItem(item: DescriptionListItem): FootnoteNode[] {
@@ -137,6 +119,11 @@ class FootnoteBlockProducer {
       this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
     
     return footnotesFromTerms.concat(footnotesFromDescription)
+  }
+
+  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
+    return concat(
+      nodes.map(node => this.getBlocklessFootnotes(node)))
   }
 
   getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
@@ -154,8 +141,8 @@ class FootnoteBlockProducer {
 
     const footnoteBlock = new FootnoteBlockNode(footnotes)
 
-    for (let footnoteIndex = 0; footnoteIndex < footnoteBlock.footnotes.length; footnoteIndex++) {
-      const footnote = footnoteBlock.footnotes[footnoteIndex]
+    for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
+      const footnote = footnoteBlock.footnotes[i]
       const innerFootnotes = this.getFootnotesAndAssignReferenceNumbers(footnote.children)
 
       // Note: This appends items to the collection we're currently looping through.
@@ -167,10 +154,22 @@ class FootnoteBlockProducer {
 }
 
 
+class Sequence {
+  public nextValue: number
+
+  constructor(args: { start: number }) {
+    this.nextValue = args.start
+  }
+
+  next(): number {
+    return this.nextValue++
+  }
+}
+
+
 interface OutlineNodeContainer {
   children: OutlineSyntaxNode[]
 }
-
 
 interface InlineNodeContainer {
   children: InlineSyntaxNode[]
