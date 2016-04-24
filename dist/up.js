@@ -1634,11 +1634,11 @@ var FootnoteBlockProducer = (function () {
         if ((node instanceof ParagraphNode_1.ParagraphNode) || (node instanceof HeadingNode_1.HeadingNode)) {
             return this.getFootnotes(node.children);
         }
-        if ((node instanceof UnorderedListNode_1.UnorderedListNode) || (node instanceof OrderedListNode_1.OrderedListNode)) {
-            return this.getBlocklessFootnotesFromOutlineContainers(node.listItems);
-        }
         if (node instanceof LineBlockNode_1.LineBlockNode) {
             return this.getFootnotesFromInlineContainers(node.lines);
+        }
+        if ((node instanceof UnorderedListNode_1.UnorderedListNode) || (node instanceof OrderedListNode_1.OrderedListNode)) {
+            return this.getBlocklessFootnotesFromOutlineContainers(node.listItems);
         }
         if (node instanceof DescriptionListNode_1.DescriptionListNode) {
             return this.getBlocklessFootnotesFromDescriptionList(node);
@@ -1661,13 +1661,8 @@ var FootnoteBlockProducer = (function () {
         return footnotes;
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineContainers = function (containers) {
-        var footnotes = [];
-        for (var _i = 0, containers_1 = containers; _i < containers_1.length; _i++) {
-            var container = containers_1[_i];
-            var footnotesForThisContainer = this.getBlocklessFootnotesFromOutlineNodes(container.children);
-            footnotes.push.apply(footnotes, footnotesForThisContainer);
-        }
-        return footnotes;
+        var _this = this;
+        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getBlocklessFootnotesFromOutlineNodes(container.children); }));
     };
     FootnoteBlockProducer.prototype.getFootnotesFromInlineContainers = function (containers) {
         var _this = this;
@@ -1683,17 +1678,18 @@ var FootnoteBlockProducer = (function () {
         return footnoteBlock;
         var _a;
     };
-    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (outlineNodes) {
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (nodes) {
         var _this = this;
-        return CollectionHelpers_1.concat(outlineNodes.map(function (node) { return _this.getBlocklessFootnotes(node); }));
+        return CollectionHelpers_1.concat(nodes.map(function (node) { return _this.getBlocklessFootnotes(node); }));
     };
-    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionList = function (descriptionList) {
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionList = function (list) {
         var _this = this;
-        return CollectionHelpers_1.concat(descriptionList.listItems.map(function (listItem) {
-            var footnotesForTerms = _this.getFootnotesFromInlineContainers(listItem.terms);
-            var footnotesForDescription = _this.getBlocklessFootnotesFromOutlineNodes(listItem.description.children);
-            return footnotesForTerms.concat(footnotesForDescription);
-        }));
+        return CollectionHelpers_1.concat(list.listItems.map(function (item) { return _this.getBlocklessFootnotesFromDescriptionListItem(item); }));
+    };
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionListItem = function (item) {
+        var footnotesFromTerms = this.getFootnotesFromInlineContainers(item.terms);
+        var footnotesFromDescription = this.getBlocklessFootnotesFromOutlineNodes(item.description.children);
+        return footnotesFromTerms.concat(footnotesFromDescription);
     };
     return FootnoteBlockProducer;
 }());

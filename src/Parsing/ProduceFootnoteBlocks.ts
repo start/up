@@ -110,15 +110,7 @@ class FootnoteBlockProducer {
   }
 
   getBlocklessFootnotesFromOutlineContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
-    const footnotes: FootnoteNode[] = []
-
-    for (const container of containers) {
-      const footnotesForThisContainer = this.getBlocklessFootnotesFromOutlineNodes(container.children)
-
-      footnotes.push(...footnotesForThisContainer)
-    }
-
-    return footnotes
+    return concat(containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
   }
 
   getFootnotesFromInlineContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
