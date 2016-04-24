@@ -172,21 +172,21 @@ describe('Footnote references in unordered list items', () => {
 
 * Roses are red ((This is not my line.))
   Violets are blue ((Neither is this line. I think my mom made it up.))`
-  
-  const footnotes = [
-          new FootnoteReferenceNode([
-            new PlainTextNode("Well, I do, but I pretend not to."),
-          ], 1),
-          new FootnoteReferenceNode([
-            new PlainTextNode("Or touch."),
-          ], 2),
-          new FootnoteReferenceNode([
-            new PlainTextNode('This is not my line.')
-          ], 3),
-          new FootnoteReferenceNode([
-            new PlainTextNode('Neither is this line. I think my mom made it up.')
-          ], 4)
-        ]
+
+    const footnotes = [
+      new FootnoteReferenceNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1),
+      new FootnoteReferenceNode([
+        new PlainTextNode("Or touch."),
+      ], 2),
+      new FootnoteReferenceNode([
+        new PlainTextNode('This is not my line.')
+      ], 3),
+      new FootnoteReferenceNode([
+        new PlainTextNode('Neither is this line. I think my mom made it up.')
+      ], 4)
+    ]
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -234,11 +234,11 @@ describe('Footnote references in unordered list items', () => {
 describe('Footnote references in a blockquote', () => {
   it('produce footnote blocks within the blockquote', () => {
     const text = "> I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
-    
-    const footnote = 
-            new FootnoteReferenceNode([
-              new PlainTextNode("Well, I do, but I pretend not to."),
-            ], 1)
+
+    const footnote =
+      new FootnoteReferenceNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -264,6 +264,15 @@ describe('Footnote references nested inside 2 or more outline conventions nested
 >
 > * I don't eat ((Or touch.)) pumpkins.`
 
+    const footnotes = [
+      new FootnoteReferenceNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1),
+      new FootnoteReferenceNode([
+        new PlainTextNode("Or touch."),
+      ], 2)
+    ]
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
@@ -273,7 +282,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
-                new FootnoteReferenceNode(1),
+                footnotes[1],
                 new PlainTextNode(" Never have."),
               ]),
               new ParagraphNode([
@@ -284,21 +293,14 @@ describe('Footnote references nested inside 2 or more outline conventions nested
             new UnorderedListItem([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
-                new FootnoteReferenceNode(2),
+                footnotes[2],
                 new PlainTextNode(" pumpkins."),
               ])
             ])
 
           ]),
 
-          new FootnoteBlockNode([
-            new FootnoteReferenceNode([
-              new PlainTextNode("Well, I do, but I pretend not to."),
-            ], 1),
-            new FootnoteReferenceNode([
-              new PlainTextNode("Or touch."),
-            ], 2)
-          ])
+          new FootnoteBlockNode(footnotes)
 
         ])
       ])
@@ -316,13 +318,22 @@ describe('Footnote references in ordered list items', () => {
 
 2) I don't eat ((Or touch.)) pumpkins.`
 
+    const footnotes = [
+      new FootnoteReferenceNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1),
+      new FootnoteReferenceNode([
+        new PlainTextNode("Or touch."),
+      ], 2)
+    ]
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
-              new FootnoteReferenceNode(1),
+              footnotes[1],
               new PlainTextNode(" Never have."),
             ]),
             new ParagraphNode([
@@ -332,19 +343,12 @@ describe('Footnote references in ordered list items', () => {
           new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
-              new FootnoteReferenceNode(2),
+              footnotes[2],
               new PlainTextNode(" pumpkins."),
             ])
           ], 2)
         ]),
-        new FootnoteBlockNode([
-          new FootnoteReferenceNode([
-            new PlainTextNode("Well, I do, but I pretend not to."),
-          ], 1),
-          new FootnoteReferenceNode([
-            new PlainTextNode("Or touch."),
-          ], 2)
-        ])
+        new FootnoteBlockNode(footnotes)
       ]))
   })
 })
@@ -364,6 +368,18 @@ Night Shade ((This probably wasn't a reference to the family of plants.))
 Gary
   A young man with a great sense of smell. ((Or maybe Ash simply smelled really good.))`
 
+    const footnotes = [
+      new FootnoteReferenceNode([
+        new PlainTextNode("What happens to the creature if the seed is never planted?"),
+      ], 1),
+      new FootnoteReferenceNode([
+        new PlainTextNode("This probably wasn't a reference to the family of plants."),
+      ], 2),
+      new FootnoteReferenceNode([
+        new PlainTextNode("Or maybe Ash simply smelled really good."),
+      ], 3)
+    ]
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
@@ -372,7 +388,7 @@ Gary
           ], new Description([
             new ParagraphNode([
               new PlainTextNode('A strange seed was planted on its back at birth.'),
-              new FootnoteReferenceNode(1),
+              footnotes[1],
               new PlainTextNode(' The plant sprouts and grows with this Pokémon.')
             ])
           ])),
@@ -382,7 +398,7 @@ Gary
             new DescriptionTerm([new PlainTextNode('Lick')]),
             new DescriptionTerm([
               new PlainTextNode('Night Shade'),
-              new FootnoteReferenceNode(2)
+              footnotes[2]
             ])
           ], new Description([
             new ParagraphNode([
@@ -395,22 +411,12 @@ Gary
           ], new Description([
             new ParagraphNode([
               new PlainTextNode('A young man with a great sense of smell.'),
-              new FootnoteReferenceNode(3)
+              footnotes[3]
             ])
           ]))
         ]),
 
-        new FootnoteBlockNode([
-          new FootnoteReferenceNode([
-            new PlainTextNode("What happens to the creature if the seed is never planted?"),
-          ], 1),
-          new FootnoteReferenceNode([
-            new PlainTextNode("This probably wasn't a reference to the family of plants."),
-          ], 2),
-          new FootnoteReferenceNode([
-            new PlainTextNode("Or maybe Ash simply smelled really good."),
-          ], 3)
-        ])
+        new FootnoteBlockNode(footnotes)
       ])
     )
   })
