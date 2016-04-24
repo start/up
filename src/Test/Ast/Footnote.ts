@@ -32,7 +32,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 describe('In a paragraph, text surrounded by 2 parentheses', () => {
   it('produces a footnote reference node. This node references a footnote node within a footnote block node after the paragraph', () => {
     const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
-    
+
     const footnote = new FootnoteReferenceNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
@@ -73,7 +73,7 @@ describe('A footnote reference', () => {
   })
 
   it('can contain other footnote references, which produce additional footnotes in the same footnote block', () => {
-const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really."
+    const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really."
 
     const innerFootnote = new FootnoteReferenceNode([
       new PlainTextNode('Well, I '),
@@ -556,7 +556,6 @@ describe('Nested footnote references', () => {
       secondInnerFootnote,
     ], 1)
 
-
     const secondFootnote = new FootnoteReferenceNode([
       new PlainTextNode("Probably."),
     ], 2)
@@ -572,7 +571,9 @@ describe('Nested footnote references', () => {
         new FootnoteBlockNode([
           firstFootnote,
           secondFootnote,
-          firstInnerFootnote
+          firstInnerFootnote,
+          secondInnerFootnote,
+          footnoteInsideFirstInnerFootnote
         ])
       ]))
   })
