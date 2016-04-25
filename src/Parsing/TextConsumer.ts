@@ -137,6 +137,10 @@ export class TextConsumer {
     const match = result[0]
     const captures = result.slice(1)
     
+    if (!this.areRelevantBracketsClosed(match)) {
+      return false
+    }
+    
     this.skip(match.length)
 
     if (then) {

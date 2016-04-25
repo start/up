@@ -419,16 +419,23 @@ class Tokenizer {
   }
   
   tokenizeNakedUrl(): boolean {
-    const PROTOCOL_PATTERN = /^(?:https?)?:\/\//
+    return false
+    /*const PROTOCOL_PATTERN = /^(?:https?)?:\/\//
+    
+    let urlProtocol: string
     
     if (!this.consumer.consumeIfMatchesPattern({
       pattern: PROTOCOL_PATTERN,
-      then: () => null
+      then: (match) => urlProtocol = match 
     })) {
-      
+      return false
     }
     
-    return false
+    let restOfUrl = ''
+    
+    while(!this.consumer.done()) {
+      
+    }*/
   }
 
   addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | TextConsumer): void {

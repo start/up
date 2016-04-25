@@ -873,12 +873,6 @@ var Tokenizer = (function () {
         return false;
     };
     Tokenizer.prototype.tokenizeNakedUrl = function () {
-        var PROTOCOL_PATTERN = /^(?:https?)?:\/\//;
-        if (!this.consumer.consumeIfMatchesPattern({
-            pattern: PROTOCOL_PATTERN,
-            then: function () { return null; }
-        })) {
-        }
         return false;
     };
     Tokenizer.prototype.addToken = function (meaning, valueOrConsumerBefore) {
@@ -1783,6 +1777,9 @@ var TextConsumer = (function () {
         }
         var match = result[0];
         var captures = result.slice(1);
+        if (!this.areRelevantBracketsClosed(match)) {
+            return false;
+        }
         this.skip(match.length);
         if (then) {
             then.apply(void 0, [match].concat(captures));
