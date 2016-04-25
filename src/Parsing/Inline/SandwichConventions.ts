@@ -25,8 +25,6 @@ const REVISION_DELETION = sandwich('~~', '~~', RevisionDeletionNode, TokenMeanin
 const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd)
 const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
 
-// These are converted to footnote references later.
-//
 // TODO: Better handle leading space hack
 const FOOTNOTE = sandwich(' ((', '))', FootnoteNode, TokenMeaning.FootnoteReferenceStart, TokenMeaning.FootnoteReferenceEnd)
 
