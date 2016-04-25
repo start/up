@@ -68,6 +68,7 @@ class Tokenizer {
         || this.handleRegularSandwiches()
         || this.tokenizeMedia()
         || this.handleLink()
+        || this.tokenizeNakedUrl()
       )
 
       if (wasAnythingDiscovered) {
@@ -414,6 +415,19 @@ class Tokenizer {
       return true
     }
 
+    return false
+  }
+  
+  tokenizeNakedUrl(): boolean {
+    const PROTOCOL_PATTERN = /^(?:https?)?:\/\//
+    
+    if (!this.consumer.consumeIfMatchesPattern({
+      pattern: PROTOCOL_PATTERN,
+      then: () => null
+    })) {
+      
+    }
+    
     return false
   }
 

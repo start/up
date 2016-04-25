@@ -665,7 +665,8 @@ var Tokenizer = (function () {
                 || this.tokenizeRaisedVoicePlaceholders()
                 || this.handleRegularSandwiches()
                 || this.tokenizeMedia()
-                || this.handleLink());
+                || this.handleLink()
+                || this.tokenizeNakedUrl());
             if (wasAnythingDiscovered) {
                 continue;
             }
@@ -868,6 +869,15 @@ var Tokenizer = (function () {
         if (this.consumer.consumeIfMatches(']')) {
             this.undoLatest(LINK);
             return true;
+        }
+        return false;
+    };
+    Tokenizer.prototype.tokenizeNakedUrl = function () {
+        var PROTOCOL_PATTERN = /^(?:https?)?:\/\//;
+        if (!this.consumer.consumeIfMatchesPattern({
+            pattern: PROTOCOL_PATTERN,
+            then: function () { return null; }
+        })) {
         }
         return false;
     };
