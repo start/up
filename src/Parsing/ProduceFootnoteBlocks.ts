@@ -45,10 +45,11 @@ class FootnoteBlockProducer {
     for (const outlineNode of outlineNodeContainer.children) {
       outlineNodesWithFootnoteBlocks.push(outlineNode)
 
-      const footnotes = this.getBlocklessFootnotes(outlineNode)
+      const footnotesForNextFootnoteBlock =
+        this.getBlocklessFootnotes(outlineNode)
 
-      if (footnotes.length) {
-        outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotes))
+      if (footnotesForNextFootnoteBlock.length) {
+        outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock))
       }
     }
 

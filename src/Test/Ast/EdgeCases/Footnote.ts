@@ -106,3 +106,51 @@ describe('Within an outline convention, a blockquoted footnote reference that fo
       ]))
   })
 })
+
+
+
+describe('A footnote with inner footnotes followed by another footnote with inner footnotes', () => {
+  it('produces no duplicate reference numbers', () => {
+    const text =
+      "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably. ((No.))))"
+
+    const footnoteInsideFirstFootnote = new FootnoteNode([
+      new PlainTextNode('Well, I '),
+      new EmphasisNode([
+        new PlainTextNode('do')
+      ]),
+      new PlainTextNode(', but I pretend not to.'),
+    ], 3)
+
+    const firstFootnote = new FootnoteNode([
+      new PlainTextNode("That said, I don't eat cereal."),
+      footnoteInsideFirstFootnote,
+      new PlainTextNode(" Never have."),
+    ], 1)
+
+    const footnoteInsideSecondFootnote = new FootnoteNode([
+      new PlainTextNode("No."),
+    ], 4)
+
+    const secondFootnote = new FootnoteNode([
+      new PlainTextNode("Probably."),
+      footnoteInsideSecondFootnote
+    ], 2)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("Me? I'm totally normal."),
+          firstFootnote,
+          new PlainTextNode(" Really."),
+          secondFootnote,
+        ]),
+        new FootnoteBlockNode([
+          firstFootnote,
+          secondFootnote,
+          footnoteInsideFirstFootnote,
+          footnoteInsideSecondFootnote
+        ])
+      ]))
+  })
+})

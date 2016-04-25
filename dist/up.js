@@ -1604,15 +1604,6 @@ function produceFootnoteBlocks(documentNode) {
     new FootnoteBlockProducer(documentNode);
 }
 exports.produceFootnoteBlocks = produceFootnoteBlocks;
-var Sequence = (function () {
-    function Sequence(args) {
-        this.nextValue = args.start;
-    }
-    Sequence.prototype.next = function () {
-        return this.nextValue++;
-    };
-    return Sequence;
-}());
 var FootnoteBlockProducer = (function () {
     function FootnoteBlockProducer(documentNode) {
         this.footnoteReferenceNumberSequence = new Sequence({ start: 1 });
@@ -1623,9 +1614,9 @@ var FootnoteBlockProducer = (function () {
         for (var _i = 0, _a = outlineNodeContainer.children; _i < _a.length; _i++) {
             var outlineNode = _a[_i];
             outlineNodesWithFootnoteBlocks.push(outlineNode);
-            var footnotes = this.getBlocklessFootnotes(outlineNode);
-            if (footnotes.length) {
-                outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotes));
+            var footnotesForNextFootnoteBlock = this.getBlocklessFootnotes(outlineNode);
+            if (footnotesForNextFootnoteBlock.length) {
+                outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock));
             }
         }
         outlineNodeContainer.children = outlineNodesWithFootnoteBlocks;
@@ -1660,17 +1651,13 @@ var FootnoteBlockProducer = (function () {
         }
         return footnotes;
     };
-    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineContainers = function (containers) {
-        var _this = this;
-        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getBlocklessFootnotesFromOutlineNodes(container.children); }));
-    };
     FootnoteBlockProducer.prototype.getFootnotesFromInlineContainers = function (containers) {
         var _this = this;
         return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getFootnotesAndAssignReferenceNumbers(container.children); }));
     };
-    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (nodes) {
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineContainers = function (containers) {
         var _this = this;
-        return CollectionHelpers_1.concat(nodes.map(function (node) { return _this.getBlocklessFootnotes(node); }));
+        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getBlocklessFootnotesFromOutlineNodes(container.children); }));
     };
     FootnoteBlockProducer.prototype.getBlocklessFootnotesFromDescriptionList = function (list) {
         var _this = this;
@@ -1681,10 +1668,14 @@ var FootnoteBlockProducer = (function () {
         var footnotesFromDescription = this.getBlocklessFootnotesFromOutlineNodes(item.description.children);
         return footnotesFromTerms.concat(footnotesFromDescription);
     };
+    FootnoteBlockProducer.prototype.getBlocklessFootnotesFromOutlineNodes = function (nodes) {
+        var _this = this;
+        return CollectionHelpers_1.concat(nodes.map(function (node) { return _this.getBlocklessFootnotes(node); }));
+    };
     FootnoteBlockProducer.prototype.getFootnoteBlock = function (footnotes) {
         var footnoteBlock = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
-        for (var footnoteIndex = 0; footnoteIndex < footnoteBlock.footnotes.length; footnoteIndex++) {
-            var footnote = footnoteBlock.footnotes[footnoteIndex];
+        for (var i = 0; i < footnoteBlock.footnotes.length; i++) {
+            var footnote = footnoteBlock.footnotes[i];
             var innerFootnotes = this.getFootnotesAndAssignReferenceNumbers(footnote.children);
             (_a = footnoteBlock.footnotes).push.apply(_a, innerFootnotes);
         }
@@ -1692,6 +1683,15 @@ var FootnoteBlockProducer = (function () {
         var _a;
     };
     return FootnoteBlockProducer;
+}());
+var Sequence = (function () {
+    function Sequence(args) {
+        this.nextValue = args.start;
+    }
+    Sequence.prototype.next = function () {
+        return this.nextValue++;
+    };
+    return Sequence;
 }());
 
 },{"../SyntaxNodes/BlockquoteNode":37,"../SyntaxNodes/DescriptionListNode":41,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/FootnoteNode":46,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/UnorderedListNode":67,"./CollectionHelpers":1}],34:[function(require,module,exports){
