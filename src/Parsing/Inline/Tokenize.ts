@@ -419,12 +419,12 @@ class Tokenizer {
   }
   
   tokenizeNakedUrl(): boolean {
-    const PROTOCOL_PATTERN = /^(?:https?)?:\/\//
+    const SCHEME_PATTERN = /^(?:https?)?:\/\//
     
     let urlProtocol: string
     
     if (!this.consumer.consumeIfMatchesPattern({
-      pattern: PROTOCOL_PATTERN,
+      pattern: SCHEME_PATTERN,
       then: (match) => urlProtocol = match 
     })) {
       return false

@@ -873,10 +873,10 @@ var Tokenizer = (function () {
         return false;
     };
     Tokenizer.prototype.tokenizeNakedUrl = function () {
-        var PROTOCOL_PATTERN = /^(?:https?)?:\/\//;
+        var SCHEME_PATTERN = /^(?:https?)?:\/\//;
         var urlProtocol;
         if (!this.consumer.consumeIfMatchesPattern({
-            pattern: PROTOCOL_PATTERN,
+            pattern: SCHEME_PATTERN,
             then: function (match) { return urlProtocol = match; }
         })) {
             return false;

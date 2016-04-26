@@ -33,4 +33,13 @@ describe('A naked URL', () => {
         ], 'https://archive.org')
       ]))
   })
+  
+  it('can contain matching parenthesis', () => {
+    expect(Up.toAst('https://archive.org/fake(url)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('archive.org/fake(url)')
+        ], 'https://archive.org/fake(url)')
+      ]))
+  })
 })
