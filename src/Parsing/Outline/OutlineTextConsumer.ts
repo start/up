@@ -10,11 +10,6 @@ interface ConsumeLineArgs {
   then?: OnConsume
 }
 
-interface ConsumeIfMatchesPatternArgs {
-  pattern: RegExp,
-  then?: OnConsume
-}
-
 interface ShouldConsumeLine {
   (line: string, ...captures: string[]): boolean
 }
