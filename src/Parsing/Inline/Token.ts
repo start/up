@@ -1,4 +1,4 @@
-import { InlineTextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from './InlineTextConsumer'
 
 export enum TokenMeaning {
   PlainText,
