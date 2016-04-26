@@ -1351,8 +1351,7 @@ var OutlineTextConsumer = (function () {
         this.index = 0;
     }
     OutlineTextConsumer.prototype.done = function () {
-        return (this.index >= this.text.length
-            || this.isOnTrailingBackslash());
+        return this.index >= this.text.length;
     };
     OutlineTextConsumer.prototype.consumeLine = function (args) {
         if (this.done()) {
@@ -1394,27 +1393,14 @@ var OutlineTextConsumer = (function () {
     OutlineTextConsumer.prototype.remainingText = function () {
         return this.text.slice(this.index);
     };
-    OutlineTextConsumer.prototype.moveNext = function () {
-        this.skip((this.isCurrentCharEscaped() ? 2 : 1));
-    };
     OutlineTextConsumer.prototype.consumedText = function () {
         return this.text.substr(0, this.index);
-    };
-    OutlineTextConsumer.prototype.currentChar = function () {
-        return this.at(this.index);
-    };
-    OutlineTextConsumer.prototype.at = function (index) {
-        return this.text[index];
     };
     OutlineTextConsumer.prototype.match = function (needle) {
         return needle === this.text.substr(this.index, needle.length);
     };
-    OutlineTextConsumer.prototype.isCurrentCharEscaped = function () {
-        return this.currentChar() === '\\';
-    };
     OutlineTextConsumer.prototype.isOnTrailingBackslash = function () {
-        return (this.index === this.text.length - 1
-            && this.isCurrentCharEscaped());
+        return this.index === this.text.length - 1;
     };
     OutlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
