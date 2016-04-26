@@ -15,24 +15,27 @@ interface OnConsume {
 export class InlineTextConsumer {
   public countUnclosedParen = 0;
   public countUnclosedSquareBracket = 0;
-
+  private isCurrentCharEscaped = false
   private index = 0;
 
-  constructor(private text: string) { }
+  constructor(private text: string) {
+    this.applyEscaping()
+  }
 
   done(): boolean {
-    return (
-      this.index >= this.text.length
-      || this.isOnTrailingBackslash()
-    )
+    return this.index >= this.text.length
   }
 
   consumeIfMatches(needle: string): boolean {
+    if (this.cannotMatchAnything()) {
+      return false
+    }
+    
     const isMatch = (
       needle === this.text.substr(this.index, needle.length)
       && this.areRelevantBracketsClosed(needle)
     )
-    
+
     if (!isMatch) {
       return false
     }
@@ -42,6 +45,10 @@ export class InlineTextConsumer {
   }
 
   consume(args: ConsumeArgs): boolean {
+    if (this.cannotMatchAnything()) {
+      return false
+    }
+    
     const { upTo, then } = args
     const from = args.from || ''
 
@@ -70,6 +77,10 @@ export class InlineTextConsumer {
   }
 
   consumeIfMatchesPattern(args: ConsumeIfMatchesPatternArgs): boolean {
+    if (this.cannotMatchAnything()) {
+      return false
+    }
+    
     const { pattern, then } = args
 
     const result = pattern.exec(this.remainingText())
@@ -80,11 +91,11 @@ export class InlineTextConsumer {
 
     const match = result[0]
     const captures = result.slice(1)
-    
+
     if (!this.areRelevantBracketsClosed(match)) {
       return false
     }
-    
+
     this.advance(match.length)
 
     if (then) {
@@ -95,11 +106,12 @@ export class InlineTextConsumer {
   }
 
   moveNext(): void {
-    // As a rule, we only count brackets found in plain, regular text. We ignore any brackets that are
-    // consumed as part of a text match (i.e. delimiters for syntax rules). That's why we call
-    // `updateUnclosedBracketCounts` here rather than in `skip`. 
-    this.updateUnclosedBracketCounts()
-    this.advance((this.isCurrentCharEscaped() ? 2 : 1))
+    if (!this.isCurrentCharEscaped) {
+      this.updateUnclosedBracketCounts()
+    }
+
+    this.advance(1)
+    this.applyEscaping()
   }
 
   advance(count: number): void {
@@ -118,16 +130,13 @@ export class InlineTextConsumer {
     return this.text.substr(0, this.index)
   }
 
+  // TODO: Reconsider this method
   escapedCurrentChar(): string {
     if (this.done()) {
       throw new Error('There is no more text!')
     }
 
-    return (
-      this.isCurrentCharEscaped()
-        ? this.at(this.index + 1)
-        : this.currentChar()
-    )
+    return this.currentChar()
   }
 
   currentChar(): string {
@@ -137,7 +146,7 @@ export class InlineTextConsumer {
   at(index: number): string {
     return this.text[index]
   }
-  
+
   // This method is a bit hackish.
   //
   // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.  
@@ -158,16 +167,17 @@ export class InlineTextConsumer {
   skipToEnd(): void {
     this.index = this.text.length
   }
-
-  private isCurrentCharEscaped(): boolean {
-    return this.currentChar() === '\\'
+  
+  private cannotMatchAnything(): boolean {
+    return this.isCurrentCharEscaped || this.done()
   }
 
-  private isOnTrailingBackslash(): boolean {
-    return (
-      this.index === this.text.length - 1
-      && this.isCurrentCharEscaped()
-    )
+  private applyEscaping(): void {
+    this.isCurrentCharEscaped = (this.currentChar() === '\\')
+
+    if (this.isCurrentCharEscaped) {
+      this.advance(1)
+    }
   }
 
   private updateUnclosedBracketCounts(): void {

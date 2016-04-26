@@ -3,6 +3,8 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
+import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
+import { Line } from '../../../SyntaxNodes/Line'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
@@ -23,6 +25,43 @@ describe('A backslash that is the first character in a paragraph', () => {
       ]))
   })
 })
+
+
+describe("A backslash that is the first character in a line block's first line", () => {
+  it('correctly escapes the next character', () => {
+    const text = `
+\\Roses are red
+Violets are blue`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([new PlainTextNode('Roses are red')]),
+          new Line([new PlainTextNode('Violets are blue')])
+        ])
+      ])
+    )
+  })
+})
+
+
+describe("A backslash that is the first character in a line block's second line", () => {
+  it('correctly escapes the next character', () => {
+    const text = `
+Roses are red
+\\Violets are blue`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([new PlainTextNode('Roses are red')]),
+          new Line([new PlainTextNode('Violets are blue')])
+        ])
+      ])
+    )
+  })
+})
+
 
 describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {

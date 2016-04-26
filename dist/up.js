@@ -139,13 +139,17 @@ var InlineTextConsumer = (function () {
         this.text = text;
         this.countUnclosedParen = 0;
         this.countUnclosedSquareBracket = 0;
+        this.isCurrentCharEscaped = false;
         this.index = 0;
+        this.applyEscaping();
     }
     InlineTextConsumer.prototype.done = function () {
-        return (this.index >= this.text.length
-            || this.isOnTrailingBackslash());
+        return this.index >= this.text.length;
     };
     InlineTextConsumer.prototype.consumeIfMatches = function (needle) {
+        if (this.cannotMatchAnything()) {
+            return false;
+        }
         var isMatch = (needle === this.text.substr(this.index, needle.length)
             && this.areRelevantBracketsClosed(needle));
         if (!isMatch) {
@@ -155,6 +159,9 @@ var InlineTextConsumer = (function () {
         return true;
     };
     InlineTextConsumer.prototype.consume = function (args) {
+        if (this.cannotMatchAnything()) {
+            return false;
+        }
         var upTo = args.upTo, then = args.then;
         var from = args.from || '';
         var consumer = new InlineTextConsumer(this.remainingText());
@@ -175,6 +182,9 @@ var InlineTextConsumer = (function () {
         return false;
     };
     InlineTextConsumer.prototype.consumeIfMatchesPattern = function (args) {
+        if (this.cannotMatchAnything()) {
+            return false;
+        }
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this.remainingText());
         if (!result) {
@@ -192,8 +202,11 @@ var InlineTextConsumer = (function () {
         return true;
     };
     InlineTextConsumer.prototype.moveNext = function () {
-        this.updateUnclosedBracketCounts();
-        this.advance((this.isCurrentCharEscaped() ? 2 : 1));
+        if (!this.isCurrentCharEscaped) {
+            this.updateUnclosedBracketCounts();
+        }
+        this.advance(1);
+        this.applyEscaping();
     };
     InlineTextConsumer.prototype.advance = function (count) {
         this.index += count;
@@ -211,9 +224,7 @@ var InlineTextConsumer = (function () {
         if (this.done()) {
             throw new Error('There is no more text!');
         }
-        return (this.isCurrentCharEscaped()
-            ? this.at(this.index + 1)
-            : this.currentChar());
+        return this.currentChar();
     };
     InlineTextConsumer.prototype.currentChar = function () {
         return this.at(this.index);
@@ -232,12 +243,14 @@ var InlineTextConsumer = (function () {
     InlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
     };
-    InlineTextConsumer.prototype.isCurrentCharEscaped = function () {
-        return this.currentChar() === '\\';
+    InlineTextConsumer.prototype.cannotMatchAnything = function () {
+        return this.isCurrentCharEscaped || this.done();
     };
-    InlineTextConsumer.prototype.isOnTrailingBackslash = function () {
-        return (this.index === this.text.length - 1
-            && this.isCurrentCharEscaped());
+    InlineTextConsumer.prototype.applyEscaping = function () {
+        this.isCurrentCharEscaped = (this.currentChar() === '\\');
+        if (this.isCurrentCharEscaped) {
+            this.advance(1);
+        }
     };
     InlineTextConsumer.prototype.updateUnclosedBracketCounts = function () {
         switch (this.currentChar()) {
