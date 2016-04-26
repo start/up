@@ -1384,6 +1384,15 @@ var OutlineTextConsumer = (function () {
         }
         return true;
     };
+    OutlineTextConsumer.prototype.skip = function (count) {
+        this.index += count;
+    };
+    OutlineTextConsumer.prototype.lengthConsumed = function () {
+        return this.index;
+    };
+    OutlineTextConsumer.prototype.remainingText = function () {
+        return this.text.slice(this.index);
+    };
     OutlineTextConsumer.prototype.consume = function (args) {
         var upTo = args.upTo, then = args.then;
         var from = args.from || '';
@@ -1413,15 +1422,6 @@ var OutlineTextConsumer = (function () {
     };
     OutlineTextConsumer.prototype.moveNext = function () {
         this.skip((this.isCurrentCharEscaped() ? 2 : 1));
-    };
-    OutlineTextConsumer.prototype.skip = function (count) {
-        this.index += count;
-    };
-    OutlineTextConsumer.prototype.lengthConsumed = function () {
-        return this.index;
-    };
-    OutlineTextConsumer.prototype.remainingText = function () {
-        return this.text.slice(this.index);
     };
     OutlineTextConsumer.prototype.consumedText = function () {
         return this.text.substr(0, this.index);

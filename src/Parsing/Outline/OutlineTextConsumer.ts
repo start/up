@@ -75,6 +75,18 @@ export class OutlineTextConsumer {
     return true
   }
 
+  skip(count: number): void {
+    this.index += count
+  }
+
+  lengthConsumed(): number {
+    return this.index
+  }
+
+  remainingText(): string {
+    return this.text.slice(this.index)
+  }
+
   private consume(args: ConsumeArgs): boolean {
     const { upTo, then } = args
     const from = args.from || ''
@@ -119,27 +131,15 @@ export class OutlineTextConsumer {
     this.skip((this.isCurrentCharEscaped() ? 2 : 1))
   }
 
-  skip(count: number): void {
-    this.index += count
-  }
-
-  lengthConsumed(): number {
-    return this.index
-  }
-
-  remainingText(): string {
-    return this.text.slice(this.index)
-  }
-
-  consumedText(): string {
+  private consumedText(): string {
     return this.text.substr(0, this.index)
   }
 
-  currentChar(): string {
+  private currentChar(): string {
     return this.at(this.index)
   }
 
-  at(index: number): string {
+  private at(index: number): string {
     return this.text[index]
   }
 
@@ -150,7 +150,6 @@ export class OutlineTextConsumer {
   private isCurrentCharEscaped(): boolean {
     return this.currentChar() === '\\'
   }
-
 
   private isOnTrailingBackslash(): boolean {
     return (
