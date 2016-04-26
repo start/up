@@ -23,11 +23,6 @@ interface OnConsume {
   (text: string, ...captures: string[]): void
 }
 
-interface OnConsumeUpTo {
-  (beforeNeedle: string): void
-}
-
-
 export class TextConsumer {
   public countUnclosedParen = 0;
   public countUnclosedSquareBracket = 0;

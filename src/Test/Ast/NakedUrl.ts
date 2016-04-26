@@ -35,7 +35,7 @@ describe('A naked URL', () => {
   })
   
   it('can contain escaped spaces', () => {
-    expect(Up.toAst('https://archive.org/fake\ url')).to.be.eql(
+    expect(Up.toAst('https://archive.org/fake\\ url')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('archive.org/fake url')
