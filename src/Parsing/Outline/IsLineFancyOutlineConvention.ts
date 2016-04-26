@@ -1,6 +1,6 @@
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { InlineTextConsumer } from '../TextConsumer'
+import { OutlineTextConsumer } from './OutlineTextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'

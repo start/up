@@ -1,4 +1,4 @@
-import { InlineTextConsumer } from '../TextConsumer'
+import { OutlineTextConsumer } from './OutlineTextConsumer'
 import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
@@ -42,7 +42,7 @@ const INDENTED_PATTERN = new RegExp(
 //
 // List items don't need to be separated by blank lines.
 export function parseOrderedList(args: OutlineParserArgs): boolean {
-  const consumer = new InlineTextConsumer(args.text)
+  const consumer = new OutlineTextConsumer(args.text)
   const rawListItems: RawListItem[] = []
 
   while (!consumer.done()) {

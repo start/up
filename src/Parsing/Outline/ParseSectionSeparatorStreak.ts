@@ -1,4 +1,4 @@
-import { InlineTextConsumer } from '../TextConsumer'
+import { OutlineTextConsumer } from './OutlineTextConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { STREAK, either, BLANK } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
@@ -9,7 +9,7 @@ const STREAK_PATTERN = new RegExp(
 
 // A horizontal streak of characters indicates separation between sections.
 export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
-  const consumer = new InlineTextConsumer(args.text)
+  const consumer = new OutlineTextConsumer(args.text)
 
   if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
     return false

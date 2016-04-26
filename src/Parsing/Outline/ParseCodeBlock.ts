@@ -1,4 +1,4 @@
-import { InlineTextConsumer } from '../TextConsumer'
+import { OutlineTextConsumer } from './OutlineTextConsumer'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { streakOf } from './Patterns'
@@ -10,7 +10,7 @@ const CODE_FENCE_PATTERN = new RegExp(
 
 // Code blocks are surrounded (underlined and overlined) by streaks of backticks
 export function parseCodeBlock(args: OutlineParserArgs): boolean {
-  const consumer = new InlineTextConsumer(args.text)
+  const consumer = new OutlineTextConsumer(args.text)
 
   if (!consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
     return false
