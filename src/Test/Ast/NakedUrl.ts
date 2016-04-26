@@ -24,5 +24,13 @@ describe('A naked URL', () => {
         ], 'https://archive.org')
       ]))
   })
+  
+  it('is terminated by a space', () => {
+    expect(Up.toAst('https://archive.org ')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('archive.org')
+        ], 'https://archive.org')
+      ]))
+  })
 })
-
