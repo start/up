@@ -15,6 +15,15 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
+describe('A backslash that is the first character in a paragraph', () => {
+  it('correctly escapes the next character', () => {
+    expect(Up.toAst('\\*So many* Tuesdays')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('*So many* Tuesdays')
+      ]))
+  })
+})
+
 describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {
     expect(Up.toAst('\\\\\\\\')).to.be.eql(

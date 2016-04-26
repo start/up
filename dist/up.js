@@ -146,12 +146,12 @@ var InlineTextConsumer = (function () {
             || this.isOnTrailingBackslash());
     };
     InlineTextConsumer.prototype.consumeIfMatches = function (needle) {
-        var doesMatch = (needle === this.text.substr(this.index, needle.length)
+        var isMatch = (needle === this.text.substr(this.index, needle.length)
             && this.areRelevantBracketsClosed(needle));
-        if (!doesMatch) {
+        if (!isMatch) {
             return false;
         }
-        this.skip(needle.length);
+        this.advance(needle.length);
         return true;
     };
     InlineTextConsumer.prototype.consume = function (args) {
@@ -163,7 +163,7 @@ var InlineTextConsumer = (function () {
         }
         while (!consumer.done()) {
             if (consumer.consumeIfMatches(upTo)) {
-                this.skip(consumer.lengthConsumed());
+                this.advance(consumer.lengthConsumed());
                 if (then) {
                     var text = consumer.consumedText().slice(from.length, -upTo.length);
                     then(text);
@@ -185,7 +185,7 @@ var InlineTextConsumer = (function () {
         if (!this.areRelevantBracketsClosed(match)) {
             return false;
         }
-        this.skip(match.length);
+        this.advance(match.length);
         if (then) {
             then.apply(void 0, [match].concat(captures));
         }
@@ -193,9 +193,9 @@ var InlineTextConsumer = (function () {
     };
     InlineTextConsumer.prototype.moveNext = function () {
         this.updateUnclosedBracketCounts();
-        this.skip((this.isCurrentCharEscaped() ? 2 : 1));
+        this.advance((this.isCurrentCharEscaped() ? 2 : 1));
     };
-    InlineTextConsumer.prototype.skip = function (count) {
+    InlineTextConsumer.prototype.advance = function (count) {
         this.index += count;
     };
     InlineTextConsumer.prototype.lengthConsumed = function () {
@@ -926,7 +926,7 @@ var Tokenizer = (function () {
             var wasMediaFound = tokenizeMedia({
                 text: this.consumer.remainingText(),
                 then: function (lengthConsumed, tokens) {
-                    _this.consumer.skip(lengthConsumed);
+                    _this.consumer.advance(lengthConsumed);
                     (_a = _this.tokens).push.apply(_a, tokens);
                     var _a;
                 }
