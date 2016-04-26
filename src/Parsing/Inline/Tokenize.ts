@@ -421,11 +421,11 @@ class Tokenizer {
   tokenizeNakedUrl(): boolean {
     const SCHEME_PATTERN = /^(?:https?)?:\/\//
     
-    let urlProtocol: string
+    let urlScheme: string
     
     if (!this.consumer.consumeIfMatchesPattern({
       pattern: SCHEME_PATTERN,
-      then: (match) => urlProtocol = match 
+      then: (match) => urlScheme = match
     })) {
       return false
     }
@@ -443,7 +443,7 @@ class Tokenizer {
     
     this.addToken(TokenMeaning.LinkStart)
     this.addPlainTextToken(restOfUrl)
-    this.addToken(TokenMeaning.LinkUrlAndLinkEnd, urlProtocol + restOfUrl)
+    this.addToken(TokenMeaning.LinkUrlAndLinkEnd, urlScheme + restOfUrl)
     
     return true
   }

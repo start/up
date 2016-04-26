@@ -874,10 +874,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tokenizeNakedUrl = function () {
         var SCHEME_PATTERN = /^(?:https?)?:\/\//;
-        var urlProtocol;
+        var urlScheme;
         if (!this.consumer.consumeIfMatchesPattern({
             pattern: SCHEME_PATTERN,
-            then: function (match) { return urlProtocol = match; }
+            then: function (match) { return urlScheme = match; }
         })) {
             return false;
         }
@@ -889,7 +889,7 @@ var Tokenizer = (function () {
         })) { }
         this.addToken(Token_1.TokenMeaning.LinkStart);
         this.addPlainTextToken(restOfUrl);
-        this.addToken(Token_1.TokenMeaning.LinkUrlAndLinkEnd, urlProtocol + restOfUrl);
+        this.addToken(Token_1.TokenMeaning.LinkUrlAndLinkEnd, urlScheme + restOfUrl);
         return true;
     };
     Tokenizer.prototype.addToken = function (meaning, valueOrConsumerBefore) {
