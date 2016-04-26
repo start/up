@@ -152,37 +152,6 @@ var InlineTextConsumer = (function () {
         this.skip(needle.length);
         return true;
     };
-    InlineTextConsumer.prototype.consumeLine = function (args) {
-        if (this.done()) {
-            return false;
-        }
-        var consumer = new InlineTextConsumer(this.remainingText());
-        var line;
-        var wasAbleToConsumeUpToLineBreak = consumer.consume({
-            upTo: '\n',
-            then: function (upToLineBreak) { line = upToLineBreak; }
-        });
-        if (!wasAbleToConsumeUpToLineBreak) {
-            line = consumer.remainingText();
-            consumer.skipToEnd();
-        }
-        var captures = [];
-        if (args.pattern) {
-            var results = args.pattern.exec(line);
-            if (!results) {
-                return false;
-            }
-            captures = results.slice(1);
-        }
-        if (args.if && !args.if.apply(args, [line].concat(captures))) {
-            return false;
-        }
-        this.skip(consumer.lengthConsumed());
-        if (args.then) {
-            args.then.apply(args, [line].concat(captures));
-        }
-        return true;
-    };
     InlineTextConsumer.prototype.consume = function (args) {
         var upTo = args.upTo, then = args.then;
         var from = args.from || '';

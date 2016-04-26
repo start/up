@@ -4,21 +4,10 @@ interface ConsumeArgs {
   then?: OnConsume
 }
 
-interface ConsumeLineArgs {
-  pattern?: RegExp,
-  if?: ShouldConsumeLine,
-  then?: OnConsume
-}
-
 interface ConsumeIfMatchesPatternArgs {
   pattern: RegExp,
   then?: OnConsume
 }
-
-interface ShouldConsumeLine {
-  (line: string, ...captures: string[]): boolean
-}
-
 interface OnConsume {
   (text: string, ...captures: string[]): void
 }
@@ -44,51 +33,6 @@ export class InlineTextConsumer {
     }
 
     this.skip(needle.length)
-    return true
-  }
-
-  consumeLine(args: ConsumeLineArgs): boolean {
-    if (this.done()) {
-      return false
-    }
-
-    const consumer = new InlineTextConsumer(this.remainingText())
-
-    let line: string
-
-    const wasAbleToConsumeUpToLineBreak =
-      consumer.consume({
-        upTo: '\n',
-        then: (upToLineBreak) => { line = upToLineBreak }
-      })
-
-    if (!wasAbleToConsumeUpToLineBreak) {
-      line = consumer.remainingText()
-      consumer.skipToEnd()
-    }
-
-    let captures: string[] = []
-
-    if (args.pattern) {
-      const results = args.pattern.exec(line)
-
-      if (!results) {
-        return false
-      }
-
-      captures = results.slice(1)
-    }
-
-    if (args.if && !args.if(line, ...captures)) {
-      return false
-    }
-
-    this.skip(consumer.lengthConsumed())
-
-    if (args.then) {
-      args.then(line, ...captures)
-    }
-
     return true
   }
 
