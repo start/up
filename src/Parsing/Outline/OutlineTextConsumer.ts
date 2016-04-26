@@ -135,18 +135,6 @@ export class OutlineTextConsumer {
     return this.text.substr(0, this.index)
   }
 
-  escapedCurrentChar(): string {
-    if (this.done()) {
-      throw new Error('There is no more text!')
-    }
-
-    return (
-      this.isCurrentCharEscaped()
-        ? this.at(this.index + 1)
-        : this.currentChar()
-    )
-  }
-
   currentChar(): string {
     return this.at(this.index)
   }

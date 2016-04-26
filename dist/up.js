@@ -1426,14 +1426,6 @@ var OutlineTextConsumer = (function () {
     OutlineTextConsumer.prototype.consumedText = function () {
         return this.text.substr(0, this.index);
     };
-    OutlineTextConsumer.prototype.escapedCurrentChar = function () {
-        if (this.done()) {
-            throw new Error('There is no more text!');
-        }
-        return (this.isCurrentCharEscaped()
-            ? this.at(this.index + 1)
-            : this.currentChar());
-    };
     OutlineTextConsumer.prototype.currentChar = function () {
         return this.at(this.index);
     };
