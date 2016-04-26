@@ -873,7 +873,24 @@ var Tokenizer = (function () {
         return false;
     };
     Tokenizer.prototype.tokenizeNakedUrl = function () {
-        return false;
+        var PROTOCOL_PATTERN = /^(?:https?)?:\/\//;
+        var urlProtocol;
+        if (!this.consumer.consumeIfMatchesPattern({
+            pattern: PROTOCOL_PATTERN,
+            then: function (match) { return urlProtocol = match; }
+        })) {
+            return false;
+        }
+        var NON_WHITESPACE_CHAR_PATTERN = /^\S/;
+        var restOfUrl = '';
+        while (this.consumer.consumeIfMatchesPattern({
+            pattern: NON_WHITESPACE_CHAR_PATTERN,
+            then: function (char) { return restOfUrl += char; }
+        })) { }
+        this.addToken(Token_1.TokenMeaning.LinkStart);
+        this.addPlainTextToken(restOfUrl);
+        this.addToken(Token_1.TokenMeaning.LinkUrlAndLinkEnd, urlProtocol + restOfUrl);
+        return true;
     };
     Tokenizer.prototype.addToken = function (meaning, valueOrConsumerBefore) {
         this.tokens.push(new Token_1.Token(meaning, valueOrConsumerBefore));

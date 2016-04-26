@@ -419,8 +419,7 @@ class Tokenizer {
   }
   
   tokenizeNakedUrl(): boolean {
-    return false
-    /*const PROTOCOL_PATTERN = /^(?:https?)?:\/\//
+    const PROTOCOL_PATTERN = /^(?:https?)?:\/\//
     
     let urlProtocol: string
     
@@ -431,11 +430,22 @@ class Tokenizer {
       return false
     }
     
+    const NON_WHITESPACE_CHAR_PATTERN = /^\S/
+    
     let restOfUrl = ''
     
-    while(!this.consumer.done()) {
-      
-    }*/
+    // TODO: fix escaping
+    
+    while(this.consumer.consumeIfMatchesPattern({
+      pattern: NON_WHITESPACE_CHAR_PATTERN,
+      then: (char) => restOfUrl += char
+    })) { }
+    
+    this.addToken(TokenMeaning.LinkStart)
+    this.addPlainTextToken(restOfUrl)
+    this.addToken(TokenMeaning.LinkUrlAndLinkEnd, urlProtocol + restOfUrl)
+    
+    return true
   }
 
   addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | TextConsumer): void {
