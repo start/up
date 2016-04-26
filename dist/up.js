@@ -1353,13 +1353,6 @@ var OutlineTextConsumer = (function () {
         return (this.index >= this.text.length
             || this.isOnTrailingBackslash());
     };
-    OutlineTextConsumer.prototype.consumeIfMatches = function (needle) {
-        if (!this.match(needle)) {
-            return false;
-        }
-        this.skip(needle.length);
-        return true;
-    };
     OutlineTextConsumer.prototype.consumeLine = function (args) {
         if (this.done()) {
             return false;
@@ -1411,18 +1404,11 @@ var OutlineTextConsumer = (function () {
         }
         return false;
     };
-    OutlineTextConsumer.prototype.consumeIfMatchesPattern = function (args) {
-        var pattern = args.pattern, then = args.then;
-        var result = pattern.exec(this.remainingText());
-        if (!result) {
+    OutlineTextConsumer.prototype.consumeIfMatches = function (needle) {
+        if (!this.match(needle)) {
             return false;
         }
-        var match = result[0];
-        var captures = result.slice(1);
-        this.skip(match.length);
-        if (then) {
-            then.apply(void 0, [match].concat(captures));
-        }
+        this.skip(needle.length);
         return true;
     };
     OutlineTextConsumer.prototype.moveNext = function () {

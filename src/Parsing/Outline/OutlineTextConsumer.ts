@@ -35,15 +35,6 @@ export class OutlineTextConsumer {
     )
   }
 
-  consumeIfMatches(needle: string): boolean {
-    if (!this.match(needle)) {
-      return false
-    }
-
-    this.skip(needle.length)
-    return true
-  }
-
   consumeLine(args: ConsumeLineArgs): boolean {
     if (this.done()) {
       return false
@@ -117,24 +108,12 @@ export class OutlineTextConsumer {
     return false
   }
 
-  consumeIfMatchesPattern(args: ConsumeIfMatchesPatternArgs): boolean {
-    const { pattern, then } = args
-
-    const result = pattern.exec(this.remainingText())
-
-    if (!result) {
+  consumeIfMatches(needle: string): boolean {
+    if (!this.match(needle)) {
       return false
     }
 
-    const match = result[0]
-    const captures = result.slice(1)
-    
-    this.skip(match.length)
-
-    if (then) {
-      then(match, ...captures)
-    }
-
+    this.skip(needle.length)
     return true
   }
 
