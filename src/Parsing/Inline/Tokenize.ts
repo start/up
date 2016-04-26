@@ -266,7 +266,7 @@ class Tokenizer {
       const wasMediaFound = tokenizeMedia({
         text: this.consumer.remainingText(),
         then: (lengthConsumed, tokens) => {
-          this.consumer.skip(lengthConsumed)
+          this.consumer.advance(lengthConsumed)
           this.tokens.push(...tokens)
         }
       })

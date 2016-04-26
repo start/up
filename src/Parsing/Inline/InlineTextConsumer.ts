@@ -28,16 +28,16 @@ export class InlineTextConsumer {
   }
 
   consumeIfMatches(needle: string): boolean {
-    const doesMatch = (
+    const isMatch = (
       needle === this.text.substr(this.index, needle.length)
       && this.areRelevantBracketsClosed(needle)
     )
     
-    if (!doesMatch) {
+    if (!isMatch) {
       return false
     }
 
-    this.skip(needle.length)
+    this.advance(needle.length)
     return true
   }
 
@@ -53,7 +53,7 @@ export class InlineTextConsumer {
 
     while (!consumer.done()) {
       if (consumer.consumeIfMatches(upTo)) {
-        this.skip(consumer.lengthConsumed())
+        this.advance(consumer.lengthConsumed())
 
         if (then) {
           const text = consumer.consumedText().slice(from.length, -upTo.length)
@@ -85,7 +85,7 @@ export class InlineTextConsumer {
       return false
     }
     
-    this.skip(match.length)
+    this.advance(match.length)
 
     if (then) {
       then(match, ...captures)
@@ -99,10 +99,10 @@ export class InlineTextConsumer {
     // consumed as part of a text match (i.e. delimiters for syntax rules). That's why we call
     // `updateUnclosedBracketCounts` here rather than in `skip`. 
     this.updateUnclosedBracketCounts()
-    this.skip((this.isCurrentCharEscaped() ? 2 : 1))
+    this.advance((this.isCurrentCharEscaped() ? 2 : 1))
   }
 
-  skip(count: number): void {
+  advance(count: number): void {
     this.index += count
   }
 
