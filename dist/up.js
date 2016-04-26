@@ -1347,8 +1347,6 @@ exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
 var OutlineTextConsumer = (function () {
     function OutlineTextConsumer(text) {
         this.text = text;
-        this.countUnclosedParen = 0;
-        this.countUnclosedSquareBracket = 0;
         this.index = 0;
     }
     OutlineTextConsumer.prototype.done = function () {
@@ -1421,9 +1419,6 @@ var OutlineTextConsumer = (function () {
         }
         var match = result[0];
         var captures = result.slice(1);
-        if (!this.areRelevantBracketsClosed(match)) {
-            return false;
-        }
         this.skip(match.length);
         if (then) {
             then.apply(void 0, [match].concat(captures));
@@ -1431,7 +1426,6 @@ var OutlineTextConsumer = (function () {
         return true;
     };
     OutlineTextConsumer.prototype.moveNext = function () {
-        this.updateUnclosedBracketCounts();
         this.skip((this.isCurrentCharEscaped() ? 2 : 1));
     };
     OutlineTextConsumer.prototype.skip = function (count) {
@@ -1460,17 +1454,8 @@ var OutlineTextConsumer = (function () {
     OutlineTextConsumer.prototype.at = function (index) {
         return this.text[index];
     };
-    OutlineTextConsumer.prototype.asBeforeMatch = function (matchLength) {
-        var copy = new OutlineTextConsumer('');
-        copy.text = this.text;
-        copy.index = this.index - matchLength;
-        copy.countUnclosedParen = this.countUnclosedParen;
-        copy.countUnclosedSquareBracket = this.countUnclosedSquareBracket;
-        return copy;
-    };
     OutlineTextConsumer.prototype.match = function (needle) {
-        return (needle === this.text.substr(this.index, needle.length)
-            && this.areRelevantBracketsClosed(needle));
+        return needle === this.text.substr(this.index, needle.length);
     };
     OutlineTextConsumer.prototype.isCurrentCharEscaped = function () {
         return this.currentChar() === '\\';
@@ -1482,47 +1467,9 @@ var OutlineTextConsumer = (function () {
     OutlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
     };
-    OutlineTextConsumer.prototype.updateUnclosedBracketCounts = function () {
-        switch (this.currentChar()) {
-            case '(':
-                this.countUnclosedParen += 1;
-                break;
-            case ')':
-                this.countUnclosedParen = Math.max(0, this.countUnclosedParen - 1);
-                break;
-            case '[':
-                this.countUnclosedSquareBracket += 1;
-                break;
-            case ']':
-                this.countUnclosedSquareBracket = Math.max(0, this.countUnclosedSquareBracket - 1);
-                break;
-        }
-    };
-    OutlineTextConsumer.prototype.areRelevantBracketsClosed = function (needle) {
-        return ((!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
-            && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')')));
-    };
     return OutlineTextConsumer;
 }());
 exports.OutlineTextConsumer = OutlineTextConsumer;
-function appearsToCloseAnyPreceedingBrackets(text, openingBracketChar, closingBracketChar) {
-    var countSurplusOpened = 0;
-    for (var _i = 0, text_1 = text; _i < text_1.length; _i++) {
-        var char = text_1[_i];
-        switch (char) {
-            case openingBracketChar:
-                countSurplusOpened += 1;
-                break;
-            case closingBracketChar:
-                if (!countSurplusOpened) {
-                    return true;
-                }
-                countSurplusOpened -= 1;
-                break;
-        }
-    }
-    return false;
-}
 
 },{}],25:[function(require,module,exports){
 "use strict";
