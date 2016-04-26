@@ -80,7 +80,7 @@ export class OutlineTextConsumer {
     return true
   }
 
-  consume(args: ConsumeArgs): boolean {
+  private consume(args: ConsumeArgs): boolean {
     const { upTo, then } = args
     const from = args.from || ''
 
@@ -108,7 +108,7 @@ export class OutlineTextConsumer {
     return false
   }
 
-  consumeIfMatches(needle: string): boolean {
+  private consumeIfMatches(needle: string): boolean {
     if (!this.match(needle)) {
       return false
     }
@@ -117,7 +117,7 @@ export class OutlineTextConsumer {
     return true
   }
 
-  moveNext(): void {
+  private moveNext(): void {
     // As a rule, we only count brackets found in plain, regular text. We ignore any brackets that are
     // consumed as part of a text match (i.e. delimiters for syntax rules). That's why we call
     // `updateUnclosedBracketCounts` here rather than in `skip`. 
