@@ -146,7 +146,9 @@ var InlineTextConsumer = (function () {
             || this.isOnTrailingBackslash());
     };
     InlineTextConsumer.prototype.consumeIfMatches = function (needle) {
-        if (!this.match(needle)) {
+        var doesMatch = (needle === this.text.substr(this.index, needle.length)
+            && this.areRelevantBracketsClosed(needle));
+        if (!doesMatch) {
             return false;
         }
         this.skip(needle.length);
@@ -229,10 +231,6 @@ var InlineTextConsumer = (function () {
     };
     InlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
-    };
-    InlineTextConsumer.prototype.match = function (needle) {
-        return (needle === this.text.substr(this.index, needle.length)
-            && this.areRelevantBracketsClosed(needle));
     };
     InlineTextConsumer.prototype.isCurrentCharEscaped = function () {
         return this.currentChar() === '\\';

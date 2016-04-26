@@ -28,7 +28,12 @@ export class InlineTextConsumer {
   }
 
   consumeIfMatches(needle: string): boolean {
-    if (!this.match(needle)) {
+    const doesMatch = (
+      needle === this.text.substr(this.index, needle.length)
+      && this.areRelevantBracketsClosed(needle)
+    )
+    
+    if (!doesMatch) {
       return false
     }
 
@@ -154,17 +159,9 @@ export class InlineTextConsumer {
     this.index = this.text.length
   }
 
-  private match(needle: string) {
-    return (
-      needle === this.text.substr(this.index, needle.length)
-      && this.areRelevantBracketsClosed(needle)
-    )
-  }
-
   private isCurrentCharEscaped(): boolean {
     return this.currentChar() === '\\'
   }
-
 
   private isOnTrailingBackslash(): boolean {
     return (
