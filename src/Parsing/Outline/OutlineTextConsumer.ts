@@ -1,6 +1,3 @@
-import { InlineTextConsumer } from '../Inline/InlineTextConsumer'
-
-
 interface ConsumeLineArgs {
   pattern?: RegExp,
   if?: ShouldConsumeLine,
@@ -30,19 +27,24 @@ export class OutlineTextConsumer {
       return false
     }
 
-    const inlineConsumer = new InlineTextConsumer(this.remainingText())
-
     let line: string
-
-    const wasAbleToConsumeUpToLineBreak =
-      inlineConsumer.consume({
-        upTo: '\n',
-        then: (upToLineBreak) => { line = upToLineBreak }
-      })
-
-    if (!wasAbleToConsumeUpToLineBreak) {
-      line = inlineConsumer.remainingText()
-      inlineConsumer.skipToEnd()
+    
+    for (let i = this.index; i < this.text.length; i++) {
+      const char = this.text[i]
+      
+      // Escaped line breaks don't end lines. If the current char is a backslash, let's just skip the next one.
+      if (char === '\\') {
+        i++
+        continue
+      }
+      
+      if (char === '\n') {
+        line = this.text.substring(this.index, i)
+      }
+    }
+    
+    if (!line) {
+      line = this.remainingText()
     }
 
     let captures: string[] = []
@@ -61,7 +63,7 @@ export class OutlineTextConsumer {
       return false
     }
 
-    this.advance(inlineConsumer.lengthConsumed())
+    this.advance(line.length)
 
     if (args.then) {
       args.then(line, ...captures)

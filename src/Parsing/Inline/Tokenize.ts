@@ -76,7 +76,7 @@ class Tokenizer {
       }
 
       this.addPlainTextToken(this.consumer.escapedCurrentChar())
-      this.consumer.moveNext()
+      this.consumer.advanceOneChar()
     }
 
     this.tokens = applyRaisedVoices(this.tokens)
@@ -266,7 +266,7 @@ class Tokenizer {
       const wasMediaFound = tokenizeMedia({
         text: this.consumer.remainingText(),
         then: (lengthConsumed, tokens) => {
-          this.consumer.advance(lengthConsumed)
+          this.consumer.advanceAfterMatch(lengthConsumed)
           this.tokens.push(...tokens)
         }
       })

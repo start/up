@@ -113,7 +113,7 @@ Violets are blue`
       new DocumentNode([
         new LineBlockNode([
           new Line([
-            new PlainTextNode('Roses are red')
+            new PlainTextNode('Roses2 are red')
           ]),
           new Line([
             new PlainTextNode(' \t')

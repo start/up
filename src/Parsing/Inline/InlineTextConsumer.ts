@@ -30,7 +30,7 @@ export class InlineTextConsumer {
     if (this.cannotMatchAnything()) {
       return false
     }
-    
+
     const isMatch = (
       needle === this.text.substr(this.index, needle.length)
       && this.areRelevantBracketsClosed(needle)
@@ -40,7 +40,7 @@ export class InlineTextConsumer {
       return false
     }
 
-    this.advance(needle.length)
+    this.advanceAfterMatch(needle.length)
     return true
   }
 
@@ -48,7 +48,7 @@ export class InlineTextConsumer {
     if (this.cannotMatchAnything()) {
       return false
     }
-    
+
     const { upTo, then } = args
     const from = args.from || ''
 
@@ -60,7 +60,7 @@ export class InlineTextConsumer {
 
     while (!consumer.done()) {
       if (consumer.consumeIfMatches(upTo)) {
-        this.advance(consumer.lengthConsumed())
+        this.advanceAfterMatch(consumer.lengthConsumed())
 
         if (then) {
           const text = consumer.consumedText().slice(from.length, -upTo.length)
@@ -70,7 +70,7 @@ export class InlineTextConsumer {
         return true
       }
 
-      consumer.moveNext()
+      consumer.advanceOneChar()
     }
 
     return false
@@ -80,7 +80,7 @@ export class InlineTextConsumer {
     if (this.cannotMatchAnything()) {
       return false
     }
-    
+
     const { pattern, then } = args
 
     const result = pattern.exec(this.remainingText())
@@ -96,7 +96,7 @@ export class InlineTextConsumer {
       return false
     }
 
-    this.advance(match.length)
+    this.advanceAfterMatch(match.length)
 
     if (then) {
       then(match, ...captures)
@@ -105,17 +105,21 @@ export class InlineTextConsumer {
     return true
   }
 
-  moveNext(): void {
+  advanceOneChar(): void {
     if (!this.isCurrentCharEscaped) {
+
+      // As a rule, we only count brackets found in plain, regular text. We ignore any brackets that are
+      // consumed as part of a text match (i.e. tokens for syntax rules). That's why we call
+      // `updateUnclosedBracketCounts` here rather than in `advance`. 
       this.updateUnclosedBracketCounts()
     }
 
-    this.advance(1)
-    this.applyEscaping()
+    this.advanceAfterMatch(1)
   }
 
-  advance(count: number): void {
-    this.index += count
+  advanceAfterMatch(matchLength: number): void {
+    this.index += matchLength
+    this.applyEscaping()
   }
 
   lengthConsumed(): number {
@@ -167,7 +171,7 @@ export class InlineTextConsumer {
   skipToEnd(): void {
     this.index = this.text.length
   }
-  
+
   private cannotMatchAnything(): boolean {
     return this.isCurrentCharEscaped || this.done()
   }
@@ -176,7 +180,7 @@ export class InlineTextConsumer {
     this.isCurrentCharEscaped = (this.currentChar() === '\\')
 
     if (this.isCurrentCharEscaped) {
-      this.advance(1)
+      this.index += 1
     }
   }
 

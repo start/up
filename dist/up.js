@@ -155,7 +155,7 @@ var InlineTextConsumer = (function () {
         if (!isMatch) {
             return false;
         }
-        this.advance(needle.length);
+        this.advanceAfterMatch(needle.length);
         return true;
     };
     InlineTextConsumer.prototype.consume = function (args) {
@@ -170,14 +170,14 @@ var InlineTextConsumer = (function () {
         }
         while (!consumer.done()) {
             if (consumer.consumeIfMatches(upTo)) {
-                this.advance(consumer.lengthConsumed());
+                this.advanceAfterMatch(consumer.lengthConsumed());
                 if (then) {
                     var text = consumer.consumedText().slice(from.length, -upTo.length);
                     then(text);
                 }
                 return true;
             }
-            consumer.moveNext();
+            consumer.advanceOneChar();
         }
         return false;
     };
@@ -195,21 +195,21 @@ var InlineTextConsumer = (function () {
         if (!this.areRelevantBracketsClosed(match)) {
             return false;
         }
-        this.advance(match.length);
+        this.advanceAfterMatch(match.length);
         if (then) {
             then.apply(void 0, [match].concat(captures));
         }
         return true;
     };
-    InlineTextConsumer.prototype.moveNext = function () {
+    InlineTextConsumer.prototype.advanceOneChar = function () {
         if (!this.isCurrentCharEscaped) {
             this.updateUnclosedBracketCounts();
         }
-        this.advance(1);
-        this.applyEscaping();
+        this.advanceAfterMatch(1);
     };
-    InlineTextConsumer.prototype.advance = function (count) {
-        this.index += count;
+    InlineTextConsumer.prototype.advanceAfterMatch = function (matchLength) {
+        this.index += matchLength;
+        this.applyEscaping();
     };
     InlineTextConsumer.prototype.lengthConsumed = function () {
         return this.index;
@@ -249,7 +249,7 @@ var InlineTextConsumer = (function () {
     InlineTextConsumer.prototype.applyEscaping = function () {
         this.isCurrentCharEscaped = (this.currentChar() === '\\');
         if (this.isCurrentCharEscaped) {
-            this.advance(1);
+            this.index += 1;
         }
     };
     InlineTextConsumer.prototype.updateUnclosedBracketCounts = function () {
@@ -833,7 +833,7 @@ var Tokenizer = (function () {
                 continue;
             }
             this.addPlainTextToken(this.consumer.escapedCurrentChar());
-            this.consumer.moveNext();
+            this.consumer.advanceOneChar();
         }
         this.tokens = ApplyRaisedVoices_1.applyRaisedVoices(this.tokens);
         this.massageTokensIntoTreeStructure();
@@ -939,7 +939,7 @@ var Tokenizer = (function () {
             var wasMediaFound = tokenizeMedia({
                 text: this.consumer.remainingText(),
                 then: function (lengthConsumed, tokens) {
-                    _this.consumer.advance(lengthConsumed);
+                    _this.consumer.advanceAfterMatch(lengthConsumed);
                     (_a = _this.tokens).push.apply(_a, tokens);
                     var _a;
                 }
@@ -1355,7 +1355,6 @@ exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
 
 },{"./ParseBlockquote":26,"./ParseOrderedList":29,"./ParseSectionSeparatorStreak":31,"./ParseUnorderedList":32}],24:[function(require,module,exports){
 "use strict";
-var InlineTextConsumer_1 = require('../Inline/InlineTextConsumer');
 var OutlineTextConsumer = (function () {
     function OutlineTextConsumer(text) {
         this.text = text;
@@ -1368,15 +1367,19 @@ var OutlineTextConsumer = (function () {
         if (this.done()) {
             return false;
         }
-        var inlineConsumer = new InlineTextConsumer_1.InlineTextConsumer(this.remainingText());
         var line;
-        var wasAbleToConsumeUpToLineBreak = inlineConsumer.consume({
-            upTo: '\n',
-            then: function (upToLineBreak) { line = upToLineBreak; }
-        });
-        if (!wasAbleToConsumeUpToLineBreak) {
-            line = inlineConsumer.remainingText();
-            inlineConsumer.skipToEnd();
+        for (var i = this.index; i < this.text.length; i++) {
+            var char = this.text[i];
+            if (char === '\\') {
+                i++;
+                continue;
+            }
+            if (char === '\n') {
+                line = this.text.substring(this.index, i);
+            }
+        }
+        if (!line) {
+            line = this.remainingText();
         }
         var captures = [];
         if (args.pattern) {
@@ -1389,7 +1392,7 @@ var OutlineTextConsumer = (function () {
         if (args.if && !args.if.apply(args, [line].concat(captures))) {
             return false;
         }
-        this.advance(inlineConsumer.lengthConsumed());
+        this.advance(line.length);
         if (args.then) {
             args.then.apply(args, [line].concat(captures));
         }
@@ -1408,7 +1411,7 @@ var OutlineTextConsumer = (function () {
 }());
 exports.OutlineTextConsumer = OutlineTextConsumer;
 
-},{"../Inline/InlineTextConsumer":6}],25:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 var OutlineTextConsumer_1 = require('./OutlineTextConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
