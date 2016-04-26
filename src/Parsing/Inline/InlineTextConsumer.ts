@@ -150,6 +150,10 @@ export class InlineTextConsumer {
     return copy
   }
 
+  skipToEnd(): void {
+    this.index = this.text.length
+  }
+
   private match(needle: string) {
     return (
       needle === this.text.substr(this.index, needle.length)
@@ -167,10 +171,6 @@ export class InlineTextConsumer {
       this.index === this.text.length - 1
       && this.isCurrentCharEscaped()
     )
-  }
-
-  private skipToEnd(): void {
-    this.index = this.text.length
   }
 
   private updateUnclosedBracketCounts(): void {

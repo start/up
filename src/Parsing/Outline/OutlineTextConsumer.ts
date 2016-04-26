@@ -1,8 +1,5 @@
-interface ConsumeArgs {
-  from?: string
-  upTo: string,
-  then?: OnConsume
-}
+import { InlineTextConsumer } from '../Inline/InlineTextConsumer'
+
 
 interface ConsumeLineArgs {
   pattern?: RegExp,
@@ -35,19 +32,19 @@ export class OutlineTextConsumer {
       return false
     }
 
-    const consumer = new OutlineTextConsumer(this.remainingText())
+    const inlineConsumer = new InlineTextConsumer(this.remainingText())
 
     let line: string
 
     const wasAbleToConsumeUpToLineBreak =
-      consumer.consume({
+      inlineConsumer.consume({
         upTo: '\n',
         then: (upToLineBreak) => { line = upToLineBreak }
       })
 
     if (!wasAbleToConsumeUpToLineBreak) {
-      line = consumer.remainingText()
-      consumer.skipToEnd()
+      line = inlineConsumer.remainingText()
+      inlineConsumer.skipToEnd()
     }
 
     let captures: string[] = []
@@ -66,7 +63,7 @@ export class OutlineTextConsumer {
       return false
     }
 
-    this.skip(consumer.lengthConsumed())
+    this.skip(inlineConsumer.lengthConsumed())
 
     if (args.then) {
       args.then(line, ...captures)
@@ -85,43 +82,6 @@ export class OutlineTextConsumer {
 
   remainingText(): string {
     return this.text.slice(this.index)
-  }
-
-  private consume(args: ConsumeArgs): boolean {
-    const { upTo, then } = args
-    const from = args.from || ''
-
-    const consumer = new OutlineTextConsumer(this.remainingText())
-
-    if (from && !consumer.consumeIfMatches(from)) {
-      return false
-    }
-
-    while (!consumer.done()) {
-      if (consumer.consumeIfMatches(upTo)) {
-        this.skip(consumer.lengthConsumed())
-
-        if (then) {
-          const text = consumer.consumedText().slice(from.length, -upTo.length)
-          then(text)
-        }
-
-        return true
-      }
-
-      consumer.moveNext()
-    }
-
-    return false
-  }
-
-  private consumeIfMatches(needle: string): boolean {
-    if (!this.match(needle)) {
-      return false
-    }
-
-    this.skip(needle.length)
-    return true
   }
 
   private moveNext(): void {

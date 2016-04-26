@@ -227,6 +227,9 @@ var InlineTextConsumer = (function () {
         copy.countUnclosedSquareBracket = this.countUnclosedSquareBracket;
         return copy;
     };
+    InlineTextConsumer.prototype.skipToEnd = function () {
+        this.index = this.text.length;
+    };
     InlineTextConsumer.prototype.match = function (needle) {
         return (needle === this.text.substr(this.index, needle.length)
             && this.areRelevantBracketsClosed(needle));
@@ -237,9 +240,6 @@ var InlineTextConsumer = (function () {
     InlineTextConsumer.prototype.isOnTrailingBackslash = function () {
         return (this.index === this.text.length - 1
             && this.isCurrentCharEscaped());
-    };
-    InlineTextConsumer.prototype.skipToEnd = function () {
-        this.index = this.text.length;
     };
     InlineTextConsumer.prototype.updateUnclosedBracketCounts = function () {
         switch (this.currentChar()) {
@@ -1344,6 +1344,7 @@ exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
 
 },{"./ParseBlockquote":26,"./ParseOrderedList":29,"./ParseSectionSeparatorStreak":31,"./ParseUnorderedList":32}],24:[function(require,module,exports){
 "use strict";
+var InlineTextConsumer_1 = require('../Inline/InlineTextConsumer');
 var OutlineTextConsumer = (function () {
     function OutlineTextConsumer(text) {
         this.text = text;
@@ -1357,15 +1358,15 @@ var OutlineTextConsumer = (function () {
         if (this.done()) {
             return false;
         }
-        var consumer = new OutlineTextConsumer(this.remainingText());
+        var inlineConsumer = new InlineTextConsumer_1.InlineTextConsumer(this.remainingText());
         var line;
-        var wasAbleToConsumeUpToLineBreak = consumer.consume({
+        var wasAbleToConsumeUpToLineBreak = inlineConsumer.consume({
             upTo: '\n',
             then: function (upToLineBreak) { line = upToLineBreak; }
         });
         if (!wasAbleToConsumeUpToLineBreak) {
-            line = consumer.remainingText();
-            consumer.skipToEnd();
+            line = inlineConsumer.remainingText();
+            inlineConsumer.skipToEnd();
         }
         var captures = [];
         if (args.pattern) {
@@ -1378,7 +1379,7 @@ var OutlineTextConsumer = (function () {
         if (args.if && !args.if.apply(args, [line].concat(captures))) {
             return false;
         }
-        this.skip(consumer.lengthConsumed());
+        this.skip(inlineConsumer.lengthConsumed());
         if (args.then) {
             args.then.apply(args, [line].concat(captures));
         }
@@ -1392,33 +1393,6 @@ var OutlineTextConsumer = (function () {
     };
     OutlineTextConsumer.prototype.remainingText = function () {
         return this.text.slice(this.index);
-    };
-    OutlineTextConsumer.prototype.consume = function (args) {
-        var upTo = args.upTo, then = args.then;
-        var from = args.from || '';
-        var consumer = new OutlineTextConsumer(this.remainingText());
-        if (from && !consumer.consumeIfMatches(from)) {
-            return false;
-        }
-        while (!consumer.done()) {
-            if (consumer.consumeIfMatches(upTo)) {
-                this.skip(consumer.lengthConsumed());
-                if (then) {
-                    var text = consumer.consumedText().slice(from.length, -upTo.length);
-                    then(text);
-                }
-                return true;
-            }
-            consumer.moveNext();
-        }
-        return false;
-    };
-    OutlineTextConsumer.prototype.consumeIfMatches = function (needle) {
-        if (!this.match(needle)) {
-            return false;
-        }
-        this.skip(needle.length);
-        return true;
     };
     OutlineTextConsumer.prototype.moveNext = function () {
         this.skip((this.isCurrentCharEscaped() ? 2 : 1));
@@ -1449,7 +1423,7 @@ var OutlineTextConsumer = (function () {
 }());
 exports.OutlineTextConsumer = OutlineTextConsumer;
 
-},{}],25:[function(require,module,exports){
+},{"../Inline/InlineTextConsumer":6}],25:[function(require,module,exports){
 "use strict";
 var OutlineTextConsumer_1 = require('./OutlineTextConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
