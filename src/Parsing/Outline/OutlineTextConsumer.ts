@@ -15,6 +15,7 @@ interface OnConsume {
   (text: string, ...captures: string[]): void
 }
 
+
 export class OutlineTextConsumer {
   private index = 0;
 
@@ -79,21 +80,5 @@ export class OutlineTextConsumer {
 
   remainingText(): string {
     return this.text.slice(this.index)
-  }
-
-  private consumedText(): string {
-    return this.text.substr(0, this.index)
-  }
-
-  private match(needle: string) {
-    return needle === this.text.substr(this.index, needle.length)
-  }
-
-  private isOnTrailingBackslash(): boolean {
-    return this.index === this.text.length - 1
-  }
-
-  private skipToEnd(): void {
-    this.index = this.text.length
   }
 }

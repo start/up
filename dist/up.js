@@ -1393,18 +1393,6 @@ var OutlineTextConsumer = (function () {
     OutlineTextConsumer.prototype.remainingText = function () {
         return this.text.slice(this.index);
     };
-    OutlineTextConsumer.prototype.consumedText = function () {
-        return this.text.substr(0, this.index);
-    };
-    OutlineTextConsumer.prototype.match = function (needle) {
-        return needle === this.text.substr(this.index, needle.length);
-    };
-    OutlineTextConsumer.prototype.isOnTrailingBackslash = function () {
-        return this.index === this.text.length - 1;
-    };
-    OutlineTextConsumer.prototype.skipToEnd = function () {
-        this.index = this.text.length;
-    };
     return OutlineTextConsumer;
 }());
 exports.OutlineTextConsumer = OutlineTextConsumer;
