@@ -1218,7 +1218,7 @@ function getOutlineNodes(text) {
                 text: consumer.remainingText(),
                 then: function (resultNodes, lengthParsed) {
                     nodes.push.apply(nodes, resultNodes);
-                    consumer.skip(lengthParsed);
+                    consumer.advance(lengthParsed);
                 }
             });
             if (didConventionParseSuccessfully) {
@@ -1378,13 +1378,13 @@ var OutlineTextConsumer = (function () {
         if (args.if && !args.if.apply(args, [line].concat(captures))) {
             return false;
         }
-        this.skip(inlineConsumer.lengthConsumed());
+        this.advance(inlineConsumer.lengthConsumed());
         if (args.then) {
             args.then.apply(args, [line].concat(captures));
         }
         return true;
     };
-    OutlineTextConsumer.prototype.skip = function (count) {
+    OutlineTextConsumer.prototype.advance = function (count) {
         this.index += count;
     };
     OutlineTextConsumer.prototype.lengthConsumed = function () {
@@ -1524,7 +1524,7 @@ function parseDescriptionList(args) {
             text: consumer.remainingText(),
             then: function (lines, lengthParsed, shouldTerminateList) {
                 descriptionLines.push.apply(descriptionLines, lines);
-                consumer.skip(lengthParsed);
+                consumer.advance(lengthParsed);
                 isListTerminated = shouldTerminateList;
             }
         });
@@ -1584,7 +1584,7 @@ function parseOrderedList(args) {
             text: consumer.remainingText(),
             then: function (lines, lengthParsed, shouldTerminateList) {
                 (_a = rawListItem.lines).push.apply(_a, lines);
-                consumer.skip(lengthParsed);
+                consumer.advance(lengthParsed);
                 isListTerminated = shouldTerminateList;
                 var _a;
             }
@@ -1734,7 +1734,7 @@ function parseUnorderedList(args) {
             text: consumer.remainingText(),
             then: function (lines, lengthParsed, shouldTerminateList) {
                 listItemLines.push.apply(listItemLines, lines);
-                consumer.skip(lengthParsed);
+                consumer.advance(lengthParsed);
                 isListTerminated = shouldTerminateList;
             }
         });

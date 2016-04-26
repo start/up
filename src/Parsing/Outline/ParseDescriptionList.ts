@@ -74,7 +74,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       text: consumer.remainingText(),
       then: (lines, lengthParsed, shouldTerminateList) => {
         descriptionLines.push(...lines)
-        consumer.skip(lengthParsed)
+        consumer.advance(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })

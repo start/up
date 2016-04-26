@@ -61,7 +61,7 @@ export class OutlineTextConsumer {
       return false
     }
 
-    this.skip(inlineConsumer.lengthConsumed())
+    this.advance(inlineConsumer.lengthConsumed())
 
     if (args.then) {
       args.then(line, ...captures)
@@ -70,7 +70,7 @@ export class OutlineTextConsumer {
     return true
   }
 
-  skip(count: number): void {
+  advance(count: number): void {
     this.index += count
   }
 

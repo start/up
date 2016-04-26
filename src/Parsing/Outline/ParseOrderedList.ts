@@ -67,7 +67,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
       text: consumer.remainingText(),
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItem.lines.push(...lines)
-        consumer.skip(lengthParsed)
+        consumer.advance(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })

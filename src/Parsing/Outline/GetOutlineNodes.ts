@@ -60,7 +60,7 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
         text: consumer.remainingText(),
         then: (resultNodes, lengthParsed) => {
           nodes.push(...resultNodes)
-          consumer.skip(lengthParsed)
+          consumer.advance(lengthParsed)
         }
       })
 

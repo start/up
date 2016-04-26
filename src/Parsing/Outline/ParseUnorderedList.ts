@@ -54,7 +54,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
       text: consumer.remainingText(),
       then: (lines, lengthParsed, shouldTerminateList) => {
         listItemLines.push(...lines)
-        consumer.skip(lengthParsed)
+        consumer.advance(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })
