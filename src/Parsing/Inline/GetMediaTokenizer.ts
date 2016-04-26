@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
-import { TextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from '../TextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
@@ -24,7 +24,7 @@ export function getMediaTokenizer(mediaConvention: MediaConvention) {
   const mediaStartPattern = new RegExp(`^\\[${mediaConvention.facePattern}:`)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
-    const consumer = new TextConsumer(args.text)
+    const consumer = new InlineTextConsumer(args.text)
 
     const doesSatisfyStartPattern = consumer.consumeIfMatchesPattern({ pattern: mediaStartPattern })
 

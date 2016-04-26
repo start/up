@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { TextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from '../TextConsumer'
 import { last } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { tokenize } from './Tokenize'

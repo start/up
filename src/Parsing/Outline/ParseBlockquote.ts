@@ -1,4 +1,4 @@
-import { TextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from '../TextConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from './Patterns'
@@ -24,7 +24,7 @@ const TRAILING_SPACE_PATTERN = new RegExp(
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,
 // even other blockquotes! They're like mini-documents.
 export function parseBlockquote(args: OutlineParserArgs): boolean {
-  const consumer = new TextConsumer(args.text)
+  const consumer = new InlineTextConsumer(args.text)
   const blockquoteLines: string[] = []
 
   // Collect all consecutive blockquoted lines

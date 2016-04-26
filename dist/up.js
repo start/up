@@ -101,7 +101,7 @@ function getMediaTokenizer(mediaConvention) {
     var tokenMeaningForStartAndDescription = mediaConvention.tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd = mediaConvention.tokenMeaningForUrlAndEnd;
     var mediaStartPattern = new RegExp("^\\[" + mediaConvention.facePattern + ":");
     return function tokenizeMedia(args) {
-        var consumer = new TextConsumer_1.TextConsumer(args.text);
+        var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
         var doesSatisfyStartPattern = consumer.consumeIfMatchesPattern({ pattern: mediaStartPattern });
         if (!doesSatisfyStartPattern) {
             return false;
@@ -653,7 +653,7 @@ var Tokenizer = (function () {
     function Tokenizer(text) {
         this.tokens = [];
         this.failureTracker = new FailureTracker_1.FailureTracker();
-        this.consumer = new TextConsumer_1.TextConsumer(text);
+        this.consumer = new TextConsumer_1.InlineTextConsumer(text);
         while (true) {
             if (this.consumer.done()) {
                 if (this.backtrackIfAnyConventionsAreUnclosed()) {
@@ -994,7 +994,7 @@ var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 function getHeadingParser(headingLeveler) {
     return function parseHeading(args) {
-        var consumer = new TextConsumer_1.TextConsumer(args.text);
+        var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
         var optionalOverline;
         consumer.consumeLine({
             pattern: STREAK_PATTERN,
@@ -1058,7 +1058,7 @@ function getOutlineNodes(text) {
     var trimmedText = text
         .replace(LEADING_BLANK_LINES_PATTERN, '')
         .replace(TRAILING_WHITESPACE_PATTERN, '');
-    var consumer = new TextConsumer_1.TextConsumer(trimmedText);
+    var consumer = new TextConsumer_1.InlineTextConsumer(trimmedText);
     var nodes = [];
     while (!consumer.done()) {
         for (var _i = 0, outlineParsers_1 = outlineParsers; _i < outlineParsers_1.length; _i++) {
@@ -1099,7 +1099,7 @@ var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 function getRemainingLinesOfListItem(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var lines = [];
     var countLinesIncluded = 0;
     var lengthParsed = 0;
@@ -1198,7 +1198,7 @@ var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var Patterns_1 = require('./Patterns');
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 function parseBlankLineSeparation(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var countBlankLines = 0;
     while (consumer.consumeLine({ pattern: BLANK_PATTERN })) {
         countBlankLines += 1;
@@ -1226,7 +1226,7 @@ var ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(Patterns_1.capture(Patterns_1
 var FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(BLOCKQUOTE_DELIMITER));
 var TRAILING_SPACE_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.INLINE_WHITESPACE_CHAR));
 function parseBlockquote(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var blockquoteLines = [];
     while (consumer.consumeLine({
         pattern: ALL_BLOCKQUOTE_DELIMITERS_PATTERN,
@@ -1252,7 +1252,7 @@ var CodeBlockNode_1 = require('../../SyntaxNodes/CodeBlockNode');
 var Patterns_1 = require('./Patterns');
 var CODE_FENCE_PATTERN = new RegExp(Patterns_1.streakOf('`'));
 function parseCodeBlock(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     if (!consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
         return false;
     }
@@ -1286,7 +1286,7 @@ var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 function parseDescriptionList(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var listItemNodes = [];
     var lengthParsed = 0;
     var _loop_1 = function() {
@@ -1358,7 +1358,7 @@ var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 function parseOrderedList(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var rawListItems = [];
     var _loop_1 = function() {
         var rawListItem = new RawListItem();
@@ -1435,7 +1435,7 @@ var IsLineFancyOutlineConvention_1 = require('./IsLineFancyOutlineConvention');
 var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 function parseRegularLines(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var inlineNodesPerRegularLine = [];
     var regularLineNodes = [];
     var terminatingNodes = [];
@@ -1489,7 +1489,7 @@ var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var Patterns_1 = require('./Patterns');
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 function parseSectionSeparatorStreak(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
         return false;
     }
@@ -1511,7 +1511,7 @@ var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 function parseUnorderedList(args) {
-    var consumer = new TextConsumer_1.TextConsumer(args.text);
+    var consumer = new TextConsumer_1.InlineTextConsumer(args.text);
     var listItemsContents = [];
     var _loop_1 = function() {
         var listItemLines = [];
@@ -1717,29 +1717,29 @@ var Sequence = (function () {
 
 },{"../SyntaxNodes/BlockquoteNode":37,"../SyntaxNodes/DescriptionListNode":41,"../SyntaxNodes/FootnoteBlockNode":45,"../SyntaxNodes/FootnoteNode":46,"../SyntaxNodes/HeadingNode":47,"../SyntaxNodes/LineBlockNode":52,"../SyntaxNodes/OrderedListNode":56,"../SyntaxNodes/ParagraphNode":58,"../SyntaxNodes/UnorderedListNode":67,"./CollectionHelpers":1}],34:[function(require,module,exports){
 "use strict";
-var TextConsumer = (function () {
-    function TextConsumer(text) {
+var InlineTextConsumer = (function () {
+    function InlineTextConsumer(text) {
         this.text = text;
         this.countUnclosedParen = 0;
         this.countUnclosedSquareBracket = 0;
         this.index = 0;
     }
-    TextConsumer.prototype.done = function () {
+    InlineTextConsumer.prototype.done = function () {
         return (this.index >= this.text.length
             || this.isOnTrailingBackslash());
     };
-    TextConsumer.prototype.consumeIfMatches = function (needle) {
+    InlineTextConsumer.prototype.consumeIfMatches = function (needle) {
         if (!this.match(needle)) {
             return false;
         }
         this.skip(needle.length);
         return true;
     };
-    TextConsumer.prototype.consumeLine = function (args) {
+    InlineTextConsumer.prototype.consumeLine = function (args) {
         if (this.done()) {
             return false;
         }
-        var consumer = new TextConsumer(this.remainingText());
+        var consumer = new InlineTextConsumer(this.remainingText());
         var line;
         var wasAbleToConsumeUpToLineBreak = consumer.consume({
             upTo: '\n',
@@ -1766,10 +1766,10 @@ var TextConsumer = (function () {
         }
         return true;
     };
-    TextConsumer.prototype.consume = function (args) {
+    InlineTextConsumer.prototype.consume = function (args) {
         var upTo = args.upTo, then = args.then;
         var from = args.from || '';
-        var consumer = new TextConsumer(this.remainingText());
+        var consumer = new InlineTextConsumer(this.remainingText());
         if (from && !consumer.consumeIfMatches(from)) {
             return false;
         }
@@ -1786,7 +1786,7 @@ var TextConsumer = (function () {
         }
         return false;
     };
-    TextConsumer.prototype.consumeIfMatchesPattern = function (args) {
+    InlineTextConsumer.prototype.consumeIfMatchesPattern = function (args) {
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this.remainingText());
         if (!result) {
@@ -1803,23 +1803,23 @@ var TextConsumer = (function () {
         }
         return true;
     };
-    TextConsumer.prototype.moveNext = function () {
+    InlineTextConsumer.prototype.moveNext = function () {
         this.updateUnclosedBracketCounts();
         this.skip((this.isCurrentCharEscaped() ? 2 : 1));
     };
-    TextConsumer.prototype.skip = function (count) {
+    InlineTextConsumer.prototype.skip = function (count) {
         this.index += count;
     };
-    TextConsumer.prototype.lengthConsumed = function () {
+    InlineTextConsumer.prototype.lengthConsumed = function () {
         return this.index;
     };
-    TextConsumer.prototype.remainingText = function () {
+    InlineTextConsumer.prototype.remainingText = function () {
         return this.text.slice(this.index);
     };
-    TextConsumer.prototype.consumedText = function () {
+    InlineTextConsumer.prototype.consumedText = function () {
         return this.text.substr(0, this.index);
     };
-    TextConsumer.prototype.escapedCurrentChar = function () {
+    InlineTextConsumer.prototype.escapedCurrentChar = function () {
         if (this.done()) {
             throw new Error('There is no more text!');
         }
@@ -1827,35 +1827,35 @@ var TextConsumer = (function () {
             ? this.at(this.index + 1)
             : this.currentChar());
     };
-    TextConsumer.prototype.currentChar = function () {
+    InlineTextConsumer.prototype.currentChar = function () {
         return this.at(this.index);
     };
-    TextConsumer.prototype.at = function (index) {
+    InlineTextConsumer.prototype.at = function (index) {
         return this.text[index];
     };
-    TextConsumer.prototype.asBeforeMatch = function (matchLength) {
-        var copy = new TextConsumer('');
+    InlineTextConsumer.prototype.asBeforeMatch = function (matchLength) {
+        var copy = new InlineTextConsumer('');
         copy.text = this.text;
         copy.index = this.index - matchLength;
         copy.countUnclosedParen = this.countUnclosedParen;
         copy.countUnclosedSquareBracket = this.countUnclosedSquareBracket;
         return copy;
     };
-    TextConsumer.prototype.match = function (needle) {
+    InlineTextConsumer.prototype.match = function (needle) {
         return (needle === this.text.substr(this.index, needle.length)
             && this.areRelevantBracketsClosed(needle));
     };
-    TextConsumer.prototype.isCurrentCharEscaped = function () {
+    InlineTextConsumer.prototype.isCurrentCharEscaped = function () {
         return this.currentChar() === '\\';
     };
-    TextConsumer.prototype.isOnTrailingBackslash = function () {
+    InlineTextConsumer.prototype.isOnTrailingBackslash = function () {
         return (this.index === this.text.length - 1
             && this.isCurrentCharEscaped());
     };
-    TextConsumer.prototype.skipToEnd = function () {
+    InlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
     };
-    TextConsumer.prototype.updateUnclosedBracketCounts = function () {
+    InlineTextConsumer.prototype.updateUnclosedBracketCounts = function () {
         switch (this.currentChar()) {
             case '(':
                 this.countUnclosedParen += 1;
@@ -1871,13 +1871,13 @@ var TextConsumer = (function () {
                 break;
         }
     };
-    TextConsumer.prototype.areRelevantBracketsClosed = function (needle) {
+    InlineTextConsumer.prototype.areRelevantBracketsClosed = function (needle) {
         return ((!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
             && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')')));
     };
-    return TextConsumer;
+    return InlineTextConsumer;
 }());
-exports.TextConsumer = TextConsumer;
+exports.InlineTextConsumer = InlineTextConsumer;
 function appearsToCloseAnyPreceedingBrackets(text, openingBracketChar, closingBracketChar) {
     var countSurplusOpened = 0;
     for (var _i = 0, text_1 = text; _i < text_1.length; _i++) {

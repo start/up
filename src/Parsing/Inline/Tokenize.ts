@@ -3,7 +3,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { SandwichConvention } from './SandwichConvention'
-import { TextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from '../TextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
@@ -42,7 +42,7 @@ const MEDIA_TOKENIZERS = [
 class Tokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
-  private consumer: TextConsumer
+  private consumer: InlineTextConsumer
 
   // Square brackets must be perfectly balanced within the contents of a link, and this is how we track that.
   //
@@ -51,7 +51,7 @@ class Tokenizer {
   private countUnclosedSquareBracketsAtLinkStart: number
 
   constructor(text: string) {
-    this.consumer = new TextConsumer(text)
+    this.consumer = new InlineTextConsumer(text)
 
     while (true) {
       if (this.consumer.done()) {
@@ -448,7 +448,7 @@ class Tokenizer {
     return true
   }
 
-  addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | TextConsumer): void {
+  addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | InlineTextConsumer): void {
     this.tokens.push(new Token(meaning, valueOrConsumerBefore))
   }
 

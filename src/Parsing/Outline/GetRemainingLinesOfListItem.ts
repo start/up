@@ -1,4 +1,4 @@
-import { TextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from '../TextConsumer'
 import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
@@ -30,7 +30,7 @@ interface OnSuccess {
 // However, if there are 2 or more trailing blank lines, they should *not* be included. Instead,
 // they indicate the end of the list.
 export function getRemainingLinesOfListItem(args: Args): boolean {
-  const consumer = new TextConsumer(args.text)
+  const consumer = new InlineTextConsumer(args.text)
   const lines: string[] = []
 
   let countLinesIncluded = 0

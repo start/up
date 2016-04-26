@@ -1,4 +1,4 @@
-import { TextConsumer } from '../TextConsumer'
+import { InlineTextConsumer } from '../TextConsumer'
 
 export enum TokenMeaning {
   PlainText,
@@ -30,9 +30,9 @@ export enum TokenMeaning {
 
 export class Token {
   public value: string
-  public consumerBefore: TextConsumer
+  public consumerBefore: InlineTextConsumer
   
-  constructor(public meaning: TokenMeaning, valueOrConsumerBefore?: string|TextConsumer) {
+  constructor(public meaning: TokenMeaning, valueOrConsumerBefore?: string|InlineTextConsumer) {
     if (typeof valueOrConsumerBefore === 'string') {
       this.value = valueOrConsumerBefore
     } else {

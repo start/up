@@ -23,7 +23,7 @@ interface OnConsume {
   (text: string, ...captures: string[]): void
 }
 
-export class TextConsumer {
+export class InlineTextConsumer {
   public countUnclosedParen = 0;
   public countUnclosedSquareBracket = 0;
 
@@ -52,7 +52,7 @@ export class TextConsumer {
       return false
     }
 
-    const consumer = new TextConsumer(this.remainingText())
+    const consumer = new InlineTextConsumer(this.remainingText())
 
     let line: string
 
@@ -96,7 +96,7 @@ export class TextConsumer {
     const { upTo, then } = args
     const from = args.from || ''
 
-    const consumer = new TextConsumer(this.remainingText())
+    const consumer = new InlineTextConsumer(this.remainingText())
 
     if (from && !consumer.consumeIfMatches(from)) {
       return false
@@ -195,8 +195,8 @@ export class TextConsumer {
   //
   // Unfortunately, the returned TextConsumer is only guaranteed to have correct unclosed bracket counts
   // if this object hasn't advanced since its last match.
-  asBeforeMatch(matchLength: number): TextConsumer {
-    const copy = new TextConsumer('')
+  asBeforeMatch(matchLength: number): InlineTextConsumer {
+    const copy = new InlineTextConsumer('')
 
     copy.text = this.text
     copy.index = this.index - matchLength
