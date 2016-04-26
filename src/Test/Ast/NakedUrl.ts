@@ -72,7 +72,7 @@ describe('A naked URL', () => {
       ]))
   })
   
-  it('can contain be inside square brackets', () => {
+  it('can be inside square brackets', () => {
     expect(Up.toAst('[https://archive.org/fake]')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('['),
