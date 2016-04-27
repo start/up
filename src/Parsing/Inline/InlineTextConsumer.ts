@@ -156,17 +156,22 @@ export class InlineTextConsumer {
   // if this object hasn't advanced since its last match.
   asBeforeMatch(matchLength: number): InlineTextConsumer {
     const copy = new InlineTextConsumer('')
-
-    copy.text = this.text
-    copy.index = this.index - matchLength
-    copy.countUnclosedParen = this.countUnclosedParen
-    copy.countUnclosedSquareBracket = this.countUnclosedSquareBracket
+    
+    copy.mimic(this)
+    copy.index -= matchLength
 
     return copy
   }
-
+  
   skipToEnd(): void {
     this.index = this.text.length
+  }
+  
+  private mimic(other: InlineTextConsumer): void {
+    this.text = other.text
+    this.index = other.index
+    this.countUnclosedParen = other.countUnclosedParen
+    this.countUnclosedSquareBracket = other.countUnclosedSquareBracket
   }
 
   private cannotMatchAnything(): boolean {

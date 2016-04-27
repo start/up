@@ -231,14 +231,18 @@ var InlineTextConsumer = (function () {
     };
     InlineTextConsumer.prototype.asBeforeMatch = function (matchLength) {
         var copy = new InlineTextConsumer('');
-        copy.text = this.text;
-        copy.index = this.index - matchLength;
-        copy.countUnclosedParen = this.countUnclosedParen;
-        copy.countUnclosedSquareBracket = this.countUnclosedSquareBracket;
+        copy.mimic(this);
+        copy.index -= matchLength;
         return copy;
     };
     InlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
+    };
+    InlineTextConsumer.prototype.mimic = function (other) {
+        this.text = other.text;
+        this.index = other.index;
+        this.countUnclosedParen = other.countUnclosedParen;
+        this.countUnclosedSquareBracket = other.countUnclosedSquareBracket;
     };
     InlineTextConsumer.prototype.cannotMatchAnything = function () {
         return this.isCurrentCharEscaped || this.done();
