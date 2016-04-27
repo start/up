@@ -36,3 +36,13 @@ describe('An image that is the only convention on its line', () => {
       ]))
   })
 })
+
+
+describe('An image with a relative URL containing spaces and no extension', () => {
+  it('is parsed correctly', () => {
+    expect(Up.toAst('[o_o: haunted house -> haunted house]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('haunted house', 'haunted house'),
+      ]))
+  })
+})

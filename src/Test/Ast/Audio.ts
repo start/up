@@ -37,3 +37,13 @@ describe('Audio that is the only convention on its line', () => {
       ]))
   })
 })
+
+
+describe('Audio with a relative URL containing spaces and no extension', () => {
+  it('is parsed correctly', () => {
+    expect(Up.toAst('[-_-: ghostly howling -> ghostly howling]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghostly howling', 'ghostly howling'),
+      ]))
+  })
+})

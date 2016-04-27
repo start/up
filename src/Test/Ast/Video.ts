@@ -50,3 +50,13 @@ describe('A video that is the only convention on its line', () => {
       ]))
   })
 })
+
+
+describe('A video with a relative URL containing spaces and no extension', () => {
+  it('is parsed correctly', () => {
+    expect(Up.toAst('[-_o: ghosts eating luggage -> ghosts eating luggage]')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('ghosts eating luggage', 'ghosts eating luggage'),
+      ]))
+  })
+})
