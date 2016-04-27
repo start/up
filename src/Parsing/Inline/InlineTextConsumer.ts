@@ -14,8 +14,6 @@ interface OnConsume {
 }
 
 export class InlineTextConsumer {
-  public countUnclosedParen = 0
-  public countUnclosedSquareBracket = 0
   private isCurrentCharEscaped = false
   private index = 0
 
@@ -28,13 +26,9 @@ export class InlineTextConsumer {
   }
 
   consumeIfMatches(needle: string): boolean {
-    if (this.cannotMatchAnything()) {
-      return false
-    }
-
     const isMatch = (
-      needle === this.text.substr(this.index, needle.length)
-      && this.areRelevantBracketsClosed(needle)
+      !this.cannotMatchAnything()
+      && needle === this.text.substr(this.index, needle.length)
     )
 
     if (!isMatch) {
@@ -93,10 +87,6 @@ export class InlineTextConsumer {
     const match = result[0]
     const captures = result.slice(1)
 
-    if (!this.areRelevantBracketsClosed(match)) {
-      return false
-    }
-
     this.advanceAfterMatch(match.length)
 
     if (then) {
@@ -107,14 +97,6 @@ export class InlineTextConsumer {
   }
 
   advanceToNextChar(): void {
-    if (!this.isCurrentCharEscaped) {
-
-      // As a rule, we only count brackets found in plain, regular text. We ignore any brackets that are
-      // consumed as part of a text match (i.e. tokens for syntax rules). That's why we call
-      // `updateUnclosedBracketCounts` here rather than in `advanceAfterMatch`. 
-      this.updateUnclosedBracketCounts()
-    }
-
     this.advanceAfterMatch(1)
   }
 
@@ -148,30 +130,18 @@ export class InlineTextConsumer {
     return this.text[index]
   }
 
-  // This method is a bit hackish.
+  // This method is hackish, and it'll likley need to be replaced.
   //
-  // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.  
-  //
-  // Unfortunately, the returned TextConsumer is only guaranteed to have correct unclosed bracket counts
-  // if this object hasn't advanced since its last match.
+  // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.
   asBeforeMatch(matchLength: number): InlineTextConsumer {
-    const copy = new InlineTextConsumer('')
-    
-    copy.mimic(this)
-    copy.index -= matchLength
+    const copy = new InlineTextConsumer(this.text)
+    copy.index = this.index - matchLength
 
     return copy
   }
   
   skipToEnd(): void {
     this.index = this.text.length
-  }
-  
-  private mimic(other: InlineTextConsumer): void {
-    this.text = other.text
-    this.index = other.index
-    this.countUnclosedParen = other.countUnclosedParen
-    this.countUnclosedSquareBracket = other.countUnclosedSquareBracket
   }
 
   private cannotMatchAnything(): boolean {
@@ -185,66 +155,4 @@ export class InlineTextConsumer {
       this.index += 1
     }
   }
-
-  private updateUnclosedBracketCounts(): void {
-    switch (this.currentChar()) {
-      case '(':
-        this.countUnclosedParen += 1
-        break
-      case ')':
-        this.countUnclosedParen = Math.max(0, this.countUnclosedParen - 1)
-        break
-      case '[':
-        this.countUnclosedSquareBracket += 1
-        break
-      case ']':
-        this.countUnclosedSquareBracket = Math.max(0, this.countUnclosedSquareBracket - 1)
-        break
-    }
-  }
-
-  private areRelevantBracketsClosed(needle: string): boolean {
-    // We only care about unclosed brackets if `needle` would appear to close them. If that's the case,
-    // we refuse to match `needle`, because the author likely intended the needle to be plain text.
-    return (
-      (!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
-      && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')'))
-    )
-  }
-}
-
-// Returns true if `text` contains any closing brackets that would appear to close any preceeding opening brackets.
-//
-// Assuming '(' and ')' are the specified brackets, the following examples would cause this function to return `true`:
-//
-//   )
-//   ))
-//   hello)
-//   ( ))
-//   ) ((((
-//
-// And the following examples would not:
-//
-//   ()
-//   (( )
-function appearsToCloseAnyPreceedingBrackets(text: string, openingBracketChar: string, closingBracketChar: string): boolean {
-  let countSurplusOpened = 0
-
-  for (let char of text) {
-
-    switch (char) {
-      case openingBracketChar:
-        countSurplusOpened += 1
-        break
-
-      case closingBracketChar:
-        if (!countSurplusOpened) {
-          return true
-        }
-        countSurplusOpened -= 1
-        break
-    }
-  }
-
-  return false
 }

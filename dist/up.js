@@ -137,8 +137,6 @@ exports.getMediaTokenizer = getMediaTokenizer;
 var InlineTextConsumer = (function () {
     function InlineTextConsumer(text) {
         this.text = text;
-        this.countUnclosedParen = 0;
-        this.countUnclosedSquareBracket = 0;
         this.isCurrentCharEscaped = false;
         this.index = 0;
         this.applyEscaping();
@@ -147,11 +145,8 @@ var InlineTextConsumer = (function () {
         return this.index >= this.text.length;
     };
     InlineTextConsumer.prototype.consumeIfMatches = function (needle) {
-        if (this.cannotMatchAnything()) {
-            return false;
-        }
-        var isMatch = (needle === this.text.substr(this.index, needle.length)
-            && this.areRelevantBracketsClosed(needle));
+        var isMatch = (!this.cannotMatchAnything()
+            && needle === this.text.substr(this.index, needle.length));
         if (!isMatch) {
             return false;
         }
@@ -192,9 +187,6 @@ var InlineTextConsumer = (function () {
         }
         var match = result[0];
         var captures = result.slice(1);
-        if (!this.areRelevantBracketsClosed(match)) {
-            return false;
-        }
         this.advanceAfterMatch(match.length);
         if (then) {
             then.apply(void 0, [match].concat(captures));
@@ -202,9 +194,6 @@ var InlineTextConsumer = (function () {
         return true;
     };
     InlineTextConsumer.prototype.advanceToNextChar = function () {
-        if (!this.isCurrentCharEscaped) {
-            this.updateUnclosedBracketCounts();
-        }
         this.advanceAfterMatch(1);
     };
     InlineTextConsumer.prototype.advanceAfterMatch = function (matchLength) {
@@ -230,19 +219,12 @@ var InlineTextConsumer = (function () {
         return this.text[index];
     };
     InlineTextConsumer.prototype.asBeforeMatch = function (matchLength) {
-        var copy = new InlineTextConsumer('');
-        copy.mimic(this);
-        copy.index -= matchLength;
+        var copy = new InlineTextConsumer(this.text);
+        copy.index = this.index - matchLength;
         return copy;
     };
     InlineTextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
-    };
-    InlineTextConsumer.prototype.mimic = function (other) {
-        this.text = other.text;
-        this.index = other.index;
-        this.countUnclosedParen = other.countUnclosedParen;
-        this.countUnclosedSquareBracket = other.countUnclosedSquareBracket;
     };
     InlineTextConsumer.prototype.cannotMatchAnything = function () {
         return this.isCurrentCharEscaped || this.done();
@@ -253,47 +235,9 @@ var InlineTextConsumer = (function () {
             this.index += 1;
         }
     };
-    InlineTextConsumer.prototype.updateUnclosedBracketCounts = function () {
-        switch (this.currentChar()) {
-            case '(':
-                this.countUnclosedParen += 1;
-                break;
-            case ')':
-                this.countUnclosedParen = Math.max(0, this.countUnclosedParen - 1);
-                break;
-            case '[':
-                this.countUnclosedSquareBracket += 1;
-                break;
-            case ']':
-                this.countUnclosedSquareBracket = Math.max(0, this.countUnclosedSquareBracket - 1);
-                break;
-        }
-    };
-    InlineTextConsumer.prototype.areRelevantBracketsClosed = function (needle) {
-        return ((!this.countUnclosedSquareBracket || !appearsToCloseAnyPreceedingBrackets(needle, '[', ']'))
-            && (!this.countUnclosedParen || !appearsToCloseAnyPreceedingBrackets(needle, '(', ')')));
-    };
     return InlineTextConsumer;
 }());
 exports.InlineTextConsumer = InlineTextConsumer;
-function appearsToCloseAnyPreceedingBrackets(text, openingBracketChar, closingBracketChar) {
-    var countSurplusOpened = 0;
-    for (var _i = 0, text_1 = text; _i < text_1.length; _i++) {
-        var char = text_1[_i];
-        switch (char) {
-            case openingBracketChar:
-                countSurplusOpened += 1;
-                break;
-            case closingBracketChar:
-                if (!countSurplusOpened) {
-                    return true;
-                }
-                countSurplusOpened -= 1;
-                break;
-        }
-    }
-    return false;
-}
 
 },{}],7:[function(require,module,exports){
 "use strict";
@@ -1010,16 +954,11 @@ var Tokenizer = (function () {
             var LINK_START = '[';
             if (this.consumer.consumeIfMatches(LINK_START)) {
                 this.addToken(Token_1.TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length));
-                this.countUnclosedSquareBracketsAtLinkStart = this.consumer.countUnclosedSquareBracket;
                 return true;
             }
             return false;
         }
         if (this.consumer.consumeIfMatches(' -> ')) {
-            if (this.consumer.countUnclosedSquareBracket !== this.countUnclosedSquareBracketsAtLinkStart) {
-                this.undoLatest(LINK);
-                return true;
-            }
             var didFindClosingBracket = this.consumer.consume({
                 upTo: ']',
                 then: function (url) { return _this.addToken(Token_1.TokenMeaning.LinkUrlAndLinkEnd, TextHelpers_1.applyBackslashEscaping(url)); }
