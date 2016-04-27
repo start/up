@@ -1367,7 +1367,8 @@ var OutlineTextConsumer = (function () {
         if (this.done()) {
             return false;
         }
-        var line;
+        var fullLine;
+        var lineWithoutTerminatingLineBreak;
         for (var i = this.index; i < this.text.length; i++) {
             var char = this.text[i];
             if (char === '\\') {
@@ -1375,26 +1376,28 @@ var OutlineTextConsumer = (function () {
                 continue;
             }
             if (char === '\n') {
-                line = this.text.substring(this.index, i);
+                fullLine = this.text.substring(this.index, i + 1);
+                lineWithoutTerminatingLineBreak = fullLine.slice(0, -1);
+                break;
             }
         }
-        if (!line) {
-            line = this.remainingText();
+        if (!fullLine) {
+            fullLine = lineWithoutTerminatingLineBreak = this.remainingText();
         }
         var captures = [];
         if (args.pattern) {
-            var results = args.pattern.exec(line);
+            var results = args.pattern.exec(lineWithoutTerminatingLineBreak);
             if (!results) {
                 return false;
             }
             captures = results.slice(1);
         }
-        if (args.if && !args.if.apply(args, [line].concat(captures))) {
+        if (args.if && !args.if.apply(args, [lineWithoutTerminatingLineBreak].concat(captures))) {
             return false;
         }
-        this.advance(line.length);
+        this.advance(fullLine.length);
         if (args.then) {
-            args.then.apply(args, [line].concat(captures));
+            args.then.apply(args, [lineWithoutTerminatingLineBreak].concat(captures));
         }
         return true;
     };

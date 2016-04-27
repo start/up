@@ -27,30 +27,37 @@ export class OutlineTextConsumer {
       return false
     }
 
-    let line: string
-    
+    let fullLine: string
+    let lineWithoutTerminatingLineBreak: string
+
     for (let i = this.index; i < this.text.length; i++) {
       const char = this.text[i]
-      
+
       // Escaped line breaks don't end lines. If the current char is a backslash, let's just skip the next one.
       if (char === '\\') {
         i++
         continue
       }
-      
+
       if (char === '\n') {
-        line = this.text.substring(this.index, i)
+        // We don't want to include line break
+        fullLine = this.text.substring(this.index, i + 1)
+        lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
+        break
       }
     }
     
-    if (!line) {
-      line = this.remainingText()
+    if (!fullLine) {
+      // Alright, so we couldn't find a terminating line break!
+      //
+      // That means we're on the text's final line.
+      fullLine = lineWithoutTerminatingLineBreak = this.remainingText()
     }
 
     let captures: string[] = []
 
     if (args.pattern) {
-      const results = args.pattern.exec(line)
+      const results = args.pattern.exec(lineWithoutTerminatingLineBreak)
 
       if (!results) {
         return false
@@ -59,14 +66,14 @@ export class OutlineTextConsumer {
       captures = results.slice(1)
     }
 
-    if (args.if && !args.if(line, ...captures)) {
+    if (args.if && !args.if(lineWithoutTerminatingLineBreak, ...captures)) {
       return false
     }
 
-    this.advance(line.length)
+    this.advance(fullLine.length)
 
     if (args.then) {
-      args.then(line, ...captures)
+      args.then(lineWithoutTerminatingLineBreak, ...captures)
     }
 
     return true
