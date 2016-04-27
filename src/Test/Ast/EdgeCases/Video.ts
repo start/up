@@ -50,3 +50,15 @@ Do not pour the spiders into your sister's cereal.
       ]))
   })
 })
+
+
+describe('An otherwise valid video convention prematurely terminated by an unmatched closing bracket in its description', () => {
+  it('is treated as plain text', () => {
+    expect(Up.toAst('[-_o: memes] -> 8]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('[-_o: memes] -> 8]'),
+        ])
+      ]))
+  })
+})

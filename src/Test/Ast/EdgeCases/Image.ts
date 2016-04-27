@@ -51,3 +51,15 @@ Do not pour the spiders into your sister's cereal.
       ]))
   })
 })
+
+
+describe('An otherwise valid image convention prematurely terminated by an unmatched closing bracket in its description', () => {
+  it('is treated as plain text', () => {
+    expect(Up.toAst('[o_o: dank memes] -> 8]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('[o_o: dank memes] -> 8]'),
+        ])
+      ]))
+  })
+})
