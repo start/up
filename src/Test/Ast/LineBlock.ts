@@ -102,12 +102,12 @@ And addresses do, too
       ]))
   })
   
-  it('can be blank if escaped', () => {
+  it('can be blank if at least one of the whitespace characters is escaped', () => {
     const text =
       `
 Roses are red
-\\ \t
-\\ \t
+ \\\t\t
+ \\\t\t
 Violets are blue`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -116,10 +116,10 @@ Violets are blue`
             new PlainTextNode('Roses are red')
           ]),
           new Line([
-            new PlainTextNode(' \t')
+            new PlainTextNode(' \t\t')
           ]),
           new Line([
-            new PlainTextNode(' \t')
+            new PlainTextNode(' \t\t')
           ]),
           new Line([
             new PlainTextNode('Violets are blue')
