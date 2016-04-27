@@ -12,17 +12,9 @@ import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
 import { parseDescriptionList } from './ParseDescriptionList'
-import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
+import { startsWith, endsWith, BLANK, ANY_WHITESPACE, LINE_BREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
-
-const LEADING_BLANK_LINES_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + '\n')
-)
-
-const TRAILING_WHITESPACE_PATTERN = new RegExp(
-  endsWith(ANY_WHITESPACE)
-)
 
 
 export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
@@ -44,27 +36,22 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
     parseRegularLines,
   ]
 
-  // Leading and trailing blank lines are ignored. This also trims trailing whitespace from the
-  // last non-blank line, but that won't affect parsing.
-  const trimmedText = text
-    .replace(LEADING_BLANK_LINES_PATTERN, '')
-    .replace(TRAILING_WHITESPACE_PATTERN, '')
-
-  const consumer = new OutlineTextConsumer(trimmedText)
+  const consumer = new OutlineTextConsumer(trimOuterBlankLines(text))
   const nodes: OutlineSyntaxNode[] = []
 
   while (!consumer.done()) {
     for (let parseOutlineConvention of outlineParsers) {
 
-      const didConventionParseSuccessfully = parseOutlineConvention({
-        text: consumer.remainingText(),
-        then: (resultNodes, lengthParsed) => {
-          nodes.push(...resultNodes)
-          consumer.advance(lengthParsed)
-        }
-      })
+      const wasConventionFound =
+        parseOutlineConvention({
+          text: consumer.remainingText(),
+          then: (newNodes, lengthParsed) => {
+            nodes.push(...newNodes)
+            consumer.advance(lengthParsed)
+          }
+        })
 
-      if (didConventionParseSuccessfully) {
+      if (wasConventionFound) {
         break
       }
     }
@@ -72,6 +59,7 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
 
   return condenseConsecutiveSectionSeparatorNodes(nodes)
 }
+
 
 // To produce a cleaner AST, we condense multiple consecutive section separator nodes into one.
 function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
@@ -89,4 +77,21 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
   }
 
   return resultNodes
+}
+
+
+const LEADING_BLANK_LINES_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE + LINE_BREAK)
+)
+
+const TRAILIN_BLANK_LINES_PATTERN = new RegExp(
+  endsWith(LINE_BREAK + ANY_WHITESPACE)
+)
+
+function trimOuterBlankLines(text: string): string {
+  return (
+    text
+      .replace(LEADING_BLANK_LINES_PATTERN, '')
+      .replace(TRAILIN_BLANK_LINES_PATTERN, '')
+  )
 }

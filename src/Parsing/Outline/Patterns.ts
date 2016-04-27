@@ -24,6 +24,8 @@ const startsWith = (pattern: string) => '^' + pattern
 
 const endsWith = (pattern: string) => pattern + '$'
 
+const LINE_BREAK = '\n'
+
 const BLANK = solely('')
 
 const INDENT = either('  ', '\t')
@@ -51,6 +53,7 @@ export {
   ANY_WHITESPACE,
   STREAK,
   INTEGER,
+  LINE_BREAK,
   capture,
   optional,
   either,

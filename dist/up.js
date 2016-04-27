@@ -1203,8 +1203,6 @@ var ParseDescriptionList_1 = require('./ParseDescriptionList');
 var Patterns_1 = require('./Patterns');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var HeadingLeveler_1 = require('./HeadingLeveler');
-var LEADING_BLANK_LINES_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '\n'));
-var TRAILING_WHITESPACE_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.ANY_WHITESPACE));
 function getOutlineNodes(text) {
     var headingParser = GetHeadingParser_1.getHeadingParser(new HeadingLeveler_1.HeadingLeveler());
     var outlineParsers = [
@@ -1218,22 +1216,19 @@ function getOutlineNodes(text) {
         ParseDescriptionList_1.parseDescriptionList,
         ParseRegularLines_1.parseRegularLines,
     ];
-    var trimmedText = text
-        .replace(LEADING_BLANK_LINES_PATTERN, '')
-        .replace(TRAILING_WHITESPACE_PATTERN, '');
-    var consumer = new OutlineTextConsumer_1.OutlineTextConsumer(trimmedText);
+    var consumer = new OutlineTextConsumer_1.OutlineTextConsumer(trimOuterBlankLines(text));
     var nodes = [];
     while (!consumer.done()) {
         for (var _i = 0, outlineParsers_1 = outlineParsers; _i < outlineParsers_1.length; _i++) {
             var parseOutlineConvention = outlineParsers_1[_i];
-            var didConventionParseSuccessfully = parseOutlineConvention({
+            var wasConventionFound = parseOutlineConvention({
                 text: consumer.remainingText(),
-                then: function (resultNodes, lengthParsed) {
-                    nodes.push.apply(nodes, resultNodes);
+                then: function (newNodes, lengthParsed) {
+                    nodes.push.apply(nodes, newNodes);
                     consumer.advance(lengthParsed);
                 }
             });
-            if (didConventionParseSuccessfully) {
+            if (wasConventionFound) {
                 break;
             }
         }
@@ -1252,6 +1247,13 @@ function condenseConsecutiveSectionSeparatorNodes(nodes) {
         }
     }
     return resultNodes;
+}
+var LEADING_BLANK_LINES_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + Patterns_1.LINE_BREAK));
+var TRAILIN_BLANK_LINES_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.LINE_BREAK + Patterns_1.ANY_WHITESPACE));
+function trimOuterBlankLines(text) {
+    return (text
+        .replace(LEADING_BLANK_LINES_PATTERN, '')
+        .replace(TRAILIN_BLANK_LINES_PATTERN, ''));
 }
 
 },{"../../SyntaxNodes/SectionSeparatorNode":64,"../CollectionHelpers":1,"./GetHeadingParser":19,"./HeadingLeveler":22,"./OutlineTextConsumer":24,"./ParseBlankLineSeparation":25,"./ParseBlockquote":26,"./ParseCodeBlock":27,"./ParseDescriptionList":28,"./ParseOrderedList":29,"./ParseRegularLines":30,"./ParseSectionSeparatorStreak":31,"./ParseUnorderedList":32,"./Patterns":33}],21:[function(require,module,exports){
@@ -1807,6 +1809,8 @@ var startsWith = function (pattern) { return '^' + pattern; };
 exports.startsWith = startsWith;
 var endsWith = function (pattern) { return pattern + '$'; };
 exports.endsWith = endsWith;
+var LINE_BREAK = '\n';
+exports.LINE_BREAK = LINE_BREAK;
 var BLANK = solely('');
 exports.BLANK = BLANK;
 var INDENT = either('  ', '\t');

@@ -96,7 +96,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 
 
 - Clinton
-- Sanders 
+- Sanders
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -138,7 +138,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 
 
 - Clinton
-- Sanders 
+- Sanders
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([

@@ -49,7 +49,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 
 
 # Clinton
-# Sanders 
+# Sanders
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -91,7 +91,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 
 
 # Clinton
-# Sanders 
+# Sanders
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([

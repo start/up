@@ -1,15 +1,11 @@
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { OutlineTextConsumer } from './OutlineTextConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
-import { getHeadingParser } from './GetHeadingParser'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
-import { startsWith, endsWith, BLANK, ANY_WHITESPACE} from './Patterns'
 import { last } from '../CollectionHelpers'
-import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
 const SINGLE_LINE_OUTLINE_PARSERS = [
   parseUnorderedList,

@@ -35,9 +35,9 @@ StarCraft 2
 
 
 Magnus Carlsen
-  An above average chess player 
+  An above average chess player
 Lee Chang-ho
-  An above average go player 
+  An above average go player
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -101,9 +101,9 @@ StarCraft 2
 
 
 Magnus Carlsen
-  An above average chess player 
+  An above average chess player
 Lee Chang-ho
-  An above average go player 
+  An above average go player
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
