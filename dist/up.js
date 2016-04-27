@@ -172,12 +172,12 @@ var InlineTextConsumer = (function () {
             if (consumer.consumeIfMatches(upTo)) {
                 this.advanceAfterMatch(consumer.lengthConsumed());
                 if (then) {
-                    var text = consumer.consumedText().slice(from.length, -upTo.length);
+                    var text = consumer.text.slice(from.length, consumer.index - upTo.length);
                     then(text);
                 }
                 return true;
             }
-            consumer.advanceOneChar();
+            consumer.advanceToNextChar();
         }
         return false;
     };
@@ -201,7 +201,7 @@ var InlineTextConsumer = (function () {
         }
         return true;
     };
-    InlineTextConsumer.prototype.advanceOneChar = function () {
+    InlineTextConsumer.prototype.advanceToNextChar = function () {
         if (!this.isCurrentCharEscaped) {
             this.updateUnclosedBracketCounts();
         }
@@ -216,9 +216,6 @@ var InlineTextConsumer = (function () {
     };
     InlineTextConsumer.prototype.remainingText = function () {
         return this.text.slice(this.index);
-    };
-    InlineTextConsumer.prototype.consumedText = function () {
-        return this.text.substr(0, this.index);
     };
     InlineTextConsumer.prototype.escapedCurrentChar = function () {
         if (this.done()) {
@@ -833,7 +830,7 @@ var Tokenizer = (function () {
                 continue;
             }
             this.addPlainTextToken(this.consumer.escapedCurrentChar());
-            this.consumer.advanceOneChar();
+            this.consumer.advanceToNextChar();
         }
         this.tokens = ApplyRaisedVoices_1.applyRaisedVoices(this.tokens);
         this.massageTokensIntoTreeStructure();

@@ -63,14 +63,14 @@ export class InlineTextConsumer {
         this.advanceAfterMatch(consumer.lengthConsumed())
 
         if (then) {
-          const text = consumer.consumedText().slice(from.length, -upTo.length)
+          const text = consumer.text.slice(from.length, consumer.index - upTo.length)
           then(text)
         }
 
         return true
       }
 
-      consumer.advanceOneChar()
+      consumer.advanceToNextChar()
     }
 
     return false
@@ -105,12 +105,12 @@ export class InlineTextConsumer {
     return true
   }
 
-  advanceOneChar(): void {
+  advanceToNextChar(): void {
     if (!this.isCurrentCharEscaped) {
 
       // As a rule, we only count brackets found in plain, regular text. We ignore any brackets that are
       // consumed as part of a text match (i.e. tokens for syntax rules). That's why we call
-      // `updateUnclosedBracketCounts` here rather than in `advance`. 
+      // `updateUnclosedBracketCounts` here rather than in `advanceAfterMatch`. 
       this.updateUnclosedBracketCounts()
     }
 
@@ -128,10 +128,6 @@ export class InlineTextConsumer {
 
   remainingText(): string {
     return this.text.slice(this.index)
-  }
-
-  consumedText(): string {
-    return this.text.substr(0, this.index)
   }
 
   // TODO: Reconsider this method

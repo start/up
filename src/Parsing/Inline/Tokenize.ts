@@ -76,7 +76,7 @@ class Tokenizer {
       }
 
       this.addPlainTextToken(this.consumer.escapedCurrentChar())
-      this.consumer.advanceOneChar()
+      this.consumer.advanceToNextChar()
     }
 
     this.tokens = applyRaisedVoices(this.tokens)
