@@ -71,3 +71,14 @@ describe('4 consecutive backslashes', () => {
       ]))
   })
 })
+
+
+describe('An escaped character', () => {
+  it('can immediately follow inline code', () => {
+    expect(Up.toAst('`pennsylvania()`\\ ')).to.be.eql(
+      insideDocumentAndParagraph([
+        new InlineCodeNode('pennsylvania()'),
+        new PlainTextNode(' ')
+      ]))
+  })
+})

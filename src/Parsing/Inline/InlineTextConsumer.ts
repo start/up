@@ -8,15 +8,16 @@ interface ConsumeIfMatchesPatternArgs {
   pattern: RegExp,
   then?: OnConsume
 }
+
 interface OnConsume {
   (text: string, ...captures: string[]): void
 }
 
 export class InlineTextConsumer {
-  public countUnclosedParen = 0;
-  public countUnclosedSquareBracket = 0;
+  public countUnclosedParen = 0
+  public countUnclosedSquareBracket = 0
   private isCurrentCharEscaped = false
-  private index = 0;
+  private index = 0
 
   constructor(private text: string) {
     this.applyEscaping()
