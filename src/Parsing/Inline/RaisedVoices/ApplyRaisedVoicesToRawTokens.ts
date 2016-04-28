@@ -14,15 +14,19 @@ import { PlainTextMarker } from './PlainTextMarker'
 
 // TODO: Rename marker classes
 
-export function applyRaisedVoices(tokens: Token[]): void {
+export function applyRaisedVoicesToRawTokens(tokens: Token[]): Token[] {
   const raisedVoiceMarkers = getRaisedVoiceMarkers(tokens)
   
   // Hooray! We've determined which raised voice tokens to produce!
   //
   // Now, let's replace the placeholder "PotentialRaisedVoice..." tokens with the real ones.
+  const resultTokens = tokens.slice()
+  
   for (const raisedVoiceMarker of raisedVoiceMarkers.sort(comapreMarkersDescending)) {
-    tokens.splice(raisedVoiceMarker.originalTokenIndex, 1, ...raisedVoiceMarker.tokens())
+    resultTokens.splice(raisedVoiceMarker.originalTokenIndex, 1, ...raisedVoiceMarker.tokens())
   }
+  
+  return resultTokens
 }
 
 

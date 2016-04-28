@@ -8,7 +8,7 @@ import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
+import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
@@ -16,7 +16,10 @@ import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure
 
 
 export function tokenize(text: string): Token[] {
-  return new Tokenizer(text).tokens
+  const rawTokens = new RawTokenizer(text).tokens
+  const tokensWithRaisedVoicesApplied = applyRaisedVoicesToRawTokens(rawTokens)
+  
+  return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
 
 
@@ -41,7 +44,7 @@ const MEDIA_TOKENIZERS = [
 ].map(mediaConvention => getMediaTokenizer(mediaConvention))
 
 
-class Tokenizer {
+class RawTokenizer {
   public tokens: Token[] = []
   private failureTracker = new FailureTracker()
   private consumer: InlineTextConsumer
@@ -74,9 +77,6 @@ class Tokenizer {
       this.addPlainTextToken(this.consumer.escapedCurrentChar())
       this.consumer.advanceToNextChar()
     }
-
-    applyRaisedVoices(this.tokens)
-    massageTokensIntoTreeStructure(this.tokens)
   }
 
   backtrackIfAnyConventionsAreUnclosed(): boolean {

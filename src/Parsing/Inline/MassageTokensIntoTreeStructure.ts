@@ -8,7 +8,6 @@ import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token, TokenMeaning } from './Token'
 import { FailureTracker } from './FailureTracker'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
 
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
@@ -23,8 +22,8 @@ const ALL_SANDWICHES = [
 ]
 
 
-export function massageTokensIntoTreeStructure(tokens: Token[]): void {
-  new TokenMasseuse(tokens)
+export function massageTokensIntoTreeStructure(tokens: Token[]): Token[] {
+  return new TokenMasseuse(tokens.slice()).tokens
 }
 
 // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This class rearranges
@@ -108,7 +107,7 @@ class TokenMasseuse {
   }
 
   // This function assumes that any sandwich tokens are already properly nested.
-  splitAnySandwichThatOverlapsWithLinks(): void {
+  private splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       if (this.tokens[tokenIndex].meaning !== TokenMeaning.LinkStart) {
         continue
@@ -175,7 +174,7 @@ class TokenMasseuse {
   //
   // Functionally, this method does exactly what its name implies: it adds sandwich end tokens before `index`
   // and sandwich start tokens after `index`.
-  closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: SandwichConvention[]): void {
+  private closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: SandwichConvention[]): void {
     const startTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
         .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
@@ -188,12 +187,8 @@ class TokenMasseuse {
     this.insertTokens(index + 1, startTokensToAdd)
     this.insertTokens(index, endTokensToAdd)
   }
-
-  addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | InlineTextConsumer): void {
-    this.tokens.push(new Token(meaning, valueOrConsumerBefore))
-  }
-
-  insertTokens(index: number, tokens: Token[]): void {
+  
+  private insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
   }
 }

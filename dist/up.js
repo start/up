@@ -252,7 +252,7 @@ var ALL_SANDWICHES = [
     SandwichConventions_1.EMPHASIS
 ];
 function massageTokensIntoTreeStructure(tokens) {
-    new TokenMasseuse(tokens);
+    return new TokenMasseuse(tokens.slice()).tokens;
 }
 exports.massageTokensIntoTreeStructure = massageTokensIntoTreeStructure;
 var TokenMasseuse = (function () {
@@ -333,9 +333,6 @@ var TokenMasseuse = (function () {
             .map(function (sandwich) { return new Token_1.Token(sandwich.convention.endTokenMeaning()); });
         this.insertTokens(index + 1, startTokensToAdd);
         this.insertTokens(index, endTokensToAdd);
-    };
-    TokenMasseuse.prototype.addToken = function (meaning, valueOrConsumerBefore) {
-        this.tokens.push(new Token_1.Token(meaning, valueOrConsumerBefore));
     };
     TokenMasseuse.prototype.insertTokens = function (index, tokens) {
         (_a = this.tokens).splice.apply(_a, [index, 0].concat(tokens));
@@ -508,14 +505,16 @@ var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
 var StartMarker_1 = require('./StartMarker');
 var EndMarker_1 = require('./EndMarker');
 var PlainTextMarker_1 = require('./PlainTextMarker');
-function applyRaisedVoices(tokens) {
+function applyRaisedVoicesToRawTokens(tokens) {
     var raisedVoiceMarkers = getRaisedVoiceMarkers(tokens);
+    var resultTokens = tokens.slice();
     for (var _i = 0, _a = raisedVoiceMarkers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
         var raisedVoiceMarker = _a[_i];
-        tokens.splice.apply(tokens, [raisedVoiceMarker.originalTokenIndex, 1].concat(raisedVoiceMarker.tokens()));
+        resultTokens.splice.apply(resultTokens, [raisedVoiceMarker.originalTokenIndex, 1].concat(raisedVoiceMarker.tokens()));
     }
+    return resultTokens;
 }
-exports.applyRaisedVoices = applyRaisedVoices;
+exports.applyRaisedVoicesToRawTokens = applyRaisedVoicesToRawTokens;
 function getRaisedVoiceMarkers(tokens) {
     var markers = [];
     for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
@@ -844,13 +843,15 @@ var CollectionHelpers_1 = require('../CollectionHelpers');
 var Token_1 = require('./Token');
 var FailureTracker_1 = require('./FailureTracker');
 var TextHelpers_1 = require('../TextHelpers');
-var ApplyRaisedVoices_1 = require('./RaisedVoices/ApplyRaisedVoices');
+var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
 var GetMediaTokenizer_1 = require('./GetMediaTokenizer');
 var MediaConventions_1 = require('./MediaConventions');
 var SandwichConventions_1 = require('./SandwichConventions');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
 function tokenize(text) {
-    return new Tokenizer(text).tokens;
+    var rawTokens = new RawTokenizer(text).tokens;
+    var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(rawTokens);
+    return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
 }
 exports.tokenize = tokenize;
 var LINK = new Convention_1.Convention(Token_1.TokenMeaning.LinkStart, Token_1.TokenMeaning.LinkUrlAndLinkEnd);
@@ -867,8 +868,8 @@ var MEDIA_TOKENIZERS = [
     MediaConventions_1.IMAGE,
     MediaConventions_1.VIDEO
 ].map(function (mediaConvention) { return GetMediaTokenizer_1.getMediaTokenizer(mediaConvention); });
-var Tokenizer = (function () {
-    function Tokenizer(text) {
+var RawTokenizer = (function () {
+    function RawTokenizer(text) {
         this.tokens = [];
         this.failureTracker = new FailureTracker_1.FailureTracker();
         this.consumer = new InlineTextConsumer_1.InlineTextConsumer(text);
@@ -891,10 +892,8 @@ var Tokenizer = (function () {
             this.addPlainTextToken(this.consumer.escapedCurrentChar());
             this.consumer.advanceToNextChar();
         }
-        ApplyRaisedVoices_1.applyRaisedVoices(this.tokens);
-        MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(this.tokens);
     }
-    Tokenizer.prototype.backtrackIfAnyConventionsAreUnclosed = function () {
+    RawTokenizer.prototype.backtrackIfAnyConventionsAreUnclosed = function () {
         for (var i = 0; i < this.tokens.length; i++) {
             if (this.isTokenStartOfUnclosedConvention(i)) {
                 this.backtrack(i);
@@ -903,7 +902,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeInlineCode = function () {
+    RawTokenizer.prototype.tokenizeInlineCode = function () {
         var _this = this;
         return this.consumer.consume({
             from: '`',
@@ -911,7 +910,7 @@ var Tokenizer = (function () {
             then: function (code) { return _this.addToken(Token_1.TokenMeaning.InlineCode, TextHelpers_1.applyBackslashEscaping(code)); }
         });
     };
-    Tokenizer.prototype.tokenizeMedia = function () {
+    RawTokenizer.prototype.tokenizeMedia = function () {
         var _this = this;
         for (var _i = 0, MEDIA_TOKENIZERS_1 = MEDIA_TOKENIZERS; _i < MEDIA_TOKENIZERS_1.length; _i++) {
             var tokenizeMedia = MEDIA_TOKENIZERS_1[_i];
@@ -929,7 +928,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
+    RawTokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
         var originalTextIndex = this.consumer.lengthConsumed();
         var raisedVoiceDelimiter;
         var didMatchRaisedVoiceDelimiter = this.consumer.consumeIfMatchesPattern({
@@ -961,7 +960,7 @@ var Tokenizer = (function () {
         this.addToken(meaning, raisedVoiceDelimiter);
         return true;
     };
-    Tokenizer.prototype.handleRegularSandwiches = function () {
+    RawTokenizer.prototype.handleRegularSandwiches = function () {
         var textIndex = this.consumer.lengthConsumed();
         for (var _i = 0, REGULAR_SANDWICHES_1 = REGULAR_SANDWICHES; _i < REGULAR_SANDWICHES_1.length; _i++) {
             var sandwich = REGULAR_SANDWICHES_1[_i];
@@ -978,7 +977,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.handleLink = function () {
+    RawTokenizer.prototype.handleLink = function () {
         var _this = this;
         var textIndex = this.consumer.lengthConsumed();
         if (this.failureTracker.hasConventionFailed(LINK, textIndex)) {
@@ -1008,7 +1007,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeNakedUrl = function () {
+    RawTokenizer.prototype.tokenizeNakedUrl = function () {
         var SCHEME_PATTERN = /^(?:https?)?:\/\//;
         var urlScheme;
         if (!this.consumer.consumeIfMatchesPattern({
@@ -1028,10 +1027,10 @@ var Tokenizer = (function () {
         this.addToken(Token_1.TokenMeaning.LinkUrlAndLinkEnd, urlScheme + restOfUrl);
         return true;
     };
-    Tokenizer.prototype.addToken = function (meaning, valueOrConsumerBefore) {
+    RawTokenizer.prototype.addToken = function (meaning, valueOrConsumerBefore) {
         this.tokens.push(new Token_1.Token(meaning, valueOrConsumerBefore));
     };
-    Tokenizer.prototype.addPlainTextToken = function (text) {
+    RawTokenizer.prototype.addPlainTextToken = function (text) {
         var lastToken = CollectionHelpers_1.last(this.tokens);
         if (lastToken && (lastToken.meaning === Token_1.TokenMeaning.PlainText)) {
             lastToken.value += text;
@@ -1040,17 +1039,17 @@ var Tokenizer = (function () {
             this.tokens.push(new Token_1.Token(Token_1.TokenMeaning.PlainText, text));
         }
     };
-    Tokenizer.prototype.undoLatest = function (convention) {
+    RawTokenizer.prototype.undoLatest = function (convention) {
         this.backtrack(this.indexOfStartOfLatestInstanceOfConvention(convention));
     };
-    Tokenizer.prototype.backtrack = function (indexOfEarliestTokenToUndo) {
+    RawTokenizer.prototype.backtrack = function (indexOfEarliestTokenToUndo) {
         var token = this.tokens[indexOfEarliestTokenToUndo];
         var meaning = token.meaning;
         this.failureTracker.registerFailure(token.meaning, token.textIndex());
         this.consumer = token.consumerBefore;
         this.tokens.splice(indexOfEarliestTokenToUndo);
     };
-    Tokenizer.prototype.isTokenStartOfUnclosedConvention = function (index) {
+    RawTokenizer.prototype.isTokenStartOfUnclosedConvention = function (index) {
         var token = this.tokens[index];
         for (var _i = 0, POTENTIALLY_UNCLOSED_CONVENTIONS_1 = POTENTIALLY_UNCLOSED_CONVENTIONS; _i < POTENTIALLY_UNCLOSED_CONVENTIONS_1.length; _i++) {
             var convention = POTENTIALLY_UNCLOSED_CONVENTIONS_1[_i];
@@ -1060,7 +1059,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.isInside = function (convention) {
+    RawTokenizer.prototype.isInside = function (convention) {
         var excessStartTokens = 0;
         for (var _i = 0, _a = this.tokens; _i < _a.length; _i++) {
             var token = _a[_i];
@@ -1073,7 +1072,7 @@ var Tokenizer = (function () {
         }
         return excessStartTokens > 0;
     };
-    Tokenizer.prototype.isConventionAtIndexUnclosed = function (convention, index) {
+    RawTokenizer.prototype.isConventionAtIndexUnclosed = function (convention, index) {
         var excessStartTokens = 1;
         var startIndex = index + 1;
         for (var i = startIndex; i < this.tokens.length; i++) {
@@ -1090,10 +1089,10 @@ var Tokenizer = (function () {
         }
         return true;
     };
-    Tokenizer.prototype.indexOfStartOfLatestInstanceOfConvention = function (convention) {
+    RawTokenizer.prototype.indexOfStartOfLatestInstanceOfConvention = function (convention) {
         return this.indexOfLastTokenWithMeaning(convention.startTokenMeaning());
     };
-    Tokenizer.prototype.indexOfLastTokenWithMeaning = function (meaning) {
+    RawTokenizer.prototype.indexOfLastTokenWithMeaning = function (meaning) {
         for (var i = this.tokens.length - 1; i >= 0; i--) {
             if (this.tokens[i].meaning === meaning) {
                 return i;
@@ -1101,10 +1100,10 @@ var Tokenizer = (function () {
         }
         throw new Error('Missing token');
     };
-    return Tokenizer;
+    return RawTokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../TextHelpers":37,"./Convention":2,"./FailureTracker":3,"./GetMediaTokenizer":5,"./InlineTextConsumer":6,"./MassageTokensIntoTreeStructure":7,"./MediaConventions":9,"./RaisedVoices/ApplyRaisedVoices":11,"./SandwichConventions":17,"./Token":18}],20:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../TextHelpers":37,"./Convention":2,"./FailureTracker":3,"./GetMediaTokenizer":5,"./InlineTextConsumer":6,"./MassageTokensIntoTreeStructure":7,"./MediaConventions":9,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":11,"./SandwichConventions":17,"./Token":18}],20:[function(require,module,exports){
 "use strict";
 var OutlineTextConsumer_1 = require('./OutlineTextConsumer');
 var HeadingNode_1 = require('../../SyntaxNodes/HeadingNode');
