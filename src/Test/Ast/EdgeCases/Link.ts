@@ -141,4 +141,15 @@ describe("A link's contents", () => {
         new PlainTextNode('.')
       ]))
   })
+  
+  it('can contain an escaped unmatched closing bracket', () => {
+    expect(Up.toAst('I like [weird brackets\\] -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('weird brackets]')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
 })
