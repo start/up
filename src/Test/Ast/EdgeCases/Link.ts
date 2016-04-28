@@ -128,3 +128,17 @@ describe('A link', () => {
       ]))
   })
 })
+
+
+describe("A link's contents", () => {
+  it('can contain inline code containing an unmatched closing bracket', () => {
+    expect(Up.toAst('I like [`poor_syntax]` -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new InlineCodeNode('poor_syntax]')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
