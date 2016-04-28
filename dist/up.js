@@ -855,19 +855,10 @@ function tokenize(text) {
 }
 exports.tokenize = tokenize;
 var LINK = new Convention_1.Convention(Token_1.TokenMeaning.LinkStart, Token_1.TokenMeaning.LinkUrlAndLinkEnd);
-var REGULAR_SANDWICHES = [
-    SandwichConventions_1.REVISION_DELETION,
-    SandwichConventions_1.REVISION_INSERTION,
-    SandwichConventions_1.SPOILER,
-    SandwichConventions_1.FOOTNOTE
-];
+var REGULAR_SANDWICHES = [SandwichConventions_1.REVISION_DELETION, SandwichConventions_1.REVISION_INSERTION, SandwichConventions_1.SPOILER, SandwichConventions_1.FOOTNOTE];
 var ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SandwichConventions_1.STRESS, SandwichConventions_1.EMPHASIS);
 var POTENTIALLY_UNCLOSED_CONVENTIONS = [LINK].concat(REGULAR_SANDWICHES.map(function (sandwich) { return sandwich.convention; }));
-var MEDIA_TOKENIZERS = [
-    MediaConventions_1.AUDIO,
-    MediaConventions_1.IMAGE,
-    MediaConventions_1.VIDEO
-].map(function (mediaConvention) { return GetMediaTokenizer_1.getMediaTokenizer(mediaConvention); });
+var MEDIA_TOKENIZERS = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(GetMediaTokenizer_1.getMediaTokenizer);
 var RawTokenizer = (function () {
     function RawTokenizer(text) {
         this.tokens = [];
@@ -1036,7 +1027,7 @@ var RawTokenizer = (function () {
             lastToken.value += text;
         }
         else {
-            this.tokens.push(new Token_1.Token(Token_1.TokenMeaning.PlainText, text));
+            this.addToken(Token_1.TokenMeaning.PlainText, text);
         }
     };
     RawTokenizer.prototype.undoLatest = function (convention) {

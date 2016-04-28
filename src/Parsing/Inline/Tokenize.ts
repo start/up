@@ -25,23 +25,17 @@ export function tokenize(text: string): Token[] {
 
 const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
 
-const REGULAR_SANDWICHES = [
-  REVISION_DELETION,
-  REVISION_INSERTION,
-  SPOILER,
-  FOOTNOTE
-]
+const REGULAR_SANDWICHES =
+  [REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE]
 
-const ALL_SANDWICHES = REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
+const ALL_SANDWICHES =
+  REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 
 const POTENTIALLY_UNCLOSED_CONVENTIONS =
   [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
 
-const MEDIA_TOKENIZERS = [
-  AUDIO,
-  IMAGE,
-  VIDEO
-].map(mediaConvention => getMediaTokenizer(mediaConvention))
+const MEDIA_TOKENIZERS =
+  [AUDIO, IMAGE, VIDEO].map(getMediaTokenizer)
 
 
 class RawTokenizer {
@@ -287,7 +281,7 @@ class RawTokenizer {
     if (lastToken && (lastToken.meaning === TokenMeaning.PlainText)) {
       lastToken.value += text
     } else {
-      this.tokens.push(new Token(TokenMeaning.PlainText, text))
+      this.addToken(TokenMeaning.PlainText, text)
     }
   }
 
