@@ -75,8 +75,7 @@ class Tokenizer {
       this.consumer.advanceToNextChar()
     }
 
-    this.tokens = applyRaisedVoices(this.tokens)
-    
+    applyRaisedVoices(this.tokens)
     massageTokensIntoTreeStructure(this.tokens)
   }
 

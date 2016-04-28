@@ -509,11 +509,14 @@ var StartMarker_1 = require('./StartMarker');
 var EndMarker_1 = require('./EndMarker');
 var PlainTextMarker_1 = require('./PlainTextMarker');
 function applyRaisedVoices(tokens) {
-    var markers = getMarkers(tokens);
-    return replacePlaceholderTokens(tokens, markers);
+    var raisedVoiceMarkers = getRaisedVoiceMarkers(tokens);
+    for (var _i = 0, _a = raisedVoiceMarkers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
+        var raisedVoiceMarker = _a[_i];
+        tokens.splice.apply(tokens, [raisedVoiceMarker.originalTokenIndex, 1].concat(raisedVoiceMarker.tokens()));
+    }
 }
 exports.applyRaisedVoices = applyRaisedVoices;
-function getMarkers(tokens) {
+function getRaisedVoiceMarkers(tokens) {
     var markers = [];
     for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
         var token = tokens[tokenIndex];
@@ -547,14 +550,6 @@ function getMarkers(tokens) {
             : marker;
     });
     return withFailedMarkersTreatedAsPlainText;
-}
-function replacePlaceholderTokens(tokens, markers) {
-    var resultTokens = tokens.slice();
-    for (var _i = 0, _a = markers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
-        var marker = _a[_i];
-        resultTokens.splice.apply(resultTokens, [marker.originalTokenIndex, 1].concat(marker.tokens()));
-    }
-    return resultTokens;
 }
 
 },{".././Token":18,"./EndMarker":12,"./PlainTextMarker":13,"./RaisedVoiceMarker":14,"./StartMarker":15}],12:[function(require,module,exports){
@@ -896,7 +891,7 @@ var Tokenizer = (function () {
             this.addPlainTextToken(this.consumer.escapedCurrentChar());
             this.consumer.advanceToNextChar();
         }
-        this.tokens = ApplyRaisedVoices_1.applyRaisedVoices(this.tokens);
+        ApplyRaisedVoices_1.applyRaisedVoices(this.tokens);
         MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(this.tokens);
     }
     Tokenizer.prototype.backtrackIfAnyConventionsAreUnclosed = function () {

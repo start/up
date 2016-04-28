@@ -12,15 +12,21 @@ import { StartMarker } from './StartMarker'
 import { EndMarker } from './EndMarker'
 import { PlainTextMarker } from './PlainTextMarker'
 
+// TODO: Rename marker classes
 
-export function applyRaisedVoices(tokens: Token[]): Token[] {
-  const markers = getMarkers(tokens)
+export function applyRaisedVoices(tokens: Token[]): void {
+  const raisedVoiceMarkers = getRaisedVoiceMarkers(tokens)
   
-  return replacePlaceholderTokens(tokens, markers)
+  // Hooray! We've determined which raised voice tokens to produce!
+  //
+  // Now, let's replace the placeholder "PotentialRaisedVoice..." tokens with the real ones.
+  for (const raisedVoiceMarker of raisedVoiceMarkers.sort(comapreMarkersDescending)) {
+    tokens.splice(raisedVoiceMarker.originalTokenIndex, 1, ...raisedVoiceMarker.tokens())
+  }
 }
 
 
-function getMarkers(tokens: Token[]): RaisedVoiceMarker[] {
+function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
   const markers: RaisedVoiceMarker[] = []
 
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
@@ -90,16 +96,4 @@ function getMarkers(tokens: Token[]): RaisedVoiceMarker[] {
     )
 
   return withFailedMarkersTreatedAsPlainText
-}
-
-
-function replacePlaceholderTokens(tokens: Token[], markers: RaisedVoiceMarker[]): Token[] {
-  // We could probably be naughty and modify the `tokens` collection directly without anyone noticing.
-  const resultTokens = tokens.slice()
-
-  for (const marker of markers.sort(comapreMarkersDescending)) {
-    resultTokens.splice(marker.originalTokenIndex, 1, ...marker.tokens())
-  }
-
-  return resultTokens
 }
