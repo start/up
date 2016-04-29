@@ -1,13 +1,12 @@
 import { parseDocument } from './Parsing/ParseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
-import { getOutlineNodes } from './Parsing/Outline/GetOutlineNodes'
 import { HtmlWriter } from './Writer/HtmlWriter'
 
 
 interface UpConfigArgs {
   documentName?: string,
-
+  
   i18n?: {
     idWordDelimiter?: string,
 
@@ -24,14 +23,14 @@ interface UpConfigArgs {
 
 
 class UpConfig {
-  private config: UpConfigArgs
+  public settings: UpConfigArgs
 
   constructor(args: UpConfigArgs) {
     args = args || {}
     const i18n = args.i18n || {}
     const i18nTerms = i18n.terms || {}
 
-    this.config = {
+    this.settings = {
       documentName: args.documentName || '',
 
       i18n: {
@@ -52,7 +51,23 @@ class UpConfig {
 
 
 export class Up {
-  constructor(public config: UpConfig) {
-    
+  private htmlWriter: HtmlWriter
+  
+  constructor(public config: UpConfig) { }
+  
+  // TODO: Accept configuration settings here, too
+  toAst(text: string): DocumentNode {
+    return parseDocument(text)
+  }
+  
+  // TODO: Accept configuration settings here, too
+  toHtml(textOrNode: string | SyntaxNode): string {
+    const node = (
+      typeof textOrNode === 'string'
+        ? this.toAst(textOrNode)
+        : textOrNode
+    )
+
+    return this.htmlWriter.write(node)
   }
 }
