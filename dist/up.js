@@ -2475,6 +2475,51 @@ exports.VideoNode = VideoNode;
 
 },{"./MediaSyntaxNode":56}],71:[function(require,module,exports){
 "use strict";
+var ParseDocument_1 = require('./Parsing/ParseDocument');
+var HtmlWriter_1 = require('./Writer/HtmlWriter');
+var UpConfig = (function () {
+    function UpConfig(args) {
+        args = args || {};
+        var i18n = args.i18n || {};
+        var i18nTerms = i18n.terms || {};
+        this.settings = {
+            documentName: args.documentName || '',
+            i18n: {
+                idWordDelimiter: i18n.idWordDelimiter || '-',
+                terms: {
+                    image: i18nTerms.image || 'image',
+                    audio: i18nTerms.audio || 'audio',
+                    video: i18nTerms.video || 'video',
+                    spoiler: i18nTerms.spoiler || 'spoiler',
+                    footnote: i18nTerms.footnote || 'footnote',
+                    footnoteReference: i18nTerms.footnoteReference || 'footnote reference',
+                }
+            }
+        };
+    }
+    return UpConfig;
+}());
+exports.UpConfig = UpConfig;
+var Up = (function () {
+    function Up(config) {
+        this.config = new UpConfig(config);
+        this.htmlWriter = new HtmlWriter_1.HtmlWriter(this.config);
+    }
+    Up.prototype.toAst = function (text) {
+        return ParseDocument_1.parseDocument(text);
+    };
+    Up.prototype.toHtml = function (textOrNode) {
+        var node = (typeof textOrNode === 'string'
+            ? this.toAst(textOrNode)
+            : textOrNode);
+        return this.htmlWriter.write(node);
+    };
+    return Up;
+}());
+exports.Up = Up;
+
+},{"./Parsing/ParseDocument":35,"./Writer/HtmlWriter":72}],72:[function(require,module,exports){
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -2552,7 +2597,7 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.footnoteReference = function (node) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
         return this.htmlElement('sup', [innerLinkNode], {
-            id: this.config.footnoteReferenceId(node.referenceNumber),
+            id: this.footnoteReferenceId(node.referenceNumber),
             'data-footnote-reference': null
         });
     };
@@ -2603,11 +2648,11 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteReferenceInnerLink = function (footnoteReference) {
         var referenceNumber = footnoteReference.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.config.footnoteId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
         var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], {
-            id: this.config.footnoteId(footnote.referenceNumber),
+            id: this.footnoteId(footnote.referenceNumber),
             'data-footnote': null
         });
         var descriptionHtml = this.htmlElement('dd', footnote.children);
@@ -2615,7 +2660,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
         var referenceNumber = footnote.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.config.footnoteReferenceId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.footnoteReferenceId(referenceNumber)));
     };
     HtmlWriter.prototype.mediaFallback = function (content, url) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
@@ -2654,7 +2699,7 @@ function internalUrl(id) {
     return '#' + id;
 }
 
-},{"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/PlainTextNode":61,"./Writer":72}],72:[function(require,module,exports){
+},{"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/PlainTextNode":61,"./Writer":73}],73:[function(require,module,exports){
 "use strict";
 var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var ImageNode_1 = require('../SyntaxNodes/ImageNode');
@@ -2679,10 +2724,9 @@ var LineBlockNode_1 = require('../SyntaxNodes/LineBlockNode');
 var HeadingNode_1 = require('../SyntaxNodes/HeadingNode');
 var CodeBlockNode_1 = require('../SyntaxNodes/CodeBlockNode');
 var SectionSeparatorNode_1 = require('../SyntaxNodes/SectionSeparatorNode');
-var WriterConfig_1 = require('./WriterConfig');
 var Writer = (function () {
     function Writer(config) {
-        this.config = new WriterConfig_1.WriterConfig(config);
+        this.config = config;
     }
     Writer.prototype.write = function (node) {
         return this.dispatchWrite(node);
@@ -2759,65 +2803,39 @@ var Writer = (function () {
         }
         throw new Error("Unrecognized syntax node");
     };
-    return Writer;
-}());
-exports.Writer = Writer;
-
-},{"../SyntaxNodes/AudioNode":38,"../SyntaxNodes/BlockquoteNode":39,"../SyntaxNodes/CodeBlockNode":40,"../SyntaxNodes/DescriptionListNode":43,"../SyntaxNodes/DocumentNode":45,"../SyntaxNodes/EmphasisNode":46,"../SyntaxNodes/FootnoteBlockNode":47,"../SyntaxNodes/FootnoteNode":48,"../SyntaxNodes/HeadingNode":49,"../SyntaxNodes/ImageNode":50,"../SyntaxNodes/InlineCodeNode":51,"../SyntaxNodes/LineBlockNode":54,"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/ParagraphNode":60,"../SyntaxNodes/PlainTextNode":61,"../SyntaxNodes/RevisionDeletionNode":62,"../SyntaxNodes/RevisionInsertionNode":63,"../SyntaxNodes/SectionSeparatorNode":65,"../SyntaxNodes/SpoilerNode":66,"../SyntaxNodes/StressNode":67,"../SyntaxNodes/UnorderedListNode":69,"../SyntaxNodes/VideoNode":70,"./WriterConfig":73}],73:[function(require,module,exports){
-"use strict";
-var WriterConfig = (function () {
-    function WriterConfig(args) {
-        args = args || {};
-        var i18n = args.i18n || {};
-        var i18nTerms = i18n.terms || {};
-        this.config = {
-            documentName: args.documentName || '',
-            i18n: {
-                idWordDelimiter: i18n.idWordDelimiter || '-',
-                terms: {
-                    footnote: i18nTerms.footnote || 'footnote',
-                    footnoteReference: i18nTerms.footnoteReference || 'footnote reference',
-                }
-            }
-        };
-    }
-    WriterConfig.prototype.getId = function () {
+    Writer.prototype.getId = function () {
         var parts = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             parts[_i - 0] = arguments[_i];
         }
-        var allParts = [this.config.documentName].concat(parts);
+        var allParts = [this.config.settings.documentName].concat(parts);
         var rawId = allParts.join(' ');
         return (rawId
             .trim()
-            .replace(/\s+/g, this.config.i18n.idWordDelimiter));
+            .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter));
     };
-    WriterConfig.prototype.footnoteId = function (referenceNumber) {
-        return this.getId(this.config.i18n.terms.footnote, referenceNumber.toString());
+    Writer.prototype.footnoteId = function (referenceNumber) {
+        return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber.toString());
     };
-    WriterConfig.prototype.footnoteReferenceId = function (referenceNumber) {
-        return this.getId(this.config.i18n.terms.footnoteReference, referenceNumber.toString());
+    Writer.prototype.footnoteReferenceId = function (referenceNumber) {
+        return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber.toString());
     };
-    return WriterConfig;
+    return Writer;
 }());
-exports.WriterConfig = WriterConfig;
+exports.Writer = Writer;
 
-},{}],74:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":38,"../SyntaxNodes/BlockquoteNode":39,"../SyntaxNodes/CodeBlockNode":40,"../SyntaxNodes/DescriptionListNode":43,"../SyntaxNodes/DocumentNode":45,"../SyntaxNodes/EmphasisNode":46,"../SyntaxNodes/FootnoteBlockNode":47,"../SyntaxNodes/FootnoteNode":48,"../SyntaxNodes/HeadingNode":49,"../SyntaxNodes/ImageNode":50,"../SyntaxNodes/InlineCodeNode":51,"../SyntaxNodes/LineBlockNode":54,"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/ParagraphNode":60,"../SyntaxNodes/PlainTextNode":61,"../SyntaxNodes/RevisionDeletionNode":62,"../SyntaxNodes/RevisionInsertionNode":63,"../SyntaxNodes/SectionSeparatorNode":65,"../SyntaxNodes/SpoilerNode":66,"../SyntaxNodes/StressNode":67,"../SyntaxNodes/UnorderedListNode":69,"../SyntaxNodes/VideoNode":70}],74:[function(require,module,exports){
 "use strict";
-var ParseDocument_1 = require('./Parsing/ParseDocument');
-var HtmlWriter_1 = require('./Writer/HtmlWriter');
+var Up_1 = require('./Up');
+var up = new Up_1.Up();
 function toAst(text) {
-    return ParseDocument_1.parseDocument(text);
+    return up.toAst(text);
 }
 exports.toAst = toAst;
-var htmlWriter = new HtmlWriter_1.HtmlWriter();
 function toHtml(textOrNode) {
-    var node = (typeof textOrNode === 'string'
-        ? toAst(textOrNode)
-        : textOrNode);
-    return htmlWriter.write(node);
+    return up.toHtml(textOrNode);
 }
 exports.toHtml = toHtml;
 
-},{"./Parsing/ParseDocument":35,"./Writer/HtmlWriter":71}]},{},[74])(74)
+},{"./Up":71}]},{},[74])(74)
 });

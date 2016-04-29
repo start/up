@@ -29,10 +29,10 @@ import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { WriterConfig, WriterConfigArgs } from './WriterConfig'
+import { UpConfig } from '../Up'
 
 export class HtmlWriter extends Writer {
-  constructor(config?: WriterConfigArgs) {
+  constructor(config?: UpConfig) {
     super(config)
   }
 
@@ -131,7 +131,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElement(
       'sup',
       [innerLinkNode], {
-        id: this.config.footnoteReferenceId(node.referenceNumber),
+        id: this.footnoteReferenceId(node.referenceNumber),
         'data-footnote-reference': null
       })
   }
@@ -205,7 +205,7 @@ export class HtmlWriter extends Writer {
 
     return new LinkNode(
       [new PlainTextNode(referenceNumber.toString())],
-      internalUrl(this.config.footnoteId(referenceNumber)))
+      internalUrl(this.footnoteId(referenceNumber)))
   }
 
   private footnote(footnote: FootnoteNode): string {
@@ -213,7 +213,7 @@ export class HtmlWriter extends Writer {
       this.htmlElement(
         'dt',
         [this.footnoteLinkBackToReference(footnote)], {
-          id: this.config.footnoteId(footnote.referenceNumber),
+          id: this.footnoteId(footnote.referenceNumber),
           'data-footnote': null
         })
 
@@ -228,7 +228,7 @@ export class HtmlWriter extends Writer {
 
     return new LinkNode(
       [new PlainTextNode(referenceNumber.toString())],
-      internalUrl(this.config.footnoteReferenceId(referenceNumber))
+      internalUrl(this.footnoteReferenceId(referenceNumber))
     )
   }
 
@@ -246,6 +246,7 @@ export class HtmlWriter extends Writer {
       '')
   }
 }
+
 
 function htmlElement(tagName: string, content: string, attrs: any = {}): string {
   return `${htmlTag(tagName, attrs)}${content}</${tagName}>`

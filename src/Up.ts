@@ -22,10 +22,10 @@ interface UpConfigArgs {
 }
 
 
-class UpConfig {
+export class UpConfig {
   public settings: UpConfigArgs
 
-  constructor(args: UpConfigArgs) {
+  constructor(args?: UpConfigArgs) {
     args = args || {}
     const i18n = args.i18n || {}
     const i18nTerms = i18n.terms || {}
@@ -52,8 +52,12 @@ class UpConfig {
 
 export class Up {
   private htmlWriter: HtmlWriter
+  private config: UpConfig
   
-  constructor(public config: UpConfig) { }
+  constructor(config?: UpConfigArgs) {
+    this.config = new UpConfig(config)
+    this.htmlWriter = new HtmlWriter(this.config)
+  }
   
   // TODO: Accept configuration settings here, too
   toAst(text: string): DocumentNode {

@@ -30,15 +30,12 @@ import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { WriterConfig, WriterConfigArgs } from './WriterConfig'
+import { UpConfig } from '../Up'
 
 
 export abstract class Writer {
-  public config: WriterConfig
-
-  constructor(config: WriterConfigArgs) {
-    this.config = new WriterConfig(config)
-  }
+  
+  constructor(public config: UpConfig) { }
 
   write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
@@ -166,4 +163,22 @@ export abstract class Writer {
   abstract audio(node: AudioNode): string;
   abstract video(node: VideoNode): string;
   abstract plainText(node: PlainTextNode): string;
+
+  protected getId(...parts: string[]): string {
+    const allParts = [this.config.settings.documentName].concat(parts)
+    const rawId = allParts.join(' ')
+
+    return (
+      rawId
+        .trim()
+        .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter))
+  }
+
+  protected footnoteId(referenceNumber: number): string {
+    return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber.toString())
+  }
+
+  protected footnoteReferenceId(referenceNumber: number): string {
+    return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber.toString())
+  }
 }
