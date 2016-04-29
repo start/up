@@ -17,10 +17,12 @@ interface TokenizeMediaArgs {
 export function getMediaTokenizer(mediaConvention: MediaConvention) {
   const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = mediaConvention
   
-  // Media conventions start with an opening bracket, a face, and a colon:
+  // Media conventions start with an opening bracket, the term for the type of media, and a colon.
+  //
+  // For example:
   //
   // [audio: ...
-  const mediaStartPattern = new RegExp(`^\\[${mediaConvention.facePattern}:`)
+  const mediaStartPattern = new RegExp(`^\\[${mediaConvention.termForMediaType}:`)
 
   return function tokenizeMedia(args: TokenizeMediaArgs): boolean {
     const consumer = new InlineTextConsumer(args.text)

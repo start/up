@@ -99,7 +99,7 @@ var Token_1 = require('./Token');
 var TextHelpers_1 = require('../TextHelpers');
 function getMediaTokenizer(mediaConvention) {
     var tokenMeaningForStartAndDescription = mediaConvention.tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd = mediaConvention.tokenMeaningForUrlAndEnd;
-    var mediaStartPattern = new RegExp("^\\[" + mediaConvention.facePattern + ":");
+    var mediaStartPattern = new RegExp("^\\[" + mediaConvention.termForMediaType + ":");
     return function tokenizeMedia(args) {
         var consumer = new InlineTextConsumer_1.InlineTextConsumer(args.text);
         var doesSatisfyStartPattern = consumer.consumeIfMatchesPattern({ pattern: mediaStartPattern });
@@ -354,8 +354,8 @@ function getSandwichEndedByThisToken(token) {
 },{"./SandwichConventions":17,"./Token":18}],8:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
-    function MediaConvention(facePattern, NodeType, tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd) {
-        this.facePattern = facePattern;
+    function MediaConvention(termForMediaType, NodeType, tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd) {
+        this.termForMediaType = termForMediaType;
         this.NodeType = NodeType;
         this.tokenMeaningForStartAndDescription = tokenMeaningForStartAndDescription;
         this.tokenMeaningForUrlAndEnd = tokenMeaningForUrlAndEnd;
@@ -375,7 +375,7 @@ var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode
 exports.AUDIO = AUDIO;
 var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, Token_1.TokenMeaning.ImageStartAndAudioDescription, Token_1.TokenMeaning.ImageUrlAndAudioEnd);
 exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('(?:video|video)', VideoNode_1.VideoNode, Token_1.TokenMeaning.VideoStartAndAudioDescription, Token_1.TokenMeaning.VideoUrlAndAudioEnd);
+var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, Token_1.TokenMeaning.VideoStartAndAudioDescription, Token_1.TokenMeaning.VideoUrlAndAudioEnd);
 exports.VIDEO = VIDEO;
 
 },{"../../SyntaxNodes/AudioNode":38,"../../SyntaxNodes/ImageNode":50,"../../SyntaxNodes/VideoNode":70,"./MediaConvention":8,"./Token":18}],10:[function(require,module,exports){

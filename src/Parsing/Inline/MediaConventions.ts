@@ -8,7 +8,7 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 const AUDIO = new MediaConvention('audio', AudioNode, TokenMeaning.AudioStartAndAudioDescription, TokenMeaning.AudioUrlAndAudioEnd)
 const IMAGE = new MediaConvention('image', ImageNode, TokenMeaning.ImageStartAndAudioDescription, TokenMeaning.ImageUrlAndAudioEnd)
-const VIDEO = new MediaConvention('(?:video|video)', VideoNode, TokenMeaning.VideoStartAndAudioDescription, TokenMeaning.VideoUrlAndAudioEnd)
+const VIDEO = new MediaConvention('video', VideoNode, TokenMeaning.VideoStartAndAudioDescription, TokenMeaning.VideoUrlAndAudioEnd)
 
 export {
   AUDIO,

@@ -4,7 +4,7 @@ import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 export class MediaConvention {
   constructor(
-    public facePattern: string,
+    public termForMediaType: string,
     public NodeType: MediaSyntaxNodeType,
     public tokenMeaningForStartAndDescription: TokenMeaning,
     public tokenMeaningForUrlAndEnd: TokenMeaning) { }
