@@ -18,7 +18,7 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Bracketed text containing a face with its second eye open, reading to a description, both of which point to a URL', () => {
+describe('Bracketed text containing the word "video" with a description pointing to a URL', () => {
   it('produces a video bide with the description and URL', () => {
     expect(Up.toAst('I would never stay in a house with this. [video: ghosts eating luggage -> http://example.com/poltergeists.webm] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -28,19 +28,6 @@ describe('Bracketed text containing a face with its second eye open, reading to 
       ]))
   })
 })
-
-
-describe('Bracketed text containing a face with its first eye open, reading to a description, both of which point to a URL', () => {
-  it('produces a video bide with the description and URL', () => {
-    expect(Up.toAst('I would never stay in a house with this. [video: ghosts eating luggage -> http://example.com/poltergeists.webm] Would you?')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I would never stay in a house with this. '),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new PlainTextNode(' Would you?')
-      ]))
-  })
-})
-
 
 describe('A video that is the only convention on its line', () => {
   it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
