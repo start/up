@@ -18,7 +18,7 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Bracketed text containing the word "video" with a description pointing to a URL', () => {
+describe('Bracketed text starting with "video:" with a description pointing to a URL', () => {
   it('produces a video bide with the description and URL', () => {
     expect(Up.toAst('I would never stay in a house with this. [video: ghosts eating luggage -> http://example.com/poltergeists.webm] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
