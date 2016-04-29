@@ -16,7 +16,7 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Bracketed text containing open eyes, reading a description, both of which point to a URL', () => {
+describe('Bracketed text containing the word "image" with a description pointing to a URL', () => {
   it('produces an image node with the description and URL', () => {
     expect(Up.toAst('I would never stay here. [image: haunted house -> http://example.com/hauntedhouse.svg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([

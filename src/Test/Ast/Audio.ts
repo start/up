@@ -17,7 +17,7 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Bracketed text containing a face with closed eyes, listening to a description, both of which point to a URL', () => {
+describe('Bracketed text containing the word "audio" with a description pointing to a URL', () => {
   it('produces an audio node with the description and URL', () => {
     expect(Up.toAst('I would never stay in a house with these sounds. [audio: ghostly howling -> http://example.com/ghosts.ogg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
