@@ -371,11 +371,11 @@ var MediaConvention_1 = require('./MediaConvention');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-var AUDIO = new MediaConvention_1.MediaConvention('-_-', AudioNode_1.AudioNode, Token_1.TokenMeaning.AudioStartAndAudioDescription, Token_1.TokenMeaning.AudioUrlAndAudioEnd);
+var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, Token_1.TokenMeaning.AudioStartAndAudioDescription, Token_1.TokenMeaning.AudioUrlAndAudioEnd);
 exports.AUDIO = AUDIO;
-var IMAGE = new MediaConvention_1.MediaConvention('o_o', ImageNode_1.ImageNode, Token_1.TokenMeaning.ImageStartAndAudioDescription, Token_1.TokenMeaning.ImageUrlAndAudioEnd);
+var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, Token_1.TokenMeaning.ImageStartAndAudioDescription, Token_1.TokenMeaning.ImageUrlAndAudioEnd);
 exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('(?:-_o|o_-)', VideoNode_1.VideoNode, Token_1.TokenMeaning.VideoStartAndAudioDescription, Token_1.TokenMeaning.VideoUrlAndAudioEnd);
+var VIDEO = new MediaConvention_1.MediaConvention('(?:video|video)', VideoNode_1.VideoNode, Token_1.TokenMeaning.VideoStartAndAudioDescription, Token_1.TokenMeaning.VideoUrlAndAudioEnd);
 exports.VIDEO = VIDEO;
 
 },{"../../SyntaxNodes/AudioNode":38,"../../SyntaxNodes/ImageNode":50,"../../SyntaxNodes/VideoNode":70,"./MediaConvention":8,"./Token":18}],10:[function(require,module,exports){

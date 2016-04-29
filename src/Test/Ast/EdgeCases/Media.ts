@@ -16,7 +16,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 describe('A line consisting solely of media conventions (and optional whitespace)', () => {
   it('produces a node for each convention and includes each directly into the outline, rather than squeezing them all into a paragraph', () => {
     const text =
-      '[-_-: ghostly howling -> http://example.com/ghosts.ogg] [o_o: haunted house -> http://example.com/hauntedhouse.svg] [o_-: ghosts eating luggage -> http://example.com/poltergeists.webm] '
+      '[audio: ghostly howling -> http://example.com/ghosts.ogg] [image: haunted house -> http://example.com/hauntedhouse.svg] [video: ghosts eating luggage -> http://example.com/poltergeists.webm] '
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -32,7 +32,7 @@ describe('A paragraph followed by a line consisting solely of media conventions'
   it('does not produce a line block node', () => {
     const text = `
 You'll never believe this fake evidence!
-[-_-: ghostly howling -> http://example.com/ghosts.ogg][o_o: haunted house -> http://example.com/hauntedhouse.svg][o_-: ghosts eating luggage -> http://example.com/poltergeists.webm]`
+[audio: ghostly howling -> http://example.com/ghosts.ogg][image: haunted house -> http://example.com/hauntedhouse.svg][video: ghosts eating luggage -> http://example.com/poltergeists.webm]`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -52,7 +52,7 @@ describe('A line solely consisting solely of media conventions inserted in the m
     const text = `
 1234 Spooky Street
 Pepe, PA 17101
-[-_-: ghostly howling -> http://example.com/ghosts.ogg][o_o: haunted house -> http://example.com/hauntedhouse.svg][o_-: ghosts eating luggage -> http://example.com/poltergeists.webm]
+[audio: ghostly howling -> http://example.com/ghosts.ogg][image: haunted house -> http://example.com/hauntedhouse.svg][video: ghosts eating luggage -> http://example.com/poltergeists.webm]
 Roses are red
 Skeltals are white
 If you stay here
