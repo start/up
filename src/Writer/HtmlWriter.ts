@@ -29,7 +29,7 @@ import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { UpConfig } from '../Up'
+import { UpConfig } from '../UpConfig'
 
 export class HtmlWriter extends Writer {
   constructor(config?: UpConfig) {

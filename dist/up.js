@@ -2477,6 +2477,27 @@ exports.VideoNode = VideoNode;
 "use strict";
 var ParseDocument_1 = require('./Parsing/ParseDocument');
 var HtmlWriter_1 = require('./Writer/HtmlWriter');
+var UpConfig_1 = require('./UpConfig');
+var Up = (function () {
+    function Up(config) {
+        this.config = new UpConfig_1.UpConfig(config);
+        this.htmlWriter = new HtmlWriter_1.HtmlWriter(this.config);
+    }
+    Up.prototype.toAst = function (text) {
+        return ParseDocument_1.parseDocument(text);
+    };
+    Up.prototype.toHtml = function (textOrNode) {
+        var node = (typeof textOrNode === 'string'
+            ? this.toAst(textOrNode)
+            : textOrNode);
+        return this.htmlWriter.write(node);
+    };
+    return Up;
+}());
+exports.Up = Up;
+
+},{"./Parsing/ParseDocument":35,"./UpConfig":72,"./Writer/HtmlWriter":73}],72:[function(require,module,exports){
+"use strict";
 var UpConfig = (function () {
     function UpConfig(args) {
         args = args || {};
@@ -2500,25 +2521,8 @@ var UpConfig = (function () {
     return UpConfig;
 }());
 exports.UpConfig = UpConfig;
-var Up = (function () {
-    function Up(config) {
-        this.config = new UpConfig(config);
-        this.htmlWriter = new HtmlWriter_1.HtmlWriter(this.config);
-    }
-    Up.prototype.toAst = function (text) {
-        return ParseDocument_1.parseDocument(text);
-    };
-    Up.prototype.toHtml = function (textOrNode) {
-        var node = (typeof textOrNode === 'string'
-            ? this.toAst(textOrNode)
-            : textOrNode);
-        return this.htmlWriter.write(node);
-    };
-    return Up;
-}());
-exports.Up = Up;
 
-},{"./Parsing/ParseDocument":35,"./Writer/HtmlWriter":72}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2699,7 +2703,7 @@ function internalUrl(id) {
     return '#' + id;
 }
 
-},{"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/PlainTextNode":61,"./Writer":73}],73:[function(require,module,exports){
+},{"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/PlainTextNode":61,"./Writer":74}],74:[function(require,module,exports){
 "use strict";
 var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var ImageNode_1 = require('../SyntaxNodes/ImageNode');
@@ -2824,7 +2828,7 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/AudioNode":38,"../SyntaxNodes/BlockquoteNode":39,"../SyntaxNodes/CodeBlockNode":40,"../SyntaxNodes/DescriptionListNode":43,"../SyntaxNodes/DocumentNode":45,"../SyntaxNodes/EmphasisNode":46,"../SyntaxNodes/FootnoteBlockNode":47,"../SyntaxNodes/FootnoteNode":48,"../SyntaxNodes/HeadingNode":49,"../SyntaxNodes/ImageNode":50,"../SyntaxNodes/InlineCodeNode":51,"../SyntaxNodes/LineBlockNode":54,"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/ParagraphNode":60,"../SyntaxNodes/PlainTextNode":61,"../SyntaxNodes/RevisionDeletionNode":62,"../SyntaxNodes/RevisionInsertionNode":63,"../SyntaxNodes/SectionSeparatorNode":65,"../SyntaxNodes/SpoilerNode":66,"../SyntaxNodes/StressNode":67,"../SyntaxNodes/UnorderedListNode":69,"../SyntaxNodes/VideoNode":70}],74:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":38,"../SyntaxNodes/BlockquoteNode":39,"../SyntaxNodes/CodeBlockNode":40,"../SyntaxNodes/DescriptionListNode":43,"../SyntaxNodes/DocumentNode":45,"../SyntaxNodes/EmphasisNode":46,"../SyntaxNodes/FootnoteBlockNode":47,"../SyntaxNodes/FootnoteNode":48,"../SyntaxNodes/HeadingNode":49,"../SyntaxNodes/ImageNode":50,"../SyntaxNodes/InlineCodeNode":51,"../SyntaxNodes/LineBlockNode":54,"../SyntaxNodes/LinkNode":55,"../SyntaxNodes/OrderedListNode":58,"../SyntaxNodes/ParagraphNode":60,"../SyntaxNodes/PlainTextNode":61,"../SyntaxNodes/RevisionDeletionNode":62,"../SyntaxNodes/RevisionInsertionNode":63,"../SyntaxNodes/SectionSeparatorNode":65,"../SyntaxNodes/SpoilerNode":66,"../SyntaxNodes/StressNode":67,"../SyntaxNodes/UnorderedListNode":69,"../SyntaxNodes/VideoNode":70}],75:[function(require,module,exports){
 "use strict";
 var Up_1 = require('./Up');
 var up = new Up_1.Up();
@@ -2837,5 +2841,5 @@ function toHtml(textOrNode) {
 }
 exports.toHtml = toHtml;
 
-},{"./Up":71}]},{},[74])(74)
+},{"./Up":71}]},{},[75])(75)
 });

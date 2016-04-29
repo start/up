@@ -30,7 +30,7 @@ import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { UpConfig } from '../Up'
+import { UpConfig } from '../UpConfig'
 
 
 export abstract class Writer {
