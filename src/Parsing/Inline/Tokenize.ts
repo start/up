@@ -13,9 +13,9 @@ import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
 import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure'
+import { UpConfig } from '../../UpConfig'
 
-
-export function tokenize(text: string): Token[] {
+export function tokenize(text: string, config: UpConfig): Token[] {
   const rawTokens = new RawTokenizer(text).tokens
   const tokensWithRaisedVoicesApplied = applyRaisedVoicesToRawTokens(rawTokens)
   

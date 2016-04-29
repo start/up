@@ -87,8 +87,8 @@ exports.FailureTracker = FailureTracker;
 "use strict";
 var Tokenize_1 = require('./Tokenize');
 var Parse_1 = require('./Parse');
-function getInlineNodes(text) {
-    return Parse_1.parse(Tokenize_1.tokenize(text));
+function getInlineNodes(text, config) {
+    return Parse_1.parse(Tokenize_1.tokenize(text, config));
 }
 exports.getInlineNodes = getInlineNodes;
 
@@ -848,7 +848,7 @@ var GetMediaTokenizer_1 = require('./GetMediaTokenizer');
 var MediaConventions_1 = require('./MediaConventions');
 var SandwichConventions_1 = require('./SandwichConventions');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
-function tokenize(text) {
+function tokenize(text, config) {
     var rawTokens = new RawTokenizer(text).tokens;
     var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(rawTokens);
     return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
@@ -1130,7 +1130,7 @@ function getHeadingParser(headingLeveler) {
             return false;
         }
         var headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline);
-        args.then([new HeadingNode_1.HeadingNode(GetInlineNodes_1.getInlineNodes(content), headingLevel)], consumer.lengthConsumed());
+        args.then([new HeadingNode_1.HeadingNode(GetInlineNodes_1.getInlineNodes(content, args.config), headingLevel)], consumer.lengthConsumed());
         return true;
     };
 }
@@ -1503,7 +1503,7 @@ function parseDescriptionList(args) {
             }
         });
         lengthParsed = consumer.lengthConsumed();
-        var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(GetInlineNodes_1.getInlineNodes(term)); });
+        var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(GetInlineNodes_1.getInlineNodes(term, args.config)); });
         var description = new Description_1.Description(GetOutlineNodes_1.getOutlineNodes(descriptionLines.join('\n'), args.config));
         listItemNodes.push(new DescriptionListItem_1.DescriptionListItem(terms, description));
         if (isListTerminated) {
@@ -1624,7 +1624,7 @@ function parseRegularLines(args) {
         var wasLineConsumed = consumer.consumeLine({
             pattern: NON_BLANK_LINE_PATTERN,
             if: function (line) { return !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
-            then: function (line) { return inlineNodes = GetInlineNodes_1.getInlineNodes(line); }
+            then: function (line) { return inlineNodes = GetInlineNodes_1.getInlineNodes(line, args.config); }
         });
         if (!wasLineConsumed || !inlineNodes.length) {
             return "break";

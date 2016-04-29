@@ -79,7 +79,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
     
     args.then(
-      [new HeadingNode(getInlineNodes(content), headingLevel)],
+      [new HeadingNode(getInlineNodes(content, args.config), headingLevel)],
       consumer.lengthConsumed())
 
     return true

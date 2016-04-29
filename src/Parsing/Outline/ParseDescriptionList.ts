@@ -83,7 +83,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     lengthParsed = consumer.lengthConsumed()
 
     const terms =
-      rawTerms.map((term) => new DescriptionTerm(getInlineNodes(term)))
+      rawTerms.map((term) => new DescriptionTerm(getInlineNodes(term, args.config)))
     
     const description =
       new Description(getOutlineNodes(descriptionLines.join('\n'), args.config))
