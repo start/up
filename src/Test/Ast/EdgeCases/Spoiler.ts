@@ -17,20 +17,11 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('A spoiler with " -> " inside', () => {
   it('is not transformed into a link', () => {
-    expect(Up.toAst('[<_<]Goten + Trunks -> Gotenks[>_>]')).to.be.eql(
+    expect(Up.toAst('[SPOILER: Goten + Trunks -> Gotenks]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('Goten + Trunks -> Gotenks')
         ]),
-      ]))
-  })
-})
-
-describe('A single spoiler start face', () => {
-  it ('remains plain text', () => {
-    expect(Up.toAst('[<_<]')).to.be.eql(
-      insideDocumentAndParagraph([
-          new PlainTextNode('[<_<]')
       ]))
   })
 })

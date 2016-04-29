@@ -15,9 +15,9 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Text surrounded by faces looking away', () => {
+describe('Bracketed text starting with "spoiler:"', () => {
   it('is put inside a spoiler node', () => {
-    expect(Up.toAst('After you beat the Elite Four, [<_<]you fight Gary[>_>].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
@@ -26,9 +26,18 @@ describe('Text surrounded by faces looking away', () => {
         new PlainTextNode('.')
       ]))
   })
+})
+
+describe('Spoiler conventions', () => {
+  it('can use any capitalization of the word "spoiler"', () => {
+    const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
+    const withRandomCase = 'After you beat the Elite Four, [SPoILeR: you fight Gary].'
+    
+    expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
+  })
 
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('After you beat the Elite Four, [<_<]you fight *Gary*[>_>].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight *Gary*].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
@@ -42,7 +51,7 @@ describe('Text surrounded by faces looking away', () => {
   })
 
   it('can be nested within another spoiler node', () => {
-    expect(Up.toAst('After you beat the Elite Four, [<_<]you fight [<_<]Gary[>_>][>_>].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
