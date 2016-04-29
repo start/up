@@ -41,7 +41,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     while (!consumer.done()) {
       const isTerm = consumer.consumeLine({
         pattern: NON_BLANK_PATTERN,
-        if: (line) => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line),
+        if: (line) => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
         then: (line) => rawTerms.push(line)
       })
 
@@ -86,7 +86,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       rawTerms.map((term) => new DescriptionTerm(getInlineNodes(term)))
     
     const description =
-      new Description(getOutlineNodes(descriptionLines.join('\n')))
+      new Description(getOutlineNodes(descriptionLines.join('\n'), args.config))
 
     listItemNodes.push(new DescriptionListItem(terms, description))
     

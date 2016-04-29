@@ -16,7 +16,7 @@ export class Up {
   
   // TODO: Accept configuration settings here, too
   toAst(text: string): DocumentNode {
-    return parseDocument(text)
+    return parseDocument(text, this.config)
   }
   
   // TODO: Accept configuration settings here, too

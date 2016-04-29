@@ -72,7 +72,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
 
   const listItems =
     listItemsContents.map((listItemContents) =>
-      new UnorderedListItem(getOutlineNodes(listItemContents)))
+      new UnorderedListItem(getOutlineNodes(listItemContents, args.config)))
  
   args.then([new UnorderedListNode(listItems)], consumer.lengthConsumed())
   return true

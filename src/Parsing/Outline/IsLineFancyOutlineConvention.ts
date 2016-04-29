@@ -6,8 +6,9 @@ import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
 import { last } from '../CollectionHelpers'
+import { UpConfig } from '../../UpConfig'
 
-const SINGLE_LINE_OUTLINE_PARSERS = [
+const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
   parseUnorderedList,
   parseOrderedList,
   parseSectionSeparatorStreak,
@@ -15,8 +16,12 @@ const SINGLE_LINE_OUTLINE_PARSERS = [
 ]
 
 // If `line` would be considered anything but a regular paragraph, it's considered fancy. 
-export function isLineFancyOutlineConvention(line: string): boolean {
-  return SINGLE_LINE_OUTLINE_PARSERS.some(
-    (parse) => parse({ text: line, then: () => { } })
+export function isLineFancyOutlineConvention(line: string, config: UpConfig): boolean {
+  return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(
+    (parse) => parse({
+      text: line,
+      config: config,
+      then: () => { /* Do nothing */ }
+    })
   )
 }

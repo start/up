@@ -85,7 +85,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   
   let listItems = rawListItems.map((rawListItem) => {
     return new OrderedListItem(
-      getOutlineNodes(rawListItem.content()),
+      getOutlineNodes(rawListItem.content(), args.config),
       getExplicitOrdinal(rawListItem)
     )
   })

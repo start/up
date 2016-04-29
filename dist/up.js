@@ -1126,7 +1126,7 @@ function getHeadingParser(headingLeveler) {
         if (!hasContentAndUnderline) {
             return false;
         }
-        if (IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(content)) {
+        if (IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(content, args.config)) {
             return false;
         }
         var headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline);
@@ -1152,7 +1152,7 @@ var ParseDescriptionList_1 = require('./ParseDescriptionList');
 var Patterns_1 = require('./Patterns');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var HeadingLeveler_1 = require('./HeadingLeveler');
-function getOutlineNodes(text) {
+function getOutlineNodes(text, config) {
     var headingParser = GetHeadingParser_1.getHeadingParser(new HeadingLeveler_1.HeadingLeveler());
     var outlineParsers = [
         ParseBlankLineSeparation_1.parseBlankLineSeparation,
@@ -1172,6 +1172,7 @@ function getOutlineNodes(text) {
             var parseOutlineConvention = outlineParsers_1[_i];
             var wasConventionFound = parseOutlineConvention({
                 text: consumer.remainingText(),
+                config: config,
                 then: function (newNodes, lengthParsed) {
                     nodes.push.apply(nodes, newNodes);
                     consumer.advance(lengthParsed);
@@ -1294,14 +1295,18 @@ var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
 var ParseBlockquote_1 = require('./ParseBlockquote');
 var ParseUnorderedList_1 = require('./ParseUnorderedList');
 var ParseOrderedList_1 = require('./ParseOrderedList');
-var SINGLE_LINE_OUTLINE_PARSERS = [
+var OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
     ParseUnorderedList_1.parseUnorderedList,
     ParseOrderedList_1.parseOrderedList,
     ParseSectionSeparatorStreak_1.parseSectionSeparatorStreak,
     ParseBlockquote_1.parseBlockquote
 ];
-function isLineFancyOutlineConvention(line) {
-    return SINGLE_LINE_OUTLINE_PARSERS.some(function (parse) { return parse({ text: line, then: function () { } }); });
+function isLineFancyOutlineConvention(line, config) {
+    return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(function (parse) { return parse({
+        text: line,
+        config: config,
+        then: function () { }
+    }); });
 }
 exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
 
@@ -1412,7 +1417,7 @@ function parseBlockquote(args) {
         return false;
     }
     var blockquoteContent = blockquoteLines.join('\n');
-    args.then([new BlockquoteNode_1.BlockquoteNode(GetOutlineNodes_1.getOutlineNodes(blockquoteContent))], consumer.lengthConsumed());
+    args.then([new BlockquoteNode_1.BlockquoteNode(GetOutlineNodes_1.getOutlineNodes(blockquoteContent, args.config))], consumer.lengthConsumed());
     return true;
 }
 exports.parseBlockquote = parseBlockquote;
@@ -1469,7 +1474,7 @@ function parseDescriptionList(args) {
         while (!consumer.done()) {
             var isTerm = consumer.consumeLine({
                 pattern: NON_BLANK_PATTERN,
-                if: function (line) { return !INDENTED_PATTERN.test(line) && !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line); },
+                if: function (line) { return !INDENTED_PATTERN.test(line) && !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
                 then: function (line) { return rawTerms.push(line); }
             });
             if (!isTerm) {
@@ -1499,7 +1504,7 @@ function parseDescriptionList(args) {
         });
         lengthParsed = consumer.lengthConsumed();
         var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(GetInlineNodes_1.getInlineNodes(term)); });
-        var description = new Description_1.Description(GetOutlineNodes_1.getOutlineNodes(descriptionLines.join('\n')));
+        var description = new Description_1.Description(GetOutlineNodes_1.getOutlineNodes(descriptionLines.join('\n'), args.config));
         listItemNodes.push(new DescriptionListItem_1.DescriptionListItem(terms, description));
         if (isListTerminated) {
             return "break";
@@ -1571,7 +1576,7 @@ function parseOrderedList(args) {
         return false;
     }
     var listItems = rawListItems.map(function (rawListItem) {
-        return new OrderedListItem_1.OrderedListItem(GetOutlineNodes_1.getOutlineNodes(rawListItem.content()), getExplicitOrdinal(rawListItem));
+        return new OrderedListItem_1.OrderedListItem(GetOutlineNodes_1.getOutlineNodes(rawListItem.content(), args.config), getExplicitOrdinal(rawListItem));
     });
     args.then([new OrderedListNode_1.OrderedListNode(listItems)], consumer.lengthConsumed());
     return true;
@@ -1618,7 +1623,7 @@ function parseRegularLines(args) {
         var inlineNodes;
         var wasLineConsumed = consumer.consumeLine({
             pattern: NON_BLANK_LINE_PATTERN,
-            if: function (line) { return !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line); },
+            if: function (line) { return !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
             then: function (line) { return inlineNodes = GetInlineNodes_1.getInlineNodes(line); }
         });
         if (!wasLineConsumed || !inlineNodes.length) {
@@ -1720,7 +1725,7 @@ function parseUnorderedList(args) {
         return false;
     }
     var listItems = listItemsContents.map(function (listItemContents) {
-        return new UnorderedListItem_1.UnorderedListItem(GetOutlineNodes_1.getOutlineNodes(listItemContents));
+        return new UnorderedListItem_1.UnorderedListItem(GetOutlineNodes_1.getOutlineNodes(listItemContents, args.config));
     });
     args.then([new UnorderedListNode_1.UnorderedListNode(listItems)], consumer.lengthConsumed());
     return true;
@@ -1779,8 +1784,8 @@ exports.NON_BLANK = NON_BLANK;
 var GetOutlineNodes_1 = require('./Outline/GetOutlineNodes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var ProduceFootnoteBlocks_1 = require('./ProduceFootnoteBlocks');
-function parseDocument(text) {
-    var documentNode = new DocumentNode_1.DocumentNode(GetOutlineNodes_1.getOutlineNodes(text));
+function parseDocument(text, config) {
+    var documentNode = new DocumentNode_1.DocumentNode(GetOutlineNodes_1.getOutlineNodes(text, config));
     ProduceFootnoteBlocks_1.produceFootnoteBlocks(documentNode);
     return documentNode;
 }
@@ -2484,7 +2489,7 @@ var Up = (function () {
         this.htmlWriter = new HtmlWriter_1.HtmlWriter(this.config);
     }
     Up.prototype.toAst = function (text) {
-        return ParseDocument_1.parseDocument(text);
+        return ParseDocument_1.parseDocument(text, this.config);
     };
     Up.prototype.toHtml = function (textOrNode) {
         var node = (typeof textOrNode === 'string'

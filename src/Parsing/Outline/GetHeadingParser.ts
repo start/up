@@ -72,7 +72,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
 
-    if (isLineFancyOutlineConvention(content)) {
+    if (isLineFancyOutlineConvention(content, args.config)) {
       return false
     }
 

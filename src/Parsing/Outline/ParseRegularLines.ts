@@ -60,7 +60,7 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     
     const wasLineConsumed = consumer.consumeLine({
       pattern: NON_BLANK_LINE_PATTERN,
-      if: (line) => !isLineFancyOutlineConvention(line),
+      if: (line) => !isLineFancyOutlineConvention(line, args.config),
       then: (line) => inlineNodes = getInlineNodes(line)
     })
     

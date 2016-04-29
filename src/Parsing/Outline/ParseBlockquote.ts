@@ -40,7 +40,7 @@ export function parseBlockquote(args: OutlineParserArgs): boolean {
 
   const blockquoteContent = blockquoteLines.join('\n')
 
-  args.then([new BlockquoteNode(getOutlineNodes(blockquoteContent))], consumer.lengthConsumed())
+  args.then([new BlockquoteNode(getOutlineNodes(blockquoteContent, args.config))], consumer.lengthConsumed())
   return true
 }
 

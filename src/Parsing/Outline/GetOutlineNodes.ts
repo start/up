@@ -15,9 +15,10 @@ import { parseDescriptionList } from './ParseDescriptionList'
 import { startsWith, endsWith, BLANK, ANY_WHITESPACE, LINE_BREAK } from './Patterns'
 import { last } from '../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
+import { UpConfig } from '../../UpConfig'
 
 
-export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
+export function getOutlineNodes(text: string, config: UpConfig): OutlineSyntaxNode[] {
 
   // Within each call to parseOutline, we reset the underlines associated with each heading level.
   // This means blockquotes and list items are their own mini-documents with their own heading
@@ -45,6 +46,7 @@ export function getOutlineNodes(text: string): OutlineSyntaxNode[] {
       const wasConventionFound =
         parseOutlineConvention({
           text: consumer.remainingText(),
+          config: config,
           then: (newNodes, lengthParsed) => {
             nodes.push(...newNodes)
             consumer.advance(lengthParsed)
