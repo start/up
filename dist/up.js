@@ -2311,7 +2311,7 @@ var PlainTextNode = (function (_super) {
 }(InlineSyntaxNode_1.InlineSyntaxNode));
 exports.PlainTextNode = PlainTextNode;
 function isWhitespace(node) {
-    return (node instanceof PlainTextNode) && !node.text.trim();
+    return (node instanceof PlainTextNode) && !/\S/.test(node.text);
 }
 exports.isWhitespace = isWhitespace;
 

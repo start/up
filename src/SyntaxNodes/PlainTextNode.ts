@@ -10,5 +10,5 @@ export class PlainTextNode extends InlineSyntaxNode {
 
 
 export function isWhitespace(node: InlineSyntaxNode): boolean {
-  return (node instanceof PlainTextNode) && !node.text.trim()
+  return (node instanceof PlainTextNode) && !/\S/.test(node.text)
 }
