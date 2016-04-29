@@ -3,22 +3,25 @@ Up is a lightweight markup language for writing in plain text.
 I'm not accepting contributions at this time!
 
 
+This is a link to a [small search engine -> http://ddg.gg].
 
-This is a [link -> https://stackoverflow.com].
-
-This is *emphasized*.
-
-This is **stressed**.
+This is *emphasized*. This is **stressed**.
 
 This is some `inline_code()`. 
+
+This is a regular sentence. ((And this is a footnote.))
 
 This is ++inserted++.
 
 This is ~~removed~~.
 
-This is [<_<]an important spoiler[>_>].
+This is [spoiler: an important spoiler].
 
-This is a regular sentence. ((And this is an aside.))
+This is an image: [image: baby parrot -> http://i.imgur.com/p2DNWk3.jpg]
+
+This is some audio: [audio: baby parrot chirping -> http://example.com/babyparrot.ogg]
+
+This is a video: [video: baby parrot eating -> http://example.com/babyparrot.webm]
 
 
 Styles can overlap!
@@ -35,7 +38,7 @@ A backslash "escapes" the following character, removing any special meaning:
 
 This is not a [link \-> https://stackoverflow.com].
 
-This text is not \*emphasized\*.
+This text is not \*emphasized*.
 
 
 Link URLs can easily contain [matching brackets -> https://google.com/search?q=[hi]].
@@ -173,10 +176,3 @@ Bulbasaur
 Donut
 Doughnut
   The favorite dessert of hedgehogs. Multiple terms can be associated with a single description.
-  
-
-This is a picture: [o_o: baby parrot -> http://i.imgur.com/p2DNWk3.jpg]
-
-This is some audio: [-_-: baby parrot chirping -> http://example.com/babyparrot.ogg]
-
-This is a video: [-_o: baby parrot eating -> http://example.com/babyparrot.webm]
