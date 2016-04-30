@@ -53,9 +53,6 @@ const REGULAR_SANDWICHES =
 const ALL_SANDWICHES =
   REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 
-const POTENTIALLY_UNCLOSED_CONVENTIONS =
-  [LINK].concat(REGULAR_SANDWICHES.map(sandwich => sandwich.convention))
-
 const MEDIA_TOKENIZERS =
   [AUDIO, IMAGE, VIDEO].map(getMediaTokenizer)
 
@@ -293,19 +290,5 @@ class RawTokenizer {
     }
 
     return excessStartTokens > 0
-  }
-
-  indexOfStartOfLatestInstanceOfConvention(convention: Convention): number {
-    return this.indexOfLastTokenWithMeaning(convention.startTokenType())
-  }
-
-  indexOfLastTokenWithMeaning(meaning: TokenMeaning): number {
-    for (let i = this.tokens.length - 1; i >= 0; i--) {
-      if (this.tokens[i].meaning === meaning) {
-        return i
-      }
-    }
-
-    throw new Error('Missing token')
   }
 }
