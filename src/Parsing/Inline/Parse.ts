@@ -16,13 +16,6 @@ import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
 
 
-export class ParseResult {
-  constructor(
-    public nodes: InlineSyntaxNode[],
-    public countTokensParsed: number) { }
-}
-
-
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
@@ -162,4 +155,11 @@ function parseUntil(tokens: Token[], terminator?: TokenMeaning): ParseResult {
 
 function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
+}
+
+
+class ParseResult {
+  constructor(
+    public nodes: InlineSyntaxNode[],
+    public countTokensParsed: number) { }
 }

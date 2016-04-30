@@ -387,14 +387,6 @@ var CollectionHelpers_1 = require('../CollectionHelpers');
 var Token_1 = require('./Token');
 var MediaConventions_1 = require('./MediaConventions');
 var SandwichConventions_1 = require('./SandwichConventions');
-var ParseResult = (function () {
-    function ParseResult(nodes, countTokensParsed) {
-        this.nodes = nodes;
-        this.countTokensParsed = countTokensParsed;
-    }
-    return ParseResult;
-}());
-exports.ParseResult = ParseResult;
 function parse(tokens) {
     return parseUntil(tokens).nodes;
 }
@@ -497,6 +489,13 @@ function parseUntil(tokens, terminator) {
 function isNotPureWhitespace(nodes) {
     return !nodes.every(PlainTextNode_1.isWhitespace);
 }
+var ParseResult = (function () {
+    function ParseResult(nodes, countTokensParsed) {
+        this.nodes = nodes;
+        this.countTokensParsed = countTokensParsed;
+    }
+    return ParseResult;
+}());
 
 },{"../../SyntaxNodes/InlineCodeNode":51,"../../SyntaxNodes/LinkNode":55,"../../SyntaxNodes/PlainTextNode":61,"../CollectionHelpers":1,"./MediaConventions":9,"./SandwichConventions":17,"./Token":18}],11:[function(require,module,exports){
 "use strict";
