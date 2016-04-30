@@ -1,3 +1,3 @@
-export class FootnoteReferenceStartToken {
+export class FootnoteReferenceEndToken {
   token(): void { }  
 }

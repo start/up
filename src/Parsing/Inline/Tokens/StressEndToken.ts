@@ -1,3 +1,3 @@
-export class StressStartToken {
+export class StressEndToken {
   token(): void { }  
 }

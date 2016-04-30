@@ -16,6 +16,7 @@ import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
 
 
+
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return parseUntil(tokens).nodes
 }
