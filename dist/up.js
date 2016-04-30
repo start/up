@@ -849,7 +849,7 @@ var MediaConventions_1 = require('./MediaConventions');
 var SandwichConventions_1 = require('./SandwichConventions');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
 function tokenize(text, config) {
-    var rawTokens = new RawTokenizer(text).tokens;
+    var rawTokens = new RawTokenizer(text, config).tokens;
     var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(rawTokens);
     return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
 }
@@ -860,7 +860,7 @@ var ALL_SANDWICHES = REGULAR_SANDWICHES.concat(SandwichConventions_1.STRESS, San
 var POTENTIALLY_UNCLOSED_CONVENTIONS = [LINK].concat(REGULAR_SANDWICHES.map(function (sandwich) { return sandwich.convention; }));
 var MEDIA_TOKENIZERS = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(GetMediaTokenizer_1.getMediaTokenizer);
 var RawTokenizer = (function () {
-    function RawTokenizer(text) {
+    function RawTokenizer(text, config) {
         this.tokens = [];
         this.failureTracker = new FailureTracker_1.FailureTracker();
         this.consumer = new InlineTextConsumer_1.InlineTextConsumer(text);

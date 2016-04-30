@@ -16,7 +16,7 @@ import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure
 import { UpConfig } from '../../UpConfig'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  const rawTokens = new RawTokenizer(text).tokens
+  const rawTokens = new RawTokenizer(text, config).tokens
   const tokensWithRaisedVoicesApplied = applyRaisedVoicesToRawTokens(rawTokens)
   
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
@@ -43,7 +43,7 @@ class RawTokenizer {
   private failureTracker = new FailureTracker()
   private consumer: InlineTextConsumer
   
-  constructor(text: string) {
+  constructor(text: string, config: UpConfig) {
     this.consumer = new InlineTextConsumer(text)
 
     while (true) {
