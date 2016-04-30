@@ -163,14 +163,14 @@ class RawTokenizer {
 
     for (const sandwich of REGULAR_SANDWICHES) {
       if (this.isInside(sandwich.convention) && this.consumer.consumeIfMatches(sandwich.end)) {
-        this.addToken(sandwich.convention.endTokenType())
+        this.addToken(new sandwich.EndTokenType())
         return true
       }
 
       const foundStartToken = this.consumer.consumeIfMatches(sandwich.start)
 
       if (foundStartToken) {
-        this.addToken(sandwich.convention.startTokenType(), this.consumer.asBeforeMatch(sandwich.start.length))
+        this.addToken(new sandwich.StartTokenType())
         return true
       }
     }
