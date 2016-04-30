@@ -45,13 +45,8 @@ export function tokenize(text: string, config: UpConfig): Token[] {
 }
 
 
-const LINK = new Convention(TokenMeaning.LinkStart, TokenMeaning.LinkUrlAndLinkEnd)
-
 const REGULAR_SANDWICHES =
   [REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE]
-
-const ALL_SANDWICHES =
-  REGULAR_SANDWICHES.concat(STRESS, EMPHASIS)
 
 const MEDIA_TOKENIZERS =
   [AUDIO, IMAGE, VIDEO].map(getMediaTokenizer)
@@ -162,7 +157,7 @@ class RawTokenizer {
     const textIndex = this.consumer.lengthConsumed()
 
     for (const sandwich of REGULAR_SANDWICHES) {
-      if (this.isInside(sandwich.convention) && this.consumer.consumeIfMatches(sandwich.end)) {
+      if (this.isInsideSandwich(sandwich) && this.consumer.consumeIfMatches(sandwich.end)) {
         this.addToken(new sandwich.EndTokenType())
         return true
       }
@@ -181,7 +176,7 @@ class RawTokenizer {
   handleLink(): boolean {
     const textIndex = this.consumer.lengthConsumed()
 
-    if (!this.isInside(LINK)) {
+    if (!this.isInsideLink()) {
       // Since we're not inside a link, we can potentially start one. Let's see whether we should...
       const LINK_START = '['
 
@@ -277,14 +272,22 @@ class RawTokenizer {
     }
   }
 
-  isInside(convention: Convention): boolean {
+  isInsideSandwich(sandwich: SandwichConvention): boolean {
+    return this.isInside(sandwich.StartTokenType, sandwich.EndTokenType)
+  }
+
+  isInsideLink(): boolean {
+    return this.isInside(LinkStartToken, LinkEndToken)
+  }
+
+  isInside(StartTokenType: TokenType, EndTokenType: TokenType): boolean {
     // We guaranteed to be inside a convention if there are more start tokens than end tokens.
     let excessStartTokens = 0
 
     for (const token of this.tokens) {
-      if (token.meaning === convention.startTokenType()) {
+      if (token instanceof StartTokenType) {
         excessStartTokens += 1
-      } else if (token.meaning === convention.endTokenType()) {
+      } else if (token instanceof EndTokenType) {
         excessStartTokens -= 1
       }
     }
