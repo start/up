@@ -23,7 +23,7 @@ const STRESS = sandwich('**', '**', StressNode, TokenMeaning.StressStart, TokenM
 const EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd)
 const REVISION_DELETION = sandwich('~~', '~~', RevisionDeletionNode, TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd)
 const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd)
-const SPOILER = sandwich('[<_<]', '[>_>]', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
+const SPOILER = sandwich('[SPOILER: ', ']', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
 
 // TODO: Better handle leading space hack
 const FOOTNOTE = sandwich(' ((', '))', FootnoteNode, TokenMeaning.FootnoteReferenceStart, TokenMeaning.FootnoteReferenceEnd)
