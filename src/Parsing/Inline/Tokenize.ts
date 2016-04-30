@@ -28,6 +28,11 @@ import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceSta
 import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { StressEndToken } from './Tokens/StressEndToken'
+import { StressStartToken } from './Tokens/StressStartToken'
+import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
+import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
+import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
+import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { VideoToken } from './Tokens/VideoToken'
 import { Token } from './Tokens/Token'
 

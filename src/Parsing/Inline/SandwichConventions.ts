@@ -1,6 +1,6 @@
 import { SandwichConvention } from './SandwichConvention'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
-import { TokenMeaning } from './Token'
+import { TokenType } from './Tokens/Token'
 import { Convention } from './Convention'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -8,25 +8,28 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
+import { StressEndToken } from './Tokens/StressEndToken'
+import { StressStartToken } from './Tokens/StressStartToken'
+import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
+import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
+import { EmphasisEndToken } from './Tokens/EmphasisEndToken'
+import { EmphasisStartToken } from './Tokens/EmphasisStartToken'
+import { FootnoteReferenceEndToken } from './Tokens/FootnoteReferenceEndToken'
+import { FootnoteReferenceStartToken } from './Tokens/FootnoteReferenceStartToken'
+import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
+import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
+import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
+import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 
-function sandwich(
-  start: string,
-  end: string,
-  NodeType: RichInlineSyntaxNodeType,
-  startMeaning: TokenMeaning,
-  endMeaning: TokenMeaning
-): SandwichConvention {
-  return new SandwichConvention(start, end, NodeType, new Convention(startMeaning, endMeaning))
-}
 
-const STRESS = sandwich('**', '**', StressNode, TokenMeaning.StressStart, TokenMeaning.StressEnd)
-const EMPHASIS = sandwich('*', '*', EmphasisNode, TokenMeaning.EmphasisStart, TokenMeaning.EmphasisEnd)
-const REVISION_DELETION = sandwich('~~', '~~', RevisionDeletionNode, TokenMeaning.RevisionDeletionStart, TokenMeaning.RevisionDeletionEnd)
-const REVISION_INSERTION = sandwich('++', '++', RevisionInsertionNode, TokenMeaning.RevisionInserionStart, TokenMeaning.RevisionInsertionEnd)
-const SPOILER = sandwich('[SPOILER: ', ']', SpoilerNode, TokenMeaning.SpoilerStart, TokenMeaning.SpoilerEnd)
+const STRESS = new SandwichConvention('**', '**', StressNode, StressStartToken, StressEndToken)
+const EMPHASIS = new SandwichConvention('*', '*', EmphasisNode, EmphasisStartToken, EmphasisEndToken)
+const REVISION_DELETION = new SandwichConvention('~~', '~~', RevisionDeletionNode, RevisionDeletionStartToken, RevisionInsertionEndToken)
+const REVISION_INSERTION = new SandwichConvention('++', '++', RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
+const SPOILER = new SandwichConvention('[SPOILER: ', ']', SpoilerNode, SpoilerStartToken, SpoilerEndToken)
 
 // TODO: Better handle leading space hack
-const FOOTNOTE = sandwich(' ((', '))', FootnoteNode, TokenMeaning.FootnoteReferenceStart, TokenMeaning.FootnoteReferenceEnd)
+const FOOTNOTE = new SandwichConvention(' ((', '))', FootnoteNode, FootnoteReferenceStartToken, FootnoteReferenceEndToken)
 
 
 export {
