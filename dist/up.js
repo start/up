@@ -1456,6 +1456,7 @@ var LineConsumer = (function () {
     function LineConsumer(text) {
         this.text = text;
         this.index = 0;
+        this.dirty();
     }
     LineConsumer.prototype.done = function () {
         return this.index >= this.text.length;
@@ -1498,14 +1499,18 @@ var LineConsumer = (function () {
         }
         return true;
     };
-    LineConsumer.prototype.advance = function (count) {
-        this.index += count;
+    LineConsumer.prototype.advance = function (countCharacters) {
+        this.index += countCharacters;
+        this.dirty();
     };
     LineConsumer.prototype.lengthConsumed = function () {
         return this.index;
     };
     LineConsumer.prototype.remainingText = function () {
-        return this.text.slice(this.index);
+        return this._remainingText;
+    };
+    LineConsumer.prototype.dirty = function () {
+        this._remainingText = this.text.slice(this.index);
     };
     return LineConsumer;
 }());

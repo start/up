@@ -14,9 +14,12 @@ interface OnConsume {
 
 
 export class LineConsumer {
-  private index = 0;
+  private index = 0
+  private _remainingText: string
 
-  constructor(private text: string) { }
+  constructor(private text: string) {
+    this.dirty()
+  }
 
   done(): boolean {
     return this.index >= this.text.length
@@ -79,8 +82,9 @@ export class LineConsumer {
     return true
   }
 
-  advance(count: number): void {
-    this.index += count
+  advance(countCharacters: number): void {
+    this.index += countCharacters
+    this.dirty()
   }
 
   lengthConsumed(): number {
@@ -88,6 +92,10 @@ export class LineConsumer {
   }
 
   remainingText(): string {
-    return this.text.slice(this.index)
+    return this._remainingText
+  }
+  
+  private dirty(): void {
+    this._remainingText = this.text.slice(this.index)
   }
 }
