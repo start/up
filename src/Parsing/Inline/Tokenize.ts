@@ -189,7 +189,7 @@ class RawTokenizer {
       const LINK_START = '['
 
       if (this.consumer.consumeIfMatches(LINK_START)) {
-        this.addToken(TokenMeaning.LinkStart, this.consumer.asBeforeMatch(LINK_START.length))
+        this.addToken(new LinkStartToken())
         return true
       }
 
@@ -202,7 +202,7 @@ class RawTokenizer {
       // Okay, we found the URL arrow. Now, let's find the closing bracket and finish up.
       const didFindClosingBracket = this.consumer.consume({
         upTo: ']',
-        then: url => this.addToken(TokenMeaning.LinkUrlAndLinkEnd, applyBackslashEscaping(url))
+        then: url => this.addToken(new LinkEndToken(applyBackslashEscaping(url)))
       })
 
       if (!didFindClosingBracket) {
@@ -248,9 +248,9 @@ class RawTokenizer {
       then: (char) => restOfUrl += char
     })) { }
     
-    this.addToken(TokenMeaning.LinkStart)
+    this.addToken(new LinkStartToken())
     this.addPlainTextToken(restOfUrl)
-    this.addToken(TokenMeaning.LinkUrlAndLinkEnd, urlScheme + restOfUrl)
+    this.addToken(new LinkEndToken(urlScheme + restOfUrl))
     
     return true
   }
@@ -273,10 +273,10 @@ class RawTokenizer {
     // Every single time `isInside` is called, we have to iterate through every token. And we call `isInside`
     // frequently. Until we reduce the frequency of iteration, we'll try to minimize the number of tokens we
     // have. 
-    if (lastToken && (lastToken.meaning === TokenMeaning.PlainText)) {
-      lastToken.value += text
+    if (lastToken instanceof PlainTextToken) {
+      lastToken.text += text
     } else {
-      this.addToken(TokenMeaning.PlainText, text)
+      this.addToken(new PlainTextToken(text))
     }
   }
 
