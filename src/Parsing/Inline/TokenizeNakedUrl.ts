@@ -3,7 +3,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { SandwichConvention } from './SandwichConvention'
-import { InlineTextConsumer } from './InlineTextConsumer'
+import { TextConsumer } from './TextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
@@ -44,7 +44,7 @@ interface TokenizeNakedUrlArgs {
 }
 
 export function tokenizeNakedUrl(args: TokenizeNakedUrlArgs): boolean {
-  const consumer = new InlineTextConsumer(args.text)
+  const consumer = new TextConsumer(args.text)
 
   const SCHEME_PATTERN = /^(?:https?)?:\/\//
 

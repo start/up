@@ -3,7 +3,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { SandwichConvention } from './SandwichConvention'
-import { InlineTextConsumer } from './InlineTextConsumer'
+import { TextConsumer } from './TextConsumer'
 import { tokenizeNakedUrl } from './TokenizeNakedUrl'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { applyBackslashEscaping } from '../TextHelpers'
@@ -55,10 +55,10 @@ const MEDIA_TOKENIZERS =
 
 class RawTokenizer {
   public tokens: Token[] = []
-  private consumer: InlineTextConsumer
+  private consumer: TextConsumer
   
   constructor(text: string, config: UpConfig) {
-    this.consumer = new InlineTextConsumer(text)
+    this.consumer = new TextConsumer(text)
 
     while (!this.consumer.done()) {
       const wasAnythingDiscovered = (

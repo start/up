@@ -13,7 +13,7 @@ interface OnConsume {
   (text: string, ...captures: string[]): void
 }
 
-export class InlineTextConsumer {
+export class TextConsumer {
   private isCurrentCharEscaped = false
   private index = 0
 
@@ -47,7 +47,7 @@ export class InlineTextConsumer {
     const { upTo, then } = args
     const from = args.from || ''
 
-    const consumer = new InlineTextConsumer(this.remainingText())
+    const consumer = new TextConsumer(this.remainingText())
 
     if (from && !consumer.consumeIfMatches(from)) {
       return false
@@ -133,8 +133,8 @@ export class InlineTextConsumer {
   // This method is hackish, and it'll likley need to be replaced.
   //
   // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.
-  asBeforeMatch(matchLength: number): InlineTextConsumer {
-    const copy = new InlineTextConsumer(this.text)
+  asBeforeMatch(matchLength: number): TextConsumer {
+    const copy = new TextConsumer(this.text)
     copy.index = this.index - matchLength
 
     return copy
