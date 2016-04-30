@@ -55,21 +55,12 @@ const MEDIA_TOKENIZERS =
 
 class RawTokenizer {
   public tokens: Token[] = []
-  private failureTracker = new FailureTracker()
   private consumer: InlineTextConsumer
   
   constructor(text: string, config: UpConfig) {
     this.consumer = new InlineTextConsumer(text)
 
-    while (true) {
-      if (this.consumer.done()) {
-        if (this.backtrackIfAnyConventionsAreUnclosed()) {
-          continue
-        }
-
-        break
-      }
-
+    while (!this.consumer.done()) {
       const wasAnythingDiscovered = (
         this.tokenizeInlineCode()
         || this.tokenizeRaisedVoicePlaceholders()
@@ -86,17 +77,6 @@ class RawTokenizer {
       this.addPlainTextToken(this.consumer.escapedCurrentChar())
       this.consumer.advanceToNextChar()
     }
-  }
-
-  backtrackIfAnyConventionsAreUnclosed(): boolean {
-    for (let i = 0; i < this.tokens.length; i++) {
-      if (this.isTokenStartOfUnclosedConvention(i)) {
-        this.backtrack(i)
-        return true
-      }
-    }
-
-    return false
   }
 
   tokenizeInlineCode(): boolean {
@@ -183,10 +163,7 @@ class RawTokenizer {
         return true
       }
 
-      const foundStartToken = (
-        !this.failureTracker.hasConventionFailed(sandwich.convention, textIndex)
-        && this.consumer.consumeIfMatches(sandwich.start)
-      )
+      const foundStartToken = this.consumer.consumeIfMatches(sandwich.start)
 
       if (foundStartToken) {
         this.addToken(sandwich.convention.startTokenMeaning(), this.consumer.asBeforeMatch(sandwich.start.length))
@@ -199,10 +176,6 @@ class RawTokenizer {
 
   handleLink(): boolean {
     const textIndex = this.consumer.lengthConsumed()
-
-    if (this.failureTracker.hasConventionFailed(LINK, textIndex)) {
-      return false
-    }
 
     if (!this.isInside(LINK)) {
       // Since we're not inside a link, we can potentially start one. Let's see whether we should...
@@ -227,7 +200,7 @@ class RawTokenizer {
 
       if (!didFindClosingBracket) {
         // No, the closing bracket is nowehere to be found. This wasn't a link. Oops!
-        this.undoLatest(LINK)
+        // TODO: Fail
       }
 
       return true
@@ -238,7 +211,7 @@ class RawTokenizer {
     // If we find a closing brace before finding any URL arrow, that means we're actually looking at regular
     // bracketed text.
     if (this.consumer.consumeIfMatches(']')) {
-      this.undoLatest(LINK)
+      // TODO: Fail
       return true
     }
 
@@ -298,20 +271,6 @@ class RawTokenizer {
     } else {
       this.addToken(TokenMeaning.PlainText, text)
     }
-  }
-
-  undoLatest(convention: Convention): void {
-    this.backtrack(this.indexOfStartOfLatestInstanceOfConvention(convention))
-  }
-
-  backtrack(indexOfEarliestTokenToUndo: number): void {
-    const token = this.tokens[indexOfEarliestTokenToUndo]
-
-    let meaning = token.meaning
-
-    this.failureTracker.registerFailure(token.meaning, token.textIndex())
-    this.consumer = token.consumerBefore
-    this.tokens.splice(indexOfEarliestTokenToUndo)
   }
 
   isTokenStartOfUnclosedConvention(index: number): boolean {
