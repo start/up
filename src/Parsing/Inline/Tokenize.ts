@@ -4,6 +4,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { SandwichConvention } from './SandwichConvention'
 import { InlineTextConsumer } from './InlineTextConsumer'
+import { tokenizeNakedUrl } from './TokenizeNakedUrl'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
@@ -218,33 +219,13 @@ class RawTokenizer {
   }
   
   tokenizeNakedUrl(): boolean {
-    const SCHEME_PATTERN = /^(?:https?)?:\/\//
-    
-    let urlScheme: string
-    
-    if (!this.consumer.consumeIfMatchesPattern({
-      pattern: SCHEME_PATTERN,
-      then: (match) => urlScheme = match
-    })) {
-      return false
-    }
-    
-    const NON_WHITESPACE_CHAR_PATTERN = /^\S/
-    
-    let restOfUrl = ''
-    
-    // TODO: fix escaping
-    
-    while(this.consumer.consumeIfMatchesPattern({
-      pattern: NON_WHITESPACE_CHAR_PATTERN,
-      then: (char) => restOfUrl += char
-    })) { }
-    
-    this.addToken(new LinkStartToken())
-    this.addPlainTextToken(restOfUrl)
-    this.addToken(new LinkEndToken(urlScheme + restOfUrl))
-    
-    return true
+    return tokenizeNakedUrl({
+      text: this.consumer.remainingText(),
+      then: (lengthConsumed, tokens) => {
+        this.consumer.advanceAfterMatch(lengthConsumed)
+        this.tokens.push(...tokens)
+      }
+    })
   }
 
   addToken(token: Token): void {
