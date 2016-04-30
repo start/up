@@ -1,3 +1,3 @@
-export class PotentialRaisedVoiceStartToken {
-  token(): void { }  
-}
+import { PotentialRaisedVoiceToken } from './PotentialRaisedVoiceToken'
+
+export class PotentialRaisedVoiceStartToken extends PotentialRaisedVoiceToken { }

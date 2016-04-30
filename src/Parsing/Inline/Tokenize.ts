@@ -34,7 +34,8 @@ import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { VideoToken } from './Tokens/VideoToken'
-import { Token } from './Tokens/Token'
+import { Token, TokenType } from './Tokens/Token'
+import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const rawTokens = new RawTokenizer(text, config).tokens
@@ -89,7 +90,7 @@ class RawTokenizer {
     return this.consumer.consume({
       from: '`',
       upTo: '`',
-      then: code => this.addToken(TokenMeaning.InlineCode, applyBackslashEscaping(code))
+      then: code => this.addToken(new InlineCodeToken(applyBackslashEscaping(code)))
     })
   }
 
@@ -115,10 +116,10 @@ class RawTokenizer {
   tokenizeRaisedVoicePlaceholders(): boolean {
     const originalTextIndex = this.consumer.lengthConsumed()
 
-    let raisedVoiceDelimiter: string
+    let asterisks: string
     const didMatchRaisedVoiceDelimiter = this.consumer.consumeIfMatchesPattern({
       pattern: /^\*+/,
-      then: match => { raisedVoiceDelimiter = match }
+      then: match => { asterisks = match }
     })
 
     if (!didMatchRaisedVoiceDelimiter) {
@@ -143,20 +144,20 @@ class RawTokenizer {
     const nextRawChar = this.consumer.currentChar()
     const canOpenConvention = NON_WHITESPACE.test(nextRawChar)
 
-    let meaning: TokenMeaning
+    let PotentialType: PotentialRaisedVoiceTokenType
 
     if (canOpenConvention && canCloseConvention) {
-      meaning = TokenMeaning.PotentialRaisedVoiceStartOrEnd
+      PotentialType = PotentialRaisedVoiceStartOrEndToken
     } else if (canOpenConvention) {
-      meaning = TokenMeaning.PotentialRaisedVoiceStart
+      PotentialType = PotentialRaisedVoiceStartToken
     } else if (canCloseConvention) {
-      meaning = TokenMeaning.PotentialRaisedVoiceEnd
+      PotentialType = PotentialRaisedVoiceEndToken
     } else {
-      this.addPlainTextToken(raisedVoiceDelimiter)
+      this.addPlainTextToken(asterisks)
       return true
     }
 
-    this.addToken(meaning, raisedVoiceDelimiter)
+    this.addToken(new PotentialType(asterisks))
     return true
   }
 
@@ -254,8 +255,8 @@ class RawTokenizer {
     return true
   }
 
-  addToken(meaning: TokenMeaning, valueOrConsumerBefore?: string | InlineTextConsumer): void {
-    this.tokens.push(new Token(meaning, valueOrConsumerBefore))
+  addToken(token: Token): void {
+    this.tokens.push(token)
   }
 
   addPlainTextToken(text: string): void {
