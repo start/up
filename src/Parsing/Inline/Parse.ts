@@ -149,8 +149,8 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
     }
 
     for (const sandwich of SANDWICHES) {
-      if (token.meaning === sandwich.convention.startTokenType()) {
-        const result = parseUntil(tokens.slice(countParsed), sandwich.convention.endTokenType())
+      if (token instanceof sandwich.StartTokenType) {
+        const result = parseUntil(tokens.slice(countParsed), sandwich.EndTokenType)
         index += result.countTokensParsed
 
         if (result.nodes.length) {
