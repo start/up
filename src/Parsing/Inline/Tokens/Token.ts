@@ -3,5 +3,5 @@ export interface Token {
 }
 
 export interface TokenType {
-  new(_1?: any, _2?: any):Token
+  new(..._: any[]):Token
 }
