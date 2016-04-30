@@ -4,13 +4,16 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Convention } from '../Convention'
 import { InlineTextConsumer } from '../InlineTextConsumer'
 import { last, lastChar, swap } from '../../CollectionHelpers'
-import { Token, TokenMeaning } from '.././Token'
-import { FailureTracker } from '../FailureTracker'
+import { Token } from '.././Tokens/Token'
 import { applyBackslashEscaping } from '../../TextHelpers'
 import { RaisedVoiceMarker, comapreMarkersDescending } from './RaisedVoiceMarker'
 import { StartMarker } from './StartMarker'
 import { EndMarker } from './EndMarker'
 import { PlainTextMarker } from './PlainTextMarker'
+import { PotentialRaisedVoiceToken } from '../Tokens/PotentialRaisedVoiceToken'
+import { PotentialRaisedVoiceEndToken } from '../Tokens/PotentialRaisedVoiceEndToken'
+import { PotentialRaisedVoiceStartOrEndToken } from '../Tokens/PotentialRaisedVoiceStartOrEndToken'
+import { PotentialRaisedVoiceStartToken } from '../Tokens/PotentialRaisedVoiceStartToken'
 
 // TODO: Rename marker classes
 
@@ -29,29 +32,29 @@ export function applyRaisedVoicesToRawTokens(tokens: Token[]): Token[] {
   return resultTokens
 }
 
-
 function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
   const markers: RaisedVoiceMarker[] = []
 
   for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
-    const {meaning, value} = token
 
     const canStartConvention = (
-      meaning === TokenMeaning.PotentialRaisedVoiceStart
-      || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
+      token instanceof PotentialRaisedVoiceStartToken
+      || token instanceof PotentialRaisedVoiceStartOrEndToken
     )
 
     const canEndConvention = (
-      meaning === TokenMeaning.PotentialRaisedVoiceEnd
-      || meaning === TokenMeaning.PotentialRaisedVoiceStartOrEnd
+      token instanceof PotentialRaisedVoiceEndToken
+      || token instanceof PotentialRaisedVoiceStartOrEndToken
     )
 
-    const isTokenRelevant = canStartConvention || canEndConvention
+    const isPotentialRaisedVoiceToken = canStartConvention || canEndConvention
 
-    if (!isTokenRelevant) {
+    if (!isPotentialRaisedVoiceToken) {
       continue
     }
+    
+    const { asterisks } = <PotentialRaisedVoiceToken>token
 
     // A given raised voice marker will serve only 1 of 3 roles:
     //
@@ -71,7 +74,7 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
     // markers, we immediately treat the dlimiter as plain text.    
 
     if (canEndConvention) {
-      const endMarker = new EndMarker(tokenIndex, value)
+      const endMarker = new EndMarker(tokenIndex, asterisks)
 
       endMarker.matchAnyApplicableStartMarkers(markers)
 
@@ -82,11 +85,11 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
     }
 
     if (canStartConvention) {
-      markers.push(new StartMarker(tokenIndex, value))
+      markers.push(new StartMarker(tokenIndex, asterisks))
     } else {
       // Well, we could neither start nor end any conventions using this marker, so we'll assume it was meant to
       // be plain text.
-      markers.push(new PlainTextMarker(tokenIndex, value))
+      markers.push(new PlainTextMarker(tokenIndex, asterisks))
     }
   }
 
