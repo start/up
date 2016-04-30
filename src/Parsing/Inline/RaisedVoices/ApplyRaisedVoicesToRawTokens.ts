@@ -98,7 +98,7 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
   const withFailedMarkersTreatedAsPlainText =
     markers.map(marker =>
       marker.providesNoTokens()
-        ? new PlainTextMarker(marker.originalTokenIndex, marker.originalValue)
+        ? new PlainTextMarker(marker.originalTokenIndex, marker.originalAsterisks)
         : marker
     )
 

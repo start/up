@@ -4,16 +4,17 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Convention } from '../Convention'
 import { InlineTextConsumer } from '../InlineTextConsumer'
 import { last, lastChar, swap } from '../../CollectionHelpers'
-import { Token, TokenMeaning } from '.././Token'
-import { FailureTracker } from '../FailureTracker'
+import { Token } from '../Tokens/Token'
 import { applyBackslashEscaping } from '../../TextHelpers'
 import { RaisedVoiceMarker } from './RaisedVoiceMarker'
 import { StartMarker } from './StartMarker'
+import { EmphasisEndToken } from '../Tokens/EmphasisEndToken'
+import { StressEndToken } from '../Tokens/StressEndToken'
 
 
 export class EndMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
-    return this.tokenMeanings.map(meaning => new Token(meaning))
+    return this.tokenTypes.map(TokenType => new TokenType())
   }
 
   matchAnyApplicableStartMarkers(markers: RaisedVoiceMarker[]): void {
@@ -103,22 +104,22 @@ export class EndMarker extends RaisedVoiceMarker {
       Math.min(this.countSurplusAsterisks, startMarker.countSurplusAsterisks)
 
     this.payForStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon)
-    this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
-    this.tokenMeanings.push(TokenMeaning.StressEnd)
+    this.tokenTypes.push(EmphasisEndToken)
+    this.tokenTypes.push(StressEndToken)
 
     startMarker.startStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon)
   }
 
   private endStress(startMarker: StartMarker): void {
     this.payForStress()
-    this.tokenMeanings.push(TokenMeaning.StressEnd)
+    this.tokenTypes.push(StressEndToken)
 
     startMarker.startStress()
   }
 
   private endEmphasis(startMarker: StartMarker): void {
     this.payForEmphasis()
-    this.tokenMeanings.push(TokenMeaning.EmphasisEnd)
+    this.tokenTypes.push(EmphasisEndToken)
 
     startMarker.startEmphasis()
   }

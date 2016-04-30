@@ -4,8 +4,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Convention } from '../Convention'
 import { InlineTextConsumer } from '../InlineTextConsumer'
 import { last, lastChar, swap } from '../../CollectionHelpers'
-import { Token, TokenMeaning } from '.././Token'
-import { FailureTracker } from '../FailureTracker'
+import { Token, TokenType } from '../Tokens/Token'
 import { applyBackslashEscaping } from '../../TextHelpers'
 import { STRESS, EMPHASIS } from '../SandwichConventions'
 
@@ -16,11 +15,11 @@ const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
 
 
 export abstract class RaisedVoiceMarker {
-  protected tokenMeanings: TokenMeaning[] = []
+  protected tokenTypes: TokenType[] = []
   public countSurplusAsterisks: number
   
-  constructor(public originalTokenIndex: number, public originalValue: string) {
-    this.countSurplusAsterisks = originalValue.length
+  constructor(public originalTokenIndex: number, public originalAsterisks: string) {
+    this.countSurplusAsterisks = originalAsterisks.length
   }
 
   abstract tokens(): Token[] 
