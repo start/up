@@ -790,6 +790,11 @@ exports.FOOTNOTE = FOOTNOTE;
 
 },{"../../SyntaxNodes/EmphasisNode":46,"../../SyntaxNodes/FootnoteNode":48,"../../SyntaxNodes/RevisionDeletionNode":62,"../../SyntaxNodes/RevisionInsertionNode":63,"../../SyntaxNodes/SpoilerNode":66,"../../SyntaxNodes/StressNode":67,"./Convention":2,"./SandwichConvention":16,"./Token":18}],18:[function(require,module,exports){
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 (function (TokenMeaning) {
     TokenMeaning[TokenMeaning["PlainText"] = 0] = "PlainText";
     TokenMeaning[TokenMeaning["EmphasisStart"] = 1] = "EmphasisStart";
@@ -818,6 +823,106 @@ exports.FOOTNOTE = FOOTNOTE;
     TokenMeaning[TokenMeaning["PotentialRaisedVoiceStartOrEnd"] = 24] = "PotentialRaisedVoiceStartOrEnd";
 })(exports.TokenMeaning || (exports.TokenMeaning = {}));
 var TokenMeaning = exports.TokenMeaning;
+var EmphasisStartToken = (function () {
+    function EmphasisStartToken() {
+    }
+    return EmphasisStartToken;
+}());
+var EmphasisEndToken = (function () {
+    function EmphasisEndToken() {
+    }
+    return EmphasisEndToken;
+}());
+var StressStartToken = (function () {
+    function StressStartToken() {
+    }
+    return StressStartToken;
+}());
+var StressStartEndToken = (function () {
+    function StressStartEndToken() {
+    }
+    return StressStartEndToken;
+}());
+var SpoilerStartToken = (function () {
+    function SpoilerStartToken() {
+    }
+    return SpoilerStartToken;
+}());
+var FootnoteReferenceStartToken = (function () {
+    function FootnoteReferenceStartToken() {
+    }
+    return FootnoteReferenceStartToken;
+}());
+var FootnoteReferenceEndToken = (function () {
+    function FootnoteReferenceEndToken() {
+    }
+    return FootnoteReferenceEndToken;
+}());
+var PotentialRaisedVoiceStart = (function () {
+    function PotentialRaisedVoiceStart() {
+    }
+    return PotentialRaisedVoiceStart;
+}());
+var PotentialRaisedVoiceEnd = (function () {
+    function PotentialRaisedVoiceEnd() {
+    }
+    return PotentialRaisedVoiceEnd;
+}());
+var PotentialRaisedVoiceStartOrEnd = (function () {
+    function PotentialRaisedVoiceStartOrEnd() {
+    }
+    return PotentialRaisedVoiceStartOrEnd;
+}());
+var LinkStartToken = (function () {
+    function LinkStartToken() {
+    }
+    return LinkStartToken;
+}());
+var LinkUrlAndLinkEndToken = (function () {
+    function LinkUrlAndLinkEndToken(url) {
+        this.url = url;
+    }
+    return LinkUrlAndLinkEndToken;
+}());
+var InlineCodeToken = (function () {
+    function InlineCodeToken(code) {
+        this.code = code;
+    }
+    return InlineCodeToken;
+}());
+var PlainTextToken = (function () {
+    function PlainTextToken(text) {
+        this.text = text;
+    }
+    return PlainTextToken;
+}());
+var MediaToken = (function () {
+    function MediaToken(description, url) {
+        this.description = description;
+    }
+    return MediaToken;
+}());
+var ImageToken = (function (_super) {
+    __extends(ImageToken, _super);
+    function ImageToken() {
+        _super.apply(this, arguments);
+    }
+    return ImageToken;
+}(MediaToken));
+var AudioToken = (function (_super) {
+    __extends(AudioToken, _super);
+    function AudioToken() {
+        _super.apply(this, arguments);
+    }
+    return AudioToken;
+}(MediaToken));
+var VideoToken = (function (_super) {
+    __extends(VideoToken, _super);
+    function VideoToken() {
+        _super.apply(this, arguments);
+    }
+    return VideoToken;
+}(MediaToken));
 var Token = (function () {
     function Token(meaning, valueOrConsumerBefore) {
         this.meaning = meaning;
