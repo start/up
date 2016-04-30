@@ -1,4 +1,4 @@
-import { OutlineTextConsumer } from './OutlineTextConsumer'
+import { LineConsumer } from './LineConsumer'
 import { isWhitespace } from '../../SyntaxNodes/PlainTextNode'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -29,7 +29,7 @@ const STREAK_PATTERN = new RegExp(
 // And addresses do, too
 
 export function parseRegularLines(args: OutlineParserArgs): boolean {
-  const consumer = new OutlineTextConsumer(args.text)
+  const consumer = new LineConsumer(args.text)
 
   // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
   //

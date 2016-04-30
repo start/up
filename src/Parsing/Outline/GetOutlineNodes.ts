@@ -2,7 +2,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
-import { OutlineTextConsumer } from './OutlineTextConsumer'
+import { LineConsumer } from './LineConsumer'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { getHeadingParser } from './GetHeadingParser'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
@@ -37,7 +37,7 @@ export function getOutlineNodes(text: string, config: UpConfig): OutlineSyntaxNo
     parseRegularLines,
   ]
 
-  const consumer = new OutlineTextConsumer(trimOuterBlankLines(text))
+  const consumer = new LineConsumer(trimOuterBlankLines(text))
   const nodes: OutlineSyntaxNode[] = []
 
   while (!consumer.done()) {

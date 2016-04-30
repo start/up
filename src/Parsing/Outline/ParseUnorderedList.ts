@@ -1,4 +1,4 @@
-import { OutlineTextConsumer } from './OutlineTextConsumer'
+import { LineConsumer } from './LineConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
@@ -32,7 +32,7 @@ const STREAK_PATTERN = new RegExp(
 //
 // List items don't need to be separated by blank lines.
 export function parseUnorderedList(args: OutlineParserArgs): boolean {
-  const consumer = new OutlineTextConsumer(args.text)
+  const consumer = new LineConsumer(args.text)
   const listItemsContents: string[] = []
 
   while (!consumer.done()) {

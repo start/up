@@ -1,4 +1,4 @@
-import { OutlineTextConsumer } from './OutlineTextConsumer'
+import { LineConsumer } from './LineConsumer'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -30,7 +30,7 @@ const INDENTED_PATTERN = new RegExp(
 //
 // Multiple terms can be associated with a single description.
 export function parseDescriptionList(args: OutlineParserArgs): boolean {
-  const consumer = new OutlineTextConsumer(args.text)
+  const consumer = new LineConsumer(args.text)
   const listItemNodes: DescriptionListItem[] = []
   let lengthParsed = 0
 

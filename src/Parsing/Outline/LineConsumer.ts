@@ -13,7 +13,7 @@ interface OnConsume {
 }
 
 
-export class OutlineTextConsumer {
+export class LineConsumer {
   private index = 0;
 
   constructor(private text: string) { }

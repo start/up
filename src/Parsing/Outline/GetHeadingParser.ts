@@ -1,4 +1,4 @@
-import { OutlineTextConsumer } from './OutlineTextConsumer'
+import { LineConsumer } from './LineConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
@@ -20,7 +20,7 @@ const STREAK_PATTERN = new RegExp(
 export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser {
 
   return function parseHeading(args: OutlineParserArgs): boolean {
-    const consumer = new OutlineTextConsumer(args.text)
+    const consumer = new LineConsumer(args.text)
 
     // First, let's parse the optional overline.
     let optionalOverline: string

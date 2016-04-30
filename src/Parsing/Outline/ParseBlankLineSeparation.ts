@@ -1,4 +1,4 @@
-import { OutlineTextConsumer } from './OutlineTextConsumer'
+import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK } from './Patterns'
 import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
@@ -13,7 +13,7 @@ const BLANK_PATTERN = new RegExp(
 // However, 3 or more consecutive blank lines indicates meaningful, deliberate separation between sections.
 // We represent that separation with a SectionSeparatorNode.
 export function parseBlankLineSeparation(args: OutlineParserArgs): boolean {
-  const consumer = new OutlineTextConsumer(args.text)
+  const consumer = new LineConsumer(args.text)
 
   let countBlankLines = 0
 
