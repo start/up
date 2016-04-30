@@ -1,19 +1,19 @@
-import { TokenMeaning } from './Token'
+import { Token, TokenType } from './Tokens/Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { last } from '../CollectionHelpers'
 
 export class Convention {
-  public tokenMeanings: TokenMeaning[]
+  public tokenTypes: TokenType[]
   
-  constructor(...meanings: TokenMeaning[]) {
-    this.tokenMeanings = meanings
+  constructor(...tokenTypes: TokenType[]) {
+    this.tokenTypes = tokenTypes
   }
   
-  startTokenMeaning(): TokenMeaning {
-    return this.tokenMeanings[0]
+  startTokenType(): TokenType {
+    return this.tokenTypes[0]
   }
   
-  endTokenMeaning(): TokenMeaning {
-    return last(this.tokenMeanings)
+  endTokenType(): TokenType {
+    return last(this.tokenTypes)
   }
 }

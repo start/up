@@ -1,4 +1,3 @@
-import { Token, TokenMeaning } from './Token'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { Convention } from './Convention'
 

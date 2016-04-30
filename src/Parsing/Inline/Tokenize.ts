@@ -29,6 +29,7 @@ import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { VideoToken } from './Tokens/VideoToken'
+import { Token } from './Tokens/Token'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const rawTokens = new RawTokenizer(text, config).tokens
@@ -159,14 +160,14 @@ class RawTokenizer {
 
     for (const sandwich of REGULAR_SANDWICHES) {
       if (this.isInside(sandwich.convention) && this.consumer.consumeIfMatches(sandwich.end)) {
-        this.addToken(sandwich.convention.endTokenMeaning())
+        this.addToken(sandwich.convention.endTokenType())
         return true
       }
 
       const foundStartToken = this.consumer.consumeIfMatches(sandwich.start)
 
       if (foundStartToken) {
-        this.addToken(sandwich.convention.startTokenMeaning(), this.consumer.asBeforeMatch(sandwich.start.length))
+        this.addToken(sandwich.convention.startTokenType(), this.consumer.asBeforeMatch(sandwich.start.length))
         return true
       }
     }
@@ -277,7 +278,7 @@ class RawTokenizer {
     const token = this.tokens[index]
 
     for (let convention of POTENTIALLY_UNCLOSED_CONVENTIONS) {
-      if (token.meaning === convention.startTokenMeaning()) {
+      if (token.meaning === convention.startTokenType()) {
         return this.isConventionAtIndexUnclosed(convention, index)
       }
     }
@@ -290,9 +291,9 @@ class RawTokenizer {
     let excessStartTokens = 0
 
     for (const token of this.tokens) {
-      if (token.meaning === convention.startTokenMeaning()) {
+      if (token.meaning === convention.startTokenType()) {
         excessStartTokens += 1
-      } else if (token.meaning === convention.endTokenMeaning()) {
+      } else if (token.meaning === convention.endTokenType()) {
         excessStartTokens -= 1
       }
     }
@@ -308,9 +309,9 @@ class RawTokenizer {
     for (let i = startIndex; i < this.tokens.length; i++) {
       const token = this.tokens[i]
 
-      if (token.meaning === convention.startTokenMeaning()) {
+      if (token.meaning === convention.startTokenType()) {
         excessStartTokens += 1
-      } else if (token.meaning === convention.endTokenMeaning()) {
+      } else if (token.meaning === convention.endTokenType()) {
         excessStartTokens -= 1
       }
 
@@ -326,7 +327,7 @@ class RawTokenizer {
   }
 
   indexOfStartOfLatestInstanceOfConvention(convention: Convention): number {
-    return this.indexOfLastTokenWithMeaning(convention.startTokenMeaning())
+    return this.indexOfLastTokenWithMeaning(convention.startTokenType())
   }
 
   indexOfLastTokenWithMeaning(meaning: TokenMeaning): number {

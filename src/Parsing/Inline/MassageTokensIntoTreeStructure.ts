@@ -177,12 +177,12 @@ class TokenMasseuse {
   private closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: SandwichConvention[]): void {
     const startTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
-        .map(sandwich => new Token(sandwich.convention.startTokenMeaning()))
+        .map(sandwich => new Token(sandwich.convention.startTokenType()))
         .reverse()
 
     const endTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
-        .map(sandwich => new Token(sandwich.convention.endTokenMeaning()))
+        .map(sandwich => new Token(sandwich.convention.endTokenType()))
 
     this.insertTokens(index + 1, startTokensToAdd)
     this.insertTokens(index, endTokensToAdd)
@@ -195,12 +195,12 @@ class TokenMasseuse {
 
 function getSandwichStartedByThisToken(token: Token): SandwichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
-    sandwich.convention.startTokenMeaning() === token.meaning
+    sandwich.convention.startTokenType() === token.meaning
   )[0]
 }
 
 function getSandwichEndedByThisToken(token: Token): SandwichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
-    sandwich.convention.endTokenMeaning() === token.meaning
+    sandwich.convention.endTokenType() === token.meaning
   )[0]
 }
