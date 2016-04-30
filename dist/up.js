@@ -1350,7 +1350,6 @@ function trimOuterBlankLines(text) {
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var Patterns_1 = require('./Patterns');
-var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 function getRemainingLinesOfListItem(args) {

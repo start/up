@@ -2,12 +2,8 @@ import { LineConsumer } from './LineConsumer'
 import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from './Patterns'
+import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
 import { last } from '../CollectionHelpers'
-
-const STREAK_PATTERN = new RegExp(
-  STREAK
-)
 
 const BLANK_PATTERN = new RegExp(
   BLANK
@@ -16,20 +12,17 @@ const BLANK_PATTERN = new RegExp(
 const INDENTED_PATTERN = new RegExp(
   startsWith(INDENT)
 )
-interface Args {
-  text: string,
-  then: OnSuccess
-}
 
 interface OnSuccess {
   (lines: string[], lengthParsed: number, shouldTerminateList: boolean): void
 }
 
+
 // All indented and/or blank lines should be included in a list item.
 //
 // However, if there are 2 or more trailing blank lines, they should *not* be included. Instead,
 // they indicate the end of the list.
-export function getRemainingLinesOfListItem(args: Args): boolean {
+export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess }): boolean {
   const consumer = new LineConsumer(args.text)
   const lines: string[] = []
 
