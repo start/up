@@ -5,5 +5,5 @@ export interface MediaTokenType {
 export abstract class MediaToken {
   token(): void { }
   
-  constructor (public description: string, url: string) { }
+  constructor (public description: string, public url: string) { }
 }

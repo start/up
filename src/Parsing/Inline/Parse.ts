@@ -92,7 +92,7 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
     }
 
     if (token instanceof LinkStartToken) {
-      const result = parseUntil(tokens.slice(countParsed), TokenMeaning.LinkUrlAndLinkEnd)
+      const result = parseUntil(tokens.slice(countParsed), LinkEndToken)
       index += result.countTokensParsed
 
       let contents = result.nodes
@@ -129,12 +129,9 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
 
 
     for (const media of MEDIA_CONVENTIONS) {
-      if (token.meaning === media.TokenType) {
-        let description = token.value.trim()
-
-        // We know the next token will be TokenMeaning.AudioUrlAndAudioEnd
-        index += 1
-        const url = tokens[index].value.trim()
+      if (token instanceof media.TokenType) {
+        let description = token.description.trim()
+        const url = token.url.trim()
 
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document
