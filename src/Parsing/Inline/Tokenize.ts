@@ -280,18 +280,6 @@ class RawTokenizer {
     }
   }
 
-  isTokenStartOfUnclosedConvention(index: number): boolean {
-    const token = this.tokens[index]
-
-    for (let convention of POTENTIALLY_UNCLOSED_CONVENTIONS) {
-      if (token.meaning === convention.startTokenType()) {
-        return this.isConventionAtIndexUnclosed(convention, index)
-      }
-    }
-
-    return false
-  }
-
   isInside(convention: Convention): boolean {
     // We guaranteed to be inside a convention if there are more start tokens than end tokens.
     let excessStartTokens = 0
@@ -305,31 +293,6 @@ class RawTokenizer {
     }
 
     return excessStartTokens > 0
-  }
-
-  isConventionAtIndexUnclosed(convention: Convention, index: number): boolean {
-    // We know the token at `index` is the start token
-    let excessStartTokens = 1
-    const startIndex = index + 1
-
-    for (let i = startIndex; i < this.tokens.length; i++) {
-      const token = this.tokens[i]
-
-      if (token.meaning === convention.startTokenType()) {
-        excessStartTokens += 1
-      } else if (token.meaning === convention.endTokenType()) {
-        excessStartTokens -= 1
-      }
-
-      if (excessStartTokens === 0) {
-        // We've reached a point where there is an end token for every start token. This means the convention
-        // starting at `index` is complete. For this function, it doesn't matter whether there are any other
-        // unclosed instances of this convention later on.
-        return false
-      }
-    }
-
-    return true
   }
 
   indexOfStartOfLatestInstanceOfConvention(convention: Convention): number {
