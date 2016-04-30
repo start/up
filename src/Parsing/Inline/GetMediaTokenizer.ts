@@ -4,8 +4,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
-import { Token, TokenMeaning } from './Token'
-import { FailureTracker } from './FailureTracker'
+import { Token } from './Tokens/Token'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { MediaConvention } from './MediaConvention'
 
@@ -15,7 +14,7 @@ interface TokenizeMediaArgs {
 }
 
 export function getMediaTokenizer(mediaConvention: MediaConvention) {
-  const { tokenMeaningForStartAndDescription, tokenMeaningForUrlAndEnd } = mediaConvention
+  const { TokenType } = mediaConvention
   
   // Media conventions start with an opening bracket, the term for the type of media, and a colon.
   //
@@ -33,8 +32,6 @@ export function getMediaTokenizer(mediaConvention: MediaConvention) {
       return false
     }
 
-    // We've made it this far, so it's likely that we're dealing with a media convention.
-    //
     // Let's determine the media's description.
     let description: string
 
@@ -60,12 +57,7 @@ export function getMediaTokenizer(mediaConvention: MediaConvention) {
       return false
     }
     
-    const tokens = [
-      new Token(tokenMeaningForStartAndDescription, description),
-      new Token(tokenMeaningForUrlAndEnd, url)
-    ]
-    
-    args.then(consumer.lengthConsumed(), tokens)
+    args.then(consumer.lengthConsumed(), [new TokenType(description, url)])
 
     return true
   }
