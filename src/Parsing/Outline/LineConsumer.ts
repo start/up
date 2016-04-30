@@ -33,17 +33,17 @@ export class LineConsumer {
     let fullLine: string
     let lineWithoutTerminatingLineBreak: string
 
+    // First, let's find the end of the current line
     for (let i = this.index; i < this.text.length; i++) {
       const char = this.text[i]
 
-      // Escaped line breaks don't end lines. If the current char is a backslash, let's just skip the next one.
+      // Escaped line breaks don't end lines
       if (char === '\\') {
         i++
         continue
       }
 
       if (char === '\n') {
-        // We don't want to include line break
         fullLine = this.text.substring(this.index, i + 1)
         lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
         break
@@ -51,9 +51,7 @@ export class LineConsumer {
     }
     
     if (!fullLine) {
-      // Alright, so we couldn't find a terminating line break!
-      //
-      // That means we're on the text's final line.
+      // Well, we couldn't find a terminating line break! That must mean we're on the text's final line.
       fullLine = lineWithoutTerminatingLineBreak = this.remainingText()
     }
 
