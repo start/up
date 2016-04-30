@@ -65,7 +65,7 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
     const token = tokens[index]
     countParsed = index + 1
 
-    if (token instanceof terminator) {
+    if (terminator && token instanceof terminator) {
       stillNeedsTerminator = false
       break
     }

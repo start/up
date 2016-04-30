@@ -348,7 +348,7 @@ function parseUntil(tokens, terminator) {
     MainParserLoop: for (var index = 0; index < tokens.length; index++) {
         var token = tokens[index];
         countParsed = index + 1;
-        if (token instanceof terminator) {
+        if (terminator && token instanceof terminator) {
             stillNeedsTerminator = false;
             break;
         }
