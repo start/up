@@ -5,10 +5,11 @@ import { Convention } from './Convention'
 import { SandwichConvention } from './SandwichConvention'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
-import { Token, TokenMeaning } from './Token'
-import { FailureTracker } from './FailureTracker'
+import { Token } from './Tokens/Token'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { getMediaTokenizer }  from './GetMediaTokenizer'
+import { LinkStartToken } from './Tokens/LinkStartToken'
+import { LinkEndToken } from './Tokens/LinkEndToken'
 
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
 
@@ -109,7 +110,7 @@ class TokenMasseuse {
   // This function assumes that any sandwich tokens are already properly nested.
   private splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      if (this.tokens[tokenIndex].meaning !== TokenMeaning.LinkStart) {
+      if (this.tokens[tokenIndex] instanceof LinkStartToken) {
         continue
       }
 
@@ -117,7 +118,7 @@ class TokenMasseuse {
       let linkEndIndex: number
 
       for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
-        if (this.tokens[i].meaning === TokenMeaning.LinkUrlAndLinkEnd) {
+        if (this.tokens[i] instanceof LinkEndToken) {
           linkEndIndex = i
           break
         }
@@ -177,12 +178,12 @@ class TokenMasseuse {
   private closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: SandwichConvention[]): void {
     const startTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
-        .map(sandwich => new Token(sandwich.convention.startTokenType()))
+        .map(sandwich => new sandwich.StartTokenType())
         .reverse()
 
     const endTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
-        .map(sandwich => new Token(sandwich.convention.endTokenType()))
+        .map(sandwich => new sandwich.EndTokenType())
 
     this.insertTokens(index + 1, startTokensToAdd)
     this.insertTokens(index, endTokensToAdd)
@@ -195,12 +196,12 @@ class TokenMasseuse {
 
 function getSandwichStartedByThisToken(token: Token): SandwichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
-    sandwich.convention.startTokenType() === token.meaning
+    token instanceof sandwich.StartTokenType
   )[0]
 }
 
 function getSandwichEndedByThisToken(token: Token): SandwichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
-    sandwich.convention.endTokenType() === token.meaning
+    token instanceof sandwich.EndTokenType
   )[0]
 }
