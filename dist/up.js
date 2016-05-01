@@ -916,8 +916,9 @@ var RawTokenizer = (function () {
     return RawTokenizer;
 }());
 var AnotherTokenizer = (function () {
-    function AnotherTokenizer(args) {
-        this.state = args.state;
+    function AnotherTokenizer(state, config) {
+        this.state = state;
+        this.config = config;
     }
     return AnotherTokenizer;
 }());

@@ -279,15 +279,10 @@ class RawTokenizer {
   }
 }
 
-interface TokenizerArgs {
-  state: TokenizerState,
-  then: (result: TokenizerResult) => boolean
-}
-
 class AnotherTokenizer {
-  private state: TokenizerState
+  public result: TokenizerResult
   
-  constructor(args: TokenizerArgs) {
-    this.state = args.state  
+  constructor(private state: TokenizerState, private config: UpConfig) {
+    
   }
 }
