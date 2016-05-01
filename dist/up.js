@@ -924,17 +924,26 @@ var Tokenizer = (function () {
         this.lengthAdvanced = 0;
         this.tokens = [];
         var inlineCode = '';
+        var isCharEscaped = false;
         while (!this.done()) {
             var currentChar = this.text[0];
+            isCharEscaped = false;
+            if (currentChar === '\\') {
+                isCharEscaped = true;
+                this.advance(1);
+                continue;
+            }
             if (this.context.isInlineCodeOpen) {
-                if (this.closeInlineCode()) {
+                if (!isCharEscaped && this.closeInlineCode()) {
                     this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(inlineCode));
                     return;
                 }
                 inlineCode += currentChar;
             }
-            if (this.openInlineCode()) {
-                continue;
+            if (!isCharEscaped) {
+                if (this.openInlineCode()) {
+                    continue;
+                }
             }
             this.addPlainTextToken(currentChar);
             this.advance(1);
