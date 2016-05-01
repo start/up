@@ -2,6 +2,8 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
+import { TokenizerResult } from './TokenizerResult'
+import { TokenizerState } from './TokenizerState'
 import { SandwichConvention } from './SandwichConvention'
 import { TextConsumer } from './TextConsumer'
 import { tokenizeNakedUrl } from './TokenizeNakedUrl'
@@ -274,5 +276,18 @@ class RawTokenizer {
     }
 
     return excessStartTokens > 0
+  }
+}
+
+interface TokenizerArgs {
+  state: TokenizerState,
+  then: (result: TokenizerResult) => boolean
+}
+
+class AnotherTokenizer {
+  private state: TokenizerState
+  
+  constructor(args: TokenizerArgs) {
+    this.state = args.state  
   }
 }

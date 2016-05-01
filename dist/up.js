@@ -915,6 +915,12 @@ var RawTokenizer = (function () {
     };
     return RawTokenizer;
 }());
+var AnotherTokenizer = (function () {
+    function AnotherTokenizer(args) {
+        this.state = args.state;
+    }
+    return AnotherTokenizer;
+}());
 
 },{"../CollectionHelpers":1,"../TextHelpers":58,"./GetMediaTokenizer":3,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./SandwichConventions":14,"./TextConsumer":15,"./TokenizeNakedUrl":17,"./Tokens/InlineCodeToken":24,"./Tokens/LinkEndToken":25,"./Tokens/LinkStartToken":26,"./Tokens/PlainTextToken":28,"./Tokens/PotentialRaisedVoiceEndToken":29,"./Tokens/PotentialRaisedVoiceStartOrEndToken":30,"./Tokens/PotentialRaisedVoiceStartToken":31}],17:[function(require,module,exports){
 "use strict";
