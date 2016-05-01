@@ -923,15 +923,24 @@ var Tokenizer = (function () {
         this.config = config;
         this.lengthAdvanced = 0;
         this.tokens = [];
+        var inlineCode = '';
         while (!this.done()) {
-            if (this.tokenizeInlineCode()) {
+            var currentChar = this.text[0];
+            if (this.context.isInlineCodeOpen) {
+                if (this.closeInlineCode()) {
+                    this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(inlineCode));
+                    return;
+                }
+                inlineCode += currentChar;
+            }
+            if (this.openInlineCode()) {
                 continue;
             }
-            this.addPlainTextToken(this.text[0]);
+            this.addPlainTextToken(currentChar);
             this.advance(1);
         }
         this.result = {
-            failed: this.context.failed(),
+            succeeded: !this.context.failed(),
             lengthAdvanced: this.lengthAdvanced,
             tokens: this.tokens
         };
@@ -939,25 +948,32 @@ var Tokenizer = (function () {
     Tokenizer.prototype.addPlainTextToken = function (text) {
         this.tokens.push(new PlainTextToken_1.PlainTextToken(text));
     };
-    Tokenizer.prototype.tokenizeInlineCode = function () {
+    Tokenizer.prototype.openInlineCode = function () {
         if (this.text[0] !== '`') {
             return false;
         }
-        var inlineCode = '';
-        for (var i = 1; i < this.text.length; i++) {
-            var char = this.text[i];
-            if (char === '\\') {
-                i += 1;
-                continue;
-            }
-            if (char === '`') {
-                this.advance(i + 1);
-                this.tokens.push(new InlineCodeToken_1.InlineCodeToken(inlineCode));
-                return true;
-            }
-            inlineCode += char;
+        return this.tryToTokenize({
+            context: this.context.withInlineCodeOpen(),
+            charsToSkip: 1
+        });
+    };
+    Tokenizer.prototype.closeInlineCode = function () {
+        if (this.text[0] === '`') {
+            this.advance(1);
+            return true;
         }
         return false;
+    };
+    Tokenizer.prototype.tryToTokenize = function (args) {
+        var charsToSkip = args.charsToSkip, context = args.context;
+        var result = new Tokenizer(this.text.substr(charsToSkip), context, this.config).result;
+        if (!result.succeeded) {
+            return false;
+        }
+        (_a = this.tokens).push.apply(_a, result.tokens);
+        this.advance(charsToSkip + result.lengthAdvanced);
+        return true;
+        var _a;
     };
     Tokenizer.prototype.advance = function (length) {
         this.text = this.text.substr(length);
@@ -965,6 +981,17 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.done = function () {
         return !this.text.length;
+    };
+    Tokenizer.prototype.getResultFor = function () {
+        var tokens = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            tokens[_i - 0] = arguments[_i];
+        }
+        return {
+            succeeded: true,
+            lengthAdvanced: this.lengthAdvanced,
+            tokens: tokens
+        };
     };
     return Tokenizer;
 }());
@@ -1008,6 +1035,7 @@ exports.tokenizeNakedUrl = tokenizeNakedUrl;
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext() {
+        this.isInlineCodeOpen = false;
         this.isLinkOpen = false;
         this.isRevisionDeletionOpen = false;
         this.isRevisionInsertionOpen = false;
@@ -1020,6 +1048,11 @@ var TokenizerContext = (function () {
             || this.isRevisionInsertionOpen
             || this.countSpoilersOpen > 0
             || this.countFootnotesOpen > 0);
+    };
+    TokenizerContext.prototype.withInlineCodeOpen = function () {
+        var copy = this.copyForNewOpenConvention();
+        copy.isInlineCodeOpen = true;
+        return copy;
     };
     TokenizerContext.prototype.withLinkOpen = function () {
         var copy = this.copyForNewOpenConvention();

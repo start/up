@@ -1,7 +1,7 @@
 import { Token } from './Tokens/Token'
 
 export interface TokenizerResult {
-  failed: boolean
+  succeeded: boolean
   lengthAdvanced: number 
   tokens: Token[]
 }

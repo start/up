@@ -281,6 +281,7 @@ class OldTokenizer {
   }
 }
 
+
 class Tokenizer {
   public result: TokenizerResult
   private lengthAdvanced = 0
@@ -291,17 +292,30 @@ class Tokenizer {
     private context: TokenizerContext,
     private config: UpConfig
   ) {
+    let inlineCode = ''
+    
     while (!this.done()) {
-      if (this.tokenizeInlineCode()) {
+      const currentChar = this.text[0]
+      
+      if (this.context.isInlineCodeOpen) {
+        if (this.closeInlineCode()) {
+          this.result = this.getResultFor(new InlineCodeToken(inlineCode))
+          return
+        }
+        
+        inlineCode += currentChar
+      }
+
+      if (this.openInlineCode()) {
         continue
       }
 
-      this.addPlainTextToken(this.text[0])
+      this.addPlainTextToken(currentChar)
       this.advance(1)
     }
 
     this.result = {
-      failed: this.context.failed(),
+      succeeded: !this.context.failed(),
       lengthAdvanced: this.lengthAdvanced,
       tokens: this.tokens
     }
@@ -311,31 +325,39 @@ class Tokenizer {
     this.tokens.push(new PlainTextToken(text))
   }
 
-  private tokenizeInlineCode(): boolean {
+  private openInlineCode(): boolean {
     if (this.text[0] !== '`') {
       return false
     }
 
-    let inlineCode = ''
+    return this.tryToTokenize({
+      context: this.context.withInlineCodeOpen(),
+      charsToSkip: 1
+    })
+  }
 
-    for (let i = 1; i < this.text.length; i++) {
-      const char = this.text[i]
+  private closeInlineCode(): boolean {
+    if (this.text[0] === '`') {
+      this.advance(1)
+      return true
+    }
+    
+    return false
+  }
 
-      if (char === '\\') {
-        i += 1
-        continue
-      }
+  private tryToTokenize(args: { context: TokenizerContext, charsToSkip: number }): boolean {
+    const { charsToSkip, context } = args
 
-      if (char === '`') {
-        this.advance(i + 1)
-        this.tokens.push(new InlineCodeToken(inlineCode))
-        return true
-      }
+    const result =
+      new Tokenizer(this.text.substr(charsToSkip), context, this.config).result
 
-      inlineCode += char
+    if (!result.succeeded) {
+      return false
     }
 
-    return false
+    this.tokens.push(...result.tokens)
+    this.advance(charsToSkip + result.lengthAdvanced)
+    return true
   }
 
   private advance(length: number): void {
@@ -345,5 +367,13 @@ class Tokenizer {
 
   private done(): boolean {
     return !this.text.length
+  }
+  
+  private getResultFor(...tokens: Token[]): TokenizerResult {
+    return {
+            succeeded: true,
+            lengthAdvanced: this.lengthAdvanced,
+            tokens: tokens
+          }
   }
 }
