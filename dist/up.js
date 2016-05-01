@@ -920,8 +920,15 @@ var AnotherTokenizer = (function () {
         this.text = text;
         this.context = context;
         this.config = config;
+        this.lengthAdvanced = 0;
+        this.tokens = [];
         while (!this.done()) {
         }
+        this.result = {
+            failed: this.context.failed(),
+            lengthAdvanced: this.lengthAdvanced,
+            tokens: this.tokens
+        };
     }
     AnotherTokenizer.prototype.done = function () {
         return true;

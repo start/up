@@ -281,15 +281,26 @@ class RawTokenizer {
 
 class AnotherTokenizer {
   public result: TokenizerResult
-  private lengthAdvanced: number
+  private lengthAdvanced = 0
+  private tokens: Token[] = []
   
-  constructor(private text: string, private context: TokenizerContext, private config: UpConfig) {
+  constructor(
+    private text: string,
+    private context: TokenizerContext,
+    private config: UpConfig
+  ) {
     while (!this.done()) {
-      
+       
+    }  
+    
+    this.result = {
+      failed: this.context.failed(),
+      lengthAdvanced: this.lengthAdvanced,
+      tokens: this.tokens
     }
   }
   
-  done(): boolean {
+  private done(): boolean {
     return true
   }
 }
