@@ -916,10 +916,16 @@ var RawTokenizer = (function () {
     return RawTokenizer;
 }());
 var AnotherTokenizer = (function () {
-    function AnotherTokenizer(state, config) {
-        this.state = state;
+    function AnotherTokenizer(text, context, config) {
+        this.text = text;
+        this.context = context;
         this.config = config;
+        while (!this.done()) {
+        }
     }
+    AnotherTokenizer.prototype.done = function () {
+        return true;
+    };
     return AnotherTokenizer;
 }());
 

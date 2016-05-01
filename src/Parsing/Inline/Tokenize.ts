@@ -3,7 +3,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
 import { TokenizerResult } from './TokenizerResult'
-import { TokenizerState } from './TokenizerState'
+import { TokenizerContext } from './TokenizerContext'
 import { SandwichConvention } from './SandwichConvention'
 import { TextConsumer } from './TextConsumer'
 import { tokenizeNakedUrl } from './TokenizeNakedUrl'
@@ -281,10 +281,15 @@ class RawTokenizer {
 
 class AnotherTokenizer {
   public result: TokenizerResult
+  private lengthAdvanced: number
   
-  constructor(private state: TokenizerState, private config: UpConfig) {
-    while (!state.done()) {
+  constructor(private text: string, private context: TokenizerContext, private config: UpConfig) {
+    while (!this.done()) {
       
     }
+  }
+  
+  done(): boolean {
+    return true
   }
 }

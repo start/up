@@ -1,18 +1,13 @@
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
-export class TokenizerState {
+export class TokenizerContext {
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
   public isRevisionInsertionOpen = false
   public countSpoilersOpen = 0
   public countFootnotesOpen = 0
-  public lengthAdvanced = 0
   
-  constructor(public remainingText: string) { }
-  
-  done(): boolean {
-    return !this.remainingText
-  }
+  constructor() { }
   
   failed(): boolean {
     return (
@@ -24,62 +19,54 @@ export class TokenizerState {
     )
   }
   
-  advance(length: number) {
-    this.remainingText = this.remainingText.substr(length)
-  }
-  
-  withLinkOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const copy = this.copyForNewOpenConvention(args)
+  withLinkOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
     
     copy.isLinkOpen = true
     
     return copy
   }
   
-  withRevisionDeletionOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const copy = this.copyForNewOpenConvention(args)
+  withRevisionDeletionOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
     
     copy.isRevisionDeletionOpen = true
     
     return copy
   }
   
-  withRevisionInsertionOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const copy = this.copyForNewOpenConvention(args)
+  withRevisionInsertionOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
     
     copy.isRevisionInsertionOpen = true
     
     return copy
   }
   
-  withAdditionalSpoilerOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const copy = this.copyForNewOpenConvention(args)
+  withAdditionalSpoilerOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
     
     copy.countSpoilersOpen += 1
     
     return copy
   }
   
-  withAdditionalFootnoteOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const copy = this.copyForNewOpenConvention(args)
+  withAdditionalFootnoteOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
     
     copy.countSpoilersOpen += 1
     
     return copy
   }
   
-  private copyForNewOpenConvention(args: WithNewOpenConventionArgs): TokenizerState {
-    const copy = new TokenizerState(this.remainingText)
+  private copyForNewOpenConvention(): TokenizerContext {
+    const copy = new TokenizerContext()
     
     copy.isLinkOpen = this.isLinkOpen
     copy.isRevisionDeletionOpen = this.isRevisionDeletionOpen
     copy.isRevisionInsertionOpen = this.isRevisionInsertionOpen
     copy.countSpoilersOpen = this.countSpoilersOpen
     copy.countFootnotesOpen = this.countFootnotesOpen
-    
-    // The copy should start with a `lengthAdvanced` of 0.
-    copy.advance(args.lengthAdvanceed)
-    copy.lengthAdvanced = 0
     
     return copy
   }
