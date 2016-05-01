@@ -16,4 +16,16 @@ export class TokenizerState {
       || this.countFootnotesOpen > 0
     )
   }
+  
+  private clone(): TokenizerState {
+    const clone = new TokenizerState()
+    
+    clone.isLinkOpen = this.isLinkOpen
+    clone.isRevisionDeletionOpen = this.isRevisionDeletionOpen
+    clone.isRevisionInsertionOpen = this.isRevisionInsertionOpen
+    clone.countSpoilersOpen = this.countSpoilersOpen
+    clone.countFootnotesOpen = this.countFootnotesOpen
+    
+    return clone
+  }
 }
