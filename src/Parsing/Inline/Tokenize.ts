@@ -42,10 +42,10 @@ import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToke
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const result = new Tokenizer(text, new TokenizerContext(), config).result
-  
+
   const tokensWithRaisedVoicesApplied =
     applyRaisedVoicesToRawTokens(result.tokens)
-  
+
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
 
@@ -60,7 +60,7 @@ const MEDIA_TOKENIZERS =
 class OldTokenizer {
   public tokens: Token[] = []
   private consumer: TextConsumer
-  
+
   constructor(text: string, config: UpConfig) {
     this.consumer = new TextConsumer(text)
 
@@ -100,7 +100,7 @@ class OldTokenizer {
           this.tokens.push(...tokens)
         }
       })
-      
+
       if (wasMediaFound) {
         return true
       }
@@ -221,7 +221,7 @@ class OldTokenizer {
 
     return false
   }
-  
+
   tokenizeNakedUrl(): boolean {
     return tokenizeNakedUrl({
       text: this.consumer.remainingText(),
@@ -238,7 +238,7 @@ class OldTokenizer {
 
   addPlainTextToken(text: string): void {
     const lastToken = last(this.tokens)
- 
+
     // We combine consecutive plain-text tokens (i.e. plain text characters) during parsing into a single
     // PlainTextNode.
     //
@@ -285,30 +285,65 @@ class Tokenizer {
   public result: TokenizerResult
   private lengthAdvanced = 0
   private tokens: Token[] = []
-  
+
   constructor(
     private text: string,
     private context: TokenizerContext,
     private config: UpConfig
   ) {
     while (!this.done()) {
-       this.tokens.push(new PlainTextToken(text[0]))
-       this.advance(1)
+      if (this.tokenizeInlineCode()) {
+        continue
+      }
+
+      this.addPlainTextToken(this.text[0])
+      this.advance(1)
     }
-    
+
     this.result = {
       failed: this.context.failed(),
       lengthAdvanced: this.lengthAdvanced,
       tokens: this.tokens
     }
   }
-  
-  private advance(length: number): void {
-    this.lengthAdvanced += length
-    this.text = this.text.substr(length)
+
+  private addPlainTextToken(text: string): void {
+    this.tokens.push(new PlainTextToken(text))
   }
-  
+
+  private tokenizeInlineCode(): boolean {
+    if (this.text[0] !== '`') {
+      return false
+    }
+
+    let inlineCode = ''
+
+    for (let i = 1; i < this.text.length; i++) {
+      const char = this.text[i]
+
+      if (char === '\\') {
+        i += 1
+        continue
+      }
+
+      if (char === '`') {
+        this.advance(i + 1)
+        this.tokens.push(new InlineCodeToken(inlineCode))
+        return true
+      }
+
+      inlineCode += char
+    }
+
+    return false
+  }
+
+  private advance(length: number): void {
+    this.text = this.text.substr(length)
+    this.lengthAdvanced += length
+  }
+
   private done(): boolean {
-    return !!this.text.length
+    return !this.text.length
   }
 }

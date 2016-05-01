@@ -924,7 +924,10 @@ var Tokenizer = (function () {
         this.lengthAdvanced = 0;
         this.tokens = [];
         while (!this.done()) {
-            this.tokens.push(new PlainTextToken_1.PlainTextToken(text[0]));
+            if (this.tokenizeInlineCode()) {
+                continue;
+            }
+            this.addPlainTextToken(this.text[0]);
             this.advance(1);
         }
         this.result = {
@@ -933,12 +936,35 @@ var Tokenizer = (function () {
             tokens: this.tokens
         };
     }
+    Tokenizer.prototype.addPlainTextToken = function (text) {
+        this.tokens.push(new PlainTextToken_1.PlainTextToken(text));
+    };
+    Tokenizer.prototype.tokenizeInlineCode = function () {
+        if (this.text[0] !== '`') {
+            return false;
+        }
+        var inlineCode = '';
+        for (var i = 1; i < this.text.length; i++) {
+            var char = this.text[i];
+            if (char === '\\') {
+                i += 1;
+                continue;
+            }
+            if (char === '`') {
+                this.advance(i + 1);
+                this.tokens.push(new InlineCodeToken_1.InlineCodeToken(inlineCode));
+                return true;
+            }
+            inlineCode += char;
+        }
+        return false;
+    };
     Tokenizer.prototype.advance = function (length) {
-        this.lengthAdvanced += length;
         this.text = this.text.substr(length);
+        this.lengthAdvanced += length;
     };
     Tokenizer.prototype.done = function () {
-        return !!this.text.length;
+        return !this.text.length;
     };
     return Tokenizer;
 }());
