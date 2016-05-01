@@ -41,8 +41,10 @@ import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  const rawTokens = new RawTokenizer(text, config).tokens
-  const tokensWithRaisedVoicesApplied = applyRaisedVoicesToRawTokens(rawTokens)
+  const result = new Tokenizer(text, new TokenizerContext(), config).result
+  
+  const tokensWithRaisedVoicesApplied =
+    applyRaisedVoicesToRawTokens(result.tokens)
   
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
@@ -55,7 +57,7 @@ const MEDIA_TOKENIZERS =
   [AUDIO, IMAGE, VIDEO].map(getMediaTokenizer)
 
 
-class RawTokenizer {
+class OldTokenizer {
   public tokens: Token[] = []
   private consumer: TextConsumer
   
@@ -279,7 +281,7 @@ class RawTokenizer {
   }
 }
 
-class AnotherTokenizer {
+class Tokenizer {
   public result: TokenizerResult
   private lengthAdvanced = 0
   private tokens: Token[] = []
@@ -290,8 +292,9 @@ class AnotherTokenizer {
     private config: UpConfig
   ) {
     while (!this.done()) {
-       
-    }  
+       this.tokens.push(new PlainTextToken(text[0]))
+       this.advance(1)
+    }
     
     this.result = {
       failed: this.context.failed(),
@@ -300,7 +303,12 @@ class AnotherTokenizer {
     }
   }
   
+  private advance(length: number): void {
+    this.lengthAdvanced += length
+    this.text = this.text.substr(length)
+  }
+  
   private done(): boolean {
-    return true
+    return !!this.text.length
   }
 }
