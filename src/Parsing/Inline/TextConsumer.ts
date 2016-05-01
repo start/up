@@ -129,16 +129,6 @@ export class TextConsumer {
   at(index: number): string {
     return this.text[index]
   }
-
-  // This method is hackish, and it'll likley need to be replaced.
-  //
-  // It returns a new TextConsumer object with an index that is `matchLength` behind the current object's.
-  asBeforeMatch(matchLength: number): TextConsumer {
-    const copy = new TextConsumer(this.text)
-    copy.index = this.index - matchLength
-
-    return copy
-  }
   
   skipToEnd(): void {
     this.index = this.text.length

@@ -712,11 +712,6 @@ var TextConsumer = (function () {
     TextConsumer.prototype.at = function (index) {
         return this.text[index];
     };
-    TextConsumer.prototype.asBeforeMatch = function (matchLength) {
-        var copy = new TextConsumer(this.text);
-        copy.index = this.index - matchLength;
-        return copy;
-    };
     TextConsumer.prototype.skipToEnd = function () {
         this.index = this.text.length;
     };
