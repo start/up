@@ -6,6 +6,7 @@ export class TokenizerState {
   public isRevisionInsertionOpen = false
   public countSpoilersOpen = 0
   public countFootnotesOpen = 0
+  public lengthAdvanced = 0
   
   constructor(public remainingText: string) { }
   
@@ -28,66 +29,59 @@ export class TokenizerState {
   }
   
   withLinkOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const clone = this.cloneForNewOpenConvention(args)
+    const copy = this.copyForNewOpenConvention(args)
     
-    clone.isLinkOpen = true
-    clone.advance(length)
+    copy.isLinkOpen = true
     
-    return clone
+    return copy
   }
   
   withRevisionDeletionOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const clone = this.cloneForNewOpenConvention(args)
+    const copy = this.copyForNewOpenConvention(args)
     
-    clone.isRevisionDeletionOpen = true
+    copy.isRevisionDeletionOpen = true
     
-    return clone
+    return copy
   }
   
   withRevisionInsertionOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const clone = this.cloneForNewOpenConvention(args)
+    const copy = this.copyForNewOpenConvention(args)
     
-    clone.isRevisionInsertionOpen = true
+    copy.isRevisionInsertionOpen = true
     
-    return clone
+    return copy
   }
   
   withAdditionalSpoilerOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const clone = this.cloneForNewOpenConvention(args)
+    const copy = this.copyForNewOpenConvention(args)
     
-    clone.countSpoilersOpen += 1
+    copy.countSpoilersOpen += 1
     
-    return clone
+    return copy
   }
   
   withAdditionalFootnoteOpen(args: WithNewOpenConventionArgs): TokenizerState {
-    const clone = this.cloneForNewOpenConvention(args)
+    const copy = this.copyForNewOpenConvention(args)
     
-    clone.countSpoilersOpen += 1
+    copy.countSpoilersOpen += 1
     
-    return clone
+    return copy
   }
   
-  private cloneForNewOpenConvention(args: WithNewOpenConventionArgs): TokenizerState {
-    const clone = this.clone()
+  private copyForNewOpenConvention(args: WithNewOpenConventionArgs): TokenizerState {
+    const copy = new TokenizerState(this.remainingText)
     
-    clone.advance(args.lengthAdvanceed)
+    copy.isLinkOpen = this.isLinkOpen
+    copy.isRevisionDeletionOpen = this.isRevisionDeletionOpen
+    copy.isRevisionInsertionOpen = this.isRevisionInsertionOpen
+    copy.countSpoilersOpen = this.countSpoilersOpen
+    copy.countFootnotesOpen = this.countFootnotesOpen
     
-    return clone
-  }
-  
-  
-  private clone(): TokenizerState {
-    const clone = new TokenizerState(this.remainingText)
+    // The copy should start with a `lengthAdvanced` of 0.
+    copy.advance(args.lengthAdvanceed)
+    copy.lengthAdvanced = 0
     
-    clone.remainingText = this.remainingText
-    clone.isLinkOpen = this.isLinkOpen
-    clone.isRevisionDeletionOpen = this.isRevisionDeletionOpen
-    clone.isRevisionInsertionOpen = this.isRevisionInsertionOpen
-    clone.countSpoilersOpen = this.countSpoilersOpen
-    clone.countFootnotesOpen = this.countFootnotesOpen
-    
-    return clone
+    return copy
   }
 }
 

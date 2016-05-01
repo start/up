@@ -283,6 +283,8 @@ class AnotherTokenizer {
   public result: TokenizerResult
   
   constructor(private state: TokenizerState, private config: UpConfig) {
-    
+    while (!state.done()) {
+      
+    }
   }
 }
