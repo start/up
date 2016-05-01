@@ -1,6 +1,7 @@
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
 export class TokenizerState {
+  public textIndex = 0
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
   public isRevisionInsertionOpen = false
@@ -20,6 +21,7 @@ export class TokenizerState {
   private clone(): TokenizerState {
     const clone = new TokenizerState()
     
+    clone.textIndex = this.textIndex
     clone.isLinkOpen = this.isLinkOpen
     clone.isRevisionDeletionOpen = this.isRevisionDeletionOpen
     clone.isRevisionInsertionOpen = this.isRevisionInsertionOpen
