@@ -1075,8 +1075,7 @@ var TokenizerContext = (function () {
         }
         var match = result[0];
         var captures = result.slice(1);
-        var charBeforeMatch = this.entireText[this.currentIndex() - 1];
-        var isTouchingWordEnd = NOT_WHITESPACE_PATTERN.test(charBeforeMatch);
+        var isTouchingWordEnd = this.isTouchingEndOfWord;
         var charAfterMatch = this.entireText[this.currentIndex() + match.length];
         var isTouchingWordStart = NOT_WHITESPACE_PATTERN.test(charAfterMatch);
         if (then) {
@@ -1144,15 +1143,6 @@ var TokenizerContext = (function () {
         this.lengthAdvanced += length;
         this.dirty();
     };
-    TokenizerContext.prototype.isTouchingEndOfNonWhitespace = function () {
-        var previousChar = this.entireText[this.currentIndex() - 1];
-        return NOT_WHITESPACE_PATTERN.test(previousChar);
-    };
-    TokenizerContext.prototype.isTouchingBeginningOfNonWhitespace = function (args) {
-        args = args || { countCharsToLookAhead: 0 };
-        var relevantChar = this.entireText[this.currentIndex() + args.countCharsToLookAhead];
-        return NOT_WHITESPACE_PATTERN.test(relevantChar);
-    };
     TokenizerContext.prototype.currentIndex = function () {
         return this.initialIndex + this.lengthAdvanced;
     };
@@ -1170,6 +1160,8 @@ var TokenizerContext = (function () {
     TokenizerContext.prototype.dirty = function () {
         this.remainingText = this.entireText.substr(this.currentIndex());
         this.currentChar = this.remainingText[0];
+        var previousChar = this.entireText[this.currentIndex() - 1];
+        this.isTouchingEndOfWord = NOT_WHITESPACE_PATTERN.test(previousChar);
     };
     return TokenizerContext;
 }());

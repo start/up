@@ -14,6 +14,7 @@ export class TokenizerContext {
   public lengthAdvanced = 0
   public remainingText: string
   public currentChar: string
+  public isTouchingEndOfWord: boolean
 
   constructor(private entireText: string, private initialIndex = 0) {
     this.dirty()
@@ -31,8 +32,7 @@ export class TokenizerContext {
     const match = result[0]
     const captures = result.slice(1)
 
-    const charBeforeMatch = this.entireText[this.currentIndex() - 1]
-    const isTouchingWordEnd = NOT_WHITESPACE_PATTERN.test(charBeforeMatch)
+    const isTouchingWordEnd = this.isTouchingEndOfWord
 
     const charAfterMatch = this.entireText[this.currentIndex() + match.length]
     const isTouchingWordStart = NOT_WHITESPACE_PATTERN.test(charAfterMatch)
@@ -124,21 +124,7 @@ export class TokenizerContext {
     this.lengthAdvanced += length
     this.dirty()
   }
-
-  isTouchingEndOfNonWhitespace(): boolean {
-    const previousChar = this.entireText[this.currentIndex() - 1]
-
-    return NOT_WHITESPACE_PATTERN.test(previousChar)
-  }
-
-  isTouchingBeginningOfNonWhitespace(args?: { countCharsToLookAhead: number }): boolean {
-    args = args || { countCharsToLookAhead: 0 }
-    const relevantChar =
-      this.entireText[this.currentIndex() + args.countCharsToLookAhead]
-
-    return NOT_WHITESPACE_PATTERN.test(relevantChar)
-  }
-
+  
   private currentIndex(): number {
     return this.initialIndex + this.lengthAdvanced
   }
@@ -164,6 +150,9 @@ export class TokenizerContext {
   private dirty(): void {
     this.remainingText = this.entireText.substr(this.currentIndex())
     this.currentChar = this.remainingText[0]
+    
+    const previousChar = this.entireText[this.currentIndex() - 1]
+    this.isTouchingEndOfWord = NOT_WHITESPACE_PATTERN.test(previousChar)
   }
 }
 
