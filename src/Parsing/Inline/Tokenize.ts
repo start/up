@@ -307,6 +307,8 @@ class Tokenizer {
         }
 
         inlineCode += currentChar
+        this.context.advance(1)
+        continue
       }
 
       if (!isCharEscaped) {

@@ -937,6 +937,8 @@ var Tokenizer = (function () {
                     return;
                 }
                 inlineCode += currentChar;
+                this.context.advance(1);
+                continue;
             }
             if (!isCharEscaped) {
                 if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
