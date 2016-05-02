@@ -41,7 +41,7 @@ import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  const result = new Tokenizer(text, new TokenizerContext(), config).result
+  const result = new Tokenizer(new TokenizerContext(text), config).result
 
   const tokensWithRaisedVoicesApplied =
     applyRaisedVoicesToRawTokens(result.tokens)
@@ -284,24 +284,19 @@ class OldTokenizer {
 
 class Tokenizer {
   public result: TokenizerResult
-  private lengthAdvanced = 0
   private tokens: Token[] = []
 
-  constructor(
-    private text: string,
-    private context: TokenizerContext,
-    private config: UpConfig
-  ) {
+  constructor(private context: TokenizerContext, private config: UpConfig) {
     let inlineCode = ''
     let isCharEscaped = false
 
-    while (!this.done()) {
-      const currentChar = this.text[0]
+    while (!this.context.done()) {
+      const currentChar = this.context.currentChar
       isCharEscaped = false
 
       if (currentChar === '\\') {
         isCharEscaped = true
-        this.advance(1)
+        this.context.advance(1)
         continue
       }
 
@@ -321,12 +316,12 @@ class Tokenizer {
       }
 
       this.addPlainTextToken(currentChar)
-      this.advance(1)
+      this.context.advance(1)
     }
 
     this.result = {
       succeeded: !this.context.failed(),
-      lengthAdvanced: this.lengthAdvanced,
+      lengthAdvanced: this.context.lengthAdvanced,
       tokens: this.tokens
     }
   }
@@ -336,53 +331,41 @@ class Tokenizer {
   }
 
   private openInlineCode(): boolean {
-    if (this.text[0] !== '`') {
+    if (this.context.currentChar !== '`') {
       return false
     }
 
-    return this.tryToTokenize({
-      context: this.context.withInlineCodeOpen(),
-      charsToSkip: 1
-    })
+    return this.tryToTokenize(
+      this.context.withInlineCodeOpen({ startTokenLength: 1 }))
   }
 
   private closeInlineCode(): boolean {
-    if (this.text[0] === '`') {
-      this.advance(1)
+    if (this.context.currentChar === '`') {
+      this.context.advance(1)
       return true
     }
 
     return false
   }
 
-  private tryToTokenize(args: { context: TokenizerContext, charsToSkip: number }): boolean {
-    const { charsToSkip, context } = args
+  private tryToTokenize(context: TokenizerContext): boolean {
 
     const result =
-      new Tokenizer(this.text.substr(charsToSkip), context, this.config).result
+      new Tokenizer(context, this.config).result
 
     if (!result.succeeded) {
       return false
     }
 
     this.tokens.push(...result.tokens)
-    this.advance(charsToSkip + result.lengthAdvanced)
+    this.context.advance(result.lengthAdvanced)
     return true
-  }
-
-  private advance(length: number): void {
-    this.text = this.text.substr(length)
-    this.lengthAdvanced += length
-  }
-
-  private done(): boolean {
-    return !this.text.length
   }
 
   private getResultFor(...tokens: Token[]): TokenizerResult {
     return {
       succeeded: true,
-      lengthAdvanced: this.lengthAdvanced,
+      lengthAdvanced: this.context.lengthAdvanced,
       tokens: tokens
     }
   }

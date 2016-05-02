@@ -7,8 +7,17 @@ export class TokenizerContext {
   public isRevisionInsertionOpen = false
   public countSpoilersOpen = 0
   public countFootnotesOpen = 0
+  public lengthAdvanced = 0
+  public remainingText: string
+  public currentChar: string
   
-  constructor() { }
+  constructor(private entireText: string, private initialIndex = 0) {
+    this.dirty()
+  }
+  
+  done(): boolean {
+    return !this.remainingText
+  }
   
   failed(): boolean {
     return (
@@ -20,56 +29,65 @@ export class TokenizerContext {
     )
   }
   
-  withInlineCodeOpen(): TokenizerContext {
-    const copy = this.copyForNewOpenConvention()
+  withInlineCodeOpen(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = this.copyForNewOpenConvention(args)
     
     copy.isInlineCodeOpen = true
     
     return copy
   }
   
-  withLinkOpen(): TokenizerContext {
-    const copy = this.copyForNewOpenConvention()
+  withLinkOpen(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = this.copyForNewOpenConvention(args)
     
     copy.isLinkOpen = true
     
     return copy
   }
   
-  withRevisionDeletionOpen(): TokenizerContext {
-    const copy = this.copyForNewOpenConvention()
+  withRevisionDeletionOpen(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = this.copyForNewOpenConvention(args)
     
     copy.isRevisionDeletionOpen = true
     
     return copy
   }
   
-  withRevisionInsertionOpen(): TokenizerContext {
-    const copy = this.copyForNewOpenConvention()
+  withRevisionInsertionOpen(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = this.copyForNewOpenConvention(args)
     
     copy.isRevisionInsertionOpen = true
     
     return copy
   }
   
-  withAdditionalSpoilerOpen(): TokenizerContext {
-    const copy = this.copyForNewOpenConvention()
+  withAdditionalSpoilerOpen(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = this.copyForNewOpenConvention(args)
     
     copy.countSpoilersOpen += 1
     
     return copy
   }
   
-  withAdditionalFootnoteOpen(): TokenizerContext {
-    const copy = this.copyForNewOpenConvention()
+  withAdditionalFootnoteOpen(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = this.copyForNewOpenConvention(args)
     
     copy.countSpoilersOpen += 1
     
     return copy
   }
   
-  private copyForNewOpenConvention(): TokenizerContext {
-    const copy = new TokenizerContext()
+  advance(length: number): void {
+    this.lengthAdvanced += length
+    this.dirty()  
+  }
+  
+  private currentIndex(): number {
+    return this.initialIndex + this.lengthAdvanced
+  }
+  
+  private copyForNewOpenConvention(args: WithNewOpenConventionArgs): TokenizerContext {
+    const copy = new TokenizerContext(this.entireText, this.currentIndex())
     
     copy.isLinkOpen = this.isLinkOpen
     copy.isRevisionDeletionOpen = this.isRevisionDeletionOpen
@@ -80,10 +98,18 @@ export class TokenizerContext {
     // We don't copy `this.isInlineCodeOpen`. It will always be false when this method is called,
     // because no new conventions can be opened inside of inline code.
     
+    copy.advance(args.startTokenLength)
+    copy.dirty()
+    
     return copy
+  }
+  
+  private dirty(): void {
+    this.remainingText = this.entireText.substr(this.currentIndex())
+    this.currentChar = this.remainingText[0]
   }
 }
 
 interface WithNewOpenConventionArgs {
-  lengthAdvanceed: number
+  startTokenLength: number
 }
