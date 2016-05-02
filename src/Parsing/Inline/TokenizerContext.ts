@@ -1,3 +1,5 @@
+const NOT_WHITESPACE_PATTERN = /\S/
+
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
 export class TokenizerContext {
@@ -80,6 +82,19 @@ export class TokenizerContext {
   advance(length: number): void {
     this.lengthAdvanced += length
     this.dirty()  
+  }
+  
+  isTouchingEndOfNonWhitespace(): boolean {
+    const previousChar = this.remainingText[this.currentIndex() - 1]
+    
+    return NOT_WHITESPACE_PATTERN.test(previousChar)
+  }
+  
+  isTouchingBeginningOfNonWhitespace(args?: { countCharsToLookAhead: number }): boolean {
+    args = args || { countCharsToLookAhead: 0 }
+    const relevantChar = this.remainingText[this.currentIndex() + args.countCharsToLookAhead]
+    
+    return NOT_WHITESPACE_PATTERN.test(relevantChar)
   }
   
   private currentIndex(): number {

@@ -310,7 +310,7 @@ class Tokenizer {
       }
 
       if (!isCharEscaped) {
-        if (this.openInlineCode()) {
+        if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
           continue
         }
       }
@@ -330,7 +330,7 @@ class Tokenizer {
     this.tokens.push(new PlainTextToken(text))
   }
 
-  private openInlineCode(): boolean {
+  private tokenizeInlineCode(): boolean {
     if (this.context.currentChar !== '`') {
       return false
     }
@@ -368,5 +368,53 @@ class Tokenizer {
       lengthAdvanced: this.context.lengthAdvanced,
       tokens: tokens
     }
+  }
+
+  // Handle emphasis and stress conventions
+  private tokenizeRaisedVoicePlaceholders(): boolean {
+    const ASTERISKS_PATTERN = /^\*+/
+    const matchResult = ASTERISKS_PATTERN.exec(this.context.remainingText)
+
+    if (!matchResult) {
+      return false
+    }
+
+    const asterisks = matchResult[0]
+    const countAsterisks = asterisks.length
+    
+    // If the previous character in the raw source text was whitespace, this delimiter cannot end any raised-voice
+    // conventions. That's because delimiter needs to look like it's touching the end of the text it's affecting.
+    //
+    // We're only concerned with how the asterisks appear in the surrounding raw text. Therefore, at least for now,
+    // we don't care whether any preceding whitespace is escaped or not.
+
+    const canCloseConvention = this.context.isTouchingEndOfNonWhitespace()
+
+    // Likewise, a delimiter cannot begin any raised-voice conventions if the next character in the raw source text 
+    // is whitespace. That's because the delimiter must look like it's touching the beginning of the text it's
+    // affecting. At least for now, the next raw character can even be a backslash!
+
+    // The text consumer's current char is actually the next char after the delimiter we just consumed.
+    const canOpenConvention =
+      this.context.isTouchingBeginningOfNonWhitespace({
+        countCharsToLookAhead: countAsterisks
+    })
+
+    let Type: PotentialRaisedVoiceTokenType
+
+    if (canOpenConvention && canCloseConvention) {
+      Type = PotentialRaisedVoiceStartOrEndToken
+    } else if (canOpenConvention) {
+      Type = PotentialRaisedVoiceStartToken
+    } else if (canCloseConvention) {
+      Type = PotentialRaisedVoiceEndToken
+    } else {
+      this.addPlainTextToken(asterisks)
+      return true
+    }
+
+    this.tokens.push(new Type(asterisks))
+    this.context.advance(countAsterisks)
+    return true
   }
 }

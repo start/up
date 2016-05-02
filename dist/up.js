@@ -939,7 +939,7 @@ var Tokenizer = (function () {
                 inlineCode += currentChar;
             }
             if (!isCharEscaped) {
-                if (this.openInlineCode()) {
+                if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
                     continue;
                 }
             }
@@ -955,7 +955,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.addPlainTextToken = function (text) {
         this.tokens.push(new PlainTextToken_1.PlainTextToken(text));
     };
-    Tokenizer.prototype.openInlineCode = function () {
+    Tokenizer.prototype.tokenizeInlineCode = function () {
         if (this.context.currentChar !== '`') {
             return false;
         }
@@ -988,6 +988,36 @@ var Tokenizer = (function () {
             lengthAdvanced: this.context.lengthAdvanced,
             tokens: tokens
         };
+    };
+    Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
+        var ASTERISKS_PATTERN = /^\*+/;
+        var matchResult = ASTERISKS_PATTERN.exec(this.context.remainingText);
+        if (!matchResult) {
+            return false;
+        }
+        var asterisks = matchResult[0];
+        var countAsterisks = asterisks.length;
+        var canCloseConvention = this.context.isTouchingEndOfNonWhitespace();
+        var canOpenConvention = this.context.isTouchingBeginningOfNonWhitespace({
+            countCharsToLookAhead: countAsterisks
+        });
+        var Type;
+        if (canOpenConvention && canCloseConvention) {
+            Type = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
+        }
+        else if (canOpenConvention) {
+            Type = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
+        }
+        else if (canCloseConvention) {
+            Type = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
+        }
+        else {
+            this.addPlainTextToken(asterisks);
+            return true;
+        }
+        this.tokens.push(new Type(asterisks));
+        this.context.advance(countAsterisks);
+        return true;
     };
     return Tokenizer;
 }());
@@ -1029,6 +1059,7 @@ exports.tokenizeNakedUrl = tokenizeNakedUrl;
 
 },{"./TextConsumer":15,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29}],18:[function(require,module,exports){
 "use strict";
+var NOT_WHITESPACE_PATTERN = /\S/;
 var TokenizerContext = (function () {
     function TokenizerContext(entireText, initialIndex) {
         if (initialIndex === void 0) { initialIndex = 0; }
@@ -1086,6 +1117,15 @@ var TokenizerContext = (function () {
     TokenizerContext.prototype.advance = function (length) {
         this.lengthAdvanced += length;
         this.dirty();
+    };
+    TokenizerContext.prototype.isTouchingEndOfNonWhitespace = function () {
+        var previousChar = this.remainingText[this.currentIndex() - 1];
+        return NOT_WHITESPACE_PATTERN.test(previousChar);
+    };
+    TokenizerContext.prototype.isTouchingBeginningOfNonWhitespace = function (args) {
+        args = args || { countCharsToLookAhead: 0 };
+        var relevantChar = this.remainingText[this.currentIndex() + args.countCharsToLookAhead];
+        return NOT_WHITESPACE_PATTERN.test(relevantChar);
     };
     TokenizerContext.prototype.currentIndex = function () {
         return this.initialIndex + this.lengthAdvanced;
