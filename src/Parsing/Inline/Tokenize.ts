@@ -349,7 +349,6 @@ class Tokenizer {
   }
 
   private tryToTokenize(context: TokenizerContext): boolean {
-
     const result =
       new Tokenizer(context, this.config).result
 

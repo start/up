@@ -16,3 +16,12 @@ describe('Inline code', () => {
       ]))
   })
 })
+
+describe('An unmatched backtick', () => {
+  it('does not produce any inline code', () => {
+    expect(Up.toAst('I don`t ever do this')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I don`t ever do this')
+      ]))
+  })
+})
