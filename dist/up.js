@@ -992,34 +992,29 @@ var Tokenizer = (function () {
         };
     };
     Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
+        var _this = this;
         var ASTERISKS_PATTERN = /^\*+/;
-        var matchResult = ASTERISKS_PATTERN.exec(this.context.remainingText);
-        if (!matchResult) {
-            return false;
-        }
-        var asterisks = matchResult[0];
-        var countAsterisks = asterisks.length;
-        var canCloseConvention = this.context.isTouchingEndOfNonWhitespace();
-        var canOpenConvention = this.context.isTouchingBeginningOfNonWhitespace({
-            countCharsToLookAhead: countAsterisks
+        return this.context.match({
+            pattern: ASTERISKS_PATTERN,
+            then: function (asterisks, isTouchingWordEnd, isTouchingWordStart) {
+                var canCloseConvention = isTouchingWordEnd;
+                var canOpenConvention = isTouchingWordStart;
+                var AsteriskTokenType;
+                if (canOpenConvention && canCloseConvention) {
+                    AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
+                }
+                else if (canOpenConvention) {
+                    AsteriskTokenType = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
+                }
+                else if (canCloseConvention) {
+                    AsteriskTokenType = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
+                }
+                else {
+                    AsteriskTokenType = PlainTextToken_1.PlainTextToken;
+                }
+                _this.tokens.push(new AsteriskTokenType(asterisks));
+            }
         });
-        this.context.advance(countAsterisks);
-        var AsteriskTokenType;
-        if (canOpenConvention && canCloseConvention) {
-            AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
-        }
-        else if (canOpenConvention) {
-            AsteriskTokenType = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
-        }
-        else if (canCloseConvention) {
-            AsteriskTokenType = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
-        }
-        else {
-            this.addPlainTextToken(asterisks);
-            return true;
-        }
-        this.tokens.push(new AsteriskTokenType(asterisks));
-        return true;
     };
     return Tokenizer;
 }());

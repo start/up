@@ -166,5 +166,5 @@ interface MatchArgs {
 }
 
 interface OnMatch {
-  (match: string, isTouchingWordEnd: boolean, isTouchingWordStart: boolean, ...captures: string[]): boolean
+  (match: string, isTouchingWordEnd: boolean, isTouchingWordStart: boolean, ...captures: string[]): void
 }
