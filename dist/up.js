@@ -1078,7 +1078,8 @@ var TokenizerContext = (function () {
         return !this.remainingText;
     };
     TokenizerContext.prototype.failed = function () {
-        return (this.isLinkOpen
+        return (this.isInlineCodeOpen
+            || this.isLinkOpen
             || this.isRevisionDeletionOpen
             || this.isRevisionInsertionOpen
             || this.countSpoilersOpen > 0

@@ -23,7 +23,8 @@ export class TokenizerContext {
   
   failed(): boolean {
     return (
-      this.isLinkOpen
+      this.isInlineCodeOpen
+      || this.isLinkOpen
       || this.isRevisionDeletionOpen
       || this.isRevisionInsertionOpen
       || this.countSpoilersOpen > 0
