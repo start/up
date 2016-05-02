@@ -342,12 +342,7 @@ class Tokenizer {
   }
 
   private closeInlineCode(): boolean {
-    if (this.context.currentChar === '`') {
-      this.context.advance(1)
-      return true
-    }
-
-    return false
+    return this.context.advanceIfMatch({ pattern: /^`/ })
   }
 
   private tryToTokenize(context: TokenizerContext): boolean {
@@ -388,7 +383,6 @@ class Tokenizer {
         // Likewise, a token cannot begin any raised-voice conventions if the next character in the raw source text 
         // is whitespace. That's because the token must look like it's touching the beginning of the text it's
         // affecting. At least for now, the next raw character can even be a backslash!
-
         const canOpenConvention = isTouchingWordStart
         
         let AsteriskTokenType: new (asterisks: string) => Token

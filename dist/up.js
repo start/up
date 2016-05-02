@@ -964,11 +964,7 @@ var Tokenizer = (function () {
         return this.tryToTokenize(this.context.withInlineCodeOpen({ startTokenLength: 1 }));
     };
     Tokenizer.prototype.closeInlineCode = function () {
-        if (this.context.currentChar === '`') {
-            this.context.advance(1);
-            return true;
-        }
-        return false;
+        return this.context.advanceIfMatch({ pattern: /^`/ });
     };
     Tokenizer.prototype.tryToTokenize = function (context) {
         var result = new Tokenizer(context, this.config).result;
