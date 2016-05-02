@@ -994,7 +994,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
         var ASTERISKS_PATTERN = /^\*+/;
-        return this.context.match({
+        return this.context.advanceIfMatch({
             pattern: ASTERISKS_PATTERN,
             then: function (asterisks, isTouchingWordEnd, isTouchingWordStart) {
                 var canCloseConvention = isTouchingWordEnd;
@@ -1083,11 +1083,25 @@ var TokenizerContext = (function () {
         var isTouchingWordEnd = NOT_WHITESPACE_PATTERN.test(charBeforeMatch);
         var charAfterMatch = this.entireText[this.currentIndex() + match.length];
         var isTouchingWordStart = NOT_WHITESPACE_PATTERN.test(charAfterMatch);
-        this.advance(match.length);
         if (then) {
             then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
         }
         return true;
+    };
+    TokenizerContext.prototype.advanceIfMatch = function (args) {
+        var _this = this;
+        var originalThen = args.then || (function () { });
+        return this.match({
+            pattern: args.pattern,
+            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                var captures = [];
+                for (var _i = 3; _i < arguments.length; _i++) {
+                    captures[_i - 3] = arguments[_i];
+                }
+                _this.advance(match.length);
+                originalThen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            }
+        });
     };
     TokenizerContext.prototype.done = function () {
         return !this.remainingText;

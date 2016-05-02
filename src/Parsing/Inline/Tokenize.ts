@@ -336,7 +336,7 @@ class Tokenizer {
     if (this.context.currentChar !== '`') {
       return false
     }
-
+    
     return this.tryToTokenize(
       this.context.withInlineCodeOpen({ startTokenLength: 1 }))
   }
@@ -374,7 +374,7 @@ class Tokenizer {
   private tokenizeRaisedVoicePlaceholders(): boolean {
     const ASTERISKS_PATTERN = /^\*+/
 
-    return this.context.match({
+    return this.context.advanceIfMatch({
       pattern: ASTERISKS_PATTERN,
       
       then: (asterisks, isTouchingWordEnd, isTouchingWordStart) => {

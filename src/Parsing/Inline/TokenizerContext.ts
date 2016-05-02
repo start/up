@@ -30,20 +30,31 @@ export class TokenizerContext {
 
     const match = result[0]
     const captures = result.slice(1)
-    
+
     const charBeforeMatch = this.entireText[this.currentIndex() - 1]
     const isTouchingWordEnd = NOT_WHITESPACE_PATTERN.test(charBeforeMatch)
-    
+
     const charAfterMatch = this.entireText[this.currentIndex() + match.length]
     const isTouchingWordStart = NOT_WHITESPACE_PATTERN.test(charAfterMatch)
-
-    this.advance(match.length)
 
     if (then) {
       then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
     }
 
     return true
+  }
+
+  advanceIfMatch(args: MatchArgs): boolean {
+    let originalThen = args.then || (() => {})
+    
+    return this.match({
+      pattern: args.pattern,
+      
+      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+        this.advance(match.length)
+        originalThen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+      }
+    })
   }
 
   done(): boolean {
@@ -162,7 +173,7 @@ interface WithNewOpenConventionArgs {
 
 interface MatchArgs {
   pattern: RegExp,
-  then: OnMatch
+  then?: OnMatch
 }
 
 interface OnMatch {
