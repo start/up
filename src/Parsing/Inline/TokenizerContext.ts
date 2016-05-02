@@ -85,14 +85,15 @@ export class TokenizerContext {
   }
   
   isTouchingEndOfNonWhitespace(): boolean {
-    const previousChar = this.remainingText[this.currentIndex() - 1]
+    const previousChar = this.entireText[this.currentIndex() - 1]
     
     return NOT_WHITESPACE_PATTERN.test(previousChar)
   }
   
   isTouchingBeginningOfNonWhitespace(args?: { countCharsToLookAhead: number }): boolean {
     args = args || { countCharsToLookAhead: 0 }
-    const relevantChar = this.remainingText[this.currentIndex() + args.countCharsToLookAhead]
+    const relevantChar =
+      this.entireText[this.currentIndex() + args.countCharsToLookAhead]
     
     return NOT_WHITESPACE_PATTERN.test(relevantChar)
   }

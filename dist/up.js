@@ -1001,22 +1001,22 @@ var Tokenizer = (function () {
         var canOpenConvention = this.context.isTouchingBeginningOfNonWhitespace({
             countCharsToLookAhead: countAsterisks
         });
-        var Type;
+        this.context.advance(countAsterisks);
+        var AsteriskTokenType;
         if (canOpenConvention && canCloseConvention) {
-            Type = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
+            AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
         }
         else if (canOpenConvention) {
-            Type = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
+            AsteriskTokenType = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
         }
         else if (canCloseConvention) {
-            Type = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
+            AsteriskTokenType = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
         }
         else {
             this.addPlainTextToken(asterisks);
             return true;
         }
-        this.tokens.push(new Type(asterisks));
-        this.context.advance(countAsterisks);
+        this.tokens.push(new AsteriskTokenType(asterisks));
         return true;
     };
     return Tokenizer;
@@ -1119,12 +1119,12 @@ var TokenizerContext = (function () {
         this.dirty();
     };
     TokenizerContext.prototype.isTouchingEndOfNonWhitespace = function () {
-        var previousChar = this.remainingText[this.currentIndex() - 1];
+        var previousChar = this.entireText[this.currentIndex() - 1];
         return NOT_WHITESPACE_PATTERN.test(previousChar);
     };
     TokenizerContext.prototype.isTouchingBeginningOfNonWhitespace = function (args) {
         args = args || { countCharsToLookAhead: 0 };
-        var relevantChar = this.remainingText[this.currentIndex() + args.countCharsToLookAhead];
+        var relevantChar = this.entireText[this.currentIndex() + args.countCharsToLookAhead];
         return NOT_WHITESPACE_PATTERN.test(relevantChar);
     };
     TokenizerContext.prototype.currentIndex = function () {
