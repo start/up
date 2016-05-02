@@ -72,48 +72,48 @@ export class TokenizerContext {
     )
   }
 
-  withInlineCodeOpen(args: WithNewOpenConventionArgs): TokenizerContext {
-    const copy = this.copyForNewOpenConvention(args)
+  withInlineCodeOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
 
     copy.isInlineCodeOpen = true
 
     return copy
   }
 
-  withLinkOpen(args: WithNewOpenConventionArgs): TokenizerContext {
-    const copy = this.copyForNewOpenConvention(args)
+  withLinkOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
 
     copy.isLinkOpen = true
 
     return copy
   }
 
-  withRevisionDeletionOpen(args: WithNewOpenConventionArgs): TokenizerContext {
-    const copy = this.copyForNewOpenConvention(args)
+  withRevisionDeletionOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
 
     copy.isRevisionDeletionOpen = true
 
     return copy
   }
 
-  withRevisionInsertionOpen(args: WithNewOpenConventionArgs): TokenizerContext {
-    const copy = this.copyForNewOpenConvention(args)
+  withRevisionInsertionOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
 
     copy.isRevisionInsertionOpen = true
 
     return copy
   }
 
-  withAdditionalSpoilerOpen(args: WithNewOpenConventionArgs): TokenizerContext {
-    const copy = this.copyForNewOpenConvention(args)
+  withAdditionalSpoilerOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
 
     copy.countSpoilersOpen += 1
 
     return copy
   }
 
-  withAdditionalFootnoteOpen(args: WithNewOpenConventionArgs): TokenizerContext {
-    const copy = this.copyForNewOpenConvention(args)
+  withAdditionalFootnoteOpen(): TokenizerContext {
+    const copy = this.copyForNewOpenConvention()
 
     copy.countSpoilersOpen += 1
 
@@ -129,7 +129,7 @@ export class TokenizerContext {
     return this.initialIndex + this.lengthAdvanced
   }
 
-  private copyForNewOpenConvention(args: WithNewOpenConventionArgs): TokenizerContext {
+  private copyForNewOpenConvention(): TokenizerContext {
     const copy = new TokenizerContext(this.entireText, this.currentIndex())
 
     copy.isLinkOpen = this.isLinkOpen
@@ -141,9 +141,7 @@ export class TokenizerContext {
     // We don't copy `this.isInlineCodeOpen`. It will always be false when this method is called,
     // because no new conventions can be opened inside of inline code.
 
-    copy.advance(args.startTokenLength)
     copy.dirty()
-
     return copy
   }
 
@@ -154,10 +152,6 @@ export class TokenizerContext {
     const previousChar = this.entireText[this.currentIndex() - 1]
     this.isTouchingEndOfWord = NOT_WHITESPACE_PATTERN.test(previousChar)
   }
-}
-
-interface WithNewOpenConventionArgs {
-  startTokenLength: number
 }
 
 interface MatchArgs {

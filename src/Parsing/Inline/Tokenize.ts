@@ -333,19 +333,35 @@ class Tokenizer {
   }
 
   private tokenizeInlineCode(): boolean {
-    if (this.context.currentChar !== '`') {
-      return false
-    }
-    
-    return this.tryToTokenize(
-      this.context.withInlineCodeOpen({ startTokenLength: 1 }))
+    return this.tokenizeConvention({
+      pattern: /^`/,
+      getNewContext: () => this.context.withInlineCodeOpen()
+    })
   }
 
   private closeInlineCode(): boolean {
     return this.context.advanceIfMatch({ pattern: /^`/ })
   }
+  
+  private tokenizeConvention(args: OpenConventionArgs): boolean {
+    let newContext: TokenizerContext
+    
+    const canOpenPattern = this.context.match({
+      pattern: args.pattern,
+      then: match => {
+        newContext = args.getNewContext()
+        newContext.advance(match.length)
+      }
+    })
+    
+    if (!canOpenPattern) {
+      return false
+    }
+    
+    return this.tokenizeRestOfConvention(newContext)
+  }
 
-  private tryToTokenize(context: TokenizerContext): boolean {
+  private tokenizeRestOfConvention(context: TokenizerContext): boolean {
     const result = new Tokenizer(context, this.config).result
 
     if (!result.succeeded) {
@@ -401,4 +417,9 @@ class Tokenizer {
       }
     })
   }
+}
+
+interface OpenConventionArgs {
+  pattern: RegExp,
+  getNewContext: () => TokenizerContext
 }

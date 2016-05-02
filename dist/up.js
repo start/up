@@ -958,15 +958,30 @@ var Tokenizer = (function () {
         this.tokens.push(new PlainTextToken_1.PlainTextToken(text));
     };
     Tokenizer.prototype.tokenizeInlineCode = function () {
-        if (this.context.currentChar !== '`') {
-            return false;
-        }
-        return this.tryToTokenize(this.context.withInlineCodeOpen({ startTokenLength: 1 }));
+        var _this = this;
+        return this.tokenizeConvention({
+            pattern: /^`/,
+            getNewContext: function () { return _this.context.withInlineCodeOpen(); }
+        });
     };
     Tokenizer.prototype.closeInlineCode = function () {
         return this.context.advanceIfMatch({ pattern: /^`/ });
     };
-    Tokenizer.prototype.tryToTokenize = function (context) {
+    Tokenizer.prototype.tokenizeConvention = function (args) {
+        var newContext;
+        var canOpenPattern = this.context.match({
+            pattern: args.pattern,
+            then: function (match) {
+                newContext = args.getNewContext();
+                newContext.advance(match.length);
+            }
+        });
+        if (!canOpenPattern) {
+            return false;
+        }
+        return this.tokenizeRestOfConvention(newContext);
+    };
+    Tokenizer.prototype.tokenizeRestOfConvention = function (context) {
         var result = new Tokenizer(context, this.config).result;
         if (!result.succeeded) {
             return false;
@@ -1109,33 +1124,33 @@ var TokenizerContext = (function () {
             || this.countSpoilersOpen > 0
             || this.countFootnotesOpen > 0);
     };
-    TokenizerContext.prototype.withInlineCodeOpen = function (args) {
-        var copy = this.copyForNewOpenConvention(args);
+    TokenizerContext.prototype.withInlineCodeOpen = function () {
+        var copy = this.copyForNewOpenConvention();
         copy.isInlineCodeOpen = true;
         return copy;
     };
-    TokenizerContext.prototype.withLinkOpen = function (args) {
-        var copy = this.copyForNewOpenConvention(args);
+    TokenizerContext.prototype.withLinkOpen = function () {
+        var copy = this.copyForNewOpenConvention();
         copy.isLinkOpen = true;
         return copy;
     };
-    TokenizerContext.prototype.withRevisionDeletionOpen = function (args) {
-        var copy = this.copyForNewOpenConvention(args);
+    TokenizerContext.prototype.withRevisionDeletionOpen = function () {
+        var copy = this.copyForNewOpenConvention();
         copy.isRevisionDeletionOpen = true;
         return copy;
     };
-    TokenizerContext.prototype.withRevisionInsertionOpen = function (args) {
-        var copy = this.copyForNewOpenConvention(args);
+    TokenizerContext.prototype.withRevisionInsertionOpen = function () {
+        var copy = this.copyForNewOpenConvention();
         copy.isRevisionInsertionOpen = true;
         return copy;
     };
-    TokenizerContext.prototype.withAdditionalSpoilerOpen = function (args) {
-        var copy = this.copyForNewOpenConvention(args);
+    TokenizerContext.prototype.withAdditionalSpoilerOpen = function () {
+        var copy = this.copyForNewOpenConvention();
         copy.countSpoilersOpen += 1;
         return copy;
     };
-    TokenizerContext.prototype.withAdditionalFootnoteOpen = function (args) {
-        var copy = this.copyForNewOpenConvention(args);
+    TokenizerContext.prototype.withAdditionalFootnoteOpen = function () {
+        var copy = this.copyForNewOpenConvention();
         copy.countSpoilersOpen += 1;
         return copy;
     };
@@ -1146,14 +1161,13 @@ var TokenizerContext = (function () {
     TokenizerContext.prototype.currentIndex = function () {
         return this.initialIndex + this.lengthAdvanced;
     };
-    TokenizerContext.prototype.copyForNewOpenConvention = function (args) {
+    TokenizerContext.prototype.copyForNewOpenConvention = function () {
         var copy = new TokenizerContext(this.entireText, this.currentIndex());
         copy.isLinkOpen = this.isLinkOpen;
         copy.isRevisionDeletionOpen = this.isRevisionDeletionOpen;
         copy.isRevisionInsertionOpen = this.isRevisionInsertionOpen;
         copy.countSpoilersOpen = this.countSpoilersOpen;
         copy.countFootnotesOpen = this.countFootnotesOpen;
-        copy.advance(args.startTokenLength);
         copy.dirty();
         return copy;
     };
