@@ -1076,6 +1076,24 @@ var TokenizerContext = (function () {
         this.lengthAdvanced = 0;
         this.dirty();
     }
+    TokenizerContext.prototype.match = function (args) {
+        var pattern = args.pattern, then = args.then;
+        var result = pattern.exec(this.remainingText);
+        if (!result) {
+            return false;
+        }
+        var match = result[0];
+        var captures = result.slice(1);
+        var charBeforeMatch = this.entireText[this.currentIndex() - 1];
+        var isTouchingWordEnd = NOT_WHITESPACE_PATTERN.test(charBeforeMatch);
+        var charAfterMatch = this.entireText[this.currentIndex() + match.length];
+        var isTouchingWordStart = NOT_WHITESPACE_PATTERN.test(charAfterMatch);
+        this.advance(match.length);
+        if (then) {
+            then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+        }
+        return true;
+    };
     TokenizerContext.prototype.done = function () {
         return !this.remainingText;
     };
