@@ -295,7 +295,7 @@ class Tokenizer {
 
   constructor(private context: TokenizerContext, private config: UpConfig) {
     this.tokens.push(...this.context.initialTokens)
-    
+
     while (!this.context.done()) {
       if (this.context.currentChar === '\\') {
         this.context.advance(1)
@@ -308,17 +308,11 @@ class Tokenizer {
           return
         }
       } else {
-        if (this.context.countSpoilersOpen) {
-          if (this.closeSpoiler()) {
-            return
-          }
-        } else {
-          if (this.tokenizeSpoiler()) {
-            continue
-          }
+        if (this.context.countSpoilersOpen && this.closeSpoiler()) {
+          return
         }
-        
-        if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
+
+        if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders() || this.tokenizeSpoiler()) {
           continue
         }
       }
@@ -375,21 +369,21 @@ class Tokenizer {
 
     return false
   }
-  
+
   private tokenizeSpoiler(): boolean {
     return this.tokenizeConvention({
-      pattern: new RegExp(`^\\[${this.config.settings.i18n.terms.spoiler}:\s*`, 'i'),
+      pattern: new RegExp(`^\\[${this.config.settings.i18n.terms.spoiler}:\\s*`, 'i'),
       getNewContext: () => this.context.withAdditionalSpoilerOpen()
     })
   }
-  
+
   private closeSpoiler(): boolean {
     if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
       this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken())
       this.result = this.getResult()
       return true
     }
-    
+
     return false
   }
 

@@ -28,7 +28,7 @@ describe('Bracketed text starting with "spoiler:"', () => {
   })
 })
 
-describe('Spoiler conventions', () => {
+describe('A spoiler convention', () => {
   it('can use any capitalization of the word "spoiler"', () => {
     const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
     const withRandomCase = 'After you beat the Elite Four, [SPoILeR: you fight Gary].'
@@ -50,7 +50,7 @@ describe('Spoiler conventions', () => {
       ]))
   })
 
-  it('can be nested within another spoiler node', () => {
+  it('can be nested within another spoiler convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),

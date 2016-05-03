@@ -936,17 +936,10 @@ var Tokenizer = (function () {
                 }
             }
             else {
-                if (this.context.countSpoilersOpen) {
-                    if (this.closeSpoiler()) {
-                        return;
-                    }
+                if (this.context.countSpoilersOpen && this.closeSpoiler()) {
+                    return;
                 }
-                else {
-                    if (this.tokenizeSpoiler()) {
-                        continue;
-                    }
-                }
-                if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
+                if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders() || this.tokenizeSpoiler()) {
                     continue;
                 }
             }
@@ -1001,7 +994,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenizeSpoiler = function () {
         var _this = this;
         return this.tokenizeConvention({
-            pattern: new RegExp("^\\[" + this.config.settings.i18n.terms.spoiler + ":s*", 'i'),
+            pattern: new RegExp("^\\[" + this.config.settings.i18n.terms.spoiler + ":\\s*", 'i'),
             getNewContext: function () { return _this.context.withAdditionalSpoilerOpen(); }
         });
     };
