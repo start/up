@@ -930,7 +930,6 @@ var Tokenizer = (function () {
             }
             if (this.context.isInlineCodeOpen) {
                 if (this.closeInlineCode()) {
-                    this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
                     return;
                 }
             }
@@ -980,7 +979,11 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.closeInlineCode = function () {
-        return this.context.advanceIfMatch({ pattern: /^`/ });
+        if (this.context.advanceIfMatch({ pattern: /^`/ })) {
+            this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
+            return true;
+        }
+        return false;
     };
     Tokenizer.prototype.tokenizeConvention = function (args) {
         var newContext;

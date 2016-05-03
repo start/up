@@ -303,7 +303,6 @@ class Tokenizer {
 
       if (this.context.isInlineCodeOpen) {
         if (this.closeInlineCode()) {
-          this.result = this.getResultFor(new InlineCodeToken(this.flushUnmatchedText()))
           return
         }
       } else {
@@ -332,7 +331,7 @@ class Tokenizer {
   private flushUnmatchedText(): string {
     const unmatchedText = this.collcetedUnmatchedText
     this.collcetedUnmatchedText = ''
-    
+
     return unmatchedText
   }
 
@@ -357,7 +356,12 @@ class Tokenizer {
   }
 
   private closeInlineCode(): boolean {
-    return this.context.advanceIfMatch({ pattern: /^`/ })
+    if (this.context.advanceIfMatch({ pattern: /^`/ })) {
+      this.result = this.getResultFor(new InlineCodeToken(this.flushUnmatchedText()))
+      return true
+    }
+
+    return false
   }
 
   private tokenizeConvention(args: OpenConventionArgs): boolean {
