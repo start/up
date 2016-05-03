@@ -294,7 +294,9 @@ class Tokenizer {
   private collcetedUnmatchedText = ''
 
   constructor(private context: TokenizerContext, private config: UpConfig) {
-    this.tokens.push(...this.context.initialTokens)
+    if (this.context.initialToken) {
+      this.tokens.push(this.context.initialToken)
+    }
 
     while (!this.context.done()) {
       if (this.context.currentChar === '\\') {
@@ -308,16 +310,14 @@ class Tokenizer {
           return
         }
       } else {
-        // TODO: Handle overlapping!
-        
-        if (this.context.countSpoilersOpen && this.closeSpoiler()) {
+        if (this.context.countSpoilersOpen && this.closeSpoiler() && this.context.isSpoilerInnermostOpenConvention()) {
           return
         }
-        
-        if (this.context.countFootnotesOpen && this.closeFootnote()) {
+
+        if (this.context.countFootnotesOpen && this.closeFootnote() && this.context.isFootnoteInnermostOpenConvention()) {
           return
         }
-        
+
         const didTokenizeConvention = (
           this.tokenizeInlineCode()
           || this.tokenizeRaisedVoicePlaceholders()

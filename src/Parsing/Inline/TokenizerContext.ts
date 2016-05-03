@@ -8,17 +8,23 @@ const NOT_WHITESPACE_PATTERN = /\S/
 
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
+
 export class TokenizerContext {
-  public initialTokens: Token[] = []
+  // The following fields are set once in `copyForNewOpenConvention` and the various `with...Open` methods,
+  // then subsequently never change.
   public isInlineCodeOpen = false
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
   public isRevisionInsertionOpen = false
   public countSpoilersOpen = 0
   public countFootnotesOpen = 0
+
+  public initialToken: Token
+    
+  // This is the only field that changes during the use of the object. That being said...
   public lengthAdvanced = 0
   
-  // The following three fields are determined based on other fields
+  // ...the following fields are re-computed in `dirty()` based `lengthAdvanced`.
   public remainingText: string
   public currentChar: string
   public isTouchingEndOfWord: boolean
@@ -115,7 +121,7 @@ export class TokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.countSpoilersOpen += 1
-    copy.initialTokens = [new SpoilerStartToken()]
+    copy.initialToken = new SpoilerStartToken()
 
     return copy
   }
@@ -124,7 +130,7 @@ export class TokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.countFootnotesOpen += 1
-    copy.initialTokens = [new FootnoteStartToken()]
+    copy.initialToken = new FootnoteStartToken()
 
     return copy
   }
@@ -133,6 +139,14 @@ export class TokenizerContext {
     this.lengthAdvanced += length
     this.dirty()
   }
+  
+  isSpoilerInnermostOpenConvention(): boolean {
+    return this.initialToken instanceof SpoilerStartToken
+  }
+  
+  isFootnoteInnermostOpenConvention(): boolean {
+    return this.initialToken instanceof FootnoteStartToken
+  } 
   
   private currentIndex(): number {
     return this.initialIndex + this.lengthAdvanced

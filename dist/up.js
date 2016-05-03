@@ -924,7 +924,9 @@ var Tokenizer = (function () {
         this.config = config;
         this.tokens = [];
         this.collcetedUnmatchedText = '';
-        (_a = this.tokens).push.apply(_a, this.context.initialTokens);
+        if (this.context.initialToken) {
+            this.tokens.push(this.context.initialToken);
+        }
         while (!this.context.done()) {
             if (this.context.currentChar === '\\') {
                 this.context.advance(1);
@@ -937,10 +939,10 @@ var Tokenizer = (function () {
                 }
             }
             else {
-                if (this.context.countSpoilersOpen && this.closeSpoiler()) {
+                if (this.context.countSpoilersOpen && this.closeSpoiler() && this.context.isSpoilerInnermostOpenConvention()) {
                     return;
                 }
-                if (this.context.countFootnotesOpen && this.closeFootnote()) {
+                if (this.context.countFootnotesOpen && this.closeFootnote() && this.context.isFootnoteInnermostOpenConvention()) {
                     return;
                 }
                 var didTokenizeConvention = (this.tokenizeInlineCode()
@@ -959,7 +961,6 @@ var Tokenizer = (function () {
             lengthAdvanced: this.context.lengthAdvanced,
             tokens: this.tokens
         };
-        var _a;
     }
     Tokenizer.prototype.collectCurrentChar = function () {
         this.collcetedUnmatchedText += this.context.currentChar;
@@ -1139,7 +1140,6 @@ var TokenizerContext = (function () {
         if (initialIndex === void 0) { initialIndex = 0; }
         this.entireText = entireText;
         this.initialIndex = initialIndex;
-        this.initialTokens = [];
         this.isInlineCodeOpen = false;
         this.isLinkOpen = false;
         this.isRevisionDeletionOpen = false;
@@ -1214,18 +1214,24 @@ var TokenizerContext = (function () {
     TokenizerContext.prototype.withAdditionalSpoilerOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.countSpoilersOpen += 1;
-        copy.initialTokens = [new SpoilerStartToken_1.SpoilerStartToken()];
+        copy.initialToken = new SpoilerStartToken_1.SpoilerStartToken();
         return copy;
     };
     TokenizerContext.prototype.withAdditionalFootnoteOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.countFootnotesOpen += 1;
-        copy.initialTokens = [new FootnoteStartToken_1.FootnoteStartToken()];
+        copy.initialToken = new FootnoteStartToken_1.FootnoteStartToken();
         return copy;
     };
     TokenizerContext.prototype.advance = function (length) {
         this.lengthAdvanced += length;
         this.dirty();
+    };
+    TokenizerContext.prototype.isSpoilerInnermostOpenConvention = function () {
+        return this.initialToken instanceof SpoilerStartToken_1.SpoilerStartToken;
+    };
+    TokenizerContext.prototype.isFootnoteInnermostOpenConvention = function () {
+        return this.initialToken instanceof FootnoteStartToken_1.FootnoteStartToken;
     };
     TokenizerContext.prototype.currentIndex = function () {
         return this.initialIndex + this.lengthAdvanced;
