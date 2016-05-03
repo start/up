@@ -921,51 +921,49 @@ var Tokenizer = (function () {
         this.context = context;
         this.config = config;
         this.tokens = [];
-        this.unmatchedText = '';
-        var inlineCode = '';
-        var isCharEscaped = false;
+        this.collcetedUnmatchedText = '';
         while (!this.context.done()) {
             var currentChar = this.context.currentChar;
             if (currentChar === '\\') {
-                isCharEscaped = true;
-                this.context.advance(1);
+                this.collectCurrentChar();
                 continue;
             }
             if (this.context.isInlineCodeOpen) {
-                if (!isCharEscaped && this.closeInlineCode()) {
-                    this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(inlineCode));
+                if (this.closeInlineCode()) {
+                    this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
                     return;
                 }
-                inlineCode += currentChar;
-                this.context.advance(1);
-                isCharEscaped = false;
-                continue;
             }
-            if (!isCharEscaped) {
+            else {
                 if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
                     continue;
                 }
             }
-            this.unmatchedText += currentChar;
-            this.addPlainTextToken(currentChar);
-            this.context.advance(1);
-            isCharEscaped = false;
+            this.collectCurrentChar();
         }
+        this.flushUnmatchedTextToPlainTextToken();
         this.result = {
             succeeded: !this.context.failed(),
             lengthAdvanced: this.context.lengthAdvanced,
             tokens: this.tokens
         };
     }
+    Tokenizer.prototype.collectCurrentChar = function () {
+        this.collcetedUnmatchedText += this.context.currentChar;
+        this.context.advance(1);
+    };
     Tokenizer.prototype.flushUnmatchedText = function () {
-        var unmatchedText = this.unmatchedText;
-        this.unmatchedText = '';
+        var unmatchedText = this.collcetedUnmatchedText;
+        this.collcetedUnmatchedText = '';
         return unmatchedText;
     };
     Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
-        this.tokens.push(new PlainTextToken_1.PlainTextToken(this.flushUnmatchedText()));
+        var unmatchedText = this.flushUnmatchedText();
+        if (unmatchedText) {
+            this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
+        }
     };
-    Tokenizer.prototype.flushUnmatchedTextThenAddTokens = function () {
+    Tokenizer.prototype.flushUnmatchedTextToPlainTextTokenThenAddTokens = function () {
         var tokens = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             tokens[_i - 0] = arguments[_i];
@@ -973,9 +971,6 @@ var Tokenizer = (function () {
         this.flushUnmatchedTextToPlainTextToken();
         (_a = this.tokens).push.apply(_a, tokens);
         var _a;
-    };
-    Tokenizer.prototype.addPlainTextToken = function (text) {
-        this.tokens.push(new PlainTextToken_1.PlainTextToken(text));
     };
     Tokenizer.prototype.tokenizeInlineCode = function () {
         var _this = this;
@@ -1006,10 +1001,9 @@ var Tokenizer = (function () {
         if (!result.succeeded) {
             return false;
         }
-        (_a = this.tokens).push.apply(_a, result.tokens);
+        this.flushUnmatchedTextToPlainTextTokenThenAddTokens.apply(this, result.tokens);
         this.context.advance(result.lengthAdvanced);
         return true;
-        var _a;
     };
     Tokenizer.prototype.getResultFor = function () {
         var tokens = [];
@@ -1043,7 +1037,7 @@ var Tokenizer = (function () {
                 else {
                     AsteriskTokenType = PlainTextToken_1.PlainTextToken;
                 }
-                _this.tokens.push(new AsteriskTokenType(asterisks));
+                _this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new AsteriskTokenType(asterisks));
             }
         });
     };

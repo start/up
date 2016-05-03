@@ -285,50 +285,38 @@ class OldTokenizer {
 class Tokenizer {
   public result: TokenizerResult
   private tokens: Token[] = []
-  
+
   // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
   // to a token.
   //
   // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
   // tokens (like InlineCodeTokens).
-  private unmatchedText = ''
+  private collcetedUnmatchedText = ''
 
   constructor(private context: TokenizerContext, private config: UpConfig) {
-    let inlineCode = ''
-    let isCharEscaped = false
-
     while (!this.context.done()) {
       const currentChar = this.context.currentChar
 
       if (currentChar === '\\') {
-        isCharEscaped = true
-        this.context.advance(1)
+        this.collectCurrentChar()
         continue
       }
 
       if (this.context.isInlineCodeOpen) {
-        if (!isCharEscaped && this.closeInlineCode()) {
-          this.result = this.getResultFor(new InlineCodeToken(inlineCode))
+        if (this.closeInlineCode()) {
+          this.result = this.getResultFor(new InlineCodeToken(this.flushUnmatchedText()))
           return
         }
-
-        inlineCode += currentChar
-        this.context.advance(1)
-        isCharEscaped = false
-        continue
-      }
-
-      if (!isCharEscaped) {
+      } else {
         if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
           continue
         }
       }
 
-      this.unmatchedText += currentChar
-      this.addPlainTextToken(currentChar)
-      this.context.advance(1)
-      isCharEscaped = false
+      this.collectCurrentChar()
     }
+
+    this.flushUnmatchedTextToPlainTextToken()
 
     this.result = {
       succeeded: !this.context.failed(),
@@ -336,24 +324,30 @@ class Tokenizer {
       tokens: this.tokens
     }
   }
-  
-  private flushUnmatchedText(): string {
-    const unmatchedText = this.unmatchedText
-    this.unmatchedText = ''
-    return unmatchedText
-  }
-  
-  private flushUnmatchedTextToPlainTextToken(): void {
-    this.tokens.push(new PlainTextToken(this.flushUnmatchedText()))
-  }
-  
-  private flushUnmatchedTextThenAddTokens(...tokens: Token[]): void {
-    this.flushUnmatchedTextToPlainTextToken()
-    this.tokens.push(...tokens)
+
+  private collectCurrentChar(): void {
+    this.collcetedUnmatchedText += this.context.currentChar
+    this.context.advance(1)
   }
 
-  private addPlainTextToken(text: string): void {
-    this.tokens.push(new PlainTextToken(text))
+  private flushUnmatchedText(): string {
+    const unmatchedText = this.collcetedUnmatchedText
+    this.collcetedUnmatchedText = ''
+    
+    return unmatchedText
+  }
+
+  private flushUnmatchedTextToPlainTextToken(): void {
+    const unmatchedText = this.flushUnmatchedText()
+
+    if (unmatchedText) {
+      this.tokens.push(new PlainTextToken(unmatchedText))
+    }
+  }
+
+  private flushUnmatchedTextToPlainTextTokenThenAddTokens(...tokens: Token[]): void {
+    this.flushUnmatchedTextToPlainTextToken()
+    this.tokens.push(...tokens)
   }
 
   private tokenizeInlineCode(): boolean {
@@ -392,7 +386,7 @@ class Tokenizer {
       return false
     }
 
-    this.tokens.push(...result.tokens)
+    this.flushUnmatchedTextToPlainTextTokenThenAddTokens(...result.tokens)
     this.context.advance(result.lengthAdvanced)
     return true
   }
@@ -437,7 +431,7 @@ class Tokenizer {
           AsteriskTokenType = PlainTextToken
         }
 
-        this.tokens.push(new AsteriskTokenType(asterisks))
+        this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new AsteriskTokenType(asterisks))
       }
     })
   }
