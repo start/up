@@ -1,3 +1,6 @@
+import { Token } from './Tokens/Token'
+import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
+
 const NOT_WHITESPACE_PATTERN = /\S/
 
 // TODO: Explain why this class is separate from `Tokenizer`
@@ -5,6 +8,7 @@ const NOT_WHITESPACE_PATTERN = /\S/
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
 export class TokenizerContext {
+  public initialTokens: Token[]
   public isInlineCodeOpen = false
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
@@ -12,6 +16,8 @@ export class TokenizerContext {
   public countSpoilersOpen = 0
   public countFootnotesOpen = 0
   public lengthAdvanced = 0
+  
+  // The following three fields are determined based on other fields
   public remainingText: string
   public currentChar: string
   public isTouchingEndOfWord: boolean
@@ -108,6 +114,7 @@ export class TokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.countSpoilersOpen += 1
+    copy.initialTokens = [new SpoilerStartToken()]
 
     return copy
   }

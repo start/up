@@ -747,6 +747,7 @@ var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
 var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
 var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
+var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
 function tokenize(text, config) {
     var result = new Tokenizer(new TokenizerContext_1.TokenizerContext(text), config).result;
     var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(result.tokens);
@@ -922,6 +923,7 @@ var Tokenizer = (function () {
         this.config = config;
         this.tokens = [];
         this.collcetedUnmatchedText = '';
+        (_a = this.tokens).push.apply(_a, this.context.initialTokens);
         while (!this.context.done()) {
             if (this.context.currentChar === '\\') {
                 this.context.advance(1);
@@ -934,6 +936,16 @@ var Tokenizer = (function () {
                 }
             }
             else {
+                if (this.context.countSpoilersOpen) {
+                    if (this.closeSpoiler()) {
+                        return;
+                    }
+                }
+                else {
+                    if (this.tokenizeSpoiler()) {
+                        continue;
+                    }
+                }
                 if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders()) {
                     continue;
                 }
@@ -946,6 +958,7 @@ var Tokenizer = (function () {
             lengthAdvanced: this.context.lengthAdvanced,
             tokens: this.tokens
         };
+        var _a;
     }
     Tokenizer.prototype.collectCurrentChar = function () {
         this.collcetedUnmatchedText += this.context.currentChar;
@@ -985,6 +998,21 @@ var Tokenizer = (function () {
         }
         return false;
     };
+    Tokenizer.prototype.tokenizeSpoiler = function () {
+        var _this = this;
+        return this.tokenizeConvention({
+            pattern: new RegExp("^\\[" + this.config.settings.i18n.terms.spoiler + ":s*", 'i'),
+            getNewContext: function () { return _this.context.withAdditionalSpoilerOpen(); }
+        });
+    };
+    Tokenizer.prototype.closeSpoiler = function () {
+        if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
+            this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken_1.SpoilerEndToken());
+            this.result = this.getResult();
+            return true;
+        }
+        return false;
+    };
     Tokenizer.prototype.tokenizeConvention = function (args) {
         var newContext;
         var canOpenPattern = this.context.match({
@@ -1007,6 +1035,9 @@ var Tokenizer = (function () {
         this.flushUnmatchedTextToPlainTextTokenThenAddTokens.apply(this, result.tokens);
         this.context.advance(result.lengthAdvanced);
         return true;
+    };
+    Tokenizer.prototype.getResult = function () {
+        return this.getResultFor.apply(this, this.tokens);
     };
     Tokenizer.prototype.getResultFor = function () {
         var tokens = [];
@@ -1047,7 +1078,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../TextHelpers":59,"./GetMediaTokenizer":3,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./SandwichConventions":14,"./TextConsumer":15,"./TokenizeNakedUrl":17,"./TokenizerContext":18,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32}],17:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../TextHelpers":59,"./GetMediaTokenizer":3,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./SandwichConventions":14,"./TextConsumer":15,"./TokenizeNakedUrl":17,"./TokenizerContext":18,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":37}],17:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('./TextConsumer');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
@@ -1084,6 +1115,7 @@ exports.tokenizeNakedUrl = tokenizeNakedUrl;
 
 },{"./TextConsumer":15,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29}],18:[function(require,module,exports){
 "use strict";
+var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var NOT_WHITESPACE_PATTERN = /\S/;
 var TokenizerContext = (function () {
     function TokenizerContext(entireText, initialIndex) {
@@ -1164,6 +1196,7 @@ var TokenizerContext = (function () {
     TokenizerContext.prototype.withAdditionalSpoilerOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.countSpoilersOpen += 1;
+        copy.initialTokens = [new SpoilerStartToken_1.SpoilerStartToken()];
         return copy;
     };
     TokenizerContext.prototype.withAdditionalFootnoteOpen = function () {
@@ -1198,7 +1231,7 @@ var TokenizerContext = (function () {
 }());
 exports.TokenizerContext = TokenizerContext;
 
-},{}],19:[function(require,module,exports){
+},{"./Tokens/SpoilerStartToken":38}],19:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
