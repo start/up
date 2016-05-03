@@ -9,10 +9,10 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 describe('Inline code', () => {
   it('can be the last convention in a paragraph', () => {
-    expect(Up.toAst('Dropship `harrass`')).to.be.eql(
+    expect(Up.toAst('Dropship `harass`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Dropship '),
-        new InlineCodeNode('harrass')
+        new InlineCodeNode('harass')
       ]))
   })
 })
