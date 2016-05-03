@@ -925,7 +925,6 @@ var Tokenizer = (function () {
         var isCharEscaped = false;
         while (!this.context.done()) {
             var currentChar = this.context.currentChar;
-            isCharEscaped = false;
             if (currentChar === '\\') {
                 isCharEscaped = true;
                 this.context.advance(1);
@@ -938,6 +937,7 @@ var Tokenizer = (function () {
                 }
                 inlineCode += currentChar;
                 this.context.advance(1);
+                isCharEscaped = false;
                 continue;
             }
             if (!isCharEscaped) {
@@ -947,6 +947,7 @@ var Tokenizer = (function () {
             }
             this.addPlainTextToken(currentChar);
             this.context.advance(1);
+            isCharEscaped = false;
         }
         this.result = {
             succeeded: !this.context.failed(),

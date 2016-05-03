@@ -292,7 +292,6 @@ class Tokenizer {
 
     while (!this.context.done()) {
       const currentChar = this.context.currentChar
-      isCharEscaped = false
 
       if (currentChar === '\\') {
         isCharEscaped = true
@@ -308,6 +307,7 @@ class Tokenizer {
 
         inlineCode += currentChar
         this.context.advance(1)
+        isCharEscaped = false
         continue
       }
 
@@ -319,6 +319,7 @@ class Tokenizer {
 
       this.addPlainTextToken(currentChar)
       this.context.advance(1)
+      isCharEscaped = false
     }
 
     this.result = {
@@ -342,10 +343,10 @@ class Tokenizer {
   private closeInlineCode(): boolean {
     return this.context.advanceIfMatch({ pattern: /^`/ })
   }
-  
+
   private tokenizeConvention(args: OpenConventionArgs): boolean {
     let newContext: TokenizerContext
-    
+
     const canOpenPattern = this.context.match({
       pattern: args.pattern,
       then: match => {
@@ -353,11 +354,11 @@ class Tokenizer {
         newContext.advance(match.length)
       }
     })
-    
+
     if (!canOpenPattern) {
       return false
     }
-    
+
     return this.tokenizeRestOfConvention(newContext)
   }
 
@@ -387,7 +388,7 @@ class Tokenizer {
 
     return this.context.advanceIfMatch({
       pattern: ASTERISKS_PATTERN,
-      
+
       then: (asterisks, isTouchingWordEnd, isTouchingWordStart) => {
         // If the previous character in the raw source text was whitespace, this token cannot end any raised-voice
         // conventions. That's because the token needs to look like it's touching the end of the text it's affecting.
@@ -400,7 +401,7 @@ class Tokenizer {
         // is whitespace. That's because the token must look like it's touching the beginning of the text it's
         // affecting. At least for now, the next raw character can even be a backslash!
         const canOpenConvention = isTouchingWordStart
-        
+
         let AsteriskTokenType: new (asterisks: string) => Token
 
         if (canOpenConvention && canCloseConvention) {
