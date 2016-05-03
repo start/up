@@ -18,8 +18,8 @@ import { UpConfig } from '../../UpConfig'
 import { AudioToken } from './Tokens/AudioToken'
 import { EmphasisEndToken } from './Tokens/EmphasisEndToken'
 import { EmphasisStartToken } from './Tokens/EmphasisStartToken'
-import { FootnoteReferenceEndToken } from './Tokens/FootnoteReferenceEndToken'
-import { FootnoteReferenceStartToken } from './Tokens/FootnoteReferenceStartToken'
+import { FootnoteEndToken } from './Tokens/FootnoteEndToken'
+import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
 import { ImageToken } from './Tokens/ImageToken'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
 import { LinkStartToken } from './Tokens/LinkStartToken'
@@ -308,11 +308,24 @@ class Tokenizer {
           return
         }
       } else {
+        // TODO: Handle overlapping!
+        
         if (this.context.countSpoilersOpen && this.closeSpoiler()) {
           return
         }
+        
+        if (this.context.countFootnotesOpen && this.closeFootnote()) {
+          return
+        }
+        
+        const didTokenizeConvention = (
+          this.tokenizeInlineCode()
+          || this.tokenizeRaisedVoicePlaceholders()
+          || this.tokenizeSpoiler()
+          || this.tokenizeFootnote()
+        )
 
-        if (this.tokenizeInlineCode() || this.tokenizeRaisedVoicePlaceholders() || this.tokenizeSpoiler()) {
+        if (didTokenizeConvention) {
           continue
         }
       }
@@ -380,6 +393,23 @@ class Tokenizer {
   private closeSpoiler(): boolean {
     if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
       this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken())
+      this.result = this.getResult()
+      return true
+    }
+
+    return false
+  }
+
+  private tokenizeFootnote(): boolean {
+    return this.tokenizeConvention({
+      pattern: /^\s*\(\(/,
+      getNewContext: () => this.context.withAdditionalFootnoteOpen()
+    })
+  }
+
+  private closeFootnote(): boolean {
+    if (this.context.advanceIfMatch({ pattern: /^\)\)/ })) {
+      this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new FootnoteEndToken())
       this.result = this.getResult()
       return true
     }

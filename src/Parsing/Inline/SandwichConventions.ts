@@ -14,8 +14,8 @@ import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { EmphasisEndToken } from './Tokens/EmphasisEndToken'
 import { EmphasisStartToken } from './Tokens/EmphasisStartToken'
-import { FootnoteReferenceEndToken } from './Tokens/FootnoteReferenceEndToken'
-import { FootnoteReferenceStartToken } from './Tokens/FootnoteReferenceStartToken'
+import { FootnoteEndToken } from './Tokens/FootnoteEndToken'
+import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
 import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
 import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
@@ -29,7 +29,7 @@ const REVISION_INSERTION = new SandwichConvention('++', '++', RevisionInsertionN
 const SPOILER = new SandwichConvention('[SPOILER: ', ']', SpoilerNode, SpoilerStartToken, SpoilerEndToken)
 
 // TODO: Better handle leading space hack
-const FOOTNOTE = new SandwichConvention(' ((', '))', FootnoteNode, FootnoteReferenceStartToken, FootnoteReferenceEndToken)
+const FOOTNOTE = new SandwichConvention(' ((', '))', FootnoteNode, FootnoteStartToken, FootnoteEndToken)
 
 
 export {

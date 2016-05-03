@@ -1,5 +1,6 @@
 import { Token } from './Tokens/Token'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
+import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
 
 const NOT_WHITESPACE_PATTERN = /\S/
 
@@ -8,7 +9,7 @@ const NOT_WHITESPACE_PATTERN = /\S/
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
 export class TokenizerContext {
-  public initialTokens: Token[]
+  public initialTokens: Token[] = []
   public isInlineCodeOpen = false
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
@@ -122,7 +123,8 @@ export class TokenizerContext {
   withAdditionalFootnoteOpen(): TokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
-    copy.countSpoilersOpen += 1
+    copy.countFootnotesOpen += 1
+    copy.initialTokens = [new FootnoteStartToken()]
 
     return copy
   }
