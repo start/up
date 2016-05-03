@@ -295,9 +295,8 @@ class Tokenizer {
 
   constructor(private context: TokenizerContext, private config: UpConfig) {
     while (!this.context.done()) {
-      const currentChar = this.context.currentChar
-
-      if (currentChar === '\\') {
+      if (this.context.currentChar === '\\') {
+        this.context.advance(1)
         this.collectCurrentChar()
         continue
       }

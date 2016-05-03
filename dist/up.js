@@ -923,8 +923,8 @@ var Tokenizer = (function () {
         this.tokens = [];
         this.collcetedUnmatchedText = '';
         while (!this.context.done()) {
-            var currentChar = this.context.currentChar;
-            if (currentChar === '\\') {
+            if (this.context.currentChar === '\\') {
+                this.context.advance(1);
                 this.collectCurrentChar();
                 continue;
             }
