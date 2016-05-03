@@ -376,6 +376,7 @@ class Tokenizer {
 
   private closeInlineCode(): boolean {
     if (this.context.advanceIfMatch({ pattern: /^`/ })) {
+      this.context.closeInlineCode()
       this.result = this.getResultFor(new InlineCodeToken(this.flushUnmatchedText()))
       return true
     }
@@ -393,6 +394,7 @@ class Tokenizer {
   private closeSpoiler(): boolean {
     if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
       this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken())
+      this.context.closeSpoiler()
       this.result = this.getResult()
       return true
     }
@@ -410,6 +412,7 @@ class Tokenizer {
   private closeFootnote(): boolean {
     if (this.context.advanceIfMatch({ pattern: /^\)\)/ })) {
       this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new FootnoteEndToken())
+      this.context.closeFootnote()
       this.result = this.getResult()
       return true
     }

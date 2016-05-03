@@ -995,6 +995,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeInlineCode = function () {
         if (this.context.advanceIfMatch({ pattern: /^`/ })) {
+            this.context.closeInlineCode();
             this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
             return true;
         }
@@ -1010,6 +1011,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeSpoiler = function () {
         if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
             this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken_1.SpoilerEndToken());
+            this.context.closeSpoiler();
             this.result = this.getResult();
             return true;
         }
@@ -1025,6 +1027,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeFootnote = function () {
         if (this.context.advanceIfMatch({ pattern: /^\)\)/ })) {
             this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new FootnoteEndToken_1.FootnoteEndToken());
+            this.context.closeFootnote();
             this.result = this.getResult();
             return true;
         }
