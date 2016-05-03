@@ -285,6 +285,13 @@ class OldTokenizer {
 class Tokenizer {
   public result: TokenizerResult
   private tokens: Token[] = []
+  
+  // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
+  // to a token.
+  //
+  // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
+  // tokens (like InlineCodeTokens).
+  private nonMatchingText = ''
 
   constructor(private context: TokenizerContext, private config: UpConfig) {
     let inlineCode = ''
@@ -317,6 +324,7 @@ class Tokenizer {
         }
       }
 
+      this.nonMatchingText += currentChar
       this.addPlainTextToken(currentChar)
       this.context.advance(1)
       isCharEscaped = false

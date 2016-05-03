@@ -921,6 +921,7 @@ var Tokenizer = (function () {
         this.context = context;
         this.config = config;
         this.tokens = [];
+        this.nonMatchingText = '';
         var inlineCode = '';
         var isCharEscaped = false;
         while (!this.context.done()) {
@@ -945,6 +946,7 @@ var Tokenizer = (function () {
                     continue;
                 }
             }
+            this.nonMatchingText += currentChar;
             this.addPlainTextToken(currentChar);
             this.context.advance(1);
             isCharEscaped = false;
