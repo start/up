@@ -134,6 +134,30 @@ export class TokenizerContext {
 
     return copy
   }
+  
+  closeInlineCode(): void {
+    this.isInlineCodeOpen = false
+  }
+  
+  closeLink(): void {
+    this.isLinkOpen = false
+  }
+  
+  closeRevisionDeletion(): void {
+    this.isRevisionDeletionOpen = false
+  }
+  
+  closeRevisionInsertion(): void {
+    this.isRevisionInsertionOpen = false
+  }
+  
+  closeSpoiler(): void {
+    this.countSpoilersOpen -= 1
+  }
+  
+  closeFootnote(): void {
+    this.countFootnotesOpen -= 1
+  }
 
   advance(length: number): void {
     this.lengthAdvanced += length
@@ -160,10 +184,8 @@ export class TokenizerContext {
     copy.isRevisionInsertionOpen = this.isRevisionInsertionOpen
     copy.countSpoilersOpen = this.countSpoilersOpen
     copy.countFootnotesOpen = this.countFootnotesOpen
-
-    // We don't copy `this.isInlineCodeOpen`. It will always be false when this method is called,
-    // because no new conventions can be opened inside of inline code.
-
+    copy.isInlineCodeOpen = this.isInlineCodeOpen
+    
     copy.dirty()
     return copy
   }

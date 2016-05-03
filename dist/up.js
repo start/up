@@ -1223,6 +1223,24 @@ var TokenizerContext = (function () {
         copy.initialToken = new FootnoteStartToken_1.FootnoteStartToken();
         return copy;
     };
+    TokenizerContext.prototype.closeInlineCode = function () {
+        this.isInlineCodeOpen = false;
+    };
+    TokenizerContext.prototype.closeLink = function () {
+        this.isLinkOpen = false;
+    };
+    TokenizerContext.prototype.closeRevisionDeletion = function () {
+        this.isRevisionDeletionOpen = false;
+    };
+    TokenizerContext.prototype.closeRevisionInsertion = function () {
+        this.isRevisionInsertionOpen = false;
+    };
+    TokenizerContext.prototype.closeSpoiler = function () {
+        this.countSpoilersOpen -= 1;
+    };
+    TokenizerContext.prototype.closeFootnote = function () {
+        this.countFootnotesOpen -= 1;
+    };
     TokenizerContext.prototype.advance = function (length) {
         this.lengthAdvanced += length;
         this.dirty();
@@ -1243,6 +1261,7 @@ var TokenizerContext = (function () {
         copy.isRevisionInsertionOpen = this.isRevisionInsertionOpen;
         copy.countSpoilersOpen = this.countSpoilersOpen;
         copy.countFootnotesOpen = this.countFootnotesOpen;
+        copy.isInlineCodeOpen = this.isInlineCodeOpen;
         copy.dirty();
         return copy;
     };
