@@ -23,6 +23,12 @@ const ALL_SANDWICHES = [
 ]
 
 
+// TODO: Determing what to do about:
+//
+// 1. Footnotes inside of links
+// 2. Footnotes overlapping with a spoiler
+
+
 export function massageTokensIntoTreeStructure(tokens: Token[]): Token[] {
   return new TokenMasseuse(tokens.slice()).tokens
 }
