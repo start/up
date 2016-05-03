@@ -291,7 +291,7 @@ class Tokenizer {
   //
   // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
   // tokens (like InlineCodeTokens).
-  private nonMatchingText = ''
+  private unmatchedText = ''
 
   constructor(private context: TokenizerContext, private config: UpConfig) {
     let inlineCode = ''
@@ -324,7 +324,7 @@ class Tokenizer {
         }
       }
 
-      this.nonMatchingText += currentChar
+      this.unmatchedText += currentChar
       this.addPlainTextToken(currentChar)
       this.context.advance(1)
       isCharEscaped = false
@@ -335,6 +335,21 @@ class Tokenizer {
       lengthAdvanced: this.context.lengthAdvanced,
       tokens: this.tokens
     }
+  }
+  
+  private flushUnmatchedText(): string {
+    const unmatchedText = this.unmatchedText
+    this.unmatchedText = ''
+    return unmatchedText
+  }
+  
+  private flushUnmatchedTextToPlainTextToken(): void {
+    this.tokens.push(new PlainTextToken(this.flushUnmatchedText()))
+  }
+  
+  private flushUnmatchedTextThenAddTokens(...tokens: Token[]): void {
+    this.flushUnmatchedTextToPlainTextToken()
+    this.tokens.push(...tokens)
   }
 
   private addPlainTextToken(text: string): void {

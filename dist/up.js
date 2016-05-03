@@ -921,7 +921,7 @@ var Tokenizer = (function () {
         this.context = context;
         this.config = config;
         this.tokens = [];
-        this.nonMatchingText = '';
+        this.unmatchedText = '';
         var inlineCode = '';
         var isCharEscaped = false;
         while (!this.context.done()) {
@@ -946,7 +946,7 @@ var Tokenizer = (function () {
                     continue;
                 }
             }
-            this.nonMatchingText += currentChar;
+            this.unmatchedText += currentChar;
             this.addPlainTextToken(currentChar);
             this.context.advance(1);
             isCharEscaped = false;
@@ -957,6 +957,23 @@ var Tokenizer = (function () {
             tokens: this.tokens
         };
     }
+    Tokenizer.prototype.flushUnmatchedText = function () {
+        var unmatchedText = this.unmatchedText;
+        this.unmatchedText = '';
+        return unmatchedText;
+    };
+    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
+        this.tokens.push(new PlainTextToken_1.PlainTextToken(this.flushUnmatchedText()));
+    };
+    Tokenizer.prototype.flushUnmatchedTextThenAddTokens = function () {
+        var tokens = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            tokens[_i - 0] = arguments[_i];
+        }
+        this.flushUnmatchedTextToPlainTextToken();
+        (_a = this.tokens).push.apply(_a, tokens);
+        var _a;
+    };
     Tokenizer.prototype.addPlainTextToken = function (text) {
         this.tokens.push(new PlainTextToken_1.PlainTextToken(text));
     };
