@@ -1,4 +1,3 @@
-
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
@@ -232,6 +231,37 @@ describe('An unordered list item with an asterisk bullet', () => {
 
 
 describe('An unordered list', () => {
+  it('is evaluated for inline conventions', () => {
+    const text =
+      `
+* Hello, World *1-2*!
+* Goodbye, World *1-2*!`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, World '),
+              new EmphasisNode([
+                new PlainTextNode('1-2')
+              ]),
+              new PlainTextNode('!')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, World '),
+              new EmphasisNode([
+                new PlainTextNode('1-2')
+              ]),
+              new PlainTextNode('!')
+            ])
+          ])
+        ]),
+      ])
+    )
+  })
+
   it('can be directly followed by a paragraph', () => {
     const text =
       `
