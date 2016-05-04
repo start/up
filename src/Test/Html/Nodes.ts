@@ -1,5 +1,5 @@
-
 import { expect } from 'chai'
+import * as Up from '../../index'
 
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
@@ -30,7 +30,6 @@ import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import * as Up from '../../index'
 import { HtmlWriter } from '../../Writer/HtmlWriter'
 
 
