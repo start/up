@@ -1,13 +1,11 @@
-
 import { expect } from 'chai'
 import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
 
 describe('An opening bracket followed by " -> " followed by a closing bracket', () => {
@@ -21,7 +19,7 @@ describe('An opening bracket followed by " -> " followed by a closing bracket', 
 
 
 describe('A link with no URL', () => {
-  it('does not produce a link node, but its contents are included directly', () => {
+  it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
     expect(Up.toAst('[*Yggdra Union* -> ]')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
