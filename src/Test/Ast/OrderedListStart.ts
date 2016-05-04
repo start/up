@@ -1,23 +1,7 @@
 
 import { expect } from 'chai'
 import * as Up from '../../index'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 function listStart(text: string): number {
   const list = <OrderedListNode>Up.toAst(text).children[0]
