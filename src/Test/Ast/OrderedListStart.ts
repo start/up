@@ -23,7 +23,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
     const text =
       `
 #. Hello, world!
-5 Goodbye, world!
+5) Goodbye, world!
 #) Goodbye, world!`
     expect(listStart(text)).to.be.eql(null)
   })
