@@ -1,19 +1,10 @@
-
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-
 
 describe('Text surrounded by asterisks', () => {
   it('is put inside an emphasis node', () => {
@@ -39,7 +30,7 @@ describe('Text separated from surrounding asterisks by whitespace', () => {
 
 
 describe('Emphasized text', () => {
-  it('is evaluated for other conventions', () => {
+  it('is evaluated for inline conventions', () => {
     expect(Up.toAst('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
