@@ -1,16 +1,13 @@
-
 import { expect } from 'chai'
 import * as Up from '../../../index'
-import { insideDocumentAndParagraph } from '../Helpers'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-
 
 
 describe('A line consisting solely of media conventions (and optional whitespace)', () => {
