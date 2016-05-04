@@ -751,6 +751,7 @@ var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoi
 var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
 var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
 var RevisionInsertionEndToken_1 = require('./Tokens/RevisionInsertionEndToken');
+var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
 function tokenize(text, config) {
     var result = new Tokenizer(new TokenizerContext_1.TokenizerContext(text), config).result;
     var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(result.tokens);
@@ -957,6 +958,16 @@ var Tokenizer = (function () {
                         continue;
                     }
                 }
+                if (this.context.isRevisionDeletionOpen) {
+                    if (this.closeRevisionDeletion()) {
+                        return;
+                    }
+                }
+                else {
+                    if (this.tokenizeRevisionDeletion()) {
+                        continue;
+                    }
+                }
                 var didTokenizeConvention = (this.tokenizeInlineCode()
                     || this.tokenizeRaisedVoicePlaceholders()
                     || this.tokenizeSpoiler()
@@ -1045,6 +1056,22 @@ var Tokenizer = (function () {
         }
         return false;
     };
+    Tokenizer.prototype.tokenizeRevisionDeletion = function () {
+        var _this = this;
+        return this.tokenizeConvention({
+            pattern: /^~~/,
+            getNewContext: function () { return _this.context.withRevisionDeletionOpen(); }
+        });
+    };
+    Tokenizer.prototype.closeRevisionDeletion = function () {
+        if (this.context.advanceIfMatch({ pattern: /^~~/ })) {
+            this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionDeletionEndToken_1.RevisionDeletionEndToken());
+            this.context.closeRevisionDeletion();
+            this.result = this.getResult();
+            return true;
+        }
+        return false;
+    };
     Tokenizer.prototype.tokenizeFootnote = function () {
         var _this = this;
         return this.tokenizeConvention({
@@ -1126,7 +1153,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../TextHelpers":60,"./GetMediaTokenizer":3,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./SandwichConventions":14,"./TextConsumer":15,"./TokenizeNakedUrl":17,"./TokenizerContext":18,"./Tokens/FootnoteEndToken":22,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/SpoilerEndToken":38}],17:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../TextHelpers":60,"./GetMediaTokenizer":3,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./SandwichConventions":14,"./TextConsumer":15,"./TokenizeNakedUrl":17,"./TokenizerContext":18,"./Tokens/FootnoteEndToken":22,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/RevisionDeletionEndToken":34,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/SpoilerEndToken":38}],17:[function(require,module,exports){
 "use strict";
 var TextConsumer_1 = require('./TextConsumer');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
@@ -1165,6 +1192,7 @@ exports.tokenizeNakedUrl = tokenizeNakedUrl;
 "use strict";
 var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToken');
+var RevisionDeletionStartToken_1 = require('./Tokens/RevisionDeletionStartToken');
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var NOT_WHITESPACE_PATTERN = /\S/;
 var TokenizerContext = (function () {
@@ -1236,6 +1264,7 @@ var TokenizerContext = (function () {
     TokenizerContext.prototype.withRevisionDeletionOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.isRevisionDeletionOpen = true;
+        copy.initialToken = new RevisionDeletionStartToken_1.RevisionDeletionStartToken();
         return copy;
     };
     TokenizerContext.prototype.withRevisionInsertionOpen = function () {
@@ -1308,7 +1337,7 @@ var TokenizerContext = (function () {
 }());
 exports.TokenizerContext = TokenizerContext;
 
-},{"./Tokens/FootnoteStartToken":23,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerStartToken":39}],19:[function(require,module,exports){
+},{"./Tokens/FootnoteStartToken":23,"./Tokens/RevisionDeletionStartToken":35,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerStartToken":39}],19:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];

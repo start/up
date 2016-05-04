@@ -1,6 +1,7 @@
 import { Token } from './Tokens/Token'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
+import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
 
 const NOT_WHITESPACE_PATTERN = /\S/
@@ -107,6 +108,7 @@ export class TokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.isRevisionDeletionOpen = true
+    copy.initialToken = new RevisionDeletionStartToken()
 
     return copy
   }

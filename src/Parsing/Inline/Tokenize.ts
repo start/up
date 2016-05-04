@@ -330,6 +330,17 @@ class Tokenizer {
             continue
           }
         }
+        
+        if (this.context.isRevisionDeletionOpen) {
+          if (this.closeRevisionDeletion()) {
+            return
+          }  
+        } else {
+          // Currently, as a rule, you cannot nest revision deletion inside another revision deletion.
+          if (this.tokenizeRevisionDeletion()) {
+            continue
+          }
+        }
 
         const didTokenizeConvention = (
           this.tokenizeInlineCode()
@@ -426,6 +437,24 @@ class Tokenizer {
     if (this.context.advanceIfMatch({ pattern: /^\+\+/ })) {
       this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionInsertionEndToken())
       this.context.closeRevisionInsertion()
+      this.result = this.getResult()
+      return true
+    }
+
+    return false
+  }
+
+  private tokenizeRevisionDeletion(): boolean {
+    return this.tokenizeConvention({
+      pattern: /^~~/,
+      getNewContext: () => this.context.withRevisionDeletionOpen()
+    })
+  }
+
+  private closeRevisionDeletion(): boolean {
+    if (this.context.advanceIfMatch({ pattern: /^~~/ })) {
+      this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionDeletionEndToken())
+      this.context.closeRevisionDeletion()
       this.result = this.getResult()
       return true
     }
