@@ -1,4 +1,3 @@
-
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
@@ -290,7 +289,38 @@ describe('The 5 different bullet types', () => {
 })
 
 
-describe('A numbered list', () => {
+describe('An ordered list', () => {
+  it('is evaluated for inline conventions', () => {
+    const text =
+      `
+# Hello, World *1-2*!
+# Goodbye, World *1-2*!`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, World '),
+              new EmphasisNode([
+                new PlainTextNode('1-2')
+              ]),
+              new PlainTextNode('!')
+            ])
+          ]),
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, World '),
+              new EmphasisNode([
+                new PlainTextNode('1-2')
+              ]),
+              new PlainTextNode('!')
+            ])
+          ])
+        ]),
+      ])
+    )
+  })
+  
   it('can be directly followed by a paragraph', () => {
     const text =
       `
