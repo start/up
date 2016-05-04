@@ -1,4 +1,3 @@
-
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
