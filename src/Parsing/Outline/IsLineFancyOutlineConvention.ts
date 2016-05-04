@@ -1,11 +1,8 @@
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
-import { last } from '../CollectionHelpers'
 import { UpConfig } from '../../UpConfig'
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [

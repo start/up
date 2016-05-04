@@ -1669,8 +1669,8 @@ exports.getHeadingParser = getHeadingParser;
 
 },{"../../SyntaxNodes/HeadingNode":72,"../Inline/GetInlineNodes":2,"./HeadingLeveler":46,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48,"./Patterns":57}],44:[function(require,module,exports){
 "use strict";
-var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var LineConsumer_1 = require('./LineConsumer');
+var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
 var GetHeadingParser_1 = require('./GetHeadingParser');
 var ParseBlankLineSeparation_1 = require('./ParseBlankLineSeparation');

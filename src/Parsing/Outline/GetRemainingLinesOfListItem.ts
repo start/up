@@ -1,9 +1,6 @@
 import { LineConsumer } from './LineConsumer'
-import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
-import { last } from '../CollectionHelpers'
 
 const BLANK_PATTERN = new RegExp(
   BLANK

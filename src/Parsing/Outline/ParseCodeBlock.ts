@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { streakOf } from './Patterns'
-import { OutlineParserArgs, } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParser'
 
 const CODE_FENCE_PATTERN = new RegExp(
   streakOf('`')
