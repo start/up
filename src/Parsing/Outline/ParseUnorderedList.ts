@@ -4,8 +4,7 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from './Patterns'
-import { last } from '../CollectionHelpers'
-import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
+import { OutlineParserArgs, } from './OutlineParser'
 
 const BULLET_PATTERN = new RegExp(
   startsWith(

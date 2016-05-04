@@ -7,8 +7,7 @@ import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from './Patterns'
-import { last } from '../CollectionHelpers'
-import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParser'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 
 const NON_BLANK_PATTERN = new RegExp(

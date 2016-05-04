@@ -9,7 +9,7 @@ import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from './Patterns'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
-import { OutlineParser, OutlineParserArgs, } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParser'
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
   NON_BLANK
