@@ -1,10 +1,8 @@
-
 import { expect } from 'chai'
 import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
 describe('Inline code', () => {
@@ -16,6 +14,7 @@ describe('Inline code', () => {
       ]))
   })
 })
+
 
 describe('An unmatched backtick', () => {
   it('does not produce any inline code', () => {
