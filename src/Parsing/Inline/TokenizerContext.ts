@@ -1,10 +1,12 @@
 import { Token } from './Tokens/Token'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
+import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
 import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
 
 const NOT_WHITESPACE_PATTERN = /\S/
 
 // TODO: Explain why this class is separate from `Tokenizer`
+// TODO: Refactor tons of duplicate functionality
 
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
@@ -113,6 +115,7 @@ export class TokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.isRevisionInsertionOpen = true
+    copy.initialToken = new RevisionInsertionStartToken()
 
     return copy
   }

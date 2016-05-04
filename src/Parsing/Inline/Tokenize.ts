@@ -281,6 +281,8 @@ class OldTokenizer {
   }
 }
 
+// TODO: Refactor tons of duplicate functionality
+
 
 class Tokenizer {
   public result: TokenizerResult
@@ -316,6 +318,17 @@ class Tokenizer {
 
         if (this.context.countFootnotesOpen && this.closeFootnote() && this.context.isFootnoteInnermostOpenConvention()) {
           return
+        }
+        
+        if (this.context.isRevisionInsertionOpen) {
+          if (this.closeRevisionInsertion()) {
+            return
+          }  
+        } else {
+          // Currently, as a rule, you cannot nest revision insertion inside another revision insertion.
+          if (this.tokenizeRevisionInsertion()) {
+            continue
+          }
         }
 
         const didTokenizeConvention = (
@@ -395,6 +408,24 @@ class Tokenizer {
     if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
       this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken())
       this.context.closeSpoiler()
+      this.result = this.getResult()
+      return true
+    }
+
+    return false
+  }
+
+  private tokenizeRevisionInsertion(): boolean {
+    return this.tokenizeConvention({
+      pattern: /^\+\+/,
+      getNewContext: () => this.context.withRevisionInsertionOpen()
+    })
+  }
+
+  private closeRevisionInsertion(): boolean {
+    if (this.context.advanceIfMatch({ pattern: /^\+\+/ })) {
+      this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionInsertionEndToken())
+      this.context.closeRevisionInsertion()
       this.result = this.getResult()
       return true
     }

@@ -164,7 +164,7 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
   }
 
   if (stillNeedsTerminator) {
-    throw new Error('Missing token')
+    throw new Error(`Missing token: ${terminator}`)
   }
 
   return new ParseResult(nodes, countParsed)

@@ -24,7 +24,7 @@ import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 
 const STRESS = new SandwichConvention('**', '**', StressNode, StressStartToken, StressEndToken)
 const EMPHASIS = new SandwichConvention('*', '*', EmphasisNode, EmphasisStartToken, EmphasisEndToken)
-const REVISION_DELETION = new SandwichConvention('~~', '~~', RevisionDeletionNode, RevisionDeletionStartToken, RevisionInsertionEndToken)
+const REVISION_DELETION = new SandwichConvention('~~', '~~', RevisionDeletionNode, RevisionDeletionStartToken, RevisionDeletionEndToken)
 const REVISION_INSERTION = new SandwichConvention('++', '++', RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
 const SPOILER = new SandwichConvention('[SPOILER: ', ']', SpoilerNode, SpoilerStartToken, SpoilerEndToken)
 
