@@ -1,6 +1,4 @@
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { RichConvention } from './RichConvention'
-import { TextConsumer } from './TextConsumer'
 import { Token } from './Tokens/Token'
 import { applyBackslashEscaping } from '../TextHelpers'
 import { LinkStartToken } from './Tokens/LinkStartToken'
