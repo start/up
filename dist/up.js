@@ -449,9 +449,8 @@ exports.PlainTextMarker = PlainTextMarker;
 
 },{"../Tokens/PlainTextToken":26,"./RaisedVoiceMarker":10}],10:[function(require,module,exports){
 "use strict";
-var SandwichConventions_1 = require('../SandwichConventions');
-var STRESS_COST = SandwichConventions_1.STRESS.start.length;
-var EMPHASIS_COST = SandwichConventions_1.EMPHASIS.start.length;
+var EMPHASIS_COST = 1;
+var STRESS_COST = 2;
 var STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST;
 var RaisedVoiceMarker = (function () {
     function RaisedVoiceMarker(originalTokenIndex, originalAsterisks) {
@@ -507,7 +506,7 @@ function comapreMarkersDescending(a, b) {
 }
 exports.comapreMarkersDescending = comapreMarkersDescending;
 
-},{"../SandwichConventions":13}],11:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];

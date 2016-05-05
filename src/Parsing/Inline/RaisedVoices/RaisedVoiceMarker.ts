@@ -4,8 +4,8 @@ import { applyBackslashEscaping } from '../../TextHelpers'
 import { STRESS, EMPHASIS } from '../SandwichConventions'
 
 
-const STRESS_COST = STRESS.start.length
-const EMPHASIS_COST = EMPHASIS.start.length
+const EMPHASIS_COST = 1
+const STRESS_COST = 2
 const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
 
 
