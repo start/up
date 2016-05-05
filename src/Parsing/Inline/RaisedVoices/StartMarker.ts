@@ -16,8 +16,8 @@ export class StartMarker extends RaisedVoiceMarker {
     )
   }
   
-  startStressAndEmphasisTogether(countAsterisksEndMarkerHasInCommon: number): void {
-    this.payForStressAndEmphasisTogether(countAsterisksEndMarkerHasInCommon)
+  startStressAndEmphasisTogether(countAsterisksInCommonWithEndMarker: number): void {
+    this.payForStressAndEmphasisTogether(countAsterisksInCommonWithEndMarker)
     this.tokenTypes.push(EmphasisStartToken)
     this.tokenTypes.push(StressStartToken)
   }

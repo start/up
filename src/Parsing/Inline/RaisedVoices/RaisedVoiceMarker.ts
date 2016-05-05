@@ -47,12 +47,12 @@ export abstract class RaisedVoiceMarker {
    return this.canIndicateStress && !this.canIndicateStressAndEmphasisTogether() 
   }
   
-  payForStressAndEmphasisTogether(countAsterisksMatchingDelimiterHasInCommon: number): void {
-    if (countAsterisksMatchingDelimiterHasInCommon < STRESS_AND_EMPHASIS_TOGETHER_COST) {
-      throw new Error(`Delimiter at index ${this.originalTokenIndex} only spent ${countAsterisksMatchingDelimiterHasInCommon} to open stress and emphasis`)
+  payForStressAndEmphasisTogether(countAsterisksInCommonWithMatchingDelimiter: number): void {
+    if (countAsterisksInCommonWithMatchingDelimiter < STRESS_AND_EMPHASIS_TOGETHER_COST) {
+      throw new Error(`Delimiter at index ${this.originalTokenIndex} only spent ${countAsterisksInCommonWithMatchingDelimiter} to open stress and emphasis`)
     }
     
-    this.pay(countAsterisksMatchingDelimiterHasInCommon)
+    this.pay(countAsterisksInCommonWithMatchingDelimiter)
   }
   
   payForStress(): void {

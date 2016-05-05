@@ -406,11 +406,11 @@ var EndMarker = (function (_super) {
         }
     };
     EndMarker.prototype.startStressAndEmphasisTogether = function (startMarker) {
-        var countAsterisksStartMarkerHasInCommon = Math.min(this.countSurplusAsterisks, startMarker.countSurplusAsterisks);
-        this.payForStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon);
+        var countAsterisksInCommonWithStartMarker = Math.min(this.countSurplusAsterisks, startMarker.countSurplusAsterisks);
+        this.payForStressAndEmphasisTogether(countAsterisksInCommonWithStartMarker);
         this.tokenTypes.push(EmphasisEndToken_1.EmphasisEndToken);
         this.tokenTypes.push(StressEndToken_1.StressEndToken);
-        startMarker.startStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon);
+        startMarker.startStressAndEmphasisTogether(countAsterisksInCommonWithStartMarker);
     };
     EndMarker.prototype.endStress = function (startMarker) {
         this.payForStress();
@@ -480,11 +480,11 @@ var RaisedVoiceMarker = (function () {
     RaisedVoiceMarker.prototype.canIndicateStressButNotBothTogether = function () {
         return this.canIndicateStress && !this.canIndicateStressAndEmphasisTogether();
     };
-    RaisedVoiceMarker.prototype.payForStressAndEmphasisTogether = function (countAsterisksMatchingDelimiterHasInCommon) {
-        if (countAsterisksMatchingDelimiterHasInCommon < STRESS_AND_EMPHASIS_TOGETHER_COST) {
-            throw new Error("Delimiter at index " + this.originalTokenIndex + " only spent " + countAsterisksMatchingDelimiterHasInCommon + " to open stress and emphasis");
+    RaisedVoiceMarker.prototype.payForStressAndEmphasisTogether = function (countAsterisksInCommonWithMatchingDelimiter) {
+        if (countAsterisksInCommonWithMatchingDelimiter < STRESS_AND_EMPHASIS_TOGETHER_COST) {
+            throw new Error("Delimiter at index " + this.originalTokenIndex + " only spent " + countAsterisksInCommonWithMatchingDelimiter + " to open stress and emphasis");
         }
-        this.pay(countAsterisksMatchingDelimiterHasInCommon);
+        this.pay(countAsterisksInCommonWithMatchingDelimiter);
     };
     RaisedVoiceMarker.prototype.payForStress = function () {
         this.pay(STRESS_COST);
@@ -526,8 +526,8 @@ var StartMarker = (function (_super) {
             .map(function (TokenType) { return new TokenType(); })
             .reverse());
     };
-    StartMarker.prototype.startStressAndEmphasisTogether = function (countAsterisksEndMarkerHasInCommon) {
-        this.payForStressAndEmphasisTogether(countAsterisksEndMarkerHasInCommon);
+    StartMarker.prototype.startStressAndEmphasisTogether = function (countAsterisksInCommonWithEndMarker) {
+        this.payForStressAndEmphasisTogether(countAsterisksInCommonWithEndMarker);
         this.tokenTypes.push(EmphasisStartToken_1.EmphasisStartToken);
         this.tokenTypes.push(StressStartToken_1.StressStartToken);
     };

@@ -93,14 +93,14 @@ export class EndMarker extends RaisedVoiceMarker {
     //
     // To be clear, any unmatched asterisks are *not* canceled, and they remain available to be subsequently matched
     // with other markers.
-    const countAsterisksStartMarkerHasInCommon =
+    const countAsterisksInCommonWithStartMarker =
       Math.min(this.countSurplusAsterisks, startMarker.countSurplusAsterisks)
 
-    this.payForStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon)
+    this.payForStressAndEmphasisTogether(countAsterisksInCommonWithStartMarker)
     this.tokenTypes.push(EmphasisEndToken)
     this.tokenTypes.push(StressEndToken)
 
-    startMarker.startStressAndEmphasisTogether(countAsterisksStartMarkerHasInCommon)
+    startMarker.startStressAndEmphasisTogether(countAsterisksInCommonWithStartMarker)
   }
 
   private endStress(startMarker: StartMarker): void {
