@@ -1,13 +1,8 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { Convention } from './Convention'
 import { RichConvention } from './RichConvention'
 import { TextConsumer } from './TextConsumer'
-import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token } from './Tokens/Token'
 import { applyBackslashEscaping } from '../TextHelpers'
-import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
 

@@ -1,7 +1,5 @@
 import { RichConvention } from './RichConvention'
-import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TokenType } from './Tokens/Token'
-import { Convention } from './Convention'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
@@ -27,8 +25,6 @@ const EMPHASIS = new RichConvention(EmphasisNode, EmphasisStartToken, EmphasisEn
 const REVISION_DELETION = new RichConvention(RevisionDeletionNode, RevisionDeletionStartToken, RevisionDeletionEndToken)
 const REVISION_INSERTION = new RichConvention(RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
 const SPOILER = new RichConvention(SpoilerNode, SpoilerStartToken, SpoilerEndToken)
-
-// TODO: Better handle leading space hack
 const FOOTNOTE = new RichConvention(FootnoteNode, FootnoteStartToken, FootnoteEndToken)
 
 
