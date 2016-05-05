@@ -1,4 +1,4 @@
-import { SandwichConvention } from './SandwichConvention'
+import { RichConvention } from './RichConvention'
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TokenType } from './Tokens/Token'
 import { Convention } from './Convention'
@@ -22,14 +22,14 @@ import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 
 
-const STRESS = new SandwichConvention('**', '**', StressNode, StressStartToken, StressEndToken)
-const EMPHASIS = new SandwichConvention('*', '*', EmphasisNode, EmphasisStartToken, EmphasisEndToken)
-const REVISION_DELETION = new SandwichConvention('~~', '~~', RevisionDeletionNode, RevisionDeletionStartToken, RevisionDeletionEndToken)
-const REVISION_INSERTION = new SandwichConvention('++', '++', RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
-const SPOILER = new SandwichConvention('[SPOILER: ', ']', SpoilerNode, SpoilerStartToken, SpoilerEndToken)
+const STRESS = new RichConvention(StressNode, StressStartToken, StressEndToken)
+const EMPHASIS = new RichConvention(EmphasisNode, EmphasisStartToken, EmphasisEndToken)
+const REVISION_DELETION = new RichConvention(RevisionDeletionNode, RevisionDeletionStartToken, RevisionDeletionEndToken)
+const REVISION_INSERTION = new RichConvention(RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
+const SPOILER = new RichConvention(SpoilerNode, SpoilerStartToken, SpoilerEndToken)
 
 // TODO: Better handle leading space hack
-const FOOTNOTE = new SandwichConvention(' ((', '))', FootnoteNode, FootnoteStartToken, FootnoteEndToken)
+const FOOTNOTE = new RichConvention(FootnoteNode, FootnoteStartToken, FootnoteEndToken)
 
 
 export {

@@ -33,14 +33,14 @@ exports.getInlineNodes = getInlineNodes;
 "use strict";
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
-var SandwichConventions_1 = require('./SandwichConventions');
+var RichConventions_1 = require('./RichConventions');
 var ALL_SANDWICHES = [
-    SandwichConventions_1.REVISION_DELETION,
-    SandwichConventions_1.REVISION_INSERTION,
-    SandwichConventions_1.SPOILER,
-    SandwichConventions_1.FOOTNOTE,
-    SandwichConventions_1.STRESS,
-    SandwichConventions_1.EMPHASIS
+    RichConventions_1.REVISION_DELETION,
+    RichConventions_1.REVISION_INSERTION,
+    RichConventions_1.SPOILER,
+    RichConventions_1.FOOTNOTE,
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS
 ];
 function massageTokensIntoTreeStructure(tokens) {
     return new TokenMasseuse(tokens.slice()).tokens;
@@ -142,7 +142,7 @@ function getSandwichEndedByThisToken(token) {
     })[0];
 }
 
-},{"./SandwichConventions":13,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24}],4:[function(require,module,exports){
+},{"./RichConventions":13,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24}],4:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
     function MediaConvention(termForMediaType, NodeType, TokenType) {
@@ -177,7 +177,7 @@ var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var MediaConventions_1 = require('./MediaConventions');
-var SandwichConventions_1 = require('./SandwichConventions');
+var RichConventions_1 = require('./RichConventions');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
@@ -187,12 +187,12 @@ function parse(tokens) {
 }
 exports.parse = parse;
 var SANDWICHES = [
-    SandwichConventions_1.STRESS,
-    SandwichConventions_1.EMPHASIS,
-    SandwichConventions_1.REVISION_DELETION,
-    SandwichConventions_1.REVISION_INSERTION,
-    SandwichConventions_1.SPOILER,
-    SandwichConventions_1.FOOTNOTE
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS,
+    RichConventions_1.REVISION_DELETION,
+    RichConventions_1.REVISION_INSERTION,
+    RichConventions_1.SPOILER,
+    RichConventions_1.FOOTNOTE
 ];
 var MEDIA_CONVENTIONS = [
     MediaConventions_1.AUDIO,
@@ -290,7 +290,7 @@ var ParseResult = (function () {
     return ParseResult;
 }());
 
-},{"../../SyntaxNodes/InlineCodeNode":70,"../../SyntaxNodes/LinkNode":74,"../../SyntaxNodes/PlainTextNode":80,"../CollectionHelpers":1,"./MediaConventions":5,"./SandwichConventions":13,"./Tokens/InlineCodeToken":22,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/PlainTextToken":26}],7:[function(require,module,exports){
+},{"../../SyntaxNodes/InlineCodeNode":70,"../../SyntaxNodes/LinkNode":74,"../../SyntaxNodes/PlainTextNode":80,"../CollectionHelpers":1,"./MediaConventions":5,"./RichConventions":13,"./Tokens/InlineCodeToken":22,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/PlainTextToken":26}],7:[function(require,module,exports){
 "use strict";
 var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
 var StartMarker_1 = require('./StartMarker');
@@ -545,21 +545,19 @@ exports.StartMarker = StartMarker;
 
 },{"../Tokens/EmphasisStartToken":18,"../Tokens/StressStartToken":38,"./RaisedVoiceMarker":10}],12:[function(require,module,exports){
 "use strict";
-var SandwichConvention = (function () {
-    function SandwichConvention(start, end, NodeType, StartTokenType, EndTokenType) {
-        this.start = start;
-        this.end = end;
+var RichConvention = (function () {
+    function RichConvention(NodeType, StartTokenType, EndTokenType) {
         this.NodeType = NodeType;
         this.StartTokenType = StartTokenType;
         this.EndTokenType = EndTokenType;
     }
-    return SandwichConvention;
+    return RichConvention;
 }());
-exports.SandwichConvention = SandwichConvention;
+exports.RichConvention = RichConvention;
 
 },{}],13:[function(require,module,exports){
 "use strict";
-var SandwichConvention_1 = require('./SandwichConvention');
+var RichConvention_1 = require('./RichConvention');
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
 var EmphasisNode_1 = require('../../SyntaxNodes/EmphasisNode');
 var SpoilerNode_1 = require('../../SyntaxNodes/SpoilerNode');
@@ -578,20 +576,20 @@ var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToke
 var RevisionInsertionEndToken_1 = require('./Tokens/RevisionInsertionEndToken');
 var RevisionDeletionStartToken_1 = require('./Tokens/RevisionDeletionStartToken');
 var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
-var STRESS = new SandwichConvention_1.SandwichConvention('**', '**', StressNode_1.StressNode, StressStartToken_1.StressStartToken, StressEndToken_1.StressEndToken);
+var STRESS = new RichConvention_1.RichConvention(StressNode_1.StressNode, StressStartToken_1.StressStartToken, StressEndToken_1.StressEndToken);
 exports.STRESS = STRESS;
-var EMPHASIS = new SandwichConvention_1.SandwichConvention('*', '*', EmphasisNode_1.EmphasisNode, EmphasisStartToken_1.EmphasisStartToken, EmphasisEndToken_1.EmphasisEndToken);
+var EMPHASIS = new RichConvention_1.RichConvention(EmphasisNode_1.EmphasisNode, EmphasisStartToken_1.EmphasisStartToken, EmphasisEndToken_1.EmphasisEndToken);
 exports.EMPHASIS = EMPHASIS;
-var REVISION_DELETION = new SandwichConvention_1.SandwichConvention('~~', '~~', RevisionDeletionNode_1.RevisionDeletionNode, RevisionDeletionStartToken_1.RevisionDeletionStartToken, RevisionDeletionEndToken_1.RevisionDeletionEndToken);
+var REVISION_DELETION = new RichConvention_1.RichConvention(RevisionDeletionNode_1.RevisionDeletionNode, RevisionDeletionStartToken_1.RevisionDeletionStartToken, RevisionDeletionEndToken_1.RevisionDeletionEndToken);
 exports.REVISION_DELETION = REVISION_DELETION;
-var REVISION_INSERTION = new SandwichConvention_1.SandwichConvention('++', '++', RevisionInsertionNode_1.RevisionInsertionNode, RevisionInsertionStartToken_1.RevisionInsertionStartToken, RevisionInsertionEndToken_1.RevisionInsertionEndToken);
+var REVISION_INSERTION = new RichConvention_1.RichConvention(RevisionInsertionNode_1.RevisionInsertionNode, RevisionInsertionStartToken_1.RevisionInsertionStartToken, RevisionInsertionEndToken_1.RevisionInsertionEndToken);
 exports.REVISION_INSERTION = REVISION_INSERTION;
-var SPOILER = new SandwichConvention_1.SandwichConvention('[SPOILER: ', ']', SpoilerNode_1.SpoilerNode, SpoilerStartToken_1.SpoilerStartToken, SpoilerEndToken_1.SpoilerEndToken);
+var SPOILER = new RichConvention_1.RichConvention(SpoilerNode_1.SpoilerNode, SpoilerStartToken_1.SpoilerStartToken, SpoilerEndToken_1.SpoilerEndToken);
 exports.SPOILER = SPOILER;
-var FOOTNOTE = new SandwichConvention_1.SandwichConvention(' ((', '))', FootnoteNode_1.FootnoteNode, FootnoteStartToken_1.FootnoteStartToken, FootnoteEndToken_1.FootnoteEndToken);
+var FOOTNOTE = new RichConvention_1.RichConvention(FootnoteNode_1.FootnoteNode, FootnoteStartToken_1.FootnoteStartToken, FootnoteEndToken_1.FootnoteEndToken);
 exports.FOOTNOTE = FOOTNOTE;
 
-},{"../../SyntaxNodes/EmphasisNode":65,"../../SyntaxNodes/FootnoteNode":67,"../../SyntaxNodes/RevisionDeletionNode":81,"../../SyntaxNodes/RevisionInsertionNode":82,"../../SyntaxNodes/SpoilerNode":85,"../../SyntaxNodes/StressNode":86,"./SandwichConvention":12,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionDeletionStartToken":32,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/RevisionInsertionStartToken":34,"./Tokens/SpoilerEndToken":35,"./Tokens/SpoilerStartToken":36,"./Tokens/StressEndToken":37,"./Tokens/StressStartToken":38}],14:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":65,"../../SyntaxNodes/FootnoteNode":67,"../../SyntaxNodes/RevisionDeletionNode":81,"../../SyntaxNodes/RevisionInsertionNode":82,"../../SyntaxNodes/SpoilerNode":85,"../../SyntaxNodes/StressNode":86,"./RichConvention":12,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionDeletionStartToken":32,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/RevisionInsertionStartToken":34,"./Tokens/SpoilerEndToken":35,"./Tokens/SpoilerStartToken":36,"./Tokens/StressEndToken":37,"./Tokens/StressStartToken":38}],14:[function(require,module,exports){
 "use strict";
 var TokenizerContext_1 = require('./TokenizerContext');
 var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');

@@ -1,7 +1,6 @@
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { Token, TokenType } from '../Tokens/Token'
 import { applyBackslashEscaping } from '../../TextHelpers'
-import { STRESS, EMPHASIS } from '../SandwichConventions'
 
 
 const EMPHASIS_COST = 1

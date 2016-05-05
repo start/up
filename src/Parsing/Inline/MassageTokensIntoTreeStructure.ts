@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Convention } from './Convention'
-import { SandwichConvention } from './SandwichConvention'
+import { RichConvention } from './RichConvention'
 import { TextConsumer } from './TextConsumer'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { Token } from './Tokens/Token'
@@ -11,7 +11,7 @@ import { getMediaTokenizer }  from './GetMediaTokenizer'
 import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
 
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './SandwichConventions'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 
 const ALL_SANDWICHES = [
   REVISION_DELETION,
@@ -50,7 +50,7 @@ class TokenMasseuse {
   // Massages sandwich tokens into a tree structure while preserving any overlapping conveyed by the author. This
   // method completely ignores link tokens, and it assumes no tokens are missing.
   massageSandwichesIntoTreeStructure(): void {
-    const unclosedSandwiches: SandwichConvention[] = []
+    const unclosedSandwiches: RichConvention[] = []
 
     // Here's our overall strategy:
     //
@@ -79,7 +79,7 @@ class TokenMasseuse {
       // opened between this token and its corresponding start token, those sandwiches overlap this one and will
       // need to be chopped in half.
 
-      let overlappingFromMostRecentToLeast: SandwichConvention[] = []
+      let overlappingFromMostRecentToLeast: RichConvention[] = []
 
       // We'll check the unclosed sandwiches from most recently opened to least recently opened.
       for (let sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
@@ -135,8 +135,8 @@ class TokenMasseuse {
       // 1. Start before the link and end inside the link
       // 2. Start inside the link and end after the link
 
-      const overlappingStartingBefore: SandwichConvention[] = []
-      const overlappingStartingInside: SandwichConvention[] = []
+      const overlappingStartingBefore: RichConvention[] = []
+      const overlappingStartingInside: RichConvention[] = []
 
       for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
         const token = this.tokens[insideLinkIndex]
@@ -181,7 +181,7 @@ class TokenMasseuse {
   //
   // Functionally, this method does exactly what its name implies: it adds sandwich end tokens before `index`
   // and sandwich start tokens after `index`.
-  private closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: SandwichConvention[]): void {
+  private closeAndReopenSandwichesAroundTokenAtIndex(index: number, sandwichesInTheOrderTheyShouldClose: RichConvention[]): void {
     const startTokensToAdd =
       sandwichesInTheOrderTheyShouldClose
         .map(sandwich => new sandwich.StartTokenType())
@@ -200,13 +200,13 @@ class TokenMasseuse {
   }
 }
 
-function getSandwichStartedByThisToken(token: Token): SandwichConvention {
+function getSandwichStartedByThisToken(token: Token): RichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
     token instanceof sandwich.StartTokenType
   )[0]
 }
 
-function getSandwichEndedByThisToken(token: Token): SandwichConvention {
+function getSandwichEndedByThisToken(token: Token): RichConvention {
   return ALL_SANDWICHES.filter(sandwich =>
     token instanceof sandwich.EndTokenType
   )[0]
