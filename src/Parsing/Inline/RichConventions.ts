@@ -6,6 +6,7 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { StressStartToken } from './Tokens/StressStartToken'
 import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
@@ -18,14 +19,17 @@ import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToke
 import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
+import { LinkStartToken } from './Tokens/LinkStartToken'
+import { LinkEndToken } from './Tokens/LinkEndToken'
 
 
-const STRESS = new RichConvention(StressNode, StressStartToken, StressEndToken)
 const EMPHASIS = new RichConvention(EmphasisNode, EmphasisStartToken, EmphasisEndToken)
+const STRESS = new RichConvention(StressNode, StressStartToken, StressEndToken)
 const REVISION_DELETION = new RichConvention(RevisionDeletionNode, RevisionDeletionStartToken, RevisionDeletionEndToken)
 const REVISION_INSERTION = new RichConvention(RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
 const SPOILER = new RichConvention(SpoilerNode, SpoilerStartToken, SpoilerEndToken)
 const FOOTNOTE = new RichConvention(FootnoteNode, FootnoteStartToken, FootnoteEndToken)
+const LINK = new RichConvention(LinkNode, LinkStartToken, LinkEndToken)
 
 
 export {
@@ -34,5 +38,6 @@ export {
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
-  FOOTNOTE
+  FOOTNOTE,
+  LINK
 }

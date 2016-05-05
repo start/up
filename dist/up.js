@@ -564,6 +564,7 @@ var SpoilerNode_1 = require('../../SyntaxNodes/SpoilerNode');
 var FootnoteNode_1 = require('../../SyntaxNodes/FootnoteNode');
 var RevisionDeletionNode_1 = require('../../SyntaxNodes/RevisionDeletionNode');
 var RevisionInsertionNode_1 = require('../../SyntaxNodes/RevisionInsertionNode');
+var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var StressEndToken_1 = require('./Tokens/StressEndToken');
 var StressStartToken_1 = require('./Tokens/StressStartToken');
 var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
@@ -576,10 +577,12 @@ var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToke
 var RevisionInsertionEndToken_1 = require('./Tokens/RevisionInsertionEndToken');
 var RevisionDeletionStartToken_1 = require('./Tokens/RevisionDeletionStartToken');
 var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
-var STRESS = new RichConvention_1.RichConvention(StressNode_1.StressNode, StressStartToken_1.StressStartToken, StressEndToken_1.StressEndToken);
-exports.STRESS = STRESS;
+var LinkStartToken_1 = require('./Tokens/LinkStartToken');
+var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var EMPHASIS = new RichConvention_1.RichConvention(EmphasisNode_1.EmphasisNode, EmphasisStartToken_1.EmphasisStartToken, EmphasisEndToken_1.EmphasisEndToken);
 exports.EMPHASIS = EMPHASIS;
+var STRESS = new RichConvention_1.RichConvention(StressNode_1.StressNode, StressStartToken_1.StressStartToken, StressEndToken_1.StressEndToken);
+exports.STRESS = STRESS;
 var REVISION_DELETION = new RichConvention_1.RichConvention(RevisionDeletionNode_1.RevisionDeletionNode, RevisionDeletionStartToken_1.RevisionDeletionStartToken, RevisionDeletionEndToken_1.RevisionDeletionEndToken);
 exports.REVISION_DELETION = REVISION_DELETION;
 var REVISION_INSERTION = new RichConvention_1.RichConvention(RevisionInsertionNode_1.RevisionInsertionNode, RevisionInsertionStartToken_1.RevisionInsertionStartToken, RevisionInsertionEndToken_1.RevisionInsertionEndToken);
@@ -588,8 +591,10 @@ var SPOILER = new RichConvention_1.RichConvention(SpoilerNode_1.SpoilerNode, Spo
 exports.SPOILER = SPOILER;
 var FOOTNOTE = new RichConvention_1.RichConvention(FootnoteNode_1.FootnoteNode, FootnoteStartToken_1.FootnoteStartToken, FootnoteEndToken_1.FootnoteEndToken);
 exports.FOOTNOTE = FOOTNOTE;
+var LINK = new RichConvention_1.RichConvention(LinkNode_1.LinkNode, LinkStartToken_1.LinkStartToken, LinkEndToken_1.LinkEndToken);
+exports.LINK = LINK;
 
-},{"../../SyntaxNodes/EmphasisNode":65,"../../SyntaxNodes/FootnoteNode":67,"../../SyntaxNodes/RevisionDeletionNode":81,"../../SyntaxNodes/RevisionInsertionNode":82,"../../SyntaxNodes/SpoilerNode":85,"../../SyntaxNodes/StressNode":86,"./RichConvention":12,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionDeletionStartToken":32,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/RevisionInsertionStartToken":34,"./Tokens/SpoilerEndToken":35,"./Tokens/SpoilerStartToken":36,"./Tokens/StressEndToken":37,"./Tokens/StressStartToken":38}],14:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":65,"../../SyntaxNodes/FootnoteNode":67,"../../SyntaxNodes/LinkNode":74,"../../SyntaxNodes/RevisionDeletionNode":81,"../../SyntaxNodes/RevisionInsertionNode":82,"../../SyntaxNodes/SpoilerNode":85,"../../SyntaxNodes/StressNode":86,"./RichConvention":12,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionDeletionStartToken":32,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/RevisionInsertionStartToken":34,"./Tokens/SpoilerEndToken":35,"./Tokens/SpoilerStartToken":36,"./Tokens/StressEndToken":37,"./Tokens/StressStartToken":38}],14:[function(require,module,exports){
 "use strict";
 var TokenizerContext_1 = require('./TokenizerContext');
 var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
