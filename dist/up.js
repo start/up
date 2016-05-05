@@ -186,7 +186,7 @@ function parse(tokens) {
     return parseUntil(tokens).nodes;
 }
 exports.parse = parse;
-var SANDWICHES = [
+var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS,
     RichConventions_1.EMPHASIS,
     RichConventions_1.REVISION_DELETION,
@@ -199,14 +199,14 @@ var MEDIA_CONVENTIONS = [
     MediaConventions_1.IMAGE,
     MediaConventions_1.VIDEO
 ];
-function parseUntil(tokens, terminator) {
+function parseUntil(tokens, Terminator) {
     var nodes = [];
-    var stillNeedsTerminator = !!terminator;
+    var stillNeedsTerminator = !!Terminator;
     var countParsed = 0;
     MainParserLoop: for (var index = 0; index < tokens.length; index++) {
         var token = tokens[index];
         countParsed = index + 1;
-        if (terminator && token instanceof terminator) {
+        if (Terminator && token instanceof Terminator) {
             stillNeedsTerminator = false;
             break;
         }
@@ -262,20 +262,20 @@ function parseUntil(tokens, terminator) {
                 continue MainParserLoop;
             }
         }
-        for (var _a = 0, SANDWICHES_1 = SANDWICHES; _a < SANDWICHES_1.length; _a++) {
-            var sandwich = SANDWICHES_1[_a];
-            if (token instanceof sandwich.StartTokenType) {
-                var result = parseUntil(tokens.slice(countParsed), sandwich.EndTokenType);
+        for (var _a = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _a < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _a++) {
+            var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_a];
+            if (token instanceof richConvention.StartTokenType) {
+                var result = parseUntil(tokens.slice(countParsed), richConvention.EndTokenType);
                 index += result.countTokensParsed;
                 if (result.nodes.length) {
-                    nodes.push(new sandwich.NodeType(result.nodes));
+                    nodes.push(new richConvention.NodeType(result.nodes));
                 }
                 continue MainParserLoop;
             }
         }
     }
     if (stillNeedsTerminator) {
-        throw new Error("Missing token: " + terminator);
+        throw new Error("Missing token: " + Terminator);
     }
     return new ParseResult(nodes, countParsed);
 }

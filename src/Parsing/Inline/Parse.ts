@@ -37,7 +37,7 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
 }
 
 
-const SANDWICHES = [
+const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS,
   EMPHASIS,
   REVISION_DELETION,
@@ -53,9 +53,9 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
+function parseUntil(tokens: Token[], Terminator?: TokenType): ParseResult {
   const nodes: InlineSyntaxNode[] = []
-  let stillNeedsTerminator = !!terminator
+  let stillNeedsTerminator = !!Terminator
   let countParsed = 0
 
   MainParserLoop:
@@ -63,7 +63,7 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
     const token = tokens[index]
     countParsed = index + 1
 
-    if (terminator && token instanceof terminator) {
+    if (Terminator && token instanceof Terminator) {
       stillNeedsTerminator = false
       break
     }
@@ -98,7 +98,7 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
 
       // The URL was in the LinkEndToken, the last token we parsed
       //
-      // TODO: Move URL to LinkStartToken
+      // TODO: Move URL to LinkStartToken?
       const linkEndToken = <LinkEndToken>tokens[index]
       
       let url = linkEndToken.url.trim()
@@ -146,14 +146,14 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
       }
     }
 
-    for (const sandwich of SANDWICHES) {
-      if (token instanceof sandwich.StartTokenType) {
-        const result = parseUntil(tokens.slice(countParsed), sandwich.EndTokenType)
+    for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
+      if (token instanceof richConvention.StartTokenType) {
+        const result = parseUntil(tokens.slice(countParsed), richConvention.EndTokenType)
         index += result.countTokensParsed
 
         if (result.nodes.length) {
           // Like empty inline code, we discard any empty sandwich convention
-          nodes.push(new sandwich.NodeType(result.nodes))
+          nodes.push(new richConvention.NodeType(result.nodes))
         }
 
         continue MainParserLoop
@@ -162,11 +162,12 @@ function parseUntil(tokens: Token[], terminator?: TokenType): ParseResult {
   }
 
   if (stillNeedsTerminator) {
-    throw new Error(`Missing token: ${terminator}`)
+    throw new Error(`Missing token: ${Terminator}`)
   }
 
   return new ParseResult(nodes, countParsed)
 }
+
 
 function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
