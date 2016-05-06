@@ -3,20 +3,15 @@ import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
-import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
-
+import { RichConvention } from './RichConvention'
+import { TokenizerState } from './TokenizerState'
 
 export class TokenizerContext {
-  public innermostConvention: RichInlineSyntaxNodeType
-
-  public textIndex = 0
-  public countTokens = 0
-
-  public isLinkOpen = false
-  public isRevisionDeletionOpen = false
-  public isRevisionInsertionOpen = false
-  public countSpoilersOpen = 0
-  public countFootnotesOpen = 0
+  constructor(
+    public state: TokenizerState,
+    public textIndex: number,
+    public countTokens: number,
+    public collectedUnmatchedText: string) { }
 }
 
 
@@ -37,9 +32,9 @@ export class OldTokenizerContext {
   public countFootnotesOpen = 0
 
   public initialToken: Token
-    
+
   public lengthAdvanced = 0
-  
+
   // Tthe following fields are re-computed in `dirty()` based on `lengthAdvanced`.
   public remainingText: string
   public currentChar: string
@@ -74,11 +69,11 @@ export class OldTokenizerContext {
   }
 
   advanceIfMatch(args: MatchArgs): boolean {
-    let originalThen = args.then || (() => {})
-    
+    let originalThen = args.then || (() => { })
+
     return this.match({
       pattern: args.pattern,
-      
+
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.advance(match.length)
         originalThen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -152,27 +147,27 @@ export class OldTokenizerContext {
 
     return copy
   }
-  
+
   closeInlineCode(): void {
     this.isInlineCodeOpen = false
   }
-  
+
   closeLink(): void {
     this.isLinkOpen = false
   }
-  
+
   closeRevisionDeletion(): void {
     this.isRevisionDeletionOpen = false
   }
-  
+
   closeRevisionInsertion(): void {
     this.isRevisionInsertionOpen = false
   }
-  
+
   closeSpoiler(): void {
     this.countSpoilersOpen -= 1
   }
-  
+
   closeFootnote(): void {
     this.countFootnotesOpen -= 1
   }
@@ -181,15 +176,15 @@ export class OldTokenizerContext {
     this.lengthAdvanced += length
     this.dirty()
   }
-  
+
   isSpoilerInnermostOpenConvention(): boolean {
     return this.initialToken instanceof SpoilerStartToken
   }
-  
+
   isFootnoteInnermostOpenConvention(): boolean {
     return this.initialToken instanceof FootnoteStartToken
-  } 
-  
+  }
+
   private currentIndex(): number {
     return this.initialIndex + this.lengthAdvanced
   }
@@ -203,7 +198,7 @@ export class OldTokenizerContext {
     copy.countSpoilersOpen = this.countSpoilersOpen
     copy.countFootnotesOpen = this.countFootnotesOpen
     copy.isInlineCodeOpen = this.isInlineCodeOpen
-    
+
     copy.dirty()
     return copy
   }
@@ -211,7 +206,7 @@ export class OldTokenizerContext {
   private dirty(): void {
     this.remainingText = this.entireText.substr(this.currentIndex())
     this.currentChar = this.remainingText[0]
-    
+
     const previousChar = this.entireText[this.currentIndex() - 1]
     this.isTouchingEndOfWord = NOT_WHITESPACE_PATTERN.test(previousChar)
   }

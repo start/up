@@ -2,6 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TokenizerResult } from './TokenizerResult'
+import { TokenizerState } from './TokenizerState'
 import { OldTokenizerContext, TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
@@ -34,7 +35,7 @@ import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { NON_WHITESPACE_CHAR } from '../Patterns'
+import { startsWith, NON_WHITESPACE_CHAR } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const tokens = new Tokenizer(text, config).tokens
@@ -50,6 +51,10 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR
 )
 
+const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
+  startsWith('`')
+)
+
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -59,13 +64,15 @@ class Tokenizer {
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
+  
+  private unresolvedContexts: TokenizerContext[] = []
 
   // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
   // to a token.
   //
   // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
   // tokens (like InlineCodeTokens).
-  private collcetedUnmatchedText = ''
+  private collectedUnmatchedText = ''
   
   constructor(private entireText: string, private config: UpConfig) {
     this.dirty()
@@ -74,6 +81,18 @@ class Tokenizer {
       if (this.currentChar === '\\') {
         this.advance(1)
         this.collectCurrentChar()
+        continue
+      }
+      
+      if (this.hasState(TokenizerState.InlineCode)) {
+        if (!this.closeInlineCode()) {
+          this.collectCurrentChar()  
+        }
+        
+        continue
+      }
+      
+      if (this.openInlineCode()) {
         continue
       }
       
@@ -93,13 +112,13 @@ class Tokenizer {
   }
 
   private collectCurrentChar(): void {
-    this.collcetedUnmatchedText += this.currentChar
+    this.collectedUnmatchedText += this.currentChar
     this.advance(1)
   }
 
   private flushUnmatchedText(): string {
-    const unmatchedText = this.collcetedUnmatchedText
-    this.collcetedUnmatchedText = ''
+    const unmatchedText = this.collectedUnmatchedText
+    this.collectedUnmatchedText = ''
 
     return unmatchedText
   }
@@ -110,6 +129,45 @@ class Tokenizer {
     if (unmatchedText) {
       this.tokens.push(new PlainTextToken(unmatchedText))
     }
+  }
+  
+  private openInlineCode(): boolean {
+    if (this.match({pattern: INLINE_CODE_DELIMITER_PATTERN})) {
+      this.advance(1)
+      
+      this.addUnresolvedContext(TokenizerState.InlineCode)
+      this.flushUnmatchedTextToPlainTextToken()
+      return true
+    }
+    
+    return false
+  }
+  
+  private closeInlineCode(): boolean {
+    if (this.match({pattern: INLINE_CODE_DELIMITER_PATTERN})) {
+      this.advance(1)
+      
+      // Inline code can't contain other conventions, so we don't need to worry about any more recent unresolved contexts.
+      this.unresolvedContexts.pop()
+      this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
+      return true
+    }
+    
+    return false
+  }
+  
+  private addUnresolvedContext(nextState: TokenizerState): void {
+    this.unresolvedContexts.push(
+      new TokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText))
+  }
+  
+  private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
+    this.flushUnmatchedTextToPlainTextToken()
+    this.tokens.push(token)
+  }
+  
+  private hasState(state: TokenizerState): boolean {
+    return this.unresolvedContexts.some(context => context.state === state)
   }
 
   private match(args: MatchArgs): boolean {
@@ -142,6 +200,7 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 }
+
 
 
 interface MatchArgs {
