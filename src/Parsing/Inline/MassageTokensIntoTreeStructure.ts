@@ -1,6 +1,5 @@
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
-import { applyBackslashEscaping } from '../TextHelpers'
 import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
 

@@ -1,3 +1,3 @@
-export function applyBackslashEscaping(text: string) {
-  return text.replace(/\\(.?)/g, '$1')
+export function escapeForRegex(text: string): string {
+  return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
 }

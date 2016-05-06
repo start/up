@@ -1,6 +1,5 @@
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { Token, TokenType } from '../Tokens/Token'
-import { applyBackslashEscaping } from '../../TextHelpers'
 
 
 const EMPHASIS_COST = 1
