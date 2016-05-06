@@ -627,12 +627,6 @@ var FootnoteEndToken_1 = require('./Tokens/FootnoteEndToken');
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
-var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
-var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
-var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
-var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
-var RevisionInsertionEndToken_1 = require('./Tokens/RevisionInsertionEndToken');
-var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
 var Patterns_1 = require('../Patterns');
 function tokenize(text, config) {
     var tokens = new Tokenizer(text, config).tokens;
@@ -724,45 +718,75 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openInlineCode = function () {
         var _this = this;
-        return this.canTry(TokenizerState_1.TokenizerState.InlineCode) && this.advanceAfterMatch({
-            pattern: INLINE_CODE_DELIMITER_PATTERN,
+        return this.openConvention({
+            stateToOpen: TokenizerState_1.TokenizerState.InlineCode,
+            startPattern: INLINE_CODE_DELIMITER_PATTERN,
             then: function () {
-                _this.addUnresolvedContext(TokenizerState_1.TokenizerState.InlineCode);
                 _this.flushUnmatchedTextToPlainTextToken();
             }
         });
     };
     Tokenizer.prototype.closeInlineCode = function () {
         var _this = this;
-        return this.advanceAfterMatch({
-            pattern: INLINE_CODE_DELIMITER_PATTERN,
+        return this.closeConvention({
+            stateToClose: TokenizerState_1.TokenizerState.InlineCode,
+            endPattern: INLINE_CODE_DELIMITER_PATTERN,
             then: function () {
-                _this.unresolvedContexts.pop();
                 _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
         });
     };
     Tokenizer.prototype.openFootnote = function () {
         var _this = this;
-        return this.canTry(TokenizerState_1.TokenizerState.Footnote) && this.advanceAfterMatch({
-            pattern: FOOTNOTE_START_PATTERN,
+        return this.openConvention({
+            stateToOpen: TokenizerState_1.TokenizerState.Footnote,
+            startPattern: FOOTNOTE_START_PATTERN,
             then: function () {
-                _this.addUnresolvedContext(TokenizerState_1.TokenizerState.Footnote);
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
             }
         });
     };
     Tokenizer.prototype.closeFootnote = function () {
         var _this = this;
-        return this.advanceAfterMatch({
-            pattern: FOOTNOTE_END_PATTERN,
+        return this.closeConvention({
+            stateToClose: TokenizerState_1.TokenizerState.Footnote,
+            endPattern: FOOTNOTE_END_PATTERN,
             then: function () {
-                _this.removeMostRecentUnresolvedContextWithState(TokenizerState_1.TokenizerState.Footnote);
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
             }
         });
     };
-    Tokenizer.prototype.removeMostRecentUnresolvedContextWithState = function (state) {
+    Tokenizer.prototype.openConvention = function (args) {
+        var _this = this;
+        var stateToOpen = args.stateToOpen, startPattern = args.startPattern, then = args.then;
+        return this.canTry(stateToOpen) && this.advanceAfterMatch({
+            pattern: startPattern,
+            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                var captures = [];
+                for (var _i = 3; _i < arguments.length; _i++) {
+                    captures[_i - 3] = arguments[_i];
+                }
+                _this.addUnresolvedContext(stateToOpen);
+                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            }
+        });
+    };
+    Tokenizer.prototype.closeConvention = function (args) {
+        var _this = this;
+        var stateToClose = args.stateToClose, endPattern = args.endPattern, then = args.then;
+        return this.advanceAfterMatch({
+            pattern: endPattern,
+            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                var captures = [];
+                for (var _i = 3; _i < arguments.length; _i++) {
+                    captures[_i - 3] = arguments[_i];
+                }
+                _this.resolveMostRecentUnresolved(stateToClose);
+                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            }
+        });
+    };
+    Tokenizer.prototype.resolveMostRecentUnresolved = function (state) {
         for (var i = 0; i < this.unresolvedContexts.length; i++) {
             if (this.unresolvedContexts[i].state === state) {
                 this.unresolvedContexts.splice(i, 1);
@@ -805,239 +829,8 @@ var Tokenizer = (function () {
     };
     return Tokenizer;
 }());
-var OldTokenizer = (function () {
-    function OldTokenizer(context, config) {
-        this.context = context;
-        this.config = config;
-        this.tokens = [];
-        this.collcetedUnmatchedText = '';
-        if (this.context.initialToken) {
-            this.tokens.push(this.context.initialToken);
-        }
-        while (!this.context.done()) {
-            if (this.context.currentChar === '\\') {
-                this.context.advance(1);
-                this.collectCurrentChar();
-                continue;
-            }
-            if (this.context.isInlineCodeOpen) {
-                if (this.closeInlineCode()) {
-                    return;
-                }
-            }
-            else {
-                if (this.context.countSpoilersOpen && this.closeSpoiler() && this.context.isSpoilerInnermostOpenConvention()) {
-                    return;
-                }
-                if (this.context.countFootnotesOpen && this.closeFootnote() && this.context.isFootnoteInnermostOpenConvention()) {
-                    return;
-                }
-                if (this.context.isRevisionInsertionOpen) {
-                    if (this.closeRevisionInsertion()) {
-                        return;
-                    }
-                }
-                else {
-                    if (this.tokenizeRevisionInsertion()) {
-                        continue;
-                    }
-                }
-                if (this.context.isRevisionDeletionOpen) {
-                    if (this.closeRevisionDeletion()) {
-                        return;
-                    }
-                }
-                else {
-                    if (this.tokenizeRevisionDeletion()) {
-                        continue;
-                    }
-                }
-                var didTokenizeConvention = (this.tokenizeInlineCode()
-                    || this.tokenizeRaisedVoicePlaceholders()
-                    || this.tokenizeSpoiler()
-                    || this.tokenizeFootnote());
-                if (didTokenizeConvention) {
-                    continue;
-                }
-            }
-            this.collectCurrentChar();
-        }
-        this.flushUnmatchedTextToPlainTextToken();
-        this.result = {
-            succeeded: !this.context.failed(),
-            lengthAdvanced: this.context.lengthAdvanced,
-            tokens: this.tokens
-        };
-    }
-    OldTokenizer.prototype.collectCurrentChar = function () {
-        this.collcetedUnmatchedText += this.context.currentChar;
-        this.context.advance(1);
-    };
-    OldTokenizer.prototype.flushUnmatchedText = function () {
-        var unmatchedText = this.collcetedUnmatchedText;
-        this.collcetedUnmatchedText = '';
-        return unmatchedText;
-    };
-    OldTokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
-        var unmatchedText = this.flushUnmatchedText();
-        if (unmatchedText) {
-            this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
-        }
-    };
-    OldTokenizer.prototype.flushUnmatchedTextToPlainTextTokenThenAddTokens = function () {
-        var tokens = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            tokens[_i - 0] = arguments[_i];
-        }
-        this.flushUnmatchedTextToPlainTextToken();
-        (_a = this.tokens).push.apply(_a, tokens);
-        var _a;
-    };
-    OldTokenizer.prototype.tokenizeInlineCode = function () {
-        var _this = this;
-        return this.tokenizeConvention({
-            pattern: /^`/,
-            getNewContext: function () { return _this.context.withInlineCodeOpen(); }
-        });
-    };
-    OldTokenizer.prototype.closeInlineCode = function () {
-        if (this.context.advanceIfMatch({ pattern: /^`/ })) {
-            this.context.closeInlineCode();
-            this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
-            return true;
-        }
-        return false;
-    };
-    OldTokenizer.prototype.tokenizeSpoiler = function () {
-        var _this = this;
-        return this.tokenizeConvention({
-            pattern: new RegExp("^\\[" + this.config.settings.i18n.terms.spoiler + ":\\s*", 'i'),
-            getNewContext: function () { return _this.context.withAdditionalSpoilerOpen(); }
-        });
-    };
-    OldTokenizer.prototype.closeSpoiler = function () {
-        if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
-            this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken_1.SpoilerEndToken());
-            this.context.closeSpoiler();
-            this.result = this.getResult();
-            return true;
-        }
-        return false;
-    };
-    OldTokenizer.prototype.tokenizeRevisionInsertion = function () {
-        var _this = this;
-        return this.tokenizeConvention({
-            pattern: /^\+\+/,
-            getNewContext: function () { return _this.context.withRevisionInsertionOpen(); }
-        });
-    };
-    OldTokenizer.prototype.closeRevisionInsertion = function () {
-        if (this.context.advanceIfMatch({ pattern: /^\+\+/ })) {
-            this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionInsertionEndToken_1.RevisionInsertionEndToken());
-            this.context.closeRevisionInsertion();
-            this.result = this.getResult();
-            return true;
-        }
-        return false;
-    };
-    OldTokenizer.prototype.tokenizeRevisionDeletion = function () {
-        var _this = this;
-        return this.tokenizeConvention({
-            pattern: /^~~/,
-            getNewContext: function () { return _this.context.withRevisionDeletionOpen(); }
-        });
-    };
-    OldTokenizer.prototype.closeRevisionDeletion = function () {
-        if (this.context.advanceIfMatch({ pattern: /^~~/ })) {
-            this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionDeletionEndToken_1.RevisionDeletionEndToken());
-            this.context.closeRevisionDeletion();
-            this.result = this.getResult();
-            return true;
-        }
-        return false;
-    };
-    OldTokenizer.prototype.tokenizeFootnote = function () {
-        var _this = this;
-        return this.tokenizeConvention({
-            pattern: /^\s*\(\(/,
-            getNewContext: function () { return _this.context.withAdditionalFootnoteOpen(); }
-        });
-    };
-    OldTokenizer.prototype.closeFootnote = function () {
-        if (this.context.advanceIfMatch({ pattern: /^\)\)/ })) {
-            this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new FootnoteEndToken_1.FootnoteEndToken());
-            this.context.closeFootnote();
-            this.result = this.getResult();
-            return true;
-        }
-        return false;
-    };
-    OldTokenizer.prototype.tokenizeConvention = function (args) {
-        var newContext;
-        var canOpenPattern = this.context.match({
-            pattern: args.pattern,
-            then: function (match) {
-                newContext = args.getNewContext();
-                newContext.advance(match.length);
-            }
-        });
-        if (!canOpenPattern) {
-            return false;
-        }
-        return this.tokenizeRestOfConvention(newContext);
-    };
-    OldTokenizer.prototype.tokenizeRestOfConvention = function (context) {
-        var result = new OldTokenizer(context, this.config).result;
-        if (!result.succeeded) {
-            return false;
-        }
-        this.flushUnmatchedTextToPlainTextTokenThenAddTokens.apply(this, result.tokens);
-        this.context.advance(result.lengthAdvanced);
-        return true;
-    };
-    OldTokenizer.prototype.getResult = function () {
-        return this.getResultFor.apply(this, this.tokens);
-    };
-    OldTokenizer.prototype.getResultFor = function () {
-        var tokens = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            tokens[_i - 0] = arguments[_i];
-        }
-        return {
-            succeeded: true,
-            lengthAdvanced: this.context.lengthAdvanced,
-            tokens: tokens
-        };
-    };
-    OldTokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
-        var _this = this;
-        var ASTERISKS_PATTERN = /^\*+/;
-        return this.context.advanceIfMatch({
-            pattern: ASTERISKS_PATTERN,
-            then: function (asterisks, isTouchingWordEnd, isTouchingWordStart) {
-                var canCloseConvention = isTouchingWordEnd;
-                var canOpenConvention = isTouchingWordStart;
-                var AsteriskTokenType;
-                if (canOpenConvention && canCloseConvention) {
-                    AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
-                }
-                else if (canOpenConvention) {
-                    AsteriskTokenType = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
-                }
-                else if (canCloseConvention) {
-                    AsteriskTokenType = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
-                }
-                else {
-                    AsteriskTokenType = PlainTextToken_1.PlainTextToken;
-                }
-                _this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new AsteriskTokenType(asterisks));
-            }
-        });
-    };
-    return OldTokenizer;
-}());
 
-},{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28,"./Tokens/PotentialRaisedVoiceEndToken":29,"./Tokens/PotentialRaisedVoiceStartOrEndToken":30,"./Tokens/PotentialRaisedVoiceStartToken":31,"./Tokens/RevisionDeletionEndToken":33,"./Tokens/RevisionInsertionEndToken":35,"./Tokens/SpoilerEndToken":37}],16:[function(require,module,exports){
+},{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28}],16:[function(require,module,exports){
 "use strict";
 var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToken');
