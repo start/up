@@ -17,12 +17,13 @@ import { concat } from './CollectionHelpers'
 
 // Here are the rules!
 //
-// 1. Any footnotes within a top-level outline convention (which naturally includes any footnotes within any nested
-//    outline conventions) are placed into a footnote block directly following that top-level outline convention.
-//    The only exception to this rule is blockquotes, because...
+// 1. Any footnotes within a top-level outline convention (which includes any footnotes within any nested
+//    outline conventions) are placed into a footnote block directly following that top-level outline
+//    convention. Blockquotes are the exception to this rule, because...
 //
-// 2. Blocknotes are considere mini-documents! Therefore, that first rule also applies to all top-level outline
-//    conventions inside any blockquote.
+// 2. Blocknotes are considere mini-documents! Therefore, that first rule is applied all top-level outline
+//    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote
+//    are placed into a footnote block inside the blockquote after the paragraph.
 //
 // We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block. 
 
