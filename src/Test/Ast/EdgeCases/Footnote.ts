@@ -31,6 +31,34 @@ describe('A footnote reference at the end of a paragraph', () => {
 })
 
 
+describe('Nested parenthesized text ending with "))"', () => {
+  it('does not produce any footnote nodes', () => {
+    const text = "(I don't eat cereal. (Well, I do, but I pretend not to.))"
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode(text)
+        ]),
+      ]))
+  })
+})
+
+
+describe('Nested parenthesized text starting with "((" but ending in different spots', () => {
+  it('does not produce any footnote nodes', () => {
+    const text = "((I don't eat cereal.) Well, I do, but I pretend not to.)"
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode(text)
+        ]),
+      ]))
+  })
+})
+
+
 describe('Inside an outline convention, blockquoted footnote references', () => {
   it('produce footnote blocks directly after each appropriate convention within the blockquote', () => {
     const text = `
@@ -99,7 +127,6 @@ describe('Within an outline convention, a blockquoted footnote reference that fo
 })
 
 
-
 describe('A footnote with inner footnotes followed by another footnote with inner footnotes', () => {
   it('produces no duplicate reference numbers', () => {
     const text =
@@ -142,6 +169,26 @@ describe('A footnote with inner footnotes followed by another footnote with inne
           footnoteInsideFirstFootnote,
           footnoteInsideSecondFootnote
         ])
+      ]))
+  })
+})
+
+
+describe('A footnote reference at the beginning of a paragraph', () => {
+  it('produces the expected syntax nodes', () => {
+    const text = "((I would never eat cereal.)) I'm a normal breakfast eater, just like you."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('I would never eat cereal.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote,
+          new PlainTextNode(" I'm a normal breakfast eater, just like you.")
+        ]),
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
