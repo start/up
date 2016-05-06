@@ -7,12 +7,23 @@ import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
 const NOT_WHITESPACE_PATTERN = /\S/
 
 // TODO: Explain why this class is separate from `Tokenizer`
+
+export class TokenizerContext {
+  public index = 0
+    
+  public isLinkOpen = false
+  public isRevisionDeletionOpen = false
+  public isRevisionInsertionOpen = false
+  public countSpoilersOpen = 0
+  public countFootnotesOpen = 0
+}
+
 // TODO: Refactor tons of duplicate functionality
 
 // For now, emphasis and stress aren't determined until after tokenization, so we don't
 // need to worry about keeping track of them here.
 
-export class TokenizerContext {
+export class OldTokenizerContext {
   public isInlineCodeOpen = false
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
@@ -85,7 +96,7 @@ export class TokenizerContext {
     )
   }
 
-  withInlineCodeOpen(): TokenizerContext {
+  withInlineCodeOpen(): OldTokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.isInlineCodeOpen = true
@@ -93,7 +104,7 @@ export class TokenizerContext {
     return copy
   }
 
-  withLinkOpen(): TokenizerContext {
+  withLinkOpen(): OldTokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.isLinkOpen = true
@@ -101,7 +112,7 @@ export class TokenizerContext {
     return copy
   }
 
-  withRevisionDeletionOpen(): TokenizerContext {
+  withRevisionDeletionOpen(): OldTokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.isRevisionDeletionOpen = true
@@ -110,7 +121,7 @@ export class TokenizerContext {
     return copy
   }
 
-  withRevisionInsertionOpen(): TokenizerContext {
+  withRevisionInsertionOpen(): OldTokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.isRevisionInsertionOpen = true
@@ -119,7 +130,7 @@ export class TokenizerContext {
     return copy
   }
 
-  withAdditionalSpoilerOpen(): TokenizerContext {
+  withAdditionalSpoilerOpen(): OldTokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.countSpoilersOpen += 1
@@ -128,7 +139,7 @@ export class TokenizerContext {
     return copy
   }
 
-  withAdditionalFootnoteOpen(): TokenizerContext {
+  withAdditionalFootnoteOpen(): OldTokenizerContext {
     const copy = this.copyForNewOpenConvention()
 
     copy.countFootnotesOpen += 1
@@ -178,8 +189,8 @@ export class TokenizerContext {
     return this.initialIndex + this.lengthAdvanced
   }
 
-  private copyForNewOpenConvention(): TokenizerContext {
-    const copy = new TokenizerContext(this.entireText, this.currentIndex())
+  private copyForNewOpenConvention(): OldTokenizerContext {
+    const copy = new OldTokenizerContext(this.entireText, this.currentIndex())
 
     copy.isLinkOpen = this.isLinkOpen
     copy.isRevisionDeletionOpen = this.isRevisionDeletionOpen

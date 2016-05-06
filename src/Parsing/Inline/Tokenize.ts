@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TokenizerResult } from './TokenizerResult'
-import { TokenizerContext } from './TokenizerContext'
+import { OldTokenizerContext, TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { applyBackslashEscaping } from '../TextHelpers'
@@ -36,7 +36,7 @@ import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  const result = new Tokenizer(new TokenizerContext(text), config).result
+  const result = new OldTokenizer(new OldTokenizerContext(text), config).result
 
   const tokensWithRaisedVoicesApplied =
     applyRaisedVoicesToRawTokens(result.tokens)
@@ -44,10 +44,19 @@ export function tokenize(text: string, config: UpConfig): Token[] {
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
 
+class Tokenizer {
+  public tokens: Token[] = []
+  private index = 0
+  
+  constructor(private entireText: string, private config: UpConfig) {
+    
+  }
+}
+
 // TODO: Refactor tons of duplicate functionality
 
 
-class Tokenizer {
+class OldTokenizer {
   public result: TokenizerResult
   private tokens: Token[] = []
 
@@ -58,7 +67,7 @@ class Tokenizer {
   // tokens (like InlineCodeTokens).
   private collcetedUnmatchedText = ''
 
-  constructor(private context: TokenizerContext, private config: UpConfig) {
+  constructor(private context: OldTokenizerContext, private config: UpConfig) {
     if (this.context.initialToken) {
       this.tokens.push(this.context.initialToken)
     }
@@ -244,7 +253,7 @@ class Tokenizer {
   }
 
   private tokenizeConvention(args: OpenConventionArgs): boolean {
-    let newContext: TokenizerContext
+    let newContext: OldTokenizerContext
 
     const canOpenPattern = this.context.match({
       pattern: args.pattern,
@@ -261,8 +270,8 @@ class Tokenizer {
     return this.tokenizeRestOfConvention(newContext)
   }
 
-  private tokenizeRestOfConvention(context: TokenizerContext): boolean {
-    const result = new Tokenizer(context, this.config).result
+  private tokenizeRestOfConvention(context: OldTokenizerContext): boolean {
+    const result = new OldTokenizer(context, this.config).result
 
     if (!result.succeeded) {
       return false
@@ -325,5 +334,5 @@ class Tokenizer {
 
 interface OpenConventionArgs {
   pattern: RegExp,
-  getNewContext: () => TokenizerContext
+  getNewContext: () => OldTokenizerContext
 }

@@ -609,13 +609,22 @@ var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
 var RevisionInsertionEndToken_1 = require('./Tokens/RevisionInsertionEndToken');
 var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
 function tokenize(text, config) {
-    var result = new Tokenizer(new TokenizerContext_1.TokenizerContext(text), config).result;
+    var result = new OldTokenizer(new TokenizerContext_1.OldTokenizerContext(text), config).result;
     var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(result.tokens);
     return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
 }
 exports.tokenize = tokenize;
 var Tokenizer = (function () {
-    function Tokenizer(context, config) {
+    function Tokenizer(entireText, config) {
+        this.entireText = entireText;
+        this.config = config;
+        this.tokens = [];
+        this.index = 0;
+    }
+    return Tokenizer;
+}());
+var OldTokenizer = (function () {
+    function OldTokenizer(context, config) {
         this.context = context;
         this.config = config;
         this.tokens = [];
@@ -678,22 +687,22 @@ var Tokenizer = (function () {
             tokens: this.tokens
         };
     }
-    Tokenizer.prototype.collectCurrentChar = function () {
+    OldTokenizer.prototype.collectCurrentChar = function () {
         this.collcetedUnmatchedText += this.context.currentChar;
         this.context.advance(1);
     };
-    Tokenizer.prototype.flushUnmatchedText = function () {
+    OldTokenizer.prototype.flushUnmatchedText = function () {
         var unmatchedText = this.collcetedUnmatchedText;
         this.collcetedUnmatchedText = '';
         return unmatchedText;
     };
-    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
+    OldTokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
         var unmatchedText = this.flushUnmatchedText();
         if (unmatchedText) {
             this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
         }
     };
-    Tokenizer.prototype.flushUnmatchedTextToPlainTextTokenThenAddTokens = function () {
+    OldTokenizer.prototype.flushUnmatchedTextToPlainTextTokenThenAddTokens = function () {
         var tokens = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             tokens[_i - 0] = arguments[_i];
@@ -702,14 +711,14 @@ var Tokenizer = (function () {
         (_a = this.tokens).push.apply(_a, tokens);
         var _a;
     };
-    Tokenizer.prototype.tokenizeInlineCode = function () {
+    OldTokenizer.prototype.tokenizeInlineCode = function () {
         var _this = this;
         return this.tokenizeConvention({
             pattern: /^`/,
             getNewContext: function () { return _this.context.withInlineCodeOpen(); }
         });
     };
-    Tokenizer.prototype.closeInlineCode = function () {
+    OldTokenizer.prototype.closeInlineCode = function () {
         if (this.context.advanceIfMatch({ pattern: /^`/ })) {
             this.context.closeInlineCode();
             this.result = this.getResultFor(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
@@ -717,14 +726,14 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeSpoiler = function () {
+    OldTokenizer.prototype.tokenizeSpoiler = function () {
         var _this = this;
         return this.tokenizeConvention({
             pattern: new RegExp("^\\[" + this.config.settings.i18n.terms.spoiler + ":\\s*", 'i'),
             getNewContext: function () { return _this.context.withAdditionalSpoilerOpen(); }
         });
     };
-    Tokenizer.prototype.closeSpoiler = function () {
+    OldTokenizer.prototype.closeSpoiler = function () {
         if (this.context.advanceIfMatch({ pattern: /^\]/ })) {
             this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new SpoilerEndToken_1.SpoilerEndToken());
             this.context.closeSpoiler();
@@ -733,14 +742,14 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeRevisionInsertion = function () {
+    OldTokenizer.prototype.tokenizeRevisionInsertion = function () {
         var _this = this;
         return this.tokenizeConvention({
             pattern: /^\+\+/,
             getNewContext: function () { return _this.context.withRevisionInsertionOpen(); }
         });
     };
-    Tokenizer.prototype.closeRevisionInsertion = function () {
+    OldTokenizer.prototype.closeRevisionInsertion = function () {
         if (this.context.advanceIfMatch({ pattern: /^\+\+/ })) {
             this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionInsertionEndToken_1.RevisionInsertionEndToken());
             this.context.closeRevisionInsertion();
@@ -749,14 +758,14 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeRevisionDeletion = function () {
+    OldTokenizer.prototype.tokenizeRevisionDeletion = function () {
         var _this = this;
         return this.tokenizeConvention({
             pattern: /^~~/,
             getNewContext: function () { return _this.context.withRevisionDeletionOpen(); }
         });
     };
-    Tokenizer.prototype.closeRevisionDeletion = function () {
+    OldTokenizer.prototype.closeRevisionDeletion = function () {
         if (this.context.advanceIfMatch({ pattern: /^~~/ })) {
             this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new RevisionDeletionEndToken_1.RevisionDeletionEndToken());
             this.context.closeRevisionDeletion();
@@ -765,14 +774,14 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeFootnote = function () {
+    OldTokenizer.prototype.tokenizeFootnote = function () {
         var _this = this;
         return this.tokenizeConvention({
             pattern: /^\s*\(\(/,
             getNewContext: function () { return _this.context.withAdditionalFootnoteOpen(); }
         });
     };
-    Tokenizer.prototype.closeFootnote = function () {
+    OldTokenizer.prototype.closeFootnote = function () {
         if (this.context.advanceIfMatch({ pattern: /^\)\)/ })) {
             this.flushUnmatchedTextToPlainTextTokenThenAddTokens(new FootnoteEndToken_1.FootnoteEndToken());
             this.context.closeFootnote();
@@ -781,7 +790,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.tokenizeConvention = function (args) {
+    OldTokenizer.prototype.tokenizeConvention = function (args) {
         var newContext;
         var canOpenPattern = this.context.match({
             pattern: args.pattern,
@@ -795,8 +804,8 @@ var Tokenizer = (function () {
         }
         return this.tokenizeRestOfConvention(newContext);
     };
-    Tokenizer.prototype.tokenizeRestOfConvention = function (context) {
-        var result = new Tokenizer(context, this.config).result;
+    OldTokenizer.prototype.tokenizeRestOfConvention = function (context) {
+        var result = new OldTokenizer(context, this.config).result;
         if (!result.succeeded) {
             return false;
         }
@@ -804,10 +813,10 @@ var Tokenizer = (function () {
         this.context.advance(result.lengthAdvanced);
         return true;
     };
-    Tokenizer.prototype.getResult = function () {
+    OldTokenizer.prototype.getResult = function () {
         return this.getResultFor.apply(this, this.tokens);
     };
-    Tokenizer.prototype.getResultFor = function () {
+    OldTokenizer.prototype.getResultFor = function () {
         var tokens = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             tokens[_i - 0] = arguments[_i];
@@ -818,7 +827,7 @@ var Tokenizer = (function () {
             tokens: tokens
         };
     };
-    Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
+    OldTokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
         var ASTERISKS_PATTERN = /^\*+/;
         return this.context.advanceIfMatch({
@@ -843,7 +852,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    return Tokenizer;
+    return OldTokenizer;
 }());
 
 },{"./MassageTokensIntoTreeStructure":3,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":7,"./TokenizerContext":15,"./Tokens/FootnoteEndToken":19,"./Tokens/InlineCodeToken":22,"./Tokens/PlainTextToken":26,"./Tokens/PotentialRaisedVoiceEndToken":27,"./Tokens/PotentialRaisedVoiceStartOrEndToken":28,"./Tokens/PotentialRaisedVoiceStartToken":29,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/SpoilerEndToken":35}],15:[function(require,module,exports){
@@ -854,7 +863,19 @@ var RevisionDeletionStartToken_1 = require('./Tokens/RevisionDeletionStartToken'
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var NOT_WHITESPACE_PATTERN = /\S/;
 var TokenizerContext = (function () {
-    function TokenizerContext(entireText, initialIndex) {
+    function TokenizerContext() {
+        this.index = 0;
+        this.isLinkOpen = false;
+        this.isRevisionDeletionOpen = false;
+        this.isRevisionInsertionOpen = false;
+        this.countSpoilersOpen = 0;
+        this.countFootnotesOpen = 0;
+    }
+    return TokenizerContext;
+}());
+exports.TokenizerContext = TokenizerContext;
+var OldTokenizerContext = (function () {
+    function OldTokenizerContext(entireText, initialIndex) {
         if (initialIndex === void 0) { initialIndex = 0; }
         this.entireText = entireText;
         this.initialIndex = initialIndex;
@@ -867,7 +888,7 @@ var TokenizerContext = (function () {
         this.lengthAdvanced = 0;
         this.dirty();
     }
-    TokenizerContext.prototype.match = function (args) {
+    OldTokenizerContext.prototype.match = function (args) {
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this.remainingText);
         if (!result) {
@@ -883,7 +904,7 @@ var TokenizerContext = (function () {
         }
         return true;
     };
-    TokenizerContext.prototype.advanceIfMatch = function (args) {
+    OldTokenizerContext.prototype.advanceIfMatch = function (args) {
         var _this = this;
         var originalThen = args.then || (function () { });
         return this.match({
@@ -898,10 +919,10 @@ var TokenizerContext = (function () {
             }
         });
     };
-    TokenizerContext.prototype.done = function () {
+    OldTokenizerContext.prototype.done = function () {
         return !this.remainingText;
     };
-    TokenizerContext.prototype.failed = function () {
+    OldTokenizerContext.prototype.failed = function () {
         return (this.isInlineCodeOpen
             || this.isLinkOpen
             || this.isRevisionDeletionOpen
@@ -909,73 +930,73 @@ var TokenizerContext = (function () {
             || this.countSpoilersOpen > 0
             || this.countFootnotesOpen > 0);
     };
-    TokenizerContext.prototype.withInlineCodeOpen = function () {
+    OldTokenizerContext.prototype.withInlineCodeOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.isInlineCodeOpen = true;
         return copy;
     };
-    TokenizerContext.prototype.withLinkOpen = function () {
+    OldTokenizerContext.prototype.withLinkOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.isLinkOpen = true;
         return copy;
     };
-    TokenizerContext.prototype.withRevisionDeletionOpen = function () {
+    OldTokenizerContext.prototype.withRevisionDeletionOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.isRevisionDeletionOpen = true;
         copy.initialToken = new RevisionDeletionStartToken_1.RevisionDeletionStartToken();
         return copy;
     };
-    TokenizerContext.prototype.withRevisionInsertionOpen = function () {
+    OldTokenizerContext.prototype.withRevisionInsertionOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.isRevisionInsertionOpen = true;
         copy.initialToken = new RevisionInsertionStartToken_1.RevisionInsertionStartToken();
         return copy;
     };
-    TokenizerContext.prototype.withAdditionalSpoilerOpen = function () {
+    OldTokenizerContext.prototype.withAdditionalSpoilerOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.countSpoilersOpen += 1;
         copy.initialToken = new SpoilerStartToken_1.SpoilerStartToken();
         return copy;
     };
-    TokenizerContext.prototype.withAdditionalFootnoteOpen = function () {
+    OldTokenizerContext.prototype.withAdditionalFootnoteOpen = function () {
         var copy = this.copyForNewOpenConvention();
         copy.countFootnotesOpen += 1;
         copy.initialToken = new FootnoteStartToken_1.FootnoteStartToken();
         return copy;
     };
-    TokenizerContext.prototype.closeInlineCode = function () {
+    OldTokenizerContext.prototype.closeInlineCode = function () {
         this.isInlineCodeOpen = false;
     };
-    TokenizerContext.prototype.closeLink = function () {
+    OldTokenizerContext.prototype.closeLink = function () {
         this.isLinkOpen = false;
     };
-    TokenizerContext.prototype.closeRevisionDeletion = function () {
+    OldTokenizerContext.prototype.closeRevisionDeletion = function () {
         this.isRevisionDeletionOpen = false;
     };
-    TokenizerContext.prototype.closeRevisionInsertion = function () {
+    OldTokenizerContext.prototype.closeRevisionInsertion = function () {
         this.isRevisionInsertionOpen = false;
     };
-    TokenizerContext.prototype.closeSpoiler = function () {
+    OldTokenizerContext.prototype.closeSpoiler = function () {
         this.countSpoilersOpen -= 1;
     };
-    TokenizerContext.prototype.closeFootnote = function () {
+    OldTokenizerContext.prototype.closeFootnote = function () {
         this.countFootnotesOpen -= 1;
     };
-    TokenizerContext.prototype.advance = function (length) {
+    OldTokenizerContext.prototype.advance = function (length) {
         this.lengthAdvanced += length;
         this.dirty();
     };
-    TokenizerContext.prototype.isSpoilerInnermostOpenConvention = function () {
+    OldTokenizerContext.prototype.isSpoilerInnermostOpenConvention = function () {
         return this.initialToken instanceof SpoilerStartToken_1.SpoilerStartToken;
     };
-    TokenizerContext.prototype.isFootnoteInnermostOpenConvention = function () {
+    OldTokenizerContext.prototype.isFootnoteInnermostOpenConvention = function () {
         return this.initialToken instanceof FootnoteStartToken_1.FootnoteStartToken;
     };
-    TokenizerContext.prototype.currentIndex = function () {
+    OldTokenizerContext.prototype.currentIndex = function () {
         return this.initialIndex + this.lengthAdvanced;
     };
-    TokenizerContext.prototype.copyForNewOpenConvention = function () {
-        var copy = new TokenizerContext(this.entireText, this.currentIndex());
+    OldTokenizerContext.prototype.copyForNewOpenConvention = function () {
+        var copy = new OldTokenizerContext(this.entireText, this.currentIndex());
         copy.isLinkOpen = this.isLinkOpen;
         copy.isRevisionDeletionOpen = this.isRevisionDeletionOpen;
         copy.isRevisionInsertionOpen = this.isRevisionInsertionOpen;
@@ -985,15 +1006,15 @@ var TokenizerContext = (function () {
         copy.dirty();
         return copy;
     };
-    TokenizerContext.prototype.dirty = function () {
+    OldTokenizerContext.prototype.dirty = function () {
         this.remainingText = this.entireText.substr(this.currentIndex());
         this.currentChar = this.remainingText[0];
         var previousChar = this.entireText[this.currentIndex() - 1];
         this.isTouchingEndOfWord = NOT_WHITESPACE_PATTERN.test(previousChar);
     };
-    return TokenizerContext;
+    return OldTokenizerContext;
 }());
-exports.TokenizerContext = TokenizerContext;
+exports.OldTokenizerContext = OldTokenizerContext;
 
 },{"./Tokens/FootnoteStartToken":20,"./Tokens/RevisionDeletionStartToken":32,"./Tokens/RevisionInsertionStartToken":34,"./Tokens/SpoilerStartToken":36}],16:[function(require,module,exports){
 "use strict";
