@@ -13,8 +13,6 @@ const NOT_WHITESPACE_PATTERN = /\S/
 // need to worry about keeping track of them here.
 
 export class TokenizerContext {
-  // The following fields are set once in `copyForNewOpenConvention` and the various `with...Open` methods,
-  // then subsequently never change.
   public isInlineCodeOpen = false
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
@@ -24,10 +22,9 @@ export class TokenizerContext {
 
   public initialToken: Token
     
-  // This is the only field that changes during the use of the object. That being said...
   public lengthAdvanced = 0
   
-  // ...the following fields are re-computed in `dirty()` based `lengthAdvanced`.
+  // Tthe following fields are re-computed in `dirty()` based on `lengthAdvanced`.
   public remainingText: string
   public currentChar: string
   public isTouchingEndOfWord: boolean

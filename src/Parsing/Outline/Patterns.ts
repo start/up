@@ -1,48 +1,67 @@
-const group = (pattern: string) => `(?:${pattern})`
+const group =
+  (pattern: string) => `(?:${pattern})`
 
-const capture = (pattern: string) => `(${pattern})`
+const capture =
+  (pattern: string) => `(${pattern})`
 
-const optional = (pattern: string) => group(pattern) + '?'
+const optional =
+  (pattern: string) => group(pattern) + '?'
 
-const any = (pattern: string) => group(pattern) + '*'
+const any =
+  (pattern: string) => group(pattern) + '*'
 
-const atLeast = (count: number, pattern: string) => group(pattern) + `{${count},}`
+const atLeast =
+  (count: number, pattern: string) => group(pattern) + `{${count},}`
 
-const either = (...patterns: string[]) => group(patterns.join('|'))
+const either =
+  (...patterns: string[]) => group(patterns.join('|'))
 
-const INLINE_WHITESPACE_CHAR = '[^\\S\\n]'
+const solely =
+  (pattern: string) => '^' + pattern + INLINE_WHITESPACE + '$'
 
-const ANY_WHITESPACE = any('\\s')
+const streakOf =
+  (charPattern: string) => solely(atLeast(3, charPattern))
 
-const INLINE_WHITESPACE = any('[^\\S\\n]')
+const startsWith =
+  (pattern: string) => '^' + pattern
 
-const solely = (pattern: string) => '^' + pattern + INLINE_WHITESPACE + '$'
+const endsWith =
+  (pattern: string) => pattern + '$'
 
-const streakOf = (charPattern: string) => solely(atLeast(3, charPattern))
+const INLINE_WHITESPACE_CHAR =
+  '[^\\S\\n]'
 
-const startsWith = (pattern: string) => '^' + pattern
+const ANY_WHITESPACE =
+  any('\\s')
 
-const endsWith = (pattern: string) => pattern + '$'
+const INLINE_WHITESPACE =
+  any('[^\\S\\n]')
 
-const LINE_BREAK = '\n'
+const LINE_BREAK =
+  '\n'
 
-const BLANK = solely('')
+const BLANK =
+  solely('')
 
-const INDENT = either('  ', '\t')
+const INDENT =
+  either('  ', '\t')
 
-const STREAK_CHAR = either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
+const STREAK_CHAR =
+  either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
 
-const INTEGER = '\\d+'
+const INTEGER =
+  '\\d+'
 
-const STREAK = solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
+const STREAK =
+  solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
+
+const NON_WHITESPACE_CHAR =
+  '\\S'
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
-const NON_WHITESPACE_CHAR = '\\S'
-
-// We don't need to check for the start or end of the string, because if a line
-// contains a non-whitespace character anywhere in it, it's not blank.
-const NON_BLANK = NON_WHITESPACE_CHAR
+const NON_BLANK =
+  NON_WHITESPACE_CHAR
 
 export {
   NON_BLANK,
