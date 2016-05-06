@@ -631,7 +631,13 @@ var Tokenizer = (function () {
         this.unresolvedContexts = [];
         this.collectedUnmatchedText = '';
         this.dirty();
-        while (!this.done()) {
+        while (true) {
+            if (this.done()) {
+                if (!this.hasUnresolvedConventions()) {
+                    break;
+                }
+                this.backtrack();
+            }
             if (this.currentChar === '\\') {
                 this.advance(1);
                 this.collectCurrentChar();
@@ -659,6 +665,16 @@ var Tokenizer = (function () {
     }
     Tokenizer.prototype.done = function () {
         return !this.remainingText;
+    };
+    Tokenizer.prototype.hasUnresolvedConventions = function () {
+        return !!this.unresolvedContexts.length;
+    };
+    Tokenizer.prototype.backtrack = function () {
+        var latestUnresolvedContext = this.unresolvedContexts.pop();
+        this.textIndex = latestUnresolvedContext.textIndex;
+        this.tokens.splice(latestUnresolvedContext.countTokens);
+        this.collectedUnmatchedText = latestUnresolvedContext.collectedUnmatchedText;
+        throw new Error("TODO: Prevent retrying failed states");
     };
     Tokenizer.prototype.advance = function (length) {
         this.textIndex += length;

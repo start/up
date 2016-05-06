@@ -63,7 +63,6 @@ const FOOTNOTE_END_PATTERN = new RegExp(
   startsWith(escapeForRegex('))'))
 )
 
-
 class Tokenizer {
   public tokens: Token[] = []
 
@@ -85,7 +84,15 @@ class Tokenizer {
   constructor(private entireText: string, private config: UpConfig) {
     this.dirty()
 
-    while (!this.done()) {
+    while (true) {      
+      if (this.done()) {
+        if (!this.hasUnresolvedConventions()) {
+          break
+        }
+        
+        this.backtrack()
+      }
+      
       if (this.currentChar === '\\') {
         this.advance(1)
         this.collectCurrentChar()
@@ -123,6 +130,20 @@ class Tokenizer {
 
   private done(): boolean {
     return !this.remainingText
+  }
+  
+  private hasUnresolvedConventions(): boolean {
+    return !!this.unresolvedContexts.length
+  }
+  
+  private backtrack(): void {
+    const latestUnresolvedContext = this.unresolvedContexts.pop()
+    
+    this.textIndex = latestUnresolvedContext.textIndex
+    this.tokens.splice(latestUnresolvedContext.countTokens)
+    this.collectedUnmatchedText = latestUnresolvedContext.collectedUnmatchedText
+    
+    throw new Error("TODO: Prevent retrying failed states")
   }
 
   private advance(length: number): void {
