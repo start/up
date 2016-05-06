@@ -58,13 +58,13 @@ const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
 
 class Tokenizer {
   public tokens: Token[] = []
-  
+
   private textIndex = 0
-  
+
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
-  
+
   private unresolvedContexts: TokenizerContext[] = []
 
   // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
@@ -73,39 +73,39 @@ class Tokenizer {
   // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
   // tokens (like InlineCodeTokens).
   private collectedUnmatchedText = ''
-  
+
   constructor(private entireText: string, private config: UpConfig) {
     this.dirty()
-    
+
     while (!this.done()) {
       if (this.currentChar === '\\') {
         this.advance(1)
         this.collectCurrentChar()
         continue
       }
-      
+
       if (this.hasState(TokenizerState.InlineCode)) {
         if (!this.closeInlineCode()) {
-          this.collectCurrentChar()  
+          this.collectCurrentChar()
         }
-        
+
         continue
       }
-      
+
       if (this.openInlineCode()) {
         continue
       }
-      
+
       this.collectCurrentChar()
     }
-    
+
     this.flushUnmatchedTextToPlainTextToken()
   }
 
   private done(): boolean {
     return !this.remainingText
   }
-  
+
   private advance(length: number): void {
     this.textIndex += length
     this.dirty()
@@ -130,47 +130,42 @@ class Tokenizer {
       this.tokens.push(new PlainTextToken(unmatchedText))
     }
   }
-  
+
   private openInlineCode(): boolean {
-    if (this.match({pattern: INLINE_CODE_DELIMITER_PATTERN})) {
-      this.advance(1)
-      
-      this.addUnresolvedContext(TokenizerState.InlineCode)
-      this.flushUnmatchedTextToPlainTextToken()
-      return true
-    }
-    
-    return false
+    return this.advanceAfterMatch({
+      pattern: INLINE_CODE_DELIMITER_PATTERN,
+      then: () => {
+        this.addUnresolvedContext(TokenizerState.InlineCode)
+        this.flushUnmatchedTextToPlainTextToken()
+      }
+    })
   }
-  
+
   private closeInlineCode(): boolean {
-    if (this.match({pattern: INLINE_CODE_DELIMITER_PATTERN})) {
-      this.advance(1)
-      
-      // Inline code can't contain other conventions, so we don't need to worry about any more recent unresolved contexts.
-      this.unresolvedContexts.pop()
-      this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
-      return true
-    }
-    
-    return false
+    return this.advanceAfterMatch({
+      pattern: INLINE_CODE_DELIMITER_PATTERN,
+      then: () => {
+        this.unresolvedContexts.pop()
+        this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
+      }
+    })
   }
-  
+
   private addUnresolvedContext(nextState: TokenizerState): void {
     this.unresolvedContexts.push(
       new TokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText))
   }
-  
+
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
     this.flushUnmatchedTextToPlainTextToken()
     this.tokens.push(token)
   }
-  
+
   private hasState(state: TokenizerState): boolean {
     return this.unresolvedContexts.some(context => context.state === state)
   }
 
-  private match(args: MatchArgs): boolean {
+  private advanceAfterMatch(args: MatchArgs): boolean {
     const { pattern, then } = args
 
     const result = pattern.exec(this.remainingText)
@@ -189,13 +184,15 @@ class Tokenizer {
       then(match, this.isTouchingWordEnd, isTouchingWordStart, ...captures)
     }
 
+    this.advance(match.length)
+
     return true
   }
-  
+
   private dirty(): void {
     this.remainingText = this.entireText.substr(this.textIndex)
     this.currentChar = this.remainingText[0]
-    
+
     const previousChar = this.entireText[this.textIndex - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
@@ -250,22 +247,22 @@ class OldTokenizer {
         if (this.context.countFootnotesOpen && this.closeFootnote() && this.context.isFootnoteInnermostOpenConvention()) {
           return
         }
-        
+
         if (this.context.isRevisionInsertionOpen) {
           if (this.closeRevisionInsertion()) {
             return
-          }  
+          }
         } else {
           // Currently, as a rule, you cannot nest revision insertion inside another revision insertion.
           if (this.tokenizeRevisionInsertion()) {
             continue
           }
         }
-        
+
         if (this.context.isRevisionDeletionOpen) {
           if (this.closeRevisionDeletion()) {
             return
-          }  
+          }
         } else {
           // Currently, as a rule, you cannot nest revision deletion inside another revision deletion.
           if (this.tokenizeRevisionDeletion()) {

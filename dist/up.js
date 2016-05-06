@@ -669,22 +669,24 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.openInlineCode = function () {
-        if (this.match({ pattern: INLINE_CODE_DELIMITER_PATTERN })) {
-            this.advance(1);
-            this.addUnresolvedContext(TokenizerState_1.TokenizerState.InlineCode);
-            this.flushUnmatchedTextToPlainTextToken();
-            return true;
-        }
-        return false;
+        var _this = this;
+        return this.advanceAfterMatch({
+            pattern: INLINE_CODE_DELIMITER_PATTERN,
+            then: function () {
+                _this.addUnresolvedContext(TokenizerState_1.TokenizerState.InlineCode);
+                _this.flushUnmatchedTextToPlainTextToken();
+            }
+        });
     };
     Tokenizer.prototype.closeInlineCode = function () {
-        if (this.match({ pattern: INLINE_CODE_DELIMITER_PATTERN })) {
-            this.advance(1);
-            this.unresolvedContexts.pop();
-            this.tokens.push(new InlineCodeToken_1.InlineCodeToken(this.flushUnmatchedText()));
-            return true;
-        }
-        return false;
+        var _this = this;
+        return this.advanceAfterMatch({
+            pattern: INLINE_CODE_DELIMITER_PATTERN,
+            then: function () {
+                _this.unresolvedContexts.pop();
+                _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
+            }
+        });
     };
     Tokenizer.prototype.addUnresolvedContext = function (nextState) {
         this.unresolvedContexts.push(new TokenizerContext_1.TokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText));
@@ -696,7 +698,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.hasState = function (state) {
         return this.unresolvedContexts.some(function (context) { return context.state === state; });
     };
-    Tokenizer.prototype.match = function (args) {
+    Tokenizer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this.remainingText);
         if (!result) {
@@ -709,6 +711,7 @@ var Tokenizer = (function () {
         if (then) {
             then.apply(void 0, [match, this.isTouchingWordEnd, isTouchingWordStart].concat(captures));
         }
+        this.advance(match.length);
         return true;
     };
     Tokenizer.prototype.dirty = function () {
