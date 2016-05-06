@@ -3,14 +3,15 @@ import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
+import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
 
-const NOT_WHITESPACE_PATTERN = /\S/
-
-// TODO: Explain why this class is separate from `Tokenizer`
 
 export class TokenizerContext {
-  public index = 0
-    
+  public innermostConvention: RichInlineSyntaxNodeType
+
+  public textIndex = 0
+  public countTokens = 0
+
   public isLinkOpen = false
   public isRevisionDeletionOpen = false
   public isRevisionInsertionOpen = false
@@ -18,6 +19,10 @@ export class TokenizerContext {
   public countFootnotesOpen = 0
 }
 
+
+const NOT_WHITESPACE_PATTERN = /\S/
+
+// TODO: Explain why this class is separate from `Tokenizer`
 // TODO: Refactor tons of duplicate functionality
 
 // For now, emphasis and stress aren't determined until after tokenization, so we don't

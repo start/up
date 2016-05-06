@@ -608,19 +608,43 @@ var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceSta
 var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
 var RevisionInsertionEndToken_1 = require('./Tokens/RevisionInsertionEndToken');
 var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
+var Patterns_1 = require('../Patterns');
 function tokenize(text, config) {
     var result = new OldTokenizer(new TokenizerContext_1.OldTokenizerContext(text), config).result;
     var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(result.tokens);
     return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
 }
 exports.tokenize = tokenize;
+var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         this.entireText = entireText;
         this.config = config;
         this.tokens = [];
-        this.index = 0;
+        this.textIndex = 0;
     }
+    Tokenizer.prototype.match = function (args) {
+        var pattern = args.pattern, then = args.then;
+        var result = pattern.exec(this.remainingText);
+        if (!result) {
+            return false;
+        }
+        var match = result[0];
+        var captures = result.slice(1);
+        var isTouchingWordEnd = this.isTouchingWordEnd;
+        var charAfterMatch = this.entireText[this.textIndex + match.length];
+        var isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch);
+        if (then) {
+            then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+        }
+        return true;
+    };
+    Tokenizer.prototype.dirty = function () {
+        this.remainingText = this.entireText.substr(this.textIndex);
+        this.currentChar = this.remainingText[0];
+        var previousChar = this.entireText[this.textIndex - 1];
+        this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
+    };
     return Tokenizer;
 }());
 var OldTokenizer = (function () {
@@ -855,16 +879,16 @@ var OldTokenizer = (function () {
     return OldTokenizer;
 }());
 
-},{"./MassageTokensIntoTreeStructure":3,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":7,"./TokenizerContext":15,"./Tokens/FootnoteEndToken":19,"./Tokens/InlineCodeToken":22,"./Tokens/PlainTextToken":26,"./Tokens/PotentialRaisedVoiceEndToken":27,"./Tokens/PotentialRaisedVoiceStartOrEndToken":28,"./Tokens/PotentialRaisedVoiceStartToken":29,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/SpoilerEndToken":35}],15:[function(require,module,exports){
+},{"../Patterns":55,"./MassageTokensIntoTreeStructure":3,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":7,"./TokenizerContext":15,"./Tokens/FootnoteEndToken":19,"./Tokens/InlineCodeToken":22,"./Tokens/PlainTextToken":26,"./Tokens/PotentialRaisedVoiceEndToken":27,"./Tokens/PotentialRaisedVoiceStartOrEndToken":28,"./Tokens/PotentialRaisedVoiceStartToken":29,"./Tokens/RevisionDeletionEndToken":31,"./Tokens/RevisionInsertionEndToken":33,"./Tokens/SpoilerEndToken":35}],15:[function(require,module,exports){
 "use strict";
 var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToken');
 var RevisionDeletionStartToken_1 = require('./Tokens/RevisionDeletionStartToken');
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
-var NOT_WHITESPACE_PATTERN = /\S/;
 var TokenizerContext = (function () {
     function TokenizerContext() {
-        this.index = 0;
+        this.textIndex = 0;
+        this.countTokens = 0;
         this.isLinkOpen = false;
         this.isRevisionDeletionOpen = false;
         this.isRevisionInsertionOpen = false;
@@ -874,6 +898,7 @@ var TokenizerContext = (function () {
     return TokenizerContext;
 }());
 exports.TokenizerContext = TokenizerContext;
+var NOT_WHITESPACE_PATTERN = /\S/;
 var OldTokenizerContext = (function () {
     function OldTokenizerContext(entireText, initialIndex) {
         if (initialIndex === void 0) { initialIndex = 0; }

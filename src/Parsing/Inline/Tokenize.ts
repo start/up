@@ -34,6 +34,7 @@ import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
+import { NON_WHITESPACE_CHAR } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const result = new OldTokenizer(new OldTokenizerContext(text), config).result
@@ -44,13 +45,66 @@ export function tokenize(text: string, config: UpConfig): Token[] {
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
 
+
+const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
+  NON_WHITESPACE_CHAR
+)
+
+
 class Tokenizer {
   public tokens: Token[] = []
-  private index = 0
+  
+  private textIndex = 0
+  
+  public currentChar: string
+  private remainingText: string
+  public isTouchingWordEnd: boolean
   
   constructor(private entireText: string, private config: UpConfig) {
     
   }
+
+  private match(args: MatchArgs): boolean {
+    const { pattern, then } = args
+
+    const result = pattern.exec(this.remainingText)
+
+    if (!result) {
+      return false
+    }
+
+    const match = result[0]
+    const captures = result.slice(1)
+
+    const isTouchingWordEnd = this.isTouchingWordEnd
+
+    const charAfterMatch = this.entireText[this.textIndex + match.length]
+    const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
+
+    if (then) {
+      then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+    }
+
+    return true
+  }
+  
+  private dirty(): void {
+    this.remainingText = this.entireText.substr(this.textIndex)
+    this.currentChar = this.remainingText[0]
+    
+    const previousChar = this.entireText[this.textIndex - 1]
+    this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
+  }
+}
+
+
+interface MatchArgs {
+  pattern: RegExp,
+  then?: OnMatch
+}
+
+interface OnMatch {
+  (match: string, isTouchingWordEnd: boolean, isTouchingWordStart: boolean, ...captures: string[]): void
 }
 
 // TODO: Refactor tons of duplicate functionality
