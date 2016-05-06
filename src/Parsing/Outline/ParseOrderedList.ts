@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from './Patterns'
+import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 

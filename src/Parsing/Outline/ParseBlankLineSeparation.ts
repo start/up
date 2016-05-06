@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { BLANK } from './Patterns'
+import { BLANK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
 const BLANK_PATTERN = new RegExp(

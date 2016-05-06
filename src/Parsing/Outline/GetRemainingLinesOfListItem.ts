@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from './Patterns'
+import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from '../Patterns'
 
 const BLANK_PATTERN = new RegExp(
   BLANK

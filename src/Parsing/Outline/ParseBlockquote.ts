@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './GetOutlineNodes'
-import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from './Patterns'
+import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
 const BLOCKQUOTE_DELIMITER = '>' + optional(INLINE_WHITESPACE_CHAR)

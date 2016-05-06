@@ -6,7 +6,7 @@ import { Description } from '../../SyntaxNodes/Description'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './GetOutlineNodes'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
-import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from './Patterns'
+import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 
