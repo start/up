@@ -6,6 +6,7 @@ import { TokenizerState } from './TokenizerState'
 import { OldTokenizerContext, TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
+import { escapeForRegex } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure'
@@ -34,7 +35,7 @@ import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { startsWith, NON_WHITESPACE_CHAR } from '../Patterns'
+import { startsWith, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const tokens = new Tokenizer(text, config).tokens
@@ -52,6 +53,14 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
 
 const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
   startsWith('`')
+)
+
+const FOOTNOTE_START_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE + escapeForRegex('(('))
+)
+
+const FOOTNOTE_END_PATTERN = new RegExp(
+  startsWith(escapeForRegex('))'))
 )
 
 
@@ -90,8 +99,19 @@ class Tokenizer {
 
         continue
       }
+      
+      if (this.hasState(TokenizerState.Footnote)) {
+        if (this.closeFootnote()) {
+          continue
+        }
+      }
+      
+      const didOpenNewConvention = (
+        this.openInlineCode()
+        || this.openFootnote()
+      )
 
-      if (this.openInlineCode()) {
+      if (didOpenNewConvention) {
         continue
       }
 
@@ -148,6 +168,37 @@ class Tokenizer {
         this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
       }
     })
+  }
+
+  private openFootnote(): boolean {
+    return this.advanceAfterMatch({
+      pattern: FOOTNOTE_START_PATTERN,
+      then: () => {
+        this.addUnresolvedContext(TokenizerState.Footnote)
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
+      }
+    })
+  }
+
+  private closeFootnote(): boolean {
+    return this.advanceAfterMatch({
+      pattern: FOOTNOTE_END_PATTERN,
+      then: () => {
+        this.removeMostRecentUnresolvedContextWithState(TokenizerState.Footnote)
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
+      }
+    })
+  }
+  
+  private removeMostRecentUnresolvedContextWithState(state: TokenizerState): void {
+    for (let i = 0; i < this.unresolvedContexts.length; i++) {
+      if (this.unresolvedContexts[i].state === state) {
+        this.unresolvedContexts.splice(i, 1)
+        return
+      }
+    }
+    
+    throw new Error(`State was not unresolved: ${TokenizerState[state]}`)
   }
 
   private addUnresolvedContext(nextState: TokenizerState): void {
