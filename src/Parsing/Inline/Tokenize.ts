@@ -56,12 +56,58 @@ class Tokenizer {
   
   private textIndex = 0
   
-  public currentChar: string
+  private currentChar: string
   private remainingText: string
-  public isTouchingWordEnd: boolean
+  private isTouchingWordEnd: boolean
+
+  // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
+  // to a token.
+  //
+  // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
+  // tokens (like InlineCodeTokens).
+  private collcetedUnmatchedText = ''
   
   constructor(private entireText: string, private config: UpConfig) {
+    while (!this.done()) {
+      if (this.currentChar === '\\') {
+        this.advance(1)
+        this.collectCurrentChar()
+        continue
+      }
+      
+      this.collectCurrentChar()
+    }
     
+    this.flushUnmatchedTextToPlainTextToken()
+  }
+
+  private done(): boolean {
+    return !this.remainingText
+  }
+  
+  private advance(length: number): void {
+    this.textIndex += length
+    this.dirty()
+  }
+
+  private collectCurrentChar(): void {
+    this.collcetedUnmatchedText += this.currentChar
+    this.advance(1)
+  }
+
+  private flushUnmatchedText(): string {
+    const unmatchedText = this.collcetedUnmatchedText
+    this.collcetedUnmatchedText = ''
+
+    return unmatchedText
+  }
+
+  private flushUnmatchedTextToPlainTextToken(): void {
+    const unmatchedText = this.flushUnmatchedText()
+
+    if (unmatchedText) {
+      this.tokens.push(new PlainTextToken(unmatchedText))
+    }
   }
 
   private match(args: MatchArgs): boolean {
@@ -76,13 +122,11 @@ class Tokenizer {
     const match = result[0]
     const captures = result.slice(1)
 
-    const isTouchingWordEnd = this.isTouchingWordEnd
-
     const charAfterMatch = this.entireText[this.textIndex + match.length]
     const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
 
     if (then) {
-      then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+      then(match, this.isTouchingWordEnd, isTouchingWordStart, ...captures)
     }
 
     return true

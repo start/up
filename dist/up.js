@@ -622,7 +622,39 @@ var Tokenizer = (function () {
         this.config = config;
         this.tokens = [];
         this.textIndex = 0;
+        this.collcetedUnmatchedText = '';
+        while (!this.done()) {
+            if (this.currentChar === '\\') {
+                this.advance(1);
+                this.collectCurrentChar();
+                continue;
+            }
+            this.collectCurrentChar();
+        }
+        this.flushUnmatchedTextToPlainTextToken();
     }
+    Tokenizer.prototype.done = function () {
+        return !this.remainingText;
+    };
+    Tokenizer.prototype.advance = function (length) {
+        this.textIndex += length;
+        this.dirty();
+    };
+    Tokenizer.prototype.collectCurrentChar = function () {
+        this.collcetedUnmatchedText += this.currentChar;
+        this.advance(1);
+    };
+    Tokenizer.prototype.flushUnmatchedText = function () {
+        var unmatchedText = this.collcetedUnmatchedText;
+        this.collcetedUnmatchedText = '';
+        return unmatchedText;
+    };
+    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
+        var unmatchedText = this.flushUnmatchedText();
+        if (unmatchedText) {
+            this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
+        }
+    };
     Tokenizer.prototype.match = function (args) {
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this.remainingText);
@@ -631,11 +663,10 @@ var Tokenizer = (function () {
         }
         var match = result[0];
         var captures = result.slice(1);
-        var isTouchingWordEnd = this.isTouchingWordEnd;
         var charAfterMatch = this.entireText[this.textIndex + match.length];
         var isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch);
         if (then) {
-            then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            then.apply(void 0, [match, this.isTouchingWordEnd, isTouchingWordStart].concat(captures));
         }
         return true;
     };
