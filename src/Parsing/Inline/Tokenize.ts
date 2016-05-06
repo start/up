@@ -37,10 +37,10 @@ import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToke
 import { NON_WHITESPACE_CHAR } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  const result = new OldTokenizer(new OldTokenizerContext(text), config).result
+  const tokens = new Tokenizer(text, config).tokens
 
   const tokensWithRaisedVoicesApplied =
-    applyRaisedVoicesToRawTokens(result.tokens)
+    applyRaisedVoicesToRawTokens(tokens)
 
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
@@ -68,6 +68,8 @@ class Tokenizer {
   private collcetedUnmatchedText = ''
   
   constructor(private entireText: string, private config: UpConfig) {
+    this.dirty()
+    
     while (!this.done()) {
       if (this.currentChar === '\\') {
         this.advance(1)
