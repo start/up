@@ -3,6 +3,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { TokenizerResult } from './TokenizerResult'
 import { TokenizerState } from './TokenizerState'
+import { FailedStateTracker } from './FailedStateTracker'
 import { OldTokenizerContext, TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
@@ -74,6 +75,7 @@ class Tokenizer {
 
   private unresolvedContexts: TokenizerContext[] = []
 
+  private failedStateTracker: FailedStateTracker = new FailedStateTracker()
   // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
   // to a token.
   //
@@ -84,15 +86,15 @@ class Tokenizer {
   constructor(private entireText: string, private config: UpConfig) {
     this.dirty()
 
-    while (true) {      
+    while (true) {
       if (this.done()) {
         if (!this.hasUnresolvedConventions()) {
           break
         }
-        
-        this.backtrack()
+
+        this.backtrackLatestFailedConvention()
       }
-      
+
       if (this.currentChar === '\\') {
         this.advance(1)
         this.collectCurrentChar()
@@ -106,13 +108,13 @@ class Tokenizer {
 
         continue
       }
-      
+
       if (this.hasState(TokenizerState.Footnote)) {
         if (this.closeFootnote()) {
           continue
         }
       }
-      
+
       const didOpenNewConvention = (
         this.openInlineCode()
         || this.openFootnote()
@@ -131,19 +133,21 @@ class Tokenizer {
   private done(): boolean {
     return !this.remainingText
   }
-  
+
   private hasUnresolvedConventions(): boolean {
     return !!this.unresolvedContexts.length
   }
-  
-  private backtrack(): void {
+
+  private backtrackLatestFailedConvention(): void {
     const latestUnresolvedContext = this.unresolvedContexts.pop()
-    
+
+    this.failedStateTracker.registerFailure(latestUnresolvedContext)
+
     this.textIndex = latestUnresolvedContext.textIndex
     this.tokens.splice(latestUnresolvedContext.countTokens)
     this.collectedUnmatchedText = latestUnresolvedContext.collectedUnmatchedText
     
-    throw new Error("TODO: Prevent retrying failed states")
+    this.dirty()
   }
 
   private advance(length: number): void {
@@ -171,8 +175,12 @@ class Tokenizer {
     }
   }
 
+  private canTry(state: TokenizerState): boolean {
+    return !this.failedStateTracker.hasFailed(state, this.textIndex)
+  }
+
   private openInlineCode(): boolean {
-    return this.advanceAfterMatch({
+    return this.canTry(TokenizerState.InlineCode) && this.advanceAfterMatch({
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       then: () => {
         this.addUnresolvedContext(TokenizerState.InlineCode)
@@ -192,7 +200,7 @@ class Tokenizer {
   }
 
   private openFootnote(): boolean {
-    return this.advanceAfterMatch({
+    return this.canTry(TokenizerState.Footnote) && this.advanceAfterMatch({
       pattern: FOOTNOTE_START_PATTERN,
       then: () => {
         this.addUnresolvedContext(TokenizerState.Footnote)
@@ -210,7 +218,7 @@ class Tokenizer {
       }
     })
   }
-  
+
   private removeMostRecentUnresolvedContextWithState(state: TokenizerState): void {
     for (let i = 0; i < this.unresolvedContexts.length; i++) {
       if (this.unresolvedContexts[i].state === state) {
@@ -218,7 +226,7 @@ class Tokenizer {
         return
       }
     }
-    
+
     throw new Error(`State was not unresolved: ${TokenizerState[state]}`)
   }
 

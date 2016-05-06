@@ -17,7 +17,7 @@ import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToke
 import { startsWith, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
 
 export class FailedStateTracker {
-  private failedStatesByTextIndex: FailedStatesByTextIndex
+  private failedStatesByTextIndex: FailedStatesByTextIndex = {}
   
   registerFailure(failedContext: TokenizerContext): void {
     const { textIndex, state } = failedContext
