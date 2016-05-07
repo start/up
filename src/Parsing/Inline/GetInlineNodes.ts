@@ -4,5 +4,7 @@ import { parse } from './Parse'
 import { UpConfig } from '../../UpConfig'
 
 export function getInlineNodes(text: string, config: UpConfig): InlineSyntaxNode[] {
-  return parse(tokenize(text, config))
+  return parse({
+    tokens: tokenize(text, config)
+  }).nodes
 }

@@ -59,7 +59,9 @@ exports.FallibleTokenizerContext = FallibleTokenizerContext;
 var Tokenize_1 = require('./Tokenize');
 var Parse_1 = require('./Parse');
 function getInlineNodes(text, config) {
-    return Parse_1.parse(Tokenize_1.tokenize(text, config));
+    return Parse_1.parse({
+        tokens: Tokenize_1.tokenize(text, config)
+    }).nodes;
 }
 exports.getInlineNodes = getInlineNodes;
 
@@ -215,10 +217,6 @@ var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
-function parse(tokens) {
-    return parseUntil(tokens).nodes;
-}
-exports.parse = parse;
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS,
     RichConventions_1.EMPHASIS,
@@ -232,14 +230,15 @@ var MEDIA_CONVENTIONS = [
     MediaConventions_1.IMAGE,
     MediaConventions_1.VIDEO
 ];
-function parseUntil(tokens, Terminator) {
+function parse(args) {
+    var tokens = args.tokens, UntilTokenType = args.UntilTokenType;
     var nodes = [];
-    var stillNeedsTerminator = !!Terminator;
+    var stillNeedsTerminator = !!UntilTokenType;
     var countParsed = 0;
     MainParserLoop: for (var index = 0; index < tokens.length; index++) {
         var token = tokens[index];
         countParsed = index + 1;
-        if (Terminator && token instanceof Terminator) {
+        if (UntilTokenType && token instanceof UntilTokenType) {
             stillNeedsTerminator = false;
             break;
         }
@@ -260,7 +259,10 @@ function parseUntil(tokens, Terminator) {
             continue;
         }
         if (token instanceof LinkStartToken_1.LinkStartToken) {
-            var result = parseUntil(tokens.slice(countParsed), LinkEndToken_1.LinkEndToken);
+            var result = parse({
+                tokens: tokens.slice(countParsed),
+                UntilTokenType: LinkEndToken_1.LinkEndToken
+            });
             index += result.countTokensParsed;
             var contents = result.nodes;
             var hasContents = isNotPureWhitespace(contents);
@@ -298,7 +300,10 @@ function parseUntil(tokens, Terminator) {
         for (var _a = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _a < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _a++) {
             var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_a];
             if (token instanceof richConvention.StartTokenType) {
-                var result = parseUntil(tokens.slice(countParsed), richConvention.EndTokenType);
+                var result = parse({
+                    tokens: tokens.slice(countParsed),
+                    UntilTokenType: richConvention.EndTokenType
+                });
                 index += result.countTokensParsed;
                 if (result.nodes.length) {
                     nodes.push(new richConvention.NodeType(result.nodes));
@@ -308,10 +313,11 @@ function parseUntil(tokens, Terminator) {
         }
     }
     if (stillNeedsTerminator) {
-        throw new Error("Missing token: " + Terminator);
+        throw new Error("Missing token: " + UntilTokenType);
     }
     return new ParseResult(nodes, countParsed);
 }
+exports.parse = parse;
 function isNotPureWhitespace(nodes) {
     return !nodes.every(PlainTextNode_1.isWhitespace);
 }

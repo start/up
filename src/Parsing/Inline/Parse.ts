@@ -33,11 +33,6 @@ import { MediaTokenType } from './Tokens/MediaToken'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
-export function parse(tokens: Token[]): InlineSyntaxNode[] {
-  return parseUntil(tokens).nodes
-}
-
-
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS,
   EMPHASIS,
@@ -54,9 +49,12 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-function parseUntil(tokens: Token[], Terminator?: TokenType): ParseResult {
+export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): ParseResult {
+  const { tokens, UntilTokenType } = args
+  
   const nodes: InlineSyntaxNode[] = []
-  let stillNeedsTerminator = !!Terminator
+  
+  let stillNeedsTerminator = !!UntilTokenType
   let countParsed = 0
 
   MainParserLoop:
@@ -64,7 +62,7 @@ function parseUntil(tokens: Token[], Terminator?: TokenType): ParseResult {
     const token = tokens[index]
     countParsed = index + 1
 
-    if (Terminator && token instanceof Terminator) {
+    if (UntilTokenType && token instanceof UntilTokenType) {
       stillNeedsTerminator = false
       break
     }
@@ -91,7 +89,11 @@ function parseUntil(tokens: Token[], Terminator?: TokenType): ParseResult {
     }
 
     if (token instanceof LinkStartToken) {
-      const result = parseUntil(tokens.slice(countParsed), LinkEndToken)
+      const result = parse({
+        tokens: tokens.slice(countParsed),
+        UntilTokenType: LinkEndToken
+      })
+      
       index += result.countTokensParsed
 
       let contents = result.nodes
@@ -149,7 +151,11 @@ function parseUntil(tokens: Token[], Terminator?: TokenType): ParseResult {
 
     for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
       if (token instanceof richConvention.StartTokenType) {
-        const result = parseUntil(tokens.slice(countParsed), richConvention.EndTokenType)
+        const result = parse({
+          tokens: tokens.slice(countParsed),
+          UntilTokenType: richConvention.EndTokenType
+        })
+        
         index += result.countTokensParsed
 
         if (result.nodes.length) {
@@ -163,7 +169,7 @@ function parseUntil(tokens: Token[], Terminator?: TokenType): ParseResult {
   }
 
   if (stillNeedsTerminator) {
-    throw new Error(`Missing token: ${Terminator}`)
+    throw new Error(`Missing token: ${UntilTokenType}`)
   }
 
   return new ParseResult(nodes, countParsed)
