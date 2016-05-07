@@ -843,14 +843,13 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.undoPrematurelyClosedLink = function () {
-        var didPrematurelyCloseLink = this.advanceAfterMatch({ pattern: LINK_END_PATTERN });
-        if (!didPrematurelyCloseLink) {
-            return false;
+        if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+            this.undoLatestFallibleContext({
+                where: function (context) { return context.state === TokenizerState_1.TokenizerState.Link; }
+            });
+            return true;
         }
-        this.undoLatestFallibleContext({
-            where: function (context) { return context.state === TokenizerState_1.TokenizerState.Link; }
-        });
-        return true;
+        return false;
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
         return this.openFallibleConvention({

@@ -300,18 +300,15 @@ class Tokenizer {
   }
 
   private undoPrematurelyClosedLink(): boolean {
-    const didPrematurelyCloseLink =
-      this.advanceAfterMatch({ pattern: LINK_END_PATTERN })
+    if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+      this.undoLatestFallibleContext({
+        where: (context) => context.state === TokenizerState.Link
+      })
 
-    if (!didPrematurelyCloseLink) {
-      return false
+      return true
     }
 
-    this.undoLatestFallibleContext({
-      where: (context) => context.state === TokenizerState.Link
-    })
-    
-    return true
+    return false
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
