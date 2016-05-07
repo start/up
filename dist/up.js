@@ -207,16 +207,16 @@ exports.VIDEO = VIDEO;
 
 },{"../../SyntaxNodes/AudioNode":62,"../../SyntaxNodes/ImageNode":74,"../../SyntaxNodes/VideoNode":94,"./MediaConvention":6,"./Tokens/AudioToken":20,"./Tokens/ImageToken":25,"./Tokens/VideoToken":43}],8:[function(require,module,exports){
 "use strict";
-var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
-var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var CollectionHelpers_1 = require('../CollectionHelpers');
-var MediaConventions_1 = require('./MediaConventions');
-var RichConventions_1 = require('./RichConventions');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
+var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
+var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
+var MediaConventions_1 = require('./MediaConventions');
+var RichConventions_1 = require('./RichConventions');
 var ParseResult_1 = require('./ParseResult');
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS,
