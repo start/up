@@ -58,6 +58,10 @@ const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
   startsWith(atLeast(1, escapeForRegex('*')))
 )
 
+const LINK_START_PATTERN = new RegExp(
+  startsWith(escapeForRegex('['))
+)
+
 class Tokenizer {
   public tokens: Token[] = []
 
@@ -145,7 +149,7 @@ class Tokenizer {
         continue
       }
 
-      if (this.hasState(TokenizerState.InlineCode)) {
+      if (this.innermostStateIs(TokenizerState.InlineCode)) {
         if (!this.closeSandwich(this.inlineCodeConvention)) {
           this.collectCurrentChar()
         }
@@ -157,6 +161,7 @@ class Tokenizer {
         this.tokenizeRaisedVoicePlaceholders()
         || this.closeSandwichIfInnermost(this.parenthesizedConvention)
         || this.closeSandwichIfInnermost(this.squareBracketedConvention)
+        || this.openLink()
         || this.openSandwich(this.inlineCodeConvention)
         || this.closeSandwich(this.spoilerConvention)
         || this.openSandwich(this.spoilerConvention)
@@ -233,16 +238,21 @@ class Tokenizer {
   private canTry(state: TokenizerState): boolean {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
+  
+  private openLink(): boolean {
+    return false
+    /*const LINK_CONTENT_STATE = TokenizerState.LinkContent
+    return this.canTry(LINK_CONTENT_STATE) && this.advanceAfterMatch({
+      pattern: LINK_START_PATTERN,
+      then: () => {}
+    })*/
+  }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
-    const { state, startPattern, onOpen } = sandwich
-
-    return this.canTry(state) && this.advanceAfterMatch({
-      pattern: startPattern,
-      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.addUnresolvedContext(state)
-        onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
-      }
+    return this.openState({
+      stateToOpen: sandwich.state,
+      startPattern: sandwich.startPattern,
+      onOpen: sandwich.onOpen
     })
   }
 
@@ -261,11 +271,23 @@ class Tokenizer {
   private closeSandwichIfInnermost(sandwich: TokenizableSandwich): boolean {
     const { state, endPattern, onClose } = sandwich
 
-    return this.isInnermostState(state) && this.advanceAfterMatch({
+    return this.innermostStateIs(state) && this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.unresolvedContexts.pop()
         onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+      }
+    })
+  }
+  
+  private openState(args: OpenConventionArgs): boolean {
+    const { stateToOpen, startPattern, onOpen } = args
+
+    return this.canTry(stateToOpen) && this.advanceAfterMatch({
+      pattern: startPattern,
+      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+        this.addUnresolvedContext(stateToOpen)
+        onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
@@ -295,7 +317,7 @@ class Tokenizer {
     return this.unresolvedContexts.some(context => context.state === state)
   }
 
-  private isInnermostState(state: TokenizerState): boolean {
+  private innermostStateIs(state: TokenizerState): boolean {
     const innermostState = last(this.unresolvedContexts)
     return (innermostState && innermostState.state === state)
   }
@@ -332,6 +354,20 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
+  private getBracketedConvention(state: TokenizerState, openBracket: string, closeBracket: string): TokenizableSandwich {
+    const addBracketToBuffer = (bracket: string) => {
+      this.plainTextBuffer += bracket
+    }
+
+    return new TokenizableSandwich({
+      state: state,
+      startPattern: escapeForRegex(openBracket),
+      endPattern: escapeForRegex(closeBracket),
+      onOpen: addBracketToBuffer,
+      onClose: addBracketToBuffer
+    })
+  }
+
   private getTypicalSandwichConvention(
     args: {
       state: TokenizerState,
@@ -351,20 +387,6 @@ class Tokenizer {
       onClose: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.EndTokenType())
       }
-    })
-  }
-
-  private getBracketedConvention(state: TokenizerState, openBracket: string, closeBracket: string): TokenizableSandwich {
-    const addBracketToBuffer = (bracket: string) => {
-      this.plainTextBuffer += bracket
-    }
-
-    return new TokenizableSandwich({
-      state: state,
-      startPattern: escapeForRegex(openBracket),
-      endPattern: escapeForRegex(closeBracket),
-      onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer
     })
   }
 
@@ -412,7 +434,7 @@ interface MatchArgs {
 interface OpenConventionArgs {
   stateToOpen: TokenizerState,
   startPattern: RegExp,
-  then: OnTokenizerMatch
+  onOpen: OnTokenizerMatch
 }
 
 interface CloseConventionArgs {

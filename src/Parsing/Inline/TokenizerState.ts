@@ -3,5 +3,7 @@ export enum TokenizerState {
   Footnote,
   Spoiler,
   Parenthesized,
-  SquareBracketed
+  SquareBracketed,
+  LinkContent,
+  LinkUrl
 }
