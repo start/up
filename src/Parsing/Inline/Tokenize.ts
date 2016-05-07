@@ -152,25 +152,15 @@ class Tokenizer {
         continue
       }
 
-      if (this.hasState(TokenizerState.Footnote)) {
-        if (this.closeConvention(this.footnoteConvention)) {
-          continue
-        }
-      }
-
-      if (this.hasState(TokenizerState.Spoiler)) {
-        if (this.closeConvention(this.spoilerConvention)) {
-          continue
-        }
-      }
-
-      const didOpenNewConvention = (
+      const tokenizedSomething = (
         this.openConvention(this.inlineCodeConvention)
+        || this.closeConvention(this.footnoteConvention)
+        || this.closeConvention(this.spoilerConvention)
         || this.openConvention(this.footnoteConvention)
         || this.openConvention(this.spoilerConvention)
       )
 
-      if (didOpenNewConvention) {
+      if (tokenizedSomething) {
         continue
       }
 
@@ -244,7 +234,7 @@ class Tokenizer {
   private closeConvention(convention: TokenizableConvention): boolean {
     const { state, endPattern, onClose } = convention
 
-    return this.advanceAfterMatch({
+    return this.hasState(state) && this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.resolveMostRecentUnresolved(state)

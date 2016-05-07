@@ -699,26 +699,14 @@ var Tokenizer = (function () {
                 this.collectCurrentChar();
                 continue;
             }
-            if (this.hasState(TokenizerState_1.TokenizerState.InlineCode)) {
-                if (!this.closeConvention(this.inlineCodeConvention)) {
-                    this.collectCurrentChar();
-                }
-                continue;
-            }
-            if (this.hasState(TokenizerState_1.TokenizerState.Footnote)) {
-                if (this.closeConvention(this.footnoteConvention)) {
-                    continue;
-                }
-            }
-            if (this.hasState(TokenizerState_1.TokenizerState.Spoiler)) {
-                if (this.closeConvention(this.spoilerConvention)) {
-                    continue;
-                }
-            }
-            var didOpenNewConvention = (this.openConvention(this.inlineCodeConvention)
-                || this.openConvention(this.footnoteConvention)
-                || this.openConvention(this.spoilerConvention));
-            if (didOpenNewConvention) {
+            var tokenizedSomething = (!this.hasState(TokenizerState_1.TokenizerState.InlineCode)
+                && (this.closeConvention(this.inlineCodeConvention)
+                    || this.openConvention(this.inlineCodeConvention)
+                    || this.closeConvention(this.footnoteConvention)
+                    || this.closeConvention(this.spoilerConvention)
+                    || this.openConvention(this.footnoteConvention)
+                    || this.openConvention(this.spoilerConvention)));
+            if (tokenizedSomething) {
                 continue;
             }
             this.collectCurrentChar();
@@ -779,7 +767,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeConvention = function (convention) {
         var _this = this;
         var state = convention.state, endPattern = convention.endPattern, onClose = convention.onClose;
-        return this.advanceAfterMatch({
+        return this.hasState(state) && this.advanceAfterMatch({
             pattern: endPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
