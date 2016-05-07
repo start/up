@@ -683,7 +683,7 @@ var Tokenizer = (function () {
         this.config = config;
         this.tokens = [];
         this.textIndex = 0;
-        this.unresolvedContexts = [];
+        this.openContext = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.plainTextBuffer = '';
         this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
@@ -771,11 +771,11 @@ var Tokenizer = (function () {
         return !this.remainingText;
     };
     Tokenizer.prototype.failed = function () {
-        return this.unresolvedContexts.some(function (context) { return context instanceof FallibleTokenizerContext_1.FallibleTokenizerContext; });
+        return this.openContext.some(function (context) { return context instanceof FallibleTokenizerContext_1.FallibleTokenizerContext; });
     };
     Tokenizer.prototype.undoLatestFallibleContext = function (args) {
-        while (this.unresolvedContexts.length) {
-            var unresolvedContext = this.unresolvedContexts.pop();
+        while (this.openContext.length) {
+            var unresolvedContext = this.openContext.pop();
             if (unresolvedContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext && (!args || args.where(unresolvedContext))) {
                 this.undoContext(unresolvedContext);
                 break;
@@ -813,8 +813,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openLink = function () {
         var _this = this;
-        return this.openConvention({
-            stateToOpen: TokenizerState_1.TokenizerState.Link,
+        return this.openFallibleConvention({
+            state: TokenizerState_1.TokenizerState.Link,
             startPattern: LINK_START_PATTERN,
             onOpen: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken_1.LinkStartToken());
@@ -823,8 +823,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openLinkUrl = function () {
         var _this = this;
-        return this.openConvention({
-            stateToOpen: TokenizerState_1.TokenizerState.LinkUrl,
+        return this.openFallibleConvention({
+            state: TokenizerState_1.TokenizerState.LinkUrl,
             startPattern: LINK_URL_START_PATTERN,
             onOpen: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
@@ -853,8 +853,8 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
-        return this.openConvention({
-            stateToOpen: sandwich.state,
+        return this.openFallibleConvention({
+            state: sandwich.state,
             startPattern: sandwich.startPattern,
             onOpen: sandwich.onOpen
         });
@@ -884,22 +884,22 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.unresolvedContexts.pop();
+                _this.openContext.pop();
                 onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
-    Tokenizer.prototype.openConvention = function (args) {
+    Tokenizer.prototype.openFallibleConvention = function (args) {
         var _this = this;
-        var stateToOpen = args.stateToOpen, startPattern = args.startPattern, onOpen = args.onOpen;
-        return this.canTry(stateToOpen) && this.advanceAfterMatch({
+        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen;
+        return this.canTry(state) && this.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.addUnresolvedContext(stateToOpen);
+                _this.addUnresolvedContext(state);
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
@@ -913,26 +913,26 @@ var Tokenizer = (function () {
             || this.closeSandwichIfInnermost(this.squareBracketedConvention));
     };
     Tokenizer.prototype.resolveMostRecentUnresolved = function (state) {
-        for (var i = 0; i < this.unresolvedContexts.length; i++) {
-            if (this.unresolvedContexts[i].state === state) {
-                this.unresolvedContexts.splice(i, 1);
+        for (var i = 0; i < this.openContext.length; i++) {
+            if (this.openContext[i].state === state) {
+                this.openContext.splice(i, 1);
                 return;
             }
         }
         throw new Error("State was not unresolved: " + TokenizerState_1.TokenizerState[state]);
     };
     Tokenizer.prototype.addUnresolvedContext = function (nextState) {
-        this.unresolvedContexts.push(new FallibleTokenizerContext_1.FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer));
+        this.openContext.push(new FallibleTokenizerContext_1.FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
         this.tokens.push(token);
     };
     Tokenizer.prototype.hasState = function (state) {
-        return this.unresolvedContexts.some(function (context) { return context.state === state; });
+        return this.openContext.some(function (context) { return context.state === state; });
     };
     Tokenizer.prototype.innermostStateIs = function (state) {
-        var innermostState = CollectionHelpers_1.last(this.unresolvedContexts);
+        var innermostState = CollectionHelpers_1.last(this.openContext);
         return (innermostState && innermostState.state === state);
     };
     Tokenizer.prototype.advanceAfterMatch = function (args) {

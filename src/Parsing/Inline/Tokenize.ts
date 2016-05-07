@@ -75,11 +75,15 @@ class Tokenizer {
 
   private textIndex = 0
 
+  // These three fields are computer based on `textIndex`.
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
 
-  private unresolvedContexts: TokenizerContext[] = []
+  // Any time we open a new convention, we add it to `openContexts`.
+  //
+  // Most conventions need to be resolved by the time we consume the last character of the text.
+  private openContext: TokenizerContext[] = []
 
   private failedStateTracker: FailedStateTracker = new FailedStateTracker()
 
@@ -94,9 +98,9 @@ class Tokenizer {
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
 
-  // These conventions don't produce any distinct syntax nodes. Instead, they ensure that any conventions
-  // whose delimiters contain parentheses or square brackets can contain parenthesized or "square bracketed"
-  // text.
+  // These conventions don't produce any distinct syntax nodes, and they don't need to be closed. Their
+  // purpose is to ensure that any conventions whose delimiters contain parentheses or square brackets
+  // can contain parenthesized or "square bracketed" text.
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
 
@@ -208,12 +212,12 @@ class Tokenizer {
   }
 
   private failed(): boolean {
-    return this.unresolvedContexts.some(context => context instanceof FallibleTokenizerContext)
+    return this.openContext.some(context => context instanceof FallibleTokenizerContext)
   }
 
-  private undoLatestFallibleContext(args?: {where: (unresolvedContext: FallibleTokenizerContext) => boolean}): void {
-    while (this.unresolvedContexts.length) {
-      const unresolvedContext = this.unresolvedContexts.pop()
+  private undoLatestFallibleContext(args?: { where: (unresolvedContext: FallibleTokenizerContext) => boolean }): void {
+    while (this.openContext.length) {
+      const unresolvedContext = this.openContext.pop()
 
       if (unresolvedContext instanceof FallibleTokenizerContext && (!args || args.where(unresolvedContext))) {
         this.undoContext(unresolvedContext)
@@ -262,8 +266,8 @@ class Tokenizer {
   }
 
   private openLink(): boolean {
-    return this.openConvention({
-      stateToOpen: TokenizerState.Link,
+    return this.openFallibleConvention({
+      state: TokenizerState.Link,
       startPattern: LINK_START_PATTERN,
       onOpen: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken())
@@ -272,8 +276,8 @@ class Tokenizer {
   }
 
   private openLinkUrl(): boolean {
-    return this.openConvention({
-      stateToOpen: TokenizerState.LinkUrl,
+    return this.openFallibleConvention({
+      state: TokenizerState.LinkUrl,
       startPattern: LINK_URL_START_PATTERN,
       onOpen: () => {
         this.flushUnmatchedTextToPlainTextToken()
@@ -302,13 +306,13 @@ class Tokenizer {
     }
 
     this.undoLatestFallibleContext({
-      where: (context) => context.state === TokenizerState.Link 
+      where: (context) => context.state === TokenizerState.Link
     })
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
-    return this.openConvention({
-      stateToOpen: sandwich.state,
+    return this.openFallibleConvention({
+      state: sandwich.state,
       startPattern: sandwich.startPattern,
       onOpen: sandwich.onOpen
     })
@@ -332,19 +336,25 @@ class Tokenizer {
     return this.innermostStateIs(state) && this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.unresolvedContexts.pop()
+        this.openContext.pop()
         onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
 
-  private openConvention(args: OpenConventionArgs): boolean {
-    const { stateToOpen, startPattern, onOpen } = args
+  private openFallibleConvention(
+    args: {
+      state: TokenizerState,
+      startPattern: RegExp,
+      onOpen: OnTokenizerMatch
+    }
+  ): boolean {
+    const { state, startPattern, onOpen } = args
 
-    return this.canTry(stateToOpen) && this.advanceAfterMatch({
+    return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.addUnresolvedContext(stateToOpen)
+        this.addUnresolvedContext(state)
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -365,9 +375,9 @@ class Tokenizer {
   }
 
   private resolveMostRecentUnresolved(state: TokenizerState): void {
-    for (let i = 0; i < this.unresolvedContexts.length; i++) {
-      if (this.unresolvedContexts[i].state === state) {
-        this.unresolvedContexts.splice(i, 1)
+    for (let i = 0; i < this.openContext.length; i++) {
+      if (this.openContext[i].state === state) {
+        this.openContext.splice(i, 1)
         return
       }
     }
@@ -376,7 +386,7 @@ class Tokenizer {
   }
 
   private addUnresolvedContext(nextState: TokenizerState): void {
-    this.unresolvedContexts.push(
+    this.openContext.push(
       new FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer))
   }
 
@@ -386,15 +396,15 @@ class Tokenizer {
   }
 
   private hasState(state: TokenizerState): boolean {
-    return this.unresolvedContexts.some(context => context.state === state)
+    return this.openContext.some(context => context.state === state)
   }
 
   private innermostStateIs(state: TokenizerState): boolean {
-    const innermostState = last(this.unresolvedContexts)
+    const innermostState = last(this.openContext)
     return (innermostState && innermostState.state === state)
   }
 
-  private advanceAfterMatch(args: MatchArgs): boolean {
+  private advanceAfterMatch(args: { pattern: RegExp, then?: OnTokenizerMatch }): boolean {
     const { pattern, then } = args
 
     const result = pattern.exec(this.remainingText)
@@ -495,22 +505,4 @@ class Tokenizer {
       }
     })
   }
-}
-
-
-interface MatchArgs {
-  pattern: RegExp,
-  then?: OnTokenizerMatch
-}
-
-interface OpenConventionArgs {
-  stateToOpen: TokenizerState,
-  startPattern: RegExp,
-  onOpen: OnTokenizerMatch
-}
-
-interface CloseConventionArgs {
-  stateToClose: TokenizerState,
-  endPattern: RegExp,
-  then: OnTokenizerMatch
 }
