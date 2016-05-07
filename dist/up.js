@@ -649,6 +649,7 @@ var TokenizerState_1 = require('./TokenizerState');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var FailedStateTracker_1 = require('./FailedStateTracker');
 var FallibleTokenizerContext_1 = require('./FallibleTokenizerContext');
+var CollectionHelpers_1 = require('../CollectionHelpers');
 var TextHelpers_1 = require('../TextHelpers');
 var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
@@ -747,11 +748,13 @@ var Tokenizer = (function () {
                 continue;
             }
             var tokenizedSomething = (this.tokenizeRaisedVoicePlaceholders()
+                || this.closeSandwichIfInnermost(this.parenthesizedConvention)
                 || this.openSandwich(this.inlineCodeConvention)
-                || this.closeSandwich(this.footnoteConvention)
                 || this.closeSandwich(this.spoilerConvention)
+                || this.openSandwich(this.spoilerConvention)
+                || this.closeSandwich(this.footnoteConvention)
                 || this.openSandwich(this.footnoteConvention)
-                || this.openSandwich(this.spoilerConvention));
+                || this.openSandwich(this.parenthesizedConvention));
             if (tokenizedSomething) {
                 continue;
             }
@@ -835,6 +838,21 @@ var Tokenizer = (function () {
             }
         });
     };
+    Tokenizer.prototype.closeSandwichIfInnermost = function (sandwich) {
+        var _this = this;
+        var state = sandwich.state, endPattern = sandwich.endPattern, onClose = sandwich.onClose;
+        return this.isInnermostState(state) && this.advanceAfterMatch({
+            pattern: endPattern,
+            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                var captures = [];
+                for (var _i = 3; _i < arguments.length; _i++) {
+                    captures[_i - 3] = arguments[_i];
+                }
+                _this.unresolvedContexts.pop();
+                onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            }
+        });
+    };
     Tokenizer.prototype.resolveMostRecentUnresolved = function (state) {
         for (var i = 0; i < this.unresolvedContexts.length; i++) {
             if (this.unresolvedContexts[i].state === state) {
@@ -853,6 +871,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.hasState = function (state) {
         return this.unresolvedContexts.some(function (context) { return context.state === state; });
+    };
+    Tokenizer.prototype.isInnermostState = function (state) {
+        var innermostState = CollectionHelpers_1.last(this.unresolvedContexts);
+        return (innermostState && innermostState.state === state);
     };
     Tokenizer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
@@ -903,7 +925,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./TokenizableSandwich":16,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],18:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./TokenizableSandwich":16,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],18:[function(require,module,exports){
 "use strict";
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";

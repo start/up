@@ -162,11 +162,13 @@ class Tokenizer {
 
       const tokenizedSomething = (
         this.tokenizeRaisedVoicePlaceholders()
+        || this.closeSandwichIfInnermost(this.parenthesizedConvention)
         || this.openSandwich(this.inlineCodeConvention)
-        || this.closeSandwich(this.footnoteConvention)
         || this.closeSandwich(this.spoilerConvention)
-        || this.openSandwich(this.footnoteConvention)
         || this.openSandwich(this.spoilerConvention)
+        || this.closeSandwich(this.footnoteConvention)
+        || this.openSandwich(this.footnoteConvention)
+        || this.openSandwich(this.parenthesizedConvention)
       )
 
       if (tokenizedSomething) {
@@ -267,6 +269,18 @@ class Tokenizer {
     })
   }
 
+  private closeSandwichIfInnermost(sandwich: TokenizableSandwich): boolean {
+    const { state, endPattern, onClose } = sandwich
+
+    return this.isInnermostState(state) && this.advanceAfterMatch({
+      pattern: endPattern,
+      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+        this.unresolvedContexts.pop()
+        onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+      }
+    })
+  }
+
   private resolveMostRecentUnresolved(state: TokenizerState): void {
     for (let i = 0; i < this.unresolvedContexts.length; i++) {
       if (this.unresolvedContexts[i].state === state) {
@@ -290,6 +304,11 @@ class Tokenizer {
 
   private hasState(state: TokenizerState): boolean {
     return this.unresolvedContexts.some(context => context.state === state)
+  }
+
+  private isInnermostState(state: TokenizerState): boolean {
+    const innermostState = last(this.unresolvedContexts)
+    return (innermostState && innermostState.state === state)
   }
 
   private advanceAfterMatch(args: MatchArgs): boolean {
