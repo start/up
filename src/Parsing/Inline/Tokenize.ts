@@ -83,8 +83,9 @@ class Tokenizer {
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
   
-  // TODO: Explain
+  // TODO: Explain these
   private parenthesizedConvention: TokenizableSandwich
+  private squareBracketedConvention: TokenizableSandwich
 
   constructor(private entireText: string, private config: UpConfig) {
     this.inlineCodeConvention = new TokenizableSandwich({
@@ -136,6 +137,15 @@ class Tokenizer {
       onClose: collectMatch
     })
 
+    this.squareBracketedConvention = new TokenizableSandwich({
+      state: TokenizerState.SquareBracketed,
+      startPattern: escapeForRegex('['),
+      endPattern: escapeForRegex(']'),
+      onOpen: collectMatch,
+      onClose: collectMatch
+    })
+
+
     this.dirty()
     this.tokenize()
   }
@@ -167,12 +177,14 @@ class Tokenizer {
       const tokenizedSomething = (
         this.tokenizeRaisedVoicePlaceholders()
         || this.closeSandwichIfInnermost(this.parenthesizedConvention)
+        || this.closeSandwichIfInnermost(this.squareBracketedConvention)
         || this.openSandwich(this.inlineCodeConvention)
         || this.closeSandwich(this.spoilerConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.closeSandwich(this.footnoteConvention)
         || this.openSandwich(this.footnoteConvention)
         || this.openSandwich(this.parenthesizedConvention)
+        || this.openSandwich(this.squareBracketedConvention)
       )
 
       if (tokenizedSomething) {

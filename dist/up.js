@@ -724,6 +724,13 @@ var Tokenizer = (function () {
             onOpen: collectMatch,
             onClose: collectMatch
         });
+        this.squareBracketedConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            state: TokenizerState_1.TokenizerState.SquareBracketed,
+            startPattern: TextHelpers_1.escapeForRegex('['),
+            endPattern: TextHelpers_1.escapeForRegex(']'),
+            onOpen: collectMatch,
+            onClose: collectMatch
+        });
         this.dirty();
         this.tokenize();
     }
@@ -748,12 +755,14 @@ var Tokenizer = (function () {
             }
             var tokenizedSomething = (this.tokenizeRaisedVoicePlaceholders()
                 || this.closeSandwichIfInnermost(this.parenthesizedConvention)
+                || this.closeSandwichIfInnermost(this.squareBracketedConvention)
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.closeSandwich(this.spoilerConvention)
                 || this.openSandwich(this.spoilerConvention)
                 || this.closeSandwich(this.footnoteConvention)
                 || this.openSandwich(this.footnoteConvention)
-                || this.openSandwich(this.parenthesizedConvention));
+                || this.openSandwich(this.parenthesizedConvention)
+                || this.openSandwich(this.squareBracketedConvention));
             if (tokenizedSomething) {
                 continue;
             }
@@ -928,6 +937,7 @@ var Tokenizer = (function () {
     TokenizerState[TokenizerState["Footnote"] = 1] = "Footnote";
     TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
     TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
+    TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 
