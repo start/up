@@ -133,7 +133,7 @@ class Tokenizer {
       this.getBracketedConvention(TokenizerState.Parenthesized, '(', ')')
 
     this.squareBracketedConvention =
-      this.getBracketedConvention(TokenizerState.Parenthesized, '[', ']')
+      this.getBracketedConvention(TokenizerState.SquareBracketed, '[', ']')
 
     this.dirty()
     this.tokenize()
@@ -189,8 +189,8 @@ class Tokenizer {
         || this.openSandwich(this.spoilerConvention)
         || this.closeSandwich(this.footnoteConvention)
         || this.openSandwich(this.footnoteConvention)
-        || this.openLink()
-        || (this.hasState(TokenizerState.Link) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
+        || (!this.hasState(TokenizerState.Link) && this.openLink())
+        || (this.hasState(TokenizerState.Link) && (this.openLinkUrlOrUndoPrematureLink() || this.undoPrematurelyClosedLink()))
         || this.openBracketedText()
       )
 
@@ -271,14 +271,49 @@ class Tokenizer {
     })
   }
 
-  private openLinkUrl(): boolean {
-    return this.openFallibleConvention({
+  private openLinkUrlOrUndoPrematureLink(): boolean {
+    const didStartLinkUrl = this.openFallibleConvention({
       state: TokenizerState.LinkUrl,
       startPattern: LINK_URL_START_PATTERN,
       onOpen: () => {
         this.flushUnmatchedTextToPlainTextToken()
       }
     })
+
+    if (!didStartLinkUrl) {
+      return false
+    }
+
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      let openContext = this.openContexts[i]
+
+      if (openContext.state === TokenizerState.SquareBracketed) {
+        // If we've encountered any unclosed square brackets since starting the link, it means we started
+        // the link too early.
+        //
+        // We're looking at either:
+        //
+        // 1. A bracketed link, which should start with the second opening bracket:
+        //  
+        //    [I use [Google -> https://google.com]]
+        //
+        // 2. A bracketed link missing the second closing bracket, which should still start with the second
+        //    opening bracket:
+        //   
+        //    Go to [this [site -> https://stackoverflow.com]! 
+        //
+        // TODO: Don't produce link context until the URL arrow is found inside bracketed text
+        
+        this.undoLink()
+        break
+      }
+
+      if (openContext.state === TokenizerState.Link) {
+        break
+      }
+    }
+
+    return true
   }
 
   private closeLink(): boolean {
@@ -295,14 +330,17 @@ class Tokenizer {
 
   private undoPrematurelyClosedLink(): boolean {
     if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
-      this.undoLatestFallibleContext({
-        where: (context) => context.state === TokenizerState.Link
-      })
-
+      this.undoLink()
       return true
     }
 
     return false
+  }
+
+  private undoLink(): void {
+    this.undoLatestFallibleContext({
+      where: (context) => context.state === TokenizerState.Link
+    })
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
