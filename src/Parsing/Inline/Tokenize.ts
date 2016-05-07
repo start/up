@@ -169,16 +169,25 @@ class Tokenizer {
         this.closeSandwichIfInnermost(this.parenthesizedConvention)
         || this.closeSandwichIfInnermost(this.squareBracketedConvention)
       )
-      
+
       if (didCloseBracket) {
         continue
       }
-      
+
       if (this.innermostStateIs(TokenizerState.LinkUrl)) {
         if (!this.closeLink()) {
+          const didOpenBracket = (
+            this.openSandwich(this.parenthesizedConvention)
+            || this.openSandwich(this.squareBracketedConvention)
+          )
+
+          if (didOpenBracket) {
+            continue
+          }
+
           this.collectCurrentChar()
         }
-        
+
         continue
       }
 

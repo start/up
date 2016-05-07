@@ -746,6 +746,11 @@ var Tokenizer = (function () {
             }
             if (this.innermostStateIs(TokenizerState_1.TokenizerState.LinkUrl)) {
                 if (!this.closeLink()) {
+                    var didOpenBracket = (this.openSandwich(this.parenthesizedConvention)
+                        || this.openSandwich(this.squareBracketedConvention));
+                    if (didOpenBracket) {
+                        continue;
+                    }
                     this.collectCurrentChar();
                 }
                 continue;
