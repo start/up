@@ -31,7 +31,7 @@ describe('A footnote reference at the end of a paragraph', () => {
 })
 
 
-describe('Nested parenthesized text ending with "))"', () => {
+describe('Nested parenthesized text ending together with "))"', () => {
   it('does not produce any footnote nodes', () => {
     const text = "(I don't eat cereal. (Well, I do, but I pretend not to.))"
 
@@ -40,6 +40,25 @@ describe('Nested parenthesized text ending with "))"', () => {
         new ParagraphNode([
           new PlainTextNode(text)
         ]),
+      ]))
+  })
+})
+
+
+describe('A footnote that contains nested parenthesized text ending together with "))"', () => {
+  it('produces a footnote containing the nested parenthesized text', () => {
+    const text = "((I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?))"
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode("I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?")
+    ], 1)
+    
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
