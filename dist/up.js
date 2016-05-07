@@ -656,6 +656,8 @@ var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure
 var FootnoteEndToken_1 = require('./Tokens/FootnoteEndToken');
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
+var LinkStartToken_1 = require('./Tokens/LinkStartToken');
+var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
 var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
@@ -672,6 +674,8 @@ exports.tokenize = tokenize;
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, TextHelpers_1.escapeForRegex('*'))));
 var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('[')));
+var LINK_URL_START_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
+var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -735,10 +739,20 @@ var Tokenizer = (function () {
                 }
                 continue;
             }
+            var didCloseBracket = (this.closeSandwichIfInnermost(this.parenthesizedConvention)
+                || this.closeSandwichIfInnermost(this.squareBracketedConvention));
+            if (didCloseBracket) {
+                continue;
+            }
+            if (this.innermostStateIs(TokenizerState_1.TokenizerState.LinkUrl)) {
+                if (!this.closeLink()) {
+                    this.collectCurrentChar();
+                }
+                continue;
+            }
             var tokenizedSomething = (this.tokenizeRaisedVoicePlaceholders()
-                || this.closeSandwichIfInnermost(this.parenthesizedConvention)
-                || this.closeSandwichIfInnermost(this.squareBracketedConvention)
                 || this.openLink()
+                || (this.hasState(TokenizerState_1.TokenizerState.LinkContent) && this.openLinkUrl())
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.closeSandwich(this.spoilerConvention)
                 || this.openSandwich(this.spoilerConvention)
@@ -797,10 +811,39 @@ var Tokenizer = (function () {
         return !this.failedStateTracker.hasFailed(state, this.textIndex);
     };
     Tokenizer.prototype.openLink = function () {
-        return false;
+        var _this = this;
+        return this.openConvention({
+            stateToOpen: TokenizerState_1.TokenizerState.LinkContent,
+            startPattern: LINK_START_PATTERN,
+            onOpen: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken_1.LinkStartToken());
+            }
+        });
+    };
+    Tokenizer.prototype.openLinkUrl = function () {
+        var _this = this;
+        return this.openConvention({
+            stateToOpen: TokenizerState_1.TokenizerState.LinkUrl,
+            startPattern: LINK_URL_START_PATTERN,
+            onOpen: function () {
+                _this.flushUnmatchedTextToPlainTextToken();
+            }
+        });
+    };
+    Tokenizer.prototype.closeLink = function () {
+        var _this = this;
+        return this.advanceAfterMatch({
+            pattern: LINK_END_PATTERN,
+            then: function () {
+                var url = _this.flushUnmatchedText();
+                _this.tokens.push(new LinkEndToken_1.LinkEndToken(url));
+                _this.resolveMostRecentUnresolved(TokenizerState_1.TokenizerState.LinkUrl);
+                _this.resolveMostRecentUnresolved(TokenizerState_1.TokenizerState.LinkContent);
+            }
+        });
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
-        return this.openState({
+        return this.openConvention({
             stateToOpen: sandwich.state,
             startPattern: sandwich.startPattern,
             onOpen: sandwich.onOpen
@@ -836,7 +879,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.openState = function (args) {
+    Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
         var stateToOpen = args.stateToOpen, startPattern = args.startPattern, onOpen = args.onOpen;
         return this.canTry(stateToOpen) && this.advanceAfterMatch({
@@ -950,7 +993,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./TokenizableSandwich":16,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],18:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./TokenizableSandwich":16,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],18:[function(require,module,exports){
 "use strict";
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";

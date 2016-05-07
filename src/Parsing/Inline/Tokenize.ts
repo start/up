@@ -62,6 +62,14 @@ const LINK_START_PATTERN = new RegExp(
   startsWith(escapeForRegex('['))
 )
 
+const LINK_URL_START_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE)
+)
+
+const LINK_END_PATTERN = new RegExp(
+  startsWith(escapeForRegex(']'))
+)
+
 class Tokenizer {
   public tokens: Token[] = []
 
@@ -157,11 +165,27 @@ class Tokenizer {
         continue
       }
 
+      const didCloseBracket = (
+        this.closeSandwichIfInnermost(this.parenthesizedConvention)
+        || this.closeSandwichIfInnermost(this.squareBracketedConvention)
+      )
+      
+      if (didCloseBracket) {
+        continue
+      }
+      
+      if (this.innermostStateIs(TokenizerState.LinkUrl)) {
+        if (!this.closeLink()) {
+          this.collectCurrentChar()
+        }
+        
+        continue
+      }
+
       const tokenizedSomething = (
         this.tokenizeRaisedVoicePlaceholders()
-        || this.closeSandwichIfInnermost(this.parenthesizedConvention)
-        || this.closeSandwichIfInnermost(this.squareBracketedConvention)
         || this.openLink()
+        || (this.hasState(TokenizerState.LinkContent) && this.openLinkUrl())
         || this.openSandwich(this.inlineCodeConvention)
         || this.closeSandwich(this.spoilerConvention)
         || this.openSandwich(this.spoilerConvention)
@@ -238,18 +262,41 @@ class Tokenizer {
   private canTry(state: TokenizerState): boolean {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
-  
+
   private openLink(): boolean {
-    return false
-    /*const LINK_CONTENT_STATE = TokenizerState.LinkContent
-    return this.canTry(LINK_CONTENT_STATE) && this.advanceAfterMatch({
-      pattern: LINK_START_PATTERN,
-      then: () => {}
-    })*/
+    return this.openConvention({
+      stateToOpen: TokenizerState.LinkContent,
+      startPattern: LINK_START_PATTERN,
+      onOpen: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken())
+      }
+    })
+  }
+
+  private openLinkUrl(): boolean {
+    return this.openConvention({
+      stateToOpen: TokenizerState.LinkUrl,
+      startPattern: LINK_URL_START_PATTERN,
+      onOpen: () => {
+        this.flushUnmatchedTextToPlainTextToken()
+      }
+    })
+  }
+
+  private closeLink(): boolean {
+    return this.advanceAfterMatch({
+      pattern: LINK_END_PATTERN,
+      then: () => {
+        const url = this.flushUnmatchedText()
+        this.tokens.push(new LinkEndToken(url))
+        this.resolveMostRecentUnresolved(TokenizerState.LinkUrl)
+        this.resolveMostRecentUnresolved(TokenizerState.LinkContent)
+      }
+    })
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
-    return this.openState({
+    return this.openConvention({
       stateToOpen: sandwich.state,
       startPattern: sandwich.startPattern,
       onOpen: sandwich.onOpen
@@ -279,8 +326,8 @@ class Tokenizer {
       }
     })
   }
-  
-  private openState(args: OpenConventionArgs): boolean {
+
+  private openConvention(args: OpenConventionArgs): boolean {
     const { stateToOpen, startPattern, onOpen } = args
 
     return this.canTry(stateToOpen) && this.advanceAfterMatch({
