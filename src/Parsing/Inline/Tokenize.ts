@@ -1,8 +1,10 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerResult } from './TokenizerResult'
 import { TokenizerState } from './TokenizerState'
+import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
 import { OldTokenizerContext, TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
@@ -74,12 +76,12 @@ class Tokenizer {
   // tokens (like InlineCodeTokens).
   private collectedUnmatchedText = ''
 
-  private inlineCodeConvention: TokenizableConvention
-  private footnoteConvention: TokenizableConvention
-  private spoilerConvention: TokenizableConvention
+  private inlineCodeConvention: TokenizableSandwich
+  private footnoteConvention: TokenizableSandwich
+  private spoilerConvention: TokenizableSandwich
 
   constructor(private entireText: string, private config: UpConfig) {
-    this.inlineCodeConvention = new TokenizableConvention({
+    this.inlineCodeConvention = new TokenizableSandwich({
       state: TokenizerState.InlineCode,
       startPattern: '`',
       endPattern: '`',
@@ -91,7 +93,7 @@ class Tokenizer {
       }
     })
 
-    this.footnoteConvention = new TokenizableConvention({
+    this.footnoteConvention = new TokenizableSandwich({
       state: TokenizerState.Footnote,
       startPattern: ANY_WHITESPACE + escapeForRegex('(('),
       endPattern: escapeForRegex('))'),
@@ -103,7 +105,7 @@ class Tokenizer {
       }
     })
 
-    this.spoilerConvention = new TokenizableConvention({
+    this.spoilerConvention = new TokenizableSandwich({
       state: TokenizerState.Spoiler,
       startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
       endPattern: escapeForRegex(']'),
@@ -136,7 +138,7 @@ class Tokenizer {
       }
 
       if (this.hasState(TokenizerState.InlineCode)) {
-        if (!this.closeConvention(this.inlineCodeConvention)) {
+        if (!this.closeSandwich(this.inlineCodeConvention)) {
           this.collectCurrentChar()
         }
 
@@ -145,11 +147,11 @@ class Tokenizer {
 
       const tokenizedSomething = (
         this.tokenizeRaisedVoicePlaceholders()
-        || this.openConvention(this.inlineCodeConvention)
-        || this.closeConvention(this.footnoteConvention)
-        || this.closeConvention(this.spoilerConvention)
-        || this.openConvention(this.footnoteConvention)
-        || this.openConvention(this.spoilerConvention)
+        || this.openSandwich(this.inlineCodeConvention)
+        || this.closeSandwich(this.footnoteConvention)
+        || this.closeSandwich(this.spoilerConvention)
+        || this.openSandwich(this.footnoteConvention)
+        || this.openSandwich(this.spoilerConvention)
       )
 
       if (tokenizedSomething) {
@@ -211,8 +213,8 @@ class Tokenizer {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
 
-  private openConvention(convention: TokenizableConvention): boolean {
-    const { state, startPattern, onOpen } = convention
+  private openSandwich(sandwich: TokenizableSandwich): boolean {
+    const { state, startPattern, onOpen } = sandwich
 
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
@@ -223,8 +225,8 @@ class Tokenizer {
     })
   }
 
-  private closeConvention(convention: TokenizableConvention): boolean {
-    const { state, endPattern, onClose } = convention
+  private closeSandwich(sandwich: TokenizableSandwich): boolean {
+    const { state, endPattern, onClose } = sandwich
 
     return this.hasState(state) && this.advanceAfterMatch({
       pattern: endPattern,
@@ -292,7 +294,6 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
-
   private tokenizeRaisedVoicePlaceholders(): boolean {
     return this.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -329,47 +330,19 @@ class Tokenizer {
 }
 
 
-interface TokenizableConventionArgs {
-  state: TokenizerState,
-  startPattern: string,
-  endPattern: string,
-  onOpen: OnMatch,
-  onClose: OnMatch
-}
-
-class TokenizableConvention {
-  public state: TokenizerState
-  public startPattern: RegExp
-  public endPattern: RegExp
-  public onOpen: OnMatch
-  public onClose: OnMatch
-
-  constructor(args: TokenizableConventionArgs) {
-    this.state = args.state
-    this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
-    this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
-    this.onOpen = args.onOpen
-    this.onClose = args.onClose
-  }
-}
-
 interface MatchArgs {
   pattern: RegExp,
-  then?: OnMatch
+  then?: OnTokenizerMatch
 }
 
 interface OpenConventionArgs {
   stateToOpen: TokenizerState,
   startPattern: RegExp,
-  then: OnMatch
+  then: OnTokenizerMatch
 }
 
 interface CloseConventionArgs {
   stateToClose: TokenizerState,
   endPattern: RegExp,
-  then: OnMatch
-}
-
-interface OnMatch {
-  (match: string, isTouchingWordEnd: boolean, isTouchingWordStart: boolean, ...captures: string[]): void
+  then: OnTokenizerMatch
 }
