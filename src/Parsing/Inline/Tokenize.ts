@@ -82,8 +82,8 @@ class Tokenizer {
 
   // Any time we open a new convention, we add it to `openContexts`.
   //
-  // Most conventions need to be resolved by the time we consume the last character of the text.
-  private openContext: TokenizerContext[] = []
+  // Most conventions need to be closed by the time we consume the last character of the text.
+  private openContexts: TokenizerContext[] = []
 
   private failedStateTracker: FailedStateTracker = new FailedStateTracker()
 
@@ -147,15 +147,18 @@ class Tokenizer {
 
   private tokenize(): void {
     while (true) {
-      if (this.done()) {
-        if (!this.failed()) {
-          break
-        }
-
+      
+      if (this.failed()) {
         this.undoLatestFallibleContext()
       }
 
-      if (this.currentChar === '\\') {
+      if (this.reachedEndOfText()) {
+        break
+      }
+      
+      const ESCAPE_CHAR = '\\'
+
+      if (this.currentChar === ESCAPE_CHAR) {
         this.advance(1)
         this.collectCurrentChar()
         continue
@@ -169,7 +172,7 @@ class Tokenizer {
         continue
       }
 
-      if (this.closeBracketedPlainText()) {
+      if (this.closeBracketsIfTheyAreInnermost()) {
         continue
       }
 
@@ -178,7 +181,7 @@ class Tokenizer {
           continue
         }
 
-        if (!this.openBracketedPlainText()) {
+        if (!this.openBracketedText()) {
           this.collectCurrentChar()
         }
 
@@ -194,7 +197,7 @@ class Tokenizer {
         || this.openSandwich(this.footnoteConvention)
         || this.openLink()
         || (this.hasState(TokenizerState.Link) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
-        || this.openBracketedPlainText()
+        || this.openBracketedText()
       )
 
       if (didSomething) {
@@ -207,20 +210,23 @@ class Tokenizer {
     this.flushUnmatchedTextToPlainTextToken()
   }
 
-  private done(): boolean {
+  private reachedEndOfText(): boolean {
     return !this.remainingText
   }
 
   private failed(): boolean {
-    return this.openContext.some(context => context instanceof FallibleTokenizerContext)
+    return (
+      this.reachedEndOfText()
+      && this.openContexts.some(context => context instanceof FallibleTokenizerContext)
+    )
   }
 
-  private undoLatestFallibleContext(args?: { where: (unresolvedContext: FallibleTokenizerContext) => boolean }): void {
-    while (this.openContext.length) {
-      const unresolvedContext = this.openContext.pop()
+  private undoLatestFallibleContext(args?: { where: (context: FallibleTokenizerContext) => boolean }): void {
+    while (this.openContexts.length) {
+      const openContext = this.openContexts.pop()
 
-      if (unresolvedContext instanceof FallibleTokenizerContext && (!args || args.where(unresolvedContext))) {
-        this.undoContext(unresolvedContext)
+      if (openContext instanceof FallibleTokenizerContext && (!args || args.where(openContext))) {
+        this.undoContext(openContext)
         break
       }
     }
@@ -291,8 +297,8 @@ class Tokenizer {
       then: () => {
         const url = this.flushUnmatchedText()
         this.tokens.push(new LinkEndToken(url))
-        this.resolveMostRecentUnresolved(TokenizerState.LinkUrl)
-        this.resolveMostRecentUnresolved(TokenizerState.Link)
+        this.closeMostRecentOpen(TokenizerState.LinkUrl)
+        this.closeMostRecentOpen(TokenizerState.Link)
       }
     })
   }
@@ -324,7 +330,7 @@ class Tokenizer {
     return this.hasState(state) && this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.resolveMostRecentUnresolved(state)
+        this.closeMostRecentOpen(state)
         onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -336,7 +342,7 @@ class Tokenizer {
     return this.innermostStateIs(state) && this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContext.pop()
+        this.openContexts.pop()
         onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -354,39 +360,39 @@ class Tokenizer {
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.addUnresolvedContext(state)
+        this.openContext(state)
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
 
-  private openBracketedPlainText(): boolean {
+  private openBracketedText(): boolean {
     return (
       this.openSandwich(this.parenthesizedConvention)
       || this.openSandwich(this.squareBracketedConvention)
     )
   }
 
-  private closeBracketedPlainText(): boolean {
+  private closeBracketsIfTheyAreInnermost(): boolean {
     return (
       this.closeSandwichIfInnermost(this.parenthesizedConvention)
       || this.closeSandwichIfInnermost(this.squareBracketedConvention)
     )
   }
 
-  private resolveMostRecentUnresolved(state: TokenizerState): void {
-    for (let i = 0; i < this.openContext.length; i++) {
-      if (this.openContext[i].state === state) {
-        this.openContext.splice(i, 1)
+  private closeMostRecentOpen(state: TokenizerState): void {
+    for (let i = 0; i < this.openContexts.length; i++) {
+      if (this.openContexts[i].state === state) {
+        this.openContexts.splice(i, 1)
         return
       }
     }
 
-    throw new Error(`State was not unresolved: ${TokenizerState[state]}`)
+    throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 
-  private addUnresolvedContext(nextState: TokenizerState): void {
-    this.openContext.push(
+  private openContext(nextState: TokenizerState): void {
+    this.openContexts.push(
       new FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer))
   }
 
@@ -396,11 +402,11 @@ class Tokenizer {
   }
 
   private hasState(state: TokenizerState): boolean {
-    return this.openContext.some(context => context.state === state)
+    return this.openContexts.some(context => context.state === state)
   }
 
   private innermostStateIs(state: TokenizerState): boolean {
-    const innermostState = last(this.openContext)
+    const innermostState = last(this.openContexts)
     return (innermostState && innermostState.state === state)
   }
 
