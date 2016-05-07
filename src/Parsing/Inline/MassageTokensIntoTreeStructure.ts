@@ -1,11 +1,9 @@
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
-import { LinkStartToken } from './Tokens/LinkStartToken'
-import { LinkEndToken } from './Tokens/LinkEndToken'
 
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
+import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 
-const ALL_SANDWICHES = [
+const REGULAR_SANDWICHES = [
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,
@@ -108,7 +106,7 @@ class TokenMasseuse {
   // This function assumes that any sandwich tokens are already properly nested.
   private splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      if (!(this.tokens[tokenIndex] instanceof LinkStartToken)) {
+      if (!(this.tokens[tokenIndex] instanceof LINK.StartTokenType)) {
         continue
       }
 
@@ -116,7 +114,7 @@ class TokenMasseuse {
       let linkEndIndex: number
 
       for (let i = linkStartIndex + 1; i < this.tokens.length; i++) {
-        if (this.tokens[i] instanceof LinkEndToken) {
+        if (this.tokens[i] instanceof LINK.EndTokenType) {
           linkEndIndex = i
           break
         }
@@ -193,13 +191,13 @@ class TokenMasseuse {
 }
 
 function getSandwichStartedByThisToken(token: Token): RichConvention {
-  return ALL_SANDWICHES.filter(sandwich =>
+  return REGULAR_SANDWICHES.filter(sandwich =>
     token instanceof sandwich.StartTokenType
   )[0]
 }
 
 function getSandwichEndedByThisToken(token: Token): RichConvention {
-  return ALL_SANDWICHES.filter(sandwich =>
+  return REGULAR_SANDWICHES.filter(sandwich =>
     token instanceof sandwich.EndTokenType
   )[0]
 }

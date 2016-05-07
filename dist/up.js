@@ -67,10 +67,8 @@ exports.getInlineNodes = getInlineNodes;
 
 },{"./Parse":8,"./Tokenize":18}],5:[function(require,module,exports){
 "use strict";
-var LinkStartToken_1 = require('./Tokens/LinkStartToken');
-var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var RichConventions_1 = require('./RichConventions');
-var ALL_SANDWICHES = [
+var REGULAR_SANDWICHES = [
     RichConventions_1.REVISION_DELETION,
     RichConventions_1.REVISION_INSERTION,
     RichConventions_1.SPOILER,
@@ -117,13 +115,13 @@ var TokenMasseuse = (function () {
     };
     TokenMasseuse.prototype.splitAnySandwichThatOverlapsWithLinks = function () {
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            if (!(this.tokens[tokenIndex] instanceof LinkStartToken_1.LinkStartToken)) {
+            if (!(this.tokens[tokenIndex] instanceof RichConventions_1.LINK.StartTokenType)) {
                 continue;
             }
             var linkStartIndex = tokenIndex;
             var linkEndIndex = void 0;
             for (var i = linkStartIndex + 1; i < this.tokens.length; i++) {
-                if (this.tokens[i] instanceof LinkEndToken_1.LinkEndToken) {
+                if (this.tokens[i] instanceof RichConventions_1.LINK.EndTokenType) {
                     linkEndIndex = i;
                     break;
                 }
@@ -168,17 +166,17 @@ var TokenMasseuse = (function () {
     return TokenMasseuse;
 }());
 function getSandwichStartedByThisToken(token) {
-    return ALL_SANDWICHES.filter(function (sandwich) {
+    return REGULAR_SANDWICHES.filter(function (sandwich) {
         return token instanceof sandwich.StartTokenType;
     })[0];
 }
 function getSandwichEndedByThisToken(token) {
-    return ALL_SANDWICHES.filter(function (sandwich) {
+    return REGULAR_SANDWICHES.filter(function (sandwich) {
         return token instanceof sandwich.EndTokenType;
     })[0];
 }
 
-},{"./RichConventions":16,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28}],6:[function(require,module,exports){
+},{"./RichConventions":16}],6:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
     function MediaConvention(NodeType, TokenType) {
