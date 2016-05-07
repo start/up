@@ -71,7 +71,7 @@ class Tokenizer {
   private unresolvedContexts: TokenizerContext[] = []
 
   private failedStateTracker: FailedStateTracker = new FailedStateTracker()
-  
+
   // The tokenizer collects any text that isn't consumed by special delimiters. Eventually, this text is
   // flushed to a token.
   //
@@ -82,8 +82,10 @@ class Tokenizer {
   private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
-  
-  // TODO: Explain these
+
+  // These conventions don't produce any distinct syntax nodes. Instead, they ensure that any conventions
+  // whose delimiters contain parentheses or square brackets can contain parenthesized or "square bracketed"
+  // text.
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
 
@@ -124,27 +126,11 @@ class Tokenizer {
       }
     })
 
-    const collectMatch =
-      (match: string) => {
-        this.plainTextBuffer +=  match
-      }
+    this.parenthesizedConvention =
+      this.getBracketedConvention(TokenizerState.Parenthesized, '(', ')')
 
-    this.parenthesizedConvention = new TokenizableSandwich({
-      state: TokenizerState.Parenthesized,
-      startPattern: escapeForRegex('('),
-      endPattern: escapeForRegex(')'),
-      onOpen: collectMatch,
-      onClose: collectMatch
-    })
-
-    this.squareBracketedConvention = new TokenizableSandwich({
-      state: TokenizerState.SquareBracketed,
-      startPattern: escapeForRegex('['),
-      endPattern: escapeForRegex(']'),
-      onOpen: collectMatch,
-      onClose: collectMatch
-    })
-
+    this.squareBracketedConvention =
+      this.getBracketedConvention(TokenizerState.Parenthesized, '[', ']')
 
     this.dirty()
     this.tokenize()
@@ -351,6 +337,20 @@ class Tokenizer {
 
     const previousChar = this.entireText[this.textIndex - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
+  }
+
+  private getBracketedConvention(state: TokenizerState, startPattern: string, endPattern: string): TokenizableSandwich {
+    const addBracketToBuffer = (bracket: string) => {
+      this.plainTextBuffer += bracket
+    }
+
+    return new TokenizableSandwich({
+      state: state,
+      startPattern: escapeForRegex(startPattern),
+      endPattern: escapeForRegex(endPattern),
+      onOpen: addBracketToBuffer,
+      onClose: addBracketToBuffer
+    })
   }
 
   private tokenizeRaisedVoicePlaceholders(): boolean {

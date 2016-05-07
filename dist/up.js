@@ -714,23 +714,10 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken_1.SpoilerEndToken());
             }
         });
-        var collectMatch = function (match) {
-            _this.plainTextBuffer += match;
-        };
-        this.parenthesizedConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.Parenthesized,
-            startPattern: TextHelpers_1.escapeForRegex('('),
-            endPattern: TextHelpers_1.escapeForRegex(')'),
-            onOpen: collectMatch,
-            onClose: collectMatch
-        });
-        this.squareBracketedConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.SquareBracketed,
-            startPattern: TextHelpers_1.escapeForRegex('['),
-            endPattern: TextHelpers_1.escapeForRegex(']'),
-            onOpen: collectMatch,
-            onClose: collectMatch
-        });
+        this.parenthesizedConvention =
+            this.getBracketedConvention(TokenizerState_1.TokenizerState.Parenthesized, '(', ')');
+        this.squareBracketedConvention =
+            this.getBracketedConvention(TokenizerState_1.TokenizerState.Parenthesized, '[', ']');
         this.dirty();
         this.tokenize();
     }
@@ -902,6 +889,19 @@ var Tokenizer = (function () {
         this.currentChar = this.remainingText[0];
         var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
+    };
+    Tokenizer.prototype.getBracketedConvention = function (state, startPattern, endPattern) {
+        var _this = this;
+        var addBracketToBuffer = function (bracket) {
+            _this.plainTextBuffer += bracket;
+        };
+        return new TokenizableSandwich_1.TokenizableSandwich({
+            state: state,
+            startPattern: TextHelpers_1.escapeForRegex(startPattern),
+            endPattern: TextHelpers_1.escapeForRegex(endPattern),
+            onOpen: addBracketToBuffer,
+            onClose: addBracketToBuffer
+        });
     };
     Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
