@@ -6,7 +6,6 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { PlainTextNode, isWhitespace } from '../../SyntaxNodes/PlainTextNode'
 import { last } from '../CollectionHelpers'
 import { tokenize } from './Tokenize'
@@ -30,6 +29,8 @@ import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
+import { MediaTokenType } from './Tokens/MediaToken'
+import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
 export function parse(tokens: Token[]): InlineSyntaxNode[] {

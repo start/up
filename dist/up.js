@@ -179,8 +179,7 @@ function getSandwichEndedByThisToken(token) {
 },{"./RichConventions":15,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27}],6:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
-    function MediaConvention(termForMediaType, NodeType, TokenType) {
-        this.termForMediaType = termForMediaType;
+    function MediaConvention(NodeType, TokenType) {
         this.NodeType = NodeType;
         this.TokenType = TokenType;
     }
@@ -197,11 +196,11 @@ var VideoToken_1 = require('./Tokens/VideoToken');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, AudioToken_1.AudioToken);
+var AUDIO = new MediaConvention_1.MediaConvention(AudioNode_1.AudioNode, AudioToken_1.AudioToken);
 exports.AUDIO = AUDIO;
-var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, ImageToken_1.ImageToken);
+var IMAGE = new MediaConvention_1.MediaConvention(ImageNode_1.ImageNode, ImageToken_1.ImageToken);
 exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken);
+var VIDEO = new MediaConvention_1.MediaConvention(VideoNode_1.VideoNode, VideoToken_1.VideoToken);
 exports.VIDEO = VIDEO;
 
 },{"../../SyntaxNodes/AudioNode":61,"../../SyntaxNodes/ImageNode":73,"../../SyntaxNodes/VideoNode":93,"./MediaConvention":6,"./Tokens/AudioToken":19,"./Tokens/ImageToken":24,"./Tokens/VideoToken":42}],8:[function(require,module,exports){
