@@ -7,6 +7,8 @@ import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
 import { TokenizerContext } from './TokenizerContext'
+import { InfallibleTokenizerContext } from './InfallibleTokenizerContext'
+import { FallibleTokenizerContext } from './FallibleTokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
@@ -124,7 +126,7 @@ class Tokenizer {
   private tokenize(): void {
     while (true) {
       if (this.done()) {
-        if (!this.hasUnresolvedConventions()) {
+        if (!this.failed()) {
           break
         }
 
@@ -168,12 +170,21 @@ class Tokenizer {
     return !this.remainingText
   }
 
-  private hasUnresolvedConventions(): boolean {
-    return this.unresolvedContexts.some(context => context.mustBeResolved)
+  private failed(): boolean {
+    return this.unresolvedContexts.some(context => context instanceof FallibleTokenizerContext)
   }
 
   private backtrackLatestFailedConvention(): void {
-    const latestUnresolvedContext = this.unresolvedContexts.pop()
+    let latestUnresolvedContext: FallibleTokenizerContext
+    
+    for (let i = 0; i < this.unresolvedContexts.length; i++) {
+      const unresolvedContext = this.unresolvedContexts[i]
+      
+      if (unresolvedContext instanceof FallibleTokenizerContext) {
+        latestUnresolvedContext = unresolvedContext
+        this.unresolvedContexts.splice(i, 1)
+      }
+    }
 
     this.failedStateTracker.registerFailure(latestUnresolvedContext)
 
@@ -250,7 +261,7 @@ class Tokenizer {
 
   private addUnresolvedContext(nextState: TokenizerState): void {
     this.unresolvedContexts.push(
-      new TokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText))
+      new FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {

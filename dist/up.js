@@ -43,6 +43,19 @@ exports.FailedStateTracker = FailedStateTracker;
 
 },{}],3:[function(require,module,exports){
 "use strict";
+var FallibleTokenizerContext = (function () {
+    function FallibleTokenizerContext(state, textIndex, countTokens, collectedUnmatchedText) {
+        this.state = state;
+        this.textIndex = textIndex;
+        this.countTokens = countTokens;
+        this.collectedUnmatchedText = collectedUnmatchedText;
+    }
+    return FallibleTokenizerContext;
+}());
+exports.FallibleTokenizerContext = FallibleTokenizerContext;
+
+},{}],4:[function(require,module,exports){
+"use strict";
 var Tokenize_1 = require('./Tokenize');
 var Parse_1 = require('./Parse');
 function getInlineNodes(text, config) {
@@ -50,7 +63,7 @@ function getInlineNodes(text, config) {
 }
 exports.getInlineNodes = getInlineNodes;
 
-},{"./Parse":7,"./Tokenize":16}],4:[function(require,module,exports){
+},{"./Parse":8,"./Tokenize":17}],5:[function(require,module,exports){
 "use strict";
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
@@ -163,7 +176,7 @@ function getSandwichEndedByThisToken(token) {
     })[0];
 }
 
-},{"./RichConventions":14,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27}],5:[function(require,module,exports){
+},{"./RichConventions":15,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27}],6:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
     function MediaConvention(termForMediaType, NodeType, TokenType) {
@@ -175,7 +188,7 @@ var MediaConvention = (function () {
 }());
 exports.MediaConvention = MediaConvention;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 var MediaConvention_1 = require('./MediaConvention');
 var AudioToken_1 = require('./Tokens/AudioToken');
@@ -191,7 +204,7 @@ exports.IMAGE = IMAGE;
 var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken);
 exports.VIDEO = VIDEO;
 
-},{"../../SyntaxNodes/AudioNode":61,"../../SyntaxNodes/ImageNode":73,"../../SyntaxNodes/VideoNode":93,"./MediaConvention":5,"./Tokens/AudioToken":19,"./Tokens/ImageToken":24,"./Tokens/VideoToken":42}],7:[function(require,module,exports){
+},{"../../SyntaxNodes/AudioNode":61,"../../SyntaxNodes/ImageNode":73,"../../SyntaxNodes/VideoNode":93,"./MediaConvention":6,"./Tokens/AudioToken":19,"./Tokens/ImageToken":24,"./Tokens/VideoToken":42}],8:[function(require,module,exports){
 "use strict";
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
@@ -311,7 +324,7 @@ var ParseResult = (function () {
     return ParseResult;
 }());
 
-},{"../../SyntaxNodes/InlineCodeNode":74,"../../SyntaxNodes/LinkNode":78,"../../SyntaxNodes/PlainTextNode":84,"../CollectionHelpers":1,"./MediaConventions":6,"./RichConventions":14,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29}],8:[function(require,module,exports){
+},{"../../SyntaxNodes/InlineCodeNode":74,"../../SyntaxNodes/LinkNode":78,"../../SyntaxNodes/PlainTextNode":84,"../CollectionHelpers":1,"./MediaConventions":7,"./RichConventions":15,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/PlainTextToken":29}],9:[function(require,module,exports){
 "use strict";
 var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
 var StartMarker_1 = require('./StartMarker');
@@ -366,7 +379,7 @@ function getRaisedVoiceMarkers(tokens) {
     return withFailedMarkersTreatedAsPlainText;
 }
 
-},{"../Tokens/PotentialRaisedVoiceEndToken":30,"../Tokens/PotentialRaisedVoiceStartOrEndToken":31,"../Tokens/PotentialRaisedVoiceStartToken":32,"./EndMarker":9,"./PlainTextMarker":10,"./RaisedVoiceMarker":11,"./StartMarker":12}],9:[function(require,module,exports){
+},{"../Tokens/PotentialRaisedVoiceEndToken":30,"../Tokens/PotentialRaisedVoiceStartOrEndToken":31,"../Tokens/PotentialRaisedVoiceStartToken":32,"./EndMarker":10,"./PlainTextMarker":11,"./RaisedVoiceMarker":12,"./StartMarker":13}],10:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -447,7 +460,7 @@ var EndMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.EndMarker = EndMarker;
 
-},{"../Tokens/EmphasisEndToken":20,"../Tokens/StressEndToken":40,"./RaisedVoiceMarker":11,"./StartMarker":12}],10:[function(require,module,exports){
+},{"../Tokens/EmphasisEndToken":20,"../Tokens/StressEndToken":40,"./RaisedVoiceMarker":12,"./StartMarker":13}],11:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -468,7 +481,7 @@ var PlainTextMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.PlainTextMarker = PlainTextMarker;
 
-},{"../Tokens/PlainTextToken":29,"./RaisedVoiceMarker":11}],11:[function(require,module,exports){
+},{"../Tokens/PlainTextToken":29,"./RaisedVoiceMarker":12}],12:[function(require,module,exports){
 "use strict";
 var EMPHASIS_COST = 1;
 var STRESS_COST = 2;
@@ -527,7 +540,7 @@ function comapreMarkersDescending(a, b) {
 }
 exports.comapreMarkersDescending = comapreMarkersDescending;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -564,7 +577,7 @@ var StartMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.StartMarker = StartMarker;
 
-},{"../Tokens/EmphasisStartToken":21,"../Tokens/StressStartToken":41,"./RaisedVoiceMarker":11}],13:[function(require,module,exports){
+},{"../Tokens/EmphasisStartToken":21,"../Tokens/StressStartToken":41,"./RaisedVoiceMarker":12}],14:[function(require,module,exports){
 "use strict";
 var RichConvention = (function () {
     function RichConvention(NodeType, StartTokenType, EndTokenType) {
@@ -576,7 +589,7 @@ var RichConvention = (function () {
 }());
 exports.RichConvention = RichConvention;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 var RichConvention_1 = require('./RichConvention');
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
@@ -615,7 +628,7 @@ exports.FOOTNOTE = FOOTNOTE;
 var LINK = new RichConvention_1.RichConvention(LinkNode_1.LinkNode, LinkStartToken_1.LinkStartToken, LinkEndToken_1.LinkEndToken);
 exports.LINK = LINK;
 
-},{"../../SyntaxNodes/EmphasisNode":69,"../../SyntaxNodes/FootnoteNode":71,"../../SyntaxNodes/LinkNode":78,"../../SyntaxNodes/RevisionDeletionNode":85,"../../SyntaxNodes/RevisionInsertionNode":86,"../../SyntaxNodes/SpoilerNode":89,"../../SyntaxNodes/StressNode":90,"./RichConvention":13,"./Tokens/EmphasisEndToken":20,"./Tokens/EmphasisStartToken":21,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/RevisionDeletionEndToken":34,"./Tokens/RevisionDeletionStartToken":35,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39,"./Tokens/StressEndToken":40,"./Tokens/StressStartToken":41}],15:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":69,"../../SyntaxNodes/FootnoteNode":71,"../../SyntaxNodes/LinkNode":78,"../../SyntaxNodes/RevisionDeletionNode":85,"../../SyntaxNodes/RevisionInsertionNode":86,"../../SyntaxNodes/SpoilerNode":89,"../../SyntaxNodes/StressNode":90,"./RichConvention":14,"./Tokens/EmphasisEndToken":20,"./Tokens/EmphasisStartToken":21,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/RevisionDeletionEndToken":34,"./Tokens/RevisionDeletionStartToken":35,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39,"./Tokens/StressEndToken":40,"./Tokens/StressStartToken":41}],16:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableSandwich = (function () {
@@ -630,12 +643,12 @@ var TokenizableSandwich = (function () {
 }());
 exports.TokenizableSandwich = TokenizableSandwich;
 
-},{"../Patterns":58}],16:[function(require,module,exports){
+},{"../Patterns":58}],17:[function(require,module,exports){
 "use strict";
 var TokenizerState_1 = require('./TokenizerState');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var FailedStateTracker_1 = require('./FailedStateTracker');
-var TokenizerContext_1 = require('./TokenizerContext');
+var FallibleTokenizerContext_1 = require('./FallibleTokenizerContext');
 var TextHelpers_1 = require('../TextHelpers');
 var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
@@ -706,7 +719,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (true) {
             if (this.done()) {
-                if (!this.hasUnresolvedConventions()) {
+                if (!this.failed()) {
                     break;
                 }
                 this.backtrackLatestFailedConvention();
@@ -738,11 +751,18 @@ var Tokenizer = (function () {
     Tokenizer.prototype.done = function () {
         return !this.remainingText;
     };
-    Tokenizer.prototype.hasUnresolvedConventions = function () {
-        return this.unresolvedContexts.some(function (context) { return context.mustBeResolved; });
+    Tokenizer.prototype.failed = function () {
+        return this.unresolvedContexts.some(function (context) { return context instanceof FallibleTokenizerContext_1.FallibleTokenizerContext; });
     };
     Tokenizer.prototype.backtrackLatestFailedConvention = function () {
-        var latestUnresolvedContext = this.unresolvedContexts.pop();
+        var latestUnresolvedContext;
+        for (var i = 0; i < this.unresolvedContexts.length; i++) {
+            var unresolvedContext = this.unresolvedContexts[i];
+            if (unresolvedContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext) {
+                latestUnresolvedContext = unresolvedContext;
+                this.unresolvedContexts.splice(i, 1);
+            }
+        }
         this.failedStateTracker.registerFailure(latestUnresolvedContext);
         this.textIndex = latestUnresolvedContext.textIndex;
         this.tokens.splice(latestUnresolvedContext.countTokens);
@@ -811,7 +831,7 @@ var Tokenizer = (function () {
         throw new Error("State was not unresolved: " + TokenizerState_1.TokenizerState[state]);
     };
     Tokenizer.prototype.addUnresolvedContext = function (nextState) {
-        this.unresolvedContexts.push(new TokenizerContext_1.TokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText));
+        this.unresolvedContexts.push(new FallibleTokenizerContext_1.FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
@@ -869,21 +889,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizableSandwich":15,"./TokenizerContext":17,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],17:[function(require,module,exports){
-"use strict";
-var TokenizerContext = (function () {
-    function TokenizerContext(state, textIndex, countTokens, collectedUnmatchedText, otherArgs) {
-        this.state = state;
-        this.textIndex = textIndex;
-        this.countTokens = countTokens;
-        this.collectedUnmatchedText = collectedUnmatchedText;
-        this.mustBeResolved = !otherArgs || otherArgs.mustBeResolved;
-    }
-    return TokenizerContext;
-}());
-exports.TokenizerContext = TokenizerContext;
-
-},{}],18:[function(require,module,exports){
+},{"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./TokenizableSandwich":16,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],18:[function(require,module,exports){
 "use strict";
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
@@ -1222,7 +1228,7 @@ function getHeadingParser(headingLeveler) {
 }
 exports.getHeadingParser = getHeadingParser;
 
-},{"../../SyntaxNodes/HeadingNode":72,"../Inline/GetInlineNodes":3,"../Patterns":58,"./HeadingLeveler":46,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48}],44:[function(require,module,exports){
+},{"../../SyntaxNodes/HeadingNode":72,"../Inline/GetInlineNodes":4,"../Patterns":58,"./HeadingLeveler":46,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48}],44:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -1612,7 +1618,7 @@ function parseDescriptionList(args) {
 }
 exports.parseDescriptionList = parseDescriptionList;
 
-},{"../../SyntaxNodes/Description":64,"../../SyntaxNodes/DescriptionListItem":65,"../../SyntaxNodes/DescriptionListNode":66,"../../SyntaxNodes/DescriptionTerm":67,"../Inline/GetInlineNodes":3,"../Patterns":58,"./GetOutlineNodes":44,"./GetRemainingLinesOfListItem":45,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48}],53:[function(require,module,exports){
+},{"../../SyntaxNodes/Description":64,"../../SyntaxNodes/DescriptionListItem":65,"../../SyntaxNodes/DescriptionListNode":66,"../../SyntaxNodes/DescriptionTerm":67,"../Inline/GetInlineNodes":4,"../Patterns":58,"./GetOutlineNodes":44,"./GetRemainingLinesOfListItem":45,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48}],53:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
@@ -1752,7 +1758,7 @@ function isMediaSyntaxNode(node) {
     return node instanceof MediaSyntaxNode_1.MediaSyntaxNode;
 }
 
-},{"../../SyntaxNodes/Line":76,"../../SyntaxNodes/LineBlockNode":77,"../../SyntaxNodes/MediaSyntaxNode":79,"../../SyntaxNodes/ParagraphNode":83,"../../SyntaxNodes/PlainTextNode":84,"../Inline/GetInlineNodes":3,"../Patterns":58,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48}],55:[function(require,module,exports){
+},{"../../SyntaxNodes/Line":76,"../../SyntaxNodes/LineBlockNode":77,"../../SyntaxNodes/MediaSyntaxNode":79,"../../SyntaxNodes/ParagraphNode":83,"../../SyntaxNodes/PlainTextNode":84,"../Inline/GetInlineNodes":4,"../Patterns":58,"./IsLineFancyOutlineConvention":47,"./LineConsumer":48}],55:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
