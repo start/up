@@ -777,19 +777,16 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.undoLatestFallibleContext = function (args) {
         while (this.openContexts.length) {
-            var openContext = this.openContexts.pop();
-            if (openContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext && (!args || args.where(openContext))) {
-                this.undoContext(openContext);
-                break;
+            var context_1 = this.openContexts.pop();
+            if (context_1 instanceof FallibleTokenizerContext_1.FallibleTokenizerContext && (!args || args.where(context_1))) {
+                this.failedStateTracker.registerFailure(context_1);
+                this.textIndex = context_1.textIndex;
+                this.tokens.splice(context_1.countTokens);
+                this.plainTextBuffer = context_1.plainTextBuffer;
+                this.dirty();
+                return;
             }
         }
-    };
-    Tokenizer.prototype.undoContext = function (failedContext) {
-        this.failedStateTracker.registerFailure(failedContext);
-        this.textIndex = failedContext.textIndex;
-        this.tokens.splice(failedContext.countTokens);
-        this.plainTextBuffer = failedContext.plainTextBuffer;
-        this.dirty();
     };
     Tokenizer.prototype.advance = function (length) {
         this.textIndex += length;
@@ -853,6 +850,7 @@ var Tokenizer = (function () {
         this.undoLatestFallibleContext({
             where: function (context) { return context.state === TokenizerState_1.TokenizerState.Link; }
         });
+        return true;
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
         return this.openFallibleConvention({

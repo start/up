@@ -147,7 +147,7 @@ class Tokenizer {
 
   private tokenize(): void {
     while (true) {
-      
+
       if (this.failed()) {
         this.undoLatestFallibleContext()
       }
@@ -155,7 +155,7 @@ class Tokenizer {
       if (this.reachedEndOfText()) {
         break
       }
-      
+
       const ESCAPE_CHAR = '\\'
 
       if (this.currentChar === ESCAPE_CHAR) {
@@ -223,23 +223,19 @@ class Tokenizer {
 
   private undoLatestFallibleContext(args?: { where: (context: FallibleTokenizerContext) => boolean }): void {
     while (this.openContexts.length) {
-      const openContext = this.openContexts.pop()
+      const context = this.openContexts.pop()
 
-      if (openContext instanceof FallibleTokenizerContext && (!args || args.where(openContext))) {
-        this.undoContext(openContext)
-        break
+      if (context instanceof FallibleTokenizerContext && (!args || args.where(context))) {
+        this.failedStateTracker.registerFailure(context)
+
+        this.textIndex = context.textIndex
+        this.tokens.splice(context.countTokens)
+        this.plainTextBuffer = context.plainTextBuffer
+
+        this.dirty()
+        return
       }
     }
-  }
-
-  private undoContext(failedContext: FallibleTokenizerContext): void {
-    this.failedStateTracker.registerFailure(failedContext)
-
-    this.textIndex = failedContext.textIndex
-    this.tokens.splice(failedContext.countTokens)
-    this.plainTextBuffer = failedContext.plainTextBuffer
-
-    this.dirty()
   }
 
   private advance(length: number): void {
@@ -314,6 +310,8 @@ class Tokenizer {
     this.undoLatestFallibleContext({
       where: (context) => context.state === TokenizerState.Link
     })
+    
+    return true
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
