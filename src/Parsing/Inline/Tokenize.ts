@@ -83,9 +83,51 @@ class Tokenizer {
   // tokens (like InlineCodeTokens).
   private collectedUnmatchedText = ''
 
-  constructor(private entireText: string, private config: UpConfig) {
-    this.dirty()
+  private inlineCodeConvention: TokenizableConvention
+  private footnoteConvention: TokenizableConvention
 
+  constructor(private entireText: string, private config: UpConfig) {
+    this.inlineCodeConvention = {
+      openArgs: {
+        stateToOpen: TokenizerState.InlineCode,
+        startPattern: INLINE_CODE_DELIMITER_PATTERN,
+        then: () => {
+          this.flushUnmatchedTextToPlainTextToken()
+        }
+      },
+
+      closeArgs: {
+        stateToClose: TokenizerState.InlineCode,
+        endPattern: INLINE_CODE_DELIMITER_PATTERN,
+        then: () => {
+          this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
+        }
+      }
+    }
+
+    this.footnoteConvention = {
+      openArgs: {
+        stateToOpen: TokenizerState.Footnote,
+        startPattern: FOOTNOTE_START_PATTERN,
+        then: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
+        }
+      },
+
+      closeArgs: {
+        stateToClose: TokenizerState.Footnote,
+        endPattern: FOOTNOTE_END_PATTERN,
+        then: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
+        }
+      }
+    }
+
+    this.dirty()
+    this.tokenize()
+  }
+
+  private tokenize(): void {
     while (true) {
       if (this.done()) {
         if (!this.hasUnresolvedConventions()) {
@@ -180,43 +222,19 @@ class Tokenizer {
   }
 
   private openInlineCode(): boolean {
-    return this.openConvention({
-      stateToOpen: TokenizerState.InlineCode,
-      startPattern: INLINE_CODE_DELIMITER_PATTERN,
-      then: () => {
-        this.flushUnmatchedTextToPlainTextToken()
-      }
-    })
+    return this.openConvention(this.inlineCodeConvention.openArgs)
   }
 
   private closeInlineCode(): boolean {
-    return this.closeConvention({
-      stateToClose: TokenizerState.InlineCode,
-      endPattern: INLINE_CODE_DELIMITER_PATTERN,
-      then: () => {
-        this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
-      }
-    })
+    return this.closeConvention(this.inlineCodeConvention.closeArgs)
   }
 
   private openFootnote(): boolean {
-    return this.openConvention({
-      stateToOpen: TokenizerState.Footnote,
-      startPattern: FOOTNOTE_START_PATTERN,
-      then: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
-      }
-    })
+    return this.openConvention(this.footnoteConvention.openArgs)
   }
 
   private closeFootnote(): boolean {
-    return this.closeConvention({
-      stateToClose: TokenizerState.Footnote,
-      endPattern: FOOTNOTE_END_PATTERN,
-      then: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
-      }
-    })
+    return this.closeConvention(this.footnoteConvention.closeArgs)
   }
 
   private openConvention(args: OpenConventionArgs): boolean {
@@ -301,6 +319,10 @@ class Tokenizer {
   }
 }
 
+interface TokenizableConvention {
+  openArgs: OpenConventionArgs,
+  closeArgs: CloseConventionArgs
+}
 
 interface MatchArgs {
   pattern: RegExp,

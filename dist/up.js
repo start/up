@@ -640,6 +640,7 @@ var FOOTNOTE_START_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHI
 var FOOTNOTE_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('))')));
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
+        var _this = this;
         this.entireText = entireText;
         this.config = config;
         this.tokens = [];
@@ -647,7 +648,42 @@ var Tokenizer = (function () {
         this.unresolvedContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.collectedUnmatchedText = '';
+        this.inlineCodeConvention = {
+            openArgs: {
+                stateToOpen: TokenizerState_1.TokenizerState.InlineCode,
+                startPattern: INLINE_CODE_DELIMITER_PATTERN,
+                then: function () {
+                    _this.flushUnmatchedTextToPlainTextToken();
+                }
+            },
+            closeArgs: {
+                stateToClose: TokenizerState_1.TokenizerState.InlineCode,
+                endPattern: INLINE_CODE_DELIMITER_PATTERN,
+                then: function () {
+                    _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
+                }
+            }
+        };
+        this.footnoteConvention = {
+            openArgs: {
+                stateToOpen: TokenizerState_1.TokenizerState.Footnote,
+                startPattern: FOOTNOTE_START_PATTERN,
+                then: function () {
+                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
+                }
+            },
+            closeArgs: {
+                stateToClose: TokenizerState_1.TokenizerState.Footnote,
+                endPattern: FOOTNOTE_END_PATTERN,
+                then: function () {
+                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
+                }
+            }
+        };
         this.dirty();
+        this.tokenize();
+    }
+    Tokenizer.prototype.tokenize = function () {
         while (true) {
             if (this.done()) {
                 if (!this.hasUnresolvedConventions()) {
@@ -679,7 +715,7 @@ var Tokenizer = (function () {
             this.collectCurrentChar();
         }
         this.flushUnmatchedTextToPlainTextToken();
-    }
+    };
     Tokenizer.prototype.done = function () {
         return !this.remainingText;
     };
@@ -717,44 +753,16 @@ var Tokenizer = (function () {
         return !this.failedStateTracker.hasFailed(state, this.textIndex);
     };
     Tokenizer.prototype.openInlineCode = function () {
-        var _this = this;
-        return this.openConvention({
-            stateToOpen: TokenizerState_1.TokenizerState.InlineCode,
-            startPattern: INLINE_CODE_DELIMITER_PATTERN,
-            then: function () {
-                _this.flushUnmatchedTextToPlainTextToken();
-            }
-        });
+        return this.openConvention(this.inlineCodeConvention.openArgs);
     };
     Tokenizer.prototype.closeInlineCode = function () {
-        var _this = this;
-        return this.closeConvention({
-            stateToClose: TokenizerState_1.TokenizerState.InlineCode,
-            endPattern: INLINE_CODE_DELIMITER_PATTERN,
-            then: function () {
-                _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
-            }
-        });
+        return this.closeConvention(this.inlineCodeConvention.closeArgs);
     };
     Tokenizer.prototype.openFootnote = function () {
-        var _this = this;
-        return this.openConvention({
-            stateToOpen: TokenizerState_1.TokenizerState.Footnote,
-            startPattern: FOOTNOTE_START_PATTERN,
-            then: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
-            }
-        });
+        return this.openConvention(this.footnoteConvention.openArgs);
     };
     Tokenizer.prototype.closeFootnote = function () {
-        var _this = this;
-        return this.closeConvention({
-            stateToClose: TokenizerState_1.TokenizerState.Footnote,
-            endPattern: FOOTNOTE_END_PATTERN,
-            then: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
-            }
-        });
+        return this.closeConvention(this.footnoteConvention.closeArgs);
     };
     Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
