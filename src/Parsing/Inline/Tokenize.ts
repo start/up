@@ -102,29 +102,23 @@ class Tokenizer {
       }
     })
 
-    this.footnoteConvention = new TokenizableSandwich({
-      state: TokenizerState.Footnote,
-      startPattern: ANY_WHITESPACE + escapeForRegex('(('),
-      endPattern: escapeForRegex('))'),
-      onOpen: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
-      },
-      onClose: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
-      }
-    })
+    this.footnoteConvention =
+      this.getTypicalSandwichConvention({
+        state: TokenizerState.Spoiler,
+        startPattern: ANY_WHITESPACE + escapeForRegex('(('),
+        endPattern: escapeForRegex('))'),
+        StartTokenType: FootnoteStartToken,
+        EndTokenType: FootnoteEndToken
+      })
 
-    this.spoilerConvention = new TokenizableSandwich({
-      state: TokenizerState.Spoiler,
-      startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
-      endPattern: escapeForRegex(']'),
-      onOpen: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerStartToken())
-      },
-      onClose: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken())
-      }
-    })
+    this.spoilerConvention =
+      this.getTypicalSandwichConvention({
+        state: TokenizerState.Spoiler,
+        startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
+        endPattern: escapeForRegex(']'),
+        StartTokenType: SpoilerStartToken,
+        EndTokenType: SpoilerEndToken
+      })
 
     this.parenthesizedConvention =
       this.getBracketedConvention(TokenizerState.Parenthesized, '(', ')')
@@ -192,22 +186,22 @@ class Tokenizer {
   }
 
   private backtrackLatestFailedConvention(): void {
-    let latestUnresolvedContext: FallibleTokenizerContext
+    let latestFailedContext: FallibleTokenizerContext
 
     for (let i = 0; i < this.unresolvedContexts.length; i++) {
       const unresolvedContext = this.unresolvedContexts[i]
 
       if (unresolvedContext instanceof FallibleTokenizerContext) {
-        latestUnresolvedContext = unresolvedContext
+        latestFailedContext = unresolvedContext
         this.unresolvedContexts.splice(i, 1)
       }
     }
 
-    this.failedStateTracker.registerFailure(latestUnresolvedContext)
+    this.failedStateTracker.registerFailure(latestFailedContext)
 
-    this.textIndex = latestUnresolvedContext.textIndex
-    this.tokens.splice(latestUnresolvedContext.countTokens)
-    this.plainTextBuffer = latestUnresolvedContext.plainTextBuffer
+    this.textIndex = latestFailedContext.textIndex
+    this.tokens.splice(latestFailedContext.countTokens)
+    this.plainTextBuffer = latestFailedContext.plainTextBuffer
 
     this.dirty()
   }
@@ -339,15 +333,37 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
-  private getBracketedConvention(state: TokenizerState, startPattern: string, endPattern: string): TokenizableSandwich {
+  private getTypicalSandwichConvention(
+    args: {
+      state: TokenizerState,
+      startPattern: string,
+      endPattern: string,
+      StartTokenType: TokenType,
+      EndTokenType: TokenType
+    }
+  ): TokenizableSandwich {
+    return new TokenizableSandwich({
+      state: args.state,
+      startPattern: args.startPattern,
+      endPattern: args.endPattern,
+      onOpen: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.StartTokenType())
+      },
+      onClose: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.EndTokenType())
+      }
+    })
+  }
+
+  private getBracketedConvention(state: TokenizerState, openBracket: string, closeBracket: string): TokenizableSandwich {
     const addBracketToBuffer = (bracket: string) => {
       this.plainTextBuffer += bracket
     }
 
     return new TokenizableSandwich({
       state: state,
-      startPattern: escapeForRegex(startPattern),
-      endPattern: escapeForRegex(endPattern),
+      startPattern: escapeForRegex(openBracket),
+      endPattern: escapeForRegex(closeBracket),
       onOpen: addBracketToBuffer,
       onClose: addBracketToBuffer
     })

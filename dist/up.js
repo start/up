@@ -692,28 +692,22 @@ var Tokenizer = (function () {
                 _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
         });
-        this.footnoteConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.Footnote,
-            startPattern: Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('(('),
-            endPattern: TextHelpers_1.escapeForRegex('))'),
-            onOpen: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
-            },
-            onClose: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
-            }
-        });
-        this.spoilerConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.Spoiler,
-            startPattern: TextHelpers_1.escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + Patterns_1.ANY_WHITESPACE,
-            endPattern: TextHelpers_1.escapeForRegex(']'),
-            onOpen: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerStartToken_1.SpoilerStartToken());
-            },
-            onClose: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken_1.SpoilerEndToken());
-            }
-        });
+        this.footnoteConvention =
+            this.getTypicalSandwichConvention({
+                state: TokenizerState_1.TokenizerState.Spoiler,
+                startPattern: Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('(('),
+                endPattern: TextHelpers_1.escapeForRegex('))'),
+                StartTokenType: FootnoteStartToken_1.FootnoteStartToken,
+                EndTokenType: FootnoteEndToken_1.FootnoteEndToken
+            });
+        this.spoilerConvention =
+            this.getTypicalSandwichConvention({
+                state: TokenizerState_1.TokenizerState.Spoiler,
+                startPattern: TextHelpers_1.escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + Patterns_1.ANY_WHITESPACE,
+                endPattern: TextHelpers_1.escapeForRegex(']'),
+                StartTokenType: SpoilerStartToken_1.SpoilerStartToken,
+                EndTokenType: SpoilerEndToken_1.SpoilerEndToken
+            });
         this.parenthesizedConvention =
             this.getBracketedConvention(TokenizerState_1.TokenizerState.Parenthesized, '(', ')');
         this.squareBracketedConvention =
@@ -764,18 +758,18 @@ var Tokenizer = (function () {
         return this.unresolvedContexts.some(function (context) { return context instanceof FallibleTokenizerContext_1.FallibleTokenizerContext; });
     };
     Tokenizer.prototype.backtrackLatestFailedConvention = function () {
-        var latestUnresolvedContext;
+        var latestFailedContext;
         for (var i = 0; i < this.unresolvedContexts.length; i++) {
             var unresolvedContext = this.unresolvedContexts[i];
             if (unresolvedContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext) {
-                latestUnresolvedContext = unresolvedContext;
+                latestFailedContext = unresolvedContext;
                 this.unresolvedContexts.splice(i, 1);
             }
         }
-        this.failedStateTracker.registerFailure(latestUnresolvedContext);
-        this.textIndex = latestUnresolvedContext.textIndex;
-        this.tokens.splice(latestUnresolvedContext.countTokens);
-        this.plainTextBuffer = latestUnresolvedContext.plainTextBuffer;
+        this.failedStateTracker.registerFailure(latestFailedContext);
+        this.textIndex = latestFailedContext.textIndex;
+        this.tokens.splice(latestFailedContext.countTokens);
+        this.plainTextBuffer = latestFailedContext.plainTextBuffer;
         this.dirty();
     };
     Tokenizer.prototype.advance = function (length) {
@@ -890,15 +884,29 @@ var Tokenizer = (function () {
         var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
-    Tokenizer.prototype.getBracketedConvention = function (state, startPattern, endPattern) {
+    Tokenizer.prototype.getTypicalSandwichConvention = function (args) {
+        var _this = this;
+        return new TokenizableSandwich_1.TokenizableSandwich({
+            state: args.state,
+            startPattern: args.startPattern,
+            endPattern: args.endPattern,
+            onOpen: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.StartTokenType());
+            },
+            onClose: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.EndTokenType());
+            }
+        });
+    };
+    Tokenizer.prototype.getBracketedConvention = function (state, openBracket, closeBracket) {
         var _this = this;
         var addBracketToBuffer = function (bracket) {
             _this.plainTextBuffer += bracket;
         };
         return new TokenizableSandwich_1.TokenizableSandwich({
             state: state,
-            startPattern: TextHelpers_1.escapeForRegex(startPattern),
-            endPattern: TextHelpers_1.escapeForRegex(endPattern),
+            startPattern: TextHelpers_1.escapeForRegex(openBracket),
+            endPattern: TextHelpers_1.escapeForRegex(closeBracket),
             onOpen: addBracketToBuffer,
             onClose: addBracketToBuffer
         });
