@@ -44,11 +44,11 @@ exports.FailedStateTracker = FailedStateTracker;
 },{}],3:[function(require,module,exports){
 "use strict";
 var FallibleTokenizerContext = (function () {
-    function FallibleTokenizerContext(state, textIndex, countTokens, collectedUnmatchedText) {
+    function FallibleTokenizerContext(state, textIndex, countTokens, plainTextBuffer) {
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
-        this.collectedUnmatchedText = collectedUnmatchedText;
+        this.plainTextBuffer = plainTextBuffer;
     }
     return FallibleTokenizerContext;
 }());
@@ -680,7 +680,7 @@ var Tokenizer = (function () {
         this.textIndex = 0;
         this.unresolvedContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
-        this.collectedUnmatchedText = '';
+        this.plainTextBuffer = '';
         this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
             state: TokenizerState_1.TokenizerState.InlineCode,
             startPattern: '`',
@@ -714,16 +714,15 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken_1.SpoilerEndToken());
             }
         });
+        var collectMatch = function (match) {
+            _this.plainTextBuffer += match;
+        };
         this.parenthesizedConvention = new TokenizableSandwich_1.TokenizableSandwich({
             state: TokenizerState_1.TokenizerState.Parenthesized,
             startPattern: TextHelpers_1.escapeForRegex('('),
             endPattern: TextHelpers_1.escapeForRegex(')'),
-            onOpen: function (match) {
-                _this.flushUnmatchedTextToPlainTextToken({ andAppend: match });
-            },
-            onClose: function (match) {
-                _this.flushUnmatchedTextToPlainTextToken({ andAppend: match });
-            }
+            onOpen: collectMatch,
+            onClose: collectMatch
         });
         this.dirty();
         this.tokenize();
@@ -780,7 +779,7 @@ var Tokenizer = (function () {
         this.failedStateTracker.registerFailure(latestUnresolvedContext);
         this.textIndex = latestUnresolvedContext.textIndex;
         this.tokens.splice(latestUnresolvedContext.countTokens);
-        this.collectedUnmatchedText = latestUnresolvedContext.collectedUnmatchedText;
+        this.plainTextBuffer = latestUnresolvedContext.plainTextBuffer;
         this.dirty();
     };
     Tokenizer.prototype.advance = function (length) {
@@ -788,19 +787,16 @@ var Tokenizer = (function () {
         this.dirty();
     };
     Tokenizer.prototype.collectCurrentChar = function () {
-        this.collectedUnmatchedText += this.currentChar;
+        this.plainTextBuffer += this.currentChar;
         this.advance(1);
     };
     Tokenizer.prototype.flushUnmatchedText = function () {
-        var unmatchedText = this.collectedUnmatchedText;
-        this.collectedUnmatchedText = '';
+        var unmatchedText = this.plainTextBuffer;
+        this.plainTextBuffer = '';
         return unmatchedText;
     };
-    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function (args) {
-        var extraText = ((args && args.andAppend)
-            ? args.andAppend
-            : '');
-        var unmatchedText = this.flushUnmatchedText() + extraText;
+    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
+        var unmatchedText = this.flushUnmatchedText();
         if (unmatchedText) {
             this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
         }
@@ -863,7 +859,7 @@ var Tokenizer = (function () {
         throw new Error("State was not unresolved: " + TokenizerState_1.TokenizerState[state]);
     };
     Tokenizer.prototype.addUnresolvedContext = function (nextState) {
-        this.unresolvedContexts.push(new FallibleTokenizerContext_1.FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText));
+        this.unresolvedContexts.push(new FallibleTokenizerContext_1.FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();

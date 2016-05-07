@@ -71,16 +71,19 @@ class Tokenizer {
   private unresolvedContexts: TokenizerContext[] = []
 
   private failedStateTracker: FailedStateTracker = new FailedStateTracker()
-  // The tokenizer collects text that doesn't match any conventions' delimiters. Eventually, this text is flushed
-  // to a token.
+  
+  // The tokenizer collects any text that isn't consumed by special delimiters. Eventually, this text is
+  // flushed to a token.
   //
-  // Usually, this non-matching text is flushed to a PlainTextToken, but it can also be flushed to other kinds of
-  // tokens (like InlineCodeTokens).
-  private collectedUnmatchedText = ''
+  // Usually, it's flushed to a PlainTextToken, but it can also be flushed to other kinds of tokens (like
+  // InlineCodeTokens).
+  private plainTextBuffer = ''
 
   private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
+  
+  // TODO: Explain
   private parenthesizedConvention: TokenizableSandwich
 
   constructor(private entireText: string, private config: UpConfig) {
@@ -120,16 +123,17 @@ class Tokenizer {
       }
     })
 
+    const collectMatch =
+      (match: string) => {
+        this.plainTextBuffer +=  match
+      }
+
     this.parenthesizedConvention = new TokenizableSandwich({
       state: TokenizerState.Parenthesized,
       startPattern: escapeForRegex('('),
       endPattern: escapeForRegex(')'),
-      onOpen: (match) => {
-        this.flushUnmatchedTextToPlainTextToken({ andAppend: match })
-      },
-      onClose: (match) => {
-        this.flushUnmatchedTextToPlainTextToken({ andAppend: match })
-      }
+      onOpen: collectMatch,
+      onClose: collectMatch
     })
 
     this.dirty()
@@ -205,7 +209,7 @@ class Tokenizer {
 
     this.textIndex = latestUnresolvedContext.textIndex
     this.tokens.splice(latestUnresolvedContext.countTokens)
-    this.collectedUnmatchedText = latestUnresolvedContext.collectedUnmatchedText
+    this.plainTextBuffer = latestUnresolvedContext.plainTextBuffer
 
     this.dirty()
   }
@@ -216,25 +220,19 @@ class Tokenizer {
   }
 
   private collectCurrentChar(): void {
-    this.collectedUnmatchedText += this.currentChar
+    this.plainTextBuffer += this.currentChar
     this.advance(1)
   }
 
   private flushUnmatchedText(): string {
-    const unmatchedText = this.collectedUnmatchedText
-    this.collectedUnmatchedText = ''
+    const unmatchedText = this.plainTextBuffer
+    this.plainTextBuffer = ''
 
     return unmatchedText
   }
 
-  private flushUnmatchedTextToPlainTextToken(args?: { andAppend: string }): void {
-    let extraText = (
-      (args && args.andAppend)
-        ? args.andAppend
-        : ''
-    )
-
-    const unmatchedText = this.flushUnmatchedText() + extraText
+  private flushUnmatchedTextToPlainTextToken(): void {
+    const unmatchedText = this.flushUnmatchedText()
 
     if (unmatchedText) {
       this.tokens.push(new PlainTextToken(unmatchedText))
@@ -294,7 +292,7 @@ class Tokenizer {
 
   private addUnresolvedContext(nextState: TokenizerState): void {
     this.unresolvedContexts.push(
-      new FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.collectedUnmatchedText))
+      new FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {

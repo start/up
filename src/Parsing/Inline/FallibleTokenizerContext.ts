@@ -5,5 +5,5 @@ export class FallibleTokenizerContext {
     public state: TokenizerState,
     public textIndex: number,
     public countTokens: number,
-    public collectedUnmatchedText: string) { }
+    public plainTextBuffer: string) { }
 }
