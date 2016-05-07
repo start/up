@@ -713,6 +713,17 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken_1.SpoilerEndToken());
             }
         });
+        this.parenthesizedConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            state: TokenizerState_1.TokenizerState.Parenthesized,
+            startPattern: TextHelpers_1.escapeForRegex('('),
+            endPattern: TextHelpers_1.escapeForRegex(')'),
+            onOpen: function (match) {
+                _this.flushUnmatchedTextToPlainTextToken({ andAppend: match });
+            },
+            onClose: function (match) {
+                _this.flushUnmatchedTextToPlainTextToken({ andAppend: match });
+            }
+        });
         this.dirty();
         this.tokenize();
     }
@@ -782,8 +793,11 @@ var Tokenizer = (function () {
         this.collectedUnmatchedText = '';
         return unmatchedText;
     };
-    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
-        var unmatchedText = this.flushUnmatchedText();
+    Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function (args) {
+        var extraText = ((args && args.andAppend)
+            ? args.andAppend
+            : '');
+        var unmatchedText = this.flushUnmatchedText() + extraText;
         if (unmatchedText) {
             this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
         }
@@ -895,6 +909,7 @@ var Tokenizer = (function () {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
     TokenizerState[TokenizerState["Footnote"] = 1] = "Footnote";
     TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
+    TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 

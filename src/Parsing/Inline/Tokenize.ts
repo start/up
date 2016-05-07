@@ -81,6 +81,7 @@ class Tokenizer {
   private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
+  private parenthesizedConvention: TokenizableSandwich
 
   constructor(private entireText: string, private config: UpConfig) {
     this.inlineCodeConvention = new TokenizableSandwich({
@@ -116,6 +117,18 @@ class Tokenizer {
       },
       onClose: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken())
+      }
+    })
+
+    this.parenthesizedConvention = new TokenizableSandwich({
+      state: TokenizerState.Parenthesized,
+      startPattern: escapeForRegex('('),
+      endPattern: escapeForRegex(')'),
+      onOpen: (match) => {
+        this.flushUnmatchedTextToPlainTextToken({ andAppend: match })
+      },
+      onClose: (match) => {
+        this.flushUnmatchedTextToPlainTextToken({ andAppend: match })
       }
     })
 
@@ -176,10 +189,10 @@ class Tokenizer {
 
   private backtrackLatestFailedConvention(): void {
     let latestUnresolvedContext: FallibleTokenizerContext
-    
+
     for (let i = 0; i < this.unresolvedContexts.length; i++) {
       const unresolvedContext = this.unresolvedContexts[i]
-      
+
       if (unresolvedContext instanceof FallibleTokenizerContext) {
         latestUnresolvedContext = unresolvedContext
         this.unresolvedContexts.splice(i, 1)
@@ -212,8 +225,14 @@ class Tokenizer {
     return unmatchedText
   }
 
-  private flushUnmatchedTextToPlainTextToken(): void {
-    const unmatchedText = this.flushUnmatchedText()
+  private flushUnmatchedTextToPlainTextToken(args?: { andAppend: string }): void {
+    let extraText = (
+      (args && args.andAppend)
+        ? args.andAppend
+        : ''
+    )
+
+    const unmatchedText = this.flushUnmatchedText() + extraText
 
     if (unmatchedText) {
       this.tokens.push(new PlainTextToken(unmatchedText))
