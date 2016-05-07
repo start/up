@@ -31,6 +31,7 @@ import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
 import { MediaTokenType } from './Tokens/MediaToken'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
+import { ParseResult } from './ParseResult'
 
 
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
@@ -178,11 +179,4 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
 
 function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
-}
-
-
-class ParseResult {
-  constructor(
-    public nodes: InlineSyntaxNode[],
-    public countTokensParsed: number) { }
 }
