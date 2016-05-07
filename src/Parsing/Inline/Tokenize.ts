@@ -36,7 +36,7 @@ import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { startsWith, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
+import { startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const tokens = new Tokenizer(text, config).tokens
@@ -47,21 +47,12 @@ export function tokenize(text: string, config: UpConfig): Token[] {
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
 
-
 const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR
 )
 
-const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
-  startsWith('`')
-)
-
-const FOOTNOTE_START_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + escapeForRegex('(('))
-)
-
-const FOOTNOTE_END_PATTERN = new RegExp(
-  startsWith(escapeForRegex('))'))
+const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
+  startsWith(atLeast(1, escapeForRegex('*')))
 )
 
 class Tokenizer {
@@ -153,7 +144,8 @@ class Tokenizer {
       }
 
       const tokenizedSomething = (
-        this.openConvention(this.inlineCodeConvention)
+        this.tokenizeRaisedVoicePlaceholders()
+        || this.openConvention(this.inlineCodeConvention)
         || this.closeConvention(this.footnoteConvention)
         || this.closeConvention(this.spoilerConvention)
         || this.openConvention(this.footnoteConvention)
@@ -299,7 +291,43 @@ class Tokenizer {
     const previousChar = this.entireText[this.textIndex - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
+
+
+  private tokenizeRaisedVoicePlaceholders(): boolean {
+    return this.advanceAfterMatch({
+      pattern: RAISED_VOICE_DELIMITER_PATTERN,
+
+      then: (asterisks, isTouchingWordEnd, isTouchingWordStart) => {
+        // If the previous character in the raw source text was whitespace, this token cannot end any raised-voice
+        // conventions. That's because the token needs to look like it's touching the end of the text it's affecting.
+        //
+        // We're only concerned with how the asterisks appear in the surrounding raw text. Therefore, at least for now,
+        // we don't care whether any preceding whitespace is escaped or not.
+        const canCloseConvention = isTouchingWordEnd
+
+        // Likewise, a token cannot begin any raised-voice conventions if the next character in the raw source text 
+        // is whitespace. That's because the token must look like it's touching the beginning of the text it's
+        // affecting. At least for now, the next raw character can even be a backslash!
+        const canOpenConvention = isTouchingWordStart
+
+        let AsteriskTokenType: new (asterisks: string) => Token
+
+        if (canOpenConvention && canCloseConvention) {
+          AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken
+        } else if (canOpenConvention) {
+          AsteriskTokenType = PotentialRaisedVoiceStartToken
+        } else if (canCloseConvention) {
+          AsteriskTokenType = PotentialRaisedVoiceEndToken
+        } else {
+          AsteriskTokenType = PlainTextToken
+        }
+
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new AsteriskTokenType(asterisks))
+      }
+    })
+  }
 }
+
 
 interface TokenizableConventionArgs {
   state: TokenizerState,

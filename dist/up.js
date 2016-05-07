@@ -627,6 +627,9 @@ var FootnoteEndToken_1 = require('./Tokens/FootnoteEndToken');
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
+var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
+var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
+var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
 var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
 var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var Patterns_1 = require('../Patterns');
@@ -637,9 +640,7 @@ function tokenize(text, config) {
 }
 exports.tokenize = tokenize;
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
-var INLINE_CODE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith('`'));
-var FOOTNOTE_START_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('((')));
-var FOOTNOTE_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('))')));
+var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, TextHelpers_1.escapeForRegex('*'))));
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -699,13 +700,18 @@ var Tokenizer = (function () {
                 this.collectCurrentChar();
                 continue;
             }
-            var tokenizedSomething = (!this.hasState(TokenizerState_1.TokenizerState.InlineCode)
-                && (this.closeConvention(this.inlineCodeConvention)
-                    || this.openConvention(this.inlineCodeConvention)
-                    || this.closeConvention(this.footnoteConvention)
-                    || this.closeConvention(this.spoilerConvention)
-                    || this.openConvention(this.footnoteConvention)
-                    || this.openConvention(this.spoilerConvention)));
+            if (this.hasState(TokenizerState_1.TokenizerState.InlineCode)) {
+                if (!this.closeConvention(this.inlineCodeConvention)) {
+                    this.collectCurrentChar();
+                }
+                continue;
+            }
+            var tokenizedSomething = (this.tokenizeRaisedVoicePlaceholders()
+                || this.openConvention(this.inlineCodeConvention)
+                || this.closeConvention(this.footnoteConvention)
+                || this.closeConvention(this.spoilerConvention)
+                || this.openConvention(this.footnoteConvention)
+                || this.openConvention(this.spoilerConvention));
             if (tokenizedSomething) {
                 continue;
             }
@@ -820,6 +826,30 @@ var Tokenizer = (function () {
         var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
+    Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
+        var _this = this;
+        return this.advanceAfterMatch({
+            pattern: RAISED_VOICE_DELIMITER_PATTERN,
+            then: function (asterisks, isTouchingWordEnd, isTouchingWordStart) {
+                var canCloseConvention = isTouchingWordEnd;
+                var canOpenConvention = isTouchingWordStart;
+                var AsteriskTokenType;
+                if (canOpenConvention && canCloseConvention) {
+                    AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken;
+                }
+                else if (canOpenConvention) {
+                    AsteriskTokenType = PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken;
+                }
+                else if (canCloseConvention) {
+                    AsteriskTokenType = PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken;
+                }
+                else {
+                    AsteriskTokenType = PlainTextToken_1.PlainTextToken;
+                }
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new AsteriskTokenType(asterisks));
+            }
+        });
+    };
     return Tokenizer;
 }());
 var TokenizableConvention = (function () {
@@ -833,7 +863,7 @@ var TokenizableConvention = (function () {
     return TokenizableConvention;
 }());
 
-},{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28,"./Tokens/SpoilerEndToken":37,"./Tokens/SpoilerStartToken":38}],16:[function(require,module,exports){
+},{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28,"./Tokens/PotentialRaisedVoiceEndToken":29,"./Tokens/PotentialRaisedVoiceStartOrEndToken":30,"./Tokens/PotentialRaisedVoiceStartToken":31,"./Tokens/SpoilerEndToken":37,"./Tokens/SpoilerStartToken":38}],16:[function(require,module,exports){
 "use strict";
 var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToken');
