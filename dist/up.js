@@ -665,8 +665,6 @@ var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesTo
 var RichConventions_1 = require('./RichConventions');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
-var LinkStartToken_1 = require('./Tokens/LinkStartToken');
-var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
 var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
@@ -821,7 +819,7 @@ var Tokenizer = (function () {
             state: TokenizerState_1.TokenizerState.Link,
             startPattern: LINK_START_PATTERN,
             onOpen: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken_1.LinkStartToken());
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
             }
         });
     };
@@ -841,7 +839,7 @@ var Tokenizer = (function () {
             pattern: LINK_END_PATTERN,
             then: function () {
                 var url = _this.flushUnmatchedText();
-                _this.tokens.push(new LinkEndToken_1.LinkEndToken(url));
+                _this.tokens.push(new RichConventions_1.LINK.EndTokenType(url));
                 _this.closeMostRecentOpen(TokenizerState_1.TokenizerState.LinkUrl);
                 _this.closeMostRecentOpen(TokenizerState_1.TokenizerState.Link);
             }
@@ -936,8 +934,7 @@ var Tokenizer = (function () {
         return this.openContexts.some(function (context) { return context.state === state; });
     };
     Tokenizer.prototype.innermostStateIs = function (state) {
-        var innermostState = CollectionHelpers_1.last(this.openContexts);
-        return (innermostState && innermostState.state === state);
+        return (this.openContexts.length && CollectionHelpers_1.last(this.openContexts).state === state);
     };
     Tokenizer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
@@ -1015,7 +1012,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../Patterns":59,"../TextHelpers":61,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableSandwich":17,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/PlainTextToken":30,"./Tokens/PotentialRaisedVoiceEndToken":31,"./Tokens/PotentialRaisedVoiceStartOrEndToken":32,"./Tokens/PotentialRaisedVoiceStartToken":33}],19:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../Patterns":59,"../TextHelpers":61,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableSandwich":17,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/PlainTextToken":30,"./Tokens/PotentialRaisedVoiceEndToken":31,"./Tokens/PotentialRaisedVoiceStartOrEndToken":32,"./Tokens/PotentialRaisedVoiceStartToken":33}],19:[function(require,module,exports){
 "use strict";
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";

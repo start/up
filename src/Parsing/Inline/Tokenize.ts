@@ -13,18 +13,14 @@ import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
-import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
+import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK } from './RichConventions'
 import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure'
 import { UpConfig } from '../../UpConfig'
-import { AudioToken } from './Tokens/AudioToken'
 import { EmphasisEndToken } from './Tokens/EmphasisEndToken'
 import { EmphasisStartToken } from './Tokens/EmphasisStartToken'
 import { FootnoteEndToken } from './Tokens/FootnoteEndToken'
 import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
-import { ImageToken } from './Tokens/ImageToken'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
-import { LinkStartToken } from './Tokens/LinkStartToken'
-import { LinkEndToken } from './Tokens/LinkEndToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
 import { PotentialRaisedVoiceEndToken } from './Tokens/PotentialRaisedVoiceEndToken'
 import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoiceStartOrEndToken'
@@ -37,7 +33,6 @@ import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToke
 import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
-import { VideoToken } from './Tokens/VideoToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
 import { startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
@@ -271,7 +266,7 @@ class Tokenizer {
       state: TokenizerState.Link,
       startPattern: LINK_START_PATTERN,
       onOpen: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken())
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
       }
     })
   }
@@ -291,7 +286,7 @@ class Tokenizer {
       pattern: LINK_END_PATTERN,
       then: () => {
         const url = this.flushUnmatchedText()
-        this.tokens.push(new LinkEndToken(url))
+        this.tokens.push(new LINK.EndTokenType(url))
         this.closeMostRecentOpen(TokenizerState.LinkUrl)
         this.closeMostRecentOpen(TokenizerState.Link)
       }
@@ -400,8 +395,7 @@ class Tokenizer {
   }
 
   private innermostStateIs(state: TokenizerState): boolean {
-    const innermostState = last(this.openContexts)
-    return (innermostState && innermostState.state === state)
+    return (this.openContexts.length && last(this.openContexts).state === state)
   }
 
   private advanceAfterMatch(args: { pattern: RegExp, then?: OnTokenizerMatch }): boolean {
