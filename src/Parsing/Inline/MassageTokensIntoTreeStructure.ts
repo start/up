@@ -108,7 +108,7 @@ class TokenMasseuse {
   // This function assumes that any sandwich tokens are already properly nested.
   private splitAnySandwichThatOverlapsWithLinks(): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      if (this.tokens[tokenIndex] instanceof LinkStartToken) {
+      if (!(this.tokens[tokenIndex] instanceof LinkStartToken)) {
         continue
       }
 

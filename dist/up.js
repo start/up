@@ -117,7 +117,7 @@ var TokenMasseuse = (function () {
     };
     TokenMasseuse.prototype.splitAnySandwichThatOverlapsWithLinks = function () {
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            if (this.tokens[tokenIndex] instanceof LinkStartToken_1.LinkStartToken) {
+            if (!(this.tokens[tokenIndex] instanceof LinkStartToken_1.LinkStartToken)) {
                 continue;
             }
             var linkStartIndex = tokenIndex;
