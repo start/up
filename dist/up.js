@@ -662,9 +662,8 @@ var FallibleTokenizerContext_1 = require('./FallibleTokenizerContext');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var TextHelpers_1 = require('../TextHelpers');
 var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
+var RichConventions_1 = require('./RichConventions');
 var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
-var FootnoteEndToken_1 = require('./Tokens/FootnoteEndToken');
-var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
@@ -672,8 +671,6 @@ var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
 var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
 var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
-var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
-var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var Patterns_1 = require('../Patterns');
 function tokenize(text, config) {
     var tokens = new Tokenizer(text, config).tokens;
@@ -712,16 +709,14 @@ var Tokenizer = (function () {
                 state: TokenizerState_1.TokenizerState.Spoiler,
                 startPattern: Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('(('),
                 endPattern: TextHelpers_1.escapeForRegex('))'),
-                StartTokenType: FootnoteStartToken_1.FootnoteStartToken,
-                EndTokenType: FootnoteEndToken_1.FootnoteEndToken
+                richConvention: RichConventions_1.FOOTNOTE
             });
         this.spoilerConvention =
             this.getTypicalSandwichConvention({
                 state: TokenizerState_1.TokenizerState.Spoiler,
                 startPattern: TextHelpers_1.escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + Patterns_1.ANY_WHITESPACE,
                 endPattern: TextHelpers_1.escapeForRegex(']'),
-                StartTokenType: SpoilerStartToken_1.SpoilerStartToken,
-                EndTokenType: SpoilerEndToken_1.SpoilerEndToken
+                richConvention: RichConventions_1.SPOILER
             });
         this.parenthesizedConvention =
             this.getBracketedConvention(TokenizerState_1.TokenizerState.Parenthesized, '(', ')');
@@ -986,10 +981,10 @@ var Tokenizer = (function () {
             startPattern: args.startPattern,
             endPattern: args.endPattern,
             onOpen: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.StartTokenType());
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.StartTokenType());
             },
             onClose: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.EndTokenType());
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.EndTokenType());
             }
         });
     };
@@ -1020,7 +1015,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../Patterns":59,"../TextHelpers":61,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./TokenizableSandwich":17,"./TokenizerState":19,"./Tokens/FootnoteEndToken":23,"./Tokens/FootnoteStartToken":24,"./Tokens/InlineCodeToken":26,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/PlainTextToken":30,"./Tokens/PotentialRaisedVoiceEndToken":31,"./Tokens/PotentialRaisedVoiceStartOrEndToken":32,"./Tokens/PotentialRaisedVoiceStartToken":33,"./Tokens/SpoilerEndToken":39,"./Tokens/SpoilerStartToken":40}],19:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../Patterns":59,"../TextHelpers":61,"./FailedStateTracker":2,"./FallibleTokenizerContext":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableSandwich":17,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/PlainTextToken":30,"./Tokens/PotentialRaisedVoiceEndToken":31,"./Tokens/PotentialRaisedVoiceStartOrEndToken":32,"./Tokens/PotentialRaisedVoiceStartToken":33}],19:[function(require,module,exports){
 "use strict";
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";

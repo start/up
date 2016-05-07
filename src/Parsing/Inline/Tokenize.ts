@@ -13,6 +13,7 @@ import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
+import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure'
 import { UpConfig } from '../../UpConfig'
 import { AudioToken } from './Tokens/AudioToken'
@@ -122,8 +123,7 @@ class Tokenizer {
         state: TokenizerState.Spoiler,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
         endPattern: escapeForRegex('))'),
-        StartTokenType: FootnoteStartToken,
-        EndTokenType: FootnoteEndToken
+        richConvention: FOOTNOTE
       })
 
     this.spoilerConvention =
@@ -131,8 +131,7 @@ class Tokenizer {
         state: TokenizerState.Spoiler,
         startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
         endPattern: escapeForRegex(']'),
-        StartTokenType: SpoilerStartToken,
-        EndTokenType: SpoilerEndToken
+        richConvention: SPOILER
       })
 
     this.parenthesizedConvention =
@@ -456,8 +455,7 @@ class Tokenizer {
       state: TokenizerState,
       startPattern: string,
       endPattern: string,
-      StartTokenType: TokenType,
-      EndTokenType: TokenType
+      richConvention: RichConvention
     }
   ): TokenizableSandwich {
     return new TokenizableSandwich({
@@ -465,10 +463,10 @@ class Tokenizer {
       startPattern: args.startPattern,
       endPattern: args.endPattern,
       onOpen: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.StartTokenType())
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.StartTokenType())
       },
       onClose: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.EndTokenType())
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.EndTokenType())
       }
     })
   }
