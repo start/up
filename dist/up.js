@@ -650,8 +650,8 @@ var Tokenizer = (function () {
         this.collectedUnmatchedText = '';
         this.inlineCodeConvention = new TokenizableConvention({
             state: TokenizerState_1.TokenizerState.InlineCode,
-            startPattern: Patterns_1.startsWith('`'),
-            endPattern: Patterns_1.startsWith('`'),
+            startPattern: '`',
+            endPattern: '`',
             onOpen: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
@@ -661,8 +661,8 @@ var Tokenizer = (function () {
         });
         this.footnoteConvention = new TokenizableConvention({
             state: TokenizerState_1.TokenizerState.Footnote,
-            startPattern: Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('((')),
-            endPattern: Patterns_1.startsWith(TextHelpers_1.escapeForRegex('))')),
+            startPattern: Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('(('),
+            endPattern: TextHelpers_1.escapeForRegex('))'),
             onOpen: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
             },
@@ -818,8 +818,8 @@ var Tokenizer = (function () {
 var TokenizableConvention = (function () {
     function TokenizableConvention(args) {
         this.state = args.state;
-        this.startPattern = new RegExp(args.startPattern);
-        this.endPattern = new RegExp(args.endPattern);
+        this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern));
+        this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern));
         this.onOpen = args.onOpen;
         this.onClose = args.onClose;
     }

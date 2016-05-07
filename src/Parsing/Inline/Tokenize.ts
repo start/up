@@ -89,8 +89,8 @@ class Tokenizer {
   constructor(private entireText: string, private config: UpConfig) {
     this.inlineCodeConvention = new TokenizableConvention({
       state: TokenizerState.InlineCode,
-      startPattern: startsWith('`'),
-      endPattern: startsWith('`'),
+      startPattern: '`',
+      endPattern: '`',
       onOpen: () => {
         this.flushUnmatchedTextToPlainTextToken()
       },
@@ -101,8 +101,8 @@ class Tokenizer {
 
     this.footnoteConvention = new TokenizableConvention({
       state: TokenizerState.Footnote,
-      startPattern: startsWith(ANY_WHITESPACE + escapeForRegex('((')),
-      endPattern: startsWith(escapeForRegex('))')),
+      startPattern: ANY_WHITESPACE + escapeForRegex('(('),
+      endPattern: escapeForRegex('))'),
       onOpen: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
       },
@@ -308,8 +308,8 @@ class TokenizableConvention {
 
   constructor(args: TokenizableConventionArgs) {
     this.state = args.state
-    this.startPattern = new RegExp(args.startPattern)
-    this.endPattern = new RegExp(args.endPattern)
+    this.startPattern = new RegExp(startsWith(args.startPattern))
+    this.endPattern = new RegExp(startsWith(args.endPattern))
     this.onOpen = args.onOpen
     this.onClose = args.onClose
   }
