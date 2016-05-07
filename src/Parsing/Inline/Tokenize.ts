@@ -87,41 +87,29 @@ class Tokenizer {
   private footnoteConvention: TokenizableConvention
 
   constructor(private entireText: string, private config: UpConfig) {
-    this.inlineCodeConvention = {
-      openArgs: {
-        stateToOpen: TokenizerState.InlineCode,
-        startPattern: INLINE_CODE_DELIMITER_PATTERN,
-        then: () => {
-          this.flushUnmatchedTextToPlainTextToken()
-        }
+    this.inlineCodeConvention = new TokenizableConvention({
+      state: TokenizerState.InlineCode,
+      startPattern: startsWith('`'),
+      endPattern: startsWith('`'),
+      onOpen: () => {
+        this.flushUnmatchedTextToPlainTextToken()
       },
-
-      closeArgs: {
-        stateToClose: TokenizerState.InlineCode,
-        endPattern: INLINE_CODE_DELIMITER_PATTERN,
-        then: () => {
-          this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
-        }
+      onClose: () => {
+        this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
       }
-    }
+    })
 
-    this.footnoteConvention = {
-      openArgs: {
-        stateToOpen: TokenizerState.Footnote,
-        startPattern: FOOTNOTE_START_PATTERN,
-        then: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
-        }
+    this.footnoteConvention = new TokenizableConvention({
+      state: TokenizerState.Footnote,
+      startPattern: startsWith(ANY_WHITESPACE + escapeForRegex('((')),
+      endPattern: startsWith(escapeForRegex('))')),
+      onOpen: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken())
       },
-
-      closeArgs: {
-        stateToClose: TokenizerState.Footnote,
-        endPattern: FOOTNOTE_END_PATTERN,
-        then: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
-        }
+      onClose: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
       }
-    }
+    })
 
     this.dirty()
     this.tokenize()
@@ -144,7 +132,7 @@ class Tokenizer {
       }
 
       if (this.hasState(TokenizerState.InlineCode)) {
-        if (!this.closeInlineCode()) {
+        if (!this.closeConvention(this.inlineCodeConvention)) {
           this.collectCurrentChar()
         }
 
@@ -152,14 +140,14 @@ class Tokenizer {
       }
 
       if (this.hasState(TokenizerState.Footnote)) {
-        if (this.closeFootnote()) {
+        if (this.closeConvention(this.footnoteConvention)) {
           continue
         }
       }
 
       const didOpenNewConvention = (
-        this.openInlineCode()
-        || this.openFootnote()
+        this.openConvention(this.inlineCodeConvention)
+        || this.openConvention(this.footnoteConvention)
       )
 
       if (didOpenNewConvention) {
@@ -221,42 +209,26 @@ class Tokenizer {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
 
-  private openInlineCode(): boolean {
-    return this.openConvention(this.inlineCodeConvention.openArgs)
-  }
+  private openConvention(convention: TokenizableConvention): boolean {
+    const { state, startPattern, onOpen } = convention
 
-  private closeInlineCode(): boolean {
-    return this.closeConvention(this.inlineCodeConvention.closeArgs)
-  }
-
-  private openFootnote(): boolean {
-    return this.openConvention(this.footnoteConvention.openArgs)
-  }
-
-  private closeFootnote(): boolean {
-    return this.closeConvention(this.footnoteConvention.closeArgs)
-  }
-
-  private openConvention(args: OpenConventionArgs): boolean {
-    const { stateToOpen, startPattern, then } = args
-
-    return this.canTry(stateToOpen) && this.advanceAfterMatch({
+    return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.addUnresolvedContext(stateToOpen)
-        then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        this.addUnresolvedContext(state)
+        onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
 
-  private closeConvention(args: CloseConventionArgs): boolean {
-    const { stateToClose, endPattern, then } = args
+  private closeConvention(convention: TokenizableConvention): boolean {
+    const { state, endPattern, onClose } = convention
 
     return this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.resolveMostRecentUnresolved(stateToClose)
-        then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        this.resolveMostRecentUnresolved(state)
+        onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
@@ -319,9 +291,28 @@ class Tokenizer {
   }
 }
 
-interface TokenizableConvention {
-  openArgs: OpenConventionArgs,
-  closeArgs: CloseConventionArgs
+interface TokenizableConventionArgs {
+  state: TokenizerState,
+  startPattern: string,
+  endPattern: string,
+  onOpen: OnMatch,
+  onClose: OnMatch
+}
+
+class TokenizableConvention {
+  public state: TokenizerState
+  public startPattern: RegExp
+  public endPattern: RegExp
+  public onOpen: OnMatch
+  public onClose: OnMatch
+
+  constructor(args: TokenizableConventionArgs) {
+    this.state = args.state
+    this.startPattern = new RegExp(args.startPattern)
+    this.endPattern = new RegExp(args.endPattern)
+    this.onOpen = args.onOpen
+    this.onClose = args.onClose
+  }
 }
 
 interface MatchArgs {

@@ -648,38 +648,28 @@ var Tokenizer = (function () {
         this.unresolvedContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.collectedUnmatchedText = '';
-        this.inlineCodeConvention = {
-            openArgs: {
-                stateToOpen: TokenizerState_1.TokenizerState.InlineCode,
-                startPattern: INLINE_CODE_DELIMITER_PATTERN,
-                then: function () {
-                    _this.flushUnmatchedTextToPlainTextToken();
-                }
+        this.inlineCodeConvention = new TokenizableConvention({
+            state: TokenizerState_1.TokenizerState.InlineCode,
+            startPattern: Patterns_1.startsWith('`'),
+            endPattern: Patterns_1.startsWith('`'),
+            onOpen: function () {
+                _this.flushUnmatchedTextToPlainTextToken();
             },
-            closeArgs: {
-                stateToClose: TokenizerState_1.TokenizerState.InlineCode,
-                endPattern: INLINE_CODE_DELIMITER_PATTERN,
-                then: function () {
-                    _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
-                }
+            onClose: function () {
+                _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
-        };
-        this.footnoteConvention = {
-            openArgs: {
-                stateToOpen: TokenizerState_1.TokenizerState.Footnote,
-                startPattern: FOOTNOTE_START_PATTERN,
-                then: function () {
-                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
-                }
+        });
+        this.footnoteConvention = new TokenizableConvention({
+            state: TokenizerState_1.TokenizerState.Footnote,
+            startPattern: Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + TextHelpers_1.escapeForRegex('((')),
+            endPattern: Patterns_1.startsWith(TextHelpers_1.escapeForRegex('))')),
+            onOpen: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteStartToken_1.FootnoteStartToken());
             },
-            closeArgs: {
-                stateToClose: TokenizerState_1.TokenizerState.Footnote,
-                endPattern: FOOTNOTE_END_PATTERN,
-                then: function () {
-                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
-                }
+            onClose: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
             }
-        };
+        });
         this.dirty();
         this.tokenize();
     }
@@ -697,18 +687,18 @@ var Tokenizer = (function () {
                 continue;
             }
             if (this.hasState(TokenizerState_1.TokenizerState.InlineCode)) {
-                if (!this.closeInlineCode()) {
+                if (!this.closeConvention(this.inlineCodeConvention)) {
                     this.collectCurrentChar();
                 }
                 continue;
             }
             if (this.hasState(TokenizerState_1.TokenizerState.Footnote)) {
-                if (this.closeFootnote()) {
+                if (this.closeConvention(this.footnoteConvention)) {
                     continue;
                 }
             }
-            var didOpenNewConvention = (this.openInlineCode()
-                || this.openFootnote());
+            var didOpenNewConvention = (this.openConvention(this.inlineCodeConvention)
+                || this.openConvention(this.footnoteConvention));
             if (didOpenNewConvention) {
                 continue;
             }
@@ -752,36 +742,24 @@ var Tokenizer = (function () {
     Tokenizer.prototype.canTry = function (state) {
         return !this.failedStateTracker.hasFailed(state, this.textIndex);
     };
-    Tokenizer.prototype.openInlineCode = function () {
-        return this.openConvention(this.inlineCodeConvention.openArgs);
-    };
-    Tokenizer.prototype.closeInlineCode = function () {
-        return this.closeConvention(this.inlineCodeConvention.closeArgs);
-    };
-    Tokenizer.prototype.openFootnote = function () {
-        return this.openConvention(this.footnoteConvention.openArgs);
-    };
-    Tokenizer.prototype.closeFootnote = function () {
-        return this.closeConvention(this.footnoteConvention.closeArgs);
-    };
-    Tokenizer.prototype.openConvention = function (args) {
+    Tokenizer.prototype.openConvention = function (convention) {
         var _this = this;
-        var stateToOpen = args.stateToOpen, startPattern = args.startPattern, then = args.then;
-        return this.canTry(stateToOpen) && this.advanceAfterMatch({
+        var state = convention.state, startPattern = convention.startPattern, onOpen = convention.onOpen;
+        return this.canTry(state) && this.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.addUnresolvedContext(stateToOpen);
-                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                _this.addUnresolvedContext(state);
+                onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
-    Tokenizer.prototype.closeConvention = function (args) {
+    Tokenizer.prototype.closeConvention = function (convention) {
         var _this = this;
-        var stateToClose = args.stateToClose, endPattern = args.endPattern, then = args.then;
+        var state = convention.state, endPattern = convention.endPattern, onClose = convention.onClose;
         return this.advanceAfterMatch({
             pattern: endPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -789,8 +767,8 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.resolveMostRecentUnresolved(stateToClose);
-                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                _this.resolveMostRecentUnresolved(state);
+                onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
@@ -836,6 +814,16 @@ var Tokenizer = (function () {
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
     return Tokenizer;
+}());
+var TokenizableConvention = (function () {
+    function TokenizableConvention(args) {
+        this.state = args.state;
+        this.startPattern = new RegExp(args.startPattern);
+        this.endPattern = new RegExp(args.endPattern);
+        this.onOpen = args.onOpen;
+        this.onClose = args.onClose;
+    }
+    return TokenizableConvention;
 }());
 
 },{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28}],16:[function(require,module,exports){
