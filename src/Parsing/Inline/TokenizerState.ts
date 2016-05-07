@@ -1,4 +1,5 @@
 export enum TokenizerState { 
   InlineCode,
-  Footnote
+  Footnote,
+  Spoiler,
 }

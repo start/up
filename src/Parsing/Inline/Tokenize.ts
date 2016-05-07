@@ -85,6 +85,7 @@ class Tokenizer {
 
   private inlineCodeConvention: TokenizableConvention
   private footnoteConvention: TokenizableConvention
+  private spoilerConvention: TokenizableConvention
 
   constructor(private entireText: string, private config: UpConfig) {
     this.inlineCodeConvention = new TokenizableConvention({
@@ -108,6 +109,18 @@ class Tokenizer {
       },
       onClose: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken())
+      }
+    })
+
+    this.spoilerConvention = new TokenizableConvention({
+      state: TokenizerState.Spoiler,
+      startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
+      endPattern: escapeForRegex(']'),
+      onOpen: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerStartToken())
+      },
+      onClose: () => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken())
       }
     })
 
@@ -145,9 +158,16 @@ class Tokenizer {
         }
       }
 
+      if (this.hasState(TokenizerState.Spoiler)) {
+        if (this.closeConvention(this.spoilerConvention)) {
+          continue
+        }
+      }
+
       const didOpenNewConvention = (
         this.openConvention(this.inlineCodeConvention)
         || this.openConvention(this.footnoteConvention)
+        || this.openConvention(this.spoilerConvention)
       )
 
       if (didOpenNewConvention) {
@@ -308,8 +328,8 @@ class TokenizableConvention {
 
   constructor(args: TokenizableConventionArgs) {
     this.state = args.state
-    this.startPattern = new RegExp(startsWith(args.startPattern))
-    this.endPattern = new RegExp(startsWith(args.endPattern))
+    this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
+    this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
     this.onOpen = args.onOpen
     this.onClose = args.onClose
   }

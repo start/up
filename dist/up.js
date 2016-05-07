@@ -627,6 +627,8 @@ var FootnoteEndToken_1 = require('./Tokens/FootnoteEndToken');
 var FootnoteStartToken_1 = require('./Tokens/FootnoteStartToken');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
+var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
+var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var Patterns_1 = require('../Patterns');
 function tokenize(text, config) {
     var tokens = new Tokenizer(text, config).tokens;
@@ -670,6 +672,17 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new FootnoteEndToken_1.FootnoteEndToken());
             }
         });
+        this.spoilerConvention = new TokenizableConvention({
+            state: TokenizerState_1.TokenizerState.Spoiler,
+            startPattern: TextHelpers_1.escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + Patterns_1.ANY_WHITESPACE,
+            endPattern: TextHelpers_1.escapeForRegex(']'),
+            onOpen: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerStartToken_1.SpoilerStartToken());
+            },
+            onClose: function () {
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SpoilerEndToken_1.SpoilerEndToken());
+            }
+        });
         this.dirty();
         this.tokenize();
     }
@@ -697,8 +710,14 @@ var Tokenizer = (function () {
                     continue;
                 }
             }
+            if (this.hasState(TokenizerState_1.TokenizerState.Spoiler)) {
+                if (this.closeConvention(this.spoilerConvention)) {
+                    continue;
+                }
+            }
             var didOpenNewConvention = (this.openConvention(this.inlineCodeConvention)
-                || this.openConvention(this.footnoteConvention));
+                || this.openConvention(this.footnoteConvention)
+                || this.openConvention(this.spoilerConvention));
             if (didOpenNewConvention) {
                 continue;
             }
@@ -818,15 +837,15 @@ var Tokenizer = (function () {
 var TokenizableConvention = (function () {
     function TokenizableConvention(args) {
         this.state = args.state;
-        this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern));
-        this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern));
+        this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern), 'i');
+        this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
         this.onOpen = args.onOpen;
         this.onClose = args.onClose;
     }
     return TokenizableConvention;
 }());
 
-},{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28}],16:[function(require,module,exports){
+},{"../Patterns":57,"../TextHelpers":59,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizerContext":16,"./TokenizerState":17,"./Tokens/FootnoteEndToken":21,"./Tokens/FootnoteStartToken":22,"./Tokens/InlineCodeToken":24,"./Tokens/PlainTextToken":28,"./Tokens/SpoilerEndToken":37,"./Tokens/SpoilerStartToken":38}],16:[function(require,module,exports){
 "use strict";
 var SpoilerStartToken_1 = require('./Tokens/SpoilerStartToken');
 var RevisionInsertionStartToken_1 = require('./Tokens/RevisionInsertionStartToken');
@@ -990,6 +1009,7 @@ exports.OldTokenizerContext = OldTokenizerContext;
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
     TokenizerState[TokenizerState["Footnote"] = 1] = "Footnote";
+    TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 
