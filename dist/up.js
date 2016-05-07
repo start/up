@@ -726,7 +726,7 @@ var Tokenizer = (function () {
                 if (!this.failed()) {
                     break;
                 }
-                this.backtrackLatestFailedConvention();
+                this.undoLatestFallibleContext();
             }
             if (this.currentChar === '\\') {
                 this.advance(1);
@@ -757,8 +757,8 @@ var Tokenizer = (function () {
                 || this.openSandwich(this.spoilerConvention)
                 || this.closeSandwich(this.footnoteConvention)
                 || this.openSandwich(this.footnoteConvention)
-                || this.openLinkContent()
-                || (this.hasState(TokenizerState_1.TokenizerState.LinkContent) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
+                || this.openLink()
+                || (this.hasState(TokenizerState_1.TokenizerState.Link) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
                 || this.openBracketedPlainText());
             if (didSomething) {
                 continue;
@@ -773,16 +773,14 @@ var Tokenizer = (function () {
     Tokenizer.prototype.failed = function () {
         return this.unresolvedContexts.some(function (context) { return context instanceof FallibleTokenizerContext_1.FallibleTokenizerContext; });
     };
-    Tokenizer.prototype.backtrackLatestFailedConvention = function () {
-        var latestFailedContext;
+    Tokenizer.prototype.undoLatestFallibleContext = function (args) {
         while (this.unresolvedContexts.length) {
             var unresolvedContext = this.unresolvedContexts.pop();
-            if (unresolvedContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext) {
-                latestFailedContext = unresolvedContext;
+            if (unresolvedContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext && (!args || args.where(unresolvedContext))) {
+                this.undoContext(unresolvedContext);
                 break;
             }
         }
-        this.undoContext(latestFailedContext);
     };
     Tokenizer.prototype.undoContext = function (failedContext) {
         this.failedStateTracker.registerFailure(failedContext);
@@ -813,10 +811,10 @@ var Tokenizer = (function () {
     Tokenizer.prototype.canTry = function (state) {
         return !this.failedStateTracker.hasFailed(state, this.textIndex);
     };
-    Tokenizer.prototype.openLinkContent = function () {
+    Tokenizer.prototype.openLink = function () {
         var _this = this;
         return this.openConvention({
-            stateToOpen: TokenizerState_1.TokenizerState.LinkContent,
+            stateToOpen: TokenizerState_1.TokenizerState.Link,
             startPattern: LINK_START_PATTERN,
             onOpen: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken_1.LinkStartToken());
@@ -841,7 +839,7 @@ var Tokenizer = (function () {
                 var url = _this.flushUnmatchedText();
                 _this.tokens.push(new LinkEndToken_1.LinkEndToken(url));
                 _this.resolveMostRecentUnresolved(TokenizerState_1.TokenizerState.LinkUrl);
-                _this.resolveMostRecentUnresolved(TokenizerState_1.TokenizerState.LinkContent);
+                _this.resolveMostRecentUnresolved(TokenizerState_1.TokenizerState.Link);
             }
         });
     };
@@ -850,15 +848,9 @@ var Tokenizer = (function () {
         if (!didPrematurelyCloseLink) {
             return false;
         }
-        var failedLinkContext;
-        while (this.unresolvedContexts.length) {
-            var unresolvedContext = this.unresolvedContexts.pop();
-            if (unresolvedContext.state === TokenizerState_1.TokenizerState.LinkContent) {
-                failedLinkContext = unresolvedContext;
-                break;
-            }
-        }
-        this.undoContext(failedLinkContext);
+        this.undoLatestFallibleContext({
+            where: function (context) { return context.state === TokenizerState_1.TokenizerState.Link; }
+        });
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
         return this.openConvention({
@@ -1027,7 +1019,7 @@ var Tokenizer = (function () {
     TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
     TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
     TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
-    TokenizerState[TokenizerState["LinkContent"] = 5] = "LinkContent";
+    TokenizerState[TokenizerState["Link"] = 5] = "Link";
     TokenizerState[TokenizerState["LinkUrl"] = 6] = "LinkUrl";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;

@@ -148,7 +148,7 @@ class Tokenizer {
           break
         }
 
-        this.backtrackLatestFailedConvention()
+        this.undoLatestFallibleContext()
       }
 
       if (this.currentChar === '\\') {
@@ -188,8 +188,8 @@ class Tokenizer {
         || this.openSandwich(this.spoilerConvention)
         || this.closeSandwich(this.footnoteConvention)
         || this.openSandwich(this.footnoteConvention)
-        || this.openLinkContent()
-        || (this.hasState(TokenizerState.LinkContent) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
+        || this.openLink()
+        || (this.hasState(TokenizerState.Link) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
         || this.openBracketedPlainText()
       )
 
@@ -211,19 +211,15 @@ class Tokenizer {
     return this.unresolvedContexts.some(context => context instanceof FallibleTokenizerContext)
   }
 
-  private backtrackLatestFailedConvention(): void {
-    let latestFailedContext: FallibleTokenizerContext
-
+  private undoLatestFallibleContext(args?: {where: (unresolvedContext: FallibleTokenizerContext) => boolean}): void {
     while (this.unresolvedContexts.length) {
       const unresolvedContext = this.unresolvedContexts.pop()
 
-      if (unresolvedContext instanceof FallibleTokenizerContext) {
-        latestFailedContext = unresolvedContext
+      if (unresolvedContext instanceof FallibleTokenizerContext && (!args || args.where(unresolvedContext))) {
+        this.undoContext(unresolvedContext)
         break
       }
     }
-
-    this.undoContext(latestFailedContext)
   }
 
   private undoContext(failedContext: FallibleTokenizerContext): void {
@@ -265,9 +261,9 @@ class Tokenizer {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
 
-  private openLinkContent(): boolean {
+  private openLink(): boolean {
     return this.openConvention({
-      stateToOpen: TokenizerState.LinkContent,
+      stateToOpen: TokenizerState.Link,
       startPattern: LINK_START_PATTERN,
       onOpen: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LinkStartToken())
@@ -292,7 +288,7 @@ class Tokenizer {
         const url = this.flushUnmatchedText()
         this.tokens.push(new LinkEndToken(url))
         this.resolveMostRecentUnresolved(TokenizerState.LinkUrl)
-        this.resolveMostRecentUnresolved(TokenizerState.LinkContent)
+        this.resolveMostRecentUnresolved(TokenizerState.Link)
       }
     })
   }
@@ -305,18 +301,9 @@ class Tokenizer {
       return false
     }
 
-    let failedLinkContext: FallibleTokenizerContext
-
-    while (this.unresolvedContexts.length) {
-      const unresolvedContext = this.unresolvedContexts.pop()
-
-      if (unresolvedContext.state === TokenizerState.LinkContent) {
-        failedLinkContext = <FallibleTokenizerContext>unresolvedContext
-        break
-      }
-    }
-
-    this.undoContext(failedLinkContext)
+    this.undoLatestFallibleContext({
+      where: (context) => context.state === TokenizerState.Link 
+    })
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
