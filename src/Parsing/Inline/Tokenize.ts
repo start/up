@@ -169,7 +169,7 @@ class Tokenizer {
   }
 
   private hasUnresolvedConventions(): boolean {
-    return !!this.unresolvedContexts.length
+    return this.unresolvedContexts.some(context => context.mustBeResolved)
   }
 
   private backtrackLatestFailedConvention(): void {

@@ -739,7 +739,7 @@ var Tokenizer = (function () {
         return !this.remainingText;
     };
     Tokenizer.prototype.hasUnresolvedConventions = function () {
-        return !!this.unresolvedContexts.length;
+        return this.unresolvedContexts.some(function (context) { return context.mustBeResolved; });
     };
     Tokenizer.prototype.backtrackLatestFailedConvention = function () {
         var latestUnresolvedContext = this.unresolvedContexts.pop();
@@ -872,11 +872,12 @@ var Tokenizer = (function () {
 },{"../Patterns":58,"../TextHelpers":60,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":8,"./TokenizableSandwich":15,"./TokenizerContext":17,"./TokenizerState":18,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/InlineCodeToken":25,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39}],17:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
-    function TokenizerContext(state, textIndex, countTokens, collectedUnmatchedText) {
+    function TokenizerContext(state, textIndex, countTokens, collectedUnmatchedText, otherArgs) {
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
         this.collectedUnmatchedText = collectedUnmatchedText;
+        this.mustBeResolved = !otherArgs || otherArgs.mustBeResolved;
     }
     return TokenizerContext;
 }());
