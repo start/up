@@ -165,46 +165,35 @@ class Tokenizer {
         continue
       }
 
-      const didCloseBracket = (
-        this.closeSandwichIfInnermost(this.parenthesizedConvention)
-        || this.closeSandwichIfInnermost(this.squareBracketedConvention)
-      )
-
-      if (didCloseBracket) {
+      if (this.closeBracketedPlainText()) {
         continue
       }
 
       if (this.innermostStateIs(TokenizerState.LinkUrl)) {
-        if (!this.closeLink()) {
-          const didOpenBracket = (
-            this.openSandwich(this.parenthesizedConvention)
-            || this.openSandwich(this.squareBracketedConvention)
-          )
+        if (this.closeLink()) {
+          continue
+        }
 
-          if (didOpenBracket) {
-            continue
-          }
-
+        if (!this.openBracketedPlainText()) {
           this.collectCurrentChar()
         }
 
         continue
       }
 
-      const tokenizedSomething = (
+      const didSomething = (
         this.tokenizeRaisedVoicePlaceholders()
-        || this.openLink()
-        || (this.hasState(TokenizerState.LinkContent) && this.openLinkUrl())
         || this.openSandwich(this.inlineCodeConvention)
         || this.closeSandwich(this.spoilerConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.closeSandwich(this.footnoteConvention)
         || this.openSandwich(this.footnoteConvention)
-        || this.openSandwich(this.parenthesizedConvention)
-        || this.openSandwich(this.squareBracketedConvention)
+        || this.openLinkContent()
+        || (this.hasState(TokenizerState.LinkContent) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
+        || this.openBracketedPlainText()
       )
 
-      if (tokenizedSomething) {
+      if (didSomething) {
         continue
       }
 
@@ -225,20 +214,24 @@ class Tokenizer {
   private backtrackLatestFailedConvention(): void {
     let latestFailedContext: FallibleTokenizerContext
 
-    for (let i = 0; i < this.unresolvedContexts.length; i++) {
-      const unresolvedContext = this.unresolvedContexts[i]
+    while (this.unresolvedContexts.length) {
+      const unresolvedContext = this.unresolvedContexts.pop()
 
       if (unresolvedContext instanceof FallibleTokenizerContext) {
         latestFailedContext = unresolvedContext
-        this.unresolvedContexts.splice(i, 1)
+        break
       }
     }
 
-    this.failedStateTracker.registerFailure(latestFailedContext)
+    this.undoContext(latestFailedContext)
+  }
 
-    this.textIndex = latestFailedContext.textIndex
-    this.tokens.splice(latestFailedContext.countTokens)
-    this.plainTextBuffer = latestFailedContext.plainTextBuffer
+  private undoContext(failedContext: FallibleTokenizerContext): void {
+    this.failedStateTracker.registerFailure(failedContext)
+
+    this.textIndex = failedContext.textIndex
+    this.tokens.splice(failedContext.countTokens)
+    this.plainTextBuffer = failedContext.plainTextBuffer
 
     this.dirty()
   }
@@ -272,7 +265,7 @@ class Tokenizer {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
 
-  private openLink(): boolean {
+  private openLinkContent(): boolean {
     return this.openConvention({
       stateToOpen: TokenizerState.LinkContent,
       startPattern: LINK_START_PATTERN,
@@ -302,6 +295,28 @@ class Tokenizer {
         this.resolveMostRecentUnresolved(TokenizerState.LinkContent)
       }
     })
+  }
+
+  private undoPrematurelyClosedLink(): boolean {
+    const didPrematurelyCloseLink =
+      this.advanceAfterMatch({ pattern: LINK_END_PATTERN })
+
+    if (!didPrematurelyCloseLink) {
+      return false
+    }
+
+    let failedLinkContext: FallibleTokenizerContext
+
+    while (this.unresolvedContexts.length) {
+      const unresolvedContext = this.unresolvedContexts.pop()
+
+      if (unresolvedContext.state === TokenizerState.LinkContent) {
+        failedLinkContext = <FallibleTokenizerContext>unresolvedContext
+        break
+      }
+    }
+
+    this.undoContext(failedLinkContext)
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
@@ -346,6 +361,20 @@ class Tokenizer {
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
+  }
+
+  private openBracketedPlainText(): boolean {
+    return (
+      this.openSandwich(this.parenthesizedConvention)
+      || this.openSandwich(this.squareBracketedConvention)
+    )
+  }
+
+  private closeBracketedPlainText(): boolean {
+    return (
+      this.closeSandwichIfInnermost(this.parenthesizedConvention)
+      || this.closeSandwichIfInnermost(this.squareBracketedConvention)
+    )
   }
 
   private resolveMostRecentUnresolved(state: TokenizerState): void {

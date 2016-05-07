@@ -739,33 +739,28 @@ var Tokenizer = (function () {
                 }
                 continue;
             }
-            var didCloseBracket = (this.closeSandwichIfInnermost(this.parenthesizedConvention)
-                || this.closeSandwichIfInnermost(this.squareBracketedConvention));
-            if (didCloseBracket) {
+            if (this.closeBracketedPlainText()) {
                 continue;
             }
             if (this.innermostStateIs(TokenizerState_1.TokenizerState.LinkUrl)) {
-                if (!this.closeLink()) {
-                    var didOpenBracket = (this.openSandwich(this.parenthesizedConvention)
-                        || this.openSandwich(this.squareBracketedConvention));
-                    if (didOpenBracket) {
-                        continue;
-                    }
+                if (this.closeLink()) {
+                    continue;
+                }
+                if (!this.openBracketedPlainText()) {
                     this.collectCurrentChar();
                 }
                 continue;
             }
-            var tokenizedSomething = (this.tokenizeRaisedVoicePlaceholders()
-                || this.openLink()
-                || (this.hasState(TokenizerState_1.TokenizerState.LinkContent) && this.openLinkUrl())
+            var didSomething = (this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.closeSandwich(this.spoilerConvention)
                 || this.openSandwich(this.spoilerConvention)
                 || this.closeSandwich(this.footnoteConvention)
                 || this.openSandwich(this.footnoteConvention)
-                || this.openSandwich(this.parenthesizedConvention)
-                || this.openSandwich(this.squareBracketedConvention));
-            if (tokenizedSomething) {
+                || this.openLinkContent()
+                || (this.hasState(TokenizerState_1.TokenizerState.LinkContent) && (this.openLinkUrl() || this.undoPrematurelyClosedLink()))
+                || this.openBracketedPlainText());
+            if (didSomething) {
                 continue;
             }
             this.collectCurrentChar();
@@ -780,17 +775,20 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.backtrackLatestFailedConvention = function () {
         var latestFailedContext;
-        for (var i = 0; i < this.unresolvedContexts.length; i++) {
-            var unresolvedContext = this.unresolvedContexts[i];
+        while (this.unresolvedContexts.length) {
+            var unresolvedContext = this.unresolvedContexts.pop();
             if (unresolvedContext instanceof FallibleTokenizerContext_1.FallibleTokenizerContext) {
                 latestFailedContext = unresolvedContext;
-                this.unresolvedContexts.splice(i, 1);
+                break;
             }
         }
-        this.failedStateTracker.registerFailure(latestFailedContext);
-        this.textIndex = latestFailedContext.textIndex;
-        this.tokens.splice(latestFailedContext.countTokens);
-        this.plainTextBuffer = latestFailedContext.plainTextBuffer;
+        this.undoContext(latestFailedContext);
+    };
+    Tokenizer.prototype.undoContext = function (failedContext) {
+        this.failedStateTracker.registerFailure(failedContext);
+        this.textIndex = failedContext.textIndex;
+        this.tokens.splice(failedContext.countTokens);
+        this.plainTextBuffer = failedContext.plainTextBuffer;
         this.dirty();
     };
     Tokenizer.prototype.advance = function (length) {
@@ -815,7 +813,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.canTry = function (state) {
         return !this.failedStateTracker.hasFailed(state, this.textIndex);
     };
-    Tokenizer.prototype.openLink = function () {
+    Tokenizer.prototype.openLinkContent = function () {
         var _this = this;
         return this.openConvention({
             stateToOpen: TokenizerState_1.TokenizerState.LinkContent,
@@ -846,6 +844,21 @@ var Tokenizer = (function () {
                 _this.resolveMostRecentUnresolved(TokenizerState_1.TokenizerState.LinkContent);
             }
         });
+    };
+    Tokenizer.prototype.undoPrematurelyClosedLink = function () {
+        var didPrematurelyCloseLink = this.advanceAfterMatch({ pattern: LINK_END_PATTERN });
+        if (!didPrematurelyCloseLink) {
+            return false;
+        }
+        var failedLinkContext;
+        while (this.unresolvedContexts.length) {
+            var unresolvedContext = this.unresolvedContexts.pop();
+            if (unresolvedContext.state === TokenizerState_1.TokenizerState.LinkContent) {
+                failedLinkContext = unresolvedContext;
+                break;
+            }
+        }
+        this.undoContext(failedLinkContext);
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
         return this.openConvention({
@@ -898,6 +911,14 @@ var Tokenizer = (function () {
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
+    };
+    Tokenizer.prototype.openBracketedPlainText = function () {
+        return (this.openSandwich(this.parenthesizedConvention)
+            || this.openSandwich(this.squareBracketedConvention));
+    };
+    Tokenizer.prototype.closeBracketedPlainText = function () {
+        return (this.closeSandwichIfInnermost(this.parenthesizedConvention)
+            || this.closeSandwichIfInnermost(this.squareBracketedConvention));
     };
     Tokenizer.prototype.resolveMostRecentUnresolved = function (state) {
         for (var i = 0; i < this.unresolvedContexts.length; i++) {
