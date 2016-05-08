@@ -1,5 +1,11 @@
 import { TokenizerState } from './TokenizerState'
 
-export interface TokenizerContext {
-  state: TokenizerState
+export class TokenizerContext {
+  constructor(
+    public state: TokenizerState,
+    public textIndex: number,
+    public countTokens: number,
+    public plainTextBuffer: string,
+    public mustBeClosed: boolean
+  ) { }
 }

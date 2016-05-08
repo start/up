@@ -1,10 +1,10 @@
 import { TokenizerState } from './TokenizerState'
-import { FallibleTokenizerContext } from './FallibleTokenizerContext'
+import { TokenizerContext } from './TokenizerContext'
 
 export class FailedStateTracker {
   private failedStatesByTextIndex: FailedStatesByTextIndex = {}
   
-  registerFailure(failedContext: FallibleTokenizerContext): void {
+  registerFailure(failedContext: TokenizerContext): void {
     const { textIndex, state } = failedContext
     
     if (!this.failedStatesByTextIndex[textIndex]) {

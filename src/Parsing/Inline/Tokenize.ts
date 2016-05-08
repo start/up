@@ -6,8 +6,6 @@ import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
 import { TokenizerContext } from './TokenizerContext'
-import { InfallibleTokenizerContext } from './InfallibleTokenizerContext'
-import { FallibleTokenizerContext } from './FallibleTokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
@@ -211,15 +209,15 @@ class Tokenizer {
   private failed(): boolean {
     return (
       this.reachedEndOfText()
-      && this.openContexts.some(context => context instanceof FallibleTokenizerContext)
+      && this.openContexts.some(context => context.mustBeClosed)
     )
   }
 
-  private undoLatestFallibleContext(args?: { where: (context: FallibleTokenizerContext) => boolean }): void {
+  private undoLatestFallibleContext(args?: { where: (context: TokenizerContext) => boolean }): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (context instanceof FallibleTokenizerContext && (!args || args.where(context))) {
+      if (context.mustBeClosed && (!args || args.where(context))) {
         this.failedStateTracker.registerFailure(context)
 
         this.textIndex = context.textIndex
@@ -303,7 +301,7 @@ class Tokenizer {
         //    Go to [this [site -> https://stackoverflow.com]! 
         //
         // TODO: Don't produce link context until the URL arrow is found inside bracketed text
-        
+
         this.undoLink()
         break
       }
@@ -387,7 +385,7 @@ class Tokenizer {
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContext(state)
+        this.openContext({ withState: state })
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -418,9 +416,12 @@ class Tokenizer {
     throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 
-  private openContext(nextState: TokenizerState): void {
+  private openContext(
+    { withState, mustBeClosed = true }:
+      { withState: TokenizerState, mustBeClosed?: boolean }
+  ): void {
     this.openContexts.push(
-      new FallibleTokenizerContext(nextState, this.textIndex, this.tokens.length, this.plainTextBuffer))
+      new TokenizerContext(withState, this.textIndex, this.tokens.length, this.plainTextBuffer, mustBeClosed))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
