@@ -5,5 +5,7 @@ export enum TokenizerState {
   Parenthesized,
   SquareBracketed,
   Link,
-  LinkUrl
+  LinkUrl,
+  RevisionInsertion,
+  RevisionDeletion
 }

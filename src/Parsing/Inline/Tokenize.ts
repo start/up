@@ -91,6 +91,8 @@ class Tokenizer {
   private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
+  private revisionDeletionConvention: TokenizableSandwich
+  private revisionInsertionConvention: TokenizableSandwich
 
   // These conventions don't produce any distinct syntax nodes, and they don't need to be closed. Their
   // purpose is to ensure that any conventions whose delimiters contain parentheses or square brackets
@@ -113,6 +115,22 @@ class Tokenizer {
         startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
         endPattern: escapeForRegex(']'),
         richConvention: SPOILER
+      })
+
+    this.revisionDeletionConvention =
+      this.getTypicalSandwichConvention({
+        state: TokenizerState.RevisionDeletion,
+        startPattern: '~~',
+        endPattern: '~~',
+        richConvention: REVISION_DELETION
+      })
+      
+    this.revisionInsertionConvention =
+      this.getTypicalSandwichConvention({
+        state: TokenizerState.RevisionInsertion,
+        startPattern: escapeForRegex('++'),
+        endPattern: escapeForRegex('++'),
+        richConvention: REVISION_INSERTION
       })
 
     this.parenthesizedConvention =

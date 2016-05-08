@@ -699,6 +699,20 @@ var Tokenizer = (function () {
                 endPattern: TextHelpers_1.escapeForRegex(']'),
                 richConvention: RichConventions_1.SPOILER
             });
+        this.revisionDeletionConvention =
+            this.getTypicalSandwichConvention({
+                state: TokenizerState_1.TokenizerState.RevisionDeletion,
+                startPattern: '~~',
+                endPattern: '~~',
+                richConvention: RichConventions_1.REVISION_DELETION
+            });
+        this.revisionInsertionConvention =
+            this.getTypicalSandwichConvention({
+                state: TokenizerState_1.TokenizerState.RevisionInsertion,
+                startPattern: TextHelpers_1.escapeForRegex('++'),
+                endPattern: TextHelpers_1.escapeForRegex('++'),
+                richConvention: RichConventions_1.REVISION_INSERTION
+            });
         this.parenthesizedConvention =
             this.getBracketedConvention(TokenizerState_1.TokenizerState.Parenthesized, '(', ')');
         this.squareBracketedConvention =
@@ -1051,6 +1065,8 @@ exports.TokenizerContext = TokenizerContext;
     TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
     TokenizerState[TokenizerState["Link"] = 5] = "Link";
     TokenizerState[TokenizerState["LinkUrl"] = 6] = "LinkUrl";
+    TokenizerState[TokenizerState["RevisionInsertion"] = 7] = "RevisionInsertion";
+    TokenizerState[TokenizerState["RevisionDeletion"] = 8] = "RevisionDeletion";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 
