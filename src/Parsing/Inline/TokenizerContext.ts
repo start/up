@@ -6,6 +6,6 @@ export class TokenizerContext {
     public textIndex: number,
     public countTokens: number,
     public plainTextBuffer: string,
-    public mustBeClosed: boolean
+    public mustClose: boolean
   ) { }
 }

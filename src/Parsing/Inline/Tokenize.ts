@@ -99,18 +99,6 @@ class Tokenizer {
   private squareBracketedConvention: TokenizableSandwich
 
   constructor(private entireText: string, private config: UpConfig) {
-    this.inlineCodeConvention = new TokenizableSandwich({
-      state: TokenizerState.InlineCode,
-      startPattern: '`',
-      endPattern: '`',
-      onOpen: () => {
-        this.flushUnmatchedTextToPlainTextToken()
-      },
-      onClose: () => {
-        this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
-      }
-    })
-
     this.footnoteConvention =
       this.getTypicalSandwichConvention({
         state: TokenizerState.Spoiler,
@@ -132,6 +120,19 @@ class Tokenizer {
 
     this.squareBracketedConvention =
       this.getBracketedConvention(TokenizerState.SquareBracketed, '[', ']')
+      
+    this.inlineCodeConvention = new TokenizableSandwich({
+      state: TokenizerState.InlineCode,
+      startPattern: '`',
+      endPattern: '`',
+      onOpen: () => {
+        this.flushUnmatchedTextToPlainTextToken()
+      },
+      onClose: () => {
+        this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
+      }
+    })
+
 
     this.dirty()
     this.tokenize()
@@ -209,7 +210,7 @@ class Tokenizer {
   private failed(): boolean {
     return (
       this.reachedEndOfText()
-      && this.openContexts.some(context => context.mustBeClosed)
+      && this.openContexts.some(context => context.mustClose)
     )
   }
 
@@ -217,7 +218,7 @@ class Tokenizer {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (context.mustBeClosed && (!args || args.where(context))) {
+      if (context.mustClose && (!args || args.where(context))) {
         this.failedStateTracker.registerFailure(context)
 
         this.textIndex = context.textIndex
@@ -479,7 +480,8 @@ class Tokenizer {
       startPattern: escapeForRegex(openBracket),
       endPattern: escapeForRegex(closeBracket),
       onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer
+      onClose: addBracketToBuffer,
+      mustClose: false
     })
   }
 

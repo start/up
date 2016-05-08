@@ -8,20 +8,21 @@ export class TokenizableSandwich {
   public endPattern: RegExp
   public onOpen: OnTokenizerMatch
   public onClose: OnTokenizerMatch
+  public mustClose: boolean
 
-  constructor(args: TokenizableSandwichArgs) {
+  constructor(args: {
+    state: TokenizerState,
+    startPattern: string,
+    endPattern: string,
+    onOpen: OnTokenizerMatch,
+    onClose: OnTokenizerMatch
+    mustClose?: boolean
+  }) {
     this.state = args.state
     this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
     this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
     this.onOpen = args.onOpen
     this.onClose = args.onClose
+    this.mustClose = args.mustClose || (args.mustClose == null) 
   }
-}
-
-interface TokenizableSandwichArgs {
-  state: TokenizerState,
-  startPattern: string,
-  endPattern: string,
-  onOpen: OnTokenizerMatch,
-  onClose: OnTokenizerMatch
 }

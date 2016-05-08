@@ -633,6 +633,7 @@ var TokenizableSandwich = (function () {
         this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
         this.onOpen = args.onOpen;
         this.onClose = args.onClose;
+        this.mustClose = args.mustClose || (args.mustClose == null);
     }
     return TokenizableSandwich;
 }());
@@ -676,17 +677,6 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.plainTextBuffer = '';
-        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.InlineCode,
-            startPattern: '`',
-            endPattern: '`',
-            onOpen: function () {
-                _this.flushUnmatchedTextToPlainTextToken();
-            },
-            onClose: function () {
-                _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
-            }
-        });
         this.footnoteConvention =
             this.getTypicalSandwichConvention({
                 state: TokenizerState_1.TokenizerState.Spoiler,
@@ -705,6 +695,17 @@ var Tokenizer = (function () {
             this.getBracketedConvention(TokenizerState_1.TokenizerState.Parenthesized, '(', ')');
         this.squareBracketedConvention =
             this.getBracketedConvention(TokenizerState_1.TokenizerState.SquareBracketed, '[', ']');
+        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            state: TokenizerState_1.TokenizerState.InlineCode,
+            startPattern: '`',
+            endPattern: '`',
+            onOpen: function () {
+                _this.flushUnmatchedTextToPlainTextToken();
+            },
+            onClose: function () {
+                _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
+            }
+        });
         this.dirty();
         this.tokenize();
     }
@@ -761,12 +762,12 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.failed = function () {
         return (this.reachedEndOfText()
-            && this.openContexts.some(function (context) { return context.mustBeClosed; }));
+            && this.openContexts.some(function (context) { return context.mustClose; }));
     };
     Tokenizer.prototype.undoLatestFallibleContext = function (args) {
         while (this.openContexts.length) {
             var context_1 = this.openContexts.pop();
-            if (context_1.mustBeClosed && (!args || args.where(context_1))) {
+            if (context_1.mustClose && (!args || args.where(context_1))) {
                 this.failedStateTracker.registerFailure(context_1);
                 this.textIndex = context_1.textIndex;
                 this.tokens.splice(context_1.countTokens);
@@ -971,7 +972,8 @@ var Tokenizer = (function () {
             startPattern: TextHelpers_1.escapeForRegex(openBracket),
             endPattern: TextHelpers_1.escapeForRegex(closeBracket),
             onOpen: addBracketToBuffer,
-            onClose: addBracketToBuffer
+            onClose: addBracketToBuffer,
+            mustClose: false
         });
     };
     Tokenizer.prototype.getTypicalSandwichConvention = function (args) {
@@ -1018,12 +1020,12 @@ var Tokenizer = (function () {
 },{"../CollectionHelpers":1,"../Patterns":59,"../TextHelpers":61,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./RichConventions":15,"./TokenizableSandwich":16,"./TokenizerContext":18,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/PlainTextToken":30,"./Tokens/PotentialRaisedVoiceEndToken":31,"./Tokens/PotentialRaisedVoiceStartOrEndToken":32,"./Tokens/PotentialRaisedVoiceStartToken":33}],18:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
-    function TokenizerContext(state, textIndex, countTokens, plainTextBuffer, mustBeClosed) {
+    function TokenizerContext(state, textIndex, countTokens, plainTextBuffer, mustClose) {
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
         this.plainTextBuffer = plainTextBuffer;
-        this.mustBeClosed = mustBeClosed;
+        this.mustClose = mustClose;
     }
     return TokenizerContext;
 }());
