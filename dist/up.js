@@ -801,22 +801,24 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openLink = function () {
         var _this = this;
-        return this.openFallibleConvention({
+        return this.openConvention({
             state: TokenizerState_1.TokenizerState.Link,
             startPattern: LINK_START_PATTERN,
             onOpen: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
-            }
+            },
+            mustClose: true
         });
     };
     Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
         var _this = this;
-        var didStartLinkUrl = this.openFallibleConvention({
+        var didStartLinkUrl = this.openConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
             startPattern: LINK_URL_START_PATTERN,
             onOpen: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
-            }
+            },
+            mustClose: false
         });
         if (!didStartLinkUrl) {
             return false;
@@ -858,10 +860,11 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
-        return this.openFallibleConvention({
+        return this.openConvention({
             state: sandwich.state,
             startPattern: sandwich.startPattern,
-            onOpen: sandwich.onOpen
+            onOpen: sandwich.onOpen,
+            mustClose: sandwich.mustClose
         });
     };
     Tokenizer.prototype.closeSandwich = function (sandwich) {
@@ -894,7 +897,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.openFallibleConvention = function (args) {
+    Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
         var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen;
         return this.canTry(state) && this.advanceAfterMatch({
@@ -904,7 +907,7 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.openContext({ withState: state });
+                _this.openContext({ withState: state, mustClose: args.mustClose });
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
@@ -926,9 +929,8 @@ var Tokenizer = (function () {
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
     };
-    Tokenizer.prototype.openContext = function (_a) {
-        var withState = _a.withState, _b = _a.mustBeClosed, mustBeClosed = _b === void 0 ? true : _b;
-        this.openContexts.push(new TokenizerContext_1.TokenizerContext(withState, this.textIndex, this.tokens.length, this.plainTextBuffer, mustBeClosed));
+    Tokenizer.prototype.openContext = function (args) {
+        this.openContexts.push(new TokenizerContext_1.TokenizerContext(args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose || (args.mustClose == null)));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
