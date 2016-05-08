@@ -423,14 +423,10 @@ class Tokenizer {
     throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 
-  private openContext(args: { withState: TokenizerState, mustClose?: boolean }): void {
+  private openContext(args: { withState: TokenizerState, mustClose: boolean }): void {
     this.openContexts.push(
       new TokenizerContext(
-        args.withState,
-        this.textIndex,
-        this.tokens.length,
-        this.plainTextBuffer,
-        args.mustClose || (args.mustClose == null)))
+        args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {

@@ -1,6 +1,7 @@
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { startsWith } from '../Patterns'
+import { defaultTrue } from '../BooleanHelpers'
 
 export class TokenizableSandwich {
   public state: TokenizerState
@@ -23,6 +24,6 @@ export class TokenizableSandwich {
     this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
     this.onOpen = args.onOpen
     this.onClose = args.onClose
-    this.mustClose = args.mustClose || (args.mustClose == null) 
+    this.mustClose = defaultTrue(args.mustClose) 
   }
 }
