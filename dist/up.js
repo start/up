@@ -773,8 +773,9 @@ var Tokenizer = (function () {
                 || this.openSandwich(this.revisionDeletionConvention)
                 || this.closeSandwich(this.revisionInsertionConvention)
                 || this.openSandwich(this.revisionInsertionConvention)
-                || (!this.hasState(TokenizerState_1.TokenizerState.Link) && this.openLink())
-                || (this.hasState(TokenizerState_1.TokenizerState.Link) && (this.openLinkUrlOrUndoPrematureLink() || this.undoPrematurelyClosedLink()))
+                || this.openLink()
+                || this.openLinkUrlOrUndoPrematureLink()
+                || this.undoLinkThatWasActuallyBracketedText()
                 || this.openBracketedText());
             if (didSomething) {
                 continue;
@@ -827,24 +828,26 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openLink = function () {
         var _this = this;
-        return this.openConvention({
+        return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
             state: TokenizerState_1.TokenizerState.Link,
             startPattern: LINK_START_PATTERN,
             onOpen: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
             },
-            mustClose: true
+            mustClose: true,
+            close: function () { return false; }
         });
     };
     Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
         var _this = this;
-        var didStartLinkUrl = this.openConvention({
+        var didStartLinkUrl = this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
             startPattern: LINK_URL_START_PATTERN,
             onOpen: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
-            mustClose: false
+            mustClose: false,
+            close: function () { return false; }
         });
         if (!didStartLinkUrl) {
             return false;
@@ -873,8 +876,8 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.undoPrematurelyClosedLink = function () {
-        if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+    Tokenizer.prototype.undoLinkThatWasActuallyBracketedText = function () {
+        if (this.hasState(TokenizerState_1.TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
             this.undoLink();
             return true;
         }
@@ -886,11 +889,13 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
+        var _this = this;
         return this.openConvention({
             state: sandwich.state,
             startPattern: sandwich.startPattern,
             onOpen: sandwich.onOpen,
-            mustClose: sandwich.mustClose
+            mustClose: sandwich.mustClose,
+            close: function () { return _this.closeSandwich(sandwich); }
         });
     };
     Tokenizer.prototype.closeSandwich = function (sandwich) {
@@ -933,7 +938,11 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.openContext({ withState: state, mustClose: args.mustClose });
+                _this.openContext({
+                    withState: state,
+                    mustClose: args.mustClose,
+                    close: args.close
+                });
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
@@ -956,7 +965,7 @@ var Tokenizer = (function () {
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
     };
     Tokenizer.prototype.openContext = function (args) {
-        this.openContexts.push(new TokenizerContext_1.TokenizerContext(args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose));
+        this.openContexts.push(new TokenizerContext_1.TokenizerContext(args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose, args.close));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
@@ -1048,12 +1057,13 @@ var Tokenizer = (function () {
 },{"../CollectionHelpers":2,"../Patterns":60,"../TextHelpers":62,"./FailedStateTracker":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableSandwich":17,"./TokenizerContext":19,"./TokenizerState":20,"./Tokens/InlineCodeToken":27,"./Tokens/PlainTextToken":31,"./Tokens/PotentialRaisedVoiceEndToken":32,"./Tokens/PotentialRaisedVoiceStartOrEndToken":33,"./Tokens/PotentialRaisedVoiceStartToken":34}],19:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
-    function TokenizerContext(state, textIndex, countTokens, plainTextBuffer, mustClose) {
+    function TokenizerContext(state, textIndex, countTokens, plainTextBuffer, mustClose, close) {
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
         this.plainTextBuffer = plainTextBuffer;
         this.mustClose = mustClose;
+        this.close = close;
     }
     return TokenizerContext;
 }());

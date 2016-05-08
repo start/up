@@ -5,7 +5,7 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
-import { TokenizerContext } from './TokenizerContext'
+import { TokenizerContext, CloseContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
@@ -124,7 +124,7 @@ class Tokenizer {
         endPattern: '~~',
         richConvention: REVISION_DELETION
       })
-      
+
     this.revisionInsertionConvention =
       this.getTypicalSandwichConvention({
         state: TokenizerState.RevisionInsertion,
@@ -138,7 +138,7 @@ class Tokenizer {
 
     this.squareBracketedConvention =
       this.getBracketedConvention(TokenizerState.SquareBracketed, '[', ']')
-      
+
     this.inlineCodeConvention = new TokenizableSandwich({
       state: TokenizerState.InlineCode,
       startPattern: '`',
@@ -210,8 +210,9 @@ class Tokenizer {
         || this.openSandwich(this.revisionDeletionConvention)
         || this.closeSandwich(this.revisionInsertionConvention)
         || this.openSandwich(this.revisionInsertionConvention)
-        || (!this.hasState(TokenizerState.Link) && this.openLink())
-        || (this.hasState(TokenizerState.Link) && (this.openLinkUrlOrUndoPrematureLink() || this.undoPrematurelyClosedLink()))
+        || this.openLink()
+        || this.openLinkUrlOrUndoPrematureLink()
+        || this.undoLinkThatWasActuallyBracketedText()
         || this.openBracketedText()
       )
 
@@ -283,27 +284,30 @@ class Tokenizer {
   }
 
   private openLink(): boolean {
-    return this.openConvention({
+    return !this.hasState(TokenizerState.Link) && this.openConvention({
       state: TokenizerState.Link,
       startPattern: LINK_START_PATTERN,
       onOpen: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
       },
-      mustClose: true
+      mustClose: true,
+      close: () => false
     })
   }
 
   private openLinkUrlOrUndoPrematureLink(): boolean {
-    const didStartLinkUrl = this.openConvention({
-      state: TokenizerState.LinkUrl,
-      startPattern: LINK_URL_START_PATTERN,
-      onOpen: () => {
-        this.flushUnmatchedTextToPlainTextToken()
-      },
-      // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
-      // to the URL arrow. We set the link context's `mustClose` to true.
-      mustClose: false
-    })
+    const didStartLinkUrl =
+      this.hasState(TokenizerState.Link) && this.openConvention({
+        state: TokenizerState.LinkUrl,
+        startPattern: LINK_URL_START_PATTERN,
+        onOpen: () => {
+          this.flushUnmatchedTextToPlainTextToken()
+        },
+        // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
+        // to the URL arrow. We set the link context's `mustClose` to true.
+        mustClose: false,
+        close: () => false
+      })
 
     if (!didStartLinkUrl) {
       return false
@@ -353,8 +357,9 @@ class Tokenizer {
     })
   }
 
-  private undoPrematurelyClosedLink(): boolean {
-    if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+  // This method isn't called once we start tokenizing a link's URL.
+  private undoLinkThatWasActuallyBracketedText(): boolean { 
+    if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
       this.undoLink()
       return true
     }
@@ -373,7 +378,8 @@ class Tokenizer {
       state: sandwich.state,
       startPattern: sandwich.startPattern,
       onOpen: sandwich.onOpen,
-      mustClose: sandwich.mustClose
+      mustClose: sandwich.mustClose,
+      close: () => this.closeSandwich(sandwich)
     })
   }
 
@@ -406,7 +412,8 @@ class Tokenizer {
       state: TokenizerState,
       startPattern: RegExp,
       onOpen: OnTokenizerMatch,
-      mustClose: boolean
+      mustClose: boolean,
+      close: CloseContext
     }
   ): boolean {
     const { state, startPattern, onOpen } = args
@@ -414,7 +421,11 @@ class Tokenizer {
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContext({ withState: state, mustClose: args.mustClose })
+        this.openContext({
+          withState: state,
+          mustClose: args.mustClose,
+          close: args.close
+        })
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -445,10 +456,10 @@ class Tokenizer {
     throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 
-  private openContext(args: { withState: TokenizerState, mustClose: boolean }): void {
+  private openContext(args: { withState: TokenizerState, mustClose: boolean, close: CloseContext }): void {
     this.openContexts.push(
       new TokenizerContext(
-        args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose))
+        args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose, args.close))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
