@@ -769,6 +769,10 @@ var Tokenizer = (function () {
                 || this.openSandwich(this.spoilerConvention)
                 || this.closeSandwich(this.footnoteConvention)
                 || this.openSandwich(this.footnoteConvention)
+                || this.closeSandwich(this.revisionDeletionConvention)
+                || this.openSandwich(this.revisionDeletionConvention)
+                || this.closeSandwich(this.revisionInsertionConvention)
+                || this.openSandwich(this.revisionInsertionConvention)
                 || (!this.hasState(TokenizerState_1.TokenizerState.Link) && this.openLink())
                 || (this.hasState(TokenizerState_1.TokenizerState.Link) && (this.openLinkUrlOrUndoPrematureLink() || this.undoPrematurelyClosedLink()))
                 || this.openBracketedText());
