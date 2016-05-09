@@ -642,7 +642,6 @@ var TokenizableSandwich = (function () {
         this.mustClose = BooleanHelpers_1.defaultTrue(args.mustClose);
         this.ignoreOuterContexts = args.ignoreOuterContexts;
         this.onOpen = args.onOpen;
-        this.whenInside = args.whenInside || (function () { });
         this.onClose = args.onClose;
     }
     return TokenizableSandwich;
@@ -838,7 +837,6 @@ var Tokenizer = (function () {
             },
             mustClose: true,
             ignoreOuterContexts: false,
-            whenInside: function () { },
             close: function () { return false; }
         });
     };
@@ -852,7 +850,6 @@ var Tokenizer = (function () {
             },
             ignoreOuterContexts: true,
             mustClose: false,
-            whenInside: function () { },
             close: function () { return false; }
         });
         if (!didStartLinkUrl) {
@@ -902,7 +899,6 @@ var Tokenizer = (function () {
             onOpen: sandwich.onOpen,
             mustClose: sandwich.mustClose,
             ignoreOuterContexts: sandwich.ignoreOuterContexts,
-            whenInside: sandwich.whenInside,
             close: function () { return _this.closeSandwich(sandwich); }
         });
     };
@@ -950,8 +946,7 @@ var Tokenizer = (function () {
                     withState: state,
                     mustClose: args.mustClose,
                     ignoreOuterContexts: args.ignoreOuterContexts,
-                    close: args.close,
-                    whenInside: args.whenInside
+                    close: args.close
                 });
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
@@ -982,8 +977,7 @@ var Tokenizer = (function () {
             plainTextBuffer: this.plainTextBuffer,
             mustClose: args.mustClose,
             ignoreOuterContexts: args.ignoreOuterContexts,
-            close: args.close,
-            whenInside: args.whenInside
+            close: args.close
         }));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
@@ -1083,7 +1077,6 @@ var TokenizerContext = (function () {
         this.plainTextBuffer = args.plainTextBuffer;
         this.mustClose = args.mustClose;
         this.ignoreOuterContexts = args.ignoreOuterContexts;
-        this.whenInside = args.whenInside;
         this.close = args.close;
     }
     return TokenizerContext;

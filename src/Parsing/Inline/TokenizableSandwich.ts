@@ -2,7 +2,6 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { startsWith } from '../Patterns'
 import { defaultTrue } from '../BooleanHelpers'
-import { WhenInsideContext } from './TokenizerContext'
 
 export class TokenizableSandwich {
   public state: TokenizerState
@@ -11,7 +10,6 @@ export class TokenizableSandwich {
   public mustClose: boolean
   public ignoreOuterContexts: boolean
   public onOpen: OnTokenizerMatch
-  public whenInside: WhenInsideContext
   public onClose: OnTokenizerMatch
 
   constructor(args: {
@@ -21,7 +19,6 @@ export class TokenizableSandwich {
     mustClose?: boolean
     ignoreOuterContexts?: boolean
     onOpen: OnTokenizerMatch
-    whenInside?: WhenInsideContext
     onClose: OnTokenizerMatch
   }) {
     this.state = args.state
@@ -30,7 +27,6 @@ export class TokenizableSandwich {
     this.mustClose = defaultTrue(args.mustClose)
     this.ignoreOuterContexts = args.ignoreOuterContexts
     this.onOpen = args.onOpen
-    this.whenInside = args.whenInside || (() => {})
     this.onClose = args.onClose
   }
 }

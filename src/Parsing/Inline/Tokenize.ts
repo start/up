@@ -5,7 +5,7 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
-import { TokenizerContext, CloseContext, WhenInsideContext } from './TokenizerContext'
+import { TokenizerContext, CloseContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
@@ -292,7 +292,6 @@ class Tokenizer {
       },
       mustClose: true,
       ignoreOuterContexts: false,
-      whenInside: () => { },
       close: () => false
     })
   }
@@ -309,7 +308,6 @@ class Tokenizer {
         // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
         // to the URL arrow. We set the link context's `mustClose` to true.
         mustClose: false,
-        whenInside: () => { },
         close: () => false
       })
 
@@ -384,7 +382,6 @@ class Tokenizer {
       onOpen: sandwich.onOpen,
       mustClose: sandwich.mustClose,
       ignoreOuterContexts: sandwich.ignoreOuterContexts,
-      whenInside: sandwich.whenInside,
       close: () => this.closeSandwich(sandwich)
     })
   }
@@ -420,8 +417,7 @@ class Tokenizer {
       onOpen: OnTokenizerMatch,
       mustClose: boolean,
       ignoreOuterContexts: boolean,
-      close: CloseContext,
-      whenInside: WhenInsideContext
+      close: CloseContext
     }
   ): boolean {
     const { state, startPattern, onOpen } = args
@@ -433,8 +429,7 @@ class Tokenizer {
           withState: state,
           mustClose: args.mustClose,
           ignoreOuterContexts: args.ignoreOuterContexts,
-          close: args.close,
-          whenInside: args.whenInside
+          close: args.close
         })
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
@@ -471,8 +466,7 @@ class Tokenizer {
       withState: TokenizerState,
       mustClose: boolean,
       ignoreOuterContexts: boolean,
-      close: CloseContext,
-      whenInside: WhenInsideContext
+      close: CloseContext
     }
   ): void {
     this.openContexts.push(
@@ -483,8 +477,7 @@ class Tokenizer {
         plainTextBuffer: this.plainTextBuffer,
         mustClose: args.mustClose,
         ignoreOuterContexts: args.ignoreOuterContexts,
-        close: args.close,
-        whenInside: args.whenInside
+        close: args.close
       }))
   }
 
