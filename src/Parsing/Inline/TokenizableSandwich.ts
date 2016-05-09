@@ -12,15 +12,17 @@ export class TokenizableSandwich {
   public onOpen: OnTokenizerMatch
   public onClose: OnTokenizerMatch
 
-  constructor(args: {
-    state: TokenizerState
-    startPattern: string
-    endPattern: string
-    mustClose?: boolean
-    ignoreOuterContexts?: boolean
-    onOpen: OnTokenizerMatch
-    onClose: OnTokenizerMatch
-  }) {
+  constructor(
+    args: {
+      state: TokenizerState
+      startPattern: string
+      endPattern: string
+      mustClose?: boolean
+      ignoreOuterContexts?: boolean
+      onOpen: OnTokenizerMatch
+      onClose: OnTokenizerMatch
+    }
+  ) {
     this.state = args.state
     this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
     this.endPattern = new RegExp(startsWith(args.endPattern), 'i')

@@ -44,6 +44,7 @@ export function tokenize(text: string, config: UpConfig): Token[] {
   return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
 }
 
+
 const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR
 )
@@ -63,6 +64,7 @@ const LINK_URL_START_PATTERN = new RegExp(
 const LINK_END_PATTERN = new RegExp(
   startsWith(escapeForRegex(']'))
 )
+
 
 class Tokenizer {
   public tokens: Token[] = []
@@ -535,15 +537,17 @@ class Tokenizer {
       richConvention: RichConvention
     }
   ): TokenizableSandwich {
+    const { state, startPattern, endPattern, richConvention } = args
+    
     return new TokenizableSandwich({
-      state: args.state,
-      startPattern: args.startPattern,
-      endPattern: args.endPattern,
+      state: state,
+      startPattern: startPattern,
+      endPattern: endPattern,
       onOpen: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.StartTokenType())
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.StartTokenType())
       },
       onClose: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.EndTokenType())
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.EndTokenType())
       }
     })
   }

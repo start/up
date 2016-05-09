@@ -1020,15 +1020,16 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getTypicalSandwichConvention = function (args) {
         var _this = this;
+        var state = args.state, startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
         return new TokenizableSandwich_1.TokenizableSandwich({
-            state: args.state,
-            startPattern: args.startPattern,
-            endPattern: args.endPattern,
+            state: state,
+            startPattern: startPattern,
+            endPattern: endPattern,
             onOpen: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.StartTokenType());
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.StartTokenType());
             },
             onClose: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new args.richConvention.EndTokenType());
+                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.EndTokenType());
             }
         });
     };
