@@ -934,7 +934,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
-        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen;
+        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts, close = args.close;
         return this.canTry(state) && this.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -942,12 +942,15 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.openContext({
-                    withState: state,
-                    mustClose: args.mustClose,
-                    ignoreOuterContexts: args.ignoreOuterContexts,
-                    close: args.close
-                });
+                _this.openContexts.push(new TokenizerContext_1.TokenizerContext({
+                    state: state,
+                    textIndex: _this.textIndex,
+                    countTokens: _this.tokens.length,
+                    plainTextBuffer: _this.plainTextBuffer,
+                    mustClose: mustClose,
+                    ignoreOuterContexts: ignoreOuterContexts,
+                    close: close
+                }));
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
@@ -968,17 +971,6 @@ var Tokenizer = (function () {
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
-    };
-    Tokenizer.prototype.openContext = function (args) {
-        this.openContexts.push(new TokenizerContext_1.TokenizerContext({
-            state: args.withState,
-            textIndex: this.textIndex,
-            countTokens: this.tokens.length,
-            plainTextBuffer: this.plainTextBuffer,
-            mustClose: args.mustClose,
-            ignoreOuterContexts: args.ignoreOuterContexts,
-            close: args.close
-        }));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();

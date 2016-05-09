@@ -420,17 +420,23 @@ class Tokenizer {
       close: CloseContext
     }
   ): boolean {
-    const { state, startPattern, onOpen } = args
+    const { state, startPattern, onOpen, mustClose, ignoreOuterContexts, close } = args
 
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
+      
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContext({
-          withState: state,
-          mustClose: args.mustClose,
-          ignoreOuterContexts: args.ignoreOuterContexts,
-          close: args.close
-        })
+        this.openContexts.push(
+          new TokenizerContext({
+            state: state,
+            textIndex: this.textIndex,
+            countTokens: this.tokens.length,
+            plainTextBuffer: this.plainTextBuffer,
+            mustClose: mustClose,
+            ignoreOuterContexts: ignoreOuterContexts,
+            close: close
+          }))
+          
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -459,26 +465,6 @@ class Tokenizer {
     }
 
     throw new Error(`State was not open: ${TokenizerState[state]}`)
-  }
-
-  private openContext(
-    args: {
-      withState: TokenizerState,
-      mustClose: boolean,
-      ignoreOuterContexts: boolean,
-      close: CloseContext
-    }
-  ): void {
-    this.openContexts.push(
-      new TokenizerContext({
-        state: args.withState,
-        textIndex: this.textIndex,
-        countTokens: this.tokens.length,
-        plainTextBuffer: this.plainTextBuffer,
-        mustClose: args.mustClose,
-        ignoreOuterContexts: args.ignoreOuterContexts,
-        close: args.close
-      }))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
