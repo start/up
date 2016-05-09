@@ -5,7 +5,7 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
-import { TokenizerContext, CloseContext } from './TokenizerContext'
+import { TokenizerContext, CloseContext, WhenInsideContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
@@ -291,6 +291,8 @@ class Tokenizer {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
       },
       mustClose: true,
+      ignoreOuterContexts: false,
+      whenInside: () => { },
       close: () => false
     })
   }
@@ -303,9 +305,11 @@ class Tokenizer {
         onOpen: () => {
           this.flushUnmatchedTextToPlainTextToken()
         },
+        ignoreOuterContexts: true,
         // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
         // to the URL arrow. We set the link context's `mustClose` to true.
         mustClose: false,
+        whenInside: () => { },
         close: () => false
       })
 
@@ -358,7 +362,7 @@ class Tokenizer {
   }
 
   // This method isn't called once we start tokenizing a link's URL.
-  private undoLinkThatWasActuallyBracketedText(): boolean { 
+  private undoLinkThatWasActuallyBracketedText(): boolean {
     if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
       this.undoLink()
       return true
@@ -379,6 +383,8 @@ class Tokenizer {
       startPattern: sandwich.startPattern,
       onOpen: sandwich.onOpen,
       mustClose: sandwich.mustClose,
+      ignoreOuterContexts: sandwich.ignoreOuterContexts,
+      whenInside: sandwich.whenInside,
       close: () => this.closeSandwich(sandwich)
     })
   }
@@ -413,7 +419,9 @@ class Tokenizer {
       startPattern: RegExp,
       onOpen: OnTokenizerMatch,
       mustClose: boolean,
-      close: CloseContext
+      ignoreOuterContexts: boolean,
+      close: CloseContext,
+      whenInside: WhenInsideContext
     }
   ): boolean {
     const { state, startPattern, onOpen } = args
@@ -424,7 +432,9 @@ class Tokenizer {
         this.openContext({
           withState: state,
           mustClose: args.mustClose,
-          close: args.close
+          ignoreOuterContexts: args.ignoreOuterContexts,
+          close: args.close,
+          whenInside: args.whenInside
         })
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
@@ -456,10 +466,26 @@ class Tokenizer {
     throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 
-  private openContext(args: { withState: TokenizerState, mustClose: boolean, close: CloseContext }): void {
+  private openContext(
+    args: {
+      withState: TokenizerState,
+      mustClose: boolean,
+      ignoreOuterContexts: boolean,
+      close: CloseContext,
+      whenInside: WhenInsideContext
+    }
+  ): void {
     this.openContexts.push(
-      new TokenizerContext(
-        args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose, args.close))
+      new TokenizerContext({
+        state: args.withState,
+        textIndex: this.textIndex,
+        countTokens: this.tokens.length,
+        plainTextBuffer: this.plainTextBuffer,
+        mustClose: args.mustClose,
+        ignoreOuterContexts: args.ignoreOuterContexts,
+        close: args.close,
+        whenInside: args.whenInside
+      }))
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {

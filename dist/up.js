@@ -639,9 +639,11 @@ var TokenizableSandwich = (function () {
         this.state = args.state;
         this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern), 'i');
         this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
-        this.onOpen = args.onOpen;
-        this.onClose = args.onClose;
         this.mustClose = BooleanHelpers_1.defaultTrue(args.mustClose);
+        this.ignoreOuterContexts = args.ignoreOuterContexts;
+        this.onOpen = args.onOpen;
+        this.whenInside = args.whenInside || (function () { });
+        this.onClose = args.onClose;
     }
     return TokenizableSandwich;
 }());
@@ -835,6 +837,8 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
             },
             mustClose: true,
+            ignoreOuterContexts: false,
+            whenInside: function () { },
             close: function () { return false; }
         });
     };
@@ -846,7 +850,9 @@ var Tokenizer = (function () {
             onOpen: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
+            ignoreOuterContexts: true,
             mustClose: false,
+            whenInside: function () { },
             close: function () { return false; }
         });
         if (!didStartLinkUrl) {
@@ -895,6 +901,8 @@ var Tokenizer = (function () {
             startPattern: sandwich.startPattern,
             onOpen: sandwich.onOpen,
             mustClose: sandwich.mustClose,
+            ignoreOuterContexts: sandwich.ignoreOuterContexts,
+            whenInside: sandwich.whenInside,
             close: function () { return _this.closeSandwich(sandwich); }
         });
     };
@@ -941,7 +949,9 @@ var Tokenizer = (function () {
                 _this.openContext({
                     withState: state,
                     mustClose: args.mustClose,
-                    close: args.close
+                    ignoreOuterContexts: args.ignoreOuterContexts,
+                    close: args.close,
+                    whenInside: args.whenInside
                 });
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
@@ -965,7 +975,16 @@ var Tokenizer = (function () {
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
     };
     Tokenizer.prototype.openContext = function (args) {
-        this.openContexts.push(new TokenizerContext_1.TokenizerContext(args.withState, this.textIndex, this.tokens.length, this.plainTextBuffer, args.mustClose, args.close));
+        this.openContexts.push(new TokenizerContext_1.TokenizerContext({
+            state: args.withState,
+            textIndex: this.textIndex,
+            countTokens: this.tokens.length,
+            plainTextBuffer: this.plainTextBuffer,
+            mustClose: args.mustClose,
+            ignoreOuterContexts: args.ignoreOuterContexts,
+            close: args.close,
+            whenInside: args.whenInside
+        }));
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
@@ -1057,13 +1076,15 @@ var Tokenizer = (function () {
 },{"../CollectionHelpers":2,"../Patterns":60,"../TextHelpers":62,"./FailedStateTracker":3,"./MassageTokensIntoTreeStructure":5,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableSandwich":17,"./TokenizerContext":19,"./TokenizerState":20,"./Tokens/InlineCodeToken":27,"./Tokens/PlainTextToken":31,"./Tokens/PotentialRaisedVoiceEndToken":32,"./Tokens/PotentialRaisedVoiceStartOrEndToken":33,"./Tokens/PotentialRaisedVoiceStartToken":34}],19:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
-    function TokenizerContext(state, textIndex, countTokens, plainTextBuffer, mustClose, close) {
-        this.state = state;
-        this.textIndex = textIndex;
-        this.countTokens = countTokens;
-        this.plainTextBuffer = plainTextBuffer;
-        this.mustClose = mustClose;
-        this.close = close;
+    function TokenizerContext(args) {
+        this.state = args.state;
+        this.textIndex = args.textIndex;
+        this.countTokens = args.countTokens;
+        this.plainTextBuffer = args.plainTextBuffer;
+        this.mustClose = args.mustClose;
+        this.ignoreOuterContexts = args.ignoreOuterContexts;
+        this.whenInside = args.whenInside;
+        this.close = args.close;
     }
     return TokenizerContext;
 }());
