@@ -3,6 +3,7 @@ import { TokenizerState } from './TokenizerState'
 import { startsWith } from '../Patterns'
 import { defaultTrue } from '../BooleanHelpers'
 
+
 export class TokenizableSandwich {
   public state: TokenizerState
   public startPattern: RegExp

@@ -5,7 +5,7 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { FailedStateTracker } from './FailedStateTracker'
-import { TokenizerContext, CloseContext } from './TokenizerContext'
+import { TokenizerContext, CloseContext, CancelContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, lastChar, swap } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
@@ -294,7 +294,8 @@ class Tokenizer {
       },
       mustClose: true,
       ignoreOuterContexts: false,
-      close: () => false
+      close: () => false,
+      cancel: () => false
     })
   }
 
@@ -310,7 +311,8 @@ class Tokenizer {
         // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
         // to the URL arrow. We set the link context's `mustClose` to true.
         mustClose: false,
-        close: () => false
+        close: () => false,
+        cancel: () => false
       })
 
     if (!didStartLinkUrl) {
@@ -384,7 +386,8 @@ class Tokenizer {
       onOpen: sandwich.onOpen,
       mustClose: sandwich.mustClose,
       ignoreOuterContexts: sandwich.ignoreOuterContexts,
-      close: () => this.closeSandwich(sandwich)
+      close: () => this.closeSandwich(sandwich),
+      cancel: (() => false)
     })
   }
 
@@ -419,10 +422,11 @@ class Tokenizer {
       onOpen: OnTokenizerMatch,
       mustClose: boolean,
       ignoreOuterContexts: boolean,
-      close: CloseContext
+      close: CloseContext,
+      cancel: CancelContext
     }
   ): boolean {
-    const { state, startPattern, onOpen, mustClose, ignoreOuterContexts, close } = args
+    const { state, startPattern, onOpen, mustClose, ignoreOuterContexts, close, cancel } = args
 
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
@@ -436,7 +440,8 @@ class Tokenizer {
             plainTextBuffer: this.plainTextBuffer,
             mustClose: mustClose,
             ignoreOuterContexts: ignoreOuterContexts,
-            close: close
+            close: close,
+            cancel: cancel
           }))
           
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)

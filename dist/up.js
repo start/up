@@ -837,7 +837,8 @@ var Tokenizer = (function () {
             },
             mustClose: true,
             ignoreOuterContexts: false,
-            close: function () { return false; }
+            close: function () { return false; },
+            cancel: function () { return false; }
         });
     };
     Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
@@ -850,7 +851,8 @@ var Tokenizer = (function () {
             },
             ignoreOuterContexts: true,
             mustClose: false,
-            close: function () { return false; }
+            close: function () { return false; },
+            cancel: function () { return false; }
         });
         if (!didStartLinkUrl) {
             return false;
@@ -899,7 +901,8 @@ var Tokenizer = (function () {
             onOpen: sandwich.onOpen,
             mustClose: sandwich.mustClose,
             ignoreOuterContexts: sandwich.ignoreOuterContexts,
-            close: function () { return _this.closeSandwich(sandwich); }
+            close: function () { return _this.closeSandwich(sandwich); },
+            cancel: (function () { return false; })
         });
     };
     Tokenizer.prototype.closeSandwich = function (sandwich) {
@@ -934,7 +937,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
-        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts, close = args.close;
+        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts, close = args.close, cancel = args.cancel;
         return this.canTry(state) && this.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -949,7 +952,8 @@ var Tokenizer = (function () {
                     plainTextBuffer: _this.plainTextBuffer,
                     mustClose: mustClose,
                     ignoreOuterContexts: ignoreOuterContexts,
-                    close: close
+                    close: close,
+                    cancel: cancel
                 }));
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
@@ -1064,13 +1068,15 @@ var Tokenizer = (function () {
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
-        this.state = args.state;
-        this.textIndex = args.textIndex;
-        this.countTokens = args.countTokens;
-        this.plainTextBuffer = args.plainTextBuffer;
-        this.mustClose = args.mustClose;
-        this.ignoreOuterContexts = args.ignoreOuterContexts;
-        this.close = args.close;
+        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts, close = args.close, cancel = args.cancel;
+        this.state = state;
+        this.textIndex = textIndex;
+        this.countTokens = countTokens;
+        this.plainTextBuffer = plainTextBuffer;
+        this.mustClose = mustClose;
+        this.ignoreOuterContexts = ignoreOuterContexts;
+        this.close = close;
+        this.cancel = cancel;
     }
     return TokenizerContext;
 }());

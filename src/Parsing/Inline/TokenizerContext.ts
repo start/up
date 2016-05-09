@@ -4,6 +4,10 @@ export interface CloseContext {
   (): boolean
 }
 
+export interface CancelContext {
+  (): boolean
+}
+
 export class TokenizerContext {
   public state: TokenizerState
   public textIndex: number
@@ -12,6 +16,7 @@ export class TokenizerContext {
   public mustClose: boolean
   public ignoreOuterContexts: boolean
   public close: CloseContext
+  public cancel: CancelContext
 
   constructor(
     args: {
@@ -22,14 +27,18 @@ export class TokenizerContext {
       mustClose: boolean
       ignoreOuterContexts: boolean
       close: CloseContext
+      cancel: CancelContext
     }
   ) {
-    this.state = args.state
-    this.textIndex = args.textIndex
-    this.countTokens = args.countTokens
-    this.plainTextBuffer = args.plainTextBuffer
-    this.mustClose = args.mustClose
-    this.ignoreOuterContexts = args.ignoreOuterContexts
-    this.close = args.close
+    const { state, textIndex, countTokens, plainTextBuffer, mustClose, ignoreOuterContexts, close, cancel } = args
+    
+    this.state = state
+    this.textIndex = textIndex
+    this.countTokens = countTokens
+    this.plainTextBuffer = plainTextBuffer
+    this.mustClose = mustClose
+    this.ignoreOuterContexts = ignoreOuterContexts
+    this.close = close
+    this.cancel = cancel
   }
 }
