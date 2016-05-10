@@ -746,7 +746,7 @@ var Tokenizer = (function () {
                 this.collectCurrentChar();
                 continue;
             }
-            LoopOpenContexts: for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            for (var i = this.openContexts.length - 1; i >= 0; i--) {
                 var context_1 = this.openContexts[i];
                 var state = context_1.state;
                 if (state === TokenizerState_1.TokenizerState.InlineCode) {
@@ -772,7 +772,7 @@ var Tokenizer = (function () {
                 ]; _i < _a.length; _i++) {
                     var sandwich = _a[_i];
                     if (state === sandwich.state && this.closeSandwich(sandwich)) {
-                        continue LoopOpenContexts;
+                        continue LoopCharacters;
                     }
                 }
                 if (state === TokenizerState_1.TokenizerState.Link) {

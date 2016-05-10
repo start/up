@@ -177,7 +177,7 @@ class Tokenizer {
         continue
       }
 
-      LoopOpenContexts: for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      for (let i = this.openContexts.length - 1; i >= 0; i--) {
         let context = this.openContexts[i]
         const { state } = context
 
@@ -209,7 +209,7 @@ class Tokenizer {
           this.parenthesizedConvention
         ]) {
           if (state === sandwich.state && this.closeSandwich(sandwich)) {
-            continue LoopOpenContexts
+            continue LoopCharacters
           }
         }
 
