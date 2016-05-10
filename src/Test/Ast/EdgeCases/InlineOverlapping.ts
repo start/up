@@ -172,7 +172,7 @@ describe('Overlapped emphasized and linked text', () => {
 describe('A paragraph with 2 (separately!) overlapped links', () => {
   it('produces the correct nodes for each', () => {
     const text = 'I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.'
-    
+
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
@@ -230,7 +230,8 @@ describe('Conventions that completely overlap', () => {
             new PlainTextNode('Why would you do this?')
           ])
         ])
-      ]))
+      ])
+    )
   })
 })
 
@@ -242,13 +243,14 @@ describe('A spoiler that overlaps a link', () => {
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('Gary loses to '),
-          new LinkNode([
-            new SpoilerNode([
-              new PlainTextNode('Ash')
-            ]),
-            new PlainTextNode(' Ketchum')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-        ])
-      ]))
+        ]),
+        new LinkNode([
+          new SpoilerNode([
+            new PlainTextNode('Ash')
+          ]),
+          new PlainTextNode(' Ketchum')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
+      ])
+    )
   })
 })
