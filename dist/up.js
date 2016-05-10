@@ -633,16 +633,19 @@ exports.LINK = LINK;
 
 },{"../../SyntaxNodes/EmphasisNode":72,"../../SyntaxNodes/FootnoteNode":74,"../../SyntaxNodes/LinkNode":81,"../../SyntaxNodes/RevisionDeletionNode":88,"../../SyntaxNodes/RevisionInsertionNode":89,"../../SyntaxNodes/SpoilerNode":92,"../../SyntaxNodes/StressNode":93,"./RichConvention":15,"./Tokens/EmphasisEndToken":23,"./Tokens/EmphasisStartToken":24,"./Tokens/FootnoteEndToken":25,"./Tokens/FootnoteStartToken":26,"./Tokens/LinkEndToken":29,"./Tokens/LinkStartToken":30,"./Tokens/RevisionDeletionEndToken":37,"./Tokens/RevisionDeletionStartToken":38,"./Tokens/RevisionInsertionEndToken":39,"./Tokens/RevisionInsertionStartToken":40,"./Tokens/SpoilerEndToken":41,"./Tokens/SpoilerStartToken":42,"./Tokens/StressEndToken":43,"./Tokens/StressStartToken":44}],17:[function(require,module,exports){
 "use strict";
+var TextHelpers_1 = require('../TextHelpers');
+var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
     function TokenizableMedia(localizedTerm, TokenType) {
-        this.localizedTerm = localizedTerm;
         this.TokenType = TokenType;
+        this.startPattern = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE));
+        this.endPattern = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
     }
     return TokenizableMedia;
 }());
 exports.TokenizableMedia = TokenizableMedia;
 
-},{}],18:[function(require,module,exports){
+},{"../Patterns":61,"../TextHelpers":63}],18:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var BooleanHelpers_1 = require('../BooleanHelpers');
@@ -689,7 +692,7 @@ var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, TextHelpers_1.escapeForRegex('*'))));
 var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('[')));
 var LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
-var LINK_AND_MEDIA_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
+var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -743,10 +746,9 @@ var Tokenizer = (function () {
                 _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
         });
-        this.mediaConventions =
-            [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
-                return new TokenizableMedia_1.TokenizableMedia(_this.config.localize(media.nonLocalizedTerm), media.TokenType);
-            });
+        this.mediaConventions = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
+            return new TokenizableMedia_1.TokenizableMedia(_this.config.localize(media.nonLocalizedTerm), media.TokenType);
+        });
         this.dirty();
         this.tokenize();
     }
@@ -900,7 +902,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeLink = function () {
         var _this = this;
         return this.advanceAfterMatch({
-            pattern: LINK_AND_MEDIA_END_PATTERN,
+            pattern: LINK_END_PATTERN,
             then: function () {
                 var url = _this.flushUnmatchedText();
                 _this.tokens.push(new RichConventions_1.LINK.EndTokenType(url));
@@ -910,7 +912,7 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.undoLinkThatWasActuallyBracketedText = function () {
-        if (this.hasState(TokenizerState_1.TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_AND_MEDIA_END_PATTERN })) {
+        if (this.hasState(TokenizerState_1.TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
             this.undoLink();
             return true;
         }

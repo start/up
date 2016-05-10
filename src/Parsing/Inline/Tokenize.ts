@@ -62,7 +62,7 @@ const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE)
 )
 
-const LINK_AND_MEDIA_END_PATTERN = new RegExp(
+const LINK_END_PATTERN = new RegExp(
   startsWith(escapeForRegex(']'))
 )
 
@@ -156,9 +156,8 @@ class Tokenizer {
       }
     })
 
-    this.mediaConventions =
-      [AUDIO, IMAGE, VIDEO].map(media =>
-        new TokenizableMedia(this.config.localize(media.nonLocalizedTerm), media.TokenType))
+    this.mediaConventions = [AUDIO, IMAGE, VIDEO].map(media =>
+      new TokenizableMedia(this.config.localize(media.nonLocalizedTerm), media.TokenType))
 
     this.dirty()
     this.tokenize()
@@ -372,7 +371,7 @@ class Tokenizer {
 
   private closeLink(): boolean {
     return this.advanceAfterMatch({
-      pattern: LINK_AND_MEDIA_END_PATTERN,
+      pattern: LINK_END_PATTERN,
       then: () => {
         const url = this.flushUnmatchedText()
         this.tokens.push(new LINK.EndTokenType(url))
@@ -384,7 +383,7 @@ class Tokenizer {
 
   // This method isn't called once we start tokenizing a link's URL.
   private undoLinkThatWasActuallyBracketedText(): boolean {
-    if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_AND_MEDIA_END_PATTERN })) {
+    if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
       this.undoLink()
       return true
     }
