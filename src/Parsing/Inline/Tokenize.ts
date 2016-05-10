@@ -159,7 +159,7 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    while (true) {
+    LoopCharacters: while (true) {
 
       if (this.failed()) {
         this.undoLatestFallibleContext()
@@ -177,52 +177,64 @@ class Tokenizer {
         continue
       }
 
-      if (this.innermostStateIs(TokenizerState.InlineCode)) {
-        if (!this.closeSandwich(this.inlineCodeConvention)) {
-          this.collectCurrentChar()
+      LoopOpenContexts: for (let i = this.openContexts.length - 1; i >= 0; i--) {
+        let context = this.openContexts[i]
+        const { state } = context
+
+        if (state === TokenizerState.InlineCode) {
+          if (!this.closeSandwich(this.inlineCodeConvention)) {
+            this.collectCurrentChar()
+          }
+
+          continue LoopCharacters
         }
 
-        continue
-      }
+        if (state === TokenizerState.LinkUrl) {
+          const openedSquareBracketOrClosedLink =
+            this.openSandwich(this.squareBracketedConvention) || this.closeLink()
+            
+          if (!openedSquareBracketOrClosedLink) {
+            this.collectCurrentChar()
+          }
 
-      if (this.closeBracketsIfTheyAreInnermost()) {
-        continue
-      }
-
-      if (this.innermostStateIs(TokenizerState.LinkUrl)) {
-        if (this.closeLink()) {
-          continue
+          continue LoopCharacters
         }
 
-        if (!this.openBracketedText()) {
-          this.collectCurrentChar()
+        for (const sandwich of [
+          this.spoilerConvention,
+          this.footnoteConvention,
+          this.revisionDeletionConvention,
+          this.revisionInsertionConvention,
+          this.squareBracketedConvention,
+          this.parenthesizedConvention
+        ]) {
+          if (state === sandwich.state && this.closeSandwich(sandwich)) {
+            continue LoopOpenContexts
+          }
         }
 
-        continue
+        if (state === TokenizerState.Link) {
+          if (this.openLinkUrlOrUndoPrematureLink()) {
+            continue LoopCharacters
+          }
+        }
       }
 
-      const didSomething = (
+      const openedConvention = (
         this.tokenizeRaisedVoicePlaceholders()
         || this.openSandwich(this.inlineCodeConvention)
-        || this.closeSandwich(this.spoilerConvention)
         || this.openSandwich(this.spoilerConvention)
-        || this.closeSandwich(this.footnoteConvention)
         || this.openSandwich(this.footnoteConvention)
-        || this.closeSandwich(this.revisionDeletionConvention)
         || this.openSandwich(this.revisionDeletionConvention)
-        || this.closeSandwich(this.revisionInsertionConvention)
         || this.openSandwich(this.revisionInsertionConvention)
         || this.openLink()
-        || this.openLinkUrlOrUndoPrematureLink()
-        || this.undoLinkThatWasActuallyBracketedText()
-        || this.openBracketedText()
+        || this.openSandwich(this.parenthesizedConvention)
+        || this.openSandwich(this.squareBracketedConvention)
       )
 
-      if (didSomething) {
-        continue
+      if (!openedConvention) {
+        this.collectCurrentChar()
       }
-
-      this.collectCurrentChar()
     }
 
     this.flushUnmatchedTextToPlainTextToken()
@@ -430,7 +442,7 @@ class Tokenizer {
 
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
-      
+
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContexts.push(
           new TokenizerContext({
@@ -443,7 +455,7 @@ class Tokenizer {
             close: close,
             cancel: cancel
           }))
-          
+
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -543,7 +555,7 @@ class Tokenizer {
     }
   ): TokenizableSandwich {
     const { state, startPattern, endPattern, richConvention } = args
-    
+
     return new TokenizableSandwich({
       state: state,
       startPattern: startPattern,

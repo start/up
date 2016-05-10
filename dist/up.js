@@ -733,7 +733,7 @@ var Tokenizer = (function () {
         this.tokenize();
     }
     Tokenizer.prototype.tokenize = function () {
-        while (true) {
+        LoopCharacters: while (true) {
             if (this.failed()) {
                 this.undoLatestFallibleContext();
             }
@@ -746,42 +746,53 @@ var Tokenizer = (function () {
                 this.collectCurrentChar();
                 continue;
             }
-            if (this.innermostStateIs(TokenizerState_1.TokenizerState.InlineCode)) {
-                if (!this.closeSandwich(this.inlineCodeConvention)) {
-                    this.collectCurrentChar();
+            LoopOpenContexts: for (var i = this.openContexts.length - 1; i >= 0; i--) {
+                var context_1 = this.openContexts[i];
+                var state = context_1.state;
+                if (state === TokenizerState_1.TokenizerState.InlineCode) {
+                    if (!this.closeSandwich(this.inlineCodeConvention)) {
+                        this.collectCurrentChar();
+                    }
+                    continue LoopCharacters;
                 }
-                continue;
-            }
-            if (this.closeBracketsIfTheyAreInnermost()) {
-                continue;
-            }
-            if (this.innermostStateIs(TokenizerState_1.TokenizerState.LinkUrl)) {
-                if (this.closeLink()) {
-                    continue;
+                if (state === TokenizerState_1.TokenizerState.LinkUrl) {
+                    var openedSquareBracketOrClosedLink = this.openSandwich(this.squareBracketedConvention) || this.closeLink();
+                    if (!openedSquareBracketOrClosedLink) {
+                        this.collectCurrentChar();
+                    }
+                    continue LoopCharacters;
                 }
-                if (!this.openBracketedText()) {
-                    this.collectCurrentChar();
+                for (var _i = 0, _a = [
+                    this.spoilerConvention,
+                    this.footnoteConvention,
+                    this.revisionDeletionConvention,
+                    this.revisionInsertionConvention,
+                    this.squareBracketedConvention,
+                    this.parenthesizedConvention
+                ]; _i < _a.length; _i++) {
+                    var sandwich = _a[_i];
+                    if (state === sandwich.state && this.closeSandwich(sandwich)) {
+                        continue LoopOpenContexts;
+                    }
                 }
-                continue;
+                if (state === TokenizerState_1.TokenizerState.Link) {
+                    if (this.openLinkUrlOrUndoPrematureLink()) {
+                        continue LoopCharacters;
+                    }
+                }
             }
-            var didSomething = (this.tokenizeRaisedVoicePlaceholders()
+            var openedConvention = (this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
-                || this.closeSandwich(this.spoilerConvention)
                 || this.openSandwich(this.spoilerConvention)
-                || this.closeSandwich(this.footnoteConvention)
                 || this.openSandwich(this.footnoteConvention)
-                || this.closeSandwich(this.revisionDeletionConvention)
                 || this.openSandwich(this.revisionDeletionConvention)
-                || this.closeSandwich(this.revisionInsertionConvention)
                 || this.openSandwich(this.revisionInsertionConvention)
                 || this.openLink()
-                || this.openLinkUrlOrUndoPrematureLink()
-                || this.undoLinkThatWasActuallyBracketedText()
-                || this.openBracketedText());
-            if (didSomething) {
-                continue;
+                || this.openSandwich(this.parenthesizedConvention)
+                || this.openSandwich(this.squareBracketedConvention));
+            if (!openedConvention) {
+                this.collectCurrentChar();
             }
-            this.collectCurrentChar();
         }
         this.flushUnmatchedTextToPlainTextToken();
     };
@@ -794,12 +805,12 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.undoLatestFallibleContext = function (args) {
         while (this.openContexts.length) {
-            var context_1 = this.openContexts.pop();
-            if (context_1.mustClose && (!args || args.where(context_1))) {
-                this.failedStateTracker.registerFailure(context_1);
-                this.textIndex = context_1.textIndex;
-                this.tokens.splice(context_1.countTokens);
-                this.plainTextBuffer = context_1.plainTextBuffer;
+            var context_2 = this.openContexts.pop();
+            if (context_2.mustClose && (!args || args.where(context_2))) {
+                this.failedStateTracker.registerFailure(context_2);
+                this.textIndex = context_2.textIndex;
+                this.tokens.splice(context_2.countTokens);
+                this.plainTextBuffer = context_2.plainTextBuffer;
                 this.dirty();
                 return;
             }
