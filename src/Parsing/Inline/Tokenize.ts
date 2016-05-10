@@ -1,6 +1,5 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { MediaToken } from './Tokens/MediaToken'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
@@ -157,7 +156,7 @@ class Tokenizer {
     })
 
     this.mediaConventions = [AUDIO, IMAGE, VIDEO].map(media =>
-      new TokenizableMedia(this.config.localize(media.nonLocalizedTerm), media.TokenType))
+      new TokenizableMedia(media.TokenType, media.state, this.config.localize(media.nonLocalizedTerm)))
 
     this.dirty()
     this.tokenize()
@@ -209,6 +208,17 @@ class Tokenizer {
           continue LoopCharacters
         }
 
+        if (state === TokenizerState.MediaUrl) {
+          const openedSquareBracketOrClosedMedia =
+            this.openSandwich(this.squareBracketedConvention) || this.closeMedia()
+
+          if (!openedSquareBracketOrClosedMedia) {
+            this.collectCurrentChar()
+          }
+
+          continue LoopCharacters
+        }
+
         for (const sandwich of [
           this.spoilerConvention,
           this.footnoteConvention,
@@ -218,6 +228,16 @@ class Tokenizer {
           this.parenthesizedConvention
         ]) {
           if (state === sandwich.state && this.closeSandwich(sandwich)) {
+            continue LoopCharacters
+          }
+        }
+
+        for (const media of this.mediaConventions) {
+          if (state === media.state) {
+            if (!this.openMediaUrl()) {
+              this.collectCurrentChar()
+            }
+            
             continue LoopCharacters
           }
         }
@@ -236,6 +256,7 @@ class Tokenizer {
         || this.openSandwich(this.footnoteConvention)
         || this.openSandwich(this.revisionDeletionConvention)
         || this.openSandwich(this.revisionInsertionConvention)
+        || this.openMedia()
         || this.openLink()
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
@@ -319,6 +340,26 @@ class Tokenizer {
     })
   }
 
+  private openMedia(): boolean {
+    for (let media of this.mediaConventions) {
+      const openedMediaConvention = this.openConvention({
+        state: media.state,
+        startPattern: media.startPattern,
+        onOpen: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType())
+        },
+        mustClose: true,
+        ignoreOuterContexts: true
+      })
+      
+      if (openedMediaConvention) {
+        return true
+      }
+    }
+    
+    return false
+  }
+
   private openLinkUrlOrUndoPrematureLink(): boolean {
     const didStartLinkUrl =
       this.hasState(TokenizerState.Link) && this.openConvention({
@@ -369,14 +410,51 @@ class Tokenizer {
     return true
   }
 
+  private currentMediaToken(): MediaToken {
+    const currentToken = last(this.tokens)
+
+    if (currentToken instanceof MediaToken) {
+      return currentToken
+    }
+
+    throw new Error('Current token is not a media token')
+  }
+
+  private openMediaUrl(): boolean {
+    return this.openConvention({
+      state: TokenizerState.MediaUrl,
+      startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+      onOpen: () => {
+        this.currentMediaToken().description = this.flushUnmatchedText()
+      },
+      ignoreOuterContexts: true,
+      // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
+      // to the URL arrow. We set the media context's `mustClose` to true.
+      mustClose: false
+    })
+  }
+
   private closeLink(): boolean {
     return this.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
         const url = this.flushUnmatchedText()
         this.tokens.push(new LINK.EndTokenType(url))
-        this.closeMostRecentOpen(TokenizerState.LinkUrl)
-        this.closeMostRecentOpen(TokenizerState.Link)
+        this.closeMostRecentContextWithState(TokenizerState.LinkUrl)
+        this.closeMostRecentContextWithState(TokenizerState.Link)
+      }
+    })
+  }
+
+  private closeMedia(): boolean {
+    return this.advanceAfterMatch({
+      pattern: LINK_END_PATTERN,
+      then: () => {
+        this.currentMediaToken().url = this.flushUnmatchedText()
+        this.closeMostRecentContextWithState(TokenizerState.MediaUrl)
+        
+        // Once the media URL's context is closed, the media's context is innermost.
+        this.closeInnermostContext()
       }
     })
   }
@@ -413,7 +491,7 @@ class Tokenizer {
     return this.hasState(state) && this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeMostRecentOpen(state)
+        this.closeMostRecentContextWithState(state)
         onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -476,7 +554,7 @@ class Tokenizer {
     )
   }
 
-  private closeMostRecentOpen(state: TokenizerState): void {
+  private closeMostRecentContextWithState(state: TokenizerState): void {
     for (let i = 0; i < this.openContexts.length; i++) {
       if (this.openContexts[i].state === state) {
         this.openContexts.splice(i, 1)
@@ -485,6 +563,14 @@ class Tokenizer {
     }
 
     throw new Error(`State was not open: ${TokenizerState[state]}`)
+  }
+
+  private closeInnermostContext(): void {
+    if (!this.openContexts.length) {
+      throw new Error(`No open contexts`)
+    }
+    
+    this.openContexts.pop()
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {

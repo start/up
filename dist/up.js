@@ -173,10 +173,11 @@ function getSandwichEndedByThisToken(token) {
 },{"./RichConventions":16}],6:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
-    function MediaConvention(nonLocalizedTerm, NodeType, TokenType) {
+    function MediaConvention(nonLocalizedTerm, NodeType, TokenType, state) {
         this.nonLocalizedTerm = nonLocalizedTerm;
         this.NodeType = NodeType;
         this.TokenType = TokenType;
+        this.state = state;
     }
     return MediaConvention;
 }());
@@ -191,14 +192,15 @@ var VideoToken_1 = require('./Tokens/VideoToken');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, AudioToken_1.AudioToken);
+var TokenizerState_1 = require('./TokenizerState');
+var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, AudioToken_1.AudioToken, TokenizerState_1.TokenizerState.Audio);
 exports.AUDIO = AUDIO;
-var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, ImageToken_1.ImageToken);
+var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, ImageToken_1.ImageToken, TokenizerState_1.TokenizerState.Image);
 exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken);
+var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken, TokenizerState_1.TokenizerState.Video);
 exports.VIDEO = VIDEO;
 
-},{"../../SyntaxNodes/AudioNode":64,"../../SyntaxNodes/ImageNode":76,"../../SyntaxNodes/VideoNode":96,"./MediaConvention":6,"./Tokens/AudioToken":22,"./Tokens/ImageToken":27,"./Tokens/VideoToken":45}],8:[function(require,module,exports){
+},{"../../SyntaxNodes/AudioNode":64,"../../SyntaxNodes/ImageNode":76,"../../SyntaxNodes/VideoNode":96,"./MediaConvention":6,"./TokenizerState":21,"./Tokens/AudioToken":22,"./Tokens/ImageToken":27,"./Tokens/VideoToken":45}],8:[function(require,module,exports){
 "use strict";
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var CollectionHelpers_1 = require('../CollectionHelpers');
@@ -636,8 +638,9 @@ exports.LINK = LINK;
 var TextHelpers_1 = require('../TextHelpers');
 var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
-    function TokenizableMedia(localizedTerm, TokenType) {
+    function TokenizableMedia(TokenType, state, localizedTerm) {
         this.TokenType = TokenType;
+        this.state = state;
         this.startPattern = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE));
         this.endPattern = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
     }
@@ -665,6 +668,7 @@ exports.TokenizableSandwich = TokenizableSandwich;
 
 },{"../BooleanHelpers":1,"../Patterns":61}],19:[function(require,module,exports){
 "use strict";
+var MediaToken_1 = require('./Tokens/MediaToken');
 var TokenizerState_1 = require('./TokenizerState');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var TokenizableMedia_1 = require('./TokenizableMedia');
@@ -747,7 +751,7 @@ var Tokenizer = (function () {
             }
         });
         this.mediaConventions = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
-            return new TokenizableMedia_1.TokenizableMedia(_this.config.localize(media.nonLocalizedTerm), media.TokenType);
+            return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, _this.config.localize(media.nonLocalizedTerm));
         });
         this.dirty();
         this.tokenize();
@@ -784,6 +788,13 @@ var Tokenizer = (function () {
                     }
                     continue LoopCharacters;
                 }
+                if (state === TokenizerState_1.TokenizerState.MediaUrl) {
+                    var openedSquareBracketOrClosedMedia = this.openSandwich(this.squareBracketedConvention) || this.closeMedia();
+                    if (!openedSquareBracketOrClosedMedia) {
+                        this.collectCurrentChar();
+                    }
+                    continue LoopCharacters;
+                }
                 for (var _i = 0, _a = [
                     this.spoilerConvention,
                     this.footnoteConvention,
@@ -794,6 +805,15 @@ var Tokenizer = (function () {
                 ]; _i < _a.length; _i++) {
                     var sandwich = _a[_i];
                     if (state === sandwich.state && this.closeSandwich(sandwich)) {
+                        continue LoopCharacters;
+                    }
+                }
+                for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
+                    var media = _c[_b];
+                    if (state === media.state) {
+                        if (!this.openMediaUrl()) {
+                            this.collectCurrentChar();
+                        }
                         continue LoopCharacters;
                     }
                 }
@@ -809,6 +829,7 @@ var Tokenizer = (function () {
                 || this.openSandwich(this.footnoteConvention)
                 || this.openSandwich(this.revisionDeletionConvention)
                 || this.openSandwich(this.revisionInsertionConvention)
+                || this.openMedia()
                 || this.openLink()
                 || this.openSandwich(this.parenthesizedConvention)
                 || this.openSandwich(this.squareBracketedConvention));
@@ -873,6 +894,30 @@ var Tokenizer = (function () {
             ignoreOuterContexts: false
         });
     };
+    Tokenizer.prototype.openMedia = function () {
+        var _this = this;
+        var _loop_1 = function(media) {
+            var openedMediaConvention = this_1.openConvention({
+                state: media.state,
+                startPattern: media.startPattern,
+                onOpen: function () {
+                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType());
+                },
+                mustClose: true,
+                ignoreOuterContexts: true
+            });
+            if (openedMediaConvention) {
+                return { value: true };
+            }
+        };
+        var this_1 = this;
+        for (var _i = 0, _a = this.mediaConventions; _i < _a.length; _i++) {
+            var media = _a[_i];
+            var state_1 = _loop_1(media);
+            if (typeof state_1 === "object") return state_1.value;
+        }
+        return false;
+    };
     Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
         var _this = this;
         var didStartLinkUrl = this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
@@ -899,6 +944,25 @@ var Tokenizer = (function () {
         }
         return true;
     };
+    Tokenizer.prototype.currentMediaToken = function () {
+        var currentToken = CollectionHelpers_1.last(this.tokens);
+        if (currentToken instanceof MediaToken_1.MediaToken) {
+            return currentToken;
+        }
+        throw new Error('Current token is not a media token');
+    };
+    Tokenizer.prototype.openMediaUrl = function () {
+        var _this = this;
+        return this.openConvention({
+            state: TokenizerState_1.TokenizerState.MediaUrl,
+            startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+            onOpen: function () {
+                _this.currentMediaToken().description = _this.flushUnmatchedText();
+            },
+            ignoreOuterContexts: true,
+            mustClose: false
+        });
+    };
     Tokenizer.prototype.closeLink = function () {
         var _this = this;
         return this.advanceAfterMatch({
@@ -906,8 +970,19 @@ var Tokenizer = (function () {
             then: function () {
                 var url = _this.flushUnmatchedText();
                 _this.tokens.push(new RichConventions_1.LINK.EndTokenType(url));
-                _this.closeMostRecentOpen(TokenizerState_1.TokenizerState.LinkUrl);
-                _this.closeMostRecentOpen(TokenizerState_1.TokenizerState.Link);
+                _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.LinkUrl);
+                _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.Link);
+            }
+        });
+    };
+    Tokenizer.prototype.closeMedia = function () {
+        var _this = this;
+        return this.advanceAfterMatch({
+            pattern: LINK_END_PATTERN,
+            then: function () {
+                _this.currentMediaToken().url = _this.flushUnmatchedText();
+                _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.MediaUrl);
+                _this.closeInnermostContext();
             }
         });
     };
@@ -942,7 +1017,7 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.closeMostRecentOpen(state);
+                _this.closeMostRecentContextWithState(state);
                 onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
@@ -993,7 +1068,7 @@ var Tokenizer = (function () {
         return (this.closeSandwichIfInnermost(this.parenthesizedConvention)
             || this.closeSandwichIfInnermost(this.squareBracketedConvention));
     };
-    Tokenizer.prototype.closeMostRecentOpen = function (state) {
+    Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
         for (var i = 0; i < this.openContexts.length; i++) {
             if (this.openContexts[i].state === state) {
                 this.openContexts.splice(i, 1);
@@ -1001,6 +1076,12 @@ var Tokenizer = (function () {
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+    };
+    Tokenizer.prototype.closeInnermostContext = function () {
+        if (!this.openContexts.length) {
+            throw new Error("No open contexts");
+        }
+        this.openContexts.pop();
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
@@ -1090,7 +1171,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":2,"../Patterns":61,"../TextHelpers":63,"./FailedStateTracker":3,"./MassageTokensIntoTreeStructure":5,"./MediaConventions":7,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableMedia":17,"./TokenizableSandwich":18,"./TokenizerContext":20,"./TokenizerState":21,"./Tokens/InlineCodeToken":28,"./Tokens/PlainTextToken":32,"./Tokens/PotentialRaisedVoiceEndToken":33,"./Tokens/PotentialRaisedVoiceStartOrEndToken":34,"./Tokens/PotentialRaisedVoiceStartToken":35}],20:[function(require,module,exports){
+},{"../CollectionHelpers":2,"../Patterns":61,"../TextHelpers":63,"./FailedStateTracker":3,"./MassageTokensIntoTreeStructure":5,"./MediaConventions":7,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableMedia":17,"./TokenizableSandwich":18,"./TokenizerContext":20,"./TokenizerState":21,"./Tokens/InlineCodeToken":28,"./Tokens/MediaToken":31,"./Tokens/PlainTextToken":32,"./Tokens/PotentialRaisedVoiceEndToken":33,"./Tokens/PotentialRaisedVoiceStartOrEndToken":34,"./Tokens/PotentialRaisedVoiceStartToken":35}],20:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
@@ -1119,6 +1200,10 @@ exports.TokenizerContext = TokenizerContext;
     TokenizerState[TokenizerState["LinkUrl"] = 6] = "LinkUrl";
     TokenizerState[TokenizerState["RevisionInsertion"] = 7] = "RevisionInsertion";
     TokenizerState[TokenizerState["RevisionDeletion"] = 8] = "RevisionDeletion";
+    TokenizerState[TokenizerState["Audio"] = 9] = "Audio";
+    TokenizerState[TokenizerState["Image"] = 10] = "Image";
+    TokenizerState[TokenizerState["Video"] = 11] = "Video";
+    TokenizerState[TokenizerState["MediaUrl"] = 12] = "MediaUrl";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 

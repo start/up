@@ -7,5 +7,9 @@ export enum TokenizerState {
   Link,
   LinkUrl,
   RevisionInsertion,
-  RevisionDeletion
+  RevisionDeletion,
+  Audio,
+  Image,
+  Video,
+  MediaUrl
 }
