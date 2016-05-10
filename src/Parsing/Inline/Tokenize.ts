@@ -162,7 +162,7 @@ class Tokenizer {
     LoopCharacters: while (true) {
 
       if (this.failed()) {
-        this.undoLatestFallibleContext()
+        this.undoLatestFailedContext()
       }
 
       if (this.reachedEndOfText()) {
@@ -251,7 +251,7 @@ class Tokenizer {
     )
   }
 
-  private undoLatestFallibleContext(args?: { where: (context: TokenizerContext) => boolean }): void {
+  private undoLatestFailedContext(args?: { where: (context: TokenizerContext) => boolean }): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
@@ -260,6 +260,7 @@ class Tokenizer {
 
         this.textIndex = context.textIndex
         this.tokens.splice(context.countTokens)
+        this.openContexts = context.openContexts
         this.plainTextBuffer = context.plainTextBuffer
 
         this.dirty()
@@ -382,7 +383,7 @@ class Tokenizer {
   }
 
   private undoLink(): void {
-    this.undoLatestFallibleContext({
+    this.undoLatestFailedContext({
       where: (context) => context.state === TokenizerState.Link
     })
   }
@@ -441,6 +442,7 @@ class Tokenizer {
             state: state,
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
+            openContexts: this.openContexts,
             plainTextBuffer: this.plainTextBuffer,
             mustClose: mustClose,
             ignoreOuterContexts: ignoreOuterContexts

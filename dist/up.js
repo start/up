@@ -735,7 +735,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         LoopCharacters: while (true) {
             if (this.failed()) {
-                this.undoLatestFallibleContext();
+                this.undoLatestFailedContext();
             }
             if (this.reachedEndOfText()) {
                 break;
@@ -803,13 +803,14 @@ var Tokenizer = (function () {
         return (this.reachedEndOfText()
             && this.openContexts.some(function (context) { return context.mustClose; }));
     };
-    Tokenizer.prototype.undoLatestFallibleContext = function (args) {
+    Tokenizer.prototype.undoLatestFailedContext = function (args) {
         while (this.openContexts.length) {
             var context_2 = this.openContexts.pop();
             if (context_2.mustClose && (!args || args.where(context_2))) {
                 this.failedStateTracker.registerFailure(context_2);
                 this.textIndex = context_2.textIndex;
                 this.tokens.splice(context_2.countTokens);
+                this.openContexts = context_2.openContexts;
                 this.plainTextBuffer = context_2.plainTextBuffer;
                 this.dirty();
                 return;
@@ -896,7 +897,7 @@ var Tokenizer = (function () {
         return false;
     };
     Tokenizer.prototype.undoLink = function () {
-        this.undoLatestFallibleContext({
+        this.undoLatestFailedContext({
             where: function (context) { return context.state === TokenizerState_1.TokenizerState.Link; }
         });
     };
@@ -953,6 +954,7 @@ var Tokenizer = (function () {
                     state: state,
                     textIndex: _this.textIndex,
                     countTokens: _this.tokens.length,
+                    openContexts: _this.openContexts,
                     plainTextBuffer: _this.plainTextBuffer,
                     mustClose: mustClose,
                     ignoreOuterContexts: ignoreOuterContexts
@@ -1070,10 +1072,11 @@ var Tokenizer = (function () {
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
-        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts;
+        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, openContexts = args.openContexts, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts;
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
+        this.openContexts = openContexts.slice();
         this.plainTextBuffer = plainTextBuffer;
         this.mustClose = mustClose;
         this.ignoreOuterContexts = ignoreOuterContexts;
