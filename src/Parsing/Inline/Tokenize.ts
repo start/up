@@ -4,6 +4,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
+import { TokenizableMedia } from './TokenizableMedia'
 import { FailedStateTracker } from './FailedStateTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
@@ -57,11 +58,11 @@ const LINK_START_PATTERN = new RegExp(
   startsWith(escapeForRegex('['))
 )
 
-const LINK_URL_START_PATTERN = new RegExp(
+const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
   startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE)
 )
 
-const LINK_END_PATTERN = new RegExp(
+const LINK_AND_MEDIA_END_PATTERN = new RegExp(
   startsWith(escapeForRegex(']'))
 )
 
@@ -101,6 +102,8 @@ class Tokenizer {
   // can contain parenthesized or "square bracketed" text.
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
+
+  private mediaConventions: TokenizableMedia[]
 
   constructor(private entireText: string, private config: UpConfig) {
     this.footnoteConvention =
@@ -153,6 +156,9 @@ class Tokenizer {
       }
     })
 
+    this.mediaConventions =
+      [AUDIO, IMAGE, VIDEO].map(media =>
+        new TokenizableMedia(this.config.localize(media.nonLocalizedTerm), media.TokenType))
 
     this.dirty()
     this.tokenize()
@@ -173,11 +179,11 @@ class Tokenizer {
 
       if (this.currentChar === ESCAPE_CHAR) {
         this.advance(1)
-        
+
         if (!this.reachedEndOfText()) {
           this.collectCurrentChar()
         }
-        
+
         continue
       }
 
@@ -318,7 +324,7 @@ class Tokenizer {
     const didStartLinkUrl =
       this.hasState(TokenizerState.Link) && this.openConvention({
         state: TokenizerState.LinkUrl,
-        startPattern: LINK_URL_START_PATTERN,
+        startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
         onOpen: () => {
           this.flushUnmatchedTextToPlainTextToken()
         },
@@ -366,7 +372,7 @@ class Tokenizer {
 
   private closeLink(): boolean {
     return this.advanceAfterMatch({
-      pattern: LINK_END_PATTERN,
+      pattern: LINK_AND_MEDIA_END_PATTERN,
       then: () => {
         const url = this.flushUnmatchedText()
         this.tokens.push(new LINK.EndTokenType(url))
@@ -378,7 +384,7 @@ class Tokenizer {
 
   // This method isn't called once we start tokenizing a link's URL.
   private undoLinkThatWasActuallyBracketedText(): boolean {
-    if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+    if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_AND_MEDIA_END_PATTERN })) {
       this.undoLink()
       return true
     }

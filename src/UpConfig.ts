@@ -1,6 +1,6 @@
 export interface UpConfigArgs {
   documentName?: string,
-  
+
   i18n?: {
     idWordDelimiter?: string,
 
@@ -11,6 +11,7 @@ export interface UpConfigArgs {
       spoiler?: string,
       footnote?: string,
       footnoteReference?: string
+      [term: string]: string
     }
   }
 }
@@ -40,5 +41,15 @@ export class UpConfig {
         }
       }
     }
+  }
+
+  localize(nonLocalizedTerm: string): string {
+    const localizedTerm = this.settings.i18n.terms[nonLocalizedTerm]
+
+    if (localizedTerm) {
+      return localizedTerm
+    }
+
+    throw new Error(`Unrecognizes term: ${nonLocalizedTerm}`)
   }
 }
