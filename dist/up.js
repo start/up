@@ -847,9 +847,7 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
             },
             mustClose: true,
-            ignoreOuterContexts: false,
-            close: function () { return false; },
-            cancel: function () { return false; }
+            ignoreOuterContexts: false
         });
     };
     Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
@@ -861,9 +859,7 @@ var Tokenizer = (function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
             ignoreOuterContexts: true,
-            mustClose: false,
-            close: function () { return false; },
-            cancel: function () { return false; }
+            mustClose: false
         });
         if (!didStartLinkUrl) {
             return false;
@@ -905,15 +901,12 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.openSandwich = function (sandwich) {
-        var _this = this;
         return this.openConvention({
             state: sandwich.state,
             startPattern: sandwich.startPattern,
             onOpen: sandwich.onOpen,
             mustClose: sandwich.mustClose,
-            ignoreOuterContexts: sandwich.ignoreOuterContexts,
-            close: function () { return _this.closeSandwich(sandwich); },
-            cancel: (function () { return false; })
+            ignoreOuterContexts: sandwich.ignoreOuterContexts
         });
     };
     Tokenizer.prototype.closeSandwich = function (sandwich) {
@@ -948,7 +941,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
-        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts, close = args.close, cancel = args.cancel;
+        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts;
         return this.canTry(state) && this.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -962,9 +955,7 @@ var Tokenizer = (function () {
                     countTokens: _this.tokens.length,
                     plainTextBuffer: _this.plainTextBuffer,
                     mustClose: mustClose,
-                    ignoreOuterContexts: ignoreOuterContexts,
-                    close: close,
-                    cancel: cancel
+                    ignoreOuterContexts: ignoreOuterContexts
                 }));
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
@@ -1079,15 +1070,13 @@ var Tokenizer = (function () {
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
-        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts, close = args.close, cancel = args.cancel;
+        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts;
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
         this.plainTextBuffer = plainTextBuffer;
         this.mustClose = mustClose;
         this.ignoreOuterContexts = ignoreOuterContexts;
-        this.close = close;
-        this.cancel = cancel;
     }
     return TokenizerContext;
 }());
