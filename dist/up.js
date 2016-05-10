@@ -743,7 +743,9 @@ var Tokenizer = (function () {
             var ESCAPE_CHAR = '\\';
             if (this.currentChar === ESCAPE_CHAR) {
                 this.advance(1);
-                this.collectCurrentChar();
+                if (!this.reachedEndOfText()) {
+                    this.collectCurrentChar();
+                }
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {

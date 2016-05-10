@@ -173,7 +173,11 @@ class Tokenizer {
 
       if (this.currentChar === ESCAPE_CHAR) {
         this.advance(1)
-        this.collectCurrentChar()
+        
+        if (!this.reachedEndOfText()) {
+          this.collectCurrentChar()
+        }
+        
         continue
       }
 
@@ -192,7 +196,7 @@ class Tokenizer {
         if (state === TokenizerState.LinkUrl) {
           const openedSquareBracketOrClosedLink =
             this.openSandwich(this.squareBracketedConvention) || this.closeLink()
-            
+
           if (!openedSquareBracketOrClosedLink) {
             this.collectCurrentChar()
           }
