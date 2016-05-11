@@ -901,10 +901,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openNakedUrl = function () {
         var _this = this;
-        return this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
+        return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
             state: TokenizerState_1.TokenizerState.Link,
-            startPattern: NAKED_URL_START_PATTERN,
-            onOpen: function (urlProtocol) {
+            pattern: NAKED_URL_START_PATTERN,
+            then: function (urlProtocol) {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken_1.NakedUrlToken(urlProtocol));
             },
             mustClose: true
@@ -914,8 +914,8 @@ var Tokenizer = (function () {
         var _this = this;
         return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
             state: TokenizerState_1.TokenizerState.Link,
-            startPattern: LINK_START_PATTERN,
-            onOpen: function () {
+            pattern: LINK_START_PATTERN,
+            then: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
             },
             mustClose: true
@@ -926,8 +926,8 @@ var Tokenizer = (function () {
         var _loop_1 = function(media) {
             var openedMediaConvention = this_1.openConvention({
                 state: media.state,
-                startPattern: media.startPattern,
-                onOpen: function () {
+                pattern: media.startPattern,
+                then: function () {
                     _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType());
                 },
                 mustClose: true
@@ -948,8 +948,8 @@ var Tokenizer = (function () {
         var _this = this;
         var didStartLinkUrl = this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
-            startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-            onOpen: function () {
+            pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+            then: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
             mustClose: false
@@ -973,8 +973,8 @@ var Tokenizer = (function () {
         var _this = this;
         return this.openConvention({
             state: TokenizerState_1.TokenizerState.MediaUrl,
-            startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-            onOpen: function () {
+            pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+            then: function () {
                 _this.currentToken.description = _this.flushUnmatchedText();
             },
             mustClose: false
@@ -1018,8 +1018,8 @@ var Tokenizer = (function () {
     Tokenizer.prototype.openSandwich = function (sandwich) {
         return this.openConvention({
             state: sandwich.state,
-            startPattern: sandwich.startPattern,
-            onOpen: sandwich.onOpen,
+            pattern: sandwich.startPattern,
+            then: sandwich.onOpen,
             mustClose: sandwich.mustClose
         });
     };
@@ -1055,9 +1055,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
-        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose;
+        var state = args.state, pattern = args.pattern, then = args.then, mustClose = args.mustClose;
         return this.canTry(state) && this.advanceAfterMatch({
-            pattern: startPattern,
+            pattern: pattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
                 for (var _i = 3; _i < arguments.length; _i++) {
@@ -1071,7 +1071,7 @@ var Tokenizer = (function () {
                     plainTextBuffer: _this.plainTextBuffer,
                     mustClose: mustClose
                 }));
-                onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };

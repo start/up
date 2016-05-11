@@ -354,8 +354,8 @@ class Tokenizer {
   private openNakedUrl(): boolean {
     return !this.hasState(TokenizerState.Link) && this.hasState(TokenizerState.Link) && this.openConvention({
       state: TokenizerState.Link,
-      startPattern: NAKED_URL_START_PATTERN,
-      onOpen: (urlProtocol) => {
+      pattern: NAKED_URL_START_PATTERN,
+      then: (urlProtocol) => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))
       },
       mustClose: true
@@ -365,8 +365,8 @@ class Tokenizer {
   private openLink(): boolean {
     return !this.hasState(TokenizerState.Link) && this.openConvention({
       state: TokenizerState.Link,
-      startPattern: LINK_START_PATTERN,
-      onOpen: () => {
+      pattern: LINK_START_PATTERN,
+      then: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
       },
       mustClose: true
@@ -377,8 +377,8 @@ class Tokenizer {
     for (let media of this.mediaConventions) {
       const openedMediaConvention = this.openConvention({
         state: media.state,
-        startPattern: media.startPattern,
-        onOpen: () => {
+        pattern: media.startPattern,
+        then: () => {
           this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType())
         },
         mustClose: true
@@ -396,8 +396,8 @@ class Tokenizer {
     const didStartLinkUrl =
       this.hasState(TokenizerState.Link) && this.openConvention({
         state: TokenizerState.LinkUrl,
-        startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-        onOpen: () => {
+        pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+        then: () => {
           this.flushUnmatchedTextToPlainTextToken()
         },
         // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
@@ -444,8 +444,8 @@ class Tokenizer {
   private openMediaUrl(): boolean {
     return this.openConvention({
       state: TokenizerState.MediaUrl,
-      startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-      onOpen: () => {
+      pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+      then: () => {
         (<MediaToken>this.currentToken).description = this.flushUnmatchedText()
       },
       // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
@@ -498,8 +498,8 @@ class Tokenizer {
   private openSandwich(sandwich: TokenizableSandwich): boolean {
     return this.openConvention({
       state: sandwich.state,
-      startPattern: sandwich.startPattern,
-      onOpen: sandwich.onOpen,
+      pattern: sandwich.startPattern,
+      then: sandwich.onOpen,
       mustClose: sandwich.mustClose
     })
   }
@@ -531,15 +531,15 @@ class Tokenizer {
   private openConvention(
     args: {
       state: TokenizerState,
-      startPattern: RegExp,
-      onOpen: OnTokenizerMatch,
+      pattern: RegExp,
+      then: OnTokenizerMatch,
       mustClose: boolean
     }
   ): boolean {
-    const { state, startPattern, onOpen, mustClose } = args
+    const { state, pattern, then, mustClose } = args
 
     return this.canTry(state) && this.advanceAfterMatch({
-      pattern: startPattern,
+      pattern: pattern,
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContexts.push(
@@ -552,7 +552,7 @@ class Tokenizer {
             mustClose: mustClose
           }))
 
-        onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
