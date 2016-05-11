@@ -352,7 +352,7 @@ class Tokenizer {
   }
 
   private openNakedUrl(): boolean {
-    return this.hasState(TokenizerState.Link) && this.openConvention({
+    return !this.hasState(TokenizerState.Link) && this.hasState(TokenizerState.Link) && this.openConvention({
       state: TokenizerState.Link,
       startPattern: NAKED_URL_START_PATTERN,
       onOpen: (urlProtocol) => {

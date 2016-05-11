@@ -73,4 +73,13 @@ describe('A naked URL', () => {
         new PlainTextNode(']'),
       ]))
   })
+  
+  it("is ignored when inside a link's contents", () => {
+    expect(Up.toAst('[https://archive.org/fake -> https://archive.org/real]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('https://archive.org/fake')
+        ], 'https://archive.org/real')
+      ]))
+  })
 })
