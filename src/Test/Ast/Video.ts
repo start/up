@@ -35,3 +35,13 @@ describe('A video with a relative URL containing spaces and no extension', () =>
       ]))
   })
 })
+
+
+describe('Matching square brackets in a video URL', () => {
+  it('do not terminate the URL', () => {
+    expect(Up.toAst('[video: ghosts eating luggage -> http://example.com/?state=[NE]]')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
+      ]))
+  })
+})

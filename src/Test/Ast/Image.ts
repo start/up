@@ -36,3 +36,13 @@ describe('An image with a relative URL containing spaces and no extension', () =
       ]))
   })
 })
+
+
+describe('Matching square brackets in a video URL', () => {
+  it('do not terminate the URL', () => {
+    expect(Up.toAst('[image: haunted house -> http://example.com/?state=[NE]]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('haunted house', 'http://example.com/?state=[NE]'),
+      ]))
+  })
+})

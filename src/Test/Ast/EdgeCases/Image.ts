@@ -65,7 +65,7 @@ describe('An otherwise valid image convention prematurely terminated by an unmat
 })
 
 
-describe("Unmatched opening parentheses in a image's url", () => {
+describe("Unmatched opening parentheses in an image URL", () => {
   it('do not affect any text that follows the link', () => {
     const text = '(([image: West Virginia exit polling -> https://example.com/a(normal(url]))'
 

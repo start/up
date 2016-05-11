@@ -65,7 +65,7 @@ describe('An otherwise valid video convention prematurely terminated by an unmat
 })
 
 
-describe("Unmatched opening parentheses in a video's url", () => {
+describe("Unmatched opening parentheses in a video URL", () => {
   it('do not affect any text that follows the link', () => {
     const text = '(([video: West Virginia exit polling -> https://example.com/a(normal(url]))'
 
