@@ -703,6 +703,7 @@ var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeFo
 var LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
 var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
+var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE));
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -809,6 +810,11 @@ var Tokenizer = (function () {
                         continue LoopCharacters;
                     }
                 }
+                if (state === TokenizerState_1.TokenizerState.NakedUrl) {
+                    if (this.closeNakedUrl()) {
+                        continue;
+                    }
+                }
                 for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
                     var media = _c[_b];
                     if (state === media.state) {
@@ -909,6 +915,12 @@ var Tokenizer = (function () {
             },
             mustClose: true
         });
+    };
+    Tokenizer.prototype.closeNakedUrl = function () {
+        if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
+            return false;
+        }
+        return true;
     };
     Tokenizer.prototype.openLink = function () {
         var _this = this;
@@ -2207,6 +2219,8 @@ var endsWith = function (pattern) { return pattern + '$'; };
 exports.endsWith = endsWith;
 var INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
 exports.INLINE_WHITESPACE_CHAR = INLINE_WHITESPACE_CHAR;
+var WHITESPACE_CHAR = '\\s';
+exports.WHITESPACE_CHAR = WHITESPACE_CHAR;
 var ANY_WHITESPACE = any('\\s');
 exports.ANY_WHITESPACE = ANY_WHITESPACE;
 var INLINE_WHITESPACE = any('[^\\S\\n]');

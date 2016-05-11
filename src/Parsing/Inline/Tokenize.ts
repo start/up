@@ -34,7 +34,7 @@ import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR, optional } from '../Patterns'
+import { startsWith, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, optional } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const tokens = new Tokenizer(text, config).tokens
@@ -68,6 +68,10 @@ const LINK_END_PATTERN = new RegExp(
 
 const NAKED_URL_START_PATTERN = new RegExp(
   startsWith('http' + optional('s') + '://')
+)
+
+const WHITESPACE_CHAR_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE)
 )
 
 
@@ -232,6 +236,12 @@ class Tokenizer {
           }
         }
 
+        if (state === TokenizerState.NakedUrl) {
+          if (this.closeNakedUrl()) {
+            continue
+          }
+        }
+
         for (const media of this.mediaConventions) {
           if (state === media.state) {
             if (!this.openMediaUrl()) {
@@ -360,6 +370,17 @@ class Tokenizer {
       },
       mustClose: true
     })
+  }
+
+  private closeNakedUrl(): boolean {
+    if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
+      return false
+    }
+    
+    // We don't want to advance past the whitespace character! We leave the whitespace character to be matched by another
+    // convention (e.g. the leading space for footnote reference).
+
+    return true
   }
 
   private openLink(): boolean {

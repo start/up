@@ -30,6 +30,9 @@ const endsWith =
 
 const INLINE_WHITESPACE_CHAR =
   '[^\\S\\n]'
+  
+const WHITESPACE_CHAR =
+  '\\s'
 
 const ANY_WHITESPACE =
   any('\\s')
@@ -67,6 +70,7 @@ export {
   NON_BLANK,
   BLANK,
   INLINE_WHITESPACE_CHAR,
+  WHITESPACE_CHAR,
   NON_WHITESPACE_CHAR,
   INDENT,
   ANY_WHITESPACE,
