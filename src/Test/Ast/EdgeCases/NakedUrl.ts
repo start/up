@@ -72,3 +72,13 @@ describe("Unmatched opening parentheses in a naked URL", () => {
       ]))
   })
 })
+
+
+describe('A naked URL protocol without the rest of the URL', () => {
+  it("is preserved as plain text", () => {
+    expect(Up.toAst('http://')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('http://')
+      ]))
+  })
+})
