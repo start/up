@@ -826,7 +826,14 @@ var Tokenizer = (function () {
                     }
                 }
             }
-            var openedConvention = !this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && (this.tokenizeRaisedVoicePlaceholders()
+            if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
+                var didOpenBracket = this.openSandwich(this.parenthesizedConvention) || this.openSandwich(this.squareBracketedConvention);
+                if (!didOpenBracket) {
+                    this.collectCurrentChar();
+                }
+                continue;
+            }
+            var openedConvention = (this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.openSandwich(this.spoilerConvention)
                 || this.openSandwich(this.footnoteConvention)

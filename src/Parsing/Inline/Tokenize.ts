@@ -236,7 +236,7 @@ class Tokenizer {
 
             continue LoopCharacters
           }
-          
+
           case TokenizerState.InlineCode: {
             if (!this.closeSandwich(this.inlineCodeConvention)) {
               this.collectCurrentChar()
@@ -249,36 +249,46 @@ class Tokenizer {
             if (this.tryCloseNakedUrl()) {
               continue LoopCharacters
             }
-            
+
             break
           }
-          
+
           case TokenizerState.Link: {
             if (state === TokenizerState.Link) {
               if (this.openLinkUrlOrUndoPrematureLink()) {
                 continue LoopCharacters
               }
             }
-            
+
             break
           }
         }
       }
 
-      const openedConvention =
-        !this.hasState(TokenizerState.NakedUrl) && (
-          this.tokenizeRaisedVoicePlaceholders()
-          || this.openSandwich(this.inlineCodeConvention)
-          || this.openSandwich(this.spoilerConvention)
-          || this.openSandwich(this.footnoteConvention)
-          || this.openSandwich(this.revisionDeletionConvention)
-          || this.openSandwich(this.revisionInsertionConvention)
-          || this.openMedia()
-          || this.openLink()
-          || this.openSandwich(this.parenthesizedConvention)
-          || this.openSandwich(this.squareBracketedConvention)
-          || this.openNakedUrl()
-        )
+      if (this.hasState(TokenizerState.NakedUrl)) {
+        const didOpenBracket =
+          this.openSandwich(this.parenthesizedConvention) || this.openSandwich(this.squareBracketedConvention)
+
+        if (!didOpenBracket) {
+          this.collectCurrentChar()
+        }
+
+        continue
+      }
+
+      const openedConvention = (
+        this.tokenizeRaisedVoicePlaceholders()
+        || this.openSandwich(this.inlineCodeConvention)
+        || this.openSandwich(this.spoilerConvention)
+        || this.openSandwich(this.footnoteConvention)
+        || this.openSandwich(this.revisionDeletionConvention)
+        || this.openSandwich(this.revisionInsertionConvention)
+        || this.openMedia()
+        || this.openLink()
+        || this.openSandwich(this.parenthesizedConvention)
+        || this.openSandwich(this.squareBracketedConvention)
+        || this.openNakedUrl()
+      )
 
       if (!openedConvention) {
         this.collectCurrentChar()
