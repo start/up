@@ -259,18 +259,20 @@ class Tokenizer {
         }
       }
 
-      const openedConvention = (
-        this.tokenizeRaisedVoicePlaceholders()
-        || this.openSandwich(this.inlineCodeConvention)
-        || this.openSandwich(this.spoilerConvention)
-        || this.openSandwich(this.footnoteConvention)
-        || this.openSandwich(this.revisionDeletionConvention)
-        || this.openSandwich(this.revisionInsertionConvention)
-        || this.openMedia()
-        || this.openLink()
-        || this.openSandwich(this.parenthesizedConvention)
-        || this.openSandwich(this.squareBracketedConvention)
-      )
+      const openedConvention =
+        !this.hasState(TokenizerState.NakedUrl) && (
+          this.tokenizeRaisedVoicePlaceholders()
+          || this.openSandwich(this.inlineCodeConvention)
+          || this.openSandwich(this.spoilerConvention)
+          || this.openSandwich(this.footnoteConvention)
+          || this.openSandwich(this.revisionDeletionConvention)
+          || this.openSandwich(this.revisionInsertionConvention)
+          || this.openMedia()
+          || this.openLink()
+          || this.openSandwich(this.parenthesizedConvention)
+          || this.openSandwich(this.squareBracketedConvention)
+          || this.openNakedUrl()
+        )
 
       if (!openedConvention) {
         this.collectCurrentChar()
@@ -368,7 +370,7 @@ class Tokenizer {
       then: (urlProtocol) => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))
       },
-      mustClose: true
+      mustClose: false
     })
   }
 
@@ -378,7 +380,9 @@ class Tokenizer {
     if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
       return false
     }
-    
+
+    (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
+
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
@@ -609,12 +613,12 @@ class Tokenizer {
   private closeMostRecentContextWithStateAndAnyInnerContexts(state: TokenizerState): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
-      
+
       if (context.state === state) {
         return
       }
     }
-    
+
     throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 

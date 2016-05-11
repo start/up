@@ -830,7 +830,7 @@ var Tokenizer = (function () {
                     }
                 }
             }
-            var openedConvention = (this.tokenizeRaisedVoicePlaceholders()
+            var openedConvention = !this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && (this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.openSandwich(this.spoilerConvention)
                 || this.openSandwich(this.footnoteConvention)
@@ -839,7 +839,8 @@ var Tokenizer = (function () {
                 || this.openMedia()
                 || this.openLink()
                 || this.openSandwich(this.parenthesizedConvention)
-                || this.openSandwich(this.squareBracketedConvention));
+                || this.openSandwich(this.squareBracketedConvention)
+                || this.openNakedUrl());
             if (!openedConvention) {
                 this.collectCurrentChar();
             }
@@ -913,13 +914,14 @@ var Tokenizer = (function () {
             then: function (urlProtocol) {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken_1.NakedUrlToken(urlProtocol));
             },
-            mustClose: true
+            mustClose: false
         });
     };
     Tokenizer.prototype.closeNakedUrl = function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }
+        this.currentToken.restOfUrl = this.flushUnmatchedText();
         this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
         return true;
     };
