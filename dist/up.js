@@ -664,7 +664,6 @@ var TokenizableSandwich = (function () {
         this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern), 'i');
         this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
         this.mustClose = BooleanHelpers_1.defaultTrue(args.mustClose);
-        this.ignoreOuterContexts = args.ignoreOuterContexts;
         this.onOpen = args.onOpen;
         this.onClose = args.onClose;
     }
@@ -898,8 +897,7 @@ var Tokenizer = (function () {
             onOpen: function (urlProtocol) {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken_1.NakedUrlToken(urlProtocol));
             },
-            mustClose: true,
-            ignoreOuterContexts: false
+            mustClose: true
         });
     };
     Tokenizer.prototype.openLink = function () {
@@ -910,8 +908,7 @@ var Tokenizer = (function () {
             onOpen: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
             },
-            mustClose: true,
-            ignoreOuterContexts: false
+            mustClose: true
         });
     };
     Tokenizer.prototype.openMedia = function () {
@@ -923,8 +920,7 @@ var Tokenizer = (function () {
                 onOpen: function () {
                     _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType());
                 },
-                mustClose: true,
-                ignoreOuterContexts: true
+                mustClose: true
             });
             if (openedMediaConvention) {
                 return { value: true };
@@ -946,7 +942,6 @@ var Tokenizer = (function () {
             onOpen: function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
-            ignoreOuterContexts: true,
             mustClose: false
         });
         if (!didStartLinkUrl) {
@@ -979,7 +974,6 @@ var Tokenizer = (function () {
             onOpen: function () {
                 _this.currentMediaToken().description = _this.flushUnmatchedText();
             },
-            ignoreOuterContexts: true,
             mustClose: false
         });
     };
@@ -1023,8 +1017,7 @@ var Tokenizer = (function () {
             state: sandwich.state,
             startPattern: sandwich.startPattern,
             onOpen: sandwich.onOpen,
-            mustClose: sandwich.mustClose,
-            ignoreOuterContexts: sandwich.ignoreOuterContexts
+            mustClose: sandwich.mustClose
         });
     };
     Tokenizer.prototype.closeSandwich = function (sandwich) {
@@ -1059,7 +1052,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openConvention = function (args) {
         var _this = this;
-        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts;
+        var state = args.state, startPattern = args.startPattern, onOpen = args.onOpen, mustClose = args.mustClose;
         return this.canTry(state) && this.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1073,8 +1066,7 @@ var Tokenizer = (function () {
                     countTokens: _this.tokens.length,
                     openContexts: _this.openContexts,
                     plainTextBuffer: _this.plainTextBuffer,
-                    mustClose: mustClose,
-                    ignoreOuterContexts: ignoreOuterContexts
+                    mustClose: mustClose
                 }));
                 onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
@@ -1195,14 +1187,13 @@ var Tokenizer = (function () {
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
-        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, openContexts = args.openContexts, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose, ignoreOuterContexts = args.ignoreOuterContexts;
+        var state = args.state, textIndex = args.textIndex, countTokens = args.countTokens, openContexts = args.openContexts, plainTextBuffer = args.plainTextBuffer, mustClose = args.mustClose;
         this.state = state;
         this.textIndex = textIndex;
         this.countTokens = countTokens;
         this.openContexts = openContexts.slice();
         this.plainTextBuffer = plainTextBuffer;
         this.mustClose = mustClose;
-        this.ignoreOuterContexts = ignoreOuterContexts;
     }
     return TokenizerContext;
 }());

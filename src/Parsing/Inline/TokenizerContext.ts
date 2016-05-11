@@ -8,7 +8,6 @@ export class TokenizerContext {
   public openContexts: TokenizerContext[]
   public plainTextBuffer: string
   public mustClose: boolean
-  public ignoreOuterContexts: boolean
 
   constructor(
     args: {
@@ -18,10 +17,9 @@ export class TokenizerContext {
       openContexts: TokenizerContext[]
       plainTextBuffer: string
       mustClose: boolean
-      ignoreOuterContexts: boolean
     }
   ) {
-    const { state, textIndex, countTokens, openContexts, plainTextBuffer, mustClose, ignoreOuterContexts } = args
+    const { state, textIndex, countTokens, openContexts, plainTextBuffer, mustClose } = args
     
     this.state = state
     this.textIndex = textIndex
@@ -29,6 +27,5 @@ export class TokenizerContext {
     this.openContexts = openContexts.slice()
     this.plainTextBuffer = plainTextBuffer
     this.mustClose = mustClose
-    this.ignoreOuterContexts = ignoreOuterContexts
   }
 }

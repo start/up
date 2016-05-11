@@ -340,8 +340,7 @@ class Tokenizer {
       onOpen: (urlProtocol) => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))
       },
-      mustClose: true,
-      ignoreOuterContexts: false
+      mustClose: true
     })
   }
 
@@ -352,8 +351,7 @@ class Tokenizer {
       onOpen: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
       },
-      mustClose: true,
-      ignoreOuterContexts: false
+      mustClose: true
     })
   }
 
@@ -365,8 +363,7 @@ class Tokenizer {
         onOpen: () => {
           this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType())
         },
-        mustClose: true,
-        ignoreOuterContexts: true
+        mustClose: true
       })
       
       if (openedMediaConvention) {
@@ -385,7 +382,6 @@ class Tokenizer {
         onOpen: () => {
           this.flushUnmatchedTextToPlainTextToken()
         },
-        ignoreOuterContexts: true,
         // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
         // to the URL arrow. We set the link context's `mustClose` to true.
         mustClose: false
@@ -444,7 +440,6 @@ class Tokenizer {
       onOpen: () => {
         this.currentMediaToken().description = this.flushUnmatchedText()
       },
-      ignoreOuterContexts: true,
       // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
       // to the URL arrow. We set the media context's `mustClose` to true.
       mustClose: false
@@ -497,8 +492,7 @@ class Tokenizer {
       state: sandwich.state,
       startPattern: sandwich.startPattern,
       onOpen: sandwich.onOpen,
-      mustClose: sandwich.mustClose,
-      ignoreOuterContexts: sandwich.ignoreOuterContexts
+      mustClose: sandwich.mustClose
     })
   }
 
@@ -531,11 +525,10 @@ class Tokenizer {
       state: TokenizerState,
       startPattern: RegExp,
       onOpen: OnTokenizerMatch,
-      mustClose: boolean,
-      ignoreOuterContexts: boolean
+      mustClose: boolean
     }
   ): boolean {
-    const { state, startPattern, onOpen, mustClose, ignoreOuterContexts } = args
+    const { state, startPattern, onOpen, mustClose } = args
 
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: startPattern,
@@ -548,8 +541,7 @@ class Tokenizer {
             countTokens: this.tokens.length,
             openContexts: this.openContexts,
             plainTextBuffer: this.plainTextBuffer,
-            mustClose: mustClose,
-            ignoreOuterContexts: ignoreOuterContexts
+            mustClose: mustClose
           }))
 
         onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)

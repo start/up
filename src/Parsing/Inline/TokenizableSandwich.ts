@@ -9,7 +9,6 @@ export class TokenizableSandwich {
   public startPattern: RegExp
   public endPattern: RegExp
   public mustClose: boolean
-  public ignoreOuterContexts: boolean
   public onOpen: OnTokenizerMatch
   public onClose: OnTokenizerMatch
 
@@ -19,7 +18,6 @@ export class TokenizableSandwich {
       startPattern: string
       endPattern: string
       mustClose?: boolean
-      ignoreOuterContexts?: boolean
       onOpen: OnTokenizerMatch
       onClose: OnTokenizerMatch
     }
@@ -28,7 +26,6 @@ export class TokenizableSandwich {
     this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
     this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
     this.mustClose = defaultTrue(args.mustClose)
-    this.ignoreOuterContexts = args.ignoreOuterContexts
     this.onOpen = args.onOpen
     this.onClose = args.onClose
   }
