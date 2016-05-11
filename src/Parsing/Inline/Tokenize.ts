@@ -160,7 +160,7 @@ class Tokenizer {
       startPattern: '`',
       endPattern: '`',
       onOpen: () => {
-        this.flushUnmatchedTextToPlainTextToken()
+        this.flushAnyUnmatchedTextToPlainTextToken()
       },
       onClose: () => {
         this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
@@ -177,12 +177,10 @@ class Tokenizer {
   private tokenize(): void {
     LoopCharacters: while (true) {
 
-      if (this.failed()) {
-        this.undoLatestFailedContext()
-      }
-
       if (this.reachedEndOfText()) {
-        break
+        if (this.finalize()) {
+          break
+        }
       }
 
       if (this.collectCurrentCharIfEscaped()) {
@@ -278,8 +276,6 @@ class Tokenizer {
         this.collectCurrentChar()
       }
     }
-
-    this.flushUnmatchedTextToPlainTextToken()
   }
 
   private collectCurrentCharIfEscaped(): boolean {
@@ -307,31 +303,56 @@ class Tokenizer {
     return !this.remainingText
   }
 
-  private failed(): boolean {
-    return (
-      this.reachedEndOfText()
-      && this.openContexts.some(context => context.mustClose)
-    )
-  }
-
-  private undoLatestFailedContext(args?: { where: (context: TokenizerContext) => boolean }): void {
+  private finalize(): boolean {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (context.mustClose && (!args || args.where(context))) {
-        this.failedStateTracker.registerFailure(context)
-
-        this.textIndex = context.textIndex
-        this.tokens.splice(context.countTokens)
-        this.openContexts = context.openContexts
-        this.plainTextBuffer = context.plainTextBuffer
-
-        this.currentToken = last(this.tokens)
-        this.dirty()
-
-        return
+      switch (context.state) {
+        case TokenizerState.NakedUrl:
+          this.finalizeNakedUrl()
+          break;
+          
+        // Parentheses and brackets can be left unclosed.
+        case TokenizerState.SquareBracketed:
+        case TokenizerState.Parenthesized:
+        // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
+        // handler (below) backtrack to before the link itself.
+        case TokenizerState.LinkUrl:
+        // The same applies for media URLs.
+        case TokenizerState.MediaUrl:
+          break;
+        
+        default:
+          this.backtrackToBeforeContext(context)
+          return false
       }
     }
+    
+    this.flushAnyUnmatchedTextToPlainTextToken()
+    
+    return true
+  }
+
+  private backtrackToBeforeLatestContextWithState(state: TokenizerState): void {
+    while (this.openContexts.length) {
+      const context = this.openContexts.pop()
+      
+      if (context.state === state) {
+        this.backtrackToBeforeContext(context)
+      }
+    }
+  }
+  
+  private backtrackToBeforeContext(context: TokenizerContext): void {
+    this.failedStateTracker.registerFailure(context)
+
+    this.textIndex = context.textIndex
+    this.tokens.splice(context.countTokens)
+    this.openContexts = context.openContexts
+    this.plainTextBuffer = context.plainTextBuffer
+
+    this.currentToken = last(this.tokens)
+    this.dirty()
   }
 
   private advance(length: number): void {
@@ -351,7 +372,7 @@ class Tokenizer {
     return unmatchedText
   }
 
-  private flushUnmatchedTextToPlainTextToken(): void {
+  private flushAnyUnmatchedTextToPlainTextToken(): void {
     const unmatchedText = this.flushUnmatchedText()
 
     if (unmatchedText) {
@@ -369,8 +390,7 @@ class Tokenizer {
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))
-      },
-      mustClose: false
+      }
     })
   }
 
@@ -381,13 +401,17 @@ class Tokenizer {
       return false
     }
 
-    (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
+    this.finalizeNakedUrl()
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
-
+    
     return true
+  }
+  
+  private finalizeNakedUrl(): void {
+    (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
   }
 
   private openLink(): boolean {
@@ -396,8 +420,7 @@ class Tokenizer {
       pattern: LINK_START_PATTERN,
       then: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
-      },
-      mustClose: true
+      }
     })
   }
 
@@ -408,8 +431,7 @@ class Tokenizer {
         pattern: media.startPattern,
         then: () => {
           this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType())
-        },
-        mustClose: true
+        }
       })
 
       if (openedMediaConvention) {
@@ -426,11 +448,8 @@ class Tokenizer {
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
         then: () => {
-          this.flushUnmatchedTextToPlainTextToken()
-        },
-        // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
-        // to the URL arrow. We set the link context's `mustClose` to true.
-        mustClose: false
+          this.flushAnyUnmatchedTextToPlainTextToken()
+        }
       })
 
     if (!didStartLinkUrl) {
@@ -457,7 +476,7 @@ class Tokenizer {
         //
         // TODO: Don't produce link context until the URL arrow is found inside bracketed text
 
-        this.undoLink()
+        this.backtrackToBeforeLink()
         break
       }
 
@@ -475,10 +494,7 @@ class Tokenizer {
       pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
       then: () => {
         (<MediaToken>this.currentToken).description = this.flushUnmatchedText()
-      },
-      // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
-      // to the URL arrow. We set the media context's `mustClose` to true.
-      mustClose: false
+      }
     })
   }
 
@@ -510,25 +526,22 @@ class Tokenizer {
   // This method isn't called once we start tokenizing a link's URL.
   private undoLinkThatWasActuallyBracketedText(): boolean {
     if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
-      this.undoLink()
+      this.backtrackToBeforeLink()
       return true
     }
 
     return false
   }
 
-  private undoLink(): void {
-    this.undoLatestFailedContext({
-      where: (context) => context.state === TokenizerState.Link
-    })
+  private backtrackToBeforeLink(): void {
+    this.backtrackToBeforeLatestContextWithState(TokenizerState.Link)
   }
 
   private openSandwich(sandwich: TokenizableSandwich): boolean {
     return this.openConvention({
       state: sandwich.state,
       pattern: sandwich.startPattern,
-      then: sandwich.onOpen,
-      mustClose: sandwich.mustClose
+      then: sandwich.onOpen
     })
   }
 
@@ -548,11 +561,10 @@ class Tokenizer {
     args: {
       state: TokenizerState,
       pattern: RegExp,
-      then: OnTokenizerMatch,
-      mustClose: boolean
+      then: OnTokenizerMatch
     }
   ): boolean {
-    const { state, pattern, then, mustClose } = args
+    const { state, pattern, then } = args
 
     return this.canTry(state) && this.advanceAfterMatch({
       pattern: pattern,
@@ -564,8 +576,7 @@ class Tokenizer {
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
             openContexts: this.openContexts,
-            plainTextBuffer: this.plainTextBuffer,
-            mustClose: mustClose
+            plainTextBuffer: this.plainTextBuffer
           }))
 
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -612,7 +623,7 @@ class Tokenizer {
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
-    this.flushUnmatchedTextToPlainTextToken()
+    this.flushAnyUnmatchedTextToPlainTextToken()
     this.addToken(token)
   }
 
@@ -662,8 +673,7 @@ class Tokenizer {
       startPattern: escapeForRegex(openBracket),
       endPattern: escapeForRegex(closeBracket),
       onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer,
-      mustClose: false
+      onClose: addBracketToBuffer
     })
   }
 

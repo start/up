@@ -7,7 +7,6 @@ export class TokenizerContext {
   public countTokens: number
   public openContexts: TokenizerContext[]
   public plainTextBuffer: string
-  public mustClose: boolean
 
   constructor(
     args: {
@@ -16,16 +15,14 @@ export class TokenizerContext {
       countTokens: number
       openContexts: TokenizerContext[]
       plainTextBuffer: string
-      mustClose: boolean
     }
   ) {
-    const { state, textIndex, countTokens, openContexts, plainTextBuffer, mustClose } = args
+    const { state, textIndex, countTokens, openContexts, plainTextBuffer } = args
     
     this.state = state
     this.textIndex = textIndex
     this.countTokens = countTokens
     this.openContexts = openContexts.slice()
     this.plainTextBuffer = plainTextBuffer
-    this.mustClose = mustClose
   }
 }
