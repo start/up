@@ -11,5 +11,6 @@ export enum TokenizerState {
   Audio,
   Image,
   Video,
-  MediaUrl
+  MediaUrl,
+  NakedUrl
 }

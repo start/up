@@ -27,13 +27,14 @@ import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
 import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { StressStartToken } from './Tokens/StressStartToken'
+import { NakedUrlToken } from './Tokens/NakedUrlToken'
 import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
 import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
+import { startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR, optional } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   const tokens = new Tokenizer(text, config).tokens
@@ -63,6 +64,10 @@ const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
 
 const LINK_END_PATTERN = new RegExp(
   startsWith(escapeForRegex(']'))
+)
+
+const NAKED_URL_START_PATTERN = new RegExp(
+  startsWith('http' + optional('s') + '://')
 )
 
 
@@ -326,6 +331,18 @@ class Tokenizer {
 
   private canTry(state: TokenizerState): boolean {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
+  }
+  
+  private openNakedUrl(): boolean {
+    return this.hasState(TokenizerState.Link) && this.openConvention({
+      state: TokenizerState.Link,
+      startPattern: NAKED_URL_START_PATTERN,
+      onOpen: (urlProtocol) => {
+        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))
+      },
+      mustClose: true,
+      ignoreOuterContexts: false
+    })
   }
 
   private openLink(): boolean {
