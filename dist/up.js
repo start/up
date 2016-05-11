@@ -767,26 +767,6 @@ var Tokenizer = (function () {
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
                 var context_1 = this.openContexts[i];
                 var state = context_1.state;
-                if (state === TokenizerState_1.TokenizerState.InlineCode) {
-                    if (!this.closeSandwich(this.inlineCodeConvention)) {
-                        this.collectCurrentChar();
-                    }
-                    continue LoopCharacters;
-                }
-                if (state === TokenizerState_1.TokenizerState.LinkUrl) {
-                    var openedSquareBracketOrClosedLink = this.openSandwich(this.squareBracketedConvention) || this.closeLink();
-                    if (!openedSquareBracketOrClosedLink) {
-                        this.collectCurrentChar();
-                    }
-                    continue LoopCharacters;
-                }
-                if (state === TokenizerState_1.TokenizerState.MediaUrl) {
-                    var openedSquareBracketOrClosedMedia = this.openSandwich(this.squareBracketedConvention) || this.closeMedia();
-                    if (!openedSquareBracketOrClosedMedia) {
-                        this.collectCurrentChar();
-                    }
-                    continue LoopCharacters;
-                }
                 for (var _i = 0, _a = [
                     this.spoilerConvention,
                     this.footnoteConvention,
@@ -800,11 +780,6 @@ var Tokenizer = (function () {
                         continue LoopCharacters;
                     }
                 }
-                if (state === TokenizerState_1.TokenizerState.NakedUrl) {
-                    if (this.closeNakedUrl()) {
-                        continue;
-                    }
-                }
                 for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
                     var media = _c[_b];
                     if (state === media.state) {
@@ -814,9 +789,40 @@ var Tokenizer = (function () {
                         continue LoopCharacters;
                     }
                 }
-                if (state === TokenizerState_1.TokenizerState.Link) {
-                    if (this.openLinkUrlOrUndoPrematureLink()) {
+                switch (state) {
+                    case TokenizerState_1.TokenizerState.LinkUrl: {
+                        var openedSquareBracketOrClosedLink = this.openSandwich(this.squareBracketedConvention) || this.closeLink();
+                        if (!openedSquareBracketOrClosedLink) {
+                            this.collectCurrentChar();
+                        }
                         continue LoopCharacters;
+                    }
+                    case TokenizerState_1.TokenizerState.MediaUrl: {
+                        var openedSquareBracketOrClosedMedia = this.openSandwich(this.squareBracketedConvention) || this.closeMedia();
+                        if (!openedSquareBracketOrClosedMedia) {
+                            this.collectCurrentChar();
+                        }
+                        continue LoopCharacters;
+                    }
+                    case TokenizerState_1.TokenizerState.InlineCode: {
+                        if (!this.closeSandwich(this.inlineCodeConvention)) {
+                            this.collectCurrentChar();
+                        }
+                        continue LoopCharacters;
+                    }
+                    case TokenizerState_1.TokenizerState.NakedUrl: {
+                        if (this.tryCloseNakedUrl()) {
+                            continue LoopCharacters;
+                        }
+                        break;
+                    }
+                    case TokenizerState_1.TokenizerState.Link: {
+                        if (state === TokenizerState_1.TokenizerState.Link) {
+                            if (this.openLinkUrlOrUndoPrematureLink()) {
+                                continue LoopCharacters;
+                            }
+                        }
+                        break;
                     }
                 }
             }
@@ -923,7 +929,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.closeNakedUrl = function () {
+    Tokenizer.prototype.tryCloseNakedUrl = function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }

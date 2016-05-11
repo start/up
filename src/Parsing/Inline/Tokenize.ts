@@ -191,36 +191,6 @@ class Tokenizer {
         let context = this.openContexts[i]
         const { state } = context
 
-        if (state === TokenizerState.InlineCode) {
-          if (!this.closeSandwich(this.inlineCodeConvention)) {
-            this.collectCurrentChar()
-          }
-
-          continue LoopCharacters
-        }
-
-        if (state === TokenizerState.LinkUrl) {
-          const openedSquareBracketOrClosedLink =
-            this.openSandwich(this.squareBracketedConvention) || this.closeLink()
-
-          if (!openedSquareBracketOrClosedLink) {
-            this.collectCurrentChar()
-          }
-
-          continue LoopCharacters
-        }
-
-        if (state === TokenizerState.MediaUrl) {
-          const openedSquareBracketOrClosedMedia =
-            this.openSandwich(this.squareBracketedConvention) || this.closeMedia()
-
-          if (!openedSquareBracketOrClosedMedia) {
-            this.collectCurrentChar()
-          }
-
-          continue LoopCharacters
-        }
-
         for (const sandwich of [
           this.spoilerConvention,
           this.footnoteConvention,
@@ -234,12 +204,6 @@ class Tokenizer {
           }
         }
 
-        if (state === TokenizerState.NakedUrl) {
-          if (this.closeNakedUrl()) {
-            continue
-          }
-        }
-
         for (const media of this.mediaConventions) {
           if (state === media.state) {
             if (!this.openMediaUrl()) {
@@ -250,9 +214,53 @@ class Tokenizer {
           }
         }
 
-        if (state === TokenizerState.Link) {
-          if (this.openLinkUrlOrUndoPrematureLink()) {
+        switch (state) {
+          case TokenizerState.LinkUrl: {
+            const openedSquareBracketOrClosedLink =
+              this.openSandwich(this.squareBracketedConvention) || this.closeLink()
+
+            if (!openedSquareBracketOrClosedLink) {
+              this.collectCurrentChar()
+            }
+
             continue LoopCharacters
+          }
+
+          case TokenizerState.MediaUrl: {
+            const openedSquareBracketOrClosedMedia =
+              this.openSandwich(this.squareBracketedConvention) || this.closeMedia()
+
+            if (!openedSquareBracketOrClosedMedia) {
+              this.collectCurrentChar()
+            }
+
+            continue LoopCharacters
+          }
+          
+          case TokenizerState.InlineCode: {
+            if (!this.closeSandwich(this.inlineCodeConvention)) {
+              this.collectCurrentChar()
+            }
+
+            continue LoopCharacters
+          }
+
+          case TokenizerState.NakedUrl: {
+            if (this.tryCloseNakedUrl()) {
+              continue LoopCharacters
+            }
+            
+            break
+          }
+          
+          case TokenizerState.Link: {
+            if (state === TokenizerState.Link) {
+              if (this.openLinkUrlOrUndoPrematureLink()) {
+                continue LoopCharacters
+              }
+            }
+            
+            break
           }
         }
       }
@@ -311,7 +319,7 @@ class Tokenizer {
         case TokenizerState.NakedUrl:
           this.finalizeNakedUrl()
           break;
-          
+
         // Parentheses and brackets can be left unclosed.
         case TokenizerState.SquareBracketed:
         case TokenizerState.Parenthesized:
@@ -321,28 +329,28 @@ class Tokenizer {
         // The same applies for media URLs.
         case TokenizerState.MediaUrl:
           break;
-        
+
         default:
           this.backtrackToBeforeContext(context)
           return false
       }
     }
-    
+
     this.flushAnyUnmatchedTextToPlainTextToken()
-    
+
     return true
   }
 
   private backtrackToBeforeLatestContextWithState(state: TokenizerState): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
-      
+
       if (context.state === state) {
         this.backtrackToBeforeContext(context)
       }
     }
   }
-  
+
   private backtrackToBeforeContext(context: TokenizerContext): void {
     this.failedStateTracker.registerFailure(context)
 
@@ -394,7 +402,7 @@ class Tokenizer {
     })
   }
 
-  private closeNakedUrl(): boolean {
+  private tryCloseNakedUrl(): boolean {
     // Whitespace terminates naked URLs, but we don't actually advance past the whitespace character! We leave
     // the whitespace to be matched by another convention (e.g. the leading space for footnote reference).
     if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
@@ -406,10 +414,10 @@ class Tokenizer {
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
-    
+
     return true
   }
-  
+
   private finalizeNakedUrl(): void {
     (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
   }
