@@ -770,12 +770,7 @@ var Tokenizer = (function () {
             if (this.reachedEndOfText()) {
                 break;
             }
-            var ESCAPE_CHAR = '\\';
-            if (this.currentChar === ESCAPE_CHAR) {
-                this.advance(1);
-                if (!this.reachedEndOfText()) {
-                    this.collectCurrentChar();
-                }
+            if (this.collectCurrentCharIfEscaped()) {
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -844,6 +839,17 @@ var Tokenizer = (function () {
             }
         }
         this.flushUnmatchedTextToPlainTextToken();
+    };
+    Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
+        var ESCAPE_CHAR = '\\';
+        if (this.currentChar !== ESCAPE_CHAR) {
+            return false;
+        }
+        this.advance(1);
+        if (!this.reachedEndOfText()) {
+            this.collectCurrentChar();
+        }
+        return true;
     };
     Tokenizer.prototype.addToken = function (token) {
         this.currentToken = token;

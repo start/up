@@ -80,7 +80,7 @@ class Tokenizer {
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
-  
+
   // This field is updatede very time we add a new token
   private currentToken: Token
 
@@ -181,15 +181,7 @@ class Tokenizer {
         break
       }
 
-      const ESCAPE_CHAR = '\\'
-
-      if (this.currentChar === ESCAPE_CHAR) {
-        this.advance(1)
-
-        if (!this.reachedEndOfText()) {
-          this.collectCurrentChar()
-        }
-
+      if (this.collectCurrentCharIfEscaped()) {
         continue
       }
 
@@ -245,7 +237,7 @@ class Tokenizer {
             if (!this.openMediaUrl()) {
               this.collectCurrentChar()
             }
-            
+
             continue LoopCharacters
           }
         }
@@ -277,7 +269,23 @@ class Tokenizer {
 
     this.flushUnmatchedTextToPlainTextToken()
   }
-  
+
+  private collectCurrentCharIfEscaped(): boolean {
+    const ESCAPE_CHAR = '\\'
+
+    if (this.currentChar !== ESCAPE_CHAR) {
+      return false
+    }
+
+    this.advance(1)
+
+    if (!this.reachedEndOfText()) {
+      this.collectCurrentChar()
+    }
+
+    return true
+  }
+
   private addToken(token: Token): void {
     this.currentToken = token
     this.tokens.push(token)
@@ -305,10 +313,10 @@ class Tokenizer {
         this.tokens.splice(context.countTokens)
         this.openContexts = context.openContexts
         this.plainTextBuffer = context.plainTextBuffer
-        
-        this.currentToken = last(this.tokens) 
+
+        this.currentToken = last(this.tokens)
         this.dirty()
-        
+
         return
       }
     }
@@ -342,7 +350,7 @@ class Tokenizer {
   private canTry(state: TokenizerState): boolean {
     return !this.failedStateTracker.hasFailed(state, this.textIndex)
   }
-  
+
   private openNakedUrl(): boolean {
     return this.hasState(TokenizerState.Link) && this.openConvention({
       state: TokenizerState.Link,
@@ -375,12 +383,12 @@ class Tokenizer {
         },
         mustClose: true
       })
-      
+
       if (openedMediaConvention) {
         return true
       }
     }
-    
+
     return false
   }
 
@@ -464,7 +472,7 @@ class Tokenizer {
       then: () => {
         (<MediaToken>this.currentToken).url = this.flushUnmatchedText()
         this.closeMostRecentContextWithState(TokenizerState.MediaUrl)
-        
+
         // Once the media URL's context is closed, the media's context is innermost.
         this.closeInnermostContext()
       }
@@ -578,7 +586,7 @@ class Tokenizer {
     if (!this.openContexts.length) {
       throw new Error(`No open contexts`)
     }
-    
+
     this.openContexts.pop()
   }
 
