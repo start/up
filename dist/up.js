@@ -697,13 +697,13 @@ function tokenize(text, config) {
     return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
 }
 exports.tokenize = tokenize;
-var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, TextHelpers_1.escapeForRegex('*'))));
 var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex('[')));
 var LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
 var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
+var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -1019,7 +1019,7 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.undoLinkThatWasActuallyBracketedText = function () {
-        if (this.hasState(TokenizerState_1.TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+        if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
             this.undoLink();
             return true;
         }
@@ -1041,7 +1041,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeSandwich = function (sandwich) {
         var _this = this;
         var state = sandwich.state, endPattern = sandwich.endPattern, onClose = sandwich.onClose;
-        return this.hasState(state) && this.advanceAfterMatch({
+        return this.advanceAfterMatch({
             pattern: endPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
@@ -1049,21 +1049,6 @@ var Tokenizer = (function () {
                     captures[_i - 3] = arguments[_i];
                 }
                 _this.closeMostRecentContextWithState(state);
-                onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
-            }
-        });
-    };
-    Tokenizer.prototype.closeSandwichIfInnermost = function (sandwich) {
-        var _this = this;
-        var state = sandwich.state, endPattern = sandwich.endPattern, onClose = sandwich.onClose;
-        return this.innermostStateIs(state) && this.advanceAfterMatch({
-            pattern: endPattern,
-            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
-                var captures = [];
-                for (var _i = 3; _i < arguments.length; _i++) {
-                    captures[_i - 3] = arguments[_i];
-                }
-                _this.openContexts.pop();
                 onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
@@ -1093,10 +1078,6 @@ var Tokenizer = (function () {
     Tokenizer.prototype.openBracketedText = function () {
         return (this.openSandwich(this.parenthesizedConvention)
             || this.openSandwich(this.squareBracketedConvention));
-    };
-    Tokenizer.prototype.closeBracketsIfTheyAreInnermost = function () {
-        return (this.closeSandwichIfInnermost(this.parenthesizedConvention)
-            || this.closeSandwichIfInnermost(this.squareBracketedConvention));
     };
     Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
         for (var i = 0; i < this.openContexts.length; i++) {

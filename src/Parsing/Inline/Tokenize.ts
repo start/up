@@ -46,10 +46,6 @@ export function tokenize(text: string, config: UpConfig): Token[] {
 }
 
 
-const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
-  NON_WHITESPACE_CHAR
-)
-
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
   startsWith(atLeast(1, escapeForRegex('*')))
 )
@@ -72,6 +68,10 @@ const NAKED_URL_START_PATTERN = new RegExp(
 
 const WHITESPACE_CHAR_PATTERN = new RegExp(
   WHITESPACE_CHAR
+)
+
+const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
+  NON_WHITESPACE_CHAR
 )
 
 
@@ -509,7 +509,7 @@ class Tokenizer {
 
   // This method isn't called once we start tokenizing a link's URL.
   private undoLinkThatWasActuallyBracketedText(): boolean {
-    if (this.hasState(TokenizerState.Link) && this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
+    if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
       this.undoLink()
       return true
     }
@@ -535,22 +535,10 @@ class Tokenizer {
   private closeSandwich(sandwich: TokenizableSandwich): boolean {
     const { state, endPattern, onClose } = sandwich
 
-    return this.hasState(state) && this.advanceAfterMatch({
+    return this.advanceAfterMatch({
       pattern: endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.closeMostRecentContextWithState(state)
-        onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
-      }
-    })
-  }
-
-  private closeSandwichIfInnermost(sandwich: TokenizableSandwich): boolean {
-    const { state, endPattern, onClose } = sandwich
-
-    return this.innermostStateIs(state) && this.advanceAfterMatch({
-      pattern: endPattern,
-      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContexts.pop()
         onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -592,13 +580,6 @@ class Tokenizer {
     )
   }
 
-  private closeBracketsIfTheyAreInnermost(): boolean {
-    return (
-      this.closeSandwichIfInnermost(this.parenthesizedConvention)
-      || this.closeSandwichIfInnermost(this.squareBracketedConvention)
-    )
-  }
-
   private closeMostRecentContextWithState(state: TokenizerState): void {
     for (let i = 0; i < this.openContexts.length; i++) {
       if (this.openContexts[i].state === state) {
@@ -637,10 +618,6 @@ class Tokenizer {
 
   private hasState(state: TokenizerState): boolean {
     return this.openContexts.some(context => context.state === state)
-  }
-
-  private innermostStateIs(state: TokenizerState): boolean {
-    return (this.openContexts.length && last(this.openContexts).state === state)
   }
 
   private advanceAfterMatch(args: { pattern: RegExp, then?: OnTokenizerMatch }): boolean {
