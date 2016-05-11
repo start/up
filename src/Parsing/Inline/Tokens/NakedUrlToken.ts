@@ -3,5 +3,9 @@ export class NakedUrlToken {
   
   public restOfUrl = ''
   
-  constructor(public protocol: string) { }
+  constructor(private protocol: string) { }
+  
+  url(): string {
+    return this.protocol + this.restOfUrl
+  }
 }

@@ -7,6 +7,7 @@ import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
 import { Token, TokenType } from './Tokens/Token'
+import { NakedUrlToken } from './Tokens/NakedUrlToken'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
@@ -38,10 +39,9 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
   let stillNeedsTerminator = !!UntilTokenType
   let countParsed = 0
 
-  MainParserLoop:
-  for (let index = 0; index < tokens.length; index++) {
-    const token = tokens[index]
-    countParsed = index + 1
+  LoopTokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+    const token = tokens[tokenIndex]
+    countParsed = tokenIndex + 1
 
     if (UntilTokenType && token instanceof UntilTokenType) {
       stillNeedsTerminator = false
@@ -69,13 +69,20 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
       continue
     }
 
+    if (token instanceof NakedUrlToken) {
+      const content = [new PlainTextNode(token.restOfUrl)]
+      nodes.push(new LinkNode(content, token.url()))
+      
+      continue
+    }
+
     if (token instanceof LinkStartToken) {
       const result = parse({
         tokens: tokens.slice(countParsed),
         UntilTokenType: LinkEndToken
       })
       
-      index += result.countTokensParsed
+      tokenIndex += result.countTokensParsed
 
       let contents = result.nodes
       const hasContents = isNotPureWhitespace(contents)
@@ -83,7 +90,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
       // The URL was in the LinkEndToken, the last token we parsed
       //
       // TODO: Move URL to LinkStartToken?
-      const linkEndToken = <LinkEndToken>tokens[index]
+      const linkEndToken = <LinkEndToken>tokens[tokenIndex]
       
       let url = linkEndToken.url.trim()
       const hasUrl = !!url
@@ -117,7 +124,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
 
         if (!url) {
           // If there's no URL, there's nothing meaningful to include in the document
-          continue MainParserLoop
+          continue LoopTokens
         }
 
         if (!description) {
@@ -126,7 +133,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
         }
 
         nodes.push(new media.NodeType(description, url))
-        continue MainParserLoop
+        continue LoopTokens
       }
     }
 
@@ -137,14 +144,14 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
           UntilTokenType: richConvention.EndTokenType
         })
         
-        index += result.countTokensParsed
+        tokenIndex += result.countTokensParsed
 
         if (result.nodes.length) {
           // Like empty inline code, we discard any empty sandwich convention
           nodes.push(new richConvention.NodeType(result.nodes))
         }
 
-        continue MainParserLoop
+        continue LoopTokens
       }
     }
   }

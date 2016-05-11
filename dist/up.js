@@ -208,6 +208,7 @@ var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
+var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var MediaConventions_1 = require('./MediaConventions');
@@ -231,9 +232,9 @@ function parse(args) {
     var nodes = [];
     var stillNeedsTerminator = !!UntilTokenType;
     var countParsed = 0;
-    MainParserLoop: for (var index = 0; index < tokens.length; index++) {
-        var token = tokens[index];
-        countParsed = index + 1;
+    LoopTokens: for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+        var token = tokens[tokenIndex];
+        countParsed = tokenIndex + 1;
         if (UntilTokenType && token instanceof UntilTokenType) {
             stillNeedsTerminator = false;
             break;
@@ -254,15 +255,20 @@ function parse(args) {
             }
             continue;
         }
+        if (token instanceof NakedUrlToken_1.NakedUrlToken) {
+            var content = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
+            nodes.push(new LinkNode_1.LinkNode(content, token.url()));
+            continue;
+        }
         if (token instanceof LinkStartToken_1.LinkStartToken) {
             var result = parse({
                 tokens: tokens.slice(countParsed),
                 UntilTokenType: LinkEndToken_1.LinkEndToken
             });
-            index += result.countTokensParsed;
+            tokenIndex += result.countTokensParsed;
             var contents = result.nodes;
             var hasContents = isNotPureWhitespace(contents);
-            var linkEndToken = tokens[index];
+            var linkEndToken = tokens[tokenIndex];
             var url = linkEndToken.url.trim();
             var hasUrl = !!url;
             if (!hasContents && !hasUrl) {
@@ -284,13 +290,13 @@ function parse(args) {
                 var description = token.description.trim();
                 var url = token.url.trim();
                 if (!url) {
-                    continue MainParserLoop;
+                    continue LoopTokens;
                 }
                 if (!description) {
                     description = url;
                 }
                 nodes.push(new media.NodeType(description, url));
-                continue MainParserLoop;
+                continue LoopTokens;
             }
         }
         for (var _a = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _a < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _a++) {
@@ -300,11 +306,11 @@ function parse(args) {
                     tokens: tokens.slice(countParsed),
                     UntilTokenType: richConvention.EndTokenType
                 });
-                index += result.countTokensParsed;
+                tokenIndex += result.countTokensParsed;
                 if (result.nodes.length) {
                     nodes.push(new richConvention.NodeType(result.nodes));
                 }
-                continue MainParserLoop;
+                continue LoopTokens;
             }
         }
     }
@@ -318,7 +324,7 @@ function isNotPureWhitespace(nodes) {
     return !nodes.every(PlainTextNode_1.isWhitespace);
 }
 
-},{"../../SyntaxNodes/InlineCodeNode":78,"../../SyntaxNodes/LinkNode":82,"../../SyntaxNodes/PlainTextNode":88,"../CollectionHelpers":2,"./MediaConventions":7,"./ParseResult":9,"./RichConventions":16,"./Tokens/InlineCodeToken":28,"./Tokens/LinkEndToken":29,"./Tokens/LinkStartToken":30,"./Tokens/PlainTextToken":33}],9:[function(require,module,exports){
+},{"../../SyntaxNodes/InlineCodeNode":78,"../../SyntaxNodes/LinkNode":82,"../../SyntaxNodes/PlainTextNode":88,"../CollectionHelpers":2,"./MediaConventions":7,"./ParseResult":9,"./RichConventions":16,"./Tokens/InlineCodeToken":28,"./Tokens/LinkEndToken":29,"./Tokens/LinkStartToken":30,"./Tokens/NakedUrlToken":32,"./Tokens/PlainTextToken":33}],9:[function(require,module,exports){
 "use strict";
 var ParseResult = (function () {
     function ParseResult(nodes, countTokensParsed) {
@@ -1348,6 +1354,9 @@ var NakedUrlToken = (function () {
         this.restOfUrl = '';
     }
     NakedUrlToken.prototype.token = function () { };
+    NakedUrlToken.prototype.url = function () {
+        return this.protocol + this.restOfUrl;
+    };
     return NakedUrlToken;
 }());
 exports.NakedUrlToken = NakedUrlToken;
