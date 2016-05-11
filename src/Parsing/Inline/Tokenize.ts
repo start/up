@@ -71,7 +71,7 @@ const NAKED_URL_START_PATTERN = new RegExp(
 )
 
 const WHITESPACE_CHAR_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE)
+  WHITESPACE_CHAR
 )
 
 
@@ -365,7 +365,7 @@ class Tokenizer {
 
   private openNakedUrl(): boolean {
     return !this.hasState(TokenizerState.Link) && this.openConvention({
-      state: TokenizerState.Link,
+      state: TokenizerState.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))

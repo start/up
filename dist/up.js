@@ -703,7 +703,7 @@ var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeFo
 var LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(TextHelpers_1.escapeForRegex(']')));
 var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
-var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE));
+var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -909,7 +909,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.openNakedUrl = function () {
         var _this = this;
         return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
-            state: TokenizerState_1.TokenizerState.Link,
+            state: TokenizerState_1.TokenizerState.NakedUrl,
             pattern: NAKED_URL_START_PATTERN,
             then: function (urlProtocol) {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken_1.NakedUrlToken(urlProtocol));
