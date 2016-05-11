@@ -3,10 +3,12 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 describe('An opening bracket followed by " -> " followed by a closing bracket', () => {
   it('does not produce a link node', () => {
@@ -134,7 +136,7 @@ describe("A link's contents", () => {
         new PlainTextNode('.')
       ]))
   })
-  
+
   it('can contain an escaped unmatched closing bracket', () => {
     expect(Up.toAst('I like [weird brackets\\] -> https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -143,6 +145,31 @@ describe("A link's contents", () => {
           new PlainTextNode('weird brackets]')
         ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe("Unmatched opening parentheses in a link's url", () => {
+  it('do not affect any text that follows the link', () => {
+    const text = '((He won [West Virginia -> https://example.com/a(normal(url] easily.))'
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('He won '),
+      new LinkNode([
+        new PlainTextNode('West Virginia')
+      ], 'https://example.com/a(normal(url'),
+      new PlainTextNode(' easily.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
+        ])
       ]))
   })
 })
