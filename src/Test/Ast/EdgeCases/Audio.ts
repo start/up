@@ -4,6 +4,8 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('Audio without a description', () => {
@@ -56,6 +58,27 @@ describe('An otherwise valid audio convention prematurely terminated by an unmat
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('[audio: zzz] -> 8]'),
+        ])
+      ]))
+  })
+})
+
+
+describe("Unmatched opening parentheses in an audio convention's url", () => {
+  it('do not affect any text that follows the link', () => {
+    const text = '(([audio: West Virginia exit polling -> https://example.com/a(normal(url]))'
+
+    const footnote = new FootnoteNode([
+      new AudioNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
         ])
       ]))
   })

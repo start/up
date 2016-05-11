@@ -5,7 +5,8 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('An image without a description', () => {
@@ -58,6 +59,27 @@ describe('An otherwise valid image convention prematurely terminated by an unmat
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('[image: dank memes] -> 8]'),
+        ])
+      ]))
+  })
+})
+
+
+describe("Unmatched opening parentheses in a image's url", () => {
+  it('do not affect any text that follows the link', () => {
+    const text = '(([image: West Virginia exit polling -> https://example.com/a(normal(url]))'
+
+    const footnote = new FootnoteNode([
+      new ImageNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
         ])
       ]))
   })

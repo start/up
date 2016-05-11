@@ -5,6 +5,8 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('A video without a description', () => {
@@ -57,6 +59,27 @@ describe('An otherwise valid video convention prematurely terminated by an unmat
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('[video: memes] -> 8]'),
+        ])
+      ]))
+  })
+})
+
+
+describe("Unmatched opening parentheses in a video's url", () => {
+  it('do not affect any text that follows the link', () => {
+    const text = '(([video: West Virginia exit polling -> https://example.com/a(normal(url]))'
+
+    const footnote = new FootnoteNode([
+      new VideoNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
         ])
       ]))
   })
