@@ -80,6 +80,9 @@ class Tokenizer {
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
+  
+  // This field is updatede very time we add a new token
+  private currentToken: Token
 
   // Any time we open a new convention, we add it to `openContexts`.
   //
@@ -156,7 +159,7 @@ class Tokenizer {
         this.flushUnmatchedTextToPlainTextToken()
       },
       onClose: () => {
-        this.tokens.push(new InlineCodeToken(this.flushUnmatchedText()))
+        this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
       }
     })
 
@@ -274,6 +277,11 @@ class Tokenizer {
 
     this.flushUnmatchedTextToPlainTextToken()
   }
+  
+  private addToken(token: Token): void {
+    this.currentToken = token
+    this.tokens.push(token)
+  }
 
   private reachedEndOfText(): boolean {
     return !this.remainingText
@@ -297,8 +305,10 @@ class Tokenizer {
         this.tokens.splice(context.countTokens)
         this.openContexts = context.openContexts
         this.plainTextBuffer = context.plainTextBuffer
-
+        
+        this.currentToken = last(this.tokens) 
         this.dirty()
+        
         return
       }
     }
@@ -325,7 +335,7 @@ class Tokenizer {
     const unmatchedText = this.flushUnmatchedText()
 
     if (unmatchedText) {
-      this.tokens.push(new PlainTextToken(unmatchedText))
+      this.addToken(new PlainTextToken(unmatchedText))
     }
   }
 
@@ -423,22 +433,12 @@ class Tokenizer {
     return true
   }
 
-  private currentMediaToken(): MediaToken {
-    const currentToken = last(this.tokens)
-
-    if (currentToken instanceof MediaToken) {
-      return currentToken
-    }
-
-    throw new Error('Current token is not a media token')
-  }
-
   private openMediaUrl(): boolean {
     return this.openConvention({
       state: TokenizerState.MediaUrl,
       startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
       onOpen: () => {
-        this.currentMediaToken().description = this.flushUnmatchedText()
+        (<MediaToken>this.currentToken).description = this.flushUnmatchedText()
       },
       // If we fail to find the final closing bracket, we want to backtrack to the opening bracket, not
       // to the URL arrow. We set the media context's `mustClose` to true.
@@ -451,7 +451,7 @@ class Tokenizer {
       pattern: LINK_END_PATTERN,
       then: () => {
         const url = this.flushUnmatchedText()
-        this.tokens.push(new LINK.EndTokenType(url))
+        this.addToken(new LINK.EndTokenType(url))
         this.closeMostRecentContextWithState(TokenizerState.LinkUrl)
         this.closeMostRecentContextWithState(TokenizerState.Link)
       }
@@ -462,7 +462,7 @@ class Tokenizer {
     return this.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
-        this.currentMediaToken().url = this.flushUnmatchedText()
+        (<MediaToken>this.currentToken).url = this.flushUnmatchedText()
         this.closeMostRecentContextWithState(TokenizerState.MediaUrl)
         
         // Once the media URL's context is closed, the media's context is innermost.
@@ -584,7 +584,7 @@ class Tokenizer {
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
     this.flushUnmatchedTextToPlainTextToken()
-    this.tokens.push(token)
+    this.addToken(token)
   }
 
   private hasState(state: TokenizerState): boolean {

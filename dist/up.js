@@ -673,7 +673,6 @@ exports.TokenizableSandwich = TokenizableSandwich;
 
 },{"../BooleanHelpers":1,"../Patterns":62}],19:[function(require,module,exports){
 "use strict";
-var MediaToken_1 = require('./Tokens/MediaToken');
 var TokenizerState_1 = require('./TokenizerState');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var TokenizableMedia_1 = require('./TokenizableMedia');
@@ -754,7 +753,7 @@ var Tokenizer = (function () {
                 _this.flushUnmatchedTextToPlainTextToken();
             },
             onClose: function () {
-                _this.tokens.push(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
+                _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
         });
         this.mediaConventions = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
@@ -846,6 +845,10 @@ var Tokenizer = (function () {
         }
         this.flushUnmatchedTextToPlainTextToken();
     };
+    Tokenizer.prototype.addToken = function (token) {
+        this.currentToken = token;
+        this.tokens.push(token);
+    };
     Tokenizer.prototype.reachedEndOfText = function () {
         return !this.remainingText;
     };
@@ -862,6 +865,7 @@ var Tokenizer = (function () {
                 this.tokens.splice(context_2.countTokens);
                 this.openContexts = context_2.openContexts;
                 this.plainTextBuffer = context_2.plainTextBuffer;
+                this.currentToken = CollectionHelpers_1.last(this.tokens);
                 this.dirty();
                 return;
             }
@@ -883,7 +887,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushUnmatchedTextToPlainTextToken = function () {
         var unmatchedText = this.flushUnmatchedText();
         if (unmatchedText) {
-            this.tokens.push(new PlainTextToken_1.PlainTextToken(unmatchedText));
+            this.addToken(new PlainTextToken_1.PlainTextToken(unmatchedText));
         }
     };
     Tokenizer.prototype.canTry = function (state) {
@@ -959,20 +963,13 @@ var Tokenizer = (function () {
         }
         return true;
     };
-    Tokenizer.prototype.currentMediaToken = function () {
-        var currentToken = CollectionHelpers_1.last(this.tokens);
-        if (currentToken instanceof MediaToken_1.MediaToken) {
-            return currentToken;
-        }
-        throw new Error('Current token is not a media token');
-    };
     Tokenizer.prototype.openMediaUrl = function () {
         var _this = this;
         return this.openConvention({
             state: TokenizerState_1.TokenizerState.MediaUrl,
             startPattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
             onOpen: function () {
-                _this.currentMediaToken().description = _this.flushUnmatchedText();
+                _this.currentToken.description = _this.flushUnmatchedText();
             },
             mustClose: false
         });
@@ -983,7 +980,7 @@ var Tokenizer = (function () {
             pattern: LINK_END_PATTERN,
             then: function () {
                 var url = _this.flushUnmatchedText();
-                _this.tokens.push(new RichConventions_1.LINK.EndTokenType(url));
+                _this.addToken(new RichConventions_1.LINK.EndTokenType(url));
                 _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.LinkUrl);
                 _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.Link);
             }
@@ -994,7 +991,7 @@ var Tokenizer = (function () {
         return this.advanceAfterMatch({
             pattern: LINK_END_PATTERN,
             then: function () {
-                _this.currentMediaToken().url = _this.flushUnmatchedText();
+                _this.currentToken.url = _this.flushUnmatchedText();
                 _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.MediaUrl);
                 _this.closeInnermostContext();
             }
@@ -1097,7 +1094,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.addTokenAfterFlushingUnmatchedTextToPlainTextToken = function (token) {
         this.flushUnmatchedTextToPlainTextToken();
-        this.tokens.push(token);
+        this.addToken(token);
     };
     Tokenizer.prototype.hasState = function (state) {
         return this.openContexts.some(function (context) { return context.state === state; });
@@ -1183,7 +1180,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":2,"../Patterns":62,"../TextHelpers":64,"./FailedStateTracker":3,"./MassageTokensIntoTreeStructure":5,"./MediaConventions":7,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableMedia":17,"./TokenizableSandwich":18,"./TokenizerContext":20,"./TokenizerState":21,"./Tokens/InlineCodeToken":28,"./Tokens/MediaToken":31,"./Tokens/NakedUrlToken":32,"./Tokens/PlainTextToken":33,"./Tokens/PotentialRaisedVoiceEndToken":34,"./Tokens/PotentialRaisedVoiceStartOrEndToken":35,"./Tokens/PotentialRaisedVoiceStartToken":36}],20:[function(require,module,exports){
+},{"../CollectionHelpers":2,"../Patterns":62,"../TextHelpers":64,"./FailedStateTracker":3,"./MassageTokensIntoTreeStructure":5,"./MediaConventions":7,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":10,"./RichConventions":16,"./TokenizableMedia":17,"./TokenizableSandwich":18,"./TokenizerContext":20,"./TokenizerState":21,"./Tokens/InlineCodeToken":28,"./Tokens/NakedUrlToken":32,"./Tokens/PlainTextToken":33,"./Tokens/PotentialRaisedVoiceEndToken":34,"./Tokens/PotentialRaisedVoiceStartOrEndToken":35,"./Tokens/PotentialRaisedVoiceStartToken":36}],20:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
