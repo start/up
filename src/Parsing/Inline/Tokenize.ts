@@ -362,7 +362,7 @@ class Tokenizer {
   }
 
   private openNakedUrl(): boolean {
-    return !this.hasState(TokenizerState.Link) && this.hasState(TokenizerState.Link) && this.openConvention({
+    return !this.hasState(TokenizerState.Link) && this.openConvention({
       state: TokenizerState.Link,
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
@@ -373,12 +373,15 @@ class Tokenizer {
   }
 
   private closeNakedUrl(): boolean {
+    // Whitespace terminates naked URLs, but we don't actually advance past the whitespace character! We leave
+    // the whitespace to be matched by another convention (e.g. the leading space for footnote reference).
     if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
       return false
     }
     
-    // We don't want to advance past the whitespace character! We leave the whitespace character to be matched by another
-    // convention (e.g. the leading space for footnote reference).
+    // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
+    // any text that follows the URL.
+    this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
 
     return true
   }
@@ -600,6 +603,18 @@ class Tokenizer {
       }
     }
 
+    throw new Error(`State was not open: ${TokenizerState[state]}`)
+  }
+
+  private closeMostRecentContextWithStateAndAnyInnerContexts(state: TokenizerState): void {
+    while (this.openContexts.length) {
+      const context = this.openContexts.pop()
+      
+      if (context.state === state) {
+        return
+      }
+    }
+    
     throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 

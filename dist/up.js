@@ -907,7 +907,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openNakedUrl = function () {
         var _this = this;
-        return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
+        return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
             state: TokenizerState_1.TokenizerState.Link,
             pattern: NAKED_URL_START_PATTERN,
             then: function (urlProtocol) {
@@ -920,6 +920,7 @@ var Tokenizer = (function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }
+        this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
         return true;
     };
     Tokenizer.prototype.openLink = function () {
@@ -1099,6 +1100,15 @@ var Tokenizer = (function () {
         for (var i = 0; i < this.openContexts.length; i++) {
             if (this.openContexts[i].state === state) {
                 this.openContexts.splice(i, 1);
+                return;
+            }
+        }
+        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+    };
+    Tokenizer.prototype.closeMostRecentContextWithStateAndAnyInnerContexts = function (state) {
+        while (this.openContexts.length) {
+            var context_3 = this.openContexts.pop();
+            if (context_3.state === state) {
                 return;
             }
         }
