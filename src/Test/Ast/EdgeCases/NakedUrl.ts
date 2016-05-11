@@ -1,9 +1,12 @@
 import { expect } from 'chai'
 import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('A naked URL containing another URL', () => {
@@ -41,6 +44,31 @@ describe('A naked URL following an open square bracket', () => {
           new PlainTextNode('nintendo.com')
         ], 'https://nintendo.com'),
         new PlainTextNode(']')
+      ]))
+  })
+})
+
+
+describe("Unmatched opening parentheses in a naked URL", () => {
+  it('do not affect any text that follows the URL', () => {
+    const text = '((Well, https://www.example.com/a(normal(url is my favorite site!))'
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, '),
+      new LinkNode([
+        new PlainTextNode('www.example.com/a(normal(url')
+      ], 'https://www.example.com/a(normal(url'),
+      new PlainTextNode(' is my favorite site!')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
+        ])
       ]))
   })
 })
