@@ -228,6 +228,10 @@ class Tokenizer {
 
     this.dirty()
     this.tokenize()
+    
+    this.tokens =
+      massageTokensIntoTreeStructure(
+        applyRaisedVoicesToRawTokens(this.tokens))
   }
 
   private tokenize(): void {
@@ -243,7 +247,7 @@ class Tokenizer {
 
       const currentOpenContext = last(this.openContexts)
 
-      if (currentOpenContext && currentOpenContext.state == TokenizerState.InlineCode) {
+      if (currentOpenContext && (currentOpenContext.state === TokenizerState.InlineCode)) {
         this.closeSandwich(this.inlineCodeConvention)
           || this.collectCurrentChar()
 
@@ -280,10 +284,6 @@ class Tokenizer {
         || this.openNakedUrl()
         || this.collectCurrentChar()
     }
-
-    this.tokens =
-      massageTokensIntoTreeStructure(
-        applyRaisedVoicesToRawTokens(this.tokens))
   }
 
   private performContextSpecificTokenization(state: TokenizerState): boolean {
@@ -308,7 +308,7 @@ class Tokenizer {
 
     const isMediaAndHandleIt =
       (media: TokenizableMedia) =>
-        media.state === state && (this.openMediaUrl() || this.collectCurrentChar())
+        (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())
 
     if (this.mediaConventions.some(isMediaAndHandleIt)) {
       return true

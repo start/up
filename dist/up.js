@@ -807,6 +807,8 @@ var Tokenizer = (function () {
         });
         this.dirty();
         this.tokenize();
+        this.tokens =
+            MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
     }
     Tokenizer.prototype.tokenize = function () {
         LoopCharacters: while (true) {
@@ -817,7 +819,7 @@ var Tokenizer = (function () {
                 continue;
             }
             var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
-            if (currentOpenContext && currentOpenContext.state == TokenizerState_1.TokenizerState.InlineCode) {
+            if (currentOpenContext && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)) {
                 this.closeSandwich(this.inlineCodeConvention)
                     || this.collectCurrentChar();
                 continue;
@@ -848,8 +850,6 @@ var Tokenizer = (function () {
                 || this.openNakedUrl()
                 || this.collectCurrentChar();
         }
-        this.tokens =
-            MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
     };
     Tokenizer.prototype.performContextSpecificTokenization = function (state) {
         var _this = this;
@@ -870,7 +870,7 @@ var Tokenizer = (function () {
             return true;
         }
         var isMediaAndHandleIt = function (media) {
-            return media.state === state && (_this.openMediaUrl() || _this.collectCurrentChar());
+            return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
         };
         if (this.mediaConventions.some(isMediaAndHandleIt)) {
             return true;
