@@ -539,6 +539,8 @@ class Tokenizer {
       squareBrackeContext.countTokens + 1
       
     this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
+    
+    return true
   }
 
   private openMediaUrl(): boolean {

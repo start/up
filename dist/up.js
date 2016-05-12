@@ -1042,6 +1042,7 @@ var Tokenizer = (function () {
         squareBrackeContext.state = TokenizerState_1.TokenizerState.Link;
         var indexOfSquareBracketedStartToken = squareBrackeContext.countTokens + 1;
         this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());
+        return true;
     };
     Tokenizer.prototype.openMediaUrl = function () {
         var _this = this;
