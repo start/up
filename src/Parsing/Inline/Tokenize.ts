@@ -228,7 +228,7 @@ class Tokenizer {
 
     this.dirty()
     this.tokenize()
-    
+
     this.tokens =
       massageTokensIntoTreeStructure(
         applyRaisedVoicesToRawTokens(this.tokens))
@@ -285,32 +285,17 @@ class Tokenizer {
         || this.collectCurrentChar()
     }
   }
-
+   
   private performContextSpecificTokenization(state: TokenizerState): boolean {
-    const closeSandwich =
-      (sandwich: TokenizableSandwich) =>
-        (sandwich.state === state) && this.closeSandwich(sandwich)
-
-    const didCloseSandwich = [
-      this.spoilerConvention,
-      this.footnoteConvention,
-      this.revisionDeletionConvention,
-      this.revisionInsertionConvention,
-      this.squareBracketedConvention,
-      this.parenthesizedConvention,
-      this.squareBracketedInsideUrlConvention,
-      this.parenthesizedInsideUrlConvention
-    ].some(closeSandwich)
-
-    if (didCloseSandwich) {
+    if (this.closeCorrespondingRichSandwich(state)) {
       return true
     }
 
-    const isMediaAndHandleIt =
+    const handleMedia =
       (media: TokenizableMedia) =>
         (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())
 
-    if (this.mediaConventions.some(isMediaAndHandleIt)) {
+    if (this.mediaConventions.some(handleMedia)) {
       return true
     }
 
@@ -337,6 +322,25 @@ class Tokenizer {
     }
 
     return false
+  }
+  
+  private closeCorrespondingRichSandwich(state: TokenizerState): boolean {
+    const richSandwiches = [
+      this.spoilerConvention,
+      this.footnoteConvention,
+      this.revisionDeletionConvention,
+      this.revisionInsertionConvention,
+      this.squareBracketedConvention,
+      this.parenthesizedConvention,
+      this.squareBracketedInsideUrlConvention,
+      this.parenthesizedInsideUrlConvention
+    ]
+
+    const closeSandwich =
+      (sandwich: TokenizableSandwich) =>
+        (sandwich.state === state) && this.closeSandwich(sandwich)
+
+    return richSandwiches.some(closeSandwich)
   }
 
   private collectCurrentCharIfEscaped(): boolean {

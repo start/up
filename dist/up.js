@@ -853,26 +853,13 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.performContextSpecificTokenization = function (state) {
         var _this = this;
-        var closeSandwich = function (sandwich) {
-            return (sandwich.state === state) && _this.closeSandwich(sandwich);
-        };
-        var didCloseSandwich = [
-            this.spoilerConvention,
-            this.footnoteConvention,
-            this.revisionDeletionConvention,
-            this.revisionInsertionConvention,
-            this.squareBracketedConvention,
-            this.parenthesizedConvention,
-            this.squareBracketedInsideUrlConvention,
-            this.parenthesizedInsideUrlConvention
-        ].some(closeSandwich);
-        if (didCloseSandwich) {
+        if (this.closeCorrespondingRichSandwich(state)) {
             return true;
         }
-        var isMediaAndHandleIt = function (media) {
+        var handleMedia = function (media) {
             return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
         };
-        if (this.mediaConventions.some(isMediaAndHandleIt)) {
+        if (this.mediaConventions.some(handleMedia)) {
             return true;
         }
         switch (state) {
@@ -891,6 +878,23 @@ var Tokenizer = (function () {
             }
         }
         return false;
+    };
+    Tokenizer.prototype.closeCorrespondingRichSandwich = function (state) {
+        var _this = this;
+        var richSandwiches = [
+            this.spoilerConvention,
+            this.footnoteConvention,
+            this.revisionDeletionConvention,
+            this.revisionInsertionConvention,
+            this.squareBracketedConvention,
+            this.parenthesizedConvention,
+            this.squareBracketedInsideUrlConvention,
+            this.parenthesizedInsideUrlConvention
+        ];
+        var closeSandwich = function (sandwich) {
+            return (sandwich.state === state) && _this.closeSandwich(sandwich);
+        };
+        return richSandwiches.some(closeSandwich);
     };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';
