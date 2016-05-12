@@ -10,7 +10,8 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
-describe('An opening bracket followed by " -> " followed by a closing bracket', () => {
+
+describe('Bracketed text followed by " -> " followed by a closing bracket', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('[Try to] do this -> smile :]')).to.be.eql(
       insideDocumentAndParagraph([
