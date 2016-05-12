@@ -312,7 +312,8 @@ class Tokenizer {
       this.squareBracketedInsideUrlConvention,
       this.parenthesizedInsideUrlConvention
     ].some(sandwich =>
-      (sandwich.state === state) && this.closeSandwich(sandwich))
+      (sandwich.state === state)
+      && this.closeSandwich(sandwich))
   }
 
   private handleMediaCorrespondingToState(state: TokenizerState): boolean {
@@ -324,14 +325,11 @@ class Tokenizer {
   private handleInlineCode(): boolean {
     const currentOpenContext = last(this.openContexts)
 
-    if (currentOpenContext && (currentOpenContext.state === TokenizerState.InlineCode)) {
-      this.closeSandwich(this.inlineCodeConvention)
-        || this.collectCurrentChar()
-
-      return true
-    }
-
-    return false
+    return (
+      currentOpenContext
+      && (currentOpenContext.state === TokenizerState.InlineCode)
+      && (this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar())
+    )
   }
 
   private openSquareBracketInsideUrl(): boolean {

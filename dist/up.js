@@ -871,7 +871,8 @@ var Tokenizer = (function () {
             this.squareBracketedInsideUrlConvention,
             this.parenthesizedInsideUrlConvention
         ].some(function (sandwich) {
-            return (sandwich.state === state) && _this.closeSandwich(sandwich);
+            return (sandwich.state === state)
+                && _this.closeSandwich(sandwich);
         });
     };
     Tokenizer.prototype.handleMediaCorrespondingToState = function (state) {
@@ -883,12 +884,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.handleInlineCode = function () {
         var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
-        if (currentOpenContext && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)) {
-            this.closeSandwich(this.inlineCodeConvention)
-                || this.collectCurrentChar();
-            return true;
-        }
-        return false;
+        return (currentOpenContext
+            && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)
+            && (this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar()));
     };
     Tokenizer.prototype.openSquareBracketInsideUrl = function () {
         return this.openSandwich(this.squareBracketedInsideUrlConvention);
