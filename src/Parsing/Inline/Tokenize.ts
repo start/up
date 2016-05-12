@@ -289,8 +289,8 @@ class Tokenizer {
   private performContextSpecificTokenization(state: TokenizerState): boolean {
     const closeSandwich =
       (sandwich: TokenizableSandwich) =>
-        sandwich.state === state && this.closeSandwich(sandwich)
-    
+        (sandwich.state === state) && this.closeSandwich(sandwich)
+
     const didCloseSandwich = [
       this.spoilerConvention,
       this.footnoteConvention,
@@ -301,41 +301,41 @@ class Tokenizer {
       this.squareBracketedInsideUrlConvention,
       this.parenthesizedInsideUrlConvention
     ].some(closeSandwich)
-    
+
     if (didCloseSandwich) {
       return true
     }
-    
+
     const isMediaAndHandleIt =
       (media: TokenizableMedia) =>
         media.state === state && (this.openMediaUrl() || this.collectCurrentChar())
-    
+
     if (this.mediaConventions.some(isMediaAndHandleIt)) {
       return true
     }
 
     switch (state) {
       case TokenizerState.LinkUrl: {
-        this.openSandwich(this.squareBracketedInsideUrlConvention)
+        return (
+          this.openSandwich(this.squareBracketedInsideUrlConvention)
           || this.closeLink()
           || this.collectCurrentChar()
-
-        return true
+        )
       }
 
       case TokenizerState.MediaUrl: {
-        this.openSandwich(this.squareBracketedInsideUrlConvention)
+        return (
+          this.openSandwich(this.squareBracketedInsideUrlConvention)
           || this.closeMedia()
           || this.collectCurrentChar()
-
-        return true
+        )
       }
 
       case TokenizerState.NakedUrl: {
         return this.tryCloseNakedUrl()
       }
     }
-    
+
     return false
   }
 
@@ -348,11 +348,10 @@ class Tokenizer {
 
     this.advance(1)
 
-    if (!this.reachedEndOfText()) {
-      this.collectCurrentChar()
-    }
-
-    return true
+    return (
+      this.reachedEndOfText()
+      || this.collectCurrentChar()
+    )
   }
 
   private addToken(token: Token): void {
@@ -429,7 +428,7 @@ class Tokenizer {
   private collectCurrentChar(): boolean {
     this.plainTextBuffer += this.currentChar
     this.advance(1)
-    
+
     return true
   }
 

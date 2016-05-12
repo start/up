@@ -854,7 +854,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.performContextSpecificTokenization = function (state) {
         var _this = this;
         var closeSandwich = function (sandwich) {
-            return sandwich.state === state && _this.closeSandwich(sandwich);
+            return (sandwich.state === state) && _this.closeSandwich(sandwich);
         };
         var didCloseSandwich = [
             this.spoilerConvention,
@@ -877,16 +877,14 @@ var Tokenizer = (function () {
         }
         switch (state) {
             case TokenizerState_1.TokenizerState.LinkUrl: {
-                this.openSandwich(this.squareBracketedInsideUrlConvention)
+                return (this.openSandwich(this.squareBracketedInsideUrlConvention)
                     || this.closeLink()
-                    || this.collectCurrentChar();
-                return true;
+                    || this.collectCurrentChar());
             }
             case TokenizerState_1.TokenizerState.MediaUrl: {
-                this.openSandwich(this.squareBracketedInsideUrlConvention)
+                return (this.openSandwich(this.squareBracketedInsideUrlConvention)
                     || this.closeMedia()
-                    || this.collectCurrentChar();
-                return true;
+                    || this.collectCurrentChar());
             }
             case TokenizerState_1.TokenizerState.NakedUrl: {
                 return this.tryCloseNakedUrl();
@@ -900,10 +898,8 @@ var Tokenizer = (function () {
             return false;
         }
         this.advance(1);
-        if (!this.reachedEndOfText()) {
-            this.collectCurrentChar();
-        }
-        return true;
+        return (this.reachedEndOfText()
+            || this.collectCurrentChar());
     };
     Tokenizer.prototype.addToken = function (token) {
         this.currentToken = token;
