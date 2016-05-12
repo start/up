@@ -39,8 +39,18 @@ describe('Audio with a relative URL containing spaces and no extension', () => {
 })
 
 
-describe('Matching square brackets in a video URL', () => {
-  it('do not terminate the URL', () => {
+describe('An audio description', () => {
+  it('can contain matching square brackets', () => {
+    expect(Up.toAst('[audio: [ghostly] howling -> http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('[ghostly] howling', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
+describe('An audio URL', () => {
+  it('can contain matching square brackets', () => {
     expect(Up.toAst('[audio: ghostly howling -> http://example.com/?state=[NE]]')).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/?state=[NE]'),
