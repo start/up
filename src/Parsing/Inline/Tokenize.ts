@@ -617,13 +617,6 @@ class Tokenizer {
     })
   }
 
-  private openBracketedText(): boolean {
-    return (
-      this.openSandwich(this.parenthesizedConvention)
-      || this.openSandwich(this.squareBracketedConvention)
-    )
-  }
-
   private closeMostRecentContextWithState(state: TokenizerState): void {
     let indexOfEnclosedNakedUrlContext = -1
 

@@ -1111,10 +1111,6 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.openBracketedText = function () {
-        return (this.openSandwich(this.parenthesizedConvention)
-            || this.openSandwich(this.squareBracketedConvention));
-    };
     Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
         var indexOfEnclosedNakedUrlContext = -1;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
