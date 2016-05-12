@@ -831,7 +831,7 @@ var Tokenizer = (function () {
             }
             if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
                 this.openSandwich(this.parenthesizedInsideUrlConvention)
-                    || this.openSandwich(this.squareBracketedInsideUrlConvention)
+                    || this.openSquareBracketInsideUrl()
                     || this.collectCurrentChar();
                 continue;
             }
@@ -854,10 +854,10 @@ var Tokenizer = (function () {
     Tokenizer.prototype.performContextSpecificTokenization = function (state) {
         return (this.closeSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
-            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && (this.openSandwich(this.squareBracketedInsideUrlConvention)
+            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && (this.openSquareBracketInsideUrl()
                 || this.closeLink()
                 || this.collectCurrentChar()))
-            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && (this.openSandwich(this.squareBracketedInsideUrlConvention)
+            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && (this.openSquareBracketInsideUrl()
                 || this.closeMedia()
                 || this.collectCurrentChar()))
             || ((state === TokenizerState_1.TokenizerState.NakedUrl) && this.tryCloseNakedUrl()));
@@ -885,6 +885,9 @@ var Tokenizer = (function () {
             return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
         };
         return this.mediaConventions.some(handleMedia);
+    };
+    Tokenizer.prototype.openSquareBracketInsideUrl = function () {
+        return this.openSandwich(this.squareBracketedInsideUrlConvention);
     };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';

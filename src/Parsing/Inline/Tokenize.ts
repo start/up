@@ -262,7 +262,7 @@ class Tokenizer {
 
       if (this.hasState(TokenizerState.NakedUrl)) {
         this.openSandwich(this.parenthesizedInsideUrlConvention)
-          || this.openSandwich(this.squareBracketedInsideUrlConvention)
+          || this.openSquareBracketInsideUrl()
           || this.collectCurrentChar()
 
         continue
@@ -293,12 +293,12 @@ class Tokenizer {
       || this.handleMediaCorrespondingToState(state)
       
       || ((state === TokenizerState.LinkUrl) && (
-        this.openSandwich(this.squareBracketedInsideUrlConvention)
+        this.openSquareBracketInsideUrl()
         || this.closeLink()
         || this.collectCurrentChar()))
         
       || ((state === TokenizerState.MediaUrl) && (
-        this.openSandwich(this.squareBracketedInsideUrlConvention)
+        this.openSquareBracketInsideUrl()
         || this.closeMedia()
         || this.collectCurrentChar()))
         
@@ -331,6 +331,10 @@ class Tokenizer {
         (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())
 
     return this.mediaConventions.some(handleMedia)
+  }
+  
+  private openSquareBracketInsideUrl(): boolean {
+    return this.openSandwich(this.squareBracketedInsideUrlConvention)
   }
 
   private collectCurrentCharIfEscaped(): boolean {
