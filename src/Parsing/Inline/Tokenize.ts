@@ -246,10 +246,7 @@ class Tokenizer {
       const currentOpenContext = last(this.openContexts)
 
       if (currentOpenContext && currentOpenContext.state == TokenizerState.InlineCode) {
-        if (!this.closeSandwich(this.inlineCodeConvention)) {
-          this.collectCurrentChar()
-        }
-
+        this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar()
         continue
       }
 
@@ -274,9 +271,7 @@ class Tokenizer {
 
         for (const media of this.mediaConventions) {
           if (state === media.state) {
-            if (!this.openMediaUrl()) {
-              this.collectCurrentChar()
-            }
+            this.openMediaUrl() || this.collectCurrentChar()
 
             continue LoopCharacters
           }

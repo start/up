@@ -820,9 +820,7 @@ var Tokenizer = (function () {
             }
             var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
             if (currentOpenContext && currentOpenContext.state == TokenizerState_1.TokenizerState.InlineCode) {
-                if (!this.closeSandwich(this.inlineCodeConvention)) {
-                    this.collectCurrentChar();
-                }
+                this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar();
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -846,9 +844,7 @@ var Tokenizer = (function () {
                 for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
                     var media = _c[_b];
                     if (state === media.state) {
-                        if (!this.openMediaUrl()) {
-                            this.collectCurrentChar();
-                        }
+                        this.openMediaUrl() || this.collectCurrentChar();
                         continue LoopCharacters;
                     }
                 }
