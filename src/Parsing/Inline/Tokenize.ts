@@ -263,7 +263,9 @@ class Tokenizer {
           this.revisionDeletionConvention,
           this.revisionInsertionConvention,
           this.squareBracketedConvention,
-          this.parenthesizedConvention
+          this.parenthesizedConvention,
+          this.squareBracketedInsideUrlConvention,
+          this.parenthesizedInsideUrlConvention
         ]) {
           if (state === sandwich.state && this.closeSandwich(sandwich)) {
             continue LoopCharacters
@@ -531,8 +533,8 @@ class Tokenizer {
 
     squareBrackeContext.state = TokenizerState.Link
     
-    // The token at `countTokens` is the flushed PlainTextToken. The next one is the one SquareBracketedStartToken
-    // we want to replace.
+    // The token at `countTokens` is the flushed PlainTextToken. The next one is the SquareBracketedStartToken
+    // we want to replace with a LinkStartToken.
     const indexOfSquareBracketedStartToken =
       squareBrackeContext.countTokens + 1
       

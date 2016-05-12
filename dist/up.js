@@ -834,7 +834,9 @@ var Tokenizer = (function () {
                     this.revisionDeletionConvention,
                     this.revisionInsertionConvention,
                     this.squareBracketedConvention,
-                    this.parenthesizedConvention
+                    this.parenthesizedConvention,
+                    this.squareBracketedInsideUrlConvention,
+                    this.parenthesizedInsideUrlConvention
                 ]; _i < _a.length; _i++) {
                     var sandwich = _a[_i];
                     if (state === sandwich.state && this.closeSandwich(sandwich)) {
