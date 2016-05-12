@@ -818,10 +818,8 @@ var Tokenizer = (function () {
                         break;
                     }
                     case TokenizerState_1.TokenizerState.Link: {
-                        if (state === TokenizerState_1.TokenizerState.Link) {
-                            if (this.openLinkUrlOrUndoPrematureLink()) {
-                                continue LoopCharacters;
-                            }
+                        if (this.openLinkUrlOrUndoPrematureLink()) {
+                            continue LoopCharacters;
                         }
                         break;
                     }

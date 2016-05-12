@@ -256,10 +256,8 @@ class Tokenizer {
           }
 
           case TokenizerState.Link: {
-            if (state === TokenizerState.Link) {
-              if (this.openLinkUrlOrUndoPrematureLink()) {
-                continue LoopCharacters
-              }
+            if (this.openLinkUrlOrUndoPrematureLink()) {
+              continue LoopCharacters
             }
 
             break
