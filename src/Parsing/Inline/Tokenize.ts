@@ -131,7 +131,7 @@ class Tokenizer {
 
   private mediaConventions: TokenizableMedia[]
 
-  constructor(private entireText: string, private config: UpConfig) {
+  constructor(private entireText: string, config: UpConfig) {
     this.footnoteConvention =
       this.getRichSandwichConvention({
         state: TokenizerState.Spoiler,
@@ -143,7 +143,7 @@ class Tokenizer {
     this.spoilerConvention =
       this.getRichSandwichConvention({
         state: TokenizerState.Spoiler,
-        startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
+        startPattern: escapeForRegex('[' + config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
         endPattern: escapeForRegex(']'),
         richConvention: SPOILER
       })
@@ -224,7 +224,7 @@ class Tokenizer {
     })
 
     this.mediaConventions = [AUDIO, IMAGE, VIDEO].map(media =>
-      new TokenizableMedia(media.TokenType, media.state, this.config.localize(media.nonLocalizedTerm)))
+      new TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm)))
 
     this.dirty()
     this.tokenize()

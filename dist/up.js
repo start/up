@@ -719,7 +719,6 @@ var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
         this.entireText = entireText;
-        this.config = config;
         this.tokens = [];
         this.textIndex = 0;
         this.openContexts = [];
@@ -735,7 +734,7 @@ var Tokenizer = (function () {
         this.spoilerConvention =
             this.getRichSandwichConvention({
                 state: TokenizerState_1.TokenizerState.Spoiler,
-                startPattern: TextHelpers_1.escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + Patterns_1.ANY_WHITESPACE,
+                startPattern: TextHelpers_1.escapeForRegex('[' + config.settings.i18n.terms.spoiler + ':') + Patterns_1.ANY_WHITESPACE,
                 endPattern: TextHelpers_1.escapeForRegex(']'),
                 richConvention: RichConventions_1.SPOILER
             });
@@ -807,7 +806,7 @@ var Tokenizer = (function () {
             onClose: addBracketToBuffer
         });
         this.mediaConventions = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
-            return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, _this.config.localize(media.nonLocalizedTerm));
+            return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm));
         });
         this.dirty();
         this.tokenize();
