@@ -751,7 +751,7 @@ var Tokenizer = (function () {
             });
         this.parenthesizedConvention =
             new TokenizableSandwich_1.TokenizableSandwich({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
+                state: TokenizerState_1.TokenizerState.Parenthesized,
                 startPattern: OPEN_PAREN,
                 endPattern: CLOSE_PAREN,
                 onOpen: function () {
@@ -763,7 +763,7 @@ var Tokenizer = (function () {
             });
         this.squareBracketedConvention =
             new TokenizableSandwich_1.TokenizableSandwich({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
+                state: TokenizerState_1.TokenizerState.SquareBracketed,
                 startPattern: OPEN_SQUARE_BRACKET,
                 endPattern: CLOSE_SQUARE_BRACKET,
                 onOpen: function () {

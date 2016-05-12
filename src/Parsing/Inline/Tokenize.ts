@@ -166,7 +166,7 @@ class Tokenizer {
 
     this.parenthesizedConvention =
       new TokenizableSandwich({
-        state: TokenizerState.ParenthesizedInsideUrl,
+        state: TokenizerState.Parenthesized,
         startPattern: OPEN_PAREN,
         endPattern: CLOSE_PAREN,
         onOpen: () => {
@@ -179,7 +179,7 @@ class Tokenizer {
 
     this.squareBracketedConvention =
       new TokenizableSandwich({
-        state: TokenizerState.ParenthesizedInsideUrl,
+        state: TokenizerState.SquareBracketed,
         startPattern: OPEN_SQUARE_BRACKET,
         endPattern: CLOSE_SQUARE_BRACKET,
         onOpen: () => {
