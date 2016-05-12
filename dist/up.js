@@ -850,17 +850,11 @@ var Tokenizer = (function () {
                 }
                 switch (state) {
                     case TokenizerState_1.TokenizerState.LinkUrl: {
-                        var openedSquareBracketOrClosedLink = this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink();
-                        if (!openedSquareBracketOrClosedLink) {
-                            this.collectCurrentChar();
-                        }
+                        this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink() || this.collectCurrentChar();
                         continue LoopCharacters;
                     }
                     case TokenizerState_1.TokenizerState.MediaUrl: {
-                        var openedSquareBracketOrClosedMedia = this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia();
-                        if (!openedSquareBracketOrClosedMedia) {
-                            this.collectCurrentChar();
-                        }
+                        this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia() || this.collectCurrentChar();
                         continue LoopCharacters;
                     }
                     case TokenizerState_1.TokenizerState.NakedUrl: {
@@ -872,11 +866,7 @@ var Tokenizer = (function () {
                 }
             }
             if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
-                var didOpenBracket = (this.openSandwich(this.parenthesizedInsideUrlConvention)
-                    || this.openSandwich(this.squareBracketedInsideUrlConvention));
-                if (!didOpenBracket) {
-                    this.collectCurrentChar();
-                }
+                this.openSandwich(this.parenthesizedInsideUrlConvention) || this.openSandwich(this.squareBracketedInsideUrlConvention) || this.collectCurrentChar();
                 continue;
             }
             if (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {

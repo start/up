@@ -272,31 +272,18 @@ class Tokenizer {
         for (const media of this.mediaConventions) {
           if (state === media.state) {
             this.openMediaUrl() || this.collectCurrentChar()
-
             continue LoopCharacters
           }
         }
 
         switch (state) {
           case TokenizerState.LinkUrl: {
-            const openedSquareBracketOrClosedLink =
-              this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink()
-
-            if (!openedSquareBracketOrClosedLink) {
-              this.collectCurrentChar()
-            }
-
+            this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink() || this.collectCurrentChar()
             continue LoopCharacters
           }
 
           case TokenizerState.MediaUrl: {
-            const openedSquareBracketOrClosedMedia =
-              this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia()
-
-            if (!openedSquareBracketOrClosedMedia) {
-              this.collectCurrentChar()
-            }
-
+            this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia() || this.collectCurrentChar()
             continue LoopCharacters
           }
 
@@ -311,15 +298,7 @@ class Tokenizer {
       }
 
       if (this.hasState(TokenizerState.NakedUrl)) {
-        const didOpenBracket = (
-          this.openSandwich(this.parenthesizedInsideUrlConvention)
-          || this.openSandwich(this.squareBracketedInsideUrlConvention)
-        )
-
-        if (!didOpenBracket) {
-          this.collectCurrentChar()
-        }
-
+        this.openSandwich(this.parenthesizedInsideUrlConvention) || this.openSandwich(this.squareBracketedInsideUrlConvention) || this.collectCurrentChar()
         continue
       }
 
@@ -527,14 +506,14 @@ class Tokenizer {
     }
 
     squareBrackeContext.state = TokenizerState.Link
-    
+
     // The token at `countTokens` is the flushed PlainTextToken. The next one is the SquareBracketedStartToken
     // we want to replace with a LinkStartToken.
     const indexOfSquareBracketedStartToken =
       squareBrackeContext.countTokens + 1
-      
+
     this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
-    
+
     return true
   }
 
