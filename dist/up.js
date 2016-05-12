@@ -819,22 +819,15 @@ var Tokenizer = (function () {
             if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
                 break;
             }
-            if (this.collectCurrentCharIfEscaped() || this.handleInlineCode()) {
-                continue;
-            }
-            if (this.performContextSpecificTokenizations()) {
-                continue;
-            }
-            if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
-                this.openSandwich(this.parenthesizedInsideUrlConvention)
+            this.collectCurrentCharIfEscaped()
+                || this.handleInlineCode()
+                || this.performContextSpecificTokenizations()
+                || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && (this.openSandwich(this.parenthesizedInsideUrlConvention)
                     || this.openSquareBracketInsideUrl()
-                    || this.collectCurrentChar();
-                continue;
-            }
-            if (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
-                continue;
-            }
-            this.tokenizeRaisedVoicePlaceholders()
+                    || this.collectCurrentChar()))
+                || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed)
+                    && this.convertSquareBracketedContextToLink())
+                || this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.openSandwich(this.spoilerConvention)
                 || this.openSandwich(this.footnoteConvention)

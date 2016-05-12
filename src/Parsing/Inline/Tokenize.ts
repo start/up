@@ -236,32 +236,23 @@ class Tokenizer {
 
   private tokenize(): void {
     while (true) {
-
       if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
         break
       }
 
-      if (this.collectCurrentCharIfEscaped() || this.handleInlineCode()) {
-        continue
-      }
+      this.collectCurrentCharIfEscaped()
+        || this.handleInlineCode()
+        || this.performContextSpecificTokenizations()
 
-      if (this.performContextSpecificTokenizations()) {
-        continue
-      }
-
-      if (this.hasState(TokenizerState.NakedUrl)) {
-        this.openSandwich(this.parenthesizedInsideUrlConvention)
+        || (this.hasState(TokenizerState.NakedUrl) && (
+          this.openSandwich(this.parenthesizedInsideUrlConvention)
           || this.openSquareBracketInsideUrl()
-          || this.collectCurrentChar()
+          || this.collectCurrentChar()))
 
-        continue
-      }
-
-      if (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
-        continue
-      }
-
-      this.tokenizeRaisedVoicePlaceholders()
+        || (this.hasState(TokenizerState.SquareBracketed)
+          && this.convertSquareBracketedContextToLink())
+          
+        || this.tokenizeRaisedVoicePlaceholders()
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.openSandwich(this.footnoteConvention)
@@ -271,6 +262,7 @@ class Tokenizer {
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openNakedUrl()
+        
         || this.collectCurrentChar()
     }
   }
