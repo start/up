@@ -311,7 +311,7 @@ class Tokenizer {
 
     return true
   }
-
+  
   private addToken(token: Token): void {
     this.currentToken = token
     this.tokens.push(token)
@@ -327,7 +327,7 @@ class Tokenizer {
 
       switch (context.state) {
         case TokenizerState.NakedUrl:
-          this.finalizeNakedUrl()
+          this.flushUnmatchedTextToNakedUrl()
           break;
 
         // Parentheses and brackets can be left unclosed.
@@ -419,7 +419,7 @@ class Tokenizer {
       return false
     }
 
-    this.finalizeNakedUrl()
+    this.flushUnmatchedTextToNakedUrl()
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
@@ -428,7 +428,7 @@ class Tokenizer {
     return true
   }
 
-  private finalizeNakedUrl(): void {
+  private flushUnmatchedTextToNakedUrl(): void {
     (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
   }
 
@@ -610,10 +610,24 @@ class Tokenizer {
   }
 
   private closeMostRecentContextWithState(state: TokenizerState): void {
-    for (let i = 0; i < this.openContexts.length; i++) {
-      if (this.openContexts[i].state === state) {
+    let indexOfEnclosedNakedUrlContext = -1
+    
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+      
+      if (context.state === state) {
+        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too.
+        if (indexOfEnclosedNakedUrlContext != -1) {
+          this.flushUnmatchedTextToNakedUrl()
+          this.openContexts.splice(indexOfEnclosedNakedUrlContext, 1)
+        }
+        
         this.openContexts.splice(i, 1)
         return
+      }
+      
+      if (context.state === TokenizerState.NakedUrl) {
+        indexOfEnclosedNakedUrlContext = i
       }
     }
 

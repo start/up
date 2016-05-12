@@ -871,7 +871,7 @@ var Tokenizer = (function () {
             var context_2 = this.openContexts.pop();
             switch (context_2.state) {
                 case TokenizerState_1.TokenizerState.NakedUrl:
-                    this.finalizeNakedUrl();
+                    this.flushUnmatchedTextToNakedUrl();
                     break;
                 case TokenizerState_1.TokenizerState.SquareBracketed:
                 case TokenizerState_1.TokenizerState.Parenthesized:
@@ -939,11 +939,11 @@ var Tokenizer = (function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }
-        this.finalizeNakedUrl();
+        this.flushUnmatchedTextToNakedUrl();
         this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
         return true;
     };
-    Tokenizer.prototype.finalizeNakedUrl = function () {
+    Tokenizer.prototype.flushUnmatchedTextToNakedUrl = function () {
         this.currentToken.restOfUrl = this.flushUnmatchedText();
     };
     Tokenizer.prototype.openLink = function () {
@@ -1093,18 +1093,27 @@ var Tokenizer = (function () {
             || this.openSandwich(this.squareBracketedConvention));
     };
     Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
-        for (var i = 0; i < this.openContexts.length; i++) {
-            if (this.openContexts[i].state === state) {
+        var indexOfEnclosedNakedUrlContext = -1;
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            var context_4 = this.openContexts[i];
+            if (context_4.state === state) {
+                if (indexOfEnclosedNakedUrlContext != -1) {
+                    this.flushUnmatchedTextToNakedUrl();
+                    this.openContexts.splice(indexOfEnclosedNakedUrlContext, 1);
+                }
                 this.openContexts.splice(i, 1);
                 return;
+            }
+            if (context_4.state === TokenizerState_1.TokenizerState.NakedUrl) {
+                indexOfEnclosedNakedUrlContext = i;
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
     };
     Tokenizer.prototype.closeMostRecentContextWithStateAndAnyInnerContexts = function (state) {
         while (this.openContexts.length) {
-            var context_4 = this.openContexts.pop();
-            if (context_4.state === state) {
+            var context_5 = this.openContexts.pop();
+            if (context_5.state === state) {
                 return;
             }
         }
