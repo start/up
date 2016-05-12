@@ -1197,15 +1197,6 @@ var Tokenizer = (function () {
         var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
-    Tokenizer.prototype.getBracketedConvention = function (state, openBracket, closeBracket, onOpenAndClose) {
-        return new TokenizableSandwich_1.TokenizableSandwich({
-            state: state,
-            startPattern: TextHelpers_1.escapeForRegex(openBracket),
-            endPattern: TextHelpers_1.escapeForRegex(closeBracket),
-            onOpen: onOpenAndClose,
-            onClose: onOpenAndClose
-        });
-    };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
         var state = args.state, startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;

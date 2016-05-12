@@ -732,21 +732,6 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
-  private getBracketedConvention(
-    state: TokenizerState,
-    openBracket: string,
-    closeBracket: string,
-    onOpenAndClose: (bracket: string) => void
-  ): TokenizableSandwich {
-    return new TokenizableSandwich({
-      state: state,
-      startPattern: escapeForRegex(openBracket),
-      endPattern: escapeForRegex(closeBracket),
-      onOpen: onOpenAndClose,
-      onClose: onOpenAndClose
-    })
-  }
-
   private getRichSandwichConvention(
     args: {
       state: TokenizerState,
