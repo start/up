@@ -7,7 +7,7 @@ import { TokenizableMedia } from './TokenizableMedia'
 import { FailedStateTracker } from './FailedStateTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
-import { last, lastChar, swap } from '../CollectionHelpers'
+import { last, reverse } from '../CollectionHelpers'
 import { escapeForRegex } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
@@ -235,24 +235,18 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    LoopCharacters: while (true) {
+    while (true) {
 
       if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
         break
       }
 
-      if (this.collectCurrentCharIfEscaped()) {
+      if (this.collectCurrentCharIfEscaped() || this.handleInlineCode()) {
         continue
       }
 
-      if (this.handleInlineCode()) {
+      if (this.performContextSpecificTokenizations()) {
         continue
-      }
-
-      for (let i = this.openContexts.length - 1; i >= 0; i--) {
-        if (this.performContextSpecificTokenization(this.openContexts[i].state)) {
-          continue LoopCharacters
-        }
       }
 
       if (this.hasState(TokenizerState.NakedUrl)) {
@@ -281,7 +275,7 @@ class Tokenizer {
     }
   }
 
-  private performContextSpecificTokenization(state: TokenizerState): boolean {
+  private performSpecificTokenizations(state: TokenizerState): boolean {
     return (
       this.closeSandwichCorrespondingToState(state)
 
@@ -330,6 +324,16 @@ class Tokenizer {
       && (currentOpenContext.state === TokenizerState.InlineCode)
       && (this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar())
     )
+  }
+
+  private performContextSpecificTokenizations(): boolean {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      if (this.performSpecificTokenizations(this.openContexts[i].state)) {
+        return true
+      }
+    }
+
+    return false
   }
 
   private openSquareBracketInsideUrl(): boolean {

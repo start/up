@@ -18,3 +18,7 @@ export function swap<T>(items: T[], firstIndex: number, secondIndex: number): vo
 export function concat<T>(collections: T[][]): T[] {
   return [].concat([], ...collections)
 }
+
+export function reverse<T>(items: T[]): T[] {
+  return items.slice().reverse()
+}
