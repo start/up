@@ -202,29 +202,15 @@ class Tokenizer {
       }
     })
 
-    const addBracketToBuffer = (bracket: string) => {
-      this.plainTextBuffer += bracket
-    }
-
     this.parenthesizedInsideUrlConvention =
-      new TokenizableSandwich({
-        state: TokenizerState.ParenthesizedInsideUrl,
-        startPattern: OPEN_PAREN,
-        endPattern: CLOSE_PAREN,
-        onOpen: addBracketToBuffer,
-        onClose: addBracketToBuffer
-      })
+      this.getBracketInsideUrlConvention(TokenizerState.ParenthesizedInsideUrl, OPEN_PAREN, CLOSE_PAREN)
 
-    this.squareBracketedInsideUrlConvention = new TokenizableSandwich({
-      state: TokenizerState.SquareBracketedInsideUrl,
-      startPattern: OPEN_SQUARE_BRACKET,
-      endPattern: CLOSE_SQUARE_BRACKET,
-      onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer
-    })
+    this.squareBracketedInsideUrlConvention =
+      this.getBracketInsideUrlConvention(TokenizerState.SquareBracketedInsideUrl, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET)
 
-    this.mediaConventions = [AUDIO, IMAGE, VIDEO].map(media =>
-      new TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm)))
+    this.mediaConventions =
+      [AUDIO, IMAGE, VIDEO].map(media =>
+        new TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm)))
 
     this.dirty()
     this.tokenize()
@@ -728,6 +714,20 @@ class Tokenizer {
       onClose: () => {
         this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.EndTokenType())
       }
+    })
+  }
+
+  private getBracketInsideUrlConvention(state: TokenizerState, openBracket: string, closeBracket: string): TokenizableSandwich {
+    const addBracketToBuffer = (bracket: string) => {
+      this.plainTextBuffer += bracket
+    }
+
+    return new TokenizableSandwich({
+      state: state,
+      startPattern: openBracket,
+      endPattern: closeBracket,
+      onOpen: addBracketToBuffer,
+      onClose: addBracketToBuffer
     })
   }
 

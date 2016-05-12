@@ -787,27 +787,14 @@ var Tokenizer = (function () {
                 _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
         });
-        var addBracketToBuffer = function (bracket) {
-            _this.plainTextBuffer += bracket;
-        };
         this.parenthesizedInsideUrlConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
-                startPattern: OPEN_PAREN,
-                endPattern: CLOSE_PAREN,
-                onOpen: addBracketToBuffer,
-                onClose: addBracketToBuffer
+            this.getBracketInsideUrlConvention(TokenizerState_1.TokenizerState.ParenthesizedInsideUrl, OPEN_PAREN, CLOSE_PAREN);
+        this.squareBracketedInsideUrlConvention =
+            this.getBracketInsideUrlConvention(TokenizerState_1.TokenizerState.SquareBracketedInsideUrl, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET);
+        this.mediaConventions =
+            [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
+                return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm));
             });
-        this.squareBracketedInsideUrlConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
-            startPattern: OPEN_SQUARE_BRACKET,
-            endPattern: CLOSE_SQUARE_BRACKET,
-            onOpen: addBracketToBuffer,
-            onClose: addBracketToBuffer
-        });
-        this.mediaConventions = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
-            return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm));
-        });
         this.dirty();
         this.tokenize();
         this.tokens =
@@ -1193,6 +1180,19 @@ var Tokenizer = (function () {
             onClose: function () {
                 _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.EndTokenType());
             }
+        });
+    };
+    Tokenizer.prototype.getBracketInsideUrlConvention = function (state, openBracket, closeBracket) {
+        var _this = this;
+        var addBracketToBuffer = function (bracket) {
+            _this.plainTextBuffer += bracket;
+        };
+        return new TokenizableSandwich_1.TokenizableSandwich({
+            state: state,
+            startPattern: openBracket,
+            endPattern: closeBracket,
+            onOpen: addBracketToBuffer,
+            onClose: addBracketToBuffer
         });
     };
     Tokenizer.prototype.tokenizeRaisedVoicePlaceholders = function () {
