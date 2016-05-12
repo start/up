@@ -823,7 +823,7 @@ var Tokenizer = (function () {
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
-                if (this.performContextSpecificTokenization(this.openContexts[i])) {
+                if (this.performContextSpecificTokenization(this.openContexts[i].state)) {
                     continue LoopCharacters;
                 }
             }
@@ -851,9 +851,12 @@ var Tokenizer = (function () {
         this.tokens =
             MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
     };
-    Tokenizer.prototype.performContextSpecificTokenization = function (context) {
-        var state = context.state;
-        for (var _i = 0, _a = [
+    Tokenizer.prototype.performContextSpecificTokenization = function (state) {
+        var _this = this;
+        var closeSandwich = function (sandwich) {
+            return sandwich.state === state && _this.closeSandwich(sandwich);
+        };
+        var didCloseSandwich = [
             this.spoilerConvention,
             this.footnoteConvention,
             this.revisionDeletionConvention,
@@ -862,19 +865,15 @@ var Tokenizer = (function () {
             this.parenthesizedConvention,
             this.squareBracketedInsideUrlConvention,
             this.parenthesizedInsideUrlConvention
-        ]; _i < _a.length; _i++) {
-            var sandwich = _a[_i];
-            if (state === sandwich.state && this.closeSandwich(sandwich)) {
-                return true;
-            }
+        ].some(closeSandwich);
+        if (didCloseSandwich) {
+            return true;
         }
-        for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
-            var media = _c[_b];
-            if (state === media.state) {
-                this.openMediaUrl()
-                    || this.collectCurrentChar();
-                return true;
-            }
+        var isMediaAndHandleIt = function (media) {
+            return media.state === state && (_this.openMediaUrl() || _this.collectCurrentChar());
+        };
+        if (this.mediaConventions.some(isMediaAndHandleIt)) {
+            return true;
         }
         switch (state) {
             case TokenizerState_1.TokenizerState.LinkUrl: {
@@ -959,6 +958,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.collectCurrentChar = function () {
         this.plainTextBuffer += this.currentChar;
         this.advance(1);
+        return true;
     };
     Tokenizer.prototype.flushUnmatchedText = function () {
         var unmatchedText = this.plainTextBuffer;

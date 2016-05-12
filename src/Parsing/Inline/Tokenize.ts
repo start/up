@@ -251,7 +251,7 @@ class Tokenizer {
       }
 
       for (let i = this.openContexts.length - 1; i >= 0; i--) {
-        if (this.performContextSpecificTokenization(this.openContexts[i])) {
+        if (this.performContextSpecificTokenization(this.openContexts[i].state)) {
           continue LoopCharacters
         }
       }
@@ -286,10 +286,12 @@ class Tokenizer {
         applyRaisedVoicesToRawTokens(this.tokens))
   }
 
-  private performContextSpecificTokenization(context: TokenizerContext): boolean {
-    const { state } = context
-
-    for (const sandwich of [
+  private performContextSpecificTokenization(state: TokenizerState): boolean {
+    const closeSandwich =
+      (sandwich: TokenizableSandwich) =>
+        sandwich.state === state && this.closeSandwich(sandwich)
+    
+    const didCloseSandwich = [
       this.spoilerConvention,
       this.footnoteConvention,
       this.revisionDeletionConvention,
@@ -298,19 +300,18 @@ class Tokenizer {
       this.parenthesizedConvention,
       this.squareBracketedInsideUrlConvention,
       this.parenthesizedInsideUrlConvention
-    ]) {
-      if (state === sandwich.state && this.closeSandwich(sandwich)) {
-        return true
-      }
+    ].some(closeSandwich)
+    
+    if (didCloseSandwich) {
+      return true
     }
-
-    for (const media of this.mediaConventions) {
-      if (state === media.state) {
-        this.openMediaUrl()
-          || this.collectCurrentChar()
-
-        return true
-      }
+    
+    const isMediaAndHandleIt =
+      (media: TokenizableMedia) =>
+        media.state === state && (this.openMediaUrl() || this.collectCurrentChar())
+    
+    if (this.mediaConventions.some(isMediaAndHandleIt)) {
+      return true
     }
 
     switch (state) {
@@ -422,9 +423,14 @@ class Tokenizer {
     this.dirty()
   }
 
-  private collectCurrentChar(): void {
+  // This method will never fail, and it always returns true.
+  //
+  // Ensuring it always returns true allows us to use some cleaner boolean logic. 
+  private collectCurrentChar(): boolean {
     this.plainTextBuffer += this.currentChar
     this.advance(1)
+    
+    return true
   }
 
   private flushUnmatchedText(): string {
