@@ -2,6 +2,10 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode, isWhitespace } from '../../SyntaxNodes/PlainTextNode'
 import { last } from '../CollectionHelpers'
 import { tokenize } from './Tokenize'
+import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
+import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
+import { SquareBracketedStartToken } from './Tokens/SquareBracketedStartToken'
+import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
 import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
@@ -31,11 +35,11 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): ParseResult {
+export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): ParseResult {
   const { tokens, UntilTokenType } = args
-  
+
   const nodes: InlineSyntaxNode[] = []
-  
+
   let stillNeedsTerminator = !!UntilTokenType
   let countParsed = 0
 
@@ -48,7 +52,18 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
       break
     }
 
-    if (token instanceof PlainTextToken) {
+    if (
+      token instanceof PlainTextToken
+      || token instanceof ParenthesizedStartToken
+      || token instanceof ParenthesizedEndToken
+      || token instanceof SquareBracketedStartToken
+      || token instanceof SquareBracketedEndToken
+    ) {
+
+      if (!token.text) {
+        continue
+      }
+
       const lastNode = last(nodes)
 
       if (lastNode instanceof PlainTextNode) {
@@ -72,7 +87,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
     if (token instanceof NakedUrlToken) {
       const content = [new PlainTextNode(token.restOfUrl)]
       nodes.push(new LinkNode(content, token.url()))
-      
+
       continue
     }
 
@@ -81,7 +96,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
         tokens: tokens.slice(countParsed),
         UntilTokenType: LinkEndToken
       })
-      
+
       tokenIndex += result.countTokensParsed
 
       let contents = result.nodes
@@ -91,7 +106,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
       //
       // TODO: Move URL to LinkStartToken?
       const linkEndToken = <LinkEndToken>tokens[tokenIndex]
-      
+
       let url = linkEndToken.url.trim()
       const hasUrl = !!url
 
@@ -143,7 +158,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType } ): P
           tokens: tokens.slice(countParsed),
           UntilTokenType: richConvention.EndTokenType
         })
-        
+
         tokenIndex += result.countTokensParsed
 
         if (result.nodes.length) {

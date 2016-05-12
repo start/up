@@ -28,6 +28,10 @@ import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { StressStartToken } from './Tokens/StressStartToken'
 import { NakedUrlToken } from './Tokens/NakedUrlToken'
+import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
+import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
+import { SquareBracketedStartToken } from './Tokens/SquareBracketedStartToken'
+import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
 import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
 import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
 import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
@@ -41,12 +45,25 @@ export function tokenize(text: string, config: UpConfig): Token[] {
 }
 
 
+const OPEN_SQUARE_BRACKET =
+  escapeForRegex('[')
+
+const CLOSE_SQUARE_BRACKET =
+  escapeForRegex(']')
+
+const OPEN_PAREN =
+  escapeForRegex('(')
+
+const CLOSE_PAREN =
+  escapeForRegex('(')
+
+
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
   startsWith(atLeast(1, escapeForRegex('*')))
 )
 
 const LINK_START_PATTERN = new RegExp(
-  startsWith(escapeForRegex('['))
+  startsWith(OPEN_SQUARE_BRACKET)
 )
 
 const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
@@ -54,7 +71,7 @@ const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
 )
 
 const LINK_END_PATTERN = new RegExp(
-  startsWith(escapeForRegex(']'))
+  startsWith(CLOSE_SQUARE_BRACKET)
 )
 
 const NAKED_URL_START_PATTERN = new RegExp(
@@ -103,17 +120,20 @@ class Tokenizer {
   private revisionDeletionConvention: TokenizableSandwich
   private revisionInsertionConvention: TokenizableSandwich
 
-  // These conventions don't produce any distinct syntax nodes, and they don't need to be closed. Their
-  // purpose is to ensure that any conventions whose delimiters contain parentheses or square brackets
-  // can contain parenthesized or "square bracketed" text.
+  // These conventions ensure ensure that any conventions whose delimiters contain parentheses or square
+  // brackets can contain parenthesized or "square bracketed" content.
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
+
+  // These conventions serve the same function for URLs.
+  private parenthesizedInsideUrlConvention: TokenizableSandwich
+  private squareBracketedInsideUrlConvention: TokenizableSandwich
 
   private mediaConventions: TokenizableMedia[]
 
   constructor(private entireText: string, private config: UpConfig) {
     this.footnoteConvention =
-      this.getTypicalSandwichConvention({
+      this.getRichSandwichConvention({
         state: TokenizerState.Spoiler,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
         endPattern: escapeForRegex('))'),
@@ -121,7 +141,7 @@ class Tokenizer {
       })
 
     this.spoilerConvention =
-      this.getTypicalSandwichConvention({
+      this.getRichSandwichConvention({
         state: TokenizerState.Spoiler,
         startPattern: escapeForRegex('[' + this.config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
         endPattern: escapeForRegex(']'),
@@ -129,7 +149,7 @@ class Tokenizer {
       })
 
     this.revisionDeletionConvention =
-      this.getTypicalSandwichConvention({
+      this.getRichSandwichConvention({
         state: TokenizerState.RevisionDeletion,
         startPattern: '~~',
         endPattern: '~~',
@@ -137,7 +157,7 @@ class Tokenizer {
       })
 
     this.revisionInsertionConvention =
-      this.getTypicalSandwichConvention({
+      this.getRichSandwichConvention({
         state: TokenizerState.RevisionInsertion,
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++'),
@@ -145,17 +165,58 @@ class Tokenizer {
       })
 
     this.parenthesizedConvention =
-      this.getBracketedConvention(TokenizerState.Parenthesized, '(', ')')
+      new TokenizableSandwich({
+        state: TokenizerState.ParenthesizedInsideUrl,
+        startPattern: OPEN_PAREN,
+        endPattern: CLOSE_PAREN,
+        onOpen: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken())
+        },
+        onClose: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken())
+        }
+      })
 
     this.squareBracketedConvention =
-      this.getBracketedConvention(TokenizerState.SquareBracketed, '[', ']')
+      new TokenizableSandwich({
+        state: TokenizerState.ParenthesizedInsideUrl,
+        startPattern: OPEN_SQUARE_BRACKET,
+        endPattern: CLOSE_SQUARE_BRACKET,
+        onOpen: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedStartToken())
+        },
+        onClose: () => {
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedEndToken())
+        }
+      })
+
+    const addBracketToBuffer = (bracket: string) => {
+      this.plainTextBuffer += bracket
+    }
+
+    this.parenthesizedInsideUrlConvention =
+      new TokenizableSandwich({
+        state: TokenizerState.ParenthesizedInsideUrl,
+        startPattern: OPEN_SQUARE_BRACKET,
+        endPattern: CLOSE_SQUARE_BRACKET,
+        onOpen: addBracketToBuffer,
+        onClose: addBracketToBuffer
+      })
+
+    this.squareBracketedInsideUrlConvention = new TokenizableSandwich({
+      state: TokenizerState.SquareBracketedInsideUrl,
+      startPattern: OPEN_SQUARE_BRACKET,
+      endPattern: CLOSE_SQUARE_BRACKET,
+      onOpen: addBracketToBuffer,
+      onClose: addBracketToBuffer
+    })
 
     this.inlineCodeConvention = new TokenizableSandwich({
       state: TokenizerState.InlineCode,
       startPattern: '`',
       endPattern: '`',
       onOpen: () => {
-        this.flushAnyUnmatchedTextToPlainTextToken()
+        this.flushUnmatchedTextToPlainTextToken()
       },
       onClose: () => {
         this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
@@ -222,7 +283,7 @@ class Tokenizer {
         switch (state) {
           case TokenizerState.LinkUrl: {
             const openedSquareBracketOrClosedLink =
-              this.openSandwich(this.squareBracketedConvention) || this.closeLink()
+              this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink()
 
             if (!openedSquareBracketOrClosedLink) {
               this.collectCurrentChar()
@@ -233,7 +294,7 @@ class Tokenizer {
 
           case TokenizerState.MediaUrl: {
             const openedSquareBracketOrClosedMedia =
-              this.openSandwich(this.squareBracketedConvention) || this.closeMedia()
+              this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia()
 
             if (!openedSquareBracketOrClosedMedia) {
               this.collectCurrentChar()
@@ -253,8 +314,10 @@ class Tokenizer {
       }
 
       if (this.hasState(TokenizerState.NakedUrl)) {
-        const didOpenBracket =
-          this.openSandwich(this.parenthesizedConvention) || this.openSandwich(this.squareBracketedConvention)
+        const didOpenBracket = (
+          this.openSandwich(this.parenthesizedInsideUrlConvention)
+          || this.openSandwich(this.squareBracketedInsideUrlConvention)
+        )
 
         if (!didOpenBracket) {
           this.collectCurrentChar()
@@ -262,7 +325,7 @@ class Tokenizer {
 
         continue
       }
-      
+
       if (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
         continue
       }
@@ -327,6 +390,8 @@ class Tokenizer {
         // Parentheses and brackets can be left unclosed.
         case TokenizerState.SquareBracketed:
         case TokenizerState.Parenthesized:
+        case TokenizerState.SquareBracketedInsideUrl:
+        case TokenizerState.ParenthesizedInsideUrl:
         // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
         // handler (below) backtrack to before the link itself.
         case TokenizerState.LinkUrl:
@@ -340,7 +405,7 @@ class Tokenizer {
       }
     }
 
-    this.flushAnyUnmatchedTextToPlainTextToken()
+    this.flushUnmatchedTextToPlainTextToken()
 
     return true
   }
@@ -384,12 +449,11 @@ class Tokenizer {
     return unmatchedText
   }
 
-  private flushAnyUnmatchedTextToPlainTextToken(): void {
-    const unmatchedText = this.flushUnmatchedText()
-
-    if (unmatchedText) {
-      this.addToken(new PlainTextToken(unmatchedText))
-    }
+  private flushUnmatchedTextToPlainTextToken(): void {
+    // This will create a PlainTextToken even when there isn't any text to flush.
+    //
+    // TODO: Explain why this is helpful
+    this.addToken(new PlainTextToken(this.flushUnmatchedText()))
   }
 
   private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
@@ -450,23 +514,29 @@ class Tokenizer {
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
         then: () => {
-          this.flushAnyUnmatchedTextToPlainTextToken()
+          this.flushUnmatchedTextToPlainTextToken()
         }
       })
+
+    if (!didStartLinkUrl) {
+      return false
+    }
+
+    const squareBrackeContext =
+      this.getInnermostContextWithState(TokenizerState.SquareBracketed)
+
+    if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
+      return false
+    }
+
+    squareBrackeContext.state = TokenizerState.Link
+    
+    // The token at `countTokens` is the flushed PlainTextToken. The next one is the one SquareBracketedStartToken
+    // we want to replace.
+    const indexOfSquareBracketedStartToken =
+      squareBrackeContext.countTokens + 1
       
-      if (!didStartLinkUrl) {
-        return false
-      }
-      
-      const squareBrackeContext =
-        this.getInnermostContextWithState(TokenizerState.SquareBracketed)
-      
-      if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
-        return false
-      }
-      
-      squareBrackeContext.state = TokenizerState.Link
-      this.tokens.splice(squareBrackeContext.countTokens, 0, new LINK.StartTokenType())
+    this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
   }
 
   private openMediaUrl(): boolean {
@@ -620,7 +690,7 @@ class Tokenizer {
   }
 
   private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
-    this.flushAnyUnmatchedTextToPlainTextToken()
+    this.flushUnmatchedTextToPlainTextToken()
     this.addToken(token)
   }
 
@@ -660,21 +730,22 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
-  private getBracketedConvention(state: TokenizerState, openBracket: string, closeBracket: string): TokenizableSandwich {
-    const addBracketToBuffer = (bracket: string) => {
-      this.plainTextBuffer += bracket
-    }
-
+  private getBracketedConvention(
+    state: TokenizerState,
+    openBracket: string,
+    closeBracket: string,
+    onOpenAndClose: (bracket: string) => void
+  ): TokenizableSandwich {
     return new TokenizableSandwich({
       state: state,
       startPattern: escapeForRegex(openBracket),
       endPattern: escapeForRegex(closeBracket),
-      onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer
+      onOpen: onOpenAndClose,
+      onClose: onOpenAndClose
     })
   }
 
-  private getTypicalSandwichConvention(
+  private getRichSandwichConvention(
     args: {
       state: TokenizerState,
       startPattern: string,
