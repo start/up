@@ -235,11 +235,8 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    while (true) {
-      if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
-        break
-      }
-
+    while (!(this.reachedEndOfText() && this.finalizeAndCheckValidity())) {
+      
       this.collectCurrentCharIfEscaped()
         || this.handleInlineCode()
         || this.performContextSpecificTokenizations()
@@ -270,7 +267,6 @@ class Tokenizer {
   private performSpecificTokenizations(state: TokenizerState): boolean {
     return (
       this.closeSandwichCorrespondingToState(state)
-
       || this.handleMediaCorrespondingToState(state)
 
       || ((state === TokenizerState.LinkUrl) && (

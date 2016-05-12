@@ -815,10 +815,7 @@ var Tokenizer = (function () {
             MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
     }
     Tokenizer.prototype.tokenize = function () {
-        while (true) {
-            if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
-                break;
-            }
+        while (!(this.reachedEndOfText() && this.finalizeAndCheckValidity())) {
             this.collectCurrentCharIfEscaped()
                 || this.handleInlineCode()
                 || this.performContextSpecificTokenizations()
