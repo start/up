@@ -63,8 +63,8 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
     // On the other hand, if we fail to match a regular end marker (TokenMeaning.PotentialRaisedVoiceEnd) to any
     // start markers, we immediately treat the marker as plain text.
     //
-    // LAstly, if we fail to match a regular start marker (TokenMeaning.PotentialRaisedVoiceStart) to any end
-    // markers, we immediately treat the dlimiter as plain text.    
+    // Lastly, if we fail to match a regular start marker (TokenMeaning.PotentialRaisedVoiceStart) to any end
+    // markers, we immediately treat the marker as plain text.    
 
     if (canEndConvention) {
       const endMarker = new EndMarker(tokenIndex, asterisks)

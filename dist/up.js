@@ -683,9 +683,7 @@ var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceSta
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var Patterns_1 = require('../Patterns');
 function tokenize(text, config) {
-    var tokens = new Tokenizer(text, config).tokens;
-    var tokensWithRaisedVoicesApplied = ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(tokens);
-    return MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied);
+    return new Tokenizer(text, config).tokens;
 }
 exports.tokenize = tokenize;
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, TextHelpers_1.escapeForRegex('*'))));
@@ -847,6 +845,8 @@ var Tokenizer = (function () {
                 this.collectCurrentChar();
             }
         }
+        this.tokens =
+            MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
     };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';

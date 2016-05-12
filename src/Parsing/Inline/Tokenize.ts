@@ -37,12 +37,7 @@ import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToke
 import { startsWith, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, optional } from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  const tokens = new Tokenizer(text, config).tokens
-
-  const tokensWithRaisedVoicesApplied =
-    applyRaisedVoicesToRawTokens(tokens)
-
-  return massageTokensIntoTreeStructure(tokensWithRaisedVoicesApplied)
+  return new Tokenizer(text, config).tokens
 }
 
 
@@ -294,6 +289,10 @@ class Tokenizer {
         this.collectCurrentChar()
       }
     }
+    
+    this.tokens =
+      massageTokensIntoTreeStructure(
+        applyRaisedVoicesToRawTokens(this.tokens))
   }
 
   private collectCurrentCharIfEscaped(): boolean {
