@@ -819,7 +819,7 @@ var Tokenizer = (function () {
             this.collectCurrentCharIfEscaped()
                 || this.handleInlineCode()
                 || this.performContextSpecificTokenizations()
-                || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && (this.openSandwich(this.parenthesizedInsideUrlConvention)
+                || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && (this.openParenthesisInsideUrl()
                     || this.openSquareBracketInsideUrl()
                     || this.collectCurrentChar()))
                 || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed)
@@ -884,6 +884,9 @@ var Tokenizer = (function () {
             }
         }
         return false;
+    };
+    Tokenizer.prototype.openParenthesisInsideUrl = function () {
+        return this.openSandwich(this.parenthesizedInsideUrlConvention);
     };
     Tokenizer.prototype.openSquareBracketInsideUrl = function () {
         return this.openSandwich(this.squareBracketedInsideUrlConvention);

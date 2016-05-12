@@ -242,7 +242,7 @@ class Tokenizer {
         || this.performContextSpecificTokenizations()
 
         || (this.hasState(TokenizerState.NakedUrl) && (
-          this.openSandwich(this.parenthesizedInsideUrlConvention)
+          this.openParenthesisInsideUrl()
           || this.openSquareBracketInsideUrl()
           || this.collectCurrentChar()))
 
@@ -322,6 +322,10 @@ class Tokenizer {
     }
 
     return false
+  }
+
+  private openParenthesisInsideUrl(): boolean {
+    return this.openSandwich(this.parenthesizedInsideUrlConvention)
   }
 
   private openSquareBracketInsideUrl(): boolean {
