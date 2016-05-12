@@ -61,4 +61,11 @@ describe('A video URL', () => {
         new VideoNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
+  
+  it('can contain nested matching square brackets', () => {
+    expect(Up.toAst('[video: ghosts eating luggage -> http://example.com/?[state=[NE]]]')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
+      ]))
+  })
 })

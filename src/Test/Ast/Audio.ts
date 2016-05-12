@@ -63,4 +63,11 @@ describe('An audio URL', () => {
         new AudioNode('ghostly howling', 'http://example.com/?state=[NE]'),
       ]))
   })
+  
+  it('can contain matching square brackets', () => {
+    expect(Up.toAst('[audio: ghostly howling -> http://example.com/?[state=[NE]]]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghostly howling', 'http://example.com/?[state=[NE]]'),
+      ]))
+  })
 })

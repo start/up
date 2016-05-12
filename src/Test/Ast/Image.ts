@@ -62,4 +62,11 @@ describe('An image URL', () => {
         new ImageNode('haunted house', 'http://example.com/?state=[NE]'),
       ]))
   })
+  
+  it('can contain nested matching square brackets', () => {
+    expect(Up.toAst('[image: haunted house -> http://example.com/?[state=[NE]]]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('haunted house', 'http://example.com/?[state=[NE]]'),
+      ]))
+  })
 })
