@@ -764,6 +764,13 @@ var Tokenizer = (function () {
             if (this.collectCurrentCharIfEscaped()) {
                 continue;
             }
+            var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
+            if (currentOpenContext && currentOpenContext.state == TokenizerState_1.TokenizerState.InlineCode) {
+                if (!this.closeSandwich(this.inlineCodeConvention)) {
+                    this.collectCurrentChar();
+                }
+                continue;
+            }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
                 var context_1 = this.openContexts[i];
                 var state = context_1.state;
@@ -800,12 +807,6 @@ var Tokenizer = (function () {
                     case TokenizerState_1.TokenizerState.MediaUrl: {
                         var openedSquareBracketOrClosedMedia = this.openSandwich(this.squareBracketedConvention) || this.closeMedia();
                         if (!openedSquareBracketOrClosedMedia) {
-                            this.collectCurrentChar();
-                        }
-                        continue LoopCharacters;
-                    }
-                    case TokenizerState_1.TokenizerState.InlineCode: {
-                        if (!this.closeSandwich(this.inlineCodeConvention)) {
                             this.collectCurrentChar();
                         }
                         continue LoopCharacters;

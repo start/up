@@ -187,6 +187,16 @@ class Tokenizer {
         continue
       }
 
+      const currentOpenContext = last(this.openContexts)
+
+      if (currentOpenContext && currentOpenContext.state == TokenizerState.InlineCode) {
+        if (!this.closeSandwich(this.inlineCodeConvention)) {
+          this.collectCurrentChar()
+        }
+
+        continue
+      }
+
       for (let i = this.openContexts.length - 1; i >= 0; i--) {
         let context = this.openContexts[i]
         const { state } = context
@@ -231,14 +241,6 @@ class Tokenizer {
               this.openSandwich(this.squareBracketedConvention) || this.closeMedia()
 
             if (!openedSquareBracketOrClosedMedia) {
-              this.collectCurrentChar()
-            }
-
-            continue LoopCharacters
-          }
-
-          case TokenizerState.InlineCode: {
-            if (!this.closeSandwich(this.inlineCodeConvention)) {
               this.collectCurrentChar()
             }
 
