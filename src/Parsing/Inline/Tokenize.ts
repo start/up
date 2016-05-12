@@ -285,38 +285,28 @@ class Tokenizer {
         || this.collectCurrentChar()
     }
   }
-   
+
   private performContextSpecificTokenization(state: TokenizerState): boolean {
-    if (this.closeCorrespondingRichSandwich(state) || this.handleCorrespondingMedia(state)) {
-      return true
-    }
-
-    switch (state) {
-      case TokenizerState.LinkUrl: {
-        return (
-          this.openSandwich(this.squareBracketedInsideUrlConvention)
-          || this.closeLink()
-          || this.collectCurrentChar()
-        )
-      }
-
-      case TokenizerState.MediaUrl: {
-        return (
-          this.openSandwich(this.squareBracketedInsideUrlConvention)
-          || this.closeMedia()
-          || this.collectCurrentChar()
-        )
-      }
-
-      case TokenizerState.NakedUrl: {
-        return this.tryCloseNakedUrl()
-      }
-    }
-
-    return false
+    return (
+      this.closeSandwichCorrespondingToState(state)
+      
+      || this.handleMediaCorrespondingToState(state)
+      
+      || ((state === TokenizerState.LinkUrl) && (
+        this.openSandwich(this.squareBracketedInsideUrlConvention)
+        || this.closeLink()
+        || this.collectCurrentChar()))
+        
+      || ((state === TokenizerState.MediaUrl) && (
+        this.openSandwich(this.squareBracketedInsideUrlConvention)
+        || this.closeMedia()
+        || this.collectCurrentChar()))
+        
+      || ((state === TokenizerState.NakedUrl) && this.tryCloseNakedUrl())
+    )
   }
-  
-  private closeCorrespondingRichSandwich(state: TokenizerState): boolean {
+
+  private closeSandwichCorrespondingToState(state: TokenizerState): boolean {
     const richSandwiches = [
       this.spoilerConvention,
       this.footnoteConvention,
@@ -334,8 +324,8 @@ class Tokenizer {
 
     return richSandwiches.some(closeSandwich)
   }
-  
-  private handleCorrespondingMedia(state: TokenizerState): boolean {
+
+  private handleMediaCorrespondingToState(state: TokenizerState): boolean {
     const handleMedia =
       (media: TokenizableMedia) =>
         (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())

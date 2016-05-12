@@ -852,27 +852,17 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.performContextSpecificTokenization = function (state) {
-        if (this.closeCorrespondingRichSandwich(state) || this.handleCorrespondingMedia(state)) {
-            return true;
-        }
-        switch (state) {
-            case TokenizerState_1.TokenizerState.LinkUrl: {
-                return (this.openSandwich(this.squareBracketedInsideUrlConvention)
-                    || this.closeLink()
-                    || this.collectCurrentChar());
-            }
-            case TokenizerState_1.TokenizerState.MediaUrl: {
-                return (this.openSandwich(this.squareBracketedInsideUrlConvention)
-                    || this.closeMedia()
-                    || this.collectCurrentChar());
-            }
-            case TokenizerState_1.TokenizerState.NakedUrl: {
-                return this.tryCloseNakedUrl();
-            }
-        }
-        return false;
+        return (this.closeSandwichCorrespondingToState(state)
+            || this.handleMediaCorrespondingToState(state)
+            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && (this.openSandwich(this.squareBracketedInsideUrlConvention)
+                || this.closeLink()
+                || this.collectCurrentChar()))
+            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && (this.openSandwich(this.squareBracketedInsideUrlConvention)
+                || this.closeMedia()
+                || this.collectCurrentChar()))
+            || ((state === TokenizerState_1.TokenizerState.NakedUrl) && this.tryCloseNakedUrl()));
     };
-    Tokenizer.prototype.closeCorrespondingRichSandwich = function (state) {
+    Tokenizer.prototype.closeSandwichCorrespondingToState = function (state) {
         var _this = this;
         var richSandwiches = [
             this.spoilerConvention,
@@ -889,7 +879,7 @@ var Tokenizer = (function () {
         };
         return richSandwiches.some(closeSandwich);
     };
-    Tokenizer.prototype.handleCorrespondingMedia = function (state) {
+    Tokenizer.prototype.handleMediaCorrespondingToState = function (state) {
         var _this = this;
         var handleMedia = function (media) {
             return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
