@@ -815,12 +815,6 @@ var Tokenizer = (function () {
                         }
                         break;
                     }
-                    case TokenizerState_1.TokenizerState.Link: {
-                        if (this.openLinkUrlOrUndoPrematureLink()) {
-                            continue LoopCharacters;
-                        }
-                        break;
-                    }
                 }
             }
             if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
@@ -830,6 +824,9 @@ var Tokenizer = (function () {
                 }
                 continue;
             }
+            if (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
+                continue;
+            }
             var openedConvention = (this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.openSandwich(this.spoilerConvention)
@@ -837,7 +834,6 @@ var Tokenizer = (function () {
                 || this.openSandwich(this.revisionDeletionConvention)
                 || this.openSandwich(this.revisionInsertionConvention)
                 || this.openMedia()
-                || this.openLink()
                 || this.openSandwich(this.parenthesizedConvention)
                 || this.openSandwich(this.squareBracketedConvention)
                 || this.openNakedUrl());
@@ -922,8 +918,9 @@ var Tokenizer = (function () {
             this.addToken(new PlainTextToken_1.PlainTextToken(unmatchedText));
         }
     };
-    Tokenizer.prototype.canTry = function (state) {
-        return !this.failedStateTracker.hasFailed(state, this.textIndex);
+    Tokenizer.prototype.canTry = function (state, textIndex) {
+        if (textIndex === void 0) { textIndex = this.textIndex; }
+        return !this.failedStateTracker.hasFailed(state, textIndex);
     };
     Tokenizer.prototype.openNakedUrl = function () {
         var _this = this;
@@ -945,16 +942,6 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.flushUnmatchedTextToNakedUrl = function () {
         this.currentToken.restOfUrl = this.flushUnmatchedText();
-    };
-    Tokenizer.prototype.openLink = function () {
-        var _this = this;
-        return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
-            state: TokenizerState_1.TokenizerState.Link,
-            pattern: LINK_START_PATTERN,
-            then: function () {
-                _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new RichConventions_1.LINK.StartTokenType());
-            }
-        });
     };
     Tokenizer.prototype.openMedia = function () {
         var _this = this;
@@ -978,7 +965,7 @@ var Tokenizer = (function () {
         }
         return false;
     };
-    Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
+    Tokenizer.prototype.convertSquareBracketedContextToLink = function () {
         var _this = this;
         var didStartLinkUrl = this.openConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
@@ -990,17 +977,12 @@ var Tokenizer = (function () {
         if (!didStartLinkUrl) {
             return false;
         }
-        for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var openContext = this.openContexts[i];
-            if (openContext.state === TokenizerState_1.TokenizerState.SquareBracketed) {
-                this.backtrackToBeforeLink();
-                break;
-            }
-            if (openContext.state === TokenizerState_1.TokenizerState.Link) {
-                break;
-            }
+        var squareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
+        if (!this.canTry(TokenizerState_1.TokenizerState.Link, squareBrackeContext.textIndex)) {
+            return false;
         }
-        return true;
+        squareBrackeContext.state = TokenizerState_1.TokenizerState.Link;
+        this.tokens.splice(squareBrackeContext.countTokens, 0, new RichConventions_1.LINK.StartTokenType());
     };
     Tokenizer.prototype.openMediaUrl = function () {
         var _this = this;
@@ -1108,6 +1090,15 @@ var Tokenizer = (function () {
             var context_5 = this.openContexts.pop();
             if (context_5.state === state) {
                 return;
+            }
+        }
+        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+    };
+    Tokenizer.prototype.getInnermostContextWithState = function (state) {
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            var context_6 = this.openContexts[i];
+            if (context_6.state === state) {
+                return context_6;
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);

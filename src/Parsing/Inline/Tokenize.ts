@@ -249,14 +249,6 @@ class Tokenizer {
 
             break
           }
-
-          case TokenizerState.Link: {
-            if (this.openLinkUrlOrUndoPrematureLink()) {
-              continue LoopCharacters
-            }
-
-            break
-          }
         }
       }
 
@@ -270,6 +262,10 @@ class Tokenizer {
 
         continue
       }
+      
+      if (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
+        continue
+      }
 
       const openedConvention = (
         this.tokenizeRaisedVoicePlaceholders()
@@ -279,7 +275,6 @@ class Tokenizer {
         || this.openSandwich(this.revisionDeletionConvention)
         || this.openSandwich(this.revisionInsertionConvention)
         || this.openMedia()
-        || this.openLink()
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openNakedUrl()
@@ -289,7 +284,7 @@ class Tokenizer {
         this.collectCurrentChar()
       }
     }
-    
+
     this.tokens =
       massageTokensIntoTreeStructure(
         applyRaisedVoicesToRawTokens(this.tokens))
@@ -310,7 +305,7 @@ class Tokenizer {
 
     return true
   }
-  
+
   private addToken(token: Token): void {
     this.currentToken = token
     this.tokens.push(token)
@@ -397,8 +392,8 @@ class Tokenizer {
     }
   }
 
-  private canTry(state: TokenizerState): boolean {
-    return !this.failedStateTracker.hasFailed(state, this.textIndex)
+  private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
+    return !this.failedStateTracker.hasFailed(state, textIndex)
   }
 
   private openNakedUrl(): boolean {
@@ -431,16 +426,6 @@ class Tokenizer {
     (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
   }
 
-  private openLink(): boolean {
-    return !this.hasState(TokenizerState.Link) && this.openConvention({
-      state: TokenizerState.Link,
-      pattern: LINK_START_PATTERN,
-      then: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new LINK.StartTokenType())
-      }
-    })
-  }
-
   private openMedia(): boolean {
     for (let media of this.mediaConventions) {
       const openedMediaConvention = this.openConvention({
@@ -459,7 +444,7 @@ class Tokenizer {
     return false
   }
 
-  private openLinkUrlOrUndoPrematureLink(): boolean {
+  private convertSquareBracketedContextToLink(): boolean {
     const didStartLinkUrl =
       this.openConvention({
         state: TokenizerState.LinkUrl,
@@ -468,41 +453,20 @@ class Tokenizer {
           this.flushAnyUnmatchedTextToPlainTextToken()
         }
       })
-
-    if (!didStartLinkUrl) {
-      return false
-    }
-
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      let openContext = this.openContexts[i]
-
-      if (openContext.state === TokenizerState.SquareBracketed) {
-        // If we've encountered any unclosed square brackets since starting the link, it means we started
-        // the link too early.
-        //
-        // We're looking at either:
-        //
-        // 1. A bracketed link, which should start with the second opening bracket:
-        //  
-        //    [I use [Google -> https://google.com]]
-        //
-        // 2. A bracketed link missing the second closing bracket, which should still start with the second
-        //    opening bracket:
-        //   
-        //    Go to [this [site -> https://stackoverflow.com]! 
-        //
-        // TODO: Don't produce link context until the URL arrow is found inside bracketed text
-
-        this.backtrackToBeforeLink()
-        break
+      
+      if (!didStartLinkUrl) {
+        return false
       }
-
-      if (openContext.state === TokenizerState.Link) {
-        break
+      
+      const squareBrackeContext =
+        this.getInnermostContextWithState(TokenizerState.SquareBracketed)
+      
+      if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
+        return false
       }
-    }
-
-    return true
+      
+      squareBrackeContext.state = TokenizerState.Link
+      this.tokens.splice(squareBrackeContext.countTokens, 0, new LINK.StartTokenType())
   }
 
   private openMediaUrl(): boolean {
@@ -600,21 +564,21 @@ class Tokenizer {
 
   private closeMostRecentContextWithState(state: TokenizerState): void {
     let indexOfEnclosedNakedUrlContext = -1
-    
+
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
-      
+
       if (context.state === state) {
         // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too.
         if (indexOfEnclosedNakedUrlContext != -1) {
           this.flushUnmatchedTextToNakedUrl()
           this.openContexts.splice(indexOfEnclosedNakedUrlContext, 1)
         }
-        
+
         this.openContexts.splice(i, 1)
         return
       }
-      
+
       if (context.state === TokenizerState.NakedUrl) {
         indexOfEnclosedNakedUrlContext = i
       }
@@ -629,6 +593,18 @@ class Tokenizer {
 
       if (context.state === state) {
         return
+      }
+    }
+
+    throw new Error(`State was not open: ${TokenizerState[state]}`)
+  }
+
+  private getInnermostContextWithState(state: TokenizerState): TokenizerContext {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+
+      if (context.state === state) {
+        return context
       }
     }
 
