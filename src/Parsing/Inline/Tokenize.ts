@@ -190,27 +190,6 @@ class Tokenizer {
         }
       })
 
-    const addBracketToBuffer = (bracket: string) => {
-      this.plainTextBuffer += bracket
-    }
-
-    this.parenthesizedInsideUrlConvention =
-      new TokenizableSandwich({
-        state: TokenizerState.ParenthesizedInsideUrl,
-        startPattern: OPEN_SQUARE_BRACKET,
-        endPattern: CLOSE_SQUARE_BRACKET,
-        onOpen: addBracketToBuffer,
-        onClose: addBracketToBuffer
-      })
-
-    this.squareBracketedInsideUrlConvention = new TokenizableSandwich({
-      state: TokenizerState.SquareBracketedInsideUrl,
-      startPattern: OPEN_SQUARE_BRACKET,
-      endPattern: CLOSE_SQUARE_BRACKET,
-      onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer
-    })
-
     this.inlineCodeConvention = new TokenizableSandwich({
       state: TokenizerState.InlineCode,
       startPattern: '`',
@@ -221,6 +200,27 @@ class Tokenizer {
       onClose: () => {
         this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
       }
+    })
+
+    const addBracketToBuffer = (bracket: string) => {
+      this.plainTextBuffer += bracket
+    }
+
+    this.parenthesizedInsideUrlConvention =
+      new TokenizableSandwich({
+        state: TokenizerState.ParenthesizedInsideUrl,
+        startPattern: OPEN_PAREN,
+        endPattern: CLOSE_PAREN,
+        onOpen: addBracketToBuffer,
+        onClose: addBracketToBuffer
+      })
+
+    this.squareBracketedInsideUrlConvention = new TokenizableSandwich({
+      state: TokenizerState.SquareBracketedInsideUrl,
+      startPattern: OPEN_SQUARE_BRACKET,
+      endPattern: CLOSE_SQUARE_BRACKET,
+      onOpen: addBracketToBuffer,
+      onClose: addBracketToBuffer
     })
 
     this.mediaConventions = [AUDIO, IMAGE, VIDEO].map(media =>

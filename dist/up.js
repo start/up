@@ -777,24 +777,6 @@ var Tokenizer = (function () {
                     _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedEndToken_1.SquareBracketedEndToken());
                 }
             });
-        var addBracketToBuffer = function (bracket) {
-            _this.plainTextBuffer += bracket;
-        };
-        this.parenthesizedInsideUrlConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
-                startPattern: OPEN_SQUARE_BRACKET,
-                endPattern: CLOSE_SQUARE_BRACKET,
-                onOpen: addBracketToBuffer,
-                onClose: addBracketToBuffer
-            });
-        this.squareBracketedInsideUrlConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
-            startPattern: OPEN_SQUARE_BRACKET,
-            endPattern: CLOSE_SQUARE_BRACKET,
-            onOpen: addBracketToBuffer,
-            onClose: addBracketToBuffer
-        });
         this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
             state: TokenizerState_1.TokenizerState.InlineCode,
             startPattern: '`',
@@ -805,6 +787,24 @@ var Tokenizer = (function () {
             onClose: function () {
                 _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
             }
+        });
+        var addBracketToBuffer = function (bracket) {
+            _this.plainTextBuffer += bracket;
+        };
+        this.parenthesizedInsideUrlConvention =
+            new TokenizableSandwich_1.TokenizableSandwich({
+                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
+                startPattern: OPEN_PAREN,
+                endPattern: CLOSE_PAREN,
+                onOpen: addBracketToBuffer,
+                onClose: addBracketToBuffer
+            });
+        this.squareBracketedInsideUrlConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
+            startPattern: OPEN_SQUARE_BRACKET,
+            endPattern: CLOSE_SQUARE_BRACKET,
+            onOpen: addBracketToBuffer,
+            onClose: addBracketToBuffer
         });
         this.mediaConventions = [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
             return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, _this.config.localize(media.nonLocalizedTerm));
