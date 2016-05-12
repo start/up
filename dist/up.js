@@ -810,17 +810,16 @@ var Tokenizer = (function () {
     }
     Tokenizer.prototype.tokenize = function () {
         LoopCharacters: while (true) {
-            if (this.reachedEndOfText()) {
-                if (this.finalize()) {
-                    break;
-                }
+            if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
+                break;
             }
             if (this.collectCurrentCharIfEscaped()) {
                 continue;
             }
             var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
             if (currentOpenContext && currentOpenContext.state == TokenizerState_1.TokenizerState.InlineCode) {
-                this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar();
+                this.closeSandwich(this.inlineCodeConvention)
+                    || this.collectCurrentChar();
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -844,17 +843,22 @@ var Tokenizer = (function () {
                 for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
                     var media = _c[_b];
                     if (state === media.state) {
-                        this.openMediaUrl() || this.collectCurrentChar();
+                        this.openMediaUrl()
+                            || this.collectCurrentChar();
                         continue LoopCharacters;
                     }
                 }
                 switch (state) {
                     case TokenizerState_1.TokenizerState.LinkUrl: {
-                        this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink() || this.collectCurrentChar();
+                        this.openSandwich(this.squareBracketedInsideUrlConvention)
+                            || this.closeLink()
+                            || this.collectCurrentChar();
                         continue LoopCharacters;
                     }
                     case TokenizerState_1.TokenizerState.MediaUrl: {
-                        this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia() || this.collectCurrentChar();
+                        this.openSandwich(this.squareBracketedInsideUrlConvention)
+                            || this.closeMedia()
+                            || this.collectCurrentChar();
                         continue LoopCharacters;
                     }
                     case TokenizerState_1.TokenizerState.NakedUrl: {
@@ -866,7 +870,9 @@ var Tokenizer = (function () {
                 }
             }
             if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
-                this.openSandwich(this.parenthesizedInsideUrlConvention) || this.openSandwich(this.squareBracketedInsideUrlConvention) || this.collectCurrentChar();
+                this.openSandwich(this.parenthesizedInsideUrlConvention)
+                    || this.openSandwich(this.squareBracketedInsideUrlConvention)
+                    || this.collectCurrentChar();
                 continue;
             }
             if (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
@@ -907,7 +913,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.reachedEndOfText = function () {
         return !this.remainingText;
     };
-    Tokenizer.prototype.finalize = function () {
+    Tokenizer.prototype.finalizeAndCheckValidity = function () {
         while (this.openContexts.length) {
             var context_2 = this.openContexts.pop();
             switch (context_2.state) {

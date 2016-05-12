@@ -233,10 +233,8 @@ class Tokenizer {
   private tokenize(): void {
     LoopCharacters: while (true) {
 
-      if (this.reachedEndOfText()) {
-        if (this.finalize()) {
-          break
-        }
+      if (this.reachedEndOfText() && this.finalizeAndCheckValidity()) {
+        break
       }
 
       if (this.collectCurrentCharIfEscaped()) {
@@ -246,7 +244,9 @@ class Tokenizer {
       const currentOpenContext = last(this.openContexts)
 
       if (currentOpenContext && currentOpenContext.state == TokenizerState.InlineCode) {
-        this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar()
+        this.closeSandwich(this.inlineCodeConvention)
+          || this.collectCurrentChar()
+
         continue
       }
 
@@ -271,19 +271,27 @@ class Tokenizer {
 
         for (const media of this.mediaConventions) {
           if (state === media.state) {
-            this.openMediaUrl() || this.collectCurrentChar()
+            this.openMediaUrl()
+              || this.collectCurrentChar()
+
             continue LoopCharacters
           }
         }
 
         switch (state) {
           case TokenizerState.LinkUrl: {
-            this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeLink() || this.collectCurrentChar()
+            this.openSandwich(this.squareBracketedInsideUrlConvention)
+              || this.closeLink()
+              || this.collectCurrentChar()
+
             continue LoopCharacters
           }
 
           case TokenizerState.MediaUrl: {
-            this.openSandwich(this.squareBracketedInsideUrlConvention) || this.closeMedia() || this.collectCurrentChar()
+            this.openSandwich(this.squareBracketedInsideUrlConvention)
+              || this.closeMedia()
+              || this.collectCurrentChar()
+
             continue LoopCharacters
           }
 
@@ -298,7 +306,10 @@ class Tokenizer {
       }
 
       if (this.hasState(TokenizerState.NakedUrl)) {
-        this.openSandwich(this.parenthesizedInsideUrlConvention) || this.openSandwich(this.squareBracketedInsideUrlConvention) || this.collectCurrentChar()
+        this.openSandwich(this.parenthesizedInsideUrlConvention)
+          || this.openSandwich(this.squareBracketedInsideUrlConvention)
+          || this.collectCurrentChar()
+
         continue
       }
 
@@ -354,7 +365,7 @@ class Tokenizer {
     return !this.remainingText
   }
 
-  private finalize(): boolean {
+  private finalizeAndCheckValidity(): boolean {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
