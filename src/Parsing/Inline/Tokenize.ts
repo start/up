@@ -251,57 +251,8 @@ class Tokenizer {
       }
 
       for (let i = this.openContexts.length - 1; i >= 0; i--) {
-        let context = this.openContexts[i]
-        const { state } = context
-
-        for (const sandwich of [
-          this.spoilerConvention,
-          this.footnoteConvention,
-          this.revisionDeletionConvention,
-          this.revisionInsertionConvention,
-          this.squareBracketedConvention,
-          this.parenthesizedConvention,
-          this.squareBracketedInsideUrlConvention,
-          this.parenthesizedInsideUrlConvention
-        ]) {
-          if (state === sandwich.state && this.closeSandwich(sandwich)) {
-            continue LoopCharacters
-          }
-        }
-
-        for (const media of this.mediaConventions) {
-          if (state === media.state) {
-            this.openMediaUrl()
-              || this.collectCurrentChar()
-
-            continue LoopCharacters
-          }
-        }
-
-        switch (state) {
-          case TokenizerState.LinkUrl: {
-            this.openSandwich(this.squareBracketedInsideUrlConvention)
-              || this.closeLink()
-              || this.collectCurrentChar()
-
-            continue LoopCharacters
-          }
-
-          case TokenizerState.MediaUrl: {
-            this.openSandwich(this.squareBracketedInsideUrlConvention)
-              || this.closeMedia()
-              || this.collectCurrentChar()
-
-            continue LoopCharacters
-          }
-
-          case TokenizerState.NakedUrl: {
-            if (this.tryCloseNakedUrl()) {
-              continue LoopCharacters
-            }
-
-            break
-          }
+        if (this.performContextSpecificTokenization(this.openContexts[i])) {
+          continue LoopCharacters
         }
       }
 
@@ -333,6 +284,58 @@ class Tokenizer {
     this.tokens =
       massageTokensIntoTreeStructure(
         applyRaisedVoicesToRawTokens(this.tokens))
+  }
+
+  private performContextSpecificTokenization(context: TokenizerContext): boolean {
+    const { state } = context
+
+    for (const sandwich of [
+      this.spoilerConvention,
+      this.footnoteConvention,
+      this.revisionDeletionConvention,
+      this.revisionInsertionConvention,
+      this.squareBracketedConvention,
+      this.parenthesizedConvention,
+      this.squareBracketedInsideUrlConvention,
+      this.parenthesizedInsideUrlConvention
+    ]) {
+      if (state === sandwich.state && this.closeSandwich(sandwich)) {
+        return true
+      }
+    }
+
+    for (const media of this.mediaConventions) {
+      if (state === media.state) {
+        this.openMediaUrl()
+          || this.collectCurrentChar()
+
+        return true
+      }
+    }
+
+    switch (state) {
+      case TokenizerState.LinkUrl: {
+        this.openSandwich(this.squareBracketedInsideUrlConvention)
+          || this.closeLink()
+          || this.collectCurrentChar()
+
+        return true
+      }
+
+      case TokenizerState.MediaUrl: {
+        this.openSandwich(this.squareBracketedInsideUrlConvention)
+          || this.closeMedia()
+          || this.collectCurrentChar()
+
+        return true
+      }
+
+      case TokenizerState.NakedUrl: {
+        return this.tryCloseNakedUrl()
+      }
+    }
+    
+    return false
   }
 
   private collectCurrentCharIfEscaped(): boolean {

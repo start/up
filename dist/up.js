@@ -823,50 +823,8 @@ var Tokenizer = (function () {
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
-                var context_1 = this.openContexts[i];
-                var state = context_1.state;
-                for (var _i = 0, _a = [
-                    this.spoilerConvention,
-                    this.footnoteConvention,
-                    this.revisionDeletionConvention,
-                    this.revisionInsertionConvention,
-                    this.squareBracketedConvention,
-                    this.parenthesizedConvention,
-                    this.squareBracketedInsideUrlConvention,
-                    this.parenthesizedInsideUrlConvention
-                ]; _i < _a.length; _i++) {
-                    var sandwich = _a[_i];
-                    if (state === sandwich.state && this.closeSandwich(sandwich)) {
-                        continue LoopCharacters;
-                    }
-                }
-                for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
-                    var media = _c[_b];
-                    if (state === media.state) {
-                        this.openMediaUrl()
-                            || this.collectCurrentChar();
-                        continue LoopCharacters;
-                    }
-                }
-                switch (state) {
-                    case TokenizerState_1.TokenizerState.LinkUrl: {
-                        this.openSandwich(this.squareBracketedInsideUrlConvention)
-                            || this.closeLink()
-                            || this.collectCurrentChar();
-                        continue LoopCharacters;
-                    }
-                    case TokenizerState_1.TokenizerState.MediaUrl: {
-                        this.openSandwich(this.squareBracketedInsideUrlConvention)
-                            || this.closeMedia()
-                            || this.collectCurrentChar();
-                        continue LoopCharacters;
-                    }
-                    case TokenizerState_1.TokenizerState.NakedUrl: {
-                        if (this.tryCloseNakedUrl()) {
-                            continue LoopCharacters;
-                        }
-                        break;
-                    }
+                if (this.performContextSpecificTokenization(this.openContexts[i])) {
+                    continue LoopCharacters;
                 }
             }
             if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
@@ -893,6 +851,50 @@ var Tokenizer = (function () {
         this.tokens =
             MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
     };
+    Tokenizer.prototype.performContextSpecificTokenization = function (context) {
+        var state = context.state;
+        for (var _i = 0, _a = [
+            this.spoilerConvention,
+            this.footnoteConvention,
+            this.revisionDeletionConvention,
+            this.revisionInsertionConvention,
+            this.squareBracketedConvention,
+            this.parenthesizedConvention,
+            this.squareBracketedInsideUrlConvention,
+            this.parenthesizedInsideUrlConvention
+        ]; _i < _a.length; _i++) {
+            var sandwich = _a[_i];
+            if (state === sandwich.state && this.closeSandwich(sandwich)) {
+                return true;
+            }
+        }
+        for (var _b = 0, _c = this.mediaConventions; _b < _c.length; _b++) {
+            var media = _c[_b];
+            if (state === media.state) {
+                this.openMediaUrl()
+                    || this.collectCurrentChar();
+                return true;
+            }
+        }
+        switch (state) {
+            case TokenizerState_1.TokenizerState.LinkUrl: {
+                this.openSandwich(this.squareBracketedInsideUrlConvention)
+                    || this.closeLink()
+                    || this.collectCurrentChar();
+                return true;
+            }
+            case TokenizerState_1.TokenizerState.MediaUrl: {
+                this.openSandwich(this.squareBracketedInsideUrlConvention)
+                    || this.closeMedia()
+                    || this.collectCurrentChar();
+                return true;
+            }
+            case TokenizerState_1.TokenizerState.NakedUrl: {
+                return this.tryCloseNakedUrl();
+            }
+        }
+        return false;
+    };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';
         if (this.currentChar !== ESCAPE_CHAR) {
@@ -913,8 +915,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.finalizeAndCheckValidity = function () {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            switch (context_2.state) {
+            var context_1 = this.openContexts.pop();
+            switch (context_1.state) {
                 case TokenizerState_1.TokenizerState.NakedUrl:
                     this.flushUnmatchedTextToNakedUrl();
                     break;
@@ -926,7 +928,7 @@ var Tokenizer = (function () {
                 case TokenizerState_1.TokenizerState.MediaUrl:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_2);
+                    this.backtrackToBeforeContext(context_1);
                     return false;
             }
         }
@@ -935,9 +937,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.backtrackToBeforeLatestContextWithState = function (state) {
         while (this.openContexts.length) {
-            var context_3 = this.openContexts.pop();
-            if (context_3.state === state) {
-                this.backtrackToBeforeContext(context_3);
+            var context_2 = this.openContexts.pop();
+            if (context_2.state === state) {
+                this.backtrackToBeforeContext(context_2);
             }
         }
     };
@@ -1120,8 +1122,8 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
         var indexOfEnclosedNakedUrlContext = -1;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_4 = this.openContexts[i];
-            if (context_4.state === state) {
+            var context_3 = this.openContexts[i];
+            if (context_3.state === state) {
                 if (indexOfEnclosedNakedUrlContext != -1) {
                     this.flushUnmatchedTextToNakedUrl();
                     this.openContexts.splice(indexOfEnclosedNakedUrlContext, 1);
@@ -1129,7 +1131,7 @@ var Tokenizer = (function () {
                 this.openContexts.splice(i, 1);
                 return;
             }
-            if (context_4.state === TokenizerState_1.TokenizerState.NakedUrl) {
+            if (context_3.state === TokenizerState_1.TokenizerState.NakedUrl) {
                 indexOfEnclosedNakedUrlContext = i;
             }
         }
@@ -1137,8 +1139,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeMostRecentContextWithStateAndAnyInnerContexts = function (state) {
         while (this.openContexts.length) {
-            var context_5 = this.openContexts.pop();
-            if (context_5.state === state) {
+            var context_4 = this.openContexts.pop();
+            if (context_4.state === state) {
                 return;
             }
         }
@@ -1146,9 +1148,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getInnermostContextWithState = function (state) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_6 = this.openContexts[i];
-            if (context_6.state === state) {
-                return context_6;
+            var context_5 = this.openContexts[i];
+            if (context_5.state === state) {
+                return context_5;
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
