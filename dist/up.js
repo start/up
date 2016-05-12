@@ -818,10 +818,7 @@ var Tokenizer = (function () {
             if (this.collectCurrentCharIfEscaped()) {
                 continue;
             }
-            var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
-            if (currentOpenContext && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)) {
-                this.closeSandwich(this.inlineCodeConvention)
-                    || this.collectCurrentChar();
+            if (this.handleInlineCode()) {
                 continue;
             }
             for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -864,7 +861,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeSandwichCorrespondingToState = function (state) {
         var _this = this;
-        var richSandwiches = [
+        return [
             this.spoilerConvention,
             this.footnoteConvention,
             this.revisionDeletionConvention,
@@ -873,18 +870,25 @@ var Tokenizer = (function () {
             this.parenthesizedConvention,
             this.squareBracketedInsideUrlConvention,
             this.parenthesizedInsideUrlConvention
-        ];
-        var closeSandwich = function (sandwich) {
+        ].some(function (sandwich) {
             return (sandwich.state === state) && _this.closeSandwich(sandwich);
-        };
-        return richSandwiches.some(closeSandwich);
+        });
     };
     Tokenizer.prototype.handleMediaCorrespondingToState = function (state) {
         var _this = this;
-        var handleMedia = function (media) {
-            return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
-        };
-        return this.mediaConventions.some(handleMedia);
+        return this.mediaConventions.some(function (media) {
+            return (media.state === state)
+                && (_this.openMediaUrl() || _this.collectCurrentChar());
+        });
+    };
+    Tokenizer.prototype.handleInlineCode = function () {
+        var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
+        if (currentOpenContext && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)) {
+            this.closeSandwich(this.inlineCodeConvention)
+                || this.collectCurrentChar();
+            return true;
+        }
+        return false;
     };
     Tokenizer.prototype.openSquareBracketInsideUrl = function () {
         return this.openSandwich(this.squareBracketedInsideUrlConvention);

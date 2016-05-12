@@ -245,12 +245,7 @@ class Tokenizer {
         continue
       }
 
-      const currentOpenContext = last(this.openContexts)
-
-      if (currentOpenContext && (currentOpenContext.state === TokenizerState.InlineCode)) {
-        this.closeSandwich(this.inlineCodeConvention)
-          || this.collectCurrentChar()
-
+      if (this.handleInlineCode()) {
         continue
       }
 
@@ -289,25 +284,25 @@ class Tokenizer {
   private performContextSpecificTokenization(state: TokenizerState): boolean {
     return (
       this.closeSandwichCorrespondingToState(state)
-      
+
       || this.handleMediaCorrespondingToState(state)
-      
+
       || ((state === TokenizerState.LinkUrl) && (
         this.openSquareBracketInsideUrl()
         || this.closeLink()
         || this.collectCurrentChar()))
-        
+
       || ((state === TokenizerState.MediaUrl) && (
         this.openSquareBracketInsideUrl()
         || this.closeMedia()
         || this.collectCurrentChar()))
-        
+
       || ((state === TokenizerState.NakedUrl) && this.tryCloseNakedUrl())
     )
   }
 
   private closeSandwichCorrespondingToState(state: TokenizerState): boolean {
-    const richSandwiches = [
+    return [
       this.spoilerConvention,
       this.footnoteConvention,
       this.revisionDeletionConvention,
@@ -316,23 +311,29 @@ class Tokenizer {
       this.parenthesizedConvention,
       this.squareBracketedInsideUrlConvention,
       this.parenthesizedInsideUrlConvention
-    ]
-
-    const closeSandwich =
-      (sandwich: TokenizableSandwich) =>
-        (sandwich.state === state) && this.closeSandwich(sandwich)
-
-    return richSandwiches.some(closeSandwich)
+    ].some(sandwich =>
+      (sandwich.state === state) && this.closeSandwich(sandwich))
   }
 
   private handleMediaCorrespondingToState(state: TokenizerState): boolean {
-    const handleMedia =
-      (media: TokenizableMedia) =>
-        (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())
-
-    return this.mediaConventions.some(handleMedia)
+    return this.mediaConventions.some(media =>
+      (media.state === state)
+      && (this.openMediaUrl() || this.collectCurrentChar()))
   }
-  
+
+  private handleInlineCode(): boolean {
+    const currentOpenContext = last(this.openContexts)
+
+    if (currentOpenContext && (currentOpenContext.state === TokenizerState.InlineCode)) {
+      this.closeSandwich(this.inlineCodeConvention)
+        || this.collectCurrentChar()
+
+      return true
+    }
+
+    return false
+  }
+
   private openSquareBracketInsideUrl(): boolean {
     return this.openSandwich(this.squareBracketedInsideUrlConvention)
   }
