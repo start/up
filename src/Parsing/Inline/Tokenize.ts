@@ -540,16 +540,6 @@ class Tokenizer {
     })
   }
 
-  // This method isn't called once we start tokenizing a link's URL.
-  private undoLinkThatWasActuallyBracketedText(): boolean {
-    if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
-      this.backtrackToBeforeLink()
-      return true
-    }
-
-    return false
-  }
-
   private backtrackToBeforeLink(): void {
     this.backtrackToBeforeLatestContextWithState(TokenizerState.Link)
   }

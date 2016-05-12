@@ -1035,13 +1035,6 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.undoLinkThatWasActuallyBracketedText = function () {
-        if (this.advanceAfterMatch({ pattern: LINK_END_PATTERN })) {
-            this.backtrackToBeforeLink();
-            return true;
-        }
-        return false;
-    };
     Tokenizer.prototype.backtrackToBeforeLink = function () {
         this.backtrackToBeforeLatestContextWithState(TokenizerState_1.TokenizerState.Link);
     };
