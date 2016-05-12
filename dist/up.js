@@ -980,7 +980,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openLinkUrlOrUndoPrematureLink = function () {
         var _this = this;
-        var didStartLinkUrl = this.hasState(TokenizerState_1.TokenizerState.Link) && this.openConvention({
+        var didStartLinkUrl = this.openConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
             pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
             then: function () {

@@ -461,7 +461,7 @@ class Tokenizer {
 
   private openLinkUrlOrUndoPrematureLink(): boolean {
     const didStartLinkUrl =
-      this.hasState(TokenizerState.Link) && this.openConvention({
+      this.openConvention({
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
         then: () => {
@@ -534,7 +534,7 @@ class Tokenizer {
         (<MediaToken>this.currentToken).url = this.flushUnmatchedText()
         this.closeMostRecentContextWithState(TokenizerState.MediaUrl)
 
-        // Once the media URL's context is closed, the media's context is innermost.
+        // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
         this.closeInnermostContext()
       }
     })
