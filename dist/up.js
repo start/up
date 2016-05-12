@@ -878,7 +878,7 @@ var Tokenizer = (function () {
             if (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink()) {
                 continue;
             }
-            var openedConvention = (this.tokenizeRaisedVoicePlaceholders()
+            this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.openSandwich(this.spoilerConvention)
                 || this.openSandwich(this.footnoteConvention)
@@ -887,10 +887,8 @@ var Tokenizer = (function () {
                 || this.openMedia()
                 || this.openSandwich(this.parenthesizedConvention)
                 || this.openSandwich(this.squareBracketedConvention)
-                || this.openNakedUrl());
-            if (!openedConvention) {
-                this.collectCurrentChar();
-            }
+                || this.openNakedUrl()
+                || this.collectCurrentChar();
         }
         this.tokens =
             MassageTokensIntoTreeStructure_1.massageTokensIntoTreeStructure(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));

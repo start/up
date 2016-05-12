@@ -317,8 +317,7 @@ class Tokenizer {
         continue
       }
 
-      const openedConvention = (
-        this.tokenizeRaisedVoicePlaceholders()
+      this.tokenizeRaisedVoicePlaceholders()
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.openSandwich(this.footnoteConvention)
@@ -328,11 +327,7 @@ class Tokenizer {
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openNakedUrl()
-      )
-
-      if (!openedConvention) {
-        this.collectCurrentChar()
-      }
+        || this.collectCurrentChar()
     }
 
     this.tokens =
