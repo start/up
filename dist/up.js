@@ -852,14 +852,7 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.performContextSpecificTokenization = function (state) {
-        var _this = this;
-        if (this.closeCorrespondingRichSandwich(state)) {
-            return true;
-        }
-        var handleMedia = function (media) {
-            return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
-        };
-        if (this.mediaConventions.some(handleMedia)) {
+        if (this.closeCorrespondingRichSandwich(state) || this.handleCorrespondingMedia(state)) {
             return true;
         }
         switch (state) {
@@ -895,6 +888,13 @@ var Tokenizer = (function () {
             return (sandwich.state === state) && _this.closeSandwich(sandwich);
         };
         return richSandwiches.some(closeSandwich);
+    };
+    Tokenizer.prototype.handleCorrespondingMedia = function (state) {
+        var _this = this;
+        var handleMedia = function (media) {
+            return (media.state === state) && (_this.openMediaUrl() || _this.collectCurrentChar());
+        };
+        return this.mediaConventions.some(handleMedia);
     };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';

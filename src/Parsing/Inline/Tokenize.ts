@@ -287,15 +287,7 @@ class Tokenizer {
   }
    
   private performContextSpecificTokenization(state: TokenizerState): boolean {
-    if (this.closeCorrespondingRichSandwich(state)) {
-      return true
-    }
-
-    const handleMedia =
-      (media: TokenizableMedia) =>
-        (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())
-
-    if (this.mediaConventions.some(handleMedia)) {
+    if (this.closeCorrespondingRichSandwich(state) || this.handleCorrespondingMedia(state)) {
       return true
     }
 
@@ -341,6 +333,14 @@ class Tokenizer {
         (sandwich.state === state) && this.closeSandwich(sandwich)
 
     return richSandwiches.some(closeSandwich)
+  }
+  
+  private handleCorrespondingMedia(state: TokenizerState): boolean {
+    const handleMedia =
+      (media: TokenizableMedia) =>
+        (media.state === state) && (this.openMediaUrl() || this.collectCurrentChar())
+
+    return this.mediaConventions.some(handleMedia)
   }
 
   private collectCurrentCharIfEscaped(): boolean {
