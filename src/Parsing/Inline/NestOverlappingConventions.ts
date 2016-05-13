@@ -188,13 +188,13 @@ class ConventionNester {
 }
 
 function getConventionStartedByThisToken(token: Token): RichConvention {
-  return OVERLAPPABLE_CONVENTIONS.filter(convention =>
+  return FREELY_SPLITTABLE_CONVENTIONS.filter(convention =>
     token instanceof convention.StartTokenType
   )[0]
 }
 
 function getConventionEndedByThisToken(token: Token): RichConvention {
-  return OVERLAPPABLE_CONVENTIONS.filter(convention =>
+  return FREELY_SPLITTABLE_CONVENTIONS.filter(convention =>
     token instanceof convention.EndTokenType
   )[0]
 }

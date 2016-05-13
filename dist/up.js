@@ -188,12 +188,12 @@ var ConventionNester = (function () {
     return ConventionNester;
 }());
 function getConventionStartedByThisToken(token) {
-    return OVERLAPPABLE_CONVENTIONS.filter(function (convention) {
+    return FREELY_SPLITTABLE_CONVENTIONS.filter(function (convention) {
         return token instanceof convention.StartTokenType;
     })[0];
 }
 function getConventionEndedByThisToken(token) {
-    return OVERLAPPABLE_CONVENTIONS.filter(function (convention) {
+    return FREELY_SPLITTABLE_CONVENTIONS.filter(function (convention) {
         return token instanceof convention.EndTokenType;
     })[0];
 }
