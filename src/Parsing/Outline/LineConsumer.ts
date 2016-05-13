@@ -89,6 +89,7 @@ export class LineConsumer {
   }
 }
 
+
 interface ShouldConsumeLine {
   (line: string, ...captures: string[]): boolean
 }

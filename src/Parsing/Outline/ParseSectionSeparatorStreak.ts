@@ -3,9 +3,6 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { STREAK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
-const STREAK_PATTERN = new RegExp(
-  STREAK
-)
 
 // A horizontal streak of characters indicates separation between sections.
 export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
@@ -18,3 +15,8 @@ export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
   args.then([new SectionSeparatorNode()], consumer.lengthConsumed())
   return true
 }
+
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
+)

@@ -3,9 +3,6 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { streakOf } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
-const CODE_FENCE_PATTERN = new RegExp(
-  streakOf('`')
-)
 
 // Code blocks are surrounded (underlined and overlined) by streaks of backticks
 export function parseCodeBlock(args: OutlineParserArgs): boolean {
@@ -31,3 +28,8 @@ export function parseCodeBlock(args: OutlineParserArgs): boolean {
 
   return false
 }
+
+
+const CODE_FENCE_PATTERN = new RegExp(
+  streakOf('`')
+)

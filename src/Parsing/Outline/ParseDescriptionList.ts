@@ -10,18 +10,6 @@ import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from '
 import { OutlineParserArgs } from './OutlineParser'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 
-const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK
-)
-
-const BLANK_PATTERN = new RegExp(
-  BLANK
-)
-
-const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
-
 
 // Description lists are collections of terms and descriptions.
 //
@@ -101,3 +89,16 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
   args.then([new DescriptionListNode(listItemNodes)], lengthParsed)
   return true
 }
+
+
+const NON_BLANK_PATTERN = new RegExp(
+  NON_BLANK
+)
+
+const BLANK_PATTERN = new RegExp(
+  BLANK
+)
+
+const INDENTED_PATTERN = new RegExp(
+  startsWith(INDENT)
+)

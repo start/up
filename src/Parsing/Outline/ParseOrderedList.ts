@@ -7,33 +7,6 @@ import { OutlineParserArgs } from './OutlineParser'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 
 
-const BULLETED_PATTERN = new RegExp(
-  startsWith(
-    optional(' ')
-    + either(
-      '#',
-      capture(either(INTEGER, '#') + either('\\.', '\\)'))
-    )
-    + INLINE_WHITESPACE_CHAR
-  )
-)
-
-const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
-  INTEGER + '\\.'
-)
-
-const STREAK_PATTERN = new RegExp(
-  STREAK
-)
-
-const BLANK_LINE_PATTERN = new RegExp(
-  BLANK
-)
-
-const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
-
 // Ordered lists are simply collections of ordered list items.
 //
 // List items can contain any kind of convention, even other lists!  In list items
@@ -129,11 +102,39 @@ function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
 }
 
 
-const INTEGER_PATTERN = new RegExp(
-  capture(INTEGER)
-)
-
 function getExplicitOrdinal(rawListItem: RawListItem): number {
   const result = INTEGER_PATTERN.exec(rawListItem.bullet)
   return (result ? parseInt(result[1]) : null)
 }
+
+
+const INTEGER_PATTERN = new RegExp(
+  capture(INTEGER)
+)
+
+const BULLETED_PATTERN = new RegExp(
+  startsWith(
+    optional(' ')
+    + either(
+      '#',
+      capture(either(INTEGER, '#') + either('\\.', '\\)'))
+    )
+    + INLINE_WHITESPACE_CHAR
+  )
+)
+
+const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
+  INTEGER + '\\.'
+)
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
+)
+
+const BLANK_LINE_PATTERN = new RegExp(
+  BLANK
+)
+
+const INDENTED_PATTERN = new RegExp(
+  startsWith(INDENT)
+)

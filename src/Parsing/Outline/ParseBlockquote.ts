@@ -5,22 +5,6 @@ import { HeadingLeveler } from './HeadingLeveler'
 import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
-const BLOCKQUOTE_DELIMITER = '>' + optional(INLINE_WHITESPACE_CHAR)
-
-const ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(
-  capture(
-    startsWith((atLeast(1, BLOCKQUOTE_DELIMITER)))
-  )
-)
-
-const FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(
-  startsWith(BLOCKQUOTE_DELIMITER)
-)
-
-const TRAILING_SPACE_PATTERN = new RegExp(
-  endsWith(INLINE_WHITESPACE_CHAR)
-)
-
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,
 // even other blockquotes! They're like mini-documents.
@@ -63,3 +47,21 @@ function isLineProperlyBlockquoted(line: string, delimiters: string): boolean {
     
   return TRAILING_SPACE_PATTERN.test(delimiters) || (line === delimiters)
 }
+
+
+const BLOCKQUOTE_DELIMITER =
+  '>' + optional(INLINE_WHITESPACE_CHAR)
+
+const ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(
+  capture(
+    startsWith((atLeast(1, BLOCKQUOTE_DELIMITER)))
+  )
+)
+
+const FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(
+  startsWith(BLOCKQUOTE_DELIMITER)
+)
+
+const TRAILING_SPACE_PATTERN = new RegExp(
+  endsWith(INLINE_WHITESPACE_CHAR)
+)

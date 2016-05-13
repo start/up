@@ -6,23 +6,6 @@ import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
-const BULLET_PATTERN = new RegExp(
-  startsWith(
-    optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
-  )
-)
-
-const BLANK_LINE_PATTERN = new RegExp(
-  BLANK
-)
-
-const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
-
-const STREAK_PATTERN = new RegExp(
-  STREAK
-)
 
 // Unordered lists are simply collections of bulleted list items.
 //
@@ -76,3 +59,22 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
   args.then([new UnorderedListNode(listItems)], consumer.lengthConsumed())
   return true
 }
+
+
+const BULLET_PATTERN = new RegExp(
+  startsWith(
+    optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
+  )
+)
+
+const BLANK_LINE_PATTERN = new RegExp(
+  BLANK
+)
+
+const INDENTED_PATTERN = new RegExp(
+  startsWith(INDENT)
+)
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
+)

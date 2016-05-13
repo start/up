@@ -11,13 +11,6 @@ import { NON_BLANK, STREAK } from '../Patterns'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { OutlineParserArgs } from './OutlineParser'
 
-const NON_BLANK_LINE_PATTERN = new RegExp(
-  NON_BLANK
-)
-
-const STREAK_PATTERN = new RegExp(
-  STREAK
-)
 
 // A single non-blank line is treated as a paragraph.
 //
@@ -134,3 +127,12 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
 function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
   return node instanceof MediaSyntaxNode
 }
+
+
+const NON_BLANK_LINE_PATTERN = new RegExp(
+  NON_BLANK
+)
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
+)

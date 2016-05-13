@@ -3,9 +3,6 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
-const BLANK_PATTERN = new RegExp(
-  BLANK
-) 
 
 // Outline conventions (e.g. paragraphs, headings) are normally separated by 1 or 2 consecutive blank lines.
 // The blank lines themselves don't produce any syntax nodes.
@@ -37,3 +34,8 @@ export function parseBlankLineSeparation(args: OutlineParserArgs): boolean {
   args.then(nodes, consumer.lengthConsumed())
   return true
 }
+
+
+const BLANK_PATTERN = new RegExp(
+  BLANK
+) 
