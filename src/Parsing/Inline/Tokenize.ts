@@ -4,7 +4,7 @@ import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
-import { massageTokensIntoTreeStructure } from './MassageTokensIntoTreeStructure'
+import { nestOverlappingConventions } from './NestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last, reverse } from '../CollectionHelpers'
 import { MediaToken } from './Tokens/MediaToken'
@@ -173,7 +173,7 @@ class Tokenizer {
     this.tokenize()
 
     this.tokens =
-      massageTokensIntoTreeStructure(
+      nestOverlappingConventions(
         applyRaisedVoicesToRawTokens(this.tokens))
   }
 

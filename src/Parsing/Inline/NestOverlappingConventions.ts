@@ -19,8 +19,8 @@ const REGULAR_SANDWICHES = [
 // 2. Footnotes overlapping with a spoiler
 
 
-export function massageTokensIntoTreeStructure(tokens: Token[]): Token[] {
-  return new TokenMasseuse(tokens.slice()).tokens
+export function nestOverlappingConventions(tokens: Token[]): Token[] {
+  return new ConventionNester(tokens.slice()).tokens
 }
 
 // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This class rearranges
@@ -29,7 +29,7 @@ export function massageTokensIntoTreeStructure(tokens: Token[]): Token[] {
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent. Links,
 // however, must not be split into multiple pieces, which means any convention that overlaps with a link must
 // be split instead.
-class TokenMasseuse {
+class ConventionNester {
 
   // This class mutates the `tokens` argument!
   constructor(public tokens: Token[]) {
