@@ -1824,9 +1824,6 @@ var LineConsumer = (function () {
         this.index = 0;
         this.dirty();
     }
-    LineConsumer.prototype.done = function () {
-        return this.index >= this.text.length;
-    };
     LineConsumer.prototype.consumeLine = function (args) {
         if (this.done()) {
             return false;
@@ -1864,6 +1861,9 @@ var LineConsumer = (function () {
             args.then.apply(args, [lineWithoutTerminatingLineBreak].concat(captures));
         }
         return true;
+    };
+    LineConsumer.prototype.done = function () {
+        return this.index >= this.text.length;
     };
     LineConsumer.prototype.advance = function (countCharacters) {
         this.index += countCharacters;

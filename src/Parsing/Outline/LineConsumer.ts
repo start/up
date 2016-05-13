@@ -1,18 +1,3 @@
-interface ConsumeLineArgs {
-  pattern?: RegExp,
-  if?: ShouldConsumeLine,
-  then?: OnConsume
-}
-
-interface ShouldConsumeLine {
-  (line: string, ...captures: string[]): boolean
-}
-
-interface OnConsume {
-  (text: string, ...captures: string[]): void
-}
-
-
 export class LineConsumer {
   private index = 0
   private _remainingText: string
@@ -21,11 +6,13 @@ export class LineConsumer {
     this.dirty()
   }
 
-  done(): boolean {
-    return this.index >= this.text.length
-  }
-
-  consumeLine(args: ConsumeLineArgs): boolean {
+  consumeLine(
+    args: {
+      pattern?: RegExp,
+      if?: ShouldConsumeLine,
+      then?: OnConsume
+    }
+  ): boolean {
     if (this.done()) {
       return false
     }
@@ -49,7 +36,7 @@ export class LineConsumer {
         break
       }
     }
-    
+
     if (!fullLine) {
       // Well, we couldn't find a terminating line break! That must mean we're on the text's final line.
       fullLine = lineWithoutTerminatingLineBreak = this.remainingText()
@@ -80,6 +67,10 @@ export class LineConsumer {
     return true
   }
 
+  done(): boolean {
+    return this.index >= this.text.length
+  }
+
   advance(countCharacters: number): void {
     this.index += countCharacters
     this.dirty()
@@ -92,8 +83,16 @@ export class LineConsumer {
   remainingText(): string {
     return this._remainingText
   }
-  
+
   private dirty(): void {
     this._remainingText = this.text.slice(this.index)
   }
+}
+
+interface ShouldConsumeLine {
+  (line: string, ...captures: string[]): boolean
+}
+
+interface OnConsume {
+  (text: string, ...captures: string[]): void
 }
