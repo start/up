@@ -1715,8 +1715,6 @@ var Patterns_1 = require('../Patterns');
 var GetInlineNodes_1 = require('../Inline/GetInlineNodes');
 var IsLineFancyOutlineConvention_1 = require('./IsLineFancyOutlineConvention');
 var HeadingLeveler_1 = require('./HeadingLeveler');
-var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
-var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 function getHeadingParser(headingLeveler) {
     return function parseHeading(args) {
         var consumer = new LineConsumer_1.LineConsumer(args.text);
@@ -1748,6 +1746,8 @@ function getHeadingParser(headingLeveler) {
     };
 }
 exports.getHeadingParser = getHeadingParser;
+var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
+var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
 },{"../../SyntaxNodes/HeadingNode":78,"../Inline/GetInlineNodes":3,"../Patterns":66,"./HeadingLeveler":54,"./IsLineFancyOutlineConvention":55,"./LineConsumer":56}],52:[function(require,module,exports){
 "use strict";

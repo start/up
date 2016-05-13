@@ -7,13 +7,6 @@ import { getOutlineNodes } from './GetOutlineNodes'
 import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
-const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK
-)
-
-const STREAK_PATTERN = new RegExp(
-  STREAK
-)
 
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
 export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser {
@@ -84,3 +77,12 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     return true
   }
 }
+
+
+const NON_BLANK_PATTERN = new RegExp(
+  NON_BLANK
+)
+
+const STREAK_PATTERN = new RegExp(
+  STREAK
+)
