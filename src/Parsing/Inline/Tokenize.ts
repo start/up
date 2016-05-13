@@ -1,5 +1,5 @@
 import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET } from '../Patterns'
-import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK } from './RichConventions'
+import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
@@ -91,7 +91,6 @@ class Tokenizer {
   constructor(private entireText: string, config: UpConfig) {
     this.footnoteConvention =
       this.getRichSandwichConvention({
-        state: TokenizerState.Spoiler,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
         endPattern: escapeForRegex('))'),
         richConvention: FOOTNOTE
@@ -99,7 +98,6 @@ class Tokenizer {
 
     this.spoilerConvention =
       this.getRichSandwichConvention({
-        state: TokenizerState.Spoiler,
         startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: CLOSE_SQUARE_BRACKET,
         richConvention: SPOILER
@@ -107,7 +105,6 @@ class Tokenizer {
 
     this.revisionDeletionConvention =
       this.getRichSandwichConvention({
-        state: TokenizerState.RevisionDeletion,
         startPattern: '~~',
         endPattern: '~~',
         richConvention: REVISION_DELETION
@@ -115,7 +112,6 @@ class Tokenizer {
 
     this.revisionInsertionConvention =
       this.getRichSandwichConvention({
-        state: TokenizerState.RevisionInsertion,
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++'),
         richConvention: REVISION_INSERTION
@@ -653,16 +649,15 @@ class Tokenizer {
 
   private getRichSandwichConvention(
     args: {
-      state: TokenizerState,
       startPattern: string,
       endPattern: string,
       richConvention: RichConvention
     }
   ): TokenizableSandwich {
-    const { state, startPattern, endPattern, richConvention } = args
+    const { startPattern, endPattern, richConvention } = args
 
     return new TokenizableSandwich({
-      state: state,
+      state: richConvention.tokenizerState,
       startPattern: startPattern,
       endPattern: endPattern,
       onOpen: () => {
