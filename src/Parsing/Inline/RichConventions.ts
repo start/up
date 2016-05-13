@@ -21,16 +21,54 @@ import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
+import { TokenizerState } from './TokenizerState'
 
 
-const EMPHASIS = new RichConvention(EmphasisNode, EmphasisStartToken, EmphasisEndToken)
-const STRESS = new RichConvention(StressNode, StressStartToken, StressEndToken)
-const REVISION_DELETION = new RichConvention(RevisionDeletionNode, RevisionDeletionStartToken, RevisionDeletionEndToken)
-const REVISION_INSERTION = new RichConvention(RevisionInsertionNode, RevisionInsertionStartToken, RevisionInsertionEndToken)
-const SPOILER = new RichConvention(SpoilerNode, SpoilerStartToken, SpoilerEndToken)
-const FOOTNOTE = new RichConvention(FootnoteNode, FootnoteStartToken, FootnoteEndToken)
-const LINK = new RichConvention(LinkNode, LinkStartToken, LinkEndToken)
+const EMPHASIS = {
+  NodeType: EmphasisNode,
+  StartTokenType: EmphasisStartToken,
+  EndTokenType: EmphasisEndToken,
+}
 
+const STRESS = {
+  NodeType: StressNode,
+  StartTokenType: StressStartToken,
+  EndTokenType: StressEndToken,
+}
+
+const REVISION_DELETION = {
+  NodeType: RevisionDeletionNode,
+  StartTokenType: RevisionDeletionStartToken,
+  EndTokenType: RevisionDeletionEndToken,
+  tokenizerState: TokenizerState.RevisionDeletion
+}
+
+const REVISION_INSERTION = {
+  NodeType: RevisionInsertionNode,
+  StartTokenType: RevisionInsertionStartToken,
+  EndTokenType: RevisionInsertionEndToken,
+  tokenizerState: TokenizerState.RevisionInsertion
+}
+
+const SPOILER = {
+  NodeType: SpoilerNode,
+  StartTokenType: SpoilerStartToken,
+  EndTokenType: SpoilerEndToken,
+  tokenizerState: TokenizerState.Spoiler
+}
+
+const FOOTNOTE = {
+  NodeType: FootnoteNode,
+  StartTokenType: FootnoteStartToken,
+  EndTokenType: FootnoteEndToken,
+  tokenizerState: TokenizerState.Footnote
+}
+
+const LINK =  {
+  StartTokenType: LinkStartToken,
+  EndTokenType: LinkEndToken,
+  tokenizerState: TokenizerState.Link
+}
 
 export {
   EMPHASIS,

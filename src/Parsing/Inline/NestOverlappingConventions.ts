@@ -1,4 +1,4 @@
-import { RichConvention, RichConventionType } from './RichConvention'
+import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
 
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
@@ -12,7 +12,7 @@ export function nestOverlappingConventions(tokens: Token[]): Token[] {
 }
 
 // We're always okay with splitting these conventions.
-const FREELY_SPLITTABLE_CONVENTIONS = [
+const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
   REVISION_DELETION,
   REVISION_INSERTION,
   STRESS,
