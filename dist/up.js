@@ -1907,13 +1907,6 @@ var ParseBlockquote_1 = require('./ParseBlockquote');
 var ParseUnorderedList_1 = require('./ParseUnorderedList');
 var ParseOrderedList_1 = require('./ParseOrderedList');
 var HeadingLeveler_1 = require('./HeadingLeveler');
-var OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
-    ParseUnorderedList_1.parseUnorderedList,
-    ParseOrderedList_1.parseOrderedList,
-    ParseSectionSeparatorStreak_1.parseSectionSeparatorStreak,
-    ParseBlockquote_1.parseBlockquote
-];
-var DUMMY_HEADING_LEVELER = new HeadingLeveler_1.HeadingLeveler();
 function isLineFancyOutlineConvention(line, config) {
     return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(function (parse) { return parse({
         text: line,
@@ -1923,6 +1916,13 @@ function isLineFancyOutlineConvention(line, config) {
     }); });
 }
 exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
+var OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
+    ParseUnorderedList_1.parseUnorderedList,
+    ParseOrderedList_1.parseOrderedList,
+    ParseSectionSeparatorStreak_1.parseSectionSeparatorStreak,
+    ParseBlockquote_1.parseBlockquote
+];
+var DUMMY_HEADING_LEVELER = new HeadingLeveler_1.HeadingLeveler();
 
 },{"./HeadingLeveler":54,"./ParseBlockquote":58,"./ParseOrderedList":61,"./ParseSectionSeparatorStreak":63,"./ParseUnorderedList":64}],56:[function(require,module,exports){
 "use strict";
