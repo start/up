@@ -4,8 +4,10 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
@@ -127,8 +129,8 @@ Warlocked
 })
 
 
-describe("A level-2 heading underline defined outside of a list item", () => {
-  it('produces a level-2 heading node inside a list item, too', () => {
+describe("A level-2 heading underline defined outside of an unordered list", () => {
+  it('produces a level-2 heading node inside the unordered list, too', () => {
     const text = `
 Hello, world!
 =============
@@ -145,6 +147,32 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
         new UnorderedListNode([
           new UnorderedListItem([
+            new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe("A level-2 heading underline defined outside of an ordered list", () => {
+  it('produces a level-2 heading node inside the ordered list, too', () => {
+    const text = `
+Hello, world!
+=============
+
+Goodbye, world!
+=-=-=-=-=-=-=-=
+
+#) Umm, I forgot my keys.
+  =-=-=-=-=-=-=-=-=-=-=`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+        new OrderedListNode([
+          new OrderedListItem([
             new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
           ])
         ])
