@@ -8,6 +8,10 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
+import { Description } from '../../SyntaxNodes/Description'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
@@ -175,6 +179,36 @@ Goodbye, world!
           new OrderedListItem([
             new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
           ])
+        ])
+      ]))
+  })
+})
+
+
+describe("A level-2 heading underline defined outside of a description list", () => {
+  it('produces a level-2 heading node inside the description list, too', () => {
+    const text = `
+Hello, world!
+=============
+
+Goodbye, world!
+=-=-=-=-=-=-=-=
+
+Awkward
+  Umm, I forgot my keys.
+  =-=-=-=-=-=-=-=-=-=-=`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+        new DescriptionListNode([
+          new DescriptionListItem(
+            [new DescriptionTerm([new PlainTextNode('Awkward')])],
+            new Description([
+              new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
+            ])
+          )
         ])
       ]))
   })
