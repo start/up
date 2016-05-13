@@ -15,7 +15,6 @@ export class TokenizableSandwich {
       state: TokenizerState
       startPattern: string
       endPattern: string
-      mustClose?: boolean
       onOpen: OnTokenizerMatch
       onClose: OnTokenizerMatch
     }
