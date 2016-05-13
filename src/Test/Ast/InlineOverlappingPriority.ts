@@ -1,6 +1,8 @@
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
+import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -8,10 +10,12 @@ import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('Overlapped emphasized and linked text', () => {
-  it('produce an emphasis node, followed by a link node containing another emphasis node. The link node is unbroken', () => {
+  it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
@@ -31,7 +35,7 @@ describe('Overlapped emphasized and linked text', () => {
 
 
 describe('Overlapped linked and emphasized text', () => {
-  it('produce a link node containing an emphasis node, followed by an empahsis node. The link node is unbroken', () => {
+  it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
@@ -51,19 +55,48 @@ describe('Overlapped linked and emphasized text', () => {
 
 
 describe('A spoiler that overlaps a link', () => {
-  it("produce the correct nodes, despite the seemingly terminating closing bracket in the link's contents", () => {
+  it("splits the link node, not the spoiler node", () => {
     // TODO: For bracketed conventions, possibly allow different types of brackets
     expect(Up.toAst('[SPOILER: Gary loses to [Ash] Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('Gary loses to '),
+          new LinkNode([
+            new SpoilerNode([
+              new PlainTextNode('Ash')
+            ])
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
         ]),
         new LinkNode([
-          new SpoilerNode([
-            new PlainTextNode('Ash')
-          ]),
           new PlainTextNode(' Ketchum')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
+      ])
+    )
+  })
+})
+
+
+describe('A spoiler that overlaps a footnote', () => {
+  it("splits the spoiler node, not the footnote node", () => {
+    const text = '[SPOILER: Gary loses to Ash ((Ketchum] is his last name))'
+
+    const footnote =
+      new FootnoteNode([
+        new SpoilerNode([
+          new PlainTextNode('Ketchum')
+        ]),
+        new PlainTextNode(' is his last name')
+      ])
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SpoilerNode([
+            new PlainTextNode('Gary loses to Ash'),
+          ]),
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
       ])
     )
   })
