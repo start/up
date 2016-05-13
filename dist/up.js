@@ -612,6 +612,8 @@ var SpoilerNode_1 = require('../../SyntaxNodes/SpoilerNode');
 var FootnoteNode_1 = require('../../SyntaxNodes/FootnoteNode');
 var RevisionDeletionNode_1 = require('../../SyntaxNodes/RevisionDeletionNode');
 var RevisionInsertionNode_1 = require('../../SyntaxNodes/RevisionInsertionNode');
+var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
+var SquareBracketedEndToken_1 = require('./Tokens/SquareBracketedEndToken');
 var StressEndToken_1 = require('./Tokens/StressEndToken');
 var StressStartToken_1 = require('./Tokens/StressStartToken');
 var SpoilerEndToken_1 = require('./Tokens/SpoilerEndToken');
@@ -673,8 +675,18 @@ var LINK = {
     tokenizerState: TokenizerState_1.TokenizerState.Link
 };
 exports.LINK = LINK;
+var PARENTHESIZED = {
+    StartTokenType: LinkStartToken_1.LinkStartToken,
+    EndTokenType: LinkEndToken_1.LinkEndToken,
+    tokenizerState: TokenizerState_1.TokenizerState.Parenthesized
+};
+var SQUARE_BRACKETED = {
+    StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
+    EndTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
+    tokenizerState: TokenizerState_1.TokenizerState.SquareBracketed
+};
 
-},{"../../SyntaxNodes/EmphasisNode":74,"../../SyntaxNodes/FootnoteNode":76,"../../SyntaxNodes/RevisionDeletionNode":90,"../../SyntaxNodes/RevisionInsertionNode":91,"../../SyntaxNodes/SpoilerNode":94,"../../SyntaxNodes/StressNode":95,"./TokenizerState":19,"./Tokens/EmphasisEndToken":21,"./Tokens/EmphasisStartToken":22,"./Tokens/FootnoteEndToken":23,"./Tokens/FootnoteStartToken":24,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/RevisionDeletionEndToken":38,"./Tokens/RevisionDeletionStartToken":39,"./Tokens/RevisionInsertionEndToken":40,"./Tokens/RevisionInsertionStartToken":41,"./Tokens/SpoilerEndToken":42,"./Tokens/SpoilerStartToken":43,"./Tokens/StressEndToken":46,"./Tokens/StressStartToken":47}],15:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":74,"../../SyntaxNodes/FootnoteNode":76,"../../SyntaxNodes/RevisionDeletionNode":90,"../../SyntaxNodes/RevisionInsertionNode":91,"../../SyntaxNodes/SpoilerNode":94,"../../SyntaxNodes/StressNode":95,"./TokenizerState":19,"./Tokens/EmphasisEndToken":21,"./Tokens/EmphasisStartToken":22,"./Tokens/FootnoteEndToken":23,"./Tokens/FootnoteStartToken":24,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/RevisionDeletionEndToken":38,"./Tokens/RevisionDeletionStartToken":39,"./Tokens/RevisionInsertionEndToken":40,"./Tokens/RevisionInsertionStartToken":41,"./Tokens/SpoilerEndToken":42,"./Tokens/SpoilerStartToken":43,"./Tokens/SquareBracketedEndToken":44,"./Tokens/SquareBracketedStartToken":45,"./Tokens/StressEndToken":46,"./Tokens/StressStartToken":47}],15:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
