@@ -1,6 +1,5 @@
 import { MediaTokenType } from './Tokens/MediaToken'
-import { escapeForRegex } from '../TextHelpers'
-import { startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
+import { escapeForRegex, startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
 import { TokenizerState } from './TokenizerState'
 
 

@@ -1,3 +1,7 @@
+function escapeForRegex(text: string): string {
+  return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
+}
+
 const group =
   (pattern: string) => `(?:${pattern})`
 
@@ -60,6 +64,18 @@ const STREAK =
 
 const NON_WHITESPACE_CHAR =
   '\\S'
+  
+const OPEN_SQUARE_BRACKET =
+  escapeForRegex('[')
+
+const CLOSE_SQUARE_BRACKET =
+  escapeForRegex(']')
+
+const OPEN_PAREN =
+  escapeForRegex('(')
+
+const CLOSE_PAREN =
+  escapeForRegex(')')
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
@@ -67,6 +83,19 @@ const NON_BLANK =
   NON_WHITESPACE_CHAR
 
 export {
+  capture,
+  optional,
+  either,
+  solely,
+  startsWith,
+  endsWith,
+  streakOf,
+  atLeast,
+  escapeForRegex,
+  OPEN_PAREN,
+  CLOSE_PAREN,
+  OPEN_SQUARE_BRACKET,
+  CLOSE_SQUARE_BRACKET,
   NON_BLANK,
   BLANK,
   INLINE_WHITESPACE_CHAR,
@@ -77,12 +106,4 @@ export {
   STREAK,
   INTEGER,
   LINE_BREAK,
-  capture,
-  optional,
-  either,
-  solely,
-  startsWith,
-  endsWith,
-  streakOf,
-  atLeast
 }

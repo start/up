@@ -8,7 +8,6 @@ import { FailedStateTracker } from './FailedStateTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { RichConvention } from './RichConvention'
 import { last, reverse } from '../CollectionHelpers'
-import { escapeForRegex } from '../TextHelpers'
 import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK } from './RichConventions'
@@ -38,24 +37,15 @@ import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
 import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
 import { Token, TokenType } from './Tokens/Token'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { startsWith, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, optional } from '../Patterns'
+import {
+  escapeForRegex, startsWith, optional, atLeast,
+  ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET
+} from '../Patterns'
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   return new Tokenizer(text, config).tokens
 }
 
-
-const OPEN_SQUARE_BRACKET =
-  escapeForRegex('[')
-
-const CLOSE_SQUARE_BRACKET =
-  escapeForRegex(']')
-
-const OPEN_PAREN =
-  escapeForRegex('(')
-
-const CLOSE_PAREN =
-  escapeForRegex(')')
 
 
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
@@ -143,8 +133,8 @@ class Tokenizer {
     this.spoilerConvention =
       this.getRichSandwichConvention({
         state: TokenizerState.Spoiler,
-        startPattern: escapeForRegex('[' + config.settings.i18n.terms.spoiler + ':') + ANY_WHITESPACE,
-        endPattern: escapeForRegex(']'),
+        startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
+        endPattern: CLOSE_SQUARE_BRACKET,
         richConvention: SPOILER
       })
 
@@ -176,7 +166,6 @@ class Tokenizer {
       }
     })
 
-
     this.parenthesizedConvention =
       new TokenizableSandwich({
         state: TokenizerState.Parenthesized,
@@ -202,6 +191,7 @@ class Tokenizer {
           this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedEndToken())
         }
       })
+
     this.parenthesizedInsideUrlConvention =
       this.getBracketInsideUrlConvention(TokenizerState.ParenthesizedInsideUrl, OPEN_PAREN, CLOSE_PAREN)
 
@@ -222,7 +212,7 @@ class Tokenizer {
 
   private tokenize(): void {
     while (!(this.reachedEndOfText() && this.finalizeAndCheckValidity())) {
-      
+
       this.collectCurrentCharIfEscaped()
         || this.handleInlineCode()
         || this.performContextSpecificTokenizations()
@@ -234,7 +224,7 @@ class Tokenizer {
 
         || (this.hasState(TokenizerState.SquareBracketed)
           && this.convertSquareBracketedContextToLink())
-          
+
         || this.tokenizeRaisedVoicePlaceholders()
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
@@ -245,7 +235,7 @@ class Tokenizer {
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openNakedUrl()
-        
+
         || this.collectCurrentChar()
     }
   }
