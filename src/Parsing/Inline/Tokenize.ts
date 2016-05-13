@@ -42,39 +42,10 @@ import {
   ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET
 } from '../Patterns'
 
+
 export function tokenize(text: string, config: UpConfig): Token[] {
   return new Tokenizer(text, config).tokens
 }
-
-
-
-const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
-  startsWith(atLeast(1, escapeForRegex('*')))
-)
-
-const LINK_START_PATTERN = new RegExp(
-  startsWith(OPEN_SQUARE_BRACKET)
-)
-
-const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE)
-)
-
-const LINK_END_PATTERN = new RegExp(
-  startsWith(CLOSE_SQUARE_BRACKET)
-)
-
-const NAKED_URL_START_PATTERN = new RegExp(
-  startsWith('http' + optional('s') + '://')
-)
-
-const WHITESPACE_CHAR_PATTERN = new RegExp(
-  WHITESPACE_CHAR
-)
-
-const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
-  NON_WHITESPACE_CHAR
-)
 
 
 class Tokenizer {
@@ -755,3 +726,32 @@ class Tokenizer {
     })
   }
 }
+
+
+const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
+  startsWith(atLeast(1, escapeForRegex('*')))
+)
+
+const LINK_START_PATTERN = new RegExp(
+  startsWith(OPEN_SQUARE_BRACKET)
+)
+
+const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE)
+)
+
+const LINK_END_PATTERN = new RegExp(
+  startsWith(CLOSE_SQUARE_BRACKET)
+)
+
+const NAKED_URL_START_PATTERN = new RegExp(
+  startsWith('http' + optional('s') + '://')
+)
+
+const WHITESPACE_CHAR_PATTERN = new RegExp(
+  WHITESPACE_CHAR
+)
+
+const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
+  NON_WHITESPACE_CHAR
+)
