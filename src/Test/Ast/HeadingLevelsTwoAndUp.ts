@@ -3,12 +3,13 @@ import * as Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
   it('produces a level-2 heading node', () => {
-    const text =
-      `
+    const text = `
 Hello, world!
 =============
 
@@ -23,8 +24,7 @@ Goodbye, world!
   }) 
   
   it('produces a level-2 heading node when the underline characters only differ by spaces', () => {
-    const text =
-      `
+    const text = `
 Hello, world!
 =============
 
@@ -39,8 +39,7 @@ Goodbye, world!
   })
   
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
-    const text =
-      `
+    const text = `
 Hello, world!
 =============
 
@@ -59,8 +58,7 @@ Goodbye again, world!
   })
   
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
-    const text =
-      `
+    const text = `
 Hello, world!
 =============
 
@@ -83,8 +81,7 @@ Goodbye again, world!
 describe('7 headings with different heading underlines', () => {
   
   it('produce 7 heading nodes, with levels in ascending order', () => {
-    const text =
-      `
+    const text = `
 ####################
 Interactive Software
 ####################
@@ -126,4 +123,29 @@ Warlocked
         new HeadingNode([new PlainTextNode('Warlocked')], 7)
       ]))
   })
+})
+
+describe("A level-2 heading underline defined outside of a list item", () => {
+  it('produces a level-2 heading node inside a list item, too', () => {
+    const text = `
+Hello, world!
+=============
+
+Goodbye, world!
+=-=-=-=-=-=-=-=
+
+* Umm, I forgot my keys.
+  =-=-=-=-=-=-=-=-=-=-=`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new HeadingNode([ new PlainTextNode('Umm, I forgot my keys.')], 2)
+          ])
+        ])
+      ]))
+  }) 
 })
