@@ -76,6 +76,31 @@ describe('A spoiler that overlaps a link', () => {
 })
 
 
+describe('A link that overlaps a spoiler', () => {
+  it("splits the link node, not the spoiler node", () => {
+    // TODO: For bracketed conventions, possibly allow different types of brackets
+    const text =
+      'In Pokémon Red, [Gary Oak [SPOILER: loses to Ash Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly] throughout the game.'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, '),
+        new LinkNode([
+          new PlainTextNode('Gary Oak ')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+        new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode(' loses to Ash Ketchum')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+          new PlainTextNode(' repeatedly')
+        ]),
+        new PlainTextNode(' throughout the game.')
+      ])
+    )
+  })
+})
+
+
 describe('A spoiler that overlaps a footnote', () => {
   it("splits the spoiler node, not the footnote node", () => {
     const text = '[SPOILER: Gary loses to Ash ((Ketchum] is his last name))'
@@ -86,7 +111,7 @@ describe('A spoiler that overlaps a footnote', () => {
           new PlainTextNode('Ketchum')
         ]),
         new PlainTextNode(' is his last name')
-      ])
+      ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -95,6 +120,35 @@ describe('A spoiler that overlaps a footnote', () => {
             new PlainTextNode('Gary loses to Ash'),
           ]),
           footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ])
+    )
+  })
+})
+
+
+describe('A footnote that overlaps a spoiler', () => {
+  it("splits the spoiler node, not the footnote node", () => {
+    const text = 'Eventually, I will think of one ((reasonable [SPOILER: and realistic)) example of a] footnote that overlaps a spoiler.'
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode('reasonable '),
+        new SpoilerNode([
+          new PlainTextNode('and realistic')
+        ]),
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Eventually, I will think of one'),
+          footnote,
+          new SpoilerNode([
+            new PlainTextNode(' example of a'),
+          ]),
+          new PlainTextNode(' footnote that overlaps a spoiler.'),
         ]),
         new FootnoteBlockNode([footnote])
       ])
