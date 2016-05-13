@@ -126,6 +126,7 @@ Warlocked
   })
 })
 
+
 describe("A level-2 heading underline defined outside of a list item", () => {
   it('produces a level-2 heading node inside a list item, too', () => {
     const text = `
@@ -151,24 +152,27 @@ Goodbye, world!
   })
 })
 
-describe("A level-2 heading underline defined outside of a blockquote", () => {
-  it('is not recognized inside a blockquote, producing a level-1 heading node by default', () => {
+
+describe("A level-2 heading underline defined inside a blockquote", () => {
+  it('is not recognized inside a further nested blockquote, producing a level-1 heading node by default', () => {
     const text = `
-Hello, world!
-=============
-
-Goodbye, world!
-=-=-=-=-=-=-=-=
-
-> Umm, I forgot my keys.
-> =-=-=-=-=-=-=-=-=-=-=`
+> Hello, world!
+> =============
+>
+> Goodbye, world!
+> =-=-=-=-=-=-=-=
+>
+> > Umm, I forgot my keys.
+> > =-=-=-=-=-=-=-=-=-=-=`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
         new BlockquoteNode([
-          new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+          new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+          new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+          new BlockquoteNode([
+            new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+          ])
         ])
       ]))
   })
