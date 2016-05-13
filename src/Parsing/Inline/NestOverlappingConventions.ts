@@ -1,4 +1,4 @@
-import { RichConvention } from './RichConvention'
+import { RichConvention, RichConventionType } from './RichConvention'
 import { Token } from './Tokens/Token'
 
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
