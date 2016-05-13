@@ -1,6 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './GetOutlineNodes'
+import { HeadingLeveler } from './HeadingLeveler'
 import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
 
@@ -40,7 +41,13 @@ export function parseBlockquote(args: OutlineParserArgs): boolean {
 
   const blockquoteContent = blockquoteLines.join('\n')
 
-  args.then([new BlockquoteNode(getOutlineNodes(blockquoteContent, args.config))], consumer.lengthConsumed())
+  // Within blockquotes, heading levels are reset
+  const headingLeveler = new HeadingLeveler()
+  
+  args.then([
+    new BlockquoteNode(getOutlineNodes(blockquoteContent, headingLeveler, args.config))],
+    consumer.lengthConsumed())
+    
   return true
 }
 

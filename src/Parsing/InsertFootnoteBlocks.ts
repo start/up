@@ -27,12 +27,12 @@ import { concat } from './CollectionHelpers'
 //
 // We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block. 
 
-export function produceFootnoteBlocks(documentNode: DocumentNode): void {
-  new FootnoteBlockProducer(documentNode)
+export function insertFootnoteBlocks(documentNode: DocumentNode): void {
+  new FootnoteBlockInserter(documentNode)
 }
 
 
-class FootnoteBlockProducer {
+class FootnoteBlockInserter {
   private footnoteReferenceNumberSequence = new Sequence({ start: 1 })
 
   constructor(documentNode: DocumentNode) {
