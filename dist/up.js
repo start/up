@@ -678,27 +678,27 @@ exports.TokenizableSandwich = TokenizableSandwich;
 
 },{"../Patterns":66}],18:[function(require,module,exports){
 "use strict";
+var Patterns_1 = require('../Patterns');
+var RichConventions_1 = require('./RichConventions');
+var MediaConventions_1 = require('./MediaConventions');
+var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
+var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
+var CollectionHelpers_1 = require('../CollectionHelpers');
 var TokenizerState_1 = require('./TokenizerState');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var TokenizableMedia_1 = require('./TokenizableMedia');
 var FailedStateTracker_1 = require('./FailedStateTracker');
 var TokenizerContext_1 = require('./TokenizerContext');
-var CollectionHelpers_1 = require('../CollectionHelpers');
-var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
-var MediaConventions_1 = require('./MediaConventions');
-var RichConventions_1 = require('./RichConventions');
-var MassageTokensIntoTreeStructure_1 = require('./MassageTokensIntoTreeStructure');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
-var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
-var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
-var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
 var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
 var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
 var SquareBracketedEndToken_1 = require('./Tokens/SquareBracketedEndToken');
-var Patterns_1 = require('../Patterns');
+var PotentialRaisedVoiceEndToken_1 = require('./Tokens/PotentialRaisedVoiceEndToken');
+var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoiceStartOrEndToken');
+var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
 function tokenize(text, config) {
     return new Tokenizer(text, config).tokens;
 }
