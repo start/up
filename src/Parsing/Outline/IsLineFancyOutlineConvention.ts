@@ -7,6 +7,14 @@ import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 
 
+const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
+  parseUnorderedList,
+  parseOrderedList,
+  parseSectionSeparatorStreak,
+  parseBlockquote
+]
+
+
 // If `line` would be considered anything but a regular paragraph, it's considered fancy. 
 export function isLineFancyOutlineConvention(line: string, config: UpConfig): boolean {
   
@@ -20,13 +28,6 @@ export function isLineFancyOutlineConvention(line: string, config: UpConfig): bo
   )
 }
 
-
-const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
-  parseUnorderedList,
-  parseOrderedList,
-  parseSectionSeparatorStreak,
-  parseBlockquote
-]
 
 // We don't care about heading levels!  We only care whether or not the line is a regular paragraph.
 const DUMMY_HEADING_LEVELER = new HeadingLeveler()
