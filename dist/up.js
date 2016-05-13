@@ -89,35 +89,42 @@ exports.VIDEO = VIDEO;
 },{"../../SyntaxNodes/AudioNode":67,"../../SyntaxNodes/ImageNode":79,"../../SyntaxNodes/VideoNode":99,"./MediaConvention":4,"./TokenizerState":20,"./Tokens/AudioToken":21,"./Tokens/ImageToken":26,"./Tokens/VideoToken":49}],6:[function(require,module,exports){
 "use strict";
 var RichConventions_1 = require('./RichConventions');
-var FREELY_SPLITTABLE_CONVENTIONS = [
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE,
-    RichConventions_1.STRESS,
-    RichConventions_1.EMPHASIS
-];
-var OVERLAPPABLE_CONVENTIONS = FREELY_SPLITTABLE_CONVENTIONS.concat([RichConventions_1.LINK, RichConventions_1.SPOILER, RichConventions_1.FOOTNOTE]);
 function nestOverlappingConventions(tokens) {
     return new ConventionNester(tokens.slice()).tokens;
 }
 exports.nestOverlappingConventions = nestOverlappingConventions;
+var FREELY_SPLITTABLE_CONVENTIONS = [
+    RichConventions_1.REVISION_DELETION,
+    RichConventions_1.REVISION_INSERTION,
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS
+];
+var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
+    RichConventions_1.LINK,
+    RichConventions_1.SPOILER,
+    RichConventions_1.FOOTNOTE
+];
 var ConventionNester = (function () {
     function ConventionNester(tokens) {
         this.tokens = tokens;
-        this.nestFreelySplittableConventions();
-        this.splitAnyConventionsThatOverlapWithLinks();
+        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
+        var conventionsWeAreHappyToSplit = FREELY_SPLITTABLE_CONVENTIONS;
+        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
+            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
+            this.splitAnyConventionsThatOverlapWithLinks(conventionsWeAreHappyToSplit, conventionNotToSplit);
+            conventionsWeAreHappyToSplit.push(conventionNotToSplit);
+        }
     }
-    ConventionNester.prototype.nestFreelySplittableConventions = function () {
+    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
         var unclosedConventions = [];
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
             var token = this.tokens[tokenIndex];
-            var conventionStartedByThisToken = getConventionStartedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
+            var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventions);
             if (conventionStartedByThisToken) {
                 unclosedConventions.push(conventionStartedByThisToken);
                 continue;
             }
-            var conventionEndedByThisToken = getConventionEndedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
+            var conventionEndedByThisToken = getConventionEndedBy(token, conventions);
             if (!conventionEndedByThisToken) {
                 continue;
             }
@@ -135,29 +142,29 @@ var ConventionNester = (function () {
             tokenIndex += (2 * countOverlapping);
         }
     };
-    ConventionNester.prototype.splitAnyConventionsThatOverlapWithLinks = function () {
+    ConventionNester.prototype.splitAnyConventionsThatOverlapWithLinks = function (conventionsWeAreHappyToSplit, cconventionNotToSplit) {
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
             if (!(this.tokens[tokenIndex] instanceof RichConventions_1.LINK.StartTokenType)) {
                 continue;
             }
-            var linkStartIndex = tokenIndex;
-            var linkEndIndex = void 0;
-            for (var i = linkStartIndex + 1; i < this.tokens.length; i++) {
-                if (this.tokens[i] instanceof RichConventions_1.LINK.EndTokenType) {
-                    linkEndIndex = i;
+            var heroStartIndex = tokenIndex;
+            var heroEndIndex = void 0;
+            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
+                if (this.tokens[i] instanceof cconventionNotToSplit.EndTokenType) {
+                    heroEndIndex = i;
                     break;
                 }
             }
             var overlappingStartingBefore = [];
             var overlappingStartingInside = [];
-            for (var insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
-                var token = this.tokens[insideLinkIndex];
-                var conventionStartedByThisToken = getConventionStartedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
+            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
+                var token = this.tokens[indexInsideHero];
+                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsWeAreHappyToSplit);
                 if (conventionStartedByThisToken) {
                     overlappingStartingInside.push(conventionStartedByThisToken);
                     continue;
                 }
-                var conventionEndedByThisToken = getConventionEndedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
+                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsWeAreHappyToSplit);
                 if (conventionEndedByThisToken) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
@@ -166,10 +173,10 @@ var ConventionNester = (function () {
                     overlappingStartingBefore.push(conventionEndedByThisToken);
                 }
             }
-            this.closeAndReopenConventionsAroundTokenAtIndex(linkEndIndex, overlappingStartingInside);
-            this.closeAndReopenConventionsAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore);
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
             var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
-            tokenIndex = linkEndIndex + countTokensAdded;
+            tokenIndex = heroEndIndex + countTokensAdded;
         }
     };
     ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, conventionsInTheOrderTheyShouldClose) {
@@ -192,7 +199,7 @@ function getConventionStartedByThisToken(token, conventions) {
         return token instanceof convention.StartTokenType;
     })[0];
 }
-function getConventionEndedByThisToken(token, conventions) {
+function getConventionEndedBy(token, conventions) {
     return conventions.filter(function (convention) {
         return token instanceof convention.EndTokenType;
     })[0];
