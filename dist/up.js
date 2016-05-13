@@ -1822,8 +1822,6 @@ function trimOuterBlankLines(text) {
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var Patterns_1 = require('../Patterns');
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 function getRemainingLinesOfListItem(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
     var lines = [];
@@ -1863,6 +1861,8 @@ function getRemainingLinesOfListItem(args) {
     return true;
 }
 exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
+var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
+var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 
 },{"../Patterns":66,"./LineConsumer":56}],54:[function(require,module,exports){
 "use strict";
