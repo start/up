@@ -4,6 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
 
@@ -21,8 +22,8 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
       ]))
-  }) 
-  
+  })
+
   it('produces a level-2 heading node when the underline characters only differ by spaces', () => {
     const text = `
 Hello, world!
@@ -37,7 +38,7 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
       ]))
   })
-  
+
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
     const text = `
 Hello, world!
@@ -56,7 +57,7 @@ Goodbye again, world!
         new HeadingNode([new PlainTextNode('Goodbye again, world!')], 2)
       ]))
   })
-  
+
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
     const text = `
 Hello, world!
@@ -79,7 +80,7 @@ Goodbye again, world!
 
 
 describe('7 headings with different heading underlines', () => {
-  
+
   it('produce 7 heading nodes, with levels in ascending order', () => {
     const text = `
 ####################
@@ -143,9 +144,32 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
         new UnorderedListNode([
           new UnorderedListItem([
-            new HeadingNode([ new PlainTextNode('Umm, I forgot my keys.')], 2)
+            new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
           ])
         ])
       ]))
-  }) 
+  })
+})
+
+describe("A level-2 heading underline defined outside of a blockquote", () => {
+  it('is not recognized inside a blockquote, producing a level-1 heading node by default', () => {
+    const text = `
+Hello, world!
+=============
+
+Goodbye, world!
+=-=-=-=-=-=-=-=
+
+> Umm, I forgot my keys.
+> =-=-=-=-=-=-=-=-=-=-=`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+        new BlockquoteNode([
+          new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+        ])
+      ]))
+  })
 })
