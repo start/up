@@ -291,3 +291,30 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
       ]))
   })
 })
+
+
+describe("A level-2 heading underline defined inside a blockquote", () => {
+  it('is not recognized inside a different blockquote, producing a level-1 heading node by default', () => {
+    const text = `
+> Hello, world!
+> =============
+>
+> Goodbye, world!
+> =-=-=-=-=-=-=-=
+
+
+> Umm, I forgot my keys.
+> =-=-=-=-=-=-=-=-=-=-=`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+          new HeadingNode([new PlainTextNode('Goodbye, world!')], 2)
+        ]),
+        new BlockquoteNode([
+          new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+        ])
+      ]))
+  })
+})
