@@ -697,6 +697,7 @@ var PotentialRaisedVoiceStartOrEndToken_1 = require('./Tokens/PotentialRaisedVoi
 var PotentialRaisedVoiceStartToken_1 = require('./Tokens/PotentialRaisedVoiceStartToken');
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
+var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
 var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
 var SquareBracketedEndToken_1 = require('./Tokens/SquareBracketedEndToken');
 var Patterns_1 = require('../Patterns');
@@ -761,7 +762,7 @@ var Tokenizer = (function () {
                     _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken_1.ParenthesizedStartToken());
                 },
                 onClose: function () {
-                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken_1.ParenthesizedStartToken());
+                    _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedEndToken_1.ParenthesizedEndToken());
                 }
             });
         this.squareBracketedConvention =
@@ -1222,7 +1223,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 
-},{"../CollectionHelpers":1,"../Patterns":65,"../TextHelpers":67,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./RichConventions":15,"./TokenizableMedia":16,"./TokenizableSandwich":17,"./TokenizerContext":19,"./TokenizerState":20,"./Tokens/InlineCodeToken":27,"./Tokens/NakedUrlToken":31,"./Tokens/ParenthesizedStartToken":33,"./Tokens/PlainTextToken":34,"./Tokens/PotentialRaisedVoiceEndToken":35,"./Tokens/PotentialRaisedVoiceStartOrEndToken":36,"./Tokens/PotentialRaisedVoiceStartToken":37,"./Tokens/SquareBracketedEndToken":45,"./Tokens/SquareBracketedStartToken":46}],19:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../Patterns":65,"../TextHelpers":67,"./FailedStateTracker":2,"./MassageTokensIntoTreeStructure":4,"./MediaConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./RichConventions":15,"./TokenizableMedia":16,"./TokenizableSandwich":17,"./TokenizerContext":19,"./TokenizerState":20,"./Tokens/InlineCodeToken":27,"./Tokens/NakedUrlToken":31,"./Tokens/ParenthesizedEndToken":32,"./Tokens/ParenthesizedStartToken":33,"./Tokens/PlainTextToken":34,"./Tokens/PotentialRaisedVoiceEndToken":35,"./Tokens/PotentialRaisedVoiceStartOrEndToken":36,"./Tokens/PotentialRaisedVoiceStartToken":37,"./Tokens/SquareBracketedEndToken":45,"./Tokens/SquareBracketedStartToken":46}],19:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {

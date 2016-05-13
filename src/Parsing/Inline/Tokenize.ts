@@ -173,7 +173,7 @@ class Tokenizer {
           this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken())
         },
         onClose: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken())
+          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedEndToken())
         }
       })
 
