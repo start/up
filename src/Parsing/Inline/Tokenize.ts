@@ -55,7 +55,7 @@ const OPEN_PAREN =
   escapeForRegex('(')
 
 const CLOSE_PAREN =
-  escapeForRegex('(')
+  escapeForRegex(')')
 
 
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
@@ -164,6 +164,19 @@ class Tokenizer {
         richConvention: REVISION_INSERTION
       })
 
+    this.inlineCodeConvention = new TokenizableSandwich({
+      state: TokenizerState.InlineCode,
+      startPattern: '`',
+      endPattern: '`',
+      onOpen: () => {
+        this.flushUnmatchedTextToPlainTextToken()
+      },
+      onClose: () => {
+        this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
+      }
+    })
+
+
     this.parenthesizedConvention =
       new TokenizableSandwich({
         state: TokenizerState.Parenthesized,
@@ -189,19 +202,6 @@ class Tokenizer {
           this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedEndToken())
         }
       })
-
-    this.inlineCodeConvention = new TokenizableSandwich({
-      state: TokenizerState.InlineCode,
-      startPattern: '`',
-      endPattern: '`',
-      onOpen: () => {
-        this.flushUnmatchedTextToPlainTextToken()
-      },
-      onClose: () => {
-        this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
-      }
-    })
-
     this.parenthesizedInsideUrlConvention =
       this.getBracketInsideUrlConvention(TokenizerState.ParenthesizedInsideUrl, OPEN_PAREN, CLOSE_PAREN)
 

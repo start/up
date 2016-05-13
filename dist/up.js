@@ -708,7 +708,7 @@ exports.tokenize = tokenize;
 var OPEN_SQUARE_BRACKET = TextHelpers_1.escapeForRegex('[');
 var CLOSE_SQUARE_BRACKET = TextHelpers_1.escapeForRegex(']');
 var OPEN_PAREN = TextHelpers_1.escapeForRegex('(');
-var CLOSE_PAREN = TextHelpers_1.escapeForRegex('(');
+var CLOSE_PAREN = TextHelpers_1.escapeForRegex(')');
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, TextHelpers_1.escapeForRegex('*'))));
 var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(OPEN_SQUARE_BRACKET));
 var LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
@@ -753,6 +753,17 @@ var Tokenizer = (function () {
                 endPattern: TextHelpers_1.escapeForRegex('++'),
                 richConvention: RichConventions_1.REVISION_INSERTION
             });
+        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            state: TokenizerState_1.TokenizerState.InlineCode,
+            startPattern: '`',
+            endPattern: '`',
+            onOpen: function () {
+                _this.flushUnmatchedTextToPlainTextToken();
+            },
+            onClose: function () {
+                _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
+            }
+        });
         this.parenthesizedConvention =
             new TokenizableSandwich_1.TokenizableSandwich({
                 state: TokenizerState_1.TokenizerState.Parenthesized,
@@ -777,17 +788,6 @@ var Tokenizer = (function () {
                     _this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedEndToken_1.SquareBracketedEndToken());
                 }
             });
-        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.InlineCode,
-            startPattern: '`',
-            endPattern: '`',
-            onOpen: function () {
-                _this.flushUnmatchedTextToPlainTextToken();
-            },
-            onClose: function () {
-                _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
-            }
-        });
         this.parenthesizedInsideUrlConvention =
             this.getBracketInsideUrlConvention(TokenizerState_1.TokenizerState.ParenthesizedInsideUrl, OPEN_PAREN, CLOSE_PAREN);
         this.squareBracketedInsideUrlConvention =
