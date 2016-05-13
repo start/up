@@ -91,30 +91,30 @@ class Tokenizer {
   constructor(private entireText: string, config: UpConfig) {
     this.footnoteConvention =
       this.getRichSandwichConvention({
+        richConvention: FOOTNOTE,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
-        endPattern: escapeForRegex('))'),
-        richConvention: FOOTNOTE
+        endPattern: escapeForRegex('))')
       })
 
     this.spoilerConvention =
       this.getRichSandwichConvention({
+        richConvention: SPOILER,
         startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
-        endPattern: CLOSE_SQUARE_BRACKET,
-        richConvention: SPOILER
+        endPattern: CLOSE_SQUARE_BRACKET
       })
 
     this.revisionDeletionConvention =
       this.getRichSandwichConvention({
+        richConvention: REVISION_DELETION,
         startPattern: '~~',
-        endPattern: '~~',
-        richConvention: REVISION_DELETION
+        endPattern: '~~'
       })
 
     this.revisionInsertionConvention =
       this.getRichSandwichConvention({
+        richConvention: REVISION_INSERTION,
         startPattern: escapeForRegex('++'),
-        endPattern: escapeForRegex('++'),
-        richConvention: REVISION_INSERTION
+        endPattern: escapeForRegex('++')
       })
 
     this.inlineCodeConvention = new TokenizableSandwich({
@@ -130,29 +130,17 @@ class Tokenizer {
     })
 
     this.parenthesizedConvention =
-      new TokenizableSandwich({
-        state: TokenizerState.Parenthesized,
+      this.getRichSandwichConvention({
+        richConvention: PARENTHESIZED,
         startPattern: OPEN_PAREN,
         endPattern: CLOSE_PAREN,
-        onOpen: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedStartToken())
-        },
-        onClose: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new ParenthesizedEndToken())
-        }
       })
-
+      
     this.squareBracketedConvention =
-      new TokenizableSandwich({
-        state: TokenizerState.SquareBracketed,
+      this.getRichSandwichConvention({
+        richConvention: SQUARE_BRACKETED,
         startPattern: OPEN_SQUARE_BRACKET,
         endPattern: CLOSE_SQUARE_BRACKET,
-        onOpen: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedStartToken())
-        },
-        onClose: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new SquareBracketedEndToken())
-        }
       })
 
     this.parenthesizedInsideUrlConvention =

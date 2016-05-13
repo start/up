@@ -75,8 +75,8 @@ const LINK =  {
 }
 
 const PARENTHESIZED =  {
-  StartTokenType: LinkStartToken,
-  EndTokenType: LinkEndToken,
+  StartTokenType: ParenthesizedStartToken,
+  EndTokenType: ParenthesizedEndToken,
   tokenizerState: TokenizerState.Parenthesized
 }
 
