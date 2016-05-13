@@ -89,7 +89,7 @@ exports.VIDEO = VIDEO;
 },{"../../SyntaxNodes/AudioNode":67,"../../SyntaxNodes/ImageNode":79,"../../SyntaxNodes/VideoNode":99,"./MediaConvention":4,"./TokenizerState":20,"./Tokens/AudioToken":21,"./Tokens/ImageToken":26,"./Tokens/VideoToken":49}],6:[function(require,module,exports){
 "use strict";
 var RichConventions_1 = require('./RichConventions');
-var REGULAR_SANDWICHES = [
+var FREELY_SPLITTABLE_CONVENTIONS = [
     RichConventions_1.REVISION_DELETION,
     RichConventions_1.REVISION_INSERTION,
     RichConventions_1.SPOILER,
@@ -97,6 +97,7 @@ var REGULAR_SANDWICHES = [
     RichConventions_1.STRESS,
     RichConventions_1.EMPHASIS
 ];
+var OVERLAPPABLE_CONVENTIONS = FREELY_SPLITTABLE_CONVENTIONS.concat([RichConventions_1.LINK, RichConventions_1.SPOILER, RichConventions_1.FOOTNOTE]);
 function nestOverlappingConventions(tokens) {
     return new ConventionNester(tokens.slice()).tokens;
 }
@@ -104,37 +105,37 @@ exports.nestOverlappingConventions = nestOverlappingConventions;
 var ConventionNester = (function () {
     function ConventionNester(tokens) {
         this.tokens = tokens;
-        this.massageSandwichesIntoTreeStructure();
-        this.splitAnySandwichThatOverlapsWithLinks();
+        this.nestFreelySplittableConventions();
+        this.splitAnyConventionsThatOverlapWithLinks();
     }
-    ConventionNester.prototype.massageSandwichesIntoTreeStructure = function () {
-        var unclosedSandwiches = [];
+    ConventionNester.prototype.nestFreelySplittableConventions = function () {
+        var unclosedConventions = [];
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
             var token = this.tokens[tokenIndex];
-            var sandwichStartedByThisToken = getSandwichStartedByThisToken(token);
-            if (sandwichStartedByThisToken) {
-                unclosedSandwiches.push(sandwichStartedByThisToken);
+            var conventionStartedByThisToken = getConventionStartedByThisToken(token);
+            if (conventionStartedByThisToken) {
+                unclosedConventions.push(conventionStartedByThisToken);
                 continue;
             }
-            var sandwichEndedByThisToken = getSandwichEndedByThisToken(token);
-            if (!sandwichEndedByThisToken) {
+            var conventionEndedByThisToken = getConventionEndedByThisToken(token);
+            if (!conventionEndedByThisToken) {
                 continue;
             }
             var overlappingFromMostRecentToLeast = [];
-            for (var sandwichIndex = unclosedSandwiches.length - 1; sandwichIndex >= 0; sandwichIndex--) {
-                var unclosedSandwich = unclosedSandwiches[sandwichIndex];
-                if (unclosedSandwich === sandwichEndedByThisToken) {
-                    unclosedSandwiches.splice(sandwichIndex, 1);
+            for (var conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
+                var unclosedConvention = unclosedConventions[conventionIndex];
+                if (unclosedConvention === conventionEndedByThisToken) {
+                    unclosedConventions.splice(conventionIndex, 1);
                     break;
                 }
-                overlappingFromMostRecentToLeast.push(unclosedSandwich);
+                overlappingFromMostRecentToLeast.push(unclosedConvention);
             }
-            this.closeAndReopenSandwichesAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast);
+            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast);
             var countOverlapping = overlappingFromMostRecentToLeast.length;
             tokenIndex += (2 * countOverlapping);
         }
     };
-    ConventionNester.prototype.splitAnySandwichThatOverlapsWithLinks = function () {
+    ConventionNester.prototype.splitAnyConventionsThatOverlapWithLinks = function () {
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
             if (!(this.tokens[tokenIndex] instanceof RichConventions_1.LINK.StartTokenType)) {
                 continue;
@@ -151,32 +152,32 @@ var ConventionNester = (function () {
             var overlappingStartingInside = [];
             for (var insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
                 var token = this.tokens[insideLinkIndex];
-                var sandwichStartedByThisToken = getSandwichStartedByThisToken(token);
-                if (sandwichStartedByThisToken) {
-                    overlappingStartingInside.push(sandwichStartedByThisToken);
+                var conventionStartedByThisToken = getConventionStartedByThisToken(token);
+                if (conventionStartedByThisToken) {
+                    overlappingStartingInside.push(conventionStartedByThisToken);
                     continue;
                 }
-                var sandwichEndedByThisToken = getSandwichEndedByThisToken(token);
-                if (sandwichEndedByThisToken) {
+                var conventionEndedByThisToken = getConventionEndedByThisToken(token);
+                if (conventionEndedByThisToken) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
                         continue;
                     }
-                    overlappingStartingBefore.push(sandwichEndedByThisToken);
+                    overlappingStartingBefore.push(conventionEndedByThisToken);
                 }
             }
-            this.closeAndReopenSandwichesAroundTokenAtIndex(linkEndIndex, overlappingStartingInside);
-            this.closeAndReopenSandwichesAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore);
+            this.closeAndReopenConventionsAroundTokenAtIndex(linkEndIndex, overlappingStartingInside);
+            this.closeAndReopenConventionsAroundTokenAtIndex(linkStartIndex, overlappingStartingBefore);
             var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
             tokenIndex = linkEndIndex + countTokensAdded;
         }
     };
-    ConventionNester.prototype.closeAndReopenSandwichesAroundTokenAtIndex = function (index, sandwichesInTheOrderTheyShouldClose) {
-        var startTokensToAdd = sandwichesInTheOrderTheyShouldClose
-            .map(function (sandwich) { return new sandwich.StartTokenType(); })
+    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, conventionsInTheOrderTheyShouldClose) {
+        var startTokensToAdd = conventionsInTheOrderTheyShouldClose
+            .map(function (convention) { return new convention.StartTokenType(); })
             .reverse();
-        var endTokensToAdd = sandwichesInTheOrderTheyShouldClose
-            .map(function (sandwich) { return new sandwich.EndTokenType(); });
+        var endTokensToAdd = conventionsInTheOrderTheyShouldClose
+            .map(function (convention) { return new convention.EndTokenType(); });
         this.insertTokens(index + 1, startTokensToAdd);
         this.insertTokens(index, endTokensToAdd);
     };
@@ -186,14 +187,14 @@ var ConventionNester = (function () {
     };
     return ConventionNester;
 }());
-function getSandwichStartedByThisToken(token) {
-    return REGULAR_SANDWICHES.filter(function (sandwich) {
-        return token instanceof sandwich.StartTokenType;
+function getConventionStartedByThisToken(token) {
+    return OVERLAPPABLE_CONVENTIONS.filter(function (convention) {
+        return token instanceof convention.StartTokenType;
     })[0];
 }
-function getSandwichEndedByThisToken(token) {
-    return REGULAR_SANDWICHES.filter(function (sandwich) {
-        return token instanceof sandwich.EndTokenType;
+function getConventionEndedByThisToken(token) {
+    return OVERLAPPABLE_CONVENTIONS.filter(function (convention) {
+        return token instanceof convention.EndTokenType;
     })[0];
 }
 
