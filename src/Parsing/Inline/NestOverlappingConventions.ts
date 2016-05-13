@@ -36,16 +36,16 @@ class ConventionNester {
     this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(
       FREELY_SPLITTABLE_CONVENTIONS)
     
-    const conventionsWeAreHappyToSplit =
+    const conventionsToSplit =
       FREELY_SPLITTABLE_CONVENTIONS
       
     for (const conventionNotToSplit of CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT) {
-      this.splitAnyConventionsThatOverlapWithLinks(
-        conventionsWeAreHappyToSplit,
+      this.resolveOverlapping(
+        conventionsToSplit,
         conventionNotToSplit)
       
       // We'd rather split the current convention than the ones that follow. 
-      conventionsWeAreHappyToSplit.push(conventionNotToSplit)
+      conventionsToSplit.push(conventionNotToSplit)
     }
   }
 
@@ -115,10 +115,10 @@ class ConventionNester {
     }
   }
 
-  // This function assumes that any `conventionsWeAreHappyToSplit` tokens are already properly nested.
-  private splitAnyConventionsThatOverlapWithLinks(conventionsWeAreHappyToSplit: RichConvention[], cconventionNotToSplit: RichConvention): void {
+  // This method assumes that any `conventionsToSplit` tokens are already properly nested.
+  private resolveOverlapping(conventionsToSplit: RichConvention[], conventionNotToSplit: RichConvention): void {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      if (!(this.tokens[tokenIndex] instanceof LINK.StartTokenType)) {
+      if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
         continue
       }
       
@@ -128,14 +128,14 @@ class ConventionNester {
       let heroEndIndex: number
 
       for (let i = heroStartIndex + 1; i < this.tokens.length; i++) {
-        if (this.tokens[i] instanceof cconventionNotToSplit.EndTokenType) {
+        if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
           heroEndIndex = i
           break
         }
       }
 
       // Alright, we now know where this `cconventionNotToSplit` starts and ends. Any overlapping conventions
-      //  will either:
+      // will either:
 
       // 1. Start before and end inside
       // 2. Start inside and end after
@@ -145,7 +145,7 @@ class ConventionNester {
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const token = this.tokens[indexInsideHero]
-        const conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsWeAreHappyToSplit)
+        const conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit)
 
         if (conventionStartedByThisToken) {
           // Until we encounter the end token, we'll assume this convention overlaps.
@@ -153,10 +153,10 @@ class ConventionNester {
           continue
         }
 
-        const conventionEndedByThisToken = getConventionEndedBy(token, conventionsWeAreHappyToSplit)
+        const conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit)
 
         if (conventionEndedByThisToken) {
-          // This function assumes any conventions in `conventionsWeAreHappyToSplit` are already properly nested
+          // This function assumes any conventions in `conventionsToSplit` are already properly nested
           // into a treee structure. Therefore, if there are any conventions that started inside
           // `cconventionNotToSplit`, this convention we've found must be the most recent.
           if (overlappingStartingInside.length) {

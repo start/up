@@ -108,11 +108,11 @@ var ConventionNester = (function () {
     function ConventionNester(tokens) {
         this.tokens = tokens;
         this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
-        var conventionsWeAreHappyToSplit = FREELY_SPLITTABLE_CONVENTIONS;
+        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
         for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
             var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
-            this.splitAnyConventionsThatOverlapWithLinks(conventionsWeAreHappyToSplit, conventionNotToSplit);
-            conventionsWeAreHappyToSplit.push(conventionNotToSplit);
+            this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
+            conventionsToSplit.push(conventionNotToSplit);
         }
     }
     ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
@@ -142,15 +142,15 @@ var ConventionNester = (function () {
             tokenIndex += (2 * countOverlapping);
         }
     };
-    ConventionNester.prototype.splitAnyConventionsThatOverlapWithLinks = function (conventionsWeAreHappyToSplit, cconventionNotToSplit) {
+    ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            if (!(this.tokens[tokenIndex] instanceof RichConventions_1.LINK.StartTokenType)) {
+            if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
                 continue;
             }
             var heroStartIndex = tokenIndex;
             var heroEndIndex = void 0;
             for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
-                if (this.tokens[i] instanceof cconventionNotToSplit.EndTokenType) {
+                if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
                     heroEndIndex = i;
                     break;
                 }
@@ -159,12 +159,12 @@ var ConventionNester = (function () {
             var overlappingStartingInside = [];
             for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
                 var token = this.tokens[indexInsideHero];
-                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsWeAreHappyToSplit);
+                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit);
                 if (conventionStartedByThisToken) {
                     overlappingStartingInside.push(conventionStartedByThisToken);
                     continue;
                 }
-                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsWeAreHappyToSplit);
+                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit);
                 if (conventionEndedByThisToken) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
