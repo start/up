@@ -112,12 +112,12 @@ var ConventionNester = (function () {
         var unclosedConventions = [];
         for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
             var token = this.tokens[tokenIndex];
-            var conventionStartedByThisToken = getConventionStartedByThisToken(token);
+            var conventionStartedByThisToken = getConventionStartedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
             if (conventionStartedByThisToken) {
                 unclosedConventions.push(conventionStartedByThisToken);
                 continue;
             }
-            var conventionEndedByThisToken = getConventionEndedByThisToken(token);
+            var conventionEndedByThisToken = getConventionEndedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
             if (!conventionEndedByThisToken) {
                 continue;
             }
@@ -152,12 +152,12 @@ var ConventionNester = (function () {
             var overlappingStartingInside = [];
             for (var insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
                 var token = this.tokens[insideLinkIndex];
-                var conventionStartedByThisToken = getConventionStartedByThisToken(token);
+                var conventionStartedByThisToken = getConventionStartedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
                 if (conventionStartedByThisToken) {
                     overlappingStartingInside.push(conventionStartedByThisToken);
                     continue;
                 }
-                var conventionEndedByThisToken = getConventionEndedByThisToken(token);
+                var conventionEndedByThisToken = getConventionEndedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS);
                 if (conventionEndedByThisToken) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
@@ -187,13 +187,13 @@ var ConventionNester = (function () {
     };
     return ConventionNester;
 }());
-function getConventionStartedByThisToken(token) {
-    return FREELY_SPLITTABLE_CONVENTIONS.filter(function (convention) {
+function getConventionStartedByThisToken(token, conventions) {
+    return conventions.filter(function (convention) {
         return token instanceof convention.StartTokenType;
     })[0];
 }
-function getConventionEndedByThisToken(token) {
-    return FREELY_SPLITTABLE_CONVENTIONS.filter(function (convention) {
+function getConventionEndedByThisToken(token, conventions) {
+    return conventions.filter(function (convention) {
         return token instanceof convention.EndTokenType;
     })[0];
 }

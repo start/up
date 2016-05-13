@@ -49,14 +49,14 @@ class ConventionNester {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       const token = this.tokens[tokenIndex]
 
-      const conventionStartedByThisToken = getConventionStartedByThisToken(token)
+      const conventionStartedByThisToken = getConventionStartedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS)
 
       if (conventionStartedByThisToken) {
         unclosedConventions.push(conventionStartedByThisToken)
         continue
       }
 
-      const conventionEndedByThisToken = getConventionEndedByThisToken(token)
+      const conventionEndedByThisToken = getConventionEndedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS)
 
       if (!conventionEndedByThisToken) {
         continue
@@ -127,7 +127,7 @@ class ConventionNester {
 
       for (let insideLinkIndex = linkStartIndex + 1; insideLinkIndex < linkEndIndex; insideLinkIndex++) {
         const token = this.tokens[insideLinkIndex]
-        const conventionStartedByThisToken = getConventionStartedByThisToken(token)
+        const conventionStartedByThisToken = getConventionStartedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS)
 
         if (conventionStartedByThisToken) {
           // Until we encounter the end token, we'll assume this convention overlaps.
@@ -135,7 +135,7 @@ class ConventionNester {
           continue
         }
 
-        const conventionEndedByThisToken = getConventionEndedByThisToken(token)
+        const conventionEndedByThisToken = getConventionEndedByThisToken(token, FREELY_SPLITTABLE_CONVENTIONS)
 
         if (conventionEndedByThisToken) {
           // This function assumes any convention conventions are already properly nested into a treee
@@ -162,7 +162,7 @@ class ConventionNester {
     }
   }
 
-  // The purpose of this method is best explained in the `massageconventionsIntoTreeStructure` method.
+  // The purpose of this method is best explained in the `nestFreelySplittableConventions` method.
   // In short, it chops conventions in two around the token at `index`, allowing conventions to be nested
   // properly (in a tree structure) while preserving the overlapping intended by the author.
   //
@@ -187,14 +187,14 @@ class ConventionNester {
   }
 }
 
-function getConventionStartedByThisToken(token: Token): RichConvention {
-  return FREELY_SPLITTABLE_CONVENTIONS.filter(convention =>
+function getConventionStartedByThisToken(token: Token, conventions: RichConvention[]): RichConvention {
+  return conventions.filter(convention =>
     token instanceof convention.StartTokenType
   )[0]
 }
 
-function getConventionEndedByThisToken(token: Token): RichConvention {
-  return FREELY_SPLITTABLE_CONVENTIONS.filter(convention =>
+function getConventionEndedByThisToken(token: Token, conventions: RichConvention[]): RichConvention {
+  return conventions.filter(convention =>
     token instanceof convention.EndTokenType
   )[0]
 }
