@@ -1179,12 +1179,8 @@ var Tokenizer = (function () {
             state: richConvention.tokenizerState,
             startPattern: startPattern,
             endPattern: endPattern,
-            onOpen: function () {
-                _this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType());
-            },
-            onClose: function () {
-                _this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType());
-            }
+            onOpen: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()); },
+            onClose: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType()); }
         });
     };
     Tokenizer.prototype.getBracketInsideUrlConvention = function (args) {
@@ -3028,15 +3024,22 @@ var Up = (function () {
         this.config = new UpConfig_1.UpConfig(config);
         this.htmlWriter = new HtmlWriter_1.HtmlWriter(this.config);
     }
+    Up.toAst = function (text) {
+        return this.defaultUp.toAst(text);
+    };
+    Up.toHtml = function (textOrNode) {
+        return this.defaultUp.toHtml(textOrNode);
+    };
     Up.prototype.toAst = function (text) {
         return ParseDocument_1.parseDocument(text, this.config);
     };
     Up.prototype.toHtml = function (textOrNode) {
-        var node = (typeof textOrNode === 'string'
+        var node = typeof textOrNode === 'string'
             ? this.toAst(textOrNode)
-            : textOrNode);
+            : textOrNode;
         return this.htmlWriter.write(node);
     };
+    Up.defaultUp = new Up();
     return Up;
 }());
 exports.Up = Up;

@@ -629,12 +629,8 @@ class Tokenizer {
       state: richConvention.tokenizerState,
       startPattern: startPattern,
       endPattern: endPattern,
-      onOpen: () => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType())
-      },
-      onClose: () => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType())
-      }
+      onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()),
+      onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType())
     })
   }
 
