@@ -1,7 +1,7 @@
 export class NakedUrlToken {
   token(): void { }
   
-  public restOfUrl = ''
+  restOfUrl = ''
   
   constructor(private protocol: string) { }
   

@@ -4,11 +4,11 @@ import { startsWith } from '../Patterns'
 
 
 export class TokenizableSandwich {
-  public state: TokenizerState
-  public startPattern: RegExp
-  public endPattern: RegExp
-  public onOpen: OnTokenizerMatch
-  public onClose: OnTokenizerMatch
+  state: TokenizerState
+  startPattern: RegExp
+  endPattern: RegExp
+  onOpen: OnTokenizerMatch
+  onClose: OnTokenizerMatch
 
   constructor(
     args: {

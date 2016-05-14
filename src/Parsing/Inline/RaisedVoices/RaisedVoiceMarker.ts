@@ -9,7 +9,7 @@ const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
 
 export abstract class RaisedVoiceMarker {
   protected tokenTypes: TokenType[] = []
-  public countSurplusAsterisks: number
+  countSurplusAsterisks: number
   
   constructor(public originalTokenIndex: number, public originalAsterisks: string) {
     this.countSurplusAsterisks = originalAsterisks.length

@@ -5,10 +5,10 @@ import { TokenizerState } from './TokenizerState'
 
 
 export class TokenizableMedia {
-  public TokenType: MediaTokenType
-  public state: TokenizerState
-  public startPattern: RegExp
-  public endPattern: RegExp
+  TokenType: MediaTokenType
+  state: TokenizerState
+  startPattern: RegExp
+  endPattern: RegExp
 
   constructor(
     media: MediaConvention,

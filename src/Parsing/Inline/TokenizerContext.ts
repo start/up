@@ -2,11 +2,11 @@ import { TokenizerState } from './TokenizerState'
 
 
 export class TokenizerContext {
-  public state: TokenizerState
-  public textIndex: number
-  public countTokens: number
-  public openContexts: TokenizerContext[]
-  public plainTextBuffer: string
+  state: TokenizerState
+  textIndex: number
+  countTokens: number
+  openContexts: TokenizerContext[]
+  plainTextBuffer: string
 
   constructor(
     args: {

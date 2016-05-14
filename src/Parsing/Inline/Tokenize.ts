@@ -29,7 +29,7 @@ export function tokenize(text: string, config: UpConfig): Token[] {
 
 
 class Tokenizer {
-  public tokens: Token[] = []
+  tokens: Token[] = []
 
   private textIndex = 0
 
