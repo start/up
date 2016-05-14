@@ -2808,7 +2808,7 @@ var OrderedListNode = (function (_super) {
         return this.listItems[0].ordinal;
     };
     OrderedListNode.prototype.order = function () {
-        var withExplicitOrdinals = this.listItems.filter(function (listItem) { return listItem.ordinal != null; });
+        var withExplicitOrdinals = this.listItems.filter(function (item) { return item.ordinal != null; });
         if (withExplicitOrdinals.length < 2) {
             return ListOrder.Ascending;
         }

@@ -17,7 +17,7 @@ export class OrderedListNode extends OutlineSyntaxNode {
 
   order(): ListOrder {
     const withExplicitOrdinals =
-      this.listItems.filter((listItem) => listItem.ordinal != null)
+      this.listItems.filter(item => item.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
       return ListOrder.Ascending

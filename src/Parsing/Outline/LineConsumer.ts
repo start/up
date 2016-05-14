@@ -51,7 +51,7 @@ export class LineConsumer {
         return false
       }
 
-      captures = results.slice(1)
+      [ , ...captures] = results
     }
 
     if (args.if && !args.if(lineWithoutTerminatingLineBreak, ...captures)) {
