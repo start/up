@@ -925,14 +925,14 @@ var Tokenizer = (function () {
                 case TokenizerState_1.TokenizerState.MediaUrl:
                     break;
                 default:
-                    this.resetToBeforeContext(context_1);
+                    this.failContextAndResetToBeforeIt(context_1);
                     return false;
             }
         }
         this.flushBufferToPlainTextToken();
         return true;
     };
-    Tokenizer.prototype.resetToBeforeContext = function (context) {
+    Tokenizer.prototype.failContextAndResetToBeforeIt = function (context) {
         this.failedStateTracker.registerFailure(context);
         this.textIndex = context.textIndex;
         this.tokens.splice(context.countTokens);
@@ -1010,15 +1010,15 @@ var Tokenizer = (function () {
         var didStartLinkUrl = this.openConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
             pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-            then: function () {
-                _this.flushBufferToPlainTextToken();
-            }
+            then: function (arrow) { return _this.flushBufferToPlainTextToken(); }
         });
         if (!didStartLinkUrl) {
             return false;
         }
         var squareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
         if (!this.canTry(TokenizerState_1.TokenizerState.Link, squareBrackeContext.textIndex)) {
+            var linkUrlContext = this.openContexts.pop();
+            this.failContextAndResetToBeforeIt(linkUrlContext);
             return false;
         }
         squareBrackeContext.state = TokenizerState_1.TokenizerState.Link;

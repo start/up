@@ -294,7 +294,7 @@ class Tokenizer {
           break;
 
         default:
-          this.resetToBeforeContext(context)
+          this.failContextAndResetToBeforeIt(context)
           return false
       }
     }
@@ -304,7 +304,7 @@ class Tokenizer {
     return true
   }
   
-  private resetToBeforeContext(context: TokenizerContext): void {
+  private failContextAndResetToBeforeIt(context: TokenizerContext): void {
     this.failedStateTracker.registerFailure(context)
 
     this.textIndex = context.textIndex
@@ -402,9 +402,7 @@ class Tokenizer {
       this.openConvention({
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-        then: () => {
-          this.flushBufferToPlainTextToken()
-        }
+        then: (arrow) =>  this.flushBufferToPlainTextToken()
       })
 
     if (!didStartLinkUrl) {
@@ -415,6 +413,15 @@ class Tokenizer {
       this.getInnermostContextWithState(TokenizerState.SquareBracketed)
 
     if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
+      // If we can't try a link at that location, it means we've already tried, and we failed to find the
+      // closing bracket.
+      
+      // First, lets get rid of the new link URL context.
+      const linkUrlContext = this.openContexts.pop()
+       
+      // Next, let's fail it, so we don't try match the URL arrow again.
+      this.failContextAndResetToBeforeIt(linkUrlContext)
+      
       return false
     }
 
