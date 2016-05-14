@@ -10,7 +10,7 @@ import { PotentialRaisedVoiceStartToken } from '../Tokens/PotentialRaisedVoiceSt
 
 // TODO: Rename marker classes
 
-export function applyRaisedVoicesToRawTokens(tokens: Token[]): Token[] {
+export function applyRaisedVoices(tokens: Token[]): Token[] {
   const raisedVoiceMarkers = getRaisedVoiceMarkers(tokens)
   
   // Hooray! We've determined which raised voice tokens to produce!

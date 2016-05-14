@@ -3,7 +3,7 @@ import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTH
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
-import { applyRaisedVoicesToRawTokens }  from './RaisedVoices/ApplyRaisedVoicesToRawTokens'
+import { applyRaisedVoices }  from './RaisedVoices/ApplyRaisedVoices'
 import { nestOverlappingConventions } from './NestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last, reverse } from '../CollectionHelpers'
@@ -73,43 +73,48 @@ class Tokenizer {
   private mediaConventions: TokenizableMedia[]
 
   constructor(private entireText: string, config: UpConfig) {
+    this.mediaConventions =
+      [AUDIO, IMAGE, VIDEO]
+        .map(media =>
+          new TokenizableMedia(media, config.localize(media.nonLocalizedTerm)))
+          
     this.footnoteConvention =
-      this.getRichSandwichConvention({
+      this.getRichSandwich({
         richConvention: FOOTNOTE,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
         endPattern: escapeForRegex('))')
       })
 
     this.spoilerConvention =
-      this.getRichSandwichConvention({
+      this.getRichSandwich({
         richConvention: SPOILER,
         startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: CLOSE_SQUARE_BRACKET
       })
 
     this.revisionDeletionConvention =
-      this.getRichSandwichConvention({
+      this.getRichSandwich({
         richConvention: REVISION_DELETION,
         startPattern: '~~',
         endPattern: '~~'
       })
 
     this.revisionInsertionConvention =
-      this.getRichSandwichConvention({
+      this.getRichSandwich({
         richConvention: REVISION_INSERTION,
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++')
       })
 
     this.parenthesizedConvention =
-      this.getRichSandwichConvention({
+      this.getRichSandwich({
         richConvention: PARENTHESIZED,
         startPattern: OPEN_PAREN,
         endPattern: CLOSE_PAREN,
       })
 
     this.squareBracketedConvention =
-      this.getRichSandwichConvention({
+      this.getRichSandwich({
         richConvention: SQUARE_BRACKETED,
         startPattern: OPEN_SQUARE_BRACKET,
         endPattern: CLOSE_SQUARE_BRACKET,
@@ -119,7 +124,7 @@ class Tokenizer {
       this.getBracketInsideUrlConvention({
         state: TokenizerState.ParenthesizedInsideUrl,
         openBracketPattern: OPEN_PAREN,
-        closeBracketPattern: CLOSE_PAREN 
+        closeBracketPattern: CLOSE_PAREN
       })
 
     this.squareBracketedInsideUrlConvention =
@@ -129,28 +134,20 @@ class Tokenizer {
         closeBracketPattern: CLOSE_SQUARE_BRACKET
       })
 
-    this.inlineCodeConvention = new TokenizableSandwich({
-      state: TokenizerState.InlineCode,
-      startPattern: '`',
-      endPattern: '`',
-      onOpen: () => {
-        this.flushBufferToPlainTextToken()
-      },
-      onClose: () => {
-        this.addToken(new InlineCodeToken(this.flushBufferedText()))
-      }
-    })
-
-    this.mediaConventions =
-      [AUDIO, IMAGE, VIDEO].map(media =>
-        new TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm)))
+    this.inlineCodeConvention =
+      new TokenizableSandwich({
+        state: TokenizerState.InlineCode,
+        startPattern: '`',
+        endPattern: '`',
+        onOpen: () => this.flushBufferToPlainTextToken(),
+        onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText()))
+      })
 
     this.dirty()
     this.tokenize()
 
     this.tokens =
-      nestOverlappingConventions(
-        applyRaisedVoicesToRawTokens(this.tokens))
+      nestOverlappingConventions(applyRaisedVoices(this.tokens))
   }
 
   private tokenize(): void {
@@ -297,7 +294,7 @@ class Tokenizer {
           break;
 
         default:
-          this.backtrackToBeforeContext(context)
+          this.resetToBeforeContext(context)
           return false
       }
     }
@@ -306,18 +303,8 @@ class Tokenizer {
 
     return true
   }
-
-  private backtrackToBeforeLatestContextWithState(state: TokenizerState): void {
-    while (this.openContexts.length) {
-      const context = this.openContexts.pop()
-
-      if (context.state === state) {
-        this.backtrackToBeforeContext(context)
-      }
-    }
-  }
-
-  private backtrackToBeforeContext(context: TokenizerContext): void {
+  
+  private resetToBeforeContext(context: TokenizerContext): void {
     this.failedStateTracker.registerFailure(context)
 
     this.textIndex = context.textIndex
@@ -477,11 +464,7 @@ class Tokenizer {
       }
     })
   }
-
-  private backtrackToBeforeLink(): void {
-    this.backtrackToBeforeLatestContextWithState(TokenizerState.Link)
-  }
-
+  
   private openSandwich(sandwich: TokenizableSandwich): boolean {
     return this.openConvention({
       state: sandwich.state,
@@ -603,7 +586,7 @@ class Tokenizer {
     if (!result) {
       return false
     }
-    
+
     const [match, ...captures] = result
 
     const charAfterMatch = this.entireText[this.textIndex + match.length]
@@ -626,7 +609,7 @@ class Tokenizer {
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
-  private getRichSandwichConvention(
+  private getRichSandwich(
     args: {
       startPattern: string,
       endPattern: string,

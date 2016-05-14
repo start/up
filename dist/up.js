@@ -360,7 +360,7 @@ var PlainTextMarker_1 = require('./PlainTextMarker');
 var PotentialRaisedVoiceEndToken_1 = require('../Tokens/PotentialRaisedVoiceEndToken');
 var PotentialRaisedVoiceStartOrEndToken_1 = require('../Tokens/PotentialRaisedVoiceStartOrEndToken');
 var PotentialRaisedVoiceStartToken_1 = require('../Tokens/PotentialRaisedVoiceStartToken');
-function applyRaisedVoicesToRawTokens(tokens) {
+function applyRaisedVoices(tokens) {
     var raisedVoiceMarkers = getRaisedVoiceMarkers(tokens);
     var resultTokens = tokens.slice();
     for (var _i = 0, _a = raisedVoiceMarkers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
@@ -369,7 +369,7 @@ function applyRaisedVoicesToRawTokens(tokens) {
     }
     return resultTokens;
 }
-exports.applyRaisedVoicesToRawTokens = applyRaisedVoicesToRawTokens;
+exports.applyRaisedVoices = applyRaisedVoices;
 function getRaisedVoiceMarkers(tokens) {
     var markers = [];
     for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
@@ -694,9 +694,9 @@ exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
-    function TokenizableMedia(TokenType, state, localizedTerm) {
-        this.TokenType = TokenType;
-        this.state = state;
+    function TokenizableMedia(media, localizedTerm) {
+        this.TokenType = media.TokenType;
+        this.state = media.state;
         this.startPattern = new RegExp(Patterns_1.startsWith(Patterns_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE));
         this.endPattern = new RegExp(Patterns_1.startsWith(Patterns_1.escapeForRegex(']')));
     }
@@ -724,7 +724,7 @@ exports.TokenizableSandwich = TokenizableSandwich;
 var Patterns_1 = require('../Patterns');
 var RichConventions_1 = require('./RichConventions');
 var MediaConventions_1 = require('./MediaConventions');
-var ApplyRaisedVoicesToRawTokens_1 = require('./RaisedVoices/ApplyRaisedVoicesToRawTokens');
+var ApplyRaisedVoices_1 = require('./RaisedVoices/ApplyRaisedVoices');
 var NestOverlappingConventions_1 = require('./NestOverlappingConventions');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var TokenizerState_1 = require('./TokenizerState');
@@ -751,38 +751,43 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.bufferedText = '';
+        this.mediaConventions =
+            [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO]
+                .map(function (media) {
+                return new TokenizableMedia_1.TokenizableMedia(media, config.localize(media.nonLocalizedTerm));
+            });
         this.footnoteConvention =
-            this.getRichSandwichConvention({
+            this.getRichSandwich({
                 richConvention: RichConventions_1.FOOTNOTE,
                 startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
                 endPattern: Patterns_1.escapeForRegex('))')
             });
         this.spoilerConvention =
-            this.getRichSandwichConvention({
+            this.getRichSandwich({
                 richConvention: RichConventions_1.SPOILER,
                 startPattern: Patterns_1.OPEN_SQUARE_BRACKET + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
             });
         this.revisionDeletionConvention =
-            this.getRichSandwichConvention({
+            this.getRichSandwich({
                 richConvention: RichConventions_1.REVISION_DELETION,
                 startPattern: '~~',
                 endPattern: '~~'
             });
         this.revisionInsertionConvention =
-            this.getRichSandwichConvention({
+            this.getRichSandwich({
                 richConvention: RichConventions_1.REVISION_INSERTION,
                 startPattern: Patterns_1.escapeForRegex('++'),
                 endPattern: Patterns_1.escapeForRegex('++')
             });
         this.parenthesizedConvention =
-            this.getRichSandwichConvention({
+            this.getRichSandwich({
                 richConvention: RichConventions_1.PARENTHESIZED,
                 startPattern: Patterns_1.OPEN_PAREN,
                 endPattern: Patterns_1.CLOSE_PAREN,
             });
         this.squareBracketedConvention =
-            this.getRichSandwichConvention({
+            this.getRichSandwich({
                 richConvention: RichConventions_1.SQUARE_BRACKETED,
                 startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
@@ -799,25 +804,18 @@ var Tokenizer = (function () {
                 openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
             });
-        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.InlineCode,
-            startPattern: '`',
-            endPattern: '`',
-            onOpen: function () {
-                _this.flushBufferToPlainTextToken();
-            },
-            onClose: function () {
-                _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText()));
-            }
-        });
-        this.mediaConventions =
-            [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
-                return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm));
+        this.inlineCodeConvention =
+            new TokenizableSandwich_1.TokenizableSandwich({
+                state: TokenizerState_1.TokenizerState.InlineCode,
+                startPattern: '`',
+                endPattern: '`',
+                onOpen: function () { return _this.flushBufferToPlainTextToken(); },
+                onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText())); }
             });
         this.dirty();
         this.tokenize();
         this.tokens =
-            NestOverlappingConventions_1.nestOverlappingConventions(ApplyRaisedVoicesToRawTokens_1.applyRaisedVoicesToRawTokens(this.tokens));
+            NestOverlappingConventions_1.nestOverlappingConventions(ApplyRaisedVoices_1.applyRaisedVoices(this.tokens));
     }
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.finalizeAndCheckValidity())) {
@@ -927,22 +925,14 @@ var Tokenizer = (function () {
                 case TokenizerState_1.TokenizerState.MediaUrl:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_1);
+                    this.resetToBeforeContext(context_1);
                     return false;
             }
         }
         this.flushBufferToPlainTextToken();
         return true;
     };
-    Tokenizer.prototype.backtrackToBeforeLatestContextWithState = function (state) {
-        while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            if (context_2.state === state) {
-                this.backtrackToBeforeContext(context_2);
-            }
-        }
-    };
-    Tokenizer.prototype.backtrackToBeforeContext = function (context) {
+    Tokenizer.prototype.resetToBeforeContext = function (context) {
         this.failedStateTracker.registerFailure(context);
         this.textIndex = context.textIndex;
         this.tokens.splice(context.countTokens);
@@ -1069,9 +1059,6 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.backtrackToBeforeLink = function () {
-        this.backtrackToBeforeLatestContextWithState(TokenizerState_1.TokenizerState.Link);
-    };
     Tokenizer.prototype.openSandwich = function (sandwich) {
         return this.openConvention({
             state: sandwich.state,
@@ -1118,8 +1105,8 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
         var indexOfEnclosedNakedUrlContext = -1;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_3 = this.openContexts[i];
-            if (context_3.state === state) {
+            var context_2 = this.openContexts[i];
+            if (context_2.state === state) {
                 if (indexOfEnclosedNakedUrlContext != -1) {
                     this.flushUnmatchedTextToNakedUrl();
                     this.openContexts.splice(indexOfEnclosedNakedUrlContext, 1);
@@ -1127,7 +1114,7 @@ var Tokenizer = (function () {
                 this.openContexts.splice(i, 1);
                 return;
             }
-            if (context_3.state === TokenizerState_1.TokenizerState.NakedUrl) {
+            if (context_2.state === TokenizerState_1.TokenizerState.NakedUrl) {
                 indexOfEnclosedNakedUrlContext = i;
             }
         }
@@ -1135,8 +1122,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeMostRecentContextWithStateAndAnyInnerContexts = function (state) {
         while (this.openContexts.length) {
-            var context_4 = this.openContexts.pop();
-            if (context_4.state === state) {
+            var context_3 = this.openContexts.pop();
+            if (context_3.state === state) {
                 return;
             }
         }
@@ -1144,9 +1131,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getInnermostContextWithState = function (state) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_5 = this.openContexts[i];
-            if (context_5.state === state) {
-                return context_5;
+            var context_4 = this.openContexts[i];
+            if (context_4.state === state) {
+                return context_4;
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
@@ -1185,7 +1172,7 @@ var Tokenizer = (function () {
         var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
-    Tokenizer.prototype.getRichSandwichConvention = function (args) {
+    Tokenizer.prototype.getRichSandwich = function (args) {
         var _this = this;
         var startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
         return new TokenizableSandwich_1.TokenizableSandwich({
@@ -1247,7 +1234,7 @@ var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 
-},{"../CollectionHelpers":1,"../Patterns":65,"./FailedStateTracker":2,"./MediaConventions":5,"./NestOverlappingConventions":6,"./RaisedVoices/ApplyRaisedVoicesToRawTokens":9,"./RichConventions":14,"./TokenizableMedia":15,"./TokenizableSandwich":16,"./TokenizerContext":18,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/NakedUrlToken":30,"./Tokens/PlainTextToken":33,"./Tokens/PotentialRaisedVoiceEndToken":34,"./Tokens/PotentialRaisedVoiceStartOrEndToken":35,"./Tokens/PotentialRaisedVoiceStartToken":36}],18:[function(require,module,exports){
+},{"../CollectionHelpers":1,"../Patterns":65,"./FailedStateTracker":2,"./MediaConventions":5,"./NestOverlappingConventions":6,"./RaisedVoices/ApplyRaisedVoices":9,"./RichConventions":14,"./TokenizableMedia":15,"./TokenizableSandwich":16,"./TokenizerContext":18,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/NakedUrlToken":30,"./Tokens/PlainTextToken":33,"./Tokens/PotentialRaisedVoiceEndToken":34,"./Tokens/PotentialRaisedVoiceStartOrEndToken":35,"./Tokens/PotentialRaisedVoiceStartToken":36}],18:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
