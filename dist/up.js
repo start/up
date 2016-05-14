@@ -3386,15 +3386,7 @@ exports.Writer = Writer;
 },{"../SyntaxNodes/AudioNode":66,"../SyntaxNodes/BlockquoteNode":67,"../SyntaxNodes/CodeBlockNode":68,"../SyntaxNodes/DescriptionListNode":71,"../SyntaxNodes/DocumentNode":73,"../SyntaxNodes/EmphasisNode":74,"../SyntaxNodes/FootnoteBlockNode":75,"../SyntaxNodes/FootnoteNode":76,"../SyntaxNodes/HeadingNode":77,"../SyntaxNodes/ImageNode":78,"../SyntaxNodes/InlineCodeNode":79,"../SyntaxNodes/LineBlockNode":82,"../SyntaxNodes/LinkNode":83,"../SyntaxNodes/OrderedListNode":86,"../SyntaxNodes/ParagraphNode":88,"../SyntaxNodes/PlainTextNode":89,"../SyntaxNodes/RevisionDeletionNode":90,"../SyntaxNodes/RevisionInsertionNode":91,"../SyntaxNodes/SectionSeparatorNode":93,"../SyntaxNodes/SpoilerNode":94,"../SyntaxNodes/StressNode":95,"../SyntaxNodes/UnorderedListNode":97,"../SyntaxNodes/VideoNode":98}],103:[function(require,module,exports){
 "use strict";
 var Up_1 = require('./Up');
-var up = new Up_1.Up();
-function toAst(text) {
-    return up.toAst(text);
-}
-exports.toAst = toAst;
-function toHtml(textOrNode) {
-    return up.toHtml(textOrNode);
-}
-exports.toHtml = toHtml;
+exports.Up = Up_1.Up;
 
 },{"./Up":99}]},{},[103])(103)
 });

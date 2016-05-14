@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import { Up } from '../../index'
 import { ListOrder, OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 function listOrder(text: string): ListOrder {
