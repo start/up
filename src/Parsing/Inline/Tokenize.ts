@@ -53,7 +53,7 @@ class Tokenizer {
   //
   // Usually, it's flushed to a PlainTextToken, but it can also be flushed to other kinds of tokens (like
   // InlineCodeTokens).
-  private plainTextBuffer = ''
+  private bufferedText = ''
 
   private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
@@ -107,7 +107,7 @@ class Tokenizer {
         startPattern: OPEN_PAREN,
         endPattern: CLOSE_PAREN,
       })
-      
+
     this.squareBracketedConvention =
       this.getRichSandwichConvention({
         richConvention: SQUARE_BRACKETED,
@@ -116,26 +116,28 @@ class Tokenizer {
       })
 
     this.parenthesizedInsideUrlConvention =
-      this.getBracketInsideUrlConvention(
-        TokenizerState.ParenthesizedInsideUrl,
-        OPEN_PAREN,
-        CLOSE_PAREN)
+      this.getBracketInsideUrlConvention({
+        state: TokenizerState.ParenthesizedInsideUrl,
+        openBracketPattern: OPEN_PAREN,
+        closeBracketPattern: CLOSE_PAREN 
+      })
 
     this.squareBracketedInsideUrlConvention =
-      this.getBracketInsideUrlConvention(
-        TokenizerState.SquareBracketedInsideUrl,
-        OPEN_SQUARE_BRACKET,
-        CLOSE_SQUARE_BRACKET)
+      this.getBracketInsideUrlConvention({
+        state: TokenizerState.SquareBracketedInsideUrl,
+        openBracketPattern: OPEN_SQUARE_BRACKET,
+        closeBracketPattern: CLOSE_SQUARE_BRACKET
+      })
 
     this.inlineCodeConvention = new TokenizableSandwich({
       state: TokenizerState.InlineCode,
       startPattern: '`',
       endPattern: '`',
       onOpen: () => {
-        this.flushUnmatchedTextToPlainTextToken()
+        this.flushBufferToPlainTextToken()
       },
       onClose: () => {
-        this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
+        this.addToken(new InlineCodeToken(this.flushBufferedText()))
       }
     })
 
@@ -161,7 +163,7 @@ class Tokenizer {
         || (this.hasState(TokenizerState.NakedUrl) && (
           this.openParenthesisInsideUrl()
           || this.openSquareBracketInsideUrl()
-          || this.collectCurrentChar()))
+          || this.bufferCurrentChar()))
 
         || (this.hasState(TokenizerState.SquareBracketed)
           && this.convertSquareBracketedContextToLink())
@@ -177,7 +179,7 @@ class Tokenizer {
         || this.openSandwich(this.squareBracketedConvention)
         || this.openNakedUrl()
 
-        || this.collectCurrentChar()
+        || this.bufferCurrentChar()
     }
   }
 
@@ -189,12 +191,12 @@ class Tokenizer {
       || ((state === TokenizerState.LinkUrl) && (
         this.openSquareBracketInsideUrl()
         || this.closeLink()
-        || this.collectCurrentChar()))
+        || this.bufferCurrentChar()))
 
       || ((state === TokenizerState.MediaUrl) && (
         this.openSquareBracketInsideUrl()
         || this.closeMedia()
-        || this.collectCurrentChar()))
+        || this.bufferCurrentChar()))
 
       || ((state === TokenizerState.NakedUrl) && this.tryCloseNakedUrl())
     )
@@ -218,7 +220,7 @@ class Tokenizer {
   private handleMediaCorrespondingToState(state: TokenizerState): boolean {
     return this.mediaConventions.some(media =>
       (media.state === state)
-      && (this.openMediaUrl() || this.collectCurrentChar()))
+      && (this.openMediaUrl() || this.bufferCurrentChar()))
   }
 
   private handleInlineCode(): boolean {
@@ -227,7 +229,7 @@ class Tokenizer {
     return (
       currentOpenContext
       && (currentOpenContext.state === TokenizerState.InlineCode)
-      && (this.closeSandwich(this.inlineCodeConvention) || this.collectCurrentChar())
+      && (this.closeSandwich(this.inlineCodeConvention) || this.bufferCurrentChar())
     )
   }
 
@@ -260,7 +262,7 @@ class Tokenizer {
 
     return (
       this.reachedEndOfText()
-      || this.collectCurrentChar()
+      || this.bufferCurrentChar()
     )
   }
 
@@ -300,7 +302,7 @@ class Tokenizer {
       }
     }
 
-    this.flushUnmatchedTextToPlainTextToken()
+    this.flushBufferToPlainTextToken()
 
     return true
   }
@@ -321,7 +323,7 @@ class Tokenizer {
     this.textIndex = context.textIndex
     this.tokens.splice(context.countTokens)
     this.openContexts = context.openContexts
-    this.plainTextBuffer = context.plainTextBuffer
+    this.bufferedText = context.plainTextBuffer
 
     this.currentToken = last(this.tokens)
     this.dirty()
@@ -335,25 +337,25 @@ class Tokenizer {
   // This method will never fail, and it always returns true.
   //
   // Ensuring it always returns true allows us to use some cleaner boolean logic. 
-  private collectCurrentChar(): boolean {
-    this.plainTextBuffer += this.currentChar
+  private bufferCurrentChar(): boolean {
+    this.bufferedText += this.currentChar
     this.advance(1)
 
     return true
   }
 
-  private flushUnmatchedText(): string {
-    const unmatchedText = this.plainTextBuffer
-    this.plainTextBuffer = ''
+  private flushBufferedText(): string {
+    const bufferedText = this.bufferedText
+    this.bufferedText = ''
 
-    return unmatchedText
+    return bufferedText
   }
 
-  private flushUnmatchedTextToPlainTextToken(): void {
+  private flushBufferToPlainTextToken(): void {
     // This will create a PlainTextToken even when there isn't any text to flush.
     //
     // TODO: Explain why this is helpful
-    this.addToken(new PlainTextToken(this.flushUnmatchedText()))
+    this.addToken(new PlainTextToken(this.flushBufferedText()))
   }
 
   private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
@@ -365,7 +367,7 @@ class Tokenizer {
       state: TokenizerState.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new NakedUrlToken(urlProtocol))
+        this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlToken(urlProtocol))
       }
     })
   }
@@ -387,7 +389,7 @@ class Tokenizer {
   }
 
   private flushUnmatchedTextToNakedUrl(): void {
-    (<NakedUrlToken>this.currentToken).restOfUrl = this.flushUnmatchedText()
+    (<NakedUrlToken>this.currentToken).restOfUrl = this.flushBufferedText()
   }
 
   private openMedia(): boolean {
@@ -396,7 +398,7 @@ class Tokenizer {
         state: media.state,
         pattern: media.startPattern,
         then: () => {
-          this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new media.TokenType())
+          this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType())
         }
       })
 
@@ -414,7 +416,7 @@ class Tokenizer {
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
         then: () => {
-          this.flushUnmatchedTextToPlainTextToken()
+          this.flushBufferToPlainTextToken()
         }
       })
 
@@ -446,7 +448,7 @@ class Tokenizer {
       state: TokenizerState.MediaUrl,
       pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
       then: () => {
-        (<MediaToken>this.currentToken).description = this.flushUnmatchedText()
+        (<MediaToken>this.currentToken).description = this.flushBufferedText()
       }
     })
   }
@@ -455,7 +457,7 @@ class Tokenizer {
     return this.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
-        const url = this.flushUnmatchedText()
+        const url = this.flushBufferedText()
         this.addToken(new LINK.EndTokenType(url))
         this.closeMostRecentContextWithState(TokenizerState.LinkUrl)
         this.closeMostRecentContextWithState(TokenizerState.Link)
@@ -467,7 +469,7 @@ class Tokenizer {
     return this.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
-        (<MediaToken>this.currentToken).url = this.flushUnmatchedText()
+        (<MediaToken>this.currentToken).url = this.flushBufferedText()
         this.closeMostRecentContextWithState(TokenizerState.MediaUrl)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
@@ -519,7 +521,7 @@ class Tokenizer {
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
             openContexts: this.openContexts,
-            plainTextBuffer: this.plainTextBuffer
+            plainTextBuffer: this.bufferedText
           }))
 
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -584,8 +586,8 @@ class Tokenizer {
     this.openContexts.pop()
   }
 
-  private addTokenAfterFlushingUnmatchedTextToPlainTextToken(token: Token): void {
-    this.flushUnmatchedTextToPlainTextToken()
+  private addTokenAfterFlushingBufferToPlainTextToken(token: Token): void {
+    this.flushBufferToPlainTextToken()
     this.addToken(token)
   }
 
@@ -601,9 +603,8 @@ class Tokenizer {
     if (!result) {
       return false
     }
-
-    const match = result[0]
-    const captures = result.slice(1)
+    
+    const [match, ...captures] = result
 
     const charAfterMatch = this.entireText[this.textIndex + match.length]
     const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
@@ -639,25 +640,31 @@ class Tokenizer {
       startPattern: startPattern,
       endPattern: endPattern,
       onOpen: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.StartTokenType())
+        this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType())
       },
       onClose: () => {
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new richConvention.EndTokenType())
+        this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType())
       }
     })
   }
 
-  private getBracketInsideUrlConvention(state: TokenizerState, openBracket: string, closeBracket: string): TokenizableSandwich {
-    const addBracketToBuffer = (bracket: string) => {
-      this.plainTextBuffer += bracket
+  private getBracketInsideUrlConvention(
+    args: {
+      state: TokenizerState,
+      openBracketPattern: string,
+      closeBracketPattern: string
+    }
+  ): TokenizableSandwich {
+    const bufferBracket = (bracket: string) => {
+      this.bufferedText += bracket
     }
 
     return new TokenizableSandwich({
-      state: state,
-      startPattern: openBracket,
-      endPattern: closeBracket,
-      onOpen: addBracketToBuffer,
-      onClose: addBracketToBuffer
+      state: args.state,
+      startPattern: args.openBracketPattern,
+      endPattern: args.closeBracketPattern,
+      onOpen: bufferBracket,
+      onClose: bufferBracket
     })
   }
 
@@ -690,7 +697,7 @@ class Tokenizer {
           AsteriskTokenType = PlainTextToken
         }
 
-        this.addTokenAfterFlushingUnmatchedTextToPlainTextToken(new AsteriskTokenType(asterisks))
+        this.addTokenAfterFlushingBufferToPlainTextToken(new AsteriskTokenType(asterisks))
       }
     })
   }
@@ -698,29 +705,22 @@ class Tokenizer {
 
 
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
-  startsWith(atLeast(1, escapeForRegex('*')))
-)
+  startsWith(atLeast(1, escapeForRegex('*'))))
 
 const LINK_START_PATTERN = new RegExp(
-  startsWith(OPEN_SQUARE_BRACKET)
-)
+  startsWith(OPEN_SQUARE_BRACKET))
 
 const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE)
-)
+  startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE))
 
 const LINK_END_PATTERN = new RegExp(
-  startsWith(CLOSE_SQUARE_BRACKET)
-)
+  startsWith(CLOSE_SQUARE_BRACKET))
 
 const NAKED_URL_START_PATTERN = new RegExp(
-  startsWith('http' + optional('s') + '://')
-)
+  startsWith('http' + optional('s') + '://'))
 
 const WHITESPACE_CHAR_PATTERN = new RegExp(
-  WHITESPACE_CHAR
-)
+  WHITESPACE_CHAR)
 
 const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
-  NON_WHITESPACE_CHAR
-)
+  NON_WHITESPACE_CHAR)

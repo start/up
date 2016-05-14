@@ -1,3 +1,8 @@
 export interface OnTokenizerMatch {
-  (match: string, isTouchingWordEnd: boolean, isTouchingWordStart: boolean, ...captures: string[]): void
+  (
+    match: string,
+    isTouchingWordEnd: boolean,
+    isTouchingWordStart: boolean,
+    ...captures: string[]
+  ): void
 }
