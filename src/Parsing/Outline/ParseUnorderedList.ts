@@ -64,17 +64,13 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
 const BULLET_PATTERN = new RegExp(
   startsWith(
     optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
-  )
-)
+  ))
 
 const BLANK_LINE_PATTERN = new RegExp(
-  BLANK
-)
+  BLANK)
 
 const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
+  startsWith(INDENT))
 
 const STREAK_PATTERN = new RegExp(
-  STREAK
-)
+  STREAK)

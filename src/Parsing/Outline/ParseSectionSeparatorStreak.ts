@@ -18,5 +18,4 @@ export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
 
 
 const STREAK_PATTERN = new RegExp(
-  STREAK
-)
+  STREAK)

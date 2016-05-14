@@ -124,15 +124,14 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   return true
 }
 
+
 function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
   return node instanceof MediaSyntaxNode
 }
 
 
 const NON_BLANK_LINE_PATTERN = new RegExp(
-  NON_BLANK
-)
+  NON_BLANK)
 
 const STREAK_PATTERN = new RegExp(
-  STREAK
-)
+  STREAK)

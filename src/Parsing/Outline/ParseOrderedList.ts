@@ -111,14 +111,14 @@ function getExplicitOrdinal(rawListItem: RawListItem): number {
 const INTEGER_PATTERN = new RegExp(
   capture(INTEGER))
 
+const BULLET =
+  either(
+    '#',
+    capture(either(INTEGER, '#') + either('\\.', '\\)')))
+
 const BULLETED_PATTERN = new RegExp(
   startsWith(
-    optional(' ')
-    + either(
-      '#',
-      capture(either(INTEGER, '#') + either('\\.', '\\)'))
-    )
-    + INLINE_WHITESPACE_CHAR))
+    optional(' ') + BULLET + INLINE_WHITESPACE_CHAR))
 
 const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
   INTEGER + '\\.')
