@@ -1751,18 +1751,18 @@ function getHeadingParser(headingLeveler) {
         var optionalOverline;
         consumer.consumeLine({
             pattern: STREAK_PATTERN,
-            then: function (line) { return optionalOverline = line; }
+            then: function (line) { optionalOverline = line; }
         });
         var content;
         var underline;
         var hasContentAndUnderline = (consumer.consumeLine({
             pattern: NON_BLANK_PATTERN,
-            then: function (line) { return content = line; }
+            then: function (line) { content = line; }
         })
             && consumer.consumeLine({
                 if: function (line) { return (STREAK_PATTERN.test(line)
                     && HeadingLeveler_1.isUnderlineConsistentWithOverline(optionalOverline, line)); },
-                then: function (line) { return underline = line; }
+                then: function (line) { underline = line; }
             }));
         if (!hasContentAndUnderline) {
             return false;
@@ -1962,6 +1962,19 @@ var LineConsumer = (function () {
         this.index = 0;
         this.dirty();
     }
+    LineConsumer.prototype.advance = function (countCharacters) {
+        this.index += countCharacters;
+        this.dirty();
+    };
+    LineConsumer.prototype.done = function () {
+        return this.index >= this.text.length;
+    };
+    LineConsumer.prototype.lengthConsumed = function () {
+        return this.index;
+    };
+    LineConsumer.prototype.remainingText = function () {
+        return this._remainingText;
+    };
     LineConsumer.prototype.consumeLine = function (args) {
         if (this.done()) {
             return false;
@@ -1999,19 +2012,6 @@ var LineConsumer = (function () {
             args.then.apply(args, [lineWithoutTerminatingLineBreak].concat(captures));
         }
         return true;
-    };
-    LineConsumer.prototype.done = function () {
-        return this.index >= this.text.length;
-    };
-    LineConsumer.prototype.advance = function (countCharacters) {
-        this.index += countCharacters;
-        this.dirty();
-    };
-    LineConsumer.prototype.lengthConsumed = function () {
-        return this.index;
-    };
-    LineConsumer.prototype.remainingText = function () {
-        return this._remainingText;
     };
     LineConsumer.prototype.dirty = function () {
         this._remainingText = this.text.slice(this.index);

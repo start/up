@@ -19,7 +19,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 
     consumer.consumeLine({
       pattern: STREAK_PATTERN,
-      then: (line) => optionalOverline = line
+      then: line => { optionalOverline = line }
     })
 
     // Next, save the content and parse the underline.
@@ -30,15 +30,15 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
       // Parse the content
       consumer.consumeLine({
         pattern: NON_BLANK_PATTERN,
-        then: (line) => content = line
+        then: line => { content = line }
       })
 
       // Parse the underline
       && consumer.consumeLine({
-        if: (line) => (
+        if: line => (
           STREAK_PATTERN.test(line)
           && isUnderlineConsistentWithOverline(optionalOverline, line)),
-        then: (line) => underline = line
+        then: line => { underline = line }
       })
     )
 

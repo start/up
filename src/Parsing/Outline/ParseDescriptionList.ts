@@ -28,8 +28,8 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     while (!consumer.done()) {
       const isTerm = consumer.consumeLine({
         pattern: NON_BLANK_PATTERN,
-        if: (line) => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
-        then: (line) => rawTerms.push(line)
+        if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
+        then: line => rawTerms.push(line)
       })
 
       if (!isTerm) {
@@ -46,8 +46,8 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     // Let's parse the desription's first line
     const hasDescription = consumer.consumeLine({
       pattern: INDENTED_PATTERN,
-      if: (line) => !BLANK_PATTERN.test(line),
-      then: (line) => descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
+      if: line => !BLANK_PATTERN.test(line),
+      then: line => descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
     })
 
     if (!hasDescription) {
@@ -70,7 +70,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     lengthParsed = consumer.lengthConsumed()
 
     const terms =
-      rawTerms.map((term) => new DescriptionTerm(getInlineNodes(term, args.config)))
+      rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))
     
     const description =
       new Description(getOutlineNodes(descriptionLines.join('\n'), args.headingLeveler, args.config))

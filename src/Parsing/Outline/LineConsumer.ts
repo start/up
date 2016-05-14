@@ -6,6 +6,23 @@ export class LineConsumer {
     this.dirty()
   }
 
+  advance(countCharacters: number): void {
+    this.index += countCharacters
+    this.dirty()
+  }
+
+  done(): boolean {
+    return this.index >= this.text.length
+  }
+
+  lengthConsumed(): number {
+    return this.index
+  }
+
+  remainingText(): string {
+    return this._remainingText
+  }
+
   consumeLine(
     args: {
       pattern?: RegExp,
@@ -65,23 +82,6 @@ export class LineConsumer {
     }
 
     return true
-  }
-
-  done(): boolean {
-    return this.index >= this.text.length
-  }
-
-  advance(countCharacters: number): void {
-    this.index += countCharacters
-    this.dirty()
-  }
-
-  lengthConsumed(): number {
-    return this.index
-  }
-
-  remainingText(): string {
-    return this._remainingText
   }
 
   private dirty(): void {
