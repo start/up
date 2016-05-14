@@ -80,9 +80,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 
 
 const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK
-)
+  NON_BLANK)
 
 const STREAK_PATTERN = new RegExp(
-  STREAK
-)
+  STREAK)

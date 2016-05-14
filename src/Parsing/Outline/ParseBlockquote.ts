@@ -54,14 +54,10 @@ const BLOCKQUOTE_DELIMITER =
 
 const ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(
   capture(
-    startsWith((atLeast(1, BLOCKQUOTE_DELIMITER)))
-  )
-)
+    startsWith((atLeast(1, BLOCKQUOTE_DELIMITER)))))
 
 const FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(
-  startsWith(BLOCKQUOTE_DELIMITER)
-)
+  startsWith(BLOCKQUOTE_DELIMITER))
 
 const TRAILING_SPACE_PATTERN = new RegExp(
-  endsWith(INLINE_WHITESPACE_CHAR)
-)
+  endsWith(INLINE_WHITESPACE_CHAR))

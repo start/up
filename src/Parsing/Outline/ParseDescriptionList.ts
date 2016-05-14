@@ -92,13 +92,10 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
 
 
 const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK
-)
+  NON_BLANK)
 
 const BLANK_PATTERN = new RegExp(
-  BLANK
-)
+  BLANK)
 
 const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
+  startsWith(INDENT))

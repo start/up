@@ -81,17 +81,15 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
 
 
 const LEADING_BLANK_LINES_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + LINE_BREAK)
-)
+  startsWith(ANY_WHITESPACE + LINE_BREAK))
 
 const TRAILIN_BLANK_LINES_PATTERN = new RegExp(
-  endsWith(LINE_BREAK + ANY_WHITESPACE)
-)
+  endsWith(LINE_BREAK + ANY_WHITESPACE))
+
 
 function trimOuterBlankLines(text: string): string {
   return (
     text
       .replace(LEADING_BLANK_LINES_PATTERN, '')
-      .replace(TRAILIN_BLANK_LINES_PATTERN, '')
-  )
+      .replace(TRAILIN_BLANK_LINES_PATTERN, ''))
 }

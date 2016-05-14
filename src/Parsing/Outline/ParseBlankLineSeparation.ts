@@ -37,5 +37,4 @@ export function parseBlankLineSeparation(args: OutlineParserArgs): boolean {
 
 
 const BLANK_PATTERN = new RegExp(
-  BLANK
-) 
+  BLANK) 

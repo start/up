@@ -63,12 +63,11 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
 
 
 const BLANK_PATTERN = new RegExp(
-  BLANK
-)
+  BLANK)
 
 const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
+  startsWith(INDENT))
+
 
 interface OnSuccess {
   (lines: string[], lengthParsed: number, shouldTerminateList: boolean): void

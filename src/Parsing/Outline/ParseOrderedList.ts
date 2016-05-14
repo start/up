@@ -32,9 +32,9 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     if (!isLineBulleted) {
       break
     }
-    
+
     let isListTerminated = false
-    
+
     getRemainingLinesOfListItem({
       text: consumer.remainingText(),
       then: (lines, lengthParsed, shouldTerminateList) => {
@@ -45,7 +45,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     })
 
     rawListItems.push(rawListItem)
-    
+
     if (isListTerminated) {
       break
     }
@@ -54,14 +54,14 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
     return false
   }
-  
+
   let listItems = rawListItems.map((rawListItem) => {
     return new OrderedListItem(
       getOutlineNodes(rawListItem.content(), args.headingLeveler, args.config),
       getExplicitOrdinal(rawListItem)
     )
   })
-  
+
   args.then([new OrderedListNode(listItems)], consumer.lengthConsumed())
   return true
 }
@@ -70,7 +70,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 class RawListItem {
   public bullet: string;
   public lines: string[] = [];
-  
+
   content(): string {
     // This loses the final line break, but trailing blank lines are always ignored when parsing
     // for outline conventions.
@@ -109,8 +109,7 @@ function getExplicitOrdinal(rawListItem: RawListItem): number {
 
 
 const INTEGER_PATTERN = new RegExp(
-  capture(INTEGER)
-)
+  capture(INTEGER))
 
 const BULLETED_PATTERN = new RegExp(
   startsWith(
@@ -119,22 +118,16 @@ const BULLETED_PATTERN = new RegExp(
       '#',
       capture(either(INTEGER, '#') + either('\\.', '\\)'))
     )
-    + INLINE_WHITESPACE_CHAR
-  )
-)
+    + INLINE_WHITESPACE_CHAR))
 
 const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
-  INTEGER + '\\.'
-)
+  INTEGER + '\\.')
 
 const STREAK_PATTERN = new RegExp(
-  STREAK
-)
+  STREAK)
 
 const BLANK_LINE_PATTERN = new RegExp(
-  BLANK
-)
+  BLANK)
 
 const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT)
-)
+  startsWith(INDENT))
