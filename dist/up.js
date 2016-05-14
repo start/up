@@ -775,17 +775,6 @@ var Tokenizer = (function () {
                 startPattern: Patterns_1.escapeForRegex('++'),
                 endPattern: Patterns_1.escapeForRegex('++')
             });
-        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
-            state: TokenizerState_1.TokenizerState.InlineCode,
-            startPattern: '`',
-            endPattern: '`',
-            onOpen: function () {
-                _this.flushUnmatchedTextToPlainTextToken();
-            },
-            onClose: function () {
-                _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
-            }
-        });
         this.parenthesizedConvention =
             this.getRichSandwichConvention({
                 richConvention: RichConventions_1.PARENTHESIZED,
@@ -802,6 +791,17 @@ var Tokenizer = (function () {
             this.getBracketInsideUrlConvention(TokenizerState_1.TokenizerState.ParenthesizedInsideUrl, Patterns_1.OPEN_PAREN, Patterns_1.CLOSE_PAREN);
         this.squareBracketedInsideUrlConvention =
             this.getBracketInsideUrlConvention(TokenizerState_1.TokenizerState.SquareBracketedInsideUrl, Patterns_1.OPEN_SQUARE_BRACKET, Patterns_1.CLOSE_SQUARE_BRACKET);
+        this.inlineCodeConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            state: TokenizerState_1.TokenizerState.InlineCode,
+            startPattern: '`',
+            endPattern: '`',
+            onOpen: function () {
+                _this.flushUnmatchedTextToPlainTextToken();
+            },
+            onClose: function () {
+                _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushUnmatchedText()));
+            }
+        });
         this.mediaConventions =
             [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
                 return new TokenizableMedia_1.TokenizableMedia(media.TokenType, media.state, config.localize(media.nonLocalizedTerm));

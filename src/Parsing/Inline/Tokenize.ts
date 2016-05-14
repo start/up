@@ -117,18 +117,6 @@ class Tokenizer {
         endPattern: escapeForRegex('++')
       })
 
-    this.inlineCodeConvention = new TokenizableSandwich({
-      state: TokenizerState.InlineCode,
-      startPattern: '`',
-      endPattern: '`',
-      onOpen: () => {
-        this.flushUnmatchedTextToPlainTextToken()
-      },
-      onClose: () => {
-        this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
-      }
-    })
-
     this.parenthesizedConvention =
       this.getRichSandwichConvention({
         richConvention: PARENTHESIZED,
@@ -144,10 +132,28 @@ class Tokenizer {
       })
 
     this.parenthesizedInsideUrlConvention =
-      this.getBracketInsideUrlConvention(TokenizerState.ParenthesizedInsideUrl, OPEN_PAREN, CLOSE_PAREN)
+      this.getBracketInsideUrlConvention(
+        TokenizerState.ParenthesizedInsideUrl,
+        OPEN_PAREN,
+        CLOSE_PAREN)
 
     this.squareBracketedInsideUrlConvention =
-      this.getBracketInsideUrlConvention(TokenizerState.SquareBracketedInsideUrl, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET)
+      this.getBracketInsideUrlConvention(
+        TokenizerState.SquareBracketedInsideUrl,
+        OPEN_SQUARE_BRACKET,
+        CLOSE_SQUARE_BRACKET)
+
+    this.inlineCodeConvention = new TokenizableSandwich({
+      state: TokenizerState.InlineCode,
+      startPattern: '`',
+      endPattern: '`',
+      onOpen: () => {
+        this.flushUnmatchedTextToPlainTextToken()
+      },
+      onClose: () => {
+        this.addToken(new InlineCodeToken(this.flushUnmatchedText()))
+      }
+    })
 
     this.mediaConventions =
       [AUDIO, IMAGE, VIDEO].map(media =>
