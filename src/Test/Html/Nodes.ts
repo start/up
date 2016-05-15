@@ -326,8 +326,8 @@ describe('A link node', () => {
 })
 
 
-describe('A footnote reference node', () => {
-  it("produces a sup element with a data-footnote-reference attribute and an ID indicating its reference number, containing a link that contains the reference number and points to the footnote", () => {
+describe('A footnote node', () => {
+  it("produces a sup element (with a data-footnote-reference attribute and an ID indicating its reference number), containing a link that contains the reference number and points to the footnote", () => {
     const node = new FootnoteNode([], 3)
     expect(Up.toHtml(node)).to.be.eql('<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
   })
@@ -343,7 +343,7 @@ describe('A footnote block node', () => {
 
 
 describe("Each footnote in a footnote block", () => {
-  it("produce a dt element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference, and a dd element containing the footnote contents", () => {
+  it("produce a dt element with an ID indicating its reference number (containing a link that contains the reference number and points to the reference) and a dd element containing the footnote contents", () => {
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
