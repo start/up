@@ -64,3 +64,19 @@ describe("A footnote reference's ID", () => {
       '<sup id="fn-ref-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
   })
 })
+
+
+describe("The ID of the footnote referenced by a footnote reference", () => {
+  it('uses the provided term for "footnote"', () => {
+    const up = new Up({
+      i18n: {
+        terms: { footnote: 'fn' }
+      }
+    })
+    
+    const node = new FootnoteNode([], 3)
+
+    expect(up.toHtml(node)).to.be.eql(
+      '<sup id="footnote-reference-3" data-footnote-reference><a href="#fn-3">3</a></sup>')
+  })
+})
