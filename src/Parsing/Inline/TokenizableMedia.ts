@@ -17,12 +17,15 @@ export class TokenizableMedia {
     this.TokenType = media.TokenType
     this.state = media.state
     
-    this.startPattern = new RegExp(
-      startsWith(
-        escapeForRegex('[' + localizedTerm + ':') + ANY_WHITESPACE))
+    this.startPattern = getPattern(
+      escapeForRegex('[' + localizedTerm + ':') + ANY_WHITESPACE,
+      'i')
 
-    this.endPattern = new RegExp(
-      startsWith(
-        escapeForRegex(']')))
+    this.endPattern = getPattern(
+      escapeForRegex(']'))
   }
+}
+
+function getPattern(pattern: string, flags?: string): RegExp {
+  return new RegExp(startsWith(pattern), flags)
 }

@@ -697,12 +697,15 @@ var TokenizableMedia = (function () {
     function TokenizableMedia(media, localizedTerm) {
         this.TokenType = media.TokenType;
         this.state = media.state;
-        this.startPattern = new RegExp(Patterns_1.startsWith(Patterns_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE));
-        this.endPattern = new RegExp(Patterns_1.startsWith(Patterns_1.escapeForRegex(']')));
+        this.startPattern = getPattern(Patterns_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE, 'i');
+        this.endPattern = getPattern(Patterns_1.escapeForRegex(']'));
     }
     return TokenizableMedia;
 }());
 exports.TokenizableMedia = TokenizableMedia;
+function getPattern(pattern, flags) {
+    return new RegExp(Patterns_1.startsWith(pattern), flags);
+}
 
 },{"../Patterns":65}],16:[function(require,module,exports){
 "use strict";
