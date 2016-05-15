@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../index'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
