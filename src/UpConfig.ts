@@ -1,15 +1,33 @@
+const DEFAULT_CONFIG = {
+  documentName: '',
+  
+  i18n: {
+    idWordDelimiter: '-',
+    
+    terms: {
+      image: 'image',
+      audio: 'audio',
+      video: 'video',
+      spoiler: 'spoiler',
+      footnote: 'footnote',
+      footnoteReference: 'footnote reference'
+    }
+  }
+}
+
+
 export interface UpConfigArgs {
-  documentName?: string,
+  documentName?: string
 
   i18n?: {
-    idWordDelimiter?: string,
+    idWordDelimiter?: string
 
     terms?: {
-      image?: string,
-      audio?: string,
-      video?: string,
-      spoiler?: string,
-      footnote?: string,
+      image?: string
+      audio?: string
+      video?: string
+      spoiler?: string
+      footnote?: string
       footnoteReference?: string
       [term: string]: string
     }

@@ -3049,6 +3049,20 @@ exports.Up = Up;
 
 },{"./Parsing/ParseDocument":64,"./UpConfig":100,"./Writer/HtmlWriter":101}],100:[function(require,module,exports){
 "use strict";
+var DEFAULT_CONFIG = {
+    documentName: '',
+    i18n: {
+        idWordDelimiter: '-',
+        terms: {
+            image: 'image',
+            audio: 'audio',
+            video: 'video',
+            spoiler: 'spoiler',
+            footnote: 'footnote',
+            footnoteReference: 'footnote reference'
+        }
+    }
+};
 var UpConfig = (function () {
     function UpConfig(args) {
         args = args || {};
