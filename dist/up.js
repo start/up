@@ -3050,22 +3050,23 @@ var UpConfig_1 = require('./UpConfig');
 var Up = (function () {
     function Up(config) {
         this.config = new UpConfig_1.UpConfig(config);
-        this.htmlWriter = new HtmlWriter_1.HtmlWriter(this.config);
     }
-    Up.toAst = function (text) {
-        return this.defaultUp.toAst(text);
+    Up.toAst = function (text, configChanges) {
+        return this.defaultUp.toAst(text, configChanges);
     };
-    Up.toHtml = function (textOrNode) {
-        return this.defaultUp.toHtml(textOrNode);
+    Up.toHtml = function (textOrNode, configChanges) {
+        return this.defaultUp.toHtml(textOrNode, configChanges);
     };
-    Up.prototype.toAst = function (text) {
-        return ParseDocument_1.parseDocument(text, this.config);
+    Up.prototype.toAst = function (text, configChanges) {
+        var config = this.config.withChanges(configChanges);
+        return ParseDocument_1.parseDocument(text, config);
     };
-    Up.prototype.toHtml = function (textOrNode) {
+    Up.prototype.toHtml = function (textOrNode, configChanges) {
         var node = typeof textOrNode === 'string'
-            ? this.toAst(textOrNode)
+            ? this.toAst(textOrNode, configChanges)
             : textOrNode;
-        return this.htmlWriter.write(node);
+        var config = this.config.withChanges(configChanges);
+        return new HtmlWriter_1.HtmlWriter(config).write(node);
     };
     Up.defaultUp = new Up();
     return Up;

@@ -10,36 +10,36 @@ import { UpConfigArgs } from './UpConfigArgs'
 
 export class Up {
   private static defaultUp: Up = new Up()
-  
-  static toAst(text: string): DocumentNode {
-    return this.defaultUp.toAst(text)
+
+  static toAst(text: string, configChanges?: UpConfigArgs): DocumentNode {
+    return this.defaultUp.toAst(text, configChanges)
   }
-  
-  static toHtml(textOrNode: string | SyntaxNode): string {
-    return this.defaultUp.toHtml(textOrNode)
+
+  static toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigArgs): string {
+    return this.defaultUp.toHtml(textOrNode, configChanges)
   }
-  
-  
+
+
   private config: UpConfig
-  private htmlWriter: HtmlWriter
-  
+
   constructor(config?: UpConfigArgs) {
     this.config = new UpConfig(config)
-    this.htmlWriter = new HtmlWriter(this.config)
   }
-  
-  // TODO: Accept configuration settings here, too
-  toAst(text: string): DocumentNode {
-    return parseDocument(text, this.config)
+
+  toAst(text: string, configChanges?: UpConfigArgs): DocumentNode {
+    const config = this.config.withChanges(configChanges)
+
+    return parseDocument(text, config)
   }
-  
-  // TODO: Accept configuration settings here, too
-  toHtml(textOrNode: string | SyntaxNode): string {
+
+  toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigArgs): string {
     const node =
       typeof textOrNode === 'string'
-        ? this.toAst(textOrNode)
+        ? this.toAst(textOrNode, configChanges)
         : textOrNode
 
-    return this.htmlWriter.write(node)
+    const config = this.config.withChanges(configChanges)
+
+    return new HtmlWriter(config).write(node)
   }
 }
