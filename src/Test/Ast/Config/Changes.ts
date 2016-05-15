@@ -18,6 +18,13 @@ function canBeProvidedMultipleWaysWithTheSameResult(
 
   const { text, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
+
+  describe("when provided to the default (static) toAst method", () => {
+    it("does not alter subsequent calls to the default method", () => {
+      expect(Up.toAst(text, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
+    })
+  })
+
   const whenProvidingConfigAtCreation =
     new Up(configChanges).toAst(text)
 
@@ -27,29 +34,29 @@ function canBeProvidedMultipleWaysWithTheSameResult(
   const whenOverwritingChangesProvidedAtCreation =
     new Up(conflictingConfigChanges).toAst(text, configChanges)
 
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
-    expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+  describe("when provided to an Up object's toAst method", () => {
+    it("does not alter the Up object's original settings", () => {
+      const up = new Up(configChanges)
+
+      // We don't care about the result! We only care to ensure the original config settings weren't overwritten.
+      up.toAst(text, conflictingConfigChanges)
+
+      expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(text, configChanges))
+    })
   })
 
-  it("has the same result as providing the term when calling the Up object's toAst method", () => {
-    expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
-  })
+  describe('when provided to an Up object at creation', () => {
+    it('has the same result as providing the term when calling the (default) static toAst method', () => {
+      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+    })
 
-  it("has the same result as providing the term when calling the Up object's toAst method", () => {
-    expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
-  })
+    it("has the same result as providing the term when calling the Up object's toAst method", () => {
+      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+    })
 
-  it("does not alter the Up object's original settings when the term is provided to the object's toAst method", () => {
-    const up = new Up(configChanges)
-    
-    // We don't care about the result! We only care to ensure the original config settings weren't overwritten.
-    up.toAst(text, conflictingConfigChanges)
-    
-    expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(text, configChanges))
-  })
-
-  it("does not alter subsequent calls to the (default) static toAst method when the term is provided to it", () => {
-    expect(Up.toAst(text, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
+    it("has the same result as providing the term when calling the Up object's toAst method", () => {
+      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+    })
   })
 }
 
