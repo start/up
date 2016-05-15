@@ -22,11 +22,9 @@ describe('The term that represents spoiler conventions', () => {
   })
   
   it('is always canse-insensivite', () => {
-    expect(up.toAst('[RUINS ENDING: Ash fights Gary]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SpoilerNode([
-          new PlainTextNode('Ash fights Gary')
-        ])
-      ]))
+    const uppercase = '[RUINS ENDING: Ash fights Gary]'
+    const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
+    
+    expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
   })
 })
