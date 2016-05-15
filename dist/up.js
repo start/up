@@ -782,7 +782,7 @@ var Tokenizer = (function () {
         this.mediaConventions =
             [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO]
                 .map(function (media) {
-                return new TokenizableMedia_1.TokenizableMedia(media, config.localize(media.nonLocalizedTerm));
+                return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
             });
         this.footnoteConvention =
             this.getRichSandwich({
@@ -3093,7 +3093,7 @@ var UpConfig = (function () {
     function UpConfig(configArgs) {
         this.settings = ObjectHelpers_1.merge(DEFAULT_CONFIG, configArgs);
     }
-    UpConfig.prototype.localize = function (nonLocalizedTerm) {
+    UpConfig.prototype.localizeTerm = function (nonLocalizedTerm) {
         var localizedTerm = this.settings.i18n.terms[nonLocalizedTerm];
         if (localizedTerm) {
             return localizedTerm;

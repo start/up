@@ -76,7 +76,7 @@ class Tokenizer {
     this.mediaConventions =
       [AUDIO, IMAGE, VIDEO]
         .map(media =>
-          new TokenizableMedia(media, config.localize(media.nonLocalizedTerm)))
+          new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
           
     this.footnoteConvention =
       this.getRichSandwich({

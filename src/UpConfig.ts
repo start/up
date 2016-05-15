@@ -27,7 +27,7 @@ export class UpConfig {
     this.settings = merge(DEFAULT_CONFIG, configArgs)
   }
 
-  localize(nonLocalizedTerm: string): string {
+  localizeTerm(nonLocalizedTerm: string): string {
     const localizedTerm = this.settings.i18n.terms[nonLocalizedTerm]
 
     if (localizedTerm) {
