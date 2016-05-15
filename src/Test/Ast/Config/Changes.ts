@@ -7,97 +7,107 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
-function expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text: string, configChanges: UpConfigArgs): void {
+
+function canBeProvidedMultipleWaysWithTheSameResult(
+  args: {
+    text: string,
+    configChanges: UpConfigArgs,
+    configChangesToIgnoreDueToOverwriting: UpConfigArgs
+  }
+): void {
+
+  const { text, configChanges, configChangesToIgnoreDueToOverwriting } = args
+
   const whenProvidingConfigAtCreation =
     new Up(configChanges).toAst(text)
 
-  const whenProvidingChangesWhenCallingMethod =
-    Up.toAst(text, configChanges)
-
-  expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingMethod)
-}
-
-function expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text: string, configChanges: UpConfigArgs): void {
-  const whenProvidingConfigAtCreation =
-    new Up(configChanges).toAst(text)
-
-  const whenProvidingChangesWhenCallingMethod =
+  const whenProvidingChangesWhenCallingDefaultMethod =
     new Up().toAst(text, configChanges)
 
-  expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingMethod)
+  const whenOverwritingChangesProvidedAtCreation =
+    new Up(configChangesToIgnoreDueToOverwriting).toAst(text, configChanges)
+
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+  })
+
+  it("has the same result as providing the term when calling object's toAst method", () => {
+    expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+  })
+
+  it("has the same result as providing the term when calling object's toAst method", () => {
+    expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+  })
 }
 
-describe('Providing the "audio" config term when creating the Up object', () => {
-  const configChanges: UpConfigArgs = {
-    i18n: {
-      terms: { audio: 'listen' }
+describe('The "audio" config term', () => {
+  canBeProvidedMultipleWaysWithTheSameResult({
+    text: '[listen: chanting at Nevada caucus -> https://example.com/audio.ogg]',
+    configChanges: {
+      i18n: {
+        terms: { audio: 'listen' }
+      }
+    },
+    configChangesToIgnoreDueToOverwriting: {
+      i18n: {
+        terms: { audio: 'sound' }
+      }
     }
-  }
-
-  const text = '[listen: chanting at Nevada caucus -> https://example.com/audio.ogg]'
-
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
-  })
-
-  it("has the same result as providing the term when calling object's toAst method instead", () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
   })
 })
 
 
-describe('Providing the "image" config term when creating the Up object', () => {
-  const configChanges: UpConfigArgs = {
-    i18n: {
-      terms: { image: 'see' }
+describe('The "image" config term', () => {
+  canBeProvidedMultipleWaysWithTheSameResult({
+    text: '[see: Chrono Cross logo -> https://example.com/cc.png]',
+    configChanges: {
+      i18n: {
+        terms: { image: 'see' }
+      }
+    },
+    configChangesToIgnoreDueToOverwriting: {
+      i18n: {
+        terms: { image: 'picture' }
+      }
     }
-  }
-
-  const text = '[see: Chrono Cross logo -> https://example.com/cc.png]'
-
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
-  })
-
-  it("has the same result as providing the term when calling object's toAst method instead", () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
   })
 })
 
 
-describe('Providing the "video" config term when creating the Up object', () => {
+describe('The "video" config term', () => {
+  canBeProvidedMultipleWaysWithTheSameResult({
+    text: '[watch: Nevada caucus footage -> https://example.com/video.webm]',
+    configChanges: {
+      i18n: {
+        terms: { video: 'watch' }
+      }
+    },
+    configChangesToIgnoreDueToOverwriting: {
+      i18n: {
+        terms: { video: 'watch' }
+      }
+    }
+  })
   const configChanges: UpConfigArgs = {
     i18n: {
-      terms: { video: 'watch' }
+      terms: { video: 'movie' }
     }
   }
-  
-    const text = '[watch: Nevada caucus footage -> https://example.com/video.webm]'
-    
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
-  })
-
-  it("has the same result as providing the term when calling object's toAst method instead", () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
-  })
 })
 
 
-describe('Providing the "spoiler" config term when creating the Up object', () => {
-    const text = '[RUINS ENDING: Ash fights Gary]'
-  
-  const configChanges: UpConfigArgs = {
-    i18n: {
-          terms: { spoiler: 'ruins ending' }
+describe('The "spoiler" config term', () => {
+  canBeProvidedMultipleWaysWithTheSameResult({
+    text: '[RUINS ENDING: Ash fights Gary]',
+    configChanges: {
+      i18n: {
+        terms: { spoiler: 'ruins ending' }
+      }
+    },
+    configChangesToIgnoreDueToOverwriting: {
+      i18n: {
+        terms: { spoiler: 'look away' }
+      }
     }
-  }
-    
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
-  })
-
-  it("has the same result as providing the term when calling object's toAst method instead", () => {
-    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
   })
 })
