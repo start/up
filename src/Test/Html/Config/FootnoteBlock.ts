@@ -32,7 +32,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 })
 
 
-describe("The words in footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
+describe("The words in a footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
