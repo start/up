@@ -1,3 +1,5 @@
+import { UpConfigArgs} from './UpConfigArgs'
+
 const DEFAULT_CONFIG = {
   documentName: '',
   
@@ -14,26 +16,6 @@ const DEFAULT_CONFIG = {
     }
   }
 }
-
-
-export interface UpConfigArgs {
-  documentName?: string
-
-  i18n?: {
-    idWordDelimiter?: string
-
-    terms?: {
-      image?: string
-      audio?: string
-      video?: string
-      spoiler?: string
-      footnote?: string
-      footnoteReference?: string
-      [term: string]: string
-    }
-  }
-}
-
 
 export class UpConfig {
   public settings: UpConfigArgs

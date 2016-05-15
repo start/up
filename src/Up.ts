@@ -2,7 +2,8 @@ import { parseDocument } from './Parsing/ParseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 import { HtmlWriter } from './Writer/HtmlWriter'
-import { UpConfig, UpConfigArgs } from './UpConfig'
+import { UpConfig } from './UpConfig'
+import { UpConfigArgs } from './UpConfigArgs'
 
 
 // TODO: Accept cofiguration settings in `toAst` and `toHtml`
