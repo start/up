@@ -3050,7 +3050,7 @@ exports.Up = Up;
 },{"./Parsing/ParseDocument":64,"./UpConfig":100,"./Writer/HtmlWriter":101}],100:[function(require,module,exports){
 "use strict";
 var DEFAULT_CONFIG = {
-    documentName: '',
+    documentName: null,
     i18n: {
         idWordDelimiter: '-',
         terms: {

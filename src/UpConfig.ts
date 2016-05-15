@@ -1,11 +1,11 @@
 import { UpConfigArgs} from './UpConfigArgs'
 
 const DEFAULT_CONFIG = {
-  documentName: '',
+  documentName: <string>null,
   
   i18n: {
     idWordDelimiter: '-',
-    
+
     terms: {
       image: 'image',
       audio: 'audio',
