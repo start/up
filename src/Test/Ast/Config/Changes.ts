@@ -47,39 +47,57 @@ describe('Providing the "audio" config term when creating the Up object', () => 
 
 
 describe('Providing the "image" config term when creating the Up object', () => {
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
-    const text = '[see: Chrono Cross logo -> https://example.com/cc.png]'
+  const configChanges: UpConfigArgs = {
+    i18n: {
+      terms: { image: 'see' }
+    }
+  }
 
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, {
-      i18n: {
-        terms: { image: 'see' }
-      }
-    })
+  const text = '[see: Chrono Cross logo -> https://example.com/cc.png]'
+
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
+  })
+
+  it("has the same result as providing the term when calling object's toAst method instead", () => {
+    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
   })
 })
 
 
 describe('Providing the "video" config term when creating the Up object', () => {
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+  const configChanges: UpConfigArgs = {
+    i18n: {
+      terms: { video: 'watch' }
+    }
+  }
+  
     const text = '[watch: Nevada caucus footage -> https://example.com/video.webm]'
+    
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
+  })
 
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, {
-      i18n: {
-        terms: { video: 'watch' }
-      }
-    })
+  it("has the same result as providing the term when calling object's toAst method instead", () => {
+    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
   })
 })
 
 
 describe('Providing the "spoiler" config term when creating the Up object', () => {
-  it('has the same result as providing the term when calling the (default) static toAst method', () => {
     const text = '[RUINS ENDING: Ash fights Gary]'
+  
+  const configChanges: UpConfigArgs = {
+    i18n: {
+          terms: { spoiler: 'ruins ending' }
+    }
+  }
+    
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, configChanges)
+  })
 
-    expectConfigChangesToHaveSameEffectWhenProvidedToDefaultMethod(text, {
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
-    })
+  it("has the same result as providing the term when calling object's toAst method instead", () => {
+    expectConfigChangesToHaveSameEffectWhenProvidedToMethodOfUpObject(text, configChanges)
   })
 })
