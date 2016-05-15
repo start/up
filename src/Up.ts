@@ -6,8 +6,6 @@ import { UpConfig } from './UpConfig'
 import { UpConfigArgs } from './UpConfigArgs'
 
 
-// TODO: Accept cofiguration settings in `toAst` and `toHtml`
-
 export class Up {
   private static defaultUp: Up = new Up()
 
@@ -27,19 +25,24 @@ export class Up {
   }
 
   toAst(text: string, configChanges?: UpConfigArgs): DocumentNode {
-    const config = this.config.withChanges(configChanges)
-
-    return parseDocument(text, config)
+    return toAst(text, this.config.withChanges(configChanges))
   }
 
   toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigArgs): string {
-    const node =
-      typeof textOrNode === 'string'
-        ? this.toAst(textOrNode, configChanges)
-        : textOrNode
-
-    const config = this.config.withChanges(configChanges)
-
-    return new HtmlWriter(config).write(node)
+    return toHtml(textOrNode, this.config.withChanges(configChanges))
   }
+}
+
+
+function toAst(text: string, config: UpConfig): DocumentNode {
+  return parseDocument(text, config)
+}
+
+function toHtml(textOrNode: string | SyntaxNode, config: UpConfig): string {
+  const node =
+    typeof textOrNode === 'string'
+      ? toAst(textOrNode, config)
+      : textOrNode
+
+  return new HtmlWriter(config).write(node)
 }

@@ -3058,20 +3058,24 @@ var Up = (function () {
         return this.defaultUp.toHtml(textOrNode, configChanges);
     };
     Up.prototype.toAst = function (text, configChanges) {
-        var config = this.config.withChanges(configChanges);
-        return ParseDocument_1.parseDocument(text, config);
+        return toAst(text, this.config.withChanges(configChanges));
     };
     Up.prototype.toHtml = function (textOrNode, configChanges) {
-        var node = typeof textOrNode === 'string'
-            ? this.toAst(textOrNode, configChanges)
-            : textOrNode;
-        var config = this.config.withChanges(configChanges);
-        return new HtmlWriter_1.HtmlWriter(config).write(node);
+        return toHtml(textOrNode, this.config.withChanges(configChanges));
     };
     Up.defaultUp = new Up();
     return Up;
 }());
 exports.Up = Up;
+function toAst(text, config) {
+    return ParseDocument_1.parseDocument(text, config);
+}
+function toHtml(textOrNode, config) {
+    var node = typeof textOrNode === 'string'
+        ? toAst(textOrNode, config)
+        : textOrNode;
+    return new HtmlWriter_1.HtmlWriter(config).write(node);
+}
 
 },{"./Parsing/ParseDocument":65,"./UpConfig":101,"./Writer/HtmlWriter":102}],101:[function(require,module,exports){
 "use strict";
