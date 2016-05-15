@@ -1,4 +1,6 @@
 import { UpConfigArgs} from './UpConfigArgs'
+import { merge } from './ObjectHelpers'
+
 
 const DEFAULT_CONFIG = {
   documentName: <string>null,
@@ -17,30 +19,12 @@ const DEFAULT_CONFIG = {
   }
 }
 
+
 export class UpConfig {
   public settings: UpConfigArgs
 
-  constructor(args?: UpConfigArgs) {
-    args = args || {}
-    const i18n = args.i18n || {}
-    const i18nTerms = i18n.terms || {}
-
-    this.settings = {
-      documentName: args.documentName || '',
-
-      i18n: {
-        idWordDelimiter: i18n.idWordDelimiter || '-',
-
-        terms: {
-          image: i18nTerms.image || 'image',
-          audio: i18nTerms.audio || 'audio',
-          video: i18nTerms.video || 'video',
-          spoiler: i18nTerms.spoiler || 'spoiler',
-          footnote: i18nTerms.footnote || 'footnote',
-          footnoteReference: i18nTerms.footnoteReference || 'footnote reference',
-        }
-      }
-    }
+  constructor(configArgs?: UpConfigArgs) {
+    this.settings = merge(DEFAULT_CONFIG, configArgs)
   }
 
   localize(nonLocalizedTerm: string): string {
