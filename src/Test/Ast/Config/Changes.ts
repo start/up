@@ -7,16 +7,16 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
-
 function canBeProvidedMultipleWaysWithTheSameResult(
   args: {
     text: string,
+    textForDefaultSettings: string
     configChanges: UpConfigArgs,
-    configChangesToIgnoreDueToOverwriting: UpConfigArgs
+    conflictingConfigChanges: UpConfigArgs
   }
 ): void {
 
-  const { text, configChanges, configChangesToIgnoreDueToOverwriting } = args
+  const { text, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
   const whenProvidingConfigAtCreation =
     new Up(configChanges).toAst(text)
@@ -25,30 +25,45 @@ function canBeProvidedMultipleWaysWithTheSameResult(
     new Up().toAst(text, configChanges)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(configChangesToIgnoreDueToOverwriting).toAst(text, configChanges)
+    new Up(conflictingConfigChanges).toAst(text, configChanges)
 
   it('has the same result as providing the term when calling the (default) static toAst method', () => {
     expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
   })
 
-  it("has the same result as providing the term when calling object's toAst method", () => {
+  it("has the same result as providing the term when calling the Up object's toAst method", () => {
     expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
   })
 
-  it("has the same result as providing the term when calling object's toAst method", () => {
+  it("has the same result as providing the term when calling the Up object's toAst method", () => {
     expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
   })
+
+  it("does not alter the Up object's original settings when the term is provided to the object's toAst method", () => {
+    const up = new Up(configChanges)
+    
+    // We don't care about the result! We only care to ensure the original config settings weren't overwritten.
+    up.toAst(text, conflictingConfigChanges)
+    
+    expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(text, configChanges))
+  })
+
+  it("does not alter subsequent calls to the (default) static toAst method when the term is provided to it", () => {
+    expect(Up.toAst(text, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
+  })
 }
+
 
 describe('The "audio" config term', () => {
   canBeProvidedMultipleWaysWithTheSameResult({
     text: '[listen: chanting at Nevada caucus -> https://example.com/audio.ogg]',
+    textForDefaultSettings: '[audio: chanting at Nevada caucus -> https://example.com/audio.ogg]',
     configChanges: {
       i18n: {
         terms: { audio: 'listen' }
       }
     },
-    configChangesToIgnoreDueToOverwriting: {
+    conflictingConfigChanges: {
       i18n: {
         terms: { audio: 'sound' }
       }
@@ -60,12 +75,13 @@ describe('The "audio" config term', () => {
 describe('The "image" config term', () => {
   canBeProvidedMultipleWaysWithTheSameResult({
     text: '[see: Chrono Cross logo -> https://example.com/cc.png]',
+    textForDefaultSettings: '[image: Chrono Cross logo -> https://example.com/cc.png]',
     configChanges: {
       i18n: {
         terms: { image: 'see' }
       }
     },
-    configChangesToIgnoreDueToOverwriting: {
+    conflictingConfigChanges: {
       i18n: {
         terms: { image: 'picture' }
       }
@@ -77,12 +93,13 @@ describe('The "image" config term', () => {
 describe('The "video" config term', () => {
   canBeProvidedMultipleWaysWithTheSameResult({
     text: '[watch: Nevada caucus footage -> https://example.com/video.webm]',
+    textForDefaultSettings: '[video: Nevada caucus footage -> https://example.com/video.webm]',
     configChanges: {
       i18n: {
         terms: { video: 'watch' }
       }
     },
-    configChangesToIgnoreDueToOverwriting: {
+    conflictingConfigChanges: {
       i18n: {
         terms: { video: 'watch' }
       }
@@ -99,12 +116,13 @@ describe('The "video" config term', () => {
 describe('The "spoiler" config term', () => {
   canBeProvidedMultipleWaysWithTheSameResult({
     text: '[RUINS ENDING: Ash fights Gary]',
+    textForDefaultSettings: '[SPOILER: Ash fights Gary]',
     configChanges: {
       i18n: {
         terms: { spoiler: 'ruins ending' }
       }
     },
-    configChangesToIgnoreDueToOverwriting: {
+    conflictingConfigChanges: {
       i18n: {
         terms: { spoiler: 'look away' }
       }
