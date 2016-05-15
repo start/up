@@ -54,6 +54,23 @@ describe("A footnote reference's ID", () => {
   it('uses the provided term for "footnote reference"', () => {
     const up = new Up({
       i18n: {
+        terms: { footnoteReference: 'ref' }
+      }
+    })
+    
+    const node = new FootnoteNode([], 3)
+
+    expect(up.toHtml(node)).to.be.eql(
+      '<sup id="ref-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
+  })
+})
+
+
+describe('Separate words in the provided term for "footnote reference"', () => {
+  it('are separated by the ID word delimiter in a footnote reference ID', () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '_',
         terms: { footnoteReference: 'fn ref' }
       }
     })
@@ -61,7 +78,7 @@ describe("A footnote reference's ID", () => {
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="fn-ref-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
+      '<sup id="fn_ref_3" data-footnote-reference><a href="#footnote_3">3</a></sup>')
   })
 })
 
