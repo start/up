@@ -46,3 +46,23 @@ describe('Providing the "image" config term when creating the Up object', () => 
   })
 })
 
+
+
+describe('Providing the "video" config term when creating the Up object', () => {
+  const configChanges: UpConfigArgs = {
+    i18n: {
+      terms: { video: 'watch' }
+    }
+  }
+
+  const up = new Up(configChanges)
+
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    const text = '[watch: Nevada caucus footage -> https://example.com/video.webm]'
+
+    const astFromOriginalConfig = up.toAst(text)
+    const astFromChangesToDefault = Up.toAst(text, configChanges)
+
+    expect(astFromOriginalConfig).to.be.eql(astFromChangesToDefault)
+  })
+})
