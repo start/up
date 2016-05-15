@@ -7,7 +7,7 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
-describe('Providing config options when creating the Up object', () => {
+describe('Providing the "audio" config term when creating the Up object', () => {
   const configChanges: UpConfigArgs = {
     i18n: {
       terms: { audio: 'listen' }
@@ -16,12 +16,33 @@ describe('Providing config options when creating the Up object', () => {
 
   const up = new Up(configChanges)
 
-  it('has the same result as providing them when calling the (default) static toAst method', () => {
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
     const text = '[listen: chanting at Nevada caucus -> https://example.com/audio.ogg]'
-    
+
     const astFromOriginalConfig = up.toAst(text)
     const astFromChangesToDefault = Up.toAst(text, configChanges)
 
     expect(astFromOriginalConfig).to.be.eql(astFromChangesToDefault)
   })
 })
+
+
+describe('Providing the "image" config term when creating the Up object', () => {
+  const configChanges: UpConfigArgs = {
+    i18n: {
+      terms: { image: 'see' }
+    }
+  }
+
+  const up = new Up(configChanges)
+
+  it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    const text = '[see: Chrono Cross logo -> https://example.com/cc.png]'
+
+    const astFromOriginalConfig = up.toAst(text)
+    const astFromChangesToDefault = Up.toAst(text, configChanges)
+
+    expect(astFromOriginalConfig).to.be.eql(astFromChangesToDefault)
+  })
+})
+
