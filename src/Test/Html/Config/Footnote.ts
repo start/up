@@ -48,3 +48,19 @@ it("are delimited by specified the ID word delimiter", () => {
       '<sup id="reply::11::footnote::reference::3" data-footnote-reference><a href="#reply::11::footnote::3">3</a></sup>')
   })
 })
+
+
+describe("A footnote reference's ID", () => {
+  it('uses the provided term for "footnote reference"', () => {
+    const up = new Up({
+      i18n: {
+        terms: { footnoteReference: 'fn ref' }
+      }
+    })
+    
+    const node = new FootnoteNode([], 3)
+
+    expect(up.toHtml(node)).to.be.eql(
+      '<sup id="fn-ref-3" data-footnote-reference><a href="#footnote-3">3</a></sup>')
+  })
+})
