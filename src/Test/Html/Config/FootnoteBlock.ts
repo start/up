@@ -30,3 +30,32 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.toHtml(node)).to.be.eql(html)
   })
 })
+
+
+describe("The words in footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
+  it("are delimited by specified the ID word delimiter", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '::'
+      }
+    })
+    
+    const node =
+      new FootnoteBlockNode([
+        new FootnoteNode([
+          new PlainTextNode("Arwings"),
+        ], 2),
+        new FootnoteNode([
+          new PlainTextNode("Killer Bees"),
+        ], 3),
+      ])
+
+    const html =
+      '<dl data-footnotes>'
+      + '<dt id="footnote::2" data-footnote><a href="#footnote::reference::2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote::3" data-footnote><a href="#footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
+      + '</dl>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
