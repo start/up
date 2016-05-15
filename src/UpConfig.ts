@@ -2,7 +2,7 @@ import { UpConfigArgs} from './UpConfigArgs'
 import { merge } from './ObjectHelpers'
 
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: UpConfigArgs = {
   documentName: <string>null,
   
   i18n: {
@@ -23,8 +23,12 @@ const DEFAULT_CONFIG = {
 export class UpConfig {
   public settings: UpConfigArgs
 
-  constructor(configArgs?: UpConfigArgs) {
-    this.settings = merge(DEFAULT_CONFIG, configArgs)
+  constructor(configArgs?: UpConfigArgs, defaults = DEFAULT_CONFIG) {
+    this.settings = merge(defaults, configArgs)
+  }
+  
+  withChanges(changes: UpConfigArgs): UpConfig {
+    return new UpConfig(changes, this.settings)
   }
 
   localizeTerm(nonLocalizedTerm: string): string {

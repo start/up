@@ -3090,9 +3090,13 @@ var DEFAULT_CONFIG = {
     }
 };
 var UpConfig = (function () {
-    function UpConfig(configArgs) {
-        this.settings = ObjectHelpers_1.merge(DEFAULT_CONFIG, configArgs);
+    function UpConfig(configArgs, defaults) {
+        if (defaults === void 0) { defaults = DEFAULT_CONFIG; }
+        this.settings = ObjectHelpers_1.merge(defaults, configArgs);
     }
+    UpConfig.prototype.withChanges = function (changes) {
+        return new UpConfig(changes, this.settings);
+    };
     UpConfig.prototype.localizeTerm = function (nonLocalizedTerm) {
         var localizedTerm = this.settings.i18n.terms[nonLocalizedTerm];
         if (localizedTerm) {
