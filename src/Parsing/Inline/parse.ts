@@ -43,11 +43,11 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
   const nodes: InlineSyntaxNode[] = []
 
   let stillNeedsTerminator = !!UntilTokenType
-  let countParsed = 0
+  let countTokensParsed = 0
 
   LoopTokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
-    countParsed = tokenIndex + 1
+    countTokensParsed = tokenIndex + 1
 
     if (UntilTokenType && token instanceof UntilTokenType) {
       stillNeedsTerminator = false
@@ -95,7 +95,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
 
     if (token instanceof LinkStartToken) {
       const result = parse({
-        tokens: tokens.slice(countParsed),
+        tokens: tokens.slice(countTokensParsed),
         UntilTokenType: LinkEndToken
       })
 
@@ -157,7 +157,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
     for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
       if (token instanceof richConvention.StartTokenType) {
         const result = parse({
-          tokens: tokens.slice(countParsed),
+          tokens: tokens.slice(countTokensParsed),
           UntilTokenType: richConvention.EndTokenType
         })
 
@@ -177,7 +177,7 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
     throw new Error(`Missing token: ${UntilTokenType}`)
   }
 
-  return new ParseResult(nodes, countParsed)
+  return { nodes, countTokensParsed }
 }
 
 
