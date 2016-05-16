@@ -1791,7 +1791,542 @@ exports.getHeadingParser = getHeadingParser;
 var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/HeadingNode":78,"../Inline/GetInlineNodes":4,"../Patterns":66,"./HeadingLeveler":54,"./IsLineFancyOutlineConvention":55,"./LineConsumer":56}],52:[function(require,module,exports){
+},{"../../SyntaxNodes/HeadingNode":78,"../Inline/GetInlineNodes":4,"../Patterns":66,"./HeadingLeveler":53,"./IsLineFancyOutlineConvention":54,"./LineConsumer":55}],52:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var Patterns_1 = require('../Patterns');
+function getRemainingLinesOfListItem(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var lines = [];
+    var countLinesIncluded = 0;
+    var lengthParsed = 0;
+    while (!consumer.done()) {
+        var wasLineBlank = consumer.consumeLine({
+            pattern: BLANK_PATTERN,
+            then: function (line) { return lines.push(line); }
+        });
+        if (wasLineBlank) {
+            continue;
+        }
+        var wasLineIndented = consumer.consumeLine({
+            pattern: INDENTED_PATTERN,
+            then: function (line) { return lines.push(line); }
+        });
+        if (!wasLineIndented) {
+            break;
+        }
+        countLinesIncluded = lines.length;
+        lengthParsed = consumer.lengthConsumed();
+    }
+    if (!lines.length) {
+        return false;
+    }
+    var countTrailingBlankLines = lines.length - countLinesIncluded;
+    var shouldTerminateList = countTrailingBlankLines >= 2;
+    if (!shouldTerminateList) {
+        countLinesIncluded = lines.length;
+        lengthParsed = consumer.lengthConsumed();
+    }
+    var resultLines = lines
+        .slice(0, countLinesIncluded)
+        .map(function (line) { return line.replace(INDENTED_PATTERN, ''); });
+    args.then(resultLines, lengthParsed, shouldTerminateList);
+    return true;
+}
+exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
+var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
+var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+
+},{"../Patterns":66,"./LineConsumer":55}],53:[function(require,module,exports){
+"use strict";
+var HeadingLeveler = (function () {
+    function HeadingLeveler() {
+        this.registeredUnderlineChars = [];
+    }
+    HeadingLeveler.prototype.registerUnderlineAndGetLevel = function (underline) {
+        var underlineChars = getDistinctStreakChars(underline);
+        var isAlreadyRegistered = this.registeredUnderlineChars.some(function (registered) { return registered === underlineChars; });
+        if (!isAlreadyRegistered) {
+            this.registeredUnderlineChars.push(underlineChars);
+        }
+        return this.getLevel(underlineChars);
+    };
+    HeadingLeveler.prototype.getLevel = function (underlineChars) {
+        return this.registeredUnderlineChars.indexOf(underlineChars) + 1;
+    };
+    return HeadingLeveler;
+}());
+exports.HeadingLeveler = HeadingLeveler;
+function isUnderlineConsistentWithOverline(overline, underline) {
+    return !overline || (getDistinctStreakChars(overline) === getDistinctStreakChars(underline));
+}
+exports.isUnderlineConsistentWithOverline = isUnderlineConsistentWithOverline;
+function getDistinctStreakChars(streak) {
+    var allStreakChars = streak.trim().split('');
+    var distinctUnderlineChars = allStreakChars
+        .reduce(function (distinctChars, char) {
+        var haveAlreadySeenChar = distinctChars.some(function (distinctChar) { return distinctChar === char; });
+        return (haveAlreadySeenChar
+            ? distinctChars
+            : distinctChars.concat([char]));
+    }, []);
+    return distinctUnderlineChars.sort().join('');
+}
+
+},{}],54:[function(require,module,exports){
+"use strict";
+var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
+var ParseBlockquote_1 = require('./ParseBlockquote');
+var ParseUnorderedList_1 = require('./ParseUnorderedList');
+var ParseOrderedList_1 = require('./ParseOrderedList');
+var HeadingLeveler_1 = require('./HeadingLeveler');
+var OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
+    ParseUnorderedList_1.parseUnorderedList,
+    ParseOrderedList_1.parseOrderedList,
+    ParseSectionSeparatorStreak_1.parseSectionSeparatorStreak,
+    ParseBlockquote_1.parseBlockquote
+];
+function isLineFancyOutlineConvention(line, config) {
+    return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(function (parse) { return parse({
+        text: line,
+        headingLeveler: DUMMY_HEADING_LEVELER,
+        config: config,
+        then: function () { }
+    }); });
+}
+exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
+var DUMMY_HEADING_LEVELER = new HeadingLeveler_1.HeadingLeveler();
+
+},{"./HeadingLeveler":53,"./ParseBlockquote":57,"./ParseOrderedList":60,"./ParseSectionSeparatorStreak":62,"./ParseUnorderedList":63}],55:[function(require,module,exports){
+"use strict";
+var LineConsumer = (function () {
+    function LineConsumer(text) {
+        this.text = text;
+        this.index = 0;
+        this.dirty();
+    }
+    LineConsumer.prototype.advance = function (countCharacters) {
+        this.index += countCharacters;
+        this.dirty();
+    };
+    LineConsumer.prototype.done = function () {
+        return this.index >= this.text.length;
+    };
+    LineConsumer.prototype.lengthConsumed = function () {
+        return this.index;
+    };
+    LineConsumer.prototype.remainingText = function () {
+        return this._remainingText;
+    };
+    LineConsumer.prototype.consumeLine = function (args) {
+        if (this.done()) {
+            return false;
+        }
+        var fullLine;
+        var lineWithoutTerminatingLineBreak;
+        for (var i = this.index; i < this.text.length; i++) {
+            var char = this.text[i];
+            if (char === '\\') {
+                i++;
+                continue;
+            }
+            if (char === '\n') {
+                fullLine = this.text.substring(this.index, i + 1);
+                lineWithoutTerminatingLineBreak = fullLine.slice(0, -1);
+                break;
+            }
+        }
+        if (!fullLine) {
+            fullLine = lineWithoutTerminatingLineBreak = this.remainingText();
+        }
+        var captures = [];
+        if (args.pattern) {
+            var results = args.pattern.exec(lineWithoutTerminatingLineBreak);
+            if (!results) {
+                return false;
+            }
+            captures = results.slice(1);
+        }
+        if (args.if && !args.if.apply(args, [lineWithoutTerminatingLineBreak].concat(captures))) {
+            return false;
+        }
+        this.advance(fullLine.length);
+        if (args.then) {
+            args.then.apply(args, [lineWithoutTerminatingLineBreak].concat(captures));
+        }
+        return true;
+    };
+    LineConsumer.prototype.dirty = function () {
+        this._remainingText = this.text.slice(this.index);
+    };
+    return LineConsumer;
+}());
+exports.LineConsumer = LineConsumer;
+
+},{}],56:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
+var Patterns_1 = require('../Patterns');
+function parseBlankLineSeparation(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var countBlankLines = 0;
+    while (consumer.consumeLine({ pattern: BLANK_PATTERN })) {
+        countBlankLines += 1;
+    }
+    if (!countBlankLines) {
+        return false;
+    }
+    var COUNT_BLANK_LINES_IN_SECTION_SEPARATOR = 3;
+    var nodes = (countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
+        ? [new SectionSeparatorNode_1.SectionSeparatorNode()]
+        : []);
+    args.then(nodes, consumer.lengthConsumed());
+    return true;
+}
+exports.parseBlankLineSeparation = parseBlankLineSeparation;
+var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
+
+},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":55}],57:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var BlockquoteNode_1 = require('../../SyntaxNodes/BlockquoteNode');
+var getOutlineNodes_1 = require('./getOutlineNodes');
+var HeadingLeveler_1 = require('./HeadingLeveler');
+var Patterns_1 = require('../Patterns');
+function parseBlockquote(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var blockquoteLines = [];
+    while (consumer.consumeLine({
+        pattern: ALL_BLOCKQUOTE_DELIMITERS_PATTERN,
+        if: isLineProperlyBlockquoted,
+        then: function (line) { return blockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, '')); }
+    })) { }
+    if (!blockquoteLines.length) {
+        return false;
+    }
+    var blockquoteContent = blockquoteLines.join('\n');
+    var headingLeveler = new HeadingLeveler_1.HeadingLeveler();
+    args.then([
+        new BlockquoteNode_1.BlockquoteNode(getOutlineNodes_1.getOutlineNodes(blockquoteContent, headingLeveler, args.config))], consumer.lengthConsumed());
+    return true;
+}
+exports.parseBlockquote = parseBlockquote;
+function isLineProperlyBlockquoted(line, delimiters) {
+    return TRAILING_SPACE_PATTERN.test(delimiters) || (line === delimiters);
+}
+var BLOCKQUOTE_DELIMITER = '>' + Patterns_1.optional(Patterns_1.INLINE_WHITESPACE_CHAR);
+var ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.startsWith((Patterns_1.atLeast(1, BLOCKQUOTE_DELIMITER)))));
+var FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(BLOCKQUOTE_DELIMITER));
+var TRAILING_SPACE_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.INLINE_WHITESPACE_CHAR));
+
+},{"../../SyntaxNodes/BlockquoteNode":68,"../Patterns":66,"./HeadingLeveler":53,"./LineConsumer":55,"./getOutlineNodes":64}],58:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var CodeBlockNode_1 = require('../../SyntaxNodes/CodeBlockNode');
+var Patterns_1 = require('../Patterns');
+function parseCodeBlock(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    if (!consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
+        return false;
+    }
+    var codeLines = [];
+    while (!consumer.done()) {
+        if (consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
+            args.then([new CodeBlockNode_1.CodeBlockNode(codeLines.join('\n'))], consumer.lengthConsumed());
+            return true;
+        }
+        consumer.consumeLine({
+            then: function (line) { return codeLines.push(line); }
+        });
+    }
+    return false;
+}
+exports.parseCodeBlock = parseCodeBlock;
+var CODE_FENCE_PATTERN = new RegExp(Patterns_1.streakOf('`'));
+
+},{"../../SyntaxNodes/CodeBlockNode":69,"../Patterns":66,"./LineConsumer":55}],59:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var DescriptionListItem_1 = require('../../SyntaxNodes/DescriptionListItem');
+var DescriptionListNode_1 = require('../../SyntaxNodes/DescriptionListNode');
+var DescriptionTerm_1 = require('../../SyntaxNodes/DescriptionTerm');
+var Description_1 = require('../../SyntaxNodes/Description');
+var GetInlineNodes_1 = require('../Inline/GetInlineNodes');
+var getOutlineNodes_1 = require('./getOutlineNodes');
+var IsLineFancyOutlineConvention_1 = require('./IsLineFancyOutlineConvention');
+var Patterns_1 = require('../Patterns');
+var GetRemainingLinesOfListItem_1 = require('./GetRemainingLinesOfListItem');
+function parseDescriptionList(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var listItemNodes = [];
+    var lengthParsed = 0;
+    var _loop_1 = function() {
+        var rawTerms = [];
+        while (!consumer.done()) {
+            var isTerm = consumer.consumeLine({
+                pattern: NON_BLANK_PATTERN,
+                if: function (line) { return !INDENTED_PATTERN.test(line) && !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
+                then: function (line) { return rawTerms.push(line); }
+            });
+            if (!isTerm) {
+                break;
+            }
+        }
+        if (!rawTerms.length) {
+            return "break";
+        }
+        var descriptionLines = [];
+        var hasDescription = consumer.consumeLine({
+            pattern: INDENTED_PATTERN,
+            if: function (line) { return !BLANK_PATTERN.test(line); },
+            then: function (line) { return descriptionLines.push(line.replace(INDENTED_PATTERN, '')); }
+        });
+        if (!hasDescription) {
+            return "break";
+        }
+        var isListTerminated = false;
+        GetRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
+            text: consumer.remainingText(),
+            then: function (lines, lengthParsed, shouldTerminateList) {
+                descriptionLines.push.apply(descriptionLines, lines);
+                consumer.advance(lengthParsed);
+                isListTerminated = shouldTerminateList;
+            }
+        });
+        lengthParsed = consumer.lengthConsumed();
+        var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(GetInlineNodes_1.getInlineNodes(term, args.config)); });
+        var description = new Description_1.Description(getOutlineNodes_1.getOutlineNodes(descriptionLines.join('\n'), args.headingLeveler, args.config));
+        listItemNodes.push(new DescriptionListItem_1.DescriptionListItem(terms, description));
+        if (isListTerminated) {
+            return "break";
+        }
+    };
+    while (!consumer.done()) {
+        var state_1 = _loop_1();
+        if (state_1 === "break") break;
+    }
+    if (!listItemNodes.length) {
+        return false;
+    }
+    args.then([new DescriptionListNode_1.DescriptionListNode(listItemNodes)], lengthParsed);
+    return true;
+}
+exports.parseDescriptionList = parseDescriptionList;
+var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
+var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
+var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+
+},{"../../SyntaxNodes/Description":70,"../../SyntaxNodes/DescriptionListItem":71,"../../SyntaxNodes/DescriptionListNode":72,"../../SyntaxNodes/DescriptionTerm":73,"../Inline/GetInlineNodes":4,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./IsLineFancyOutlineConvention":54,"./LineConsumer":55,"./getOutlineNodes":64}],60:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
+var OrderedListItem_1 = require('../../SyntaxNodes/OrderedListItem');
+var getOutlineNodes_1 = require('./getOutlineNodes');
+var Patterns_1 = require('../Patterns');
+var GetRemainingLinesOfListItem_1 = require('./GetRemainingLinesOfListItem');
+function parseOrderedList(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var rawListItems = [];
+    var _loop_1 = function() {
+        var rawListItem = new RawListItem();
+        var isLineBulleted = consumer.consumeLine({
+            pattern: BULLETED_PATTERN,
+            if: function (line) { return !STREAK_PATTERN.test(line); },
+            then: function (line, bullet) {
+                rawListItem.bullet = bullet;
+                rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''));
+            }
+        });
+        if (!isLineBulleted) {
+            return "break";
+        }
+        var isListTerminated = false;
+        GetRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
+            text: consumer.remainingText(),
+            then: function (lines, lengthParsed, shouldTerminateList) {
+                (_a = rawListItem.lines).push.apply(_a, lines);
+                consumer.advance(lengthParsed);
+                isListTerminated = shouldTerminateList;
+                var _a;
+            }
+        });
+        rawListItems.push(rawListItem);
+        if (isListTerminated) {
+            return "break";
+        }
+    };
+    while (!consumer.done()) {
+        var state_1 = _loop_1();
+        if (state_1 === "break") break;
+    }
+    if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
+        return false;
+    }
+    var listItems = rawListItems.map(function (rawListItem) {
+        return new OrderedListItem_1.OrderedListItem(getOutlineNodes_1.getOutlineNodes(rawListItem.content(), args.headingLeveler, args.config), getExplicitOrdinal(rawListItem));
+    });
+    args.then([new OrderedListNode_1.OrderedListNode(listItems)], consumer.lengthConsumed());
+    return true;
+}
+exports.parseOrderedList = parseOrderedList;
+var RawListItem = (function () {
+    function RawListItem() {
+        this.lines = [];
+    }
+    RawListItem.prototype.content = function () {
+        return this.lines.join('\n');
+    };
+    return RawListItem;
+}());
+function isProbablyNotAnOrderedList(rawListItems) {
+    return (rawListItems.length === 1
+        && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet));
+}
+function getExplicitOrdinal(rawListItem) {
+    var result = INTEGER_PATTERN.exec(rawListItem.bullet);
+    return (result ? parseInt(result[1]) : null);
+}
+var INTEGER_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.INTEGER));
+var BULLET = Patterns_1.either('#', Patterns_1.capture(Patterns_1.either(Patterns_1.INTEGER, '#') + Patterns_1.either('\\.', '\\)')));
+var BULLETED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR));
+var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(Patterns_1.INTEGER + '\\.');
+var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
+var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
+var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+
+},{"../../SyntaxNodes/OrderedListItem":86,"../../SyntaxNodes/OrderedListNode":87,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":55,"./getOutlineNodes":64}],61:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
+var MediaSyntaxNode_1 = require('../../SyntaxNodes/MediaSyntaxNode');
+var ParagraphNode_1 = require('../../SyntaxNodes/ParagraphNode');
+var LineBlockNode_1 = require('../../SyntaxNodes/LineBlockNode');
+var Line_1 = require('../../SyntaxNodes/Line');
+var GetInlineNodes_1 = require('../Inline/GetInlineNodes');
+var Patterns_1 = require('../Patterns');
+var IsLineFancyOutlineConvention_1 = require('./IsLineFancyOutlineConvention');
+function parseRegularLines(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var inlineNodesPerRegularLine = [];
+    var regularLineNodes = [];
+    var terminatingNodes = [];
+    var _loop_1 = function() {
+        var inlineNodes;
+        var wasLineConsumed = consumer.consumeLine({
+            pattern: NON_BLANK_LINE_PATTERN,
+            if: function (line) { return !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
+            then: function (line) { return inlineNodes = GetInlineNodes_1.getInlineNodes(line, args.config); }
+        });
+        if (!wasLineConsumed || !inlineNodes.length) {
+            return "break";
+        }
+        var doesLineConsistSolelyOfMediaConventions = (inlineNodes.every(function (node) { return isWhitespace_1.isWhitespace(node) || isMediaSyntaxNode(node); })
+            && inlineNodes.some(isMediaSyntaxNode));
+        if (doesLineConsistSolelyOfMediaConventions) {
+            terminatingNodes = inlineNodes.filter(isMediaSyntaxNode);
+            return "break";
+        }
+        inlineNodesPerRegularLine.push(inlineNodes);
+    };
+    while (true) {
+        var state_1 = _loop_1();
+        if (state_1 === "break") break;
+    }
+    var lengthConsumed = consumer.lengthConsumed();
+    switch (inlineNodesPerRegularLine.length) {
+        case 0:
+            break;
+        case 1:
+            regularLineNodes = [new ParagraphNode_1.ParagraphNode(inlineNodesPerRegularLine[0])];
+            break;
+        default: {
+            var lineBlockLines = inlineNodesPerRegularLine.map(function (inlineNodes) { return new Line_1.Line(inlineNodes); });
+            regularLineNodes = [new LineBlockNode_1.LineBlockNode(lineBlockLines)];
+            break;
+        }
+    }
+    args.then(regularLineNodes.concat(terminatingNodes), consumer.lengthConsumed());
+    return true;
+}
+exports.parseRegularLines = parseRegularLines;
+function isMediaSyntaxNode(node) {
+    return node instanceof MediaSyntaxNode_1.MediaSyntaxNode;
+}
+var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
+var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
+
+},{"../../SyntaxNodes/Line":82,"../../SyntaxNodes/LineBlockNode":83,"../../SyntaxNodes/MediaSyntaxNode":85,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/GetInlineNodes":4,"../Patterns":66,"./IsLineFancyOutlineConvention":54,"./LineConsumer":55}],62:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
+var Patterns_1 = require('../Patterns');
+function parseSectionSeparatorStreak(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
+        return false;
+    }
+    args.then([new SectionSeparatorNode_1.SectionSeparatorNode()], consumer.lengthConsumed());
+    return true;
+}
+exports.parseSectionSeparatorStreak = parseSectionSeparatorStreak;
+var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
+
+},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":55}],63:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var UnorderedListNode_1 = require('../../SyntaxNodes/UnorderedListNode');
+var UnorderedListItem_1 = require('../../SyntaxNodes/UnorderedListItem');
+var getOutlineNodes_1 = require('./getOutlineNodes');
+var GetRemainingLinesOfListItem_1 = require('./GetRemainingLinesOfListItem');
+var Patterns_1 = require('../Patterns');
+function parseUnorderedList(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var listItemsContents = [];
+    var _loop_1 = function() {
+        var listItemLines = [];
+        var isLineBulleted = consumer.consumeLine({
+            pattern: BULLET_PATTERN,
+            if: function (line) { return !STREAK_PATTERN.test(line); },
+            then: function (line) { return listItemLines.push(line.replace(BULLET_PATTERN, '')); }
+        });
+        if (!isLineBulleted) {
+            return "break";
+        }
+        var isListTerminated = false;
+        GetRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
+            text: consumer.remainingText(),
+            then: function (lines, lengthParsed, shouldTerminateList) {
+                listItemLines.push.apply(listItemLines, lines);
+                consumer.advance(lengthParsed);
+                isListTerminated = shouldTerminateList;
+            }
+        });
+        listItemsContents.push(listItemLines.join('\n'));
+        if (isListTerminated) {
+            return "break";
+        }
+    };
+    while (!consumer.done()) {
+        var state_1 = _loop_1();
+        if (state_1 === "break") break;
+    }
+    if (!listItemsContents.length) {
+        return false;
+    }
+    var listItems = listItemsContents.map(function (listItemContents) {
+        return new UnorderedListItem_1.UnorderedListItem(getOutlineNodes_1.getOutlineNodes(listItemContents, args.headingLeveler, args.config));
+    });
+    args.then([new UnorderedListNode_1.UnorderedListNode(listItems)], consumer.lengthConsumed());
+    return true;
+}
+exports.parseUnorderedList = parseUnorderedList;
+var BULLET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.optional(' ') + Patterns_1.either('\\*', '-', '\\+') + Patterns_1.INLINE_WHITESPACE_CHAR));
+var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
+var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
+
+},{"../../SyntaxNodes/UnorderedListItem":97,"../../SyntaxNodes/UnorderedListNode":98,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":55,"./getOutlineNodes":64}],64:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -1860,555 +2395,20 @@ function trimOuterBlankLines(text) {
         .replace(TRAILIN_BLANK_LINES_PATTERN, ''));
 }
 
-},{"../../SyntaxNodes/SectionSeparatorNode":94,"../CollectionHelpers":2,"../Patterns":66,"./GetHeadingParser":51,"./LineConsumer":56,"./ParseBlankLineSeparation":57,"./ParseBlockquote":58,"./ParseCodeBlock":59,"./ParseDescriptionList":60,"./ParseOrderedList":61,"./ParseRegularLines":62,"./ParseSectionSeparatorStreak":63,"./ParseUnorderedList":64}],53:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":94,"../CollectionHelpers":2,"../Patterns":66,"./GetHeadingParser":51,"./LineConsumer":55,"./ParseBlankLineSeparation":56,"./ParseBlockquote":57,"./ParseCodeBlock":58,"./ParseDescriptionList":59,"./ParseOrderedList":60,"./ParseRegularLines":61,"./ParseSectionSeparatorStreak":62,"./ParseUnorderedList":63}],65:[function(require,module,exports){
 "use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var Patterns_1 = require('../Patterns');
-function getRemainingLinesOfListItem(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var lines = [];
-    var countLinesIncluded = 0;
-    var lengthParsed = 0;
-    while (!consumer.done()) {
-        var wasLineBlank = consumer.consumeLine({
-            pattern: BLANK_PATTERN,
-            then: function (line) { return lines.push(line); }
-        });
-        if (wasLineBlank) {
-            continue;
-        }
-        var wasLineIndented = consumer.consumeLine({
-            pattern: INDENTED_PATTERN,
-            then: function (line) { return lines.push(line); }
-        });
-        if (!wasLineIndented) {
-            break;
-        }
-        countLinesIncluded = lines.length;
-        lengthParsed = consumer.lengthConsumed();
-    }
-    if (!lines.length) {
-        return false;
-    }
-    var countTrailingBlankLines = lines.length - countLinesIncluded;
-    var shouldTerminateList = countTrailingBlankLines >= 2;
-    if (!shouldTerminateList) {
-        countLinesIncluded = lines.length;
-        lengthParsed = consumer.lengthConsumed();
-    }
-    var resultLines = lines
-        .slice(0, countLinesIncluded)
-        .map(function (line) { return line.replace(INDENTED_PATTERN, ''); });
-    args.then(resultLines, lengthParsed, shouldTerminateList);
-    return true;
-}
-exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
-
-},{"../Patterns":66,"./LineConsumer":56}],54:[function(require,module,exports){
-"use strict";
-var HeadingLeveler = (function () {
-    function HeadingLeveler() {
-        this.registeredUnderlineChars = [];
-    }
-    HeadingLeveler.prototype.registerUnderlineAndGetLevel = function (underline) {
-        var underlineChars = getDistinctStreakChars(underline);
-        var isAlreadyRegistered = this.registeredUnderlineChars.some(function (registered) { return registered === underlineChars; });
-        if (!isAlreadyRegistered) {
-            this.registeredUnderlineChars.push(underlineChars);
-        }
-        return this.getLevel(underlineChars);
-    };
-    HeadingLeveler.prototype.getLevel = function (underlineChars) {
-        return this.registeredUnderlineChars.indexOf(underlineChars) + 1;
-    };
-    return HeadingLeveler;
-}());
-exports.HeadingLeveler = HeadingLeveler;
-function isUnderlineConsistentWithOverline(overline, underline) {
-    return !overline || (getDistinctStreakChars(overline) === getDistinctStreakChars(underline));
-}
-exports.isUnderlineConsistentWithOverline = isUnderlineConsistentWithOverline;
-function getDistinctStreakChars(streak) {
-    var allStreakChars = streak.trim().split('');
-    var distinctUnderlineChars = allStreakChars
-        .reduce(function (distinctChars, char) {
-        var haveAlreadySeenChar = distinctChars.some(function (distinctChar) { return distinctChar === char; });
-        return (haveAlreadySeenChar
-            ? distinctChars
-            : distinctChars.concat([char]));
-    }, []);
-    return distinctUnderlineChars.sort().join('');
-}
-
-},{}],55:[function(require,module,exports){
-"use strict";
-var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
-var ParseBlockquote_1 = require('./ParseBlockquote');
-var ParseUnorderedList_1 = require('./ParseUnorderedList');
-var ParseOrderedList_1 = require('./ParseOrderedList');
-var HeadingLeveler_1 = require('./HeadingLeveler');
-var OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
-    ParseUnorderedList_1.parseUnorderedList,
-    ParseOrderedList_1.parseOrderedList,
-    ParseSectionSeparatorStreak_1.parseSectionSeparatorStreak,
-    ParseBlockquote_1.parseBlockquote
-];
-function isLineFancyOutlineConvention(line, config) {
-    return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(function (parse) { return parse({
-        text: line,
-        headingLeveler: DUMMY_HEADING_LEVELER,
-        config: config,
-        then: function () { }
-    }); });
-}
-exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
-var DUMMY_HEADING_LEVELER = new HeadingLeveler_1.HeadingLeveler();
-
-},{"./HeadingLeveler":54,"./ParseBlockquote":58,"./ParseOrderedList":61,"./ParseSectionSeparatorStreak":63,"./ParseUnorderedList":64}],56:[function(require,module,exports){
-"use strict";
-var LineConsumer = (function () {
-    function LineConsumer(text) {
-        this.text = text;
-        this.index = 0;
-        this.dirty();
-    }
-    LineConsumer.prototype.advance = function (countCharacters) {
-        this.index += countCharacters;
-        this.dirty();
-    };
-    LineConsumer.prototype.done = function () {
-        return this.index >= this.text.length;
-    };
-    LineConsumer.prototype.lengthConsumed = function () {
-        return this.index;
-    };
-    LineConsumer.prototype.remainingText = function () {
-        return this._remainingText;
-    };
-    LineConsumer.prototype.consumeLine = function (args) {
-        if (this.done()) {
-            return false;
-        }
-        var fullLine;
-        var lineWithoutTerminatingLineBreak;
-        for (var i = this.index; i < this.text.length; i++) {
-            var char = this.text[i];
-            if (char === '\\') {
-                i++;
-                continue;
-            }
-            if (char === '\n') {
-                fullLine = this.text.substring(this.index, i + 1);
-                lineWithoutTerminatingLineBreak = fullLine.slice(0, -1);
-                break;
-            }
-        }
-        if (!fullLine) {
-            fullLine = lineWithoutTerminatingLineBreak = this.remainingText();
-        }
-        var captures = [];
-        if (args.pattern) {
-            var results = args.pattern.exec(lineWithoutTerminatingLineBreak);
-            if (!results) {
-                return false;
-            }
-            captures = results.slice(1);
-        }
-        if (args.if && !args.if.apply(args, [lineWithoutTerminatingLineBreak].concat(captures))) {
-            return false;
-        }
-        this.advance(fullLine.length);
-        if (args.then) {
-            args.then.apply(args, [lineWithoutTerminatingLineBreak].concat(captures));
-        }
-        return true;
-    };
-    LineConsumer.prototype.dirty = function () {
-        this._remainingText = this.text.slice(this.index);
-    };
-    return LineConsumer;
-}());
-exports.LineConsumer = LineConsumer;
-
-},{}],57:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
-var Patterns_1 = require('../Patterns');
-function parseBlankLineSeparation(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var countBlankLines = 0;
-    while (consumer.consumeLine({ pattern: BLANK_PATTERN })) {
-        countBlankLines += 1;
-    }
-    if (!countBlankLines) {
-        return false;
-    }
-    var COUNT_BLANK_LINES_IN_SECTION_SEPARATOR = 3;
-    var nodes = (countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
-        ? [new SectionSeparatorNode_1.SectionSeparatorNode()]
-        : []);
-    args.then(nodes, consumer.lengthConsumed());
-    return true;
-}
-exports.parseBlankLineSeparation = parseBlankLineSeparation;
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-
-},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":56}],58:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var BlockquoteNode_1 = require('../../SyntaxNodes/BlockquoteNode');
-var GetOutlineNodes_1 = require('./GetOutlineNodes');
-var HeadingLeveler_1 = require('./HeadingLeveler');
-var Patterns_1 = require('../Patterns');
-function parseBlockquote(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var blockquoteLines = [];
-    while (consumer.consumeLine({
-        pattern: ALL_BLOCKQUOTE_DELIMITERS_PATTERN,
-        if: isLineProperlyBlockquoted,
-        then: function (line) { return blockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, '')); }
-    })) { }
-    if (!blockquoteLines.length) {
-        return false;
-    }
-    var blockquoteContent = blockquoteLines.join('\n');
-    var headingLeveler = new HeadingLeveler_1.HeadingLeveler();
-    args.then([
-        new BlockquoteNode_1.BlockquoteNode(GetOutlineNodes_1.getOutlineNodes(blockquoteContent, headingLeveler, args.config))], consumer.lengthConsumed());
-    return true;
-}
-exports.parseBlockquote = parseBlockquote;
-function isLineProperlyBlockquoted(line, delimiters) {
-    return TRAILING_SPACE_PATTERN.test(delimiters) || (line === delimiters);
-}
-var BLOCKQUOTE_DELIMITER = '>' + Patterns_1.optional(Patterns_1.INLINE_WHITESPACE_CHAR);
-var ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.startsWith((Patterns_1.atLeast(1, BLOCKQUOTE_DELIMITER)))));
-var FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(BLOCKQUOTE_DELIMITER));
-var TRAILING_SPACE_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.INLINE_WHITESPACE_CHAR));
-
-},{"../../SyntaxNodes/BlockquoteNode":68,"../Patterns":66,"./GetOutlineNodes":52,"./HeadingLeveler":54,"./LineConsumer":56}],59:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var CodeBlockNode_1 = require('../../SyntaxNodes/CodeBlockNode');
-var Patterns_1 = require('../Patterns');
-function parseCodeBlock(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    if (!consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
-        return false;
-    }
-    var codeLines = [];
-    while (!consumer.done()) {
-        if (consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
-            args.then([new CodeBlockNode_1.CodeBlockNode(codeLines.join('\n'))], consumer.lengthConsumed());
-            return true;
-        }
-        consumer.consumeLine({
-            then: function (line) { return codeLines.push(line); }
-        });
-    }
-    return false;
-}
-exports.parseCodeBlock = parseCodeBlock;
-var CODE_FENCE_PATTERN = new RegExp(Patterns_1.streakOf('`'));
-
-},{"../../SyntaxNodes/CodeBlockNode":69,"../Patterns":66,"./LineConsumer":56}],60:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var DescriptionListItem_1 = require('../../SyntaxNodes/DescriptionListItem');
-var DescriptionListNode_1 = require('../../SyntaxNodes/DescriptionListNode');
-var DescriptionTerm_1 = require('../../SyntaxNodes/DescriptionTerm');
-var Description_1 = require('../../SyntaxNodes/Description');
-var GetInlineNodes_1 = require('../Inline/GetInlineNodes');
-var GetOutlineNodes_1 = require('./GetOutlineNodes');
-var IsLineFancyOutlineConvention_1 = require('./IsLineFancyOutlineConvention');
-var Patterns_1 = require('../Patterns');
-var GetRemainingLinesOfListItem_1 = require('./GetRemainingLinesOfListItem');
-function parseDescriptionList(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var listItemNodes = [];
-    var lengthParsed = 0;
-    var _loop_1 = function() {
-        var rawTerms = [];
-        while (!consumer.done()) {
-            var isTerm = consumer.consumeLine({
-                pattern: NON_BLANK_PATTERN,
-                if: function (line) { return !INDENTED_PATTERN.test(line) && !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
-                then: function (line) { return rawTerms.push(line); }
-            });
-            if (!isTerm) {
-                break;
-            }
-        }
-        if (!rawTerms.length) {
-            return "break";
-        }
-        var descriptionLines = [];
-        var hasDescription = consumer.consumeLine({
-            pattern: INDENTED_PATTERN,
-            if: function (line) { return !BLANK_PATTERN.test(line); },
-            then: function (line) { return descriptionLines.push(line.replace(INDENTED_PATTERN, '')); }
-        });
-        if (!hasDescription) {
-            return "break";
-        }
-        var isListTerminated = false;
-        GetRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
-            text: consumer.remainingText(),
-            then: function (lines, lengthParsed, shouldTerminateList) {
-                descriptionLines.push.apply(descriptionLines, lines);
-                consumer.advance(lengthParsed);
-                isListTerminated = shouldTerminateList;
-            }
-        });
-        lengthParsed = consumer.lengthConsumed();
-        var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(GetInlineNodes_1.getInlineNodes(term, args.config)); });
-        var description = new Description_1.Description(GetOutlineNodes_1.getOutlineNodes(descriptionLines.join('\n'), args.headingLeveler, args.config));
-        listItemNodes.push(new DescriptionListItem_1.DescriptionListItem(terms, description));
-        if (isListTerminated) {
-            return "break";
-        }
-    };
-    while (!consumer.done()) {
-        var state_1 = _loop_1();
-        if (state_1 === "break") break;
-    }
-    if (!listItemNodes.length) {
-        return false;
-    }
-    args.then([new DescriptionListNode_1.DescriptionListNode(listItemNodes)], lengthParsed);
-    return true;
-}
-exports.parseDescriptionList = parseDescriptionList;
-var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
-
-},{"../../SyntaxNodes/Description":70,"../../SyntaxNodes/DescriptionListItem":71,"../../SyntaxNodes/DescriptionListNode":72,"../../SyntaxNodes/DescriptionTerm":73,"../Inline/GetInlineNodes":4,"../Patterns":66,"./GetOutlineNodes":52,"./GetRemainingLinesOfListItem":53,"./IsLineFancyOutlineConvention":55,"./LineConsumer":56}],61:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
-var OrderedListItem_1 = require('../../SyntaxNodes/OrderedListItem');
-var GetOutlineNodes_1 = require('./GetOutlineNodes');
-var Patterns_1 = require('../Patterns');
-var GetRemainingLinesOfListItem_1 = require('./GetRemainingLinesOfListItem');
-function parseOrderedList(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var rawListItems = [];
-    var _loop_1 = function() {
-        var rawListItem = new RawListItem();
-        var isLineBulleted = consumer.consumeLine({
-            pattern: BULLETED_PATTERN,
-            if: function (line) { return !STREAK_PATTERN.test(line); },
-            then: function (line, bullet) {
-                rawListItem.bullet = bullet;
-                rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''));
-            }
-        });
-        if (!isLineBulleted) {
-            return "break";
-        }
-        var isListTerminated = false;
-        GetRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
-            text: consumer.remainingText(),
-            then: function (lines, lengthParsed, shouldTerminateList) {
-                (_a = rawListItem.lines).push.apply(_a, lines);
-                consumer.advance(lengthParsed);
-                isListTerminated = shouldTerminateList;
-                var _a;
-            }
-        });
-        rawListItems.push(rawListItem);
-        if (isListTerminated) {
-            return "break";
-        }
-    };
-    while (!consumer.done()) {
-        var state_1 = _loop_1();
-        if (state_1 === "break") break;
-    }
-    if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
-        return false;
-    }
-    var listItems = rawListItems.map(function (rawListItem) {
-        return new OrderedListItem_1.OrderedListItem(GetOutlineNodes_1.getOutlineNodes(rawListItem.content(), args.headingLeveler, args.config), getExplicitOrdinal(rawListItem));
-    });
-    args.then([new OrderedListNode_1.OrderedListNode(listItems)], consumer.lengthConsumed());
-    return true;
-}
-exports.parseOrderedList = parseOrderedList;
-var RawListItem = (function () {
-    function RawListItem() {
-        this.lines = [];
-    }
-    RawListItem.prototype.content = function () {
-        return this.lines.join('\n');
-    };
-    return RawListItem;
-}());
-function isProbablyNotAnOrderedList(rawListItems) {
-    return (rawListItems.length === 1
-        && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet));
-}
-function getExplicitOrdinal(rawListItem) {
-    var result = INTEGER_PATTERN.exec(rawListItem.bullet);
-    return (result ? parseInt(result[1]) : null);
-}
-var INTEGER_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.INTEGER));
-var BULLET = Patterns_1.either('#', Patterns_1.capture(Patterns_1.either(Patterns_1.INTEGER, '#') + Patterns_1.either('\\.', '\\)')));
-var BULLETED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR));
-var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(Patterns_1.INTEGER + '\\.');
-var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
-var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
-
-},{"../../SyntaxNodes/OrderedListItem":86,"../../SyntaxNodes/OrderedListNode":87,"../Patterns":66,"./GetOutlineNodes":52,"./GetRemainingLinesOfListItem":53,"./LineConsumer":56}],62:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
-var MediaSyntaxNode_1 = require('../../SyntaxNodes/MediaSyntaxNode');
-var ParagraphNode_1 = require('../../SyntaxNodes/ParagraphNode');
-var LineBlockNode_1 = require('../../SyntaxNodes/LineBlockNode');
-var Line_1 = require('../../SyntaxNodes/Line');
-var GetInlineNodes_1 = require('../Inline/GetInlineNodes');
-var Patterns_1 = require('../Patterns');
-var IsLineFancyOutlineConvention_1 = require('./IsLineFancyOutlineConvention');
-function parseRegularLines(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var inlineNodesPerRegularLine = [];
-    var regularLineNodes = [];
-    var terminatingNodes = [];
-    var _loop_1 = function() {
-        var inlineNodes;
-        var wasLineConsumed = consumer.consumeLine({
-            pattern: NON_BLANK_LINE_PATTERN,
-            if: function (line) { return !IsLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
-            then: function (line) { return inlineNodes = GetInlineNodes_1.getInlineNodes(line, args.config); }
-        });
-        if (!wasLineConsumed || !inlineNodes.length) {
-            return "break";
-        }
-        var doesLineConsistSolelyOfMediaConventions = (inlineNodes.every(function (node) { return isWhitespace_1.isWhitespace(node) || isMediaSyntaxNode(node); })
-            && inlineNodes.some(isMediaSyntaxNode));
-        if (doesLineConsistSolelyOfMediaConventions) {
-            terminatingNodes = inlineNodes.filter(isMediaSyntaxNode);
-            return "break";
-        }
-        inlineNodesPerRegularLine.push(inlineNodes);
-    };
-    while (true) {
-        var state_1 = _loop_1();
-        if (state_1 === "break") break;
-    }
-    var lengthConsumed = consumer.lengthConsumed();
-    switch (inlineNodesPerRegularLine.length) {
-        case 0:
-            break;
-        case 1:
-            regularLineNodes = [new ParagraphNode_1.ParagraphNode(inlineNodesPerRegularLine[0])];
-            break;
-        default: {
-            var lineBlockLines = inlineNodesPerRegularLine.map(function (inlineNodes) { return new Line_1.Line(inlineNodes); });
-            regularLineNodes = [new LineBlockNode_1.LineBlockNode(lineBlockLines)];
-            break;
-        }
-    }
-    args.then(regularLineNodes.concat(terminatingNodes), consumer.lengthConsumed());
-    return true;
-}
-exports.parseRegularLines = parseRegularLines;
-function isMediaSyntaxNode(node) {
-    return node instanceof MediaSyntaxNode_1.MediaSyntaxNode;
-}
-var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
-var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
-
-},{"../../SyntaxNodes/Line":82,"../../SyntaxNodes/LineBlockNode":83,"../../SyntaxNodes/MediaSyntaxNode":85,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/GetInlineNodes":4,"../Patterns":66,"./IsLineFancyOutlineConvention":55,"./LineConsumer":56}],63:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
-var Patterns_1 = require('../Patterns');
-function parseSectionSeparatorStreak(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
-        return false;
-    }
-    args.then([new SectionSeparatorNode_1.SectionSeparatorNode()], consumer.lengthConsumed());
-    return true;
-}
-exports.parseSectionSeparatorStreak = parseSectionSeparatorStreak;
-var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
-
-},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":56}],64:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
-var UnorderedListNode_1 = require('../../SyntaxNodes/UnorderedListNode');
-var UnorderedListItem_1 = require('../../SyntaxNodes/UnorderedListItem');
-var GetOutlineNodes_1 = require('./GetOutlineNodes');
-var GetRemainingLinesOfListItem_1 = require('./GetRemainingLinesOfListItem');
-var Patterns_1 = require('../Patterns');
-function parseUnorderedList(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var listItemsContents = [];
-    var _loop_1 = function() {
-        var listItemLines = [];
-        var isLineBulleted = consumer.consumeLine({
-            pattern: BULLET_PATTERN,
-            if: function (line) { return !STREAK_PATTERN.test(line); },
-            then: function (line) { return listItemLines.push(line.replace(BULLET_PATTERN, '')); }
-        });
-        if (!isLineBulleted) {
-            return "break";
-        }
-        var isListTerminated = false;
-        GetRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
-            text: consumer.remainingText(),
-            then: function (lines, lengthParsed, shouldTerminateList) {
-                listItemLines.push.apply(listItemLines, lines);
-                consumer.advance(lengthParsed);
-                isListTerminated = shouldTerminateList;
-            }
-        });
-        listItemsContents.push(listItemLines.join('\n'));
-        if (isListTerminated) {
-            return "break";
-        }
-    };
-    while (!consumer.done()) {
-        var state_1 = _loop_1();
-        if (state_1 === "break") break;
-    }
-    if (!listItemsContents.length) {
-        return false;
-    }
-    var listItems = listItemsContents.map(function (listItemContents) {
-        return new UnorderedListItem_1.UnorderedListItem(GetOutlineNodes_1.getOutlineNodes(listItemContents, args.headingLeveler, args.config));
-    });
-    args.then([new UnorderedListNode_1.UnorderedListNode(listItems)], consumer.lengthConsumed());
-    return true;
-}
-exports.parseUnorderedList = parseUnorderedList;
-var BULLET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.optional(' ') + Patterns_1.either('\\*', '-', '\\+') + Patterns_1.INLINE_WHITESPACE_CHAR));
-var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
-var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
-
-},{"../../SyntaxNodes/UnorderedListItem":97,"../../SyntaxNodes/UnorderedListNode":98,"../Patterns":66,"./GetOutlineNodes":52,"./GetRemainingLinesOfListItem":53,"./LineConsumer":56}],65:[function(require,module,exports){
-"use strict";
-var GetOutlineNodes_1 = require('./Outline/GetOutlineNodes');
+var getOutlineNodes_1 = require('./Outline/getOutlineNodes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var InsertFootnoteBlocks_1 = require('./InsertFootnoteBlocks');
 var HeadingLeveler_1 = require('./Outline/HeadingLeveler');
 function parseDocument(text, config) {
-    var documentNode = new DocumentNode_1.DocumentNode(GetOutlineNodes_1.getOutlineNodes(text, new HeadingLeveler_1.HeadingLeveler(), config));
+    var documentNode = new DocumentNode_1.DocumentNode(getOutlineNodes_1.getOutlineNodes(text, new HeadingLeveler_1.HeadingLeveler(), config));
     InsertFootnoteBlocks_1.insertFootnoteBlocks(documentNode);
     return documentNode;
 }
 exports.parseDocument = parseDocument;
 
-},{"../SyntaxNodes/DocumentNode":74,"./InsertFootnoteBlocks":50,"./Outline/GetOutlineNodes":52,"./Outline/HeadingLeveler":54}],66:[function(require,module,exports){
+},{"../SyntaxNodes/DocumentNode":74,"./InsertFootnoteBlocks":50,"./Outline/HeadingLeveler":53,"./Outline/getOutlineNodes":64}],66:[function(require,module,exports){
 "use strict";
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');

@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
-import { getOutlineNodes } from './GetOutlineNodes'
+import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'

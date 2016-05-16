@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { getOutlineNodes } from './GetOutlineNodes'
+import { getOutlineNodes } from './getOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from '../Patterns'
 
 

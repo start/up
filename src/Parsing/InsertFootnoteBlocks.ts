@@ -11,7 +11,7 @@ import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
-import { getOutlineNodes } from './Outline/GetOutlineNodes'
+import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { concat } from './CollectionHelpers'
 

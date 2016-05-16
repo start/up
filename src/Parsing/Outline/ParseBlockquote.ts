@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { getOutlineNodes } from './GetOutlineNodes'
+import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParser'
