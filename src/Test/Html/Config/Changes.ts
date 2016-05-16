@@ -64,6 +64,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 }
 
+
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new FootnoteNode([], 3),
@@ -73,6 +74,68 @@ describe('The "documentName" config setting', () => {
     },
     conflictingConfigChanges: {
       documentName: 'op'
+    }
+  })
+})
+
+
+describe('The "idWordDelimiter" config setting', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new FootnoteNode([], 3),
+    htmlFromDefaultSettings: '<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>',
+    configChanges: {
+      i18n: {
+        idWordDelimiter: '::'
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        idWordDelimiter: '_'
+      }
+    }
+  })
+})
+
+
+describe('The "footnote reference" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new FootnoteNode([], 3),
+    htmlFromDefaultSettings: '<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>',
+    configChanges: {
+      i18n: {
+        terms: {
+          footnoteReference: 'ref'
+        }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          footnoteReference: 'fn ref'
+        }
+      }
+    }
+  })
+})
+
+
+describe('The "footnote" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new FootnoteNode([], 3),
+    htmlFromDefaultSettings: '<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>',
+    configChanges: {
+      i18n: {
+        terms: {
+          footnote: 'fn'
+        }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          footnote: 'note'
+        }
+      }
     }
   })
 })
