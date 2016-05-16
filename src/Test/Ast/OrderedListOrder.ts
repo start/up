@@ -1,8 +1,9 @@
 import { expect } from 'chai'
 import { Up } from '../../index'
-import { ListOrder, OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListOrder } from '../../SyntaxNodes/OrderedListOrder'
 
-function listOrder(text: string): ListOrder {
+function listOrder(text: string): OrderedListOrder {
   const list = <OrderedListNode>Up.toAst(text).children[0]
   return list.order()
 }
@@ -14,7 +15,7 @@ describe('An ordered list with non-numeral bullets', () => {
 # Hello, world!
 #. Goodbye, world!
 #) Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
 })
 
@@ -25,7 +26,7 @@ describe('An ordered list with non-numeral bullets and a single numeral bullet',
 # Hello, world!
 2. Goodbye, world!
 #) Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
 })
 
@@ -37,7 +38,7 @@ describe('An ordered list with non-numeral bullets and 2 single numeral bullet',
 2. Goodbye, world!
 #) Goodbye, world!
 4) Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
   
   it('is ascending if the 2 numeral bullets are ascending', () => {
@@ -47,7 +48,7 @@ describe('An ordered list with non-numeral bullets and 2 single numeral bullet',
 5. Goodbye, world!
 #) Goodbye, world!
 1) Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Descrending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
   })
 })
 
@@ -57,7 +58,7 @@ describe('An ordered list with 2 non-numeral bullets', () => {
       `
 2. Hello, world!
 4) Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
   
   it('is descending if the 2 numeral bullets are descending', () => {
@@ -65,7 +66,7 @@ describe('An ordered list with 2 non-numeral bullets', () => {
       `
 5. Hello, world!
 1) Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Descrending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
   })
 })
 
@@ -76,7 +77,7 @@ describe('An ordered list with more than 2 numeral bullets', () => {
 2. Hello, world!
 4) Goodbye, world!
 1. Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Ascending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
   
   it('is descending if the first 2 numeral bullets are descending', () => {
@@ -85,6 +86,6 @@ describe('An ordered list with more than 2 numeral bullets', () => {
 5. Hello, world!
 4) Goodbye, world!
 10. Goodbye, world!`
-    expect(listOrder(text)).to.be.eql(ListOrder.Descrending)
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
   })
 })

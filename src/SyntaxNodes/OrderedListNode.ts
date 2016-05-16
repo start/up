@@ -1,10 +1,7 @@
 import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OrderedListOrder } from './OrderedListOrder'
 
-export enum ListOrder {
-  Ascending,
-  Descrending
-}
 
 export class OrderedListNode extends OutlineSyntaxNode {
   constructor(public listItems: OrderedListItem[] = []) {
@@ -15,18 +12,18 @@ export class OrderedListNode extends OutlineSyntaxNode {
     return this.listItems[0].ordinal
   }
 
-  order(): ListOrder {
+  order(): OrderedListOrder {
     const withExplicitOrdinals =
       this.listItems.filter(item => item.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
-      return ListOrder.Ascending
+      return OrderedListOrder.Ascending
     }
 
     return (
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
-        ? ListOrder.Descrending
-        : ListOrder.Ascending
+        ? OrderedListOrder.Descrending
+        : OrderedListOrder.Ascending
     )
   }
 

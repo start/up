@@ -1,5 +1,6 @@
 import { LineConsumer } from './LineConsumer'
-import { OrderedListNode, ListOrder } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListOrder } from '../../SyntaxNodes/OrderedListOrder'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from '../Patterns'

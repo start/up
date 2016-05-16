@@ -16,7 +16,8 @@ import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../SyntaxNodes/UnorderedListItem'
-import { OrderedListNode, ListOrder } from '../SyntaxNodes/OrderedListNode'
+import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
+import { OrderedListOrder } from '../SyntaxNodes/OrderedListOrder'
 import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
@@ -59,7 +60,7 @@ export class HtmlWriter extends Writer {
       attrs.start = start
     }
 
-    if (node.order() === ListOrder.Descrending) {
+    if (node.order() === OrderedListOrder.Descrending) {
       attrs.reversed = null
     }
 
