@@ -5,7 +5,7 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from '../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
+import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 
 
 // Ordered lists are simply collections of ordered list items.

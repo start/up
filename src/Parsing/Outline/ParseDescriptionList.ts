@@ -9,7 +9,7 @@ import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from '../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
+import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 
 
 // Description lists are collections of terms and descriptions.
