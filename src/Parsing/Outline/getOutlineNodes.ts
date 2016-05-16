@@ -43,8 +43,8 @@ export function getOutlineNodes(
       const wasConventionFound =
         parseOutlineConvention({
           text: consumer.remainingText(),
-          headingLeveler: headingLeveler,
-          config: config,
+          headingLeveler,
+          config,
           then: (newNodes, lengthParsed) => {
             nodes.push(...newNodes)
             consumer.advance(lengthParsed)
@@ -80,16 +80,16 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
 }
 
 
-const LEADING_BLANK_LINES_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + LINE_BREAK))
-
-const TRAILIN_BLANK_LINES_PATTERN = new RegExp(
-  endsWith(LINE_BREAK + ANY_WHITESPACE))
-
-
 function trimOuterBlankLines(text: string): string {
   return (
     text
       .replace(LEADING_BLANK_LINES_PATTERN, '')
       .replace(TRAILIN_BLANK_LINES_PATTERN, ''))
 }
+
+
+const LEADING_BLANK_LINES_PATTERN = new RegExp(
+  startsWith(ANY_WHITESPACE + LINE_BREAK))
+
+const TRAILIN_BLANK_LINES_PATTERN = new RegExp(
+  endsWith(LINE_BREAK + ANY_WHITESPACE))

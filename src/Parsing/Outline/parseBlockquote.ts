@@ -17,7 +17,7 @@ export function parseBlockquote(args: OutlineParserArgs): boolean {
   while (consumer.consumeLine({
     pattern: ALL_BLOCKQUOTE_DELIMITERS_PATTERN,
     if: isLineProperlyBlockquoted,
-    then: (line) => blockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, ''))
+    then: line => blockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, ''))
   })) { }
 
   if (!blockquoteLines.length) {

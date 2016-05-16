@@ -628,8 +628,8 @@ class Tokenizer {
 
     return new TokenizableSandwich({
       state: richConvention.tokenizerState,
-      startPattern: startPattern,
-      endPattern: endPattern,
+      startPattern,
+      endPattern,
       onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()),
       onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType())
     })

@@ -17,7 +17,7 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
   while (!consumer.done()) {
     const wasLineBlank = consumer.consumeLine({
       pattern: BLANK_PATTERN,
-      then: (line) => lines.push(line)
+      then: line => lines.push(line)
     })
 
     if (wasLineBlank) {
@@ -27,7 +27,7 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
 
     const wasLineIndented = consumer.consumeLine({
       pattern: INDENTED_PATTERN,
-      then: (line) => lines.push(line)
+      then: line => lines.push(line)
     })
 
     if (!wasLineIndented) {
@@ -55,7 +55,7 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
 
   const resultLines = lines
     .slice(0, countLinesIncluded)
-    .map((line) => line.replace(INDENTED_PATTERN, ''))
+    .map(line => line.replace(INDENTED_PATTERN, ''))
 
   args.then(resultLines, lengthParsed, shouldTerminateList)
   return true

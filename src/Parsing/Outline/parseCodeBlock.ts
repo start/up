@@ -23,7 +23,7 @@ export function parseCodeBlock(args: OutlineParserArgs): boolean {
     }
 
     consumer.consumeLine({
-      then: (line) => codeLines.push(line)
+      then: line => codeLines.push(line)
     })
   }
 

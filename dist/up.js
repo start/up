@@ -1825,13 +1825,13 @@ function condenseConsecutiveSectionSeparatorNodes(nodes) {
     }
     return resultNodes;
 }
-var LEADING_BLANK_LINES_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + Patterns_1.LINE_BREAK));
-var TRAILIN_BLANK_LINES_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.LINE_BREAK + Patterns_1.ANY_WHITESPACE));
 function trimOuterBlankLines(text) {
     return (text
         .replace(LEADING_BLANK_LINES_PATTERN, '')
         .replace(TRAILIN_BLANK_LINES_PATTERN, ''));
 }
+var LEADING_BLANK_LINES_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + Patterns_1.LINE_BREAK));
+var TRAILIN_BLANK_LINES_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.LINE_BREAK + Patterns_1.ANY_WHITESPACE));
 
 },{"../../CollectionHelpers":1,"../../SyntaxNodes/SectionSeparatorNode":95,"../Patterns":63,"./LineConsumer":50,"./getHeadingParser":51,"./parseBlankLineSeparation":55,"./parseBlockquote":56,"./parseCodeBlock":57,"./parseDescriptionList":58,"./parseOrderedList":59,"./parseRegularLines":60,"./parseSectionSeparatorStreak":61,"./parseUnorderedList":62}],53:[function(require,module,exports){
 "use strict";
