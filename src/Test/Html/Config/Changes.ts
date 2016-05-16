@@ -5,7 +5,7 @@ import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 
 
-function canBeProvidedMultipleWaysWithTheSameResult(
+function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     node: SyntaxNode,
     htmlFromDefaultSettings: string
@@ -19,7 +19,10 @@ function canBeProvidedMultipleWaysWithTheSameResult(
 
   describe("when provided to the default (static) toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
-      expect(Up.toHtml(node, configChanges)).to.be.eql(htmlFromDefaultSettings)
+      // We don't care about the result! We only care to ensure these config settings don't apply to subsequent calls.
+      Up.toHtml(node, configChanges)
+      
+      expect(Up.toHtml(node)).to.be.eql(htmlFromDefaultSettings)
     })
   })
 
@@ -60,3 +63,16 @@ function canBeProvidedMultipleWaysWithTheSameResult(
     })
   })
 }
+
+describe('The "documentName" config setting', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new FootnoteNode([], 3),
+    htmlFromDefaultSettings: '<sup id="footnote-reference-3" data-footnote-reference><a href="#footnote-3">3</a></sup>',
+    configChanges: {
+      documentName: 'reply 11'
+    },
+    conflictingConfigChanges: {
+      documentName: 'op'
+    }
+  })
+})
