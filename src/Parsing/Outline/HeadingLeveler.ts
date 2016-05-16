@@ -1,8 +1,10 @@
+import { getDistinctTrimmedChars } from '../../StringHelpers' 
+
 export class HeadingLeveler {
   private registeredUnderlineChars: string[] = []
 
   registerUnderlineAndGetLevel(underline: string): number {
-    const underlineChars = getDistinctStreakChars(underline)
+    const underlineChars = getDistinctTrimmedChars(underline)
 
     const isAlreadyRegistered =
       this.registeredUnderlineChars.some((registered) => registered === underlineChars)
@@ -20,21 +22,5 @@ export class HeadingLeveler {
 }
 
 export function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
-  return !overline || (getDistinctStreakChars(overline) === getDistinctStreakChars(underline))
-}
-
-function getDistinctStreakChars(streak: string): string {
-  const allStreakChars = streak.trim().split('')
-
-  const distinctUnderlineChars =
-    allStreakChars
-      .reduce((distinctChars, char) => {
-        const haveAlreadySeenChar = distinctChars.some((distinctChar) => distinctChar === char)
-        return (
-          haveAlreadySeenChar
-            ? distinctChars
-            : distinctChars.concat([char]))
-      }, [])
-
-  return distinctUnderlineChars.sort().join('')
+  return !overline || (getDistinctTrimmedChars(overline) === getDistinctTrimmedChars(underline))
 }
