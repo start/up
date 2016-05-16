@@ -1791,7 +1791,7 @@ exports.getHeadingParser = getHeadingParser;
 var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/HeadingNode":78,"../Inline/GetInlineNodes":4,"../Patterns":66,"./HeadingLeveler":53,"./LineConsumer":54,"./isLineFancyOutlineConvention":64}],52:[function(require,module,exports){
+},{"../../SyntaxNodes/HeadingNode":78,"../Inline/GetInlineNodes":4,"../Patterns":66,"./HeadingLeveler":53,"./LineConsumer":54,"./isLineFancyOutlineConvention":63}],52:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var Patterns_1 = require('../Patterns');
@@ -1942,30 +1942,6 @@ exports.LineConsumer = LineConsumer;
 },{}],55:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
-var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
-var Patterns_1 = require('../Patterns');
-function parseBlankLineSeparation(args) {
-    var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var countBlankLines = 0;
-    while (consumer.consumeLine({ pattern: BLANK_PATTERN })) {
-        countBlankLines += 1;
-    }
-    if (!countBlankLines) {
-        return false;
-    }
-    var COUNT_BLANK_LINES_IN_SECTION_SEPARATOR = 3;
-    var nodes = (countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
-        ? [new SectionSeparatorNode_1.SectionSeparatorNode()]
-        : []);
-    args.then(nodes, consumer.lengthConsumed());
-    return true;
-}
-exports.parseBlankLineSeparation = parseBlankLineSeparation;
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-
-},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":54}],56:[function(require,module,exports){
-"use strict";
-var LineConsumer_1 = require('./LineConsumer');
 var BlockquoteNode_1 = require('../../SyntaxNodes/BlockquoteNode');
 var getOutlineNodes_1 = require('./getOutlineNodes');
 var HeadingLeveler_1 = require('./HeadingLeveler');
@@ -1996,7 +1972,7 @@ var ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(Patterns_1.capture(Patterns_1
 var FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(BLOCKQUOTE_DELIMITER));
 var TRAILING_SPACE_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.INLINE_WHITESPACE_CHAR));
 
-},{"../../SyntaxNodes/BlockquoteNode":68,"../Patterns":66,"./HeadingLeveler":53,"./LineConsumer":54,"./getOutlineNodes":63}],57:[function(require,module,exports){
+},{"../../SyntaxNodes/BlockquoteNode":68,"../Patterns":66,"./HeadingLeveler":53,"./LineConsumer":54,"./getOutlineNodes":62}],56:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var CodeBlockNode_1 = require('../../SyntaxNodes/CodeBlockNode');
@@ -2021,7 +1997,7 @@ function parseCodeBlock(args) {
 exports.parseCodeBlock = parseCodeBlock;
 var CODE_FENCE_PATTERN = new RegExp(Patterns_1.streakOf('`'));
 
-},{"../../SyntaxNodes/CodeBlockNode":69,"../Patterns":66,"./LineConsumer":54}],58:[function(require,module,exports){
+},{"../../SyntaxNodes/CodeBlockNode":69,"../Patterns":66,"./LineConsumer":54}],57:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var DescriptionListItem_1 = require('../../SyntaxNodes/DescriptionListItem');
@@ -2093,7 +2069,7 @@ var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 
-},{"../../SyntaxNodes/Description":70,"../../SyntaxNodes/DescriptionListItem":71,"../../SyntaxNodes/DescriptionListNode":72,"../../SyntaxNodes/DescriptionTerm":73,"../Inline/GetInlineNodes":4,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":54,"./getOutlineNodes":63,"./isLineFancyOutlineConvention":64}],59:[function(require,module,exports){
+},{"../../SyntaxNodes/Description":70,"../../SyntaxNodes/DescriptionListItem":71,"../../SyntaxNodes/DescriptionListNode":72,"../../SyntaxNodes/DescriptionTerm":73,"../Inline/GetInlineNodes":4,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":54,"./getOutlineNodes":62,"./isLineFancyOutlineConvention":63}],58:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
@@ -2171,7 +2147,7 @@ var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 
-},{"../../SyntaxNodes/OrderedListItem":86,"../../SyntaxNodes/OrderedListNode":87,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":54,"./getOutlineNodes":63}],60:[function(require,module,exports){
+},{"../../SyntaxNodes/OrderedListItem":86,"../../SyntaxNodes/OrderedListNode":87,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":54,"./getOutlineNodes":62}],59:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
@@ -2232,7 +2208,7 @@ function isMediaSyntaxNode(node) {
 var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/Line":82,"../../SyntaxNodes/LineBlockNode":83,"../../SyntaxNodes/MediaSyntaxNode":85,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/GetInlineNodes":4,"../Patterns":66,"./LineConsumer":54,"./isLineFancyOutlineConvention":64}],61:[function(require,module,exports){
+},{"../../SyntaxNodes/Line":82,"../../SyntaxNodes/LineBlockNode":83,"../../SyntaxNodes/MediaSyntaxNode":85,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/GetInlineNodes":4,"../Patterns":66,"./LineConsumer":54,"./isLineFancyOutlineConvention":63}],60:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -2248,7 +2224,7 @@ function parseSectionSeparatorStreak(args) {
 exports.parseSectionSeparatorStreak = parseSectionSeparatorStreak;
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":54}],62:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":54}],61:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var UnorderedListNode_1 = require('../../SyntaxNodes/UnorderedListNode');
@@ -2302,13 +2278,13 @@ var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/UnorderedListItem":97,"../../SyntaxNodes/UnorderedListNode":98,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":54,"./getOutlineNodes":63}],63:[function(require,module,exports){
+},{"../../SyntaxNodes/UnorderedListItem":97,"../../SyntaxNodes/UnorderedListNode":98,"../Patterns":66,"./GetRemainingLinesOfListItem":52,"./LineConsumer":54,"./getOutlineNodes":62}],62:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
 var GetHeadingParser_1 = require('./GetHeadingParser');
-var ParseBlankLineSeparation_1 = require('./ParseBlankLineSeparation');
+var parseBlankLineSeparation_1 = require('./parseBlankLineSeparation');
 var ParseRegularLines_1 = require('./ParseRegularLines');
 var ParseCodeBlock_1 = require('./ParseCodeBlock');
 var ParseBlockquote_1 = require('./ParseBlockquote');
@@ -2319,7 +2295,7 @@ var Patterns_1 = require('../Patterns');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 function getOutlineNodes(text, headingLeveler, config) {
     var outlineParsers = [
-        ParseBlankLineSeparation_1.parseBlankLineSeparation,
+        parseBlankLineSeparation_1.parseBlankLineSeparation,
         GetHeadingParser_1.getHeadingParser(headingLeveler),
         ParseUnorderedList_1.parseUnorderedList,
         ParseOrderedList_1.parseOrderedList,
@@ -2371,7 +2347,7 @@ function trimOuterBlankLines(text) {
         .replace(TRAILIN_BLANK_LINES_PATTERN, ''));
 }
 
-},{"../../SyntaxNodes/SectionSeparatorNode":94,"../CollectionHelpers":2,"../Patterns":66,"./GetHeadingParser":51,"./LineConsumer":54,"./ParseBlankLineSeparation":55,"./ParseBlockquote":56,"./ParseCodeBlock":57,"./ParseDescriptionList":58,"./ParseOrderedList":59,"./ParseRegularLines":60,"./ParseSectionSeparatorStreak":61,"./ParseUnorderedList":62}],64:[function(require,module,exports){
+},{"../../SyntaxNodes/SectionSeparatorNode":94,"../CollectionHelpers":2,"../Patterns":66,"./GetHeadingParser":51,"./LineConsumer":54,"./ParseBlockquote":55,"./ParseCodeBlock":56,"./ParseDescriptionList":57,"./ParseOrderedList":58,"./ParseRegularLines":59,"./ParseSectionSeparatorStreak":60,"./ParseUnorderedList":61,"./parseBlankLineSeparation":64}],63:[function(require,module,exports){
 "use strict";
 var ParseSectionSeparatorStreak_1 = require('./ParseSectionSeparatorStreak');
 var ParseBlockquote_1 = require('./ParseBlockquote');
@@ -2395,7 +2371,31 @@ function isLineFancyOutlineConvention(line, config) {
 exports.isLineFancyOutlineConvention = isLineFancyOutlineConvention;
 var DUMMY_HEADING_LEVELER = new HeadingLeveler_1.HeadingLeveler();
 
-},{"./HeadingLeveler":53,"./ParseBlockquote":56,"./ParseOrderedList":59,"./ParseSectionSeparatorStreak":61,"./ParseUnorderedList":62}],65:[function(require,module,exports){
+},{"./HeadingLeveler":53,"./ParseBlockquote":55,"./ParseOrderedList":58,"./ParseSectionSeparatorStreak":60,"./ParseUnorderedList":61}],64:[function(require,module,exports){
+"use strict";
+var LineConsumer_1 = require('./LineConsumer');
+var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
+var Patterns_1 = require('../Patterns');
+function parseBlankLineSeparation(args) {
+    var consumer = new LineConsumer_1.LineConsumer(args.text);
+    var countBlankLines = 0;
+    while (consumer.consumeLine({ pattern: BLANK_PATTERN })) {
+        countBlankLines += 1;
+    }
+    if (!countBlankLines) {
+        return false;
+    }
+    var COUNT_BLANK_LINES_IN_SECTION_SEPARATOR = 3;
+    var nodes = (countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
+        ? [new SectionSeparatorNode_1.SectionSeparatorNode()]
+        : []);
+    args.then(nodes, consumer.lengthConsumed());
+    return true;
+}
+exports.parseBlankLineSeparation = parseBlankLineSeparation;
+var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
+
+},{"../../SyntaxNodes/SectionSeparatorNode":94,"../Patterns":66,"./LineConsumer":54}],65:[function(require,module,exports){
 "use strict";
 var getOutlineNodes_1 = require('./Outline/getOutlineNodes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
@@ -2408,7 +2408,7 @@ function parseDocument(text, config) {
 }
 exports.parseDocument = parseDocument;
 
-},{"../SyntaxNodes/DocumentNode":74,"./InsertFootnoteBlocks":50,"./Outline/HeadingLeveler":53,"./Outline/getOutlineNodes":63}],66:[function(require,module,exports){
+},{"../SyntaxNodes/DocumentNode":74,"./InsertFootnoteBlocks":50,"./Outline/HeadingLeveler":53,"./Outline/getOutlineNodes":62}],66:[function(require,module,exports){
 "use strict";
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');

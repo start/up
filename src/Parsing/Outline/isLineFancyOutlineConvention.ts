@@ -1,5 +1,5 @@
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
-import { parseBlankLineSeparation } from './ParseBlankLineSeparation'
+import { parseBlankLineSeparation } from './parseBlankLineSeparation'
 import { parseBlockquote } from './ParseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
