@@ -29,6 +29,9 @@ function canBeProvidedMultipleWaysWithTheSameResult(
     new Up(configChanges).toAst(text)
 
   const whenProvidingChangesWhenCallingDefaultMethod =
+    Up.toAst(text, configChanges)
+    
+  const whenProvidingChangesWhenCallingtMethodOnObject =
     new Up().toAst(text, configChanges)
 
   const whenOverwritingChangesProvidedAtCreation =
@@ -51,11 +54,11 @@ function canBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has the same result as providing the term when calling the Up object's toAst method", () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the term when calling the Up object's toAst method", () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+    it("has the same result as providing the term when calling the Up object's toAst method, overwriting the term provided at creation", () => {
+      expect(whenProvidingConfigAtCreation).to.be.eql(whenOverwritingChangesProvidedAtCreation)
     })
   })
 }
