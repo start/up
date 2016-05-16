@@ -2,7 +2,7 @@ import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { parseBlankLineSeparation } from './parseBlankLineSeparation'
 import { parseBlockquote } from './parseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
-import { parseOrderedList } from './ParseOrderedList'
+import { parseOrderedList } from './parseOrderedList'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 
