@@ -7,7 +7,7 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
-function canBeProvidedMultipleWaysWithTheSameResult(
+function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     text: string,
     textForDefaultSettings: string
@@ -65,7 +65,7 @@ function canBeProvidedMultipleWaysWithTheSameResult(
 
 
 describe('The "audio" config term', () => {
-  canBeProvidedMultipleWaysWithTheSameResult({
+  itCanBeProvidedMultipleWaysWithTheSameResult({
     text: '[listen: chanting at Nevada caucus -> https://example.com/audio.ogg]',
     textForDefaultSettings: '[audio: chanting at Nevada caucus -> https://example.com/audio.ogg]',
     configChanges: {
@@ -83,7 +83,7 @@ describe('The "audio" config term', () => {
 
 
 describe('The "image" config term', () => {
-  canBeProvidedMultipleWaysWithTheSameResult({
+  itCanBeProvidedMultipleWaysWithTheSameResult({
     text: '[see: Chrono Cross logo -> https://example.com/cc.png]',
     textForDefaultSettings: '[image: Chrono Cross logo -> https://example.com/cc.png]',
     configChanges: {
@@ -101,7 +101,7 @@ describe('The "image" config term', () => {
 
 
 describe('The "video" config term', () => {
-  canBeProvidedMultipleWaysWithTheSameResult({
+  itCanBeProvidedMultipleWaysWithTheSameResult({
     text: '[watch: Nevada caucus footage -> https://example.com/video.webm]',
     textForDefaultSettings: '[video: Nevada caucus footage -> https://example.com/video.webm]',
     configChanges: {
@@ -124,7 +124,7 @@ describe('The "video" config term', () => {
 
 
 describe('The "spoiler" config term', () => {
-  canBeProvidedMultipleWaysWithTheSameResult({
+  itCanBeProvidedMultipleWaysWithTheSameResult({
     text: '[RUINS ENDING: Ash fights Gary]',
     textForDefaultSettings: '[SPOILER: Ash fights Gary]',
     configChanges: {
