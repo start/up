@@ -152,7 +152,7 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    while (!(this.reachedEndOfText() && this.finalizeAndCheckValidity())) {
+    while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
 
       this.collectCurrentCharIfEscaped()
         || this.handleInlineCode()
@@ -273,7 +273,7 @@ class Tokenizer {
     return !this.remainingText
   }
 
-  private finalizeAndCheckValidity(): boolean {
+  private resolveOpenContexts(): boolean {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
@@ -506,14 +506,13 @@ class Tokenizer {
       pattern: pattern,
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContexts.push(
-          new TokenizerContext({
+        this.openContexts.push({
             state: state,
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
-            openContexts: this.openContexts,
+            openContexts: this.openContexts.slice(),
             plainTextBuffer: this.bufferedText
-          }))
+          })
 
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
