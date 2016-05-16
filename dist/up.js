@@ -1652,10 +1652,6 @@ var HeadingLeveler = (function () {
     return HeadingLeveler;
 }());
 exports.HeadingLeveler = HeadingLeveler;
-function isUnderlineConsistentWithOverline(overline, underline) {
-    return !overline || (StringHelpers_1.getDistinctTrimmedChars(overline) === StringHelpers_1.getDistinctTrimmedChars(underline));
-}
-exports.isUnderlineConsistentWithOverline = isUnderlineConsistentWithOverline;
 
 },{"../../StringHelpers":66}],50:[function(require,module,exports){
 "use strict";
@@ -1730,7 +1726,7 @@ var HeadingNode_1 = require('../../SyntaxNodes/HeadingNode');
 var Patterns_1 = require('../Patterns');
 var getInlineNodes_1 = require('../Inline/getInlineNodes');
 var isLineFancyOutlineConvention_1 = require('./isLineFancyOutlineConvention');
-var HeadingLeveler_1 = require('./HeadingLeveler');
+var StringHelpers_1 = require('../../StringHelpers');
 function getHeadingParser(headingLeveler) {
     return function parseHeading(args) {
         var consumer = new LineConsumer_1.LineConsumer(args.text);
@@ -1747,7 +1743,7 @@ function getHeadingParser(headingLeveler) {
         })
             && consumer.consumeLine({
                 if: function (line) { return (STREAK_PATTERN.test(line)
-                    && HeadingLeveler_1.isUnderlineConsistentWithOverline(optionalOverline, line)); },
+                    && isUnderlineConsistentWithOverline(optionalOverline, line)); },
                 then: function (line) { underline = line; }
             }));
         if (!hasContentAndUnderline) {
@@ -1762,10 +1758,13 @@ function getHeadingParser(headingLeveler) {
     };
 }
 exports.getHeadingParser = getHeadingParser;
+function isUnderlineConsistentWithOverline(overline, underline) {
+    return !overline || (StringHelpers_1.getDistinctTrimmedChars(overline) === StringHelpers_1.getDistinctTrimmedChars(underline));
+}
 var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/HeadingNode":78,"../Inline/getInlineNodes":46,"../Patterns":63,"./HeadingLeveler":49,"./LineConsumer":50,"./isLineFancyOutlineConvention":54}],52:[function(require,module,exports){
+},{"../../StringHelpers":66,"../../SyntaxNodes/HeadingNode":78,"../Inline/getInlineNodes":46,"../Patterns":63,"./LineConsumer":50,"./isLineFancyOutlineConvention":54}],52:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');

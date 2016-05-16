@@ -20,7 +20,3 @@ export class HeadingLeveler {
     return this.registeredUnderlineChars.indexOf(underlineChars) + 1
   }
 }
-
-export function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
-  return !overline || (getDistinctTrimmedChars(overline) === getDistinctTrimmedChars(underline))
-}

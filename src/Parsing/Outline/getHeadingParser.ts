@@ -6,7 +6,8 @@ import { either, NON_BLANK, STREAK } from '../Patterns'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
+import { HeadingLeveler } from './HeadingLeveler'
+import { getDistinctTrimmedChars } from '../../StringHelpers' 
 
 
 // Underlined text is treated as a heading. Headings can have an optional overline, too.
@@ -77,6 +78,11 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 
     return true
   }
+}
+
+
+function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
+  return !overline || (getDistinctTrimmedChars(overline) === getDistinctTrimmedChars(underline))
 }
 
 
