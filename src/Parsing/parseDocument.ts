@@ -1,6 +1,6 @@
 import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
-import { insertFootnoteBlocks } from './InsertFootnoteBlocks'
+import { insertFootnoteBlocks } from './insertFootnoteBlocks'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { UpConfig } from '../UpConfig'
 

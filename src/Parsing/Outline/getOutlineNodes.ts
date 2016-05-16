@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
+import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
 import { getHeadingParser } from './getHeadingParser'
 import { parseBlankLineSeparation } from './parseBlankLineSeparation'
 import { parseRegularLines } from './parseRegularLines'

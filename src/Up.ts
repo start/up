@@ -1,4 +1,4 @@
-import { parseDocument } from './Parsing/ParseDocument'
+import { parseDocument } from './Parsing/parseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 import { HtmlWriter } from './Writer/HtmlWriter'
