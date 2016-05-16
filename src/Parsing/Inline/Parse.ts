@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
-import { last } from '../CollectionHelpers'
+import { last } from '../../CollectionHelpers'
 import { tokenize } from './Tokenize'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
 import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'

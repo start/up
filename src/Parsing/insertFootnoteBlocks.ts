@@ -13,7 +13,7 @@ import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
-import { concat } from './CollectionHelpers'
+import { concat } from '../CollectionHelpers'
 
 // Here are the rules!
 //

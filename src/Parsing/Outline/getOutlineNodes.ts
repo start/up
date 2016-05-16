@@ -11,7 +11,7 @@ import { parseUnorderedList } from './parseUnorderedList'
 import { parseOrderedList } from './parseOrderedList'
 import { parseDescriptionList } from './parseDescriptionList'
 import { startsWith, endsWith, BLANK, ANY_WHITESPACE, LINE_BREAK } from '../Patterns'
-import { last } from '../CollectionHelpers'
+import { last } from '../../CollectionHelpers'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 
