@@ -4,7 +4,7 @@ import { OutlineParser, OutlineParserArgs } from './OutlineParser'
 import { either, NON_BLANK, STREAK } from '../Patterns'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
-import { isLineFancyOutlineConvention } from './IsLineFancyOutlineConvention'
+import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { HeadingLeveler, isUnderlineConsistentWithOverline} from './HeadingLeveler'
 
 
