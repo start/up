@@ -9,7 +9,8 @@ import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/GetInlineNodes'
 import { NON_BLANK, STREAK } from '../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { OutlineParserArgs } from './OutlineParser'
+import { OutlineParser } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // A single non-blank line is treated as a paragraph.

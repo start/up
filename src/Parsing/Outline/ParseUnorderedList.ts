@@ -4,7 +4,8 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './GetRemainingLinesOfListItem'
 import { optional, startsWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from '../Patterns'
-import { OutlineParserArgs } from './OutlineParser'
+import { OutlineParser } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Unordered lists are simply collections of bulleted list items.

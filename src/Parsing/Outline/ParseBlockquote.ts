@@ -3,7 +3,8 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../Patterns'
-import { OutlineParserArgs } from './OutlineParser'
+import { OutlineParser } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,

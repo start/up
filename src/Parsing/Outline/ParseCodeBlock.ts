@@ -1,7 +1,8 @@
 import { LineConsumer } from './LineConsumer'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { streakOf } from '../Patterns'
-import { OutlineParserArgs } from './OutlineParser'
+import { OutlineParser } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Code blocks are surrounded (underlined and overlined) by streaks of backticks

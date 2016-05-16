@@ -1,7 +1,8 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BLANK } from '../Patterns'
-import { OutlineParserArgs } from './OutlineParser'
+import { OutlineParser } from './OutlineParser'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Outline conventions (e.g. paragraphs, headings) are normally separated by 1 or 2 consecutive blank lines.
