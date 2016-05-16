@@ -53,8 +53,8 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     
     const wasLineConsumed = consumer.consumeLine({
       pattern: NON_BLANK_LINE_PATTERN,
-      if: (line) => !isLineFancyOutlineConvention(line, args.config),
-      then: (line) => inlineNodes = getInlineNodes(line, args.config)
+      if: line => !isLineFancyOutlineConvention(line, args.config),
+      then: line => inlineNodes = getInlineNodes(line, args.config)
     })
     
     // Sometimes, a non-blank line can produce no syntax nodes. The following non-blank conventions
