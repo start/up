@@ -1,6 +1,6 @@
 import { parseSectionSeparatorStreak } from './ParseSectionSeparatorStreak'
 import { parseBlankLineSeparation } from './parseBlankLineSeparation'
-import { parseBlockquote } from './ParseBlockquote'
+import { parseBlockquote } from './parseBlockquote'
 import { parseUnorderedList } from './ParseUnorderedList'
 import { parseOrderedList } from './ParseOrderedList'
 import { HeadingLeveler } from './HeadingLeveler'
