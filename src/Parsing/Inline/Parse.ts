@@ -1,5 +1,6 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { PlainTextNode, isWhitespace } from '../../SyntaxNodes/PlainTextNode'
+import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
 import { last } from '../CollectionHelpers'
 import { tokenize } from './Tokenize'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'

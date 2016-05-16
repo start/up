@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { isWhitespace } from '../../SyntaxNodes/PlainTextNode'
+import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
