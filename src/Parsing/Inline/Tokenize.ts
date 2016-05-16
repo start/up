@@ -34,7 +34,7 @@ class Tokenizer {
 
   private textIndex = 0
 
-  // These three fields are computer based on `textIndex`.
+  // These three fields are computer every time we updatae `textIndex`.
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
@@ -71,84 +71,14 @@ class Tokenizer {
   private parenthesizedInsideUrlConvention: TokenizableSandwich
   private squareBracketedInsideUrlConvention: TokenizableSandwich
 
+  // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
 
   constructor(private entireText: string, config: UpConfig) {
-    this.mediaConventions =
-      [AUDIO, IMAGE, VIDEO]
-        .map(media =>
-          new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
-          
-    this.footnoteConvention =
-      this.getRichSandwich({
-        richConvention: FOOTNOTE,
-        startPattern: ANY_WHITESPACE + escapeForRegex('(('),
-        endPattern: escapeForRegex('))')
-      })
-
-    this.spoilerConvention =
-      this.getRichSandwich({
-        richConvention: SPOILER,
-        startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
-        endPattern: CLOSE_SQUARE_BRACKET
-      })
-
-    this.revisionDeletionConvention =
-      this.getRichSandwich({
-        richConvention: REVISION_DELETION,
-        startPattern: '~~',
-        endPattern: '~~'
-      })
-
-    this.revisionInsertionConvention =
-      this.getRichSandwich({
-        richConvention: REVISION_INSERTION,
-        startPattern: escapeForRegex('++'),
-        endPattern: escapeForRegex('++')
-      })
-
-    this.parenthesizedConvention =
-      this.getRichSandwich({
-        richConvention: PARENTHESIZED,
-        startPattern: OPEN_PAREN,
-        endPattern: CLOSE_PAREN,
-      })
-
-    this.squareBracketedConvention =
-      this.getRichSandwich({
-        richConvention: SQUARE_BRACKETED,
-        startPattern: OPEN_SQUARE_BRACKET,
-        endPattern: CLOSE_SQUARE_BRACKET,
-      })
-
-    this.parenthesizedInsideUrlConvention =
-      this.getBracketInsideUrlConvention({
-        state: TokenizerState.ParenthesizedInsideUrl,
-        openBracketPattern: OPEN_PAREN,
-        closeBracketPattern: CLOSE_PAREN
-      })
-
-    this.squareBracketedInsideUrlConvention =
-      this.getBracketInsideUrlConvention({
-        state: TokenizerState.SquareBracketedInsideUrl,
-        openBracketPattern: OPEN_SQUARE_BRACKET,
-        closeBracketPattern: CLOSE_SQUARE_BRACKET
-      })
-
-    this.inlineCodeConvention =
-      new TokenizableSandwich({
-        state: TokenizerState.InlineCode,
-        startPattern: '`',
-        endPattern: '`',
-        onOpen: () => this.flushBufferToPlainTextToken(),
-        onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText()))
-      })
-
+    this.configureConventions(config)
     this.dirty()
     this.tokenize()
-
-    this.tokens =
-      nestOverlappingConventions(applyRaisedVoices(this.tokens))
+    this.tokens = nestOverlappingConventions(applyRaisedVoices(this.tokens))
   }
 
   private tokenize(): void {
@@ -482,13 +412,11 @@ class Tokenizer {
   }
 
   private closeSandwich(sandwich: TokenizableSandwich): boolean {
-    const { state, endPattern, onClose } = sandwich
-
     return this.advanceAfterMatch({
-      pattern: endPattern,
+      pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeMostRecentContextWithState(state)
-        onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        this.closeMostRecentContextWithState(sandwich.state)
+        sandwich.onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
@@ -686,6 +614,78 @@ class Tokenizer {
         this.addTokenAfterFlushingBufferToPlainTextToken(new AsteriskTokenType(asterisks))
       }
     })
+  }
+  
+  private configureConventions(config: UpConfig): void {
+    this.mediaConventions =
+      [AUDIO, IMAGE, VIDEO]
+        .map(media =>
+          new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
+          
+    this.footnoteConvention =
+      this.getRichSandwich({
+        richConvention: FOOTNOTE,
+        startPattern: ANY_WHITESPACE + escapeForRegex('(('),
+        endPattern: escapeForRegex('))')
+      })
+
+    this.spoilerConvention =
+      this.getRichSandwich({
+        richConvention: SPOILER,
+        startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
+        endPattern: CLOSE_SQUARE_BRACKET
+      })
+
+    this.revisionDeletionConvention =
+      this.getRichSandwich({
+        richConvention: REVISION_DELETION,
+        startPattern: '~~',
+        endPattern: '~~'
+      })
+
+    this.revisionInsertionConvention =
+      this.getRichSandwich({
+        richConvention: REVISION_INSERTION,
+        startPattern: escapeForRegex('++'),
+        endPattern: escapeForRegex('++')
+      })
+
+    this.parenthesizedConvention =
+      this.getRichSandwich({
+        richConvention: PARENTHESIZED,
+        startPattern: OPEN_PAREN,
+        endPattern: CLOSE_PAREN,
+      })
+
+    this.squareBracketedConvention =
+      this.getRichSandwich({
+        richConvention: SQUARE_BRACKETED,
+        startPattern: OPEN_SQUARE_BRACKET,
+        endPattern: CLOSE_SQUARE_BRACKET,
+      })
+
+    this.parenthesizedInsideUrlConvention =
+      this.getBracketInsideUrlConvention({
+        state: TokenizerState.ParenthesizedInsideUrl,
+        openBracketPattern: OPEN_PAREN,
+        closeBracketPattern: CLOSE_PAREN
+      })
+
+    this.squareBracketedInsideUrlConvention =
+      this.getBracketInsideUrlConvention({
+        state: TokenizerState.SquareBracketedInsideUrl,
+        openBracketPattern: OPEN_SQUARE_BRACKET,
+        closeBracketPattern: CLOSE_SQUARE_BRACKET
+      })
+
+    this.inlineCodeConvention =
+      new TokenizableSandwich({
+        state: TokenizerState.InlineCode,
+        startPattern: '`',
+        endPattern: '`',
+        onOpen: () => this.flushBufferToPlainTextToken(),
+        onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText()))
+      })
   }
 }
 

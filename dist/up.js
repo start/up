@@ -495,78 +495,16 @@ function tokenize(text, config) {
 exports.tokenize = tokenize;
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
-        var _this = this;
         this.entireText = entireText;
         this.tokens = [];
         this.textIndex = 0;
         this.openContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.bufferedText = '';
-        this.mediaConventions =
-            [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO]
-                .map(function (media) {
-                return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
-            });
-        this.footnoteConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.FOOTNOTE,
-                startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
-                endPattern: Patterns_1.escapeForRegex('))')
-            });
-        this.spoilerConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.SPOILER,
-                startPattern: Patterns_1.OPEN_SQUARE_BRACKET + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
-                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
-            });
-        this.revisionDeletionConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.REVISION_DELETION,
-                startPattern: '~~',
-                endPattern: '~~'
-            });
-        this.revisionInsertionConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.REVISION_INSERTION,
-                startPattern: Patterns_1.escapeForRegex('++'),
-                endPattern: Patterns_1.escapeForRegex('++')
-            });
-        this.parenthesizedConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.PARENTHESIZED,
-                startPattern: Patterns_1.OPEN_PAREN,
-                endPattern: Patterns_1.CLOSE_PAREN,
-            });
-        this.squareBracketedConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.SQUARE_BRACKETED,
-                startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
-                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
-            });
-        this.parenthesizedInsideUrlConvention =
-            this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
-                openBracketPattern: Patterns_1.OPEN_PAREN,
-                closeBracketPattern: Patterns_1.CLOSE_PAREN
-            });
-        this.squareBracketedInsideUrlConvention =
-            this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
-                openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
-                closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
-            });
-        this.inlineCodeConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                state: TokenizerState_1.TokenizerState.InlineCode,
-                startPattern: '`',
-                endPattern: '`',
-                onOpen: function () { return _this.flushBufferToPlainTextToken(); },
-                onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText())); }
-            });
+        this.configureConventions(config);
         this.dirty();
         this.tokenize();
-        this.tokens =
-            nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.tokens));
+        this.tokens = nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.tokens));
     }
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
@@ -819,16 +757,15 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeSandwich = function (sandwich) {
         var _this = this;
-        var state = sandwich.state, endPattern = sandwich.endPattern, onClose = sandwich.onClose;
         return this.advanceAfterMatch({
-            pattern: endPattern,
+            pattern: sandwich.endPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.closeMostRecentContextWithState(state);
-                onClose.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                _this.closeMostRecentContextWithState(sandwich.state);
+                sandwich.onClose.apply(sandwich, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
@@ -970,6 +907,70 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingBufferToPlainTextToken(new AsteriskTokenType(asterisks));
             }
         });
+    };
+    Tokenizer.prototype.configureConventions = function (config) {
+        var _this = this;
+        this.mediaConventions =
+            [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO]
+                .map(function (media) {
+                return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
+            });
+        this.footnoteConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.FOOTNOTE,
+                startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
+                endPattern: Patterns_1.escapeForRegex('))')
+            });
+        this.spoilerConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.SPOILER,
+                startPattern: Patterns_1.OPEN_SQUARE_BRACKET + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
+                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
+            });
+        this.revisionDeletionConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.REVISION_DELETION,
+                startPattern: '~~',
+                endPattern: '~~'
+            });
+        this.revisionInsertionConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.REVISION_INSERTION,
+                startPattern: Patterns_1.escapeForRegex('++'),
+                endPattern: Patterns_1.escapeForRegex('++')
+            });
+        this.parenthesizedConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.PARENTHESIZED,
+                startPattern: Patterns_1.OPEN_PAREN,
+                endPattern: Patterns_1.CLOSE_PAREN,
+            });
+        this.squareBracketedConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.SQUARE_BRACKETED,
+                startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
+                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
+            });
+        this.parenthesizedInsideUrlConvention =
+            this.getBracketInsideUrlConvention({
+                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
+                openBracketPattern: Patterns_1.OPEN_PAREN,
+                closeBracketPattern: Patterns_1.CLOSE_PAREN
+            });
+        this.squareBracketedInsideUrlConvention =
+            this.getBracketInsideUrlConvention({
+                state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
+                openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
+                closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
+            });
+        this.inlineCodeConvention =
+            new TokenizableSandwich_1.TokenizableSandwich({
+                state: TokenizerState_1.TokenizerState.InlineCode,
+                startPattern: '`',
+                endPattern: '`',
+                onOpen: function () { return _this.flushBufferToPlainTextToken(); },
+                onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText())); }
+            });
     };
     return Tokenizer;
 }());
