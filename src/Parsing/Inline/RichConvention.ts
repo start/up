@@ -1,5 +1,5 @@
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNode'
-import { TokenType } from './Tokens/Token'
+import { TokenType } from './Tokens/TokenType'
 import { TokenizerState } from './TokenizerState'
 
 

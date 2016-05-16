@@ -1,5 +1,6 @@
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-import { Token, TokenType } from '../Tokens/Token'
+import { Token} from '../Tokens/Token'
+import { TokenType } from '../Tokens/TokenType'
 
 
 const EMPHASIS_COST = 1

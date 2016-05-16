@@ -100,126 +100,7 @@ exports.IMAGE = IMAGE;
 var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken, TokenizerState_1.TokenizerState.Video);
 exports.VIDEO = VIDEO;
 
-},{"../../SyntaxNodes/AudioNode":67,"../../SyntaxNodes/ImageNode":79,"../../SyntaxNodes/VideoNode":99,"./MediaConvention":4,"./TokenizerState":19,"./Tokens/AudioToken":20,"./Tokens/ImageToken":25,"./Tokens/VideoToken":48}],6:[function(require,module,exports){
-"use strict";
-var RichConventions_1 = require('./RichConventions');
-function nestOverlappingConventions(tokens) {
-    return new ConventionNester(tokens.slice()).tokens;
-}
-exports.nestOverlappingConventions = nestOverlappingConventions;
-var FREELY_SPLITTABLE_CONVENTIONS = [
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.STRESS,
-    RichConventions_1.EMPHASIS
-];
-var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
-    RichConventions_1.LINK,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE
-];
-var ConventionNester = (function () {
-    function ConventionNester(tokens) {
-        this.tokens = tokens;
-        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
-        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
-        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
-            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
-            this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
-            conventionsToSplit.push(conventionNotToSplit);
-        }
-    }
-    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
-        var unclosedConventions = [];
-        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            var token = this.tokens[tokenIndex];
-            var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventions);
-            if (conventionStartedByThisToken) {
-                unclosedConventions.push(conventionStartedByThisToken);
-                continue;
-            }
-            var conventionEndedByThisToken = getConventionEndedBy(token, conventions);
-            if (!conventionEndedByThisToken) {
-                continue;
-            }
-            var overlappingFromMostRecentToLeast = [];
-            for (var conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
-                var unclosedConvention = unclosedConventions[conventionIndex];
-                if (unclosedConvention === conventionEndedByThisToken) {
-                    unclosedConventions.splice(conventionIndex, 1);
-                    break;
-                }
-                overlappingFromMostRecentToLeast.push(unclosedConvention);
-            }
-            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast);
-            var countOverlapping = overlappingFromMostRecentToLeast.length;
-            tokenIndex += (2 * countOverlapping);
-        }
-    };
-    ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
-        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
-                continue;
-            }
-            var heroStartIndex = tokenIndex;
-            var heroEndIndex = void 0;
-            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
-                if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
-                    heroEndIndex = i;
-                    break;
-                }
-            }
-            var overlappingStartingBefore = [];
-            var overlappingStartingInside = [];
-            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-                var token = this.tokens[indexInsideHero];
-                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit);
-                if (conventionStartedByThisToken) {
-                    overlappingStartingInside.push(conventionStartedByThisToken);
-                    continue;
-                }
-                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit);
-                if (conventionEndedByThisToken) {
-                    if (overlappingStartingInside.length) {
-                        overlappingStartingInside.pop();
-                        continue;
-                    }
-                    overlappingStartingBefore.push(conventionEndedByThisToken);
-                }
-            }
-            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
-            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
-            var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
-            tokenIndex = heroEndIndex + countTokensAdded;
-        }
-    };
-    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, conventionsInTheOrderTheyShouldClose) {
-        var startTokensToAdd = conventionsInTheOrderTheyShouldClose
-            .map(function (convention) { return new convention.StartTokenType(); })
-            .reverse();
-        var endTokensToAdd = conventionsInTheOrderTheyShouldClose
-            .map(function (convention) { return new convention.EndTokenType(); });
-        this.insertTokens(index + 1, startTokensToAdd);
-        this.insertTokens(index, endTokensToAdd);
-    };
-    ConventionNester.prototype.insertTokens = function (index, tokens) {
-        (_a = this.tokens).splice.apply(_a, [index, 0].concat(tokens));
-        var _a;
-    };
-    return ConventionNester;
-}());
-function getConventionStartedByThisToken(token, conventions) {
-    return conventions.filter(function (convention) {
-        return token instanceof convention.StartTokenType;
-    })[0];
-}
-function getConventionEndedBy(token, conventions) {
-    return conventions.filter(function (convention) {
-        return token instanceof convention.EndTokenType;
-    })[0];
-}
-
-},{"./RichConventions":14}],7:[function(require,module,exports){
+},{"../../SyntaxNodes/AudioNode":67,"../../SyntaxNodes/ImageNode":79,"../../SyntaxNodes/VideoNode":99,"./MediaConvention":4,"./TokenizerState":18,"./Tokens/AudioToken":19,"./Tokens/ImageToken":24,"./Tokens/VideoToken":47}],6:[function(require,module,exports){
 "use strict";
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
@@ -355,7 +236,7 @@ function isNotPureWhitespace(nodes) {
     return !nodes.every(isWhitespace_1.isWhitespace);
 }
 
-},{"../../SyntaxNodes/InlineCodeNode":80,"../../SyntaxNodes/LinkNode":84,"../../SyntaxNodes/PlainTextNode":90,"../../SyntaxNodes/isWhitespace":100,"../CollectionHelpers":2,"./MediaConventions":5,"./ParseResult":8,"./RichConventions":14,"./Tokens/InlineCodeToken":26,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/NakedUrlToken":30,"./Tokens/ParenthesizedEndToken":31,"./Tokens/ParenthesizedStartToken":32,"./Tokens/PlainTextToken":33,"./Tokens/SquareBracketedEndToken":44,"./Tokens/SquareBracketedStartToken":45}],8:[function(require,module,exports){
+},{"../../SyntaxNodes/InlineCodeNode":80,"../../SyntaxNodes/LinkNode":84,"../../SyntaxNodes/PlainTextNode":90,"../../SyntaxNodes/isWhitespace":100,"../CollectionHelpers":2,"./MediaConventions":5,"./ParseResult":7,"./RichConventions":13,"./Tokens/InlineCodeToken":25,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/NakedUrlToken":29,"./Tokens/ParenthesizedEndToken":30,"./Tokens/ParenthesizedStartToken":31,"./Tokens/PlainTextToken":32,"./Tokens/SquareBracketedEndToken":43,"./Tokens/SquareBracketedStartToken":44}],7:[function(require,module,exports){
 "use strict";
 var ParseResult = (function () {
     function ParseResult(nodes, countTokensParsed) {
@@ -366,62 +247,7 @@ var ParseResult = (function () {
 }());
 exports.ParseResult = ParseResult;
 
-},{}],9:[function(require,module,exports){
-"use strict";
-var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
-var StartMarker_1 = require('./StartMarker');
-var EndMarker_1 = require('./EndMarker');
-var PlainTextMarker_1 = require('./PlainTextMarker');
-var PotentialRaisedVoiceEndToken_1 = require('../Tokens/PotentialRaisedVoiceEndToken');
-var PotentialRaisedVoiceStartOrEndToken_1 = require('../Tokens/PotentialRaisedVoiceStartOrEndToken');
-var PotentialRaisedVoiceStartToken_1 = require('../Tokens/PotentialRaisedVoiceStartToken');
-function applyRaisedVoices(tokens) {
-    var raisedVoiceMarkers = getRaisedVoiceMarkers(tokens);
-    var resultTokens = tokens.slice();
-    for (var _i = 0, _a = raisedVoiceMarkers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
-        var raisedVoiceMarker = _a[_i];
-        resultTokens.splice.apply(resultTokens, [raisedVoiceMarker.originalTokenIndex, 1].concat(raisedVoiceMarker.tokens()));
-    }
-    return resultTokens;
-}
-exports.applyRaisedVoices = applyRaisedVoices;
-function getRaisedVoiceMarkers(tokens) {
-    var markers = [];
-    for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-        var token = tokens[tokenIndex];
-        var canStartConvention = (token instanceof PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken
-            || token instanceof PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken);
-        var canEndConvention = (token instanceof PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken
-            || token instanceof PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken);
-        var isPotentialRaisedVoiceToken = canStartConvention || canEndConvention;
-        if (!isPotentialRaisedVoiceToken) {
-            continue;
-        }
-        var asterisks = token.asterisks;
-        if (canEndConvention) {
-            var endMarker = new EndMarker_1.EndMarker(tokenIndex, asterisks);
-            endMarker.matchAnyApplicableStartMarkers(markers);
-            if (!endMarker.providesNoTokens()) {
-                markers.push(endMarker);
-                continue;
-            }
-        }
-        if (canStartConvention) {
-            markers.push(new StartMarker_1.StartMarker(tokenIndex, asterisks));
-        }
-        else {
-            markers.push(new PlainTextMarker_1.PlainTextMarker(tokenIndex, asterisks));
-        }
-    }
-    var withFailedMarkersTreatedAsPlainText = markers.map(function (marker) {
-        return marker.providesNoTokens()
-            ? new PlainTextMarker_1.PlainTextMarker(marker.originalTokenIndex, marker.originalAsterisks)
-            : marker;
-    });
-    return withFailedMarkersTreatedAsPlainText;
-}
-
-},{"../Tokens/PotentialRaisedVoiceEndToken":34,"../Tokens/PotentialRaisedVoiceStartOrEndToken":35,"../Tokens/PotentialRaisedVoiceStartToken":36,"./EndMarker":10,"./PlainTextMarker":11,"./RaisedVoiceMarker":12,"./StartMarker":13}],10:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -502,7 +328,7 @@ var EndMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.EndMarker = EndMarker;
 
-},{"../Tokens/EmphasisEndToken":21,"../Tokens/StressEndToken":46,"./RaisedVoiceMarker":12,"./StartMarker":13}],11:[function(require,module,exports){
+},{"../Tokens/EmphasisEndToken":20,"../Tokens/StressEndToken":45,"./RaisedVoiceMarker":10,"./StartMarker":11}],9:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -523,7 +349,7 @@ var PlainTextMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.PlainTextMarker = PlainTextMarker;
 
-},{"../Tokens/PlainTextToken":33,"./RaisedVoiceMarker":12}],12:[function(require,module,exports){
+},{"../Tokens/PlainTextToken":32,"./RaisedVoiceMarker":10}],10:[function(require,module,exports){
 "use strict";
 var EMPHASIS_COST = 1;
 var STRESS_COST = 2;
@@ -582,7 +408,7 @@ function comapreMarkersDescending(a, b) {
 }
 exports.comapreMarkersDescending = comapreMarkersDescending;
 
-},{}],13:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -619,7 +445,62 @@ var StartMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.StartMarker = StartMarker;
 
-},{"../Tokens/EmphasisStartToken":22,"../Tokens/StressStartToken":47,"./RaisedVoiceMarker":12}],14:[function(require,module,exports){
+},{"../Tokens/EmphasisStartToken":21,"../Tokens/StressStartToken":46,"./RaisedVoiceMarker":10}],12:[function(require,module,exports){
+"use strict";
+var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
+var StartMarker_1 = require('./StartMarker');
+var EndMarker_1 = require('./EndMarker');
+var PlainTextMarker_1 = require('./PlainTextMarker');
+var PotentialRaisedVoiceEndToken_1 = require('../Tokens/PotentialRaisedVoiceEndToken');
+var PotentialRaisedVoiceStartOrEndToken_1 = require('../Tokens/PotentialRaisedVoiceStartOrEndToken');
+var PotentialRaisedVoiceStartToken_1 = require('../Tokens/PotentialRaisedVoiceStartToken');
+function applyRaisedVoices(tokens) {
+    var raisedVoiceMarkers = getRaisedVoiceMarkers(tokens);
+    var resultTokens = tokens.slice();
+    for (var _i = 0, _a = raisedVoiceMarkers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
+        var raisedVoiceMarker = _a[_i];
+        resultTokens.splice.apply(resultTokens, [raisedVoiceMarker.originalTokenIndex, 1].concat(raisedVoiceMarker.tokens()));
+    }
+    return resultTokens;
+}
+exports.applyRaisedVoices = applyRaisedVoices;
+function getRaisedVoiceMarkers(tokens) {
+    var markers = [];
+    for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+        var token = tokens[tokenIndex];
+        var canStartConvention = (token instanceof PotentialRaisedVoiceStartToken_1.PotentialRaisedVoiceStartToken
+            || token instanceof PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken);
+        var canEndConvention = (token instanceof PotentialRaisedVoiceEndToken_1.PotentialRaisedVoiceEndToken
+            || token instanceof PotentialRaisedVoiceStartOrEndToken_1.PotentialRaisedVoiceStartOrEndToken);
+        var isPotentialRaisedVoiceToken = canStartConvention || canEndConvention;
+        if (!isPotentialRaisedVoiceToken) {
+            continue;
+        }
+        var asterisks = token.asterisks;
+        if (canEndConvention) {
+            var endMarker = new EndMarker_1.EndMarker(tokenIndex, asterisks);
+            endMarker.matchAnyApplicableStartMarkers(markers);
+            if (!endMarker.providesNoTokens()) {
+                markers.push(endMarker);
+                continue;
+            }
+        }
+        if (canStartConvention) {
+            markers.push(new StartMarker_1.StartMarker(tokenIndex, asterisks));
+        }
+        else {
+            markers.push(new PlainTextMarker_1.PlainTextMarker(tokenIndex, asterisks));
+        }
+    }
+    var withFailedMarkersTreatedAsPlainText = markers.map(function (marker) {
+        return marker.providesNoTokens()
+            ? new PlainTextMarker_1.PlainTextMarker(marker.originalTokenIndex, marker.originalAsterisks)
+            : marker;
+    });
+    return withFailedMarkersTreatedAsPlainText;
+}
+
+},{"../Tokens/PotentialRaisedVoiceEndToken":33,"../Tokens/PotentialRaisedVoiceStartOrEndToken":34,"../Tokens/PotentialRaisedVoiceStartToken":35,"./EndMarker":8,"./PlainTextMarker":9,"./RaisedVoiceMarker":10,"./StartMarker":11}],13:[function(require,module,exports){
 "use strict";
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
 var EmphasisNode_1 = require('../../SyntaxNodes/EmphasisNode');
@@ -705,7 +586,7 @@ var SQUARE_BRACKETED = {
 };
 exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
 
-},{"../../SyntaxNodes/EmphasisNode":75,"../../SyntaxNodes/FootnoteNode":77,"../../SyntaxNodes/RevisionDeletionNode":91,"../../SyntaxNodes/RevisionInsertionNode":92,"../../SyntaxNodes/SpoilerNode":95,"../../SyntaxNodes/StressNode":96,"./TokenizerState":19,"./Tokens/EmphasisEndToken":21,"./Tokens/EmphasisStartToken":22,"./Tokens/FootnoteEndToken":23,"./Tokens/FootnoteStartToken":24,"./Tokens/LinkEndToken":27,"./Tokens/LinkStartToken":28,"./Tokens/ParenthesizedEndToken":31,"./Tokens/ParenthesizedStartToken":32,"./Tokens/RevisionDeletionEndToken":38,"./Tokens/RevisionDeletionStartToken":39,"./Tokens/RevisionInsertionEndToken":40,"./Tokens/RevisionInsertionStartToken":41,"./Tokens/SpoilerEndToken":42,"./Tokens/SpoilerStartToken":43,"./Tokens/SquareBracketedEndToken":44,"./Tokens/SquareBracketedStartToken":45,"./Tokens/StressEndToken":46,"./Tokens/StressStartToken":47}],15:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":75,"../../SyntaxNodes/FootnoteNode":77,"../../SyntaxNodes/RevisionDeletionNode":91,"../../SyntaxNodes/RevisionInsertionNode":92,"../../SyntaxNodes/SpoilerNode":95,"../../SyntaxNodes/StressNode":96,"./TokenizerState":18,"./Tokens/EmphasisEndToken":20,"./Tokens/EmphasisStartToken":21,"./Tokens/FootnoteEndToken":22,"./Tokens/FootnoteStartToken":23,"./Tokens/LinkEndToken":26,"./Tokens/LinkStartToken":27,"./Tokens/ParenthesizedEndToken":30,"./Tokens/ParenthesizedStartToken":31,"./Tokens/RevisionDeletionEndToken":37,"./Tokens/RevisionDeletionStartToken":38,"./Tokens/RevisionInsertionEndToken":39,"./Tokens/RevisionInsertionStartToken":40,"./Tokens/SpoilerEndToken":41,"./Tokens/SpoilerStartToken":42,"./Tokens/SquareBracketedEndToken":43,"./Tokens/SquareBracketedStartToken":44,"./Tokens/StressEndToken":45,"./Tokens/StressStartToken":46}],14:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
@@ -722,7 +603,7 @@ function getPattern(pattern, flags) {
     return new RegExp(Patterns_1.startsWith(pattern), flags);
 }
 
-},{"../Patterns":64}],16:[function(require,module,exports){
+},{"../Patterns":64}],15:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableSandwich = (function () {
@@ -737,13 +618,13 @@ var TokenizableSandwich = (function () {
 }());
 exports.TokenizableSandwich = TokenizableSandwich;
 
-},{"../Patterns":64}],17:[function(require,module,exports){
+},{"../Patterns":64}],16:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var RichConventions_1 = require('./RichConventions');
 var MediaConventions_1 = require('./MediaConventions');
-var ApplyRaisedVoices_1 = require('./RaisedVoices/ApplyRaisedVoices');
-var NestOverlappingConventions_1 = require('./NestOverlappingConventions');
+var applyRaisedVoices_1 = require('./RaisedVoices/applyRaisedVoices');
+var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var TokenizerState_1 = require('./TokenizerState');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
@@ -833,7 +714,7 @@ var Tokenizer = (function () {
         this.dirty();
         this.tokenize();
         this.tokens =
-            NestOverlappingConventions_1.nestOverlappingConventions(ApplyRaisedVoices_1.applyRaisedVoices(this.tokens));
+            nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.tokens));
     }
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.finalizeAndCheckValidity())) {
@@ -1248,7 +1129,7 @@ var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 
-},{"../CollectionHelpers":2,"../Patterns":64,"./FailedStateTracker":3,"./MediaConventions":5,"./NestOverlappingConventions":6,"./RaisedVoices/ApplyRaisedVoices":9,"./RichConventions":14,"./TokenizableMedia":15,"./TokenizableSandwich":16,"./TokenizerContext":18,"./TokenizerState":19,"./Tokens/InlineCodeToken":26,"./Tokens/NakedUrlToken":30,"./Tokens/PlainTextToken":33,"./Tokens/PotentialRaisedVoiceEndToken":34,"./Tokens/PotentialRaisedVoiceStartOrEndToken":35,"./Tokens/PotentialRaisedVoiceStartToken":36}],18:[function(require,module,exports){
+},{"../CollectionHelpers":2,"../Patterns":64,"./FailedStateTracker":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./TokenizableMedia":14,"./TokenizableSandwich":15,"./TokenizerContext":17,"./TokenizerState":18,"./Tokens/InlineCodeToken":25,"./Tokens/NakedUrlToken":29,"./Tokens/PlainTextToken":32,"./Tokens/PotentialRaisedVoiceEndToken":33,"./Tokens/PotentialRaisedVoiceStartOrEndToken":34,"./Tokens/PotentialRaisedVoiceStartToken":35,"./nestOverlappingConventions":49}],17:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(args) {
@@ -1263,7 +1144,7 @@ var TokenizerContext = (function () {
 }());
 exports.TokenizerContext = TokenizerContext;
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 (function (TokenizerState) {
     TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
@@ -1285,7 +1166,7 @@ exports.TokenizerContext = TokenizerContext;
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1302,7 +1183,7 @@ var AudioToken = (function (_super) {
 }(MediaToken_1.MediaToken));
 exports.AudioToken = AudioToken;
 
-},{"./MediaToken":29}],21:[function(require,module,exports){
+},{"./MediaToken":28}],20:[function(require,module,exports){
 "use strict";
 var EmphasisEndToken = (function () {
     function EmphasisEndToken() {
@@ -1312,7 +1193,7 @@ var EmphasisEndToken = (function () {
 }());
 exports.EmphasisEndToken = EmphasisEndToken;
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 var EmphasisStartToken = (function () {
     function EmphasisStartToken() {
@@ -1322,7 +1203,7 @@ var EmphasisStartToken = (function () {
 }());
 exports.EmphasisStartToken = EmphasisStartToken;
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 var FootnoteEndToken = (function () {
     function FootnoteEndToken() {
@@ -1332,7 +1213,7 @@ var FootnoteEndToken = (function () {
 }());
 exports.FootnoteEndToken = FootnoteEndToken;
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 var FootnoteStartToken = (function () {
     function FootnoteStartToken() {
@@ -1342,7 +1223,7 @@ var FootnoteStartToken = (function () {
 }());
 exports.FootnoteStartToken = FootnoteStartToken;
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1359,7 +1240,7 @@ var ImageToken = (function (_super) {
 }(MediaToken_1.MediaToken));
 exports.ImageToken = ImageToken;
 
-},{"./MediaToken":29}],26:[function(require,module,exports){
+},{"./MediaToken":28}],25:[function(require,module,exports){
 "use strict";
 var InlineCodeToken = (function () {
     function InlineCodeToken(code) {
@@ -1370,7 +1251,7 @@ var InlineCodeToken = (function () {
 }());
 exports.InlineCodeToken = InlineCodeToken;
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 var LinkEndToken = (function () {
     function LinkEndToken(url) {
@@ -1381,7 +1262,7 @@ var LinkEndToken = (function () {
 }());
 exports.LinkEndToken = LinkEndToken;
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 var LinkStartToken = (function () {
     function LinkStartToken() {
@@ -1391,7 +1272,7 @@ var LinkStartToken = (function () {
 }());
 exports.LinkStartToken = LinkStartToken;
 
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 var MediaToken = (function () {
     function MediaToken(description, url) {
@@ -1403,7 +1284,7 @@ var MediaToken = (function () {
 }());
 exports.MediaToken = MediaToken;
 
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 var NakedUrlToken = (function () {
     function NakedUrlToken(protocol) {
@@ -1418,7 +1299,7 @@ var NakedUrlToken = (function () {
 }());
 exports.NakedUrlToken = NakedUrlToken;
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 var ParenthesizedEndToken = (function () {
     function ParenthesizedEndToken() {
@@ -1429,7 +1310,7 @@ var ParenthesizedEndToken = (function () {
 }());
 exports.ParenthesizedEndToken = ParenthesizedEndToken;
 
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 var ParenthesizedStartToken = (function () {
     function ParenthesizedStartToken() {
@@ -1440,7 +1321,7 @@ var ParenthesizedStartToken = (function () {
 }());
 exports.ParenthesizedStartToken = ParenthesizedStartToken;
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 var PlainTextToken = (function () {
     function PlainTextToken(text) {
@@ -1451,7 +1332,7 @@ var PlainTextToken = (function () {
 }());
 exports.PlainTextToken = PlainTextToken;
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1468,7 +1349,7 @@ var PotentialRaisedVoiceEndToken = (function (_super) {
 }(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
 exports.PotentialRaisedVoiceEndToken = PotentialRaisedVoiceEndToken;
 
-},{"./PotentialRaisedVoiceToken":37}],35:[function(require,module,exports){
+},{"./PotentialRaisedVoiceToken":36}],34:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1485,7 +1366,7 @@ var PotentialRaisedVoiceStartOrEndToken = (function (_super) {
 }(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
 exports.PotentialRaisedVoiceStartOrEndToken = PotentialRaisedVoiceStartOrEndToken;
 
-},{"./PotentialRaisedVoiceToken":37}],36:[function(require,module,exports){
+},{"./PotentialRaisedVoiceToken":36}],35:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1502,7 +1383,7 @@ var PotentialRaisedVoiceStartToken = (function (_super) {
 }(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
 exports.PotentialRaisedVoiceStartToken = PotentialRaisedVoiceStartToken;
 
-},{"./PotentialRaisedVoiceToken":37}],37:[function(require,module,exports){
+},{"./PotentialRaisedVoiceToken":36}],36:[function(require,module,exports){
 "use strict";
 var PotentialRaisedVoiceToken = (function () {
     function PotentialRaisedVoiceToken(asterisks) {
@@ -1513,7 +1394,7 @@ var PotentialRaisedVoiceToken = (function () {
 }());
 exports.PotentialRaisedVoiceToken = PotentialRaisedVoiceToken;
 
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 var RevisionDeletionEndToken = (function () {
     function RevisionDeletionEndToken() {
@@ -1523,7 +1404,7 @@ var RevisionDeletionEndToken = (function () {
 }());
 exports.RevisionDeletionEndToken = RevisionDeletionEndToken;
 
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 var RevisionDeletionStartToken = (function () {
     function RevisionDeletionStartToken() {
@@ -1533,7 +1414,7 @@ var RevisionDeletionStartToken = (function () {
 }());
 exports.RevisionDeletionStartToken = RevisionDeletionStartToken;
 
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 var RevisionInsertionEndToken = (function () {
     function RevisionInsertionEndToken() {
@@ -1543,7 +1424,7 @@ var RevisionInsertionEndToken = (function () {
 }());
 exports.RevisionInsertionEndToken = RevisionInsertionEndToken;
 
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 "use strict";
 var RevisionInsertionStartToken = (function () {
     function RevisionInsertionStartToken() {
@@ -1553,7 +1434,7 @@ var RevisionInsertionStartToken = (function () {
 }());
 exports.RevisionInsertionStartToken = RevisionInsertionStartToken;
 
-},{}],42:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 var SpoilerEndToken = (function () {
     function SpoilerEndToken() {
@@ -1563,7 +1444,7 @@ var SpoilerEndToken = (function () {
 }());
 exports.SpoilerEndToken = SpoilerEndToken;
 
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 "use strict";
 var SpoilerStartToken = (function () {
     function SpoilerStartToken() {
@@ -1573,7 +1454,7 @@ var SpoilerStartToken = (function () {
 }());
 exports.SpoilerStartToken = SpoilerStartToken;
 
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 "use strict";
 var SquareBracketedEndToken = (function () {
     function SquareBracketedEndToken() {
@@ -1584,7 +1465,7 @@ var SquareBracketedEndToken = (function () {
 }());
 exports.SquareBracketedEndToken = SquareBracketedEndToken;
 
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 var SquareBracketedStartToken = (function () {
     function SquareBracketedStartToken() {
@@ -1595,7 +1476,7 @@ var SquareBracketedStartToken = (function () {
 }());
 exports.SquareBracketedStartToken = SquareBracketedStartToken;
 
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 "use strict";
 var StressEndToken = (function () {
     function StressEndToken() {
@@ -1605,7 +1486,7 @@ var StressEndToken = (function () {
 }());
 exports.StressEndToken = StressEndToken;
 
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 "use strict";
 var StressStartToken = (function () {
     function StressStartToken() {
@@ -1615,7 +1496,7 @@ var StressStartToken = (function () {
 }());
 exports.StressStartToken = StressStartToken;
 
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1632,7 +1513,7 @@ var VideoToken = (function (_super) {
 }(MediaToken_1.MediaToken));
 exports.VideoToken = VideoToken;
 
-},{"./MediaToken":29}],49:[function(require,module,exports){
+},{"./MediaToken":28}],48:[function(require,module,exports){
 "use strict";
 var Tokenize_1 = require('./Tokenize');
 var Parse_1 = require('./Parse');
@@ -1643,7 +1524,126 @@ function getInlineNodes(text, config) {
 }
 exports.getInlineNodes = getInlineNodes;
 
-},{"./Parse":7,"./Tokenize":17}],50:[function(require,module,exports){
+},{"./Parse":6,"./Tokenize":16}],49:[function(require,module,exports){
+"use strict";
+var RichConventions_1 = require('./RichConventions');
+function nestOverlappingConventions(tokens) {
+    return new ConventionNester(tokens.slice()).tokens;
+}
+exports.nestOverlappingConventions = nestOverlappingConventions;
+var FREELY_SPLITTABLE_CONVENTIONS = [
+    RichConventions_1.REVISION_DELETION,
+    RichConventions_1.REVISION_INSERTION,
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS
+];
+var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
+    RichConventions_1.LINK,
+    RichConventions_1.SPOILER,
+    RichConventions_1.FOOTNOTE
+];
+var ConventionNester = (function () {
+    function ConventionNester(tokens) {
+        this.tokens = tokens;
+        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
+        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
+        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
+            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
+            this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
+            conventionsToSplit.push(conventionNotToSplit);
+        }
+    }
+    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
+        var unclosedConventions = [];
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            var token = this.tokens[tokenIndex];
+            var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventions);
+            if (conventionStartedByThisToken) {
+                unclosedConventions.push(conventionStartedByThisToken);
+                continue;
+            }
+            var conventionEndedByThisToken = getConventionEndedBy(token, conventions);
+            if (!conventionEndedByThisToken) {
+                continue;
+            }
+            var overlappingFromMostRecentToLeast = [];
+            for (var conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
+                var unclosedConvention = unclosedConventions[conventionIndex];
+                if (unclosedConvention === conventionEndedByThisToken) {
+                    unclosedConventions.splice(conventionIndex, 1);
+                    break;
+                }
+                overlappingFromMostRecentToLeast.push(unclosedConvention);
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast);
+            var countOverlapping = overlappingFromMostRecentToLeast.length;
+            tokenIndex += (2 * countOverlapping);
+        }
+    };
+    ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
+                continue;
+            }
+            var heroStartIndex = tokenIndex;
+            var heroEndIndex = void 0;
+            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
+                if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
+                    heroEndIndex = i;
+                    break;
+                }
+            }
+            var overlappingStartingBefore = [];
+            var overlappingStartingInside = [];
+            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
+                var token = this.tokens[indexInsideHero];
+                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit);
+                if (conventionStartedByThisToken) {
+                    overlappingStartingInside.push(conventionStartedByThisToken);
+                    continue;
+                }
+                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit);
+                if (conventionEndedByThisToken) {
+                    if (overlappingStartingInside.length) {
+                        overlappingStartingInside.pop();
+                        continue;
+                    }
+                    overlappingStartingBefore.push(conventionEndedByThisToken);
+                }
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
+            var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
+            tokenIndex = heroEndIndex + countTokensAdded;
+        }
+    };
+    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, conventionsInTheOrderTheyShouldClose) {
+        var startTokensToAdd = conventionsInTheOrderTheyShouldClose
+            .map(function (convention) { return new convention.StartTokenType(); })
+            .reverse();
+        var endTokensToAdd = conventionsInTheOrderTheyShouldClose
+            .map(function (convention) { return new convention.EndTokenType(); });
+        this.insertTokens(index + 1, startTokensToAdd);
+        this.insertTokens(index, endTokensToAdd);
+    };
+    ConventionNester.prototype.insertTokens = function (index, tokens) {
+        (_a = this.tokens).splice.apply(_a, [index, 0].concat(tokens));
+        var _a;
+    };
+    return ConventionNester;
+}());
+function getConventionStartedByThisToken(token, conventions) {
+    return conventions.filter(function (convention) {
+        return token instanceof convention.StartTokenType;
+    })[0];
+}
+function getConventionEndedBy(token, conventions) {
+    return conventions.filter(function (convention) {
+        return token instanceof convention.EndTokenType;
+    })[0];
+}
+
+},{"./RichConventions":13}],50:[function(require,module,exports){
 "use strict";
 var HeadingLeveler = (function () {
     function HeadingLeveler() {
@@ -1787,7 +1787,7 @@ exports.getHeadingParser = getHeadingParser;
 var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/HeadingNode":78,"../Inline/getInlineNodes":49,"../Patterns":64,"./HeadingLeveler":50,"./LineConsumer":51,"./isLineFancyOutlineConvention":55}],53:[function(require,module,exports){
+},{"../../SyntaxNodes/HeadingNode":78,"../Inline/getInlineNodes":48,"../Patterns":64,"./HeadingLeveler":50,"./LineConsumer":51,"./isLineFancyOutlineConvention":55}],53:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -2080,7 +2080,7 @@ var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 
-},{"../../SyntaxNodes/Description":70,"../../SyntaxNodes/DescriptionListItem":71,"../../SyntaxNodes/DescriptionListNode":72,"../../SyntaxNodes/DescriptionTerm":73,"../Inline/getInlineNodes":49,"../Patterns":64,"./LineConsumer":51,"./getOutlineNodes":53,"./getRemainingLinesOfListItem":54,"./isLineFancyOutlineConvention":55}],60:[function(require,module,exports){
+},{"../../SyntaxNodes/Description":70,"../../SyntaxNodes/DescriptionListItem":71,"../../SyntaxNodes/DescriptionListNode":72,"../../SyntaxNodes/DescriptionTerm":73,"../Inline/getInlineNodes":48,"../Patterns":64,"./LineConsumer":51,"./getOutlineNodes":53,"./getRemainingLinesOfListItem":54,"./isLineFancyOutlineConvention":55}],60:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
@@ -2219,7 +2219,7 @@ function isMediaSyntaxNode(node) {
 var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/Line":82,"../../SyntaxNodes/LineBlockNode":83,"../../SyntaxNodes/MediaSyntaxNode":85,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/getInlineNodes":49,"../Patterns":64,"./LineConsumer":51,"./isLineFancyOutlineConvention":55}],62:[function(require,module,exports){
+},{"../../SyntaxNodes/Line":82,"../../SyntaxNodes/LineBlockNode":83,"../../SyntaxNodes/MediaSyntaxNode":85,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/getInlineNodes":48,"../Patterns":64,"./LineConsumer":51,"./isLineFancyOutlineConvention":55}],62:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
