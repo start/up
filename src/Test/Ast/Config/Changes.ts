@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { UpConfigArgs } from '../../../UpConfigArgs'
-import { Up } from '../../../index'
+import Up from '../../../index'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'

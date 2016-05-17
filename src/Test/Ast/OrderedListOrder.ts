@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../index'
+import Up from '../../index'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListOrder } from '../../SyntaxNodes/OrderedListOrder'
 

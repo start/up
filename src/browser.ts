@@ -1,3 +1,3 @@
-import { Up } from './Up'
+import Up from './index'
 
-(<any>window).Up = Up
+(<any>window).Up = Up 

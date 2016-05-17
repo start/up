@@ -1,1 +1,3 @@
-export { Up } from './Up'
+import { Up }  from './Up'
+
+export default Up

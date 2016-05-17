@@ -3408,7 +3408,13 @@ exports.Writer = Writer;
 
 },{"../SyntaxNodes/AudioNode":66,"../SyntaxNodes/BlockquoteNode":67,"../SyntaxNodes/CodeBlockNode":68,"../SyntaxNodes/DescriptionListNode":71,"../SyntaxNodes/DocumentNode":73,"../SyntaxNodes/EmphasisNode":74,"../SyntaxNodes/FootnoteBlockNode":75,"../SyntaxNodes/FootnoteNode":76,"../SyntaxNodes/HeadingNode":77,"../SyntaxNodes/ImageNode":78,"../SyntaxNodes/InlineCodeNode":79,"../SyntaxNodes/LineBlockNode":82,"../SyntaxNodes/LinkNode":83,"../SyntaxNodes/OrderedListNode":86,"../SyntaxNodes/ParagraphNode":89,"../SyntaxNodes/PlainTextNode":90,"../SyntaxNodes/RevisionDeletionNode":91,"../SyntaxNodes/RevisionInsertionNode":92,"../SyntaxNodes/SectionSeparatorNode":94,"../SyntaxNodes/SpoilerNode":95,"../SyntaxNodes/StressNode":96,"../SyntaxNodes/UnorderedListNode":98,"../SyntaxNodes/VideoNode":99}],105:[function(require,module,exports){
 "use strict";
+var index_1 = require('./index');
+window.Up = index_1.default;
+
+},{"./index":106}],106:[function(require,module,exports){
+"use strict";
 var Up_1 = require('./Up');
-window.Up = Up_1.Up;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Up_1.Up;
 
 },{"./Up":101}]},{},[105]);

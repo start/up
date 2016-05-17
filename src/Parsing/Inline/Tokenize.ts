@@ -435,7 +435,7 @@ class Tokenizer {
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContexts.push({
-            state: state,
+            state,
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
             openContexts: this.openContexts.slice(),
