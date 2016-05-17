@@ -1,5 +1,1 @@
-import { Up } from './Up'
-
-export {
-  Up
-}
+export { Up } from './Up'
