@@ -37,7 +37,7 @@ describe('Inside a link, a footnote', () => {
   it("'does not produce an anchor element. The footnote's sup element directly includes the would-be anchor's contents", () => {
     const node = new LinkNode([
       new PlainTextNode('Google'),
-      new FootnoteNode([new PlainTextNode('An older search engine')], 2)
+      new FootnoteNode([new PlainTextNode('A really old search engine.')], 2)
     ], 'https://google.com')
     expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google<sup id="footnote-reference-2" data-footnote-reference>2</sup></a>')
   })
@@ -47,9 +47,9 @@ describe('Inside a link, a footnote', () => {
 describe('Inside a link, another link', () => {
   it("'does not produce an anchor element. The would-be anchor's contents are included directly inside the outer link", () => {
     const node = new LinkNode([
-      new PlainTextNode('Google is not '),
+      new PlainTextNode('Google is probably not '),
       new LinkNode([new PlainTextNode('Bing')], 'https://bing.com')
     ], 'https://google.com')
-    expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google is not Bing</a>')
+    expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google is probably not Bing</a>')
   })
 })
