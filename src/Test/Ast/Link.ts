@@ -47,6 +47,19 @@ describe("A link's contents", () => {
         new PlainTextNode('.')
       ]))
   })
+
+  it('is evaluated for naked URLs', () => {
+    expect(Up.toAst('[Google is not at https://bing.com -> https://google.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Google is not at '),
+          new LinkNode([
+            new PlainTextNode('bing.com')
+          ], 'https://bing.com')
+        ], 'https://google.com'),
+        new PlainTextNode('.')
+      ]))
+  })
 })
 
 
