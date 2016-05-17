@@ -10,6 +10,7 @@ import { last, reverse } from '../../CollectionHelpers'
 import { MediaToken } from './Tokens/MediaToken'
 import { TokenizerState } from './TokenizerState'
 import { TokenizableSandwich } from './TokenizableSandwich'
+import { TokenizerContextBehavior } from './TokenizerContextBehavior'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedStateTracker } from './FailedStateTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -73,6 +74,23 @@ class Tokenizer {
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
+  
+
+  private inlineCodeBehavior = {
+    mustClose: true,
+    onOpen: () => this.flushBufferToPlainTextToken(),
+    onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText())),
+  }
+  
+  private footnoteBehavior = this.getRichSandwichBehavior(FOOTNOTE)
+  private spoilerBehavior =  this.getRichSandwichBehavior(SPOILER)
+  private revisionDeletionBehavior =  this.getRichSandwichBehavior(REVISION_DELETION)
+  private revisionInsertionBehavior =  this.getRichSandwichBehavior(REVISION_INSERTION)
+  private parenthesizedBehavior =  this.getRichSandwichBehavior(PARENTHESIZED)
+  private squareBracketedBehavior =  this.getRichSandwichBehavior(SQUARE_BRACKETED)
+  
+  private squareBracketedInsideUrlBehavior = this.getBracketInsideUrlBehavior()
+  
 
   constructor(private entireText: string, config: UpConfig) {
     this.configureConventions(config)
@@ -542,6 +560,26 @@ class Tokenizer {
 
     const previousChar = this.entireText[this.textIndex - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
+  }
+  
+  private getRichSandwichBehavior(convention: RichConvention): TokenizerContextBehavior {
+    return {
+      mustClose: true,
+      onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new convention.StartTokenType()),
+      onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(new convention.EndTokenType())
+    }
+  }
+
+  private getBracketInsideUrlBehavior(): TokenizerContextBehavior {
+    const bufferBracket = (bracket: string) => {
+      this.bufferedText += bracket
+    }
+
+    return {
+      mustClose: false,
+      onOpen: bufferBracket,
+      onClose: bufferBracket
+    }
   }
 
   private getRichSandwich(

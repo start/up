@@ -495,12 +495,25 @@ function tokenize(text, config) {
 exports.tokenize = tokenize;
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
+        var _this = this;
         this.entireText = entireText;
         this.tokens = [];
         this.textIndex = 0;
         this.openContexts = [];
         this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
         this.bufferedText = '';
+        this.inlineCodeBehavior = {
+            mustClose: true,
+            onOpen: function () { return _this.flushBufferToPlainTextToken(); },
+            onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText())); },
+        };
+        this.footnoteBehavior = this.getRichSandwichBehavior(RichConventions_1.FOOTNOTE);
+        this.spoilerBehavior = this.getRichSandwichBehavior(RichConventions_1.SPOILER);
+        this.revisionDeletionBehavior = this.getRichSandwichBehavior(RichConventions_1.REVISION_DELETION);
+        this.revisionInsertionBehavior = this.getRichSandwichBehavior(RichConventions_1.REVISION_INSERTION);
+        this.parenthesizedBehavior = this.getRichSandwichBehavior(RichConventions_1.PARENTHESIZED);
+        this.squareBracketedBehavior = this.getRichSandwichBehavior(RichConventions_1.SQUARE_BRACKETED);
+        this.squareBracketedInsideUrlBehavior = this.getBracketInsideUrlBehavior();
         this.configureConventions(config);
         this.dirty();
         this.tokenize();
@@ -859,6 +872,25 @@ var Tokenizer = (function () {
         this.currentChar = this.remainingText[0];
         var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
+    };
+    Tokenizer.prototype.getRichSandwichBehavior = function (convention) {
+        var _this = this;
+        return {
+            mustClose: true,
+            onOpen: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(new convention.StartTokenType()); },
+            onClose: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(new convention.EndTokenType()); }
+        };
+    };
+    Tokenizer.prototype.getBracketInsideUrlBehavior = function () {
+        var _this = this;
+        var bufferBracket = function (bracket) {
+            _this.bufferedText += bracket;
+        };
+        return {
+            mustClose: false,
+            onOpen: bufferBracket,
+            onClose: bufferBracket
+        };
     };
     Tokenizer.prototype.getRichSandwich = function (args) {
         var _this = this;
