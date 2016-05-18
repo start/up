@@ -26,12 +26,7 @@ import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoi
 import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceStartToken'
 
 
-export function tokenize(text: string, config: UpConfig): Token[] {
-  return new Tokenizer(text, config).tokens
-}
-
-
-class Tokenizer {
+export class Tokenizer {
   tokens: Token[] = []
 
   private textIndex = 0
