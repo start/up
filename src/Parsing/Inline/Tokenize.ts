@@ -3,6 +3,7 @@ import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTH
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
+import { MediaConvention } from './MediaConvention'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
@@ -90,6 +91,10 @@ class Tokenizer {
   private squareBracketedBehavior =  this.getRichSandwichBehavior(SQUARE_BRACKETED)
   
   private squareBracketedInsideUrlBehavior = this.getBracketInsideUrlBehavior()
+  
+  private audioBehavior = this.getMediaBehavior(VIDEO)
+  private imageBehavior = this.getMediaBehavior(VIDEO)
+  private videoBehavior = this.getMediaBehavior(VIDEO)
   
 
   constructor(private entireText: string, config: UpConfig) {
@@ -579,6 +584,13 @@ class Tokenizer {
       mustClose: false,
       onOpen: bufferBracket,
       onClose: bufferBracket
+    }
+  }
+  
+  private getMediaBehavior(media: MediaConvention): TokenizerContextBehavior {
+    return {
+      mustClose: true,
+      onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType())
     }
   }
 
