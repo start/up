@@ -100,7 +100,7 @@ exports.IMAGE = IMAGE;
 var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken, TokenizerState_1.TokenizerState.Video);
 exports.VIDEO = VIDEO;
 
-},{"../../SyntaxNodes/AudioNode":66,"../../SyntaxNodes/ImageNode":78,"../../SyntaxNodes/VideoNode":99,"./MediaConvention":4,"./TokenizerState":15,"./Tokens/AudioToken":16,"./Tokens/ImageToken":21,"./Tokens/VideoToken":44}],6:[function(require,module,exports){
+},{"../../SyntaxNodes/AudioNode":66,"../../SyntaxNodes/ImageNode":78,"../../SyntaxNodes/VideoNode":99,"./MediaConvention":4,"./TokenizerState":14,"./Tokens/AudioToken":15,"./Tokens/ImageToken":20,"./Tokens/VideoToken":43}],6:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -181,7 +181,7 @@ var EndMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.EndMarker = EndMarker;
 
-},{"../Tokens/EmphasisEndToken":17,"../Tokens/StressEndToken":42,"./RaisedVoiceMarker":8,"./StartMarker":9}],7:[function(require,module,exports){
+},{"../Tokens/EmphasisEndToken":16,"../Tokens/StressEndToken":41,"./RaisedVoiceMarker":8,"./StartMarker":9}],7:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -202,7 +202,7 @@ var PlainTextMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.PlainTextMarker = PlainTextMarker;
 
-},{"../Tokens/PlainTextToken":29,"./RaisedVoiceMarker":8}],8:[function(require,module,exports){
+},{"../Tokens/PlainTextToken":28,"./RaisedVoiceMarker":8}],8:[function(require,module,exports){
 "use strict";
 var EMPHASIS_COST = 1;
 var STRESS_COST = 2;
@@ -298,7 +298,7 @@ var StartMarker = (function (_super) {
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
 exports.StartMarker = StartMarker;
 
-},{"../Tokens/EmphasisStartToken":18,"../Tokens/StressStartToken":43,"./RaisedVoiceMarker":8}],10:[function(require,module,exports){
+},{"../Tokens/EmphasisStartToken":17,"../Tokens/StressStartToken":42,"./RaisedVoiceMarker":8}],10:[function(require,module,exports){
 "use strict";
 var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
 var StartMarker_1 = require('./StartMarker');
@@ -353,7 +353,7 @@ function getRaisedVoiceMarkers(tokens) {
     return withFailedMarkersTreatedAsPlainText;
 }
 
-},{"../Tokens/PotentialRaisedVoiceEndToken":30,"../Tokens/PotentialRaisedVoiceStartOrEndToken":31,"../Tokens/PotentialRaisedVoiceStartToken":32,"./EndMarker":6,"./PlainTextMarker":7,"./RaisedVoiceMarker":8,"./StartMarker":9}],11:[function(require,module,exports){
+},{"../Tokens/PotentialRaisedVoiceEndToken":29,"../Tokens/PotentialRaisedVoiceStartOrEndToken":30,"../Tokens/PotentialRaisedVoiceStartToken":31,"./EndMarker":6,"./PlainTextMarker":7,"./RaisedVoiceMarker":8,"./StartMarker":9}],11:[function(require,module,exports){
 "use strict";
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
 var EmphasisNode_1 = require('../../SyntaxNodes/EmphasisNode');
@@ -439,7 +439,7 @@ var SQUARE_BRACKETED = {
 };
 exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
 
-},{"../../SyntaxNodes/EmphasisNode":74,"../../SyntaxNodes/FootnoteNode":76,"../../SyntaxNodes/RevisionDeletionNode":91,"../../SyntaxNodes/RevisionInsertionNode":92,"../../SyntaxNodes/SpoilerNode":95,"../../SyntaxNodes/StressNode":96,"./TokenizerState":15,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/ParenthesizedEndToken":27,"./Tokens/ParenthesizedStartToken":28,"./Tokens/RevisionDeletionEndToken":34,"./Tokens/RevisionDeletionStartToken":35,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39,"./Tokens/SquareBracketedEndToken":40,"./Tokens/SquareBracketedStartToken":41,"./Tokens/StressEndToken":42,"./Tokens/StressStartToken":43}],12:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":74,"../../SyntaxNodes/FootnoteNode":76,"../../SyntaxNodes/RevisionDeletionNode":91,"../../SyntaxNodes/RevisionInsertionNode":92,"../../SyntaxNodes/SpoilerNode":95,"../../SyntaxNodes/StressNode":96,"./TokenizerState":14,"./Tokens/EmphasisEndToken":16,"./Tokens/EmphasisStartToken":17,"./Tokens/FootnoteEndToken":18,"./Tokens/FootnoteStartToken":19,"./Tokens/LinkEndToken":22,"./Tokens/LinkStartToken":23,"./Tokens/ParenthesizedEndToken":26,"./Tokens/ParenthesizedStartToken":27,"./Tokens/RevisionDeletionEndToken":33,"./Tokens/RevisionDeletionStartToken":34,"./Tokens/RevisionInsertionEndToken":35,"./Tokens/RevisionInsertionStartToken":36,"./Tokens/SpoilerEndToken":37,"./Tokens/SpoilerStartToken":38,"./Tokens/SquareBracketedEndToken":39,"./Tokens/SquareBracketedStartToken":40,"./Tokens/StressEndToken":41,"./Tokens/StressStartToken":42}],12:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
@@ -472,6 +472,640 @@ var TokenizableSandwich = (function () {
 exports.TokenizableSandwich = TokenizableSandwich;
 
 },{"../Patterns":62}],14:[function(require,module,exports){
+"use strict";
+(function (TokenizerState) {
+    TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
+    TokenizerState[TokenizerState["Footnote"] = 1] = "Footnote";
+    TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
+    TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
+    TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
+    TokenizerState[TokenizerState["ParenthesizedInsideUrl"] = 5] = "ParenthesizedInsideUrl";
+    TokenizerState[TokenizerState["SquareBracketedInsideUrl"] = 6] = "SquareBracketedInsideUrl";
+    TokenizerState[TokenizerState["Link"] = 7] = "Link";
+    TokenizerState[TokenizerState["LinkUrl"] = 8] = "LinkUrl";
+    TokenizerState[TokenizerState["RevisionInsertion"] = 9] = "RevisionInsertion";
+    TokenizerState[TokenizerState["RevisionDeletion"] = 10] = "RevisionDeletion";
+    TokenizerState[TokenizerState["Audio"] = 11] = "Audio";
+    TokenizerState[TokenizerState["Image"] = 12] = "Image";
+    TokenizerState[TokenizerState["Video"] = 13] = "Video";
+    TokenizerState[TokenizerState["MediaUrl"] = 14] = "MediaUrl";
+    TokenizerState[TokenizerState["NakedUrl"] = 15] = "NakedUrl";
+})(exports.TokenizerState || (exports.TokenizerState = {}));
+var TokenizerState = exports.TokenizerState;
+
+},{}],15:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var MediaToken_1 = require('./MediaToken');
+var AudioToken = (function (_super) {
+    __extends(AudioToken, _super);
+    function AudioToken() {
+        _super.apply(this, arguments);
+    }
+    return AudioToken;
+}(MediaToken_1.MediaToken));
+exports.AudioToken = AudioToken;
+
+},{"./MediaToken":24}],16:[function(require,module,exports){
+"use strict";
+var EmphasisEndToken = (function () {
+    function EmphasisEndToken() {
+    }
+    EmphasisEndToken.prototype.token = function () { };
+    return EmphasisEndToken;
+}());
+exports.EmphasisEndToken = EmphasisEndToken;
+
+},{}],17:[function(require,module,exports){
+"use strict";
+var EmphasisStartToken = (function () {
+    function EmphasisStartToken() {
+    }
+    EmphasisStartToken.prototype.token = function () { };
+    return EmphasisStartToken;
+}());
+exports.EmphasisStartToken = EmphasisStartToken;
+
+},{}],18:[function(require,module,exports){
+"use strict";
+var FootnoteEndToken = (function () {
+    function FootnoteEndToken() {
+    }
+    FootnoteEndToken.prototype.token = function () { };
+    return FootnoteEndToken;
+}());
+exports.FootnoteEndToken = FootnoteEndToken;
+
+},{}],19:[function(require,module,exports){
+"use strict";
+var FootnoteStartToken = (function () {
+    function FootnoteStartToken() {
+    }
+    FootnoteStartToken.prototype.token = function () { };
+    return FootnoteStartToken;
+}());
+exports.FootnoteStartToken = FootnoteStartToken;
+
+},{}],20:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var MediaToken_1 = require('./MediaToken');
+var ImageToken = (function (_super) {
+    __extends(ImageToken, _super);
+    function ImageToken() {
+        _super.apply(this, arguments);
+    }
+    return ImageToken;
+}(MediaToken_1.MediaToken));
+exports.ImageToken = ImageToken;
+
+},{"./MediaToken":24}],21:[function(require,module,exports){
+"use strict";
+var InlineCodeToken = (function () {
+    function InlineCodeToken(code) {
+        this.code = code;
+    }
+    InlineCodeToken.prototype.token = function () { };
+    return InlineCodeToken;
+}());
+exports.InlineCodeToken = InlineCodeToken;
+
+},{}],22:[function(require,module,exports){
+"use strict";
+var LinkEndToken = (function () {
+    function LinkEndToken(url) {
+        this.url = url;
+    }
+    LinkEndToken.prototype.token = function () { };
+    return LinkEndToken;
+}());
+exports.LinkEndToken = LinkEndToken;
+
+},{}],23:[function(require,module,exports){
+"use strict";
+var LinkStartToken = (function () {
+    function LinkStartToken() {
+    }
+    LinkStartToken.prototype.token = function () { };
+    return LinkStartToken;
+}());
+exports.LinkStartToken = LinkStartToken;
+
+},{}],24:[function(require,module,exports){
+"use strict";
+var MediaToken = (function () {
+    function MediaToken(description, url) {
+        this.description = description;
+        this.url = url;
+    }
+    MediaToken.prototype.token = function () { };
+    return MediaToken;
+}());
+exports.MediaToken = MediaToken;
+
+},{}],25:[function(require,module,exports){
+"use strict";
+var NakedUrlToken = (function () {
+    function NakedUrlToken(protocol) {
+        this.protocol = protocol;
+        this.restOfUrl = '';
+    }
+    NakedUrlToken.prototype.token = function () { };
+    NakedUrlToken.prototype.url = function () {
+        return this.protocol + this.restOfUrl;
+    };
+    return NakedUrlToken;
+}());
+exports.NakedUrlToken = NakedUrlToken;
+
+},{}],26:[function(require,module,exports){
+"use strict";
+var ParenthesizedEndToken = (function () {
+    function ParenthesizedEndToken() {
+        this.text = ')';
+    }
+    ParenthesizedEndToken.prototype.token = function () { };
+    return ParenthesizedEndToken;
+}());
+exports.ParenthesizedEndToken = ParenthesizedEndToken;
+
+},{}],27:[function(require,module,exports){
+"use strict";
+var ParenthesizedStartToken = (function () {
+    function ParenthesizedStartToken() {
+        this.text = '(';
+    }
+    ParenthesizedStartToken.prototype.token = function () { };
+    return ParenthesizedStartToken;
+}());
+exports.ParenthesizedStartToken = ParenthesizedStartToken;
+
+},{}],28:[function(require,module,exports){
+"use strict";
+var PlainTextToken = (function () {
+    function PlainTextToken(text) {
+        this.text = text;
+    }
+    PlainTextToken.prototype.token = function () { };
+    return PlainTextToken;
+}());
+exports.PlainTextToken = PlainTextToken;
+
+},{}],29:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var PotentialRaisedVoiceToken_1 = require('./PotentialRaisedVoiceToken');
+var PotentialRaisedVoiceEndToken = (function (_super) {
+    __extends(PotentialRaisedVoiceEndToken, _super);
+    function PotentialRaisedVoiceEndToken() {
+        _super.apply(this, arguments);
+    }
+    return PotentialRaisedVoiceEndToken;
+}(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
+exports.PotentialRaisedVoiceEndToken = PotentialRaisedVoiceEndToken;
+
+},{"./PotentialRaisedVoiceToken":32}],30:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var PotentialRaisedVoiceToken_1 = require('./PotentialRaisedVoiceToken');
+var PotentialRaisedVoiceStartOrEndToken = (function (_super) {
+    __extends(PotentialRaisedVoiceStartOrEndToken, _super);
+    function PotentialRaisedVoiceStartOrEndToken() {
+        _super.apply(this, arguments);
+    }
+    return PotentialRaisedVoiceStartOrEndToken;
+}(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
+exports.PotentialRaisedVoiceStartOrEndToken = PotentialRaisedVoiceStartOrEndToken;
+
+},{"./PotentialRaisedVoiceToken":32}],31:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var PotentialRaisedVoiceToken_1 = require('./PotentialRaisedVoiceToken');
+var PotentialRaisedVoiceStartToken = (function (_super) {
+    __extends(PotentialRaisedVoiceStartToken, _super);
+    function PotentialRaisedVoiceStartToken() {
+        _super.apply(this, arguments);
+    }
+    return PotentialRaisedVoiceStartToken;
+}(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
+exports.PotentialRaisedVoiceStartToken = PotentialRaisedVoiceStartToken;
+
+},{"./PotentialRaisedVoiceToken":32}],32:[function(require,module,exports){
+"use strict";
+var PotentialRaisedVoiceToken = (function () {
+    function PotentialRaisedVoiceToken(asterisks) {
+        this.asterisks = asterisks;
+    }
+    PotentialRaisedVoiceToken.prototype.token = function () { };
+    return PotentialRaisedVoiceToken;
+}());
+exports.PotentialRaisedVoiceToken = PotentialRaisedVoiceToken;
+
+},{}],33:[function(require,module,exports){
+"use strict";
+var RevisionDeletionEndToken = (function () {
+    function RevisionDeletionEndToken() {
+    }
+    RevisionDeletionEndToken.prototype.token = function () { };
+    return RevisionDeletionEndToken;
+}());
+exports.RevisionDeletionEndToken = RevisionDeletionEndToken;
+
+},{}],34:[function(require,module,exports){
+"use strict";
+var RevisionDeletionStartToken = (function () {
+    function RevisionDeletionStartToken() {
+    }
+    RevisionDeletionStartToken.prototype.token = function () { };
+    return RevisionDeletionStartToken;
+}());
+exports.RevisionDeletionStartToken = RevisionDeletionStartToken;
+
+},{}],35:[function(require,module,exports){
+"use strict";
+var RevisionInsertionEndToken = (function () {
+    function RevisionInsertionEndToken() {
+    }
+    RevisionInsertionEndToken.prototype.token = function () { };
+    return RevisionInsertionEndToken;
+}());
+exports.RevisionInsertionEndToken = RevisionInsertionEndToken;
+
+},{}],36:[function(require,module,exports){
+"use strict";
+var RevisionInsertionStartToken = (function () {
+    function RevisionInsertionStartToken() {
+    }
+    RevisionInsertionStartToken.prototype.token = function () { };
+    return RevisionInsertionStartToken;
+}());
+exports.RevisionInsertionStartToken = RevisionInsertionStartToken;
+
+},{}],37:[function(require,module,exports){
+"use strict";
+var SpoilerEndToken = (function () {
+    function SpoilerEndToken() {
+    }
+    SpoilerEndToken.prototype.token = function () { };
+    return SpoilerEndToken;
+}());
+exports.SpoilerEndToken = SpoilerEndToken;
+
+},{}],38:[function(require,module,exports){
+"use strict";
+var SpoilerStartToken = (function () {
+    function SpoilerStartToken() {
+    }
+    SpoilerStartToken.prototype.token = function () { };
+    return SpoilerStartToken;
+}());
+exports.SpoilerStartToken = SpoilerStartToken;
+
+},{}],39:[function(require,module,exports){
+"use strict";
+var SquareBracketedEndToken = (function () {
+    function SquareBracketedEndToken() {
+        this.text = ']';
+    }
+    SquareBracketedEndToken.prototype.token = function () { };
+    return SquareBracketedEndToken;
+}());
+exports.SquareBracketedEndToken = SquareBracketedEndToken;
+
+},{}],40:[function(require,module,exports){
+"use strict";
+var SquareBracketedStartToken = (function () {
+    function SquareBracketedStartToken() {
+        this.text = '[';
+    }
+    SquareBracketedStartToken.prototype.token = function () { };
+    return SquareBracketedStartToken;
+}());
+exports.SquareBracketedStartToken = SquareBracketedStartToken;
+
+},{}],41:[function(require,module,exports){
+"use strict";
+var StressEndToken = (function () {
+    function StressEndToken() {
+    }
+    StressEndToken.prototype.token = function () { };
+    return StressEndToken;
+}());
+exports.StressEndToken = StressEndToken;
+
+},{}],42:[function(require,module,exports){
+"use strict";
+var StressStartToken = (function () {
+    function StressStartToken() {
+    }
+    StressStartToken.prototype.token = function () { };
+    return StressStartToken;
+}());
+exports.StressStartToken = StressStartToken;
+
+},{}],43:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var MediaToken_1 = require('./MediaToken');
+var VideoToken = (function (_super) {
+    __extends(VideoToken, _super);
+    function VideoToken() {
+        _super.apply(this, arguments);
+    }
+    return VideoToken;
+}(MediaToken_1.MediaToken));
+exports.VideoToken = VideoToken;
+
+},{"./MediaToken":24}],44:[function(require,module,exports){
+"use strict";
+var tokenize_1 = require('./tokenize');
+var parse_1 = require('./parse');
+function getInlineNodes(text, config) {
+    return parse_1.parse({
+        tokens: tokenize_1.tokenize(text, config)
+    }).nodes;
+}
+exports.getInlineNodes = getInlineNodes;
+
+},{"./parse":46,"./tokenize":47}],45:[function(require,module,exports){
+"use strict";
+var RichConventions_1 = require('./RichConventions');
+function nestOverlappingConventions(tokens) {
+    return new ConventionNester(tokens.slice()).tokens;
+}
+exports.nestOverlappingConventions = nestOverlappingConventions;
+var FREELY_SPLITTABLE_CONVENTIONS = [
+    RichConventions_1.REVISION_DELETION,
+    RichConventions_1.REVISION_INSERTION,
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS
+];
+var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
+    RichConventions_1.LINK,
+    RichConventions_1.SPOILER,
+    RichConventions_1.FOOTNOTE
+];
+var ConventionNester = (function () {
+    function ConventionNester(tokens) {
+        this.tokens = tokens;
+        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
+        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
+        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
+            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
+            this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
+            conventionsToSplit.push(conventionNotToSplit);
+        }
+    }
+    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
+        var unclosedConventions = [];
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            var token = this.tokens[tokenIndex];
+            var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventions);
+            if (conventionStartedByThisToken) {
+                unclosedConventions.push(conventionStartedByThisToken);
+                continue;
+            }
+            var conventionEndedByThisToken = getConventionEndedBy(token, conventions);
+            if (!conventionEndedByThisToken) {
+                continue;
+            }
+            var overlappingFromMostRecentToLeast = [];
+            for (var conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
+                var unclosedConvention = unclosedConventions[conventionIndex];
+                if (unclosedConvention === conventionEndedByThisToken) {
+                    unclosedConventions.splice(conventionIndex, 1);
+                    break;
+                }
+                overlappingFromMostRecentToLeast.push(unclosedConvention);
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast);
+            var countOverlapping = overlappingFromMostRecentToLeast.length;
+            tokenIndex += (2 * countOverlapping);
+        }
+    };
+    ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
+                continue;
+            }
+            var heroStartIndex = tokenIndex;
+            var heroEndIndex = void 0;
+            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
+                if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
+                    heroEndIndex = i;
+                    break;
+                }
+            }
+            var overlappingStartingBefore = [];
+            var overlappingStartingInside = [];
+            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
+                var token = this.tokens[indexInsideHero];
+                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit);
+                if (conventionStartedByThisToken) {
+                    overlappingStartingInside.push(conventionStartedByThisToken);
+                    continue;
+                }
+                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit);
+                if (conventionEndedByThisToken) {
+                    if (overlappingStartingInside.length) {
+                        overlappingStartingInside.pop();
+                        continue;
+                    }
+                    overlappingStartingBefore.push(conventionEndedByThisToken);
+                }
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
+            var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
+            tokenIndex = heroEndIndex + countTokensAdded;
+        }
+    };
+    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, conventionsInTheOrderTheyShouldClose) {
+        var startTokensToAdd = conventionsInTheOrderTheyShouldClose
+            .map(function (convention) { return new convention.StartTokenType(); })
+            .reverse();
+        var endTokensToAdd = conventionsInTheOrderTheyShouldClose
+            .map(function (convention) { return new convention.EndTokenType(); });
+        this.insertTokens(index + 1, startTokensToAdd);
+        this.insertTokens(index, endTokensToAdd);
+    };
+    ConventionNester.prototype.insertTokens = function (index, tokens) {
+        (_a = this.tokens).splice.apply(_a, [index, 0].concat(tokens));
+        var _a;
+    };
+    return ConventionNester;
+}());
+function getConventionStartedByThisToken(token, conventions) {
+    return conventions.filter(function (convention) {
+        return token instanceof convention.StartTokenType;
+    })[0];
+}
+function getConventionEndedBy(token, conventions) {
+    return conventions.filter(function (convention) {
+        return token instanceof convention.EndTokenType;
+    })[0];
+}
+
+},{"./RichConventions":11}],46:[function(require,module,exports){
+"use strict";
+var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
+var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
+var CollectionHelpers_1 = require('../../CollectionHelpers');
+var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
+var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
+var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
+var SquareBracketedEndToken_1 = require('./Tokens/SquareBracketedEndToken');
+var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
+var LinkStartToken_1 = require('./Tokens/LinkStartToken');
+var LinkEndToken_1 = require('./Tokens/LinkEndToken');
+var PlainTextToken_1 = require('./Tokens/PlainTextToken');
+var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
+var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
+var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
+var MediaConventions_1 = require('./MediaConventions');
+var RichConventions_1 = require('./RichConventions');
+var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS,
+    RichConventions_1.REVISION_DELETION,
+    RichConventions_1.REVISION_INSERTION,
+    RichConventions_1.SPOILER,
+    RichConventions_1.FOOTNOTE
+];
+var MEDIA_CONVENTIONS = [
+    MediaConventions_1.AUDIO,
+    MediaConventions_1.IMAGE,
+    MediaConventions_1.VIDEO
+];
+function parse(args) {
+    var tokens = args.tokens, UntilTokenType = args.UntilTokenType;
+    var nodes = [];
+    var stillNeedsTerminator = !!UntilTokenType;
+    var countTokensParsed = 0;
+    LoopTokens: for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+        var token = tokens[tokenIndex];
+        countTokensParsed = tokenIndex + 1;
+        if (UntilTokenType && token instanceof UntilTokenType) {
+            stillNeedsTerminator = false;
+            break;
+        }
+        if (token instanceof PlainTextToken_1.PlainTextToken
+            || token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken
+            || token instanceof ParenthesizedEndToken_1.ParenthesizedEndToken
+            || token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken
+            || token instanceof SquareBracketedEndToken_1.SquareBracketedEndToken) {
+            if (!token.text) {
+                continue;
+            }
+            var lastNode = CollectionHelpers_1.last(nodes);
+            if (lastNode instanceof PlainTextNode_1.PlainTextNode) {
+                lastNode.text += token.text;
+            }
+            else {
+                nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
+            }
+            continue;
+        }
+        if (token instanceof InlineCodeToken_1.InlineCodeToken) {
+            if (token.code) {
+                nodes.push(new InlineCodeNode_1.InlineCodeNode(token.code));
+            }
+            continue;
+        }
+        if (token instanceof NakedUrlToken_1.NakedUrlToken) {
+            var content = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
+            nodes.push(new LinkNode_1.LinkNode(content, token.url()));
+            continue;
+        }
+        if (token instanceof LinkStartToken_1.LinkStartToken) {
+            var result = parse({
+                tokens: tokens.slice(countTokensParsed),
+                UntilTokenType: LinkEndToken_1.LinkEndToken
+            });
+            tokenIndex += result.countTokensParsed;
+            var contents = result.nodes;
+            var hasContents = isNotPureWhitespace(contents);
+            var linkEndToken = tokens[tokenIndex];
+            var url = linkEndToken.url.trim();
+            var hasUrl = !!url;
+            if (!hasContents && !hasUrl) {
+                continue;
+            }
+            if (hasContents && !hasUrl) {
+                nodes.push.apply(nodes, contents);
+                continue;
+            }
+            if (!hasContents && hasUrl) {
+                contents = [new PlainTextNode_1.PlainTextNode(url)];
+            }
+            nodes.push(new LinkNode_1.LinkNode(contents, url));
+            continue;
+        }
+        for (var _i = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _i < MEDIA_CONVENTIONS_1.length; _i++) {
+            var media = MEDIA_CONVENTIONS_1[_i];
+            if (token instanceof media.TokenType) {
+                var description = token.description.trim();
+                var url = token.url.trim();
+                if (!url) {
+                    continue LoopTokens;
+                }
+                if (!description) {
+                    description = url;
+                }
+                nodes.push(new media.NodeType(description, url));
+                continue LoopTokens;
+            }
+        }
+        for (var _a = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _a < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _a++) {
+            var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_a];
+            if (token instanceof richConvention.StartTokenType) {
+                var result = parse({
+                    tokens: tokens.slice(countTokensParsed),
+                    UntilTokenType: richConvention.EndTokenType
+                });
+                tokenIndex += result.countTokensParsed;
+                if (result.nodes.length) {
+                    nodes.push(new richConvention.NodeType(result.nodes));
+                }
+                continue LoopTokens;
+            }
+        }
+    }
+    if (stillNeedsTerminator) {
+        throw new Error("Missing token: " + UntilTokenType);
+    }
+    return { nodes: nodes, countTokensParsed: countTokensParsed };
+}
+exports.parse = parse;
+function isNotPureWhitespace(nodes) {
+    return !nodes.every(isWhitespace_1.isWhitespace);
+}
+
+},{"../../CollectionHelpers":1,"../../SyntaxNodes/InlineCodeNode":79,"../../SyntaxNodes/LinkNode":83,"../../SyntaxNodes/PlainTextNode":90,"../../SyntaxNodes/isWhitespace":100,"./MediaConventions":5,"./RichConventions":11,"./Tokens/InlineCodeToken":21,"./Tokens/LinkEndToken":22,"./Tokens/LinkStartToken":23,"./Tokens/NakedUrlToken":25,"./Tokens/ParenthesizedEndToken":26,"./Tokens/ParenthesizedStartToken":27,"./Tokens/PlainTextToken":28,"./Tokens/SquareBracketedEndToken":39,"./Tokens/SquareBracketedStartToken":40}],47:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var RichConventions_1 = require('./RichConventions');
@@ -1014,641 +1648,7 @@ var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 
-},{"../../CollectionHelpers":1,"../Patterns":62,"./FailedStateTracker":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./TokenizableMedia":12,"./TokenizableSandwich":13,"./TokenizerState":15,"./Tokens/InlineCodeToken":22,"./Tokens/NakedUrlToken":26,"./Tokens/PlainTextToken":29,"./Tokens/PotentialRaisedVoiceEndToken":30,"./Tokens/PotentialRaisedVoiceStartOrEndToken":31,"./Tokens/PotentialRaisedVoiceStartToken":32,"./nestOverlappingConventions":46}],15:[function(require,module,exports){
-"use strict";
-(function (TokenizerState) {
-    TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
-    TokenizerState[TokenizerState["Footnote"] = 1] = "Footnote";
-    TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
-    TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
-    TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
-    TokenizerState[TokenizerState["ParenthesizedInsideUrl"] = 5] = "ParenthesizedInsideUrl";
-    TokenizerState[TokenizerState["SquareBracketedInsideUrl"] = 6] = "SquareBracketedInsideUrl";
-    TokenizerState[TokenizerState["Link"] = 7] = "Link";
-    TokenizerState[TokenizerState["LinkUrl"] = 8] = "LinkUrl";
-    TokenizerState[TokenizerState["RevisionInsertion"] = 9] = "RevisionInsertion";
-    TokenizerState[TokenizerState["RevisionDeletion"] = 10] = "RevisionDeletion";
-    TokenizerState[TokenizerState["Audio"] = 11] = "Audio";
-    TokenizerState[TokenizerState["Image"] = 12] = "Image";
-    TokenizerState[TokenizerState["Video"] = 13] = "Video";
-    TokenizerState[TokenizerState["MediaUrl"] = 14] = "MediaUrl";
-    TokenizerState[TokenizerState["NakedUrl"] = 15] = "NakedUrl";
-})(exports.TokenizerState || (exports.TokenizerState = {}));
-var TokenizerState = exports.TokenizerState;
-
-},{}],16:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var MediaToken_1 = require('./MediaToken');
-var AudioToken = (function (_super) {
-    __extends(AudioToken, _super);
-    function AudioToken() {
-        _super.apply(this, arguments);
-    }
-    return AudioToken;
-}(MediaToken_1.MediaToken));
-exports.AudioToken = AudioToken;
-
-},{"./MediaToken":25}],17:[function(require,module,exports){
-"use strict";
-var EmphasisEndToken = (function () {
-    function EmphasisEndToken() {
-    }
-    EmphasisEndToken.prototype.token = function () { };
-    return EmphasisEndToken;
-}());
-exports.EmphasisEndToken = EmphasisEndToken;
-
-},{}],18:[function(require,module,exports){
-"use strict";
-var EmphasisStartToken = (function () {
-    function EmphasisStartToken() {
-    }
-    EmphasisStartToken.prototype.token = function () { };
-    return EmphasisStartToken;
-}());
-exports.EmphasisStartToken = EmphasisStartToken;
-
-},{}],19:[function(require,module,exports){
-"use strict";
-var FootnoteEndToken = (function () {
-    function FootnoteEndToken() {
-    }
-    FootnoteEndToken.prototype.token = function () { };
-    return FootnoteEndToken;
-}());
-exports.FootnoteEndToken = FootnoteEndToken;
-
-},{}],20:[function(require,module,exports){
-"use strict";
-var FootnoteStartToken = (function () {
-    function FootnoteStartToken() {
-    }
-    FootnoteStartToken.prototype.token = function () { };
-    return FootnoteStartToken;
-}());
-exports.FootnoteStartToken = FootnoteStartToken;
-
-},{}],21:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var MediaToken_1 = require('./MediaToken');
-var ImageToken = (function (_super) {
-    __extends(ImageToken, _super);
-    function ImageToken() {
-        _super.apply(this, arguments);
-    }
-    return ImageToken;
-}(MediaToken_1.MediaToken));
-exports.ImageToken = ImageToken;
-
-},{"./MediaToken":25}],22:[function(require,module,exports){
-"use strict";
-var InlineCodeToken = (function () {
-    function InlineCodeToken(code) {
-        this.code = code;
-    }
-    InlineCodeToken.prototype.token = function () { };
-    return InlineCodeToken;
-}());
-exports.InlineCodeToken = InlineCodeToken;
-
-},{}],23:[function(require,module,exports){
-"use strict";
-var LinkEndToken = (function () {
-    function LinkEndToken(url) {
-        this.url = url;
-    }
-    LinkEndToken.prototype.token = function () { };
-    return LinkEndToken;
-}());
-exports.LinkEndToken = LinkEndToken;
-
-},{}],24:[function(require,module,exports){
-"use strict";
-var LinkStartToken = (function () {
-    function LinkStartToken() {
-    }
-    LinkStartToken.prototype.token = function () { };
-    return LinkStartToken;
-}());
-exports.LinkStartToken = LinkStartToken;
-
-},{}],25:[function(require,module,exports){
-"use strict";
-var MediaToken = (function () {
-    function MediaToken(description, url) {
-        this.description = description;
-        this.url = url;
-    }
-    MediaToken.prototype.token = function () { };
-    return MediaToken;
-}());
-exports.MediaToken = MediaToken;
-
-},{}],26:[function(require,module,exports){
-"use strict";
-var NakedUrlToken = (function () {
-    function NakedUrlToken(protocol) {
-        this.protocol = protocol;
-        this.restOfUrl = '';
-    }
-    NakedUrlToken.prototype.token = function () { };
-    NakedUrlToken.prototype.url = function () {
-        return this.protocol + this.restOfUrl;
-    };
-    return NakedUrlToken;
-}());
-exports.NakedUrlToken = NakedUrlToken;
-
-},{}],27:[function(require,module,exports){
-"use strict";
-var ParenthesizedEndToken = (function () {
-    function ParenthesizedEndToken() {
-        this.text = ')';
-    }
-    ParenthesizedEndToken.prototype.token = function () { };
-    return ParenthesizedEndToken;
-}());
-exports.ParenthesizedEndToken = ParenthesizedEndToken;
-
-},{}],28:[function(require,module,exports){
-"use strict";
-var ParenthesizedStartToken = (function () {
-    function ParenthesizedStartToken() {
-        this.text = '(';
-    }
-    ParenthesizedStartToken.prototype.token = function () { };
-    return ParenthesizedStartToken;
-}());
-exports.ParenthesizedStartToken = ParenthesizedStartToken;
-
-},{}],29:[function(require,module,exports){
-"use strict";
-var PlainTextToken = (function () {
-    function PlainTextToken(text) {
-        this.text = text;
-    }
-    PlainTextToken.prototype.token = function () { };
-    return PlainTextToken;
-}());
-exports.PlainTextToken = PlainTextToken;
-
-},{}],30:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var PotentialRaisedVoiceToken_1 = require('./PotentialRaisedVoiceToken');
-var PotentialRaisedVoiceEndToken = (function (_super) {
-    __extends(PotentialRaisedVoiceEndToken, _super);
-    function PotentialRaisedVoiceEndToken() {
-        _super.apply(this, arguments);
-    }
-    return PotentialRaisedVoiceEndToken;
-}(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
-exports.PotentialRaisedVoiceEndToken = PotentialRaisedVoiceEndToken;
-
-},{"./PotentialRaisedVoiceToken":33}],31:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var PotentialRaisedVoiceToken_1 = require('./PotentialRaisedVoiceToken');
-var PotentialRaisedVoiceStartOrEndToken = (function (_super) {
-    __extends(PotentialRaisedVoiceStartOrEndToken, _super);
-    function PotentialRaisedVoiceStartOrEndToken() {
-        _super.apply(this, arguments);
-    }
-    return PotentialRaisedVoiceStartOrEndToken;
-}(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
-exports.PotentialRaisedVoiceStartOrEndToken = PotentialRaisedVoiceStartOrEndToken;
-
-},{"./PotentialRaisedVoiceToken":33}],32:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var PotentialRaisedVoiceToken_1 = require('./PotentialRaisedVoiceToken');
-var PotentialRaisedVoiceStartToken = (function (_super) {
-    __extends(PotentialRaisedVoiceStartToken, _super);
-    function PotentialRaisedVoiceStartToken() {
-        _super.apply(this, arguments);
-    }
-    return PotentialRaisedVoiceStartToken;
-}(PotentialRaisedVoiceToken_1.PotentialRaisedVoiceToken));
-exports.PotentialRaisedVoiceStartToken = PotentialRaisedVoiceStartToken;
-
-},{"./PotentialRaisedVoiceToken":33}],33:[function(require,module,exports){
-"use strict";
-var PotentialRaisedVoiceToken = (function () {
-    function PotentialRaisedVoiceToken(asterisks) {
-        this.asterisks = asterisks;
-    }
-    PotentialRaisedVoiceToken.prototype.token = function () { };
-    return PotentialRaisedVoiceToken;
-}());
-exports.PotentialRaisedVoiceToken = PotentialRaisedVoiceToken;
-
-},{}],34:[function(require,module,exports){
-"use strict";
-var RevisionDeletionEndToken = (function () {
-    function RevisionDeletionEndToken() {
-    }
-    RevisionDeletionEndToken.prototype.token = function () { };
-    return RevisionDeletionEndToken;
-}());
-exports.RevisionDeletionEndToken = RevisionDeletionEndToken;
-
-},{}],35:[function(require,module,exports){
-"use strict";
-var RevisionDeletionStartToken = (function () {
-    function RevisionDeletionStartToken() {
-    }
-    RevisionDeletionStartToken.prototype.token = function () { };
-    return RevisionDeletionStartToken;
-}());
-exports.RevisionDeletionStartToken = RevisionDeletionStartToken;
-
-},{}],36:[function(require,module,exports){
-"use strict";
-var RevisionInsertionEndToken = (function () {
-    function RevisionInsertionEndToken() {
-    }
-    RevisionInsertionEndToken.prototype.token = function () { };
-    return RevisionInsertionEndToken;
-}());
-exports.RevisionInsertionEndToken = RevisionInsertionEndToken;
-
-},{}],37:[function(require,module,exports){
-"use strict";
-var RevisionInsertionStartToken = (function () {
-    function RevisionInsertionStartToken() {
-    }
-    RevisionInsertionStartToken.prototype.token = function () { };
-    return RevisionInsertionStartToken;
-}());
-exports.RevisionInsertionStartToken = RevisionInsertionStartToken;
-
-},{}],38:[function(require,module,exports){
-"use strict";
-var SpoilerEndToken = (function () {
-    function SpoilerEndToken() {
-    }
-    SpoilerEndToken.prototype.token = function () { };
-    return SpoilerEndToken;
-}());
-exports.SpoilerEndToken = SpoilerEndToken;
-
-},{}],39:[function(require,module,exports){
-"use strict";
-var SpoilerStartToken = (function () {
-    function SpoilerStartToken() {
-    }
-    SpoilerStartToken.prototype.token = function () { };
-    return SpoilerStartToken;
-}());
-exports.SpoilerStartToken = SpoilerStartToken;
-
-},{}],40:[function(require,module,exports){
-"use strict";
-var SquareBracketedEndToken = (function () {
-    function SquareBracketedEndToken() {
-        this.text = ']';
-    }
-    SquareBracketedEndToken.prototype.token = function () { };
-    return SquareBracketedEndToken;
-}());
-exports.SquareBracketedEndToken = SquareBracketedEndToken;
-
-},{}],41:[function(require,module,exports){
-"use strict";
-var SquareBracketedStartToken = (function () {
-    function SquareBracketedStartToken() {
-        this.text = '[';
-    }
-    SquareBracketedStartToken.prototype.token = function () { };
-    return SquareBracketedStartToken;
-}());
-exports.SquareBracketedStartToken = SquareBracketedStartToken;
-
-},{}],42:[function(require,module,exports){
-"use strict";
-var StressEndToken = (function () {
-    function StressEndToken() {
-    }
-    StressEndToken.prototype.token = function () { };
-    return StressEndToken;
-}());
-exports.StressEndToken = StressEndToken;
-
-},{}],43:[function(require,module,exports){
-"use strict";
-var StressStartToken = (function () {
-    function StressStartToken() {
-    }
-    StressStartToken.prototype.token = function () { };
-    return StressStartToken;
-}());
-exports.StressStartToken = StressStartToken;
-
-},{}],44:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var MediaToken_1 = require('./MediaToken');
-var VideoToken = (function (_super) {
-    __extends(VideoToken, _super);
-    function VideoToken() {
-        _super.apply(this, arguments);
-    }
-    return VideoToken;
-}(MediaToken_1.MediaToken));
-exports.VideoToken = VideoToken;
-
-},{"./MediaToken":25}],45:[function(require,module,exports){
-"use strict";
-var Tokenize_1 = require('./Tokenize');
-var parse_1 = require('./parse');
-function getInlineNodes(text, config) {
-    return parse_1.parse({
-        tokens: Tokenize_1.tokenize(text, config)
-    }).nodes;
-}
-exports.getInlineNodes = getInlineNodes;
-
-},{"./Tokenize":14,"./parse":47}],46:[function(require,module,exports){
-"use strict";
-var RichConventions_1 = require('./RichConventions');
-function nestOverlappingConventions(tokens) {
-    return new ConventionNester(tokens.slice()).tokens;
-}
-exports.nestOverlappingConventions = nestOverlappingConventions;
-var FREELY_SPLITTABLE_CONVENTIONS = [
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.STRESS,
-    RichConventions_1.EMPHASIS
-];
-var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
-    RichConventions_1.LINK,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE
-];
-var ConventionNester = (function () {
-    function ConventionNester(tokens) {
-        this.tokens = tokens;
-        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
-        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
-        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
-            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
-            this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
-            conventionsToSplit.push(conventionNotToSplit);
-        }
-    }
-    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
-        var unclosedConventions = [];
-        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            var token = this.tokens[tokenIndex];
-            var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventions);
-            if (conventionStartedByThisToken) {
-                unclosedConventions.push(conventionStartedByThisToken);
-                continue;
-            }
-            var conventionEndedByThisToken = getConventionEndedBy(token, conventions);
-            if (!conventionEndedByThisToken) {
-                continue;
-            }
-            var overlappingFromMostRecentToLeast = [];
-            for (var conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
-                var unclosedConvention = unclosedConventions[conventionIndex];
-                if (unclosedConvention === conventionEndedByThisToken) {
-                    unclosedConventions.splice(conventionIndex, 1);
-                    break;
-                }
-                overlappingFromMostRecentToLeast.push(unclosedConvention);
-            }
-            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast);
-            var countOverlapping = overlappingFromMostRecentToLeast.length;
-            tokenIndex += (2 * countOverlapping);
-        }
-    };
-    ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
-        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
-                continue;
-            }
-            var heroStartIndex = tokenIndex;
-            var heroEndIndex = void 0;
-            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
-                if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
-                    heroEndIndex = i;
-                    break;
-                }
-            }
-            var overlappingStartingBefore = [];
-            var overlappingStartingInside = [];
-            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-                var token = this.tokens[indexInsideHero];
-                var conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit);
-                if (conventionStartedByThisToken) {
-                    overlappingStartingInside.push(conventionStartedByThisToken);
-                    continue;
-                }
-                var conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit);
-                if (conventionEndedByThisToken) {
-                    if (overlappingStartingInside.length) {
-                        overlappingStartingInside.pop();
-                        continue;
-                    }
-                    overlappingStartingBefore.push(conventionEndedByThisToken);
-                }
-            }
-            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
-            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
-            var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
-            tokenIndex = heroEndIndex + countTokensAdded;
-        }
-    };
-    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, conventionsInTheOrderTheyShouldClose) {
-        var startTokensToAdd = conventionsInTheOrderTheyShouldClose
-            .map(function (convention) { return new convention.StartTokenType(); })
-            .reverse();
-        var endTokensToAdd = conventionsInTheOrderTheyShouldClose
-            .map(function (convention) { return new convention.EndTokenType(); });
-        this.insertTokens(index + 1, startTokensToAdd);
-        this.insertTokens(index, endTokensToAdd);
-    };
-    ConventionNester.prototype.insertTokens = function (index, tokens) {
-        (_a = this.tokens).splice.apply(_a, [index, 0].concat(tokens));
-        var _a;
-    };
-    return ConventionNester;
-}());
-function getConventionStartedByThisToken(token, conventions) {
-    return conventions.filter(function (convention) {
-        return token instanceof convention.StartTokenType;
-    })[0];
-}
-function getConventionEndedBy(token, conventions) {
-    return conventions.filter(function (convention) {
-        return token instanceof convention.EndTokenType;
-    })[0];
-}
-
-},{"./RichConventions":11}],47:[function(require,module,exports){
-"use strict";
-var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
-var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
-var CollectionHelpers_1 = require('../../CollectionHelpers');
-var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
-var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
-var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
-var SquareBracketedEndToken_1 = require('./Tokens/SquareBracketedEndToken');
-var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
-var LinkStartToken_1 = require('./Tokens/LinkStartToken');
-var LinkEndToken_1 = require('./Tokens/LinkEndToken');
-var PlainTextToken_1 = require('./Tokens/PlainTextToken');
-var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
-var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
-var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
-var MediaConventions_1 = require('./MediaConventions');
-var RichConventions_1 = require('./RichConventions');
-var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
-    RichConventions_1.STRESS,
-    RichConventions_1.EMPHASIS,
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE
-];
-var MEDIA_CONVENTIONS = [
-    MediaConventions_1.AUDIO,
-    MediaConventions_1.IMAGE,
-    MediaConventions_1.VIDEO
-];
-function parse(args) {
-    var tokens = args.tokens, UntilTokenType = args.UntilTokenType;
-    var nodes = [];
-    var stillNeedsTerminator = !!UntilTokenType;
-    var countTokensParsed = 0;
-    LoopTokens: for (var tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-        var token = tokens[tokenIndex];
-        countTokensParsed = tokenIndex + 1;
-        if (UntilTokenType && token instanceof UntilTokenType) {
-            stillNeedsTerminator = false;
-            break;
-        }
-        if (token instanceof PlainTextToken_1.PlainTextToken
-            || token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken
-            || token instanceof ParenthesizedEndToken_1.ParenthesizedEndToken
-            || token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken
-            || token instanceof SquareBracketedEndToken_1.SquareBracketedEndToken) {
-            if (!token.text) {
-                continue;
-            }
-            var lastNode = CollectionHelpers_1.last(nodes);
-            if (lastNode instanceof PlainTextNode_1.PlainTextNode) {
-                lastNode.text += token.text;
-            }
-            else {
-                nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
-            }
-            continue;
-        }
-        if (token instanceof InlineCodeToken_1.InlineCodeToken) {
-            if (token.code) {
-                nodes.push(new InlineCodeNode_1.InlineCodeNode(token.code));
-            }
-            continue;
-        }
-        if (token instanceof NakedUrlToken_1.NakedUrlToken) {
-            var content = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
-            nodes.push(new LinkNode_1.LinkNode(content, token.url()));
-            continue;
-        }
-        if (token instanceof LinkStartToken_1.LinkStartToken) {
-            var result = parse({
-                tokens: tokens.slice(countTokensParsed),
-                UntilTokenType: LinkEndToken_1.LinkEndToken
-            });
-            tokenIndex += result.countTokensParsed;
-            var contents = result.nodes;
-            var hasContents = isNotPureWhitespace(contents);
-            var linkEndToken = tokens[tokenIndex];
-            var url = linkEndToken.url.trim();
-            var hasUrl = !!url;
-            if (!hasContents && !hasUrl) {
-                continue;
-            }
-            if (hasContents && !hasUrl) {
-                nodes.push.apply(nodes, contents);
-                continue;
-            }
-            if (!hasContents && hasUrl) {
-                contents = [new PlainTextNode_1.PlainTextNode(url)];
-            }
-            nodes.push(new LinkNode_1.LinkNode(contents, url));
-            continue;
-        }
-        for (var _i = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _i < MEDIA_CONVENTIONS_1.length; _i++) {
-            var media = MEDIA_CONVENTIONS_1[_i];
-            if (token instanceof media.TokenType) {
-                var description = token.description.trim();
-                var url = token.url.trim();
-                if (!url) {
-                    continue LoopTokens;
-                }
-                if (!description) {
-                    description = url;
-                }
-                nodes.push(new media.NodeType(description, url));
-                continue LoopTokens;
-            }
-        }
-        for (var _a = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _a < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _a++) {
-            var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_a];
-            if (token instanceof richConvention.StartTokenType) {
-                var result = parse({
-                    tokens: tokens.slice(countTokensParsed),
-                    UntilTokenType: richConvention.EndTokenType
-                });
-                tokenIndex += result.countTokensParsed;
-                if (result.nodes.length) {
-                    nodes.push(new richConvention.NodeType(result.nodes));
-                }
-                continue LoopTokens;
-            }
-        }
-    }
-    if (stillNeedsTerminator) {
-        throw new Error("Missing token: " + UntilTokenType);
-    }
-    return { nodes: nodes, countTokensParsed: countTokensParsed };
-}
-exports.parse = parse;
-function isNotPureWhitespace(nodes) {
-    return !nodes.every(isWhitespace_1.isWhitespace);
-}
-
-},{"../../CollectionHelpers":1,"../../SyntaxNodes/InlineCodeNode":79,"../../SyntaxNodes/LinkNode":83,"../../SyntaxNodes/PlainTextNode":90,"../../SyntaxNodes/isWhitespace":100,"./MediaConventions":5,"./RichConventions":11,"./Tokens/InlineCodeToken":22,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/NakedUrlToken":26,"./Tokens/ParenthesizedEndToken":27,"./Tokens/ParenthesizedStartToken":28,"./Tokens/PlainTextToken":29,"./Tokens/SquareBracketedEndToken":40,"./Tokens/SquareBracketedStartToken":41}],48:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../Patterns":62,"./FailedStateTracker":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./TokenizableMedia":12,"./TokenizableSandwich":13,"./TokenizerState":14,"./Tokens/InlineCodeToken":21,"./Tokens/NakedUrlToken":25,"./Tokens/PlainTextToken":28,"./Tokens/PotentialRaisedVoiceEndToken":29,"./Tokens/PotentialRaisedVoiceStartOrEndToken":30,"./Tokens/PotentialRaisedVoiceStartToken":31,"./nestOverlappingConventions":45}],48:[function(require,module,exports){
 "use strict";
 var StringHelpers_1 = require('../../StringHelpers');
 var HeadingLeveler = (function () {
@@ -1781,7 +1781,7 @@ function isUnderlineConsistentWithOverline(overline, underline) {
 var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../StringHelpers":65,"../../SyntaxNodes/HeadingNode":77,"../Inline/getInlineNodes":45,"../Patterns":62,"./LineConsumer":49,"./isLineFancyOutlineConvention":53}],51:[function(require,module,exports){
+},{"../../StringHelpers":65,"../../SyntaxNodes/HeadingNode":77,"../Inline/getInlineNodes":44,"../Patterns":62,"./LineConsumer":49,"./isLineFancyOutlineConvention":53}],51:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -2074,7 +2074,7 @@ var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
 
-},{"../../SyntaxNodes/Description":69,"../../SyntaxNodes/DescriptionListItem":70,"../../SyntaxNodes/DescriptionListNode":71,"../../SyntaxNodes/DescriptionTerm":72,"../Inline/getInlineNodes":45,"../Patterns":62,"./LineConsumer":49,"./getOutlineNodes":51,"./getRemainingLinesOfListItem":52,"./isLineFancyOutlineConvention":53}],58:[function(require,module,exports){
+},{"../../SyntaxNodes/Description":69,"../../SyntaxNodes/DescriptionListItem":70,"../../SyntaxNodes/DescriptionListNode":71,"../../SyntaxNodes/DescriptionTerm":72,"../Inline/getInlineNodes":44,"../Patterns":62,"./LineConsumer":49,"./getOutlineNodes":51,"./getRemainingLinesOfListItem":52,"./isLineFancyOutlineConvention":53}],58:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var OrderedListNode_1 = require('../../SyntaxNodes/OrderedListNode');
@@ -2213,7 +2213,7 @@ function isMediaSyntaxNode(node) {
 var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
-},{"../../SyntaxNodes/Line":81,"../../SyntaxNodes/LineBlockNode":82,"../../SyntaxNodes/MediaSyntaxNode":84,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/getInlineNodes":45,"../Patterns":62,"./LineConsumer":49,"./isLineFancyOutlineConvention":53}],60:[function(require,module,exports){
+},{"../../SyntaxNodes/Line":81,"../../SyntaxNodes/LineBlockNode":82,"../../SyntaxNodes/MediaSyntaxNode":84,"../../SyntaxNodes/ParagraphNode":89,"../../SyntaxNodes/isWhitespace":100,"../Inline/getInlineNodes":44,"../Patterns":62,"./LineConsumer":49,"./isLineFancyOutlineConvention":53}],60:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');

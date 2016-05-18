@@ -8,7 +8,7 @@ clean:
 install: clean
 	mkdir -p built dist
 	tsc
-	browserify built/browser.js --outfile dist/up.js
+	./node_modules/.bin/browserify built/browser.js --outfile dist/up.js
 
 test: install
 	npm test
