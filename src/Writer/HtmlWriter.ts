@@ -33,6 +33,10 @@ import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../UpConfig'
 
 export class HtmlWriter extends Writer {
+  // If a link is nested within another link, we include the inner link's contents directly in the outer link.
+  // We don't create an anchor element for the inner link.
+  private isInsideLink = false
+
   constructor(config?: UpConfig) {
     super(config)
   }
@@ -145,7 +149,15 @@ export class HtmlWriter extends Writer {
   }
 
   link(node: LinkNode): string {
-    return this.htmlElement('a', node.children, { href: node.url })
+    if (this.isInsideLink) {
+      return node.children.map(child => this.write(child)).join('') 
+    }
+    
+    this.isInsideLink = true
+    const html = this.htmlElement('a', node.children, { href: node.url })
+    this.isInsideLink = false
+    
+    return html
   }
 
   image(node: ImageNode): string {

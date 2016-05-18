@@ -3166,6 +3166,7 @@ var HtmlWriter = (function (_super) {
     __extends(HtmlWriter, _super);
     function HtmlWriter(config) {
         _super.call(this, config);
+        this.isInsideLink = false;
     }
     HtmlWriter.prototype.document = function (node) {
         return this.htmlElements(node.children);
@@ -3239,7 +3240,14 @@ var HtmlWriter = (function (_super) {
         return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-footnotes': null });
     };
     HtmlWriter.prototype.link = function (node) {
-        return this.htmlElement('a', node.children, { href: node.url });
+        var _this = this;
+        if (this.isInsideLink) {
+            return node.children.map(function (child) { return _this.write(child); }).join('');
+        }
+        this.isInsideLink = true;
+        var html = this.htmlElement('a', node.children, { href: node.url });
+        this.isInsideLink = false;
+        return html;
     };
     HtmlWriter.prototype.image = function (node) {
         return htmlElementWithNoEndTag('img', { src: node.url, alt: node.description, title: node.description });
