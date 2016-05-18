@@ -5,6 +5,6 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 export interface TokenizerContextBehavior {
   mustClose: boolean
   onOpen?: OnTokenizerMatch
-  onClose?: OnTokenizerMatch
   onResolve?: OnTokenizerMatch
+  onClose?: OnTokenizerMatch
 }

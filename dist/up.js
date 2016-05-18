@@ -1148,9 +1148,21 @@ var Tokenizer = (function () {
         this.parenthesizedBehavior = this.getRichSandwichBehavior(RichConventions_1.PARENTHESIZED);
         this.squareBracketedBehavior = this.getRichSandwichBehavior(RichConventions_1.SQUARE_BRACKETED);
         this.squareBracketedInsideUrlBehavior = this.getBracketInsideUrlBehavior();
-        this.audioBehavior = this.getMediaBehavior(MediaConventions_1.VIDEO);
-        this.imageBehavior = this.getMediaBehavior(MediaConventions_1.VIDEO);
+        this.audioBehavior = this.getMediaBehavior(MediaConventions_1.AUDIO);
+        this.imageBehavior = this.getMediaBehavior(MediaConventions_1.IMAGE);
         this.videoBehavior = this.getMediaBehavior(MediaConventions_1.VIDEO);
+        this.nakedUrlBehavior = {
+            mustClose: false,
+            onOpen: function (urlProtocol) {
+                _this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlToken_1.NakedUrlToken(urlProtocol));
+            },
+            onResolve: function () {
+                _this.flushUnmatchedTextToNakedUrl();
+            },
+            onClose: function () {
+                _this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
+            }
+        };
         this.configureConventions(config);
         this.dirty();
         this.tokenize();

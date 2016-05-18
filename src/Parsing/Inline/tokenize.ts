@@ -75,27 +75,42 @@ class Tokenizer {
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
-  
+
 
   private inlineCodeBehavior = {
     mustClose: true,
     onOpen: () => this.flushBufferToPlainTextToken(),
     onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText())),
   }
-  
+
   private footnoteBehavior = this.getRichSandwichBehavior(FOOTNOTE)
-  private spoilerBehavior =  this.getRichSandwichBehavior(SPOILER)
-  private revisionDeletionBehavior =  this.getRichSandwichBehavior(REVISION_DELETION)
-  private revisionInsertionBehavior =  this.getRichSandwichBehavior(REVISION_INSERTION)
-  private parenthesizedBehavior =  this.getRichSandwichBehavior(PARENTHESIZED)
-  private squareBracketedBehavior =  this.getRichSandwichBehavior(SQUARE_BRACKETED)
-  
+  private spoilerBehavior = this.getRichSandwichBehavior(SPOILER)
+  private revisionDeletionBehavior = this.getRichSandwichBehavior(REVISION_DELETION)
+  private revisionInsertionBehavior = this.getRichSandwichBehavior(REVISION_INSERTION)
+  private parenthesizedBehavior = this.getRichSandwichBehavior(PARENTHESIZED)
+  private squareBracketedBehavior = this.getRichSandwichBehavior(SQUARE_BRACKETED)
+
   private squareBracketedInsideUrlBehavior = this.getBracketInsideUrlBehavior()
-  
-  private audioBehavior = this.getMediaBehavior(VIDEO)
-  private imageBehavior = this.getMediaBehavior(VIDEO)
+
+  private audioBehavior = this.getMediaBehavior(AUDIO)
+  private imageBehavior = this.getMediaBehavior(IMAGE)
   private videoBehavior = this.getMediaBehavior(VIDEO)
-  
+
+  private nakedUrlBehavior: TokenizerContextBehavior = {
+    mustClose: false,
+    onOpen: (urlProtocol) => {
+      this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlToken(urlProtocol))
+    },
+    onResolve: () => {
+      this.flushUnmatchedTextToNakedUrl()
+    },
+    onClose: () => {
+      // There could be some bracket contexts opened inside the URL, and we don't want them to have any impact on
+      // any text that follows the URL.
+      this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
+    }
+  }
+
 
   constructor(private entireText: string, config: UpConfig) {
     this.configureConventions(config)
@@ -257,7 +272,7 @@ class Tokenizer {
 
     return true
   }
-  
+
   private failContextAndResetToBeforeIt(context: TokenizerContext): void {
     this.failedStateTracker.registerFailure(context)
 
@@ -356,7 +371,7 @@ class Tokenizer {
       this.openConvention({
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-        then: (arrow) =>  this.flushBufferToPlainTextToken()
+        then: (arrow) => this.flushBufferToPlainTextToken()
       })
 
     if (!didStartLinkUrl) {
@@ -369,13 +384,13 @@ class Tokenizer {
     if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
       // If we can't try a link at that location, it means we've already tried, and we failed to find the
       // closing bracket.
-      
+
       // First, lets get rid of the new link URL context.
       const linkUrlContext = this.openContexts.pop()
-       
+
       // Next, let's fail it, so we don't try match the URL arrow again.
       this.failContextAndResetToBeforeIt(linkUrlContext)
-      
+
       return false
     }
 
@@ -425,7 +440,7 @@ class Tokenizer {
       }
     })
   }
-  
+
   private openSandwich(sandwich: TokenizableSandwich): boolean {
     return this.openConvention({
       state: sandwich.state,
@@ -458,12 +473,12 @@ class Tokenizer {
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContexts.push({
-            state,
-            textIndex: this.textIndex,
-            countTokens: this.tokens.length,
-            openContexts: this.openContexts.slice(),
-            plainTextBuffer: this.bufferedText
-          })
+          state,
+          textIndex: this.textIndex,
+          countTokens: this.tokens.length,
+          openContexts: this.openContexts.slice(),
+          plainTextBuffer: this.bufferedText
+        })
 
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
@@ -566,7 +581,7 @@ class Tokenizer {
     const previousChar = this.entireText[this.textIndex - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
-  
+
   private getRichSandwichBehavior(convention: RichConvention): TokenizerContextBehavior {
     return {
       mustClose: true,
@@ -586,7 +601,7 @@ class Tokenizer {
       onClose: bufferBracket
     }
   }
-  
+
   private getMediaBehavior(media: MediaConvention): TokenizerContextBehavior {
     return {
       mustClose: true,
@@ -665,13 +680,13 @@ class Tokenizer {
       }
     })
   }
-  
+
   private configureConventions(config: UpConfig): void {
     this.mediaConventions =
       [AUDIO, IMAGE, VIDEO]
         .map(media =>
           new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
-          
+
     this.footnoteConvention =
       this.getRichSandwich({
         richConvention: FOOTNOTE,
