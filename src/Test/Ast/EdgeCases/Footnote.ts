@@ -51,9 +51,16 @@ describe('A footnote that contains nested parenthesized text ending together wit
     const text = "((I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?))"
 
     const footnote = new FootnoteNode([
-      new PlainTextNode("I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?")
+      new PlainTextNode("I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?"),
+      new ParenthesizedNode([
+        new PlainTextNode("(I don't eat cereal. "),
+        new ParenthesizedNode([
+          new PlainTextNode("(Well, I do, but I pretend not to.)"),
+        ]),
+        new PlainTextNode(')')
+      ])
     ], 1)
-    
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
