@@ -44,7 +44,7 @@ describe('Two left parentheses followed by a single right square parenthesis', (
       insideDocumentAndParagraph([
         new PlainTextNode(':( I like '),
         new ParenthesizedNode([
-          new PlainTextNode('[certain '),
+          new PlainTextNode('(certain '),
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
@@ -62,7 +62,7 @@ describe('A left parenthesis followed by two right parentheses', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new ParenthesizedNode([
-          new PlainTextNode('[certain '),
+          new PlainTextNode('(certain '),
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
