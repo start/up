@@ -23,13 +23,12 @@ describe('A naked URL containing another URL', () => {
 
 describe('A naked URL following an open parenthesis', () => {
   it("can contain an escaped closing parenthesis", () => {
-    expect(Up.toAst('(https://nintendo.com\)')).to.be.eql(
+    expect(Up.toAst('(https://nintendo.com\\)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('('),
         new LinkNode([
-          new PlainTextNode('nintendo.com')
-        ], 'https://nintendo.com'),
-        new PlainTextNode(')')
+          new PlainTextNode('nintendo.com)')
+        ], 'https://nintendo.com)'),
       ]))
   })
 })
@@ -37,13 +36,12 @@ describe('A naked URL following an open parenthesis', () => {
 
 describe('A naked URL following an open square bracket', () => {
   it("can contain an escaped closing square bracket", () => {
-    expect(Up.toAst('[https://nintendo.com\]')).to.be.eql(
+    expect(Up.toAst('[https://nintendo.com\\]')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('['),
         new LinkNode([
-          new PlainTextNode('nintendo.com')
-        ], 'https://nintendo.com'),
-        new PlainTextNode(']')
+          new PlainTextNode('nintendo.com]')
+        ], 'https://nintendo.com]'),
       ]))
   })
 })
