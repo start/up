@@ -39,7 +39,13 @@ describe('Nested parenthesized text ending together with "))"', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode(text)
+          new ParenthesizedNode([
+            new PlainTextNode("(I don't eat cereal. "),
+            new ParenthesizedNode([
+              new PlainTextNode("(Well, I do, but I pretend not to.)"),
+            ]),
+            new PlainTextNode(')')
+          ])
         ]),
       ]))
   })
