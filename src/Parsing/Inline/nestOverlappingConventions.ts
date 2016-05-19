@@ -1,5 +1,7 @@
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
+import { getConventionEndedBy } from './getConventionEndedBy'
+import { getConventionStartedBy } from './getConventionStartedBy'
 
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 
@@ -64,7 +66,7 @@ class ConventionNester {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       const token = this.tokens[tokenIndex]
 
-      const conventionStartedByThisToken = getConventionStartedByThisToken(token, conventions)
+      const conventionStartedByThisToken = getConventionStartedBy(token, conventions)
 
       if (conventionStartedByThisToken) {
         unclosedConventions.push(conventionStartedByThisToken)
@@ -145,7 +147,7 @@ class ConventionNester {
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const token = this.tokens[indexInsideHero]
-        const conventionStartedByThisToken = getConventionStartedByThisToken(token, conventionsToSplit)
+        const conventionStartedByThisToken = getConventionStartedBy(token, conventionsToSplit)
 
         if (conventionStartedByThisToken) {
           // Until we encounter the end token, we'll assume this convention overlaps.
@@ -203,17 +205,4 @@ class ConventionNester {
   private insertTokens(index: number, tokens: Token[]): void {
     this.tokens.splice(index, 0, ...tokens)
   }
-}
-
-
-function getConventionStartedByThisToken(token: Token, conventions: RichConvention[]): RichConvention {
-  return conventions.filter(convention =>
-    token instanceof convention.StartTokenType
-  )[0]
-}
-
-function getConventionEndedBy(token: Token, conventions: RichConvention[]): RichConvention {
-  return conventions.filter(convention =>
-    token instanceof convention.EndTokenType
-  )[0]
 }
