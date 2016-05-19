@@ -36,3 +36,39 @@ describe('Parenthesized text', () => {
       ]))
   })
 })
+
+
+describe('Two left square brackets followed by a single right square bracket', () => {
+  it('produces bracketed text starting from the second left square bracket', () => {
+    expect(Up.toAst(':( I like [certain *types* of] pizza')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode(':( I like '),
+        new ParenthesizedNode([
+          new PlainTextNode('[certain '),
+          new EmphasisNode([
+            new PlainTextNode('types')
+          ]),
+          new PlainTextNode(' of]')
+        ]),
+        new PlainTextNode(' pizza')
+      ]))
+  })
+})
+
+
+describe('A left square brackets followed by two right square brackets', () => {
+  it('produces bracketed text ending with the first right square bracket', () => {
+    expect(Up.toAst('I like [certain *types* of] pizza :)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new ParenthesizedNode([
+          new PlainTextNode('[certain '),
+          new EmphasisNode([
+            new PlainTextNode('types')
+          ]),
+          new PlainTextNode(' of]')
+        ]),
+        new PlainTextNode(' pizza :)')
+      ]))
+  })
+})
