@@ -12,7 +12,7 @@ describe('Text surrounded by parentheses', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new ParenthesizedNode([
-          new PlainTextNode('certain types of')
+          new PlainTextNode('(certain types of)')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -26,11 +26,11 @@ describe('Parenthesized text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new ParenthesizedNode([
-          new PlainTextNode('certain '),
+          new PlainTextNode('(certain '),
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of')
+          new PlainTextNode(' of)')
         ]),
         new PlainTextNode(' pizza')
       ]))

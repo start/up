@@ -73,10 +73,11 @@ describe('Nested parenthesized text starting with "((" but ending in different s
       new DocumentNode([
         new ParagraphNode([
           new ParenthesizedNode([
+            new PlainTextNode('('),
             new ParenthesizedNode([
-              new PlainTextNode("I don't eat cereal.")
+              new PlainTextNode("(I don't eat cereal.)")
             ]),
-            new PlainTextNode(" Well, I do, but I pretend not to.")
+            new PlainTextNode(" Well, I do, but I pretend not to.)")
           ])
         ]),
       ]))
