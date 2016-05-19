@@ -1536,11 +1536,11 @@ function parse(args) {
             tokenIndex += result.countTokensParsed;
             var resultNodes = (_a = [new PlainTextNode_1.PlainTextNode('(')]).concat.apply(_a, result.nodes);
             if (result.isMissingTerminator) {
-                nodes.push.apply(nodes, resultNodes);
+                nodes.push.apply(nodes, combineConsecutivePlainTextNodes(resultNodes));
                 continue;
             }
             resultNodes.push(new PlainTextNode_1.PlainTextNode(')'));
-            nodes.push(new SquareBracketedNode_1.SquareBracketedNode(resultNodes));
+            nodes.push(new SquareBracketedNode_1.SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)));
             continue;
         }
         if (token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken) {
@@ -1552,11 +1552,11 @@ function parse(args) {
             tokenIndex += result.countTokensParsed;
             var resultNodes = (_b = [new PlainTextNode_1.PlainTextNode('[')]).concat.apply(_b, result.nodes);
             if (result.isMissingTerminator) {
-                nodes.push.apply(nodes, resultNodes);
+                nodes.push.apply(nodes, combineConsecutivePlainTextNodes(resultNodes));
                 continue;
             }
             resultNodes.push(new PlainTextNode_1.PlainTextNode(']'));
-            nodes.push(new SquareBracketedNode_1.SquareBracketedNode(resultNodes));
+            nodes.push(new SquareBracketedNode_1.SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)));
             continue;
         }
         if (token instanceof InlineCodeToken_1.InlineCodeToken) {

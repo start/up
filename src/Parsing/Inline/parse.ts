@@ -22,6 +22,8 @@ import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTN
 import { ParseResult } from './ParseResult'
 
 
+// TODO: Heavily refactor duplicate code
+
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS,
   EMPHASIS,
@@ -86,12 +88,12 @@ export function parse(
           .concat(...result.nodes)
 
       if (result.isMissingTerminator) {
-        nodes.push(...resultNodes)
+        nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
         continue
       }
 
       resultNodes.push(new PlainTextNode(')'))
-      nodes.push(new SquareBracketedNode(resultNodes))
+      nodes.push(new SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)))
 
       continue
     }
@@ -110,12 +112,12 @@ export function parse(
           .concat(...result.nodes)
 
       if (result.isMissingTerminator) {
-        nodes.push(...resultNodes)
+        nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
         continue
       }
 
       resultNodes.push(new PlainTextNode(']'))
-      nodes.push(new SquareBracketedNode(resultNodes))
+      nodes.push(new SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)))
 
       continue
     }
