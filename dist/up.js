@@ -1138,7 +1138,6 @@ exports.NakedUrlToken = NakedUrlToken;
 "use strict";
 var ParenthesizedEndToken = (function () {
     function ParenthesizedEndToken() {
-        this.text = ')';
     }
     ParenthesizedEndToken.prototype.token = function () { };
     return ParenthesizedEndToken;
@@ -1149,7 +1148,6 @@ exports.ParenthesizedEndToken = ParenthesizedEndToken;
 "use strict";
 var ParenthesizedStartToken = (function () {
     function ParenthesizedStartToken() {
-        this.text = '(';
     }
     ParenthesizedStartToken.prototype.token = function () { };
     return ParenthesizedStartToken;
@@ -1293,7 +1291,6 @@ exports.SpoilerStartToken = SpoilerStartToken;
 "use strict";
 var SquareBracketedEndToken = (function () {
     function SquareBracketedEndToken() {
-        this.text = ']';
     }
     SquareBracketedEndToken.prototype.token = function () { };
     return SquareBracketedEndToken;
@@ -1304,7 +1301,6 @@ exports.SquareBracketedEndToken = SquareBracketedEndToken;
 "use strict";
 var SquareBracketedStartToken = (function () {
     function SquareBracketedStartToken() {
-        this.text = '[';
     }
     SquareBracketedStartToken.prototype.token = function () { };
     return SquareBracketedStartToken;
