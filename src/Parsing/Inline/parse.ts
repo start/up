@@ -40,194 +40,206 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-export function parse(
-  args: {
-    tokens: Token[],
-    UntilTokenType?: TokenType,
-    isTerminatorOptional?: boolean
-  }
-): ParseResult {
-  const { tokens, UntilTokenType, isTerminatorOptional } = args
-
-  const nodes: InlineSyntaxNode[] = []
-
-  let countTokensParsed = 0
-
-  LoopTokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-    const token = tokens[tokenIndex]
-    countTokensParsed = tokenIndex + 1
-
-    if (UntilTokenType && token instanceof UntilTokenType) {
-      return {
-        countTokensParsed,
-        nodes: combineConsecutivePlainTextNodes(nodes),
-        isMissingTerminator: false
-      }
-    }
-
-    if (token instanceof PlainTextToken) {
-      if (!token.text) {
-        continue
-      }
-
-      nodes.push(new PlainTextNode(token.text))
-      continue
-    }
-
-    if (token instanceof ParenthesizedStartToken) {
-      const result = parse({
-        tokens: tokens.slice(countTokensParsed),
-        UntilTokenType: ParenthesizedEndToken,
-        isTerminatorOptional: true
-      })
-
-      tokenIndex += result.countTokensParsed
-
-      const resultNodes =
-        [<InlineSyntaxNode>new PlainTextNode('(')]
-          .concat(...result.nodes)
-
-      if (result.isMissingTerminator) {
-        nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
-        continue
-      }
-
-      resultNodes.push(new PlainTextNode(')'))
-      nodes.push(new ParenthesizedNode(combineConsecutivePlainTextNodes(resultNodes)))
-
-      continue
-    }
-
-    if (token instanceof SquareBracketedStartToken) {
-      const result = parse({
-        tokens: tokens.slice(countTokensParsed),
-        UntilTokenType: SquareBracketedEndToken,
-        isTerminatorOptional: true
-      })
-
-      tokenIndex += result.countTokensParsed
-
-      const resultNodes =
-        [<InlineSyntaxNode>new PlainTextNode('[')]
-          .concat(...result.nodes)
-
-      if (result.isMissingTerminator) {
-        nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
-        continue
-      }
-
-      resultNodes.push(new PlainTextNode(']'))
-      nodes.push(new SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)))
-
-      continue
-    }
-
-    if (token instanceof InlineCodeToken) {
-      // Empty inline code isn't meaningful, so we discard it
-      if (token.code) {
-        nodes.push(new InlineCodeNode(token.code))
-      }
-
-      continue
-    }
-
-    if (token instanceof NakedUrlToken) {
-      const content = [new PlainTextNode(token.restOfUrl)]
-      nodes.push(new LinkNode(content, token.url()))
-
-      continue
-    }
-
-    if (token instanceof LinkStartToken) {
-      const result = parse({
-        tokens: tokens.slice(countTokensParsed),
-        UntilTokenType: LinkEndToken
-      })
-
-      tokenIndex += result.countTokensParsed
-
-      let contents = result.nodes
-      const hasContents = isNotPureWhitespace(contents)
-
-      // The URL was in the LinkEndToken, the last token we parsed
-      //
-      // TODO: Move URL to LinkStartToken?
-      const linkEndToken = <LinkEndToken>tokens[tokenIndex]
-
-      let url = linkEndToken.url.trim()
-      const hasUrl = !!url
-
-      if (!hasContents && !hasUrl) {
-        // If there's no content and no URL, there's nothing meaninful to include in the document
-        continue
-      }
-
-      if (hasContents && !hasUrl) {
-        // If there's content but no URL, we include the content directly in the document without producing
-        // a link node
-        nodes.push(...contents)
-        continue
-      }
-
-      if (!hasContents && hasUrl) {
-        // If there's no content but we have a URL, we'll use the URL for the content
-        contents = [new PlainTextNode(url)]
-      }
-
-      nodes.push(new LinkNode(contents, url))
-      continue
-    }
+interface ParseArgs {
+  tokens: Token[],
+  UntilTokenType?: TokenType,
+  isTerminatorOptional?: boolean
+}
 
 
-    for (const media of MEDIA_CONVENTIONS) {
-      if (token instanceof media.TokenType) {
-        let description = token.description.trim()
-        const url = token.url.trim()
+export function parse(args: ParseArgs): ParseResult {
+  return new Parser(args).result
+}
 
-        if (!url) {
-          // If there's no URL, there's nothing meaningful to include in the document
-          continue LoopTokens
+class Parser {
+  private tokens: Token[]
+  public result: ParseResult
+
+  constructor(args: ParseArgs) {
+    const { UntilTokenType, isTerminatorOptional } = args
+    this.tokens = args.tokens
+
+    const nodes: InlineSyntaxNode[] = []
+
+    let countTokensParsed = 0
+
+    LoopTokens: for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+      const token = this.tokens[tokenIndex]
+      countTokensParsed = tokenIndex + 1
+
+      if (UntilTokenType && token instanceof UntilTokenType) {
+        this.result = {
+          countTokensParsed,
+          nodes: combineConsecutivePlainTextNodes(nodes),
+          isMissingTerminator: false
         }
 
-        if (!description) {
-          // If there's no description, we treat the URL as the description
-          description = url
+        return
+      }
+
+      if (token instanceof PlainTextToken) {
+        if (!token.text) {
+          continue
         }
 
-        nodes.push(new media.NodeType(description, url))
-        continue LoopTokens
+        nodes.push(new PlainTextNode(token.text))
+        continue
       }
-    }
 
-    for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
-      if (token instanceof richConvention.StartTokenType) {
+      if (token instanceof ParenthesizedStartToken) {
         const result = parse({
-          tokens: tokens.slice(countTokensParsed),
-          UntilTokenType: richConvention.EndTokenType
+          tokens: this.tokens.slice(countTokensParsed),
+          UntilTokenType: ParenthesizedEndToken,
+          isTerminatorOptional: true
         })
 
         tokenIndex += result.countTokensParsed
 
-        if (result.nodes.length) {
-          // Like empty inline code, we discard any empty sandwich convention
-          nodes.push(new richConvention.NodeType(result.nodes))
+        const resultNodes =
+          [<InlineSyntaxNode>new PlainTextNode('(')]
+            .concat(...result.nodes)
+
+        if (result.isMissingTerminator) {
+          nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
+          continue
         }
 
-        continue LoopTokens
+        resultNodes.push(new PlainTextNode(')'))
+        nodes.push(new ParenthesizedNode(combineConsecutivePlainTextNodes(resultNodes)))
+
+        continue
+      }
+
+      if (token instanceof SquareBracketedStartToken) {
+        const result = parse({
+          tokens: this.tokens.slice(countTokensParsed),
+          UntilTokenType: SquareBracketedEndToken,
+          isTerminatorOptional: true
+        })
+
+        tokenIndex += result.countTokensParsed
+
+        const resultNodes =
+          [<InlineSyntaxNode>new PlainTextNode('[')]
+            .concat(...result.nodes)
+
+        if (result.isMissingTerminator) {
+          nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
+          continue
+        }
+
+        resultNodes.push(new PlainTextNode(']'))
+        nodes.push(new SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)))
+
+        continue
+      }
+
+      if (token instanceof InlineCodeToken) {
+        // Empty inline code isn't meaningful, so we discard it
+        if (token.code) {
+          nodes.push(new InlineCodeNode(token.code))
+        }
+
+        continue
+      }
+
+      if (token instanceof NakedUrlToken) {
+        const content = [new PlainTextNode(token.restOfUrl)]
+        nodes.push(new LinkNode(content, token.url()))
+
+        continue
+      }
+
+      if (token instanceof LinkStartToken) {
+        const result = parse({
+          tokens: this.tokens.slice(countTokensParsed),
+          UntilTokenType: LinkEndToken
+        })
+
+        tokenIndex += result.countTokensParsed
+
+        let contents = result.nodes
+        const hasContents = isNotPureWhitespace(contents)
+
+        // The URL was in the LinkEndToken, the last token we parsed
+        //
+        // TODO: Move URL to LinkStartToken?
+        const linkEndToken = <LinkEndToken>this.tokens[tokenIndex]
+
+        let url = linkEndToken.url.trim()
+        const hasUrl = !!url
+
+        if (!hasContents && !hasUrl) {
+          // If there's no content and no URL, there's nothing meaninful to include in the document
+          continue
+        }
+
+        if (hasContents && !hasUrl) {
+          // If there's content but no URL, we include the content directly in the document without producing
+          // a link node
+          nodes.push(...contents)
+          continue
+        }
+
+        if (!hasContents && hasUrl) {
+          // If there's no content but we have a URL, we'll use the URL for the content
+          contents = [new PlainTextNode(url)]
+        }
+
+        nodes.push(new LinkNode(contents, url))
+        continue
+      }
+
+
+      for (const media of MEDIA_CONVENTIONS) {
+        if (token instanceof media.TokenType) {
+          let description = token.description.trim()
+          const url = token.url.trim()
+
+          if (!url) {
+            // If there's no URL, there's nothing meaningful to include in the document
+            continue LoopTokens
+          }
+
+          if (!description) {
+            // If there's no description, we treat the URL as the description
+            description = url
+          }
+
+          nodes.push(new media.NodeType(description, url))
+          continue LoopTokens
+        }
+      }
+
+      for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
+        if (token instanceof richConvention.StartTokenType) {
+          const result = parse({
+            tokens: this.tokens.slice(countTokensParsed),
+            UntilTokenType: richConvention.EndTokenType
+          })
+
+          tokenIndex += result.countTokensParsed
+
+          if (result.nodes.length) {
+            // Like empty inline code, we discard any empty sandwich convention
+            nodes.push(new richConvention.NodeType(result.nodes))
+          }
+
+          continue LoopTokens
+        }
       }
     }
-  }
+    const wasTerminatorSpecified = !!UntilTokenType
 
-  const wasTerminatorSpecified = !!UntilTokenType
+    if (!isTerminatorOptional && wasTerminatorSpecified) {
+      throw new Error(`Missing terminator token: ${UntilTokenType}`)
+    }
 
-  if (!isTerminatorOptional && wasTerminatorSpecified) {
-    throw new Error(`Missing terminator token: ${UntilTokenType}`)
-  }
-
-  return {
-    countTokensParsed,
-    nodes: combineConsecutivePlainTextNodes(nodes),
-    isMissingTerminator: wasTerminatorSpecified
+    this.result = {
+      countTokensParsed,
+      nodes: combineConsecutivePlainTextNodes(nodes),
+      isMissingTerminator: wasTerminatorSpecified
+    }
   }
 }
 
