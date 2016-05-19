@@ -9,6 +9,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
 describe('Bracketed text followed by " -> " followed by a closing bracket', () => {
@@ -100,18 +101,18 @@ describe('A link', () => {
       ]))
   })
 
-
   it('can be inside bracketed text', () => {
     expect(Up.toAst("[I use [Google -> https://google.com]]")).to.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('[I use '),
-        new LinkNode([
-          new PlainTextNode('Google')
-        ], 'https://google.com'),
-        new PlainTextNode(']')
+        new SquareBracketedNode([
+          new PlainTextNode('[I use '),
+          new LinkNode([
+            new PlainTextNode('Google')
+          ], 'https://google.com'),
+          new PlainTextNode(']')
+        ])
       ]))
   })
-
 
   it('starts with the final of multiple opening brackets even when there is just one closing bracket', () => {
     expect(Up.toAst('Go to [this [site -> https://stackoverflow.com]!!')).to.eql(
