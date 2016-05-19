@@ -53,26 +53,32 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
       break
     }
 
-    if (
-      token instanceof PlainTextToken
-      || token instanceof ParenthesizedStartToken
-      || token instanceof ParenthesizedEndToken
-      || token instanceof SquareBracketedStartToken
-      || token instanceof SquareBracketedEndToken
-    ) {
-
+    if (token instanceof PlainTextToken) {
       if (!token.text) {
         continue
       }
 
-      const lastNode = last(nodes)
-
-      if (lastNode instanceof PlainTextNode) {
-        lastNode.text += token.text
-      } else {
-        nodes.push(new PlainTextNode(token.text))
-      }
-
+      nodes.push(new PlainTextNode(token.text))
+      continue
+    }
+    
+    if (token instanceof ParenthesizedStartToken) {
+      nodes.push(new PlainTextNode('('))
+      continue
+    }
+    
+    if (token instanceof ParenthesizedEndToken) {
+      nodes.push(new PlainTextNode(')'))
+      continue
+    }
+    
+    if (token instanceof SquareBracketedStartToken) {
+      nodes.push(new PlainTextNode('['))
+      continue
+    }
+    
+    if (token instanceof SquareBracketedEndToken) {
+      nodes.push(new PlainTextNode(']'))
       continue
     }
 

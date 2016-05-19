@@ -1521,21 +1521,27 @@ function parse(args) {
             stillNeedsTerminator = false;
             break;
         }
-        if (token instanceof PlainTextToken_1.PlainTextToken
-            || token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken
-            || token instanceof ParenthesizedEndToken_1.ParenthesizedEndToken
-            || token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken
-            || token instanceof SquareBracketedEndToken_1.SquareBracketedEndToken) {
+        if (token instanceof PlainTextToken_1.PlainTextToken) {
             if (!token.text) {
                 continue;
             }
-            var lastNode = CollectionHelpers_1.last(nodes);
-            if (lastNode instanceof PlainTextNode_1.PlainTextNode) {
-                lastNode.text += token.text;
-            }
-            else {
-                nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
-            }
+            nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
+            continue;
+        }
+        if (token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken) {
+            nodes.push(new PlainTextNode_1.PlainTextNode('('));
+            continue;
+        }
+        if (token instanceof ParenthesizedEndToken_1.ParenthesizedEndToken) {
+            nodes.push(new PlainTextNode_1.PlainTextNode(')'));
+            continue;
+        }
+        if (token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken) {
+            nodes.push(new PlainTextNode_1.PlainTextNode('['));
+            continue;
+        }
+        if (token instanceof SquareBracketedEndToken_1.SquareBracketedEndToken) {
+            nodes.push(new PlainTextNode_1.PlainTextNode(']'));
             continue;
         }
         if (token instanceof InlineCodeToken_1.InlineCodeToken) {
