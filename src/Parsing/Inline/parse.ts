@@ -93,7 +93,7 @@ export function parse(
       }
 
       resultNodes.push(new PlainTextNode(')'))
-      nodes.push(new SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)))
+      nodes.push(new ParenthesizedNode(combineConsecutivePlainTextNodes(resultNodes)))
 
       continue
     }
