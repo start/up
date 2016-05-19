@@ -8,21 +8,50 @@ import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER,
 const RICH_CONVENTIONS = [LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE]
 
 export function contextualizeTokens(tokens: Token[]): Token[] {
-  for (let i = 0; i < tokens.length; i++) {
+  const resultTokens: ContextualizedToken[] = []
+  
+  for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+    const token = tokens[tokenIndex]
     
+    const conventionStartedByToken = getConventionStartedBy(token, RICH_CONVENTIONS)
+    
+    if (conventionStartedByToken) {
+      resultTokens.push(new ContextualizedStartToken(token, tokenIndex))
+      continue
+    }
+    
+    const conventionEndedByToken = getConventionEndedBy(token, RICH_CONVENTIONS)
+    
+    if (conventionStartedByToken) {
+      resultTokens.push(new ContextualizedEndToken(token, tokenIndex))
+      continue
+    }
+    
+    resultTokens.push(new ContextualizedToken(token))
   }
   
   return null
 }
 
-abstract class ContextualizedToken {
-  constructor(public token: Token, public index: number) { }
+
+class ContextualizedToken {
+  constructor(public token: Token) { }
 }
 
-abstract class ContextualizedStartToken extends ContextualizedToken {
-  endToken: Token
+
+class ContextualizedStartToken extends ContextualizedToken {
+  end: ContextualizedEndToken
+  
+  constructor(public token: Token, public index: number) {
+    super(token)
+  }
 }
 
-abstract class ContextualizedEndToken extends ContextualizedToken {
-  startToken: Token
+
+class ContextualizedEndToken extends ContextualizedToken {
+  start: ContextualizedStartToken
+  
+  constructor(public token: Token, public index: number) {
+    super(token)
+  }
 }
