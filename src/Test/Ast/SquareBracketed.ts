@@ -6,8 +6,8 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 
 
-describe('Text surrounded by parentheses', () => {
-  it('is put inside a revision deletion node', () => {
+describe('Text surrounded by square brackets', () => {
+  it('is put inside a square bracketed node with the square brackets preserved as plain text', () => {
     expect(Up.toAst('I like [certain types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -20,7 +20,7 @@ describe('Text surrounded by parentheses', () => {
 })
 
 
-describe('Parenthesized text', () => {
+describe('Square bracketed text', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toAst('I like [certain *types* of] pizza')).to.be.eql(
       insideDocumentAndParagraph([

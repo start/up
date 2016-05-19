@@ -7,7 +7,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 
 describe('Text surrounded by parentheses', () => {
-  it('is put inside a revision deletion node', () => {
+  it('is put inside a parenthesized node with the parentheses preserved as plain text', () => {
     expect(Up.toAst('I like (certain types of) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
