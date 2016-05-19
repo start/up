@@ -56,7 +56,7 @@ describe('Two left square brackets followed by a single right square bracket', (
 })
 
 
-describe('A left square brackets followed by two right square brackets', () => {
+describe('A left square bracket followed by two right square brackets', () => {
   it('produces bracketed text ending with the first right square bracket', () => {
     expect(Up.toAst('I like [certain *types* of] pizza :]')).to.be.eql(
       insideDocumentAndParagraph([

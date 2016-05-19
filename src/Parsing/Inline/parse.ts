@@ -15,6 +15,8 @@ import { TokenType } from './Tokens/TokenType'
 import { NakedUrlToken } from './Tokens/NakedUrlToken'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 import { ParseResult } from './ParseResult'
@@ -36,12 +38,17 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): ParseResult {
-  const { tokens, UntilTokenType } = args
+export function parse(
+  args: {
+    tokens: Token[],
+    UntilTokenType?: TokenType,
+    isTerminatorOptional?: boolean
+  }
+): ParseResult {
+  const { tokens, UntilTokenType, isTerminatorOptional } = args
 
   const nodes: InlineSyntaxNode[] = []
 
-  let stillNeedsTerminator = !!UntilTokenType
   let countTokensParsed = 0
 
   LoopTokens: for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
@@ -49,8 +56,11 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
     countTokensParsed = tokenIndex + 1
 
     if (UntilTokenType && token instanceof UntilTokenType) {
-      stillNeedsTerminator = false
-      break
+      return {
+        countTokensParsed,
+        nodes: combineConsecutivePlainTextNodes(nodes),
+        isMissingTerminator: false
+      }
     }
 
     if (token instanceof PlainTextToken) {
@@ -61,24 +71,52 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
       nodes.push(new PlainTextNode(token.text))
       continue
     }
-    
+
     if (token instanceof ParenthesizedStartToken) {
-      nodes.push(new PlainTextNode('('))
+      const result = parse({
+        tokens: tokens.slice(countTokensParsed),
+        UntilTokenType: ParenthesizedEndToken,
+        isTerminatorOptional: true
+      })
+
+      tokenIndex += result.countTokensParsed
+
+      const resultNodes =
+        [<InlineSyntaxNode>new PlainTextNode('(')]
+          .concat(...result.nodes)
+
+      if (result.isMissingTerminator) {
+        nodes.push(...resultNodes)
+        continue
+      }
+
+      resultNodes.push(new PlainTextNode(')'))
+      nodes.push(new SquareBracketedNode(resultNodes))
+
       continue
     }
-    
-    if (token instanceof ParenthesizedEndToken) {
-      nodes.push(new PlainTextNode(')'))
-      continue
-    }
-    
+
     if (token instanceof SquareBracketedStartToken) {
-      nodes.push(new PlainTextNode('['))
-      continue
-    }
-    
-    if (token instanceof SquareBracketedEndToken) {
-      nodes.push(new PlainTextNode(']'))
+      const result = parse({
+        tokens: tokens.slice(countTokensParsed),
+        UntilTokenType: SquareBracketedEndToken,
+        isTerminatorOptional: true
+      })
+
+      tokenIndex += result.countTokensParsed
+
+      const resultNodes =
+        [<InlineSyntaxNode>new PlainTextNode('[')]
+          .concat(...result.nodes)
+
+      if (result.isMissingTerminator) {
+        nodes.push(...resultNodes)
+        continue
+      }
+
+      resultNodes.push(new PlainTextNode(']'))
+      nodes.push(new SquareBracketedNode(resultNodes))
+
       continue
     }
 
@@ -178,13 +216,16 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
     }
   }
 
-  if (stillNeedsTerminator) {
-    throw new Error(`Missing token: ${UntilTokenType}`)
+  const wasTerminatorSpecified = !!UntilTokenType
+
+  if (!isTerminatorOptional && wasTerminatorSpecified) {
+    throw new Error(`Missing terminator token: ${UntilTokenType}`)
   }
 
   return {
     countTokensParsed,
-    nodes: combineConsecutivePlainTextTokens(nodes)
+    nodes: combineConsecutivePlainTextNodes(nodes),
+    isMissingTerminator: wasTerminatorSpecified
   }
 }
 
@@ -193,7 +234,7 @@ function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
 }
 
-function combineConsecutivePlainTextTokens(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
   const resultNodes: InlineSyntaxNode[] = []
 
   for (const node of nodes) {

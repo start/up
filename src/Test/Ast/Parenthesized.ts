@@ -38,9 +38,9 @@ describe('Parenthesized text', () => {
 })
 
 
-describe('Two left square brackets followed by a single right square bracket', () => {
-  it('produces bracketed text starting from the second left square bracket', () => {
-    expect(Up.toAst(':( I like [certain *types* of] pizza')).to.be.eql(
+describe('Two left parentheses followed by a single right square parenthesis', () => {
+  it('produces parenthesized text starting from the second left parenthesis', () => {
+    expect(Up.toAst(':( I like (certain *types* of) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode(':( I like '),
         new ParenthesizedNode([
@@ -48,7 +48,7 @@ describe('Two left square brackets followed by a single right square bracket', (
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of]')
+          new PlainTextNode(' of)')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -56,9 +56,9 @@ describe('Two left square brackets followed by a single right square bracket', (
 })
 
 
-describe('A left square brackets followed by two right square brackets', () => {
-  it('produces bracketed text ending with the first right square bracket', () => {
-    expect(Up.toAst('I like [certain *types* of] pizza :)')).to.be.eql(
+describe('A left parenthesis followed by two right parentheses', () => {
+  it('produces parenthesized text ending with the first right parenthesis', () => {
+    expect(Up.toAst('I like (certain *types* of) pizza :)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new ParenthesizedNode([
@@ -66,7 +66,7 @@ describe('A left square brackets followed by two right square brackets', () => {
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of]')
+          new PlainTextNode(' of)')
         ]),
         new PlainTextNode(' pizza :)')
       ]))
