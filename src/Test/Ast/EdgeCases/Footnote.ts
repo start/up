@@ -7,6 +7,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 
@@ -71,7 +72,12 @@ describe('Nested parenthesized text starting with "((" but ending in different s
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode(text)
+          new ParenthesizedNode([
+            new ParenthesizedNode([
+              new PlainTextNode("I don't eat cereal.")
+            ]),
+            new PlainTextNode(" Well, I do, but I pretend not to.")
+          ])
         ]),
       ]))
   })
