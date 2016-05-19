@@ -2,6 +2,9 @@ import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
 import { getConventionEndedBy } from './getConventionEndedBy'
 import { getConventionStartedBy } from './getConventionStartedBy'
+import { ContextualizedToken } from './ContextualizedToken'
+import { ContextualizedStartToken } from './ContextualizedStartToken'
+import { ContextualizedEndToken } from './ContextualizedEndToken'
 
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 
@@ -26,12 +29,25 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
     const conventionEndedByToken = getConventionEndedBy(token, RICH_CONVENTIONS)
     
     if (conventionEndedByToken) {
-      resultTokens.push(new ContextualizedEndToken(token, conventionEndedByToken, tokenIndex))
+      const endToken = new ContextualizedEndToken(token, conventionEndedByToken, tokenIndex)
+      resultTokens.push(endToken)
       
+      // Now, let's find the matching open start token.
+      //
+      // The most recent open start token ended by the current token is guaranteed to be the one that matches.
       for (let i = openStartTokens.length - 1; i >= 0; i--) {
         const startToken = openStartTokens[i]
         
         if (token instanceof startToken.convention.EndTokenType) {
+          // We found our match!
+          
+          // First, let's link the two together. 
+          startToken.end = endToken
+          endToken.start = startToken
+          
+          // Now, mark the start token as closed by removing it from the list of open start tokens.
+          //
+          // Please note that the start token is still in the list of result tokens, so we aren't destroying it.
           openStartTokens.splice(i, 1)
           break
         }
@@ -44,27 +60,4 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
   }
   
   return resultTokens
-}
-
-
-class ContextualizedToken {
-  constructor(public token: Token) { }
-}
-
-
-class ContextualizedStartToken extends ContextualizedToken {
-  end: ContextualizedEndToken
-  
-  constructor(public token: Token, public convention: RichConvention, public index: number) {
-    super(token)
-  }
-}
-
-
-class ContextualizedEndToken extends ContextualizedToken {
-  start: ContextualizedStartToken
-  
-  constructor(public token: Token, public convention: RichConvention, public index: number) {
-    super(token)
-  }
 }
