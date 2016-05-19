@@ -4,6 +4,8 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 
 describe('A naked URL', () => {
@@ -56,22 +58,26 @@ describe('A naked URL', () => {
   it('can be inside parentheses', () => {
     expect(Up.toAst('(https://archive.org/fake)')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('('),
-        new LinkNode([
-          new PlainTextNode('archive.org/fake')
-        ], 'https://archive.org/fake'),
-        new PlainTextNode(')'),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainTextNode(')')
+        ])
       ]))
   })
 
   it('can be inside square brackets', () => {
     expect(Up.toAst('[https://archive.org/fake]')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('['),
-        new LinkNode([
-          new PlainTextNode('archive.org/fake')
-        ], 'https://archive.org/fake'),
-        new PlainTextNode(']'),
+        new SquareBracketedNode([
+          new PlainTextNode('['),
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainTextNode(']'),
+        ])
       ]))
   })
 
@@ -98,9 +104,9 @@ describe('A naked URL', () => {
   it("can contain unescaped asterisks if not inside an emphasis convention", () => {
     expect(Up.toAst('https://example.org/a*normal*url')).to.be.eql(
       insideDocumentAndParagraph([
-          new LinkNode([
-            new PlainTextNode('example.org/a*normal*url')
-          ], 'https://example.org/a*normal*url')
+        new LinkNode([
+          new PlainTextNode('example.org/a*normal*url')
+        ], 'https://example.org/a*normal*url')
       ]))
   })
 })
