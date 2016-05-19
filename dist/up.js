@@ -1606,11 +1606,27 @@ function parse(args) {
     if (stillNeedsTerminator) {
         throw new Error("Missing token: " + UntilTokenType);
     }
-    return { nodes: nodes, countTokensParsed: countTokensParsed };
+    return {
+        countTokensParsed: countTokensParsed,
+        nodes: combineConsecutivePlainTextTokens(nodes)
+    };
 }
 exports.parse = parse;
 function isNotPureWhitespace(nodes) {
     return !nodes.every(isWhitespace_1.isWhitespace);
+}
+function combineConsecutivePlainTextTokens(nodes) {
+    var resultNodes = [];
+    for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
+        var node = nodes_1[_i];
+        var lastNode = CollectionHelpers_1.last(resultNodes);
+        if ((node instanceof PlainTextNode_1.PlainTextNode) && (lastNode instanceof PlainTextNode_1.PlainTextNode)) {
+            lastNode.text += node.text;
+            continue;
+        }
+        resultNodes.push(node);
+    }
+    return resultNodes;
 }
 
 },{"../../CollectionHelpers":1,"../../SyntaxNodes/InlineCodeNode":79,"../../SyntaxNodes/LinkNode":83,"../../SyntaxNodes/PlainTextNode":90,"../../SyntaxNodes/isWhitespace":100,"./MediaConventions":5,"./RichConventions":11,"./Tokens/InlineCodeToken":22,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/NakedUrlToken":26,"./Tokens/ParenthesizedEndToken":27,"./Tokens/ParenthesizedStartToken":28,"./Tokens/PlainTextToken":29,"./Tokens/SquareBracketedEndToken":40,"./Tokens/SquareBracketedStartToken":41}],48:[function(require,module,exports){

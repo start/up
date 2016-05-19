@@ -176,10 +176,30 @@ export function parse(args: { tokens: Token[], UntilTokenType?: TokenType }): Pa
     throw new Error(`Missing token: ${UntilTokenType}`)
   }
 
-  return { nodes, countTokensParsed }
+  return {
+    countTokensParsed,
+    nodes: combineConsecutivePlainTextTokens(nodes)
+  }
 }
 
 
 function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
+}
+
+function combineConsecutivePlainTextTokens(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+  const resultNodes: InlineSyntaxNode[] = []
+
+  for (const node of nodes) {
+    const lastNode = last(resultNodes)
+
+    if ((node instanceof PlainTextNode) && (lastNode instanceof PlainTextNode)) {
+      lastNode.text += node.text
+      continue
+    }
+
+    resultNodes.push(node)
+  }
+
+  return resultNodes
 }
