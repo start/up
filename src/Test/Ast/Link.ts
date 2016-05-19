@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 
 
 describe('Bracketed text pointing to a URL', () => {
@@ -57,6 +58,20 @@ describe("A link's contents", () => {
             new PlainTextNode('bing.com')
           ], 'https://bing.com')
         ], 'https://google.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+  
+  it('can contain bracketed text', () => {
+    expect(Up.toAst('I like [[only one] site -> https://stackoverflow.com].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[only one]')
+          ]),
+          new PlainTextNode(' site')
+        ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
       ]))
   })
