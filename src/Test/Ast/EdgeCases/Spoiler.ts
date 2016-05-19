@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 describe('A spoiler with " -> " inside', () => {
   it('is not transformed into a link', () => {
@@ -23,7 +23,11 @@ describe('A spoiler convention', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
-          new PlainTextNode('you fight [and beat] Gary')
+          new PlainTextNode('you fight '),
+          new SquareBracketedNode([
+            new PlainTextNode('[and beat]')
+          ]),
+          new PlainTextNode(' Gary')          
         ]),
         new PlainTextNode('.')
       ]))
