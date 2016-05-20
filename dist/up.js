@@ -1437,7 +1437,10 @@ var FREELY_SPLITTABLE_CONVENTIONS = [
     RichConventions_1.REVISION_DELETION,
     RichConventions_1.REVISION_INSERTION,
     RichConventions_1.STRESS,
-    RichConventions_1.EMPHASIS
+    RichConventions_1.EMPHASIS,
+    RichConventions_1.PARENTHESIZED,
+    RichConventions_1.SQUARE_BRACKETED,
+    RichConventions_1.CURLY_BRACKETED
 ];
 var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
     RichConventions_1.LINK,
