@@ -1426,9 +1426,9 @@ exports.getInlineNodes = getInlineNodes;
 
 },{"./Tokenizer":16,"./parse":51}],50:[function(require,module,exports){
 "use strict";
+var RichConventions_1 = require('./RichConventions');
 var getConventionEndedBy_1 = require('./TokenContextualization/getConventionEndedBy');
 var getConventionStartedBy_1 = require('./TokenContextualization/getConventionStartedBy');
-var RichConventions_1 = require('./RichConventions');
 function nestOverlappingConventions(tokens) {
     return new ConventionNester(tokens.slice()).tokens;
 }

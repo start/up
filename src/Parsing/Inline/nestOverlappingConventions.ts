@@ -1,10 +1,10 @@
+import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
 import { contextualizeTokens } from './TokenContextualization/contextualizeTokens'
 import { getConventionEndedBy } from './TokenContextualization/getConventionEndedBy'
 import { getConventionStartedBy } from './TokenContextualization/getConventionStartedBy'
 
-import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
 
 // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This function rearranges
 // and adds tokens to make that process simpler.
