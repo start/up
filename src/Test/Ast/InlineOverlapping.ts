@@ -153,36 +153,6 @@ describe('Overlapped stressed and curly bracketed text', () => {
 })
 
 
-describe('A paragraph with 2 instances of overlapped conventions', () => {
-  it('prorduce the correct nodes for each', () => {
-    expect(Up.toAst('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I '),
-        new EmphasisNode([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('drinking')
-          ])
-        ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' whole')
-        ]),
-        new PlainTextNode(' milk. I '),
-        new EmphasisNode([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('drinking')
-          ])
-        ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' whole')
-        ]),
-        new PlainTextNode(' milk.')
-      ]))
-  })
-})
-
-
 describe('Overlapped stressed, deleted, and inserted text', () => {
   it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
     expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
