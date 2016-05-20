@@ -1525,16 +1525,16 @@ var Parser = (function () {
     function Parser(args) {
         this.tokenIndex = 0;
         this.countTokensParsed = 0;
+        this.nodes = [];
         var UntilTokenType = args.UntilTokenType, isTerminatorOptional = args.isTerminatorOptional;
         this.tokens = args.tokens;
-        var nodes = [];
         LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
             var token = this.tokens[this.tokenIndex];
             this.countTokensParsed = this.tokenIndex + 1;
             if (UntilTokenType && token instanceof UntilTokenType) {
                 this.result = {
                     countTokensParsed: this.countTokensParsed,
-                    nodes: combineConsecutivePlainTextNodes(nodes),
+                    nodes: combineConsecutivePlainTextNodes(this.nodes),
                     isMissingTerminator: false
                 };
                 return;
@@ -1543,46 +1543,36 @@ var Parser = (function () {
                 if (!token.text) {
                     continue;
                 }
-                nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
+                this.nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
                 continue;
             }
             if (token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken) {
-                var result = this.parse({
-                    UntilTokenType: ParenthesizedEndToken_1.ParenthesizedEndToken,
-                    isTerminatorOptional: true
+                this.parseBracket({
+                    NodeType: ParenthesizedNode_1.ParenthesizedNode,
+                    UntilBracketType: ParenthesizedEndToken_1.ParenthesizedEndToken,
+                    openBracket: '(',
+                    closeBracket: ')'
                 });
-                var resultNodes = (_a = [new PlainTextNode_1.PlainTextNode('(')]).concat.apply(_a, result.nodes);
-                if (result.isMissingTerminator) {
-                    nodes.push.apply(nodes, combineConsecutivePlainTextNodes(resultNodes));
-                    continue;
-                }
-                resultNodes.push(new PlainTextNode_1.PlainTextNode(')'));
-                nodes.push(new ParenthesizedNode_1.ParenthesizedNode(combineConsecutivePlainTextNodes(resultNodes)));
                 continue;
             }
             if (token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken) {
-                var result = this.parse({
-                    UntilTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
-                    isTerminatorOptional: true
+                this.parseBracket({
+                    NodeType: SquareBracketedNode_1.SquareBracketedNode,
+                    UntilBracketType: SquareBracketedEndToken_1.SquareBracketedEndToken,
+                    openBracket: '[',
+                    closeBracket: ']'
                 });
-                var resultNodes = (_b = [new PlainTextNode_1.PlainTextNode('[')]).concat.apply(_b, result.nodes);
-                if (result.isMissingTerminator) {
-                    nodes.push.apply(nodes, combineConsecutivePlainTextNodes(resultNodes));
-                    continue;
-                }
-                resultNodes.push(new PlainTextNode_1.PlainTextNode(']'));
-                nodes.push(new SquareBracketedNode_1.SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)));
                 continue;
             }
             if (token instanceof InlineCodeToken_1.InlineCodeToken) {
                 if (token.code) {
-                    nodes.push(new InlineCodeNode_1.InlineCodeNode(token.code));
+                    this.nodes.push(new InlineCodeNode_1.InlineCodeNode(token.code));
                 }
                 continue;
             }
             if (token instanceof NakedUrlToken_1.NakedUrlToken) {
                 var content = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
-                nodes.push(new LinkNode_1.LinkNode(content, token.url()));
+                this.nodes.push(new LinkNode_1.LinkNode(content, token.url()));
                 continue;
             }
             if (token instanceof LinkStartToken_1.LinkStartToken) {
@@ -1596,13 +1586,13 @@ var Parser = (function () {
                     continue;
                 }
                 if (hasContents && !hasUrl) {
-                    nodes.push.apply(nodes, contents);
+                    (_a = this.nodes).push.apply(_a, contents);
                     continue;
                 }
                 if (!hasContents && hasUrl) {
                     contents = [new PlainTextNode_1.PlainTextNode(url)];
                 }
-                nodes.push(new LinkNode_1.LinkNode(contents, url));
+                this.nodes.push(new LinkNode_1.LinkNode(contents, url));
                 continue;
             }
             for (var _i = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _i < MEDIA_CONVENTIONS_1.length; _i++) {
@@ -1616,16 +1606,16 @@ var Parser = (function () {
                     if (!description) {
                         description = url;
                     }
-                    nodes.push(new media.NodeType(description, url));
+                    this.nodes.push(new media.NodeType(description, url));
                     continue LoopTokens;
                 }
             }
-            for (var _c = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _c < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _c++) {
-                var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_c];
+            for (var _b = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _b < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _b++) {
+                var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_b];
                 if (token instanceof richConvention.StartTokenType) {
                     var result = this.parse({ UntilTokenType: richConvention.EndTokenType });
                     if (result.nodes.length) {
-                        nodes.push(new richConvention.NodeType(result.nodes));
+                        this.nodes.push(new richConvention.NodeType(result.nodes));
                     }
                     continue LoopTokens;
                 }
@@ -1637,10 +1627,10 @@ var Parser = (function () {
         }
         this.result = {
             countTokensParsed: this.countTokensParsed,
-            nodes: combineConsecutivePlainTextNodes(nodes),
+            nodes: combineConsecutivePlainTextNodes(this.nodes),
             isMissingTerminator: wasTerminatorSpecified
         };
-        var _a, _b;
+        var _a;
     }
     Parser.prototype.parse = function (args) {
         var UntilTokenType = args.UntilTokenType, isTerminatorOptional = args.isTerminatorOptional;
@@ -1651,6 +1641,20 @@ var Parser = (function () {
         });
         this.tokenIndex += result.countTokensParsed;
         return result;
+    };
+    Parser.prototype.parseBracket = function (args) {
+        var result = this.parse({
+            UntilTokenType: args.UntilBracketType,
+            isTerminatorOptional: true
+        });
+        var bracketResultNodes = (_a = [new PlainTextNode_1.PlainTextNode(args.openBracket)]).concat.apply(_a, result.nodes);
+        if (result.isMissingTerminator) {
+            (_b = this.nodes).push.apply(_b, combineConsecutivePlainTextNodes(bracketResultNodes));
+            return;
+        }
+        bracketResultNodes.push(new PlainTextNode_1.PlainTextNode(args.closeBracket));
+        this.nodes.push(new args.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)));
+        var _a, _b;
     };
     return Parser;
 }());

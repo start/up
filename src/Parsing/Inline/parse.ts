@@ -1,6 +1,7 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
+import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { last } from '../../CollectionHelpers'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
 import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
@@ -55,14 +56,13 @@ class Parser {
   private tokens: Token[]
   private tokenIndex = 0
   private countTokensParsed = 0
+  private nodes: InlineSyntaxNode[] = []
 
   result: ParseResult
 
   constructor(args: ParseArgs) {
     const { UntilTokenType, isTerminatorOptional } = args
     this.tokens = args.tokens
-
-    const nodes: InlineSyntaxNode[] = []
 
     LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
@@ -71,7 +71,7 @@ class Parser {
       if (UntilTokenType && token instanceof UntilTokenType) {
         this.result = {
           countTokensParsed: this.countTokensParsed,
-          nodes: combineConsecutivePlainTextNodes(nodes),
+          nodes: combineConsecutivePlainTextNodes(this.nodes),
           isMissingTerminator: false
         }
 
@@ -83,48 +83,28 @@ class Parser {
           continue
         }
 
-        nodes.push(new PlainTextNode(token.text))
+        this.nodes.push(new PlainTextNode(token.text))
         continue
       }
 
       if (token instanceof ParenthesizedStartToken) {
-        const result = this.parse({
-          UntilTokenType: ParenthesizedEndToken,
-          isTerminatorOptional: true
+        this.parseBracket({
+          NodeType: ParenthesizedNode,
+          UntilBracketType: ParenthesizedEndToken,
+          openBracket: '(',
+          closeBracket: ')'
         })
-
-        const resultNodes =
-          [<InlineSyntaxNode>new PlainTextNode('(')]
-            .concat(...result.nodes)
-
-        if (result.isMissingTerminator) {
-          nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
-          continue
-        }
-
-        resultNodes.push(new PlainTextNode(')'))
-        nodes.push(new ParenthesizedNode(combineConsecutivePlainTextNodes(resultNodes)))
 
         continue
       }
 
       if (token instanceof SquareBracketedStartToken) {
-        const result = this.parse({
-          UntilTokenType: SquareBracketedEndToken,
-          isTerminatorOptional: true
+        this.parseBracket({
+          NodeType: SquareBracketedNode,
+          UntilBracketType: SquareBracketedEndToken,
+          openBracket: '[',
+          closeBracket: ']'
         })
-
-        const resultNodes =
-          [<InlineSyntaxNode>new PlainTextNode('[')]
-            .concat(...result.nodes)
-
-        if (result.isMissingTerminator) {
-          nodes.push(...combineConsecutivePlainTextNodes(resultNodes))
-          continue
-        }
-
-        resultNodes.push(new PlainTextNode(']'))
-        nodes.push(new SquareBracketedNode(combineConsecutivePlainTextNodes(resultNodes)))
 
         continue
       }
@@ -132,7 +112,7 @@ class Parser {
       if (token instanceof InlineCodeToken) {
         // Empty inline code isn't meaningful, so we discard it
         if (token.code) {
-          nodes.push(new InlineCodeNode(token.code))
+          this.nodes.push(new InlineCodeNode(token.code))
         }
 
         continue
@@ -140,7 +120,7 @@ class Parser {
 
       if (token instanceof NakedUrlToken) {
         const content = [new PlainTextNode(token.restOfUrl)]
-        nodes.push(new LinkNode(content, token.url()))
+        this.nodes.push(new LinkNode(content, token.url()))
 
         continue
       }
@@ -167,7 +147,7 @@ class Parser {
         if (hasContents && !hasUrl) {
           // If there's content but no URL, we include the content directly in the document without producing
           // a link node
-          nodes.push(...contents)
+          this.nodes.push(...contents)
           continue
         }
 
@@ -176,7 +156,7 @@ class Parser {
           contents = [new PlainTextNode(url)]
         }
 
-        nodes.push(new LinkNode(contents, url))
+        this.nodes.push(new LinkNode(contents, url))
         continue
       }
 
@@ -196,7 +176,7 @@ class Parser {
             description = url
           }
 
-          nodes.push(new media.NodeType(description, url))
+          this.nodes.push(new media.NodeType(description, url))
           continue LoopTokens
         }
       }
@@ -207,7 +187,7 @@ class Parser {
 
           if (result.nodes.length) {
             // Like empty inline code, we discard any empty sandwich convention
-            nodes.push(new richConvention.NodeType(result.nodes))
+            this.nodes.push(new richConvention.NodeType(result.nodes))
           }
 
           continue LoopTokens
@@ -222,19 +202,19 @@ class Parser {
 
     this.result = {
       countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutivePlainTextNodes(nodes),
+      nodes: combineConsecutivePlainTextNodes(this.nodes),
       isMissingTerminator: wasTerminatorSpecified
     }
   }
 
-  parse(
+  private parse(
     args: {
       UntilTokenType: TokenType,
       isTerminatorOptional?: boolean
     }
   ): ParseResult {
     const { UntilTokenType, isTerminatorOptional } = args
-    
+
     const result = parse({
       tokens: this.tokens.slice(this.countTokensParsed),
       UntilTokenType,
@@ -242,8 +222,34 @@ class Parser {
     })
 
     this.tokenIndex += result.countTokensParsed
-    
+
     return result
+  }
+
+  private parseBracket(
+    args: {
+      NodeType: { new(nodes: InlineSyntaxNode[]): RichInlineSyntaxNode }
+      UntilBracketType: TokenType,
+      openBracket: string,
+      closeBracket: string
+    }
+  ): void {
+    const result = this.parse({
+      UntilTokenType: args.UntilBracketType,
+      isTerminatorOptional: true
+    })
+
+    const bracketResultNodes =
+      [<InlineSyntaxNode>new PlainTextNode(args.openBracket)]
+        .concat(...result.nodes)
+
+    if (result.isMissingTerminator) {
+      this.nodes.push(...combineConsecutivePlainTextNodes(bracketResultNodes))
+      return
+    }
+
+    bracketResultNodes.push(new PlainTextNode(args.closeBracket))
+    this.nodes.push(new args.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)))
   }
 }
 
