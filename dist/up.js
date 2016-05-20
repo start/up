@@ -445,6 +445,7 @@ var CURLY_BRACKETED = {
     EndTokenType: CurlyBracketedEndToken_1.CurlyBracketedEndToken,
     tokenizerState: TokenizerState_1.TokenizerState.CurlyBracketed
 };
+exports.CURLY_BRACKETED = CURLY_BRACKETED;
 var LINK = {
     StartTokenType: LinkStartToken_1.LinkStartToken,
     EndTokenType: LinkEndToken_1.LinkEndToken,
@@ -534,6 +535,7 @@ var Tokenizer = (function () {
                 || this.openMedia()
                 || this.openSandwich(this.parenthesizedConvention)
                 || this.openSandwich(this.squareBracketedConvention)
+                || this.openSandwich(this.curlyBracketedConvention)
                 || this.openNakedUrl()
                 || this.bufferCurrentChar();
         }
@@ -557,9 +559,11 @@ var Tokenizer = (function () {
             this.revisionDeletionConvention,
             this.revisionInsertionConvention,
             this.squareBracketedConvention,
+            this.curlyBracketedConvention,
             this.parenthesizedConvention,
             this.squareBracketedInsideUrlConvention,
-            this.parenthesizedInsideUrlConvention
+            this.parenthesizedInsideUrlConvention,
+            this.curlyBracketedInsideUrlConvention
         ].some(function (sandwich) {
             return (sandwich.state === state)
                 && _this.closeSandwich(sandwich);
@@ -960,6 +964,12 @@ var Tokenizer = (function () {
                 startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
             });
+        this.curlyBracketedConvention =
+            this.getRichSandwich({
+                richConvention: RichConventions_1.CURLY_BRACKETED,
+                startPattern: Patterns_1.OPEN_CURLY_BRACKET,
+                endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
+            });
         this.parenthesizedInsideUrlConvention =
             this.getBracketInsideUrlConvention({
                 state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
@@ -971,6 +981,12 @@ var Tokenizer = (function () {
                 state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
                 openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
+            });
+        this.curlyBracketedInsideUrlConvention =
+            this.getBracketInsideUrlConvention({
+                state: TokenizerState_1.TokenizerState.CurlyBracketed,
+                openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
+                closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
             });
         this.inlineCodeConvention =
             new TokenizableSandwich_1.TokenizableSandwich({
@@ -1003,15 +1019,16 @@ var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
     TokenizerState[TokenizerState["CurlyBracketed"] = 5] = "CurlyBracketed";
     TokenizerState[TokenizerState["ParenthesizedInsideUrl"] = 6] = "ParenthesizedInsideUrl";
     TokenizerState[TokenizerState["SquareBracketedInsideUrl"] = 7] = "SquareBracketedInsideUrl";
-    TokenizerState[TokenizerState["Link"] = 8] = "Link";
-    TokenizerState[TokenizerState["LinkUrl"] = 9] = "LinkUrl";
-    TokenizerState[TokenizerState["RevisionInsertion"] = 10] = "RevisionInsertion";
-    TokenizerState[TokenizerState["RevisionDeletion"] = 11] = "RevisionDeletion";
-    TokenizerState[TokenizerState["Audio"] = 12] = "Audio";
-    TokenizerState[TokenizerState["Image"] = 13] = "Image";
-    TokenizerState[TokenizerState["Video"] = 14] = "Video";
-    TokenizerState[TokenizerState["MediaUrl"] = 15] = "MediaUrl";
-    TokenizerState[TokenizerState["NakedUrl"] = 16] = "NakedUrl";
+    TokenizerState[TokenizerState["CurlyBracketedInsideUrl"] = 8] = "CurlyBracketedInsideUrl";
+    TokenizerState[TokenizerState["Link"] = 9] = "Link";
+    TokenizerState[TokenizerState["LinkUrl"] = 10] = "LinkUrl";
+    TokenizerState[TokenizerState["RevisionInsertion"] = 11] = "RevisionInsertion";
+    TokenizerState[TokenizerState["RevisionDeletion"] = 12] = "RevisionDeletion";
+    TokenizerState[TokenizerState["Audio"] = 13] = "Audio";
+    TokenizerState[TokenizerState["Image"] = 14] = "Image";
+    TokenizerState[TokenizerState["Video"] = 15] = "Video";
+    TokenizerState[TokenizerState["MediaUrl"] = 16] = "MediaUrl";
+    TokenizerState[TokenizerState["NakedUrl"] = 17] = "NakedUrl";
 })(exports.TokenizerState || (exports.TokenizerState = {}));
 var TokenizerState = exports.TokenizerState;
 
@@ -1555,9 +1572,15 @@ var SQUARE_BRACKETED_CONVENTION = {
     openBracket: '[',
     closeBracket: ']'
 };
+var CURLY_BRACKETED_CONVENTION = {
+    convention: RichConventions_1.CURLY_BRACKETED,
+    openBracket: '{',
+    closeBracket: '}'
+};
 var BRACKET_CONVENTIONS = [
     PARENTHESIZED_CONVENTION,
-    SQUARE_BRACKETED_CONVENTION
+    SQUARE_BRACKETED_CONVENTION,
+    CURLY_BRACKETED_CONVENTION
 ];
 function parse(args) {
     return new Parser(args).result;
@@ -2390,14 +2413,18 @@ var STREAK = solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE));
 exports.STREAK = STREAK;
 var NON_WHITESPACE_CHAR = '\\S';
 exports.NON_WHITESPACE_CHAR = NON_WHITESPACE_CHAR;
-var OPEN_SQUARE_BRACKET = escapeForRegex('[');
-exports.OPEN_SQUARE_BRACKET = OPEN_SQUARE_BRACKET;
-var CLOSE_SQUARE_BRACKET = escapeForRegex(']');
-exports.CLOSE_SQUARE_BRACKET = CLOSE_SQUARE_BRACKET;
 var OPEN_PAREN = escapeForRegex('(');
 exports.OPEN_PAREN = OPEN_PAREN;
 var CLOSE_PAREN = escapeForRegex(')');
 exports.CLOSE_PAREN = CLOSE_PAREN;
+var OPEN_SQUARE_BRACKET = escapeForRegex('[');
+exports.OPEN_SQUARE_BRACKET = OPEN_SQUARE_BRACKET;
+var CLOSE_SQUARE_BRACKET = escapeForRegex(']');
+exports.CLOSE_SQUARE_BRACKET = CLOSE_SQUARE_BRACKET;
+var OPEN_CURLY_BRACKET = escapeForRegex('{');
+exports.OPEN_CURLY_BRACKET = OPEN_CURLY_BRACKET;
+var CLOSE_CURLY_BRACKET = escapeForRegex('}');
+exports.CLOSE_CURLY_BRACKET = CLOSE_CURLY_BRACKET;
 var NON_BLANK = NON_WHITESPACE_CHAR;
 exports.NON_BLANK = NON_BLANK;
 

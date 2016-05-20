@@ -30,7 +30,7 @@ describe('curly bracketed text', () => {
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of]')
+          new PlainTextNode(' of}')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -48,7 +48,7 @@ describe('Two left curly brackets followed by a single right curly bracket', () 
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of]')
+          new PlainTextNode(' of}')
         ]),
         new PlainTextNode(' pizza')
       ]))

@@ -7,6 +7,7 @@ export enum TokenizerState {
   CurlyBracketed,
   ParenthesizedInsideUrl,
   SquareBracketedInsideUrl,
+  CurlyBracketedInsideUrl,
   Link,
   LinkUrl,
   RevisionInsertion,

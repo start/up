@@ -1,4 +1,4 @@
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED } from './RichConventions'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
@@ -53,9 +53,16 @@ const SQUARE_BRACKETED_CONVENTION = {
   closeBracket: ']'
 }
 
+const CURLY_BRACKETED_CONVENTION = {
+  convention: CURLY_BRACKETED,
+  openBracket: '{',
+  closeBracket: '}'
+}
+
 const BRACKET_CONVENTIONS = [
   PARENTHESIZED_CONVENTION,
-  SQUARE_BRACKETED_CONVENTION
+  SQUARE_BRACKETED_CONVENTION,
+  CURLY_BRACKETED_CONVENTION
 ]
 
 interface ParseArgs {

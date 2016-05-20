@@ -1,5 +1,5 @@
-import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET } from '../Patterns'
-import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED } from './RichConventions'
+import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET, OPEN_CURLY_BRACKET, CLOSE_CURLY_BRACKET } from '../Patterns'
+import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
@@ -58,14 +58,16 @@ export class Tokenizer {
   private revisionDeletionConvention: TokenizableSandwich
   private revisionInsertionConvention: TokenizableSandwich
 
-  // These conventions ensure ensure that any conventions whose delimiters contain parentheses or square
-  // brackets can contain parenthesized or "square bracketed" content.
+  // These conventions ensure ensure that any conventions whose delimiters contain brackets can
+  // contain bracketed content
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
+  private curlyBracketedConvention: TokenizableSandwich
 
   // These conventions serve the same function for URLs.
   private parenthesizedInsideUrlConvention: TokenizableSandwich
   private squareBracketedInsideUrlConvention: TokenizableSandwich
+  private curlyBracketedInsideUrlConvention: TokenizableSandwich
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
@@ -101,6 +103,7 @@ export class Tokenizer {
         || this.openMedia()
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
+        || this.openSandwich(this.curlyBracketedConvention)
         || this.openNakedUrl()
 
         || this.bufferCurrentChar()
@@ -133,9 +136,11 @@ export class Tokenizer {
       this.revisionDeletionConvention,
       this.revisionInsertionConvention,
       this.squareBracketedConvention,
+      this.curlyBracketedConvention,
       this.parenthesizedConvention,
       this.squareBracketedInsideUrlConvention,
-      this.parenthesizedInsideUrlConvention
+      this.parenthesizedInsideUrlConvention,
+      this.curlyBracketedInsideUrlConvention
     ].some(sandwich =>
       (sandwich.state === state)
       && this.closeSandwich(sandwich))
@@ -660,6 +665,13 @@ export class Tokenizer {
         endPattern: CLOSE_SQUARE_BRACKET,
       })
 
+    this.curlyBracketedConvention =
+      this.getRichSandwich({
+        richConvention: CURLY_BRACKETED,
+        startPattern: OPEN_CURLY_BRACKET,
+        endPattern: CLOSE_CURLY_BRACKET,
+      })
+
     this.parenthesizedInsideUrlConvention =
       this.getBracketInsideUrlConvention({
         state: TokenizerState.ParenthesizedInsideUrl,
@@ -672,6 +684,13 @@ export class Tokenizer {
         state: TokenizerState.SquareBracketedInsideUrl,
         openBracketPattern: OPEN_SQUARE_BRACKET,
         closeBracketPattern: CLOSE_SQUARE_BRACKET
+      })
+
+    this.curlyBracketedInsideUrlConvention =
+      this.getBracketInsideUrlConvention({
+        state: TokenizerState.CurlyBracketed,
+        openBracketPattern: OPEN_CURLY_BRACKET,
+        closeBracketPattern: CLOSE_CURLY_BRACKET
       })
 
     this.inlineCodeConvention =
