@@ -113,6 +113,46 @@ describe('Overlapped stressed and parenthesized text', () => {
 })
 
 
+describe('Overlapped stressed and square bracketed text', () => {
+  it('produce a stress node, a nested square bracketed node, then a non-nested square bracketed node', () => {
+    expect(Up.toAst('I **love [drinking** whole] milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new SquareBracketedNode([
+            new PlainTextNode('[drinking')
+          ])
+        ]),
+        new SquareBracketedNode([
+          new PlainTextNode(' whole]')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed and curly bracketed text', () => {
+  it('produce a stress node, a nested curly bracketed node, then a non-nested curly bracketed node', () => {
+    expect(Up.toAst('I **love {drinking** whole} milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new SquareBracketedNode([
+            new PlainTextNode('{drinking')
+          ])
+        ]),
+        new SquareBracketedNode([
+          new PlainTextNode(' whole}')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
 describe('A paragraph with 2 instances of overlapped conventions', () => {
   it('prorduce the correct nodes for each', () => {
     expect(Up.toAst('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
