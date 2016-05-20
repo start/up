@@ -41,28 +41,10 @@ const MEDIA_CONVENTIONS = [
   VIDEO
 ]
 
-const PARENTHESIZED_CONVENTION = {
-  convention: PARENTHESIZED,
-  openBracket: '(',
-  closeBracket: ')'
-}
-
-const SQUARE_BRACKETED_CONVENTION = {
-  convention:SQUARE_BRACKETED,
-  openBracket: '[',
-  closeBracket: ']'
-}
-
-const CURLY_BRACKETED_CONVENTION = {
-  convention: CURLY_BRACKETED,
-  openBracket: '{',
-  closeBracket: '}'
-}
-
 const BRACKET_CONVENTIONS = [
-  PARENTHESIZED_CONVENTION,
-  SQUARE_BRACKETED_CONVENTION,
-  CURLY_BRACKETED_CONVENTION
+  PARENTHESIZED,
+  SQUARE_BRACKETED,
+  CURLY_BRACKETED
 ]
 
 interface ParseArgs {
@@ -112,7 +94,7 @@ class Parser {
       }
       
       for (const bracketed of BRACKET_CONVENTIONS) {
-        if (token instanceof bracketed.convention.StartTokenType) {
+        if (token instanceof bracketed.StartTokenType) {
           this.parseBracket(bracketed)
         }
       }
@@ -234,23 +216,18 @@ class Parser {
     return result
   }
 
-  private parseBracket(bracketed: BracketedConvention): void {
+  private parseBracket(bracketed: RichConvention): void {
     const result = this.parse({
-      UntilTokenType: bracketed.convention.EndTokenType,
+      UntilTokenType: bracketed.EndTokenType,
       isTerminatorOptional: true
     })
 
-    const bracketResultNodes =
-      [<InlineSyntaxNode>new PlainTextNode(bracketed.openBracket)]
-        .concat(...result.nodes)
-
     if (result.isMissingTerminator) {
-      this.nodes.push(...combineConsecutivePlainTextNodes(bracketResultNodes))
+      this.nodes.push(...result.nodes)
       return
     }
-
-    bracketResultNodes.push(new PlainTextNode(bracketed.closeBracket))
-    this.nodes.push(new bracketed.convention.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)))
+    
+    this.nodes.push(new bracketed.NodeType(result.nodes))
   }
 }
 

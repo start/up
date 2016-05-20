@@ -76,7 +76,11 @@ export class Tokenizer {
     this.configureConventions(config)
     this.dirty()
     this.tokenize()
-    this.tokens = nestOverlappingConventions(applyRaisedVoices(this.tokens))
+    
+    this.tokens =
+      nestOverlappingConventions(
+        applyRaisedVoices(
+          this.addPlainTextBrackets()))
   }
 
   private tokenize(): void {
@@ -615,6 +619,42 @@ export class Tokenizer {
         this.addTokenAfterFlushingBufferToPlainTextToken(new AsteriskTokenType(asterisks))
       }
     })
+  }
+
+  private addPlainTextBrackets(): Token[] {
+    const resultTokens: Token[] = []
+
+    for (let i = 0; i < this.tokens.length; i++) {
+      const token = this.tokens[i]
+
+      if (token instanceof PARENTHESIZED.EndTokenType) {
+        resultTokens.push(new PlainTextToken(')'))
+      }
+
+      if (token instanceof SQUARE_BRACKETED.EndTokenType) {
+        resultTokens.push(new PlainTextToken(']'))
+      }
+
+      if (token instanceof CURLY_BRACKETED.EndTokenType) {
+        resultTokens.push(new PlainTextToken('}'))
+      }
+
+      resultTokens.push(token)
+      
+      if (token instanceof PARENTHESIZED.StartTokenType) {
+        resultTokens.push(new PlainTextToken('('))
+      }
+
+      if (token instanceof SQUARE_BRACKETED.StartTokenType) {
+        resultTokens.push(new PlainTextToken('['))
+      }
+
+      if (token instanceof CURLY_BRACKETED.StartTokenType) {
+        resultTokens.push(new PlainTextToken('{'))
+      }
+    }
+
+    return resultTokens
   }
 
   private configureConventions(config: UpConfig): void {

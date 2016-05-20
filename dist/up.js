@@ -532,7 +532,8 @@ var Tokenizer = (function () {
         this.configureConventions(config);
         this.dirty();
         this.tokenize();
-        this.tokens = nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.tokens));
+        this.tokens =
+            nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.addPlainTextBrackets()));
     }
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
@@ -938,6 +939,32 @@ var Tokenizer = (function () {
                 _this.addTokenAfterFlushingBufferToPlainTextToken(new AsteriskTokenType(asterisks));
             }
         });
+    };
+    Tokenizer.prototype.addPlainTextBrackets = function () {
+        var resultTokens = [];
+        for (var i = 0; i < this.tokens.length; i++) {
+            var token = this.tokens[i];
+            if (token instanceof RichConventions_1.PARENTHESIZED.EndTokenType) {
+                resultTokens.push(new PlainTextToken_1.PlainTextToken(')'));
+            }
+            if (token instanceof RichConventions_1.SQUARE_BRACKETED.EndTokenType) {
+                resultTokens.push(new PlainTextToken_1.PlainTextToken(']'));
+            }
+            if (token instanceof RichConventions_1.CURLY_BRACKETED.EndTokenType) {
+                resultTokens.push(new PlainTextToken_1.PlainTextToken('}'));
+            }
+            resultTokens.push(token);
+            if (token instanceof RichConventions_1.PARENTHESIZED.StartTokenType) {
+                resultTokens.push(new PlainTextToken_1.PlainTextToken('('));
+            }
+            if (token instanceof RichConventions_1.SQUARE_BRACKETED.StartTokenType) {
+                resultTokens.push(new PlainTextToken_1.PlainTextToken('['));
+            }
+            if (token instanceof RichConventions_1.CURLY_BRACKETED.StartTokenType) {
+                resultTokens.push(new PlainTextToken_1.PlainTextToken('{'));
+            }
+        }
+        return resultTokens;
     };
     Tokenizer.prototype.configureConventions = function (config) {
         var _this = this;
@@ -1565,25 +1592,10 @@ var MEDIA_CONVENTIONS = [
     MediaConventions_1.IMAGE,
     MediaConventions_1.VIDEO
 ];
-var PARENTHESIZED_CONVENTION = {
-    convention: RichConventions_1.PARENTHESIZED,
-    openBracket: '(',
-    closeBracket: ')'
-};
-var SQUARE_BRACKETED_CONVENTION = {
-    convention: RichConventions_1.SQUARE_BRACKETED,
-    openBracket: '[',
-    closeBracket: ']'
-};
-var CURLY_BRACKETED_CONVENTION = {
-    convention: RichConventions_1.CURLY_BRACKETED,
-    openBracket: '{',
-    closeBracket: '}'
-};
 var BRACKET_CONVENTIONS = [
-    PARENTHESIZED_CONVENTION,
-    SQUARE_BRACKETED_CONVENTION,
-    CURLY_BRACKETED_CONVENTION
+    RichConventions_1.PARENTHESIZED,
+    RichConventions_1.SQUARE_BRACKETED,
+    RichConventions_1.CURLY_BRACKETED
 ];
 function parse(args) {
     return new Parser(args).result;
@@ -1616,7 +1628,7 @@ var Parser = (function () {
             }
             for (var _i = 0, BRACKET_CONVENTIONS_1 = BRACKET_CONVENTIONS; _i < BRACKET_CONVENTIONS_1.length; _i++) {
                 var bracketed = BRACKET_CONVENTIONS_1[_i];
-                if (token instanceof bracketed.convention.StartTokenType) {
+                if (token instanceof bracketed.StartTokenType) {
                     this.parseBracket(bracketed);
                 }
             }
@@ -1700,17 +1712,15 @@ var Parser = (function () {
     };
     Parser.prototype.parseBracket = function (bracketed) {
         var result = this.parse({
-            UntilTokenType: bracketed.convention.EndTokenType,
+            UntilTokenType: bracketed.EndTokenType,
             isTerminatorOptional: true
         });
-        var bracketResultNodes = (_a = [new PlainTextNode_1.PlainTextNode(bracketed.openBracket)]).concat.apply(_a, result.nodes);
         if (result.isMissingTerminator) {
-            (_b = this.nodes).push.apply(_b, combineConsecutivePlainTextNodes(bracketResultNodes));
+            (_a = this.nodes).push.apply(_a, result.nodes);
             return;
         }
-        bracketResultNodes.push(new PlainTextNode_1.PlainTextNode(bracketed.closeBracket));
-        this.nodes.push(new bracketed.convention.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)));
-        var _a, _b;
+        this.nodes.push(new bracketed.NodeType(result.nodes));
+        var _a;
     };
     return Parser;
 }());
