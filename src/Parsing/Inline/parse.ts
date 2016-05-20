@@ -24,8 +24,6 @@ import { RichConvention } from './RichConvention'
 import { ParseResult } from './ParseResult'
 
 
-// TODO: Heavily refactor duplicate code
-
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS,
   EMPHASIS,
@@ -251,10 +249,4 @@ function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSynt
   }
 
   return resultNodes
-}
-
-interface BracketedConvention {
-  convention: RichConvention
-  openBracket: string,
-  closeBracket: string
 }

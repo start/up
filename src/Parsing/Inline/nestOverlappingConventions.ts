@@ -84,43 +84,45 @@ class ConventionNester {
         continue
       }
 
-      if (token instanceof ContextualizedEndToken) {
-        // Alright, we've found a token that closes one of our unclosed start tokens. If any conventions were opened
-        // between this end token and its corresponding start token, those conventions overlap this one and will need
-        // to be chopped in half.
+      if (!(token instanceof ContextualizedEndToken)) {
+        continue
+      }
+      
+      // Alright, we've found a token that closes one of our unclosed start tokens. If any conventions were opened
+      // between this end token and its corresponding start token, those conventions overlap this one and will need
+      // to be chopped in half.
 
-        let endTokensOfOverlappingConventionsFromMostRecentToLeast: ContextualizedEndToken[] = []
+      let endTokensOfOverlappingConventions: ContextualizedEndToken[] = []
 
-        // We'll check the unclosed start tokens from most recently opened to least recently opened.
-        for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
-          const unclosedStartToken = unclosedStartTokens[i]
+      // We'll check the unclosed start tokens from most recently opened to least recently opened.
+      for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
+        const unclosedStartToken = unclosedStartTokens[i]
 
-          if (unclosedStartToken.end === token) {
-            // Hooray! We've reached the convention that is closed by the current token.
-            unclosedStartTokens.splice(i, 1)
+        if (unclosedStartToken.end === token) {
+          // Hooray! We've reached the convention that is closed by the current token.
+          unclosedStartTokens.splice(i, 1)
 
-            // Any conventions opened before this one don't overlap with the current convention, so we can bail.
-            break
-          }
-
-          endTokensOfOverlappingConventionsFromMostRecentToLeast.push(unclosedStartToken.end)
+          // Any conventions opened before this one don't overlap with the current convention, so we can bail.
+          break
         }
 
-        // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
-        // while making it easier to produce an abstract syntax tree, we make the following changes:
-        //
-        // 1. Just before the end token of the current convention, we add a closing token for each unclosed
-        //    convention. To preserve proper nesting, we close the conventions in order of most to least recent.
-        //  
-        // 2. Just after the end token of the current convention, we add a start token for each unclosed convention.
-        //    To avoid producing a surprising syntax tree, we re-open the conventions in their original order.
-        this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventionsFromMostRecentToLeast)
-
-        const countOverlapping = endTokensOfOverlappingConventionsFromMostRecentToLeast.length
-
-        // Advance index to reflect the fact that we just added tokens
-        tokenIndex += (2 * countOverlapping)
+        endTokensOfOverlappingConventions.push(unclosedStartToken.end)
       }
+
+      // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
+      // while making it easier to produce an abstract syntax tree, we make the following changes:
+      //
+      // 1. Just before the end token of the current convention, we add a closing token for each unclosed
+      //    convention. To preserve proper nesting, we close the conventions in order of most to least recent.
+      //  
+      // 2. Just after the end token of the current convention, we add a start token for each unclosed convention.
+      //    To avoid producing a surprising syntax tree, we re-open the conventions in their original order.
+      this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventions)
+
+      const countOverlapping = endTokensOfOverlappingConventions.length
+
+      // Advance index to reflect the fact that we just added tokens
+      tokenIndex += (2 * countOverlapping)
     }
   }
 
@@ -206,14 +208,14 @@ class ConventionNester {
   //
   // Functionally, this method does exactly what its name implies: it adds convention end tokens before `index`
   // and convention start tokens after `index`.
-  private closeAndReopenConventionsAroundTokenAtIndex(index: number, contextualizedEndTokens: ContextualizedEndToken[]): void {
+  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromMostRecentToLeast: ContextualizedEndToken[]): void {
     const contextualizedStartTokens =
-      contextualizedEndTokens
+      endTokensFromMostRecentToLeast
         .map(convention => convention.start)
         .reverse()
 
     this.insertTokens(index + 1, contextualizedStartTokens)
-    this.insertTokens(index, contextualizedEndTokens)
+    this.insertTokens(index, endTokensFromMostRecentToLeast)
   }
 
   private insertTokens(index: number, contextualizedTokens: ContextualizedToken[]): void {

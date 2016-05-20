@@ -1586,20 +1586,21 @@ var ConventionNester = (function () {
                 unclosedStartTokens.push(token);
                 continue;
             }
-            if (token instanceof ContextualizedEndToken_1.ContextualizedEndToken) {
-                var endTokensOfOverlappingConventionsFromMostRecentToLeast = [];
-                for (var i = unclosedStartTokens.length - 1; i >= 0; i--) {
-                    var unclosedStartToken = unclosedStartTokens[i];
-                    if (unclosedStartToken.end === token) {
-                        unclosedStartTokens.splice(i, 1);
-                        break;
-                    }
-                    endTokensOfOverlappingConventionsFromMostRecentToLeast.push(unclosedStartToken.end);
-                }
-                this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventionsFromMostRecentToLeast);
-                var countOverlapping = endTokensOfOverlappingConventionsFromMostRecentToLeast.length;
-                tokenIndex += (2 * countOverlapping);
+            if (!(token instanceof ContextualizedEndToken_1.ContextualizedEndToken)) {
+                continue;
             }
+            var endTokensOfOverlappingConventions = [];
+            for (var i = unclosedStartTokens.length - 1; i >= 0; i--) {
+                var unclosedStartToken = unclosedStartTokens[i];
+                if (unclosedStartToken.end === token) {
+                    unclosedStartTokens.splice(i, 1);
+                    break;
+                }
+                endTokensOfOverlappingConventions.push(unclosedStartToken.end);
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventions);
+            var countOverlapping = endTokensOfOverlappingConventions.length;
+            tokenIndex += (2 * countOverlapping);
         }
     };
     ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
@@ -1643,12 +1644,12 @@ var ConventionNester = (function () {
             tokenIndex = heroEndIndex + countTokensAdded;
         }
     };
-    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, contextualizedEndTokens) {
-        var contextualizedStartTokens = contextualizedEndTokens
+    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, endTokensFromMostRecentToLeast) {
+        var contextualizedStartTokens = endTokensFromMostRecentToLeast
             .map(function (convention) { return convention.start; })
             .reverse();
         this.insertTokens(index + 1, contextualizedStartTokens);
-        this.insertTokens(index, contextualizedEndTokens);
+        this.insertTokens(index, endTokensFromMostRecentToLeast);
     };
     ConventionNester.prototype.insertTokens = function (index, contextualizedTokens) {
         (_a = this.contextualizedTokens).splice.apply(_a, [index, 0].concat(contextualizedTokens));
