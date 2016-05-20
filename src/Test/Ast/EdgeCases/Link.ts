@@ -96,7 +96,11 @@ describe('A link', () => {
   it('can follow bracketed text', () => {
     expect(Up.toAst("I [usually] use [Google -> https://google.com]!!")).to.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I [usually] use '),
+        new PlainTextNode('I '),
+        new SquareBracketedNode([
+          new PlainTextNode('[usually]')
+        ]),
+        new PlainTextNode(' use '),        
         new LinkNode([
           new PlainTextNode('Google')
         ], 'https://google.com'),
@@ -178,6 +182,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
       ]))
   })
 })
+
 
 describe('A link missing its final closing bracket', () => {
   it('does not prevent conventions from being evaluated afterward', () => {
