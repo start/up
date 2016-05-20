@@ -7,11 +7,14 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { CurlyBracketedNode } from '../../SyntaxNodes/CurlyBracketedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
 import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
 import { SquareBracketedStartToken } from './Tokens/SquareBracketedStartToken'
 import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
+import { CurlyBracketedStartToken } from './Tokens/CurlyBracketedStartToken'
+import { CurlyBracketedEndToken } from './Tokens/CurlyBracketedEndToken'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { StressStartToken } from './Tokens/StressStartToken'
 import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
@@ -81,6 +84,13 @@ const SQUARE_BRACKETED =  {
   StartTokenType: SquareBracketedStartToken,
   EndTokenType: SquareBracketedEndToken,
   tokenizerState: TokenizerState.SquareBracketed
+}
+
+const CURLY_BRACKETED =  {
+  NodeType: CurlyBracketedNode,
+  StartTokenType: CurlyBracketedStartToken,
+  EndTokenType: CurlyBracketedEndToken,
+  tokenizerState: TokenizerState.CurlyBracketed
 }
 
 const LINK =  {

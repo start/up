@@ -4,6 +4,7 @@ export enum TokenizerState {
   Spoiler,
   Parenthesized,
   SquareBracketed,
+  CurlyBracketed,
   ParenthesizedInsideUrl,
   SquareBracketedInsideUrl,
   Link,
