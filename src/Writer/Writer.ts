@@ -11,6 +11,9 @@ import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
+import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
+import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
+import { CurlyBracketedNode } from '../SyntaxNodes/CurlyBracketedNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -129,6 +132,18 @@ export abstract class Writer {
       return this.revisionInsertion(node)
     }
 
+    if (node instanceof ParenthesizedNode) {
+      return this.parenthesized(node)
+    }
+
+    if (node instanceof SquareBracketedNode) {
+      return this.squareBracketed(node)
+    }
+
+    if (node instanceof CurlyBracketedNode) {
+      return this.curlyBracketed(node)
+    }
+    
     if (node instanceof SpoilerNode) {
       return this.spoiler(node)
     }
@@ -140,29 +155,32 @@ export abstract class Writer {
     throw new Error("Unrecognized syntax node")
   }
 
-  abstract document(node: DocumentNode): string;
-  abstract blockquote(node: BlockquoteNode): string;
-  abstract unorderedList(node: UnorderedListNode): string;
-  abstract orderedList(node: OrderedListNode): string;
-  abstract descriptionList(node: DescriptionListNode): string;
-  abstract lineBlock(node: LineBlockNode): string;
-  abstract codeBlock(node: CodeBlockNode): string;
-  abstract paragraph(node: ParagraphNode): string;
-  abstract heading(node: HeadingNode): string;
-  abstract sectionSeparator(node: SectionSeparatorNode): string;
-  abstract emphasis(node: EmphasisNode): string;
-  abstract stress(node: StressNode): string;
-  abstract inlineCode(node: InlineCodeNode): string;
-  abstract revisionInsertion(node: RevisionInsertionNode): string;
-  abstract revisionDeletion(node: RevisionDeletionNode): string;
-  abstract spoiler(node: SpoilerNode): string;
-  abstract footnoteReference(node: FootnoteNode): string;
-  abstract footnoteBlock(node: FootnoteBlockNode): string;
-  abstract link(node: LinkNode): string;
-  abstract image(node: ImageNode): string;
-  abstract audio(node: AudioNode): string;
-  abstract video(node: VideoNode): string;
-  abstract plainText(node: PlainTextNode): string;
+  abstract document(node: DocumentNode): string
+  abstract blockquote(node: BlockquoteNode): string
+  abstract unorderedList(node: UnorderedListNode): string
+  abstract orderedList(node: OrderedListNode): string
+  abstract descriptionList(node: DescriptionListNode): string
+  abstract lineBlock(node: LineBlockNode): string
+  abstract codeBlock(node: CodeBlockNode): string
+  abstract paragraph(node: ParagraphNode): string
+  abstract heading(node: HeadingNode): string
+  abstract sectionSeparator(node: SectionSeparatorNode): string
+  abstract emphasis(node: EmphasisNode): string
+  abstract stress(node: StressNode): string
+  abstract inlineCode(node: InlineCodeNode): string
+  abstract revisionInsertion(node: RevisionInsertionNode): string
+  abstract revisionDeletion(node: RevisionDeletionNode): string
+  abstract parenthesized(node: ParenthesizedNode): string
+  abstract squareBracketed(node: SquareBracketedNode): string
+  abstract curlyBracketed(node: CurlyBracketedNode): string
+  abstract spoiler(node: SpoilerNode): string
+  abstract footnoteReference(node: FootnoteNode): string
+  abstract footnoteBlock(node: FootnoteBlockNode): string
+  abstract link(node: LinkNode): string
+  abstract image(node: ImageNode): string
+  abstract audio(node: AudioNode): string
+  abstract video(node: VideoNode): string
+  abstract plainText(node: PlainTextNode): string
 
   protected getId(...parts: string[]): string {
     const allParts = [this.config.settings.documentName].concat(parts)

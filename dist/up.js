@@ -3344,6 +3344,15 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.revisionDeletion = function (node) {
         return this.htmlElement('del', node.children);
     };
+    HtmlWriter.prototype.parenthesized = function (node) {
+        return this.htmlElement('span', node.children, { 'data-parenthesized': null });
+    };
+    HtmlWriter.prototype.squareBracketed = function (node) {
+        return this.htmlElement('span', node.children, { 'data-square-bracketed': null });
+    };
+    HtmlWriter.prototype.curlyBracketed = function (node) {
+        return this.htmlElement('span', node.children, { 'data-curly-bracketed': null });
+    };
     HtmlWriter.prototype.spoiler = function (node) {
         return this.htmlElement('span', node.children, { 'data-spoiler': null });
     };
@@ -3472,6 +3481,9 @@ var StressNode_1 = require('../SyntaxNodes/StressNode');
 var InlineCodeNode_1 = require('../SyntaxNodes/InlineCodeNode');
 var RevisionInsertionNode_1 = require('../SyntaxNodes/RevisionInsertionNode');
 var RevisionDeletionNode_1 = require('../SyntaxNodes/RevisionDeletionNode');
+var ParenthesizedNode_1 = require('../SyntaxNodes/ParenthesizedNode');
+var SquareBracketedNode_1 = require('../SyntaxNodes/SquareBracketedNode');
+var CurlyBracketedNode_1 = require('../SyntaxNodes/CurlyBracketedNode');
 var SpoilerNode_1 = require('../SyntaxNodes/SpoilerNode');
 var FootnoteNode_1 = require('../SyntaxNodes/FootnoteNode');
 var FootnoteBlockNode_1 = require('../SyntaxNodes/FootnoteBlockNode');
@@ -3555,6 +3567,15 @@ var Writer = (function () {
         if (node instanceof RevisionInsertionNode_1.RevisionInsertionNode) {
             return this.revisionInsertion(node);
         }
+        if (node instanceof ParenthesizedNode_1.ParenthesizedNode) {
+            return this.parenthesized(node);
+        }
+        if (node instanceof SquareBracketedNode_1.SquareBracketedNode) {
+            return this.squareBracketed(node);
+        }
+        if (node instanceof CurlyBracketedNode_1.CurlyBracketedNode) {
+            return this.curlyBracketed(node);
+        }
         if (node instanceof SpoilerNode_1.SpoilerNode) {
             return this.spoiler(node);
         }
@@ -3584,7 +3605,7 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/AudioNode":70,"../SyntaxNodes/BlockquoteNode":71,"../SyntaxNodes/CodeBlockNode":72,"../SyntaxNodes/DescriptionListNode":76,"../SyntaxNodes/DocumentNode":78,"../SyntaxNodes/EmphasisNode":79,"../SyntaxNodes/FootnoteBlockNode":80,"../SyntaxNodes/FootnoteNode":81,"../SyntaxNodes/HeadingNode":82,"../SyntaxNodes/ImageNode":83,"../SyntaxNodes/InlineCodeNode":84,"../SyntaxNodes/LineBlockNode":87,"../SyntaxNodes/LinkNode":88,"../SyntaxNodes/OrderedListNode":91,"../SyntaxNodes/ParagraphNode":94,"../SyntaxNodes/PlainTextNode":96,"../SyntaxNodes/RevisionDeletionNode":97,"../SyntaxNodes/RevisionInsertionNode":98,"../SyntaxNodes/SectionSeparatorNode":100,"../SyntaxNodes/SpoilerNode":101,"../SyntaxNodes/StressNode":103,"../SyntaxNodes/UnorderedListNode":105,"../SyntaxNodes/VideoNode":106}],112:[function(require,module,exports){
+},{"../SyntaxNodes/AudioNode":70,"../SyntaxNodes/BlockquoteNode":71,"../SyntaxNodes/CodeBlockNode":72,"../SyntaxNodes/CurlyBracketedNode":73,"../SyntaxNodes/DescriptionListNode":76,"../SyntaxNodes/DocumentNode":78,"../SyntaxNodes/EmphasisNode":79,"../SyntaxNodes/FootnoteBlockNode":80,"../SyntaxNodes/FootnoteNode":81,"../SyntaxNodes/HeadingNode":82,"../SyntaxNodes/ImageNode":83,"../SyntaxNodes/InlineCodeNode":84,"../SyntaxNodes/LineBlockNode":87,"../SyntaxNodes/LinkNode":88,"../SyntaxNodes/OrderedListNode":91,"../SyntaxNodes/ParagraphNode":94,"../SyntaxNodes/ParenthesizedNode":95,"../SyntaxNodes/PlainTextNode":96,"../SyntaxNodes/RevisionDeletionNode":97,"../SyntaxNodes/RevisionInsertionNode":98,"../SyntaxNodes/SectionSeparatorNode":100,"../SyntaxNodes/SpoilerNode":101,"../SyntaxNodes/SquareBracketedNode":102,"../SyntaxNodes/StressNode":103,"../SyntaxNodes/UnorderedListNode":105,"../SyntaxNodes/VideoNode":106}],112:[function(require,module,exports){
 "use strict";
 var index_1 = require('./index');
 window.Up = index_1.default;

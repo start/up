@@ -9,6 +9,9 @@ import { StressNode } from '../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
+import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
+import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
+import { CurlyBracketedNode } from '../SyntaxNodes/CurlyBracketedNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -124,6 +127,18 @@ export class HtmlWriter extends Writer {
 
   revisionDeletion(node: RevisionDeletionNode): string {
     return this.htmlElement('del', node.children)
+  }
+
+  parenthesized(node: ParenthesizedNode): string {
+    return this.htmlElement('span', node.children, { 'data-parenthesized': null })
+  }
+
+  squareBracketed(node: SquareBracketedNode): string {
+    return this.htmlElement('span', node.children, { 'data-square-bracketed': null })
+  }
+
+  curlyBracketed(node: CurlyBracketedNode): string {
+    return this.htmlElement('span', node.children, { 'data-curly-bracketed': null })
   }
 
   spoiler(node: SpoilerNode): string {

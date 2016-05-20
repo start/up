@@ -322,24 +322,24 @@ describe('A revision deletion node', () => {
 
 
 describe('A parenthesized node', () => {
-  it('produces a span element (with a data-parenthesized attribute) whose contents start and end with parentheses', () => {
-    const node = new ParenthesizedNode([new PlainTextNode('Koopa Tropa')])
+  it('produces a span element with a data-parenthesized attribute', () => {
+    const node = new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
     expect(Up.toHtml(node)).to.be.eql('<span data-parenthesized>(Koopa Tropa)</span>')
   })
 })
 
 
 describe('A square bracketed node', () => {
-  it('produces a span element (with a data-square-bracketed attribute) whose contents start and end with square brackets', () => {
-    const node = new SquareBracketedNode([new PlainTextNode('Koopa Tropa')])
+  it('produces a span element with a data-square-bracketed attribute', () => {
+    const node = new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
     expect(Up.toHtml(node)).to.be.eql('<span data-square-bracketed>[Koopa Tropa]</span>')
   })
 })
 
 
 describe('A curly bracketed node', () => {
-  it('produces a span element (with a data-curly-bracketed attribute) whose contents start and end with square brackets', () => {
-    const node = new CurlyBracketedNode([new PlainTextNode('Koopa Tropa')])
+  it('produces a span element with a data-curly-bracketed attribute', () => {
+    const node = new CurlyBracketedNode([new PlainTextNode('{Koopa Tropa}')])
     expect(Up.toHtml(node)).to.be.eql('<span data-curly-bracketed>{Koopa Tropa}</span>')
   })
 })
