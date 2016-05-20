@@ -5,6 +5,8 @@ import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
 import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
@@ -67,22 +69,24 @@ const FOOTNOTE = {
   tokenizerState: TokenizerState.Footnote
 }
 
-const LINK =  {
-  StartTokenType: LinkStartToken,
-  EndTokenType: LinkEndToken,
-  tokenizerState: TokenizerState.Link
-}
-
 const PARENTHESIZED =  {
+  NodeType: ParenthesizedNode,
   StartTokenType: ParenthesizedStartToken,
   EndTokenType: ParenthesizedEndToken,
   tokenizerState: TokenizerState.Parenthesized
 }
 
 const SQUARE_BRACKETED =  {
+  NodeType: SquareBracketedNode,
   StartTokenType: SquareBracketedStartToken,
   EndTokenType: SquareBracketedEndToken,
   tokenizerState: TokenizerState.SquareBracketed
+}
+
+const LINK =  {
+  StartTokenType: LinkStartToken,
+  EndTokenType: LinkEndToken,
+  tokenizerState: TokenizerState.Link
 }
 
 export {

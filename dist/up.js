@@ -361,6 +361,8 @@ var SpoilerNode_1 = require('../../SyntaxNodes/SpoilerNode');
 var FootnoteNode_1 = require('../../SyntaxNodes/FootnoteNode');
 var RevisionDeletionNode_1 = require('../../SyntaxNodes/RevisionDeletionNode');
 var RevisionInsertionNode_1 = require('../../SyntaxNodes/RevisionInsertionNode');
+var SquareBracketedNode_1 = require('../../SyntaxNodes/SquareBracketedNode');
+var ParenthesizedNode_1 = require('../../SyntaxNodes/ParenthesizedNode');
 var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
 var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
 var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
@@ -420,26 +422,28 @@ var FOOTNOTE = {
     tokenizerState: TokenizerState_1.TokenizerState.Footnote
 };
 exports.FOOTNOTE = FOOTNOTE;
-var LINK = {
-    StartTokenType: LinkStartToken_1.LinkStartToken,
-    EndTokenType: LinkEndToken_1.LinkEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.Link
-};
-exports.LINK = LINK;
 var PARENTHESIZED = {
+    NodeType: ParenthesizedNode_1.ParenthesizedNode,
     StartTokenType: ParenthesizedStartToken_1.ParenthesizedStartToken,
     EndTokenType: ParenthesizedEndToken_1.ParenthesizedEndToken,
     tokenizerState: TokenizerState_1.TokenizerState.Parenthesized
 };
 exports.PARENTHESIZED = PARENTHESIZED;
 var SQUARE_BRACKETED = {
+    NodeType: SquareBracketedNode_1.SquareBracketedNode,
     StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
     EndTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
     tokenizerState: TokenizerState_1.TokenizerState.SquareBracketed
 };
 exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
+var LINK = {
+    StartTokenType: LinkStartToken_1.LinkStartToken,
+    EndTokenType: LinkEndToken_1.LinkEndToken,
+    tokenizerState: TokenizerState_1.TokenizerState.Link
+};
+exports.LINK = LINK;
 
-},{"../../SyntaxNodes/EmphasisNode":76,"../../SyntaxNodes/FootnoteNode":78,"../../SyntaxNodes/RevisionDeletionNode":94,"../../SyntaxNodes/RevisionInsertionNode":95,"../../SyntaxNodes/SpoilerNode":98,"../../SyntaxNodes/StressNode":100,"./TokenizerState":15,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/ParenthesizedEndToken":27,"./Tokens/ParenthesizedStartToken":28,"./Tokens/RevisionDeletionEndToken":34,"./Tokens/RevisionDeletionStartToken":35,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39,"./Tokens/SquareBracketedEndToken":40,"./Tokens/SquareBracketedStartToken":41,"./Tokens/StressEndToken":42,"./Tokens/StressStartToken":43}],12:[function(require,module,exports){
+},{"../../SyntaxNodes/EmphasisNode":76,"../../SyntaxNodes/FootnoteNode":78,"../../SyntaxNodes/ParenthesizedNode":92,"../../SyntaxNodes/RevisionDeletionNode":94,"../../SyntaxNodes/RevisionInsertionNode":95,"../../SyntaxNodes/SpoilerNode":98,"../../SyntaxNodes/SquareBracketedNode":99,"../../SyntaxNodes/StressNode":100,"./TokenizerState":15,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/ParenthesizedEndToken":27,"./Tokens/ParenthesizedStartToken":28,"./Tokens/RevisionDeletionEndToken":34,"./Tokens/RevisionDeletionStartToken":35,"./Tokens/RevisionInsertionEndToken":36,"./Tokens/RevisionInsertionStartToken":37,"./Tokens/SpoilerEndToken":38,"./Tokens/SpoilerStartToken":39,"./Tokens/SquareBracketedEndToken":40,"./Tokens/SquareBracketedStartToken":41,"./Tokens/StressEndToken":42,"./Tokens/StressStartToken":43}],12:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
@@ -1486,13 +1490,10 @@ var ConventionNester = (function () {
 
 },{"./RichConventions":11,"./getConventionEndedBy":45,"./getConventionStartedBy":46}],49:[function(require,module,exports){
 "use strict";
+var RichConventions_1 = require('./RichConventions');
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
 var CollectionHelpers_1 = require('../../CollectionHelpers');
-var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
-var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
-var SquareBracketedStartToken_1 = require('./Tokens/SquareBracketedStartToken');
-var SquareBracketedEndToken_1 = require('./Tokens/SquareBracketedEndToken');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
@@ -1500,10 +1501,7 @@ var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
-var ParenthesizedNode_1 = require('../../SyntaxNodes/ParenthesizedNode');
-var SquareBracketedNode_1 = require('../../SyntaxNodes/SquareBracketedNode');
 var MediaConventions_1 = require('./MediaConventions');
-var RichConventions_1 = require('./RichConventions');
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS,
     RichConventions_1.EMPHASIS,
@@ -1518,16 +1516,12 @@ var MEDIA_CONVENTIONS = [
     MediaConventions_1.VIDEO
 ];
 var PARENTHESIZED_CONVENTION = {
-    NodeType: ParenthesizedNode_1.ParenthesizedNode,
-    StartTokenType: ParenthesizedStartToken_1.ParenthesizedStartToken,
-    Until: ParenthesizedEndToken_1.ParenthesizedEndToken,
+    convention: RichConventions_1.PARENTHESIZED,
     openBracket: '(',
     closeBracket: ')'
 };
 var SQUARE_BRACKETED_CONVENTION = {
-    NodeType: SquareBracketedNode_1.SquareBracketedNode,
-    StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
-    Until: SquareBracketedEndToken_1.SquareBracketedEndToken,
+    convention: RichConventions_1.SQUARE_BRACKETED,
     openBracket: '[',
     closeBracket: ']'
 };
@@ -1565,9 +1559,9 @@ var Parser = (function () {
                 continue;
             }
             for (var _i = 0, BRACKET_CONVENTIONS_1 = BRACKET_CONVENTIONS; _i < BRACKET_CONVENTIONS_1.length; _i++) {
-                var bracketedConvention = BRACKET_CONVENTIONS_1[_i];
-                if (token instanceof bracketedConvention.StartTokenType) {
-                    this.parseBracket(bracketedConvention);
+                var bracketed = BRACKET_CONVENTIONS_1[_i];
+                if (token instanceof bracketed.convention.StartTokenType) {
+                    this.parseBracket(bracketed);
                 }
             }
             if (token instanceof InlineCodeToken_1.InlineCodeToken) {
@@ -1648,18 +1642,18 @@ var Parser = (function () {
         this.tokenIndex += result.countTokensParsed;
         return result;
     };
-    Parser.prototype.parseBracket = function (bracketedConvention) {
+    Parser.prototype.parseBracket = function (bracketed) {
         var result = this.parse({
-            UntilTokenType: bracketedConvention.Until,
+            UntilTokenType: bracketed.convention.EndTokenType,
             isTerminatorOptional: true
         });
-        var bracketResultNodes = (_a = [new PlainTextNode_1.PlainTextNode(bracketedConvention.openBracket)]).concat.apply(_a, result.nodes);
+        var bracketResultNodes = (_a = [new PlainTextNode_1.PlainTextNode(bracketed.openBracket)]).concat.apply(_a, result.nodes);
         if (result.isMissingTerminator) {
             (_b = this.nodes).push.apply(_b, combineConsecutivePlainTextNodes(bracketResultNodes));
             return;
         }
-        bracketResultNodes.push(new PlainTextNode_1.PlainTextNode(bracketedConvention.closeBracket));
-        this.nodes.push(new bracketedConvention.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)));
+        bracketResultNodes.push(new PlainTextNode_1.PlainTextNode(bracketed.closeBracket));
+        this.nodes.push(new bracketed.convention.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)));
         var _a, _b;
     };
     return Parser;
@@ -1681,7 +1675,7 @@ function combineConsecutivePlainTextNodes(nodes) {
     return resultNodes;
 }
 
-},{"../../CollectionHelpers":1,"../../SyntaxNodes/InlineCodeNode":81,"../../SyntaxNodes/LinkNode":85,"../../SyntaxNodes/ParenthesizedNode":92,"../../SyntaxNodes/PlainTextNode":93,"../../SyntaxNodes/SquareBracketedNode":99,"../../SyntaxNodes/isWhitespace":104,"./MediaConventions":5,"./RichConventions":11,"./Tokens/InlineCodeToken":22,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/NakedUrlToken":26,"./Tokens/ParenthesizedEndToken":27,"./Tokens/ParenthesizedStartToken":28,"./Tokens/PlainTextToken":29,"./Tokens/SquareBracketedEndToken":40,"./Tokens/SquareBracketedStartToken":41}],50:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../SyntaxNodes/InlineCodeNode":81,"../../SyntaxNodes/LinkNode":85,"../../SyntaxNodes/PlainTextNode":93,"../../SyntaxNodes/isWhitespace":104,"./MediaConventions":5,"./RichConventions":11,"./Tokens/InlineCodeToken":22,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/NakedUrlToken":26,"./Tokens/PlainTextToken":29}],50:[function(require,module,exports){
 "use strict";
 var StringHelpers_1 = require('../../StringHelpers');
 var HeadingLeveler = (function () {
