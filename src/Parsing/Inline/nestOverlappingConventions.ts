@@ -59,7 +59,7 @@ class ConventionNester {
       // We'd rather split the current convention than the ones that follow. 
       conventionsToSplit.push(conventionNotToSplit)
     }
-    
+
     this.tokens =
       this.contextualizedTokens.map(contextualizedToken => contextualizedToken.token)
   }
@@ -126,18 +126,31 @@ class ConventionNester {
 
   // This method assumes that any `conventionsToSplit` tokens are already properly nested.
   private resolveOverlapping(conventionsToSplit: RichConvention[], conventionNotToSplit: RichConvention): void {
+
+    // To keep local variable names shorter, we'll refer to `cconventionNotToSplit` as the hero convention.
+
     for (let tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-      if (!(this.contextualizedTokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
+      const potentialHeroStartToken = this.contextualizedTokens[tokenIndex]
+
+      const isStartTokenForHeroConvention =
+        potentialHeroStartToken instanceof ContextualizedStartToken
+        && potentialHeroStartToken.convention instanceof conventionNotToSplit.StartTokenType
+
+      if (!isStartTokenForHeroConvention) {
         continue
       }
-
-      // To keep variable names shorter, we'll refer to `cconventionNotToSplit` as the hero convention.
 
       const heroStartIndex = tokenIndex
       let heroEndIndex: number
 
       for (let i = heroStartIndex + 1; i < this.contextualizedTokens.length; i++) {
-        if (this.contextualizedTokens[i] instanceof conventionNotToSplit.EndTokenType) {
+        const potentialHeroEndToken = this.contextualizedTokens[i]
+
+        const isEndTokenForHeroConvention =
+          potentialHeroEndToken instanceof ContextualizedEndToken
+          && potentialHeroEndToken.convention instanceof conventionNotToSplit.StartTokenType
+
+        if (isEndTokenForHeroConvention) {
           heroEndIndex = i
           break
         }
@@ -154,17 +167,15 @@ class ConventionNester {
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const token = this.contextualizedTokens[indexInsideHero]
-        const conventionStartedByThisToken = getConventionStartedBy(token, conventionsToSplit)
 
-        if (conventionStartedByThisToken) {
+
+        if (token instanceof ContextualizedStartToken) {
           // Until we encounter the end token, we'll assume this convention overlaps.
-          overlappingStartingInside.push(conventionStartedByThisToken)
+          overlappingStartingInside.push(token.convention)
           continue
         }
 
-        const conventionEndedByThisToken = getConventionEndedBy(token, conventionsToSplit)
-
-        if (conventionEndedByThisToken) {
+        if (token instanceof ContextualizedEndToken) {
           // This function assumes any conventions in `conventionsToSplit` are already properly nested
           // into a treee structure. Therefore, if there are any conventions that started inside
           // `cconventionNotToSplit`, this convention we've found must be the most recent.
@@ -175,7 +186,7 @@ class ConventionNester {
 
           // Ahhh, so there were no conventions started inside this `cconventionNotToSplit`! That means this one
           // must have started before it.
-          overlappingStartingBefore.push(conventionEndedByThisToken)
+          overlappingStartingBefore.push(token.convention)
         }
       }
 
