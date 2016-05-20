@@ -130,15 +130,15 @@ export class HtmlWriter extends Writer {
   }
 
   parenthesized(node: ParenthesizedNode): string {
-    return this.htmlElement('span', node.children, { 'data-parenthesized': null })
+    return this.bracketed(node, 'parenthesized')
   }
 
   squareBracketed(node: SquareBracketedNode): string {
-    return this.htmlElement('span', node.children, { 'data-square-bracketed': null })
+    return this.bracketed(node, 'square-bracketed')
   }
 
   curlyBracketed(node: CurlyBracketedNode): string {
-    return this.htmlElement('span', node.children, { 'data-curly-bracketed': null })
+    return this.bracketed(node, 'curly-bracketed')
   }
 
   spoiler(node: SpoilerNode): string {
@@ -193,6 +193,10 @@ export class HtmlWriter extends Writer {
 
   plainText(node: PlainTextNode): string {
     return node.text
+  }
+  
+  private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode | CurlyBracketedNode, dataAttributeName: string): string {
+    return this.htmlElement('span', bracketed.children, { ['data-' + dataAttributeName]: null })
   }
 
   private unorderedListItem(listItem: UnorderedListItem): string {

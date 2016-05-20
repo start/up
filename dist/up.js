@@ -3345,13 +3345,13 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('del', node.children);
     };
     HtmlWriter.prototype.parenthesized = function (node) {
-        return this.htmlElement('span', node.children, { 'data-parenthesized': null });
+        return this.bracketed(node, 'parenthesized');
     };
     HtmlWriter.prototype.squareBracketed = function (node) {
-        return this.htmlElement('span', node.children, { 'data-square-bracketed': null });
+        return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.curlyBracketed = function (node) {
-        return this.htmlElement('span', node.children, { 'data-curly-bracketed': null });
+        return this.bracketed(node, 'curly-bracketed');
     };
     HtmlWriter.prototype.spoiler = function (node) {
         return this.htmlElement('span', node.children, { 'data-spoiler': null });
@@ -3390,6 +3390,10 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.plainText = function (node) {
         return node.text;
+    };
+    HtmlWriter.prototype.bracketed = function (bracketed, dataAttributeName) {
+        return this.htmlElement('span', bracketed.children, (_a = {}, _a['data-' + dataAttributeName] = null, _a));
+        var _a;
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
         return this.htmlElement('li', listItem.children);
