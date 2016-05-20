@@ -1517,6 +1517,24 @@ var MEDIA_CONVENTIONS = [
     MediaConventions_1.IMAGE,
     MediaConventions_1.VIDEO
 ];
+var PARENTHESIZED_CONVENTION = {
+    NodeType: ParenthesizedNode_1.ParenthesizedNode,
+    StartTokenType: ParenthesizedStartToken_1.ParenthesizedStartToken,
+    Until: ParenthesizedEndToken_1.ParenthesizedEndToken,
+    openBracket: '(',
+    closeBracket: ')'
+};
+var SQUARE_BRACKETED_CONVENTION = {
+    NodeType: SquareBracketedNode_1.SquareBracketedNode,
+    StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
+    Until: SquareBracketedEndToken_1.SquareBracketedEndToken,
+    openBracket: '[',
+    closeBracket: ']'
+};
+var BRACKET_CONVENTIONS = [
+    PARENTHESIZED_CONVENTION,
+    SQUARE_BRACKETED_CONVENTION
+];
 function parse(args) {
     return new Parser(args).result;
 }
@@ -1546,23 +1564,11 @@ var Parser = (function () {
                 this.nodes.push(new PlainTextNode_1.PlainTextNode(token.text));
                 continue;
             }
-            if (token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken) {
-                this.parseBracket({
-                    NodeType: ParenthesizedNode_1.ParenthesizedNode,
-                    UntilBracketType: ParenthesizedEndToken_1.ParenthesizedEndToken,
-                    openBracket: '(',
-                    closeBracket: ')'
-                });
-                continue;
-            }
-            if (token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken) {
-                this.parseBracket({
-                    NodeType: SquareBracketedNode_1.SquareBracketedNode,
-                    UntilBracketType: SquareBracketedEndToken_1.SquareBracketedEndToken,
-                    openBracket: '[',
-                    closeBracket: ']'
-                });
-                continue;
+            for (var _i = 0, BRACKET_CONVENTIONS_1 = BRACKET_CONVENTIONS; _i < BRACKET_CONVENTIONS_1.length; _i++) {
+                var bracketedConvention = BRACKET_CONVENTIONS_1[_i];
+                if (token instanceof bracketedConvention.StartTokenType) {
+                    this.parseBracket(bracketedConvention);
+                }
             }
             if (token instanceof InlineCodeToken_1.InlineCodeToken) {
                 if (token.code) {
@@ -1595,8 +1601,8 @@ var Parser = (function () {
                 this.nodes.push(new LinkNode_1.LinkNode(contents, url));
                 continue;
             }
-            for (var _i = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _i < MEDIA_CONVENTIONS_1.length; _i++) {
-                var media = MEDIA_CONVENTIONS_1[_i];
+            for (var _b = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _b < MEDIA_CONVENTIONS_1.length; _b++) {
+                var media = MEDIA_CONVENTIONS_1[_b];
                 if (token instanceof media.TokenType) {
                     var description = token.description.trim();
                     var url = token.url.trim();
@@ -1610,8 +1616,8 @@ var Parser = (function () {
                     continue LoopTokens;
                 }
             }
-            for (var _b = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _b < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _b++) {
-                var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_b];
+            for (var _c = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _c < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _c++) {
+                var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_c];
                 if (token instanceof richConvention.StartTokenType) {
                     var result = this.parse({ UntilTokenType: richConvention.EndTokenType });
                     if (result.nodes.length) {
@@ -1642,18 +1648,18 @@ var Parser = (function () {
         this.tokenIndex += result.countTokensParsed;
         return result;
     };
-    Parser.prototype.parseBracket = function (args) {
+    Parser.prototype.parseBracket = function (bracketedConvention) {
         var result = this.parse({
-            UntilTokenType: args.UntilBracketType,
+            UntilTokenType: bracketedConvention.Until,
             isTerminatorOptional: true
         });
-        var bracketResultNodes = (_a = [new PlainTextNode_1.PlainTextNode(args.openBracket)]).concat.apply(_a, result.nodes);
+        var bracketResultNodes = (_a = [new PlainTextNode_1.PlainTextNode(bracketedConvention.openBracket)]).concat.apply(_a, result.nodes);
         if (result.isMissingTerminator) {
             (_b = this.nodes).push.apply(_b, combineConsecutivePlainTextNodes(bracketResultNodes));
             return;
         }
-        bracketResultNodes.push(new PlainTextNode_1.PlainTextNode(args.closeBracket));
-        this.nodes.push(new args.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)));
+        bracketResultNodes.push(new PlainTextNode_1.PlainTextNode(bracketedConvention.closeBracket));
+        this.nodes.push(new bracketedConvention.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)));
         var _a, _b;
     };
     return Parser;

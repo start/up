@@ -19,7 +19,7 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
-import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
+import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED } from './RichConventions'
 import { ParseResult } from './ParseResult'
 
 
@@ -40,6 +40,26 @@ const MEDIA_CONVENTIONS = [
   VIDEO
 ]
 
+const PARENTHESIZED_CONVENTION = {
+  NodeType: ParenthesizedNode,
+  StartTokenType: ParenthesizedStartToken,
+  Until: ParenthesizedEndToken,
+  openBracket: '(',
+  closeBracket: ')'
+}
+
+const SQUARE_BRACKETED_CONVENTION = {
+  NodeType: SquareBracketedNode,
+  StartTokenType: SquareBracketedStartToken,  
+  Until: SquareBracketedEndToken,
+  openBracket: '[',
+  closeBracket: ']'
+}
+
+const BRACKET_CONVENTIONS = [
+  PARENTHESIZED_CONVENTION,
+  SQUARE_BRACKETED_CONVENTION
+]
 
 interface ParseArgs {
   tokens: Token[],
@@ -86,27 +106,11 @@ class Parser {
         this.nodes.push(new PlainTextNode(token.text))
         continue
       }
-
-      if (token instanceof ParenthesizedStartToken) {
-        this.parseBracket({
-          NodeType: ParenthesizedNode,
-          UntilBracketType: ParenthesizedEndToken,
-          openBracket: '(',
-          closeBracket: ')'
-        })
-
-        continue
-      }
-
-      if (token instanceof SquareBracketedStartToken) {
-        this.parseBracket({
-          NodeType: SquareBracketedNode,
-          UntilBracketType: SquareBracketedEndToken,
-          openBracket: '[',
-          closeBracket: ']'
-        })
-
-        continue
+      
+      for (const bracketedConvention of BRACKET_CONVENTIONS) {
+        if (token instanceof bracketedConvention.StartTokenType) {
+          this.parseBracket(bracketedConvention)
+        }
       }
 
       if (token instanceof InlineCodeToken) {
@@ -226,21 +230,14 @@ class Parser {
     return result
   }
 
-  private parseBracket(
-    args: {
-      NodeType: { new(nodes: InlineSyntaxNode[]): RichInlineSyntaxNode }
-      UntilBracketType: TokenType,
-      openBracket: string,
-      closeBracket: string
-    }
-  ): void {
+  private parseBracket(bracketedConvention: BracketedConvention): void {
     const result = this.parse({
-      UntilTokenType: args.UntilBracketType,
+      UntilTokenType: bracketedConvention.Until,
       isTerminatorOptional: true
     })
 
     const bracketResultNodes =
-      [<InlineSyntaxNode>new PlainTextNode(args.openBracket)]
+      [<InlineSyntaxNode>new PlainTextNode(bracketedConvention.openBracket)]
         .concat(...result.nodes)
 
     if (result.isMissingTerminator) {
@@ -248,8 +245,8 @@ class Parser {
       return
     }
 
-    bracketResultNodes.push(new PlainTextNode(args.closeBracket))
-    this.nodes.push(new args.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)))
+    bracketResultNodes.push(new PlainTextNode(bracketedConvention.closeBracket))
+    this.nodes.push(new bracketedConvention.NodeType(combineConsecutivePlainTextNodes(bracketResultNodes)))
   }
 }
 
@@ -273,4 +270,12 @@ function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSynt
   }
 
   return resultNodes
+}
+
+interface BracketedConvention {
+  NodeType: { new (nodes: InlineSyntaxNode[]): RichInlineSyntaxNode }
+  StartTokenType: TokenType,
+  Until: TokenType,
+  openBracket: string,
+  closeBracket: string
 }
