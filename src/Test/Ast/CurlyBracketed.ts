@@ -20,7 +20,7 @@ describe('Text surrounded by curly brackets', () => {
 })
 
 
-describe('curly bracketed text', () => {
+describe('Curly bracketed text', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toAst('I like {certain *types* of} pizza')).to.be.eql(
       insideDocumentAndParagraph([
