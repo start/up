@@ -2,8 +2,9 @@ import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER,
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
 import { contextualizeTokens } from './TokenContextualization/contextualizeTokens'
-import { getConventionEndedBy } from './TokenContextualization/getConventionEndedBy'
-import { getConventionStartedBy } from './TokenContextualization/getConventionStartedBy'
+import { ContextualizedToken } from './TokenContextualization/ContextualizedToken'
+import { ContextualizedStartToken } from './TokenContextualization/ContextualizedStartToken'
+import { ContextualizedEndToken } from './TokenContextualization/ContextualizedEndToken'
 
 
 // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This function rearranges
@@ -11,7 +12,7 @@ import { getConventionStartedBy } from './TokenContextualization/getConventionSt
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 export function nestOverlappingConventions(tokens: Token[]): Token[] {
-  return new ConventionNester(tokens.slice()).tokens
+  return new ConventionNester(tokens).tokens
 }
 
 // We're always okay with splitting these conventions.
@@ -36,23 +37,31 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 
 
 class ConventionNester {
+  tokens: Token[]
+
+  private contextualizedTokens: ContextualizedToken[]
 
   // This class mutates the `tokens` argument!
-  constructor(public tokens: Token[]) {
+  constructor(tokens: Token[]) {
+    this.contextualizedTokens = contextualizeTokens(tokens)
+
     this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(
       FREELY_SPLITTABLE_CONVENTIONS)
-    
+
     const conventionsToSplit =
       FREELY_SPLITTABLE_CONVENTIONS
-      
+
     for (const conventionNotToSplit of CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT) {
       this.resolveOverlapping(
         conventionsToSplit,
         conventionNotToSplit)
-      
+
       // We'd rather split the current convention than the ones that follow. 
       conventionsToSplit.push(conventionNotToSplit)
     }
+    
+    this.tokens =
+      this.contextualizedTokens.map(contextualizedToken => contextualizedToken.token)
   }
 
   // Massages convention tokens into a tree structure while preserving any overlapping conveyed by the author. This
@@ -67,74 +76,68 @@ class ConventionNester {
     // inside the current convention. If so, we essentially chop those conventions in half: We add end tokens
     // immediately before the end of the current convention, and we add corresponding start tokens immediately
     // after the end of the current convention.
-    for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      const token = this.tokens[tokenIndex]
+    for (let tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
+      const token = this.contextualizedTokens[tokenIndex]
 
-      const conventionStartedByThisToken = getConventionStartedBy(token, conventions)
-
-      if (conventionStartedByThisToken) {
-        unclosedConventions.push(conventionStartedByThisToken)
+      if (token instanceof ContextualizedStartToken) {
+        unclosedConventions.push(token.convention)
         continue
       }
 
-      const conventionEndedByThisToken = getConventionEndedBy(token, conventions)
+      if (token instanceof ContextualizedEndToken) {
+        // Alright, we've found a token that closes one of our unclosed conventions. If any other conventions were
+        // opened between this token and its corresponding start token, those conventions overlap this one and will
+        // need to be chopped in half.
 
-      if (!conventionEndedByThisToken) {
-        continue
-      }
+        let overlappingFromMostRecentToLeast: RichConvention[] = []
 
-      // Alright, we've found a token that closes one of our unclosed conventions. If any other conventions were
-      // opened between this token and its corresponding start token, those conventions overlap this one and will
-      // need to be chopped in half.
+        // We'll check the unclosed conventions from most recently opened to least recently opened.
+        for (let conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
+          const unclosedConvention = unclosedConventions[conventionIndex]
 
-      let overlappingFromMostRecentToLeast: RichConvention[] = []
+          if (unclosedConvention === token.convention) {
+            // Hooray! We've reached the convention that is closed by the current token.
+            unclosedConventions.splice(conventionIndex, 1)
 
-      // We'll check the unclosed conventions from most recently opened to least recently opened.
-      for (let conventionIndex = unclosedConventions.length - 1; conventionIndex >= 0; conventionIndex--) {
-        const unclosedConvention = unclosedConventions[conventionIndex]
+            // Any conventions opened before this one don't overlap with the current convention, so we can bail.
+            break
+          }
 
-        if (unclosedConvention === conventionEndedByThisToken) {
-          // Hooray! We've reached the convention that is closed by the current token.
-          unclosedConventions.splice(conventionIndex, 1)
-
-          // Any conventions opened before this one don't overlap with the current convention, so we can bail.
-          break
+          overlappingFromMostRecentToLeast.push(unclosedConvention)
         }
 
-        overlappingFromMostRecentToLeast.push(unclosedConvention)
+        // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
+        // while making it easier to produce an abstract syntax tree, we make the following changes:
+        //
+        // 1. Just before the end token of the current convention, we add a closing token for each unclosed
+        //    convention. To preserve proper nesting, we close the conventions in order of most to least recent.
+        //  
+        // 2. Just after the end token of the current convention, we add a start token for each unclosed convention.
+        //    To avoid producing a surprising syntax tree, we re-open the conventions in their original order.
+        this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast)
+
+        const countOverlapping = overlappingFromMostRecentToLeast.length
+
+        // Advance index to reflect the fact that we just added tokens
+        tokenIndex += (2 * countOverlapping)
       }
-
-      // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
-      // while making it easier to produce an abstract syntax tree, we make the following changes:
-      //
-      // 1. Just before the end token of the current convention, we add a closing token for each unclosed
-      //    convention. To preserve proper nesting, we close the conventions in order of most to least recent.
-      //  
-      // 2. Just after the end token of the current convention, we add a start token for each unclosed convention.
-      //    To avoid producing a surprising syntax tree, we re-open the conventions in their original order.
-      this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, overlappingFromMostRecentToLeast)
-
-      const countOverlapping = overlappingFromMostRecentToLeast.length
-
-      // Advance index to reflect the fact that we just added tokens
-      tokenIndex += (2 * countOverlapping)
     }
   }
 
   // This method assumes that any `conventionsToSplit` tokens are already properly nested.
   private resolveOverlapping(conventionsToSplit: RichConvention[], conventionNotToSplit: RichConvention): void {
-    for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      if (!(this.tokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
+    for (let tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
+      if (!(this.contextualizedTokens[tokenIndex] instanceof conventionNotToSplit.StartTokenType)) {
         continue
       }
-      
+
       // To keep variable names shorter, we'll refer to `cconventionNotToSplit` as the hero convention.
 
       const heroStartIndex = tokenIndex
       let heroEndIndex: number
 
-      for (let i = heroStartIndex + 1; i < this.tokens.length; i++) {
-        if (this.tokens[i] instanceof conventionNotToSplit.EndTokenType) {
+      for (let i = heroStartIndex + 1; i < this.contextualizedTokens.length; i++) {
+        if (this.contextualizedTokens[i] instanceof conventionNotToSplit.EndTokenType) {
           heroEndIndex = i
           break
         }
@@ -150,7 +153,7 @@ class ConventionNester {
       const overlappingStartingInside: RichConvention[] = []
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-        const token = this.tokens[indexInsideHero]
+        const token = this.contextualizedTokens[indexInsideHero]
         const conventionStartedByThisToken = getConventionStartedBy(token, conventionsToSplit)
 
         if (conventionStartedByThisToken) {
@@ -205,8 +208,8 @@ class ConventionNester {
     this.insertTokens(index + 1, startTokensToAdd)
     this.insertTokens(index, endTokensToAdd)
   }
-  
+
   private insertTokens(index: number, tokens: Token[]): void {
-    this.tokens.splice(index, 0, ...tokens)
+    this.contextualizedTokens.splice(index, 0, ...tokens)
   }
 }

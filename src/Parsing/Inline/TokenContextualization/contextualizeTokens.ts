@@ -1,8 +1,6 @@
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from '../RichConventions'
 import { RichConvention } from '../RichConvention'
 import { Token } from '../Tokens/Token'
-import { getConventionEndedBy } from './getConventionEndedBy'
-import { getConventionStartedBy } from './getConventionStartedBy'
 import { ContextualizedToken } from './ContextualizedToken'
 import { ContextualizedStartToken } from './ContextualizedStartToken'
 import { ContextualizedEndToken } from './ContextualizedEndToken'
@@ -68,4 +66,17 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
   }
 
   return resultTokens
+}
+
+
+export function getConventionStartedBy(token: Token, conventions: RichConvention[]): RichConvention {
+  return conventions.filter(convention =>
+    token instanceof convention.StartTokenType
+  )[0]
+}
+
+function getConventionEndedBy(token: Token, conventions: RichConvention[]): RichConvention {
+  return conventions.filter(convention =>
+    token instanceof convention.EndTokenType
+  )[0]
 }
