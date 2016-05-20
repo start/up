@@ -40,7 +40,7 @@ describe("A link's contents", () => {
     expect(Up.toAst('[Google is probably not [Bing -> https://bing.com] -> https://google.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
-          new PlainTextNode('Google is probably not'),
+          new PlainTextNode('Google is probably not '),
           new LinkNode([
             new PlainTextNode('Bing')
           ], 'https://bing.com')
