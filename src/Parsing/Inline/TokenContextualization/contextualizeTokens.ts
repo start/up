@@ -14,13 +14,11 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
   const resultTokens: ContextualizedToken[] = []
   const openStartTokens: ContextualizedStartToken[] = []
   
-  for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-    const token = tokens[tokenIndex]
-    
+  for (const token of tokens) {
     const conventionStartedByToken = getConventionStartedBy(token, RICH_CONVENTIONS)
     
     if (conventionStartedByToken) {
-      const startToken = new ContextualizedStartToken(token, conventionStartedByToken, tokenIndex)
+      const startToken = new ContextualizedStartToken(token, conventionStartedByToken)
       resultTokens.push(startToken)
       openStartTokens.push(startToken)
       continue
@@ -29,7 +27,7 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
     const conventionEndedByToken = getConventionEndedBy(token, RICH_CONVENTIONS)
     
     if (conventionEndedByToken) {
-      const endToken = new ContextualizedEndToken(token, conventionEndedByToken, tokenIndex)
+      const endToken = new ContextualizedEndToken(token, conventionEndedByToken)
       resultTokens.push(endToken)
       
       // Now, let's find the matching open start token.

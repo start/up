@@ -9,7 +9,7 @@ import { ContextualizedStartToken } from './ContextualizedStartToken'
 export class ContextualizedEndToken extends ContextualizedToken {
   start: ContextualizedStartToken
   
-  constructor(public token: Token, public convention: RichConvention, public index: number) {
+  constructor(public token: Token, public convention: RichConvention) {
     super(token)
   }
 }
