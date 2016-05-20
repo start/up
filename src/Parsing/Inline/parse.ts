@@ -53,7 +53,10 @@ export function parse(args: ParseArgs): ParseResult {
 
 class Parser {
   private tokens: Token[]
-  public result: ParseResult
+  private tokenIndex = 0
+  private countTokensParsed = 0
+
+  result: ParseResult
 
   constructor(args: ParseArgs) {
     const { UntilTokenType, isTerminatorOptional } = args
@@ -61,15 +64,13 @@ class Parser {
 
     const nodes: InlineSyntaxNode[] = []
 
-    let countTokensParsed = 0
-
-    LoopTokens: for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-      const token = this.tokens[tokenIndex]
-      countTokensParsed = tokenIndex + 1
+    LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
+      const token = this.tokens[this.tokenIndex]
+      this.countTokensParsed = this.tokenIndex + 1
 
       if (UntilTokenType && token instanceof UntilTokenType) {
         this.result = {
-          countTokensParsed,
+          countTokensParsed: this.countTokensParsed,
           nodes: combineConsecutivePlainTextNodes(nodes),
           isMissingTerminator: false
         }
@@ -87,13 +88,10 @@ class Parser {
       }
 
       if (token instanceof ParenthesizedStartToken) {
-        const result = parse({
-          tokens: this.tokens.slice(countTokensParsed),
+        const result = this.parse({
           UntilTokenType: ParenthesizedEndToken,
           isTerminatorOptional: true
         })
-
-        tokenIndex += result.countTokensParsed
 
         const resultNodes =
           [<InlineSyntaxNode>new PlainTextNode('(')]
@@ -111,13 +109,10 @@ class Parser {
       }
 
       if (token instanceof SquareBracketedStartToken) {
-        const result = parse({
-          tokens: this.tokens.slice(countTokensParsed),
+        const result = this.parse({
           UntilTokenType: SquareBracketedEndToken,
           isTerminatorOptional: true
         })
-
-        tokenIndex += result.countTokensParsed
 
         const resultNodes =
           [<InlineSyntaxNode>new PlainTextNode('[')]
@@ -151,12 +146,7 @@ class Parser {
       }
 
       if (token instanceof LinkStartToken) {
-        const result = parse({
-          tokens: this.tokens.slice(countTokensParsed),
-          UntilTokenType: LinkEndToken
-        })
-
-        tokenIndex += result.countTokensParsed
+        const result = this.parse({ UntilTokenType: LinkEndToken })
 
         let contents = result.nodes
         const hasContents = isNotPureWhitespace(contents)
@@ -164,7 +154,7 @@ class Parser {
         // The URL was in the LinkEndToken, the last token we parsed
         //
         // TODO: Move URL to LinkStartToken?
-        const linkEndToken = <LinkEndToken>this.tokens[tokenIndex]
+        const linkEndToken = <LinkEndToken>this.tokens[this.tokenIndex]
 
         let url = linkEndToken.url.trim()
         const hasUrl = !!url
@@ -213,12 +203,7 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token instanceof richConvention.StartTokenType) {
-          const result = parse({
-            tokens: this.tokens.slice(countTokensParsed),
-            UntilTokenType: richConvention.EndTokenType
-          })
-
-          tokenIndex += result.countTokensParsed
+          const result = this.parse({ UntilTokenType: richConvention.EndTokenType })
 
           if (result.nodes.length) {
             // Like empty inline code, we discard any empty sandwich convention
@@ -236,10 +221,29 @@ class Parser {
     }
 
     this.result = {
-      countTokensParsed,
+      countTokensParsed: this.countTokensParsed,
       nodes: combineConsecutivePlainTextNodes(nodes),
       isMissingTerminator: wasTerminatorSpecified
     }
+  }
+
+  parse(
+    args: {
+      UntilTokenType: TokenType,
+      isTerminatorOptional?: boolean
+    }
+  ): ParseResult {
+    const { UntilTokenType, isTerminatorOptional } = args
+    
+    const result = parse({
+      tokens: this.tokens.slice(this.countTokensParsed),
+      UntilTokenType,
+      isTerminatorOptional
+    })
+
+    this.tokenIndex += result.countTokensParsed
+    
+    return result
   }
 }
 

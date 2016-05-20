@@ -1523,16 +1523,17 @@ function parse(args) {
 exports.parse = parse;
 var Parser = (function () {
     function Parser(args) {
+        this.tokenIndex = 0;
+        this.countTokensParsed = 0;
         var UntilTokenType = args.UntilTokenType, isTerminatorOptional = args.isTerminatorOptional;
         this.tokens = args.tokens;
         var nodes = [];
-        var countTokensParsed = 0;
-        LoopTokens: for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            var token = this.tokens[tokenIndex];
-            countTokensParsed = tokenIndex + 1;
+        LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
+            var token = this.tokens[this.tokenIndex];
+            this.countTokensParsed = this.tokenIndex + 1;
             if (UntilTokenType && token instanceof UntilTokenType) {
                 this.result = {
-                    countTokensParsed: countTokensParsed,
+                    countTokensParsed: this.countTokensParsed,
                     nodes: combineConsecutivePlainTextNodes(nodes),
                     isMissingTerminator: false
                 };
@@ -1546,12 +1547,10 @@ var Parser = (function () {
                 continue;
             }
             if (token instanceof ParenthesizedStartToken_1.ParenthesizedStartToken) {
-                var result = parse({
-                    tokens: this.tokens.slice(countTokensParsed),
+                var result = this.parse({
                     UntilTokenType: ParenthesizedEndToken_1.ParenthesizedEndToken,
                     isTerminatorOptional: true
                 });
-                tokenIndex += result.countTokensParsed;
                 var resultNodes = (_a = [new PlainTextNode_1.PlainTextNode('(')]).concat.apply(_a, result.nodes);
                 if (result.isMissingTerminator) {
                     nodes.push.apply(nodes, combineConsecutivePlainTextNodes(resultNodes));
@@ -1562,12 +1561,10 @@ var Parser = (function () {
                 continue;
             }
             if (token instanceof SquareBracketedStartToken_1.SquareBracketedStartToken) {
-                var result = parse({
-                    tokens: this.tokens.slice(countTokensParsed),
+                var result = this.parse({
                     UntilTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
                     isTerminatorOptional: true
                 });
-                tokenIndex += result.countTokensParsed;
                 var resultNodes = (_b = [new PlainTextNode_1.PlainTextNode('[')]).concat.apply(_b, result.nodes);
                 if (result.isMissingTerminator) {
                     nodes.push.apply(nodes, combineConsecutivePlainTextNodes(resultNodes));
@@ -1589,14 +1586,10 @@ var Parser = (function () {
                 continue;
             }
             if (token instanceof LinkStartToken_1.LinkStartToken) {
-                var result = parse({
-                    tokens: this.tokens.slice(countTokensParsed),
-                    UntilTokenType: LinkEndToken_1.LinkEndToken
-                });
-                tokenIndex += result.countTokensParsed;
+                var result = this.parse({ UntilTokenType: LinkEndToken_1.LinkEndToken });
                 var contents = result.nodes;
                 var hasContents = isNotPureWhitespace(contents);
-                var linkEndToken = this.tokens[tokenIndex];
+                var linkEndToken = this.tokens[this.tokenIndex];
                 var url = linkEndToken.url.trim();
                 var hasUrl = !!url;
                 if (!hasContents && !hasUrl) {
@@ -1630,11 +1623,7 @@ var Parser = (function () {
             for (var _c = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _c < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _c++) {
                 var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_c];
                 if (token instanceof richConvention.StartTokenType) {
-                    var result = parse({
-                        tokens: this.tokens.slice(countTokensParsed),
-                        UntilTokenType: richConvention.EndTokenType
-                    });
-                    tokenIndex += result.countTokensParsed;
+                    var result = this.parse({ UntilTokenType: richConvention.EndTokenType });
                     if (result.nodes.length) {
                         nodes.push(new richConvention.NodeType(result.nodes));
                     }
@@ -1647,12 +1636,22 @@ var Parser = (function () {
             throw new Error("Missing terminator token: " + UntilTokenType);
         }
         this.result = {
-            countTokensParsed: countTokensParsed,
+            countTokensParsed: this.countTokensParsed,
             nodes: combineConsecutivePlainTextNodes(nodes),
             isMissingTerminator: wasTerminatorSpecified
         };
         var _a, _b;
     }
+    Parser.prototype.parse = function (args) {
+        var UntilTokenType = args.UntilTokenType, isTerminatorOptional = args.isTerminatorOptional;
+        var result = parse({
+            tokens: this.tokens.slice(this.countTokensParsed),
+            UntilTokenType: UntilTokenType,
+            isTerminatorOptional: isTerminatorOptional
+        });
+        this.tokenIndex += result.countTokensParsed;
+        return result;
+    };
     return Parser;
 }());
 function isNotPureWhitespace(nodes) {
