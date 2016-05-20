@@ -1,12 +1,12 @@
-import { RichConvention } from './RichConvention'
-import { Token } from './Tokens/Token'
+import { RichConvention } from '../RichConvention'
+import { Token } from '../Tokens/Token'
 import { getConventionEndedBy } from './getConventionEndedBy'
 import { getConventionStartedBy } from './getConventionStartedBy'
 import { ContextualizedToken } from './ContextualizedToken'
 import { ContextualizedStartToken } from './ContextualizedStartToken'
 import { ContextualizedEndToken } from './ContextualizedEndToken'
 
-import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
+import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from '../RichConventions'
 
 const RICH_CONVENTIONS = [LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE]
 

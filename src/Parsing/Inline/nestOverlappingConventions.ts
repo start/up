@@ -1,7 +1,7 @@
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
-import { getConventionEndedBy } from './getConventionEndedBy'
-import { getConventionStartedBy } from './getConventionStartedBy'
+import { getConventionEndedBy } from './TokenContextualization/getConventionEndedBy'
+import { getConventionStartedBy } from './TokenContextualization/getConventionStartedBy'
 
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE } from './RichConventions'
 

@@ -1,5 +1,5 @@
-import { RichConvention } from './RichConvention'
-import { Token } from './Tokens/Token'
+import { RichConvention } from '../RichConvention'
+import { Token } from '../Tokens/Token'
 
 
 export function getConventionStartedBy(token: Token, conventions: RichConvention[]): RichConvention {
