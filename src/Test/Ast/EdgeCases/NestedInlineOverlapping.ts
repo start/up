@@ -77,6 +77,30 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at th
 })
 
 
+describe('Overlapped revision deletion and doubly emphasized text (opening at different times)', () => {
+  it('splits the emphasis nodes', () => {
+    expect(Up.toAst("~~I need to sleep. *Uhhh... *So~~ what?* It's early.*")).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionDeletionNode([
+          new PlainTextNode("I need to sleep. "),
+          new EmphasisNode([
+            new PlainTextNode("Uhhh... "),
+            new EmphasisNode([
+              new PlainTextNode("So"),
+            ])
+          ])
+        ]),
+        new EmphasisNode([
+          new EmphasisNode([
+            new PlainTextNode(" what?"),
+          ]),
+          new PlainTextNode(" It's early.")
+        ]),
+      ]))
+  })
+})
+
+
 describe('Overlapped doubly parenthesized text (closing at the same time) and stress', () => {
   it('splits the stress node, with 1 part inside both parenthesized nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both parenthesized nodes', () => {
     expect(Up.toAst("(I know. (Well, I don't **really.)) Ha!**")).to.be.eql(
