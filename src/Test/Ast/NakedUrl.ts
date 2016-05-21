@@ -4,6 +4,8 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../../SyntaxNodes/StressNode'
+import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
@@ -92,10 +94,32 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can be directly inside another inline convention", () => {
+  it("can be directly inside revision insertion", () => {
+    expect(Up.toAst('++https://archive.org/fake++')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake'),
+        ])
+      ]))
+  })
+
+  it("can be directly inside emphasis", () => {
     expect(Up.toAst('*https://archive.org/fake*')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake'),
+        ])
+      ]))
+  })
+
+  it("can be directly inside stress", () => {
+    expect(Up.toAst('**https://archive.org/fake**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
           new LinkNode([
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
