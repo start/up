@@ -9,30 +9,6 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 
-describe('Overlapped doubly parenthesized text (closing at the same time) and stress', () => {
-  it('splits the stress node, with 1 part inside both parenthesized nodes (enclosing the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both parenthesized nodes', () => {
-    expect(Up.toAst("(I know. (Well, I don't **really.)) What?**")).to.be.eql(
-      insideDocumentAndParagraph([
-        new ParenthesizedNode([
-          new PlainTextNode('(I know. '),
-          new ParenthesizedNode([
-            new PlainTextNode("(Well, I don't "),
-            new StressNode([
-              new PlainTextNode('really.)')
-            ])
-          ]),
-            new StressNode([
-              new PlainTextNode(')')
-            ])
-        ]),
-        new StressNode([
-          new PlainTextNode(' What?')
-        ]),
-      ]))
-  })
-})
-
-
 describe('A paragraph with 2 separate instances of overlapped conventions', () => {
   it('prorduce the correct nodes for each', () => {
     expect(Up.toAst('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
@@ -90,6 +66,54 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
           new PlainTextNode(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new PlainTextNode(' all.')
+      ]))
+  })
+})
+
+
+describe('Overlapped doubly parenthesized text (closing at the same time) and stress', () => {
+  it('splits the stress node, with 1 part inside both parenthesized nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both parenthesized nodes', () => {
+    expect(Up.toAst("(I know. (Well, I don't **really.)) Ha!**")).to.be.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know. '),
+          new ParenthesizedNode([
+            new PlainTextNode("(Well, I don't "),
+            new StressNode([
+              new PlainTextNode('really.)')
+            ])
+          ]),
+          new StressNode([
+            new PlainTextNode(')')
+          ])
+        ]),
+        new StressNode([
+          new PlainTextNode(' Ha!')
+        ]),
+      ]))
+  })
+})
+
+
+describe('Overlapped doubly parenthesized text (closing at different times) and stress', () => {
+  it('splits the stress node, with 1 part inside both parenthesized nodes (up to first closing parenthesis), 1 part enclosing up to the second closing parenthesis, and 1 part following both parenthesized nodes', () => {
+    expect(Up.toAst("(I know. (Well, I don't **really.) So there.) Ha!**")).to.be.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know. '),
+          new ParenthesizedNode([
+            new PlainTextNode("(Well, I don't "),
+            new StressNode([
+              new PlainTextNode('really.)')
+            ])
+          ]),
+          new StressNode([
+            new PlainTextNode(' So there.)')
+          ])
+        ]),
+        new StressNode([
+          new PlainTextNode(' Ha!')
+        ]),
       ]))
   })
 })
