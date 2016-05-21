@@ -1606,7 +1606,7 @@ var ConventionNester = (function () {
         for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
             var potentialHeroStartToken = this.contextualizedTokens[tokenIndex];
             var isStartTokenForHeroConvention = potentialHeroStartToken instanceof ContextualizedStartToken_1.ContextualizedStartToken
-                && potentialHeroStartToken.convention instanceof conventionNotToSplit.StartTokenType;
+                && potentialHeroStartToken.originalToken instanceof conventionNotToSplit.StartTokenType;
             if (!isStartTokenForHeroConvention) {
                 continue;
             }
@@ -1615,7 +1615,7 @@ var ConventionNester = (function () {
             for (var i = heroStartIndex + 1; i < this.contextualizedTokens.length; i++) {
                 var potentialHeroEndToken = this.contextualizedTokens[i];
                 var isEndTokenForHeroConvention = potentialHeroEndToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
-                    && potentialHeroEndToken.convention instanceof conventionNotToSplit.EndTokenType;
+                    && potentialHeroEndToken.originalToken instanceof conventionNotToSplit.EndTokenType;
                 if (isEndTokenForHeroConvention) {
                     heroEndIndex = i;
                     break;
