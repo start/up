@@ -117,7 +117,7 @@ describe('A spoiler that overlaps a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new SpoilerNode([
-            new PlainTextNode('Gary loses to Ash'),
+            new PlainTextNode('Gary loses to Ash '),
           ]),
           footnote
         ]),

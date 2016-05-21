@@ -140,11 +140,11 @@ describe('Overlapped stressed and curly bracketed text', () => {
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
-          new SquareBracketedNode([
+          new CurlyBracketedNode([
             new PlainTextNode('{drinking')
           ])
         ]),
-        new SquareBracketedNode([
+        new CurlyBracketedNode([
           new PlainTextNode(' whole}')
         ]),
         new PlainTextNode(' milk.')
