@@ -55,8 +55,7 @@ describe('Overlapped linked and emphasized text', () => {
 
 
 describe('A spoiler that overlaps a link', () => {
-  it("splits the link node, not the spoiler node", () => {
-    // TODO: For bracketed conventions, possibly allow different types of brackets
+  it("splits the link node, not the spoiler node (TODO: For bracketed conventions, possibly allow different types of brackets)", () => {
     expect(Up.toAst('[SPOILER: Gary loses to [Ash] Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
@@ -77,8 +76,7 @@ describe('A spoiler that overlaps a link', () => {
 
 
 describe('A link that overlaps a spoiler', () => {
-  it("splits the link node, not the spoiler node", () => {
-    // TODO: For bracketed conventions, possibly allow different types of brackets
+  it("splits the link node, not the spoiler node (TODO: For bracketed conventions, possibly allow different types of brackets)", () => {
     const text =
       'In Pokémon Red, [Gary Oak [SPOILER: loses to Ash Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly] throughout the game.'
 
