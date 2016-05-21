@@ -193,23 +193,3 @@ describe('Conventions that completely overlap', () => {
     )
   })
 })
-
-
-describe('A spoiler that overlaps a link', () => {
-  it("produce the correct nodes, despite the seemingly terminating closing bracket in the link's contents", () => {
-    // TODO: For bracketed conventions, possibly allow different types of brackets
-    expect(Up.toAst('[SPOILER: Gary loses to [Ash] Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SpoilerNode([
-          new PlainTextNode('Gary loses to '),
-        ]),
-        new LinkNode([
-          new SpoilerNode([
-            new PlainTextNode('Ash')
-          ]),
-          new PlainTextNode(' Ketchum')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-      ])
-    )
-  })
-})
