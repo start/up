@@ -77,17 +77,23 @@ class ConventionNester {
     // immediately before the end of the current convention, and we add corresponding start tokens immediately
     // after the end of the current convention.
     for (let tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-      const token = this.contextualizedTokens[tokenIndex]
+      const contextualizedToken = this.contextualizedTokens[tokenIndex]
 
-      if (token instanceof ContextualizedStartToken) {
-        unclosedStartTokens.push(token)
+      if ((contextualizedToken instanceof ContextualizedStartToken)) {
+        if (startsConvention(contextualizedToken, conventions)) {
+          unclosedStartTokens.push(contextualizedToken)
+        }
         continue
       }
 
-      if (!(token instanceof ContextualizedEndToken)) {
+      if (
+        !(
+          contextualizedToken instanceof ContextualizedEndToken
+          && endsConvention(contextualizedToken, conventions))
+      ) {
         continue
       }
-      
+
       // Alright, we've found a token that closes one of our unclosed start tokens. If any conventions were opened
       // between this end token and its corresponding start token, those conventions overlap this one and will need
       // to be chopped in half.
@@ -98,7 +104,7 @@ class ConventionNester {
       for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
         const unclosedStartToken = unclosedStartTokens[i]
 
-        if (unclosedStartToken.end === token) {
+        if (unclosedStartToken.end === contextualizedToken) {
           // Hooray! We've reached the convention that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -126,7 +132,7 @@ class ConventionNester {
     }
   }
 
-  // This method assumes that any `conventionsToSplit` tokens are already properly nested.
+  // This method assumes that any `conventionsToSplit` tokens are already properly nested within each other.
   private resolveOverlapping(conventionsToSplit: RichConvention[], conventionNotToSplit: RichConvention): void {
 
     // To keep local variable names shorter, we'll refer to `cconventionNotToSplit` as the hero convention.
@@ -150,7 +156,7 @@ class ConventionNester {
 
         const isEndTokenForHeroConvention =
           potentialHeroEndToken instanceof ContextualizedEndToken
-          && potentialHeroEndToken.convention instanceof conventionNotToSplit.StartTokenType
+          && potentialHeroEndToken.convention instanceof conventionNotToSplit.EndTokenType
 
         if (isEndTokenForHeroConvention) {
           heroEndIndex = i
@@ -168,16 +174,21 @@ class ConventionNester {
       const overlappingStartingInside: ContextualizedEndToken[] = []
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-        const token = this.contextualizedTokens[indexInsideHero]
+        const contextualizedToken = this.contextualizedTokens[indexInsideHero]
 
-
-        if (token instanceof ContextualizedStartToken) {
+        if (
+          contextualizedToken instanceof ContextualizedStartToken
+          && startsConvention(contextualizedToken, conventionsToSplit)
+        ) {
           // Until we encounter the end token, we'll assume this token's convention overlaps.
-          overlappingStartingInside.push(token.end)
+          overlappingStartingInside.push(contextualizedToken.end)
           continue
         }
 
-        if (token instanceof ContextualizedEndToken) {
+        if (
+          contextualizedToken instanceof ContextualizedEndToken
+          && endsConvention(contextualizedToken, conventionsToSplit)
+        ) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
           // into a treee structure, if there are any conventions that started inside `cconventionNotToSplit`,
           // the end token we've found must end the most recent one.
@@ -188,7 +199,7 @@ class ConventionNester {
 
           // Ahhh, so there were no conventions started inside this `cconventionNotToSplit`! That means this one
           // must have started before it.
-          overlappingStartingBefore.push(token)
+          overlappingStartingBefore.push(contextualizedToken)
         }
       }
 
@@ -221,4 +232,12 @@ class ConventionNester {
   private insertTokens(index: number, contextualizedTokens: ContextualizedToken[]): void {
     this.contextualizedTokens.splice(index, 0, ...contextualizedTokens)
   }
+}
+
+function startsConvention(contextualizedToken: ContextualizedToken, conventions: RichConvention[]): boolean {
+  return conventions.some(convention => contextualizedToken.token instanceof convention.StartTokenType)
+}
+
+function endsConvention(contextualizedToken: ContextualizedToken, conventions: RichConvention[]): boolean {
+  return conventions.some(convention => contextualizedToken.token instanceof convention.EndTokenType)
 }

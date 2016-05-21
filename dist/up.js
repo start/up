@@ -1581,18 +1581,21 @@ var ConventionNester = (function () {
     ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
         var unclosedStartTokens = [];
         for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-            var token = this.contextualizedTokens[tokenIndex];
-            if (token instanceof ContextualizedStartToken_1.ContextualizedStartToken) {
-                unclosedStartTokens.push(token);
+            var contextualizedToken = this.contextualizedTokens[tokenIndex];
+            if ((contextualizedToken instanceof ContextualizedStartToken_1.ContextualizedStartToken)) {
+                if (startsConvention(contextualizedToken, conventions)) {
+                    unclosedStartTokens.push(contextualizedToken);
+                }
                 continue;
             }
-            if (!(token instanceof ContextualizedEndToken_1.ContextualizedEndToken)) {
+            if (!(contextualizedToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
+                && endsConvention(contextualizedToken, conventions))) {
                 continue;
             }
             var endTokensOfOverlappingConventions = [];
             for (var i = unclosedStartTokens.length - 1; i >= 0; i--) {
                 var unclosedStartToken = unclosedStartTokens[i];
-                if (unclosedStartToken.end === token) {
+                if (unclosedStartToken.end === contextualizedToken) {
                     unclosedStartTokens.splice(i, 1);
                     break;
                 }
@@ -1616,7 +1619,7 @@ var ConventionNester = (function () {
             for (var i = heroStartIndex + 1; i < this.contextualizedTokens.length; i++) {
                 var potentialHeroEndToken = this.contextualizedTokens[i];
                 var isEndTokenForHeroConvention = potentialHeroEndToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
-                    && potentialHeroEndToken.convention instanceof conventionNotToSplit.StartTokenType;
+                    && potentialHeroEndToken.convention instanceof conventionNotToSplit.EndTokenType;
                 if (isEndTokenForHeroConvention) {
                     heroEndIndex = i;
                     break;
@@ -1625,17 +1628,19 @@ var ConventionNester = (function () {
             var overlappingStartingBefore = [];
             var overlappingStartingInside = [];
             for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-                var token = this.contextualizedTokens[indexInsideHero];
-                if (token instanceof ContextualizedStartToken_1.ContextualizedStartToken) {
-                    overlappingStartingInside.push(token.end);
+                var contextualizedToken = this.contextualizedTokens[indexInsideHero];
+                if (contextualizedToken instanceof ContextualizedStartToken_1.ContextualizedStartToken
+                    && startsConvention(contextualizedToken, conventionsToSplit)) {
+                    overlappingStartingInside.push(contextualizedToken.end);
                     continue;
                 }
-                if (token instanceof ContextualizedEndToken_1.ContextualizedEndToken) {
+                if (contextualizedToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
+                    && endsConvention(contextualizedToken, conventionsToSplit)) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
                         continue;
                     }
-                    overlappingStartingBefore.push(token);
+                    overlappingStartingBefore.push(contextualizedToken);
                 }
             }
             this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
@@ -1657,6 +1662,12 @@ var ConventionNester = (function () {
     };
     return ConventionNester;
 }());
+function startsConvention(contextualizedToken, conventions) {
+    return conventions.some(function (convention) { return contextualizedToken.token instanceof convention.StartTokenType; });
+}
+function endsConvention(contextualizedToken, conventions) {
+    return conventions.some(function (convention) { return contextualizedToken.token instanceof convention.EndTokenType; });
+}
 
 },{"./RichConventions":11,"./TokenContextualization/ContextualizedEndToken":12,"./TokenContextualization/ContextualizedStartToken":13,"./TokenContextualization/contextualizeTokens":15}],53:[function(require,module,exports){
 "use strict";

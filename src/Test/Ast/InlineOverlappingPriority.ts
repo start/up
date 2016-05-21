@@ -110,12 +110,12 @@ describe('A spoiler that overlaps a footnote', () => {
         ]),
         new PlainTextNode(' is his last name')
       ], 1)
-
+      
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new SpoilerNode([
-            new PlainTextNode('Gary loses to Ash '),
+            new PlainTextNode('Gary loses to Ash'),
           ]),
           footnote
         ]),
