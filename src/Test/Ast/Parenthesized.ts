@@ -56,6 +56,24 @@ describe('Nested parentheses (starting at the same time)', () => {
 })
 
 
+describe('Nested parentheses (ending at the same time)', () => {
+  it("produce nested parenthesized nodes with last closing parenthesis outside of the inner node", () => {
+    expect(Up.toAst('I like (certain (types of)) pizza')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new ParenthesizedNode([
+          new PlainTextNode('(certain '),
+          new ParenthesizedNode([
+            new PlainTextNode('(types of)')
+          ]),
+          new PlainTextNode(')')
+        ]),
+        new PlainTextNode(' pizza')
+      ]))
+  })
+})
+
+
 describe('Two left parentheses followed by a single right square parenthesis', () => {
   it('produces parenthesized text starting from the second left parenthesis', () => {
     expect(Up.toAst(':( I like (certain *types* of) pizza')).to.be.eql(
