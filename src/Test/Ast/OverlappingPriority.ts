@@ -88,7 +88,7 @@ describe('A link that overlaps a spoiler', () => {
         ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
         new SpoilerNode([
           new LinkNode([
-            new PlainTextNode(' loses to Ash Ketchum')
+            new PlainTextNode('loses to Ash Ketchum')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
           new PlainTextNode(' repeatedly')
         ]),
