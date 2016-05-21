@@ -1568,7 +1568,7 @@ var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 var ConventionNester = (function () {
     function ConventionNester(tokens) {
         this.contextualizedTokens = contextualizeTokens_1.contextualizeTokens(tokens);
-        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
+        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS.slice();
         this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(conventionsToSplit);
         for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
             var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];

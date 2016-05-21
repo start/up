@@ -45,7 +45,8 @@ class ConventionNester {
   constructor(tokens: Token[]) {
     this.contextualizedTokens = contextualizeTokens(tokens)
 
-    const conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS
+    const conventionsToSplit =
+      FREELY_SPLITTABLE_CONVENTIONS.slice()
 
     this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(
       conventionsToSplit)
@@ -78,8 +79,8 @@ class ConventionNester {
     for (let tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
       const contextualizedToken = this.contextualizedTokens[tokenIndex]
 
-        if (startsConvention(contextualizedToken, conventions)) {
-          unclosedStartTokens.push(contextualizedToken)
+      if (startsConvention(contextualizedToken, conventions)) {
+        unclosedStartTokens.push(contextualizedToken)
         continue
       }
 
