@@ -39,7 +39,7 @@ describe('Square bracketed text', () => {
 
 
 describe('Nested square brackets (starting at the same time)', () => {
-  it("produce nested square bracketed nodes, with first opening bracket outside of the inner node", () => {
+  it("produce nested square bracketed nodes with first opening bracket outside of the inner node", () => {
     expect(Up.toAst('I like [[certain] types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
