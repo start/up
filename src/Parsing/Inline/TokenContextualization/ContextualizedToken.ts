@@ -3,5 +3,5 @@ import { Token } from '../Tokens/Token'
 
 
 export class ContextualizedToken {
-  constructor(public token: Token) { }
+  constructor(public originalToken: Token) { }
 }

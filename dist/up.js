@@ -463,9 +463,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ContextualizedToken_1 = require('./ContextualizedToken');
 var ContextualizedEndToken = (function (_super) {
     __extends(ContextualizedEndToken, _super);
-    function ContextualizedEndToken(token, convention) {
-        _super.call(this, token);
-        this.token = token;
+    function ContextualizedEndToken(originalToken, convention) {
+        _super.call(this, originalToken);
+        this.originalToken = originalToken;
         this.convention = convention;
     }
     return ContextualizedEndToken;
@@ -482,9 +482,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ContextualizedToken_1 = require('./ContextualizedToken');
 var ContextualizedStartToken = (function (_super) {
     __extends(ContextualizedStartToken, _super);
-    function ContextualizedStartToken(token, convention) {
-        _super.call(this, token);
-        this.token = token;
+    function ContextualizedStartToken(originalToken, convention) {
+        _super.call(this, originalToken);
+        this.originalToken = originalToken;
         this.convention = convention;
     }
     return ContextualizedStartToken;
@@ -494,8 +494,8 @@ exports.ContextualizedStartToken = ContextualizedStartToken;
 },{"./ContextualizedToken":14}],14:[function(require,module,exports){
 "use strict";
 var ContextualizedToken = (function () {
-    function ContextualizedToken(token) {
-        this.token = token;
+    function ContextualizedToken(originalToken) {
+        this.originalToken = originalToken;
     }
     return ContextualizedToken;
 }());
@@ -1568,28 +1568,25 @@ var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 var ConventionNester = (function () {
     function ConventionNester(tokens) {
         this.contextualizedTokens = contextualizeTokens_1.contextualizeTokens(tokens);
-        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(FREELY_SPLITTABLE_CONVENTIONS);
         var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS;
+        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(conventionsToSplit);
         for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
             var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
             this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
             conventionsToSplit.push(conventionNotToSplit);
         }
         this.tokens =
-            this.contextualizedTokens.map(function (contextualizedToken) { return contextualizedToken.token; });
+            this.contextualizedTokens.map(function (contextualizedToken) { return contextualizedToken.originalToken; });
     }
     ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
         var unclosedStartTokens = [];
         for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
             var contextualizedToken = this.contextualizedTokens[tokenIndex];
-            if ((contextualizedToken instanceof ContextualizedStartToken_1.ContextualizedStartToken)) {
-                if (startsConvention(contextualizedToken, conventions)) {
-                    unclosedStartTokens.push(contextualizedToken);
-                }
+            if (startsConvention(contextualizedToken, conventions)) {
+                unclosedStartTokens.push(contextualizedToken);
                 continue;
             }
-            if (!(contextualizedToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
-                && endsConvention(contextualizedToken, conventions))) {
+            if (!endsConvention(contextualizedToken, conventions)) {
                 continue;
             }
             var endTokensOfOverlappingConventions = [];
@@ -1628,19 +1625,17 @@ var ConventionNester = (function () {
             var overlappingStartingBefore = [];
             var overlappingStartingInside = [];
             for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-                var contextualizedToken = this.contextualizedTokens[indexInsideHero];
-                if (contextualizedToken instanceof ContextualizedStartToken_1.ContextualizedStartToken
-                    && startsConvention(contextualizedToken, conventionsToSplit)) {
-                    overlappingStartingInside.push(contextualizedToken.end);
+                var token = this.contextualizedTokens[indexInsideHero];
+                if (startsConvention(token, conventionsToSplit)) {
+                    overlappingStartingInside.push(token.end);
                     continue;
                 }
-                if (contextualizedToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
-                    && endsConvention(contextualizedToken, conventionsToSplit)) {
+                if (endsConvention(token, conventionsToSplit)) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
                         continue;
                     }
-                    overlappingStartingBefore.push(contextualizedToken);
+                    overlappingStartingBefore.push(token);
                 }
             }
             this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
@@ -1662,11 +1657,13 @@ var ConventionNester = (function () {
     };
     return ConventionNester;
 }());
-function startsConvention(contextualizedToken, conventions) {
-    return conventions.some(function (convention) { return contextualizedToken.token instanceof convention.StartTokenType; });
+function startsConvention(token, conventions) {
+    return (token instanceof ContextualizedStartToken_1.ContextualizedStartToken
+        && conventions.some(function (convention) { return token.originalToken instanceof convention.StartTokenType; }));
 }
-function endsConvention(contextualizedToken, conventions) {
-    return conventions.some(function (convention) { return contextualizedToken.token instanceof convention.EndTokenType; });
+function endsConvention(token, conventions) {
+    return (token instanceof ContextualizedEndToken_1.ContextualizedEndToken
+        && conventions.some(function (convention) { return token.originalToken instanceof convention.EndTokenType; }));
 }
 
 },{"./RichConventions":11,"./TokenContextualization/ContextualizedEndToken":12,"./TokenContextualization/ContextualizedStartToken":13,"./TokenContextualization/contextualizeTokens":15}],53:[function(require,module,exports){
