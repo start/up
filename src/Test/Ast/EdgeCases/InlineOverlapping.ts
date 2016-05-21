@@ -117,3 +117,28 @@ describe('Overlapped doubly parenthesized text (closing at different times) and 
       ]))
   })
 })
+
+
+describe('Overlapped stress and doubly parenthesized text (opening at different times)', () => {
+  it('does not split the stress node', () => {
+    expect(Up.toAst("**I need to sleep. (I know. (Well**, I don't really.))")).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
+          new PlainTextNode("I need to sleep. "),
+          new ParenthesizedNode([
+            new PlainTextNode('(I know. '),
+            new ParenthesizedNode([
+              new PlainTextNode("(Well"),
+            ])
+          ])
+        ]),
+        new ParenthesizedNode([
+          new ParenthesizedNode([
+            new PlainTextNode(", I don't really.)"),
+          ]),
+
+          new PlainTextNode(')')
+        ]),
+      ]))
+  })
+})
