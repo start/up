@@ -45,23 +45,20 @@ class ConventionNester {
   constructor(tokens: Token[]) {
     this.contextualizedTokens = contextualizeTokens(tokens)
 
-    const conventionsToSplit =
+    const splittableConventions =
       FREELY_SPLITTABLE_CONVENTIONS.slice()
 
     this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(
-      conventionsToSplit)
+      splittableConventions)
 
     for (const conventionNotToSplit of CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT) {
-      this.resolveOverlapping(
-        conventionsToSplit,
-        conventionNotToSplit)
+      this.resolveOverlapping(splittableConventions, conventionNotToSplit)
 
       // We'd rather split the current convention than the ones that follow. 
-      conventionsToSplit.push(conventionNotToSplit)
+      splittableConventions.push(conventionNotToSplit)
     }
 
-    this.tokens =
-      this.contextualizedTokens.map(contextualizedToken => contextualizedToken.originalToken)
+    this.tokens = this.contextualizedTokens.map(token => token.originalToken)
   }
 
   // Massages convention tokens into a tree structure while preserving any overlapping conveyed by the author. This
@@ -77,14 +74,14 @@ class ConventionNester {
     // immediately before the end of the current convention, and we add corresponding start tokens immediately
     // after the end of the current convention.
     for (let tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-      const contextualizedToken = this.contextualizedTokens[tokenIndex]
+      const token = this.contextualizedTokens[tokenIndex]
 
-      if (startsConvention(contextualizedToken, conventions)) {
-        unclosedStartTokens.push(contextualizedToken)
+      if (doesTokenStartConvention(token, conventions)) {
+        unclosedStartTokens.push(token)
         continue
       }
 
-      if (!endsConvention(contextualizedToken, conventions)) {
+      if (!doesTokenEndConvention(token, conventions)) {
         continue
       }
 
@@ -98,7 +95,7 @@ class ConventionNester {
       for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
         const unclosedStartToken = unclosedStartTokens[i]
 
-        if (unclosedStartToken.end === contextualizedToken) {
+        if (unclosedStartToken.end === token) {
           // Hooray! We've reached the convention that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -127,7 +124,7 @@ class ConventionNester {
   }
 
   // This method assumes that any `conventionsToSplit` tokens are already properly nested within each other.
-  private resolveOverlapping(conventionsToSplit: RichConvention[], conventionNotToSplit: RichConvention): void {
+  private resolveOverlapping(splittableConventions: RichConvention[], conventionNotToSplit: RichConvention): void {
 
     // To keep local variable names shorter, we'll refer to `cconventionNotToSplit` as the hero convention.
 
@@ -170,13 +167,13 @@ class ConventionNester {
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const token = this.contextualizedTokens[indexInsideHero]
 
-        if (startsConvention(token, conventionsToSplit)) {
+        if (doesTokenStartConvention(token, splittableConventions)) {
           // Until we encounter the end token, we'll assume this token's convention overlaps.
           overlappingStartingInside.push(token.end)
           continue
         }
 
-        if (endsConvention(token, conventionsToSplit)) {
+        if (doesTokenEndConvention(token, splittableConventions)) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
           // into a treee structure, if there are any conventions that started inside `cconventionNotToSplit`,
           // the end token we've found must end the most recent one.
@@ -222,13 +219,13 @@ class ConventionNester {
   }
 }
 
-function startsConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedStartToken {
+function doesTokenStartConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedStartToken {
   return (
     token instanceof ContextualizedStartToken
     && conventions.some(convention => token.originalToken instanceof convention.StartTokenType))
 }
 
-function endsConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedEndToken {
+function doesTokenEndConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedEndToken {
   return (
     token instanceof ContextualizedEndToken
     && conventions.some(convention => token.originalToken instanceof convention.EndTokenType))

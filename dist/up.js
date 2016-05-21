@@ -1568,31 +1568,30 @@ var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 var ConventionNester = (function () {
     function ConventionNester(tokens) {
         this.contextualizedTokens = contextualizeTokens_1.contextualizeTokens(tokens);
-        var conventionsToSplit = FREELY_SPLITTABLE_CONVENTIONS.slice();
-        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(conventionsToSplit);
+        var splittableConventions = FREELY_SPLITTABLE_CONVENTIONS.slice();
+        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(splittableConventions);
         for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
             var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
-            this.resolveOverlapping(conventionsToSplit, conventionNotToSplit);
-            conventionsToSplit.push(conventionNotToSplit);
+            this.resolveOverlapping(splittableConventions, conventionNotToSplit);
+            splittableConventions.push(conventionNotToSplit);
         }
-        this.tokens =
-            this.contextualizedTokens.map(function (contextualizedToken) { return contextualizedToken.originalToken; });
+        this.tokens = this.contextualizedTokens.map(function (token) { return token.originalToken; });
     }
     ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
         var unclosedStartTokens = [];
         for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-            var contextualizedToken = this.contextualizedTokens[tokenIndex];
-            if (startsConvention(contextualizedToken, conventions)) {
-                unclosedStartTokens.push(contextualizedToken);
+            var token = this.contextualizedTokens[tokenIndex];
+            if (doesTokenStartConvention(token, conventions)) {
+                unclosedStartTokens.push(token);
                 continue;
             }
-            if (!endsConvention(contextualizedToken, conventions)) {
+            if (!doesTokenEndConvention(token, conventions)) {
                 continue;
             }
             var endTokensOfOverlappingConventions = [];
             for (var i = unclosedStartTokens.length - 1; i >= 0; i--) {
                 var unclosedStartToken = unclosedStartTokens[i];
-                if (unclosedStartToken.end === contextualizedToken) {
+                if (unclosedStartToken.end === token) {
                     unclosedStartTokens.splice(i, 1);
                     break;
                 }
@@ -1603,7 +1602,7 @@ var ConventionNester = (function () {
             tokenIndex += (2 * countOverlapping);
         }
     };
-    ConventionNester.prototype.resolveOverlapping = function (conventionsToSplit, conventionNotToSplit) {
+    ConventionNester.prototype.resolveOverlapping = function (splittableConventions, conventionNotToSplit) {
         for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
             var potentialHeroStartToken = this.contextualizedTokens[tokenIndex];
             var isStartTokenForHeroConvention = potentialHeroStartToken instanceof ContextualizedStartToken_1.ContextualizedStartToken
@@ -1626,11 +1625,11 @@ var ConventionNester = (function () {
             var overlappingStartingInside = [];
             for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
                 var token = this.contextualizedTokens[indexInsideHero];
-                if (startsConvention(token, conventionsToSplit)) {
+                if (doesTokenStartConvention(token, splittableConventions)) {
                     overlappingStartingInside.push(token.end);
                     continue;
                 }
-                if (endsConvention(token, conventionsToSplit)) {
+                if (doesTokenEndConvention(token, splittableConventions)) {
                     if (overlappingStartingInside.length) {
                         overlappingStartingInside.pop();
                         continue;
@@ -1657,11 +1656,11 @@ var ConventionNester = (function () {
     };
     return ConventionNester;
 }());
-function startsConvention(token, conventions) {
+function doesTokenStartConvention(token, conventions) {
     return (token instanceof ContextualizedStartToken_1.ContextualizedStartToken
         && conventions.some(function (convention) { return token.originalToken instanceof convention.StartTokenType; }));
 }
-function endsConvention(token, conventions) {
+function doesTokenEndConvention(token, conventions) {
     return (token instanceof ContextualizedEndToken_1.ContextualizedEndToken
         && conventions.some(function (convention) { return token.originalToken instanceof convention.EndTokenType; }));
 }
