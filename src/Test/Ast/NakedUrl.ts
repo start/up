@@ -94,10 +94,11 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can be directly inside revision insertion", () => {
-    expect(Up.toAst('++https://archive.org/fake++')).to.be.eql(
+  it("can be closed by revision insertion closing", () => {
+    expect(Up.toAst('++Go here: https://archive.org/fake++')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
+          new PlainTextNode('Go here: '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
@@ -105,10 +106,11 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can be directly inside emphasis", () => {
-    expect(Up.toAst('*https://archive.org/fake*')).to.be.eql(
+  it("can be closed by emphasis closing", () => {
+    expect(Up.toAst('*Go here: https://archive.org/fake*')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
+          new PlainTextNode('Go here: '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
@@ -116,10 +118,11 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can be directly inside stress", () => {
-    expect(Up.toAst('**https://archive.org/fake**')).to.be.eql(
+  it("can be closed by stress closing", () => {
+    expect(Up.toAst('**Go here: https://archive.org/fake**')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
+          new PlainTextNode('Go here: '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
