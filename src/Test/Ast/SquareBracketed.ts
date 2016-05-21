@@ -56,6 +56,24 @@ describe('Nested square brackets (starting at the same time)', () => {
 })
 
 
+describe('Nested square brackets (ending at the same time)', () => {
+  it("produce nested square bracketed nodes with last closing square bracket outside of the inner node", () => {
+    expect(Up.toAst('I like [certain [types of]] pizza')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new SquareBracketedNode([
+          new PlainTextNode('[certain '),
+          new SquareBracketedNode([
+            new PlainTextNode('[types of]')
+          ]),
+          new PlainTextNode(']')
+        ]),
+        new PlainTextNode(' pizza')
+      ]))
+  })
+})
+
+
 describe('Two left square brackets followed by a single right square bracket', () => {
   it('produces bracketed text starting from the second left square bracket', () => {
     expect(Up.toAst(':[ I like [certain *types* of] pizza')).to.be.eql(
