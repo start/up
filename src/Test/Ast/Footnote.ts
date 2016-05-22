@@ -45,7 +45,6 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 
 describe('A footnote reference', () => {
   it('is evaluated for inline conventions', () => {
-
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
       new EmphasisNode([

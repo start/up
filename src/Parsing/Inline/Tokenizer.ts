@@ -355,8 +355,8 @@ export class Tokenizer {
       this.getInnermostContextWithState(TokenizerState.SquareBracketed)
 
     if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
-      // If we can't try a link at that location, it means we've already tried, and we failed to find the
-      // closing bracket.
+      // If we can't try a link at that location, it means we've already tried and failed to find the closing
+      // bracket.
 
       // First, lets get rid of the new link URL context.
       const linkUrlContext = this.openContexts.pop()

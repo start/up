@@ -80,3 +80,25 @@ describe('A naked URL protocol without the rest of the URL', () => {
       ]))
   })
 })
+
+
+describe('A naked URL followed by a space then a footnote', () => {
+  it('produces a link node immediately followed by a footnote node. The space is not put into a plain text node', () => {
+    const text = "https://google.com ((An old search engine.))"
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('An old search engine.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new LinkNode([
+            new PlainTextNode('google.com')
+          ], 'https://google.com'),
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
