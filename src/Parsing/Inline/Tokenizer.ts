@@ -116,10 +116,7 @@ export class Tokenizer {
       this.closeSandwichCorrespondingToState(state)
       || this.handleMediaCorrespondingToState(state)
 
-      || ((state === TokenizerState.LinkUrl) && (
-        this.openSquareBracketInsideUrl()
-        || this.closeLink()
-        || this.bufferCurrentChar()))
+      || ((state === TokenizerState.LinkUrl) && this.handleLinkUrl())
 
       || ((state === TokenizerState.MediaUrl) && (
         this.openSquareBracketInsideUrl()
@@ -128,6 +125,13 @@ export class Tokenizer {
 
       || ((state === TokenizerState.NakedUrl) && this.tryCloseNakedUrl())
     )
+  }
+  
+  private handleLinkUrl(): boolean {
+    return (
+      this.openSquareBracketInsideUrl()
+        || this.closeLink()
+        || this.bufferCurrentChar())
   }
 
   private closeSandwichCorrespondingToState(state: TokenizerState): boolean {
