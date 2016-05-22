@@ -84,27 +84,35 @@ export class Tokenizer {
     while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
 
       this.collectCurrentCharIfEscaped()
-        || this.performContextSpecificTokenizations()
+        || this.closeOrAdvanceOpenContexts()
+        
         || (this.hasState(TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
+        
         || (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
+        
         || this.tokenizeRaisedVoicePlaceholders()
+        
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.openSandwich(this.footnoteConvention)
         || this.openSandwich(this.revisionDeletionConvention)
         || this.openSandwich(this.revisionInsertionConvention)
+        
         || this.openMedia()
+        
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openSandwich(this.curlyBracketedConvention)
+        
         || this.openNakedUrl()
+        
         || this.bufferCurrentChar()
     }
   }
 
-  private performContextSpecificTokenizations(): boolean {
+  private closeOrAdvanceOpenContexts(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.performSpecificTokenizations(this.openContexts[i].state)) {
+      if (this.closeOrAdvanceContext(this.openContexts[i])) {
         return true
       }
     }
@@ -120,7 +128,9 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private performSpecificTokenizations(state: TokenizerState): boolean {
+  private closeOrAdvanceContext(context: TokenizerContext): boolean {
+    const { state } = context
+    
     return (
       this.closeSandwichCorrespondingToState(state)
       || this.handleMediaCorrespondingToState(state)

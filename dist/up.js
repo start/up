@@ -628,7 +628,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
             this.collectCurrentCharIfEscaped()
-                || this.performContextSpecificTokenizations()
+                || this.closeOrAdvanceOpenContexts()
                 || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
                 || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
                 || this.tokenizeRaisedVoicePlaceholders()
@@ -645,9 +645,9 @@ var Tokenizer = (function () {
                 || this.bufferCurrentChar();
         }
     };
-    Tokenizer.prototype.performContextSpecificTokenizations = function () {
+    Tokenizer.prototype.closeOrAdvanceOpenContexts = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.performSpecificTokenizations(this.openContexts[i].state)) {
+            if (this.closeOrAdvanceContext(this.openContexts[i])) {
                 return true;
             }
         }
@@ -659,7 +659,8 @@ var Tokenizer = (function () {
             || this.closeNakedUrl()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.performSpecificTokenizations = function (state) {
+    Tokenizer.prototype.closeOrAdvanceContext = function (context) {
+        var state = context.state;
         return (this.closeSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
             || ((state === TokenizerState_1.TokenizerState.InlineCode) && this.bufferCurrentChar())
