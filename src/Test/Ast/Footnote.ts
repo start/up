@@ -22,8 +22,8 @@ import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
-describe('In a paragraph, text surrounded by 2 parentheses', () => {
-  it('produces a footnote reference node. This node references a footnote node within a footnote block node after the paragraph', () => {
+describe('Inside a paragraph, text surrounded by 2 parentheses', () => {
+  it("produces a footnote node inside the paragraph and a footnote block node after the paragraph", () => {
     const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
 
     const footnote = new FootnoteNode([
@@ -43,7 +43,27 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 })
 
 
-describe('A footnote reference', () => {
+describe('A word followed by several spaces followed by a footnote', () => {
+  it("produces a footnote node directly after the word", () => {
+    const text = "I don't eat cereal.   ((Well, I do, but I pretend not to.))"
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
+describe('A footnote', () => {
   it('is evaluated for inline conventions', () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
@@ -64,7 +84,7 @@ describe('A footnote reference', () => {
       ]))
   })
 
-  it('can contain other footnote references, which produce additional footnotes in the same footnote block', () => {
+  it('can contain other footnote, which produce additional footnotes in the same footnote block', () => {
     const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really."
 
     const innerFootnote = new FootnoteNode([
@@ -97,7 +117,7 @@ describe('A footnote reference', () => {
 })
 
 
-describe('Footnote references in a heading', () => {
+describe('Footnotes in a heading', () => {
   it('produce a footnote block after the heading', () => {
     const text = `
 I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
@@ -122,7 +142,7 @@ I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 })
 
 
-describe('Footnote references in a line block', () => {
+describe('Footnotes in a line block', () => {
   it('produce a footnote block after the line block', () => {
     const text = `
 Roses are red ((This is not my line.))
@@ -155,7 +175,7 @@ Violets are blue ((Neither is this line. I think my mom made it up.))`
 })
 
 
-describe('Footnote references in unordered list items', () => {
+describe('Footnotes in unordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
@@ -225,7 +245,7 @@ describe('Footnote references in unordered list items', () => {
 })
 
 
-describe('Footnote references in a blockquote', () => {
+describe('Footnotes in a blockquote', () => {
   it('produce footnote blocks within the blockquote', () => {
     const text = "> I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
 
@@ -249,7 +269,7 @@ describe('Footnote references in a blockquote', () => {
   })
 })
 
-describe('Footnote references nested inside 2 or more outline conventions nested inside a blockquote', () => {
+describe('Footnotes nested inside 2 or more outline conventions nested inside a blockquote', () => {
   it("produce footnote blocks inside the blockquote after all the appropriate outline conventions. The only difference is that everything is inside a blockquote", () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
@@ -303,7 +323,7 @@ describe('Footnote references nested inside 2 or more outline conventions nested
 })
 
 
-describe('Footnote references in ordered list items', () => {
+describe('Footnotes in ordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
     const text = `
 1) I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
@@ -348,7 +368,7 @@ describe('Footnote references in ordered list items', () => {
 })
 
 
-describe('Footnote references in description list terms and definitions', () => {
+describe('Footnotes in description list terms and definitions', () => {
   it('produce a footnote block that appears after the entire description list', () => {
     const text = `
 Bulbasaur
@@ -417,7 +437,7 @@ Gary
 })
 
 
-describe('The reference numbers in a document', () => {
+describe("In a document, footnotes' reference numbers", () => {
   it('are always sequential, even across multiple outline conventions.', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
@@ -479,8 +499,8 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
 })
 
 
-describe('Nested footnote references', () => {
-  it('produce footnotes that appear after any footnotes produced by non-nested references', () => {
+describe('Nested footnotes', () => {
+  it('that appear in the footnote block after any non-nested footnotes', () => {
     const text =
       "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))"
 
@@ -518,8 +538,7 @@ describe('Nested footnote references', () => {
       ]))
   })
 
-
-  it('produce footnotes that appear after any footnotes produced by less nested references', () => {
+  it('appear in the footnote block after lesser nested footnotes', () => {
     const text =
       "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do* ((Only on Mondays...)) but I pretend not to.)) Never have. ((At least you've never seen me.)))) Really. ((Probably.))"
 
