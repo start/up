@@ -652,16 +652,16 @@ var Tokenizer = (function () {
     Tokenizer.prototype.performSpecificTokenizations = function (state) {
         return (this.closeSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
-            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.handleLinkUrl())
-            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.handleMediaUrl())
+            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAddCharToUrl())
+            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAddCharToUrl())
             || ((state === TokenizerState_1.TokenizerState.NakedUrl) && this.tryCloseNakedUrl()));
     };
-    Tokenizer.prototype.handleLinkUrl = function () {
+    Tokenizer.prototype.closeLinkOrAddCharToUrl = function () {
         return (this.openSquareBracketInsideUrl()
             || this.closeLink()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.handleMediaUrl = function () {
+    Tokenizer.prototype.closeMediaOrAddCharToUrl = function () {
         return (this.openSquareBracketInsideUrl()
             || this.closeMedia()
             || this.bufferCurrentChar());
