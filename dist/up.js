@@ -656,6 +656,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.closeNakedUrlOrAppendChar = function () {
         return (this.openParenthesisInsideUrl()
             || this.openSquareBracketInsideUrl()
+            || this.openCurlyBracketInsideUrl()
             || this.closeNakedUrl()
             || this.bufferCurrentChar());
     };
@@ -708,6 +709,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.openSquareBracketInsideUrl = function () {
         return this.openSandwich(this.squareBracketedInsideUrlConvention);
+    };
+    Tokenizer.prototype.openCurlyBracketInsideUrl = function () {
+        return this.openSandwich(this.curlyBracketedInsideUrlConvention);
     };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';
@@ -1119,7 +1123,7 @@ var Tokenizer = (function () {
             });
         this.curlyBracketedInsideUrlConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.CurlyBracketed,
+                state: TokenizerState_1.TokenizerState.CurlyBracketedInsideUrl,
                 openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
             });

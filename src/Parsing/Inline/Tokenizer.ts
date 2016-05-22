@@ -123,6 +123,7 @@ export class Tokenizer {
     return (
       this.openParenthesisInsideUrl()
       || this.openSquareBracketInsideUrl()
+      || this.openCurlyBracketInsideUrl()
       || this.closeNakedUrl()
       || this.bufferCurrentChar())
   }
@@ -183,6 +184,10 @@ export class Tokenizer {
 
   private openSquareBracketInsideUrl(): boolean {
     return this.openSandwich(this.squareBracketedInsideUrlConvention)
+  }
+
+  private openCurlyBracketInsideUrl(): boolean {
+    return this.openSandwich(this.curlyBracketedInsideUrlConvention)
   }
 
   private collectCurrentCharIfEscaped(): boolean {
@@ -717,7 +722,7 @@ export class Tokenizer {
 
     this.curlyBracketedInsideUrlConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.CurlyBracketed,
+        state: TokenizerState.CurlyBracketedInsideUrl,
         openBracketPattern: OPEN_CURLY_BRACKET,
         closeBracketPattern: CLOSE_CURLY_BRACKET
       })
