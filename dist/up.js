@@ -1032,26 +1032,29 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.addPlainTextBrackets = function () {
         var resultTokens = [];
-        for (var i = 0; i < this.tokens.length; i++) {
-            var token = this.tokens[i];
+        function addBracket(bracket) {
+            resultTokens.push(new PlainTextToken_1.PlainTextToken(bracket));
+        }
+        for (var _i = 0, _a = this.tokens; _i < _a.length; _i++) {
+            var token = _a[_i];
             if (token instanceof RichConventions_1.PARENTHESIZED.EndTokenType) {
-                resultTokens.push(new PlainTextToken_1.PlainTextToken(')'));
+                addBracket(')');
             }
             if (token instanceof RichConventions_1.SQUARE_BRACKETED.EndTokenType) {
-                resultTokens.push(new PlainTextToken_1.PlainTextToken(']'));
+                addBracket(']');
             }
             if (token instanceof RichConventions_1.CURLY_BRACKETED.EndTokenType) {
-                resultTokens.push(new PlainTextToken_1.PlainTextToken('}'));
+                addBracket('}');
             }
             resultTokens.push(token);
             if (token instanceof RichConventions_1.PARENTHESIZED.StartTokenType) {
-                resultTokens.push(new PlainTextToken_1.PlainTextToken('('));
+                addBracket('(');
             }
             if (token instanceof RichConventions_1.SQUARE_BRACKETED.StartTokenType) {
-                resultTokens.push(new PlainTextToken_1.PlainTextToken('['));
+                addBracket('[');
             }
             if (token instanceof RichConventions_1.CURLY_BRACKETED.StartTokenType) {
-                resultTokens.push(new PlainTextToken_1.PlainTextToken('{'));
+                addBracket('{');
             }
         }
         return resultTokens;

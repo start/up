@@ -30,12 +30,12 @@ export class Tokenizer {
 
   private textIndex = 0
 
-  // These three fields are computer every time we updatae `textIndex`.
+  // These three fields are computed every time we updatae `textIndex`.
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
 
-  // This field is updatede very time we add a new token
+  // This field is updated every time we add a new token.
   private currentToken: Token
 
   // Any time we open a new convention, we add it to `openContexts`.
@@ -45,11 +45,8 @@ export class Tokenizer {
 
   private failedStateTracker: FailedStateTracker = new FailedStateTracker()
 
-  // The tokenizer collects any text that isn't consumed by special delimiters. Eventually, this text is
-  // flushed to a token.
-  //
-  // Usually, it's flushed to a PlainTextToken, but it can also be flushed to other kinds of tokens (like
-  // InlineCodeTokens).
+  // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
+  // flushed to a token, asually a PlainTextToken.
   private bufferedText = ''
 
   private inlineCodeConvention: TokenizableSandwich
@@ -58,13 +55,13 @@ export class Tokenizer {
   private revisionDeletionConvention: TokenizableSandwich
   private revisionInsertionConvention: TokenizableSandwich
 
-  // These conventions ensure ensure that any conventions whose delimiters contain brackets can
-  // contain bracketed content
+  // These conventions ensure ensure that any conventions whose delimiters contain brackets can contain 
+  // bracketed content
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
   private curlyBracketedConvention: TokenizableSandwich
 
-  // These conventions serve the same function for URLs.
+  // These conventions serve a somewhat similar purpose for URLs.
   private parenthesizedInsideUrlConvention: TokenizableSandwich
   private squareBracketedInsideUrlConvention: TokenizableSandwich
   private curlyBracketedInsideUrlConvention: TokenizableSandwich
@@ -623,34 +620,36 @@ export class Tokenizer {
 
   private addPlainTextBrackets(): Token[] {
     const resultTokens: Token[] = []
+    
+    function addBracket(bracket: string): void {
+      resultTokens.push(new PlainTextToken(bracket))
+    }
 
-    for (let i = 0; i < this.tokens.length; i++) {
-      const token = this.tokens[i]
-
+    for (const token of this.tokens) {
       if (token instanceof PARENTHESIZED.EndTokenType) {
-        resultTokens.push(new PlainTextToken(')'))
+        addBracket(')')
       }
 
       if (token instanceof SQUARE_BRACKETED.EndTokenType) {
-        resultTokens.push(new PlainTextToken(']'))
+        addBracket(']')
       }
 
       if (token instanceof CURLY_BRACKETED.EndTokenType) {
-        resultTokens.push(new PlainTextToken('}'))
+        addBracket('}')
       }
 
       resultTokens.push(token)
       
       if (token instanceof PARENTHESIZED.StartTokenType) {
-        resultTokens.push(new PlainTextToken('('))
+        addBracket('(')
       }
 
       if (token instanceof SQUARE_BRACKETED.StartTokenType) {
-        resultTokens.push(new PlainTextToken('['))
+        addBracket('[')
       }
 
       if (token instanceof CURLY_BRACKETED.StartTokenType) {
-        resultTokens.push(new PlainTextToken('{'))
+        addBracket('{')
       }
     }
 
