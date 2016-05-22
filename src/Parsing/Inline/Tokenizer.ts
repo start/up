@@ -89,8 +89,7 @@ export class Tokenizer {
 
         || (this.hasState(TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
 
-        || (this.hasState(TokenizerState.SquareBracketed)
-          && this.convertSquareBracketedContextToLink())
+        || (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
 
         || this.tokenizeRaisedVoicePlaceholders()
         || this.openSandwich(this.inlineCodeConvention)
@@ -108,10 +107,21 @@ export class Tokenizer {
     }
   }
 
+  private performContextSpecificTokenizations(): boolean {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      if (this.performSpecificTokenizations(this.openContexts[i].state)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
   private closeNakedUrlOrAppendChar(): boolean {
     return (
       this.openParenthesisInsideUrl()
       || this.openSquareBracketInsideUrl()
+      || this.closeNakedUrl()
       || this.bufferCurrentChar())
   }
 
@@ -121,7 +131,6 @@ export class Tokenizer {
       || this.handleMediaCorrespondingToState(state)
       || ((state === TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
       || ((state === TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-      || ((state === TokenizerState.NakedUrl) && this.closeNakedUrl())
     )
   }
 
@@ -170,16 +179,6 @@ export class Tokenizer {
       && (currentOpenContext.state === TokenizerState.InlineCode)
       && (this.closeSandwich(this.inlineCodeConvention) || this.bufferCurrentChar())
     )
-  }
-
-  private performContextSpecificTokenizations(): boolean {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.performSpecificTokenizations(this.openContexts[i].state)) {
-        return true
-      }
-    }
-
-    return false
   }
 
   private openParenthesisInsideUrl(): boolean {

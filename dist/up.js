@@ -631,8 +631,7 @@ var Tokenizer = (function () {
                 || this.handleInlineCode()
                 || this.performContextSpecificTokenizations()
                 || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
-                || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed)
-                    && this.convertSquareBracketedContextToLink())
+                || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
                 || this.tokenizeRaisedVoicePlaceholders()
                 || this.openSandwich(this.inlineCodeConvention)
                 || this.openSandwich(this.spoilerConvention)
@@ -647,17 +646,25 @@ var Tokenizer = (function () {
                 || this.bufferCurrentChar();
         }
     };
+    Tokenizer.prototype.performContextSpecificTokenizations = function () {
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            if (this.performSpecificTokenizations(this.openContexts[i].state)) {
+                return true;
+            }
+        }
+        return false;
+    };
     Tokenizer.prototype.closeNakedUrlOrAppendChar = function () {
         return (this.openParenthesisInsideUrl()
             || this.openSquareBracketInsideUrl()
+            || this.closeNakedUrl()
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.performSpecificTokenizations = function (state) {
         return (this.closeSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
             || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.NakedUrl) && this.closeNakedUrl()));
+            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
     Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
         return (this.openSquareBracketInsideUrl()
@@ -699,14 +706,6 @@ var Tokenizer = (function () {
         return (currentOpenContext
             && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)
             && (this.closeSandwich(this.inlineCodeConvention) || this.bufferCurrentChar()));
-    };
-    Tokenizer.prototype.performContextSpecificTokenizations = function () {
-        for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.performSpecificTokenizations(this.openContexts[i].state)) {
-                return true;
-            }
-        }
-        return false;
     };
     Tokenizer.prototype.openParenthesisInsideUrl = function () {
         return this.openSandwich(this.parenthesizedInsideUrlConvention);
