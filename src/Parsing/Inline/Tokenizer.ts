@@ -73,7 +73,7 @@ export class Tokenizer {
     this.configureConventions(config)
     this.dirty()
     this.tokenize()
-    
+
     this.tokens =
       nestOverlappingConventions(
         applyRaisedVoices(
@@ -115,23 +115,24 @@ export class Tokenizer {
     return (
       this.closeSandwichCorrespondingToState(state)
       || this.handleMediaCorrespondingToState(state)
-
       || ((state === TokenizerState.LinkUrl) && this.handleLinkUrl())
-
-      || ((state === TokenizerState.MediaUrl) && (
-        this.openSquareBracketInsideUrl()
-        || this.closeMedia()
-        || this.bufferCurrentChar()))
-
+      || ((state === TokenizerState.MediaUrl) && this.handleMediaUrl())
       || ((state === TokenizerState.NakedUrl) && this.tryCloseNakedUrl())
     )
   }
-  
+
   private handleLinkUrl(): boolean {
     return (
       this.openSquareBracketInsideUrl()
-        || this.closeLink()
-        || this.bufferCurrentChar())
+      || this.closeLink()
+      || this.bufferCurrentChar())
+  }
+
+  private handleMediaUrl(): boolean {
+    return (
+      this.openSquareBracketInsideUrl()
+      || this.closeMedia()
+      || this.bufferCurrentChar())
   }
 
   private closeSandwichCorrespondingToState(state: TokenizerState): boolean {
@@ -624,7 +625,7 @@ export class Tokenizer {
 
   private addPlainTextBrackets(): Token[] {
     const resultTokens: Token[] = []
-    
+
     function addBracket(bracket: string): void {
       resultTokens.push(new PlainTextToken(bracket))
     }
@@ -643,7 +644,7 @@ export class Tokenizer {
       }
 
       resultTokens.push(token)
-      
+
       if (token instanceof PARENTHESIZED.StartTokenType) {
         addBracket('(')
       }
