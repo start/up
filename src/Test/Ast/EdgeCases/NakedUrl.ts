@@ -102,3 +102,16 @@ describe('A naked URL followed by a space then a footnote', () => {
       ]))
   })
 })
+
+describe('A naked URL inside a link', () => {
+  it("does not need a space between itseld and the start of the arrow", () => {
+    expect(Up.toAst('[https://inner.example.com/fake-> https://outer.example.com/real]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new LinkNode([
+            new PlainTextNode('inner.example.com/fake')
+          ], 'https://inner.example.com/fake')
+        ], 'https://outer.example.com/real')
+      ]))
+  })
+})

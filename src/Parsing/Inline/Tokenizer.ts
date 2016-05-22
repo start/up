@@ -92,14 +92,13 @@ export class Tokenizer {
         
         || this.tokenizeRaisedVoicePlaceholders()
         
+        || this.openMedia()
+        
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.openSandwich(this.footnoteConvention)
         || this.openSandwich(this.revisionDeletionConvention)
         || this.openSandwich(this.revisionInsertionConvention)
-        
-        || this.openMedia()
-        
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openSandwich(this.curlyBracketedConvention)
