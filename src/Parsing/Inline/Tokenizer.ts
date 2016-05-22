@@ -87,10 +87,7 @@ export class Tokenizer {
         || this.handleInlineCode()
         || this.performContextSpecificTokenizations()
 
-        || (this.hasState(TokenizerState.NakedUrl) && (
-          this.openParenthesisInsideUrl()
-          || this.openSquareBracketInsideUrl()
-          || this.bufferCurrentChar()))
+        || (this.hasState(TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
 
         || (this.hasState(TokenizerState.SquareBracketed)
           && this.convertSquareBracketedContextToLink())
@@ -111,24 +108,31 @@ export class Tokenizer {
     }
   }
 
+  private closeNakedUrlOrAppendChar(): boolean {
+    return (
+      this.openParenthesisInsideUrl()
+      || this.openSquareBracketInsideUrl()
+      || this.bufferCurrentChar())
+  }
+
   private performSpecificTokenizations(state: TokenizerState): boolean {
     return (
       this.closeSandwichCorrespondingToState(state)
       || this.handleMediaCorrespondingToState(state)
-      || ((state === TokenizerState.LinkUrl) && this.closeLinkOrAddCharToUrl())
-      || ((state === TokenizerState.MediaUrl) && this.closeMediaOrAddCharToUrl())
-      || ((state === TokenizerState.NakedUrl) && this.tryCloseNakedUrl())
+      || ((state === TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
+      || ((state === TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+      || ((state === TokenizerState.NakedUrl) && this.closeNakedUrl())
     )
   }
 
-  private closeLinkOrAddCharToUrl(): boolean {
+  private closeLinkOrAppendCharToUrl(): boolean {
     return (
       this.openSquareBracketInsideUrl()
       || this.closeLink()
       || this.bufferCurrentChar())
   }
 
-  private closeMediaOrAddCharToUrl(): boolean {
+  private closeMediaOrAppendCharToUrl(): boolean {
     return (
       this.openSquareBracketInsideUrl()
       || this.closeMedia()
@@ -297,7 +301,7 @@ export class Tokenizer {
     })
   }
 
-  private tryCloseNakedUrl(): boolean {
+  private closeNakedUrl(): boolean {
     // Whitespace terminates naked URLs, but we don't actually advance past the whitespace character! We leave
     // the whitespace to be matched by another convention (e.g. the leading space for footnote reference).
     if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {

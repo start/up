@@ -630,9 +630,7 @@ var Tokenizer = (function () {
             this.collectCurrentCharIfEscaped()
                 || this.handleInlineCode()
                 || this.performContextSpecificTokenizations()
-                || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && (this.openParenthesisInsideUrl()
-                    || this.openSquareBracketInsideUrl()
-                    || this.bufferCurrentChar()))
+                || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
                 || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed)
                     && this.convertSquareBracketedContextToLink())
                 || this.tokenizeRaisedVoicePlaceholders()
@@ -649,19 +647,24 @@ var Tokenizer = (function () {
                 || this.bufferCurrentChar();
         }
     };
+    Tokenizer.prototype.closeNakedUrlOrAppendChar = function () {
+        return (this.openParenthesisInsideUrl()
+            || this.openSquareBracketInsideUrl()
+            || this.bufferCurrentChar());
+    };
     Tokenizer.prototype.performSpecificTokenizations = function (state) {
         return (this.closeSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
-            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAddCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAddCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.NakedUrl) && this.tryCloseNakedUrl()));
+            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
+            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+            || ((state === TokenizerState_1.TokenizerState.NakedUrl) && this.closeNakedUrl()));
     };
-    Tokenizer.prototype.closeLinkOrAddCharToUrl = function () {
+    Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
         return (this.openSquareBracketInsideUrl()
             || this.closeLink()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.closeMediaOrAddCharToUrl = function () {
+    Tokenizer.prototype.closeMediaOrAppendCharToUrl = function () {
         return (this.openSquareBracketInsideUrl()
             || this.closeMedia()
             || this.bufferCurrentChar());
@@ -789,7 +792,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryCloseNakedUrl = function () {
+    Tokenizer.prototype.closeNakedUrl = function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }
