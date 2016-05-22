@@ -84,13 +84,9 @@ export class Tokenizer {
     while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
 
       this.collectCurrentCharIfEscaped()
-        || this.handleInlineCode()
         || this.performContextSpecificTokenizations()
-
         || (this.hasState(TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
-
         || (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
-
         || this.tokenizeRaisedVoicePlaceholders()
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
@@ -102,7 +98,6 @@ export class Tokenizer {
         || this.openSandwich(this.squareBracketedConvention)
         || this.openSandwich(this.curlyBracketedConvention)
         || this.openNakedUrl()
-
         || this.bufferCurrentChar()
     }
   }
@@ -129,6 +124,7 @@ export class Tokenizer {
     return (
       this.closeSandwichCorrespondingToState(state)
       || this.handleMediaCorrespondingToState(state)
+      || ((state === TokenizerState.InlineCode) && this.bufferCurrentChar())
       || ((state === TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
       || ((state === TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
     )
@@ -154,6 +150,7 @@ export class Tokenizer {
       this.footnoteConvention,
       this.revisionDeletionConvention,
       this.revisionInsertionConvention,
+      this.inlineCodeConvention,
       this.squareBracketedConvention,
       this.curlyBracketedConvention,
       this.parenthesizedConvention,
@@ -169,16 +166,6 @@ export class Tokenizer {
     return this.mediaConventions.some(media =>
       (media.state === state)
       && (this.openMediaUrl() || this.bufferCurrentChar()))
-  }
-
-  private handleInlineCode(): boolean {
-    const currentOpenContext = last(this.openContexts)
-
-    return (
-      currentOpenContext
-      && (currentOpenContext.state === TokenizerState.InlineCode)
-      && (this.closeSandwich(this.inlineCodeConvention) || this.bufferCurrentChar())
-    )
   }
 
   private openParenthesisInsideUrl(): boolean {

@@ -628,7 +628,6 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
             this.collectCurrentCharIfEscaped()
-                || this.handleInlineCode()
                 || this.performContextSpecificTokenizations()
                 || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
                 || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
@@ -663,6 +662,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.performSpecificTokenizations = function (state) {
         return (this.closeSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
+            || ((state === TokenizerState_1.TokenizerState.InlineCode) && this.bufferCurrentChar())
             || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
             || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
@@ -683,6 +683,7 @@ var Tokenizer = (function () {
             this.footnoteConvention,
             this.revisionDeletionConvention,
             this.revisionInsertionConvention,
+            this.inlineCodeConvention,
             this.squareBracketedConvention,
             this.curlyBracketedConvention,
             this.parenthesizedConvention,
@@ -700,12 +701,6 @@ var Tokenizer = (function () {
             return (media.state === state)
                 && (_this.openMediaUrl() || _this.bufferCurrentChar());
         });
-    };
-    Tokenizer.prototype.handleInlineCode = function () {
-        var currentOpenContext = CollectionHelpers_1.last(this.openContexts);
-        return (currentOpenContext
-            && (currentOpenContext.state === TokenizerState_1.TokenizerState.InlineCode)
-            && (this.closeSandwich(this.inlineCodeConvention) || this.bufferCurrentChar()));
     };
     Tokenizer.prototype.openParenthesisInsideUrl = function () {
         return this.openSandwich(this.parenthesizedInsideUrlConvention);
