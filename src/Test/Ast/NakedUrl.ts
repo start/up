@@ -194,3 +194,19 @@ describe('Inside square brackets, a naked URL', () => {
       ]))
   })
 })
+
+
+describe('Inside curly brackets, a naked URL', () => {
+  it('can contain matching curly brackets', () => {
+    expect(Up.toAst('{https://archive.org/fake{url}}')).to.be.eql(
+      insideDocumentAndParagraph([
+        new CurlyBracketedNode([
+          new PlainTextNode('{'),
+          new LinkNode([
+            new PlainTextNode('archive.org/fake{url}')
+          ], 'https://archive.org/fake{url}'),
+          new PlainTextNode('}'),
+        ])
+      ]))
+  })
+})
