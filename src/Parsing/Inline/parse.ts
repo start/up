@@ -1,4 +1,5 @@
 import { STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
+import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
@@ -19,7 +20,6 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { RichConvention } from './RichConvention'
 import { ParseResult } from './ParseResult'
 
@@ -45,16 +45,17 @@ const BRACKET_CONVENTIONS = [
   CURLY_BRACKETED
 ]
 
+export function parse(args: ParseArgs): ParseResult {
+  return new Parser(args).result
+}
+
+
 interface ParseArgs {
   tokens: Token[],
   UntilTokenType?: TokenType,
   isTerminatorOptional?: boolean
 }
 
-
-export function parse(args: ParseArgs): ParseResult {
-  return new Parser(args).result
-}
 
 class Parser {
   private tokens: Token[]
@@ -73,12 +74,7 @@ class Parser {
       this.countTokensParsed = this.tokenIndex + 1
 
       if (UntilTokenType && token instanceof UntilTokenType) {
-        this.result = {
-          countTokensParsed: this.countTokensParsed,
-          nodes: combineConsecutivePlainTextNodes(this.nodes),
-          isMissingTerminator: false
-        }
-
+        this.setResult({ isMissingTerminator: false })
         return
       }
 
@@ -107,8 +103,8 @@ class Parser {
       }
 
       if (token instanceof NakedUrlToken) {
-        const content = [new PlainTextNode(token.restOfUrl)]
-        this.nodes.push(new LinkNode(content, token.url()))
+        const contents = [new PlainTextNode(token.restOfUrl)]
+        this.nodes.push(new LinkNode(contents, token.url()))
 
         continue
       }
@@ -182,17 +178,14 @@ class Parser {
         }
       }
     }
+    
     const wasTerminatorSpecified = !!UntilTokenType
 
     if (!isTerminatorOptional && wasTerminatorSpecified) {
       throw new Error(`Missing terminator token: ${UntilTokenType}`)
     }
 
-    this.result = {
-      countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutivePlainTextNodes(this.nodes),
-      isMissingTerminator: wasTerminatorSpecified
-    }
+    this.setResult({ isMissingTerminator: wasTerminatorSpecified })
   }
 
   private parse(
@@ -226,6 +219,14 @@ class Parser {
     }
     
     this.nodes.push(new bracketed.NodeType(result.nodes))
+  }
+  
+  private setResult(args: {isMissingTerminator: boolean}): void {
+    this.result = {
+      countTokensParsed: this.countTokensParsed,
+      nodes: combineConsecutivePlainTextNodes(this.nodes),
+      isMissingTerminator: args.isMissingTerminator
+    }
   }
 }
 

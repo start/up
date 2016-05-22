@@ -1673,6 +1673,7 @@ function doesTokenEndConvention(token, conventions) {
 },{"./RichConventions":11,"./TokenContextualization/ContextualizedEndToken":12,"./TokenContextualization/ContextualizedStartToken":13,"./TokenContextualization/contextualizeTokens":15}],53:[function(require,module,exports){
 "use strict";
 var RichConventions_1 = require('./RichConventions');
+var MediaConventions_1 = require('./MediaConventions');
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
 var CollectionHelpers_1 = require('../../CollectionHelpers');
@@ -1683,7 +1684,6 @@ var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
-var MediaConventions_1 = require('./MediaConventions');
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS,
     RichConventions_1.EMPHASIS,
@@ -1717,11 +1717,7 @@ var Parser = (function () {
             var token = this.tokens[this.tokenIndex];
             this.countTokensParsed = this.tokenIndex + 1;
             if (UntilTokenType && token instanceof UntilTokenType) {
-                this.result = {
-                    countTokensParsed: this.countTokensParsed,
-                    nodes: combineConsecutivePlainTextNodes(this.nodes),
-                    isMissingTerminator: false
-                };
+                this.setResult({ isMissingTerminator: false });
                 return;
             }
             if (token instanceof PlainTextToken_1.PlainTextToken) {
@@ -1744,8 +1740,8 @@ var Parser = (function () {
                 continue;
             }
             if (token instanceof NakedUrlToken_1.NakedUrlToken) {
-                var content = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
-                this.nodes.push(new LinkNode_1.LinkNode(content, token.url()));
+                var contents = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
+                this.nodes.push(new LinkNode_1.LinkNode(contents, token.url()));
                 continue;
             }
             if (token instanceof LinkStartToken_1.LinkStartToken) {
@@ -1798,11 +1794,7 @@ var Parser = (function () {
         if (!isTerminatorOptional && wasTerminatorSpecified) {
             throw new Error("Missing terminator token: " + UntilTokenType);
         }
-        this.result = {
-            countTokensParsed: this.countTokensParsed,
-            nodes: combineConsecutivePlainTextNodes(this.nodes),
-            isMissingTerminator: wasTerminatorSpecified
-        };
+        this.setResult({ isMissingTerminator: wasTerminatorSpecified });
         var _a;
     }
     Parser.prototype.parse = function (args) {
@@ -1826,6 +1818,13 @@ var Parser = (function () {
         }
         this.nodes.push(new bracketed.NodeType(result.nodes));
         var _a;
+    };
+    Parser.prototype.setResult = function (args) {
+        this.result = {
+            countTokensParsed: this.countTokensParsed,
+            nodes: combineConsecutivePlainTextNodes(this.nodes),
+            isMissingTerminator: args.isMissingTerminator
+        };
     };
     return Parser;
 }());
