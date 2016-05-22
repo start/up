@@ -630,36 +630,22 @@ export class Tokenizer {
   private addPlainTextBrackets(): Token[] {
     const resultTokens: Token[] = []
 
-    function addBracket(bracket: string): void {
-      resultTokens.push(new PlainTextToken(bracket))
-    }
-
     for (const token of this.tokens) {
-      if (token instanceof PARENTHESIZED.EndTokenType) {
-        addBracket(')')
+      function addBracketIfTokenIs(bracket: string, TokenType: TokenType): void {
+        if (token instanceof TokenType) {
+          resultTokens.push(new PlainTextToken(bracket))
+        }
       }
 
-      if (token instanceof SQUARE_BRACKETED.EndTokenType) {
-        addBracket(']')
-      }
-
-      if (token instanceof CURLY_BRACKETED.EndTokenType) {
-        addBracket('}')
-      }
+      addBracketIfTokenIs(')', PARENTHESIZED.EndTokenType)
+      addBracketIfTokenIs(']', SQUARE_BRACKETED.EndTokenType)
+      addBracketIfTokenIs('}', CURLY_BRACKETED.EndTokenType)
 
       resultTokens.push(token)
 
-      if (token instanceof PARENTHESIZED.StartTokenType) {
-        addBracket('(')
-      }
-
-      if (token instanceof SQUARE_BRACKETED.StartTokenType) {
-        addBracket('[')
-      }
-
-      if (token instanceof CURLY_BRACKETED.StartTokenType) {
-        addBracket('{')
-      }
+      addBracketIfTokenIs('(', PARENTHESIZED.StartTokenType)
+      addBracketIfTokenIs('[', SQUARE_BRACKETED.StartTokenType)
+      addBracketIfTokenIs('{', CURLY_BRACKETED.StartTokenType)
     }
 
     return resultTokens

@@ -1041,30 +1041,23 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.addPlainTextBrackets = function () {
         var resultTokens = [];
-        function addBracket(bracket) {
-            resultTokens.push(new PlainTextToken_1.PlainTextToken(bracket));
-        }
+        var _loop_2 = function(token) {
+            function addBracketIfTokenIs(bracket, TokenType) {
+                if (token instanceof TokenType) {
+                    resultTokens.push(new PlainTextToken_1.PlainTextToken(bracket));
+                }
+            }
+            addBracketIfTokenIs(')', RichConventions_1.PARENTHESIZED.EndTokenType);
+            addBracketIfTokenIs(']', RichConventions_1.SQUARE_BRACKETED.EndTokenType);
+            addBracketIfTokenIs('}', RichConventions_1.CURLY_BRACKETED.EndTokenType);
+            resultTokens.push(token);
+            addBracketIfTokenIs('(', RichConventions_1.PARENTHESIZED.StartTokenType);
+            addBracketIfTokenIs('[', RichConventions_1.SQUARE_BRACKETED.StartTokenType);
+            addBracketIfTokenIs('{', RichConventions_1.CURLY_BRACKETED.StartTokenType);
+        };
         for (var _i = 0, _a = this.tokens; _i < _a.length; _i++) {
             var token = _a[_i];
-            if (token instanceof RichConventions_1.PARENTHESIZED.EndTokenType) {
-                addBracket(')');
-            }
-            if (token instanceof RichConventions_1.SQUARE_BRACKETED.EndTokenType) {
-                addBracket(']');
-            }
-            if (token instanceof RichConventions_1.CURLY_BRACKETED.EndTokenType) {
-                addBracket('}');
-            }
-            resultTokens.push(token);
-            if (token instanceof RichConventions_1.PARENTHESIZED.StartTokenType) {
-                addBracket('(');
-            }
-            if (token instanceof RichConventions_1.SQUARE_BRACKETED.StartTokenType) {
-                addBracket('[');
-            }
-            if (token instanceof RichConventions_1.CURLY_BRACKETED.StartTokenType) {
-                addBracket('{');
-            }
+            _loop_2(token);
         }
         return resultTokens;
     };
