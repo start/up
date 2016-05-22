@@ -40,24 +40,6 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('can contain matching parentheses', () => {
-    expect(Up.toAst('https://archive.org/fake(url)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('archive.org/fake(url)')
-        ], 'https://archive.org/fake(url)')
-      ]))
-  })
-
-  it('can contain matching square brackets', () => {
-    expect(Up.toAst('https://archive.org/fake[url]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('archive.org/fake[url]')
-        ], 'https://archive.org/fake[url]')
-      ]))
-  })
-
   it('can be inside parentheses', () => {
     expect(Up.toAst('(https://archive.org/fake)')).to.be.eql(
       insideDocumentAndParagraph([
@@ -94,6 +76,33 @@ describe('A naked URL', () => {
           ], 'https://archive.org/fake'),
           new PlainTextNode('}'),
         ])
+      ]))
+  })
+
+  it('can contain matching parentheses', () => {
+    expect(Up.toAst('https://archive.org/fake(url)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('archive.org/fake(url)')
+        ], 'https://archive.org/fake(url)')
+      ]))
+  })
+
+  it('can contain matching square brackets', () => {
+    expect(Up.toAst('https://archive.org/fake[url]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('archive.org/fake[url]')
+        ], 'https://archive.org/fake[url]')
+      ]))
+  })
+
+  it('can contain matching curly brackets', () => {
+    expect(Up.toAst('https://archive.org/fake{url}')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('archive.org/fake{url}')
+        ], 'https://archive.org/fake{url}')
       ]))
   })
 
