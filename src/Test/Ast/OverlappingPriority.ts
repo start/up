@@ -55,8 +55,8 @@ describe('Overlapped linked and emphasized text', () => {
 
 
 describe('A spoiler that overlaps a link', () => {
-  it("splits the link node, not the spoiler node (TODO: For bracketed conventions, possibly allow different types of brackets)", () => {
-    expect(Up.toAst('[SPOILER: Gary loses to [Ash] Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+  it("splits the link node, not the spoiler node", () => {
+    expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('Gary loses to '),
@@ -76,7 +76,31 @@ describe('A spoiler that overlaps a link', () => {
 
 
 describe('A link that overlaps a spoiler', () => {
-  it("splits the link node, not the spoiler node (TODO: For bracketed conventions, possibly allow different types of brackets)", () => {
+  it("splits the link node, not the spoiler node", () => {
+    const text =
+      'In Pokémon Red, [Gary Oak {SPOILER: loses to Ash Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, '),
+        new LinkNode([
+          new PlainTextNode('Gary Oak ')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+        new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode('loses to Ash Ketchum')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+          new PlainTextNode(' repeatedly')
+        ]),
+        new PlainTextNode(' throughout the game.')
+      ])
+    )
+  })
+})
+
+
+describe('A link and a spoiler using the same type of brackets', () => {
+  it("can overlap", () => {
     const text =
       'In Pokémon Red, [Gary Oak [SPOILER: loses to Ash Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly] throughout the game.'
 
