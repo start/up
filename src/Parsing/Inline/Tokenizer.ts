@@ -59,13 +59,17 @@ export class Tokenizer {
   private squareBracketedConvention: TokenizableSandwich
   private curlyBracketedConvention: TokenizableSandwich
 
-  // Unlike the other bracket conventions, these don't produce special tokens
+  // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
+  // or inside the descriptions of media conventions.  
   private parenthesizedRawTextConvention: TokenizableSandwich
   private squareBracketedRawTextConvention: TokenizableSandwich
   private curlyBracketedRawTextConvention: TokenizableSandwich
 
-  private allSandwiches: TokenizableSandwich[]
+  // This collection includes every sandwich except for the "raw" bracket conventions above.
   private sandwichesThatCanAppearInRegularContent: TokenizableSandwich[]
+
+  // This collection includes every sandwich.
+  private allSandwiches: TokenizableSandwich[]
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
@@ -74,18 +78,12 @@ export class Tokenizer {
     this.configureConventions(config)
     this.dirty()
     this.tokenize()
-
-    this.tokens =
-      nestOverlappingConventions(
-        applyRaisedVoices(
-          this.addPlainTextBrackets()))
   }
 
   private configureConventions(config: UpConfig): void {
     this.mediaConventions =
-      [AUDIO, IMAGE, VIDEO]
-        .map(media =>
-          new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
+      [AUDIO, IMAGE, VIDEO].map(media =>
+        new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
 
     this.footnoteConvention =
       this.getRichSandwich({
@@ -194,7 +192,6 @@ export class Tokenizer {
 
   private tokenize(): void {
     while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
-
       this.tryToCollectCurrentCharIfEscaped()
         || this.tryToCloseOrAdvanceOpenContexts()
         || (this.hasState(TokenizerState.NakedUrl) && this.handleNakedUrl())
@@ -204,11 +201,11 @@ export class Tokenizer {
         || this.tryToOpenNakedUrl()
         || this.bufferCurrentChar()
     }
-  }
 
-  private tryToOpenAnySandwichThatCanAppearInRegularContent(): boolean {
-    return this.sandwichesThatCanAppearInRegularContent
-      .some(sandwich => this.tryToOpenSandwich(sandwich))
+    this.tokens =
+      nestOverlappingConventions(
+        applyRaisedVoices(
+          this.addPlainTextBrackets()))
   }
 
   private tryToCloseOrAdvanceOpenContexts(): boolean {
@@ -288,6 +285,11 @@ export class Tokenizer {
     return true
   }
 
+  private tryToOpenAnySandwichThatCanAppearInRegularContent(): boolean {
+    return this.sandwichesThatCanAppearInRegularContent
+      .some(sandwich => this.tryToOpenSandwich(sandwich))
+  }
+
   private tryToOpenParenthesizedRawText(): boolean {
     return this.tryToOpenSandwich(this.parenthesizedRawTextConvention)
   }
@@ -315,94 +317,6 @@ export class Tokenizer {
     )
   }
 
-  private addToken(token: Token): void {
-    this.currentToken = token
-    this.tokens.push(token)
-  }
-
-  private reachedEndOfText(): boolean {
-    return !this.remainingText
-  }
-
-  private resolveOpenContexts(): boolean {
-    while (this.openContexts.length) {
-      const context = this.openContexts.pop()
-
-      switch (context.state) {
-        case TokenizerState.NakedUrl:
-          this.flushBufferedTextToNakedUrlToken()
-          break
-
-        // Parentheses and brackets can be left unclosed.
-        case TokenizerState.Parenthesized:
-        case TokenizerState.SquareBracketed:
-        case TokenizerState.CurlyBracketed:
-        case TokenizerState.ParenthesizedInRawText:
-        case TokenizerState.SquareBracketedInRawText:
-        case TokenizerState.CurlyBracketedInRawText:
-
-        // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
-        // handler (below) backtrack to before the link itself.
-        case TokenizerState.LinkUrl:
-
-        // The same applies for media URLs.
-        case TokenizerState.MediaUrl:
-          break;
-
-        default:
-          this.failContextAndResetToBeforeIt(context)
-          return false
-      }
-    }
-
-    this.flushBufferToPlainTextToken()
-
-    return true
-  }
-
-  private failContextAndResetToBeforeIt(context: TokenizerContext): void {
-    this.failedStateTracker.registerFailure(context)
-
-    this.textIndex = context.textIndex
-    this.tokens.splice(context.countTokens)
-    this.openContexts = context.openContexts
-    this.bufferedText = context.plainTextBuffer
-
-    this.currentToken = last(this.tokens)
-    this.dirty()
-  }
-
-  private advanceTextIndex(length: number): void {
-    this.textIndex += length
-    this.dirty()
-  }
-
-  // This method always returns true, which allows us to use some cleaner boolean logic.
-  private bufferCurrentChar(): boolean {
-    this.bufferedText += this.currentChar
-    this.advanceTextIndex(1)
-
-    return true
-  }
-
-  private flushBufferedText(): string {
-    const bufferedText = this.bufferedText
-    this.bufferedText = ''
-
-    return bufferedText
-  }
-
-  private flushBufferToPlainTextToken(): void {
-    // This will create a PlainTextToken even when there isn't any text to flush.
-    //
-    // TODO: Explain why this is helpful
-    this.addToken(new PlainTextToken(this.flushBufferedText()))
-  }
-
-  private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
-    return !this.failedStateTracker.hasFailed(state, textIndex)
-  }
-
   private tryToOpenNakedUrl(): boolean {
     return this.tryToOpenConvention({
       state: TokenizerState.NakedUrl,
@@ -422,22 +336,6 @@ export class Tokenizer {
     }
 
     return false
-  }
-
-  private closeNakedUrl(): void {
-    this.flushBufferedTextToNakedUrlToken()
-
-    // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
-    // any text that follows the URL.
-    this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
-  }
-
-  private flushBufferedTextToNakedUrlToken(): void {
-    this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText()
-  }
-
-  private currentNakedUrlToken(): NakedUrlToken {
-    return (<NakedUrlToken>this.currentToken)
   }
 
   private tryToOpenMedia(): boolean {
@@ -530,6 +428,14 @@ export class Tokenizer {
     })
   }
 
+  private closeNakedUrl(): void {
+    this.flushBufferedTextToNakedUrlToken()
+
+    // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
+    // any text that follows the URL.
+    this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
+  }
+
   private tryToOpenSandwich(sandwich: TokenizableSandwich): boolean {
     return this.tryToOpenConvention({
       state: sandwich.state,
@@ -558,15 +464,13 @@ export class Tokenizer {
     const { state, pattern, then } = args
 
     return this.canTry(state) && this.advanceAfterMatch({
-      pattern: pattern,
-
+      pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContext({ state })
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
-
 
   private openContext(args: { state: TokenizerState }): void {
     const { state } = args
@@ -580,6 +484,54 @@ export class Tokenizer {
     })
   }
 
+  private resolveOpenContexts(): boolean {
+    while (this.openContexts.length) {
+      const context = this.openContexts.pop()
+
+      switch (context.state) {
+        case TokenizerState.NakedUrl:
+          this.flushBufferedTextToNakedUrlToken()
+          break
+
+        // Parentheses and brackets can be left unclosed.
+        case TokenizerState.Parenthesized:
+        case TokenizerState.SquareBracketed:
+        case TokenizerState.CurlyBracketed:
+        case TokenizerState.ParenthesizedInRawText:
+        case TokenizerState.SquareBracketedInRawText:
+        case TokenizerState.CurlyBracketedInRawText:
+
+        // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
+        // handler (below) backtrack to before the link itself.
+        case TokenizerState.LinkUrl:
+
+        // The same applies for media URLs.
+        case TokenizerState.MediaUrl:
+          break;
+
+        default:
+          this.failContextAndResetToBeforeIt(context)
+          return false
+      }
+    }
+
+    this.flushBufferToPlainTextToken()
+
+    return true
+  }
+
+  private failContextAndResetToBeforeIt(context: TokenizerContext): void {
+    this.failedStateTracker.registerFailure(context)
+
+    this.textIndex = context.textIndex
+    this.tokens.splice(context.countTokens)
+    this.openContexts = context.openContexts
+    this.bufferedText = context.plainTextBuffer
+
+    this.currentToken = last(this.tokens)
+    this.dirty()
+  }
+  
   private failMostRecentContextWithStateAndResetToBeforeIt(state: TokenizerState): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
@@ -642,6 +594,14 @@ export class Tokenizer {
     }
 
     this.openContexts.pop()
+  }
+
+  private flushBufferedTextToNakedUrlToken(): void {
+    this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText()
+  }
+
+  private currentNakedUrlToken(): NakedUrlToken {
+    return (<NakedUrlToken>this.currentToken)
   }
 
   private addTokenAfterFlushingBufferToPlainTextToken(token: Token): void {
@@ -778,6 +738,46 @@ export class Tokenizer {
     }
 
     return resultTokens
+  }
+
+  private addToken(token: Token): void {
+    this.currentToken = token
+    this.tokens.push(token)
+  }
+
+  private reachedEndOfText(): boolean {
+    return !this.remainingText
+  }
+
+  private advanceTextIndex(length: number): void {
+    this.textIndex += length
+    this.dirty()
+  }
+
+  // This method always returns true, which allows us to use some cleaner boolean logic.
+  private bufferCurrentChar(): boolean {
+    this.bufferedText += this.currentChar
+    this.advanceTextIndex(1)
+
+    return true
+  }
+
+  private flushBufferedText(): string {
+    const bufferedText = this.bufferedText
+    this.bufferedText = ''
+
+    return bufferedText
+  }
+
+  private flushBufferToPlainTextToken(): void {
+    // This will create a PlainTextToken even when there isn't any text to flush.
+    //
+    // TODO: Explain why this is helpful
+    this.addToken(new PlainTextToken(this.flushBufferedText()))
+  }
+
+  private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
+    return !this.failedStateTracker.hasFailed(state, textIndex)
   }
 }
 
