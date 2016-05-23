@@ -330,7 +330,7 @@ export class Tokenizer {
 
       switch (context.state) {
         case TokenizerState.NakedUrl:
-          this.flushBufferedTextToNakedUrl()
+          this.flushBufferedTextToNakedUrlToken()
           break
 
         // Parentheses and brackets can be left unclosed.
@@ -416,19 +416,23 @@ export class Tokenizer {
   private tryToCloseNakedUrl(): boolean {
     // Whitespace terminates naked URLs, but we don't actually advance past the whitespace character! We leave
     // the whitespace to be matched by another convention (e.g. the leading space for footnote reference).
-    if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
-      return false
+    if (WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
+      this.closeNakedUrl()
+      return true
     }
 
-    this.flushBufferedTextToNakedUrl()
+    return false
+  }
+  
+  private closeNakedUrl(): void {
+    this.flushBufferedTextToNakedUrlToken()
     
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
-    return true
   }
   
-  private flushBufferedTextToNakedUrl(): void {
+  private flushBufferedTextToNakedUrlToken(): void {
     this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText()
   }
 
@@ -592,7 +596,7 @@ export class Tokenizer {
       if (context.state === TokenizerState.NakedUrl) {
         // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too (along with
         // any inner brackets).
-        this.flushBufferedTextToNakedUrl()
+        this.flushBufferedTextToNakedUrlToken()
       }
     }
 

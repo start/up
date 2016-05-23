@@ -827,7 +827,7 @@ var Tokenizer = (function () {
             var context_1 = this.openContexts.pop();
             switch (context_1.state) {
                 case TokenizerState_1.TokenizerState.NakedUrl:
-                    this.flushBufferedTextToNakedUrl();
+                    this.flushBufferedTextToNakedUrlToken();
                     break;
                 case TokenizerState_1.TokenizerState.Parenthesized:
                 case TokenizerState_1.TokenizerState.SquareBracketed:
@@ -887,14 +887,17 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToCloseNakedUrl = function () {
-        if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
-            return false;
+        if (WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
+            this.closeNakedUrl();
+            return true;
         }
-        this.flushBufferedTextToNakedUrl();
-        this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
-        return true;
+        return false;
     };
-    Tokenizer.prototype.flushBufferedTextToNakedUrl = function () {
+    Tokenizer.prototype.closeNakedUrl = function () {
+        this.flushBufferedTextToNakedUrlToken();
+        this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
+    };
+    Tokenizer.prototype.flushBufferedTextToNakedUrlToken = function () {
         this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText();
     };
     Tokenizer.prototype.currentNakedUrlToken = function () {
@@ -1026,7 +1029,7 @@ var Tokenizer = (function () {
                 return;
             }
             if (context_3.state === TokenizerState_1.TokenizerState.NakedUrl) {
-                this.flushBufferedTextToNakedUrl();
+                this.flushBufferedTextToNakedUrlToken();
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
