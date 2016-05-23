@@ -325,14 +325,15 @@ export class Tokenizer {
   }
 
   private resolveOpenContexts(): boolean {
+    if (this.hasState(TokenizerState.NakedUrl) && !this.validateAndFinalizeNakedUrl()) {
+        return false
+    }
+    
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
       switch (context.state) {
-        case TokenizerState.NakedUrl:
-          this.flushUnmatchedTextToNakedUrl()
-          break;
-
+        
         // Parentheses and brackets can be left unclosed.
         case TokenizerState.Parenthesized:
         case TokenizerState.SquareBracketed:
@@ -340,9 +341,11 @@ export class Tokenizer {
         case TokenizerState.ParenthesizedInRawText:
         case TokenizerState.SquareBracketedInRawText:
         case TokenizerState.CurlyBracketedInRawText:
+        
         // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
         // handler (below) backtrack to before the link itself.
         case TokenizerState.LinkUrl:
+        
         // The same applies for media URLs.
         case TokenizerState.MediaUrl:
           break;
@@ -418,23 +421,24 @@ export class Tokenizer {
       return false
     }
 
-    this.finalizeNakedUrl()
+    this.validateAndFinalizeNakedUrl()
     return true
   }
   
-  private finalizeNakedUrl(): void {
+  private validateAndFinalizeNakedUrl(): boolean {
     this.flushUnmatchedTextToNakedUrl()
     
     if (!this.currentNakedUrlToken().urlAfterProtocol) {
       // As a rule, naked URLs consisting only of a protocol are treated as plain text. We don't need to backtrack,
       // because the protocol can't possibly be interpreted as another convention.
       this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState.NakedUrl)
-      return
+      return false
     }
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
+    return true
   }
 
   private flushUnmatchedTextToNakedUrl(): void {
