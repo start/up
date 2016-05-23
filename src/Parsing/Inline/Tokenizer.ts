@@ -265,7 +265,8 @@ export class Tokenizer {
     return this.mediaConventions
       .some(media =>
         (media.state === state)
-        && (this.tryOpenMediaUrl()
+        && (
+          this.tryOpenMediaUrl()
           || this.tryOpenSquareBracketedRawText()
           || this.tryCloseFalseMediaConvention(state)
           || this.bufferCurrentChar()))
@@ -372,9 +373,7 @@ export class Tokenizer {
     this.dirty()
   }
 
-  // This method will never fail, and it always returns true.
-  //
-  // Ensuring it always returns true allows us to use some cleaner boolean logic. 
+  // This method always returns true, which allows us to use some cleaner boolean logic.
   private bufferCurrentChar(): boolean {
     this.bufferedText += this.currentChar
     this.advanceTextIndex(1)
@@ -431,21 +430,15 @@ export class Tokenizer {
   }
 
   private tryOpenMedia(): boolean {
-    for (let media of this.mediaConventions) {
-      const openedMediaConvention = this.tryOpenConvention({
+    return this.mediaConventions.some(media => {
+      return this.tryOpenConvention({
         state: media.state,
         pattern: media.startPattern,
         then: () => {
           this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType())
         }
       })
-
-      if (openedMediaConvention) {
-        return true
-      }
-    }
-
-    return false
+    })
   }
 
   private tryConvertSquareBracketedContextToLink(): boolean {

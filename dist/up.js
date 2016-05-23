@@ -897,25 +897,15 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryOpenMedia = function () {
         var _this = this;
-        var _loop_1 = function(media) {
-            var openedMediaConvention = this_1.tryOpenConvention({
+        return this.mediaConventions.some(function (media) {
+            return _this.tryOpenConvention({
                 state: media.state,
                 pattern: media.startPattern,
                 then: function () {
                     _this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType());
                 }
             });
-            if (openedMediaConvention) {
-                return { value: true };
-            }
-        };
-        var this_1 = this;
-        for (var _i = 0, _a = this.mediaConventions; _i < _a.length; _i++) {
-            var media = _a[_i];
-            var state_1 = _loop_1(media);
-            if (typeof state_1 === "object") return state_1.value;
-        }
-        return false;
+        });
     };
     Tokenizer.prototype.tryConvertSquareBracketedContextToLink = function () {
         var _this = this;
@@ -1143,7 +1133,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.addPlainTextBrackets = function () {
         var resultTokens = [];
-        var _loop_2 = function(token) {
+        var _loop_1 = function(token) {
             function addBracketIfTokenIs(bracket, TokenType) {
                 if (token instanceof TokenType) {
                     resultTokens.push(new PlainTextToken_1.PlainTextToken(bracket));
@@ -1159,7 +1149,7 @@ var Tokenizer = (function () {
         };
         for (var _i = 0, _a = this.tokens; _i < _a.length; _i++) {
             var token = _a[_i];
-            _loop_2(token);
+            _loop_1(token);
         }
         return resultTokens;
     };
