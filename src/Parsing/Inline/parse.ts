@@ -103,7 +103,7 @@ class Parser {
       }
 
       if (token instanceof NakedUrlToken) {
-        const contents = [new PlainTextNode(token.restOfUrl)]
+        const contents = [new PlainTextNode(token.urlAfterProtocol)]
         this.nodes.push(new LinkNode(contents, token.url()))
 
         continue

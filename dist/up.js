@@ -895,14 +895,14 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.finalizeNakedUrl = function () {
         this.flushUnmatchedTextToNakedUrl();
-        if (!this.currentNakedUrlToken().restOfUrl) {
+        if (!this.currentNakedUrlToken().urlAfterProtocol) {
             this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState_1.TokenizerState.NakedUrl);
             return;
         }
         this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
     };
     Tokenizer.prototype.flushUnmatchedTextToNakedUrl = function () {
-        this.currentNakedUrlToken().restOfUrl = this.flushBufferedText();
+        this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText();
     };
     Tokenizer.prototype.currentNakedUrlToken = function () {
         return this.currentToken;
@@ -1344,11 +1344,11 @@ exports.MediaToken = MediaToken;
 var NakedUrlToken = (function () {
     function NakedUrlToken(protocol) {
         this.protocol = protocol;
-        this.restOfUrl = '';
+        this.urlAfterProtocol = '';
     }
     NakedUrlToken.prototype.token = function () { };
     NakedUrlToken.prototype.url = function () {
-        return this.protocol + this.restOfUrl;
+        return this.protocol + this.urlAfterProtocol;
     };
     return NakedUrlToken;
 }());
@@ -1769,7 +1769,7 @@ var Parser = (function () {
                 continue;
             }
             if (token instanceof NakedUrlToken_1.NakedUrlToken) {
-                var contents = [new PlainTextNode_1.PlainTextNode(token.restOfUrl)];
+                var contents = [new PlainTextNode_1.PlainTextNode(token.urlAfterProtocol)];
                 this.nodes.push(new LinkNode_1.LinkNode(contents, token.url()));
                 continue;
             }

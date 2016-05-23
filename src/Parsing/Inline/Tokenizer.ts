@@ -425,7 +425,7 @@ export class Tokenizer {
   private finalizeNakedUrl(): void {
     this.flushUnmatchedTextToNakedUrl()
     
-    if (!this.currentNakedUrlToken().restOfUrl) {
+    if (!this.currentNakedUrlToken().urlAfterProtocol) {
       // As a rule, naked URLs consisting only of a protocol are treated as plain text. We don't need to backtrack,
       // because the protocol can't possibly be interpreted as another convention.
       this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState.NakedUrl)
@@ -438,7 +438,7 @@ export class Tokenizer {
   }
 
   private flushUnmatchedTextToNakedUrl(): void {
-    this.currentNakedUrlToken().restOfUrl = this.flushBufferedText()
+    this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText()
   }
   
   private currentNakedUrlToken(): NakedUrlToken {

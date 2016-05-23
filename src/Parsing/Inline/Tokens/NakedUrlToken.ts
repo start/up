@@ -1,11 +1,11 @@
 export class NakedUrlToken {
   token(): void { }
   
-  restOfUrl = ''
+  urlAfterProtocol = ''
   
   constructor(private protocol: string) { }
   
   url(): string {
-    return this.protocol + this.restOfUrl
+    return this.protocol + this.urlAfterProtocol
   }
 }
