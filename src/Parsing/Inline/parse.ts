@@ -103,6 +103,12 @@ class Parser {
       }
 
       if (token instanceof NakedUrlToken) {
+        if (!token.urlAfterProtocol) {          
+          // As a rule, naked URLs consisting only of a protocol are treated as plain text.
+          this.nodes.push(new PlainTextNode(token.url()))
+          continue
+        }
+        
         const contents = [new PlainTextNode(token.urlAfterProtocol)]
         this.nodes.push(new LinkNode(contents, token.url()))
 
