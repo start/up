@@ -427,6 +427,7 @@ export class Tokenizer {
       // As a rule, naked URLs consisting only of a protocol are treated as plain text. We don't need to backtrack,
       // because the protocol can't possibly be interpreted as another convention.
       this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState.NakedUrl)
+      return
     }
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on

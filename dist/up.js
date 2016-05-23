@@ -895,6 +895,7 @@ var Tokenizer = (function () {
         this.flushUnmatchedTextToNakedUrl();
         if (!this.currentNakedUrlToken().restOfUrl) {
             this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState_1.TokenizerState.NakedUrl);
+            return;
         }
         this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
     };
