@@ -7,6 +7,7 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
 describe('A video without a description', () => {
@@ -55,10 +56,13 @@ Do not pour the spiders into your sister's cereal.
 
 describe('An otherwise valid video convention prematurely terminated by an unmatched closing bracket in its description', () => {
   it('is treated as plain text', () => {
-    expect(Up.toAst('[video: memes] -> 8]')).to.be.eql(
+    expect(Up.toAst('[video: on] -> 8]')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('[video: memes] -> 8]'),
+          new SquareBracketedNode([
+            new PlainTextNode('[video: on]')
+          ]),
+          new PlainTextNode(' -> 8]')
         ])
       ]))
   })

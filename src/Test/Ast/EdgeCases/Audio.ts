@@ -6,7 +6,7 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 describe('Audio without a description', () => {
   it('has its URL treated as its description', () => {
@@ -57,7 +57,10 @@ describe('An otherwise valid audio convention prematurely terminated by an unmat
     expect(Up.toAst('[audio: zzz] -> 8]')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('[audio: zzz] -> 8]'),
+          new SquareBracketedNode([
+            new PlainTextNode('[audio: zzz]')
+          ]),
+          new PlainTextNode(' -> 8]')
         ])
       ]))
   })

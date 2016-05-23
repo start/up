@@ -55,16 +55,14 @@ export class Tokenizer {
   private revisionDeletionConvention: TokenizableSandwich
   private revisionInsertionConvention: TokenizableSandwich
 
-  // These conventions ensure ensure that any conventions whose delimiters contain brackets can contain 
-  // bracketed content
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
   private curlyBracketedConvention: TokenizableSandwich
 
-  // These conventions serve a somewhat similar purpose for URLs.
-  private parenthesizedInsideUrlConvention: TokenizableSandwich
-  private squareBracketedInsideUrlConvention: TokenizableSandwich
-  private curlyBracketedInsideUrlConvention: TokenizableSandwich
+  // Unlike the other bracket conventions, these don't produce special tokens
+  private parenthesizedRawTextConvention: TokenizableSandwich
+  private squareBracketedRawTextConvention: TokenizableSandwich
+  private curlyBracketedRawTextConvention: TokenizableSandwich
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
@@ -85,15 +83,15 @@ export class Tokenizer {
 
       this.collectCurrentCharIfEscaped()
         || this.closeOrAdvanceOpenContexts()
-        
+
         || (this.hasState(TokenizerState.NakedUrl) && this.closeNakedUrlOrAppendChar())
-        
+
         || (this.hasState(TokenizerState.SquareBracketed) && this.convertSquareBracketedContextToLink())
-        
+
         || this.tokenizeRaisedVoicePlaceholders()
-        
+
         || this.openMedia()
-        
+
         || this.openSandwich(this.inlineCodeConvention)
         || this.openSandwich(this.spoilerConvention)
         || this.openSandwich(this.footnoteConvention)
@@ -102,9 +100,9 @@ export class Tokenizer {
         || this.openSandwich(this.parenthesizedConvention)
         || this.openSandwich(this.squareBracketedConvention)
         || this.openSandwich(this.curlyBracketedConvention)
-        
+
         || this.openNakedUrl()
-        
+
         || this.bufferCurrentChar()
     }
   }
@@ -121,16 +119,16 @@ export class Tokenizer {
 
   private closeNakedUrlOrAppendChar(): boolean {
     return (
-      this.openParenthesisInsideUrl()
-      || this.openSquareBracketInsideUrl()
-      || this.openCurlyBracketInsideUrl()
+      this.openParenthesizedRawText()
+      || this.openSquareBracketedRawText()
+      || this.openCurlyBracketedRawText()
       || this.closeNakedUrl()
       || this.bufferCurrentChar())
   }
 
   private closeOrAdvanceContext(context: TokenizerContext): boolean {
     const { state } = context
-    
+
     return (
       this.closeSandwichCorrespondingToState(state)
       || this.handleMediaCorrespondingToState(state)
@@ -142,14 +140,14 @@ export class Tokenizer {
 
   private closeLinkOrAppendCharToUrl(): boolean {
     return (
-      this.openSquareBracketInsideUrl()
+      this.openSquareBracketedRawText()
       || this.closeLink()
       || this.bufferCurrentChar())
   }
 
   private closeMediaOrAppendCharToUrl(): boolean {
     return (
-      this.openSquareBracketInsideUrl()
+      this.openSquareBracketedRawText()
       || this.closeMedia()
       || this.bufferCurrentChar())
   }
@@ -164,30 +162,50 @@ export class Tokenizer {
       this.squareBracketedConvention,
       this.curlyBracketedConvention,
       this.parenthesizedConvention,
-      this.squareBracketedInsideUrlConvention,
-      this.parenthesizedInsideUrlConvention,
-      this.curlyBracketedInsideUrlConvention
+      this.squareBracketedRawTextConvention,
+      this.parenthesizedRawTextConvention,
+      this.curlyBracketedRawTextConvention
     ].some(sandwich =>
       (sandwich.state === state)
       && this.closeSandwich(sandwich))
   }
 
   private handleMediaCorrespondingToState(state: TokenizerState): boolean {
-    return this.mediaConventions.some(media =>
-      (media.state === state)
-      && (this.openMediaUrl() || this.bufferCurrentChar()))
+    return this.mediaConventions
+      .some(media =>
+        (media.state === state)
+        && (this.openMediaUrl()
+          || this.openSquareBracketedRawText()
+          || this.closeFalseMediaConvention(state)
+          || this.bufferCurrentChar()))
   }
 
-  private openParenthesisInsideUrl(): boolean {
-    return this.openSandwich(this.parenthesizedInsideUrlConvention)
+  private closeFalseMediaConvention(mediaState: TokenizerState): boolean {
+    if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.remainingText)) {
+      return false
+    }
+
+    // If we've encounter a closing square bracket here, it means it's unmatched. If it were matched, it would have
+    // been consumed by a SquareBracketedInRawText context.
+    //
+    // Anyway, we're dealing with something like this: [audio: garbled]
+    //
+    // That is not a valid media convention, so we need to backtrack!
+
+    this.failMostRecentContextWithStateAndResetToBeforeIt(mediaState)
+    return true
   }
 
-  private openSquareBracketInsideUrl(): boolean {
-    return this.openSandwich(this.squareBracketedInsideUrlConvention)
+  private openParenthesizedRawText(): boolean {
+    return this.openSandwich(this.parenthesizedRawTextConvention)
   }
 
-  private openCurlyBracketInsideUrl(): boolean {
-    return this.openSandwich(this.curlyBracketedInsideUrlConvention)
+  private openSquareBracketedRawText(): boolean {
+    return this.openSandwich(this.squareBracketedRawTextConvention)
+  }
+
+  private openCurlyBracketedRawText(): boolean {
+    return this.openSandwich(this.curlyBracketedRawTextConvention)
   }
 
   private collectCurrentCharIfEscaped(): boolean {
@@ -226,8 +244,8 @@ export class Tokenizer {
         // Parentheses and brackets can be left unclosed.
         case TokenizerState.SquareBracketed:
         case TokenizerState.Parenthesized:
-        case TokenizerState.SquareBracketedInsideUrl:
-        case TokenizerState.ParenthesizedInsideUrl:
+        case TokenizerState.SquareBracketedInRawText:
+        case TokenizerState.ParenthesizedInRawText:
         // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
         // handler (below) backtrack to before the link itself.
         case TokenizerState.LinkUrl:
@@ -456,6 +474,19 @@ export class Tokenizer {
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
+  }
+
+  private failMostRecentContextWithStateAndResetToBeforeIt(state: TokenizerState): void {
+    while (this.openContexts.length) {
+      const context = this.openContexts.pop()
+
+      if (context.state === state) {
+        this.failContextAndResetToBeforeIt(context)
+        return
+      }
+    }
+
+    throw new Error(`State was not open: ${TokenizerState[state]}`)
   }
 
   private closeMostRecentContextWithState(state: TokenizerState): void {
@@ -706,23 +737,23 @@ export class Tokenizer {
         endPattern: CLOSE_CURLY_BRACKET,
       })
 
-    this.parenthesizedInsideUrlConvention =
+    this.parenthesizedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.ParenthesizedInsideUrl,
+        state: TokenizerState.ParenthesizedInRawText,
         openBracketPattern: OPEN_PAREN,
         closeBracketPattern: CLOSE_PAREN
       })
 
-    this.squareBracketedInsideUrlConvention =
+    this.squareBracketedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.SquareBracketedInsideUrl,
+        state: TokenizerState.SquareBracketedInRawText,
         openBracketPattern: OPEN_SQUARE_BRACKET,
         closeBracketPattern: CLOSE_SQUARE_BRACKET
       })
 
-    this.curlyBracketedInsideUrlConvention =
+    this.curlyBracketedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.CurlyBracketedInsideUrl,
+        state: TokenizerState.CurlyBracketedInRawText,
         openBracketPattern: OPEN_CURLY_BRACKET,
         closeBracketPattern: CLOSE_CURLY_BRACKET
       })
@@ -759,3 +790,7 @@ const WHITESPACE_CHAR_PATTERN = new RegExp(
 
 const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR)
+
+const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
+  startsWith(CLOSE_SQUARE_BRACKET)
+)

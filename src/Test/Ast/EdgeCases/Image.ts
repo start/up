@@ -7,6 +7,7 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
 describe('An image without a description', () => {
@@ -55,10 +56,13 @@ Do not pour the spiders into your sister's cereal.
 
 describe('An otherwise valid image convention prematurely terminated by an unmatched closing bracket in its description', () => {
   it('is treated as plain text', () => {
-    expect(Up.toAst('[image: dank memes] -> 8]')).to.be.eql(
+    expect(Up.toAst('[image: dank meme] -> 8]')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('[image: dank memes] -> 8]'),
+          new SquareBracketedNode([
+            new PlainTextNode('[image: dank meme]')
+          ]),
+          new PlainTextNode(' -> 8]')
         ])
       ]))
   })

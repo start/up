@@ -654,9 +654,9 @@ var Tokenizer = (function () {
         return false;
     };
     Tokenizer.prototype.closeNakedUrlOrAppendChar = function () {
-        return (this.openParenthesisInsideUrl()
-            || this.openSquareBracketInsideUrl()
-            || this.openCurlyBracketInsideUrl()
+        return (this.openParenthesizedRawText()
+            || this.openSquareBracketedRawText()
+            || this.openCurlyBracketedRawText()
             || this.closeNakedUrl()
             || this.bufferCurrentChar());
     };
@@ -669,12 +669,12 @@ var Tokenizer = (function () {
             || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
     Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
-        return (this.openSquareBracketInsideUrl()
+        return (this.openSquareBracketedRawText()
             || this.closeLink()
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.closeMediaOrAppendCharToUrl = function () {
-        return (this.openSquareBracketInsideUrl()
+        return (this.openSquareBracketedRawText()
             || this.closeMedia()
             || this.bufferCurrentChar());
     };
@@ -689,9 +689,9 @@ var Tokenizer = (function () {
             this.squareBracketedConvention,
             this.curlyBracketedConvention,
             this.parenthesizedConvention,
-            this.squareBracketedInsideUrlConvention,
-            this.parenthesizedInsideUrlConvention,
-            this.curlyBracketedInsideUrlConvention
+            this.squareBracketedRawTextConvention,
+            this.parenthesizedRawTextConvention,
+            this.curlyBracketedRawTextConvention
         ].some(function (sandwich) {
             return (sandwich.state === state)
                 && _this.closeSandwich(sandwich);
@@ -699,19 +699,30 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.handleMediaCorrespondingToState = function (state) {
         var _this = this;
-        return this.mediaConventions.some(function (media) {
+        return this.mediaConventions
+            .some(function (media) {
             return (media.state === state)
-                && (_this.openMediaUrl() || _this.bufferCurrentChar());
+                && (_this.openMediaUrl()
+                    || _this.openSquareBracketedRawText()
+                    || _this.closeFalseMediaConvention(state)
+                    || _this.bufferCurrentChar());
         });
     };
-    Tokenizer.prototype.openParenthesisInsideUrl = function () {
-        return this.openSandwich(this.parenthesizedInsideUrlConvention);
+    Tokenizer.prototype.closeFalseMediaConvention = function (mediaState) {
+        if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.remainingText)) {
+            return false;
+        }
+        this.failMostRecentContextWithStateAndResetToBeforeIt(mediaState);
+        return true;
     };
-    Tokenizer.prototype.openSquareBracketInsideUrl = function () {
-        return this.openSandwich(this.squareBracketedInsideUrlConvention);
+    Tokenizer.prototype.openParenthesizedRawText = function () {
+        return this.openSandwich(this.parenthesizedRawTextConvention);
     };
-    Tokenizer.prototype.openCurlyBracketInsideUrl = function () {
-        return this.openSandwich(this.curlyBracketedInsideUrlConvention);
+    Tokenizer.prototype.openSquareBracketedRawText = function () {
+        return this.openSandwich(this.squareBracketedRawTextConvention);
+    };
+    Tokenizer.prototype.openCurlyBracketedRawText = function () {
+        return this.openSandwich(this.curlyBracketedRawTextConvention);
     };
     Tokenizer.prototype.collectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';
@@ -738,8 +749,8 @@ var Tokenizer = (function () {
                     break;
                 case TokenizerState_1.TokenizerState.SquareBracketed:
                 case TokenizerState_1.TokenizerState.Parenthesized:
-                case TokenizerState_1.TokenizerState.SquareBracketedInsideUrl:
-                case TokenizerState_1.TokenizerState.ParenthesizedInsideUrl:
+                case TokenizerState_1.TokenizerState.SquareBracketedInRawText:
+                case TokenizerState_1.TokenizerState.ParenthesizedInRawText:
                 case TokenizerState_1.TokenizerState.LinkUrl:
                 case TokenizerState_1.TokenizerState.MediaUrl:
                     break;
@@ -920,11 +931,21 @@ var Tokenizer = (function () {
             }
         });
     };
+    Tokenizer.prototype.failMostRecentContextWithStateAndResetToBeforeIt = function (state) {
+        while (this.openContexts.length) {
+            var context_2 = this.openContexts.pop();
+            if (context_2.state === state) {
+                this.failContextAndResetToBeforeIt(context_2);
+                return;
+            }
+        }
+        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+    };
     Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
         var indexOfEnclosedNakedUrlContext = -1;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_2 = this.openContexts[i];
-            if (context_2.state === state) {
+            var context_3 = this.openContexts[i];
+            if (context_3.state === state) {
                 if (indexOfEnclosedNakedUrlContext != -1) {
                     this.flushUnmatchedTextToNakedUrl();
                     this.openContexts.splice(indexOfEnclosedNakedUrlContext, 1);
@@ -932,7 +953,7 @@ var Tokenizer = (function () {
                 this.openContexts.splice(i, 1);
                 return;
             }
-            if (context_2.state === TokenizerState_1.TokenizerState.NakedUrl) {
+            if (context_3.state === TokenizerState_1.TokenizerState.NakedUrl) {
                 indexOfEnclosedNakedUrlContext = i;
             }
         }
@@ -940,8 +961,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeMostRecentContextWithStateAndAnyInnerContexts = function (state) {
         while (this.openContexts.length) {
-            var context_3 = this.openContexts.pop();
-            if (context_3.state === state) {
+            var context_4 = this.openContexts.pop();
+            if (context_4.state === state) {
                 return;
             }
         }
@@ -949,9 +970,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getInnermostContextWithState = function (state) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_4 = this.openContexts[i];
-            if (context_4.state === state) {
-                return context_4;
+            var context_5 = this.openContexts[i];
+            if (context_5.state === state) {
+                return context_5;
             }
         }
         throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
@@ -1109,21 +1130,21 @@ var Tokenizer = (function () {
                 startPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
             });
-        this.parenthesizedInsideUrlConvention =
+        this.parenthesizedRawTextConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInsideUrl,
+                state: TokenizerState_1.TokenizerState.ParenthesizedInRawText,
                 openBracketPattern: Patterns_1.OPEN_PAREN,
                 closeBracketPattern: Patterns_1.CLOSE_PAREN
             });
-        this.squareBracketedInsideUrlConvention =
+        this.squareBracketedRawTextConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.SquareBracketedInsideUrl,
+                state: TokenizerState_1.TokenizerState.SquareBracketedInRawText,
                 openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
             });
-        this.curlyBracketedInsideUrlConvention =
+        this.curlyBracketedRawTextConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.CurlyBracketedInsideUrl,
+                state: TokenizerState_1.TokenizerState.CurlyBracketedInRawText,
                 openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
             });
@@ -1146,6 +1167,7 @@ var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_
 var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
+var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
 
 },{"../../CollectionHelpers":1,"../Patterns":68,"./FailedStateTracker":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./TokenizableMedia":16,"./TokenizableSandwich":17,"./TokenizerState":19,"./Tokens/InlineCodeToken":28,"./Tokens/NakedUrlToken":32,"./Tokens/PlainTextToken":35,"./Tokens/PotentialRaisedVoiceEndToken":36,"./Tokens/PotentialRaisedVoiceStartOrEndToken":37,"./Tokens/PotentialRaisedVoiceStartToken":38,"./nestOverlappingConventions":52}],19:[function(require,module,exports){
 "use strict";
@@ -1156,9 +1178,9 @@ var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
     TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
     TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
     TokenizerState[TokenizerState["CurlyBracketed"] = 5] = "CurlyBracketed";
-    TokenizerState[TokenizerState["ParenthesizedInsideUrl"] = 6] = "ParenthesizedInsideUrl";
-    TokenizerState[TokenizerState["SquareBracketedInsideUrl"] = 7] = "SquareBracketedInsideUrl";
-    TokenizerState[TokenizerState["CurlyBracketedInsideUrl"] = 8] = "CurlyBracketedInsideUrl";
+    TokenizerState[TokenizerState["ParenthesizedInRawText"] = 6] = "ParenthesizedInRawText";
+    TokenizerState[TokenizerState["SquareBracketedInRawText"] = 7] = "SquareBracketedInRawText";
+    TokenizerState[TokenizerState["CurlyBracketedInRawText"] = 8] = "CurlyBracketedInRawText";
     TokenizerState[TokenizerState["Link"] = 9] = "Link";
     TokenizerState[TokenizerState["LinkUrl"] = 10] = "LinkUrl";
     TokenizerState[TokenizerState["RevisionInsertion"] = 11] = "RevisionInsertion";
