@@ -872,14 +872,6 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
     };
-    Tokenizer.prototype.flushBufferToPlainTextTokenOrNakedUrlToken = function () {
-        if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
-            this.closeNakedUrl();
-        }
-        else {
-            this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
-        }
-    };
     Tokenizer.prototype.canTry = function (state, textIndex) {
         if (textIndex === void 0) { textIndex = this.textIndex; }
         return !this.failedStateTracker.hasFailed(state, textIndex);
@@ -925,20 +917,22 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToConvertSquareBracketedContextToLink = function () {
         var _this = this;
-        var didOpenLinkUrll = this.tryToOpenConvention({
-            state: TokenizerState_1.TokenizerState.LinkUrl,
-            pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-            then: function (arrow) { return _this.flushBufferToPlainTextTokenOrNakedUrlToken(); }
-        });
-        if (!didOpenLinkUrll) {
+        var didFindUrlArrow = LINK_AND_MEDIA_URL_ARROW_PATTERN.test(this.remainingText);
+        if (!didFindUrlArrow) {
             return false;
         }
         var squareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
         if (!this.canTry(TokenizerState_1.TokenizerState.Link, squareBrackeContext.textIndex)) {
-            var newlyCreatedLinkUrlContext = this.openContexts.pop();
-            this.failContextAndResetToBeforeIt(newlyCreatedLinkUrlContext);
             return false;
         }
+        if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
+            this.closeNakedUrl();
+        }
+        this.tryToOpenConvention({
+            state: TokenizerState_1.TokenizerState.LinkUrl,
+            pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+            then: function (arrow) { return _this.flushBufferToPlainTextToken(); }
+        });
         squareBrackeContext.state = TokenizerState_1.TokenizerState.Link;
         var indexOfSquareBracketedStartToken = squareBrackeContext.countTokens + 1;
         this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());

@@ -399,14 +399,6 @@ export class Tokenizer {
     this.addToken(new PlainTextToken(this.flushBufferedText()))
   }
 
-  private flushBufferToPlainTextTokenOrNakedUrlToken(): void {
-    if (this.hasState(TokenizerState.NakedUrl)) {
-      this.closeNakedUrl()
-    } else {
-      this.addToken(new PlainTextToken(this.flushBufferedText()))
-    }
-  }
-
   private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
     return !this.failedStateTracker.hasFailed(state, textIndex)
   }
@@ -461,14 +453,10 @@ export class Tokenizer {
   }
 
   private tryToConvertSquareBracketedContextToLink(): boolean {
-    const didOpenLinkUrll =
-      this.tryToOpenConvention({
-        state: TokenizerState.LinkUrl,
-        pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-        then: (arrow) => this.flushBufferToPlainTextTokenOrNakedUrlToken()
-      })
+    const didFindUrlArrow =
+      LINK_AND_MEDIA_URL_ARROW_PATTERN.test(this.remainingText)
 
-    if (!didOpenLinkUrll) {
+    if (!didFindUrlArrow) {
       return false
     }
 
@@ -478,15 +466,18 @@ export class Tokenizer {
     if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
       // If we can't tryTo a link at that location, it means we've already tried and failed to find the closing
       // bracket.
-
-      // First, lets get rid of the new link URL context.
-      const newlyCreatedLinkUrlContext = this.openContexts.pop()
-
-      // Next, let's fail it, so we don't tryTo match the URL arrow again.
-      this.failContextAndResetToBeforeIt(newlyCreatedLinkUrlContext)
-
       return false
     }
+    
+    if (this.hasState(TokenizerState.NakedUrl)) {
+      this.closeNakedUrl()
+    }
+
+    this.tryToOpenConvention({
+      state: TokenizerState.LinkUrl,
+      pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+      then: (arrow) => this.flushBufferToPlainTextToken()
+    })
 
     squareBrackeContext.state = TokenizerState.Link
 
