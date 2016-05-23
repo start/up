@@ -400,7 +400,7 @@ export class Tokenizer {
   }
 
   private tryOpenNakedUrl(): boolean {
-    return !this.hasState(TokenizerState.Link) && this.tryOpenConvention({
+    return this.tryOpenConvention({
       state: TokenizerState.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
@@ -417,21 +417,29 @@ export class Tokenizer {
     }
 
     this.finalizeNakedUrl()
-
     return true
   }
   
   private finalizeNakedUrl(): void {
     this.flushUnmatchedTextToNakedUrl()
+    
+    if (!this.currentNakedUrlToken().restOfUrl) {
+      // As a rule, naked URLs consisting only of a protocol are treated as plain text. We don't need to backtrack,
+      // because the protocol can't possibly be interpreted as another convention.
+      this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState.NakedUrl)
+    }
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
   }
 
-
   private flushUnmatchedTextToNakedUrl(): void {
-    (<NakedUrlToken>this.currentToken).restOfUrl = this.flushBufferedText()
+    this.currentNakedUrlToken().restOfUrl = this.flushBufferedText()
+  }
+  
+  private currentNakedUrlToken(): NakedUrlToken {
+    return (<NakedUrlToken>this.currentToken)
   }
 
   private tryOpenMedia(): boolean {

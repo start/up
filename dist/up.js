@@ -876,7 +876,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryOpenNakedUrl = function () {
         var _this = this;
-        return !this.hasState(TokenizerState_1.TokenizerState.Link) && this.tryOpenConvention({
+        return this.tryOpenConvention({
             state: TokenizerState_1.TokenizerState.NakedUrl,
             pattern: NAKED_URL_START_PATTERN,
             then: function (urlProtocol) {
@@ -893,10 +893,16 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.finalizeNakedUrl = function () {
         this.flushUnmatchedTextToNakedUrl();
+        if (!this.currentNakedUrlToken().restOfUrl) {
+            this.failMostRecentContextWithStateAndResetToBeforeIt(TokenizerState_1.TokenizerState.NakedUrl);
+        }
         this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
     };
     Tokenizer.prototype.flushUnmatchedTextToNakedUrl = function () {
-        this.currentToken.restOfUrl = this.flushBufferedText();
+        this.currentNakedUrlToken().restOfUrl = this.flushBufferedText();
+    };
+    Tokenizer.prototype.currentNakedUrlToken = function () {
+        return this.currentToken;
     };
     Tokenizer.prototype.tryOpenMedia = function () {
         var _this = this;
