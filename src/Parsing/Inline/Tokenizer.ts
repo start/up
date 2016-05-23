@@ -416,14 +416,19 @@ export class Tokenizer {
       return false
     }
 
+    this.finalizeNakedUrl()
+
+    return true
+  }
+  
+  private finalizeNakedUrl(): void {
     this.flushUnmatchedTextToNakedUrl()
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
-
-    return true
   }
+
 
   private flushUnmatchedTextToNakedUrl(): void {
     (<NakedUrlToken>this.currentToken).restOfUrl = this.flushBufferedText()

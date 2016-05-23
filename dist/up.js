@@ -888,9 +888,12 @@ var Tokenizer = (function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }
+        this.finalizeNakedUrl();
+        return true;
+    };
+    Tokenizer.prototype.finalizeNakedUrl = function () {
         this.flushUnmatchedTextToNakedUrl();
         this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
-        return true;
     };
     Tokenizer.prototype.flushUnmatchedTextToNakedUrl = function () {
         this.currentToken.restOfUrl = this.flushBufferedText();
