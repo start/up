@@ -729,7 +729,6 @@ var Tokenizer = (function () {
             this.tryToCollectCurrentCharIfEscaped()
                 || this.tryToCloseOrAdvanceOpenContexts()
                 || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.handleNakedUrl())
-                || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenMedia()
                 || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
@@ -763,7 +762,8 @@ var Tokenizer = (function () {
             || this.handleMediaCorrespondingToState(state)
             || ((state === TokenizerState_1.TokenizerState.InlineCode) && this.bufferCurrentChar())
             || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
+            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+            || ((state === TokenizerState_1.TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink()));
     };
     Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
         return (this.tryToOpenSquareBracketedRawText()
@@ -872,6 +872,14 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
     };
+    Tokenizer.prototype.flushBufferToPlainTextTokenOrNakedUrlToken = function () {
+        if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
+            this.closeNakedUrl();
+        }
+        else {
+            this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
+        }
+    };
     Tokenizer.prototype.canTry = function (state, textIndex) {
         if (textIndex === void 0) { textIndex = this.textIndex; }
         return !this.failedStateTracker.hasFailed(state, textIndex);
@@ -917,18 +925,18 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToConvertSquareBracketedContextToLink = function () {
         var _this = this;
-        var didStartLinkUrl = this.tryToOpenConvention({
+        var didOpenLinkUrll = this.tryToOpenConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
             pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-            then: function (arrow) { return _this.flushBufferToPlainTextToken(); }
+            then: function (arrow) { return _this.flushBufferToPlainTextTokenOrNakedUrlToken(); }
         });
-        if (!didStartLinkUrl) {
+        if (!didOpenLinkUrll) {
             return false;
         }
         var squareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
         if (!this.canTry(TokenizerState_1.TokenizerState.Link, squareBrackeContext.textIndex)) {
-            var linkUrlContext = this.openContexts.pop();
-            this.failContextAndResetToBeforeIt(linkUrlContext);
+            var newlyCreatedLinkUrlContext = this.openContexts.pop();
+            this.failContextAndResetToBeforeIt(newlyCreatedLinkUrlContext);
             return false;
         }
         squareBrackeContext.state = TokenizerState_1.TokenizerState.Link;

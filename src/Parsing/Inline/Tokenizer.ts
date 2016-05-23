@@ -198,7 +198,6 @@ export class Tokenizer {
       this.tryToCollectCurrentCharIfEscaped()
         || this.tryToCloseOrAdvanceOpenContexts()
         || (this.hasState(TokenizerState.NakedUrl) && this.handleNakedUrl())
-        || (this.hasState(TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenMedia()
         || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
@@ -240,6 +239,7 @@ export class Tokenizer {
       || ((state === TokenizerState.InlineCode) && this.bufferCurrentChar())
       || ((state === TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
       || ((state === TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+      || ((state === TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
     )
   }
 
@@ -399,6 +399,14 @@ export class Tokenizer {
     this.addToken(new PlainTextToken(this.flushBufferedText()))
   }
 
+  private flushBufferToPlainTextTokenOrNakedUrlToken(): void {
+    if (this.hasState(TokenizerState.NakedUrl)) {
+      this.closeNakedUrl()
+    } else {
+      this.addToken(new PlainTextToken(this.flushBufferedText()))
+    }
+  }
+
   private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
     return !this.failedStateTracker.hasFailed(state, textIndex)
   }
@@ -423,15 +431,15 @@ export class Tokenizer {
 
     return false
   }
-  
+
   private closeNakedUrl(): void {
     this.flushBufferedTextToNakedUrlToken()
-    
+
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
     this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
   }
-  
+
   private flushBufferedTextToNakedUrlToken(): void {
     this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText()
   }
@@ -453,14 +461,14 @@ export class Tokenizer {
   }
 
   private tryToConvertSquareBracketedContextToLink(): boolean {
-    const didStartLinkUrl =
+    const didOpenLinkUrll =
       this.tryToOpenConvention({
         state: TokenizerState.LinkUrl,
         pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-        then: (arrow) => this.flushBufferToPlainTextToken()
+        then: (arrow) => this.flushBufferToPlainTextTokenOrNakedUrlToken()
       })
 
-    if (!didStartLinkUrl) {
+    if (!didOpenLinkUrll) {
       return false
     }
 
@@ -472,10 +480,10 @@ export class Tokenizer {
       // bracket.
 
       // First, lets get rid of the new link URL context.
-      const linkUrlContext = this.openContexts.pop()
+      const newlyCreatedLinkUrlContext = this.openContexts.pop()
 
       // Next, let's fail it, so we don't tryTo match the URL arrow again.
-      this.failContextAndResetToBeforeIt(linkUrlContext)
+      this.failContextAndResetToBeforeIt(newlyCreatedLinkUrlContext)
 
       return false
     }
