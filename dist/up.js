@@ -237,7 +237,7 @@ var RaisedVoiceMarker = (function () {
     };
     RaisedVoiceMarker.prototype.payForStressAndEmphasisTogether = function (countAsterisksInCommonWithMatchingDelimiter) {
         if (countAsterisksInCommonWithMatchingDelimiter < STRESS_AND_EMPHASIS_TOGETHER_COST) {
-            throw new Error("Delimiter at index " + this.originalTokenIndex + " only spent " + countAsterisksInCommonWithMatchingDelimiter + " to open stress and emphasis");
+            throw new Error("Marker at index " + this.originalTokenIndex + " only spent " + countAsterisksInCommonWithMatchingDelimiter + " to open stress and emphasis");
         }
         this.pay(countAsterisksInCommonWithMatchingDelimiter);
     };
@@ -256,10 +256,6 @@ var RaisedVoiceMarker = (function () {
     return RaisedVoiceMarker;
 }());
 exports.RaisedVoiceMarker = RaisedVoiceMarker;
-function comapreMarkersDescending(a, b) {
-    return b.originalTokenIndex - a.originalTokenIndex;
-}
-exports.comapreMarkersDescending = comapreMarkersDescending;
 
 },{}],9:[function(require,module,exports){
 "use strict";
@@ -300,7 +296,6 @@ exports.StartMarker = StartMarker;
 
 },{"../Tokens/EmphasisStartToken":24,"../Tokens/StressStartToken":49,"./RaisedVoiceMarker":8}],10:[function(require,module,exports){
 "use strict";
-var RaisedVoiceMarker_1 = require('./RaisedVoiceMarker');
 var StartMarker_1 = require('./StartMarker');
 var EndMarker_1 = require('./EndMarker');
 var PlainTextMarker_1 = require('./PlainTextMarker');
@@ -310,9 +305,9 @@ var PotentialRaisedVoiceStartToken_1 = require('../Tokens/PotentialRaisedVoiceSt
 function applyRaisedVoices(tokens) {
     var raisedVoiceMarkers = getRaisedVoiceMarkers(tokens);
     var resultTokens = tokens.slice();
-    for (var _i = 0, _a = raisedVoiceMarkers.sort(RaisedVoiceMarker_1.comapreMarkersDescending); _i < _a.length; _i++) {
-        var raisedVoiceMarker = _a[_i];
-        resultTokens.splice.apply(resultTokens, [raisedVoiceMarker.originalTokenIndex, 1].concat(raisedVoiceMarker.tokens()));
+    for (var _i = 0, _a = raisedVoiceMarkers.sort(comapreMarkersDescending); _i < _a.length; _i++) {
+        var marker = _a[_i];
+        resultTokens.splice.apply(resultTokens, [marker.originalTokenIndex, 1].concat(marker.tokens()));
     }
     return resultTokens;
 }
@@ -352,8 +347,11 @@ function getRaisedVoiceMarkers(tokens) {
     });
     return withFailedMarkersTreatedAsPlainText;
 }
+function comapreMarkersDescending(a, b) {
+    return b.originalTokenIndex - a.originalTokenIndex;
+}
 
-},{"../Tokens/PotentialRaisedVoiceEndToken":36,"../Tokens/PotentialRaisedVoiceStartOrEndToken":37,"../Tokens/PotentialRaisedVoiceStartToken":38,"./EndMarker":6,"./PlainTextMarker":7,"./RaisedVoiceMarker":8,"./StartMarker":9}],11:[function(require,module,exports){
+},{"../Tokens/PotentialRaisedVoiceEndToken":36,"../Tokens/PotentialRaisedVoiceStartOrEndToken":37,"../Tokens/PotentialRaisedVoiceStartToken":38,"./EndMarker":6,"./PlainTextMarker":7,"./StartMarker":9}],11:[function(require,module,exports){
 "use strict";
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
 var EmphasisNode_1 = require('../../SyntaxNodes/EmphasisNode');

@@ -1,5 +1,5 @@
 import { Token } from '.././Tokens/Token'
-import { RaisedVoiceMarker, comapreMarkersDescending } from './RaisedVoiceMarker'
+import { RaisedVoiceMarker } from './RaisedVoiceMarker'
 import { StartMarker } from './StartMarker'
 import { EndMarker } from './EndMarker'
 import { PlainTextMarker } from './PlainTextMarker'
@@ -8,7 +8,6 @@ import { PotentialRaisedVoiceEndToken } from '../Tokens/PotentialRaisedVoiceEndT
 import { PotentialRaisedVoiceStartOrEndToken } from '../Tokens/PotentialRaisedVoiceStartOrEndToken'
 import { PotentialRaisedVoiceStartToken } from '../Tokens/PotentialRaisedVoiceStartToken'
 
-// TODO: Rename marker classes
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
   const raisedVoiceMarkers = getRaisedVoiceMarkers(tokens)
@@ -18,12 +17,13 @@ export function applyRaisedVoices(tokens: Token[]): Token[] {
   // Now, let's replace the placeholder "PotentialRaisedVoice..." tokens with the real ones.
   const resultTokens = tokens.slice()
   
-  for (const raisedVoiceMarker of raisedVoiceMarkers.sort(comapreMarkersDescending)) {
-    resultTokens.splice(raisedVoiceMarker.originalTokenIndex, 1, ...raisedVoiceMarker.tokens())
+  for (const marker of raisedVoiceMarkers.sort(comapreMarkersDescending)) {
+    resultTokens.splice(marker.originalTokenIndex, 1, ...marker.tokens())
   }
   
   return resultTokens
 }
+
 
 function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
   const markers: RaisedVoiceMarker[] = []
@@ -96,4 +96,8 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
     )
 
   return withFailedMarkersTreatedAsPlainText
+}
+
+function comapreMarkersDescending(a: RaisedVoiceMarker, b: RaisedVoiceMarker): number {
+  return b.originalTokenIndex - a.originalTokenIndex
 }

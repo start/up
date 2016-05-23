@@ -9,8 +9,8 @@ const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
 
 
 export abstract class RaisedVoiceMarker {
-  protected tokenTypes: TokenType[] = []
   countSurplusAsterisks: number
+  protected tokenTypes: TokenType[] = []
   
   constructor(public originalTokenIndex: number, public originalAsterisks: string) {
     this.countSurplusAsterisks = originalAsterisks.length
@@ -48,7 +48,7 @@ export abstract class RaisedVoiceMarker {
   
   payForStressAndEmphasisTogether(countAsterisksInCommonWithMatchingDelimiter: number): void {
     if (countAsterisksInCommonWithMatchingDelimiter < STRESS_AND_EMPHASIS_TOGETHER_COST) {
-      throw new Error(`Delimiter at index ${this.originalTokenIndex} only spent ${countAsterisksInCommonWithMatchingDelimiter} to open stress and emphasis`)
+      throw new Error(`Marker at index ${this.originalTokenIndex} only spent ${countAsterisksInCommonWithMatchingDelimiter} to open stress and emphasis`)
     }
     
     this.pay(countAsterisksInCommonWithMatchingDelimiter)
@@ -69,8 +69,4 @@ export abstract class RaisedVoiceMarker {
   private canAfford(cost: number): boolean {
     return this.countSurplusAsterisks >= cost
   }
-}
-
-export function comapreMarkersDescending(a: RaisedVoiceMarker, b: RaisedVoiceMarker): number {
-  return b.originalTokenIndex - a.originalTokenIndex
 }
