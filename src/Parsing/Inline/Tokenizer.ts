@@ -468,7 +468,7 @@ export class Tokenizer {
       // bracket.
       return false
     }
-    
+
     if (this.hasState(TokenizerState.NakedUrl)) {
       this.closeNakedUrl()
     }
@@ -557,16 +557,22 @@ export class Tokenizer {
       pattern: pattern,
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContexts.push({
-          state,
-          textIndex: this.textIndex,
-          countTokens: this.tokens.length,
-          openContexts: this.openContexts.slice(),
-          plainTextBuffer: this.bufferedText
-        })
-
+        this.openContext({ state })
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
+    })
+  }
+
+
+  private openContext(args: { state: TokenizerState }): void {
+    const { state } = args
+
+    this.openContexts.push({
+      state,
+      textIndex: this.textIndex,
+      countTokens: this.tokens.length,
+      openContexts: this.openContexts.slice(),
+      plainTextBuffer: this.bufferedText
     })
   }
 

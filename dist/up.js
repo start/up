@@ -1002,15 +1002,19 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.openContexts.push({
-                    state: state,
-                    textIndex: _this.textIndex,
-                    countTokens: _this.tokens.length,
-                    openContexts: _this.openContexts.slice(),
-                    plainTextBuffer: _this.bufferedText
-                });
+                _this.openContext({ state: state });
                 then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
+        });
+    };
+    Tokenizer.prototype.openContext = function (args) {
+        var state = args.state;
+        this.openContexts.push({
+            state: state,
+            textIndex: this.textIndex,
+            countTokens: this.tokens.length,
+            openContexts: this.openContexts.slice(),
+            plainTextBuffer: this.bufferedText
         });
     };
     Tokenizer.prototype.failMostRecentContextWithStateAndResetToBeforeIt = function (state) {
