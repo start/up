@@ -916,25 +916,25 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToConvertSquareBracketedContextToLink = function () {
-        var _this = this;
-        var didFindUrlArrow = LINK_AND_MEDIA_URL_ARROW_PATTERN.test(this.remainingText);
-        if (!didFindUrlArrow) {
+        var urlArrowMatchResult = LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.remainingText);
+        if (!urlArrowMatchResult) {
             return false;
         }
-        var squareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
-        if (!this.canTry(TokenizerState_1.TokenizerState.Link, squareBrackeContext.textIndex)) {
+        var urlArrow = urlArrowMatchResult[0];
+        var innermostSquareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
+        if (!this.canTry(TokenizerState_1.TokenizerState.Link, innermostSquareBrackeContext.textIndex)) {
             return false;
         }
         if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
             this.closeNakedUrl();
         }
-        this.tryToOpenConvention({
-            state: TokenizerState_1.TokenizerState.LinkUrl,
-            pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-            then: function (arrow) { return _this.flushBufferToPlainTextToken(); }
-        });
-        squareBrackeContext.state = TokenizerState_1.TokenizerState.Link;
-        var indexOfSquareBracketedStartToken = squareBrackeContext.countTokens + 1;
+        else {
+            this.flushBufferToPlainTextToken();
+        }
+        this.advanceTextIndex(urlArrow.length);
+        this.openContext({ state: TokenizerState_1.TokenizerState.LinkUrl });
+        innermostSquareBrackeContext.state = TokenizerState_1.TokenizerState.Link;
+        var indexOfSquareBracketedStartToken = innermostSquareBrackeContext.countTokens + 1;
         this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());
         return true;
     };

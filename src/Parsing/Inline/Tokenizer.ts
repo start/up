@@ -451,40 +451,44 @@ export class Tokenizer {
       })
     })
   }
-
   private tryToConvertSquareBracketedContextToLink(): boolean {
-    const didFindUrlArrow =
-      LINK_AND_MEDIA_URL_ARROW_PATTERN.test(this.remainingText)
+    const urlArrowMatchResult =
+      LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.remainingText)
 
-    if (!didFindUrlArrow) {
+    if (!urlArrowMatchResult) {
       return false
     }
 
-    const squareBrackeContext =
+    const [urlArrow] = urlArrowMatchResult
+
+    const innermostSquareBrackeContext =
       this.getInnermostContextWithState(TokenizerState.SquareBracketed)
 
-    if (!this.canTry(TokenizerState.Link, squareBrackeContext.textIndex)) {
-      // If we can't tryTo a link at that location, it means we've already tried and failed to find the closing
+    if (!this.canTry(TokenizerState.Link, innermostSquareBrackeContext.textIndex)) {
+      // If we can't try a link at that location, it means we've already tried and failed to find the closing
       // bracket.
       return false
     }
 
+    // Okay, we're good to go. Let's convert the square bracket context to a link!
+
     if (this.hasState(TokenizerState.NakedUrl)) {
+      // If we're currently in the middle of a naked URL, we need to close it up. 
       this.closeNakedUrl()
+    } else {
+      this.flushBufferToPlainTextToken()
     }
 
-    this.tryToOpenConvention({
-      state: TokenizerState.LinkUrl,
-      pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
-      then: (arrow) => this.flushBufferToPlainTextToken()
-    })
+    this.advanceTextIndex(urlArrow.length)
+    this.openContext({ state: TokenizerState.LinkUrl })
 
-    squareBrackeContext.state = TokenizerState.Link
+    innermostSquareBrackeContext.state = TokenizerState.Link
 
-    // The token at `countTokens` is the flushed PlainTextToken. The next one is the SquareBracketedStartToken
-    // we want to replace with a LinkStartToken.
-    const indexOfSquareBracketedStartToken =
-      squareBrackeContext.countTokens + 1
+    // Finally, we need to replace the square bracket context's start token.
+    //
+    // The token at `innermostSquareBrackeContext.countTokens` is the flushed PlainTextToken created when the
+    // context was opened. The next token is the SquareBracketedStartToken we want to replace.
+    const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.countTokens + 1
 
     this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
 
