@@ -334,10 +334,12 @@ export class Tokenizer {
           break;
 
         // Parentheses and brackets can be left unclosed.
-        case TokenizerState.SquareBracketed:
         case TokenizerState.Parenthesized:
-        case TokenizerState.SquareBracketedInRawText:
+        case TokenizerState.SquareBracketed:
+        case TokenizerState.CurlyBracketed:
         case TokenizerState.ParenthesizedInRawText:
+        case TokenizerState.SquareBracketedInRawText:
+        case TokenizerState.CurlyBracketedInRawText:
         // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
         // handler (below) backtrack to before the link itself.
         case TokenizerState.LinkUrl:

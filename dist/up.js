@@ -829,10 +829,12 @@ var Tokenizer = (function () {
                 case TokenizerState_1.TokenizerState.NakedUrl:
                     this.flushUnmatchedTextToNakedUrl();
                     break;
-                case TokenizerState_1.TokenizerState.SquareBracketed:
                 case TokenizerState_1.TokenizerState.Parenthesized:
-                case TokenizerState_1.TokenizerState.SquareBracketedInRawText:
+                case TokenizerState_1.TokenizerState.SquareBracketed:
+                case TokenizerState_1.TokenizerState.CurlyBracketed:
                 case TokenizerState_1.TokenizerState.ParenthesizedInRawText:
+                case TokenizerState_1.TokenizerState.SquareBracketedInRawText:
+                case TokenizerState_1.TokenizerState.CurlyBracketedInRawText:
                 case TokenizerState_1.TokenizerState.LinkUrl:
                 case TokenizerState_1.TokenizerState.MediaUrl:
                     break;
