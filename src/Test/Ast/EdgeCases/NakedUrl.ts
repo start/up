@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -90,6 +91,28 @@ describe('A naked URL protocol without the rest of the URL', () => {
     expect(Up.toAst('http://')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('http://')
+      ]))
+  })
+})
+
+
+describe('A naked URL protocol followed by a space', () => {
+  it("is preserved as plain text", () => {
+    expect(Up.toAst('http:// ')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('http:// ')
+      ]))
+  })
+})
+
+
+describe('A naked URL protocol immediately followed by another convention closing', () => {
+  it("is preserved as plain text", () => {
+    expect(Up.toAst('++http://++')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new PlainTextNode('http://')
+        ])
       ]))
   })
 })
