@@ -726,87 +726,87 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
-            this.tryCollectCurrentCharIfEscaped()
-                || this.tryCloseOrAdvanceOpenContexts()
+            this.tryToCollectCurrentCharIfEscaped()
+                || this.tryToCloseOrAdvanceOpenContexts()
                 || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.handleNakedUrl())
-                || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.tryConvertSquareBracketedContextToLink())
-                || this.tryTokenizeRaisedVoicePlaceholders()
-                || this.tryOpenMedia()
-                || this.tryOpenAnySandwichThatCanAppearInRegularContent()
-                || this.tryOpenNakedUrl()
+                || (this.hasState(TokenizerState_1.TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
+                || this.tryToTokenizeRaisedVoicePlaceholders()
+                || this.tryToOpenMedia()
+                || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
+                || this.tryToOpenNakedUrl()
                 || this.bufferCurrentChar();
         }
     };
-    Tokenizer.prototype.tryOpenAnySandwichThatCanAppearInRegularContent = function () {
+    Tokenizer.prototype.tryToOpenAnySandwichThatCanAppearInRegularContent = function () {
         var _this = this;
         return this.sandwichesThatCanAppearInRegularContent
-            .some(function (sandwich) { return _this.tryOpenSandwich(sandwich); });
+            .some(function (sandwich) { return _this.tryToOpenSandwich(sandwich); });
     };
-    Tokenizer.prototype.tryCloseOrAdvanceOpenContexts = function () {
+    Tokenizer.prototype.tryToCloseOrAdvanceOpenContexts = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.tryCloseOrAdvanceContext(this.openContexts[i])) {
+            if (this.tryToCloseOrAdvanceContext(this.openContexts[i])) {
                 return true;
             }
         }
         return false;
     };
     Tokenizer.prototype.handleNakedUrl = function () {
-        return (this.tryOpenParenthesizedRawText()
-            || this.tryOpenSquareBracketedRawText()
-            || this.tryOpenCurlyBracketedRawText()
-            || this.tryCloseNakedUrl()
+        return (this.tryToOpenParenthesizedRawText()
+            || this.tryToOpenSquareBracketedRawText()
+            || this.tryToOpenCurlyBracketedRawText()
+            || this.tryToCloseNakedUrl()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.tryCloseOrAdvanceContext = function (context) {
+    Tokenizer.prototype.tryToCloseOrAdvanceContext = function (context) {
         var state = context.state;
-        return (this.tryCloseSandwichCorrespondingToState(state)
+        return (this.tryToCloseSandwichCorrespondingToState(state)
             || this.handleMediaCorrespondingToState(state)
             || ((state === TokenizerState_1.TokenizerState.InlineCode) && this.bufferCurrentChar())
             || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
             || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
     Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
-        return (this.tryOpenSquareBracketedRawText()
-            || this.tryCloseLink()
+        return (this.tryToOpenSquareBracketedRawText()
+            || this.tryToCloseLink()
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.closeMediaOrAppendCharToUrl = function () {
-        return (this.tryOpenSquareBracketedRawText()
-            || this.tryCloseMedia()
+        return (this.tryToOpenSquareBracketedRawText()
+            || this.tryToCloseMedia()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.tryCloseSandwichCorrespondingToState = function (state) {
+    Tokenizer.prototype.tryToCloseSandwichCorrespondingToState = function (state) {
         var _this = this;
-        return this.allSandwiches.some(function (sandwich) { return (sandwich.state === state) && _this.tryCloseSandwich(sandwich); });
+        return this.allSandwiches.some(function (sandwich) { return (sandwich.state === state) && _this.tryToCloseSandwich(sandwich); });
     };
     Tokenizer.prototype.handleMediaCorrespondingToState = function (state) {
         var _this = this;
         return this.mediaConventions
             .some(function (media) {
             return (media.state === state)
-                && (_this.tryOpenMediaUrl()
-                    || _this.tryOpenSquareBracketedRawText()
-                    || _this.tryCloseFalseMediaConvention(state)
+                && (_this.tryToOpenMediaUrl()
+                    || _this.tryToOpenSquareBracketedRawText()
+                    || _this.tryToCloseFalseMediaConvention(state)
                     || _this.bufferCurrentChar());
         });
     };
-    Tokenizer.prototype.tryCloseFalseMediaConvention = function (mediaState) {
+    Tokenizer.prototype.tryToCloseFalseMediaConvention = function (mediaState) {
         if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.remainingText)) {
             return false;
         }
         this.failMostRecentContextWithStateAndResetToBeforeIt(mediaState);
         return true;
     };
-    Tokenizer.prototype.tryOpenParenthesizedRawText = function () {
-        return this.tryOpenSandwich(this.parenthesizedRawTextConvention);
+    Tokenizer.prototype.tryToOpenParenthesizedRawText = function () {
+        return this.tryToOpenSandwich(this.parenthesizedRawTextConvention);
     };
-    Tokenizer.prototype.tryOpenSquareBracketedRawText = function () {
-        return this.tryOpenSandwich(this.squareBracketedRawTextConvention);
+    Tokenizer.prototype.tryToOpenSquareBracketedRawText = function () {
+        return this.tryToOpenSandwich(this.squareBracketedRawTextConvention);
     };
-    Tokenizer.prototype.tryOpenCurlyBracketedRawText = function () {
-        return this.tryOpenSandwich(this.curlyBracketedRawTextConvention);
+    Tokenizer.prototype.tryToOpenCurlyBracketedRawText = function () {
+        return this.tryToOpenSandwich(this.curlyBracketedRawTextConvention);
     };
-    Tokenizer.prototype.tryCollectCurrentCharIfEscaped = function () {
+    Tokenizer.prototype.tryToCollectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';
         if (this.currentChar !== ESCAPE_CHAR) {
             return false;
@@ -876,9 +876,9 @@ var Tokenizer = (function () {
         if (textIndex === void 0) { textIndex = this.textIndex; }
         return !this.failedStateTracker.hasFailed(state, textIndex);
     };
-    Tokenizer.prototype.tryOpenNakedUrl = function () {
+    Tokenizer.prototype.tryToOpenNakedUrl = function () {
         var _this = this;
-        return this.tryOpenConvention({
+        return this.tryToOpenConvention({
             state: TokenizerState_1.TokenizerState.NakedUrl,
             pattern: NAKED_URL_START_PATTERN,
             then: function (urlProtocol) {
@@ -886,7 +886,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryCloseNakedUrl = function () {
+    Tokenizer.prototype.tryToCloseNakedUrl = function () {
         if (!WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
             return false;
         }
@@ -900,10 +900,10 @@ var Tokenizer = (function () {
     Tokenizer.prototype.currentNakedUrlToken = function () {
         return this.currentToken;
     };
-    Tokenizer.prototype.tryOpenMedia = function () {
+    Tokenizer.prototype.tryToOpenMedia = function () {
         var _this = this;
         return this.mediaConventions.some(function (media) {
-            return _this.tryOpenConvention({
+            return _this.tryToOpenConvention({
                 state: media.state,
                 pattern: media.startPattern,
                 then: function () {
@@ -912,9 +912,9 @@ var Tokenizer = (function () {
             });
         });
     };
-    Tokenizer.prototype.tryConvertSquareBracketedContextToLink = function () {
+    Tokenizer.prototype.tryToConvertSquareBracketedContextToLink = function () {
         var _this = this;
-        var didStartLinkUrl = this.tryOpenConvention({
+        var didStartLinkUrl = this.tryToOpenConvention({
             state: TokenizerState_1.TokenizerState.LinkUrl,
             pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
             then: function (arrow) { return _this.flushBufferToPlainTextToken(); }
@@ -933,9 +933,9 @@ var Tokenizer = (function () {
         this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());
         return true;
     };
-    Tokenizer.prototype.tryOpenMediaUrl = function () {
+    Tokenizer.prototype.tryToOpenMediaUrl = function () {
         var _this = this;
-        return this.tryOpenConvention({
+        return this.tryToOpenConvention({
             state: TokenizerState_1.TokenizerState.MediaUrl,
             pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
             then: function () {
@@ -943,7 +943,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryCloseLink = function () {
+    Tokenizer.prototype.tryToCloseLink = function () {
         var _this = this;
         return this.advanceAfterMatch({
             pattern: LINK_END_PATTERN,
@@ -955,7 +955,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryCloseMedia = function () {
+    Tokenizer.prototype.tryToCloseMedia = function () {
         var _this = this;
         return this.advanceAfterMatch({
             pattern: LINK_END_PATTERN,
@@ -966,14 +966,14 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryOpenSandwich = function (sandwich) {
-        return this.tryOpenConvention({
+    Tokenizer.prototype.tryToOpenSandwich = function (sandwich) {
+        return this.tryToOpenConvention({
             state: sandwich.state,
             pattern: sandwich.startPattern,
             then: sandwich.onOpen
         });
     };
-    Tokenizer.prototype.tryCloseSandwich = function (sandwich) {
+    Tokenizer.prototype.tryToCloseSandwich = function (sandwich) {
         var _this = this;
         return this.advanceAfterMatch({
             pattern: sandwich.endPattern,
@@ -987,7 +987,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryOpenConvention = function (args) {
+    Tokenizer.prototype.tryToOpenConvention = function (args) {
         var _this = this;
         var state = args.state, pattern = args.pattern, then = args.then;
         return this.canTry(state) && this.advanceAfterMatch({
@@ -1107,7 +1107,7 @@ var Tokenizer = (function () {
             onClose: bufferBracket
         });
     };
-    Tokenizer.prototype.tryTokenizeRaisedVoicePlaceholders = function () {
+    Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
         return this.advanceAfterMatch({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
