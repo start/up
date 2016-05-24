@@ -114,6 +114,36 @@ describe("Unmatched opening parentheses in a naked URL", () => {
 })
 
 
+describe("Unmatched opening parentheses in a naked URL closed by another convention closing", () => {
+  it('does not prevent parenthesis from closing a subsequent naked URL', () => {
+    const text = '((Well, ++https://www.example.com/a(normal(url++ is better than https://w3.org))'
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, '),
+      new RevisionInsertionNode([
+        new LinkNode([
+          new PlainTextNode('www.example.com/a(normal(url')
+        ], 'https://www.example.com/a(normal(url'),
+      ]),
+      new PlainTextNode(' is better than '),
+      new LinkNode([
+        new PlainTextNode('w3.org')
+      ], 'https://w3.org'),
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
+        ])
+      ]))
+  })
+})
+
+
 describe('A naked URL protocol without the rest of the URL', () => {
   it("is preserved as plain text", () => {
     expect(Up.toAst('http://')).to.be.eql(
