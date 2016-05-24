@@ -1,5 +1,4 @@
 import { TokenizerGoal } from './TokenizerGoal'
-import { TokenizerBehavior } from './TokenizerBehavior'
 
 
 export interface TokenizerContext {
