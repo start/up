@@ -1,10 +1,10 @@
-import { getDistinctTrimmedChars } from '../../StringHelpers' 
+import { getSortedUnderlineChars } from './getSortedUnderlineChars' 
 
 export class HeadingLeveler {
   private registeredUnderlineChars: string[] = []
 
   registerUnderlineAndGetLevel(underline: string): number {
-    const underlineChars = getDistinctTrimmedChars(underline)
+    const underlineChars = getSortedUnderlineChars(underline)
 
     const isAlreadyRegistered =
       this.registeredUnderlineChars.some((registered) => registered === underlineChars)

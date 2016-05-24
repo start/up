@@ -1,4 +1,4 @@
-export function getDistinctTrimmedChars(text: string): string {
+export function getSortedUnderlineChars(text: string): string {
   return text
     .trim()
     .split('')
