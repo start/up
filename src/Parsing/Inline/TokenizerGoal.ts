@@ -4,7 +4,7 @@ export enum TokenizerGoal {
   Spoiler,
   Parenthesized,
   SquareBracketed,
-  CurlyBracketed,
+  Action,
   ParenthesizedInRawText,
   SquareBracketedInRawText,
   CurlyBracketedInRawText,

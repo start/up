@@ -11,7 +11,7 @@ import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
-import { CurlyBracketedNode } from '../SyntaxNodes/CurlyBracketedNode'
+import { ActionNode } from '../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -137,8 +137,8 @@ export class HtmlWriter extends Writer {
     return this.bracketed(node, 'square-bracketed')
   }
 
-  curlyBracketed(node: CurlyBracketedNode): string {
-    return this.bracketed(node, 'curly-bracketed')
+  action(node: ActionNode): string {
+    return this.htmlElement('span', node.children, { 'data-action': null })
   }
 
   spoiler(node: SpoilerNode): string {
@@ -195,7 +195,7 @@ export class HtmlWriter extends Writer {
     return node.text
   }
   
-  private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode | CurlyBracketedNode, dataAttributeName: string): string {
+  private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, dataAttributeName: string): string {
     return this.htmlElement('span', bracketed.children, { ['data-' + dataAttributeName]: null })
   }
 

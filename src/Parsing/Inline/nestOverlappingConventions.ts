@@ -1,4 +1,4 @@
-import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
+import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Tokens/Token'
 import { contextualizeTokens } from './TokenContextualization/contextualizeTokens'
@@ -23,7 +23,7 @@ const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
   EMPHASIS,
   PARENTHESIZED,
   SQUARE_BRACKETED,
-  CURLY_BRACKETED
+  ACTION
 ]
 
 // We avoid splitting these conventions.

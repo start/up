@@ -10,8 +10,9 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { CurlyBracketedNode } from '../../SyntaxNodes/CurlyBracketedNode'
+import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
+// TODO: Update input strings to reflect new purpose of curly brackets
 
 describe('Overlapped stressed and deleted text', () => {
   it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
@@ -133,19 +134,19 @@ describe('Overlapped stressed and square bracketed text', () => {
 })
 
 
-describe('Overlapped stressed and curly bracketed text', () => {
-  it('produce a stress node, a nested curly bracketed node, then a non-nested curly bracketed node', () => {
+describe('Overlapped stressed and action text', () => {
+  it('produce a stress node, a nested action node, then a non-nested action node', () => {
     expect(Up.toAst('I **love {drinking** whole} milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
-          new CurlyBracketedNode([
-            new PlainTextNode('{drinking')
+          new ActionNode([
+            new PlainTextNode('drinking')
           ])
         ]),
-        new CurlyBracketedNode([
-          new PlainTextNode(' whole}')
+        new ActionNode([
+          new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
       ]))

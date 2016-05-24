@@ -14,7 +14,7 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { CurlyBracketedNode } from '../../SyntaxNodes/CurlyBracketedNode'
+import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -337,10 +337,10 @@ describe('A square bracketed node', () => {
 })
 
 
-describe('A curly bracketed node', () => {
-  it('produces a span element with a data-curly-bracketed attribute', () => {
-    const node = new CurlyBracketedNode([new PlainTextNode('{Koopa Tropa}')])
-    expect(Up.toHtml(node)).to.be.eql('<span data-curly-bracketed>{Koopa Tropa}</span>')
+describe('An action node', () => {
+  it('produces a span element with a data-action attribute', () => {
+    const node = new ActionNode([new PlainTextNode('dies')])
+    expect(Up.toHtml(node)).to.be.eql('<span data-action>dies</span>')
   })
 })
 

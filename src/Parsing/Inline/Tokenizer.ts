@@ -1,5 +1,5 @@
 import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET, OPEN_CURLY_BRACKET, CLOSE_CURLY_BRACKET } from '../Patterns'
-import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, CURLY_BRACKETED } from './RichConventions'
+import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
@@ -57,7 +57,7 @@ export class Tokenizer {
 
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
-  private curlyBracketedConvention: TokenizableSandwich
+  private actionConvention: TokenizableSandwich
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
   // or inside the descriptions of media conventions.  
@@ -127,9 +127,9 @@ export class Tokenizer {
         endPattern: CLOSE_SQUARE_BRACKET,
       })
 
-    this.curlyBracketedConvention =
+    this.actionConvention =
       this.getRichSandwich({
-        richConvention: CURLY_BRACKETED,
+        richConvention: ACTION,
         startPattern: OPEN_CURLY_BRACKET,
         endPattern: CLOSE_CURLY_BRACKET,
       })
@@ -171,7 +171,7 @@ export class Tokenizer {
       this.revisionInsertionConvention,
       this.inlineCodeConvention,
       this.squareBracketedConvention,
-      this.curlyBracketedConvention,
+      this.actionConvention,
       this.parenthesizedConvention,
       this.squareBracketedRawTextConvention,
       this.parenthesizedRawTextConvention,
@@ -186,7 +186,7 @@ export class Tokenizer {
       this.revisionInsertionConvention,
       this.parenthesizedConvention,
       this.squareBracketedConvention,
-      this.curlyBracketedConvention
+      this.actionConvention
     ]
   }
 
@@ -494,7 +494,6 @@ export class Tokenizer {
         // Parentheses and brackets can be left unclosed.
         case TokenizerGoal.Parenthesized:
         case TokenizerGoal.SquareBracketed:
-        case TokenizerGoal.CurlyBracketed:
         case TokenizerGoal.ParenthesizedInRawText:
         case TokenizerGoal.SquareBracketedInRawText:
         case TokenizerGoal.CurlyBracketedInRawText:
@@ -717,13 +716,11 @@ export class Tokenizer {
 
       addBracketIfTokenIs(')', PARENTHESIZED.EndTokenType)
       addBracketIfTokenIs(']', SQUARE_BRACKETED.EndTokenType)
-      addBracketIfTokenIs('}', CURLY_BRACKETED.EndTokenType)
 
       resultTokens.push(token)
 
       addBracketIfTokenIs('(', PARENTHESIZED.StartTokenType)
       addBracketIfTokenIs('[', SQUARE_BRACKETED.StartTokenType)
-      addBracketIfTokenIs('{', CURLY_BRACKETED.StartTokenType)
     }
 
     return resultTokens

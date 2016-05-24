@@ -13,7 +13,7 @@ import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
-import { CurlyBracketedNode } from '../SyntaxNodes/CurlyBracketedNode'
+import { ActionNode } from '../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -140,8 +140,8 @@ export abstract class Writer {
       return this.squareBracketed(node)
     }
 
-    if (node instanceof CurlyBracketedNode) {
-      return this.curlyBracketed(node)
+    if (node instanceof ActionNode) {
+      return this.action(node)
     }
     
     if (node instanceof SpoilerNode) {
@@ -172,7 +172,7 @@ export abstract class Writer {
   abstract revisionDeletion(node: RevisionDeletionNode): string
   abstract parenthesized(node: ParenthesizedNode): string
   abstract squareBracketed(node: SquareBracketedNode): string
-  abstract curlyBracketed(node: CurlyBracketedNode): string
+  abstract action(node: ActionNode): string
   abstract spoiler(node: SpoilerNode): string
   abstract footnoteReference(node: FootnoteNode): string
   abstract footnoteBlock(node: FootnoteBlockNode): string

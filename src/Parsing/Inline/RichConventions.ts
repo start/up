@@ -7,14 +7,14 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { CurlyBracketedNode } from '../../SyntaxNodes/CurlyBracketedNode'
+import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
 import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
 import { SquareBracketedStartToken } from './Tokens/SquareBracketedStartToken'
 import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
-import { CurlyBracketedStartToken } from './Tokens/CurlyBracketedStartToken'
-import { CurlyBracketedEndToken } from './Tokens/CurlyBracketedEndToken'
+import { ActionStartToken } from './Tokens/ActionStartToken'
+import { ActionEndToken } from './Tokens/ActionEndToken'
 import { StressEndToken } from './Tokens/StressEndToken'
 import { StressStartToken } from './Tokens/StressStartToken'
 import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
@@ -86,11 +86,11 @@ const SQUARE_BRACKETED: RichConvention =  {
   tokenizerGoal: TokenizerGoal.SquareBracketed
 }
 
-const CURLY_BRACKETED: RichConvention =  {
-  NodeType: CurlyBracketedNode,
-  StartTokenType: CurlyBracketedStartToken,
-  EndTokenType: CurlyBracketedEndToken,
-  tokenizerGoal: TokenizerGoal.CurlyBracketed
+const ACTION: RichConvention =  {
+  NodeType: ActionNode,
+  StartTokenType: ActionStartToken,
+  EndTokenType: ActionEndToken,
+  tokenizerGoal: TokenizerGoal.Action
 }
 
 const LINK: RichConvention =  {
@@ -109,5 +109,5 @@ export {
   LINK,
   PARENTHESIZED,
   SQUARE_BRACKETED,
-  CURLY_BRACKETED
+  ACTION
 }

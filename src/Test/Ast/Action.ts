@@ -3,16 +3,17 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { CurlyBracketedNode } from '../../SyntaxNodes/CurlyBracketedNode'
+import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
+// TODO: Update input strings to reflect new purpose of curly brackets
 
 describe('Text surrounded by curly brackets', () => {
-  it('is put inside a curly bracketed node with the curly brackets preserved as plain text', () => {
+  it('is put inside an action node with the curly brackets preserved as plain text', () => {
     expect(Up.toAst('I like {certain types of} pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new CurlyBracketedNode([
-          new PlainTextNode('{certain types of}')
+        new ActionNode([
+          new PlainTextNode('certain types of')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -20,17 +21,17 @@ describe('Text surrounded by curly brackets', () => {
 })
 
 
-describe('Curly bracketed text', () => {
+describe('The text of an action', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toAst('I like {certain *types* of} pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new CurlyBracketedNode([
-          new PlainTextNode('{certain '),
+        new ActionNode([
+          new PlainTextNode('certain '),
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of}')
+          new PlainTextNode(' of')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -38,17 +39,16 @@ describe('Curly bracketed text', () => {
 })
 
 
-describe('Nested curly brackets (starting at the same time)', () => {
-  it("produce nested curly bracketed nodes with first opening bracket outside of the inner node", () => {
+describe('Nested curly brackets starting at the same time', () => {
+  it("produce nested action nodes starting at the same tmie", () => {
     expect(Up.toAst('I like {{certain} types of} pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new CurlyBracketedNode([
-          new PlainTextNode('{'),
-          new CurlyBracketedNode([
-            new PlainTextNode('{certain}')
+        new ActionNode([
+          new ActionNode([
+            new PlainTextNode('certain')
           ]),
-          new PlainTextNode(' types of}')
+          new PlainTextNode(' types of')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -56,17 +56,16 @@ describe('Nested curly brackets (starting at the same time)', () => {
 })
 
 
-describe('Nested square brackets (ending at the same time)', () => {
-  it("produce nested square bracketed nodes with last closing square bracket outside of the inner node", () => {
+describe('Nested curly brackets ending at the same time', () => {
+  it("produce action nodes ending at the same time", () => {
     expect(Up.toAst('I like {certain {types of}} pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new CurlyBracketedNode([
-          new PlainTextNode('{certain '),
-          new CurlyBracketedNode([
-            new PlainTextNode('{types of}')
+        new ActionNode([
+          new PlainTextNode('certain '),
+          new ActionNode([
+            new PlainTextNode('types of')
           ]),
-          new PlainTextNode('}')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -75,16 +74,16 @@ describe('Nested square brackets (ending at the same time)', () => {
 
 
 describe('Two left curly brackets followed by a single right curly bracket', () => {
-  it('produces bracketed text starting from the second left curly bracket', () => {
+  it('produce an action node starting from the second left curly bracket', () => {
     expect(Up.toAst(':{ I like {certain *types* of} pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode(':{ I like '),
-        new CurlyBracketedNode([
-          new PlainTextNode('{certain '),
+        new ActionNode([
+          new PlainTextNode('certain '),
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of}')
+          new PlainTextNode(' of')
         ]),
         new PlainTextNode(' pizza')
       ]))
@@ -97,12 +96,12 @@ describe('A left curly bracket followed by two right curly brackets', () => {
     expect(Up.toAst('I like {certain *types* of} pizza :}')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new CurlyBracketedNode([
-          new PlainTextNode('{certain '),
+        new ActionNode([
+          new PlainTextNode('certain '),
           new EmphasisNode([
             new PlainTextNode('types')
           ]),
-          new PlainTextNode(' of}')
+          new PlainTextNode(' of')
         ]),
         new PlainTextNode(' pizza :}')
       ]))
