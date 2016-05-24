@@ -75,6 +75,25 @@ describe('Overlapped stressed and action text', () => {
 })
 
 
+describe('Action text that overlaps a link', () => {
+  it("splits the link node, not the action node", () => {
+    expect(Up.toAst('{sighs [painfully} midwestern records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new ActionNode([
+          new PlainTextNode('sighs '),
+          new LinkNode([
+              new PlainTextNode('painfully')
+          ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records')
+        ]),
+        new LinkNode([
+          new PlainTextNode(' midwestern records')
+        ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records')
+      ])
+    )
+  })
+})
+
+
 describe('A spoiler that overlaps a link', () => {
   it("splits the link node, not the spoiler node", () => {
     expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
