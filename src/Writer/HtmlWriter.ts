@@ -90,7 +90,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'div',
       node.lines.map((line) => this.line(line)).join(''),
-      { 'data-up-lines': null }
+      { [dataAttr('lines')]: null }
     )
   }
 
@@ -139,11 +139,11 @@ export class HtmlWriter extends Writer {
   }
 
   action(node: ActionNode): string {
-    return this.htmlElement('span', node.children, { 'data-up-action': null })
+    return this.htmlElement('span', node.children, { [dataAttr('action')]: null })
   }
 
   spoiler(node: SpoilerNode): string {
-    return this.htmlElement('span', node.children, { 'data-up-spoiler': null })
+    return this.htmlElement('span', node.children, { [dataAttr('spoiler')]: null })
   }
 
   footnoteReference(node: FootnoteNode): string {
@@ -153,7 +153,7 @@ export class HtmlWriter extends Writer {
       'sup',
       [innerLinkNode], {
         id: this.footnoteReferenceId(node.referenceNumber),
-        'data-up-footnote-reference': null
+        [dataAttr('footnote-reference')]: null
       })
   }
 
@@ -161,18 +161,18 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)).join(''),
-      { 'data-up-footnotes': null })
+      { [dataAttr('footnotes')]: null })
   }
 
   link(node: LinkNode): string {
     if (this.isInsideLink) {
-      return node.children.map(child => this.write(child)).join('') 
+      return node.children.map(child => this.write(child)).join('')
     }
-    
+
     this.isInsideLink = true
     const html = this.htmlElement('a', node.children, { href: node.url })
     this.isInsideLink = false
-    
+
     return html
   }
 
@@ -195,9 +195,9 @@ export class HtmlWriter extends Writer {
   plainText(node: PlainTextNode): string {
     return node.text
   }
-  
+
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, dataAttributeName: string): string {
-    return this.htmlElement('span', bracketed.children, { ['data-up-' + dataAttributeName]: null })
+    return this.htmlElement('span', bracketed.children, { [dataAttr(dataAttributeName)]: null })
   }
 
   private unorderedListItem(listItem: UnorderedListItem): string {
@@ -247,7 +247,7 @@ export class HtmlWriter extends Writer {
         'dt',
         [this.footnoteLinkBackToReference(footnote)], {
           id: this.footnoteId(footnote.referenceNumber),
-          'data-up-footnote': null
+          [dataAttr('footnote')]: null
         })
 
     const descriptionHtml =
@@ -308,4 +308,8 @@ function htmlAttrs(attrs: any): string[] {
 
 function internalUrl(id: string): string {
   return '#' + id
+}
+
+function dataAttr(name: string): string {
+  return 'data-up-' + name
 }

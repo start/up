@@ -3449,7 +3449,8 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
-        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), { 'data-up-lines': null });
+        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), (_a = {}, _a[dataAttr('lines')] = null, _a));
+        var _a;
     };
     HtmlWriter.prototype.codeBlock = function (node) {
         return htmlElement('pre', htmlElement('code', node.text));
@@ -3485,21 +3486,27 @@ var HtmlWriter = (function (_super) {
         return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.action = function (node) {
-        return this.htmlElement('span', node.children, { 'data-up-action': null });
+        return this.htmlElement('span', node.children, (_a = {}, _a[dataAttr('action')] = null, _a));
+        var _a;
     };
     HtmlWriter.prototype.spoiler = function (node) {
-        return this.htmlElement('span', node.children, { 'data-up-spoiler': null });
+        return this.htmlElement('span', node.children, (_a = {}, _a[dataAttr('spoiler')] = null, _a));
+        var _a;
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
-        return this.htmlElement('sup', [innerLinkNode], {
-            id: this.footnoteReferenceId(node.referenceNumber),
-            'data-up-footnote-reference': null
-        });
+        return this.htmlElement('sup', [innerLinkNode], (_a = {
+                id: this.footnoteReferenceId(node.referenceNumber)
+            },
+            _a[dataAttr('footnote-reference')] = null,
+            _a
+        ));
+        var _a;
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { 'data-up-footnotes': null });
+        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), (_a = {}, _a[dataAttr('footnotes')] = null, _a));
+        var _a;
     };
     HtmlWriter.prototype.link = function (node) {
         var _this = this;
@@ -3526,7 +3533,7 @@ var HtmlWriter = (function (_super) {
         return node.text;
     };
     HtmlWriter.prototype.bracketed = function (bracketed, dataAttributeName) {
-        return this.htmlElement('span', bracketed.children, (_a = {}, _a['data-up-' + dataAttributeName] = null, _a));
+        return this.htmlElement('span', bracketed.children, (_a = {}, _a[dataAttr(dataAttributeName)] = null, _a));
         var _a;
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
@@ -3558,12 +3565,15 @@ var HtmlWriter = (function (_super) {
         return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
-        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], {
-            id: this.footnoteId(footnote.referenceNumber),
-            'data-up-footnote': null
-        });
+        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], (_a = {
+                id: this.footnoteId(footnote.referenceNumber)
+            },
+            _a[dataAttr('footnote')] = null,
+            _a
+        ));
         var descriptionHtml = this.htmlElement('dd', footnote.children);
         return termHtml + descriptionHtml;
+        var _a;
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
         var referenceNumber = footnote.referenceNumber;
@@ -3604,6 +3614,9 @@ function htmlAttrs(attrs) {
 }
 function internalUrl(id) {
     return '#' + id;
+}
+function dataAttr(name) {
+    return 'data-up-' + name;
 }
 
 },{"../SyntaxNodes/LinkNode":90,"../SyntaxNodes/OrderedListOrder":94,"../SyntaxNodes/PlainTextNode":98,"./Writer":113}],113:[function(require,module,exports){
