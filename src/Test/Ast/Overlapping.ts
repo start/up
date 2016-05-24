@@ -12,7 +12,6 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
-// TODO: Update input strings to reflect new purpose of curly brackets
 
 describe('Overlapped stressed and deleted text', () => {
   it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
@@ -136,19 +135,19 @@ describe('Overlapped stressed and square bracketed text', () => {
 
 describe('Overlapped stressed and action text', () => {
   it('produce a stress node, a nested action node, then a non-nested action node', () => {
-    expect(Up.toAst('I **love {drinking** whole} milk.')).to.be.eql(
+    expect(Up.toAst('I **hate {huge** sigh} this.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
-          new PlainTextNode('love '),
+          new PlainTextNode('hate '),
           new ActionNode([
-            new PlainTextNode('drinking')
+            new PlainTextNode('huge')
           ])
         ]),
         new ActionNode([
-          new PlainTextNode(' whole')
+          new PlainTextNode(' sigh')
         ]),
-        new PlainTextNode(' milk.')
+        new PlainTextNode(' this.')
       ]))
   })
 })
