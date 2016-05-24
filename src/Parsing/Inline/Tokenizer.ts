@@ -14,6 +14,7 @@ import { TokenizableSandwich } from './TokenizableSandwich'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
+import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
@@ -354,7 +355,7 @@ export class Tokenizer {
     const innermostSquareBrackeContext =
       this.getInnermostContextWithGoal(TokenizerGoal.SquareBracketed)
 
-    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.textIndex)) {
+    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
       // If we can't try a link at that location, it means we've already tried and failed to find the closing
       // bracket.
       return false
@@ -378,7 +379,7 @@ export class Tokenizer {
     //
     // The token at `innermostSquareBrackeContext.countTokens` is the flushed PlainTextToken created when the
     // context was opened. The next token is the SquareBracketedStartToken we want to replace.
-    const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.countTokens + 1
+    const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.countTokens + 1
 
     this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
 
@@ -467,10 +468,12 @@ export class Tokenizer {
   private openContext(args: { goal: TokenizerGoal }): void {
     this.openContexts.push({
       goal: args.goal,
-      textIndex: this.textIndex,
-      countTokens: this.tokens.length,
-      openContexts: this.openContexts.slice(),
-      plainTextBuffer: this.bufferedText
+      snapshot: new TokenizerSnapshot({
+        textIndex: this.textIndex,
+        countTokens: this.tokens.length,
+        openContexts: this.openContexts.slice(),
+        bufferedText: this.bufferedText
+      })
     })
   }
 
@@ -511,15 +514,15 @@ export class Tokenizer {
   private backtrackToBeforeContext(context: TokenizerContext): void {
     this.failedGoalTracker.registerFailure(context)
 
-    this.textIndex = context.textIndex
-    this.tokens.splice(context.countTokens)
-    this.openContexts = context.openContexts
-    this.bufferedText = context.plainTextBuffer
+    this.textIndex = context.snapshot.textIndex
+    this.tokens.splice(context.snapshot.countTokens)
+    this.openContexts = context.snapshot.openContexts
+    this.bufferedText = context.snapshot.bufferedText
 
     this.currentToken = last(this.tokens)
     this.updateComputedTextFields()
   }
-  
+
   private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()

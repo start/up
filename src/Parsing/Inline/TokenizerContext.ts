@@ -1,10 +1,7 @@
 import { TokenizerGoal } from './TokenizerGoal'
-
+import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export interface TokenizerContext {
   goal: TokenizerGoal
-  textIndex: number
-  countTokens: number
-  openContexts: TokenizerContext[]
-  plainTextBuffer: string
+  snapshot: TokenizerSnapshot
 }

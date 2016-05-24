@@ -5,7 +5,8 @@ export class FailedGoalTracker {
   private failedGoalsByTextIndex: FailedGoalsByTextIndex = {}
   
   registerFailure(failedContext: TokenizerContext): void {
-    const { textIndex, goal } = failedContext
+    const { snapshot, goal } = failedContext
+    const { textIndex } = snapshot
     
     if (!this.failedGoalsByTextIndex[textIndex]) {
       this.failedGoalsByTextIndex[textIndex] = []
