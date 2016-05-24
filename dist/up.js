@@ -1576,10 +1576,10 @@ var FREELY_SPLITTABLE_CONVENTIONS = [
     RichConventions_1.EMPHASIS,
     RichConventions_1.PARENTHESIZED,
     RichConventions_1.SQUARE_BRACKETED,
-    RichConventions_1.ACTION
 ];
 var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
     RichConventions_1.LINK,
+    RichConventions_1.ACTION,
     RichConventions_1.SPOILER,
     RichConventions_1.FOOTNOTE
 ];
