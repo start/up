@@ -4,14 +4,10 @@ function last(items) {
     return items[items.length - 1];
 }
 exports.last = last;
-function lastChar(text) {
-    return text[text.length - 1];
-}
-exports.lastChar = lastChar;
-function swap(items, firstIndex, secondIndex) {
-    var firstItem = items[firstIndex];
-    items[firstIndex] = items[secondIndex];
-    items[secondIndex] = firstItem;
+function swap(items, index1, index2) {
+    var firstItem = items[index1];
+    items[index1] = items[index2];
+    items[index2] = firstItem;
 }
 exports.swap = swap;
 function concat(collections) {
@@ -19,10 +15,6 @@ function concat(collections) {
     var _a;
 }
 exports.concat = concat;
-function reverse(items) {
-    return items.slice().reverse();
-}
-exports.reverse = reverse;
 
 },{}],2:[function(require,module,exports){
 "use strict";
