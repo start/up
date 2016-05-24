@@ -955,7 +955,7 @@ var Tokenizer = (function () {
                 return;
             }
             if (context_3.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                this.flushBufferedTextToNakedUrlToken();
+                this.closeNakedUrl();
             }
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);

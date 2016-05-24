@@ -119,7 +119,7 @@ describe('A naked URL', () => {
     expect(Up.toAst('++I love... https://archive.org/fake++!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
-          new PlainTextNode('So... '),
+          new PlainTextNode('I love... '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
