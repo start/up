@@ -1,6 +1,6 @@
 import { MediaTokenType } from './Tokens/MediaToken'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
-import { TokenizerState } from './TokenizerState'
+import { TokenizerGoal } from './TokenizerGoal'
 
 
 export class MediaConvention {
@@ -8,5 +8,5 @@ export class MediaConvention {
     public nonLocalizedTerm: string,
     public NodeType: MediaSyntaxNodeType,
     public TokenType: MediaTokenType,
-    public state: TokenizerState) { }
+    public state: TokenizerGoal) { }
 }

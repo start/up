@@ -1,9 +1,9 @@
-import { TokenizerState } from './TokenizerState'
+import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerBehavior } from './TokenizerBehavior'
 
 
 export interface TokenizerContext {
-  state: TokenizerState
+  goal: TokenizerGoal
   textIndex: number
   countTokens: number
   openContexts: TokenizerContext[]

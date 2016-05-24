@@ -1,4 +1,4 @@
-export enum TokenizerState { 
+export enum TokenizerGoal { 
   InlineCode,
   Footnote,
   Spoiler,

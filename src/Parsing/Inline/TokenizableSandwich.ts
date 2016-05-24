@@ -1,10 +1,10 @@
 import { OnTokenizerMatch } from './OnTokenizerMatch'
-import { TokenizerState } from './TokenizerState'
+import { TokenizerGoal } from './TokenizerGoal'
 import { startsWith } from '../Patterns'
 
 
 export class TokenizableSandwich {
-  state: TokenizerState
+  goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
   onOpen: OnTokenizerMatch
@@ -12,14 +12,14 @@ export class TokenizableSandwich {
 
   constructor(
     args: {
-      state: TokenizerState
+      goal: TokenizerGoal
       startPattern: string
       endPattern: string
       onOpen: OnTokenizerMatch
       onClose: OnTokenizerMatch
     }
   ) {
-    this.state = args.state
+    this.goal = args.goal
     this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
     this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
     this.onOpen = args.onOpen

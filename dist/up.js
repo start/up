@@ -51,24 +51,24 @@ exports.merge = merge;
 
 },{}],3:[function(require,module,exports){
 "use strict";
-var FailedStateTracker = (function () {
-    function FailedStateTracker() {
-        this.failedStatesByTextIndex = {};
+var FailedGoalTracker = (function () {
+    function FailedGoalTracker() {
+        this.failedGoalsByTextIndex = {};
     }
-    FailedStateTracker.prototype.registerFailure = function (failedContext) {
-        var textIndex = failedContext.textIndex, state = failedContext.state;
-        if (!this.failedStatesByTextIndex[textIndex]) {
-            this.failedStatesByTextIndex[textIndex] = [];
+    FailedGoalTracker.prototype.registerFailure = function (failedContext) {
+        var textIndex = failedContext.textIndex, goal = failedContext.goal;
+        if (!this.failedGoalsByTextIndex[textIndex]) {
+            this.failedGoalsByTextIndex[textIndex] = [];
         }
-        this.failedStatesByTextIndex[textIndex].push(state);
+        this.failedGoalsByTextIndex[textIndex].push(goal);
     };
-    FailedStateTracker.prototype.hasFailed = function (state, textIndex) {
-        var failedStates = (this.failedStatesByTextIndex[textIndex] || []);
-        return failedStates.some(function (failedState) { return failedState === state; });
+    FailedGoalTracker.prototype.hasFailed = function (goal, textIndex) {
+        var failedGoals = (this.failedGoalsByTextIndex[textIndex] || []);
+        return failedGoals.some(function (failedGoal) { return failedGoal === goal; });
     };
-    return FailedStateTracker;
+    return FailedGoalTracker;
 }());
-exports.FailedStateTracker = FailedStateTracker;
+exports.FailedGoalTracker = FailedGoalTracker;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -92,15 +92,15 @@ var VideoToken_1 = require('./Tokens/VideoToken');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-var TokenizerState_1 = require('./TokenizerState');
-var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, AudioToken_1.AudioToken, TokenizerState_1.TokenizerState.Audio);
+var TokenizerGoal_1 = require('./TokenizerGoal');
+var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, AudioToken_1.AudioToken, TokenizerGoal_1.TokenizerGoal.Audio);
 exports.AUDIO = AUDIO;
-var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, ImageToken_1.ImageToken, TokenizerState_1.TokenizerState.Image);
+var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, ImageToken_1.ImageToken, TokenizerGoal_1.TokenizerGoal.Image);
 exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken, TokenizerState_1.TokenizerState.Video);
+var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, VideoToken_1.VideoToken, TokenizerGoal_1.TokenizerGoal.Video);
 exports.VIDEO = VIDEO;
 
-},{"../../SyntaxNodes/AudioNode":72,"../../SyntaxNodes/ImageNode":85,"../../SyntaxNodes/VideoNode":108,"./MediaConvention":4,"./TokenizerState":19,"./Tokens/AudioToken":20,"./Tokens/ImageToken":27,"./Tokens/VideoToken":50}],6:[function(require,module,exports){
+},{"../../SyntaxNodes/AudioNode":72,"../../SyntaxNodes/ImageNode":85,"../../SyntaxNodes/VideoNode":108,"./MediaConvention":4,"./TokenizerGoal":19,"./Tokens/AudioToken":20,"./Tokens/ImageToken":27,"./Tokens/VideoToken":50}],6:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -382,7 +382,7 @@ var RevisionDeletionStartToken_1 = require('./Tokens/RevisionDeletionStartToken'
 var RevisionDeletionEndToken_1 = require('./Tokens/RevisionDeletionEndToken');
 var LinkStartToken_1 = require('./Tokens/LinkStartToken');
 var LinkEndToken_1 = require('./Tokens/LinkEndToken');
-var TokenizerState_1 = require('./TokenizerState');
+var TokenizerGoal_1 = require('./TokenizerGoal');
 var EMPHASIS = {
     NodeType: EmphasisNode_1.EmphasisNode,
     StartTokenType: EmphasisStartToken_1.EmphasisStartToken,
@@ -399,59 +399,59 @@ var REVISION_DELETION = {
     NodeType: RevisionDeletionNode_1.RevisionDeletionNode,
     StartTokenType: RevisionDeletionStartToken_1.RevisionDeletionStartToken,
     EndTokenType: RevisionDeletionEndToken_1.RevisionDeletionEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.RevisionDeletion
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionDeletion
 };
 exports.REVISION_DELETION = REVISION_DELETION;
 var REVISION_INSERTION = {
     NodeType: RevisionInsertionNode_1.RevisionInsertionNode,
     StartTokenType: RevisionInsertionStartToken_1.RevisionInsertionStartToken,
     EndTokenType: RevisionInsertionEndToken_1.RevisionInsertionEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.RevisionInsertion
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionInsertion
 };
 exports.REVISION_INSERTION = REVISION_INSERTION;
 var SPOILER = {
     NodeType: SpoilerNode_1.SpoilerNode,
     StartTokenType: SpoilerStartToken_1.SpoilerStartToken,
     EndTokenType: SpoilerEndToken_1.SpoilerEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.Spoiler
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Spoiler
 };
 exports.SPOILER = SPOILER;
 var FOOTNOTE = {
     NodeType: FootnoteNode_1.FootnoteNode,
     StartTokenType: FootnoteStartToken_1.FootnoteStartToken,
     EndTokenType: FootnoteEndToken_1.FootnoteEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.Footnote
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Footnote
 };
 exports.FOOTNOTE = FOOTNOTE;
 var PARENTHESIZED = {
     NodeType: ParenthesizedNode_1.ParenthesizedNode,
     StartTokenType: ParenthesizedStartToken_1.ParenthesizedStartToken,
     EndTokenType: ParenthesizedEndToken_1.ParenthesizedEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.Parenthesized
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Parenthesized
 };
 exports.PARENTHESIZED = PARENTHESIZED;
 var SQUARE_BRACKETED = {
     NodeType: SquareBracketedNode_1.SquareBracketedNode,
     StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
     EndTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.SquareBracketed
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.SquareBracketed
 };
 exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
 var CURLY_BRACKETED = {
     NodeType: CurlyBracketedNode_1.CurlyBracketedNode,
     StartTokenType: CurlyBracketedStartToken_1.CurlyBracketedStartToken,
     EndTokenType: CurlyBracketedEndToken_1.CurlyBracketedEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.CurlyBracketed
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.CurlyBracketed
 };
 exports.CURLY_BRACKETED = CURLY_BRACKETED;
 var LINK = {
     StartTokenType: LinkStartToken_1.LinkStartToken,
     EndTokenType: LinkEndToken_1.LinkEndToken,
-    tokenizerState: TokenizerState_1.TokenizerState.Link
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Link
 };
 exports.LINK = LINK;
 
-},{"../../SyntaxNodes/CurlyBracketedNode":75,"../../SyntaxNodes/EmphasisNode":81,"../../SyntaxNodes/FootnoteNode":83,"../../SyntaxNodes/ParenthesizedNode":97,"../../SyntaxNodes/RevisionDeletionNode":99,"../../SyntaxNodes/RevisionInsertionNode":100,"../../SyntaxNodes/SpoilerNode":103,"../../SyntaxNodes/SquareBracketedNode":104,"../../SyntaxNodes/StressNode":105,"./TokenizerState":19,"./Tokens/CurlyBracketedEndToken":21,"./Tokens/CurlyBracketedStartToken":22,"./Tokens/EmphasisEndToken":23,"./Tokens/EmphasisStartToken":24,"./Tokens/FootnoteEndToken":25,"./Tokens/FootnoteStartToken":26,"./Tokens/LinkEndToken":29,"./Tokens/LinkStartToken":30,"./Tokens/ParenthesizedEndToken":33,"./Tokens/ParenthesizedStartToken":34,"./Tokens/RevisionDeletionEndToken":40,"./Tokens/RevisionDeletionStartToken":41,"./Tokens/RevisionInsertionEndToken":42,"./Tokens/RevisionInsertionStartToken":43,"./Tokens/SpoilerEndToken":44,"./Tokens/SpoilerStartToken":45,"./Tokens/SquareBracketedEndToken":46,"./Tokens/SquareBracketedStartToken":47,"./Tokens/StressEndToken":48,"./Tokens/StressStartToken":49}],12:[function(require,module,exports){
+},{"../../SyntaxNodes/CurlyBracketedNode":75,"../../SyntaxNodes/EmphasisNode":81,"../../SyntaxNodes/FootnoteNode":83,"../../SyntaxNodes/ParenthesizedNode":97,"../../SyntaxNodes/RevisionDeletionNode":99,"../../SyntaxNodes/RevisionInsertionNode":100,"../../SyntaxNodes/SpoilerNode":103,"../../SyntaxNodes/SquareBracketedNode":104,"../../SyntaxNodes/StressNode":105,"./TokenizerGoal":19,"./Tokens/CurlyBracketedEndToken":21,"./Tokens/CurlyBracketedStartToken":22,"./Tokens/EmphasisEndToken":23,"./Tokens/EmphasisStartToken":24,"./Tokens/FootnoteEndToken":25,"./Tokens/FootnoteStartToken":26,"./Tokens/LinkEndToken":29,"./Tokens/LinkStartToken":30,"./Tokens/ParenthesizedEndToken":33,"./Tokens/ParenthesizedStartToken":34,"./Tokens/RevisionDeletionEndToken":40,"./Tokens/RevisionDeletionStartToken":41,"./Tokens/RevisionInsertionEndToken":42,"./Tokens/RevisionInsertionStartToken":43,"./Tokens/SpoilerEndToken":44,"./Tokens/SpoilerStartToken":45,"./Tokens/SquareBracketedEndToken":46,"./Tokens/SquareBracketedStartToken":47,"./Tokens/StressEndToken":48,"./Tokens/StressStartToken":49}],12:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -565,7 +565,7 @@ var Patterns_1 = require('../Patterns');
 var TokenizableMedia = (function () {
     function TokenizableMedia(media, localizedTerm) {
         this.TokenType = media.TokenType;
-        this.state = media.state;
+        this.goal = media.state;
         this.startPattern = getPattern(Patterns_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE, 'i');
         this.endPattern = getPattern(Patterns_1.escapeForRegex(']'));
     }
@@ -581,7 +581,7 @@ function getPattern(pattern, flags) {
 var Patterns_1 = require('../Patterns');
 var TokenizableSandwich = (function () {
     function TokenizableSandwich(args) {
-        this.state = args.state;
+        this.goal = args.goal;
         this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern), 'i');
         this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
         this.onOpen = args.onOpen;
@@ -599,10 +599,10 @@ var MediaConventions_1 = require('./MediaConventions');
 var applyRaisedVoices_1 = require('./RaisedVoices/applyRaisedVoices');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
 var CollectionHelpers_1 = require('../../CollectionHelpers');
-var TokenizerState_1 = require('./TokenizerState');
+var TokenizerGoal_1 = require('./TokenizerGoal');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var TokenizableMedia_1 = require('./TokenizableMedia');
-var FailedStateTracker_1 = require('./FailedStateTracker');
+var FailedGoalTracker_1 = require('./FailedGoalTracker');
 var InlineCodeToken_1 = require('./Tokens/InlineCodeToken');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
@@ -615,7 +615,7 @@ var Tokenizer = (function () {
         this.tokens = [];
         this.textIndex = 0;
         this.openContexts = [];
-        this.failedStateTracker = new FailedStateTracker_1.FailedStateTracker();
+        this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.bufferedText = '';
         this.configureConventions(config);
         this.dirty();
@@ -671,25 +671,25 @@ var Tokenizer = (function () {
             });
         this.parenthesizedRawTextConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.ParenthesizedInRawText,
+                goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText,
                 openBracketPattern: Patterns_1.OPEN_PAREN,
                 closeBracketPattern: Patterns_1.CLOSE_PAREN
             });
         this.squareBracketedRawTextConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.SquareBracketedInRawText,
+                goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText,
                 openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
             });
         this.curlyBracketedRawTextConvention =
             this.getBracketInsideUrlConvention({
-                state: TokenizerState_1.TokenizerState.CurlyBracketedInRawText,
+                goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText,
                 openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
             });
         this.inlineCodeConvention =
             new TokenizableSandwich_1.TokenizableSandwich({
-                state: TokenizerState_1.TokenizerState.InlineCode,
+                goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
                 startPattern: '`',
                 endPattern: '`',
                 onOpen: function () { return _this.flushBufferToPlainTextToken(); },
@@ -723,7 +723,7 @@ var Tokenizer = (function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
             this.tryToCollectCurrentCharIfEscaped()
                 || this.tryToCloseOrAdvanceOpenContexts()
-                || (this.hasState(TokenizerState_1.TokenizerState.NakedUrl) && this.handleNakedUrl())
+                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.handleNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenMedia()
                 || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
@@ -749,13 +749,13 @@ var Tokenizer = (function () {
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.tryToCloseOrAdvanceContext = function (context) {
-        var state = context.state;
-        return (this.tryToCloseSandwichCorrespondingToState(state)
-            || this.handleMediaCorrespondingToState(state)
-            || ((state === TokenizerState_1.TokenizerState.InlineCode) && this.bufferCurrentChar())
-            || ((state === TokenizerState_1.TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-            || ((state === TokenizerState_1.TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink()));
+        var goal = context.goal;
+        return (this.tryToCloseSandwichCorrespondingToGoal(goal)
+            || this.handleMediaCorrespondingToGoal(goal)
+            || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.bufferCurrentChar())
+            || ((goal === TokenizerGoal_1.TokenizerGoal.LinkUrl) && this.closeLinkOrAppendCharToUrl())
+            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+            || ((goal === TokenizerGoal_1.TokenizerGoal.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink()));
     };
     Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
         return (this.tryToOpenSquareBracketedRawText()
@@ -767,26 +767,26 @@ var Tokenizer = (function () {
             || this.tryToCloseMedia()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.tryToCloseSandwichCorrespondingToState = function (state) {
+    Tokenizer.prototype.tryToCloseSandwichCorrespondingToGoal = function (goal) {
         var _this = this;
-        return this.allSandwiches.some(function (sandwich) { return (sandwich.state === state) && _this.tryToCloseSandwich(sandwich); });
+        return this.allSandwiches.some(function (sandwich) { return (sandwich.goal === goal) && _this.tryToCloseSandwich(sandwich); });
     };
-    Tokenizer.prototype.handleMediaCorrespondingToState = function (state) {
+    Tokenizer.prototype.handleMediaCorrespondingToGoal = function (goal) {
         var _this = this;
         return this.mediaConventions
             .some(function (media) {
-            return (media.state === state)
+            return (media.goal === goal)
                 && (_this.tryToOpenMediaUrl()
                     || _this.tryToOpenSquareBracketedRawText()
-                    || _this.tryToCloseFalseMediaConvention(state)
+                    || _this.tryToCloseFalseMediaConvention(goal)
                     || _this.bufferCurrentChar());
         });
     };
-    Tokenizer.prototype.tryToCloseFalseMediaConvention = function (mediaState) {
+    Tokenizer.prototype.tryToCloseFalseMediaConvention = function (mediaGoal) {
         if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.remainingText)) {
             return false;
         }
-        this.failMostRecentContextWithStateAndResetToBeforeIt(mediaState);
+        this.failMostRecentContextWithGoalAndResetToBeforeIt(mediaGoal);
         return true;
     };
     Tokenizer.prototype.tryToOpenAnySandwichThatCanAppearInRegularContent = function () {
@@ -815,7 +815,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenNakedUrl = function () {
         var _this = this;
         return this.tryToOpenConvention({
-            state: TokenizerState_1.TokenizerState.NakedUrl,
+            goal: TokenizerGoal_1.TokenizerGoal.NakedUrl,
             pattern: NAKED_URL_START_PATTERN,
             then: function (urlProtocol) {
                 _this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlToken_1.NakedUrlToken(urlProtocol));
@@ -833,7 +833,7 @@ var Tokenizer = (function () {
         var _this = this;
         return this.mediaConventions.some(function (media) {
             return _this.tryToOpenConvention({
-                state: media.state,
+                goal: media.goal,
                 pattern: media.startPattern,
                 then: function () {
                     _this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType());
@@ -847,19 +847,19 @@ var Tokenizer = (function () {
             return false;
         }
         var urlArrow = urlArrowMatchResult[0];
-        var innermostSquareBrackeContext = this.getInnermostContextWithState(TokenizerState_1.TokenizerState.SquareBracketed);
-        if (!this.canTry(TokenizerState_1.TokenizerState.Link, innermostSquareBrackeContext.textIndex)) {
+        var innermostSquareBrackeContext = this.getInnermostContextWithGoal(TokenizerGoal_1.TokenizerGoal.SquareBracketed);
+        if (!this.canTry(TokenizerGoal_1.TokenizerGoal.Link, innermostSquareBrackeContext.textIndex)) {
             return false;
         }
-        if (this.hasState(TokenizerState_1.TokenizerState.NakedUrl)) {
+        if (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl)) {
             this.closeNakedUrl();
         }
         else {
             this.flushBufferToPlainTextToken();
         }
         this.advanceTextIndex(urlArrow.length);
-        this.openContext({ state: TokenizerState_1.TokenizerState.LinkUrl });
-        innermostSquareBrackeContext.state = TokenizerState_1.TokenizerState.Link;
+        this.openContext({ goal: TokenizerGoal_1.TokenizerGoal.LinkUrl });
+        innermostSquareBrackeContext.goal = TokenizerGoal_1.TokenizerGoal.Link;
         var indexOfSquareBracketedStartToken = innermostSquareBrackeContext.countTokens + 1;
         this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());
         return true;
@@ -867,7 +867,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenMediaUrl = function () {
         var _this = this;
         return this.tryToOpenConvention({
-            state: TokenizerState_1.TokenizerState.MediaUrl,
+            goal: TokenizerGoal_1.TokenizerGoal.MediaUrl,
             pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
             then: function () {
                 _this.currentToken.description = _this.flushBufferedText();
@@ -881,8 +881,8 @@ var Tokenizer = (function () {
             then: function () {
                 var url = _this.flushBufferedText();
                 _this.addToken(new RichConventions_1.LINK.EndTokenType(url));
-                _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.LinkUrl);
-                _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.Link);
+                _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.LinkUrl);
+                _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.Link);
             }
         });
     };
@@ -892,18 +892,18 @@ var Tokenizer = (function () {
             pattern: LINK_END_PATTERN,
             then: function () {
                 _this.currentToken.url = _this.flushBufferedText();
-                _this.closeMostRecentContextWithState(TokenizerState_1.TokenizerState.MediaUrl);
+                _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.MediaUrl);
                 _this.closeInnermostContext();
             }
         });
     };
     Tokenizer.prototype.closeNakedUrl = function () {
         this.flushBufferedTextToNakedUrlToken();
-        this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState_1.TokenizerState.NakedUrl);
+        this.closeMostRecentContextWithGoalAndAnyInnerContexts(TokenizerGoal_1.TokenizerGoal.NakedUrl);
     };
     Tokenizer.prototype.tryToOpenSandwich = function (sandwich) {
         return this.tryToOpenConvention({
-            state: sandwich.state,
+            goal: sandwich.goal,
             pattern: sandwich.startPattern,
             then: sandwich.onOpen
         });
@@ -917,30 +917,30 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.closeMostRecentContextWithState(sandwich.state);
+                _this.closeMostRecentContextWithGoal(sandwich.goal);
                 sandwich.onClose.apply(sandwich, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
     Tokenizer.prototype.tryToOpenConvention = function (args) {
         var _this = this;
-        var state = args.state, pattern = args.pattern, then = args.then;
-        return this.canTry(state) && this.advanceAfterMatch({
+        var goal = args.goal, pattern = args.pattern, then = args.then;
+        return this.canTry(goal) && this.advanceAfterMatch({
             pattern: pattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.openContext({ state: state });
+                _this.openContext({ goal: goal });
                 then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
     Tokenizer.prototype.openContext = function (args) {
-        var state = args.state;
+        var goal = args.goal;
         this.openContexts.push({
-            state: state,
+            goal: goal,
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
             openContexts: this.openContexts.slice(),
@@ -950,18 +950,18 @@ var Tokenizer = (function () {
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
             var context_1 = this.openContexts.pop();
-            switch (context_1.state) {
-                case TokenizerState_1.TokenizerState.NakedUrl:
+            switch (context_1.goal) {
+                case TokenizerGoal_1.TokenizerGoal.NakedUrl:
                     this.flushBufferedTextToNakedUrlToken();
                     break;
-                case TokenizerState_1.TokenizerState.Parenthesized:
-                case TokenizerState_1.TokenizerState.SquareBracketed:
-                case TokenizerState_1.TokenizerState.CurlyBracketed:
-                case TokenizerState_1.TokenizerState.ParenthesizedInRawText:
-                case TokenizerState_1.TokenizerState.SquareBracketedInRawText:
-                case TokenizerState_1.TokenizerState.CurlyBracketedInRawText:
-                case TokenizerState_1.TokenizerState.LinkUrl:
-                case TokenizerState_1.TokenizerState.MediaUrl:
+                case TokenizerGoal_1.TokenizerGoal.Parenthesized:
+                case TokenizerGoal_1.TokenizerGoal.SquareBracketed:
+                case TokenizerGoal_1.TokenizerGoal.CurlyBracketed:
+                case TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText:
+                case TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText:
+                case TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText:
+                case TokenizerGoal_1.TokenizerGoal.LinkUrl:
+                case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
                     this.failContextAndResetToBeforeIt(context_1);
@@ -972,7 +972,7 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.failContextAndResetToBeforeIt = function (context) {
-        this.failedStateTracker.registerFailure(context);
+        this.failedGoalTracker.registerFailure(context);
         this.textIndex = context.textIndex;
         this.tokens.splice(context.countTokens);
         this.openContexts = context.openContexts;
@@ -980,46 +980,46 @@ var Tokenizer = (function () {
         this.currentToken = CollectionHelpers_1.last(this.tokens);
         this.dirty();
     };
-    Tokenizer.prototype.failMostRecentContextWithStateAndResetToBeforeIt = function (state) {
+    Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
             var context_2 = this.openContexts.pop();
-            if (context_2.state === state) {
+            if (context_2.goal === goal) {
                 this.failContextAndResetToBeforeIt(context_2);
                 return;
             }
         }
-        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
-    Tokenizer.prototype.closeMostRecentContextWithState = function (state) {
+    Tokenizer.prototype.closeMostRecentContextWithGoal = function (goal) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_3 = this.openContexts[i];
-            if (context_3.state === state) {
+            if (context_3.goal === goal) {
                 this.openContexts.splice(i, 1);
                 return;
             }
-            if (context_3.state === TokenizerState_1.TokenizerState.NakedUrl) {
+            if (context_3.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                 this.flushBufferedTextToNakedUrlToken();
             }
         }
-        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
-    Tokenizer.prototype.closeMostRecentContextWithStateAndAnyInnerContexts = function (state) {
+    Tokenizer.prototype.closeMostRecentContextWithGoalAndAnyInnerContexts = function (goal) {
         while (this.openContexts.length) {
             var context_4 = this.openContexts.pop();
-            if (context_4.state === state) {
+            if (context_4.goal === goal) {
                 return;
             }
         }
-        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
-    Tokenizer.prototype.getInnermostContextWithState = function (state) {
+    Tokenizer.prototype.getInnermostContextWithGoal = function (goal) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_5 = this.openContexts[i];
-            if (context_5.state === state) {
+            if (context_5.goal === goal) {
                 return context_5;
             }
         }
-        throw new Error("State was not open: " + TokenizerState_1.TokenizerState[state]);
+        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.closeInnermostContext = function () {
         if (!this.openContexts.length) {
@@ -1037,8 +1037,8 @@ var Tokenizer = (function () {
         this.flushBufferToPlainTextToken();
         this.addToken(token);
     };
-    Tokenizer.prototype.hasState = function (state) {
-        return this.openContexts.some(function (context) { return context.state === state; });
+    Tokenizer.prototype.hasGoal = function (goal) {
+        return this.openContexts.some(function (context) { return context.goal === goal; });
     };
     Tokenizer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
@@ -1065,7 +1065,7 @@ var Tokenizer = (function () {
         var _this = this;
         var startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
         return new TokenizableSandwich_1.TokenizableSandwich({
-            state: richConvention.tokenizerState,
+            goal: richConvention.tokenizerGoal,
             startPattern: startPattern,
             endPattern: endPattern,
             onOpen: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()); },
@@ -1078,7 +1078,7 @@ var Tokenizer = (function () {
             _this.bufferedText += bracket;
         };
         return new TokenizableSandwich_1.TokenizableSandwich({
-            state: args.state,
+            goal: args.goal,
             startPattern: args.openBracketPattern,
             endPattern: args.closeBracketPattern,
             onOpen: bufferBracket,
@@ -1155,9 +1155,9 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
     };
-    Tokenizer.prototype.canTry = function (state, textIndex) {
+    Tokenizer.prototype.canTry = function (goal, textIndex) {
         if (textIndex === void 0) { textIndex = this.textIndex; }
-        return !this.failedStateTracker.hasFailed(state, textIndex);
+        return !this.failedGoalTracker.hasFailed(goal, textIndex);
     };
     return Tokenizer;
 }());
@@ -1171,29 +1171,29 @@ var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
 
-},{"../../CollectionHelpers":1,"../Patterns":68,"./FailedStateTracker":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./TokenizableMedia":16,"./TokenizableSandwich":17,"./TokenizerState":19,"./Tokens/InlineCodeToken":28,"./Tokens/NakedUrlToken":32,"./Tokens/PlainTextToken":35,"./Tokens/PotentialRaisedVoiceEndToken":36,"./Tokens/PotentialRaisedVoiceStartOrEndToken":37,"./Tokens/PotentialRaisedVoiceStartToken":38,"./nestOverlappingConventions":52}],19:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../Patterns":68,"./FailedGoalTracker":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./TokenizableMedia":16,"./TokenizableSandwich":17,"./TokenizerGoal":19,"./Tokens/InlineCodeToken":28,"./Tokens/NakedUrlToken":32,"./Tokens/PlainTextToken":35,"./Tokens/PotentialRaisedVoiceEndToken":36,"./Tokens/PotentialRaisedVoiceStartOrEndToken":37,"./Tokens/PotentialRaisedVoiceStartToken":38,"./nestOverlappingConventions":52}],19:[function(require,module,exports){
 "use strict";
-(function (TokenizerState) {
-    TokenizerState[TokenizerState["InlineCode"] = 0] = "InlineCode";
-    TokenizerState[TokenizerState["Footnote"] = 1] = "Footnote";
-    TokenizerState[TokenizerState["Spoiler"] = 2] = "Spoiler";
-    TokenizerState[TokenizerState["Parenthesized"] = 3] = "Parenthesized";
-    TokenizerState[TokenizerState["SquareBracketed"] = 4] = "SquareBracketed";
-    TokenizerState[TokenizerState["CurlyBracketed"] = 5] = "CurlyBracketed";
-    TokenizerState[TokenizerState["ParenthesizedInRawText"] = 6] = "ParenthesizedInRawText";
-    TokenizerState[TokenizerState["SquareBracketedInRawText"] = 7] = "SquareBracketedInRawText";
-    TokenizerState[TokenizerState["CurlyBracketedInRawText"] = 8] = "CurlyBracketedInRawText";
-    TokenizerState[TokenizerState["Link"] = 9] = "Link";
-    TokenizerState[TokenizerState["LinkUrl"] = 10] = "LinkUrl";
-    TokenizerState[TokenizerState["RevisionInsertion"] = 11] = "RevisionInsertion";
-    TokenizerState[TokenizerState["RevisionDeletion"] = 12] = "RevisionDeletion";
-    TokenizerState[TokenizerState["Audio"] = 13] = "Audio";
-    TokenizerState[TokenizerState["Image"] = 14] = "Image";
-    TokenizerState[TokenizerState["Video"] = 15] = "Video";
-    TokenizerState[TokenizerState["MediaUrl"] = 16] = "MediaUrl";
-    TokenizerState[TokenizerState["NakedUrl"] = 17] = "NakedUrl";
-})(exports.TokenizerState || (exports.TokenizerState = {}));
-var TokenizerState = exports.TokenizerState;
+(function (TokenizerGoal) {
+    TokenizerGoal[TokenizerGoal["InlineCode"] = 0] = "InlineCode";
+    TokenizerGoal[TokenizerGoal["Footnote"] = 1] = "Footnote";
+    TokenizerGoal[TokenizerGoal["Spoiler"] = 2] = "Spoiler";
+    TokenizerGoal[TokenizerGoal["Parenthesized"] = 3] = "Parenthesized";
+    TokenizerGoal[TokenizerGoal["SquareBracketed"] = 4] = "SquareBracketed";
+    TokenizerGoal[TokenizerGoal["CurlyBracketed"] = 5] = "CurlyBracketed";
+    TokenizerGoal[TokenizerGoal["ParenthesizedInRawText"] = 6] = "ParenthesizedInRawText";
+    TokenizerGoal[TokenizerGoal["SquareBracketedInRawText"] = 7] = "SquareBracketedInRawText";
+    TokenizerGoal[TokenizerGoal["CurlyBracketedInRawText"] = 8] = "CurlyBracketedInRawText";
+    TokenizerGoal[TokenizerGoal["Link"] = 9] = "Link";
+    TokenizerGoal[TokenizerGoal["LinkUrl"] = 10] = "LinkUrl";
+    TokenizerGoal[TokenizerGoal["RevisionInsertion"] = 11] = "RevisionInsertion";
+    TokenizerGoal[TokenizerGoal["RevisionDeletion"] = 12] = "RevisionDeletion";
+    TokenizerGoal[TokenizerGoal["Audio"] = 13] = "Audio";
+    TokenizerGoal[TokenizerGoal["Image"] = 14] = "Image";
+    TokenizerGoal[TokenizerGoal["Video"] = 15] = "Video";
+    TokenizerGoal[TokenizerGoal["MediaUrl"] = 16] = "MediaUrl";
+    TokenizerGoal[TokenizerGoal["NakedUrl"] = 17] = "NakedUrl";
+})(exports.TokenizerGoal || (exports.TokenizerGoal = {}));
+var TokenizerGoal = exports.TokenizerGoal;
 
 },{}],20:[function(require,module,exports){
 "use strict";

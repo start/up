@@ -9,10 +9,10 @@ import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last, reverse } from '../../CollectionHelpers'
 import { MediaToken } from './Tokens/MediaToken'
-import { TokenizerState } from './TokenizerState'
+import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { TokenizableMedia } from './TokenizableMedia'
-import { FailedStateTracker } from './FailedStateTracker'
+import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
@@ -43,7 +43,7 @@ export class Tokenizer {
   // Most conventions need to be closed by the time we consume the last character of the text.
   private openContexts: TokenizerContext[] = []
 
-  private failedStateTracker: FailedStateTracker = new FailedStateTracker()
+  private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
@@ -136,28 +136,28 @@ export class Tokenizer {
 
     this.parenthesizedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.ParenthesizedInRawText,
+        goal: TokenizerGoal.ParenthesizedInRawText,
         openBracketPattern: OPEN_PAREN,
         closeBracketPattern: CLOSE_PAREN
       })
 
     this.squareBracketedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.SquareBracketedInRawText,
+        goal: TokenizerGoal.SquareBracketedInRawText,
         openBracketPattern: OPEN_SQUARE_BRACKET,
         closeBracketPattern: CLOSE_SQUARE_BRACKET
       })
 
     this.curlyBracketedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        state: TokenizerState.CurlyBracketedInRawText,
+        goal: TokenizerGoal.CurlyBracketedInRawText,
         openBracketPattern: OPEN_CURLY_BRACKET,
         closeBracketPattern: CLOSE_CURLY_BRACKET
       })
 
     this.inlineCodeConvention =
       new TokenizableSandwich({
-        state: TokenizerState.InlineCode,
+        goal: TokenizerGoal.InlineCode,
         startPattern: '`',
         endPattern: '`',
         onOpen: () => this.flushBufferToPlainTextToken(),
@@ -194,7 +194,7 @@ export class Tokenizer {
     while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
       this.tryToCollectCurrentCharIfEscaped()
         || this.tryToCloseOrAdvanceOpenContexts()
-        || (this.hasState(TokenizerState.NakedUrl) && this.handleNakedUrl())
+        || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenMedia()
         || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
@@ -228,15 +228,15 @@ export class Tokenizer {
   }
 
   private tryToCloseOrAdvanceContext(context: TokenizerContext): boolean {
-    const { state } = context
+    const { goal } = context
 
     return (
-      this.tryToCloseSandwichCorrespondingToState(state)
-      || this.handleMediaCorrespondingToState(state)
-      || ((state === TokenizerState.InlineCode) && this.bufferCurrentChar())
-      || ((state === TokenizerState.LinkUrl) && this.closeLinkOrAppendCharToUrl())
-      || ((state === TokenizerState.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-      || ((state === TokenizerState.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
+      this.tryToCloseSandwichCorrespondingToGoal(goal)
+      || this.handleMediaCorrespondingToGoal(goal)
+      || ((goal === TokenizerGoal.InlineCode) && this.bufferCurrentChar())
+      || ((goal === TokenizerGoal.LinkUrl) && this.closeLinkOrAppendCharToUrl())
+      || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+      || ((goal === TokenizerGoal.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
     )
   }
 
@@ -254,22 +254,22 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private tryToCloseSandwichCorrespondingToState(state: TokenizerState): boolean {
-    return this.allSandwiches.some(sandwich => (sandwich.state === state) && this.tryToCloseSandwich(sandwich))
+  private tryToCloseSandwichCorrespondingToGoal(goal: TokenizerGoal): boolean {
+    return this.allSandwiches.some(sandwich => (sandwich.goal === goal) && this.tryToCloseSandwich(sandwich))
   }
 
-  private handleMediaCorrespondingToState(state: TokenizerState): boolean {
+  private handleMediaCorrespondingToGoal(goal: TokenizerGoal): boolean {
     return this.mediaConventions
       .some(media =>
-        (media.state === state)
+        (media.goal === goal)
         && (
           this.tryToOpenMediaUrl()
           || this.tryToOpenSquareBracketedRawText()
-          || this.tryToCloseFalseMediaConvention(state)
+          || this.tryToCloseFalseMediaConvention(goal)
           || this.bufferCurrentChar()))
   }
 
-  private tryToCloseFalseMediaConvention(mediaState: TokenizerState): boolean {
+  private tryToCloseFalseMediaConvention(mediaGoal: TokenizerGoal): boolean {
     if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.remainingText)) {
       return false
     }
@@ -281,7 +281,7 @@ export class Tokenizer {
     //
     // That is not a valid media convention, so we need to backtrack!
 
-    this.failMostRecentContextWithStateAndResetToBeforeIt(mediaState)
+    this.failMostRecentContextWithGoalAndResetToBeforeIt(mediaGoal)
     return true
   }
 
@@ -319,7 +319,7 @@ export class Tokenizer {
 
   private tryToOpenNakedUrl(): boolean {
     return this.tryToOpenConvention({
-      state: TokenizerState.NakedUrl,
+      goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
         this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlToken(urlProtocol))
@@ -341,7 +341,7 @@ export class Tokenizer {
   private tryToOpenMedia(): boolean {
     return this.mediaConventions.some(media => {
       return this.tryToOpenConvention({
-        state: media.state,
+        goal: media.goal,
         pattern: media.startPattern,
         then: () => {
           this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType())
@@ -360,9 +360,9 @@ export class Tokenizer {
     const [urlArrow] = urlArrowMatchResult
 
     const innermostSquareBrackeContext =
-      this.getInnermostContextWithState(TokenizerState.SquareBracketed)
+      this.getInnermostContextWithGoal(TokenizerGoal.SquareBracketed)
 
-    if (!this.canTry(TokenizerState.Link, innermostSquareBrackeContext.textIndex)) {
+    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.textIndex)) {
       // If we can't try a link at that location, it means we've already tried and failed to find the closing
       // bracket.
       return false
@@ -370,7 +370,7 @@ export class Tokenizer {
 
     // Okay, we're good to go. Let's convert the square bracket context to a link!
 
-    if (this.hasState(TokenizerState.NakedUrl)) {
+    if (this.hasGoal(TokenizerGoal.NakedUrl)) {
       // If we're currently in the middle of a naked URL, we need to close it up. 
       this.closeNakedUrl()
     } else {
@@ -378,9 +378,9 @@ export class Tokenizer {
     }
 
     this.advanceTextIndex(urlArrow.length)
-    this.openContext({ state: TokenizerState.LinkUrl })
+    this.openContext({ goal: TokenizerGoal.LinkUrl })
 
-    innermostSquareBrackeContext.state = TokenizerState.Link
+    innermostSquareBrackeContext.goal = TokenizerGoal.Link
 
     // Finally, we need to replace the square bracket context's start token.
     //
@@ -395,7 +395,7 @@ export class Tokenizer {
 
   private tryToOpenMediaUrl(): boolean {
     return this.tryToOpenConvention({
-      state: TokenizerState.MediaUrl,
+      goal: TokenizerGoal.MediaUrl,
       pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
       then: () => {
         (<MediaToken>this.currentToken).description = this.flushBufferedText()
@@ -409,8 +409,8 @@ export class Tokenizer {
       then: () => {
         const url = this.flushBufferedText()
         this.addToken(new LINK.EndTokenType(url))
-        this.closeMostRecentContextWithState(TokenizerState.LinkUrl)
-        this.closeMostRecentContextWithState(TokenizerState.Link)
+        this.closeMostRecentContextWithGoal(TokenizerGoal.LinkUrl)
+        this.closeMostRecentContextWithGoal(TokenizerGoal.Link)
       }
     })
   }
@@ -420,7 +420,7 @@ export class Tokenizer {
       pattern: LINK_END_PATTERN,
       then: () => {
         (<MediaToken>this.currentToken).url = this.flushBufferedText()
-        this.closeMostRecentContextWithState(TokenizerState.MediaUrl)
+        this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
         this.closeInnermostContext()
@@ -433,12 +433,12 @@ export class Tokenizer {
 
     // There could be some bracket contexts opened inside the naked URL, and we don't want them to have any impact on
     // any text that follows the URL.
-    this.closeMostRecentContextWithStateAndAnyInnerContexts(TokenizerState.NakedUrl)
+    this.closeMostRecentContextWithGoalAndAnyInnerContexts(TokenizerGoal.NakedUrl)
   }
 
   private tryToOpenSandwich(sandwich: TokenizableSandwich): boolean {
     return this.tryToOpenConvention({
-      state: sandwich.state,
+      goal: sandwich.goal,
       pattern: sandwich.startPattern,
       then: sandwich.onOpen
     })
@@ -448,7 +448,7 @@ export class Tokenizer {
     return this.advanceAfterMatch({
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeMostRecentContextWithState(sandwich.state)
+        this.closeMostRecentContextWithGoal(sandwich.goal)
         sandwich.onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
@@ -456,27 +456,27 @@ export class Tokenizer {
 
   private tryToOpenConvention(
     args: {
-      state: TokenizerState,
+      goal: TokenizerGoal,
       pattern: RegExp,
       then: OnTokenizerMatch
     }
   ): boolean {
-    const { state, pattern, then } = args
+    const { goal, pattern, then } = args
 
-    return this.canTry(state) && this.advanceAfterMatch({
+    return this.canTry(goal) && this.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContext({ state })
+        this.openContext({ goal })
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
 
-  private openContext(args: { state: TokenizerState }): void {
-    const { state } = args
+  private openContext(args: { goal: TokenizerGoal }): void {
+    const { goal } = args
 
     this.openContexts.push({
-      state,
+      goal,
       textIndex: this.textIndex,
       countTokens: this.tokens.length,
       openContexts: this.openContexts.slice(),
@@ -488,25 +488,25 @@ export class Tokenizer {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      switch (context.state) {
-        case TokenizerState.NakedUrl:
+      switch (context.goal) {
+        case TokenizerGoal.NakedUrl:
           this.flushBufferedTextToNakedUrlToken()
           break
 
         // Parentheses and brackets can be left unclosed.
-        case TokenizerState.Parenthesized:
-        case TokenizerState.SquareBracketed:
-        case TokenizerState.CurlyBracketed:
-        case TokenizerState.ParenthesizedInRawText:
-        case TokenizerState.SquareBracketedInRawText:
-        case TokenizerState.CurlyBracketedInRawText:
+        case TokenizerGoal.Parenthesized:
+        case TokenizerGoal.SquareBracketed:
+        case TokenizerGoal.CurlyBracketed:
+        case TokenizerGoal.ParenthesizedInRawText:
+        case TokenizerGoal.SquareBracketedInRawText:
+        case TokenizerGoal.CurlyBracketedInRawText:
 
         // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
         // handler (below) backtrack to before the link itself.
-        case TokenizerState.LinkUrl:
+        case TokenizerGoal.LinkUrl:
 
         // The same applies for media URLs.
-        case TokenizerState.MediaUrl:
+        case TokenizerGoal.MediaUrl:
           break;
 
         default:
@@ -521,7 +521,7 @@ export class Tokenizer {
   }
 
   private failContextAndResetToBeforeIt(context: TokenizerContext): void {
-    this.failedStateTracker.registerFailure(context)
+    this.failedGoalTracker.registerFailure(context)
 
     this.textIndex = context.textIndex
     this.tokens.splice(context.countTokens)
@@ -532,60 +532,60 @@ export class Tokenizer {
     this.dirty()
   }
   
-  private failMostRecentContextWithStateAndResetToBeforeIt(state: TokenizerState): void {
+  private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (context.state === state) {
+      if (context.goal === goal) {
         this.failContextAndResetToBeforeIt(context)
         return
       }
     }
 
-    throw new Error(`State was not open: ${TokenizerState[state]}`)
+    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
   }
 
-  private closeMostRecentContextWithState(state: TokenizerState): void {
+  private closeMostRecentContextWithGoal(goal: TokenizerGoal): void {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
 
-      if (context.state === state) {
+      if (context.goal === goal) {
         this.openContexts.splice(i, 1)
         return
       }
 
-      if (context.state === TokenizerState.NakedUrl) {
+      if (context.goal === TokenizerGoal.NakedUrl) {
         // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too (along with
         // any inner brackets).
         this.flushBufferedTextToNakedUrlToken()
       }
     }
 
-    throw new Error(`State was not open: ${TokenizerState[state]}`)
+    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
   }
 
-  private closeMostRecentContextWithStateAndAnyInnerContexts(state: TokenizerState): void {
+  private closeMostRecentContextWithGoalAndAnyInnerContexts(goal: TokenizerGoal): void {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (context.state === state) {
+      if (context.goal === goal) {
         return
       }
     }
 
-    throw new Error(`State was not open: ${TokenizerState[state]}`)
+    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
   }
 
-  private getInnermostContextWithState(state: TokenizerState): TokenizerContext {
+  private getInnermostContextWithGoal(goal: TokenizerGoal): TokenizerContext {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
 
-      if (context.state === state) {
+      if (context.goal === goal) {
         return context
       }
     }
 
-    throw new Error(`State was not open: ${TokenizerState[state]}`)
+    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
   }
 
   private closeInnermostContext(): void {
@@ -609,8 +609,8 @@ export class Tokenizer {
     this.addToken(token)
   }
 
-  private hasState(state: TokenizerState): boolean {
-    return this.openContexts.some(context => context.state === state)
+  private hasGoal(goal: TokenizerGoal): boolean {
+    return this.openContexts.some(context => context.goal === goal)
   }
 
   private advanceAfterMatch(args: { pattern: RegExp, then?: OnTokenizerMatch }): boolean {
@@ -654,7 +654,7 @@ export class Tokenizer {
     const { startPattern, endPattern, richConvention } = args
 
     return new TokenizableSandwich({
-      state: richConvention.tokenizerState,
+      goal: richConvention.tokenizerGoal,
       startPattern,
       endPattern,
       onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()),
@@ -664,7 +664,7 @@ export class Tokenizer {
 
   private getBracketInsideUrlConvention(
     args: {
-      state: TokenizerState,
+      goal: TokenizerGoal,
       openBracketPattern: string,
       closeBracketPattern: string
     }
@@ -674,7 +674,7 @@ export class Tokenizer {
     }
 
     return new TokenizableSandwich({
-      state: args.state,
+      goal: args.goal,
       startPattern: args.openBracketPattern,
       endPattern: args.closeBracketPattern,
       onOpen: bufferBracket,
@@ -776,8 +776,8 @@ export class Tokenizer {
     this.addToken(new PlainTextToken(this.flushBufferedText()))
   }
 
-  private canTry(state: TokenizerState, textIndex = this.textIndex): boolean {
-    return !this.failedStateTracker.hasFailed(state, textIndex)
+  private canTry(goal: TokenizerGoal, textIndex = this.textIndex): boolean {
+    return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
 }
 
