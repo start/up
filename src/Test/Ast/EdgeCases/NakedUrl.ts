@@ -63,14 +63,42 @@ describe('A naked URL following an open square bracket', () => {
 
 describe("Unmatched opening parentheses in a naked URL", () => {
   it('do not affect any text that follows the URL', () => {
-    const text = '((Well, https://www.example.com/a(normal(url is my favorite site!))'
+    const text = '((Well, https://www.example.com/a(normal(url is my favorite site))'
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, '),
       new LinkNode([
         new PlainTextNode('www.example.com/a(normal(url')
       ], 'https://www.example.com/a(normal(url'),
-      new PlainTextNode(' is my favorite site!')
+      new PlainTextNode(' is my favorite site')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
+        ])
+      ]))
+  })
+})
+
+
+describe("Unmatched opening parentheses in a naked URL", () => {
+  it('does not prevent parenthesis from closing a subsequent naked URL', () => {
+    const text = '((Well, https://www.example.com/a(normal(url is better than https://w3.org))'
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, '),
+      new LinkNode([
+        new PlainTextNode('www.example.com/a(normal(url')
+      ], 'https://www.example.com/a(normal(url'),
+      new PlainTextNode(' is better than '),
+      new LinkNode([
+        new PlainTextNode('w3.org')
+      ], 'https://w3.org'),
     ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
