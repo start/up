@@ -75,6 +75,26 @@ describe('Overlapped stressed and action text', () => {
 })
 
 
+describe('Overlapped stressed and action text', () => {
+  it('splits the stress node, not the action node', () => {
+    expect(Up.toAst('I {sigh **loudly} sing**.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new ActionNode([
+          new PlainTextNode('sigh '),
+          new StressNode([
+            new PlainTextNode('loudly')
+          ]),
+        ]),
+        new StressNode([
+          new PlainTextNode(' sing'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
 describe('Action text that overlaps a link', () => {
   it("splits the link node, not the action node", () => {
     expect(Up.toAst('{sighs [Painfully} Midwestern Records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records]')).to.be.eql(
