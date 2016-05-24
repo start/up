@@ -618,7 +618,7 @@ var Tokenizer = (function () {
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.bufferedText = '';
         this.configureConventions(config);
-        this.dirty();
+        this.updateComputedTextFields();
         this.tokenize();
     }
     Tokenizer.prototype.configureConventions = function (config) {
@@ -893,7 +893,7 @@ var Tokenizer = (function () {
             then: function () {
                 _this.currentToken.url = _this.flushBufferedText();
                 _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.MediaUrl);
-                _this.closeInnermostContext();
+                _this.openContexts.pop();
             }
         });
     };
@@ -938,9 +938,8 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.openContext = function (args) {
-        var goal = args.goal;
         this.openContexts.push({
-            goal: goal,
+            goal: args.goal,
             textIndex: this.textIndex,
             countTokens: this.tokens.length,
             openContexts: this.openContexts.slice(),
@@ -964,31 +963,31 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
-                    this.failContextAndResetToBeforeIt(context_1);
+                    this.backtrackToBeforeContext(context_1);
                     return false;
             }
         }
         this.flushBufferToPlainTextToken();
         return true;
     };
-    Tokenizer.prototype.failContextAndResetToBeforeIt = function (context) {
+    Tokenizer.prototype.backtrackToBeforeContext = function (context) {
         this.failedGoalTracker.registerFailure(context);
         this.textIndex = context.textIndex;
         this.tokens.splice(context.countTokens);
         this.openContexts = context.openContexts;
         this.bufferedText = context.plainTextBuffer;
         this.currentToken = CollectionHelpers_1.last(this.tokens);
-        this.dirty();
+        this.updateComputedTextFields();
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
             var context_2 = this.openContexts.pop();
             if (context_2.goal === goal) {
-                this.failContextAndResetToBeforeIt(context_2);
+                this.backtrackToBeforeContext(context_2);
                 return;
             }
         }
-        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
+        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.closeMostRecentContextWithGoal = function (goal) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -1001,7 +1000,7 @@ var Tokenizer = (function () {
                 this.flushBufferedTextToNakedUrlToken();
             }
         }
-        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
+        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.closeMostRecentContextWithGoalAndAnyInnerContexts = function (goal) {
         while (this.openContexts.length) {
@@ -1010,7 +1009,7 @@ var Tokenizer = (function () {
                 return;
             }
         }
-        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
+        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.getInnermostContextWithGoal = function (goal) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -1019,13 +1018,7 @@ var Tokenizer = (function () {
                 return context_5;
             }
         }
-        throw new Error("Goal was not open: " + TokenizerGoal_1.TokenizerGoal[goal]);
-    };
-    Tokenizer.prototype.closeInnermostContext = function () {
-        if (!this.openContexts.length) {
-            throw new Error("No open contexts");
-        }
-        this.openContexts.pop();
+        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.flushBufferedTextToNakedUrlToken = function () {
         this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText();
@@ -1055,7 +1048,7 @@ var Tokenizer = (function () {
         this.advanceTextIndex(match.length);
         return true;
     };
-    Tokenizer.prototype.dirty = function () {
+    Tokenizer.prototype.updateComputedTextFields = function () {
         this.remainingText = this.entireText.substr(this.textIndex);
         this.currentChar = this.remainingText[0];
         var previousChar = this.entireText[this.textIndex - 1];
@@ -1140,7 +1133,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.advanceTextIndex = function (length) {
         this.textIndex += length;
-        this.dirty();
+        this.updateComputedTextFields();
     };
     Tokenizer.prototype.bufferCurrentChar = function () {
         this.bufferedText += this.currentChar;
@@ -1707,6 +1700,10 @@ var PlainTextToken_1 = require('./Tokens/PlainTextToken');
 var NakedUrlToken_1 = require('./Tokens/NakedUrlToken');
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
+function parse(args) {
+    return new Parser(args).result;
+}
+exports.parse = parse;
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS,
     RichConventions_1.EMPHASIS,
@@ -1725,10 +1722,6 @@ var BRACKET_CONVENTIONS = [
     RichConventions_1.SQUARE_BRACKETED,
     RichConventions_1.CURLY_BRACKETED
 ];
-function parse(args) {
-    return new Parser(args).result;
-}
-exports.parse = parse;
 var Parser = (function () {
     function Parser(args) {
         this.tokenIndex = 0;

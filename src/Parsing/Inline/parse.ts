@@ -24,6 +24,11 @@ import { RichConvention } from './RichConvention'
 import { ParseResult } from './ParseResult'
 
 
+export function parse(args: ParseArgs): ParseResult {
+  return new Parser(args).result
+}
+
+
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS,
   EMPHASIS,
@@ -45,10 +50,6 @@ const BRACKET_CONVENTIONS = [
   CURLY_BRACKETED
 ]
 
-export function parse(args: ParseArgs): ParseResult {
-  return new Parser(args).result
-}
-
 
 interface ParseArgs {
   tokens: Token[],
@@ -58,12 +59,13 @@ interface ParseArgs {
 
 
 class Parser {
+  result: ParseResult
+
   private tokens: Token[]
   private tokenIndex = 0
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
 
-  result: ParseResult
 
   constructor(args: ParseArgs) {
     const { UntilTokenType, isTerminatorOptional } = args

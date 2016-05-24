@@ -76,7 +76,7 @@ export class Tokenizer {
 
   constructor(private entireText: string, config: UpConfig) {
     this.configureConventions(config)
-    this.dirty()
+    this.updateComputedTextFields()
     this.tokenize()
   }
 
@@ -423,7 +423,7 @@ export class Tokenizer {
         this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
-        this.closeInnermostContext()
+        this.openContexts.pop()
       }
     })
   }
@@ -473,10 +473,8 @@ export class Tokenizer {
   }
 
   private openContext(args: { goal: TokenizerGoal }): void {
-    const { goal } = args
-
     this.openContexts.push({
-      goal,
+      goal: args.goal,
       textIndex: this.textIndex,
       countTokens: this.tokens.length,
       openContexts: this.openContexts.slice(),
@@ -510,17 +508,16 @@ export class Tokenizer {
           break;
 
         default:
-          this.failContextAndResetToBeforeIt(context)
+          this.backtrackToBeforeContext(context)
           return false
       }
     }
 
     this.flushBufferToPlainTextToken()
-
     return true
   }
 
-  private failContextAndResetToBeforeIt(context: TokenizerContext): void {
+  private backtrackToBeforeContext(context: TokenizerContext): void {
     this.failedGoalTracker.registerFailure(context)
 
     this.textIndex = context.textIndex
@@ -529,7 +526,7 @@ export class Tokenizer {
     this.bufferedText = context.plainTextBuffer
 
     this.currentToken = last(this.tokens)
-    this.dirty()
+    this.updateComputedTextFields()
   }
   
   private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
@@ -537,12 +534,12 @@ export class Tokenizer {
       const context = this.openContexts.pop()
 
       if (context.goal === goal) {
-        this.failContextAndResetToBeforeIt(context)
+        this.backtrackToBeforeContext(context)
         return
       }
     }
 
-    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
+    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
   private closeMostRecentContextWithGoal(goal: TokenizerGoal): void {
@@ -561,7 +558,7 @@ export class Tokenizer {
       }
     }
 
-    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
+    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
   private closeMostRecentContextWithGoalAndAnyInnerContexts(goal: TokenizerGoal): void {
@@ -573,7 +570,7 @@ export class Tokenizer {
       }
     }
 
-    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
+    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
   private getInnermostContextWithGoal(goal: TokenizerGoal): TokenizerContext {
@@ -585,15 +582,7 @@ export class Tokenizer {
       }
     }
 
-    throw new Error(`Goal was not open: ${TokenizerGoal[goal]}`)
-  }
-
-  private closeInnermostContext(): void {
-    if (!this.openContexts.length) {
-      throw new Error(`No open contexts`)
-    }
-
-    this.openContexts.pop()
+    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
   private flushBufferedTextToNakedUrlToken(): void {
@@ -636,7 +625,7 @@ export class Tokenizer {
     return true
   }
 
-  private dirty(): void {
+  private updateComputedTextFields(): void {
     this.remainingText = this.entireText.substr(this.textIndex)
     this.currentChar = this.remainingText[0]
 
@@ -751,7 +740,7 @@ export class Tokenizer {
 
   private advanceTextIndex(length: number): void {
     this.textIndex += length
-    this.dirty()
+    this.updateComputedTextFields()
   }
 
   // This method always returns true, which allows us to use some cleaner boolean logic.
