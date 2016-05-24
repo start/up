@@ -54,13 +54,13 @@ export class Tokenizer {
   private spoilerConvention: TokenizableSandwich
   private revisionDeletionConvention: TokenizableSandwich
   private revisionInsertionConvention: TokenizableSandwich
+  private actionConvention: TokenizableSandwich
 
   private parenthesizedConvention: TokenizableSandwich
   private squareBracketedConvention: TokenizableSandwich
-  private actionConvention: TokenizableSandwich
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
-  // or inside the descriptions of media conventions.  
+  // or media conventions' descriptions.  
   private parenthesizedRawTextConvention: TokenizableSandwich
   private squareBracketedRawTextConvention: TokenizableSandwich
   private curlyBracketedRawTextConvention: TokenizableSandwich
@@ -164,30 +164,22 @@ export class Tokenizer {
         onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText()))
       })
 
-    this.allSandwiches = [
-      this.spoilerConvention,
-      this.footnoteConvention,
-      this.revisionDeletionConvention,
-      this.revisionInsertionConvention,
-      this.inlineCodeConvention,
-      this.squareBracketedConvention,
-      this.actionConvention,
-      this.parenthesizedConvention,
-      this.squareBracketedRawTextConvention,
-      this.parenthesizedRawTextConvention,
-      this.curlyBracketedRawTextConvention
-    ]
-
     this.sandwichesThatCanAppearInRegularContent = [
       this.inlineCodeConvention,
       this.spoilerConvention,
       this.footnoteConvention,
       this.revisionDeletionConvention,
       this.revisionInsertionConvention,
+      this.actionConvention,
       this.parenthesizedConvention,
-      this.squareBracketedConvention,
-      this.actionConvention
+      this.squareBracketedConvention
     ]
+
+    this.allSandwiches = this.sandwichesThatCanAppearInRegularContent.concat([
+      this.squareBracketedRawTextConvention,
+      this.parenthesizedRawTextConvention,
+      this.curlyBracketedRawTextConvention
+    ])
   }
 
   private tokenize(): void {

@@ -662,29 +662,21 @@ var Tokenizer = (function () {
                 onOpen: function () { return _this.flushBufferToPlainTextToken(); },
                 onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText())); }
             });
-        this.allSandwiches = [
-            this.spoilerConvention,
-            this.footnoteConvention,
-            this.revisionDeletionConvention,
-            this.revisionInsertionConvention,
-            this.inlineCodeConvention,
-            this.squareBracketedConvention,
-            this.actionConvention,
-            this.parenthesizedConvention,
-            this.squareBracketedRawTextConvention,
-            this.parenthesizedRawTextConvention,
-            this.curlyBracketedRawTextConvention
-        ];
         this.sandwichesThatCanAppearInRegularContent = [
             this.inlineCodeConvention,
             this.spoilerConvention,
             this.footnoteConvention,
             this.revisionDeletionConvention,
             this.revisionInsertionConvention,
+            this.actionConvention,
             this.parenthesizedConvention,
-            this.squareBracketedConvention,
-            this.actionConvention
+            this.squareBracketedConvention
         ];
+        this.allSandwiches = this.sandwichesThatCanAppearInRegularContent.concat([
+            this.squareBracketedRawTextConvention,
+            this.parenthesizedRawTextConvention,
+            this.curlyBracketedRawTextConvention
+        ]);
     };
     Tokenizer.prototype.tokenize = function () {
         while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
