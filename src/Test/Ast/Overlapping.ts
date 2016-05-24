@@ -133,26 +133,6 @@ describe('Overlapped stressed and square bracketed text', () => {
 })
 
 
-describe('Overlapped stressed and action text', () => {
-  it('produce a stress node, a nested action node, then a non-nested action node', () => {
-    expect(Up.toAst('I **hate {huge** sigh} this.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I '),
-        new StressNode([
-          new PlainTextNode('hate '),
-          new ActionNode([
-            new PlainTextNode('huge')
-          ])
-        ]),
-        new ActionNode([
-          new PlainTextNode(' sigh')
-        ]),
-        new PlainTextNode(' this.')
-      ]))
-  })
-})
-
-
 describe('Overlapped stressed, deleted, and inserted text', () => {
   it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
     expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
