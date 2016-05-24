@@ -82,7 +82,7 @@ describe('Action text that overlaps a link', () => {
         new ActionNode([
           new PlainTextNode('sighs '),
           new LinkNode([
-              new PlainTextNode('painfully')
+            new PlainTextNode('painfully')
           ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records')
         ]),
         new LinkNode([
@@ -101,9 +101,7 @@ describe('A spoiler that overlaps a link', () => {
         new SpoilerNode([
           new PlainTextNode('Gary loses to '),
           new LinkNode([
-            new SpoilerNode([
-              new PlainTextNode('Ash')
-            ])
+            new PlainTextNode('Ash')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
         ]),
         new LinkNode([
