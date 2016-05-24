@@ -1,4 +1,5 @@
 import { TokenizerState } from './TokenizerState'
+import { TokenizerBehavior } from './TokenizerBehavior'
 
 
 export interface TokenizerContext {
