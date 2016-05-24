@@ -77,17 +77,36 @@ describe('Overlapped stressed and action text', () => {
 
 describe('Action text that overlaps a link', () => {
   it("splits the link node, not the action node", () => {
-    expect(Up.toAst('{sighs [painfully} midwestern records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records]')).to.be.eql(
+    expect(Up.toAst('{sighs [Painfully} Midwestern Records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records]')).to.be.eql(
       insideDocumentAndParagraph([
         new ActionNode([
           new PlainTextNode('sighs '),
           new LinkNode([
-            new PlainTextNode('painfully')
+            new PlainTextNode('Painfully')
           ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records')
         ]),
         new LinkNode([
-          new PlainTextNode(' midwestern records')
+          new PlainTextNode(' Midwestern Records')
         ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records')
+      ])
+    )
+  })
+})
+
+
+describe('A link that overlaps action text', () => {
+  it("splits the link node, not the action node", () => {
+    expect(Up.toAst('[Painfully Midwestern {Records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records] furiously}')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Painfully Midwestern ')
+        ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records'),
+        new ActionNode([
+          new LinkNode([
+            new PlainTextNode('Records')
+          ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records'),
+          new PlainTextNode(' furiously')
+        ]),
       ])
     )
   })
