@@ -1,5 +1,4 @@
 import { UpConfigArgs} from './UpConfigArgs'
-import { merge } from './ObjectHelpers'
 
 
 const DEFAULT_CONFIG: UpConfigArgs = {
@@ -40,4 +39,38 @@ export class UpConfig {
 
     throw new Error(`Unrecognizes term: ${nonLocalizedTerm}`)
   }
+}
+
+
+function merge(base: StringInxexable, changes: StringInxexable): StringInxexable {
+  if (changes == null) {
+    return base
+  }
+
+  const merged: StringInxexable = {}
+
+  for (const key in base) {
+    const baseValue = merged[key] = base[key]
+    const changedValue = changes[key]
+
+    if (baseValue == null) {
+      merged[key] = changedValue
+      continue
+    }
+
+    if (changedValue != null) {
+      // If a changed value is present, we assume it has the same type as the base value.
+      merged[key] =
+        typeof baseValue === 'object'
+          ? merge(baseValue, changedValue)
+          : changedValue
+    }
+  }
+
+  return merged
+}
+
+
+interface StringInxexable {
+  [key: string]: any
 }
