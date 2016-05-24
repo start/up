@@ -13,7 +13,7 @@ describe('Inside a link, a footnote', () => {
       new PlainTextNode('Google'),
       new FootnoteNode([new PlainTextNode('A really old search engine.')], 2)
     ], 'https://google.com')
-    expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google<sup id="footnote-reference-2" data-footnote-reference>2</sup></a>')
+    expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google<sup id="footnote-reference-2" data-up-footnote-reference>2</sup></a>')
   })
 })
 

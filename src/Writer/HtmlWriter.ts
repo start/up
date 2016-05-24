@@ -35,6 +35,7 @@ import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../UpConfig'
 
+
 export class HtmlWriter extends Writer {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an anchor element for the inner link.
@@ -89,7 +90,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'div',
       node.lines.map((line) => this.line(line)).join(''),
-      { 'data-lines': null }
+      { 'data-up-lines': null }
     )
   }
 
@@ -138,11 +139,11 @@ export class HtmlWriter extends Writer {
   }
 
   action(node: ActionNode): string {
-    return this.htmlElement('span', node.children, { 'data-action': null })
+    return this.htmlElement('span', node.children, { 'data-up-action': null })
   }
 
   spoiler(node: SpoilerNode): string {
-    return this.htmlElement('span', node.children, { 'data-spoiler': null })
+    return this.htmlElement('span', node.children, { 'data-up-spoiler': null })
   }
 
   footnoteReference(node: FootnoteNode): string {
@@ -152,7 +153,7 @@ export class HtmlWriter extends Writer {
       'sup',
       [innerLinkNode], {
         id: this.footnoteReferenceId(node.referenceNumber),
-        'data-footnote-reference': null
+        'data-up-footnote-reference': null
       })
   }
 
@@ -160,7 +161,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)).join(''),
-      { 'data-footnotes': null })
+      { 'data-up-footnotes': null })
   }
 
   link(node: LinkNode): string {
@@ -196,7 +197,7 @@ export class HtmlWriter extends Writer {
   }
   
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, dataAttributeName: string): string {
-    return this.htmlElement('span', bracketed.children, { ['data-' + dataAttributeName]: null })
+    return this.htmlElement('span', bracketed.children, { ['data-up-' + dataAttributeName]: null })
   }
 
   private unorderedListItem(listItem: UnorderedListItem): string {
@@ -246,7 +247,7 @@ export class HtmlWriter extends Writer {
         'dt',
         [this.footnoteLinkBackToReference(footnote)], {
           id: this.footnoteId(footnote.referenceNumber),
-          'data-footnote': null
+          'data-up-footnote': null
         })
 
     const descriptionHtml =

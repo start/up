@@ -22,9 +22,9 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       ])
 
     const html =
-      '<dl data-footnotes>'
-      + '<dt id="reply-11-footnote-2" data-footnote><a href="#reply-11-footnote-reference-2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="reply-11-footnote-3" data-footnote><a href="#reply-11-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      '<dl data-up-footnotes>'
+      + '<dt id="reply-11-footnote-2" data-up-footnote><a href="#reply-11-footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="reply-11-footnote-3" data-up-footnote><a href="#reply-11-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -51,9 +51,9 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
       ])
 
     const html =
-      '<dl data-footnotes>'
-      + '<dt id="footnote::2" data-footnote><a href="#footnote::reference::2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="footnote::3" data-footnote><a href="#footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
+      '<dl data-up-footnotes>'
+      + '<dt id="footnote::2" data-up-footnote><a href="#footnote::reference::2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote::3" data-up-footnote><a href="#footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -81,9 +81,9 @@ describe("Separate words in the provided document name", () => {
       ])
 
     const html =
-      '<dl data-footnotes>'
-      + '<dt id="reply::11::footnote::2" data-footnote><a href="#reply::11::footnote::reference::2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="reply::11::footnote::3" data-footnote><a href="#reply::11::footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
+      '<dl data-up-footnotes>'
+      + '<dt id="reply::11::footnote::2" data-up-footnote><a href="#reply::11::footnote::reference::2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="reply::11::footnote::3" data-up-footnote><a href="#reply::11::footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -110,9 +110,9 @@ describe("A footnote's ID", () => {
       ])
 
     const html =
-      '<dl data-footnotes>'
-      + '<dt id="fn-2" data-footnote><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="fn-3" data-footnote><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      '<dl data-up-footnotes>'
+      + '<dt id="fn-2" data-up-footnote><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="fn-3" data-up-footnote><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -139,9 +139,9 @@ describe("The ID of the footnote reference referencing the footnote", () => {
       ])
 
     const html =
-      '<dl data-footnotes>'
-      + '<dt id="footnote-2" data-footnote><a href="#ref-2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="footnote-3" data-footnote><a href="#ref-3">3</a></dt><dd>Killer Bees</dd>'
+      '<dl data-up-footnotes>'
+      + '<dt id="footnote-2" data-up-footnote><a href="#ref-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote-3" data-up-footnote><a href="#ref-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -169,9 +169,9 @@ describe('Separate words in the provided term for "footnote reference"', () => {
       ])
 
     const html =
-      '<dl data-footnotes>'
-      + '<dt id="footnote_2" data-footnote><a href="#fn_ref_2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="footnote_3" data-footnote><a href="#fn_ref_3">3</a></dt><dd>Killer Bees</dd>'
+      '<dl data-up-footnotes>'
+      + '<dt id="footnote_2" data-up-footnote><a href="#fn_ref_2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote_3" data-up-footnote><a href="#fn_ref_3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
