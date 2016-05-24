@@ -3565,15 +3565,9 @@ var HtmlWriter = (function (_super) {
         return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
-        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], (_a = {
-                id: this.footnoteId(footnote.referenceNumber)
-            },
-            _a[dataAttr('footnote')] = null,
-            _a
-        ));
+        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.footnoteId(footnote.referenceNumber) });
         var descriptionHtml = this.htmlElement('dd', footnote.children);
         return termHtml + descriptionHtml;
-        var _a;
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
         var referenceNumber = footnote.referenceNumber;

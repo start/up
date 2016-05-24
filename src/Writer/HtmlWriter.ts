@@ -245,10 +245,8 @@ export class HtmlWriter extends Writer {
     const termHtml =
       this.htmlElement(
         'dt',
-        [this.footnoteLinkBackToReference(footnote)], {
-          id: this.footnoteId(footnote.referenceNumber),
-          [dataAttr('footnote')]: null
-        })
+        [this.footnoteLinkBackToReference(footnote)],
+        { id: this.footnoteId(footnote.referenceNumber) })
 
     const descriptionHtml =
       this.htmlElement('dd', footnote.children)

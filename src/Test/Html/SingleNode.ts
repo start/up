@@ -383,8 +383,8 @@ describe("Each footnote in a footnote block", () => {
 
     const html =
       '<dl data-up-footnotes>'
-      + '<dt id="footnote-2" data-up-footnote><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="footnote-3" data-up-footnote><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      + '<dt id="footnote-2"><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
