@@ -25,14 +25,14 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     })
 
     // Next, save the content and parse the underline.
-    let content: string
+    let rawContent: string
     let underline: string
 
     const hasContentAndUnderline = (
       // Parse the content
       consumer.consumeLine({
         pattern: NON_BLANK_PATTERN,
-        then: line => { content = line }
+        then: line => { rawContent = line }
       })
 
       // Parse the underline
@@ -66,14 +66,14 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
 
-    if (isLineFancyOutlineConvention(content, args.config)) {
+    if (isLineFancyOutlineConvention(rawContent, args.config)) {
       return false
     }
 
     const headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline)
     
     args.then(
-      [new HeadingNode(getInlineNodes(content, args.config), headingLevel)],
+      [new HeadingNode(getInlineNodes(rawContent, args.config), headingLevel)],
       consumer.lengthConsumed())
 
     return true

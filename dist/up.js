@@ -1944,11 +1944,11 @@ function getHeadingParser(headingLeveler) {
             pattern: STREAK_PATTERN,
             then: function (line) { optionalOverline = line; }
         });
-        var content;
+        var rawContent;
         var underline;
         var hasContentAndUnderline = (consumer.consumeLine({
             pattern: NON_BLANK_PATTERN,
-            then: function (line) { content = line; }
+            then: function (line) { rawContent = line; }
         })
             && consumer.consumeLine({
                 if: function (line) { return (STREAK_PATTERN.test(line)
@@ -1958,11 +1958,11 @@ function getHeadingParser(headingLeveler) {
         if (!hasContentAndUnderline) {
             return false;
         }
-        if (isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(content, args.config)) {
+        if (isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(rawContent, args.config)) {
             return false;
         }
         var headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline);
-        args.then([new HeadingNode_1.HeadingNode(getInlineNodes_1.getInlineNodes(content, args.config), headingLevel)], consumer.lengthConsumed());
+        args.then([new HeadingNode_1.HeadingNode(getInlineNodes_1.getInlineNodes(rawContent, args.config), headingLevel)], consumer.lengthConsumed());
         return true;
     };
 }
@@ -2449,13 +2449,13 @@ var getRemainingLinesOfListItem_1 = require('./getRemainingLinesOfListItem');
 var Patterns_1 = require('../Patterns');
 function parseUnorderedList(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var listItemsContents = [];
+    var rawListItemsContents = [];
     var _loop_1 = function() {
-        var listItemLines = [];
+        var rawListItemLines = [];
         var isLineBulleted = consumer.consumeLine({
             pattern: BULLET_PATTERN,
             if: function (line) { return !STREAK_PATTERN.test(line); },
-            then: function (line) { return listItemLines.push(line.replace(BULLET_PATTERN, '')); }
+            then: function (line) { return rawListItemLines.push(line.replace(BULLET_PATTERN, '')); }
         });
         if (!isLineBulleted) {
             return "break";
@@ -2464,12 +2464,12 @@ function parseUnorderedList(args) {
         getRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
             text: consumer.remainingText(),
             then: function (lines, lengthParsed, shouldTerminateList) {
-                listItemLines.push.apply(listItemLines, lines);
+                rawListItemLines.push.apply(rawListItemLines, lines);
                 consumer.advance(lengthParsed);
                 isListTerminated = shouldTerminateList;
             }
         });
-        listItemsContents.push(listItemLines.join('\n'));
+        rawListItemsContents.push(rawListItemLines.join('\n'));
         if (isListTerminated) {
             return "break";
         }
@@ -2478,11 +2478,11 @@ function parseUnorderedList(args) {
         var state_1 = _loop_1();
         if (state_1 === "break") break;
     }
-    if (!listItemsContents.length) {
+    if (!rawListItemsContents.length) {
         return false;
     }
-    var listItems = listItemsContents.map(function (listItemContents) {
-        return new UnorderedListItem_1.UnorderedListItem(getOutlineNodes_1.getOutlineNodes(listItemContents, args.headingLeveler, args.config));
+    var listItems = rawListItemsContents.map(function (rawContents) {
+        return new UnorderedListItem_1.UnorderedListItem(getOutlineNodes_1.getOutlineNodes(rawContents, args.headingLeveler, args.config));
     });
     args.then([new UnorderedListNode_1.UnorderedListNode(listItems)], consumer.lengthConsumed());
     return true;
