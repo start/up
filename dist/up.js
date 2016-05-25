@@ -1751,8 +1751,8 @@ var Parser = (function () {
             for (var _b = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _b < MEDIA_CONVENTIONS_1.length; _b++) {
                 var media = MEDIA_CONVENTIONS_1[_b];
                 if (token instanceof media.StartTokenType) {
-                    var descriptionToken = this.advanceToNextToken();
-                    var mediaEndToken = this.advanceToNextToken();
+                    var descriptionToken = this.getNextTokenAndAdvanceIndex();
+                    var mediaEndToken = this.getNextTokenAndAdvanceIndex();
                     var description = descriptionToken.description.trim();
                     var url = mediaEndToken.url.trim();
                     if (!url) {
@@ -1783,8 +1783,8 @@ var Parser = (function () {
         this.setResult({ isMissingTerminator: wasTerminatorSpecified });
         var _a;
     }
-    Parser.prototype.advanceToNextToken = function () {
-        return this.tokens[this.tokenIndex++];
+    Parser.prototype.getNextTokenAndAdvanceIndex = function () {
+        return this.tokens[++this.tokenIndex];
     };
     Parser.prototype.parse = function (args) {
         var UntilTokenType = args.UntilTokenType, isTerminatorOptional = args.isTerminatorOptional;

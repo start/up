@@ -158,10 +158,10 @@ class Parser {
       for (const media of MEDIA_CONVENTIONS) {
         if (token instanceof media.StartTokenType) {
           // The next token will be a media description token...
-          let descriptionToken = <MediaDescriptionToken>this.advanceToNextToken()
+          let descriptionToken = <MediaDescriptionToken>this.getNextTokenAndAdvanceIndex()
           
           // ... And the next token will be a media end token!
-          let mediaEndToken = <MediaEndToken>this.advanceToNextToken()
+          let mediaEndToken = <MediaEndToken>this.getNextTokenAndAdvanceIndex()
           
           // Alright. Now we can start producing our media syntax node.
           
@@ -206,8 +206,8 @@ class Parser {
     this.setResult({ isMissingTerminator: wasTerminatorSpecified })
   }
   
-  private advanceToNextToken(): Token {
-    return this.tokens[this.tokenIndex++]
+  private getNextTokenAndAdvanceIndex(): Token {
+    return this.tokens[++this.tokenIndex]
   }
 
   private parse(
