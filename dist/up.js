@@ -2161,19 +2161,19 @@ var HeadingLeveler_1 = require('./HeadingLeveler');
 var Patterns_1 = require('../Patterns');
 function parseBlockquote(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var blockquoteLines = [];
+    var rawBlockquoteLines = [];
     while (consumer.consumeLine({
         pattern: ALL_BLOCKQUOTE_DELIMITERS_PATTERN,
         if: isLineProperlyBlockquoted,
-        then: function (line) { return blockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, '')); }
+        then: function (line) { return rawBlockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, '')); }
     })) { }
-    if (!blockquoteLines.length) {
+    if (!rawBlockquoteLines.length) {
         return false;
     }
-    var blockquoteContent = blockquoteLines.join('\n');
+    var rawBlockquoteContent = rawBlockquoteLines.join('\n');
     var headingLeveler = new HeadingLeveler_1.HeadingLeveler();
     args.then([
-        new BlockquoteNode_1.BlockquoteNode(getOutlineNodes_1.getOutlineNodes(blockquoteContent, headingLeveler, args.config))], consumer.lengthConsumed());
+        new BlockquoteNode_1.BlockquoteNode(getOutlineNodes_1.getOutlineNodes(rawBlockquoteContent, headingLeveler, args.config))], consumer.lengthConsumed());
     return true;
 }
 exports.parseBlockquote = parseBlockquote;
