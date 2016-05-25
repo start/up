@@ -20,7 +20,8 @@ import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
-import { NakedUrlToken } from './Tokens/NakedUrlToken'
+import { NakedUrlStartToken } from './Tokens/NakedUrlStartToken'
+import { NakedUrlEndToken } from './Tokens/NakedUrlEndToken'
 import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
 import { PotentialRaisedVoiceEndToken } from './Tokens/PotentialRaisedVoiceEndToken'
 import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoiceStartOrEndToken'
@@ -36,9 +37,6 @@ export class Tokenizer {
   private currentChar: string
   private remainingText: string
   private isTouchingWordEnd: boolean
-
-  // This field is updated every time we add a new token.
-  private currentToken: Token
 
   // Any time we open a new convention, we add it to `openContexts`.
   //
@@ -316,14 +314,17 @@ export class Tokenizer {
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
       then: (urlProtocol) => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlToken(urlProtocol))
+        this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlStartToken(urlProtocol))
       }
     })
   }
 
   private tryToCloseNakedUrl(): boolean {
-    // Whitespace terminates naked URLs, but we don't actually advance past the whitespace character! We leave
-    // the whitespace to be matched by another convention (e.g. the leading space for footnote reference).
+    // Whitespace terminates naked URLs, but we don't advance past the whitespace character or do anything with it
+    // yet.
+    //
+    // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote reference, which
+    // consumes any leading whitespace).
     if (WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
       this.closeNakedUrl()
       return true
@@ -519,7 +520,6 @@ export class Tokenizer {
     this.openContexts = context.snapshot.openContexts
     this.bufferedText = context.snapshot.bufferedText
 
-    this.currentToken = last(this.tokens)
     this.updateComputedTextFields()
   }
 
@@ -580,11 +580,7 @@ export class Tokenizer {
   }
 
   private flushBufferedTextToNakedUrlToken(): void {
-    this.currentNakedUrlToken().urlAfterProtocol = this.flushBufferedText()
-  }
-
-  private currentNakedUrlToken(): NakedUrlToken {
-    return (<NakedUrlToken>this.currentToken)
+    this.addToken(new NakedUrlEndToken(this.flushBufferedText()))
   }
 
   private addTokenAfterFlushingBufferToPlainTextToken(token: Token): void {
@@ -722,7 +718,6 @@ export class Tokenizer {
   }
 
   private addToken(token: Token): void {
-    this.currentToken = token
     this.tokens.push(token)
   }
 

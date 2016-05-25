@@ -17,7 +17,8 @@ import { MediaEndToken } from './Tokens/MediaEndToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
 import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
-import { NakedUrlToken } from './Tokens/NakedUrlToken'
+import { NakedUrlEndToken } from './Tokens/NakedUrlEndToken'
+import { NakedUrlStartToken } from './Tokens/NakedUrlStartToken'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
@@ -106,15 +107,22 @@ class Parser {
         continue
       }
 
-      if (token instanceof NakedUrlToken) {
-        if (!token.urlAfterProtocol) {          
+      if (token instanceof NakedUrlStartToken) {
+        // The next token will always be a NakedUrlEndToken
+        const nakedUrlEndToken = <NakedUrlEndToken>this.getNextTokenAndAdvanceIndex()
+        
+        const protocol = token.protocol
+        const urlAfterProtocol = nakedUrlEndToken.urlAfterProtocol
+        const url = protocol + urlAfterProtocol
+        
+        if (!urlAfterProtocol) {          
           // As a rule, naked URLs consisting only of a protocol are treated as plain text.
-          this.nodes.push(new PlainTextNode(token.url()))
+          this.nodes.push(new PlainTextNode(url))
           continue
         }
         
-        const contents = [new PlainTextNode(token.urlAfterProtocol)]
-        this.nodes.push(new LinkNode(contents, token.url()))
+        const contents = [new PlainTextNode(urlAfterProtocol)]
+        this.nodes.push(new LinkNode(contents, url))
 
         continue
       }
