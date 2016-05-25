@@ -2375,7 +2375,6 @@ var isLineFancyOutlineConvention_1 = require('./isLineFancyOutlineConvention');
 function parseRegularLines(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
     var inlineNodesPerRegularLine = [];
-    var regularLineNodes = [];
     var terminatingNodes = [];
     var _loop_1 = function() {
         var inlineNodes;
@@ -2400,19 +2399,21 @@ function parseRegularLines(args) {
         if (state_1 === "break") break;
     }
     var lengthConsumed = consumer.lengthConsumed();
+    var regularLinesResultNode;
     switch (inlineNodesPerRegularLine.length) {
         case 0:
-            break;
+            args.then(terminatingNodes, lengthConsumed);
+            return true;
         case 1:
-            regularLineNodes = [new ParagraphNode_1.ParagraphNode(inlineNodesPerRegularLine[0])];
+            regularLinesResultNode = new ParagraphNode_1.ParagraphNode(inlineNodesPerRegularLine[0]);
             break;
         default: {
             var lineBlockLines = inlineNodesPerRegularLine.map(function (inlineNodes) { return new Line_1.Line(inlineNodes); });
-            regularLineNodes = [new LineBlockNode_1.LineBlockNode(lineBlockLines)];
+            regularLinesResultNode = new LineBlockNode_1.LineBlockNode(lineBlockLines);
             break;
         }
     }
-    args.then(regularLineNodes.concat(terminatingNodes), consumer.lengthConsumed());
+    args.then([regularLinesResultNode].concat(terminatingNodes), lengthConsumed);
     return true;
 }
 exports.parseRegularLines = parseRegularLines;

@@ -44,9 +44,8 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   // line blocks only examine each line individually, the line is accepted.
   //
   // TODO: Handle code blocks and description lists?
+  
   const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
-
-  let regularLineNodes: OutlineSyntaxNode[] = []
   let terminatingNodes: OutlineSyntaxNode[] = []
 
   while (true) {
@@ -103,25 +102,28 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
 
   const lengthConsumed = consumer.lengthConsumed()
 
+  let regularLinesResultNode: OutlineSyntaxNode
+
   switch (inlineNodesPerRegularLine.length) {
     case 0:
-      // If we only consumed only 1 line, and if that single line either produced no syntax nodes or
-      // consisted solely of a media node, then there aren't any other lines left over to produce a
-      // a paragraph or a line block.
-      break;
+      // If we only consumed only 1 line, and if that single line either produced no inline syntax
+      // nodes or consisted solely of media nodes, then there won't any other lines left over to
+      // produce a paragraph or a line block.
+      args.then(terminatingNodes, lengthConsumed)
+      return true
 
     case 1:
-      regularLineNodes = [new ParagraphNode(inlineNodesPerRegularLine[0])]
+      regularLinesResultNode = new ParagraphNode(inlineNodesPerRegularLine[0])
       break
 
     default: {
       const lineBlockLines = inlineNodesPerRegularLine.map(inlineNodes => new Line(inlineNodes))
-      regularLineNodes = [new LineBlockNode(lineBlockLines)]
+      regularLinesResultNode = new LineBlockNode(lineBlockLines)
       break
     }
   }
 
-  args.then(regularLineNodes.concat(terminatingNodes), consumer.lengthConsumed())
+  args.then([regularLinesResultNode].concat(terminatingNodes), lengthConsumed)
   return true
 }
 
