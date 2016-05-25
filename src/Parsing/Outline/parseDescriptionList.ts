@@ -19,7 +19,7 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 // Multiple terms can be associated with a single description.
 export function parseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
-  const listItemNodes: DescriptionListItem[] = []
+  const listItems: DescriptionListItem[] = []
   let lengthParsed = 0
 
   while (!consumer.done()) {
@@ -42,17 +42,17 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
       break
     }
 
-    const descriptionLines: string[] = []
+    const rawDescriptionLines: string[] = []
 
     // Let's parse the desription's first line
     const hasDescription = consumer.consumeLine({
       pattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
-      then: line => descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
+      then: line => rawDescriptionLines.push(line.replace(INDENTED_PATTERN, ''))
     })
 
     if (!hasDescription) {
-      // There wasn't a description, so our "term" was just a regular paragraph following the list.
+      // There wasn't a description, so our latest "term" was just a regular paragraph following the list.
       break
     }
     
@@ -61,33 +61,35 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     getRemainingLinesOfListItem({
       text: consumer.remainingText(),
       then: (lines, lengthParsed, shouldTerminateList) => {
-        descriptionLines.push(...lines)
+        rawDescriptionLines.push(...lines)
         consumer.advance(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })
     
-    // Alright, we have our description! Let's update our length parsed accordingly .
+    // Alright, we have our description! Let's update our length parsed accordingly.
     lengthParsed = consumer.lengthConsumed()
 
     const terms =
       rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))
     
+    const rawDescription = rawDescriptionLines.join('\n')
+    
     const description =
-      new Description(getOutlineNodes(descriptionLines.join('\n'), args.headingLeveler, args.config))
+      new Description(getOutlineNodes(rawDescription, args.headingLeveler, args.config))
 
-    listItemNodes.push(new DescriptionListItem(terms, description))
+    listItems.push(new DescriptionListItem(terms, description))
     
     if (isListTerminated) {
       break
     }
   }
 
-  if (!listItemNodes.length) {
+  if (!listItems.length) {
     return false
   }
 
-  args.then([new DescriptionListNode(listItemNodes)], lengthParsed)
+  args.then([new DescriptionListNode(listItems)], lengthParsed)
   return true
 }
 

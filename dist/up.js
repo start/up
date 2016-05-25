@@ -2224,7 +2224,7 @@ var Patterns_1 = require('../Patterns');
 var getRemainingLinesOfListItem_1 = require('./getRemainingLinesOfListItem');
 function parseDescriptionList(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
-    var listItemNodes = [];
+    var listItems = [];
     var lengthParsed = 0;
     var _loop_1 = function() {
         var rawTerms = [];
@@ -2241,11 +2241,11 @@ function parseDescriptionList(args) {
         if (!rawTerms.length) {
             return "break";
         }
-        var descriptionLines = [];
+        var rawDescriptionLines = [];
         var hasDescription = consumer.consumeLine({
             pattern: INDENTED_PATTERN,
             if: function (line) { return !BLANK_PATTERN.test(line); },
-            then: function (line) { return descriptionLines.push(line.replace(INDENTED_PATTERN, '')); }
+            then: function (line) { return rawDescriptionLines.push(line.replace(INDENTED_PATTERN, '')); }
         });
         if (!hasDescription) {
             return "break";
@@ -2254,15 +2254,16 @@ function parseDescriptionList(args) {
         getRemainingLinesOfListItem_1.getRemainingLinesOfListItem({
             text: consumer.remainingText(),
             then: function (lines, lengthParsed, shouldTerminateList) {
-                descriptionLines.push.apply(descriptionLines, lines);
+                rawDescriptionLines.push.apply(rawDescriptionLines, lines);
                 consumer.advance(lengthParsed);
                 isListTerminated = shouldTerminateList;
             }
         });
         lengthParsed = consumer.lengthConsumed();
         var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(getInlineNodes_1.getInlineNodes(term, args.config)); });
-        var description = new Description_1.Description(getOutlineNodes_1.getOutlineNodes(descriptionLines.join('\n'), args.headingLeveler, args.config));
-        listItemNodes.push(new DescriptionListItem_1.DescriptionListItem(terms, description));
+        var rawDescription = rawDescriptionLines.join('\n');
+        var description = new Description_1.Description(getOutlineNodes_1.getOutlineNodes(rawDescription, args.headingLeveler, args.config));
+        listItems.push(new DescriptionListItem_1.DescriptionListItem(terms, description));
         if (isListTerminated) {
             return "break";
         }
@@ -2271,10 +2272,10 @@ function parseDescriptionList(args) {
         var state_1 = _loop_1();
         if (state_1 === "break") break;
     }
-    if (!listItemNodes.length) {
+    if (!listItems.length) {
         return false;
     }
-    args.then([new DescriptionListNode_1.DescriptionListNode(listItemNodes)], lengthParsed);
+    args.then([new DescriptionListNode_1.DescriptionListNode(listItems)], lengthParsed);
     return true;
 }
 exports.parseDescriptionList = parseDescriptionList;
