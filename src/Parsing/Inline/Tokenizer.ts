@@ -8,7 +8,8 @@ import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last } from '../../CollectionHelpers'
-import { MediaToken } from './Tokens/MediaToken'
+import { MediaDescriptionToken } from './Tokens/MediaDescriptionToken'
+import { MediaEndToken } from './Tokens/MediaEndToken'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { TokenizableMedia } from './TokenizableMedia'
@@ -337,7 +338,7 @@ export class Tokenizer {
         goal: media.goal,
         pattern: media.startPattern,
         then: () => {
-          this.addTokenAfterFlushingBufferToPlainTextToken(new media.TokenType())
+          this.addTokenAfterFlushingBufferToPlainTextToken(new media.StartTokenType())
         }
       })
     })
@@ -382,7 +383,6 @@ export class Tokenizer {
     const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.countTokens + 1
 
     this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
-
     return true
   }
 
@@ -391,7 +391,7 @@ export class Tokenizer {
       goal: TokenizerGoal.MediaUrl,
       pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
       then: () => {
-        (<MediaToken>this.currentToken).description = this.flushBufferedText()
+        this.addToken(new MediaDescriptionToken(this.flushBufferedText()))
       }
     })
   }
@@ -412,7 +412,7 @@ export class Tokenizer {
     return this.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
-        (<MediaToken>this.currentToken).url = this.flushBufferedText()
+        this.addToken(new MediaEndToken(this.flushBufferedText()))
         this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.

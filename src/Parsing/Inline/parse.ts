@@ -12,6 +12,8 @@ import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
 import { LinkStartToken } from './Tokens/LinkStartToken'
 import { LinkEndToken } from './Tokens/LinkEndToken'
+import { MediaDescriptionToken } from './Tokens/MediaDescriptionToken'
+import { MediaEndToken } from './Tokens/MediaEndToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
 import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
@@ -154,9 +156,17 @@ class Parser {
 
 
       for (const media of MEDIA_CONVENTIONS) {
-        if (token instanceof media.TokenType) {
-          let description = token.description.trim()
-          const url = token.url.trim()
+        if (token instanceof media.StartTokenType) {
+          // The next token will be a media description token...
+          let descriptionToken = <MediaDescriptionToken>this.advanceToNextToken()
+          
+          // ... And the next token will be a media end token!
+          let mediaEndToken = <MediaEndToken>this.advanceToNextToken()
+          
+          // Alright. Now we can start producing our media syntax node.
+          
+          let description = descriptionToken.description.trim()
+          const url = mediaEndToken.url.trim()
 
           if (!url) {
             // If there's no URL, there's nothing meaningful to include in the document
@@ -194,6 +204,10 @@ class Parser {
     }
 
     this.setResult({ isMissingTerminator: wasTerminatorSpecified })
+  }
+  
+  private advanceToNextToken(): Token {
+    return this.tokens[this.tokenIndex++]
   }
 
   private parse(

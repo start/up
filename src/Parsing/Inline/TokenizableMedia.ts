@@ -1,11 +1,11 @@
 import { MediaConvention } from './MediaConvention'
-import { MediaTokenType } from './Tokens/MediaToken'
+import { TokenType } from './Tokens/TokenType'
 import { escapeForRegex, startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../Patterns'
 import { TokenizerGoal } from './TokenizerGoal'
 
 
 export class TokenizableMedia {
-  TokenType: MediaTokenType
+  StartTokenType: TokenType
   goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
@@ -14,8 +14,8 @@ export class TokenizableMedia {
     media: MediaConvention,
     localizedTerm: string
   ) {
-    this.TokenType = media.TokenType
-    this.goal = media.state
+    this.StartTokenType = media.StartTokenType
+    this.goal = media.goal
     
     this.startPattern = getPattern(
       escapeForRegex('[' + localizedTerm + ':') + ANY_WHITESPACE,
