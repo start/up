@@ -1,5 +1,5 @@
-export function getSortedUnderlineChars(text: string): string {
-  return text
+export function getSortedUnderlineChars(underline: string): string {
+  return underline
     .trim()
     .split('')
     .reduce((distinctChars, char) =>
