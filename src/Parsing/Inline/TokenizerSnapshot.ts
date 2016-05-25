@@ -1,23 +1,23 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerContext } from './TokenizerContext'
-
+import { Token } from './Tokens/Token'
 
 export class TokenizerSnapshot {
   textIndex: number
-  countTokens: number
+  tokens: Token[]
   openContexts: TokenizerContext[]
   bufferedText: string
 
   constructor(
     args: {
       textIndex: number
-      countTokens: number
+      tokens: Token[]
       openContexts: TokenizerContext[]
       bufferedText: string
     }
   ) {
     this.textIndex = args.textIndex
-    this.countTokens = args.countTokens
+    this.tokens = args.tokens.slice()
     this.openContexts = args.openContexts
     this.bufferedText = args.bufferedText
   }

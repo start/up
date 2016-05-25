@@ -381,7 +381,7 @@ export class Tokenizer {
     //
     // The token at `innermostSquareBrackeContext.countTokens` is the flushed PlainTextToken created when the
     // context was opened. The next token is the SquareBracketedStartToken we want to replace.
-    const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.countTokens + 1
+    const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.tokens.length + 1
 
     this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
     return true
@@ -471,7 +471,7 @@ export class Tokenizer {
       goal: args.goal,
       snapshot: new TokenizerSnapshot({
         textIndex: this.textIndex,
-        countTokens: this.tokens.length,
+        tokens: this.tokens,
         openContexts: this.openContexts.slice(),
         bufferedText: this.bufferedText
       })
@@ -516,7 +516,7 @@ export class Tokenizer {
     this.failedGoalTracker.registerFailure(context)
 
     this.textIndex = context.snapshot.textIndex
-    this.tokens.splice(context.snapshot.countTokens)
+    this.tokens = context.snapshot.tokens
     this.openContexts = context.snapshot.openContexts
     this.bufferedText = context.snapshot.bufferedText
 
