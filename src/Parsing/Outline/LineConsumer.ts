@@ -1,26 +1,26 @@
 export class LineConsumer {
-  private index = 0
-  private _remainingText: string
+  private textIndex = 0
+  private remainingText: string
 
-  constructor(private text: string) {
-    this.dirty()
+  constructor(private entireText: string) {
+    this.updateRemainingText()
   }
 
   advance(countCharacters: number): void {
-    this.index += countCharacters
-    this.dirty()
+    this.textIndex += countCharacters
+    this.updateRemainingText()
   }
 
   done(): boolean {
-    return this.index >= this.text.length
+    return this.textIndex >= this.entireText.length
   }
 
-  lengthConsumed(): number {
-    return this.index
+  countCharsConsumed(): number {
+    return this.textIndex
   }
 
-  remainingText(): string {
-    return this._remainingText
+  remainingLines(): string {
+    return this.remainingText
   }
 
   consumeLine(
@@ -38,8 +38,8 @@ export class LineConsumer {
     let lineWithoutTerminatingLineBreak: string
 
     // First, let's find the end of the current line
-    for (let i = this.index; i < this.text.length; i++) {
-      const char = this.text[i]
+    for (let i = this.textIndex; i < this.entireText.length; i++) {
+      const char = this.entireText[i]
 
       // Escaped line breaks don't end lines
       if (char === '\\') {
@@ -48,7 +48,7 @@ export class LineConsumer {
       }
 
       if (char === '\n') {
-        fullLine = this.text.substring(this.index, i + 1)
+        fullLine = this.entireText.substring(this.textIndex, i + 1)
         lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
         break
       }
@@ -56,7 +56,7 @@ export class LineConsumer {
 
     if (!fullLine) {
       // Well, we couldn't find a terminating line break! That must mean we're on the text's final line.
-      fullLine = lineWithoutTerminatingLineBreak = this.remainingText()
+      fullLine = lineWithoutTerminatingLineBreak = this.remainingLines()
     }
 
     let captures: string[] = []
@@ -84,8 +84,8 @@ export class LineConsumer {
     return true
   }
 
-  private dirty(): void {
-    this._remainingText = this.text.slice(this.index)
+  private updateRemainingText(): void {
+    this.remainingText = this.entireText.slice(this.textIndex)
   }
 }
 

@@ -37,7 +37,7 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
 
     // The line was indented and non-blank, so we know we need to include it
     countLinesIncluded = lines.length
-    lengthParsed = consumer.lengthConsumed()
+    lengthParsed = consumer.countCharsConsumed()
   }
 
   if (!lines.length) {
@@ -50,7 +50,7 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
   if (!shouldTerminateList) {
     // If we aren't terminating the list, we should return everything we consumed
     countLinesIncluded = lines.length
-    lengthParsed = consumer.lengthConsumed()
+    lengthParsed = consumer.countCharsConsumed()
   }
 
   const resultLines = lines

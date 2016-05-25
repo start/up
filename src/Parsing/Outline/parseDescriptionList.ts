@@ -59,7 +59,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     let isListTerminated = false
     
     getRemainingLinesOfListItem({
-      text: consumer.remainingText(),
+      text: consumer.remainingLines(),
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawDescriptionLines.push(...lines)
         consumer.advance(lengthParsed)
@@ -68,7 +68,7 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
     })
     
     // Alright, we have our description! Let's update our length parsed accordingly.
-    lengthParsed = consumer.lengthConsumed()
+    lengthParsed = consumer.countCharsConsumed()
 
     const terms =
       rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))

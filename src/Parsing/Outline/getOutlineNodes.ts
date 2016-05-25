@@ -42,7 +42,7 @@ export function getOutlineNodes(
 
       const wasConventionFound =
         parseOutlineConvention({
-          text: consumer.remainingText(),
+          text: consumer.remainingLines(),
           headingLeveler,
           config,
           then: (newNodes, lengthParsed) => {

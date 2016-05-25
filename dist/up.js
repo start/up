@@ -1865,17 +1865,17 @@ exports.HeadingLeveler = HeadingLeveler;
 },{"./getSortedUnderlineChars":61}],57:[function(require,module,exports){
 "use strict";
 var LineConsumer = (function () {
-    function LineConsumer(text) {
-        this.text = text;
+    function LineConsumer(entireText) {
+        this.entireText = entireText;
         this.index = 0;
-        this.dirty();
+        this.updateRemainingText();
     }
     LineConsumer.prototype.advance = function (countCharacters) {
         this.index += countCharacters;
-        this.dirty();
+        this.updateRemainingText();
     };
     LineConsumer.prototype.done = function () {
-        return this.index >= this.text.length;
+        return this.index >= this.entireText.length;
     };
     LineConsumer.prototype.lengthConsumed = function () {
         return this.index;
@@ -1889,14 +1889,14 @@ var LineConsumer = (function () {
         }
         var fullLine;
         var lineWithoutTerminatingLineBreak;
-        for (var i = this.index; i < this.text.length; i++) {
-            var char = this.text[i];
+        for (var i = this.index; i < this.entireText.length; i++) {
+            var char = this.entireText[i];
             if (char === '\\') {
                 i++;
                 continue;
             }
             if (char === '\n') {
-                fullLine = this.text.substring(this.index, i + 1);
+                fullLine = this.entireText.substring(this.index, i + 1);
                 lineWithoutTerminatingLineBreak = fullLine.slice(0, -1);
                 break;
             }
@@ -1921,8 +1921,8 @@ var LineConsumer = (function () {
         }
         return true;
     };
-    LineConsumer.prototype.dirty = function () {
-        this._remainingText = this.text.slice(this.index);
+    LineConsumer.prototype.updateRemainingText = function () {
+        this._remainingText = this.entireText.slice(this.index);
     };
     return LineConsumer;
 }());

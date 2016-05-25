@@ -32,7 +32,7 @@ export function parseBlankLineSeparation(args: OutlineParserArgs): boolean {
       : []
   )
 
-  args.then(nodes, consumer.lengthConsumed())
+  args.then(nodes, consumer.countCharsConsumed())
   return true
 }
 

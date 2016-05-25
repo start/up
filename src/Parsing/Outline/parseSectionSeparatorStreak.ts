@@ -13,7 +13,7 @@ export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
     return false
   }
 
-  args.then([new SectionSeparatorNode()], consumer.lengthConsumed())
+  args.then([new SectionSeparatorNode()], consumer.countCharsConsumed())
   return true
 }
 
