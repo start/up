@@ -10,6 +10,7 @@ describe('Text surrounded by (underlined and overlined) streaks of backticks', (
 \`\`\`
 const pie = 3.5
 \`\`\``
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const pie = 3.5'),
@@ -25,6 +26,7 @@ describe('A code block node', () => {
 // Escaping backticks in typescript...
 // Such a pain!
 \`\`\``
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
@@ -36,13 +38,13 @@ describe('A code block node', () => {
 
 describe("A code block node's contents", () => {
   it('has its indentation preserved', () => {
-    const text =
-      `
+    const text = `
 \`\`\`
 if (x < 0) {
   return false
 }
 \`\`\``
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
@@ -57,6 +59,7 @@ if (x < 0) {
 \`\`\`
 const lineBreak = "\\n"
 \`\`\``
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const lineBreak = "\\n"'),
