@@ -58,7 +58,7 @@ describe('A video with a relative URL containing spaces and no extension', () =>
 })
 
 
-describe('A video description', () => {  
+describe('A video description produced by square brackets', () => {  
   it('can contain matching square brackets', () => {
     expect(Up.toAst('[video: ghosts eating [luggage] -> http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
@@ -70,6 +70,40 @@ describe('A video description', () => {
     expect(Up.toAst('[video: [ghosts [eating]] [[luggage]] -> http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
         new VideoNode('[ghosts [eating]] [[luggage]]', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
+describe('A video description produced by parentheses', () => {  
+  it('can contain matching square brackets', () => {
+    expect(Up.toAst('(video: ghosts eating (luggage) -> http://example.com/?state=NE)')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('ghosts eating (luggage)', 'http://example.com/?state=NE'),
+      ]))
+  })
+  
+  it('can contain nested matching parentheses', () => {
+    expect(Up.toAst('(video: (ghosts (eating)) ((luggage)) -> http://example.com/?state=NE)')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('(ghosts (eating)) ((luggage))', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
+describe('A video description produced by curly brackets', () => {  
+  it('can contain matching square brackets', () => {
+    expect(Up.toAst('{video: ghosts eating {luggage} -> http://example.com/?state=NE}')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('ghosts eating {luggage}', 'http://example.com/?state=NE'),
+      ]))
+  })
+  
+  it('can contain nested matching curly brackets', () => {
+    expect(Up.toAst('(video: {ghosts {eating}} {{luggage}} -> http://example.com/?state=NE}')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('{ghosts {eating}} {{luggage}}', 'http://example.com/?state=NE'),
       ]))
   })
 })
