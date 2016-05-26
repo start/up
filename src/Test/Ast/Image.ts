@@ -6,7 +6,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-describe('Bracketed text starting with "image:" with a description pointing to a URL', () => {
+describe('Square bracketed text starting with "image:" with a description pointing to a URL', () => {
   it('produces an image node with the description and URL', () => {
     expect(Up.toAst('I would never stay here. [image: haunted house -> http://example.com/hauntedhouse.svg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -21,6 +21,26 @@ describe('Bracketed text starting with "image:" with a description pointing to a
 describe('An image that is the only convention on its line', () => {
   it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[image: haunted house -> http://example.com/hauntedhouse.svg]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+      ]))
+  })
+})
+
+
+describe('Parenthesized text starting with "image:" with a description pointing to a URL', () => {
+  it('produce an image node', () => {
+    expect(Up.toAst('(image: haunted house -> http://example.com/hauntedhouse.svg)')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+      ]))
+  })
+})
+
+
+describe('Curly bracketed text starting with "image:" with a description pointing to a URL', () => {
+  it('produce an image node', () => {
+    expect(Up.toAst('{image: haunted house -> http://example.com/hauntedhouse.svg}')).to.be.eql(
       new DocumentNode([
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
       ]))
