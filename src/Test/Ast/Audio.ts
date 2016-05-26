@@ -76,18 +76,52 @@ describe('An audio description', () => {
 })
 
 
-describe('An audio URL', () => {
+describe('The URL of a audio produced by square brackets', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toAst('[audio: ghostly howling -> http://example.com/?state=[NE]]')).to.be.eql(
+    expect(Up.toAst('[audio: ghosts eating luggage -> http://example.com/?state=[NE]]')).to.be.eql(
       new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/?state=[NE]'),
+        new AudioNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
   
-  it('can contain matching square brackets', () => {
-    expect(Up.toAst('[audio: ghostly howling -> http://example.com/?[state=[NE]]]')).to.be.eql(
+  it('can contain nested matching square brackets', () => {
+    expect(Up.toAst('[audio: ghosts eating luggage -> http://example.com/?[state=[NE]]]')).to.be.eql(
       new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/?[state=[NE]]'),
+        new AudioNode('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
+      ]))
+  })
+})
+
+
+describe('The URL of a audio produced by parentheses', () => {
+  it('can contain matching parentheses', () => {
+    expect(Up.toAst('(audio: ghosts eating luggage -> http://example.com/?state=(NE))')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghosts eating luggage', 'http://example.com/?state=(NE)'),
+      ]))
+  })
+  
+  it('can contain nested matching parentheses', () => {
+    expect(Up.toAst('(audio: ghosts eating luggage -> http://example.com/?(state=(NE)))')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghosts eating luggage', 'http://example.com/?(state=[NE))'),
+      ]))
+  })
+})
+
+
+describe('The URL of a audio produced by curly braces', () => {
+  it('can contain matching curly braces', () => {
+    expect(Up.toAst('{audio: ghosts eating luggage -> http://example.com/?state={NE}}')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghosts eating luggage', 'http://example.com/?state={NE}'),
+      ]))
+  })
+  
+  it('can contain nested matching curly braces', () => {
+    expect(Up.toAst('{audio: ghosts eating luggage -> http://example.com/?{state={NE}}}')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghosts eating luggage', 'http://example.com/?{state={NE}}'),
       ]))
   })
 })
