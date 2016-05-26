@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 
 
-describe('Bracketed text starting with "audio:" with a description pointing to a URL', () => {
+describe('Square bracketed text starting with "audio:" with a description pointing to a URL', () => {
   it('produces an audio node with the description and URL', () => {
     expect(Up.toAst('I would never stay in a house with these sounds. [audio: ghostly howling -> http://example.com/ghosts.ogg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -22,6 +22,26 @@ describe('Bracketed text starting with "audio:" with a description pointing to a
 describe('Audio that is the only convention on its line', () => {
   it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[audio: ghostly howling -> http://example.com/ghosts.ogg]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+      ]))
+  })
+})
+
+
+describe('Parenthesized text starting with "audio:" with a description pointing to a URL', () => {
+  it('produces an audio node', () => {
+    expect(Up.toAst('(audio: ghostly howling -> http://example.com/ghosts.ogg)')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+      ]))
+  })
+})
+
+
+describe('Curly bracketed text starting with "audio:" with a description pointing to a URL', () => {
+  it('produces an audio node', () => {
+    expect(Up.toAst('{audio: ghostly howling -> http://example.com/ghosts.ogg}')).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
       ]))
