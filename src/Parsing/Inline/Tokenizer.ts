@@ -472,7 +472,7 @@ export class Tokenizer {
       snapshot: new TokenizerSnapshot({
         textIndex: this.textIndex,
         tokens: this.tokens,
-        openContexts: this.openContexts.slice(),
+        openContexts: this.openContexts,
         bufferedText: this.bufferedText
       })
     })

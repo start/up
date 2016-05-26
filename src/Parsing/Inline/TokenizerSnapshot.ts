@@ -18,7 +18,7 @@ export class TokenizerSnapshot {
   ) {
     this.textIndex = args.textIndex
     this.tokens = args.tokens.slice()
-    this.openContexts = args.openContexts
+    this.openContexts = args.openContexts.slice()
     this.bufferedText = args.bufferedText
   }
 }

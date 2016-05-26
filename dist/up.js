@@ -906,7 +906,7 @@ var Tokenizer = (function () {
             snapshot: new TokenizerSnapshot_1.TokenizerSnapshot({
                 textIndex: this.textIndex,
                 tokens: this.tokens,
-                openContexts: this.openContexts.slice(),
+                openContexts: this.openContexts,
                 bufferedText: this.bufferedText
             })
         });
@@ -1151,7 +1151,7 @@ var TokenizerSnapshot = (function () {
     function TokenizerSnapshot(args) {
         this.textIndex = args.textIndex;
         this.tokens = args.tokens.slice();
-        this.openContexts = args.openContexts;
+        this.openContexts = args.openContexts.slice();
         this.bufferedText = args.bufferedText;
     }
     return TokenizerSnapshot;
