@@ -114,7 +114,7 @@ describe('A spoiler produced by parentheses', () => {
         new SpoilerNode([
           new PlainTextNode('you fight '),
           new SquareBracketedNode([
-            new PlainTextNode('[and beat]')
+            new PlainTextNode('(and beat)')
           ]),
           new PlainTextNode(' Gary')          
         ]),

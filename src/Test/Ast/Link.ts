@@ -112,7 +112,7 @@ describe('A link produced by square brackets', () => {
 
 
 describe('A link produced by parentheses', () => {
-  it('can contain square bracketed text', () => {
+  it('can contain parenthesized text', () => {
     expect(Up.toAst('I like ((only one) site -> https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
