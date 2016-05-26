@@ -34,7 +34,7 @@ describe('A footnote reference at the end of a paragraph', () => {
 })
 
 
-describe('A footnote that contains nested parenthesized text ending together with "))"', () => {
+describe('A footnote produced by parentheses that contains nested parenthesized text ending together with "))"', () => {
   it('produces a footnote containing the nested parenthesized text', () => {
     const text = "((I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?))"
 
@@ -46,6 +46,59 @@ describe('A footnote that contains nested parenthesized text ending together wit
           new PlainTextNode("(Well, I do, but I pretend not to.)"),
         ]),
         new PlainTextNode(')')
+      ]),
+      new PlainTextNode(' See?')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
+describe('A footnote produced by square brackets that contains nested square bracketed text ending together with "]]"', () => {
+  it('produces a footnote containing the nested parenthesized text', () => {
+    const text = "[[I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]]"
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode("I'm normal. "),
+      new SquareBracketedNode([
+        new PlainTextNode("[I don't eat cereal. "),
+        new SquareBracketedNode([
+          new PlainTextNode("[Well, I do, but I pretend not to.]"),
+        ]),
+        new PlainTextNode(']')
+      ]),
+      new PlainTextNode(' See?')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
+describe('A footnote produced by curly brackets that contains nested action text ending together with "}}"', () => {
+  it('produces a footnote containing the nested parenthesized text', () => {
+    const text = "{{I'm normal. {eats {dies}} See?}}"
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode("I'm normal. "),
+      new ActionNode([
+        new PlainTextNode("eats "),
+        new ActionNode([
+          new PlainTextNode("dies"),
+        ])
       ]),
       new PlainTextNode(' See?')
     ], 1)
@@ -108,7 +161,7 @@ describe('Nested square bracketed text ending together with "]]"', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new ParenthesizedNode([
+          new SquareBracketedNode([
             new PlainTextNode("(I don't eat cereal. "),
             new ParenthesizedNode([
               new PlainTextNode("(Well, I do, but I pretend not to.)"),
@@ -129,7 +182,7 @@ describe('Nested action text ending together with "}}"', () => {
       new DocumentNode([
         new ParagraphNode([
           new ParenthesizedNode([
-            new PlainTextNode("eats"),
+            new PlainTextNode("eats "),
             new ParenthesizedNode([
               new PlainTextNode("dies"),
             ])
