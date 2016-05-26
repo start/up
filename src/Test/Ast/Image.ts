@@ -75,18 +75,52 @@ describe('An image description', () => {
 })
 
 
-describe('An image URL', () => {
+describe('The URL of a image produced by square brackets', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toAst('[image: haunted house -> http://example.com/?state=[NE]]')).to.be.eql(
+    expect(Up.toAst('[image: ghosts eating luggage -> http://example.com/?state=[NE]]')).to.be.eql(
       new DocumentNode([
-        new ImageNode('haunted house', 'http://example.com/?state=[NE]'),
+        new ImageNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
   
   it('can contain nested matching square brackets', () => {
-    expect(Up.toAst('[image: haunted house -> http://example.com/?[state=[NE]]]')).to.be.eql(
+    expect(Up.toAst('[image: ghosts eating luggage -> http://example.com/?[state=[NE]]]')).to.be.eql(
       new DocumentNode([
-        new ImageNode('haunted house', 'http://example.com/?[state=[NE]]'),
+        new ImageNode('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
+      ]))
+  })
+})
+
+
+describe('The URL of a image produced by parentheses', () => {
+  it('can contain matching parentheses', () => {
+    expect(Up.toAst('(image: ghosts eating luggage -> http://example.com/?state=(NE))')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghosts eating luggage', 'http://example.com/?state=(NE)'),
+      ]))
+  })
+  
+  it('can contain nested matching parentheses', () => {
+    expect(Up.toAst('(image: ghosts eating luggage -> http://example.com/?(state=(NE)))')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghosts eating luggage', 'http://example.com/?(state=[NE))'),
+      ]))
+  })
+})
+
+
+describe('The URL of a image produced by curly braces', () => {
+  it('can contain matching curly braces', () => {
+    expect(Up.toAst('{image: ghosts eating luggage -> http://example.com/?state={NE}}')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghosts eating luggage', 'http://example.com/?state={NE}'),
+      ]))
+  })
+  
+  it('can contain nested matching curly braces', () => {
+    expect(Up.toAst('{image: ghosts eating luggage -> http://example.com/?{state={NE}}}')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghosts eating luggage', 'http://example.com/?{state={NE}}'),
       ]))
   })
 })
