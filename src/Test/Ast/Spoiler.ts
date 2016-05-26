@@ -5,9 +5,12 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-describe('Bracketed text starting with "spoiler:"', () => {
+describe('Square bracketed text starting with "spoiler:"', () => {
   it('is put inside a spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -19,6 +22,33 @@ describe('Bracketed text starting with "spoiler:"', () => {
       ]))
   })
 })
+
+describe('Parenthesized text starting with "spoiler:"', () => {
+  it('is put inside a spoiler node', () => {
+    expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+describe('Curly bracketed text starting with "spoiler:"', () => {
+  it('is put inside a spoiler node', () => {
+    expect(Up.toAst('After you beat the Elite Four, {SPOILER: you fight Gary}.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
 
 describe('A spoiler convention', () => {
   it('can use any capitalization of the word "spoiler"', () => {
@@ -51,6 +81,59 @@ describe('A spoiler convention', () => {
           new SpoilerNode([
             new PlainTextNode('Gary')
           ]),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A spoiler produced by square brackets', () => {
+  it('can contain square bracketed text', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight '),
+          new SquareBracketedNode([
+            new PlainTextNode('[and beat]')
+          ]),
+          new PlainTextNode(' Gary')          
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A spoiler produced by parentheses', () => {
+  it('can contain parenthesized text', () => {
+    expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight '),
+          new SquareBracketedNode([
+            new PlainTextNode('[and beat]')
+          ]),
+          new PlainTextNode(' Gary')          
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A spoiler produced by curly brackets', () => {
+  it('can contain action text', () => {
+    expect(Up.toAst('After you beat the Elite Four, {SPOILER: you still have to beat Gary {sigh}}.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you still have to beat Gary '),
+          new ActionNode([
+            new PlainTextNode('sigh')
+          ])          
         ]),
         new PlainTextNode('.')
       ]))

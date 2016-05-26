@@ -15,21 +15,3 @@ describe('A spoiler with " -> " inside', () => {
       ]))
   })
 })
-
-
-describe('A spoiler convention', () => {
-  it('can contain "square bracketed" text', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
-          new PlainTextNode('you fight '),
-          new SquareBracketedNode([
-            new PlainTextNode('[and beat]')
-          ]),
-          new PlainTextNode(' Gary')          
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
