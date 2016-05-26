@@ -43,6 +43,48 @@ describe('Inside a paragraph, text surrounded by 2 parentheses', () => {
 })
 
 
+describe('Text surrounded by 2 square brackets', () => {
+  it("produces a footnote node", () => {
+    const text = "I don't eat cereal. [[Well, I do, but I pretend not to.]] Never have."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
+describe('Text surrounded by 2 curly brackets', () => {
+  it("produces a footnote node", () => {
+    const text = "I don't eat cereal. {{Well, I do, but I pretend not to.}} Never have."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
 describe('A word followed by several spaces followed by a footnote', () => {
   it("produces a footnote node directly after the word", () => {
     const text = "I don't eat cereal.   ((Well, I do, but I pretend not to.))"
