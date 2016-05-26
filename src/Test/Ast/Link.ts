@@ -5,11 +5,41 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Bracketed text pointing to a URL', () => {
   it('produce a link node', () => {
     expect(Up.toAst('I like [this site -> https://stackoverflow.com]. I bet you do, too.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('. I bet you do, too.')
+      ]))
+  })
+})
+
+
+describe('Parenthesized text pointing to a URL', () => {
+  it('produce a link node', () => {
+    expect(Up.toAst('I like (this site -> https://stackoverflow.com). I bet you do, too.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('. I bet you do, too.')
+      ]))
+  })
+})
+
+
+describe('Curly bracketed text pointing to a URL', () => {
+  it('produce a link node', () => {
+    expect(Up.toAst('I like {this site -> https://stackoverflow.com}. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
@@ -61,8 +91,11 @@ describe("A link's contents", () => {
         new PlainTextNode('.')
       ]))
   })
-  
-  it('can contain bracketed text', () => {
+})
+
+
+describe('A link produced by square brackets', () => {
+  it('can contain square bracketed text', () => {
     expect(Up.toAst('I like [[only one] site -> https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -71,6 +104,40 @@ describe("A link's contents", () => {
             new PlainTextNode('[only one]')
           ]),
           new PlainTextNode(' site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A link produced by parentheses', () => {
+  it('can contain square bracketed text', () => {
+    expect(Up.toAst('I like ((only one) site -> https://stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new ParenthesizedNode([
+            new PlainTextNode('(only one)')
+          ]),
+          new PlainTextNode(' site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A link produced by curly brackets', () => {
+  it('can contain action text', () => {
+    expect(Up.toAst('I like {{faints} this site -> https://stackoverflow.com}.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new ParenthesizedNode([
+            new PlainTextNode('faints')
+          ]),
+          new PlainTextNode(' this site')
         ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
       ]))
