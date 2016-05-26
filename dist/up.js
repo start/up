@@ -810,7 +810,8 @@ var Tokenizer = (function () {
             return false;
         }
         var urlArrow = urlArrowMatchResult[0];
-        var innermostSquareBrackeContext = this.getInnermostContextWithGoal(TokenizerGoal_1.TokenizerGoal.SquareBracketed);
+        var innermostSquareBrackeContextIndex = this.getIndexOfInnermostContextWithGoal(TokenizerGoal_1.TokenizerGoal.SquareBracketed);
+        var innermostSquareBrackeContext = this.openContexts[innermostSquareBrackeContextIndex];
         if (!this.canTry(TokenizerGoal_1.TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
             return false;
         }
@@ -822,7 +823,10 @@ var Tokenizer = (function () {
         }
         this.advanceTextIndex(urlArrow.length);
         this.openContext({ goal: TokenizerGoal_1.TokenizerGoal.LinkUrl });
-        innermostSquareBrackeContext.goal = TokenizerGoal_1.TokenizerGoal.Link;
+        this.openContexts[innermostSquareBrackeContextIndex] = {
+            goal: TokenizerGoal_1.TokenizerGoal.Link,
+            snapshot: innermostSquareBrackeContext.snapshot
+        };
         var indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.tokens.length + 1;
         this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());
         return true;
@@ -901,14 +905,20 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.openContext = function (args) {
-        this.openContexts.push({
+        this.openContexts.push(this.getContext({ goal: args.goal }));
+    };
+    Tokenizer.prototype.getContext = function (args) {
+        return {
             goal: args.goal,
-            snapshot: new TokenizerSnapshot_1.TokenizerSnapshot({
-                textIndex: this.textIndex,
-                tokens: this.tokens,
-                openContexts: this.openContexts,
-                bufferedText: this.bufferedText
-            })
+            snapshot: this.getSnapshot()
+        };
+    };
+    Tokenizer.prototype.getSnapshot = function () {
+        return new TokenizerSnapshot_1.TokenizerSnapshot({
+            textIndex: this.textIndex,
+            tokens: this.tokens,
+            openContexts: this.openContexts,
+            bufferedText: this.bufferedText
         });
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
@@ -974,11 +984,10 @@ var Tokenizer = (function () {
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
-    Tokenizer.prototype.getInnermostContextWithGoal = function (goal) {
+    Tokenizer.prototype.getIndexOfInnermostContextWithGoal = function (goal) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_5 = this.openContexts[i];
-            if (context_5.goal === goal) {
-                return context_5;
+            if (this.openContexts[i].goal === goal) {
+                return i;
             }
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);

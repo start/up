@@ -354,8 +354,11 @@ export class Tokenizer {
 
     const [urlArrow] = urlArrowMatchResult
 
+    const innermostSquareBrackeContextIndex =
+      this.getIndexOfInnermostContextWithGoal(TokenizerGoal.SquareBracketed)
+      
     const innermostSquareBrackeContext =
-      this.getInnermostContextWithGoal(TokenizerGoal.SquareBracketed)
+      this.openContexts[innermostSquareBrackeContextIndex]
 
     if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
       // If we can't try a link at that location, it means we've already tried and failed to find the closing
@@ -375,7 +378,11 @@ export class Tokenizer {
     this.advanceTextIndex(urlArrow.length)
     this.openContext({ goal: TokenizerGoal.LinkUrl })
 
-    innermostSquareBrackeContext.goal = TokenizerGoal.Link
+    // Now that we've opened the link URL context, let's replace the square bracket context with a link context. 
+    this.openContexts[innermostSquareBrackeContextIndex] = {
+      goal: TokenizerGoal.Link,
+      snapshot: innermostSquareBrackeContext.snapshot
+    }
 
     // Finally, we need to replace the square bracket context's start token.
     //
@@ -467,15 +474,23 @@ export class Tokenizer {
   }
 
   private openContext(args: { goal: TokenizerGoal }): void {
-    this.openContexts.push({
+    this.openContexts.push(this.getContext({ goal: args.goal }))
+  }
+  
+  private getContext(args: { goal: TokenizerGoal }): TokenizerContext {
+    return {
       goal: args.goal,
-      snapshot: new TokenizerSnapshot({
+      snapshot: this.getSnapshot()
+    }
+  }
+  
+  private getSnapshot(): TokenizerSnapshot {
+    return new TokenizerSnapshot({
         textIndex: this.textIndex,
         tokens: this.tokens,
         openContexts: this.openContexts,
         bufferedText: this.bufferedText
       })
-    })
   }
 
   private resolveOpenContexts(): boolean {
@@ -567,12 +582,10 @@ export class Tokenizer {
     throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
-  private getInnermostContextWithGoal(goal: TokenizerGoal): TokenizerContext {
+  private getIndexOfInnermostContextWithGoal(goal: TokenizerGoal): number {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-
-      if (context.goal === goal) {
-        return context
+      if (this.openContexts[i].goal === goal) {
+        return i
       }
     }
 
