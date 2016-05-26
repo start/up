@@ -313,7 +313,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
-      then: (urlProtocol) => {
+      then: urlProtocol => {
         this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlStartToken(urlProtocol))
       }
     })
@@ -344,6 +344,7 @@ export class Tokenizer {
       })
     })
   }
+  
   private tryToConvertSquareBracketedContextToLink(): boolean {
     const urlArrowMatchResult =
       LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.remainingText)
