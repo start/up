@@ -76,7 +76,7 @@ describe('An audio description', () => {
 })
 
 
-describe('The URL of a audio produced by square brackets', () => {
+describe('The URL of audio produced by square brackets', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('[audio: ghosts eating luggage -> http://example.com/?state=[NE]]')).to.be.eql(
       new DocumentNode([
@@ -93,7 +93,7 @@ describe('The URL of a audio produced by square brackets', () => {
 })
 
 
-describe('The URL of a audio produced by parentheses', () => {
+describe('The URL of audio produced by parentheses', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toAst('(audio: ghosts eating luggage -> http://example.com/?state=(NE))')).to.be.eql(
       new DocumentNode([
@@ -110,7 +110,7 @@ describe('The URL of a audio produced by parentheses', () => {
 })
 
 
-describe('The URL of a audio produced by curly braces', () => {
+describe('The URL of audio produced by curly braces', () => {
   it('can contain matching curly braces', () => {
     expect(Up.toAst('{audio: ghosts eating luggage -> http://example.com/?state={NE}}')).to.be.eql(
       new DocumentNode([

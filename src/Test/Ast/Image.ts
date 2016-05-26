@@ -75,7 +75,7 @@ describe('An image description', () => {
 })
 
 
-describe('The URL of a image produced by square brackets', () => {
+describe('The URL of an image produced by square brackets', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('[image: ghosts eating luggage -> http://example.com/?state=[NE]]')).to.be.eql(
       new DocumentNode([
@@ -92,7 +92,7 @@ describe('The URL of a image produced by square brackets', () => {
 })
 
 
-describe('The URL of a image produced by parentheses', () => {
+describe('The URL of an image produced by parentheses', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toAst('(image: ghosts eating luggage -> http://example.com/?state=(NE))')).to.be.eql(
       new DocumentNode([
@@ -109,7 +109,7 @@ describe('The URL of a image produced by parentheses', () => {
 })
 
 
-describe('The URL of a image produced by curly braces', () => {
+describe('The URL of an image produced by curly braces', () => {
   it('can contain matching curly braces', () => {
     expect(Up.toAst('{image: ghosts eating luggage -> http://example.com/?state={NE}}')).to.be.eql(
       new DocumentNode([
