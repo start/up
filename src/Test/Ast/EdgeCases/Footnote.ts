@@ -8,6 +8,8 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
+import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 
@@ -27,26 +29,6 @@ describe('A footnote reference at the end of a paragraph', () => {
           footnote
         ]),
         new FootnoteBlockNode([footnote])
-      ]))
-  })
-})
-
-
-describe('Nested parenthesized text ending together with "))"', () => {
-  it('does not produce any footnote nodes', () => {
-    const text = "(I don't eat cereal. (Well, I do, but I pretend not to.))"
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new ParenthesizedNode([
-            new PlainTextNode("(I don't eat cereal. "),
-            new ParenthesizedNode([
-              new PlainTextNode("(Well, I do, but I pretend not to.)"),
-            ]),
-            new PlainTextNode(')')
-          ])
-        ]),
       ]))
   })
 })
@@ -92,6 +74,65 @@ describe('Nested parenthesized text starting with "((" but ending in different s
               new PlainTextNode("(I don't eat cereal.)")
             ]),
             new PlainTextNode(" Well, I do, but I pretend not to.)")
+          ])
+        ]),
+      ]))
+  })
+})
+
+
+describe('Nested parenthesized text ending together with "))"', () => {
+  it('does not produce any footnote nodes', () => {
+    const text = "(I don't eat cereal. (Well, I do, but I pretend not to.))"
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new ParenthesizedNode([
+            new PlainTextNode("(I don't eat cereal. "),
+            new ParenthesizedNode([
+              new PlainTextNode("(Well, I do, but I pretend not to.)"),
+            ]),
+            new PlainTextNode(')')
+          ])
+        ]),
+      ]))
+  })
+})
+
+
+describe('Nested square bracketed text ending together with "]]"', () => {
+  it('does not produce any footnote nodes', () => {
+    const text = "[I don't eat cereal. [Well, I do, but I pretend not to.]]"
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new ParenthesizedNode([
+            new PlainTextNode("(I don't eat cereal. "),
+            new ParenthesizedNode([
+              new PlainTextNode("(Well, I do, but I pretend not to.)"),
+            ]),
+            new PlainTextNode(')')
+          ])
+        ]),
+      ]))
+  })
+})
+
+
+describe('Nested action text ending together with "}}"', () => {
+  it('does not produce any footnote nodes', () => {
+    const text = "{eats {dies}}"
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new ParenthesizedNode([
+            new PlainTextNode("eats"),
+            new ParenthesizedNode([
+              new PlainTextNode("dies"),
+            ])
           ])
         ]),
       ]))
