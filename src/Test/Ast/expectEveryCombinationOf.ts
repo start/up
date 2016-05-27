@@ -7,13 +7,13 @@ export function expectEveryCombinationOf(
   args: {
     firstHalves: string[],
     secondHalves: string[],
-    toBe: DocumentNode
+    toProduce: DocumentNode
   }) {
-    const { firstHalves, secondHalves, toBe } = args
+    const { firstHalves, secondHalves, toProduce } = args
     
     for (const firstHalf of firstHalves) {
       for (const secondHalf of secondHalves) {
-        expect(firstHalf + secondHalf).to.be.equal(toBe)
+        expect(firstHalf + secondHalf).to.be.equal(toProduce)
       }
     }
   }

@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
+
+import { expectEveryCombinationOf } from './expectEveryCombinationOf'
 import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -9,36 +11,39 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-const linkUsingSquareBrackets =
-  'I like [this site][https://stackoverflow.com]. I bet you do, too.'
+describe('Parenthesized, square bracketed, or curly bracketed text followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
+  it('produces a link node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
+    expectEveryCombinationOf({
+      firstHalves: [
+        '[this site]',
+        '(this site)',
+        '{this site}'
+      ],
+      secondHalves: [
+        '[https://stackoverflow.com]',
+        '(https://stackoverflow.com)',
+        '{https://stackoverflow.com}'
+      ],
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+      ])
+    })
+  })
+})
 
 
-describe('Square bracketed text immediately followed by a square bracketed URL', () => {
-  it('produces a link node', () => {
-    expect(Up.toAst(linkUsingSquareBrackets)).to.be.eql(
+describe('A link', () => {
+  it('can appear in the middle of a sentence', () => {
+    expect(Up.toAst('I like [this site][https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
           new PlainTextNode('this site')
         ], 'https://stackoverflow.com'),
-        new PlainTextNode('. I bet you do, too.')
+        new PlainTextNode('.')
       ]))
-  })
-})
-
-
-describe('Parenthesized text immediately followed by a parenthesized URL', () => {
-  it('produces a link node', () => {
-    const linkUsingParentheses = 'I like (this site)(https://stackoverflow.com). I bet you do, too.'
-    expect(Up.toAst(linkUsingSquareBrackets)).to.be.eql(Up.toAst(linkUsingSquareBrackets))
-  })
-})
-
-
-describe('Curly bracketed text immediatey followed by a curly bracketed URL', () => {
-  it('produces a link node', () => {
-    const linkUsingCurlyBrackets = 'I like {this site}{https://stackoverflow.com}. I bet you do, too.'
-    expect(Up.toAst(linkUsingSquareBrackets)).to.be.eql(Up.toAst(linkUsingCurlyBrackets))
   })
 })
 
