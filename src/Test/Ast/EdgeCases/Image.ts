@@ -12,7 +12,7 @@ import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 describe('An image without a description', () => {
   it('has its URL treated as its description', () => {
-    expect(Up.toAst('[image: -> http://example.com/hauntedhouse.svg]')).to.be.eql(
+    expect(Up.toAst('[image:][ttp://example.com/hauntedhouse.svg]')).to.be.eql(
       new DocumentNode([
         new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
       ]))
@@ -22,7 +22,7 @@ describe('An image without a description', () => {
 
 describe('An image with a blank description', () => {
   it('has its URL treated as its description', () => {
-    expect(Up.toAst('[image:\t   -> http://example.com/hauntedhouse.svg]')).to.be.eql(
+    expect(Up.toAst('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.be.eql(
       new DocumentNode([
         new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
       ]))
@@ -32,7 +32,7 @@ describe('An image with a blank description', () => {
 
 describe('An image with a blank URL', () => {
   it('is not included in the document', () => {
-    expect(Up.toAst('[image: haunted house ->    \t]')).to.be.eql(
+    expect(Up.toAst('[image: haunted house][   \t]')).to.be.eql(
       new DocumentNode([]))
   })
 })
@@ -42,7 +42,7 @@ describe('A paragraph directly followed by an image on its own line', () => {
   it('produces a pagraph node followed by an image node, not a line block', () => {
     const text = `
 Do not pour the spiders into your sister's cereal.
-[image: sister arraigned on charges -> http://example.com/court.jpg]`
+[image: sister arraigned on charges][http://example.com/court.jpg]`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
@@ -54,15 +54,17 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid image convention prematurely terminated by an unmatched closing bracket in its description', () => {
+describe('An otherwise valid image convention with a space between its bracketed description and its bracketed URL', () => {
   it('is treated as plain text', () => {
-    expect(Up.toAst('[image: dank meme] -> 8]')).to.be.eql(
+    expect(Up.toAst('[image: maymay] [o_o]')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new SquareBracketedNode([
-            new PlainTextNode('[image: dank meme]')
+            new PlainTextNode('[image: maymay]')
           ]),
-          new PlainTextNode(' -> 8]')
+          new SquareBracketedNode([
+            new PlainTextNode('[o_o]')
+          ]),
         ])
       ]))
   })
@@ -71,7 +73,7 @@ describe('An otherwise valid image convention prematurely terminated by an unmat
 
 describe("Unmatched opening parentheses in an image URL", () => {
   it('do not affect any text that follows the link', () => {
-    const text = '(([image: West Virginia exit polling -> https://example.com/a(normal(url]))'
+    const text = '(([image: West Virginia exit polling][https://example.com/a(normal(url]))'
 
     const footnote = new FootnoteNode([
       new ImageNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
