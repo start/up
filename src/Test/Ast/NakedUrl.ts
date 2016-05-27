@@ -105,7 +105,7 @@ describe('A naked URL', () => {
   })
 
   it("can be inside a link", () => {
-    expect(Up.toAst('[https://inner.example.com/fake -> https://outer.example.com/real]')).to.be.eql(
+    expect(Up.toAst('[https://inner.example.com/fake][https://outer.example.com/real]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new LinkNode([
