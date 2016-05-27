@@ -42,7 +42,7 @@ describe('A paragraph with 2 separate instances of overlapped conventions', () =
 
 describe('A paragraph with 2 (separately!) overlapped links', () => {
   it('produces the correct nodes for each', () => {
-    const text = 'I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.'
+    const text = 'I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
@@ -75,7 +75,7 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
 describe('A link and a spoiler using the same type of brackets', () => {
   it("can overlap (assuming the link starts first)", () => {
     const text =
-      'In Pokémon Red, [Gary Oak [SPOILER: loses to Ash Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly] throughout the game.'
+      'In Pokémon Red, [Gary Oak [SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly] throughout the game.'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([

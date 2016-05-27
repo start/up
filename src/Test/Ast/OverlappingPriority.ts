@@ -17,7 +17,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 describe('Overlapped emphasized and linked text', () => {
   it('splits the emphasis node, not the link node', () => {
-    expect(Up.toAst('I do *not [care* at -> https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
+    expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
@@ -37,7 +37,7 @@ describe('Overlapped emphasized and linked text', () => {
 
 describe('Overlapped linked and emphasized text', () => {
   it('splits the emphasis node, not the link node', () => {
-    expect(Up.toAst('This [trash *can -> https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
+    expect(Up.toAst('This [trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -97,7 +97,7 @@ describe('Overlapped stressed and action text', () => {
 
 describe('Action text that overlaps a link', () => {
   it("splits the link node, not the action node", () => {
-    expect(Up.toAst('{sighs [Painfully} Midwestern Records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records]')).to.be.eql(
+    expect(Up.toAst('{sighs [Painfully} Midwestern Records][https://en.wikipedia.org/wiki/Painfully_Midwestern_Records]')).to.be.eql(
       insideDocumentAndParagraph([
         new ActionNode([
           new PlainTextNode('sighs '),
@@ -116,7 +116,7 @@ describe('Action text that overlaps a link', () => {
 
 describe('A link that overlaps action text', () => {
   it("splits the link node, not the action node", () => {
-    expect(Up.toAst('[Painfully Midwestern {Records -> https://en.wikipedia.org/wiki/Painfully_Midwestern_Records] furiously}')).to.be.eql(
+    expect(Up.toAst('[Painfully Midwestern {Records][https://en.wikipedia.org/wiki/Painfully_Midwestern_Records] furiously}')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Painfully Midwestern ')
@@ -135,7 +135,7 @@ describe('A link that overlaps action text', () => {
 
 describe('A spoiler that overlaps a link', () => {
   it("splits the link node, not the spoiler node", () => {
-    expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+    expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('Gary loses to '),
@@ -155,7 +155,7 @@ describe('A spoiler that overlaps a link', () => {
 describe('A link that overlaps a spoiler', () => {
   it("splits the link node, not the spoiler node", () => {
     const text =
-      'In Pokémon Red, [Gary Oak {SPOILER: loses to Ash Ketchum -> http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
+      'In Pokémon Red, [Gary Oak {SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
