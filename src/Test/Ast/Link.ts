@@ -10,7 +10,6 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-
 describe('Bracketed/parenthesized text followed immediately by a bracketed/parenthesized URL', () => {
   it('produces a link node', () => {
     expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
