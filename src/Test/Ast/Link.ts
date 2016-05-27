@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import Up from '../../index'
-
 import { expectEveryCombinationOf } from './expectEveryCombinationOf'
 import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
@@ -12,7 +11,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 
-describe('Bracketed text folloed immediately by a bracketed URL', () => {
+describe('Bracketed/parenthesized text followed immediately by a bracketed/parenthesized URL', () => {
   it('produces a link node', () => {
     expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
