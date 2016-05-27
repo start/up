@@ -10,6 +10,7 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 
 describe('Bracketed text followed by a space followed by a bracketed URL', () => {
@@ -23,6 +24,41 @@ describe('Bracketed text followed by a space followed by a bracketed URL', () =>
         new SquareBracketedNode([
           new PlainTextNode('[o_o]')
         ]),
+      ]))
+  })
+})
+
+
+describe('An otherwise valid link with mismatched brackets surrounding its description', () => {
+  it('does not produce a link node', () => {
+    expect(Up.toAst('I like [this site}(https://stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like [this site}'),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('stackoverflow.com')
+          ], 'https://stackoverflow.com'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('An otherwise valid link with mismatched brackets surrounding its URL', () => {
+  it('does not produce a link node', () => {
+    expect(Up.toAst('I like [this site][https://stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new SquareBracketedNode([
+          new PlainTextNode('[this site]')
+        ]),
+        new PlainTextNode('['),
+        new LinkNode([
+          new PlainTextNode('stackoverflow.com).')
+        ], 'https://stackoverflow.com).'),
       ]))
   })
 })
