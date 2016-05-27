@@ -33,9 +33,9 @@ describe('Parenthesized, square bracketed, or curly bracketed text starting with
   it('produces a video node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
     expectEveryCombinationOf({
       firstHalves: [
-        '[ghosts eating luggage]',
-        '(ghosts eating luggage)',
-        '{ghosts eating luggage}'
+        '[video: ghosts eating luggage]',
+        '(video: ghosts eating luggage)',
+        '{video: ghosts eating luggage}'
       ],
       secondHalves: [
         '[http://example.com/poltergeists.webm]',
@@ -43,7 +43,7 @@ describe('Parenthesized, square bracketed, or curly bracketed text starting with
         '{http://example.com/poltergeists.webm}'
       ],
       toProduce: insideDocumentAndParagraph([
-        new VideoNode('ghosts eating luggage', 'https://stackoverflow.com'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
       ])
     })
   })
@@ -146,14 +146,14 @@ describe("A video URL (enclosed by parentheses)", () => {
 
 
 describe("A video URL (enclosed by square brackets)", () => {
-  it('can contain matching curly braces', () => {
+  it('can contain matching curly brackets', () => {
     expect(Up.toAst('[video: ghosts eating luggage]{http://example.com/?state={NE}}')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating luggage', 'http://example.com/?state={NE}'),
       ]))
   })
   
-  it('can contain nested matching curly braces', () => {
+  it('can contain nested matching curly brackets', () => {
     expect(Up.toAst('[video: ghosts eating luggage]{http://example.com/?{state={NE}}}')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating luggage', 'http://example.com/?{state={NE}}'),
