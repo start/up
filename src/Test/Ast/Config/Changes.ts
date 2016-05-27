@@ -66,8 +66,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "audio" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[listen: chanting at Nevada caucus -> https://example.com/audio.ogg]',
-    textForDefaultSettings: '[audio: chanting at Nevada caucus -> https://example.com/audio.ogg]',
+    text: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    textForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     configChanges: {
       i18n: {
         terms: { audio: 'listen' }
@@ -84,8 +84,8 @@ describe('The "audio" config term', () => {
 
 describe('The "image" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[see: Chrono Cross logo -> https://example.com/cc.png]',
-    textForDefaultSettings: '[image: Chrono Cross logo -> https://example.com/cc.png]',
+    text: '[see: Chrono Cross logo][https://example.com/cc.png]',
+    textForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
     configChanges: {
       i18n: {
         terms: { image: 'see' }
@@ -102,8 +102,8 @@ describe('The "image" config term', () => {
 
 describe('The "video" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[watch: Nevada caucus footage -> https://example.com/video.webm]',
-    textForDefaultSettings: '[video: Nevada caucus footage -> https://example.com/video.webm]',
+    text: '[watch: Nevada caucus footage][https://example.com/video.webm]',
+    textForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
     configChanges: {
       i18n: {
         terms: { video: 'watch' }

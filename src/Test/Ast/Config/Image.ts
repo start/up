@@ -13,7 +13,7 @@ describe('The term that represents image conventions', () => {
     })
     
   it('comes from the "audio" config term', () => {
-    const text = '[see: Chrono Cross logo -> https://example.com/cc.png]'
+    const text = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -23,8 +23,8 @@ describe('The term that represents image conventions', () => {
   })
     
   it('is always case insensitive', () => {
-    const lowercase = '[see: Chrono Cross logo -> https://example.com/cc.png]'
-    const misedCase = '[SeE: Chrono Cross logo -> https://example.com/cc.png]'
+    const lowercase = '[see: Chrono Cross logo][https://example.com/cc.png]'
+    const misedCase = '[SeE: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(up.toAst(misedCase)).to.be.eql(up.toAst(lowercase))
   })

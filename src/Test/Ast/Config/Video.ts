@@ -13,7 +13,7 @@ describe('The term that represents video conventions', () => {
     })
     
   it('comes from the "video" config term', () => {
-    const text = '[watch: Nevada caucus footage -> https://example.com/video.webm]'
+    const text = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -23,8 +23,8 @@ describe('The term that represents video conventions', () => {
   })
     
   it('is always case insensitive', () => {
-    const lowercase = '[watch: Nevada caucus footage -> https://example.com/video.webm]'
-    const mixedCase = '[WaTCH: Nevada caucus footage -> https://example.com/video.webm]'
+    const lowercase = '[watch: Nevada caucus footage][https://example.com/video.webm]'
+    const mixedCase = '[WaTCH: Nevada caucus footage][https://example.com/video.webm]'
 
     expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
   })
