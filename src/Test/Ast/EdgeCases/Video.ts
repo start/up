@@ -12,7 +12,7 @@ import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 describe('A video without a description', () => {
   it('has its URL treated as its description', () => {
-    expect(Up.toAst('[video: -> http://example.com/poltergeists.webm]')).to.be.eql(
+    expect(Up.toAst('[video:][http://example.com/poltergeists.webm]')).to.be.eql(
       new DocumentNode([
         new VideoNode('http://example.com/poltergeists.webm', 'http://example.com/poltergeists.webm')
       ]))
@@ -22,7 +22,7 @@ describe('A video without a description', () => {
 
 describe('A video with a blank description', () => {
   it('has its URL treated as its description', () => {
-    expect(Up.toAst('[video:  \t  -> http://example.com/poltergeists.webm]')).to.be.eql(
+    expect(Up.toAst('[video:  \t ][http://example.com/poltergeists.webm]')).to.be.eql(
       new DocumentNode([
         new VideoNode('http://example.com/poltergeists.webm', 'http://example.com/poltergeists.webm')
       ]))
@@ -32,7 +32,7 @@ describe('A video with a blank description', () => {
 
 describe('A video with a blank URL', () => {
   it('is not included in the document', () => {
-    expect(Up.toAst('[video: ghosts eating luggage ->    \t  ]')).to.be.eql(
+    expect(Up.toAst('[video: ghosts eating luggage][   \t  ]')).to.be.eql(
       new DocumentNode([]))
   })
 })
@@ -42,7 +42,7 @@ describe('A paragraph directly followed by a video on its own line', () => {
   it('produces a pagraph node followed by a video node, not a line block', () => {
     const text = `
 Do not pour the spiders into your sister's cereal.
-[video: spiders crawling out of mouth -> http://example.com/spiders.webm]`
+[video: spiders crawling out of mouth][http://example.com/spiders.webm]`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
@@ -54,9 +54,9 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid video convention prematurely terminated by an unmatched closing bracket in its description', () => {
+describe('An otherwise valid video convention with a space between its bracketed description and its bracketed URL', () => {
   it('is treated as plain text', () => {
-    expect(Up.toAst('[video: on] -> 8]')).to.be.eql(
+    expect(Up.toAst('[video: on] [-_o]')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new SquareBracketedNode([
@@ -71,7 +71,7 @@ describe('An otherwise valid video convention prematurely terminated by an unmat
 
 describe("Unmatched opening parentheses in a video URL", () => {
   it('do not affect any text that follows the link', () => {
-    const text = '(([video: West Virginia exit polling -> https://example.com/a(normal(url]))'
+    const text = '(([video: West Virginia exit polling][https://example.com/a(normal(url]))'
 
     const footnote = new FootnoteNode([
       new VideoNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
