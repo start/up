@@ -11,6 +11,21 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
+
+describe('Bracketed text folloed immediately by a bracketed URL', () => {
+  it('produces a link node', () => {
+    expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
 describe('Parenthesized, square bracketed, or curly bracketed text followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
   it('produces a link node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
     expectEveryCombinationOf({
@@ -30,20 +45,6 @@ describe('Parenthesized, square bracketed, or curly bracketed text followed imme
         ], 'https://stackoverflow.com'),
       ])
     })
-  })
-})
-
-
-describe('A link', () => {
-  it('can appear in the middle of a sentence', () => {
-    expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('this site')
-        ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
-      ]))
   })
 })
 
