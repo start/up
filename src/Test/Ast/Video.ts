@@ -42,9 +42,8 @@ describe('Parenthesized, square bracketed, or curly bracketed text starting with
         '(http://example.com/poltergeists.webm)',
         '{http://example.com/poltergeists.webm}'
       ],
-      toProduce: insideDocumentAndParagraph([
+      toProduce:
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-      ])
     })
   })
 })

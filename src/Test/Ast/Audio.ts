@@ -1,13 +1,13 @@
 import { expect } from 'chai'
 import Up from '../../index'
+import { expectEveryCombinationOf } from './expectEveryCombinationOf'
 import { insideDocumentAndParagraph } from './Helpers'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 
 
-describe('Square bracketed text starting with "audio:" with a description pointing to a URL', () => {
+describe('Bracketed/parenthesized text starting with "audio:" followed by a bracketed/parenthesized URL', () => {
   it('produces an audio node with the description and URL', () => {
     expect(Up.toAst('I would never stay in a house with these sounds. [audio: ghostly howling -> http://example.com/ghosts.ogg] Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -29,22 +29,22 @@ describe('Audio that is the only convention on its line', () => {
 })
 
 
-describe('Parenthesized text starting with "audio:" with a description pointing to a URL', () => {
-  it('produces an audio node', () => {
-    expect(Up.toAst('(audio: ghostly howling -> http://example.com/ghosts.ogg)')).to.be.eql(
-      new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
-      ]))
-  })
-})
-
-
-describe('Curly bracketed text starting with "audio:" with a description pointing to a URL', () => {
-  it('produces an audio node', () => {
-    expect(Up.toAst('{audio: ghostly howling -> http://example.com/ghosts.ogg}')).to.be.eql(
-      new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
-      ]))
+describe('Parenthesized, square bracketed, or curly bracketed text starting with "image:" followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
+  it('produces a video node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
+    expectEveryCombinationOf({
+      firstHalves: [
+        '[audio: ghostly howling]',
+        '(audio: ghostly howling)',
+        '{audio: ghostly howling}'
+      ],
+      secondHalves: [
+        '[http://example.com/ghosts.ogg]',
+        '(http://example.com/ghosts.ogg)',
+        '{http://example.com/ghosts.ogg}'
+      ],
+      toProduce: 
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+    })
   })
 })
 
@@ -59,16 +59,33 @@ describe('Audio with a relative URL containing spaces and no extension', () => {
 })
 
 
-describe('An audio description', () => {
+describe('An audio description (enclosed in parentheses)', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toAst('[audio: [ghostly] howling -> http://example.com/?state=NE]')).to.be.eql(
+    expect(Up.toAst('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('(ghostly) howling', 'http://example.com/?state=NE'),
+      ]))
+  })
+  
+  it('can contain nested matching parentheses', () => {
+    expect(Up.toAst('(audio: ((ghostly) howling))[http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('((ghostly) howling)', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
+describe('An audio description (enclosed in square brackets)', () => {
+  it('can contain matching square brackets', () => {
+    expect(Up.toAst('[audio: [ghostly] howling](http://example.com/?state=NE)')).to.be.eql(
       new DocumentNode([
         new AudioNode('[ghostly] howling', 'http://example.com/?state=NE'),
       ]))
   })
   
   it('can contain nested matching square brackets', () => {
-    expect(Up.toAst('[audio: [[ghostly] howling] -> http://example.com/?state=NE]')).to.be.eql(
+    expect(Up.toAst('[audio: [[ghostly] howling]](http://example.com/?state=NE)')).to.be.eql(
       new DocumentNode([
         new AudioNode('[[ghostly] howling]', 'http://example.com/?state=NE'),
       ]))
@@ -76,16 +93,33 @@ describe('An audio description', () => {
 })
 
 
-describe('The URL of audio produced by square brackets', () => {
+describe('An audio description (enclosed in curly brackets)', () => {
+  it('can contain matching curly brackets', () => {
+    expect(Up.toAst('{audio: {ghostly} howling}(http://example.com/?state=NE)')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('{ghostly} howling', 'http://example.com/?state=NE'),
+      ]))
+  })
+  
+  it('can contain nested matching curly brackets', () => {
+    expect(Up.toAst('{audio: {{ghostly} howling}}(http://example.com/?state=NE)')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('{{ghostly} howling}', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
+describe('An audio URL (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toAst('[audio: ghosts eating luggage -> http://example.com/?state=[NE]]')).to.be.eql(
+    expect(Up.toAst('(audio: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.be.eql(
       new DocumentNode([
         new AudioNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
   
   it('can contain nested matching square brackets', () => {
-    expect(Up.toAst('[audio: ghosts eating luggage -> http://example.com/?[state=[NE]]]')).to.be.eql(
+    expect(Up.toAst('(audio: ghosts eating luggage](http://example.com/?[state=[NE]]]')).to.be.eql(
       new DocumentNode([
         new AudioNode('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
       ]))
@@ -93,7 +127,7 @@ describe('The URL of audio produced by square brackets', () => {
 })
 
 
-describe('The URL of audio produced by parentheses', () => {
+describe('An audio URL (enclosed in curly parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toAst('(audio: ghosts eating luggage -> http://example.com/?state=(NE))')).to.be.eql(
       new DocumentNode([
@@ -110,7 +144,7 @@ describe('The URL of audio produced by parentheses', () => {
 })
 
 
-describe('The URL of audio produced by curly braces', () => {
+describe('An audio URL (enclosed in curly brackets)', () => {
   it('can contain matching curly braces', () => {
     expect(Up.toAst('{audio: ghosts eating luggage -> http://example.com/?state={NE}}')).to.be.eql(
       new DocumentNode([

@@ -1,13 +1,13 @@
 import { expect } from 'chai'
 import Up from '../../index'
 
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 
 export function expectEveryCombinationOf(
   args: {
     firstHalves: string[],
     secondHalves: string[],
-    toProduce: DocumentNode
+    toProduce: SyntaxNode
   }) {
     const { firstHalves, secondHalves, toProduce } = args
     
