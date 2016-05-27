@@ -75,14 +75,14 @@ describe('An otherwise valid image convention with a space between its bracketed
 
 describe('An otherwise valid image convention with mismatched brackets surrounding its description', () => {
   it('does not produce an image node', () => {
-    expect(Up.toAst('I like [image: ghosts}(http://example.com/ghosts.ogg).')).to.be.eql(
+    expect(Up.toAst('I like [image: ghosts}(http://example.com/ghosts.svg).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like [image: ghosts}'),
         new ParenthesizedNode([
           new PlainTextNode('('),
           new LinkNode([
-            new PlainTextNode('example.com/ghosts.ogg')
-          ], 'http://example.com/ghosts.ogg'),
+            new PlainTextNode('example.com/ghosts.svg')
+          ], 'http://example.com/ghosts.svg'),
           new PlainTextNode(')'),
         ]),
         new PlainTextNode('.')
