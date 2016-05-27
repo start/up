@@ -91,7 +91,7 @@ describe('An otherwise valid audio convention with mismatched brackets surroundi
 
 
 describe('An otherwise valid audio convention with mismatched brackets surrounding its URL', () => {
-  it('does not produce a link node', () => {
+  it('does not produce an audio node', () => {
     expect(Up.toAst('I like [audio: ghosts][http://example.com/ghosts.ogg).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
