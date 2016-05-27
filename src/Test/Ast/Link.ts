@@ -36,7 +36,7 @@ describe('Parenthesized, square bracketed, or curly bracketed text followed imme
 
 describe('A link', () => {
   it('can appear in the middle of a sentence', () => {
-    expect(Up.toAst('I like [this site][https://stackoverflow.com].')).to.be.eql(
+    expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
