@@ -3387,7 +3387,7 @@ var UpConfig = (function () {
         if (localizedTerm) {
             return localizedTerm;
         }
-        throw new Error("Unrecognizes term: " + nonLocalizedTerm);
+        throw new Error("Unrecognized term: " + nonLocalizedTerm);
     };
     return UpConfig;
 }());
