@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { getOutlineNodes } from './getOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from '../Patterns'
+import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from '../../Patterns'
 
 
 // All indented and/or blank lines should be included in a list item.

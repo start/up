@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { STREAK } from '../Patterns'
+import { STREAK } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 

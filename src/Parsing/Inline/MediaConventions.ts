@@ -1,15 +1,14 @@
 import { MediaConvention } from './MediaConvention'
-import { AudioStartToken } from './Tokens/AudioStartToken'
-import { ImageStartToken } from './Tokens/ImageStartToken'
-import { VideoStartToken } from './Tokens/VideoStartToken'
+import { AudioStartToken } from './Tokenizing/Tokens/AudioStartToken'
+import { ImageStartToken } from './Tokenizing/Tokens/ImageStartToken'
+import { VideoStartToken } from './Tokenizing/Tokens/VideoStartToken'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { TokenizerGoal } from './TokenizerGoal'
 
-const AUDIO = new MediaConvention('audio', AudioNode, AudioStartToken, TokenizerGoal.Audio)
-const IMAGE = new MediaConvention('image', ImageNode, ImageStartToken, TokenizerGoal.Image)
-const VIDEO = new MediaConvention('video', VideoNode, VideoStartToken, TokenizerGoal.Video)
+const AUDIO = new MediaConvention(AudioNode, AudioStartToken)
+const IMAGE = new MediaConvention(ImageNode, ImageStartToken)
+const VIDEO = new MediaConvention(VideoNode, VideoStartToken)
 
 export {
   AUDIO,

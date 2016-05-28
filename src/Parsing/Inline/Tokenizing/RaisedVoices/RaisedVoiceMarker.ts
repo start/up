@@ -1,4 +1,3 @@
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { Token} from '../Tokens/Token'
 import { TokenType } from '../Tokens/TokenType'
 
