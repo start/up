@@ -22,7 +22,7 @@ describe('A spoiler followed immediately by a parenthesized/bracketd URL"', () =
 })
 
 
-describe('A spoiler produced by parenthesized, square bracketed, or curly bracketed text followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
+describe('A spoiler produced by parentheses, square brackets, or curly brackets followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
   it('produces a spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
     expectEveryCombinationOf({
       firstHalves: [

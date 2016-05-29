@@ -28,8 +28,8 @@ describe('Audio that is the only convention on its line', () => {
 })
 
 
-describe('Parenthesized, square bracketed, or curly bracketed text starting with "image:" followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
-  it('produces a video node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
+describe('Audio produced by parentheses, square brackets, or curly brackets followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
+  it('produces an audio node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
     expectEveryCombinationOf({
       firstHalves: [
         '[audio: ghostly howling]',
