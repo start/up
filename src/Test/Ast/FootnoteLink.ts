@@ -9,7 +9,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
-  it("produces a footnote whose entire contents is put inside a link pointing to the URL", () => {
+  it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
     const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[http://example.com] Never have."
 
     const footnote = new FootnoteNode([
