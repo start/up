@@ -15,7 +15,7 @@ export function expectEveryCombinationOf(
   args: {
     firstHalves: string[],
     secondHalves: string[],
-    toProduce: SyntaxNode
+    toProduce: DocumentNode
   }) {
     const { firstHalves, secondHalves, toProduce } = args
     

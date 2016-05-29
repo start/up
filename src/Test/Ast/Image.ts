@@ -41,8 +41,9 @@ describe('Parenthesized, square bracketed, or curly bracketed text starting with
         '(http://example.com/hauntedhouse.svg)',
         '{http://example.com/hauntedhouse.svg}'
       ],
-      toProduce:
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+      toProduce: new DocumentNode([
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+      ])
     })
   })
 })

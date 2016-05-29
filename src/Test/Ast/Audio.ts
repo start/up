@@ -41,8 +41,9 @@ describe('Parenthesized, square bracketed, or curly bracketed text starting with
         '(http://example.com/ghosts.ogg)',
         '{http://example.com/ghosts.ogg}'
       ],
-      toProduce: 
+      toProduce: new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+      ])
     })
   })
 })

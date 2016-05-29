@@ -41,8 +41,9 @@ describe('Parenthesized, square bracketed, or curly bracketed text starting with
         '(http://example.com/poltergeists.webm)',
         '{http://example.com/poltergeists.webm}'
       ],
-      toProduce:
+      toProduce: new DocumentNode([
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+      ])
     })
   })
 })
@@ -58,14 +59,14 @@ describe('A video with a relative URL containing spaces and no extension', () =>
 })
 
 
-describe('A video description produced by square brackets', () => {  
+describe('A video description produced by square brackets', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('[video: ghosts eating [luggage]](http://example.com/?state=NE)')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating [luggage]', 'http://example.com/?state=NE'),
       ]))
   })
-  
+
   it('can contain nested matching square brackets', () => {
     expect(Up.toAst('[video: [ghosts [eating]] [[luggage]]](http://example.com/?state=NE)')).to.be.eql(
       new DocumentNode([
@@ -75,14 +76,14 @@ describe('A video description produced by square brackets', () => {
 })
 
 
-describe('A video description (enclosed by parentheses)', () => {  
+describe('A video description (enclosed by parentheses)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('(video: ghosts eating (luggage))[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating (luggage)', 'http://example.com/?state=NE'),
       ]))
   })
-  
+
   it('can contain nested matching parentheses', () => {
     expect(Up.toAst('(video: (ghosts (eating)) ((luggage)))[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
@@ -92,14 +93,14 @@ describe('A video description (enclosed by parentheses)', () => {
 })
 
 
-describe('A video description (enclosed by curly brackets)', () => {  
+describe('A video description (enclosed by curly brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('{video: ghosts eating {luggage}[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating {luggage}', 'http://example.com/?state=NE'),
       ]))
   })
-  
+
   it('can contain nested matching curly brackets', () => {
     expect(Up.toAst('(video: {ghosts {eating}} {{luggage}}}[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
@@ -116,7 +117,7 @@ describe("A video URL (enclosed by square brackets)", () => {
         new VideoNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
-  
+
   it('can contain nested matching square brackets', () => {
     expect(Up.toAst('(video: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.be.eql(
       new DocumentNode([
@@ -133,7 +134,7 @@ describe("A video URL (enclosed by parentheses)", () => {
         new VideoNode('ghosts eating luggage', 'http://example.com/?state=(NE)'),
       ]))
   })
-  
+
   it('can contain nested matching parentheses', () => {
     expect(Up.toAst('[video: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.be.eql(
       new DocumentNode([
@@ -150,7 +151,7 @@ describe("A video URL (enclosed by square brackets)", () => {
         new VideoNode('ghosts eating luggage', 'http://example.com/?state={NE}'),
       ]))
   })
-  
+
   it('can contain nested matching curly brackets', () => {
     expect(Up.toAst('[video: ghosts eating luggage]{http://example.com/?{state={NE}}}')).to.be.eql(
       new DocumentNode([
