@@ -28,20 +28,21 @@ import { PotentialRaisedVoiceEndToken } from './Tokens/PotentialRaisedVoiceEndTo
 import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoiceStartOrEndToken'
 import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceStartToken'
 
+
 export function tokenize(text: string, config: UpConfig): Token[] {
   return new Tokenizer(text, config).tokens  
 }
 
+
 class Tokenizer {
   tokens: Token[] = []
-  
   
   private consumer: InlineConsumer
   
   // We use this to help us with backtracking
   private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
 
-  // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
+  // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
 
@@ -71,7 +72,7 @@ class Tokenizer {
 
   // This method always returns true, which allows us to use some cleaner boolean logic.
   private bufferCurrentChar(): boolean {
-    this.buffer += this.consumer
+    this.buffer += this.consumer.currentChar
     this.consumer.advanceTextIndex(1)
 
     return true
@@ -85,13 +86,14 @@ class Tokenizer {
   }
 
   private flushBufferToPlainTextToken(): void {
-    // This will create a PlainTextToken even when there isn't any text to flush.
-    //
-    // TODO: Explain why this is helpful
-    this.addToken(new PlainTextToken(this.flushBuffer()))
+    const buffer = this.flushBuffer()
+    
+    if (buffer) {
+      this.addToken(new PlainTextToken(buffer))
+    }
   }
 
-  private canTry(goal: TokenizerGoal, textIndex = this.consumer.countCharsConsumed): boolean {
-    return !this.failedGoalTracker.hasFailed(goal, textIndex)
+  private canTry(goal: TokenizerGoal, atIndex = this.consumer.countCharsConsumed): boolean {
+    return !this.failedGoalTracker.hasFailed(goal, atIndex)
   }
 }
