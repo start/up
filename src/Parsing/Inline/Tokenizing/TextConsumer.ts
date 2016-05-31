@@ -2,23 +2,32 @@ import { NON_WHITESPACE_CHAR } from '../../../Patterns'
 import { OnTextConsumerMatch } from './OnTextConsumerMatch'
 
 
-export class Tokenizer {
-  private textIndex = 0
-
-  // These three fields are computed every time we updatae `textIndex`.
-  private currentChar: string
-  private remainingText: string
+export class TextConsumer {
+  lengthConsumed = 0
+  
+  // These three fields are computed whenever we update `lengthConsumed`
+  remainingText: string
+  currentChar: string
   private isTouchingWordEnd: boolean
 
   constructor(private entireText: string) {  
     this.updateComputedTextFields()
   }
 
+  advanceTextIndex(length: number): void {
+    this.lengthConsumed += length
+    this.updateComputedTextFields()
+  }
+  
+  done(): boolean {
+    return this.lengthConsumed >= this.entireText.length
+  }
+
   private updateComputedTextFields(): void {
-    this.remainingText = this.entireText.substr(this.textIndex)
+    this.remainingText = this.entireText.substr(this.lengthConsumed)
     this.currentChar = this.remainingText[0]
 
-    const previousChar = this.entireText[this.textIndex - 1]
+    const previousChar = this.entireText[this.lengthConsumed - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
@@ -33,7 +42,7 @@ export class Tokenizer {
 
     const [match, ...captures] = result
 
-    const charAfterMatch = this.entireText[this.textIndex + match.length]
+    const charAfterMatch = this.entireText[this.lengthConsumed + match.length]
     const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
 
     if (then) {
@@ -43,11 +52,6 @@ export class Tokenizer {
     this.advanceTextIndex(match.length)
 
     return true
-  }
-
-  private advanceTextIndex(length: number): void {
-    this.textIndex += length
-    this.updateComputedTextFields()
   }
 }
 
