@@ -38,7 +38,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     let isListTerminated = false
 
     getRemainingLinesOfListItem({
-      text: consumer.remainingLines(),
+      text: consumer.remainingText,
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItem.lines.push(...lines)
         consumer.advance(lengthParsed)
@@ -64,7 +64,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     )
   })
 
-  args.then([new OrderedListNode(listItems)], consumer.countCharsConsumed())
+  args.then([new OrderedListNode(listItems)], consumer.countCharsConsumed)
   return true
 }
 

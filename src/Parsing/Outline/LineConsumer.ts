@@ -1,28 +1,19 @@
 export class LineConsumer {
-  private textIndex = 0
-  private remainingText: string
+  countCharsConsumed = 0
+  remainingText: string
 
   constructor(private entireText: string) {
     this.updateRemainingText()
   }
 
   advance(countCharacters: number): void {
-    this.textIndex += countCharacters
+    this.countCharsConsumed += countCharacters
     this.updateRemainingText()
   }
 
   done(): boolean {
-    return this.textIndex >= this.entireText.length
+    return this.countCharsConsumed >= this.entireText.length
   }
-
-  countCharsConsumed(): number {
-    return this.textIndex
-  }
-
-  remainingLines(): string {
-    return this.remainingText
-  }
-
   consumeLine(
     args: {
       pattern?: RegExp,
@@ -38,7 +29,7 @@ export class LineConsumer {
     let lineWithoutTerminatingLineBreak: string
 
     // First, let's find the end of the current line
-    for (let i = this.textIndex; i < this.entireText.length; i++) {
+    for (let i = this.countCharsConsumed; i < this.entireText.length; i++) {
       const char = this.entireText[i]
 
       // Escaped line breaks don't end lines
@@ -48,7 +39,7 @@ export class LineConsumer {
       }
 
       if (char === '\n') {
-        fullLine = this.entireText.substring(this.textIndex, i + 1)
+        fullLine = this.entireText.substring(this.countCharsConsumed, i + 1)
         lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
         break
       }
@@ -56,7 +47,7 @@ export class LineConsumer {
 
     if (!fullLine) {
       // Well, we couldn't find a terminating line break! That must mean we're on the text's final line.
-      fullLine = lineWithoutTerminatingLineBreak = this.remainingLines()
+      fullLine = lineWithoutTerminatingLineBreak = this.remainingText
     }
 
     let captures: string[] = []
@@ -85,7 +76,7 @@ export class LineConsumer {
   }
 
   private updateRemainingText(): void {
-    this.remainingText = this.entireText.slice(this.textIndex)
+    this.remainingText = this.entireText.slice(this.countCharsConsumed)
   }
 }
 

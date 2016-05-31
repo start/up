@@ -74,7 +74,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     
     args.then(
       [new HeadingNode(getInlineNodes(rawContent, args.config), headingLevel)],
-      consumer.countCharsConsumed())
+      consumer.countCharsConsumed)
 
     return true
   }

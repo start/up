@@ -2,10 +2,10 @@ import { NON_WHITESPACE_CHAR } from '../../../Patterns'
 import { OnTextConsumerMatch } from './OnTextConsumerMatch'
 
 
-export class TextConsumer {
-  lengthConsumed = 0
+export class InlineConsumer {
+  countCharsConsumed = 0
   
-  // These three fields are computed whenever we update `lengthConsumed`
+  // These three fields are computed whenever we update `countCharsConsumed`
   remainingText: string
   currentChar: string
   private isTouchingWordEnd: boolean
@@ -15,19 +15,19 @@ export class TextConsumer {
   }
 
   advanceTextIndex(length: number): void {
-    this.lengthConsumed += length
+    this.countCharsConsumed += length
     this.updateComputedTextFields()
   }
   
   done(): boolean {
-    return this.lengthConsumed >= this.entireText.length
+    return this.countCharsConsumed >= this.entireText.length
   }
 
   private updateComputedTextFields(): void {
-    this.remainingText = this.entireText.substr(this.lengthConsumed)
+    this.remainingText = this.entireText.substr(this.countCharsConsumed)
     this.currentChar = this.remainingText[0]
 
-    const previousChar = this.entireText[this.lengthConsumed - 1]
+    const previousChar = this.entireText[this.countCharsConsumed - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 
@@ -42,7 +42,7 @@ export class TextConsumer {
 
     const [match, ...captures] = result
 
-    const charAfterMatch = this.entireText[this.lengthConsumed + match.length]
+    const charAfterMatch = this.entireText[this.countCharsConsumed + match.length]
     const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
 
     if (then) {

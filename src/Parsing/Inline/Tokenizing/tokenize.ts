@@ -4,7 +4,7 @@ import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from './RichConvention'
 import { MediaConvention } from './MediaConvention'
-import { TextConsumer } from './TextConsumer'
+import { InlineConsumer } from './InlineConsumer'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
@@ -36,7 +36,7 @@ class Tokenizer {
   tokens: Token[] = []
   
   
-  private consumer: TextConsumer
+  private consumer: InlineConsumer
   
   // We use this to help us with backtracking
   private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
@@ -46,7 +46,7 @@ class Tokenizer {
   private buffer = ''
 
   constructor(private entireText: string, config: UpConfig) {
-    this.consumer = new TextConsumer(entireText)
+    this.consumer = new InlineConsumer(entireText)
     this.configureConventions(config)
     this.tokenize()
   }
@@ -62,8 +62,7 @@ class Tokenizer {
     
     this.flushBufferToPlainTextToken()
 
-    this.tokens =
-      nestOverlappingConventions(this.tokens)
+    this.tokens = nestOverlappingConventions(this.tokens)
   }
 
   private addToken(token: Token): void {
@@ -92,7 +91,7 @@ class Tokenizer {
     this.addToken(new PlainTextToken(this.flushBuffer()))
   }
 
-  private canTry(goal: TokenizerGoal, textIndex = this.consumer.lengthConsumed): boolean {
+  private canTry(goal: TokenizerGoal, textIndex = this.consumer.countCharsConsumed): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
 }
