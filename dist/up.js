@@ -258,13 +258,13 @@ exports.FOOTNOTE = FOOTNOTE;
 var PARENTHESIZED = {
     StartTokenType: ParenthesizedStartToken_1.ParenthesizedStartToken,
     EndTokenType: ParenthesizedEndToken_1.ParenthesizedEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Parenthesized
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RichParentheses
 };
 exports.PARENTHESIZED = PARENTHESIZED;
 var SQUARE_BRACKETED = {
     StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
     EndTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.SquareBracketed
+    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RichSquareBrackets
 };
 exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
 var ACTION = {
@@ -394,12 +394,12 @@ function getConventionEndedBy(token, conventions) {
     TokenizerGoal[TokenizerGoal["InlineCode"] = 0] = "InlineCode";
     TokenizerGoal[TokenizerGoal["Footnote"] = 1] = "Footnote";
     TokenizerGoal[TokenizerGoal["Spoiler"] = 2] = "Spoiler";
-    TokenizerGoal[TokenizerGoal["Parenthesized"] = 3] = "Parenthesized";
-    TokenizerGoal[TokenizerGoal["SquareBracketed"] = 4] = "SquareBracketed";
+    TokenizerGoal[TokenizerGoal["RichParentheses"] = 3] = "RichParentheses";
+    TokenizerGoal[TokenizerGoal["RichSquareBrackets"] = 4] = "RichSquareBrackets";
     TokenizerGoal[TokenizerGoal["Action"] = 5] = "Action";
-    TokenizerGoal[TokenizerGoal["ParenthesizedInRawText"] = 6] = "ParenthesizedInRawText";
-    TokenizerGoal[TokenizerGoal["SquareBracketedInRawText"] = 7] = "SquareBracketedInRawText";
-    TokenizerGoal[TokenizerGoal["CurlyBracketedInRawText"] = 8] = "CurlyBracketedInRawText";
+    TokenizerGoal[TokenizerGoal["RawTextParentheses"] = 6] = "RawTextParentheses";
+    TokenizerGoal[TokenizerGoal["RawTextSquareBrackets"] = 7] = "RawTextSquareBrackets";
+    TokenizerGoal[TokenizerGoal["RawTextCurlyBrackets"] = 8] = "RawTextCurlyBrackets";
     TokenizerGoal[TokenizerGoal["Link"] = 9] = "Link";
     TokenizerGoal[TokenizerGoal["LinkUrl"] = 10] = "LinkUrl";
     TokenizerGoal[TokenizerGoal["RevisionInsertion"] = 11] = "RevisionInsertion";
@@ -810,6 +810,24 @@ function tokenize(text, config) {
     return new Tokenizer(text, config).tokens;
 }
 exports.tokenize = tokenize;
+var Bracket = (function () {
+    function Bracket(open, close) {
+        this.open = open;
+        this.close = close;
+    }
+    return Bracket;
+}());
+var PARENTHESES = new Bracket('(', ')');
+var SQUARE_BRACKETS = new Bracket('[', ']');
+var CURLY_BRACKETS = new Bracket('{', '}');
+var RichBracket = (function () {
+    function RichBracket(bracket, startTokenType, endTokenType) {
+        this.bracket = bracket;
+        this.startTokenType = startTokenType;
+        this.endTokenType = endTokenType;
+    }
+    return RichBracket;
+}());
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         this.entireText = entireText;

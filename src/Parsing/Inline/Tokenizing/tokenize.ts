@@ -30,22 +30,42 @@ import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceSta
 
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  return new Tokenizer(text, config).tokens  
+  return new Tokenizer(text, config).tokens
+}
+
+
+class Bracket {
+  constructor(
+    public open: string,
+    public close: string) { }
+}
+
+
+const PARENTHESES = new Bracket('(', ')')
+const SQUARE_BRACKETS = new Bracket('[', ']')
+const CURLY_BRACKETS = new Bracket('{', '}')
+
+
+class RichBracket {
+  constructor(
+    public bracket: Bracket,
+    public startTokenType: TokenType,
+    public endTokenType: TokenType) { }
 }
 
 
 class Tokenizer {
   tokens: Token[] = []
-  
+
   private consumer: InlineConsumer
-  
+
   // We use this to help us with backtracking
   private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
 
   // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
-
+  
   constructor(private entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
     this.configureConventions(config)
@@ -53,14 +73,14 @@ class Tokenizer {
   }
 
   private configureConventions(config: UpConfig): void {
-    
+
   }
 
   private tokenize(): void {
     while (!this.consumer.done()) {
-       this.bufferCurrentChar()
+      this.bufferCurrentChar()
     }
-    
+
     this.flushBufferToPlainTextToken()
 
     this.tokens = nestOverlappingConventions(this.tokens)
@@ -87,7 +107,7 @@ class Tokenizer {
 
   private flushBufferToPlainTextToken(): void {
     const buffer = this.flushBuffer()
-    
+
     if (buffer) {
       this.addToken(new PlainTextToken(buffer))
     }

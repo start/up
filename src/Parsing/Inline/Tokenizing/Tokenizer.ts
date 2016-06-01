@@ -136,21 +136,21 @@ export class Tokenizer {
 
     this.parenthesizedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        goal: TokenizerGoal.ParenthesizedInRawText,
+        goal: TokenizerGoal.RawTextParentheses,
         openBracketPattern: OPEN_PAREN,
         closeBracketPattern: CLOSE_PAREN
       })
 
     this.squareBracketedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        goal: TokenizerGoal.SquareBracketedInRawText,
+        goal: TokenizerGoal.RawTextSquareBrackets,
         openBracketPattern: OPEN_SQUARE_BRACKET,
         closeBracketPattern: CLOSE_SQUARE_BRACKET
       })
 
     this.curlyBracketedRawTextConvention =
       this.getBracketInsideUrlConvention({
-        goal: TokenizerGoal.CurlyBracketedInRawText,
+        goal: TokenizerGoal.RawTextCurlyBrackets,
         openBracketPattern: OPEN_CURLY_BRACKET,
         closeBracketPattern: CLOSE_CURLY_BRACKET
       })
@@ -228,7 +228,7 @@ export class Tokenizer {
       || ((goal === TokenizerGoal.InlineCode) && this.bufferCurrentChar())
       || ((goal === TokenizerGoal.LinkUrl) && this.closeLinkOrAppendCharToUrl())
       || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-      || ((goal === TokenizerGoal.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
+      || ((goal === TokenizerGoal.RichSquareBrackets) && this.tryToConvertSquareBracketedContextToLink())
     )
   }
 
@@ -356,7 +356,7 @@ export class Tokenizer {
     const [urlArrow] = urlArrowMatchResult
 
     const innermostSquareBrackeContextIndex =
-      this.getIndexOfInnermostContextWithGoal(TokenizerGoal.SquareBracketed)
+      this.getIndexOfInnermostContextWithGoal(TokenizerGoal.RichSquareBrackets)
       
     const innermostSquareBrackeContext =
       this.openContexts[innermostSquareBrackeContextIndex]
@@ -504,11 +504,11 @@ export class Tokenizer {
           break
 
         // Parentheses and brackets can be left unclosed.
-        case TokenizerGoal.Parenthesized:
-        case TokenizerGoal.SquareBracketed:
-        case TokenizerGoal.ParenthesizedInRawText:
-        case TokenizerGoal.SquareBracketedInRawText:
-        case TokenizerGoal.CurlyBracketedInRawText:
+        case TokenizerGoal.RichParentheses:
+        case TokenizerGoal.RichSquareBrackets:
+        case TokenizerGoal.RawTextParentheses:
+        case TokenizerGoal.RawTextSquareBrackets:
+        case TokenizerGoal.RawTextCurlyBrackets:
 
         // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
         // handler (below) backtrack to before the link itself.

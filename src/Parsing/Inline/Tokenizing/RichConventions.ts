@@ -59,13 +59,13 @@ const FOOTNOTE : RichConvention= {
 const PARENTHESIZED: RichConvention =  {
   StartTokenType: ParenthesizedStartToken,
   EndTokenType: ParenthesizedEndToken,
-  tokenizerGoal: TokenizerGoal.Parenthesized
+  tokenizerGoal: TokenizerGoal.RichParentheses
 }
 
 const SQUARE_BRACKETED: RichConvention =  {
   StartTokenType: SquareBracketedStartToken,
   EndTokenType: SquareBracketedEndToken,
-  tokenizerGoal: TokenizerGoal.SquareBracketed
+  tokenizerGoal: TokenizerGoal.RichSquareBrackets
 }
 
 const ACTION: RichConvention =  {
