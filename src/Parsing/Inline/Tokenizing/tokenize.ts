@@ -65,7 +65,7 @@ class Tokenizer {
   // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
-  
+
   constructor(private entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
     this.configureConventions(config)
@@ -78,12 +78,28 @@ class Tokenizer {
 
   private tokenize(): void {
     while (!this.consumer.done()) {
-      this.bufferCurrentChar()
+      this.tryToBufferEscapedChar()
+        || this.bufferCurrentChar()
     }
 
     this.flushBufferToPlainTextToken()
 
     this.tokens = nestOverlappingConventions(this.tokens)
+  }
+
+  private tryToBufferEscapedChar(): boolean {
+    const ESCAPE_CHAR = '\\'
+
+    if (this.consumer.currentChar !== ESCAPE_CHAR) {
+      return false
+    }
+
+    this.consumer.advanceTextIndex(1)
+
+    return (
+      this.consumer.done()
+      || this.bufferCurrentChar()
+    )
   }
 
   private addToken(token: Token): void {

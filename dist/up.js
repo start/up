@@ -842,10 +842,20 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.consumer.done()) {
-            this.bufferCurrentChar();
+            this.tryToBufferEscapedChar()
+                || this.bufferCurrentChar();
         }
         this.flushBufferToPlainTextToken();
         this.tokens = nestOverlappingConventions_1.nestOverlappingConventions(this.tokens);
+    };
+    Tokenizer.prototype.tryToBufferEscapedChar = function () {
+        var ESCAPE_CHAR = '\\';
+        if (this.consumer.currentChar !== ESCAPE_CHAR) {
+            return false;
+        }
+        this.consumer.advanceTextIndex(1);
+        return (this.consumer.done()
+            || this.bufferCurrentChar());
     };
     Tokenizer.prototype.addToken = function (token) {
         this.tokens.push(token);
