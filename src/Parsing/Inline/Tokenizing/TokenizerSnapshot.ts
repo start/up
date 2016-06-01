@@ -10,15 +10,15 @@ export class TokenizerSnapshot {
 
   constructor(
     args: {
-      textIndex: number
+      countCharsConsumed: number
       tokens: Token[]
       openContexts: TokenizerContext[]
-      bufferedText: string
+      buffer: string
     }
   ) {
-    this.textIndex = args.textIndex
+    this.textIndex = args.countCharsConsumed
     this.tokens = args.tokens.slice()
     this.openContexts = args.openContexts.slice()
-    this.bufferedText = args.bufferedText
+    this.bufferedText = args.buffer
   }
 }

@@ -487,10 +487,10 @@ export class Tokenizer {
   
   private getSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
-        textIndex: this.textIndex,
+        countCharsConsumed: this.textIndex,
         tokens: this.tokens,
         openContexts: this.openContexts,
-        bufferedText: this.bufferedText
+        buffer: this.bufferedText
       })
   }
 

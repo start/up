@@ -15,7 +15,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
-import { TokenizerContext } from './TokenizerContext'
+import { Context } from './Context'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
@@ -65,6 +65,8 @@ class Tokenizer {
   // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
+  
+  private openContexts: Context[] = []
 
   constructor(private entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -127,6 +129,15 @@ class Tokenizer {
     if (buffer) {
       this.addToken(new PlainTextToken(buffer))
     }
+  }
+   
+  private getCurrentSnapshot(): TokenizerSnapshot {
+    return new TokenizerSnapshot({
+        countCharsConsumed: this.consumer.countCharsConsumed,
+        tokens: this.tokens,
+        openContexts: this.openContexts,
+        buffer: this.buffer
+      })
   }
 
   private canTry(goal: TokenizerGoal, atIndex = this.consumer.countCharsConsumed): boolean {
