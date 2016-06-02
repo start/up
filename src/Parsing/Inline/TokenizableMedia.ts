@@ -5,7 +5,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 
 
 export class TokenizableMedia {
-  StartTokenType: TokenKind
+  startTokenKind: TokenKind
   goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
@@ -14,7 +14,7 @@ export class TokenizableMedia {
     media: MediaConvention,
     localizedTerm: string
   ) {
-    this.StartTokenType = media.StartTokenType
+    this.startTokenKind = media.startTokenKind
     this.goal = media.goal
     
     this.startPattern = getPattern(

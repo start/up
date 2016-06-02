@@ -1,5 +1,3 @@
-import { Token } from './Tokens/Token'
-
 export enum TokenKind {
   ActionEnd,
   ActionStart,

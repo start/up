@@ -8,8 +8,6 @@ import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last } from '../../CollectionHelpers'
-import { MediaDescriptionToken } from './Tokens/MediaDescriptionToken'
-import { MediaEndToken } from './Tokens/MediaEndToken'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { TokenizableMedia } from './TokenizableMedia'
@@ -17,16 +15,8 @@ import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
-import { Token } from './Tokens/Token'
 import { TokenKind } from './TokenKind'
-import { InlineCodeToken } from './Tokens/InlineCodeToken'
-import { PlainTextToken } from './Tokens/PlainTextToken'
-import { NakedUrlStartToken } from './Tokens/NakedUrlStartToken'
-import { NakedUrlEndToken } from './Tokens/NakedUrlEndToken'
-import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToken'
-import { PotentialRaisedVoiceEndToken } from './Tokens/PotentialRaisedVoiceEndToken'
-import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoiceStartOrEndToken'
-import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceStartToken'
+import { Token } from './Token'
 
 
 export class Tokenizer {
@@ -157,7 +147,7 @@ export class Tokenizer {
         startPattern: '`',
         endPattern: '`',
         onOpen: () => this.flushBufferToPlainTextToken(),
-        onClose: () => this.addToken(new InlineCodeToken(this.flushBuffer()))
+        onClose: () => this.addToken(TokenKind.InlineCode, this.flushBuffer())
       })
 
     this.sandwichesThatCanAppearInRegularContent = [
@@ -301,7 +291,7 @@ export class Tokenizer {
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_START_PATTERN,
       then: urlProtocol => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(new NakedUrlStartToken(urlProtocol))
+        this.addTokenAfterFlushingBufferToPlainTextToken(TokenKind.NakedUrlProtocolAndStart, urlProtocol)
       }
     })
   }
@@ -326,7 +316,7 @@ export class Tokenizer {
         goal: media.goal,
         pattern: media.startPattern,
         then: () => {
-          this.addTokenAfterFlushingBufferToPlainTextToken(new media.StartTokenType())
+          this.addTokenAfterFlushingBufferToPlainTextToken(media.startTokenKind)
         }
       })
     })
@@ -337,7 +327,7 @@ export class Tokenizer {
       goal: TokenizerGoal.MediaUrl,
       pattern: URL_ARROW_PATTERN_DEPCRECATED,
       then: () => {
-        this.addToken(new MediaDescriptionToken(this.flushBuffer()))
+        this.addToken(TokenKind.MediaDescription, this.flushBuffer())
       }
     })
   }
@@ -346,7 +336,7 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: MEDIA_END_PATTERN_DEPCRECATED,
       then: () => {
-        this.addToken(new MediaEndToken(this.flushBuffer()))
+        this.addToken(TokenKind.MediaUrlAndEnd, this.flushBuffer())
         this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
@@ -514,12 +504,12 @@ export class Tokenizer {
   }
 
   private flushBufferedTextToNakedUrlToken(): void {
-    this.addToken(new NakedUrlEndToken(this.flushBuffer()))
+    this.addToken(TokenKind.NakedUrlAfterProtocolAndEnd, this.flushBuffer())
   }
 
-  private addTokenAfterFlushingBufferToPlainTextToken(token: Token): void {
+  private addTokenAfterFlushingBufferToPlainTextToken(kind: TokenKind, value?: string): void {
     this.flushBufferToPlainTextToken()
-    this.addToken(token)
+    this.addToken(kind, value)
   }
 
   private hasGoal(goal: TokenizerGoal): boolean {
@@ -539,8 +529,8 @@ export class Tokenizer {
       goal: richConvention.tokenizerGoal,
       startPattern,
       endPattern,
-      onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()),
-      onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.EndTokenType())
+      onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.startTokenKind),
+      onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.endTokenKind)
     })
   }
 
@@ -581,19 +571,17 @@ export class Tokenizer {
         // affecting. At least for now, the next raw character can even be a backslash!
         const canOpenConvention = isTouchingWordStart
 
-        let AsteriskTokenType: new (asterisks: string) => Token
+        let asteriskTokenKind = TokenKind.PlainText
 
         if (canOpenConvention && canCloseConvention) {
-          AsteriskTokenType = PotentialRaisedVoiceStartOrEndToken
+          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStartOrEnd
         } else if (canOpenConvention) {
-          AsteriskTokenType = PotentialRaisedVoiceStartToken
+          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStart
         } else if (canCloseConvention) {
-          AsteriskTokenType = PotentialRaisedVoiceEndToken
-        } else {
-          AsteriskTokenType = PlainTextToken
+          asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
         }
 
-        this.addTokenAfterFlushingBufferToPlainTextToken(new AsteriskTokenType(asterisks))
+        this.addTokenAfterFlushingBufferToPlainTextToken(asteriskTokenKind, asterisks)
       }
     })
   }
@@ -602,26 +590,26 @@ export class Tokenizer {
     const resultTokens: Token[] = []
 
     for (const token of this.tokens) {
-      function addBracketIfTokenIs(bracket: string, TokenType: TokenKind): void {
-        if (token instanceof TokenType) {
-          resultTokens.push(new PlainTextToken(bracket))
+      function addBracketIfTokenIs(bracket: string, tokenKind: TokenKind): void {
+        if (token.kind === tokenKind) {
+          resultTokens.push(new Token(TokenKind.PlainText, bracket))
         }
       }
 
-      addBracketIfTokenIs(')', PARENTHESIZED.EndTokenType)
-      addBracketIfTokenIs(']', SQUARE_BRACKETED.EndTokenType)
+      addBracketIfTokenIs(')', PARENTHESIZED.endTokenKind)
+      addBracketIfTokenIs(']', SQUARE_BRACKETED.endTokenKind)
 
       resultTokens.push(token)
 
-      addBracketIfTokenIs('(', PARENTHESIZED.StartTokenType)
-      addBracketIfTokenIs('[', SQUARE_BRACKETED.StartTokenType)
+      addBracketIfTokenIs('(', PARENTHESIZED.startTokenKind)
+      addBracketIfTokenIs('[', SQUARE_BRACKETED.startTokenKind)
     }
 
     return resultTokens
   }
 
-  private addToken(token: Token): void {
-    this.tokens.push(token)
+  private addToken(kind: TokenKind, value?: string): void {
+    this.tokens.push(new Token(kind, value))
   }
 
   // This method always returns true, which allows us to use some cleaner boolean logic.
@@ -643,7 +631,7 @@ export class Tokenizer {
     // This will create a PlainTextToken even when there isn't any text to flush.
     //
     // TODO: Explain why this is helpful
-    this.addToken(new PlainTextToken(this.flushBuffer()))
+    this.addToken(TokenKind.PlainText, this.flushBuffer())
   }
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
