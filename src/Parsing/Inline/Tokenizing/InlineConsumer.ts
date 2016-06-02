@@ -7,6 +7,10 @@ export class InlineConsumer {
   private _remainingText: string
   private _currentChar: string
   private isTouchingWordEnd: boolean
+
+  constructor(private entireText: string) {  
+    this.textIndex = 0
+  }
   
   get textIndex(): number {
     return this._textIndex
@@ -23,10 +27,6 @@ export class InlineConsumer {
   
   get currentChar(): string {
     return this._currentChar
-  }
-
-  constructor(private entireText: string) {  
-    this.textIndex = 0
   }
 
   advanceTextIndex(length: number): void {

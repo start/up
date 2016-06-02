@@ -1960,30 +1960,46 @@ exports.HeadingLeveler = HeadingLeveler;
 var LineConsumer = (function () {
     function LineConsumer(entireText) {
         this.entireText = entireText;
-        this.countCharsConsumed = 0;
-        this.updateRemainingText();
+        this.setTextIndex(0);
     }
-    LineConsumer.prototype.advance = function (countCharacters) {
-        this.countCharsConsumed += countCharacters;
-        this.updateRemainingText();
+    Object.defineProperty(LineConsumer.prototype, "textIndex", {
+        get: function () {
+            return this._textIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LineConsumer.prototype.setTextIndex = function (value) {
+        this._textIndex = value;
+        this._remainingText = this.entireText.slice(this.textIndex);
     };
-    LineConsumer.prototype.done = function () {
-        return this.countCharsConsumed >= this.entireText.length;
+    Object.defineProperty(LineConsumer.prototype, "remainingText", {
+        get: function () {
+            return this._remainingText;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LineConsumer.prototype.advanceTextIndex = function (length) {
+        this.setTextIndex(this.textIndex + length);
+    };
+    LineConsumer.prototype.reachedEndOfText = function () {
+        return this.textIndex >= this.entireText.length;
     };
     LineConsumer.prototype.consumeLine = function (args) {
-        if (this.done()) {
+        if (this.reachedEndOfText()) {
             return false;
         }
         var fullLine;
         var lineWithoutTerminatingLineBreak;
-        for (var i = this.countCharsConsumed; i < this.entireText.length; i++) {
+        for (var i = this.textIndex; i < this.entireText.length; i++) {
             var char = this.entireText[i];
             if (char === '\\') {
                 i++;
                 continue;
             }
             if (char === '\n') {
-                fullLine = this.entireText.substring(this.countCharsConsumed, i + 1);
+                fullLine = this.entireText.substring(this.textIndex, i + 1);
                 lineWithoutTerminatingLineBreak = fullLine.slice(0, -1);
                 break;
             }
@@ -2002,14 +2018,11 @@ var LineConsumer = (function () {
         if (args.if && !args.if.apply(args, [lineWithoutTerminatingLineBreak].concat(captures))) {
             return false;
         }
-        this.advance(fullLine.length);
+        this.advanceTextIndex(fullLine.length);
         if (args.then) {
             args.then.apply(args, [lineWithoutTerminatingLineBreak].concat(captures));
         }
         return true;
-    };
-    LineConsumer.prototype.updateRemainingText = function () {
-        this.remainingText = this.entireText.slice(this.countCharsConsumed);
     };
     return LineConsumer;
 }());
@@ -2049,7 +2062,7 @@ function getHeadingParser(headingLeveler) {
             return false;
         }
         var headingLevel = headingLeveler.registerUnderlineAndGetLevel(underline);
-        args.then([new HeadingNode_1.HeadingNode(getInlineNodes_1.getInlineNodes(rawContent, args.config), headingLevel)], consumer.countCharsConsumed);
+        args.then([new HeadingNode_1.HeadingNode(getInlineNodes_1.getInlineNodes(rawContent, args.config), headingLevel)], consumer.textIndex);
         return true;
     };
 }
@@ -2089,7 +2102,7 @@ function getOutlineNodes(text, headingLeveler, config) {
     ];
     var consumer = new LineConsumer_1.LineConsumer(trimOuterBlankLines(text));
     var nodes = [];
-    while (!consumer.done()) {
+    while (!consumer.reachedEndOfText()) {
         for (var _i = 0, outlineParsers_1 = outlineParsers; _i < outlineParsers_1.length; _i++) {
             var parseOutlineConvention = outlineParsers_1[_i];
             var wasConventionFound = parseOutlineConvention({
@@ -2098,7 +2111,7 @@ function getOutlineNodes(text, headingLeveler, config) {
                 config: config,
                 then: function (newNodes, lengthParsed) {
                     nodes.push.apply(nodes, newNodes);
-                    consumer.advance(lengthParsed);
+                    consumer.advanceTextIndex(lengthParsed);
                 }
             });
             if (wasConventionFound) {
@@ -2138,7 +2151,7 @@ function getRemainingLinesOfListItem(args) {
     var lines = [];
     var countLinesIncluded = 0;
     var lengthParsed = 0;
-    while (!consumer.done()) {
+    while (!consumer.reachedEndOfText()) {
         var wasLineBlank = consumer.consumeLine({
             pattern: BLANK_PATTERN,
             then: function (line) { return lines.push(line); }
@@ -2154,7 +2167,7 @@ function getRemainingLinesOfListItem(args) {
             break;
         }
         countLinesIncluded = lines.length;
-        lengthParsed = consumer.countCharsConsumed;
+        lengthParsed = consumer.textIndex;
     }
     if (!lines.length) {
         return false;
@@ -2163,7 +2176,7 @@ function getRemainingLinesOfListItem(args) {
     var shouldTerminateList = countTrailingBlankLines >= 2;
     if (!shouldTerminateList) {
         countLinesIncluded = lines.length;
-        lengthParsed = consumer.countCharsConsumed;
+        lengthParsed = consumer.textIndex;
     }
     var resultLines = lines
         .slice(0, countLinesIncluded)
@@ -2233,7 +2246,7 @@ function parseBlankLineSeparation(args) {
     var nodes = (countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
         ? [new SectionSeparatorNode_1.SectionSeparatorNode()]
         : []);
-    args.then(nodes, consumer.countCharsConsumed);
+    args.then(nodes, consumer.textIndex);
     return true;
 }
 exports.parseBlankLineSeparation = parseBlankLineSeparation;
@@ -2260,7 +2273,7 @@ function parseBlockquote(args) {
     var rawBlockquoteContent = rawBlockquoteLines.join('\n');
     var headingLeveler = new HeadingLeveler_1.HeadingLeveler();
     args.then([
-        new BlockquoteNode_1.BlockquoteNode(getOutlineNodes_1.getOutlineNodes(rawBlockquoteContent, headingLeveler, args.config))], consumer.countCharsConsumed);
+        new BlockquoteNode_1.BlockquoteNode(getOutlineNodes_1.getOutlineNodes(rawBlockquoteContent, headingLeveler, args.config))], consumer.textIndex);
     return true;
 }
 exports.parseBlockquote = parseBlockquote;
@@ -2283,9 +2296,9 @@ function parseCodeBlock(args) {
         return false;
     }
     var codeLines = [];
-    while (!consumer.done()) {
+    while (!consumer.reachedEndOfText()) {
         if (consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
-            args.then([new CodeBlockNode_1.CodeBlockNode(codeLines.join('\n'))], consumer.countCharsConsumed);
+            args.then([new CodeBlockNode_1.CodeBlockNode(codeLines.join('\n'))], consumer.textIndex);
             return true;
         }
         consumer.consumeLine({
@@ -2315,7 +2328,7 @@ function parseDescriptionList(args) {
     var lengthParsed = 0;
     var _loop_1 = function() {
         var rawTerms = [];
-        while (!consumer.done()) {
+        while (!consumer.reachedEndOfText()) {
             var isTerm = consumer.consumeLine({
                 pattern: NON_BLANK_PATTERN,
                 if: function (line) { return !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
@@ -2342,11 +2355,11 @@ function parseDescriptionList(args) {
             text: consumer.remainingText,
             then: function (lines, lengthParsed, shouldTerminateList) {
                 rawDescriptionLines.push.apply(rawDescriptionLines, lines);
-                consumer.advance(lengthParsed);
+                consumer.advanceTextIndex(lengthParsed);
                 isListTerminated = shouldTerminateList;
             }
         });
-        lengthParsed = consumer.countCharsConsumed;
+        lengthParsed = consumer.textIndex;
         var terms = rawTerms.map(function (term) { return new DescriptionTerm_1.DescriptionTerm(getInlineNodes_1.getInlineNodes(term, args.config)); });
         var rawDescription = rawDescriptionLines.join('\n');
         var description = new Description_1.Description(getOutlineNodes_1.getOutlineNodes(rawDescription, args.headingLeveler, args.config));
@@ -2355,7 +2368,7 @@ function parseDescriptionList(args) {
             return "break";
         }
     };
-    while (!consumer.done()) {
+    while (!consumer.reachedEndOfText()) {
         var state_1 = _loop_1();
         if (state_1 === "break") break;
     }
@@ -2399,7 +2412,7 @@ function parseOrderedList(args) {
             text: consumer.remainingText,
             then: function (lines, lengthParsed, shouldTerminateList) {
                 (_a = rawListItem.lines).push.apply(_a, lines);
-                consumer.advance(lengthParsed);
+                consumer.advanceTextIndex(lengthParsed);
                 isListTerminated = shouldTerminateList;
                 var _a;
             }
@@ -2409,7 +2422,7 @@ function parseOrderedList(args) {
             return "break";
         }
     };
-    while (!consumer.done()) {
+    while (!consumer.reachedEndOfText()) {
         var state_1 = _loop_1();
         if (state_1 === "break") break;
     }
@@ -2419,7 +2432,7 @@ function parseOrderedList(args) {
     var listItems = rawListItems.map(function (rawListItem) {
         return new OrderedListItem_1.OrderedListItem(getOutlineNodes_1.getOutlineNodes(rawListItem.content(), args.headingLeveler, args.config), getExplicitOrdinal(rawListItem));
     });
-    args.then([new OrderedListNode_1.OrderedListNode(listItems)], consumer.countCharsConsumed);
+    args.then([new OrderedListNode_1.OrderedListNode(listItems)], consumer.textIndex);
     return true;
 }
 exports.parseOrderedList = parseOrderedList;
@@ -2485,7 +2498,7 @@ function parseRegularLines(args) {
         var state_1 = _loop_1();
         if (state_1 === "break") break;
     }
-    var lengthConsumed = consumer.countCharsConsumed;
+    var lengthConsumed = consumer.textIndex;
     var regularLinesResultNode;
     switch (inlineNodesPerRegularLine.length) {
         case 0:
@@ -2520,7 +2533,7 @@ function parseSectionSeparatorStreak(args) {
     if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
         return false;
     }
-    args.then([new SectionSeparatorNode_1.SectionSeparatorNode()], consumer.countCharsConsumed);
+    args.then([new SectionSeparatorNode_1.SectionSeparatorNode()], consumer.textIndex);
     return true;
 }
 exports.parseSectionSeparatorStreak = parseSectionSeparatorStreak;
@@ -2552,7 +2565,7 @@ function parseUnorderedList(args) {
             text: consumer.remainingText,
             then: function (lines, lengthParsed, shouldTerminateList) {
                 rawListItemLines.push.apply(rawListItemLines, lines);
-                consumer.advance(lengthParsed);
+                consumer.advanceTextIndex(lengthParsed);
                 isListTerminated = shouldTerminateList;
             }
         });
@@ -2561,7 +2574,7 @@ function parseUnorderedList(args) {
             return "break";
         }
     };
-    while (!consumer.done()) {
+    while (!consumer.reachedEndOfText()) {
         var state_1 = _loop_1();
         if (state_1 === "break") break;
     }
@@ -2571,7 +2584,7 @@ function parseUnorderedList(args) {
     var listItems = rawListItemsContents.map(function (rawContents) {
         return new UnorderedListItem_1.UnorderedListItem(getOutlineNodes_1.getOutlineNodes(rawContents, args.headingLeveler, args.config));
     });
-    args.then([new UnorderedListNode_1.UnorderedListNode(listItems)], consumer.countCharsConsumed);
+    args.then([new UnorderedListNode_1.UnorderedListNode(listItems)], consumer.textIndex);
     return true;
 }
 exports.parseUnorderedList = parseUnorderedList;

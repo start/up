@@ -37,7 +37,7 @@ export function getOutlineNodes(
   const consumer = new LineConsumer(trimOuterBlankLines(text))
   const nodes: OutlineSyntaxNode[] = []
 
-  while (!consumer.done()) {
+  while (!consumer.reachedEndOfText()) {
     for (let parseOutlineConvention of outlineParsers) {
 
       const wasConventionFound =
@@ -47,7 +47,7 @@ export function getOutlineNodes(
           config,
           then: (newNodes, lengthParsed) => {
             nodes.push(...newNodes)
-            consumer.advance(lengthParsed)
+            consumer.advanceTextIndex(lengthParsed)
           }
         })
 

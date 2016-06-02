@@ -16,9 +16,9 @@ export function parseCodeBlock(args: OutlineParserArgs): boolean {
   const codeLines: string[] = []
 
   // Keep consuming lines until we get to the closing code fence
-  while (!consumer.done()) {
+  while (!consumer.reachedEndOfText()) {
     if (consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
-      args.then([new CodeBlockNode(codeLines.join('\n'))], consumer.countCharsConsumed)
+      args.then([new CodeBlockNode(codeLines.join('\n'))], consumer.textIndex)
       return true
     }
 

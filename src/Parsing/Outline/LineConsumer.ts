@@ -1,19 +1,32 @@
 export class LineConsumer {
-  countCharsConsumed = 0
-  remainingText: string
+  private _textIndex: number
+  private _remainingText: string
 
   constructor(private entireText: string) {
-    this.updateRemainingText()
+    this.setTextIndex(0)
+  }
+  
+  get textIndex(): number {
+    return this._textIndex
+  }
+  
+  private setTextIndex(value: number): void {
+    this._textIndex = value
+    this._remainingText = this.entireText.slice(this.textIndex) 
+  }
+  
+  get remainingText(): string {
+    return this._remainingText
   }
 
-  advance(countCharacters: number): void {
-    this.countCharsConsumed += countCharacters
-    this.updateRemainingText()
+  advanceTextIndex(length: number): void {
+    this.setTextIndex(this.textIndex + length) 
   }
 
-  done(): boolean {
-    return this.countCharsConsumed >= this.entireText.length
+  reachedEndOfText(): boolean {
+    return this.textIndex >= this.entireText.length
   }
+  
   consumeLine(
     args: {
       pattern?: RegExp,
@@ -21,7 +34,7 @@ export class LineConsumer {
       then?: OnConsume
     }
   ): boolean {
-    if (this.done()) {
+    if (this.reachedEndOfText()) {
       return false
     }
 
@@ -29,7 +42,7 @@ export class LineConsumer {
     let lineWithoutTerminatingLineBreak: string
 
     // First, let's find the end of the current line
-    for (let i = this.countCharsConsumed; i < this.entireText.length; i++) {
+    for (let i = this.textIndex; i < this.entireText.length; i++) {
       const char = this.entireText[i]
 
       // Escaped line breaks don't end lines
@@ -39,7 +52,7 @@ export class LineConsumer {
       }
 
       if (char === '\n') {
-        fullLine = this.entireText.substring(this.countCharsConsumed, i + 1)
+        fullLine = this.entireText.substring(this.textIndex, i + 1)
         lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
         break
       }
@@ -66,17 +79,13 @@ export class LineConsumer {
       return false
     }
 
-    this.advance(fullLine.length)
+    this.advanceTextIndex(fullLine.length)
 
     if (args.then) {
       args.then(lineWithoutTerminatingLineBreak, ...captures)
     }
 
     return true
-  }
-
-  private updateRemainingText(): void {
-    this.remainingText = this.entireText.slice(this.countCharsConsumed)
   }
 }
 

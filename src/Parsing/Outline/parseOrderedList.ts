@@ -19,7 +19,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
   const rawListItems: RawListItem[] = []
 
-  while (!consumer.done()) {
+  while (!consumer.reachedEndOfText()) {
     let rawListItem = new RawListItem()
 
     const isLineBulleted = consumer.consumeLine({
@@ -41,7 +41,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
       text: consumer.remainingText,
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItem.lines.push(...lines)
-        consumer.advance(lengthParsed)
+        consumer.advanceTextIndex(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })
@@ -64,7 +64,7 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
     )
   })
 
-  args.then([new OrderedListNode(listItems)], consumer.countCharsConsumed)
+  args.then([new OrderedListNode(listItems)], consumer.textIndex)
   return true
 }
 
