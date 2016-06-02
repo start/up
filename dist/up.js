@@ -748,7 +748,7 @@ var Tokenizer = (function () {
         this.tokens = [];
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
-        this.bufferedText = '';
+        this.buffer = '';
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
         this.tokenize();
@@ -825,7 +825,7 @@ var Tokenizer = (function () {
                 startPattern: '`',
                 endPattern: '`',
                 onOpen: function () { return _this.flushBufferToPlainTextToken(); },
-                onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBufferedText())); }
+                onClose: function () { return _this.addToken(new InlineCodeToken_1.InlineCodeToken(_this.flushBuffer())); }
             });
         this.sandwichesThatCanAppearInRegularContent = [
             this.inlineCodeConvention,
@@ -855,7 +855,7 @@ var Tokenizer = (function () {
                 || this.bufferCurrentChar();
         }
         this.tokens =
-            nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.addPlainTextBrackets()));
+            nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.insertPlainTextTokensForBrackets()));
     };
     Tokenizer.prototype.tryToCloseOrAdvanceOpenContexts = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -964,7 +964,7 @@ var Tokenizer = (function () {
             goal: TokenizerGoal_1.TokenizerGoal.MediaUrl,
             pattern: URL_ARROW_PATTERN_DEPCRECATED,
             then: function () {
-                _this.addToken(new MediaDescriptionToken_1.MediaDescriptionToken(_this.flushBufferedText()));
+                _this.addToken(new MediaDescriptionToken_1.MediaDescriptionToken(_this.flushBuffer()));
             }
         });
     };
@@ -973,7 +973,7 @@ var Tokenizer = (function () {
         return this.consumer.advanceAfterMatch({
             pattern: MEDIA_END_PATTERN_DEPCRECATED,
             then: function () {
-                _this.addToken(new MediaEndToken_1.MediaEndToken(_this.flushBufferedText()));
+                _this.addToken(new MediaEndToken_1.MediaEndToken(_this.flushBuffer()));
                 _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.MediaUrl);
                 _this.openContexts.pop();
             }
@@ -1033,7 +1033,7 @@ var Tokenizer = (function () {
             textIndex: this.consumer.textIndex,
             tokens: this.tokens,
             openContexts: this.openContexts,
-            bufferedText: this.bufferedText
+            bufferedText: this.buffer
         });
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
@@ -1062,7 +1062,7 @@ var Tokenizer = (function () {
         this.failedGoalTracker.registerFailure(context);
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
-        this.bufferedText = context.snapshot.bufferedText;
+        this.buffer = context.snapshot.bufferedText;
         this.consumer.textIndex = context.snapshot.textIndex;
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
@@ -1106,7 +1106,7 @@ var Tokenizer = (function () {
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.flushBufferedTextToNakedUrlToken = function () {
-        this.addToken(new NakedUrlEndToken_1.NakedUrlEndToken(this.flushBufferedText()));
+        this.addToken(new NakedUrlEndToken_1.NakedUrlEndToken(this.flushBuffer()));
     };
     Tokenizer.prototype.addTokenAfterFlushingBufferToPlainTextToken = function (token) {
         this.flushBufferToPlainTextToken();
@@ -1129,7 +1129,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getBracketInsideUrlConvention = function (args) {
         var _this = this;
         var bufferBracket = function (bracket) {
-            _this.bufferedText += bracket;
+            _this.buffer += bracket;
         };
         return new TokenizableSandwich_1.TokenizableSandwich({
             goal: args.goal,
@@ -1163,7 +1163,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.addPlainTextBrackets = function () {
+    Tokenizer.prototype.insertPlainTextTokensForBrackets = function () {
         var resultTokens = [];
         var _loop_1 = function(token) {
             function addBracketIfTokenIs(bracket, TokenType) {
@@ -1187,17 +1187,17 @@ var Tokenizer = (function () {
         this.tokens.push(token);
     };
     Tokenizer.prototype.bufferCurrentChar = function () {
-        this.bufferedText += this.consumer.currentChar;
+        this.buffer += this.consumer.currentChar;
         this.consumer.advanceTextIndex(1);
         return true;
     };
-    Tokenizer.prototype.flushBufferedText = function () {
-        var bufferedText = this.bufferedText;
-        this.bufferedText = '';
+    Tokenizer.prototype.flushBuffer = function () {
+        var bufferedText = this.buffer;
+        this.buffer = '';
         return bufferedText;
     };
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
-        this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
+        this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBuffer()));
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }

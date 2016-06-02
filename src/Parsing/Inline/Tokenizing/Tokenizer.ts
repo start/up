@@ -42,7 +42,7 @@ export class Tokenizer {
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
-  private bufferedText = ''
+  private buffer = ''
 
   private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
@@ -157,7 +157,7 @@ export class Tokenizer {
         startPattern: '`',
         endPattern: '`',
         onOpen: () => this.flushBufferToPlainTextToken(),
-        onClose: () => this.addToken(new InlineCodeToken(this.flushBufferedText()))
+        onClose: () => this.addToken(new InlineCodeToken(this.flushBuffer()))
       })
 
     this.sandwichesThatCanAppearInRegularContent = [
@@ -193,7 +193,7 @@ export class Tokenizer {
     this.tokens =
       nestOverlappingConventions(
         applyRaisedVoices(
-          this.addPlainTextBrackets()))
+          this.insertPlainTextTokensForBrackets()))
   }
 
   private tryToCloseOrAdvanceOpenContexts(): boolean {
@@ -337,7 +337,7 @@ export class Tokenizer {
       goal: TokenizerGoal.MediaUrl,
       pattern: URL_ARROW_PATTERN_DEPCRECATED,
       then: () => {
-        this.addToken(new MediaDescriptionToken(this.flushBufferedText()))
+        this.addToken(new MediaDescriptionToken(this.flushBuffer()))
       }
     })
   }
@@ -346,7 +346,7 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: MEDIA_END_PATTERN_DEPCRECATED,
       then: () => {
-        this.addToken(new MediaEndToken(this.flushBufferedText()))
+        this.addToken(new MediaEndToken(this.flushBuffer()))
         this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
@@ -415,7 +415,7 @@ export class Tokenizer {
         textIndex: this.consumer.textIndex,
         tokens: this.tokens,
         openContexts: this.openContexts,
-        bufferedText: this.bufferedText
+        bufferedText: this.buffer
       })
   }
 
@@ -454,7 +454,7 @@ export class Tokenizer {
 
     this.tokens = context.snapshot.tokens
     this.openContexts = context.snapshot.openContexts
-    this.bufferedText = context.snapshot.bufferedText
+    this.buffer = context.snapshot.bufferedText
 
     this.consumer.textIndex = context.snapshot.textIndex
   }
@@ -514,7 +514,7 @@ export class Tokenizer {
   }
 
   private flushBufferedTextToNakedUrlToken(): void {
-    this.addToken(new NakedUrlEndToken(this.flushBufferedText()))
+    this.addToken(new NakedUrlEndToken(this.flushBuffer()))
   }
 
   private addTokenAfterFlushingBufferToPlainTextToken(token: Token): void {
@@ -552,7 +552,7 @@ export class Tokenizer {
     }
   ): TokenizableSandwich {
     const bufferBracket = (bracket: string) => {
-      this.bufferedText += bracket
+      this.buffer += bracket
     }
 
     return new TokenizableSandwich({
@@ -598,7 +598,7 @@ export class Tokenizer {
     })
   }
 
-  private addPlainTextBrackets(): Token[] {
+  private insertPlainTextTokensForBrackets(): Token[] {
     const resultTokens: Token[] = []
 
     for (const token of this.tokens) {
@@ -626,15 +626,15 @@ export class Tokenizer {
 
   // This method always returns true, which allows us to use some cleaner boolean logic.
   private bufferCurrentChar(): boolean {
-    this.bufferedText += this.consumer.currentChar
+    this.buffer += this.consumer.currentChar
     this.consumer.advanceTextIndex(1)
 
     return true
   }
 
-  private flushBufferedText(): string {
-    const bufferedText = this.bufferedText
-    this.bufferedText = ''
+  private flushBuffer(): string {
+    const bufferedText = this.buffer
+    this.buffer = ''
 
     return bufferedText
   }
@@ -643,7 +643,7 @@ export class Tokenizer {
     // This will create a PlainTextToken even when there isn't any text to flush.
     //
     // TODO: Explain why this is helpful
-    this.addToken(new PlainTextToken(this.flushBufferedText()))
+    this.addToken(new PlainTextToken(this.flushBuffer()))
   }
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
