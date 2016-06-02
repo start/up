@@ -29,10 +29,18 @@ import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoi
 import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceStartToken'
 import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
 import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
+import { ContextualizedToken } from './TokenContextualization/ContextualizedToken'
+import { ContextualizedStartToken } from './TokenContextualization/ContextualizedStartToken'
+import { ContextualizedEndToken } from './TokenContextualization/ContextualizedEndToken'
+
+
+// TODO: Dramatically naming
 
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  return new Tokenizer(text, config).tokens
+  return new Tokenizer(text, config)
+    .tokens
+    .map(token => token.rawToken)
 }
 
 
@@ -43,36 +51,25 @@ class Bracket {
 }
 
 
-const PARENS = new Bracket('(', ')')
-const SQUARE_BRACKETS = new Bracket('[', ']')
-const CURLY_BRACKETS = new Bracket('{', '}')
-
-
 class TypicalRichConvention {
-  constructor(
-    public startPattern: RegExp,
-    public endPattern: RegExp,
-    public StartTokenType: TokenType,
-    public EndTokenType: TokenType) { }
+  startPattern: RegExp
+  endPattern: RegExp
+  
+  constructor(public convention: RichConvention, startPattern: string, endPattern: string) {
+    this.startPattern = new RegExp(startsWith(startPattern))
+    this.endPattern = new RegExp(startsWith(endPattern))
+   }
 }
 
 
-function toTypicalRichConvention(
-  bracket: Bracket,
-  startTokenType: TokenType,
-  endTokenType: TokenType
-): TypicalRichConvention {
-  return new TypicalRichConvention(
-    new RegExp(escapeForRegex(bracket.open)),
-    new RegExp(escapeForRegex(bracket.close)),
-    startTokenType,
-    endTokenType)
-}
-
-const RICH_PARENS = toTypicalRichConvention(PARENS, ParenthesizedStartToken, ParenthesizedEndToken)
+const RICH_PARENTHESES =
+  new TypicalRichConvention(
+    PARENTHESIZED,
+    escapeForRegex('('),
+    escapeForRegex(')'))
 
 class Tokenizer {
-  tokens: Token[] = []
+  tokens: ContextualizedToken[] = []
 
   private consumer: InlineConsumer
 
@@ -118,6 +115,7 @@ class Tokenizer {
     return (
       this.consumer.done()
       || this.tryToCloseOpenContexts()
+      || this.tryToOpenTypicalRichConvention(RICH_PARENTHESES)
       || this.bufferCurrentChar()
     )
   }
@@ -135,35 +133,53 @@ class Tokenizer {
   private tryToCloseContext(context: Context): boolean {
     return (
       context.goal === TokenizerGoal.RichParentheses
-      && this.closeTypicalRichConvention({ context, convention: RICH_PARENS })
+      && this.closeTypicalRichConvention({ context, richConvention: RICH_PARENTHESES })
     )
+  }
+
+  private tryToOpenTypicalRichConvention(richConvention: TypicalRichConvention): boolean {
+    return this.consumer.advanceAfterMatch({
+      pattern: richConvention.endPattern,
+      then: () => {
+        this.openContexts.push(
+          new Context(richConvention.convention.goal, this.getCurrentSnapshot()))
+      }
+    })
   }
 
   private closeTypicalRichConvention(
     args: {
       context: Context
-      convention: TypicalRichConvention
+      richConvention: TypicalRichConvention
     }): boolean {
-    const { context, convention } = args
+    const { context, richConvention } = args
 
     return this.consumer.advanceAfterMatch({
-      pattern: convention.endPattern,
+      pattern: richConvention.endPattern,
       then: () => {
-        this.insertToken({
-          token: new convention.StartTokenType,
-          atIndex: context.startIndex,
-          contextForToken: args.context
-        })
+        const rawStartToken = new richConvention.convention.StartTokenType()
+        const rawEndToken = new richConvention.convention.EndTokenType()
         
-        this.addToken(new convention.EndTokenType)
+        const startToken = new ContextualizedStartToken(rawStartToken, richConvention.convention)
+        const endToken = new ContextualizedEndToken(rawEndToken, richConvention.convention)
+        
+        associate(startToken, endToken)
+         
+        this.insertToken({
+          token: startToken,
+          atIndex: context.startIndex,
+          contextForToken: context
+        })
 
-        remove(this.openContexts, args.context)
+        this.addToken(endToken)
+
+        remove(this.openContexts, context)
       }
     })
   }
 
   private insertToken(args: {
-    token: Token
+    token: ContextualizedToken
     atIndex: number
     contextForToken: Context
   }) {
@@ -178,7 +194,7 @@ class Tokenizer {
     }
   }
 
-  private addToken(token: Token): void {
+  private addToken(token: ContextualizedToken): void {
     this.tokens.push(token)
   }
 
@@ -201,7 +217,7 @@ class Tokenizer {
     const buffer = this.flushBuffer()
 
     if (buffer) {
-      this.addToken(new PlainTextToken(buffer))
+      this.addToken(new ContextualizedToken(new PlainTextToken(buffer)))
     }
   }
 
@@ -222,3 +238,8 @@ class Tokenizer {
 const CLOSE_PAREN_PATTERN = new RegExp(
   CLOSE_PAREN
 )
+
+function associate(start: ContextualizedStartToken, end: ContextualizedEndToken): void {
+  start.end = end
+  end.start = start
+}

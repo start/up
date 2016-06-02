@@ -1,4 +1,4 @@
-import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET, OPEN_CURLY_BRACKET, CLOSE_CURLY_BRACKET } from '../../../Patterns'
+/*import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET, OPEN_CURLY_BRACKET, CLOSE_CURLY_BRACKET } from '../../../Patterns'
 import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../../UpConfig'
@@ -647,7 +647,7 @@ export class Tokenizer {
     const { startPattern, endPattern, richConvention } = args
 
     return new TokenizableSandwich({
-      goal: richConvention.tokenizerGoal,
+      goal: richConvention.goal,
       startPattern,
       endPattern,
       onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(new richConvention.StartTokenType()),
@@ -796,3 +796,4 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
 const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
   startsWith(CLOSE_SQUARE_BRACKET)
 )
+*/

@@ -6,5 +6,5 @@ import { TokenizerGoal } from './TokenizerGoal'
 export interface RichConvention {
    StartTokenType: TokenType,
    EndTokenType: TokenType
-   tokenizerGoal?: TokenizerGoal
+   goal?: TokenizerGoal
 }

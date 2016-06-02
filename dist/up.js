@@ -140,6 +140,26 @@ exports.LINK = LINK;
 
 },{"../../SyntaxNodes/ActionNode":61,"../../SyntaxNodes/EmphasisNode":70,"../../SyntaxNodes/FootnoteNode":73,"../../SyntaxNodes/ParenthesizedNode":87,"../../SyntaxNodes/RevisionDeletionNode":89,"../../SyntaxNodes/RevisionInsertionNode":90,"../../SyntaxNodes/SpoilerNode":93,"../../SyntaxNodes/SquareBracketedNode":94,"../../SyntaxNodes/StressNode":95,"./Tokenizing/Tokens/ActionEndToken":14,"./Tokenizing/Tokens/ActionStartToken":15,"./Tokenizing/Tokens/EmphasisEndToken":17,"./Tokenizing/Tokens/EmphasisStartToken":18,"./Tokenizing/Tokens/FootnoteEndToken":19,"./Tokenizing/Tokens/FootnoteStartToken":20,"./Tokenizing/Tokens/LinkEndToken":23,"./Tokenizing/Tokens/LinkStartToken":24,"./Tokenizing/Tokens/ParenthesizedEndToken":26,"./Tokenizing/Tokens/ParenthesizedStartToken":27,"./Tokenizing/Tokens/RevisionDeletionEndToken":29,"./Tokenizing/Tokens/RevisionDeletionStartToken":30,"./Tokenizing/Tokens/RevisionInsertionEndToken":31,"./Tokenizing/Tokens/RevisionInsertionStartToken":32,"./Tokenizing/Tokens/SpoilerEndToken":33,"./Tokenizing/Tokens/SpoilerStartToken":34,"./Tokenizing/Tokens/SquareBracketedEndToken":35,"./Tokenizing/Tokens/SquareBracketedStartToken":36,"./Tokenizing/Tokens/StressEndToken":37,"./Tokenizing/Tokens/StressStartToken":38}],5:[function(require,module,exports){
 "use strict";
+var Context = (function () {
+    function Context(goal, snapshot) {
+        this.goal = goal;
+        this.snapshot = snapshot;
+        this.reset();
+    }
+    Context.prototype.notifyOfTokenInsertion = function (indexOfNewToken) {
+        if (indexOfNewToken >= this.startIndex) {
+            this.startIndex += 1;
+        }
+    };
+    Context.prototype.reset = function () {
+        this.startIndex = this.snapshot.tokens.length;
+    };
+    return Context;
+}());
+exports.Context = Context;
+
+},{}],6:[function(require,module,exports){
+"use strict";
 var FailedGoalTracker = (function () {
     function FailedGoalTracker() {
         this.failedGoalsByTextIndex = {};
@@ -160,7 +180,7 @@ var FailedGoalTracker = (function () {
 }());
 exports.FailedGoalTracker = FailedGoalTracker;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../../Patterns');
 var InlineConsumer = (function () {
@@ -202,7 +222,7 @@ var InlineConsumer = (function () {
 exports.InlineConsumer = InlineConsumer;
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 
-},{"../../../Patterns":60}],7:[function(require,module,exports){
+},{"../../../Patterns":60}],8:[function(require,module,exports){
 "use strict";
 var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
 var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
@@ -238,53 +258,53 @@ exports.STRESS = STRESS;
 var REVISION_DELETION = {
     StartTokenType: RevisionDeletionStartToken_1.RevisionDeletionStartToken,
     EndTokenType: RevisionDeletionEndToken_1.RevisionDeletionEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionDeletion
+    goal: TokenizerGoal_1.TokenizerGoal.RevisionDeletion
 };
 exports.REVISION_DELETION = REVISION_DELETION;
 var REVISION_INSERTION = {
     StartTokenType: RevisionInsertionStartToken_1.RevisionInsertionStartToken,
     EndTokenType: RevisionInsertionEndToken_1.RevisionInsertionEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionInsertion
+    goal: TokenizerGoal_1.TokenizerGoal.RevisionInsertion
 };
 exports.REVISION_INSERTION = REVISION_INSERTION;
 var SPOILER = {
     StartTokenType: SpoilerStartToken_1.SpoilerStartToken,
     EndTokenType: SpoilerEndToken_1.SpoilerEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Spoiler
+    goal: TokenizerGoal_1.TokenizerGoal.Spoiler
 };
 exports.SPOILER = SPOILER;
 var FOOTNOTE = {
     StartTokenType: FootnoteStartToken_1.FootnoteStartToken,
     EndTokenType: FootnoteEndToken_1.FootnoteEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Footnote
+    goal: TokenizerGoal_1.TokenizerGoal.Footnote
 };
 exports.FOOTNOTE = FOOTNOTE;
 var PARENTHESIZED = {
     StartTokenType: ParenthesizedStartToken_1.ParenthesizedStartToken,
     EndTokenType: ParenthesizedEndToken_1.ParenthesizedEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RichParentheses
+    goal: TokenizerGoal_1.TokenizerGoal.RichParentheses
 };
 exports.PARENTHESIZED = PARENTHESIZED;
 var SQUARE_BRACKETED = {
     StartTokenType: SquareBracketedStartToken_1.SquareBracketedStartToken,
     EndTokenType: SquareBracketedEndToken_1.SquareBracketedEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RichSquareBrackets
+    goal: TokenizerGoal_1.TokenizerGoal.RichSquareBrackets
 };
 exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
 var ACTION = {
     StartTokenType: ActionStartToken_1.ActionStartToken,
     EndTokenType: ActionEndToken_1.ActionEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Action
+    goal: TokenizerGoal_1.TokenizerGoal.Action
 };
 exports.ACTION = ACTION;
 var LINK = {
     StartTokenType: LinkStartToken_1.LinkStartToken,
     EndTokenType: LinkEndToken_1.LinkEndToken,
-    tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Link
+    goal: TokenizerGoal_1.TokenizerGoal.Link
 };
 exports.LINK = LINK;
 
-},{"./TokenizerGoal":12,"./Tokens/ActionEndToken":14,"./Tokens/ActionStartToken":15,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/ParenthesizedEndToken":26,"./Tokens/ParenthesizedStartToken":27,"./Tokens/RevisionDeletionEndToken":29,"./Tokens/RevisionDeletionStartToken":30,"./Tokens/RevisionInsertionEndToken":31,"./Tokens/RevisionInsertionStartToken":32,"./Tokens/SpoilerEndToken":33,"./Tokens/SpoilerStartToken":34,"./Tokens/SquareBracketedEndToken":35,"./Tokens/SquareBracketedStartToken":36,"./Tokens/StressEndToken":37,"./Tokens/StressStartToken":38}],8:[function(require,module,exports){
+},{"./TokenizerGoal":12,"./Tokens/ActionEndToken":14,"./Tokens/ActionStartToken":15,"./Tokens/EmphasisEndToken":17,"./Tokens/EmphasisStartToken":18,"./Tokens/FootnoteEndToken":19,"./Tokens/FootnoteStartToken":20,"./Tokens/LinkEndToken":23,"./Tokens/LinkStartToken":24,"./Tokens/ParenthesizedEndToken":26,"./Tokens/ParenthesizedStartToken":27,"./Tokens/RevisionDeletionEndToken":29,"./Tokens/RevisionDeletionStartToken":30,"./Tokens/RevisionInsertionEndToken":31,"./Tokens/RevisionInsertionStartToken":32,"./Tokens/SpoilerEndToken":33,"./Tokens/SpoilerStartToken":34,"./Tokens/SquareBracketedEndToken":35,"./Tokens/SquareBracketedStartToken":36,"./Tokens/StressEndToken":37,"./Tokens/StressStartToken":38}],9:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -303,7 +323,7 @@ var ContextualizedEndToken = (function (_super) {
 }(ContextualizedToken_1.ContextualizedToken));
 exports.ContextualizedEndToken = ContextualizedEndToken;
 
-},{"./ContextualizedToken":10}],9:[function(require,module,exports){
+},{"./ContextualizedToken":11}],10:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -322,77 +342,17 @@ var ContextualizedStartToken = (function (_super) {
 }(ContextualizedToken_1.ContextualizedToken));
 exports.ContextualizedStartToken = ContextualizedStartToken;
 
-},{"./ContextualizedToken":10}],10:[function(require,module,exports){
+},{"./ContextualizedToken":11}],11:[function(require,module,exports){
 "use strict";
 var ContextualizedToken = (function () {
-    function ContextualizedToken(originalToken) {
-        this.originalToken = originalToken;
+    function ContextualizedToken(rawToken) {
+        this.rawToken = rawToken;
     }
     return ContextualizedToken;
 }());
 exports.ContextualizedToken = ContextualizedToken;
 
-},{}],11:[function(require,module,exports){
-"use strict";
-var RichConventions_1 = require('../RichConventions');
-var ContextualizedToken_1 = require('./ContextualizedToken');
-var ContextualizedStartToken_1 = require('./ContextualizedStartToken');
-var ContextualizedEndToken_1 = require('./ContextualizedEndToken');
-var RICH_CONVENTIONS = [
-    RichConventions_1.LINK, RichConventions_1.STRESS, RichConventions_1.EMPHASIS,
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE,
-    RichConventions_1.PARENTHESIZED,
-    RichConventions_1.SQUARE_BRACKETED,
-    RichConventions_1.ACTION
-];
-function contextualizeTokens(tokens) {
-    var resultTokens = [];
-    var openStartTokens = [];
-    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-        var token = tokens_1[_i];
-        var conventionStartedByToken = getConventionStartedBy(token, RICH_CONVENTIONS);
-        if (conventionStartedByToken) {
-            var startToken = new ContextualizedStartToken_1.ContextualizedStartToken(token, conventionStartedByToken);
-            resultTokens.push(startToken);
-            openStartTokens.push(startToken);
-            continue;
-        }
-        var conventionEndedByToken = getConventionEndedBy(token, RICH_CONVENTIONS);
-        if (conventionEndedByToken) {
-            var endToken = new ContextualizedEndToken_1.ContextualizedEndToken(token, conventionEndedByToken);
-            resultTokens.push(endToken);
-            for (var i = openStartTokens.length - 1; i >= 0; i--) {
-                var startToken = openStartTokens[i];
-                if (token instanceof startToken.convention.EndTokenType) {
-                    startToken.end = endToken;
-                    endToken.start = startToken;
-                    openStartTokens.splice(i, 1);
-                    break;
-                }
-            }
-            continue;
-        }
-        resultTokens.push(new ContextualizedToken_1.ContextualizedToken(token));
-    }
-    return resultTokens;
-}
-exports.contextualizeTokens = contextualizeTokens;
-function getConventionStartedBy(token, conventions) {
-    return conventions.filter(function (convention) {
-        return token instanceof convention.StartTokenType;
-    })[0];
-}
-exports.getConventionStartedBy = getConventionStartedBy;
-function getConventionEndedBy(token, conventions) {
-    return conventions.filter(function (convention) {
-        return token instanceof convention.EndTokenType;
-    })[0];
-}
-
-},{"../RichConventions":7,"./ContextualizedEndToken":8,"./ContextualizedStartToken":9,"./ContextualizedToken":10}],12:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 (function (TokenizerGoal) {
     TokenizerGoal[TokenizerGoal["InlineCode"] = 0] = "InlineCode";
@@ -696,7 +656,6 @@ exports.VideoStartToken = VideoStartToken;
 },{}],40:[function(require,module,exports){
 "use strict";
 var RichConventions_1 = require('./RichConventions');
-var contextualizeTokens_1 = require('./TokenContextualization/contextualizeTokens');
 var ContextualizedStartToken_1 = require('./TokenContextualization/ContextualizedStartToken');
 var ContextualizedEndToken_1 = require('./TokenContextualization/ContextualizedEndToken');
 function nestOverlappingConventions(tokens) {
@@ -719,7 +678,8 @@ var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 ];
 var ConventionNester = (function () {
     function ConventionNester(tokens) {
-        this.contextualizedTokens = contextualizeTokens_1.contextualizeTokens(tokens);
+        this.tokens = tokens;
+        this.tokens = tokens.slice();
         var splittableConventions = FREELY_SPLITTABLE_CONVENTIONS.slice();
         this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(splittableConventions);
         for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
@@ -727,12 +687,11 @@ var ConventionNester = (function () {
             this.resolveOverlapping(splittableConventions, conventionNotToSplit);
             splittableConventions.push(conventionNotToSplit);
         }
-        this.tokens = this.contextualizedTokens.map(function (token) { return token.originalToken; });
     }
     ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
         var unclosedStartTokens = [];
-        for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-            var token = this.contextualizedTokens[tokenIndex];
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            var token = this.tokens[tokenIndex];
             if (doesTokenStartConvention(token, conventions)) {
                 unclosedStartTokens.push(token);
                 continue;
@@ -755,8 +714,8 @@ var ConventionNester = (function () {
         }
     };
     ConventionNester.prototype.resolveOverlapping = function (splittableConventions, conventionNotToSplit) {
-        for (var tokenIndex = 0; tokenIndex < this.contextualizedTokens.length; tokenIndex++) {
-            var potentialHeroStartToken = this.contextualizedTokens[tokenIndex];
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            var potentialHeroStartToken = this.tokens[tokenIndex];
             var isStartTokenForHeroConvention = potentialHeroStartToken instanceof ContextualizedStartToken_1.ContextualizedStartToken
                 && potentialHeroStartToken.originalToken instanceof conventionNotToSplit.StartTokenType;
             if (!isStartTokenForHeroConvention) {
@@ -764,8 +723,8 @@ var ConventionNester = (function () {
             }
             var heroStartIndex = tokenIndex;
             var heroEndIndex = void 0;
-            for (var i = heroStartIndex + 1; i < this.contextualizedTokens.length; i++) {
-                var potentialHeroEndToken = this.contextualizedTokens[i];
+            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
+                var potentialHeroEndToken = this.tokens[i];
                 var isEndTokenForHeroConvention = potentialHeroEndToken instanceof ContextualizedEndToken_1.ContextualizedEndToken
                     && potentialHeroEndToken.originalToken instanceof conventionNotToSplit.EndTokenType;
                 if (isEndTokenForHeroConvention) {
@@ -776,7 +735,7 @@ var ConventionNester = (function () {
             var overlappingStartingBefore = [];
             var overlappingStartingInside = [];
             for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-                var token = this.contextualizedTokens[indexInsideHero];
+                var token = this.tokens[indexInsideHero];
                 if (doesTokenStartConvention(token, splittableConventions)) {
                     overlappingStartingInside.push(token.end);
                     continue;
@@ -803,7 +762,7 @@ var ConventionNester = (function () {
         this.insertTokens(index, endTokensFromMostRecentToLeast);
     };
     ConventionNester.prototype.insertTokens = function (index, contextualizedTokens) {
-        (_a = this.contextualizedTokens).splice.apply(_a, [index, 0].concat(contextualizedTokens));
+        (_a = this.tokens).splice.apply(_a, [index, 0].concat(contextualizedTokens));
         var _a;
     };
     return ConventionNester;
@@ -817,20 +776,25 @@ function doesTokenEndConvention(token, conventions) {
         && conventions.some(function (convention) { return token.originalToken instanceof convention.EndTokenType; }));
 }
 
-},{"./RichConventions":7,"./TokenContextualization/ContextualizedEndToken":8,"./TokenContextualization/ContextualizedStartToken":9,"./TokenContextualization/contextualizeTokens":11}],41:[function(require,module,exports){
+},{"./RichConventions":8,"./TokenContextualization/ContextualizedEndToken":9,"./TokenContextualization/ContextualizedStartToken":10}],41:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../../Patterns');
+var RichConventions_1 = require('./RichConventions');
 var InlineConsumer_1 = require('./InlineConsumer');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
 var CollectionHelpers_1 = require('../../../CollectionHelpers');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var FailedGoalTracker_1 = require('./FailedGoalTracker');
+var Context_1 = require('./Context');
 var TokenizerSnapshot_1 = require('./TokenizerSnapshot');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
-var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
-var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
+var ContextualizedToken_1 = require('./TokenContextualization/ContextualizedToken');
+var ContextualizedStartToken_1 = require('./TokenContextualization/ContextualizedStartToken');
+var ContextualizedEndToken_1 = require('./TokenContextualization/ContextualizedEndToken');
 function tokenize(text, config) {
-    return new Tokenizer(text, config).tokens;
+    return new Tokenizer(text, config)
+        .tokens
+        .map(function (token) { return token.rawToken; });
 }
 exports.tokenize = tokenize;
 var Bracket = (function () {
@@ -840,22 +804,15 @@ var Bracket = (function () {
     }
     return Bracket;
 }());
-var PARENS = new Bracket('(', ')');
-var SQUARE_BRACKETS = new Bracket('[', ']');
-var CURLY_BRACKETS = new Bracket('{', '}');
 var TypicalRichConvention = (function () {
-    function TypicalRichConvention(startPattern, endPattern, StartTokenType, EndTokenType) {
-        this.startPattern = startPattern;
-        this.endPattern = endPattern;
-        this.StartTokenType = StartTokenType;
-        this.EndTokenType = EndTokenType;
+    function TypicalRichConvention(convention, startPattern, endPattern) {
+        this.convention = convention;
+        this.startPattern = new RegExp(Patterns_1.startsWith(startPattern));
+        this.endPattern = new RegExp(Patterns_1.startsWith(endPattern));
     }
     return TypicalRichConvention;
 }());
-function toTypicalRichConvention(bracket, startTokenType, endTokenType) {
-    return new TypicalRichConvention(new RegExp(Patterns_1.escapeForRegex(bracket.open)), new RegExp(Patterns_1.escapeForRegex(bracket.close)), startTokenType, endTokenType);
-}
-var RICH_PARENS = toTypicalRichConvention(PARENS, ParenthesizedStartToken_1.ParenthesizedStartToken, ParenthesizedEndToken_1.ParenthesizedEndToken);
+var RICH_PARENTHESES = new TypicalRichConvention(RichConventions_1.PARENTHESIZED, Patterns_1.escapeForRegex('('), Patterns_1.escapeForRegex(')'));
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         this.entireText = entireText;
@@ -885,6 +842,7 @@ var Tokenizer = (function () {
         this.consumer.advanceTextIndex(1);
         return (this.consumer.done()
             || this.tryToCloseOpenContexts()
+            || this.tryToOpenTypicalRichConvention(RICH_PARENTHESES)
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.tryToCloseOpenContexts = function () {
@@ -897,21 +855,35 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseContext = function (context) {
         return (context.goal === TokenizerGoal_1.TokenizerGoal.RichParentheses
-            && this.closeTypicalRichConvention({ context: context, convention: RICH_PARENS }));
+            && this.closeTypicalRichConvention({ context: context, richConvention: RICH_PARENTHESES }));
+    };
+    Tokenizer.prototype.tryToOpenTypicalRichConvention = function (richConvention) {
+        var _this = this;
+        return this.consumer.advanceAfterMatch({
+            pattern: richConvention.endPattern,
+            then: function () {
+                _this.openContexts.push(new Context_1.Context(richConvention.convention.goal, _this.getCurrentSnapshot()));
+            }
+        });
     };
     Tokenizer.prototype.closeTypicalRichConvention = function (args) {
         var _this = this;
-        var context = args.context, convention = args.convention;
+        var context = args.context, richConvention = args.richConvention;
         return this.consumer.advanceAfterMatch({
-            pattern: convention.endPattern,
+            pattern: richConvention.endPattern,
             then: function () {
+                var rawStartToken = new richConvention.convention.StartTokenType();
+                var rawEndToken = new richConvention.convention.EndTokenType();
+                var startToken = new ContextualizedStartToken_1.ContextualizedStartToken(rawStartToken, richConvention.convention);
+                var endToken = new ContextualizedEndToken_1.ContextualizedEndToken(rawEndToken, richConvention.convention);
+                associate(startToken, endToken);
                 _this.insertToken({
-                    token: new convention.StartTokenType,
+                    token: startToken,
                     atIndex: context.startIndex,
-                    contextForToken: args.context
+                    contextForToken: context
                 });
-                _this.addToken(new convention.EndTokenType);
-                CollectionHelpers_1.remove(_this.openContexts, args.context);
+                _this.addToken(endToken);
+                CollectionHelpers_1.remove(_this.openContexts, context);
             }
         });
     };
@@ -941,7 +913,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         var buffer = this.flushBuffer();
         if (buffer) {
-            this.addToken(new PlainTextToken_1.PlainTextToken(buffer));
+            this.addToken(new ContextualizedToken_1.ContextualizedToken(new PlainTextToken_1.PlainTextToken(buffer)));
         }
     };
     Tokenizer.prototype.getCurrentSnapshot = function () {
@@ -959,8 +931,12 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 var CLOSE_PAREN_PATTERN = new RegExp(Patterns_1.CLOSE_PAREN);
+function associate(start, end) {
+    start.end = end;
+    end.start = start;
+}
 
-},{"../../../CollectionHelpers":1,"../../../Patterns":60,"./FailedGoalTracker":5,"./InlineConsumer":6,"./TokenizerGoal":12,"./TokenizerSnapshot":13,"./Tokens/ParenthesizedEndToken":26,"./Tokens/ParenthesizedStartToken":27,"./Tokens/PlainTextToken":28,"./nestOverlappingConventions":40}],42:[function(require,module,exports){
+},{"../../../CollectionHelpers":1,"../../../Patterns":60,"./Context":5,"./FailedGoalTracker":6,"./InlineConsumer":7,"./RichConventions":8,"./TokenContextualization/ContextualizedEndToken":9,"./TokenContextualization/ContextualizedStartToken":10,"./TokenContextualization/ContextualizedToken":11,"./TokenizerGoal":12,"./TokenizerSnapshot":13,"./Tokens/PlainTextToken":28,"./nestOverlappingConventions":40}],42:[function(require,module,exports){
 "use strict";
 var tokenize_1 = require('./Tokenizing/tokenize');
 var parse_1 = require('./parse');

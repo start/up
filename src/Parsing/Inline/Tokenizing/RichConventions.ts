@@ -35,49 +35,49 @@ const STRESS: RichConvention = {
 const REVISION_DELETION: RichConvention = {
   StartTokenType: RevisionDeletionStartToken,
   EndTokenType: RevisionDeletionEndToken,
-  tokenizerGoal: TokenizerGoal.RevisionDeletion
+  goal: TokenizerGoal.RevisionDeletion
 }
 
 const REVISION_INSERTION: RichConvention = {
   StartTokenType: RevisionInsertionStartToken,
   EndTokenType: RevisionInsertionEndToken,
-  tokenizerGoal: TokenizerGoal.RevisionInsertion
+  goal: TokenizerGoal.RevisionInsertion
 }
 
 const SPOILER: RichConvention = {
   StartTokenType: SpoilerStartToken,
   EndTokenType: SpoilerEndToken,
-  tokenizerGoal: TokenizerGoal.Spoiler
+  goal: TokenizerGoal.Spoiler
 }
 
 const FOOTNOTE : RichConvention= {
   StartTokenType: FootnoteStartToken,
   EndTokenType: FootnoteEndToken,
-  tokenizerGoal: TokenizerGoal.Footnote
+  goal: TokenizerGoal.Footnote
 }
 
 const PARENTHESIZED: RichConvention =  {
   StartTokenType: ParenthesizedStartToken,
   EndTokenType: ParenthesizedEndToken,
-  tokenizerGoal: TokenizerGoal.RichParentheses
+  goal: TokenizerGoal.RichParentheses
 }
 
 const SQUARE_BRACKETED: RichConvention =  {
   StartTokenType: SquareBracketedStartToken,
   EndTokenType: SquareBracketedEndToken,
-  tokenizerGoal: TokenizerGoal.RichSquareBrackets
+  goal: TokenizerGoal.RichSquareBrackets
 }
 
 const ACTION: RichConvention =  {
   StartTokenType: ActionStartToken,
   EndTokenType: ActionEndToken,
-  tokenizerGoal: TokenizerGoal.Action
+  goal: TokenizerGoal.Action
 }
 
 const LINK: RichConvention =  {
   StartTokenType: LinkStartToken,
   EndTokenType: LinkEndToken,
-  tokenizerGoal: TokenizerGoal.Link
+  goal: TokenizerGoal.Link
 }
 
 export {

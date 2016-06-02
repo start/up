@@ -1,17 +1,17 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerContext } from './TokenizerContext'
-import { Token } from './Tokens/Token'
+import { ContextualizedToken } from './TokenContextualization/ContextualizedToken'
 
 export class TokenizerSnapshot {
   textIndex: number
-  tokens: Token[]
+  tokens: ContextualizedToken[]
   openContexts: TokenizerContext[]
   bufferedText: string
 
   constructor(
     args: {
       countCharsConsumed: number
-      tokens: Token[]
+      tokens: ContextualizedToken[]
       openContexts: TokenizerContext[]
       buffer: string
     }
