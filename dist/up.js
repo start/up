@@ -162,23 +162,48 @@ var Patterns_1 = require('../../../Patterns');
 var InlineConsumer = (function () {
     function InlineConsumer(entireText) {
         this.entireText = entireText;
+        this._textIndex = 0;
         this.textIndex = 0;
-        this.setTextIndex(0);
     }
+    Object.defineProperty(InlineConsumer.prototype, "textIndex", {
+        get: function () {
+            return this._textIndex;
+        },
+        set: function (value) {
+            this._textIndex = value;
+            this.updateComputedTextFields();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(InlineConsumer.prototype, "remainingText", {
+        get: function () {
+            return this._remainingText;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(InlineConsumer.prototype, "currentChar", {
+        get: function () {
+            return this._currentChar;
+        },
+        enumerable: true,
+        configurable: true
+    });
     InlineConsumer.prototype.advanceTextIndex = function (length) {
-        this.setTextIndex(this.textIndex + length);
+        this.textIndex += length;
     };
     InlineConsumer.prototype.reachedEndOfText = function () {
-        return this.textIndex >= this.entireText.length;
+        return this._textIndex >= this.entireText.length;
     };
     InlineConsumer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
-        var result = pattern.exec(this.remainingText);
+        var result = pattern.exec(this._remainingText);
         if (!result) {
             return false;
         }
         var match = result[0], captures = result.slice(1);
-        var charAfterMatch = this.entireText[this.textIndex + match.length];
+        var charAfterMatch = this.entireText[this._textIndex + match.length];
         var isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch);
         if (then) {
             then.apply(void 0, [match, this.isTouchingWordEnd, isTouchingWordStart].concat(captures));
@@ -186,14 +211,10 @@ var InlineConsumer = (function () {
         this.advanceTextIndex(match.length);
         return true;
     };
-    InlineConsumer.prototype.setTextIndex = function (countCharsConsumed) {
-        this.textIndex = countCharsConsumed;
-        this.updateComputedTextFields();
-    };
     InlineConsumer.prototype.updateComputedTextFields = function () {
-        this.remainingText = this.entireText.substr(this.textIndex);
-        this.currentChar = this.remainingText[0];
-        var previousChar = this.entireText[this.textIndex - 1];
+        this._remainingText = this.entireText.substr(this._textIndex);
+        this._currentChar = this._remainingText[0];
+        var previousChar = this.entireText[this._textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
     return InlineConsumer;
@@ -1042,7 +1063,7 @@ var Tokenizer = (function () {
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
         this.bufferedText = context.snapshot.bufferedText;
-        this.consumer.setTextIndex(context.snapshot.textIndex);
+        this.consumer.textIndex = context.snapshot.textIndex;
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {

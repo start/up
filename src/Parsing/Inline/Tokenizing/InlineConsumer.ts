@@ -3,29 +3,44 @@ import { OnTextConsumerMatch } from './OnTextConsumerMatch'
 
 
 export class InlineConsumer {
-  textIndex = 0
-  
-  remainingText: string
-  currentChar: string
-  
+  private _textIndex = 0
+  private _remainingText: string
+  private _currentChar: string
   private isTouchingWordEnd: boolean
+  
+  get textIndex(): number {
+    return this._textIndex
+  }
+  
+  set textIndex(value: number) {
+    this._textIndex = value
+    this.updateComputedTextFields()
+  }
+  
+  get remainingText(): string {
+    return this._remainingText
+  }
+  
+  get currentChar(): string {
+    return this._currentChar
+  }
 
   constructor(private entireText: string) {  
-    this.setTextIndex(0)
+    this.textIndex = 0
   }
 
   advanceTextIndex(length: number): void {
-    this.setTextIndex(this.textIndex + length)
+    this.textIndex += length
   }
   
   reachedEndOfText(): boolean {
-    return this.textIndex >= this.entireText.length
+    return this._textIndex >= this.entireText.length
   }
 
   advanceAfterMatch(args: { pattern: RegExp, then?: OnTextConsumerMatch }): boolean {
     const { pattern, then } = args
 
-    const result = pattern.exec(this.remainingText)
+    const result = pattern.exec(this._remainingText)
 
     if (!result) {
       return false
@@ -33,7 +48,7 @@ export class InlineConsumer {
 
     const [match, ...captures] = result
 
-    const charAfterMatch = this.entireText[this.textIndex + match.length]
+    const charAfterMatch = this.entireText[this._textIndex + match.length]
     const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
 
     if (then) {
@@ -44,17 +59,12 @@ export class InlineConsumer {
 
     return true
   }
-  
-  setTextIndex(countCharsConsumed: number): void {
-    this.textIndex = countCharsConsumed
-    this.updateComputedTextFields()
-  }
 
   private updateComputedTextFields(): void {
-    this.remainingText = this.entireText.substr(this.textIndex)
-    this.currentChar = this.remainingText[0]
+    this._remainingText = this.entireText.substr(this._textIndex)
+    this._currentChar = this._remainingText[0]
 
-    const previousChar = this.entireText[this.textIndex - 1]
+    const previousChar = this.entireText[this._textIndex - 1]
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 }

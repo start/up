@@ -456,7 +456,7 @@ export class Tokenizer {
     this.openContexts = context.snapshot.openContexts
     this.bufferedText = context.snapshot.bufferedText
 
-    this.consumer.setTextIndex(context.snapshot.textIndex)
+    this.consumer.textIndex = context.snapshot.textIndex
   }
 
   private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
