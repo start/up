@@ -44,7 +44,7 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
       for (let i = openStartTokens.length - 1; i >= 0; i--) {
         const startToken = openStartTokens[i]
 
-        if (token instanceof startToken.convention.EndTokenType) {
+        if (token instanceof startToken.convention.endTokenKind) {
           // We found our match!
 
           // First, let's link the two together. 
@@ -71,12 +71,12 @@ export function contextualizeTokens(tokens: Token[]): ContextualizedToken[] {
 
 export function getConventionStartedBy(token: Token, conventions: RichConvention[]): RichConvention {
   return conventions.filter(convention =>
-    token instanceof convention.StartTokenType
+    token instanceof convention.startTokenKind
   )[0]
 }
 
 function getConventionEndedBy(token: Token, conventions: RichConvention[]): RichConvention {
   return conventions.filter(convention =>
-    token instanceof convention.EndTokenType
+    token instanceof convention.endTokenKind
   )[0]
 }

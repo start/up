@@ -5,20 +5,8 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
 import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { last } from '../../CollectionHelpers'
-import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
-import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
-import { SquareBracketedStartToken } from './Tokens/SquareBracketedStartToken'
-import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
-import { InlineCodeToken } from './Tokens/InlineCodeToken'
-import { LinkStartToken } from './Tokens/LinkStartToken'
-import { LinkEndToken } from './Tokens/LinkEndToken'
-import { MediaDescriptionToken } from './Tokens/MediaDescriptionToken'
-import { MediaEndToken } from './Tokens/MediaEndToken'
-import { PlainTextToken } from './Tokens/PlainTextToken'
-import { Token } from './Tokens/Token'
+import { Token } from './Token'
 import { TokenKind } from './TokenKind'
-import { NakedUrlEndToken } from './Tokens/NakedUrlEndToken'
-import { NakedUrlStartToken } from './Tokens/NakedUrlStartToken'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
@@ -56,7 +44,7 @@ const BRACKET_CONVENTIONS = [
 
 interface ParseArgs {
   tokens: Token[],
-  UntilTokenType?: TokenKind,
+  untilKind?: TokenKind,
   isTerminatorOptional?: boolean
 }
 
@@ -71,48 +59,49 @@ class Parser {
 
 
   constructor(args: ParseArgs) {
-    const { UntilTokenType, isTerminatorOptional } = args
+    const { untilKind, isTerminatorOptional } = args
     this.tokens = args.tokens
 
     LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
-      if (UntilTokenType && token instanceof UntilTokenType) {
+      if (untilKind && token.kind === untilKind) {
         this.setResult({ isMissingTerminator: false })
         return
       }
 
-      if (token instanceof PlainTextToken) {
-        if (!token.text) {
+      if (token.kind === TokenKind.PlainText) {
+        if (!token.value) {
           continue
         }
 
-        this.nodes.push(new PlainTextNode(token.text))
+        this.nodes.push(new PlainTextNode(token.value))
         continue
       }
       
       for (const bracketed of BRACKET_CONVENTIONS) {
-        if (token instanceof bracketed.StartTokenType) {
+        if (token.kind === bracketed.startTokenKind) {
           this.parseBracket(bracketed)
         }
       }
 
-      if (token instanceof InlineCodeToken) {
+      if (token.kind === TokenKind.InlineCode) {
         // Empty inline code isn't meaningful, so we discard it
-        if (token.code) {
-          this.nodes.push(new InlineCodeNode(token.code))
+        if (token.value) {
+          this.nodes.push(new InlineCodeNode(token.value))
         }
 
         continue
       }
 
-      if (token instanceof NakedUrlStartToken) {
-        // The next token will always be a NakedUrlEndToken
-        const nakedUrlEndToken = <NakedUrlEndToken>this.getNextTokenAndAdvanceIndex()
+      if (token.kind === TokenKind.NakedUrlProtocolAndStart) {
+        const protocol = token.value
         
-        const protocol = token.protocol
-        const urlAfterProtocol = nakedUrlEndToken.urlAfterProtocol
+        // The next token will always be a TokenKind.NakedUrlAfterProtocolAndEnd token
+        const nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex()
+        const urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value
+        
         const url = protocol + urlAfterProtocol
         
         if (!urlAfterProtocol) {          
@@ -127,18 +116,16 @@ class Parser {
         continue
       }
 
-      if (token instanceof LinkStartToken) {
-        const result = this.parse({ UntilTokenType: LinkEndToken })
+      if (token.kind === TokenKind.LinkStart) {
+        const result = this.parse({ untilKind: TokenKind.LinkUrlAndEnd })
 
         let contents = result.nodes
         const hasContents = isNotPureWhitespace(contents)
 
-        // The URL was in the LinkEndToken, the last token we parsed
-        //
-        // TODO: Move URL to LinkStartToken?
-        const linkEndToken = <LinkEndToken>this.tokens[this.tokenIndex]
+        // The URL was in the LinkUrlAndEnd token, the last token we parsed
+        const linkUrlAndEndToken = this.tokens[this.tokenIndex]
 
-        let url = linkEndToken.url.trim()
+        let url = linkUrlAndEndToken.value.trim()
         const hasUrl = !!url
 
         if (!hasContents && !hasUrl) {
@@ -164,17 +151,14 @@ class Parser {
 
 
       for (const media of MEDIA_CONVENTIONS) {
-        if (token instanceof media.StartTokenType) {
-          // The next token will be a media description token...
-          let descriptionToken = <MediaDescriptionToken>this.getNextTokenAndAdvanceIndex()
+        if (token.kind === media.startTokenKind) {
+          // The next token will be a MediaDescription token...
+          let description = this.getNextTokenAndAdvanceIndex().value.trim()
           
-          // ... And the next token will be a media end token!
-          let mediaEndToken = <MediaEndToken>this.getNextTokenAndAdvanceIndex()
-          
-          // Alright. Now we can start producing our media syntax node.
-          
-          let description = descriptionToken.description.trim()
-          const url = mediaEndToken.url.trim()
+          // ... And the next token will be a MediaUrlAndEnd token!
+          let url = this.getNextTokenAndAdvanceIndex().value.trim()
+
+          // Alright. Now we can start producing our media syntax node!
 
           if (!url) {
             // If there's no URL, there's nothing meaningful to include in the document
@@ -192,8 +176,8 @@ class Parser {
       }
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
-        if (token instanceof richConvention.StartTokenType) {
-          const result = this.parse({ UntilTokenType: richConvention.EndTokenType })
+        if (token.kind === richConvention.startTokenKind) {
+          const result = this.parse({ untilKind: richConvention.endTokenKind })
 
           if (result.nodes.length) {
             // Like empty inline code, we discard any empty sandwich convention
@@ -205,10 +189,10 @@ class Parser {
       }
     }
     
-    const wasTerminatorSpecified = !!UntilTokenType
+    const wasTerminatorSpecified = !!untilKind
 
     if (!isTerminatorOptional && wasTerminatorSpecified) {
-      throw new Error(`Missing terminator token: ${UntilTokenType}`)
+      throw new Error(`Missing terminator token: ${untilKind}`)
     }
 
     this.setResult({ isMissingTerminator: wasTerminatorSpecified })
@@ -220,15 +204,15 @@ class Parser {
 
   private parse(
     args: {
-      UntilTokenType: TokenKind,
+      untilKind: TokenKind,
       isTerminatorOptional?: boolean
     }
   ): ParseResult {
-    const { UntilTokenType, isTerminatorOptional } = args
+    const { untilKind, isTerminatorOptional } = args
 
     const result = parse({
       tokens: this.tokens.slice(this.countTokensParsed),
-      UntilTokenType,
+      untilKind,
       isTerminatorOptional
     })
 
@@ -239,7 +223,7 @@ class Parser {
 
   private parseBracket(bracketed: RichConvention): void {
     const result = this.parse({
-      UntilTokenType: bracketed.EndTokenType,
+      untilKind: bracketed.endTokenKind,
       isTerminatorOptional: true
     })
 

@@ -133,7 +133,7 @@ class ConventionNester {
 
       const isStartTokenForHeroConvention =
         potentialHeroStartToken instanceof ContextualizedStartToken
-        && potentialHeroStartToken.originalToken instanceof conventionNotToSplit.StartTokenType
+        && potentialHeroStartToken.originalToken instanceof conventionNotToSplit.startTokenKind
 
       if (!isStartTokenForHeroConvention) {
         continue
@@ -147,7 +147,7 @@ class ConventionNester {
 
         const isEndTokenForHeroConvention =
           potentialHeroEndToken instanceof ContextualizedEndToken
-          && potentialHeroEndToken.originalToken instanceof conventionNotToSplit.EndTokenType
+          && potentialHeroEndToken.originalToken instanceof conventionNotToSplit.endTokenKind
 
         if (isEndTokenForHeroConvention) {
           heroEndIndex = i
@@ -222,11 +222,11 @@ class ConventionNester {
 function doesTokenStartConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedStartToken {
   return (
     token instanceof ContextualizedStartToken
-    && conventions.some(convention => token.originalToken instanceof convention.StartTokenType))
+    && conventions.some(convention => token.originalToken instanceof convention.startTokenKind))
 }
 
 function doesTokenEndConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedEndToken {
   return (
     token instanceof ContextualizedEndToken
-    && conventions.some(convention => token.originalToken instanceof convention.EndTokenType))
+    && conventions.some(convention => token.originalToken instanceof convention.endTokenKind))
 }

@@ -11,7 +11,7 @@ export enum TokenKind {
   LinkUrlAndEnd,
   LinkStart,
   MediaDescription,
-  MediaEnd,
+  MediaUrlAndEnd,
   NakedUrlAfterProtocolAndEnd,
   NakedUrlProtocolAndStart,
   ParenthesizedEnd,
