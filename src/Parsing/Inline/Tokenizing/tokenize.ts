@@ -39,7 +39,7 @@ import { ContextualizedEndToken } from './TokenContextualization/ContextualizedE
 
 export function tokenize(text: string, config: UpConfig): Token[] {
   return new Tokenizer(text, config)
-    .tokens
+    .contextualizedTokens
     .map(token => token.rawToken)
 }
 
@@ -69,7 +69,7 @@ const RICH_PARENTHESES =
     escapeForRegex(')'))
 
 class Tokenizer {
-  tokens: ContextualizedToken[] = []
+  contextualizedTokens: ContextualizedToken[] = []
 
   private consumer: InlineConsumer
 
@@ -100,7 +100,8 @@ class Tokenizer {
 
     this.flushBufferToPlainTextToken()
 
-    this.tokens = nestOverlappingConventions(this.tokens)
+    this.contextualizedTokens =
+      nestOverlappingConventions(this.addPlainTextBrackets())
   }
 
   private tryToBufferEscapedChar(): boolean {
@@ -185,7 +186,7 @@ class Tokenizer {
   }) {
     const { token, atIndex, contextForToken } = args
 
-    this.tokens.splice(atIndex, 0, args.token)
+    this.contextualizedTokens.splice(atIndex, 0, args.token)
 
     for (const context of this.openContexts) {
       if (contextForToken != context) {
@@ -195,7 +196,7 @@ class Tokenizer {
   }
 
   private addToken(token: ContextualizedToken): void {
-    this.tokens.push(token)
+    this.contextualizedTokens.push(token)
   }
 
   // This method always returns true, which allows us to use some cleaner boolean logic.
@@ -217,14 +218,18 @@ class Tokenizer {
     const buffer = this.flushBuffer()
 
     if (buffer) {
-      this.addToken(new ContextualizedToken(new PlainTextToken(buffer)))
+      this.addPlainTextToken(buffer)
     }
+  }
+  
+  private addPlainTextToken(text: string): void {
+    this.addToken(new ContextualizedToken(new PlainTextToken(text)))
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
       countCharsConsumed: this.consumer.countCharsConsumed,
-      tokens: this.tokens,
+      tokens: this.contextualizedTokens,
       openContexts: this.openContexts,
       buffer: this.buffer
     })
@@ -232,6 +237,30 @@ class Tokenizer {
 
   private canTry(goal: TokenizerGoal, atIndex = this.consumer.countCharsConsumed): boolean {
     return !this.failedGoalTracker.hasFailed(goal, atIndex)
+  }
+
+  private addPlainTextBrackets(): ContextualizedToken[] {
+    const resultTokens: ContextualizedToken[] = []
+
+    for (const contextualizedToken of this.contextualizedTokens) {
+      const { rawToken } = contextualizedToken
+      
+      function addBracketIfTokenIs(bracket: string, TokenType: TokenType): void {
+        if (rawToken instanceof TokenType) {
+          resultTokens.push(new ContextualizedToken(new PlainTextToken(bracket)))
+        }
+      }
+
+      addBracketIfTokenIs(')', PARENTHESIZED.EndTokenType)
+      addBracketIfTokenIs(']', SQUARE_BRACKETED.EndTokenType)
+
+      resultTokens.push(contextualizedToken)
+
+      addBracketIfTokenIs('(', PARENTHESIZED.StartTokenType)
+      addBracketIfTokenIs('[', SQUARE_BRACKETED.StartTokenType)
+    }
+
+    return resultTokens
   }
 }
 

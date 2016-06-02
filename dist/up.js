@@ -793,7 +793,7 @@ var ContextualizedStartToken_1 = require('./TokenContextualization/Contextualize
 var ContextualizedEndToken_1 = require('./TokenContextualization/ContextualizedEndToken');
 function tokenize(text, config) {
     return new Tokenizer(text, config)
-        .tokens
+        .contextualizedTokens
         .map(function (token) { return token.rawToken; });
 }
 exports.tokenize = tokenize;
@@ -816,7 +816,7 @@ var RICH_PARENTHESES = new TypicalRichConvention(RichConventions_1.PARENTHESIZED
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         this.entireText = entireText;
-        this.tokens = [];
+        this.contextualizedTokens = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
         this.openContexts = [];
@@ -832,7 +832,8 @@ var Tokenizer = (function () {
                 || this.bufferCurrentChar();
         }
         this.flushBufferToPlainTextToken();
-        this.tokens = nestOverlappingConventions_1.nestOverlappingConventions(this.tokens);
+        this.contextualizedTokens =
+            nestOverlappingConventions_1.nestOverlappingConventions(this.addPlainTextBrackets());
     };
     Tokenizer.prototype.tryToBufferEscapedChar = function () {
         var ESCAPE_CHAR = '\\';
@@ -889,7 +890,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.insertToken = function (args) {
         var token = args.token, atIndex = args.atIndex, contextForToken = args.contextForToken;
-        this.tokens.splice(atIndex, 0, args.token);
+        this.contextualizedTokens.splice(atIndex, 0, args.token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var context_1 = _a[_i];
             if (contextForToken != context_1) {
@@ -898,7 +899,7 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.addToken = function (token) {
-        this.tokens.push(token);
+        this.contextualizedTokens.push(token);
     };
     Tokenizer.prototype.bufferCurrentChar = function () {
         this.buffer += this.consumer.currentChar;
@@ -913,13 +914,16 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         var buffer = this.flushBuffer();
         if (buffer) {
-            this.addToken(new ContextualizedToken_1.ContextualizedToken(new PlainTextToken_1.PlainTextToken(buffer)));
+            this.addPlainTextToken(buffer);
         }
+    };
+    Tokenizer.prototype.addPlainTextToken = function (text) {
+        this.addToken(new ContextualizedToken_1.ContextualizedToken(new PlainTextToken_1.PlainTextToken(text)));
     };
     Tokenizer.prototype.getCurrentSnapshot = function () {
         return new TokenizerSnapshot_1.TokenizerSnapshot({
             countCharsConsumed: this.consumer.countCharsConsumed,
-            tokens: this.tokens,
+            tokens: this.contextualizedTokens,
             openContexts: this.openContexts,
             buffer: this.buffer
         });
@@ -927,6 +931,27 @@ var Tokenizer = (function () {
     Tokenizer.prototype.canTry = function (goal, atIndex) {
         if (atIndex === void 0) { atIndex = this.consumer.countCharsConsumed; }
         return !this.failedGoalTracker.hasFailed(goal, atIndex);
+    };
+    Tokenizer.prototype.addPlainTextBrackets = function () {
+        var resultTokens = [];
+        var _loop_1 = function(contextualizedToken) {
+            var rawToken = contextualizedToken.rawToken;
+            function addBracketIfTokenIs(bracket, TokenType) {
+                if (rawToken instanceof TokenType) {
+                    resultTokens.push(new ContextualizedToken_1.ContextualizedToken(new PlainTextToken_1.PlainTextToken(bracket)));
+                }
+            }
+            addBracketIfTokenIs(')', RichConventions_1.PARENTHESIZED.EndTokenType);
+            addBracketIfTokenIs(']', RichConventions_1.SQUARE_BRACKETED.EndTokenType);
+            resultTokens.push(contextualizedToken);
+            addBracketIfTokenIs('(', RichConventions_1.PARENTHESIZED.StartTokenType);
+            addBracketIfTokenIs('[', RichConventions_1.SQUARE_BRACKETED.StartTokenType);
+        };
+        for (var _i = 0, _a = this.contextualizedTokens; _i < _a.length; _i++) {
+            var contextualizedToken = _a[_i];
+            _loop_1(contextualizedToken);
+        }
+        return resultTokens;
     };
     return Tokenizer;
 }());
