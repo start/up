@@ -1,6 +1,6 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerContext } from './TokenizerContext'
-import { Token } from './Tokens/Token'
+import { Token } from './Token'
 
 export class TokenizerSnapshot {
   textIndex: number

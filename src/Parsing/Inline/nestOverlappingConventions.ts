@@ -1,6 +1,7 @@
 import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
 import { RichConvention } from './RichConvention'
-import { Token } from './Tokens/Token'
+import { Token } from './Token'
+import { TokenKind } from './TokenKind'
 import { contextualizeTokens } from './TokenContextualization/contextualizeTokens'
 import { ContextualizedToken } from './TokenContextualization/ContextualizedToken'
 import { ContextualizedStartToken } from './TokenContextualization/ContextualizedStartToken'
@@ -133,7 +134,7 @@ class ConventionNester {
 
       const isStartTokenForHeroConvention =
         potentialHeroStartToken instanceof ContextualizedStartToken
-        && potentialHeroStartToken.originalToken instanceof conventionNotToSplit.startTokenKind
+        && potentialHeroStartToken.originalToken.kind === conventionNotToSplit.startTokenKind
 
       if (!isStartTokenForHeroConvention) {
         continue
@@ -147,7 +148,7 @@ class ConventionNester {
 
         const isEndTokenForHeroConvention =
           potentialHeroEndToken instanceof ContextualizedEndToken
-          && potentialHeroEndToken.originalToken instanceof conventionNotToSplit.endTokenKind
+          && potentialHeroEndToken.originalToken.kind === conventionNotToSplit.endTokenKind
 
         if (isEndTokenForHeroConvention) {
           heroEndIndex = i
@@ -222,11 +223,11 @@ class ConventionNester {
 function doesTokenStartConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedStartToken {
   return (
     token instanceof ContextualizedStartToken
-    && conventions.some(convention => token.originalToken instanceof convention.startTokenKind))
+    && conventions.some(convention => token.originalToken.kind === convention.startTokenKind))
 }
 
 function doesTokenEndConvention(token: ContextualizedToken, conventions: RichConvention[]): token is ContextualizedEndToken {
   return (
     token instanceof ContextualizedEndToken
-    && conventions.some(convention => token.originalToken instanceof convention.endTokenKind))
+    && conventions.some(convention => token.originalToken.kind === convention.endTokenKind))
 }
