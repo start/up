@@ -2,7 +2,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export class Context {
-  private initialTokenIndex: number
+  public startIndex: number
 
   constructor(
     public goal: TokenizerGoal,
@@ -12,12 +12,12 @@ export class Context {
   }
   
   notifyOfTokenInsertion(indexOfNewToken: number): void {
-    if (indexOfNewToken >= this.initialTokenIndex) {
-      this.initialTokenIndex += 1
+    if (indexOfNewToken >= this.startIndex) {
+      this.startIndex += 1
     }
   }
   
   reset(): void {
-    this.initialTokenIndex = this.snapshot.tokens.length
+    this.startIndex = this.snapshot.tokens.length
   }
 }

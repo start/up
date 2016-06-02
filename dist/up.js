@@ -827,6 +827,8 @@ var TokenizerGoal_1 = require('./TokenizerGoal');
 var FailedGoalTracker_1 = require('./FailedGoalTracker');
 var TokenizerSnapshot_1 = require('./TokenizerSnapshot');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
+var ParenthesizedStartToken_1 = require('./Tokens/ParenthesizedStartToken');
+var ParenthesizedEndToken_1 = require('./Tokens/ParenthesizedEndToken');
 function tokenize(text, config) {
     return new Tokenizer(text, config).tokens;
 }
@@ -838,17 +840,22 @@ var Bracket = (function () {
     }
     return Bracket;
 }());
-var PARENTHESES = new Bracket('(', ')');
+var PARENS = new Bracket('(', ')');
 var SQUARE_BRACKETS = new Bracket('[', ']');
 var CURLY_BRACKETS = new Bracket('{', '}');
-var RichBracket = (function () {
-    function RichBracket(bracket, startTokenType, endTokenType) {
-        this.bracket = bracket;
-        this.startTokenType = startTokenType;
-        this.endTokenType = endTokenType;
+var TypicalRichConvention = (function () {
+    function TypicalRichConvention(startPattern, endPattern, StartTokenType, EndTokenType) {
+        this.startPattern = startPattern;
+        this.endPattern = endPattern;
+        this.StartTokenType = StartTokenType;
+        this.EndTokenType = EndTokenType;
     }
-    return RichBracket;
+    return TypicalRichConvention;
 }());
+function toTypicalRichConvention(bracket, startTokenType, endTokenType) {
+    return new TypicalRichConvention(new RegExp(Patterns_1.escapeForRegex(bracket.open)), new RegExp(Patterns_1.escapeForRegex(bracket.close)), startTokenType, endTokenType);
+}
+var RICH_PARENS = toTypicalRichConvention(PARENS, ParenthesizedStartToken_1.ParenthesizedStartToken, ParenthesizedEndToken_1.ParenthesizedEndToken);
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         this.entireText = entireText;
@@ -890,14 +897,33 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseContext = function (context) {
         return (context.goal === TokenizerGoal_1.TokenizerGoal.RichParentheses
-            && this.closeContext({ context: context, pattern: CLOSE_PAREN_PATTERN }));
+            && this.closeTypicalRichConvention({ context: context, convention: RICH_PARENS }));
     };
-    Tokenizer.prototype.closeContext = function (args) {
+    Tokenizer.prototype.closeTypicalRichConvention = function (args) {
         var _this = this;
+        var context = args.context, convention = args.convention;
         return this.consumer.advanceAfterMatch({
-            pattern: args.pattern,
-            then: function () { CollectionHelpers_1.remove(_this.openContexts, args.context); }
+            pattern: convention.endPattern,
+            then: function () {
+                _this.insertToken({
+                    token: new convention.StartTokenType,
+                    atIndex: context.startIndex,
+                    contextForToken: args.context
+                });
+                _this.addToken(new convention.EndTokenType);
+                CollectionHelpers_1.remove(_this.openContexts, args.context);
+            }
         });
+    };
+    Tokenizer.prototype.insertToken = function (args) {
+        var token = args.token, atIndex = args.atIndex, contextForToken = args.contextForToken;
+        this.tokens.splice(atIndex, 0, args.token);
+        for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
+            var context_1 = _a[_i];
+            if (contextForToken != context_1) {
+                context_1.notifyOfTokenInsertion(atIndex);
+            }
+        }
     };
     Tokenizer.prototype.addToken = function (token) {
         this.tokens.push(token);
@@ -934,7 +960,7 @@ var Tokenizer = (function () {
 }());
 var CLOSE_PAREN_PATTERN = new RegExp(Patterns_1.CLOSE_PAREN);
 
-},{"../../../CollectionHelpers":1,"../../../Patterns":60,"./FailedGoalTracker":5,"./InlineConsumer":6,"./TokenizerGoal":12,"./TokenizerSnapshot":13,"./Tokens/PlainTextToken":28,"./nestOverlappingConventions":40}],42:[function(require,module,exports){
+},{"../../../CollectionHelpers":1,"../../../Patterns":60,"./FailedGoalTracker":5,"./InlineConsumer":6,"./TokenizerGoal":12,"./TokenizerSnapshot":13,"./Tokens/ParenthesizedEndToken":26,"./Tokens/ParenthesizedStartToken":27,"./Tokens/PlainTextToken":28,"./nestOverlappingConventions":40}],42:[function(require,module,exports){
 "use strict";
 var tokenize_1 = require('./Tokenizing/tokenize');
 var parse_1 = require('./parse');

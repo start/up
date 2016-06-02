@@ -27,6 +27,8 @@ import { PotentialRaisedVoiceTokenType } from './Tokens/PotentialRaisedVoiceToke
 import { PotentialRaisedVoiceEndToken } from './Tokens/PotentialRaisedVoiceEndToken'
 import { PotentialRaisedVoiceStartOrEndToken } from './Tokens/PotentialRaisedVoiceStartOrEndToken'
 import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceStartToken'
+import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
+import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
 
 
 export function tokenize(text: string, config: UpConfig): Token[] {
@@ -41,18 +43,33 @@ class Bracket {
 }
 
 
-const PARENTHESES = new Bracket('(', ')')
+const PARENS = new Bracket('(', ')')
 const SQUARE_BRACKETS = new Bracket('[', ']')
 const CURLY_BRACKETS = new Bracket('{', '}')
 
 
-class RichBracket {
+class TypicalRichConvention {
   constructor(
-    public bracket: Bracket,
-    public startTokenType: TokenType,
-    public endTokenType: TokenType) { }
+    public startPattern: RegExp,
+    public endPattern: RegExp,
+    public StartTokenType: TokenType,
+    public EndTokenType: TokenType) { }
 }
 
+
+function toTypicalRichConvention(
+  bracket: Bracket,
+  startTokenType: TokenType,
+  endTokenType: TokenType
+): TypicalRichConvention {
+  return new TypicalRichConvention(
+    new RegExp(escapeForRegex(bracket.open)),
+    new RegExp(escapeForRegex(bracket.close)),
+    startTokenType,
+    endTokenType)
+}
+
+const RICH_PARENS = toTypicalRichConvention(PARENS, ParenthesizedStartToken, ParenthesizedEndToken)
 
 class Tokenizer {
   tokens: Token[] = []
@@ -118,19 +135,47 @@ class Tokenizer {
   private tryToCloseContext(context: Context): boolean {
     return (
       context.goal === TokenizerGoal.RichParentheses
-      && this.closeContext({ context, pattern: CLOSE_PAREN_PATTERN })
+      && this.closeTypicalRichConvention({ context, convention: RICH_PARENS })
     )
   }
 
-  private closeContext(
+  private closeTypicalRichConvention(
     args: {
       context: Context
-      pattern: RegExp
+      convention: TypicalRichConvention
     }): boolean {
+    const { context, convention } = args
+
     return this.consumer.advanceAfterMatch({
-      pattern: args.pattern,
-      then: () => { remove(this.openContexts, args.context) }
+      pattern: convention.endPattern,
+      then: () => {
+        this.insertToken({
+          token: new convention.StartTokenType,
+          atIndex: context.startIndex,
+          contextForToken: args.context
+        })
+        
+        this.addToken(new convention.EndTokenType)
+
+        remove(this.openContexts, args.context)
+      }
     })
+  }
+
+  private insertToken(args: {
+    token: Token
+    atIndex: number
+    contextForToken: Context
+  }) {
+    const { token, atIndex, contextForToken } = args
+
+    this.tokens.splice(atIndex, 0, args.token)
+
+    for (const context of this.openContexts) {
+      if (contextForToken != context) {
+        context.notifyOfTokenInsertion(atIndex)
+      }
+    }
   }
 
   private addToken(token: Token): void {
