@@ -1,5 +1,5 @@
 import { Token} from '../Tokens/Token'
-import { TokenType } from '../Tokens/TokenType'
+import { TokenType } from '../TokenType'
 
 
 const EMPHASIS_COST = 1

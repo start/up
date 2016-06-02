@@ -1,4 +1,4 @@
-import { TokenType } from './Tokens/TokenType'
+import { TokenType } from './TokenType'
 import { TokenizerGoal } from './TokenizerGoal'
 
 

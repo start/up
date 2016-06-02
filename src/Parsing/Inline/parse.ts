@@ -16,7 +16,7 @@ import { MediaDescriptionToken } from './Tokenizing/Tokens/MediaDescriptionToken
 import { MediaEndToken } from './Tokenizing/Tokens/MediaEndToken'
 import { PlainTextToken } from './Tokenizing/Tokens/PlainTextToken'
 import { Token } from './Tokenizing/Tokens/Token'
-import { TokenType } from './Tokenizing/Tokens/TokenType'
+import { TokenType } from './Tokenizing/TokenType'
 import { NakedUrlEndToken } from './Tokenizing/Tokens/NakedUrlEndToken'
 import { NakedUrlStartToken } from './Tokenizing/Tokens/NakedUrlStartToken'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'

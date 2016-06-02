@@ -1,5 +1,5 @@
 import { RichInlineSyntaxNodeType } from '../../SyntaxNodes/RichInlineSyntaxNodeType'
-import { TokenType } from './Tokenizing/Tokens/TokenType'
+import { TokenType } from './Tokenizing/TokenType'
 
 
 // A rich inline convention is one that can contain other inline conventions.
