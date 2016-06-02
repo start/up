@@ -941,16 +941,13 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.openContext({ goal: goal });
+                _this.openContext(goal);
                 then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
-    Tokenizer.prototype.openContext = function (args) {
-        this.openContexts.push(this.getContext({ goal: args.goal }));
-    };
-    Tokenizer.prototype.getContext = function (args) {
-        return new TokenizerContext_1.TokenizerContext(args.goal, this.getSnapshot());
+    Tokenizer.prototype.openContext = function (goal) {
+        this.openContexts.push(new TokenizerContext_1.TokenizerContext(goal, this.getSnapshot()));
     };
     Tokenizer.prototype.getSnapshot = function () {
         return new TokenizerSnapshot_1.TokenizerSnapshot({

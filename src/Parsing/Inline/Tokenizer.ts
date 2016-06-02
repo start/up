@@ -383,18 +383,14 @@ export class Tokenizer {
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.openContext({ goal })
+        this.openContext(goal)
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
 
-  private openContext(args: { goal: TokenizerGoal }): void {
-    this.openContexts.push(this.getContext({ goal: args.goal }))
-  }
-  
-  private getContext(args: { goal: TokenizerGoal }): TokenizerContext {
-    return new TokenizerContext(args.goal, this.getSnapshot())
+  private openContext(goal: TokenizerGoal): void {
+    this.openContexts.push(new TokenizerContext(goal, this.getSnapshot()))
   }
   
   private getSnapshot(): TokenizerSnapshot {
