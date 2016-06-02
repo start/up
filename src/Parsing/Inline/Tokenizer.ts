@@ -394,10 +394,7 @@ export class Tokenizer {
   }
   
   private getContext(args: { goal: TokenizerGoal }): TokenizerContext {
-    return {
-      goal: args.goal,
-      snapshot: this.getSnapshot()
-    }
+    return new TokenizerContext(args.goal, this.getSnapshot())
   }
   
   private getSnapshot(): TokenizerSnapshot {
