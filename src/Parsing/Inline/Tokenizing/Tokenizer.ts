@@ -222,17 +222,8 @@ export class Tokenizer {
       this.tryToCloseSandwichCorrespondingToGoal(goal)
       || this.handleMediaCorrespondingToGoal(goal)
       || ((goal === TokenizerGoal.InlineCode) && this.bufferCurrentChar())
-      || ((goal === TokenizerGoal.LinkUrl) && this.closeLinkOrAppendCharToUrl())
       || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-      || ((goal === TokenizerGoal.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink())
     )
-  }
-
-  private closeLinkOrAppendCharToUrl(): boolean {
-    return (
-      this.tryToOpenSquareBracketedRawText()
-      || this.tryToCloseLink()
-      || this.bufferCurrentChar())
   }
 
   private closeMediaOrAppendCharToUrl(): boolean {
@@ -340,82 +331,20 @@ export class Tokenizer {
       })
     })
   }
-  
-  private tryToConvertSquareBracketedContextToLink(): boolean {
-    const urlArrowMatchResult =
-      LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.consumer.remainingText)
-
-    if (!urlArrowMatchResult) {
-      return false
-    }
-
-    const [urlArrow] = urlArrowMatchResult
-
-    const innermostSquareBrackeContextIndex =
-      this.getIndexOfInnermostContextWithGoal(TokenizerGoal.SquareBracketed)
-      
-    const innermostSquareBrackeContext =
-      this.openContexts[innermostSquareBrackeContextIndex]
-
-    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
-      // If we can't try a link at that location, it means we've already tried and failed to find the closing
-      // bracket.
-      return false
-    }
-
-    // Okay, we're good to go. Let's convert the square bracket context to a link!
-
-    if (this.hasGoal(TokenizerGoal.NakedUrl)) {
-      // If we're currently in the middle of a naked URL, we need to close it up. 
-      this.closeNakedUrl()
-    } else {
-      this.flushBufferToPlainTextToken()
-    }
-
-    this.consumer.advanceTextIndex(urlArrow.length)
-    this.openContext({ goal: TokenizerGoal.LinkUrl })
-
-    // Now that we've opened the link URL context, let's replace the square bracket context with a link context. 
-    this.openContexts[innermostSquareBrackeContextIndex] = {
-      goal: TokenizerGoal.Link,
-      snapshot: innermostSquareBrackeContext.snapshot
-    }
-
-    // Finally, we need to replace the square bracket context's start token.
-    //
-    // The token at `innermostSquareBrackeContext.countTokens` is the flushed PlainTextToken created when the
-    // context was opened. The next token is the SquareBracketedStartToken we want to replace.
-    const indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.tokens.length + 1
-
-    this.tokens.splice(indexOfSquareBracketedStartToken, 1, new LINK.StartTokenType())
-    return true
-  }
 
   private tryToOpenMediaUrl(): boolean {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.MediaUrl,
-      pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+      pattern: URL_ARROW_PATTERN_DEPCRECATED,
       then: () => {
         this.addToken(new MediaDescriptionToken(this.flushBufferedText()))
       }
     })
   }
 
-  private tryToCloseLink(): boolean {
-    return this.consumer.advanceAfterMatch({
-      pattern: LINK_END_PATTERN,
-      then: () => {
-        const url = this.flushBufferedText()
-        this.addToken(new LINK.EndTokenType(url))
-        this.closeMostRecentContextWithGoal(TokenizerGoal.LinkUrl)
-        this.closeMostRecentContextWithGoal(TokenizerGoal.Link)
-      }
-    })
-  }
-
   private tryToCloseMedia(): boolean {
     return this.consumer.advanceAfterMatch({
-      pattern: LINK_END_PATTERN,
+      pattern: MEDIA_END_PATTERN_DEPCRECATED,
       then: () => {
         this.addToken(new MediaEndToken(this.flushBufferedText()))
         this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
@@ -505,10 +434,6 @@ export class Tokenizer {
         case TokenizerGoal.ParenthesizedInRawText:
         case TokenizerGoal.SquareBracketedInRawText:
         case TokenizerGoal.CurlyBracketedInRawText:
-
-        // If a link URL is unclosed, that means the link itself is unclosed, too. We'll let the default
-        // handler (below) backtrack to before the link itself.
-        case TokenizerGoal.LinkUrl:
 
         // The same applies for media URLs.
         case TokenizerGoal.MediaUrl:
@@ -730,13 +655,10 @@ export class Tokenizer {
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
   startsWith(atLeast(1, escapeForRegex('*'))))
 
-const LINK_START_PATTERN = new RegExp(
-  startsWith(OPEN_SQUARE_BRACKET))
-
-const LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(
+const URL_ARROW_PATTERN_DEPCRECATED = new RegExp(
   startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE))
 
-const LINK_END_PATTERN = new RegExp(
+const MEDIA_END_PATTERN_DEPCRECATED = new RegExp(
   startsWith(CLOSE_SQUARE_BRACKET))
 
 const NAKED_URL_START_PATTERN = new RegExp(

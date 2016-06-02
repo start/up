@@ -856,14 +856,7 @@ var Tokenizer = (function () {
         return (this.tryToCloseSandwichCorrespondingToGoal(goal)
             || this.handleMediaCorrespondingToGoal(goal)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.bufferCurrentChar())
-            || ((goal === TokenizerGoal_1.TokenizerGoal.LinkUrl) && this.closeLinkOrAppendCharToUrl())
-            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-            || ((goal === TokenizerGoal_1.TokenizerGoal.SquareBracketed) && this.tryToConvertSquareBracketedContextToLink()));
-    };
-    Tokenizer.prototype.closeLinkOrAppendCharToUrl = function () {
-        return (this.tryToOpenSquareBracketedRawText()
-            || this.tryToCloseLink()
-            || this.bufferCurrentChar());
+            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
     Tokenizer.prototype.closeMediaOrAppendCharToUrl = function () {
         return (this.tryToOpenSquareBracketedRawText()
@@ -944,59 +937,20 @@ var Tokenizer = (function () {
             });
         });
     };
-    Tokenizer.prototype.tryToConvertSquareBracketedContextToLink = function () {
-        var urlArrowMatchResult = LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.consumer.remainingText);
-        if (!urlArrowMatchResult) {
-            return false;
-        }
-        var urlArrow = urlArrowMatchResult[0];
-        var innermostSquareBrackeContextIndex = this.getIndexOfInnermostContextWithGoal(TokenizerGoal_1.TokenizerGoal.SquareBracketed);
-        var innermostSquareBrackeContext = this.openContexts[innermostSquareBrackeContextIndex];
-        if (!this.canTry(TokenizerGoal_1.TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
-            return false;
-        }
-        if (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl)) {
-            this.closeNakedUrl();
-        }
-        else {
-            this.flushBufferToPlainTextToken();
-        }
-        this.consumer.advanceTextIndex(urlArrow.length);
-        this.openContext({ goal: TokenizerGoal_1.TokenizerGoal.LinkUrl });
-        this.openContexts[innermostSquareBrackeContextIndex] = {
-            goal: TokenizerGoal_1.TokenizerGoal.Link,
-            snapshot: innermostSquareBrackeContext.snapshot
-        };
-        var indexOfSquareBracketedStartToken = innermostSquareBrackeContext.snapshot.tokens.length + 1;
-        this.tokens.splice(indexOfSquareBracketedStartToken, 1, new RichConventions_1.LINK.StartTokenType());
-        return true;
-    };
     Tokenizer.prototype.tryToOpenMediaUrl = function () {
         var _this = this;
         return this.tryToOpenConvention({
             goal: TokenizerGoal_1.TokenizerGoal.MediaUrl,
-            pattern: LINK_AND_MEDIA_URL_ARROW_PATTERN,
+            pattern: URL_ARROW_PATTERN_DEPCRECATED,
             then: function () {
                 _this.addToken(new MediaDescriptionToken_1.MediaDescriptionToken(_this.flushBufferedText()));
-            }
-        });
-    };
-    Tokenizer.prototype.tryToCloseLink = function () {
-        var _this = this;
-        return this.consumer.advanceAfterMatch({
-            pattern: LINK_END_PATTERN,
-            then: function () {
-                var url = _this.flushBufferedText();
-                _this.addToken(new RichConventions_1.LINK.EndTokenType(url));
-                _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.LinkUrl);
-                _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.Link);
             }
         });
     };
     Tokenizer.prototype.tryToCloseMedia = function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
-            pattern: LINK_END_PATTERN,
+            pattern: MEDIA_END_PATTERN_DEPCRECATED,
             then: function () {
                 _this.addToken(new MediaEndToken_1.MediaEndToken(_this.flushBufferedText()));
                 _this.closeMostRecentContextWithGoal(TokenizerGoal_1.TokenizerGoal.MediaUrl);
@@ -1073,7 +1027,6 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText:
                 case TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText:
                 case TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText:
-                case TokenizerGoal_1.TokenizerGoal.LinkUrl:
                 case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
@@ -1233,9 +1186,8 @@ var Tokenizer = (function () {
 }());
 exports.Tokenizer = Tokenizer;
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*'))));
-var LINK_START_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.OPEN_SQUARE_BRACKET));
-var LINK_AND_MEDIA_URL_ARROW_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
-var LINK_END_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
+var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
+var MEDIA_END_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
 var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
