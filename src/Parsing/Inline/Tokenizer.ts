@@ -433,6 +433,8 @@ export class Tokenizer {
   }
 
   private backtrackToBeforeContext(context: TokenizerContext): void {
+    context.reset()
+    
     this.failedGoalTracker.registerFailure(context)
 
     this.tokens = context.snapshot.tokens

@@ -980,6 +980,7 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.backtrackToBeforeContext = function (context) {
+        context.reset();
         this.failedGoalTracker.registerFailure(context);
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
