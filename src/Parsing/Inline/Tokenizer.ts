@@ -18,7 +18,7 @@ import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
 import { Token } from './Tokens/Token'
-import { TokenType } from './TokenType'
+import { TokenKind } from './TokenKind'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
 import { NakedUrlStartToken } from './Tokens/NakedUrlStartToken'
@@ -602,7 +602,7 @@ export class Tokenizer {
     const resultTokens: Token[] = []
 
     for (const token of this.tokens) {
-      function addBracketIfTokenIs(bracket: string, TokenType: TokenType): void {
+      function addBracketIfTokenIs(bracket: string, TokenType: TokenKind): void {
         if (token instanceof TokenType) {
           resultTokens.push(new PlainTextToken(bracket))
         }

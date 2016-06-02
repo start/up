@@ -1,5 +1,5 @@
 import { Token} from '../Tokens/Token'
-import { TokenType } from '../TokenType'
+import { TokenKind } from '../TokenKind'
 
 
 const EMPHASIS_COST = 1
@@ -9,7 +9,7 @@ const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
 
 export abstract class RaisedVoiceMarker {
   countSurplusAsterisks: number
-  protected tokenTypes: TokenType[] = []
+  protected tokenTypes: TokenKind[] = []
   
   constructor(public originalTokenIndex: number, public originalAsterisks: string) {
     this.countSurplusAsterisks = originalAsterisks.length

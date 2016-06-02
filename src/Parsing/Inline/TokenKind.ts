@@ -1,5 +1,5 @@
 import { Token } from './Tokens/Token'
 
-export interface TokenType {
+export interface TokenKind {
   new(..._: any[]):Token
 }

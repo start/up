@@ -16,7 +16,7 @@ import { MediaDescriptionToken } from './Tokens/MediaDescriptionToken'
 import { MediaEndToken } from './Tokens/MediaEndToken'
 import { PlainTextToken } from './Tokens/PlainTextToken'
 import { Token } from './Tokens/Token'
-import { TokenType } from './TokenType'
+import { TokenKind } from './TokenKind'
 import { NakedUrlEndToken } from './Tokens/NakedUrlEndToken'
 import { NakedUrlStartToken } from './Tokens/NakedUrlStartToken'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
@@ -56,7 +56,7 @@ const BRACKET_CONVENTIONS = [
 
 interface ParseArgs {
   tokens: Token[],
-  UntilTokenType?: TokenType,
+  UntilTokenType?: TokenKind,
   isTerminatorOptional?: boolean
 }
 
@@ -220,7 +220,7 @@ class Parser {
 
   private parse(
     args: {
-      UntilTokenType: TokenType,
+      UntilTokenType: TokenKind,
       isTerminatorOptional?: boolean
     }
   ): ParseResult {
