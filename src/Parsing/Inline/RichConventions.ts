@@ -28,7 +28,7 @@ const STRESS: RichConvention = {
 const REVISION_DELETION: RichConvention = {
   NodeType: RevisionDeletionNode,
   startTokenKind: TokenKind.RevisionDeletionStart,
-  endTokenKind: TokenKind.RevisionDeletionStart,
+  endTokenKind: TokenKind.RevisionDeletionEnd,
   tokenizerGoal: TokenizerGoal.RevisionDeletion
 }
 

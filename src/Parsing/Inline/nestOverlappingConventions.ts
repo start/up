@@ -87,8 +87,8 @@ class ConventionNester {
       }
 
       // Alright, we've found a token that closes one of our unclosed start tokens. If any conventions were opened
-      // between this end token and its corresponding start token, those conventions overlap this one and will need
-      // to be chopped in half.
+      // between this end token and its corresponding start token, those conventions (overlapping this one) and will
+      // be chopped in half.
 
       let endTokensOfOverlappingConventions: ContextualizedEndToken[] = []
 
@@ -208,7 +208,7 @@ class ConventionNester {
   private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromMostRecentToLeast: ContextualizedEndToken[]): void {
     const contextualizedStartTokens =
       endTokensFromMostRecentToLeast
-        .map(convention => convention.start)
+        .map(endToken => endToken.start)
         .reverse()
 
     this.insertTokens(index + 1, contextualizedStartTokens)

@@ -66,7 +66,7 @@ class Parser {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
-      if (untilKind && token.kind === untilKind) {
+      if (token.kind === untilKind) {
         this.setResult({ isMissingTerminator: false })
         return
       }

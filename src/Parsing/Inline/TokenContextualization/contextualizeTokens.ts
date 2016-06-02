@@ -7,7 +7,9 @@ import { ContextualizedEndToken } from './ContextualizedEndToken'
 
 
 const RICH_CONVENTIONS = [
-  LINK, STRESS, EMPHASIS,
+  LINK,
+  STRESS,
+  EMPHASIS,
   REVISION_DELETION,
   REVISION_INSERTION,
   SPOILER,

@@ -410,7 +410,7 @@ exports.STRESS = STRESS;
 var REVISION_DELETION = {
     NodeType: RevisionDeletionNode_1.RevisionDeletionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionDeletionStart,
-    endTokenKind: TokenKind_1.TokenKind.RevisionDeletionStart,
+    endTokenKind: TokenKind_1.TokenKind.RevisionDeletionEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionDeletion
 };
 exports.REVISION_DELETION = REVISION_DELETION;
@@ -529,7 +529,9 @@ var ContextualizedToken_1 = require('./ContextualizedToken');
 var ContextualizedStartToken_1 = require('./ContextualizedStartToken');
 var ContextualizedEndToken_1 = require('./ContextualizedEndToken');
 var RICH_CONVENTIONS = [
-    RichConventions_1.LINK, RichConventions_1.STRESS, RichConventions_1.EMPHASIS,
+    RichConventions_1.LINK,
+    RichConventions_1.STRESS,
+    RichConventions_1.EMPHASIS,
     RichConventions_1.REVISION_DELETION,
     RichConventions_1.REVISION_INSERTION,
     RichConventions_1.SPOILER,
@@ -1287,7 +1289,7 @@ var ConventionNester = (function () {
     };
     ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, endTokensFromMostRecentToLeast) {
         var contextualizedStartTokens = endTokensFromMostRecentToLeast
-            .map(function (convention) { return convention.start; })
+            .map(function (endToken) { return endToken.start; })
             .reverse();
         this.insertTokens(index + 1, contextualizedStartTokens);
         this.insertTokens(index, endTokensFromMostRecentToLeast);
@@ -1349,7 +1351,7 @@ var Parser = (function () {
         LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
             var token = this.tokens[this.tokenIndex];
             this.countTokensParsed = this.tokenIndex + 1;
-            if (untilKind && token.kind === untilKind) {
+            if (token.kind === untilKind) {
                 this.setResult({ isMissingTerminator: false });
                 return;
             }
