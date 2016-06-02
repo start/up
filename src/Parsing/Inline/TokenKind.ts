@@ -1,5 +1,36 @@
 import { Token } from './Tokens/Token'
 
-export interface TokenKind {
-  new(..._: any[]):Token
+export enum TokenKind {
+  ActionEnd,
+  ActionStart,
+  AudioStart,
+  EmphasisEnd,
+  EmphasisStart,
+  FootnoteEnd,
+  FootnoteStart,
+  ImageStart,
+  InlineCode,
+  LinkUrlAndEnd,
+  LinkStart,
+  MediaDescription,
+  MediaEnd,
+  NakedUrlAfterProtocolAndEnd,
+  NakedUrlProtocolAndStart,
+  ParenthesizedEnd,
+  ParenthesizedStart,
+  PlainText,
+  PotentialRaisedVoiceEnd,
+  PotentialRaisedVoiceStartOrEnd,
+  PotentialRaisedVoiceStart,
+  RevisionDeletionEnd,
+  RevisionDeletionStart,
+  RevisionInsertionEnd,
+  RevisionInsertionStart,
+  SpoilerEnd,
+  SpoilerStart,
+  SquareBracketedEnd,
+  SquareBracketedStart,
+  StressEnd,
+  StressStart,
+  VideoStart
 }
