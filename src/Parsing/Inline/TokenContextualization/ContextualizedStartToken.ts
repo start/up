@@ -1,5 +1,5 @@
 import { RichConvention } from '../RichConvention'
-import { Token } from '../Tokens/Token'
+import { Token } from '../Token'
 import { ContextualizedToken } from './ContextualizedToken'
 import { ContextualizedEndToken } from './ContextualizedEndToken'
 
