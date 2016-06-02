@@ -1,6 +1,6 @@
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { TokenizerGoal } from './TokenizerGoal'
-import { startsWith } from '../../../Patterns'
+import { startsWith } from '../../Patterns'
 
 
 export class TokenizableSandwich {

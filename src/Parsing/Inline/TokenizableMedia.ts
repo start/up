@@ -1,6 +1,6 @@
 import { MediaConvention } from './MediaConvention'
 import { TokenType } from './TokenType'
-import { escapeForRegex, startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../../../Patterns'
+import { escapeForRegex, startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../../Patterns'
 import { TokenizerGoal } from './TokenizerGoal'
 
 

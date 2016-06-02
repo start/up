@@ -1,4 +1,4 @@
-import { NON_WHITESPACE_CHAR } from '../../../Patterns'
+import { NON_WHITESPACE_CHAR } from '../../Patterns'
 import { OnTextConsumerMatch } from './OnTextConsumerMatch'
 
 

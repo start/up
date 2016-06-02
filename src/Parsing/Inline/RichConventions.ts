@@ -9,85 +9,94 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ParenthesizedStartToken } from './Tokenizing/Tokens/ParenthesizedStartToken'
-import { ParenthesizedEndToken } from './Tokenizing/Tokens/ParenthesizedEndToken'
-import { SquareBracketedStartToken } from './Tokenizing/Tokens/SquareBracketedStartToken'
-import { SquareBracketedEndToken } from './Tokenizing/Tokens/SquareBracketedEndToken'
-import { ActionStartToken } from './Tokenizing/Tokens/ActionStartToken'
-import { ActionEndToken } from './Tokenizing/Tokens/ActionEndToken'
-import { StressEndToken } from './Tokenizing/Tokens/StressEndToken'
-import { StressStartToken } from './Tokenizing/Tokens/StressStartToken'
-import { SpoilerEndToken } from './Tokenizing/Tokens/SpoilerEndToken'
-import { SpoilerStartToken } from './Tokenizing/Tokens/SpoilerStartToken'
-import { EmphasisEndToken } from './Tokenizing/Tokens/EmphasisEndToken'
-import { EmphasisStartToken } from './Tokenizing/Tokens/EmphasisStartToken'
-import { FootnoteEndToken } from './Tokenizing/Tokens/FootnoteEndToken'
-import { FootnoteStartToken } from './Tokenizing/Tokens/FootnoteStartToken'
-import { RevisionInsertionStartToken } from './Tokenizing/Tokens/RevisionInsertionStartToken'
-import { RevisionInsertionEndToken } from './Tokenizing/Tokens/RevisionInsertionEndToken'
-import { RevisionDeletionStartToken } from './Tokenizing/Tokens/RevisionDeletionStartToken'
-import { RevisionDeletionEndToken } from './Tokenizing/Tokens/RevisionDeletionEndToken'
-import { LinkStartToken } from './Tokenizing/Tokens/LinkStartToken'
-import { LinkEndToken } from './Tokenizing/Tokens/LinkEndToken'
+import { ParenthesizedStartToken } from './Tokens/ParenthesizedStartToken'
+import { ParenthesizedEndToken } from './Tokens/ParenthesizedEndToken'
+import { SquareBracketedStartToken } from './Tokens/SquareBracketedStartToken'
+import { SquareBracketedEndToken } from './Tokens/SquareBracketedEndToken'
+import { ActionStartToken } from './Tokens/ActionStartToken'
+import { ActionEndToken } from './Tokens/ActionEndToken'
+import { StressEndToken } from './Tokens/StressEndToken'
+import { StressStartToken } from './Tokens/StressStartToken'
+import { SpoilerEndToken } from './Tokens/SpoilerEndToken'
+import { SpoilerStartToken } from './Tokens/SpoilerStartToken'
+import { EmphasisEndToken } from './Tokens/EmphasisEndToken'
+import { EmphasisStartToken } from './Tokens/EmphasisStartToken'
+import { FootnoteEndToken } from './Tokens/FootnoteEndToken'
+import { FootnoteStartToken } from './Tokens/FootnoteStartToken'
+import { RevisionInsertionStartToken } from './Tokens/RevisionInsertionStartToken'
+import { RevisionInsertionEndToken } from './Tokens/RevisionInsertionEndToken'
+import { RevisionDeletionStartToken } from './Tokens/RevisionDeletionStartToken'
+import { RevisionDeletionEndToken } from './Tokens/RevisionDeletionEndToken'
+import { LinkStartToken } from './Tokens/LinkStartToken'
+import { LinkEndToken } from './Tokens/LinkEndToken'
+import { TokenizerGoal } from './TokenizerGoal'
 
 
 const EMPHASIS: RichConvention = {
   NodeType: EmphasisNode,
   StartTokenType: EmphasisStartToken,
-  EndTokenType: EmphasisEndToken,
+  EndTokenType: EmphasisEndToken
 }
 
 const STRESS: RichConvention = {
   NodeType: StressNode,
   StartTokenType: StressStartToken,
-  EndTokenType: StressEndToken,
+  EndTokenType: StressEndToken
 }
 
 const REVISION_DELETION: RichConvention = {
   NodeType: RevisionDeletionNode,
   StartTokenType: RevisionDeletionStartToken,
-  EndTokenType: RevisionDeletionEndToken
+  EndTokenType: RevisionDeletionEndToken,
+  tokenizerGoal: TokenizerGoal.RevisionDeletion
 }
 
 const REVISION_INSERTION: RichConvention = {
   NodeType: RevisionInsertionNode,
   StartTokenType: RevisionInsertionStartToken,
-  EndTokenType: RevisionInsertionEndToken
+  EndTokenType: RevisionInsertionEndToken,
+  tokenizerGoal: TokenizerGoal.RevisionInsertion
 }
 
 const SPOILER: RichConvention = {
   NodeType: SpoilerNode,
   StartTokenType: SpoilerStartToken,
-  EndTokenType: SpoilerEndToken
+  EndTokenType: SpoilerEndToken,
+  tokenizerGoal: TokenizerGoal.Spoiler
 }
 
 const FOOTNOTE : RichConvention= {
   NodeType: FootnoteNode,
   StartTokenType: FootnoteStartToken,
-  EndTokenType: FootnoteEndToken
+  EndTokenType: FootnoteEndToken,
+  tokenizerGoal: TokenizerGoal.Footnote
 }
 
 const PARENTHESIZED: RichConvention =  {
   NodeType: ParenthesizedNode,
   StartTokenType: ParenthesizedStartToken,
-  EndTokenType: ParenthesizedEndToken
+  EndTokenType: ParenthesizedEndToken,
+  tokenizerGoal: TokenizerGoal.Parenthesized
 }
 
 const SQUARE_BRACKETED: RichConvention =  {
   NodeType: SquareBracketedNode,
   StartTokenType: SquareBracketedStartToken,
-  EndTokenType: SquareBracketedEndToken
+  EndTokenType: SquareBracketedEndToken,
+  tokenizerGoal: TokenizerGoal.SquareBracketed
 }
 
 const ACTION: RichConvention =  {
   NodeType: ActionNode,
   StartTokenType: ActionStartToken,
-  EndTokenType: ActionEndToken
+  EndTokenType: ActionEndToken,
+  tokenizerGoal: TokenizerGoal.Action
 }
 
 const LINK: RichConvention =  {
   StartTokenType: LinkStartToken,
-  EndTokenType: LinkEndToken
+  EndTokenType: LinkEndToken,
+  tokenizerGoal: TokenizerGoal.Link
 }
 
 export {
