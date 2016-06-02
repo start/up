@@ -1104,6 +1104,16 @@ var Tokenizer = (function () {
     Tokenizer.prototype.addToken = function (kind, value) {
         this.tokens.push(new Token_1.Token(kind, value));
     };
+    Tokenizer.prototype.insertToken = function (args) {
+        var atIndex = args.atIndex, kind = args.kind, forContext = args.forContext, value = args.value;
+        this.tokens.splice(atIndex, 0, new Token_1.Token(kind, value));
+        for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
+            var context_5 = _a[_i];
+            if (context_5 != forContext) {
+                context_5.registerTokenInsertion({ atIndex: atIndex });
+            }
+        }
+    };
     Tokenizer.prototype.bufferCurrentChar = function () {
         this.buffer += this.consumer.currentChar;
         this.consumer.advanceTextIndex(1);

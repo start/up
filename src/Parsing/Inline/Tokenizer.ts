@@ -61,7 +61,7 @@ export class Tokenizer {
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
-    
+
     this.configureConventions(config)
     this.tokenize()
   }
@@ -243,7 +243,7 @@ export class Tokenizer {
       return false
     }
 
-    // If we've encounter a closing square bracket here, it means it's unmatched. If it were matched, it would have
+    // If we encounter a closing square bracket here, it means it's unmatched. If it were matched, it would have
     // been consumed by a SquareBracketedInRawText context.
     //
     // Anyway, we're dealing with something like this: [audio: garbled]
@@ -300,8 +300,8 @@ export class Tokenizer {
     // Whitespace terminates naked URLs, but we don't advance past the whitespace character or do anything with it
     // yet.
     //
-    // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote reference, which
-    // consumes any leading whitespace).
+    // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
+    // leading whitespace).
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
       this.closeNakedUrl()
       return true
@@ -392,14 +392,14 @@ export class Tokenizer {
   private openContext(goal: TokenizerGoal): void {
     this.openContexts.push(new TokenizerContext(goal, this.getSnapshot()))
   }
-  
+
   private getSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
-        textIndex: this.consumer.textIndex,
-        tokens: this.tokens,
-        openContexts: this.openContexts,
-        bufferedText: this.buffer
-      })
+      textIndex: this.consumer.textIndex,
+      tokens: this.tokens,
+      openContexts: this.openContexts,
+      bufferedText: this.buffer
+    })
   }
 
   private resolveOpenContexts(): boolean {
@@ -603,6 +603,25 @@ export class Tokenizer {
 
   private addToken(kind: TokenKind, value?: string): void {
     this.tokens.push(new Token(kind, value))
+  }
+
+  private insertToken(
+    args: {
+      atIndex: number
+      kind: TokenKind
+      forContext: TokenizerContext
+      value?: string,
+    }
+  ): void {
+    const { atIndex, kind, forContext, value } = args
+    
+    this.tokens.splice(atIndex, 0, new Token(kind, value))
+    
+    for (const context of this.openContexts) {
+      if (context != forContext) {
+        context.registerTokenInsertion({ atIndex })
+      }
+    }
   }
 
   // This method always returns true, which allows us to use some cleaner boolean logic.
