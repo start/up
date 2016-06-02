@@ -728,19 +728,19 @@ var Tokenizer = (function () {
                 endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
             });
         this.parenthesizedRawTextConvention =
-            this.getBracketInsideUrlConvention({
+            this.getBracketedRawTextConvention({
                 goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText,
                 openBracketPattern: Patterns_1.OPEN_PAREN,
                 closeBracketPattern: Patterns_1.CLOSE_PAREN
             });
         this.squareBracketedRawTextConvention =
-            this.getBracketInsideUrlConvention({
+            this.getBracketedRawTextConvention({
                 goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText,
                 openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
             });
         this.curlyBracketedRawTextConvention =
-            this.getBracketInsideUrlConvention({
+            this.getBracketedRawTextConvention({
                 goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText,
                 openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
@@ -772,7 +772,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!(this.consumer.reachedEndOfText() && this.resolveOpenContexts())) {
             this.tryToCollectCurrentCharIfEscaped()
-                || this.tryToCloseOrAdvanceOpenContexts()
+                || this.tryToCloseOpenContexts()
                 || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.handleNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenMedia()
@@ -783,13 +783,20 @@ var Tokenizer = (function () {
         this.tokens =
             nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.insertPlainTextTokensForBrackets()));
     };
-    Tokenizer.prototype.tryToCloseOrAdvanceOpenContexts = function () {
+    Tokenizer.prototype.tryToCloseOpenContexts = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.tryToCloseOrAdvanceContext(this.openContexts[i])) {
+            if (this.tryToCloseContext(this.openContexts[i])) {
                 return true;
             }
         }
         return false;
+    };
+    Tokenizer.prototype.tryToCloseContext = function (context) {
+        var goal = context.goal;
+        return (this.tryToCloseSandwichCorrespondingToGoal(goal)
+            || this.handleMediaCorrespondingToGoal(goal)
+            || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.bufferCurrentChar())
+            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
     Tokenizer.prototype.handleNakedUrl = function () {
         return (this.tryToOpenParenthesizedRawText()
@@ -797,13 +804,6 @@ var Tokenizer = (function () {
             || this.tryToOpenCurlyBracketedRawText()
             || this.tryToCloseNakedUrl()
             || this.bufferCurrentChar());
-    };
-    Tokenizer.prototype.tryToCloseOrAdvanceContext = function (context) {
-        var goal = context.goal;
-        return (this.tryToCloseSandwichCorrespondingToGoal(goal)
-            || this.handleMediaCorrespondingToGoal(goal)
-            || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.bufferCurrentChar())
-            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
     };
     Tokenizer.prototype.closeMediaOrAppendCharToUrl = function () {
         return (this.tryToOpenSquareBracketedRawText()
@@ -1052,7 +1052,7 @@ var Tokenizer = (function () {
             onClose: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.endTokenKind); }
         });
     };
-    Tokenizer.prototype.getBracketInsideUrlConvention = function (args) {
+    Tokenizer.prototype.getBracketedRawTextConvention = function (args) {
         var _this = this;
         var bufferBracket = function (bracket) {
             _this.buffer += bracket;

@@ -121,21 +121,21 @@ export class Tokenizer {
       })
 
     this.parenthesizedRawTextConvention =
-      this.getBracketInsideUrlConvention({
+      this.getBracketedRawTextConvention({
         goal: TokenizerGoal.ParenthesizedInRawText,
         openBracketPattern: OPEN_PAREN,
         closeBracketPattern: CLOSE_PAREN
       })
 
     this.squareBracketedRawTextConvention =
-      this.getBracketInsideUrlConvention({
+      this.getBracketedRawTextConvention({
         goal: TokenizerGoal.SquareBracketedInRawText,
         openBracketPattern: OPEN_SQUARE_BRACKET,
         closeBracketPattern: CLOSE_SQUARE_BRACKET
       })
 
     this.curlyBracketedRawTextConvention =
-      this.getBracketInsideUrlConvention({
+      this.getBracketedRawTextConvention({
         goal: TokenizerGoal.CurlyBracketedInRawText,
         openBracketPattern: OPEN_CURLY_BRACKET,
         closeBracketPattern: CLOSE_CURLY_BRACKET
@@ -171,7 +171,7 @@ export class Tokenizer {
   private tokenize(): void {
     while (!(this.consumer.reachedEndOfText() && this.resolveOpenContexts())) {
       this.tryToCollectCurrentCharIfEscaped()
-        || this.tryToCloseOrAdvanceOpenContexts()
+        || this.tryToCloseOpenContexts()
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenMedia()
@@ -186,14 +186,25 @@ export class Tokenizer {
           this.insertPlainTextTokensForBrackets()))
   }
 
-  private tryToCloseOrAdvanceOpenContexts(): boolean {
+  private tryToCloseOpenContexts(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.tryToCloseOrAdvanceContext(this.openContexts[i])) {
+      if (this.tryToCloseContext(this.openContexts[i])) {
         return true
       }
     }
 
     return false
+  }
+
+  private tryToCloseContext(context: TokenizerContext): boolean {
+    const { goal } = context
+
+    return (
+      this.tryToCloseSandwichCorrespondingToGoal(goal)
+      || this.handleMediaCorrespondingToGoal(goal)
+      || ((goal === TokenizerGoal.InlineCode) && this.bufferCurrentChar())
+      || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+    )
   }
 
   private handleNakedUrl(): boolean {
@@ -203,17 +214,6 @@ export class Tokenizer {
       || this.tryToOpenCurlyBracketedRawText()
       || this.tryToCloseNakedUrl()
       || this.bufferCurrentChar())
-  }
-
-  private tryToCloseOrAdvanceContext(context: TokenizerContext): boolean {
-    const { goal } = context
-
-    return (
-      this.tryToCloseSandwichCorrespondingToGoal(goal)
-      || this.handleMediaCorrespondingToGoal(goal)
-      || ((goal === TokenizerGoal.InlineCode) && this.bufferCurrentChar())
-      || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
-    )
   }
 
   private closeMediaOrAppendCharToUrl(): boolean {
@@ -534,7 +534,7 @@ export class Tokenizer {
     })
   }
 
-  private getBracketInsideUrlConvention(
+  private getBracketedRawTextConvention(
     args: {
       goal: TokenizerGoal,
       openBracketPattern: string,
