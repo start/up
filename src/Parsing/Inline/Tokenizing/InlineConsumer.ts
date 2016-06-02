@@ -11,12 +11,11 @@ export class InlineConsumer {
   private isTouchingWordEnd: boolean
 
   constructor(private entireText: string) {  
-    this.updateComputedTextFields()
+    this.setCountCharsConsumed(0)
   }
 
   advanceTextIndex(length: number): void {
-    this.countCharsConsumed += length
-    this.updateComputedTextFields()
+    this.setCountCharsConsumed(this.countCharsConsumed + length)
   }
   
   reachedEndOfText(): boolean {

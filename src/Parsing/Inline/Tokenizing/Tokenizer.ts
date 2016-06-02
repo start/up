@@ -321,7 +321,7 @@ export class Tokenizer {
     //
     // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote reference, which
     // consumes any leading whitespace).
-    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.remainingText)) {
+    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
       this.closeNakedUrl()
       return true
     }

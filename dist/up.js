@@ -163,11 +163,10 @@ var InlineConsumer = (function () {
     function InlineConsumer(entireText) {
         this.entireText = entireText;
         this.countCharsConsumed = 0;
-        this.updateComputedTextFields();
+        this.setCountCharsConsumed(0);
     }
     InlineConsumer.prototype.advanceTextIndex = function (length) {
-        this.countCharsConsumed += length;
-        this.updateComputedTextFields();
+        this.setCountCharsConsumed(this.countCharsConsumed + length);
     };
     InlineConsumer.prototype.reachedEndOfText = function () {
         return this.countCharsConsumed >= this.entireText.length;
@@ -927,7 +926,7 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToCloseNakedUrl = function () {
-        if (WHITESPACE_CHAR_PATTERN.test(this.consumer.remainingText)) {
+        if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
             this.closeNakedUrl();
             return true;
         }
