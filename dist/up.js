@@ -142,7 +142,7 @@ var FailedGoalTracker = (function () {
     }
     FailedGoalTracker.prototype.registerFailure = function (failedContext) {
         var snapshot = failedContext.snapshot, goal = failedContext.goal;
-        var textIndex = snapshot.countCharsConsumed;
+        var textIndex = snapshot.textIndex;
         if (!this.failedGoalsByTextIndex[textIndex]) {
             this.failedGoalsByTextIndex[textIndex] = [];
         }
@@ -162,14 +162,14 @@ var Patterns_1 = require('../../../Patterns');
 var InlineConsumer = (function () {
     function InlineConsumer(entireText) {
         this.entireText = entireText;
-        this.countCharsConsumed = 0;
-        this.setCountCharsConsumed(0);
+        this.textIndex = 0;
+        this.setTextIndex(0);
     }
     InlineConsumer.prototype.advanceTextIndex = function (length) {
-        this.setCountCharsConsumed(this.countCharsConsumed + length);
+        this.setTextIndex(this.textIndex + length);
     };
     InlineConsumer.prototype.reachedEndOfText = function () {
-        return this.countCharsConsumed >= this.entireText.length;
+        return this.textIndex >= this.entireText.length;
     };
     InlineConsumer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
@@ -178,7 +178,7 @@ var InlineConsumer = (function () {
             return false;
         }
         var match = result[0], captures = result.slice(1);
-        var charAfterMatch = this.entireText[this.countCharsConsumed + match.length];
+        var charAfterMatch = this.entireText[this.textIndex + match.length];
         var isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch);
         if (then) {
             then.apply(void 0, [match, this.isTouchingWordEnd, isTouchingWordStart].concat(captures));
@@ -186,14 +186,14 @@ var InlineConsumer = (function () {
         this.advanceTextIndex(match.length);
         return true;
     };
-    InlineConsumer.prototype.setCountCharsConsumed = function (countCharsConsumed) {
-        this.countCharsConsumed = countCharsConsumed;
+    InlineConsumer.prototype.setTextIndex = function (countCharsConsumed) {
+        this.textIndex = countCharsConsumed;
         this.updateComputedTextFields();
     };
     InlineConsumer.prototype.updateComputedTextFields = function () {
-        this.remainingText = this.entireText.substr(this.countCharsConsumed);
+        this.remainingText = this.entireText.substr(this.textIndex);
         this.currentChar = this.remainingText[0];
-        var previousChar = this.entireText[this.countCharsConsumed - 1];
+        var previousChar = this.entireText[this.textIndex - 1];
         this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
     return InlineConsumer;
@@ -952,7 +952,7 @@ var Tokenizer = (function () {
         var urlArrow = urlArrowMatchResult[0];
         var innermostSquareBrackeContextIndex = this.getIndexOfInnermostContextWithGoal(TokenizerGoal_1.TokenizerGoal.SquareBracketed);
         var innermostSquareBrackeContext = this.openContexts[innermostSquareBrackeContextIndex];
-        if (!this.canTry(TokenizerGoal_1.TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.countCharsConsumed)) {
+        if (!this.canTry(TokenizerGoal_1.TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
             return false;
         }
         if (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl)) {
@@ -1055,7 +1055,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getSnapshot = function () {
         return new TokenizerSnapshot_1.TokenizerSnapshot({
-            countCharsConsumed: this.consumer.countCharsConsumed,
+            textIndex: this.consumer.textIndex,
             tokens: this.tokens,
             openContexts: this.openContexts,
             bufferedText: this.bufferedText
@@ -1089,7 +1089,7 @@ var Tokenizer = (function () {
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
         this.bufferedText = context.snapshot.bufferedText;
-        this.consumer.setCountCharsConsumed(context.snapshot.countCharsConsumed);
+        this.consumer.setTextIndex(context.snapshot.textIndex);
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
@@ -1226,7 +1226,7 @@ var Tokenizer = (function () {
         this.addToken(new PlainTextToken_1.PlainTextToken(this.flushBufferedText()));
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {
-        if (textIndex === void 0) { textIndex = this.consumer.countCharsConsumed; }
+        if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         return !this.failedGoalTracker.hasFailed(goal, textIndex);
     };
     return Tokenizer;
@@ -1269,7 +1269,7 @@ var TokenizerGoal = exports.TokenizerGoal;
 "use strict";
 var TokenizerSnapshot = (function () {
     function TokenizerSnapshot(args) {
-        this.countCharsConsumed = args.countCharsConsumed;
+        this.textIndex = args.textIndex;
         this.tokens = args.tokens.slice();
         this.openContexts = args.openContexts.slice();
         this.bufferedText = args.bufferedText;

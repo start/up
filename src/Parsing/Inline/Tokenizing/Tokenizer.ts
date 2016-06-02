@@ -357,7 +357,7 @@ export class Tokenizer {
     const innermostSquareBrackeContext =
       this.openContexts[innermostSquareBrackeContextIndex]
 
-    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.countCharsConsumed)) {
+    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
       // If we can't try a link at that location, it means we've already tried and failed to find the closing
       // bracket.
       return false
@@ -483,7 +483,7 @@ export class Tokenizer {
   
   private getSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
-        countCharsConsumed: this.consumer.countCharsConsumed,
+        textIndex: this.consumer.textIndex,
         tokens: this.tokens,
         openContexts: this.openContexts,
         bufferedText: this.bufferedText
@@ -531,7 +531,7 @@ export class Tokenizer {
     this.openContexts = context.snapshot.openContexts
     this.bufferedText = context.snapshot.bufferedText
 
-    this.consumer.setCountCharsConsumed(context.snapshot.countCharsConsumed)
+    this.consumer.setTextIndex(context.snapshot.textIndex)
   }
 
   private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
@@ -721,7 +721,7 @@ export class Tokenizer {
     this.addToken(new PlainTextToken(this.flushBufferedText()))
   }
 
-  private canTry(goal: TokenizerGoal, textIndex = this.consumer.countCharsConsumed): boolean {
+  private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
 }
