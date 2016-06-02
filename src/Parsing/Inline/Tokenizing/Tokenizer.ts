@@ -16,6 +16,7 @@ import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
+import { InlineConsumer } from './InlineConsumer'
 import { Token } from './Tokens/Token'
 import { TokenType } from './Tokens/TokenType'
 import { InlineCodeToken } from './Tokens/InlineCodeToken'
@@ -31,13 +32,7 @@ import { PotentialRaisedVoiceStartToken } from './Tokens/PotentialRaisedVoiceSta
 export class Tokenizer {
   tokens: Token[] = []
 
-  private textIndex = 0
-
-  // These three fields are computed every time we updatae `textIndex`.
-  private currentChar: string
-  private remainingText: string
-  private isTouchingWordEnd: boolean
-
+  private consumer: InlineConsumer
   // Any time we open a new convention, we add it to `openContexts`.
   //
   // Most conventions need to be closed by the time we consume the last character of the text.
@@ -74,9 +69,10 @@ export class Tokenizer {
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
 
-  constructor(private entireText: string, config: UpConfig) {
+  constructor(entireText: string, config: UpConfig) {
+    this.consumer = new InlineConsumer(entireText)
+    
     this.configureConventions(config)
-    this.updateComputedTextFields()
     this.tokenize()
   }
 
@@ -183,7 +179,7 @@ export class Tokenizer {
   }
 
   private tokenize(): void {
-    while (!(this.reachedEndOfText() && this.resolveOpenContexts())) {
+    while (!(this.consumer.reachedEndOfText() && this.resolveOpenContexts())) {
       this.tryToCollectCurrentCharIfEscaped()
         || this.tryToCloseOrAdvanceOpenContexts()
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
@@ -262,7 +258,7 @@ export class Tokenizer {
   }
 
   private tryToCloseFalseMediaConvention(mediaGoal: TokenizerGoal): boolean {
-    if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.remainingText)) {
+    if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.consumer.remainingText)) {
       return false
     }
 
@@ -297,14 +293,14 @@ export class Tokenizer {
   private tryToCollectCurrentCharIfEscaped(): boolean {
     const ESCAPE_CHAR = '\\'
 
-    if (this.currentChar !== ESCAPE_CHAR) {
+    if (this.consumer.currentChar !== ESCAPE_CHAR) {
       return false
     }
 
-    this.advanceTextIndex(1)
+    this.consumer.advanceTextIndex(1)
 
     return (
-      this.reachedEndOfText()
+      this.consumer.reachedEndOfText()
       || this.bufferCurrentChar()
     )
   }
@@ -325,7 +321,7 @@ export class Tokenizer {
     //
     // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote reference, which
     // consumes any leading whitespace).
-    if (WHITESPACE_CHAR_PATTERN.test(this.currentChar)) {
+    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.remainingText)) {
       this.closeNakedUrl()
       return true
     }
@@ -347,7 +343,7 @@ export class Tokenizer {
   
   private tryToConvertSquareBracketedContextToLink(): boolean {
     const urlArrowMatchResult =
-      LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.remainingText)
+      LINK_AND_MEDIA_URL_ARROW_PATTERN.exec(this.consumer.remainingText)
 
     if (!urlArrowMatchResult) {
       return false
@@ -361,7 +357,7 @@ export class Tokenizer {
     const innermostSquareBrackeContext =
       this.openContexts[innermostSquareBrackeContextIndex]
 
-    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.textIndex)) {
+    if (!this.canTry(TokenizerGoal.Link, innermostSquareBrackeContext.snapshot.countCharsConsumed)) {
       // If we can't try a link at that location, it means we've already tried and failed to find the closing
       // bracket.
       return false
@@ -376,7 +372,7 @@ export class Tokenizer {
       this.flushBufferToPlainTextToken()
     }
 
-    this.advanceTextIndex(urlArrow.length)
+    this.consumer.advanceTextIndex(urlArrow.length)
     this.openContext({ goal: TokenizerGoal.LinkUrl })
 
     // Now that we've opened the link URL context, let's replace the square bracket context with a link context. 
@@ -406,7 +402,7 @@ export class Tokenizer {
   }
 
   private tryToCloseLink(): boolean {
-    return this.advanceAfterMatch({
+    return this.consumer.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
         const url = this.flushBufferedText()
@@ -418,7 +414,7 @@ export class Tokenizer {
   }
 
   private tryToCloseMedia(): boolean {
-    return this.advanceAfterMatch({
+    return this.consumer.advanceAfterMatch({
       pattern: LINK_END_PATTERN,
       then: () => {
         this.addToken(new MediaEndToken(this.flushBufferedText()))
@@ -447,7 +443,7 @@ export class Tokenizer {
   }
 
   private tryToCloseSandwich(sandwich: TokenizableSandwich): boolean {
-    return this.advanceAfterMatch({
+    return this.consumer.advanceAfterMatch({
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.closeMostRecentContextWithGoal(sandwich.goal)
@@ -465,7 +461,7 @@ export class Tokenizer {
   ): boolean {
     const { goal, pattern, then } = args
 
-    return this.canTry(goal) && this.advanceAfterMatch({
+    return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContext({ goal })
@@ -487,7 +483,7 @@ export class Tokenizer {
   
   private getSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
-        textIndex: this.textIndex,
+        countCharsConsumed: this.consumer.countCharsConsumed,
         tokens: this.tokens,
         openContexts: this.openContexts,
         bufferedText: this.bufferedText
@@ -531,12 +527,11 @@ export class Tokenizer {
   private backtrackToBeforeContext(context: TokenizerContext): void {
     this.failedGoalTracker.registerFailure(context)
 
-    this.textIndex = context.snapshot.textIndex
     this.tokens = context.snapshot.tokens
     this.openContexts = context.snapshot.openContexts
     this.bufferedText = context.snapshot.bufferedText
 
-    this.updateComputedTextFields()
+    this.consumer.setCountCharsConsumed(context.snapshot.countCharsConsumed)
   }
 
   private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
@@ -606,37 +601,6 @@ export class Tokenizer {
     return this.openContexts.some(context => context.goal === goal)
   }
 
-  private advanceAfterMatch(args: { pattern: RegExp, then?: OnTokenizerMatch }): boolean {
-    const { pattern, then } = args
-
-    const result = pattern.exec(this.remainingText)
-
-    if (!result) {
-      return false
-    }
-
-    const [match, ...captures] = result
-
-    const charAfterMatch = this.entireText[this.textIndex + match.length]
-    const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
-
-    if (then) {
-      then(match, this.isTouchingWordEnd, isTouchingWordStart, ...captures)
-    }
-
-    this.advanceTextIndex(match.length)
-
-    return true
-  }
-
-  private updateComputedTextFields(): void {
-    this.remainingText = this.entireText.substr(this.textIndex)
-    this.currentChar = this.remainingText[0]
-
-    const previousChar = this.entireText[this.textIndex - 1]
-    this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
-  }
-
   private getRichSandwich(
     args: {
       startPattern: string,
@@ -676,7 +640,7 @@ export class Tokenizer {
   }
 
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
-    return this.advanceAfterMatch({
+    return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
 
       then: (asterisks, isTouchingWordEnd, isTouchingWordStart) => {
@@ -735,19 +699,10 @@ export class Tokenizer {
     this.tokens.push(token)
   }
 
-  private reachedEndOfText(): boolean {
-    return !this.remainingText
-  }
-
-  private advanceTextIndex(length: number): void {
-    this.textIndex += length
-    this.updateComputedTextFields()
-  }
-
   // This method always returns true, which allows us to use some cleaner boolean logic.
   private bufferCurrentChar(): boolean {
-    this.bufferedText += this.currentChar
-    this.advanceTextIndex(1)
+    this.bufferedText += this.consumer.currentChar
+    this.consumer.advanceTextIndex(1)
 
     return true
   }
@@ -766,7 +721,7 @@ export class Tokenizer {
     this.addToken(new PlainTextToken(this.flushBufferedText()))
   }
 
-  private canTry(goal: TokenizerGoal, textIndex = this.textIndex): boolean {
+  private canTry(goal: TokenizerGoal, textIndex = this.consumer.countCharsConsumed): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
 }

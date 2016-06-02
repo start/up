@@ -6,7 +6,7 @@ export class FailedGoalTracker {
   
   registerFailure(failedContext: TokenizerContext): void {
     const { snapshot, goal } = failedContext
-    const { textIndex } = snapshot
+    const textIndex = snapshot.countCharsConsumed
     
     if (!this.failedGoalsByTextIndex[textIndex]) {
       this.failedGoalsByTextIndex[textIndex] = []

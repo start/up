@@ -3,20 +3,20 @@ import { TokenizerContext } from './TokenizerContext'
 import { Token } from './Tokens/Token'
 
 export class TokenizerSnapshot {
-  textIndex: number
+  countCharsConsumed: number
   tokens: Token[]
   openContexts: TokenizerContext[]
   bufferedText: string
 
   constructor(
     args: {
-      textIndex: number
+      countCharsConsumed: number
       tokens: Token[]
       openContexts: TokenizerContext[]
       bufferedText: string
     }
   ) {
-    this.textIndex = args.textIndex
+    this.countCharsConsumed = args.countCharsConsumed
     this.tokens = args.tokens.slice()
     this.openContexts = args.openContexts.slice()
     this.bufferedText = args.bufferedText

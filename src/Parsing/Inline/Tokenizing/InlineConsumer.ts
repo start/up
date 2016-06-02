@@ -19,7 +19,7 @@ export class InlineConsumer {
     this.updateComputedTextFields()
   }
   
-  done(): boolean {
+  reachedEndOfText(): boolean {
     return this.countCharsConsumed >= this.entireText.length
   }
 
@@ -44,6 +44,11 @@ export class InlineConsumer {
     this.advanceTextIndex(match.length)
 
     return true
+  }
+  
+  setCountCharsConsumed(countCharsConsumed: number): void {
+    this.countCharsConsumed = countCharsConsumed
+    this.updateComputedTextFields()
   }
 
   private updateComputedTextFields(): void {
