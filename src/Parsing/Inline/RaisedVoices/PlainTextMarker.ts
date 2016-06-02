@@ -1,9 +1,9 @@
-import { Token } from '../Tokens/Token'
+import { Token } from '.././Token'
+import { TokenKind } from '.././TokenKind'
 import { RaisedVoiceMarker } from './RaisedVoiceMarker'
-import { PlainTextToken } from '../Tokens/PlainTextToken'
 
 export class PlainTextMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
-    return [new PlainTextToken(this.originalAsterisks)]
+    return [new Token(TokenKind.PlainText, this.originalAsterisks)]
   }
 }

@@ -1,13 +1,12 @@
-import { Token } from '../Tokens/Token'
+import { Token } from '.././Token'
+import { TokenKind } from '.././TokenKind'
 import { RaisedVoiceMarker } from './RaisedVoiceMarker'
 import { StartMarker } from './StartMarker'
-import { EmphasisEndToken } from '../Tokens/EmphasisEndToken'
-import { StressEndToken } from '../Tokens/StressEndToken'
 
 
 export class EndMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
-    return this.tokenTypes.map(TokenType => new TokenType())
+    return this.tokenKinds.map(kind => new Token(kind))
   }
 
   matchAnyApplicableStartMarkers(markers: RaisedVoiceMarker[]): void {
@@ -97,22 +96,22 @@ export class EndMarker extends RaisedVoiceMarker {
       Math.min(this.countSurplusAsterisks, startMarker.countSurplusAsterisks)
 
     this.payForStressAndEmphasisTogether(countAsterisksInCommonWithStartMarker)
-    this.tokenTypes.push(EmphasisEndToken)
-    this.tokenTypes.push(StressEndToken)
+    this.tokenKinds.push(TokenKind.EmphasisEnd)
+    this.tokenKinds.push(TokenKind.StressEnd)
 
     startMarker.startStressAndEmphasisTogether(countAsterisksInCommonWithStartMarker)
   }
 
   private endStress(startMarker: StartMarker): void {
     this.payForStress()
-    this.tokenTypes.push(StressEndToken)
+    this.tokenKinds.push(TokenKind.StressEnd)
 
     startMarker.startStress()
   }
 
   private endEmphasis(startMarker: StartMarker): void {
     this.payForEmphasis()
-    this.tokenTypes.push(EmphasisEndToken)
+    this.tokenKinds.push(TokenKind.EmphasisEnd)
 
     startMarker.startEmphasis()
   }

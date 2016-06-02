@@ -1,12 +1,9 @@
-import { Token } from '.././Tokens/Token'
+import { Token } from '.././Token'
+import { TokenKind } from '.././TokenKind'
 import { RaisedVoiceMarker } from './RaisedVoiceMarker'
 import { StartMarker } from './StartMarker'
 import { EndMarker } from './EndMarker'
 import { PlainTextMarker } from './PlainTextMarker'
-import { PotentialRaisedVoiceToken } from '../Tokens/PotentialRaisedVoiceToken'
-import { PotentialRaisedVoiceEndToken } from '../Tokens/PotentialRaisedVoiceEndToken'
-import { PotentialRaisedVoiceStartOrEndToken } from '../Tokens/PotentialRaisedVoiceStartOrEndToken'
-import { PotentialRaisedVoiceStartToken } from '../Tokens/PotentialRaisedVoiceStartToken'
 
 
 export function applyRaisedVoices(tokens: Token[]): Token[] {
@@ -32,13 +29,13 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
     const token = tokens[tokenIndex]
 
     const canStartConvention = (
-      token instanceof PotentialRaisedVoiceStartToken
-      || token instanceof PotentialRaisedVoiceStartOrEndToken
+      token.kind === TokenKind.PotentialRaisedVoiceStart
+      || token.kind === TokenKind.PotentialRaisedVoiceStartOrEnd
     )
 
     const canEndConvention = (
-      token instanceof PotentialRaisedVoiceEndToken
-      || token instanceof PotentialRaisedVoiceStartOrEndToken
+      token.kind === TokenKind.PotentialRaisedVoiceEnd
+      || token.kind === TokenKind.PotentialRaisedVoiceStartOrEnd
     )
 
     const isPotentialRaisedVoiceToken = canStartConvention || canEndConvention
@@ -47,7 +44,7 @@ function getRaisedVoiceMarkers(tokens: Token[]): RaisedVoiceMarker[] {
       continue
     }
     
-    const { asterisks } = <PotentialRaisedVoiceToken>token
+    const asterisks = token.value
 
     // A given raised voice marker will serve only 1 of 3 roles:
     //
