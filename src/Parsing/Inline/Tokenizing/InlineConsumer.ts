@@ -23,15 +23,7 @@ export class InlineConsumer {
     return this.countCharsConsumed >= this.entireText.length
   }
 
-  private updateComputedTextFields(): void {
-    this.remainingText = this.entireText.substr(this.countCharsConsumed)
-    this.currentChar = this.remainingText[0]
-
-    const previousChar = this.entireText[this.countCharsConsumed - 1]
-    this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
-  }
-
-  private advanceAfterMatch(args: { pattern: RegExp, then?: OnTextConsumerMatch }): boolean {
+  advanceAfterMatch(args: { pattern: RegExp, then?: OnTextConsumerMatch }): boolean {
     const { pattern, then } = args
 
     const result = pattern.exec(this.remainingText)
@@ -52,6 +44,14 @@ export class InlineConsumer {
     this.advanceTextIndex(match.length)
 
     return true
+  }
+
+  private updateComputedTextFields(): void {
+    this.remainingText = this.entireText.substr(this.countCharsConsumed)
+    this.currentChar = this.remainingText[0]
+
+    const previousChar = this.entireText[this.countCharsConsumed - 1]
+    this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 }
 

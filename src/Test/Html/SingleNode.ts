@@ -419,7 +419,7 @@ describe('A video node', () => {
 
 
 describe('A spoiler node', () => {
-  it('produces a span element with an empty data-up-spoiler attribute', () => {
+  it("produces a span element (with an empty data-up-spoiler attribute) containing a label, a checkbox associated with the label, and a span containing the spoiler's contents", () => {
     const node = new SpoilerNode([new PlainTextNode('45.9%')])
     expect(Up.toHtml(node)).to.be.eql('<span data-up-spoiler>45.9%</span>')
   })

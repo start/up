@@ -15,6 +15,10 @@ function concat(collections) {
     var _a;
 }
 exports.concat = concat;
+function remove(items, itemToRemove) {
+    items.splice(items.indexOf(itemToRemove), 1);
+}
+exports.remove = remove;
 
 },{}],2:[function(require,module,exports){
 "use strict";
@@ -172,12 +176,6 @@ var InlineConsumer = (function () {
     InlineConsumer.prototype.done = function () {
         return this.countCharsConsumed >= this.entireText.length;
     };
-    InlineConsumer.prototype.updateComputedTextFields = function () {
-        this.remainingText = this.entireText.substr(this.countCharsConsumed);
-        this.currentChar = this.remainingText[0];
-        var previousChar = this.entireText[this.countCharsConsumed - 1];
-        this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
-    };
     InlineConsumer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this.remainingText);
@@ -192,6 +190,12 @@ var InlineConsumer = (function () {
         }
         this.advanceTextIndex(match.length);
         return true;
+    };
+    InlineConsumer.prototype.updateComputedTextFields = function () {
+        this.remainingText = this.entireText.substr(this.countCharsConsumed);
+        this.currentChar = this.remainingText[0];
+        var previousChar = this.entireText[this.countCharsConsumed - 1];
+        this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar);
     };
     return InlineConsumer;
 }());
@@ -815,8 +819,11 @@ function doesTokenEndConvention(token, conventions) {
 
 },{"./RichConventions":7,"./TokenContextualization/ContextualizedEndToken":8,"./TokenContextualization/ContextualizedStartToken":9,"./TokenContextualization/contextualizeTokens":11}],41:[function(require,module,exports){
 "use strict";
+var Patterns_1 = require('../../../Patterns');
 var InlineConsumer_1 = require('./InlineConsumer');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
+var CollectionHelpers_1 = require('../../../CollectionHelpers');
+var TokenizerGoal_1 = require('./TokenizerGoal');
 var FailedGoalTracker_1 = require('./FailedGoalTracker');
 var TokenizerSnapshot_1 = require('./TokenizerSnapshot');
 var PlainTextToken_1 = require('./Tokens/PlainTextToken');
@@ -870,7 +877,27 @@ var Tokenizer = (function () {
         }
         this.consumer.advanceTextIndex(1);
         return (this.consumer.done()
+            || this.tryToCloseOpenContexts()
             || this.bufferCurrentChar());
+    };
+    Tokenizer.prototype.tryToCloseOpenContexts = function () {
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            if (this.tryToCloseContext(this.openContexts[i])) {
+                return true;
+            }
+        }
+        return false;
+    };
+    Tokenizer.prototype.tryToCloseContext = function (context) {
+        return (context.goal === TokenizerGoal_1.TokenizerGoal.RichParentheses
+            && this.closeContext({ context: context, pattern: CLOSE_PAREN_PATTERN }));
+    };
+    Tokenizer.prototype.closeContext = function (args) {
+        var _this = this;
+        return this.consumer.advanceAfterMatch({
+            pattern: args.pattern,
+            then: function () { CollectionHelpers_1.remove(_this.openContexts, args.context); }
+        });
     };
     Tokenizer.prototype.addToken = function (token) {
         this.tokens.push(token);
@@ -905,8 +932,9 @@ var Tokenizer = (function () {
     };
     return Tokenizer;
 }());
+var CLOSE_PAREN_PATTERN = new RegExp(Patterns_1.CLOSE_PAREN);
 
-},{"./FailedGoalTracker":5,"./InlineConsumer":6,"./TokenizerSnapshot":13,"./Tokens/PlainTextToken":28,"./nestOverlappingConventions":40}],42:[function(require,module,exports){
+},{"../../../CollectionHelpers":1,"../../../Patterns":60,"./FailedGoalTracker":5,"./InlineConsumer":6,"./TokenizerGoal":12,"./TokenizerSnapshot":13,"./Tokens/PlainTextToken":28,"./nestOverlappingConventions":40}],42:[function(require,module,exports){
 "use strict";
 var tokenize_1 = require('./Tokenizing/tokenize');
 var parse_1 = require('./parse');

@@ -12,3 +12,7 @@ export function swap<T>(items: T[], index1: number, index2: number): void {
 export function concat<T>(collections: T[][]): T[] {
   return [].concat([], ...collections)
 }
+
+export function remove<T>(items: T[], itemToRemove: T): void {
+  items.splice(items.indexOf(itemToRemove), 1)
+}

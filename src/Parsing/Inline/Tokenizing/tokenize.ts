@@ -8,7 +8,7 @@ import { InlineConsumer } from './InlineConsumer'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
-import { last } from '../../../CollectionHelpers'
+import { last, remove } from '../../../CollectionHelpers'
 import { MediaDescriptionToken } from './Tokens/MediaDescriptionToken'
 import { MediaEndToken } from './Tokens/MediaEndToken'
 import { TokenizerGoal } from './TokenizerGoal'
@@ -65,7 +65,7 @@ class Tokenizer {
   // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
-  
+
   private openContexts: Context[] = []
 
   constructor(private entireText: string, config: UpConfig) {
@@ -100,8 +100,37 @@ class Tokenizer {
 
     return (
       this.consumer.done()
+      || this.tryToCloseOpenContexts()
       || this.bufferCurrentChar()
     )
+  }
+
+  private tryToCloseOpenContexts(): boolean {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      if (this.tryToCloseContext(this.openContexts[i])) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  private tryToCloseContext(context: Context): boolean {
+    return (
+      context.goal === TokenizerGoal.RichParentheses
+      && this.closeContext({ context, pattern: CLOSE_PAREN_PATTERN })
+    )
+  }
+
+  private closeContext(
+    args: {
+      context: Context
+      pattern: RegExp
+    }): boolean {
+    return this.consumer.advanceAfterMatch({
+      pattern: args.pattern,
+      then: () => { remove(this.openContexts, args.context) }
+    })
   }
 
   private addToken(token: Token): void {
@@ -130,17 +159,21 @@ class Tokenizer {
       this.addToken(new PlainTextToken(buffer))
     }
   }
-   
+
   private getCurrentSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
-        countCharsConsumed: this.consumer.countCharsConsumed,
-        tokens: this.tokens,
-        openContexts: this.openContexts,
-        buffer: this.buffer
-      })
+      countCharsConsumed: this.consumer.countCharsConsumed,
+      tokens: this.tokens,
+      openContexts: this.openContexts,
+      buffer: this.buffer
+    })
   }
 
   private canTry(goal: TokenizerGoal, atIndex = this.consumer.countCharsConsumed): boolean {
     return !this.failedGoalTracker.hasFailed(goal, atIndex)
   }
 }
+
+const CLOSE_PAREN_PATTERN = new RegExp(
+  CLOSE_PAREN
+)
