@@ -1138,15 +1138,16 @@ var TokenizerContext = (function () {
     function TokenizerContext(goal, snapshot) {
         this.goal = goal;
         this.snapshot = snapshot;
-        this._initialTokenIndex = snapshot.tokens.length;
+        this.reset();
     }
-    Object.defineProperty(TokenizerContext.prototype, "initialTokenIndex", {
-        get: function () {
-            return this._initialTokenIndex;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    TokenizerContext.prototype.registerTokenInsertion = function (args) {
+        if (this.initialTokenIndex >= args.atIndex) {
+            this.initialTokenIndex += 1;
+        }
+    };
+    TokenizerContext.prototype.reset = function () {
+        this.initialTokenIndex = this.snapshot.tokens.length;
+    };
     return TokenizerContext;
 }());
 exports.TokenizerContext = TokenizerContext;

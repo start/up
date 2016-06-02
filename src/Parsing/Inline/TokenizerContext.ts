@@ -2,13 +2,19 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export class TokenizerContext {
-  private _initialTokenIndex: number
-  
+  public initialTokenIndex: number
+
   constructor(public goal: TokenizerGoal, public snapshot: TokenizerSnapshot) {
-    this._initialTokenIndex = snapshot.tokens.length
+    this.reset()
   }
-  
-  get initialTokenIndex(): number {
-    return this._initialTokenIndex
+
+  registerTokenInsertion(args: { atIndex: number }) {
+    if (this.initialTokenIndex >= args.atIndex) {
+      this.initialTokenIndex += 1
+    }
+  }
+
+  reset(): void {
+    this.initialTokenIndex = this.snapshot.tokens.length
   }
 }
