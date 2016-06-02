@@ -1140,24 +1140,24 @@ var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.C
 },{"../../Patterns":42,"./FailedGoalTracker":2,"./InlineConsumer":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./Token":12,"./TokenKind":17,"./TokenizableMedia":18,"./TokenizableSandwich":19,"./TokenizerGoal":21,"./TokenizerSnapshot":22,"./nestOverlappingConventions":24}],21:[function(require,module,exports){
 "use strict";
 (function (TokenizerGoal) {
-    TokenizerGoal[TokenizerGoal["InlineCode"] = 0] = "InlineCode";
-    TokenizerGoal[TokenizerGoal["Footnote"] = 1] = "Footnote";
-    TokenizerGoal[TokenizerGoal["Spoiler"] = 2] = "Spoiler";
-    TokenizerGoal[TokenizerGoal["Parenthesized"] = 3] = "Parenthesized";
-    TokenizerGoal[TokenizerGoal["SquareBracketed"] = 4] = "SquareBracketed";
-    TokenizerGoal[TokenizerGoal["Action"] = 5] = "Action";
-    TokenizerGoal[TokenizerGoal["ParenthesizedInRawText"] = 6] = "ParenthesizedInRawText";
-    TokenizerGoal[TokenizerGoal["SquareBracketedInRawText"] = 7] = "SquareBracketedInRawText";
-    TokenizerGoal[TokenizerGoal["CurlyBracketedInRawText"] = 8] = "CurlyBracketedInRawText";
-    TokenizerGoal[TokenizerGoal["Link"] = 9] = "Link";
-    TokenizerGoal[TokenizerGoal["LinkUrl"] = 10] = "LinkUrl";
-    TokenizerGoal[TokenizerGoal["RevisionInsertion"] = 11] = "RevisionInsertion";
-    TokenizerGoal[TokenizerGoal["RevisionDeletion"] = 12] = "RevisionDeletion";
-    TokenizerGoal[TokenizerGoal["Audio"] = 13] = "Audio";
-    TokenizerGoal[TokenizerGoal["Image"] = 14] = "Image";
-    TokenizerGoal[TokenizerGoal["Video"] = 15] = "Video";
-    TokenizerGoal[TokenizerGoal["MediaUrl"] = 16] = "MediaUrl";
-    TokenizerGoal[TokenizerGoal["NakedUrl"] = 17] = "NakedUrl";
+    TokenizerGoal[TokenizerGoal["InlineCode"] = 1] = "InlineCode";
+    TokenizerGoal[TokenizerGoal["Footnote"] = 2] = "Footnote";
+    TokenizerGoal[TokenizerGoal["Spoiler"] = 3] = "Spoiler";
+    TokenizerGoal[TokenizerGoal["Parenthesized"] = 4] = "Parenthesized";
+    TokenizerGoal[TokenizerGoal["SquareBracketed"] = 5] = "SquareBracketed";
+    TokenizerGoal[TokenizerGoal["Action"] = 6] = "Action";
+    TokenizerGoal[TokenizerGoal["ParenthesizedInRawText"] = 7] = "ParenthesizedInRawText";
+    TokenizerGoal[TokenizerGoal["SquareBracketedInRawText"] = 8] = "SquareBracketedInRawText";
+    TokenizerGoal[TokenizerGoal["CurlyBracketedInRawText"] = 9] = "CurlyBracketedInRawText";
+    TokenizerGoal[TokenizerGoal["Link"] = 10] = "Link";
+    TokenizerGoal[TokenizerGoal["LinkUrl"] = 11] = "LinkUrl";
+    TokenizerGoal[TokenizerGoal["RevisionInsertion"] = 12] = "RevisionInsertion";
+    TokenizerGoal[TokenizerGoal["RevisionDeletion"] = 13] = "RevisionDeletion";
+    TokenizerGoal[TokenizerGoal["Audio"] = 14] = "Audio";
+    TokenizerGoal[TokenizerGoal["Image"] = 15] = "Image";
+    TokenizerGoal[TokenizerGoal["Video"] = 16] = "Video";
+    TokenizerGoal[TokenizerGoal["MediaUrl"] = 17] = "MediaUrl";
+    TokenizerGoal[TokenizerGoal["NakedUrl"] = 18] = "NakedUrl";
 })(exports.TokenizerGoal || (exports.TokenizerGoal = {}));
 var TokenizerGoal = exports.TokenizerGoal;
 

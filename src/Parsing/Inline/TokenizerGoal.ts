@@ -1,5 +1,5 @@
 export enum TokenizerGoal { 
-  InlineCode,
+  InlineCode = 1,
   Footnote,
   Spoiler,
   Parenthesized,
