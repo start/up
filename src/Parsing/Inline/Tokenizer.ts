@@ -34,14 +34,41 @@ export class Tokenizer {
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
 
-  private footnoteConvention: TokenizableSandwich
-  private spoilerConvention: TokenizableSandwich
-  private revisionDeletionConvention: TokenizableSandwich
-  private revisionInsertionConvention: TokenizableSandwich
-  private actionConvention: TokenizableSandwich
+  private footnoteConvention = this.getRichSandwich({
+    richConvention: FOOTNOTE,
+    startPattern: ANY_WHITESPACE + escapeForRegex('(('),
+    endPattern: escapeForRegex('))')
+  })
 
-  private parenthesizedConvention: TokenizableSandwich
-  private squareBracketedConvention: TokenizableSandwich
+  private revisionDeletionConvention = this.getRichSandwich({
+    richConvention: REVISION_DELETION,
+    startPattern: '~~',
+    endPattern: '~~'
+  })
+
+  private revisionInsertionConvention = this.getRichSandwich({
+    richConvention: REVISION_INSERTION,
+    startPattern: escapeForRegex('++'),
+    endPattern: escapeForRegex('++')
+  })
+
+  private actionConvention = this.getRichSandwich({
+    richConvention: ACTION,
+    startPattern: OPEN_CURLY_BRACKET,
+    endPattern: CLOSE_CURLY_BRACKET,
+  })
+
+  private parenthesizedConvention = this.getRichSandwich({
+    richConvention: PARENTHESIZED,
+    startPattern: OPEN_PAREN,
+    endPattern: CLOSE_PAREN,
+  })
+
+  private squareBracketedConvention = this.getRichSandwich({
+    richConvention: SQUARE_BRACKETED,
+    startPattern: OPEN_SQUARE_BRACKET,
+    endPattern: CLOSE_SQUARE_BRACKET,
+  })
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
   // or media conventions' descriptions.  
@@ -70,14 +97,18 @@ export class Tokenizer {
     this.curlyBracketedRawTextConvention
   ]
 
+  private spoilerConvention: TokenizableSandwich
+
+  // These conventions are for images, audio, and video
+  private mediaConventions: TokenizableMedia[]
+
   // A rich sandwich:
   //
   // 1. Can contain other inline conventions
   // 2. Involves just 2 delimiters: 1 to mark its start, and 1 to mark its end
+  //
+  // We can't create the collection until the spoiler convention has been configured.
   private richSandwiches: TokenizableSandwich[]
-
-  // These conventions are for images, audio, and video
-  private mediaConventions: TokenizableMedia[]
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -91,53 +122,11 @@ export class Tokenizer {
       [AUDIO, IMAGE, VIDEO].map(media =>
         new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
 
-    this.footnoteConvention =
-      this.getRichSandwich({
-        richConvention: FOOTNOTE,
-        startPattern: ANY_WHITESPACE + escapeForRegex('(('),
-        endPattern: escapeForRegex('))')
-      })
-
     this.spoilerConvention =
       this.getRichSandwich({
         richConvention: SPOILER,
         startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: CLOSE_SQUARE_BRACKET
-      })
-
-    this.revisionDeletionConvention =
-      this.getRichSandwich({
-        richConvention: REVISION_DELETION,
-        startPattern: '~~',
-        endPattern: '~~'
-      })
-
-    this.revisionInsertionConvention =
-      this.getRichSandwich({
-        richConvention: REVISION_INSERTION,
-        startPattern: escapeForRegex('++'),
-        endPattern: escapeForRegex('++')
-      })
-
-    this.parenthesizedConvention =
-      this.getRichSandwich({
-        richConvention: PARENTHESIZED,
-        startPattern: OPEN_PAREN,
-        endPattern: CLOSE_PAREN,
-      })
-
-    this.squareBracketedConvention =
-      this.getRichSandwich({
-        richConvention: SQUARE_BRACKETED,
-        startPattern: OPEN_SQUARE_BRACKET,
-        endPattern: CLOSE_SQUARE_BRACKET,
-      })
-
-    this.actionConvention =
-      this.getRichSandwich({
-        richConvention: ACTION,
-        startPattern: OPEN_CURLY_BRACKET,
-        endPattern: CLOSE_CURLY_BRACKET,
       })
 
     this.richSandwiches = [

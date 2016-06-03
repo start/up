@@ -681,6 +681,36 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
+        this.footnoteConvention = this.getRichSandwich({
+            richConvention: RichConventions_1.FOOTNOTE,
+            startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
+            endPattern: Patterns_1.escapeForRegex('))')
+        });
+        this.revisionDeletionConvention = this.getRichSandwich({
+            richConvention: RichConventions_1.REVISION_DELETION,
+            startPattern: '~~',
+            endPattern: '~~'
+        });
+        this.revisionInsertionConvention = this.getRichSandwich({
+            richConvention: RichConventions_1.REVISION_INSERTION,
+            startPattern: Patterns_1.escapeForRegex('++'),
+            endPattern: Patterns_1.escapeForRegex('++')
+        });
+        this.actionConvention = this.getRichSandwich({
+            richConvention: RichConventions_1.ACTION,
+            startPattern: Patterns_1.OPEN_CURLY_BRACKET,
+            endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
+        });
+        this.parenthesizedConvention = this.getRichSandwich({
+            richConvention: RichConventions_1.PARENTHESIZED,
+            startPattern: Patterns_1.OPEN_PAREN,
+            endPattern: Patterns_1.CLOSE_PAREN,
+        });
+        this.squareBracketedConvention = this.getRichSandwich({
+            richConvention: RichConventions_1.SQUARE_BRACKETED,
+            startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
+            endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
+        });
         this.parenthesizedRawTextConvention = new TokenizableSandwich_1.TokenizableSandwich({
             goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText,
             startPattern: Patterns_1.OPEN_PAREN,
@@ -710,47 +740,11 @@ var Tokenizer = (function () {
             [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
                 return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
             });
-        this.footnoteConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.FOOTNOTE,
-                startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
-                endPattern: Patterns_1.escapeForRegex('))')
-            });
         this.spoilerConvention =
             this.getRichSandwich({
                 richConvention: RichConventions_1.SPOILER,
                 startPattern: Patterns_1.OPEN_SQUARE_BRACKET + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
-            });
-        this.revisionDeletionConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.REVISION_DELETION,
-                startPattern: '~~',
-                endPattern: '~~'
-            });
-        this.revisionInsertionConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.REVISION_INSERTION,
-                startPattern: Patterns_1.escapeForRegex('++'),
-                endPattern: Patterns_1.escapeForRegex('++')
-            });
-        this.parenthesizedConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.PARENTHESIZED,
-                startPattern: Patterns_1.OPEN_PAREN,
-                endPattern: Patterns_1.CLOSE_PAREN,
-            });
-        this.squareBracketedConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.SQUARE_BRACKETED,
-                startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
-                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
-            });
-        this.actionConvention =
-            this.getRichSandwich({
-                richConvention: RichConventions_1.ACTION,
-                startPattern: Patterns_1.OPEN_CURLY_BRACKET,
-                endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
             });
         this.richSandwiches = [
             this.spoilerConvention,
