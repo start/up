@@ -10,6 +10,7 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
+import { TokenizableBracket } from './TokenizableBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -34,37 +35,37 @@ export class Tokenizer {
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
 
-  private footnoteConvention = this.getRichSandwich({
+  private footnoteConvention = getRichSandwich({
     richConvention: FOOTNOTE,
     startPattern: ANY_WHITESPACE + escapeForRegex('(('),
     endPattern: escapeForRegex('))')
   })
 
-  private revisionDeletionConvention = this.getRichSandwich({
+  private revisionDeletionConvention = getRichSandwich({
     richConvention: REVISION_DELETION,
     startPattern: '~~',
     endPattern: '~~'
   })
 
-  private revisionInsertionConvention = this.getRichSandwich({
+  private revisionInsertionConvention = getRichSandwich({
     richConvention: REVISION_INSERTION,
     startPattern: escapeForRegex('++'),
     endPattern: escapeForRegex('++')
   })
 
-  private actionConvention = this.getRichSandwich({
+  private actionConvention = getRichSandwich({
     richConvention: ACTION,
     startPattern: OPEN_CURLY_BRACKET,
     endPattern: CLOSE_CURLY_BRACKET,
   })
 
-  private parenthesizedConvention = this.getRichSandwich({
+  private parenthesizedConvention = getRichSandwich({
     richConvention: PARENTHESIZED,
     startPattern: OPEN_PAREN,
     endPattern: CLOSE_PAREN,
   })
 
-  private squareBracketedConvention = this.getRichSandwich({
+  private squareBracketedConvention = getRichSandwich({
     richConvention: SQUARE_BRACKETED,
     startPattern: OPEN_SQUARE_BRACKET,
     endPattern: CLOSE_SQUARE_BRACKET,
@@ -123,7 +124,7 @@ export class Tokenizer {
         new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
 
     this.spoilerConvention =
-      this.getRichSandwich({
+      getRichSandwich({
         richConvention: SPOILER,
         startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: CLOSE_SQUARE_BRACKET
@@ -581,25 +582,7 @@ export class Tokenizer {
   private hasGoal(goal: TokenizerGoal): boolean {
     return this.openContexts.some(context => context.goal === goal)
   }
-
-  private getRichSandwich(
-    args: {
-      startPattern: string,
-      endPattern: string,
-      richConvention: RichConvention
-    }
-  ): TokenizableSandwich {
-    const { startPattern, endPattern, richConvention } = args
-
-    return new TokenizableSandwich({
-      goal: richConvention.tokenizerGoal,
-      startPattern,
-      endPattern,
-      startTokenKind: richConvention.startTokenKind,
-      endTokenKind: richConvention.endTokenKind
-    })
-  }
-
+  
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -697,6 +680,25 @@ export class Tokenizer {
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
+}
+
+
+function getRichSandwich(
+  args: {
+    startPattern: string,
+    endPattern: string,
+    richConvention: RichConvention
+  }
+): TokenizableSandwich {
+  const { startPattern, endPattern, richConvention } = args
+
+  return new TokenizableSandwich({
+    goal: richConvention.tokenizerGoal,
+    startPattern,
+    endPattern,
+    startTokenKind: richConvention.startTokenKind,
+    endTokenKind: richConvention.endTokenKind
+  })
 }
 
 

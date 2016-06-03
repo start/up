@@ -2,6 +2,7 @@ import { TokenKind } from './TokenKind'
 import { TokenizerGoal } from './TokenizerGoal'
 import { startsWith, escapeForRegex } from '../../Patterns'
 
+
 export class TokenizableBracket {
   goal: TokenizerGoal
   startBracket: string

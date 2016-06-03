@@ -683,32 +683,32 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
-        this.footnoteConvention = this.getRichSandwich({
+        this.footnoteConvention = getRichSandwich({
             richConvention: RichConventions_1.FOOTNOTE,
             startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
             endPattern: Patterns_1.escapeForRegex('))')
         });
-        this.revisionDeletionConvention = this.getRichSandwich({
+        this.revisionDeletionConvention = getRichSandwich({
             richConvention: RichConventions_1.REVISION_DELETION,
             startPattern: '~~',
             endPattern: '~~'
         });
-        this.revisionInsertionConvention = this.getRichSandwich({
+        this.revisionInsertionConvention = getRichSandwich({
             richConvention: RichConventions_1.REVISION_INSERTION,
             startPattern: Patterns_1.escapeForRegex('++'),
             endPattern: Patterns_1.escapeForRegex('++')
         });
-        this.actionConvention = this.getRichSandwich({
+        this.actionConvention = getRichSandwich({
             richConvention: RichConventions_1.ACTION,
             startPattern: Patterns_1.OPEN_CURLY_BRACKET,
             endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
         });
-        this.parenthesizedConvention = this.getRichSandwich({
+        this.parenthesizedConvention = getRichSandwich({
             richConvention: RichConventions_1.PARENTHESIZED,
             startPattern: Patterns_1.OPEN_PAREN,
             endPattern: Patterns_1.CLOSE_PAREN,
         });
-        this.squareBracketedConvention = this.getRichSandwich({
+        this.squareBracketedConvention = getRichSandwich({
             richConvention: RichConventions_1.SQUARE_BRACKETED,
             startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
             endPattern: Patterns_1.CLOSE_SQUARE_BRACKET,
@@ -743,7 +743,7 @@ var Tokenizer = (function () {
                 return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
             });
         this.spoilerConvention =
-            this.getRichSandwich({
+            getRichSandwich({
                 richConvention: RichConventions_1.SPOILER,
                 startPattern: Patterns_1.OPEN_SQUARE_BRACKET + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
@@ -1110,16 +1110,6 @@ var Tokenizer = (function () {
     Tokenizer.prototype.hasGoal = function (goal) {
         return this.openContexts.some(function (context) { return context.goal === goal; });
     };
-    Tokenizer.prototype.getRichSandwich = function (args) {
-        var startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
-        return new TokenizableSandwich_1.TokenizableSandwich({
-            goal: richConvention.tokenizerGoal,
-            startPattern: startPattern,
-            endPattern: endPattern,
-            startTokenKind: richConvention.startTokenKind,
-            endTokenKind: richConvention.endTokenKind
-        });
-    };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
@@ -1198,6 +1188,16 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
+function getRichSandwich(args) {
+    var startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
+    return new TokenizableSandwich_1.TokenizableSandwich({
+        goal: richConvention.tokenizerGoal,
+        startPattern: startPattern,
+        endPattern: endPattern,
+        startTokenKind: richConvention.startTokenKind,
+        endTokenKind: richConvention.endTokenKind
+    });
+}
 var INLINE_CODE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith('`'));
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*'))));
 var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
