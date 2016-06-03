@@ -11,7 +11,7 @@ import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { Bracket } from './Bracket'
-import { TokenizableRawTextBracket } from './TokenizableRawTextBracket'
+import { TokenizableBracket } from './TokenizableBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -75,13 +75,13 @@ export class Tokenizer {
   // or media conventions' descriptions. Their purpose is to allow the URLs or descriptions to contain matching
   // brackets without having to escape any closing brackets.
 
-  private parenthesizedRawTextConvention = new TokenizableRawTextBracket(
+  private parenthesizedRawTextConvention = new TokenizableBracket(
     TokenizerGoal.ParenthesizedInRawText, PARENTHESIS)
 
-  private squareBracketedRawTextConvention = new TokenizableRawTextBracket(
+  private squareBracketedRawTextConvention = new TokenizableBracket(
     TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET)
 
-  private curlyBracketedRawTextConvention = new TokenizableRawTextBracket(
+  private curlyBracketedRawTextConvention = new TokenizableBracket(
     TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
 
   private rawTextBrackets = [
@@ -396,7 +396,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRawTextBracket(tokenizableBracket: TokenizableRawTextBracket): boolean {
+  private tryToOpenRawTextBracket(tokenizableBracket: TokenizableBracket): boolean {
     return this.tryToOpenConvention({
       goal: tokenizableBracket.goal,
       pattern: tokenizableBracket.bracket.startPattern,
@@ -407,7 +407,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(tokenizableBracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
+  private tryToCloseRawTextBracket(tokenizableBracket: TokenizableBracket, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
       pattern: tokenizableBracket.bracket.endPattern,
       context,
