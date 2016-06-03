@@ -1169,7 +1169,10 @@ var Tokenizer = (function () {
         return buffer;
     };
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
-        this.addToken(TokenKind_1.TokenKind.PlainText, this.flushBuffer());
+        var buffer = this.flushBuffer();
+        if (buffer) {
+            this.addToken(TokenKind_1.TokenKind.PlainText, buffer);
+        }
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }

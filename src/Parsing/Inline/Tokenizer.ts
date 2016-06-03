@@ -184,7 +184,7 @@ export class Tokenizer {
 
         return true
       }
-      
+
       if (context.goal === TokenizerGoal.NakedUrl) {
         innerNakedUrlContext = context
       }
@@ -672,10 +672,11 @@ export class Tokenizer {
   }
 
   private flushBufferToPlainTextToken(): void {
-    // This will create a PlainTextToken even when there isn't any text to flush.
-    //
-    // TODO: Explain why this is helpful
-    this.addToken(TokenKind.PlainText, this.flushBuffer())
+    const buffer = this.flushBuffer()
+
+    if (buffer) {
+      this.addToken(TokenKind.PlainText, buffer)
+    }
   }
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
