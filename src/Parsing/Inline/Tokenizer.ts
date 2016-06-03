@@ -1,4 +1,4 @@
-import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR, OPEN_PAREN, CLOSE_PAREN, OPEN_SQUARE_BRACKET, CLOSE_SQUARE_BRACKET, OPEN_CURLY_BRACKET, CLOSE_CURLY_BRACKET } from '../../Patterns'
+import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../../Patterns'
 import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
@@ -55,20 +55,20 @@ export class Tokenizer {
 
   private actionConvention = getRichSandwich({
     richConvention: ACTION,
-    startPattern: OPEN_CURLY_BRACKET,
-    endPattern: CLOSE_CURLY_BRACKET,
+    startPattern: CURLY_BRACKET.startBracketPattern,
+    endPattern: CURLY_BRACKET.endBracketPattern
   })
 
   private parenthesizedConvention = getRichSandwich({
     richConvention: PARENTHESIZED,
-    startPattern: OPEN_PAREN,
-    endPattern: CLOSE_PAREN,
+    startPattern: PARENTHESIS.startBracketPattern,
+    endPattern: PARENTHESIS.endBracketPattern
   })
 
   private squareBracketedConvention = getRichSandwich({
     richConvention: SQUARE_BRACKETED,
-    startPattern: OPEN_SQUARE_BRACKET,
-    endPattern: CLOSE_SQUARE_BRACKET,
+    startPattern: SQUARE_BRACKET.startBracketPattern,
+    endPattern: SQUARE_BRACKET.endBracketPattern
   })
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
@@ -118,8 +118,8 @@ export class Tokenizer {
     this.spoilerConvention =
       getRichSandwich({
         richConvention: SPOILER,
-        startPattern: OPEN_SQUARE_BRACKET + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
-        endPattern: CLOSE_SQUARE_BRACKET
+        startPattern: SQUARE_BRACKET.startBracketPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
+        endPattern: SQUARE_BRACKET.endBracketPattern
       })
 
     this.richSandwiches = [
@@ -694,6 +694,16 @@ function getRichSandwich(
 }
 
 
+const PARENTHESIS =
+  new Bracket('(', ')')
+
+const SQUARE_BRACKET =
+  new Bracket('[', ']')
+  
+const CURLY_BRACKET =
+  new Bracket('{', '}')
+  
+
 const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
   startsWith('`'))
 
@@ -704,7 +714,7 @@ const URL_ARROW_PATTERN_DEPCRECATED = new RegExp(
   startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE))
 
 const MEDIA_END_PATTERN_DEPCRECATED = new RegExp(
-  startsWith(CLOSE_SQUARE_BRACKET))
+  startsWith(SQUARE_BRACKET.endBracketPattern))
 
 const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
   startsWith('http' + optional('s') + '://'))
@@ -716,15 +726,5 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR)
 
 const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
-  startsWith(CLOSE_SQUARE_BRACKET)
+  startsWith(SQUARE_BRACKET.endBracketPattern)
 )
-
-
-const PARENTHESIS =
-  new Bracket('(', ')')
-
-const SQUARE_BRACKET =
-  new Bracket('[', ']')
-  
-const CURLY_BRACKET =
-  new Bracket('{', '}')

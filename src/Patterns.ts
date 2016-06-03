@@ -65,24 +65,6 @@ const STREAK =
 const NON_WHITESPACE_CHAR =
   '\\S'
 
-const OPEN_PAREN =
-  escapeForRegex('(')
-
-const CLOSE_PAREN =
-  escapeForRegex(')')
-  
-const OPEN_SQUARE_BRACKET =
-  escapeForRegex('[')
-
-const CLOSE_SQUARE_BRACKET =
-  escapeForRegex(']')
-
-const OPEN_CURLY_BRACKET =
-  escapeForRegex('{')
-
-const CLOSE_CURLY_BRACKET =
-  escapeForRegex('}')
-
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
 const NON_BLANK =
@@ -98,12 +80,6 @@ export {
   streakOf,
   atLeast,
   escapeForRegex,
-  OPEN_PAREN,
-  CLOSE_PAREN,
-  OPEN_SQUARE_BRACKET,
-  CLOSE_SQUARE_BRACKET,
-  OPEN_CURLY_BRACKET,
-  CLOSE_CURLY_BRACKET,
   NON_BLANK,
   BLANK,
   INLINE_WHITESPACE_CHAR,
