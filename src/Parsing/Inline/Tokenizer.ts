@@ -48,12 +48,14 @@ export class Tokenizer {
   private parenthesizedRawTextConvention: TokenizableSandwich
   private squareBracketedRawTextConvention: TokenizableSandwich
   private curlyBracketedRawTextConvention: TokenizableSandwich
+  
+  private rawTextBrackets: TokenizableSandwich[]
 
-  // This collection includes every sandwich except for the "raw" bracket conventions above.
-  private sandwichesThatCanAppearInRegularContent: TokenizableSandwich[]
-
-  // This collection includes every sandwich.
-  private allSandwiches: TokenizableSandwich[]
+  // A rich sandwich:
+  //
+  // 1. Can contain other inline conventions
+  // 2. Involves just 2 delimiters: 1 to mark its start, and 1 to mark its end
+  private richSandwiches: TokenizableSandwich[]
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
@@ -140,7 +142,7 @@ export class Tokenizer {
         closeBracketPattern: CLOSE_CURLY_BRACKET
       })
 
-    this.sandwichesThatCanAppearInRegularContent = [
+    this.richSandwiches = [
       this.spoilerConvention,
       this.footnoteConvention,
       this.revisionDeletionConvention,
@@ -149,18 +151,18 @@ export class Tokenizer {
       this.parenthesizedConvention,
       this.squareBracketedConvention
     ]
-
-    this.allSandwiches = this.sandwichesThatCanAppearInRegularContent.concat([
-      this.squareBracketedRawTextConvention,
+    
+    this.rawTextBrackets = [
       this.parenthesizedRawTextConvention,
+      this.squareBracketedRawTextConvention,
       this.curlyBracketedRawTextConvention
-    ])
+    ]
   }
 
   private tokenize(): void {
     while (!(this.consumer.reachedEndOfText() && this.resolveOpenContexts())) {
       this.tryToCollectCurrentCharIfEscaped()
-        || this.tryToCloseOpenContexts()
+        || this.tryToCloseAnOpenContext()
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenMedia()
@@ -176,7 +178,7 @@ export class Tokenizer {
           this.insertPlainTextTokensForBrackets()))
   }
 
-  private tryToCloseOpenContexts(): boolean {
+  private tryToCloseAnOpenContext(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       if (this.tryToCloseContext(this.openContexts[i])) {
         return true
@@ -190,8 +192,9 @@ export class Tokenizer {
     const { goal } = context
 
     return (
-      this.tryToCloseSandwichCorrespondingToGoal(goal)
+      this.tryToCloseRichSandwichCorrespondingToGoal(goal)
       || this.handleMediaCorrespondingToGoal(goal)
+      || this.tryToCloseRawTextBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
       || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
     )
@@ -237,8 +240,16 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private tryToCloseSandwichCorrespondingToGoal(goal: TokenizerGoal): boolean {
-    return this.allSandwiches.some(sandwich => (sandwich.goal === goal) && this.tryToCloseRichSandwich(sandwich))
+  private tryToCloseRichSandwichCorrespondingToGoal(goal: TokenizerGoal): boolean {
+    return this.richSandwiches .some(sandwich =>
+      (sandwich.goal === goal)
+      && this.tryToCloseRichSandwich(sandwich))
+  }
+
+  private tryToCloseRawTextBracketCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.rawTextBrackets.some(rawTextBracket =>
+      (rawTextBracket.goal === context.goal)
+      && this.tryToCloseRawTextBracket(rawTextBracket, context))
   }
 
   private handleMediaCorrespondingToGoal(goal: TokenizerGoal): boolean {
@@ -269,20 +280,20 @@ export class Tokenizer {
   }
 
   private tryToOpenAnySandwichThatCanAppearInRegularContent(): boolean {
-    return this.sandwichesThatCanAppearInRegularContent
+    return this.richSandwiches
       .some(sandwich => this.tryToOpenRichSandwich(sandwich))
   }
 
   private tryToOpenParenthesizedRawText(): boolean {
-    return this.tryToOpenRichSandwich(this.parenthesizedRawTextConvention)
+    return this.tryToOpenRawTextBracket(this.parenthesizedRawTextConvention)
   }
 
   private tryToOpenSquareBracketedRawText(): boolean {
-    return this.tryToOpenRichSandwich(this.squareBracketedRawTextConvention)
+    return this.tryToOpenRawTextBracket(this.squareBracketedRawTextConvention)
   }
 
   private tryToOpenCurlyBracketedRawText(): boolean {
-    return this.tryToOpenRichSandwich(this.curlyBracketedRawTextConvention)
+    return this.tryToOpenRawTextBracket(this.curlyBracketedRawTextConvention)
   }
 
   private tryToCollectCurrentCharIfEscaped(): boolean {
@@ -393,9 +404,9 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(sandwich: TokenizableSandwich, context: TokenizerContext): boolean {
+  private tryToCloseRawTextBracket(bracket: TokenizableSandwich, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
-      pattern: sandwich.startPattern,
+      pattern: bracket.endPattern,
       context,
       then: (bracket) => { this.buffer += bracket }
     })
