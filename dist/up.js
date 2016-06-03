@@ -643,22 +643,6 @@ var TokenKind = exports.TokenKind;
 },{}],19:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../Patterns');
-var TokenizableBracket = (function () {
-    function TokenizableBracket(goal, bracket) {
-        this.goal = goal;
-        this.startPattern = getPattern(bracket.startPattern);
-        this.endPattern = getPattern(bracket.endPattern);
-    }
-    return TokenizableBracket;
-}());
-exports.TokenizableBracket = TokenizableBracket;
-function getPattern(bracketPattern) {
-    return new RegExp(Patterns_1.startsWith(bracketPattern));
-}
-
-},{"../../Patterns":45}],20:[function(require,module,exports){
-"use strict";
-var Patterns_1 = require('../../Patterns');
 var TokenizableMedia = (function () {
     function TokenizableMedia(media, localizedTerm) {
         this.startTokenKind = media.startTokenKind;
@@ -671,6 +655,22 @@ var TokenizableMedia = (function () {
 exports.TokenizableMedia = TokenizableMedia;
 function getPattern(pattern, flags) {
     return new RegExp(Patterns_1.startsWith(pattern), flags);
+}
+
+},{"../../Patterns":45}],20:[function(require,module,exports){
+"use strict";
+var Patterns_1 = require('../../Patterns');
+var TokenizableRawTextBracket = (function () {
+    function TokenizableRawTextBracket(goal, bracket) {
+        this.goal = goal;
+        this.startPattern = getPattern(bracket.startPattern);
+        this.endPattern = getPattern(bracket.endPattern);
+    }
+    return TokenizableRawTextBracket;
+}());
+exports.TokenizableRawTextBracket = TokenizableRawTextBracket;
+function getPattern(bracketPattern) {
+    return new RegExp(Patterns_1.startsWith(bracketPattern));
 }
 
 },{"../../Patterns":45}],21:[function(require,module,exports){
@@ -701,7 +701,7 @@ var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var Bracket_1 = require('./Bracket');
-var TokenizableBracket_1 = require('./TokenizableBracket');
+var TokenizableRawTextBracket_1 = require('./TokenizableRawTextBracket');
 var TokenizableMedia_1 = require('./TokenizableMedia');
 var FailedGoalTracker_1 = require('./FailedGoalTracker');
 var TokenizerContext_1 = require('./TokenizerContext');
@@ -745,9 +745,9 @@ var Tokenizer = (function () {
             startPattern: SQUARE_BRACKET.startPattern,
             endPattern: SQUARE_BRACKET.endPattern
         });
-        this.parenthesizedRawTextConvention = new TokenizableBracket_1.TokenizableBracket(TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, PARENTHESIS);
-        this.squareBracketedRawTextConvention = new TokenizableBracket_1.TokenizableBracket(TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET);
-        this.curlyBracketedRawTextConvention = new TokenizableBracket_1.TokenizableBracket(TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET);
+        this.parenthesizedRawTextConvention = new TokenizableRawTextBracket_1.TokenizableRawTextBracket(TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, PARENTHESIS);
+        this.squareBracketedRawTextConvention = new TokenizableRawTextBracket_1.TokenizableRawTextBracket(TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET);
+        this.curlyBracketedRawTextConvention = new TokenizableRawTextBracket_1.TokenizableRawTextBracket(TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET);
         this.rawTextBrackets = [
             this.parenthesizedRawTextConvention,
             this.squareBracketedRawTextConvention,
@@ -1230,7 +1230,7 @@ var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(SQUARE_BRACKET.endPattern));
 
-},{"../../Patterns":45,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":11,"./RichConventions":12,"./Token":13,"./TokenKind":18,"./TokenizableBracket":19,"./TokenizableMedia":20,"./TokenizableSandwich":21,"./TokenizerContext":23,"./TokenizerGoal":24,"./TokenizerSnapshot":25,"./nestOverlappingConventions":27}],23:[function(require,module,exports){
+},{"../../Patterns":45,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":11,"./RichConventions":12,"./Token":13,"./TokenKind":18,"./TokenizableMedia":19,"./TokenizableRawTextBracket":20,"./TokenizableSandwich":21,"./TokenizerContext":23,"./TokenizerGoal":24,"./TokenizerSnapshot":25,"./nestOverlappingConventions":27}],23:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(goal, snapshot) {

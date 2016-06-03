@@ -11,7 +11,7 @@ import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { Bracket } from './Bracket'
-import { TokenizableBracket } from './TokenizableBracket'
+import { TokenizableRawTextBracket } from './TokenizableRawTextBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -78,13 +78,13 @@ export class Tokenizer {
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
 
-  private parenthesizedRawTextConvention = new TokenizableBracket(
+  private parenthesizedRawTextConvention = new TokenizableRawTextBracket(
     TokenizerGoal.ParenthesizedInRawText, PARENTHESIS)
 
-  private squareBracketedRawTextConvention = new TokenizableBracket(
+  private squareBracketedRawTextConvention = new TokenizableRawTextBracket(
     TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET)
 
-  private curlyBracketedRawTextConvention = new TokenizableBracket(
+  private curlyBracketedRawTextConvention = new TokenizableRawTextBracket(
     TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
 
   private rawTextBrackets = [
@@ -401,7 +401,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRawTextBracket(bracket: TokenizableBracket): boolean {
+  private tryToOpenRawTextBracket(bracket: TokenizableRawTextBracket): boolean {
     return this.tryToOpenConvention({
       goal: bracket.goal,
       pattern: bracket.startPattern,
@@ -412,7 +412,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(bracket: TokenizableBracket, context: TokenizerContext): boolean {
+  private tryToCloseRawTextBracket(bracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
       pattern: bracket.endPattern,
       context,
