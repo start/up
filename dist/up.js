@@ -1164,9 +1164,9 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.flushBuffer = function () {
-        var bufferedText = this.buffer;
+        var buffer = this.buffer;
         this.buffer = '';
-        return bufferedText;
+        return buffer;
     };
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         this.addToken(TokenKind_1.TokenKind.PlainText, this.flushBuffer());

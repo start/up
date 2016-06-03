@@ -164,12 +164,12 @@ describe('A naked URL protocol followed by a space', () => {
 })
 
 
-describe('A naked URL protocol immediately followed by another convention closing', () => {
+describe('A naked URL protocol (only) immediately followed by another convention closing', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('++http://++')).to.be.eql(
+    expect(Up.toAst('++A URL protocol: http://++')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
-          new PlainTextNode('http://')
+          new PlainTextNode('A URL protocol: http://')
         ])
       ]))
   })

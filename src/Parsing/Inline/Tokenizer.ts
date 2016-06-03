@@ -665,10 +665,10 @@ export class Tokenizer {
   }
 
   private flushBuffer(): string {
-    const bufferedText = this.buffer
+    const buffer = this.buffer
     this.buffer = ''
 
-    return bufferedText
+    return buffer
   }
 
   private flushBufferToPlainTextToken(): void {
