@@ -15,6 +15,10 @@ function concat(collections) {
     var _a;
 }
 exports.concat = concat;
+function remove(items, itemToRemove) {
+    items.splice(items.indexOf(itemToRemove), 1);
+}
+exports.remove = remove;
 
 },{}],2:[function(require,module,exports){
 "use strict";
@@ -661,6 +665,7 @@ var RichConventions_1 = require('./RichConventions');
 var MediaConventions_1 = require('./MediaConventions');
 var applyRaisedVoices_1 = require('./RaisedVoices/applyRaisedVoices');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
+var CollectionHelpers_1 = require('../../CollectionHelpers');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var TokenizableSandwich_1 = require('./TokenizableSandwich');
 var TokenizableMedia_1 = require('./TokenizableMedia');
@@ -681,7 +686,6 @@ var Tokenizer = (function () {
         this.tokenize();
     }
     Tokenizer.prototype.configureConventions = function (config) {
-        var _this = this;
         this.mediaConventions =
             [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
                 return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
@@ -746,16 +750,7 @@ var Tokenizer = (function () {
                 openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
             });
-        this.inlineCodeConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
-                startPattern: '`',
-                endPattern: '`',
-                onOpen: function () { return _this.flushBufferToPlainTextToken(); },
-                onClose: function () { return _this.addToken(TokenKind_1.TokenKind.InlineCode, _this.flushBuffer()); }
-            });
         this.sandwichesThatCanAppearInRegularContent = [
-            this.inlineCodeConvention,
             this.spoilerConvention,
             this.footnoteConvention,
             this.revisionDeletionConvention,
@@ -777,6 +772,7 @@ var Tokenizer = (function () {
                 || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.handleNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenMedia()
+                || this.tryToOpenInlineCode()
                 || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
                 || this.tryToOpenNakedUrl()
                 || this.bufferCurrentChar();
@@ -796,8 +792,31 @@ var Tokenizer = (function () {
         var goal = context.goal;
         return (this.tryToCloseSandwichCorrespondingToGoal(goal)
             || this.handleMediaCorrespondingToGoal(goal)
-            || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.bufferCurrentChar())
+            || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
             || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
+    };
+    Tokenizer.prototype.closeInlineCodeOrAppendCurrentChar = function (context) {
+        return this.tryToCloseInlineCode(context) || this.bufferCurrentChar();
+    };
+    Tokenizer.prototype.tryToOpenInlineCode = function () {
+        var _this = this;
+        return this.canTry(TokenizerGoal_1.TokenizerGoal.InlineCode) && this.consumer.advanceAfterMatch({
+            pattern: INLINE_CODE_DELIMITER_PATTERN,
+            then: function () {
+                _this.openContext(TokenizerGoal_1.TokenizerGoal.InlineCode);
+                _this.flushBufferToPlainTextToken();
+            }
+        });
+    };
+    Tokenizer.prototype.tryToCloseInlineCode = function (context) {
+        var _this = this;
+        return this.consumer.advanceAfterMatch({
+            pattern: INLINE_CODE_DELIMITER_PATTERN,
+            then: function () {
+                _this.addToken(TokenKind_1.TokenKind.InlineCode, _this.flushBuffer());
+                _this.closeContext(context);
+            }
+        });
     };
     Tokenizer.prototype.handleNakedUrl = function () {
         return (this.tryToOpenParenthesizedRawText()
@@ -930,6 +949,9 @@ var Tokenizer = (function () {
                 sandwich.onClose.apply(sandwich, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
+    };
+    Tokenizer.prototype.closeContext = function (context) {
+        CollectionHelpers_1.remove(this.openContexts, context);
     };
     Tokenizer.prototype.tryToOpenConvention = function (args) {
         var _this = this;
@@ -1135,6 +1157,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
+var INLINE_CODE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith('`'));
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*'))));
 var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var MEDIA_END_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
@@ -1143,7 +1166,7 @@ var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
 
-},{"../../Patterns":43,"./FailedGoalTracker":2,"./InlineConsumer":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./Token":12,"./TokenKind":17,"./TokenizableMedia":18,"./TokenizableSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../Patterns":43,"./FailedGoalTracker":2,"./InlineConsumer":3,"./MediaConventions":5,"./RaisedVoices/applyRaisedVoices":10,"./RichConventions":11,"./Token":12,"./TokenKind":17,"./TokenizableMedia":18,"./TokenizableSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(goal, snapshot) {

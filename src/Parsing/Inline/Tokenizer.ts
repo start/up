@@ -7,7 +7,7 @@ import { MediaConvention } from './MediaConvention'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
-import { last } from '../../CollectionHelpers'
+import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
 import { TokenizableMedia } from './TokenizableMedia'
@@ -34,7 +34,6 @@ export class Tokenizer {
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
 
-  private inlineCodeConvention: TokenizableSandwich
   private footnoteConvention: TokenizableSandwich
   private spoilerConvention: TokenizableSandwich
   private revisionDeletionConvention: TokenizableSandwich
@@ -141,17 +140,7 @@ export class Tokenizer {
         closeBracketPattern: CLOSE_CURLY_BRACKET
       })
 
-    this.inlineCodeConvention =
-      new TokenizableSandwich({
-        goal: TokenizerGoal.InlineCode,
-        startPattern: '`',
-        endPattern: '`',
-        onOpen: () => this.flushBufferToPlainTextToken(),
-        onClose: () => this.addToken(TokenKind.InlineCode, this.flushBuffer())
-      })
-
     this.sandwichesThatCanAppearInRegularContent = [
-      this.inlineCodeConvention,
       this.spoilerConvention,
       this.footnoteConvention,
       this.revisionDeletionConvention,
@@ -175,6 +164,7 @@ export class Tokenizer {
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenMedia()
+        || this.tryToOpenInlineCode()
         || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
         || this.tryToOpenNakedUrl()
         || this.bufferCurrentChar()
@@ -202,9 +192,33 @@ export class Tokenizer {
     return (
       this.tryToCloseSandwichCorrespondingToGoal(goal)
       || this.handleMediaCorrespondingToGoal(goal)
-      || ((goal === TokenizerGoal.InlineCode) && this.bufferCurrentChar())
+      || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
       || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
     )
+  }
+
+  private closeInlineCodeOrAppendCurrentChar(context: TokenizerContext): boolean {
+    return this.tryToCloseInlineCode(context) || this.bufferCurrentChar()
+  }
+
+  private tryToOpenInlineCode(): boolean {
+    return this.canTry(TokenizerGoal.InlineCode) && this.consumer.advanceAfterMatch({
+      pattern: INLINE_CODE_DELIMITER_PATTERN,
+      then: () => {
+        this.openContext(TokenizerGoal.InlineCode)
+        this.flushBufferToPlainTextToken()
+      }
+    })
+  }
+
+  private tryToCloseInlineCode(context: TokenizerContext): boolean {
+    return this.consumer.advanceAfterMatch({
+      pattern: INLINE_CODE_DELIMITER_PATTERN,
+      then: () => {
+        this.addToken(TokenKind.InlineCode, this.flushBuffer())
+        this.closeContext(context)
+      }
+    })
   }
 
   private handleNakedUrl(): boolean {
@@ -370,6 +384,10 @@ export class Tokenizer {
       }
     })
   }
+  
+  private closeContext(context: TokenizerContext): void {
+    remove(this.openContexts, context)
+  }
 
   private tryToOpenConvention(
     args: {
@@ -434,7 +452,7 @@ export class Tokenizer {
 
   private backtrackToBeforeContext(context: TokenizerContext): void {
     context.reset()
-    
+
     this.failedGoalTracker.registerFailure(context)
 
     this.tokens = context.snapshot.tokens
@@ -616,9 +634,9 @@ export class Tokenizer {
     }
   ): void {
     const { atIndex, kind, forContext, value } = args
-    
+
     this.tokens.splice(atIndex, 0, new Token(kind, value))
-    
+
     for (const context of this.openContexts) {
       if (context != forContext) {
         context.registerTokenInsertion({ atIndex })
@@ -653,6 +671,10 @@ export class Tokenizer {
   }
 }
 
+
+
+const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
+  startsWith('`'))
 
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
   startsWith(atLeast(1, escapeForRegex('*'))))
