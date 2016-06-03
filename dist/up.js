@@ -791,7 +791,7 @@ var Tokenizer = (function () {
             || this.tryToCloseRawTextBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
             || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl(context))
-            || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl)) && this.tryToCloseNakedUrl(context));
+            || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context)));
     };
     Tokenizer.prototype.closeInlineCodeOrAppendCurrentChar = function (context) {
         return this.tryToCloseInlineCode(context) || this.bufferCurrentChar();
@@ -811,8 +811,8 @@ var Tokenizer = (function () {
         return this.consumer.advanceAfterMatch({
             pattern: INLINE_CODE_DELIMITER_PATTERN,
             then: function () {
+                _this.close({ context: context });
                 _this.addToken(TokenKind_1.TokenKind.InlineCode, _this.flushBuffer());
-                _this.closeContext(context);
             }
         });
     };
@@ -886,7 +886,7 @@ var Tokenizer = (function () {
         var _this = this;
         return this.tryToOpenConvention({
             goal: TokenizerGoal_1.TokenizerGoal.NakedUrl,
-            pattern: NAKED_URL_START_PATTERN,
+            pattern: NAKED_URL_PROTOCOL_PATTERN,
             then: function (urlProtocol) {
                 _this.addTokenAfterFlushingBufferToPlainTextToken(TokenKind_1.TokenKind.NakedUrlProtocolAndStart, urlProtocol);
             }
@@ -894,7 +894,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseNakedUrl = function (context) {
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-            this.closeNakedUrl(context);
+            this.close({ context: context, andCloseInnerContexts: true });
             return true;
         }
         return false;
@@ -926,15 +926,11 @@ var Tokenizer = (function () {
         return this.consumer.advanceAfterMatch({
             pattern: MEDIA_END_PATTERN_DEPCRECATED,
             then: function () {
+                _this.close({ context: context });
                 _this.addToken(TokenKind_1.TokenKind.MediaUrlAndEnd, _this.flushBuffer());
-                _this.closeContext(context);
                 _this.openContexts.pop();
             }
         });
-    };
-    Tokenizer.prototype.closeNakedUrl = function (context) {
-        this.flushBufferedTextToNakedUrlToken();
-        this.closeContextAndAnyInnerContexts(context);
     };
     Tokenizer.prototype.tryToOpenRichSandwich = function (sandwich) {
         var _this = this;
@@ -953,8 +949,8 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
+                _this.close({ context: context });
                 _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
-                _this.closeContext(context);
             }
         });
     };
@@ -974,25 +970,24 @@ var Tokenizer = (function () {
             then: function (bracket) { _this.buffer += bracket; }
         });
     };
-    Tokenizer.prototype.closeContext = function (contextToClose) {
-        for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_1 = this.openContexts[i];
-            if (contextToClose.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                this.closeNakedUrl(context_1);
+    Tokenizer.prototype.close = function (args) {
+        var contextToClose = args.context;
+        var andCloseInnerContexts = args.andCloseInnerContexts;
+        for (var openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
+            var openContext = this.openContexts[openContextIndex];
+            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+                this.flushBufferToNakedUrlEndToken();
+                this.openContexts.splice(openContextIndex);
                 if (contextToClose.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                     return;
                 }
                 continue;
             }
-            if (context_1 === contextToClose) {
-                this.openContexts.splice(i, 1);
-                return;
+            var foundTheContextToClose = (openContext === contextToClose);
+            if (foundTheContextToClose || andCloseInnerContexts) {
+                this.openContexts.splice(openContextIndex, 1);
             }
-        }
-    };
-    Tokenizer.prototype.closeContextAndAnyInnerContexts = function (contextToClose) {
-        while (this.openContexts.length) {
-            if (this.openContexts.pop() === contextToClose) {
+            if (foundTheContextToClose) {
                 return;
             }
         }
@@ -1023,7 +1018,7 @@ var Tokenizer = (function () {
                     captures[_i - 3] = arguments[_i];
                 }
                 then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
-                _this.closeContext(context);
+                _this.close({ context: context });
             }
         });
     };
@@ -1040,10 +1035,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            switch (context_2.goal) {
+            var context_1 = this.openContexts.pop();
+            switch (context_1.goal) {
                 case TokenizerGoal_1.TokenizerGoal.NakedUrl:
-                    this.flushBufferedTextToNakedUrlToken();
+                    this.flushBufferToNakedUrlEndToken();
                     break;
                 case TokenizerGoal_1.TokenizerGoal.Parenthesized:
                 case TokenizerGoal_1.TokenizerGoal.SquareBracketed:
@@ -1053,7 +1048,7 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_2);
+                    this.backtrackToBeforeContext(context_1);
                     return false;
             }
         }
@@ -1070,16 +1065,19 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
-            var context_3 = this.openContexts.pop();
-            if (context_3.goal === goal) {
-                this.backtrackToBeforeContext(context_3);
+            var context_2 = this.openContexts.pop();
+            if (context_2.goal === goal) {
+                this.backtrackToBeforeContext(context_2);
                 return;
             }
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
-    Tokenizer.prototype.flushBufferedTextToNakedUrlToken = function () {
-        this.addToken(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, this.flushBuffer());
+    Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
+        var urlAfterProtocol = this.flushBuffer();
+        if (urlAfterProtocol) {
+            this.addToken(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, urlAfterProtocol);
+        }
     };
     Tokenizer.prototype.addTokenAfterFlushingBufferToPlainTextToken = function (kind, value) {
         this.flushBufferToPlainTextToken();
@@ -1146,9 +1144,9 @@ var Tokenizer = (function () {
         var atIndex = args.atIndex, kind = args.kind, forContext = args.forContext, value = args.value;
         this.tokens.splice(atIndex, 0, new Token_1.Token(kind, value));
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_4 = _a[_i];
-            if (context_4 != forContext) {
-                context_4.registerTokenInsertion({ atIndex: atIndex });
+            var context_3 = _a[_i];
+            if (context_3 != forContext) {
+                context_3.registerTokenInsertion({ atIndex: atIndex });
             }
         }
     };
@@ -1179,7 +1177,7 @@ var INLINE_CODE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith('`'));
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*'))));
 var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var MEDIA_END_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
-var NAKED_URL_START_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
+var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.CLOSE_SQUARE_BRACKET));
