@@ -1441,7 +1441,7 @@ var Parser = (function () {
             }
             if (token.kind === TokenKind_1.TokenKind.NakedUrlProtocolAndStart) {
                 var protocol = token.value;
-                if (this.peekAtNextToken().kind !== TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd) {
+                if (!this.areAnyMoreTokens() || (this.peekAtNextToken().kind !== TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd)) {
                     this.nodes.push(new PlainTextNode_1.PlainTextNode(protocol));
                     continue;
                 }
@@ -1509,6 +1509,9 @@ var Parser = (function () {
         this.setResult({ isMissingTerminator: wasTerminatorSpecified });
         var _a;
     }
+    Parser.prototype.areAnyMoreTokens = function () {
+        return (this.tokenIndex + 1) < this.tokens.length;
+    };
     Parser.prototype.peekAtNextToken = function () {
         return this.tokens[this.tokenIndex + 1];
     };

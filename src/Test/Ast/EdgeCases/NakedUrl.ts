@@ -144,11 +144,11 @@ describe("Unmatched opening parentheses in a naked URL closed by another convent
 })
 
 
-describe('A naked URL protocol without the rest of the URL', () => {
+describe('A paragraph ending with a naked URL protocol (without the rest of the URL)', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('http://')).to.be.eql(
+    expect(Up.toAst('This is a URL protocol: http://')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('http://')
+        new PlainTextNode('This is a URL protocol: http://')
       ]))
   })
 })

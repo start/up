@@ -98,7 +98,7 @@ class Parser {
       if (token.kind === TokenKind.NakedUrlProtocolAndStart) {
         const protocol = token.value
         
-        if (this.peekAtNextToken().kind !== TokenKind.NakedUrlAfterProtocolAndEnd) {
+        if (!this.areAnyMoreTokens() || (this.peekAtNextToken().kind !== TokenKind.NakedUrlAfterProtocolAndEnd)) {
           // If the next token isn't a TokenKind.NakedUrlAfterProtocolAndEnd token, it means the author of the
           // document didn't include the rest of the URL.
           //
@@ -204,6 +204,10 @@ class Parser {
     }
 
     this.setResult({ isMissingTerminator: wasTerminatorSpecified })
+  }
+  
+  private areAnyMoreTokens(): boolean {
+    return (this.tokenIndex + 1) < this.tokens.length
   }
   
   private peekAtNextToken(): Token {
