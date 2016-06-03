@@ -142,15 +142,12 @@ export class Tokenizer {
 
   private tokenize(): void {
     while (!this.isDone()) {
-      
+
       this.tryToCollectEscapedChar()
-        || this.tryToCloseAnOpenContext()
+        || this.tryToCloseAnyOpenContext()
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
-        || this.tryToOpenMedia()
-        || this.tryToOpenInlineCode()
-        || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
-        || this.tryToOpenNakedUrl()
+        || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
     }
 
@@ -159,12 +156,20 @@ export class Tokenizer {
         applyRaisedVoices(
           this.insertPlainTextTokensForBrackets()))
   }
-  
+
+  private tryToOpenAnyConvention(): boolean {
+    return (
+      this.tryToOpenMedia()
+      || this.tryToOpenInlineCode()
+      || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
+      || this.tryToOpenNakedUrl())
+  }
+
   private isDone(): boolean {
     return this.consumer.reachedEndOfText() && this.resolveOpenContexts()
   }
 
-  private tryToCloseAnOpenContext(): boolean {
+  private tryToCloseAnyOpenContext(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       if (this.tryToCloseContext(this.openContexts[i])) {
         return true
@@ -240,13 +245,15 @@ export class Tokenizer {
 
   private handleMediaCorrespondingToGoal(goal: TokenizerGoal): boolean {
     return this.mediaConventions
-      .some(media =>
-        (media.goal === goal)
-        && (
-          this.tryToOpenMediaUrl()
-          || this.tryToOpenSquareBracketedRawText()
-          || this.tryToCloseFalseMediaConvention(goal)
-          || this.bufferCurrentChar()))
+      .some(media => (media.goal === goal) && this.handleMedia(media))
+  }
+  
+  private handleMedia(media: TokenizableMedia): boolean {
+    return (
+      this.tryToOpenMediaUrl()
+      || this.tryToOpenSquareBracketedRawText()
+      || this.tryToCloseFalseMediaConvention(media.goal)
+      || this.bufferCurrentChar())
   }
 
   private tryToCloseFalseMediaConvention(mediaGoal: TokenizerGoal): boolean {

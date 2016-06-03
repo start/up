@@ -759,22 +759,25 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
-                || this.tryToCloseAnOpenContext()
+                || this.tryToCloseAnyOpenContext()
                 || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.handleNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
-                || this.tryToOpenMedia()
-                || this.tryToOpenInlineCode()
-                || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
-                || this.tryToOpenNakedUrl()
+                || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
         }
         this.tokens =
             nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.insertPlainTextTokensForBrackets()));
     };
+    Tokenizer.prototype.tryToOpenAnyConvention = function () {
+        return (this.tryToOpenMedia()
+            || this.tryToOpenInlineCode()
+            || this.tryToOpenAnySandwichThatCanAppearInRegularContent()
+            || this.tryToOpenNakedUrl());
+    };
     Tokenizer.prototype.isDone = function () {
         return this.consumer.reachedEndOfText() && this.resolveOpenContexts();
     };
-    Tokenizer.prototype.tryToCloseAnOpenContext = function () {
+    Tokenizer.prototype.tryToCloseAnyOpenContext = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             if (this.tryToCloseContext(this.openContexts[i])) {
                 return true;
@@ -842,13 +845,13 @@ var Tokenizer = (function () {
     Tokenizer.prototype.handleMediaCorrespondingToGoal = function (goal) {
         var _this = this;
         return this.mediaConventions
-            .some(function (media) {
-            return (media.goal === goal)
-                && (_this.tryToOpenMediaUrl()
-                    || _this.tryToOpenSquareBracketedRawText()
-                    || _this.tryToCloseFalseMediaConvention(goal)
-                    || _this.bufferCurrentChar());
-        });
+            .some(function (media) { return (media.goal === goal) && _this.handleMedia(media); });
+    };
+    Tokenizer.prototype.handleMedia = function (media) {
+        return (this.tryToOpenMediaUrl()
+            || this.tryToOpenSquareBracketedRawText()
+            || this.tryToCloseFalseMediaConvention(media.goal)
+            || this.bufferCurrentChar());
     };
     Tokenizer.prototype.tryToCloseFalseMediaConvention = function (mediaGoal) {
         if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.consumer.remainingText)) {
