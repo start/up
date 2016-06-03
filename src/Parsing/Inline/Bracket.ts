@@ -4,11 +4,11 @@ import { escapeForRegex } from '../../Patterns'
 
 
 export class Bracket {
-  startBracketPattern: string
-  endBracketPattern: string
+  startPattern: string
+  endPattern: string
 
-  constructor(public startBracket: string, public endBracket: string) {
-    this.startBracketPattern = escapeForRegex(startBracket)
-    this.endBracketPattern = escapeForRegex(endBracket)
+  constructor(public start: string, public end: string) {
+    this.startPattern = escapeForRegex(start)
+    this.endPattern = escapeForRegex(end)
   }
 }

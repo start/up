@@ -24,11 +24,11 @@ exports.remove = remove;
 "use strict";
 var Patterns_1 = require('../../Patterns');
 var Bracket = (function () {
-    function Bracket(startBracket, endBracket) {
-        this.startBracket = startBracket;
-        this.endBracket = endBracket;
-        this.startBracketPattern = Patterns_1.escapeForRegex(startBracket);
-        this.endBracketPattern = Patterns_1.escapeForRegex(endBracket);
+    function Bracket(start, end) {
+        this.start = start;
+        this.end = end;
+        this.startPattern = Patterns_1.escapeForRegex(start);
+        this.endPattern = Patterns_1.escapeForRegex(end);
     }
     return Bracket;
 }());
@@ -646,8 +646,8 @@ var Patterns_1 = require('../../Patterns');
 var TokenizableBracket = (function () {
     function TokenizableBracket(goal, bracket) {
         this.goal = goal;
-        this.startPattern = getPattern(bracket.startBracketPattern);
-        this.endPattern = getPattern(bracket.endBracketPattern);
+        this.startPattern = getPattern(bracket.startPattern);
+        this.endPattern = getPattern(bracket.endPattern);
     }
     return TokenizableBracket;
 }());
@@ -732,18 +732,18 @@ var Tokenizer = (function () {
         });
         this.actionConvention = getRichSandwich({
             richConvention: RichConventions_1.ACTION,
-            startPattern: CURLY_BRACKET.startBracketPattern,
-            endPattern: CURLY_BRACKET.endBracketPattern
+            startPattern: CURLY_BRACKET.startPattern,
+            endPattern: CURLY_BRACKET.endPattern
         });
         this.parenthesizedConvention = getRichSandwich({
             richConvention: RichConventions_1.PARENTHESIZED,
-            startPattern: PARENTHESIS.startBracketPattern,
-            endPattern: PARENTHESIS.endBracketPattern
+            startPattern: PARENTHESIS.startPattern,
+            endPattern: PARENTHESIS.endPattern
         });
         this.squareBracketedConvention = getRichSandwich({
             richConvention: RichConventions_1.SQUARE_BRACKETED,
-            startPattern: SQUARE_BRACKET.startBracketPattern,
-            endPattern: SQUARE_BRACKET.endBracketPattern
+            startPattern: SQUARE_BRACKET.startPattern,
+            endPattern: SQUARE_BRACKET.endPattern
         });
         this.parenthesizedRawTextConvention = new TokenizableBracket_1.TokenizableBracket(TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, PARENTHESIS);
         this.squareBracketedRawTextConvention = new TokenizableBracket_1.TokenizableBracket(TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET);
@@ -765,8 +765,8 @@ var Tokenizer = (function () {
         this.spoilerConvention =
             getRichSandwich({
                 richConvention: RichConventions_1.SPOILER,
-                startPattern: SQUARE_BRACKET.startBracketPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
-                endPattern: SQUARE_BRACKET.endBracketPattern
+                startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
+                endPattern: SQUARE_BRACKET.endPattern
             });
         this.richSandwiches = [
             this.spoilerConvention,
@@ -1224,11 +1224,11 @@ var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
 var INLINE_CODE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith('`'));
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*'))));
 var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
-var MEDIA_END_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(SQUARE_BRACKET.endBracketPattern));
+var MEDIA_END_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(SQUARE_BRACKET.endPattern));
 var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
-var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(SQUARE_BRACKET.endBracketPattern));
+var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(SQUARE_BRACKET.endPattern));
 
 },{"../../Patterns":45,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":11,"./RichConventions":12,"./Token":13,"./TokenKind":18,"./TokenizableBracket":19,"./TokenizableMedia":20,"./TokenizableSandwich":21,"./TokenizerContext":23,"./TokenizerGoal":24,"./TokenizerSnapshot":25,"./nestOverlappingConventions":27}],23:[function(require,module,exports){
 "use strict";

@@ -55,20 +55,20 @@ export class Tokenizer {
 
   private actionConvention = getRichSandwich({
     richConvention: ACTION,
-    startPattern: CURLY_BRACKET.startBracketPattern,
-    endPattern: CURLY_BRACKET.endBracketPattern
+    startPattern: CURLY_BRACKET.startPattern,
+    endPattern: CURLY_BRACKET.endPattern
   })
 
   private parenthesizedConvention = getRichSandwich({
     richConvention: PARENTHESIZED,
-    startPattern: PARENTHESIS.startBracketPattern,
-    endPattern: PARENTHESIS.endBracketPattern
+    startPattern: PARENTHESIS.startPattern,
+    endPattern: PARENTHESIS.endPattern
   })
 
   private squareBracketedConvention = getRichSandwich({
     richConvention: SQUARE_BRACKETED,
-    startPattern: SQUARE_BRACKET.startBracketPattern,
-    endPattern: SQUARE_BRACKET.endBracketPattern
+    startPattern: SQUARE_BRACKET.startPattern,
+    endPattern: SQUARE_BRACKET.endPattern
   })
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
@@ -118,8 +118,8 @@ export class Tokenizer {
     this.spoilerConvention =
       getRichSandwich({
         richConvention: SPOILER,
-        startPattern: SQUARE_BRACKET.startBracketPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
-        endPattern: SQUARE_BRACKET.endBracketPattern
+        startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
+        endPattern: SQUARE_BRACKET.endPattern
       })
 
     this.richSandwiches = [
@@ -714,7 +714,7 @@ const URL_ARROW_PATTERN_DEPCRECATED = new RegExp(
   startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE))
 
 const MEDIA_END_PATTERN_DEPCRECATED = new RegExp(
-  startsWith(SQUARE_BRACKET.endBracketPattern))
+  startsWith(SQUARE_BRACKET.endPattern))
 
 const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
   startsWith('http' + optional('s') + '://'))
@@ -726,5 +726,5 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR)
 
 const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
-  startsWith(SQUARE_BRACKET.endBracketPattern)
+  startsWith(SQUARE_BRACKET.endPattern)
 )

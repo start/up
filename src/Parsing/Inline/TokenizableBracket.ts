@@ -7,8 +7,8 @@ export class TokenizableBracket {
   public endPattern: RegExp
   
   constructor(public goal: TokenizerGoal, bracket: Bracket) {
-    this.startPattern = getPattern(bracket.startBracketPattern)
-    this.endPattern = getPattern(bracket.endBracketPattern)
+    this.startPattern = getPattern(bracket.startPattern)
+    this.endPattern = getPattern(bracket.endPattern)
   }
 }
 
