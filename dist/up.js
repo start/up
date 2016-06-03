@@ -964,11 +964,7 @@ var Tokenizer = (function () {
             pattern: sandwich.endPattern,
             context: context,
             then: function () {
-                _this.insertToken({
-                    atIndex: context.initialTokenIndex,
-                    kind: sandwich.startTokenKind,
-                    forContext: context
-                });
+                _this.insertTokenAtStartOfContext(context, sandwich.startTokenKind);
                 _this.flushBufferToPlainTextToken();
                 _this.addToken(sandwich.endTokenKind);
             }
@@ -1166,13 +1162,13 @@ var Tokenizer = (function () {
     Tokenizer.prototype.addToken = function (kind, value) {
         this.tokens.push(new Token_1.Token(kind, value));
     };
-    Tokenizer.prototype.insertToken = function (args) {
-        var atIndex = args.atIndex, kind = args.kind, forContext = args.forContext, value = args.value;
-        this.tokens.splice(atIndex, 0, new Token_1.Token(kind, value));
+    Tokenizer.prototype.insertTokenAtStartOfContext = function (context, kind, value) {
+        var newTokenIndex = context.initialTokenIndex;
+        this.tokens.splice(newTokenIndex, 0, new Token_1.Token(kind, value));
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_3 = _a[_i];
-            if (context_3 != forContext) {
-                context_3.registerTokenInsertion({ atIndex: atIndex });
+            var openContext = _a[_i];
+            if (openContext !== context) {
+                openContext.registerTokenInsertion({ atIndex: newTokenIndex });
             }
         }
     };

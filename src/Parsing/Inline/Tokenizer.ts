@@ -395,11 +395,7 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       then: () => {
-        this.insertToken({
-          atIndex: context.initialTokenIndex,
-          kind: sandwich.startTokenKind,
-          forContext: context
-        })
+        this.insertTokenAtStartOfContext(context, sandwich.startTokenKind)
         
         this.flushBufferToPlainTextToken()
         this.addToken(sandwich.endTokenKind)
@@ -663,21 +659,14 @@ export class Tokenizer {
     this.tokens.push(new Token(kind, value))
   }
 
-  private insertToken(
-    args: {
-      atIndex: number
-      kind: TokenKind
-      forContext: TokenizerContext
-      value?: string,
-    }
-  ): void {
-    const { atIndex, kind, forContext, value } = args
+  private insertTokenAtStartOfContext(context: TokenizerContext, kind: TokenKind, value?: string): void {
+    const newTokenIndex = context.initialTokenIndex
+    
+    this.tokens.splice(newTokenIndex, 0, new Token(kind, value))
 
-    this.tokens.splice(atIndex, 0, new Token(kind, value))
-
-    for (const context of this.openContexts) {
-      if (context != forContext) {
-        context.registerTokenInsertion({ atIndex })
+    for (const openContext of this.openContexts) {
+      if (openContext !== context) {
+        openContext.registerTokenInsertion({ atIndex: newTokenIndex })
       }
     }
   }
