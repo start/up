@@ -170,23 +170,9 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyOpenContext(): boolean {
-    // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too (along with
-    // any of its inner raw text brackets).
-    let innerNakedUrlContext: TokenizerContext
-
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-
-      if (this.tryToCloseContext(context)) {
-        if (innerNakedUrlContext) {
-          this.closeNakedUrl(innerNakedUrlContext)
-        }
-
+      if (this.tryToCloseContext(this.openContexts[i])) {
         return true
-      }
-
-      if (context.goal === TokenizerGoal.NakedUrl) {
-        innerNakedUrlContext = context
       }
     }
 
@@ -201,7 +187,7 @@ export class Tokenizer {
       || this.handleMediaCorrespondingToGoal(goal)
       || this.tryToCloseRawTextBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
-      || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+      || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl(context))
       || ((goal === TokenizerGoal.NakedUrl)) && this.tryToCloseNakedUrl(context)
     )
   }
@@ -238,10 +224,10 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private closeMediaOrAppendCharToUrl(): boolean {
+  private closeMediaOrAppendCharToUrl(context: TokenizerContext): boolean {
     return (
       this.tryToOpenSquareBracketedRawText()
-      || this.tryToCloseMedia()
+      || this.tryToCloseMedia(context)
       || this.bufferCurrentChar())
   }
 
@@ -364,12 +350,12 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseMedia(): boolean {
+  private tryToCloseMedia(context: TokenizerContext): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: MEDIA_END_PATTERN_DEPCRECATED,
       then: () => {
         this.addToken(TokenKind.MediaUrlAndEnd, this.flushBuffer())
-        this.closeMostRecentContextWithGoal(TokenizerGoal.MediaUrl)
+        this.closeContext(context)
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
         this.openContexts.pop()
@@ -398,7 +384,7 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
-        this.closeMostRecentContextWithGoal(sandwich.goal)
+        this.closeContext(context)
       }
     })
   }
@@ -419,13 +405,32 @@ export class Tokenizer {
     })
   }
 
-  private closeContext(context: TokenizerContext): void {
-    remove(this.openContexts, context)
+  private closeContext(contextToClose: TokenizerContext): void {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+
+      // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
+      if (contextToClose.goal === TokenizerGoal.NakedUrl) {
+        this.closeNakedUrl(context)
+
+        if (contextToClose.goal === TokenizerGoal.NakedUrl) {
+          // If we simply wanted to close the naked URL, we're already done.
+          return
+        }
+        
+        continue
+      }
+
+      if (context === contextToClose) {
+        this.openContexts.splice(i, 1)
+        return
+      }
+    }
   }
 
-  private closeContextAndAnyInnerContexts(context: TokenizerContext): void {
+  private closeContextAndAnyInnerContexts(contextToClose: TokenizerContext): void {
     while (this.openContexts.length) {
-      if (this.openContexts.pop() === context) {
+      if (this.openContexts.pop() === contextToClose) {
         return
       }
     }
@@ -534,20 +539,7 @@ export class Tokenizer {
 
     throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
-
-  private closeMostRecentContextWithGoal(goal: TokenizerGoal): void {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-
-      if (context.goal === goal) {
-        this.openContexts.splice(i, 1)
-        return
-      }
-    }
-
-    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
-  }
-
+  
   private flushBufferedTextToNakedUrlToken(): void {
     this.addToken(TokenKind.NakedUrlAfterProtocolAndEnd, this.flushBuffer())
   }
