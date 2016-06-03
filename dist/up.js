@@ -733,22 +733,22 @@ var Tokenizer = (function () {
                 endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
             });
         this.parenthesizedRawTextConvention =
-            this.getBracketedRawTextConvention({
+            new TokenizableSandwich_1.TokenizableSandwich({
                 goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText,
-                openBracketPattern: Patterns_1.OPEN_PAREN,
-                closeBracketPattern: Patterns_1.CLOSE_PAREN
+                startPattern: Patterns_1.OPEN_PAREN,
+                endPattern: Patterns_1.CLOSE_PAREN
             });
         this.squareBracketedRawTextConvention =
-            this.getBracketedRawTextConvention({
+            new TokenizableSandwich_1.TokenizableSandwich({
                 goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText,
-                openBracketPattern: Patterns_1.OPEN_SQUARE_BRACKET,
-                closeBracketPattern: Patterns_1.CLOSE_SQUARE_BRACKET
+                startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
+                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
             });
         this.curlyBracketedRawTextConvention =
-            this.getBracketedRawTextConvention({
+            new TokenizableSandwich_1.TokenizableSandwich({
                 goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText,
-                openBracketPattern: Patterns_1.OPEN_CURLY_BRACKET,
-                closeBracketPattern: Patterns_1.CLOSE_CURLY_BRACKET
+                startPattern: Patterns_1.OPEN_CURLY_BRACKET,
+                endPattern: Patterns_1.CLOSE_CURLY_BRACKET
             });
         this.richSandwiches = [
             this.spoilerConvention,
@@ -1076,17 +1076,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeMostRecentContextWithGoalAndAnyInnerContexts = function (goal) {
         while (this.openContexts.length) {
-            var context_4 = this.openContexts.pop();
-            if (context_4.goal === goal) {
+            if (this.openContexts.pop().goal === goal) {
                 return;
-            }
-        }
-        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
-    };
-    Tokenizer.prototype.getIndexOfInnermostContextWithGoal = function (goal) {
-        for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.openContexts[i].goal === goal) {
-                return i;
             }
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
@@ -1110,19 +1101,6 @@ var Tokenizer = (function () {
             endPattern: endPattern,
             onOpen: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.startTokenKind); },
             onClose: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.endTokenKind); }
-        });
-    };
-    Tokenizer.prototype.getBracketedRawTextConvention = function (args) {
-        var _this = this;
-        var bufferBracket = function (bracket) {
-            _this.buffer += bracket;
-        };
-        return new TokenizableSandwich_1.TokenizableSandwich({
-            goal: args.goal,
-            startPattern: args.openBracketPattern,
-            endPattern: args.closeBracketPattern,
-            onOpen: bufferBracket,
-            onClose: bufferBracket
         });
     };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
@@ -1173,9 +1151,9 @@ var Tokenizer = (function () {
         var atIndex = args.atIndex, kind = args.kind, forContext = args.forContext, value = args.value;
         this.tokens.splice(atIndex, 0, new Token_1.Token(kind, value));
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_5 = _a[_i];
-            if (context_5 != forContext) {
-                context_5.registerTokenInsertion({ atIndex: atIndex });
+            var context_4 = _a[_i];
+            if (context_4 != forContext) {
+                context_4.registerTokenInsertion({ atIndex: atIndex });
             }
         }
     };

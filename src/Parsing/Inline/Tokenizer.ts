@@ -122,24 +122,24 @@ export class Tokenizer {
       })
 
     this.parenthesizedRawTextConvention =
-      this.getBracketedRawTextConvention({
+      new TokenizableSandwich({
         goal: TokenizerGoal.ParenthesizedInRawText,
-        openBracketPattern: OPEN_PAREN,
-        closeBracketPattern: CLOSE_PAREN
+        startPattern: OPEN_PAREN,
+        endPattern: CLOSE_PAREN
       })
 
     this.squareBracketedRawTextConvention =
-      this.getBracketedRawTextConvention({
+      new TokenizableSandwich({
         goal: TokenizerGoal.SquareBracketedInRawText,
-        openBracketPattern: OPEN_SQUARE_BRACKET,
-        closeBracketPattern: CLOSE_SQUARE_BRACKET
+        startPattern: OPEN_SQUARE_BRACKET,
+        endPattern: CLOSE_SQUARE_BRACKET
       })
 
     this.curlyBracketedRawTextConvention =
-      this.getBracketedRawTextConvention({
+      new TokenizableSandwich({
         goal: TokenizerGoal.CurlyBracketedInRawText,
-        openBracketPattern: OPEN_CURLY_BRACKET,
-        closeBracketPattern: CLOSE_CURLY_BRACKET
+        startPattern: OPEN_CURLY_BRACKET,
+        endPattern: CLOSE_CURLY_BRACKET
       })
 
     this.richSandwiches = [
@@ -541,20 +541,8 @@ export class Tokenizer {
 
   private closeMostRecentContextWithGoalAndAnyInnerContexts(goal: TokenizerGoal): void {
     while (this.openContexts.length) {
-      const context = this.openContexts.pop()
-
-      if (context.goal === goal) {
+      if (this.openContexts.pop().goal === goal) {
         return
-      }
-    }
-
-    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
-  }
-
-  private getIndexOfInnermostContextWithGoal(goal: TokenizerGoal): number {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.openContexts[i].goal === goal) {
-        return i
       }
     }
 
@@ -589,26 +577,6 @@ export class Tokenizer {
       endPattern,
       onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.startTokenKind),
       onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.endTokenKind)
-    })
-  }
-
-  private getBracketedRawTextConvention(
-    args: {
-      goal: TokenizerGoal,
-      openBracketPattern: string,
-      closeBracketPattern: string
-    }
-  ): TokenizableSandwich {
-    const bufferBracket = (bracket: string) => {
-      this.buffer += bracket
-    }
-
-    return new TokenizableSandwich({
-      goal: args.goal,
-      startPattern: args.openBracketPattern,
-      endPattern: args.closeBracketPattern,
-      onOpen: bufferBracket,
-      onClose: bufferBracket
     })
   }
 

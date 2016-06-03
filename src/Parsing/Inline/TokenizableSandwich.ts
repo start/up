@@ -15,8 +15,8 @@ export class TokenizableSandwich {
       goal: TokenizerGoal
       startPattern: string
       endPattern: string
-      onOpen: OnTokenizerMatch
-      onClose: OnTokenizerMatch
+      onOpen?: OnTokenizerMatch
+      onClose?: OnTokenizerMatch
     }
   ) {
     this.goal = args.goal
