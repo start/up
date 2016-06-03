@@ -760,7 +760,7 @@ var Tokenizer = (function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseAnyOpenContext()
-                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.handleNakedUrl())
+                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
@@ -778,17 +778,17 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() && this.resolveOpenContexts();
     };
     Tokenizer.prototype.tryToCloseAnyOpenContext = function () {
-        var enclosesNakedUrl = false;
+        var innerNakedUrlContext;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_1 = this.openContexts[i];
-            if (context_1.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                enclosesNakedUrl = true;
-            }
             if (this.tryToCloseContext(context_1)) {
-                if (enclosesNakedUrl) {
-                    this.closeNakedUrl();
+                if (innerNakedUrlContext) {
+                    this.closeNakedUrl(innerNakedUrlContext);
                 }
                 return true;
+            }
+            if (context_1.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+                innerNakedUrlContext = context_1;
             }
         }
         return false;
@@ -799,7 +799,8 @@ var Tokenizer = (function () {
             || this.handleMediaCorrespondingToGoal(goal)
             || this.tryToCloseRawTextBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
-            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl()));
+            || ((goal === TokenizerGoal_1.TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl())
+            || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl)) && this.tryToCloseNakedUrl(context));
     };
     Tokenizer.prototype.closeInlineCodeOrAppendCurrentChar = function (context) {
         return this.tryToCloseInlineCode(context) || this.bufferCurrentChar();
@@ -824,11 +825,10 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.handleNakedUrl = function () {
+    Tokenizer.prototype.appendCharToNakedUrl = function () {
         return (this.tryToOpenParenthesizedRawText()
             || this.tryToOpenSquareBracketedRawText()
             || this.tryToOpenCurlyBracketedRawText()
-            || this.tryToCloseNakedUrl()
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.closeMediaOrAppendCharToUrl = function () {
@@ -901,9 +901,9 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryToCloseNakedUrl = function () {
+    Tokenizer.prototype.tryToCloseNakedUrl = function (context) {
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-            this.closeNakedUrl();
+            this.closeNakedUrl(context);
             return true;
         }
         return false;
@@ -941,9 +941,9 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.closeNakedUrl = function () {
+    Tokenizer.prototype.closeNakedUrl = function (context) {
         this.flushBufferedTextToNakedUrlToken();
-        this.closeMostRecentContextWithGoalAndAnyInnerContexts(TokenizerGoal_1.TokenizerGoal.NakedUrl);
+        this.closeContextAndAnyInnerContexts(context);
     };
     Tokenizer.prototype.tryToOpenRichSandwich = function (sandwich) {
         var _this = this;
@@ -985,6 +985,13 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeContext = function (context) {
         CollectionHelpers_1.remove(this.openContexts, context);
+    };
+    Tokenizer.prototype.closeContextAndAnyInnerContexts = function (context) {
+        while (this.openContexts.length) {
+            if (this.openContexts.pop() === context) {
+                return;
+            }
+        }
     };
     Tokenizer.prototype.tryToOpenConvention = function (args) {
         var _this = this;
