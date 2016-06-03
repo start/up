@@ -1084,14 +1084,6 @@ var Tokenizer = (function () {
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
-    Tokenizer.prototype.closeMostRecentContextWithGoalAndAnyInnerContexts = function (goal) {
-        while (this.openContexts.length) {
-            if (this.openContexts.pop().goal === goal) {
-                return;
-            }
-        }
-        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
-    };
     Tokenizer.prototype.flushBufferedTextToNakedUrlToken = function () {
         this.addToken(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, this.flushBuffer());
     };

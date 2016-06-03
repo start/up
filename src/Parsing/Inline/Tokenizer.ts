@@ -548,16 +548,6 @@ export class Tokenizer {
     throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
-  private closeMostRecentContextWithGoalAndAnyInnerContexts(goal: TokenizerGoal): void {
-    while (this.openContexts.length) {
-      if (this.openContexts.pop().goal === goal) {
-        return
-      }
-    }
-
-    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
-  }
-
   private flushBufferedTextToNakedUrlToken(): void {
     this.addToken(TokenKind.NakedUrlAfterProtocolAndEnd, this.flushBuffer())
   }
