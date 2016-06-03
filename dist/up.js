@@ -954,19 +954,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
         var _this = this;
-        return this.consumer.advanceAfterMatch({
+        return this.tryToCloseConvention({
             pattern: sandwich.endPattern,
-            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
-                var captures = [];
-                for (var _i = 3; _i < arguments.length; _i++) {
-                    captures[_i - 3] = arguments[_i];
-                }
-                _this.closeContext({
-                    contextToClose: context,
-                    thenAddAnyClosingTokens: function () {
-                        _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
-                    }
-                });
+            context: context,
+            then: function () {
+                _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
             }
         });
     };

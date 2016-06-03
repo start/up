@@ -388,15 +388,11 @@ export class Tokenizer {
   }
 
   private tryToCloseRichSandwich(sandwich: TokenizableSandwich, context: TokenizerContext): boolean {
-    return this.consumer.advanceAfterMatch({
+    return this.tryToCloseConvention({
       pattern: sandwich.endPattern,
-      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeContext({
-          contextToClose: context,
-          thenAddAnyClosingTokens: () => {
-            this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
-          }
-        })
+      context,
+      then: () => {
+        this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
       }
     })
   }
