@@ -801,7 +801,8 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
             pattern: INLINE_CODE_DELIMITER_PATTERN,
-            then: function () {
+            flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+            thenAddAnyStartTokens: function () {
                 _this.flushBufferToPlainTextToken();
             }
         });
@@ -889,8 +890,9 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: TokenizerGoal_1.TokenizerGoal.NakedUrl,
             pattern: NAKED_URL_PROTOCOL_PATTERN,
-            then: function (urlProtocol) {
-                _this.addTokenAfterFlushingBufferToPlainTextToken(TokenKind_1.TokenKind.NakedUrlProtocolAndStart, urlProtocol);
+            flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+            thenAddAnyStartTokens: function (urlProtocol) {
+                _this.addToken(TokenKind_1.TokenKind.NakedUrlProtocolAndStart, urlProtocol);
             }
         });
     };
@@ -914,8 +916,9 @@ var Tokenizer = (function () {
             return _this.tryToOpenConvention({
                 goal: media.goal,
                 pattern: media.startPattern,
-                then: function () {
-                    _this.addTokenAfterFlushingBufferToPlainTextToken(media.startTokenKind);
+                flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+                thenAddAnyStartTokens: function () {
+                    _this.addToken(media.startTokenKind);
                 }
             });
         });
@@ -925,7 +928,8 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: TokenizerGoal_1.TokenizerGoal.MediaUrl,
             pattern: URL_ARROW_PATTERN_DEPCRECATED,
-            then: function () {
+            flushBufferToPlainTextTokenBeforeOpeningConvention: false,
+            thenAddAnyStartTokens: function () {
                 _this.addToken(TokenKind_1.TokenKind.MediaDescription, _this.flushBuffer());
             }
         });
@@ -950,8 +954,9 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
-            then: function () {
-                _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind);
+            flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+            thenAddAnyStartTokens: function () {
+                _this.addToken(sandwich.startTokenKind);
             }
         });
     };
@@ -961,7 +966,8 @@ var Tokenizer = (function () {
             pattern: sandwich.endPattern,
             context: context,
             then: function () {
-                _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
+                _this.flushBufferToPlainTextToken();
+                _this.addToken(sandwich.endTokenKind);
             }
         });
     };
@@ -970,7 +976,10 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
-            then: function (bracket) { _this.buffer += bracket; }
+            flushBufferToPlainTextTokenBeforeOpeningConvention: false,
+            thenAddAnyStartTokens: function (bracket) {
+                _this.buffer += bracket;
+            }
         });
     };
     Tokenizer.prototype.tryToCloseRawTextBracket = function (bracket, context) {
@@ -1002,7 +1011,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenConvention = function (args) {
         var _this = this;
-        var goal = args.goal, pattern = args.pattern, then = args.then;
+        var goal = args.goal, pattern = args.pattern, flushBufferToPlainTextTokenBeforeOpeningConvention = args.flushBufferToPlainTextTokenBeforeOpeningConvention, thenAddAnyStartTokens = args.thenAddAnyStartTokens;
         return this.canTry(goal) && this.consumer.advanceAfterMatch({
             pattern: pattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1010,8 +1019,11 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
+                if (flushBufferToPlainTextTokenBeforeOpeningConvention) {
+                    _this.flushBufferToPlainTextToken();
+                }
                 _this.openContext(goal);
-                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                thenAddAnyStartTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
@@ -1091,10 +1103,6 @@ var Tokenizer = (function () {
             this.addToken(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, urlAfterProtocol);
         }
     };
-    Tokenizer.prototype.addTokenAfterFlushingBufferToPlainTextToken = function (kind, value) {
-        this.flushBufferToPlainTextToken();
-        this.addToken(kind, value);
-    };
     Tokenizer.prototype.hasGoal = function (goal) {
         return this.openContexts.some(function (context) { return context.goal === goal; });
     };
@@ -1125,7 +1133,8 @@ var Tokenizer = (function () {
                 else if (canCloseConvention) {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
-                _this.addTokenAfterFlushingBufferToPlainTextToken(asteriskTokenKind, asterisks);
+                _this.flushBufferToPlainTextToken();
+                _this.addToken(asteriskTokenKind, asterisks);
             }
         });
     };

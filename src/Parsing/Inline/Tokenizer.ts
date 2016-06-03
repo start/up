@@ -200,7 +200,8 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.InlineCode,
       pattern: INLINE_CODE_DELIMITER_PATTERN,
-      then: () => {
+      flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+      thenAddAnyStartTokens: () => {
         this.flushBufferToPlainTextToken()
       }
     })
@@ -310,8 +311,9 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_PROTOCOL_PATTERN,
-      then: urlProtocol => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(TokenKind.NakedUrlProtocolAndStart, urlProtocol)
+      flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+      thenAddAnyStartTokens: urlProtocol => {
+        this.addToken(TokenKind.NakedUrlProtocolAndStart, urlProtocol)
       }
     })
   }
@@ -341,8 +343,9 @@ export class Tokenizer {
       return this.tryToOpenConvention({
         goal: media.goal,
         pattern: media.startPattern,
-        then: () => {
-          this.addTokenAfterFlushingBufferToPlainTextToken(media.startTokenKind)
+        flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+        thenAddAnyStartTokens: () => {
+          this.addToken(media.startTokenKind)
         }
       })
     })
@@ -352,7 +355,8 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.MediaUrl,
       pattern: URL_ARROW_PATTERN_DEPCRECATED,
-      then: () => {
+      flushBufferToPlainTextTokenBeforeOpeningConvention: false,
+      thenAddAnyStartTokens: () => {
         this.addToken(TokenKind.MediaDescription, this.flushBuffer())
       }
     })
@@ -379,8 +383,9 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
-      then: () => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind)
+      flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+      thenAddAnyStartTokens: () => {
+        this.addToken(sandwich.startTokenKind)
       }
     })
   }
@@ -390,7 +395,8 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       then: () => {
-        this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
+        this.flushBufferToPlainTextToken()
+        this.addToken(sandwich.endTokenKind)
       }
     })
   }
@@ -399,7 +405,10 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
-      then: (bracket) => { this.buffer += bracket }
+      flushBufferToPlainTextTokenBeforeOpeningConvention: false,
+      thenAddAnyStartTokens: (bracket) => {
+        this.buffer += bracket
+      }
     })
   }
 
@@ -448,16 +457,21 @@ export class Tokenizer {
     args: {
       goal: TokenizerGoal,
       pattern: RegExp,
-      then: OnTokenizerMatch
+      flushBufferToPlainTextTokenBeforeOpeningConvention: boolean
+      thenAddAnyStartTokens: OnTokenizerMatch
     }
   ): boolean {
-    const { goal, pattern, then } = args
+    const { goal, pattern, flushBufferToPlainTextTokenBeforeOpeningConvention, thenAddAnyStartTokens } = args
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+        if (flushBufferToPlainTextTokenBeforeOpeningConvention) {
+          this.flushBufferToPlainTextToken()
+        }
+        
         this.openContext(goal)
-        then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        thenAddAnyStartTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
@@ -560,11 +574,6 @@ export class Tokenizer {
     }
   }
 
-  private addTokenAfterFlushingBufferToPlainTextToken(kind: TokenKind, value?: string): void {
-    this.flushBufferToPlainTextToken()
-    this.addToken(kind, value)
-  }
-
   private hasGoal(goal: TokenizerGoal): boolean {
     return this.openContexts.some(context => context.goal === goal)
   }
@@ -614,7 +623,8 @@ export class Tokenizer {
           asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
         }
 
-        this.addTokenAfterFlushingBufferToPlainTextToken(asteriskTokenKind, asterisks)
+        this.flushBufferToPlainTextToken()
+        this.addToken(asteriskTokenKind, asterisks)
       }
     })
   }
@@ -691,7 +701,6 @@ export class Tokenizer {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
 }
-
 
 
 const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
