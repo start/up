@@ -1,18 +1,14 @@
 import { TokenKind } from './TokenKind'
 import { TokenizerGoal } from './TokenizerGoal'
-import { startsWith, escapeForRegex } from '../../Patterns'
+import { escapeForRegex } from '../../Patterns'
 
 
 export class Bracket {
-  startPattern: RegExp
-  endPattern: RegExp
+  startBracketPattern: string
+  endBracketPattern: string
 
   constructor(public startBracket: string, public endBracket: string) {
-    this.startPattern = getPattern(startBracket)
-    this.endPattern = getPattern(endBracket)
+    this.startBracketPattern = escapeForRegex(startBracket)
+    this.endBracketPattern = escapeForRegex(endBracket)
   }
-}
-
-function getPattern(bracket: string): RegExp {
-  return new RegExp(startsWith(escapeForRegex(bracket)))
 }

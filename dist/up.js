@@ -27,15 +27,12 @@ var Bracket = (function () {
     function Bracket(startBracket, endBracket) {
         this.startBracket = startBracket;
         this.endBracket = endBracket;
-        this.startPattern = getPattern(startBracket);
-        this.endPattern = getPattern(endBracket);
+        this.startBracketPattern = Patterns_1.escapeForRegex(startBracket);
+        this.endBracketPattern = Patterns_1.escapeForRegex(endBracket);
     }
     return Bracket;
 }());
 exports.Bracket = Bracket;
-function getPattern(bracket) {
-    return new RegExp(Patterns_1.startsWith(Patterns_1.escapeForRegex(bracket)));
-}
 
 },{"../../Patterns":45}],3:[function(require,module,exports){
 "use strict";
@@ -645,16 +642,21 @@ var TokenKind = exports.TokenKind;
 
 },{}],19:[function(require,module,exports){
 "use strict";
+var Patterns_1 = require('../../Patterns');
 var TokenizableBracket = (function () {
     function TokenizableBracket(goal, bracket) {
         this.goal = goal;
-        this.bracket = bracket;
+        this.startPattern = getPattern(bracket.startBracketPattern);
+        this.endPattern = getPattern(bracket.endBracketPattern);
     }
     return TokenizableBracket;
 }());
 exports.TokenizableBracket = TokenizableBracket;
+function getPattern(bracketPattern) {
+    return new RegExp(Patterns_1.startsWith(bracketPattern));
+}
 
-},{}],20:[function(require,module,exports){
+},{"../../Patterns":45}],20:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../Patterns');
 var TokenizableMedia = (function () {
@@ -991,21 +993,21 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryToOpenRawTextBracket = function (tokenizableBracket) {
+    Tokenizer.prototype.tryToOpenRawTextBracket = function (bracket) {
         var _this = this;
         return this.tryToOpenConvention({
-            goal: tokenizableBracket.goal,
-            pattern: tokenizableBracket.bracket.startPattern,
+            goal: bracket.goal,
+            pattern: bracket.startPattern,
             flushBufferToPlainTextTokenBeforeOpeningConvention: false,
             thenAddAnyStartTokens: function (bracket) {
                 _this.buffer += bracket;
             }
         });
     };
-    Tokenizer.prototype.tryToCloseRawTextBracket = function (tokenizableBracket, context) {
+    Tokenizer.prototype.tryToCloseRawTextBracket = function (bracket, context) {
         var _this = this;
         return this.tryToCloseConvention({
-            pattern: tokenizableBracket.bracket.endPattern,
+            pattern: bracket.endPattern,
             context: context,
             then: function (bracket) {
                 _this.buffer += bracket;

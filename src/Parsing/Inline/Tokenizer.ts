@@ -396,10 +396,10 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRawTextBracket(tokenizableBracket: TokenizableBracket): boolean {
+  private tryToOpenRawTextBracket(bracket: TokenizableBracket): boolean {
     return this.tryToOpenConvention({
-      goal: tokenizableBracket.goal,
-      pattern: tokenizableBracket.bracket.startPattern,
+      goal: bracket.goal,
+      pattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpeningConvention: false,
       thenAddAnyStartTokens: (bracket) => {
         this.buffer += bracket
@@ -407,9 +407,9 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(tokenizableBracket: TokenizableBracket, context: TokenizerContext): boolean {
+  private tryToCloseRawTextBracket(bracket: TokenizableBracket, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
-      pattern: tokenizableBracket.bracket.endPattern,
+      pattern: bracket.endPattern,
       context,
       then: (bracket) => {
         this.buffer += bracket
