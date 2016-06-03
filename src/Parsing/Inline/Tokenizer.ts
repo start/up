@@ -20,10 +20,12 @@ import { InlineConsumer } from './InlineConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 
+
 export class Tokenizer {
   tokens: Token[] = []
 
   private consumer: InlineConsumer
+  
   // Any time we open a new convention, we add it to `openContexts`.
   //
   // Most conventions need to be closed by the time we consume the last character of the text.
@@ -71,9 +73,10 @@ export class Tokenizer {
     endPattern: SQUARE_BRACKET.endPattern
   })
 
-  // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
-  // or media conventions' descriptions. Their purpose is to allow the URLs or descriptions to contain matching
-  // brackets without having to escape any closing brackets.
+  // Unlike the other bracket conventions, these don't produce special tokens.
+  //
+  // They can only appear inside URLs or media conventions' descriptions, and they allow matching
+  // brackets to be included without having to escape any closing brackets.
 
   private parenthesizedRawTextConvention = new TokenizableBracket(
     TokenizerGoal.ParenthesizedInRawText, PARENTHESIS)
@@ -90,6 +93,8 @@ export class Tokenizer {
     this.curlyBracketedRawTextConvention
   ]
 
+  // The start pattern for the spoiler convention relies on a user-configurable value, so we assign
+  // this field in the `configureConventions` method where we have access to the user's config settings.
   private spoilerConvention: TokenizableSandwich
 
   // These conventions are for images, audio, and video
