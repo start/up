@@ -10,7 +10,8 @@ import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableSandwich } from './TokenizableSandwich'
-import { TokenizableBracket } from './TokenizableBracket'
+import { Bracket } from './Bracket'
+import { TokenizableRawTextBracket } from './TokenizableRawTextBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -18,7 +19,6 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
-
 
 export class Tokenizer {
   tokens: Token[] = []
@@ -72,25 +72,17 @@ export class Tokenizer {
   })
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
-  // or media conventions' descriptions.  
+  // or media conventions' descriptions. Their purpose is to allow the URLs or descriptions to contain matching
+  // brackets without having to escape any closing brackets.
 
-  private parenthesizedRawTextConvention = new TokenizableSandwich({
-    goal: TokenizerGoal.ParenthesizedInRawText,
-    startPattern: OPEN_PAREN,
-    endPattern: CLOSE_PAREN
-  })
+  private parenthesizedRawTextConvention = new TokenizableRawTextBracket(
+    TokenizerGoal.ParenthesizedInRawText, PARENTHESIS)
 
-  private squareBracketedRawTextConvention = new TokenizableSandwich({
-    goal: TokenizerGoal.SquareBracketedInRawText,
-    startPattern: OPEN_SQUARE_BRACKET,
-    endPattern: CLOSE_SQUARE_BRACKET
-  })
+  private squareBracketedRawTextConvention = new TokenizableRawTextBracket(
+    TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET)
 
-  private curlyBracketedRawTextConvention = new TokenizableSandwich({
-    goal: TokenizerGoal.CurlyBracketedInRawText,
-    startPattern: OPEN_CURLY_BRACKET,
-    endPattern: CLOSE_CURLY_BRACKET
-  })
+  private curlyBracketedRawTextConvention = new TokenizableRawTextBracket(
+    TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
 
   private rawTextBrackets = [
     this.parenthesizedRawTextConvention,
@@ -404,10 +396,10 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRawTextBracket(sandwich: TokenizableSandwich): boolean {
+  private tryToOpenRawTextBracket(tokenizableBracket: TokenizableRawTextBracket): boolean {
     return this.tryToOpenConvention({
-      goal: sandwich.goal,
-      pattern: sandwich.startPattern,
+      goal: tokenizableBracket.goal,
+      pattern: tokenizableBracket.bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpeningConvention: false,
       thenAddAnyStartTokens: (bracket) => {
         this.buffer += bracket
@@ -415,9 +407,9 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(bracket: TokenizableSandwich, context: TokenizerContext): boolean {
+  private tryToCloseRawTextBracket(tokenizableBracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
-      pattern: bracket.endPattern,
+      pattern: tokenizableBracket.bracket.endPattern,
       context,
       then: (bracket) => {
         this.buffer += bracket
@@ -726,3 +718,13 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
 const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
   startsWith(CLOSE_SQUARE_BRACKET)
 )
+
+
+const PARENTHESIS =
+  new Bracket('(', ')')
+
+const SQUARE_BRACKET =
+  new Bracket('[', ']')
+  
+const CURLY_BRACKET =
+  new Bracket('{', '}')
