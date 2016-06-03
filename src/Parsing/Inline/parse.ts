@@ -12,7 +12,6 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { RichConvention } from './RichConvention'
-import { ParseResult } from './ParseResult'
 
 
 export function parse(args: ParseArgs): ParseResult {
@@ -27,7 +26,9 @@ const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   REVISION_INSERTION,
   SPOILER,
   FOOTNOTE,
-  ACTION
+  ACTION,
+  PARENTHESIZED,
+  SQUARE_BRACKETED
 ]
 
 const MEDIA_CONVENTIONS = [
@@ -35,18 +36,6 @@ const MEDIA_CONVENTIONS = [
   IMAGE,
   VIDEO
 ]
-
-const BRACKET_CONVENTIONS = [
-  PARENTHESIZED,
-  SQUARE_BRACKETED,
-]
-
-
-interface ParseArgs {
-  tokens: Token[],
-  untilKind?: TokenKind,
-  isTerminatorOptional?: boolean
-}
 
 
 class Parser {
@@ -59,15 +48,15 @@ class Parser {
 
 
   constructor(args: ParseArgs) {
-    const { untilKind, isTerminatorOptional } = args
+    const { untilTokenKind } = args
     this.tokens = args.tokens
 
     LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
-      if (token.kind === untilKind) {
-        this.setResult({ isMissingTerminator: false })
+      if (token.kind === untilTokenKind) {
+        this.setResult()
         return
       }
 
@@ -78,12 +67,6 @@ class Parser {
 
         this.nodes.push(new PlainTextNode(token.value))
         continue
-      }
-      
-      for (const bracketed of BRACKET_CONVENTIONS) {
-        if (token.kind === bracketed.startTokenKind) {
-          this.parseBracket(bracketed)
-        }
       }
 
       if (token.kind === TokenKind.InlineCode) {
@@ -125,7 +108,7 @@ class Parser {
       }
 
       if (token.kind === TokenKind.LinkStart) {
-        const result = this.parse({ untilKind: TokenKind.LinkUrlAndEnd })
+        const result = this.parse({ untilTokenKind: TokenKind.LinkUrlAndEnd })
 
         let contents = result.nodes
         const hasContents = isNotPureWhitespace(contents)
@@ -185,7 +168,7 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token.kind === richConvention.startTokenKind) {
-          const result = this.parse({ untilKind: richConvention.endTokenKind })
+          const result = this.parse({ untilTokenKind: richConvention.endTokenKind })
 
           if (result.nodes.length) {
             // Like empty inline code, we discard any empty sandwich convention
@@ -197,13 +180,13 @@ class Parser {
       }
     }
     
-    const wasTerminatorSpecified = !!untilKind
+    const wasTerminatorSpecified = !!untilTokenKind
 
-    if (!isTerminatorOptional && wasTerminatorSpecified) {
-      throw new Error(`Missing terminator token: ${untilKind}`)
+    if (wasTerminatorSpecified) {
+      throw new Error(`Missing terminator token: ${untilTokenKind}`)
     }
 
-    this.setResult({ isMissingTerminator: wasTerminatorSpecified })
+    this.setResult()
   }
   
   private isNextTokenOfKind(kind: TokenKind): boolean {
@@ -216,44 +199,20 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private parse(
-    args: {
-      untilKind: TokenKind,
-      isTerminatorOptional?: boolean
-    }
-  ): ParseResult {
-    const { untilKind, isTerminatorOptional } = args
-
+  private parse(args: { untilTokenKind: TokenKind }): ParseResult {
     const result = parse({
       tokens: this.tokens.slice(this.countTokensParsed),
-      untilKind,
-      isTerminatorOptional
+      untilTokenKind: args.untilTokenKind
     })
 
     this.tokenIndex += result.countTokensParsed
-
     return result
   }
-
-  private parseBracket(bracketed: RichConvention): void {
-    const result = this.parse({
-      untilKind: bracketed.endTokenKind,
-      isTerminatorOptional: true
-    })
-
-    if (result.isMissingTerminator) {
-      this.nodes.push(...result.nodes)
-      return
-    }
-    
-    this.nodes.push(new bracketed.NodeType(result.nodes))
-  }
   
-  private setResult(args: {isMissingTerminator: boolean}): void {
+  private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
       nodes: combineConsecutivePlainTextNodes(this.nodes),
-      isMissingTerminator: args.isMissingTerminator
     }
   }
 }
@@ -278,4 +237,15 @@ function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSynt
   }
 
   return resultNodes
+}
+
+
+interface ParseArgs {
+  tokens: Token[],
+  untilTokenKind?: TokenKind
+}
+
+interface ParseResult {
+  nodes: InlineSyntaxNode[]
+  countTokensParsed: number
 }

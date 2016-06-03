@@ -1,5 +1,6 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { Bracket } from './Bracket'
+import { RichConvention } from './RichConvention'
 import { startsWith } from '../../Patterns'
 
 export class TokenizableRichBracket {
@@ -8,7 +9,7 @@ export class TokenizableRichBracket {
   public rawStartBracket: string
   public rawEndBracket: string
   
-  constructor(public goal: TokenizerGoal, bracket: Bracket) {
+  constructor(public convention: RichConvention, bracket: Bracket) {
     this.startPattern = getPattern(bracket.startPattern)
     this.endPattern = getPattern(bracket.endPattern)
     this.rawEndBracket = bracket.start
