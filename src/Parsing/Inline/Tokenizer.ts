@@ -374,7 +374,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
-      then: sandwich.onOpen
+      then: () => { this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind) }
     })
   }
 
@@ -382,8 +382,8 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+        this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
         this.closeMostRecentContextWithGoal(sandwich.goal)
-        sandwich.onClose(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }
     })
   }
@@ -567,8 +567,8 @@ export class Tokenizer {
       goal: richConvention.tokenizerGoal,
       startPattern,
       endPattern,
-      onOpen: () => this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.startTokenKind),
-      onClose: () => this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.endTokenKind)
+      startTokenKind: richConvention.startTokenKind,
+      endTokenKind: richConvention.endTokenKind
     })
   }
 

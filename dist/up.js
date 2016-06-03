@@ -651,8 +651,8 @@ var TokenizableSandwich = (function () {
         this.goal = args.goal;
         this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern), 'i');
         this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
-        this.onOpen = args.onOpen;
-        this.onClose = args.onClose;
+        this.startTokenKind = args.startTokenKind;
+        this.endTokenKind = args.endTokenKind;
     }
     return TokenizableSandwich;
 }());
@@ -938,10 +938,11 @@ var Tokenizer = (function () {
         this.closeMostRecentContextWithGoalAndAnyInnerContexts(TokenizerGoal_1.TokenizerGoal.NakedUrl);
     };
     Tokenizer.prototype.tryToOpenRichSandwich = function (sandwich) {
+        var _this = this;
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
-            then: sandwich.onOpen
+            then: function () { _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind); }
         });
     };
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich) {
@@ -953,8 +954,8 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
+                _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
                 _this.closeMostRecentContextWithGoal(sandwich.goal);
-                sandwich.onClose.apply(sandwich, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
             }
         });
     };
@@ -1090,14 +1091,13 @@ var Tokenizer = (function () {
         return this.openContexts.some(function (context) { return context.goal === goal; });
     };
     Tokenizer.prototype.getRichSandwich = function (args) {
-        var _this = this;
         var startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
         return new TokenizableSandwich_1.TokenizableSandwich({
             goal: richConvention.tokenizerGoal,
             startPattern: startPattern,
             endPattern: endPattern,
-            onOpen: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.startTokenKind); },
-            onClose: function () { return _this.addTokenAfterFlushingBufferToPlainTextToken(richConvention.endTokenKind); }
+            startTokenKind: richConvention.startTokenKind,
+            endTokenKind: richConvention.endTokenKind
         });
     };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
