@@ -197,7 +197,7 @@ export class Tokenizer {
     const { goal } = context
 
     return (
-      this.tryToCloseRichSandwichCorrespondingToGoal(goal)
+      this.tryToCloseRichSandwichCorrespondingToContext(context)
       || this.handleMediaCorrespondingToGoal(goal)
       || this.tryToCloseRawTextBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
@@ -245,10 +245,10 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private tryToCloseRichSandwichCorrespondingToGoal(goal: TokenizerGoal): boolean {
-    return this.richSandwiches.some(sandwich =>
-      (sandwich.goal === goal)
-      && this.tryToCloseRichSandwich(sandwich))
+  private tryToCloseRichSandwichCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.richSandwiches.some(richSandwich =>
+      (richSandwich.goal === context.goal)
+      && this.tryToCloseRichSandwich(richSandwich, context))
   }
 
   private tryToCloseRawTextBracketCorrespondingToContext(context: TokenizerContext): boolean {
@@ -393,7 +393,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRichSandwich(sandwich: TokenizableSandwich): boolean {
+  private tryToCloseRichSandwich(sandwich: TokenizableSandwich, context: TokenizerContext): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {

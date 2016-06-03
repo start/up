@@ -795,7 +795,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseContext = function (context) {
         var goal = context.goal;
-        return (this.tryToCloseRichSandwichCorrespondingToGoal(goal)
+        return (this.tryToCloseRichSandwichCorrespondingToContext(context)
             || this.handleMediaCorrespondingToGoal(goal)
             || this.tryToCloseRawTextBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
@@ -836,11 +836,11 @@ var Tokenizer = (function () {
             || this.tryToCloseMedia()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.tryToCloseRichSandwichCorrespondingToGoal = function (goal) {
+    Tokenizer.prototype.tryToCloseRichSandwichCorrespondingToContext = function (context) {
         var _this = this;
-        return this.richSandwiches.some(function (sandwich) {
-            return (sandwich.goal === goal)
-                && _this.tryToCloseRichSandwich(sandwich);
+        return this.richSandwiches.some(function (richSandwich) {
+            return (richSandwich.goal === context.goal)
+                && _this.tryToCloseRichSandwich(richSandwich, context);
         });
     };
     Tokenizer.prototype.tryToCloseRawTextBracketCorrespondingToContext = function (context) {
@@ -953,7 +953,7 @@ var Tokenizer = (function () {
             then: function () { _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind); }
         });
     };
-    Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich) {
+    Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
         var _this = this;
         return this.consumer.advanceAfterMatch({
             pattern: sandwich.endPattern,
