@@ -14,11 +14,6 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { RichConvention } from './RichConvention'
 
 
-export function parse(args: ParseArgs): ParseResult {
-  return new Parser(args).result
-}
-
-
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS,
   EMPHASIS,
@@ -38,7 +33,7 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-class Parser {
+export class Parser {
   result: ParseResult
 
   private tokens: Token[]
@@ -47,7 +42,7 @@ class Parser {
   private nodes: InlineSyntaxNode[] = []
 
 
-  constructor(args: ParseArgs) {
+  constructor(args: { tokens: Token[], untilTokenKind?: TokenKind }) {
     const { untilTokenKind } = args
     this.tokens = args.tokens
 
@@ -80,7 +75,7 @@ class Parser {
 
       if (token.kind === TokenKind.NakedUrlProtocolAndStart) {
         const protocol = token.value
-        
+
         if (!this.isNextTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)) {
           // If the next token isn't a TokenKind.NakedUrlAfterProtocolAndEnd token, it means the author of the
           // document didn't include the rest of the URL.
@@ -89,18 +84,18 @@ class Parser {
           this.nodes.push(new PlainTextNode(protocol))
           continue
         }
-        
+
         const nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex()
         const urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value
-        
+
         const url = protocol + urlAfterProtocol
-        
-        if (!urlAfterProtocol) {          
+
+        if (!urlAfterProtocol) {
           // As a rule, naked URLs consisting only of a protocol are treated as plain text.
           this.nodes.push(new PlainTextNode(url))
           continue
         }
-        
+
         const contents = [new PlainTextNode(urlAfterProtocol)]
         this.nodes.push(new LinkNode(contents, url))
 
@@ -145,7 +140,7 @@ class Parser {
         if (token.kind === media.startTokenKind) {
           // The next token will be a MediaDescription token...
           let description = this.getNextTokenAndAdvanceIndex().value.trim()
-          
+
           // ... And the next token will be a MediaUrlAndEnd token!
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
@@ -179,7 +174,7 @@ class Parser {
         }
       }
     }
-    
+
     const wasTerminatorSpecified = !!untilTokenKind
 
     if (wasTerminatorSpecified) {
@@ -188,19 +183,19 @@ class Parser {
 
     this.setResult()
   }
-  
+
   private isNextTokenOfKind(kind: TokenKind): boolean {
     return (
       (this.tokenIndex + 1) < this.tokens.length
       && this.tokens[this.tokenIndex + 1].kind == kind)
   }
-  
+
   private getNextTokenAndAdvanceIndex(): Token {
     return this.tokens[++this.tokenIndex]
   }
 
   private parse(args: { untilTokenKind: TokenKind }): ParseResult {
-    const result = parse({
+    const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
       untilTokenKind: args.untilTokenKind
     })
@@ -208,7 +203,7 @@ class Parser {
     this.tokenIndex += result.countTokensParsed
     return result
   }
-  
+
   private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
@@ -240,10 +235,6 @@ function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSynt
 }
 
 
-interface ParseArgs {
-  tokens: Token[],
-  untilTokenKind?: TokenKind
-}
 
 interface ParseResult {
   nodes: InlineSyntaxNode[]
