@@ -811,8 +811,12 @@ var Tokenizer = (function () {
         return this.consumer.advanceAfterMatch({
             pattern: INLINE_CODE_DELIMITER_PATTERN,
             then: function () {
-                _this.close({ context: context });
-                _this.addToken(TokenKind_1.TokenKind.InlineCode, _this.flushBuffer());
+                _this.closeContext({
+                    contextToClose: context,
+                    thenAddAnyClosingTokens: function () {
+                        _this.addToken(TokenKind_1.TokenKind.InlineCode, _this.flushBuffer());
+                    }
+                });
             }
         });
     };
@@ -861,8 +865,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenAnySandwichThatCanAppearInRegularContent = function () {
         var _this = this;
-        return this.richSandwiches
-            .some(function (sandwich) { return _this.tryToOpenRichSandwich(sandwich); });
+        return this.richSandwiches.some(function (sandwich) { return _this.tryToOpenRichSandwich(sandwich); });
     };
     Tokenizer.prototype.tryToOpenParenthesizedRawText = function () {
         return this.tryToOpenRawTextBracket(this.parenthesizedRawTextConvention);
@@ -894,7 +897,12 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseNakedUrl = function (context) {
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-            this.close({ context: context, andCloseInnerContexts: true });
+            this.closeContext({
+                contextToClose: context,
+                closeInnerContexts: true,
+                thenAddAnyClosingTokens: function () {
+                }
+            });
             return true;
         }
         return false;
@@ -926,8 +934,12 @@ var Tokenizer = (function () {
         return this.consumer.advanceAfterMatch({
             pattern: MEDIA_END_PATTERN_DEPCRECATED,
             then: function () {
-                _this.close({ context: context });
-                _this.addToken(TokenKind_1.TokenKind.MediaUrlAndEnd, _this.flushBuffer());
+                _this.closeContext({
+                    contextToClose: context,
+                    thenAddAnyClosingTokens: function () {
+                        _this.addToken(TokenKind_1.TokenKind.MediaUrlAndEnd, _this.flushBuffer());
+                    }
+                });
                 _this.openContexts.pop();
             }
         });
@@ -949,8 +961,12 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.close({ context: context });
-                _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
+                _this.closeContext({
+                    contextToClose: context,
+                    thenAddAnyClosingTokens: function () {
+                        _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind);
+                    }
+                });
             }
         });
     };
@@ -970,9 +986,8 @@ var Tokenizer = (function () {
             then: function (bracket) { _this.buffer += bracket; }
         });
     };
-    Tokenizer.prototype.close = function (args) {
-        var contextToClose = args.context;
-        var andCloseInnerContexts = args.andCloseInnerContexts;
+    Tokenizer.prototype.closeContext = function (args) {
+        var contextToClose = args.contextToClose, closeInnerContexts = args.closeInnerContexts, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
         for (var openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
             var openContext = this.openContexts[openContextIndex];
             if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
@@ -984,10 +999,11 @@ var Tokenizer = (function () {
                 continue;
             }
             var foundTheContextToClose = (openContext === contextToClose);
-            if (foundTheContextToClose || andCloseInnerContexts) {
+            if (foundTheContextToClose || closeInnerContexts) {
                 this.openContexts.splice(openContextIndex, 1);
             }
             if (foundTheContextToClose) {
+                thenAddAnyClosingTokens();
                 return;
             }
         }
@@ -1017,8 +1033,12 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
-                _this.close({ context: context });
+                _this.closeContext({
+                    contextToClose: context,
+                    thenAddAnyClosingTokens: function () {
+                        then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                    }
+                });
             }
         });
     };

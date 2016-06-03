@@ -210,8 +210,12 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       then: () => {
-        this.close({ context })
-        this.addToken(TokenKind.InlineCode, this.flushBuffer())
+        this.closeContext({
+          contextToClose: context,
+          thenAddAnyClosingTokens: () => {
+            this.addToken(TokenKind.InlineCode, this.flushBuffer())
+          }
+        })
       }
     })
   }
@@ -273,8 +277,7 @@ export class Tokenizer {
   }
 
   private tryToOpenAnySandwichThatCanAppearInRegularContent(): boolean {
-    return this.richSandwiches
-      .some(sandwich => this.tryToOpenRichSandwich(sandwich))
+    return this.richSandwiches.some(sandwich => this.tryToOpenRichSandwich(sandwich))
   }
 
   private tryToOpenParenthesizedRawText(): boolean {
@@ -321,7 +324,16 @@ export class Tokenizer {
     // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
     // leading whitespace).
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-      this.close({ context, andCloseInnerContexts: true })
+      this.closeContext({
+        contextToClose: context,
+        closeInnerContexts: true,
+        thenAddAnyClosingTokens: () => {
+          // We have nothing to add.
+          //
+          // The `closeContext` method automatically adds the naked URL closing token, because it needs to add that
+          // token any time a context containing a naked URL is closed, anyway.
+        }
+      })
       return true
     }
 
@@ -354,8 +366,12 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: MEDIA_END_PATTERN_DEPCRECATED,
       then: () => {
-        this.close({ context })
-        this.addToken(TokenKind.MediaUrlAndEnd, this.flushBuffer())
+        this.closeContext({
+          contextToClose: context,
+          thenAddAnyClosingTokens: () => {
+            this.addToken(TokenKind.MediaUrlAndEnd, this.flushBuffer())
+          }
+        })
 
         // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
         this.openContexts.pop()
@@ -375,8 +391,12 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.close({ context })
-        this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
+        this.closeContext({
+          contextToClose: context,
+          thenAddAnyClosingTokens: () => {
+            this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.endTokenKind)
+          }
+        })
       }
     })
   }
@@ -397,10 +417,15 @@ export class Tokenizer {
     })
   }
 
-  private close(args: { context: TokenizerContext, andCloseInnerContexts?: boolean }): void {
-    const contextToClose = args.context
-    const { andCloseInnerContexts } = args
-    
+  private closeContext(
+    args: {
+      contextToClose: TokenizerContext,
+      closeInnerContexts?: boolean,
+      thenAddAnyClosingTokens: () => void
+    }
+  ): void {
+    const { contextToClose, closeInnerContexts, thenAddAnyClosingTokens } = args
+
     for (let openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
       const openContext = this.openContexts[openContextIndex]
 
@@ -413,17 +438,18 @@ export class Tokenizer {
           // If we simply wanted to close the naked URL, we're already done.
           return
         }
-        
+
         continue
       }
-      
+
       const foundTheContextToClose = (openContext === contextToClose)
 
-      if (foundTheContextToClose || andCloseInnerContexts) {
+      if (foundTheContextToClose || closeInnerContexts) {
         this.openContexts.splice(openContextIndex, 1)
       }
-      
+
       if (foundTheContextToClose) {
+        thenAddAnyClosingTokens()
         return
       }
     }
@@ -459,8 +485,12 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
-        this.close({ context })
+        this.closeContext({
+          contextToClose: context,
+          thenAddAnyClosingTokens: () => {
+            then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+          }
+        })
       }
     })
   }
@@ -532,10 +562,10 @@ export class Tokenizer {
 
     throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
-  
+
   private flushBufferToNakedUrlEndToken(): void {
     const urlAfterProtocol = this.flushBuffer()
-    
+
     if (urlAfterProtocol) {
       this.addToken(TokenKind.NakedUrlAfterProtocolAndEnd, urlAfterProtocol)
     }
