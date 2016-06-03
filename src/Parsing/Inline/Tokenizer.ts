@@ -105,7 +105,7 @@ export class Tokenizer {
   // A rich sandwich:
   //
   // 1. Can contain other inline conventions
-  // 2. Involves just 2 delimiters: 1 to mark its start, and 1 to mark its end
+  // 2. Involves just two delimiters: one to mark its start, and one to mark its end
   //
   // We can't create the collection until the spoiler convention has been configured.
   private richSandwiches: TokenizableSandwich[]
@@ -141,8 +141,9 @@ export class Tokenizer {
   }
 
   private tokenize(): void {
-    while (!(this.consumer.reachedEndOfText() && this.resolveOpenContexts())) {
-      this.tryToCollectCurrentCharIfEscaped()
+    while (!this.isDone()) {
+      
+      this.tryToCollectEscapedChar()
         || this.tryToCloseAnOpenContext()
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.handleNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
@@ -157,6 +158,10 @@ export class Tokenizer {
       nestOverlappingConventions(
         applyRaisedVoices(
           this.insertPlainTextTokensForBrackets()))
+  }
+  
+  private isDone(): boolean {
+    return this.consumer.reachedEndOfText() && this.resolveOpenContexts()
   }
 
   private tryToCloseAnOpenContext(): boolean {
@@ -277,7 +282,7 @@ export class Tokenizer {
     return this.tryToOpenRawTextBracket(this.curlyBracketedRawTextConvention)
   }
 
-  private tryToCollectCurrentCharIfEscaped(): boolean {
+  private tryToCollectEscapedChar(): boolean {
     const ESCAPE_CHAR = '\\'
 
     if (this.consumer.currentChar !== ESCAPE_CHAR) {

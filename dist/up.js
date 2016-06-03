@@ -757,8 +757,8 @@ var Tokenizer = (function () {
         ];
     };
     Tokenizer.prototype.tokenize = function () {
-        while (!(this.consumer.reachedEndOfText() && this.resolveOpenContexts())) {
-            this.tryToCollectCurrentCharIfEscaped()
+        while (!this.isDone()) {
+            this.tryToCollectEscapedChar()
                 || this.tryToCloseAnOpenContext()
                 || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.handleNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
@@ -770,6 +770,9 @@ var Tokenizer = (function () {
         }
         this.tokens =
             nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(this.insertPlainTextTokensForBrackets()));
+    };
+    Tokenizer.prototype.isDone = function () {
+        return this.consumer.reachedEndOfText() && this.resolveOpenContexts();
     };
     Tokenizer.prototype.tryToCloseAnOpenContext = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -868,7 +871,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenCurlyBracketedRawText = function () {
         return this.tryToOpenRawTextBracket(this.curlyBracketedRawTextConvention);
     };
-    Tokenizer.prototype.tryToCollectCurrentCharIfEscaped = function () {
+    Tokenizer.prototype.tryToCollectEscapedChar = function () {
         var ESCAPE_CHAR = '\\';
         if (this.consumer.currentChar !== ESCAPE_CHAR) {
             return false;
