@@ -40,7 +40,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('terminated by a parenthesized convention closing', () => {
+  it('is terminated by a parenthesized convention closing', () => {
     expect(Up.toAst('(https://archive.org/fake)')).to.be.eql(
       insideDocumentAndParagraph([
         new ParenthesizedNode([
@@ -53,7 +53,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('can be terminated by a square bracketed convention closing', () => {
+  it('is terminated by a square bracketed convention closing', () => {
     expect(Up.toAst('[https://archive.org/fake]')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
@@ -66,7 +66,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('terminated by an action convention closing', () => {
+  it('is terminated by an action convention closing', () => {
     expect(Up.toAst('{https://archive.org/fake}')).to.be.eql(
       insideDocumentAndParagraph([
         new ActionNode([
@@ -104,7 +104,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can be inside a link", () => {
+  it("is inside a link", () => {
     expect(Up.toAst('[https://inner.example.com/fake][https://outer.example.com/real]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
@@ -115,7 +115,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can be terminated by revision deletion closing", () => {
+  it("is terminated by revision deletion closing", () => {
     expect(Up.toAst('++I love... https://archive.org/fake++!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
@@ -128,7 +128,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('can be terminated by emphasis closing', () => {
+  it('is terminated by emphasis closing', () => {
     expect(Up.toAst('*I love... https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
@@ -141,7 +141,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('can be closed by stress closing', () => {
+  it('is closed by stress closing', () => {
     expect(Up.toAst('**I love https://archive.org/fake**!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
