@@ -385,7 +385,7 @@ export class Tokenizer {
       pattern: sandwich.startPattern,
       flushBufferToPlainTextTokenBeforeOpeningConvention: true,
       thenAddAnyStartTokens: () => {
-        this.addToken(sandwich.startTokenKind)
+        // We insert the start token once the convention is about to close
       }
     })
   }
@@ -395,6 +395,12 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       then: () => {
+        this.insertToken({
+          atIndex: context.initialTokenIndex,
+          kind: sandwich.startTokenKind,
+          forContext: context
+        })
+        
         this.flushBufferToPlainTextToken()
         this.addToken(sandwich.endTokenKind)
       }
@@ -416,7 +422,9 @@ export class Tokenizer {
     return this.tryToCloseConvention({
       pattern: bracket.endPattern,
       context,
-      then: (bracket) => { this.buffer += bracket }
+      then: (bracket) => {
+        this.buffer += bracket
+      }
     })
   }
 
@@ -469,7 +477,7 @@ export class Tokenizer {
         if (flushBufferToPlainTextTokenBeforeOpeningConvention) {
           this.flushBufferToPlainTextToken()
         }
-        
+
         this.openContext(goal)
         thenAddAnyStartTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
       }

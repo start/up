@@ -950,13 +950,11 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToOpenRichSandwich = function (sandwich) {
-        var _this = this;
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
             flushBufferToPlainTextTokenBeforeOpeningConvention: true,
             thenAddAnyStartTokens: function () {
-                _this.addToken(sandwich.startTokenKind);
             }
         });
     };
@@ -966,6 +964,11 @@ var Tokenizer = (function () {
             pattern: sandwich.endPattern,
             context: context,
             then: function () {
+                _this.insertToken({
+                    atIndex: context.initialTokenIndex,
+                    kind: sandwich.startTokenKind,
+                    forContext: context
+                });
                 _this.flushBufferToPlainTextToken();
                 _this.addToken(sandwich.endTokenKind);
             }
@@ -987,7 +990,9 @@ var Tokenizer = (function () {
         return this.tryToCloseConvention({
             pattern: bracket.endPattern,
             context: context,
-            then: function (bracket) { _this.buffer += bracket; }
+            then: function (bracket) {
+                _this.buffer += bracket;
+            }
         });
     };
     Tokenizer.prototype.closeContext = function (args) {
