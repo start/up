@@ -45,11 +45,30 @@ export class Tokenizer {
 
   // Unlike the other bracket conventions, these don't produce special tokens. They can only appear inside URLs
   // or media conventions' descriptions.  
-  private parenthesizedRawTextConvention: TokenizableSandwich
-  private squareBracketedRawTextConvention: TokenizableSandwich
-  private curlyBracketedRawTextConvention: TokenizableSandwich
-  
-  private rawTextBrackets: TokenizableSandwich[]
+
+  private parenthesizedRawTextConvention = new TokenizableSandwich({
+    goal: TokenizerGoal.ParenthesizedInRawText,
+    startPattern: OPEN_PAREN,
+    endPattern: CLOSE_PAREN
+  })
+
+  private squareBracketedRawTextConvention = new TokenizableSandwich({
+    goal: TokenizerGoal.SquareBracketedInRawText,
+    startPattern: OPEN_SQUARE_BRACKET,
+    endPattern: CLOSE_SQUARE_BRACKET
+  })
+
+  private curlyBracketedRawTextConvention = new TokenizableSandwich({
+    goal: TokenizerGoal.CurlyBracketedInRawText,
+    startPattern: OPEN_CURLY_BRACKET,
+    endPattern: CLOSE_CURLY_BRACKET
+  })
+
+  private rawTextBrackets = [
+    this.parenthesizedRawTextConvention,
+    this.squareBracketedRawTextConvention,
+    this.curlyBracketedRawTextConvention
+  ]
 
   // A rich sandwich:
   //
@@ -121,27 +140,6 @@ export class Tokenizer {
         endPattern: CLOSE_CURLY_BRACKET,
       })
 
-    this.parenthesizedRawTextConvention =
-      new TokenizableSandwich({
-        goal: TokenizerGoal.ParenthesizedInRawText,
-        startPattern: OPEN_PAREN,
-        endPattern: CLOSE_PAREN
-      })
-
-    this.squareBracketedRawTextConvention =
-      new TokenizableSandwich({
-        goal: TokenizerGoal.SquareBracketedInRawText,
-        startPattern: OPEN_SQUARE_BRACKET,
-        endPattern: CLOSE_SQUARE_BRACKET
-      })
-
-    this.curlyBracketedRawTextConvention =
-      new TokenizableSandwich({
-        goal: TokenizerGoal.CurlyBracketedInRawText,
-        startPattern: OPEN_CURLY_BRACKET,
-        endPattern: CLOSE_CURLY_BRACKET
-      })
-
     this.richSandwiches = [
       this.spoilerConvention,
       this.footnoteConvention,
@@ -150,12 +148,6 @@ export class Tokenizer {
       this.actionConvention,
       this.parenthesizedConvention,
       this.squareBracketedConvention
-    ]
-    
-    this.rawTextBrackets = [
-      this.parenthesizedRawTextConvention,
-      this.squareBracketedRawTextConvention,
-      this.curlyBracketedRawTextConvention
     ]
   }
 
@@ -241,7 +233,7 @@ export class Tokenizer {
   }
 
   private tryToCloseRichSandwichCorrespondingToGoal(goal: TokenizerGoal): boolean {
-    return this.richSandwiches .some(sandwich =>
+    return this.richSandwiches.some(sandwich =>
       (sandwich.goal === goal)
       && this.tryToCloseRichSandwich(sandwich))
   }

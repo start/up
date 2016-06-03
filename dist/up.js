@@ -681,6 +681,26 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
+        this.parenthesizedRawTextConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText,
+            startPattern: Patterns_1.OPEN_PAREN,
+            endPattern: Patterns_1.CLOSE_PAREN
+        });
+        this.squareBracketedRawTextConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText,
+            startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
+            endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
+        });
+        this.curlyBracketedRawTextConvention = new TokenizableSandwich_1.TokenizableSandwich({
+            goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText,
+            startPattern: Patterns_1.OPEN_CURLY_BRACKET,
+            endPattern: Patterns_1.CLOSE_CURLY_BRACKET
+        });
+        this.rawTextBrackets = [
+            this.parenthesizedRawTextConvention,
+            this.squareBracketedRawTextConvention,
+            this.curlyBracketedRawTextConvention
+        ];
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
         this.tokenize();
@@ -732,24 +752,6 @@ var Tokenizer = (function () {
                 startPattern: Patterns_1.OPEN_CURLY_BRACKET,
                 endPattern: Patterns_1.CLOSE_CURLY_BRACKET,
             });
-        this.parenthesizedRawTextConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText,
-                startPattern: Patterns_1.OPEN_PAREN,
-                endPattern: Patterns_1.CLOSE_PAREN
-            });
-        this.squareBracketedRawTextConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText,
-                startPattern: Patterns_1.OPEN_SQUARE_BRACKET,
-                endPattern: Patterns_1.CLOSE_SQUARE_BRACKET
-            });
-        this.curlyBracketedRawTextConvention =
-            new TokenizableSandwich_1.TokenizableSandwich({
-                goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText,
-                startPattern: Patterns_1.OPEN_CURLY_BRACKET,
-                endPattern: Patterns_1.CLOSE_CURLY_BRACKET
-            });
         this.richSandwiches = [
             this.spoilerConvention,
             this.footnoteConvention,
@@ -758,11 +760,6 @@ var Tokenizer = (function () {
             this.actionConvention,
             this.parenthesizedConvention,
             this.squareBracketedConvention
-        ];
-        this.rawTextBrackets = [
-            this.parenthesizedRawTextConvention,
-            this.squareBracketedRawTextConvention,
-            this.curlyBracketedRawTextConvention
         ];
     };
     Tokenizer.prototype.tokenize = function () {
