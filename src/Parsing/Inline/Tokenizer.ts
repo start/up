@@ -170,8 +170,23 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyOpenContext(): boolean {
+    // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too (along with
+    // any of its inner raw text brackets).
+    let enclosesNakedUrl = false
+
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.tryToCloseContext(this.openContexts[i])) {
+      const context = this.openContexts[i]
+
+      if (context.goal === TokenizerGoal.NakedUrl) {
+        enclosesNakedUrl = true
+      }
+
+      if (this.tryToCloseContext(context)) {
+
+        if (enclosesNakedUrl) {
+          this.closeNakedUrl()
+        }
+
         return true
       }
     }
@@ -247,7 +262,7 @@ export class Tokenizer {
     return this.mediaConventions
       .some(media => (media.goal === goal) && this.handleMedia(media))
   }
-  
+
   private handleMedia(media: TokenizableMedia): boolean {
     return (
       this.tryToOpenMediaUrl()
@@ -520,12 +535,6 @@ export class Tokenizer {
       if (context.goal === goal) {
         this.openContexts.splice(i, 1)
         return
-      }
-
-      if (context.goal === TokenizerGoal.NakedUrl) {
-        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed, too (along with
-        // any inner brackets).
-        this.closeNakedUrl()
       }
     }
 

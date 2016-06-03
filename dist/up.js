@@ -778,8 +778,16 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() && this.resolveOpenContexts();
     };
     Tokenizer.prototype.tryToCloseAnyOpenContext = function () {
+        var enclosesNakedUrl = false;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.tryToCloseContext(this.openContexts[i])) {
+            var context_1 = this.openContexts[i];
+            if (context_1.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+                enclosesNakedUrl = true;
+            }
+            if (this.tryToCloseContext(context_1)) {
+                if (enclosesNakedUrl) {
+                    this.closeNakedUrl();
+                }
                 return true;
             }
         }
@@ -1021,8 +1029,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
-            var context_1 = this.openContexts.pop();
-            switch (context_1.goal) {
+            var context_2 = this.openContexts.pop();
+            switch (context_2.goal) {
                 case TokenizerGoal_1.TokenizerGoal.NakedUrl:
                     this.flushBufferedTextToNakedUrlToken();
                     break;
@@ -1034,7 +1042,7 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_1);
+                    this.backtrackToBeforeContext(context_2);
                     return false;
             }
         }
@@ -1051,9 +1059,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            if (context_2.goal === goal) {
-                this.backtrackToBeforeContext(context_2);
+            var context_3 = this.openContexts.pop();
+            if (context_3.goal === goal) {
+                this.backtrackToBeforeContext(context_3);
                 return;
             }
         }
@@ -1061,13 +1069,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeMostRecentContextWithGoal = function (goal) {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_3 = this.openContexts[i];
-            if (context_3.goal === goal) {
+            var context_4 = this.openContexts[i];
+            if (context_4.goal === goal) {
                 this.openContexts.splice(i, 1);
                 return;
-            }
-            if (context_3.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                this.closeNakedUrl();
             }
         }
         throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
@@ -1148,9 +1153,9 @@ var Tokenizer = (function () {
         var atIndex = args.atIndex, kind = args.kind, forContext = args.forContext, value = args.value;
         this.tokens.splice(atIndex, 0, new Token_1.Token(kind, value));
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_4 = _a[_i];
-            if (context_4 != forContext) {
-                context_4.registerTokenInsertion({ atIndex: atIndex });
+            var context_5 = _a[_i];
+            if (context_5 != forContext) {
+                context_5.registerTokenInsertion({ atIndex: atIndex });
             }
         }
     };
