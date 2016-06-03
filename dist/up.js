@@ -649,14 +649,17 @@ var Patterns_1 = require('../../Patterns');
 var TokenizableSandwich = (function () {
     function TokenizableSandwich(args) {
         this.goal = args.goal;
-        this.startPattern = new RegExp(Patterns_1.startsWith(args.startPattern), 'i');
-        this.endPattern = new RegExp(Patterns_1.startsWith(args.endPattern), 'i');
+        this.startPattern = getPattern(args.startPattern);
+        this.endPattern = getPattern(args.endPattern);
         this.startTokenKind = args.startTokenKind;
         this.endTokenKind = args.endTokenKind;
     }
     return TokenizableSandwich;
 }());
 exports.TokenizableSandwich = TokenizableSandwich;
+function getPattern(pattern) {
+    return new RegExp(Patterns_1.startsWith(pattern), 'i');
+}
 
 },{"../../Patterns":43}],20:[function(require,module,exports){
 "use strict";

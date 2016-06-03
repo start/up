@@ -20,9 +20,13 @@ export class TokenizableSandwich {
     }
   ) {
     this.goal = args.goal
-    this.startPattern = new RegExp(startsWith(args.startPattern), 'i')
-    this.endPattern = new RegExp(startsWith(args.endPattern), 'i')
+    this.startPattern = getPattern(args.startPattern)
+    this.endPattern = getPattern(args.endPattern)
     this.startTokenKind = args.startTokenKind
     this.endTokenKind = args.endTokenKind
   }
+}
+
+function getPattern(pattern: string): RegExp {
+  return new RegExp(startsWith(pattern), 'i')
 }
