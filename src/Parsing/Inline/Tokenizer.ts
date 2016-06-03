@@ -248,8 +248,7 @@ export class Tokenizer {
   }
 
   private handleMediaCorrespondingToGoal(goal: TokenizerGoal): boolean {
-    return this.mediaConventions
-      .some(media => (media.goal === goal) && this.handleMedia(media))
+    return this.mediaConventions.some(media => (media.goal === goal) && this.handleMedia(media))
   }
 
   private handleMedia(media: TokenizableMedia): boolean {
@@ -328,10 +327,7 @@ export class Tokenizer {
         contextToClose: context,
         closeInnerContexts: true,
         thenAddAnyClosingTokens: () => {
-          // We have nothing to add.
-          //
-          // The `closeContext` method automatically adds the naked URL closing token, because it needs to add that
-          // token any time a context containing a naked URL is closed, anyway.
+          this.flushBufferToNakedUrlEndToken()
         }
       })
       return true
@@ -383,7 +379,9 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
-      then: () => { this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind) }
+      then: () => {
+        this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind)
+      }
     })
   }
 
@@ -425,19 +423,6 @@ export class Tokenizer {
     for (let openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
       const openContext = this.openContexts[openContextIndex]
 
-      // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-      if (openContext.goal === TokenizerGoal.NakedUrl) {
-        this.flushBufferToNakedUrlEndToken()
-        this.openContexts.splice(openContextIndex)
-
-        if (contextToClose.goal === TokenizerGoal.NakedUrl) {
-          // If we simply wanted to close the naked URL, we're already done.
-          return
-        }
-
-        continue
-      }
-
       const foundTheContextToClose = (openContext === contextToClose)
 
       if (foundTheContextToClose || closeInnerContexts) {
@@ -447,6 +432,14 @@ export class Tokenizer {
       if (foundTheContextToClose) {
         thenAddAnyClosingTokens()
         return
+      }
+
+      // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
+      if (openContext.goal === TokenizerGoal.NakedUrl) {
+        this.flushBufferToNakedUrlEndToken()
+        this.openContexts.splice(openContextIndex)
+
+        continue
       }
     }
   }

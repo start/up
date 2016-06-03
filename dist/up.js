@@ -847,8 +847,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.handleMediaCorrespondingToGoal = function (goal) {
         var _this = this;
-        return this.mediaConventions
-            .some(function (media) { return (media.goal === goal) && _this.handleMedia(media); });
+        return this.mediaConventions.some(function (media) { return (media.goal === goal) && _this.handleMedia(media); });
     };
     Tokenizer.prototype.handleMedia = function (media) {
         return (this.tryToOpenMediaUrl()
@@ -896,11 +895,13 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToCloseNakedUrl = function (context) {
+        var _this = this;
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
             this.closeContext({
                 contextToClose: context,
                 closeInnerContexts: true,
                 thenAddAnyClosingTokens: function () {
+                    _this.flushBufferToNakedUrlEndToken();
                 }
             });
             return true;
@@ -949,7 +950,9 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
-            then: function () { _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind); }
+            then: function () {
+                _this.addTokenAfterFlushingBufferToPlainTextToken(sandwich.startTokenKind);
+            }
         });
     };
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
@@ -982,14 +985,6 @@ var Tokenizer = (function () {
         var contextToClose = args.contextToClose, closeInnerContexts = args.closeInnerContexts, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
         for (var openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
             var openContext = this.openContexts[openContextIndex];
-            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                this.flushBufferToNakedUrlEndToken();
-                this.openContexts.splice(openContextIndex);
-                if (contextToClose.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                    return;
-                }
-                continue;
-            }
             var foundTheContextToClose = (openContext === contextToClose);
             if (foundTheContextToClose || closeInnerContexts) {
                 this.openContexts.splice(openContextIndex, 1);
@@ -997,6 +992,11 @@ var Tokenizer = (function () {
             if (foundTheContextToClose) {
                 thenAddAnyClosingTokens();
                 return;
+            }
+            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+                this.flushBufferToNakedUrlEndToken();
+                this.openContexts.splice(openContextIndex);
+                continue;
             }
         }
     };
