@@ -800,10 +800,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenInlineCode = function () {
         var _this = this;
-        return this.canTry(TokenizerGoal_1.TokenizerGoal.InlineCode) && this.consumer.advanceAfterMatch({
+        return this.tryToOpenConvention({
+            goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
             pattern: INLINE_CODE_DELIMITER_PATTERN,
             then: function () {
-                _this.openContext(TokenizerGoal_1.TokenizerGoal.InlineCode);
                 _this.flushBufferToPlainTextToken();
             }
         });
@@ -832,7 +832,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseSandwichCorrespondingToGoal = function (goal) {
         var _this = this;
-        return this.allSandwiches.some(function (sandwich) { return (sandwich.goal === goal) && _this.tryToCloseSandwich(sandwich); });
+        return this.allSandwiches.some(function (sandwich) { return (sandwich.goal === goal) && _this.tryToCloseRichSandwich(sandwich); });
     };
     Tokenizer.prototype.handleMediaCorrespondingToGoal = function (goal) {
         var _this = this;
@@ -855,16 +855,16 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenAnySandwichThatCanAppearInRegularContent = function () {
         var _this = this;
         return this.sandwichesThatCanAppearInRegularContent
-            .some(function (sandwich) { return _this.tryToOpenSandwich(sandwich); });
+            .some(function (sandwich) { return _this.tryToOpenRichSandwich(sandwich); });
     };
     Tokenizer.prototype.tryToOpenParenthesizedRawText = function () {
-        return this.tryToOpenSandwich(this.parenthesizedRawTextConvention);
+        return this.tryToOpenRichSandwich(this.parenthesizedRawTextConvention);
     };
     Tokenizer.prototype.tryToOpenSquareBracketedRawText = function () {
-        return this.tryToOpenSandwich(this.squareBracketedRawTextConvention);
+        return this.tryToOpenRichSandwich(this.squareBracketedRawTextConvention);
     };
     Tokenizer.prototype.tryToOpenCurlyBracketedRawText = function () {
-        return this.tryToOpenSandwich(this.curlyBracketedRawTextConvention);
+        return this.tryToOpenRichSandwich(this.curlyBracketedRawTextConvention);
     };
     Tokenizer.prototype.tryToCollectCurrentCharIfEscaped = function () {
         var ESCAPE_CHAR = '\\';
@@ -929,14 +929,14 @@ var Tokenizer = (function () {
         this.flushBufferedTextToNakedUrlToken();
         this.closeMostRecentContextWithGoalAndAnyInnerContexts(TokenizerGoal_1.TokenizerGoal.NakedUrl);
     };
-    Tokenizer.prototype.tryToOpenSandwich = function (sandwich) {
+    Tokenizer.prototype.tryToOpenRichSandwich = function (sandwich) {
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
             then: sandwich.onOpen
         });
     };
-    Tokenizer.prototype.tryToCloseSandwich = function (sandwich) {
+    Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich) {
         var _this = this;
         return this.consumer.advanceAfterMatch({
             pattern: sandwich.endPattern,

@@ -202,10 +202,10 @@ export class Tokenizer {
   }
 
   private tryToOpenInlineCode(): boolean {
-    return this.canTry(TokenizerGoal.InlineCode) && this.consumer.advanceAfterMatch({
+    return this.tryToOpenConvention({
+      goal: TokenizerGoal.InlineCode,
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       then: () => {
-        this.openContext(TokenizerGoal.InlineCode)
         this.flushBufferToPlainTextToken()
       }
     })
@@ -238,7 +238,7 @@ export class Tokenizer {
   }
 
   private tryToCloseSandwichCorrespondingToGoal(goal: TokenizerGoal): boolean {
-    return this.allSandwiches.some(sandwich => (sandwich.goal === goal) && this.tryToCloseSandwich(sandwich))
+    return this.allSandwiches.some(sandwich => (sandwich.goal === goal) && this.tryToCloseRichSandwich(sandwich))
   }
 
   private handleMediaCorrespondingToGoal(goal: TokenizerGoal): boolean {
@@ -270,19 +270,19 @@ export class Tokenizer {
 
   private tryToOpenAnySandwichThatCanAppearInRegularContent(): boolean {
     return this.sandwichesThatCanAppearInRegularContent
-      .some(sandwich => this.tryToOpenSandwich(sandwich))
+      .some(sandwich => this.tryToOpenRichSandwich(sandwich))
   }
 
   private tryToOpenParenthesizedRawText(): boolean {
-    return this.tryToOpenSandwich(this.parenthesizedRawTextConvention)
+    return this.tryToOpenRichSandwich(this.parenthesizedRawTextConvention)
   }
 
   private tryToOpenSquareBracketedRawText(): boolean {
-    return this.tryToOpenSandwich(this.squareBracketedRawTextConvention)
+    return this.tryToOpenRichSandwich(this.squareBracketedRawTextConvention)
   }
 
   private tryToOpenCurlyBracketedRawText(): boolean {
-    return this.tryToOpenSandwich(this.curlyBracketedRawTextConvention)
+    return this.tryToOpenRichSandwich(this.curlyBracketedRawTextConvention)
   }
 
   private tryToCollectCurrentCharIfEscaped(): boolean {
@@ -367,7 +367,7 @@ export class Tokenizer {
     this.closeMostRecentContextWithGoalAndAnyInnerContexts(TokenizerGoal.NakedUrl)
   }
 
-  private tryToOpenSandwich(sandwich: TokenizableSandwich): boolean {
+  private tryToOpenRichSandwich(sandwich: TokenizableSandwich): boolean {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
@@ -375,7 +375,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseSandwich(sandwich: TokenizableSandwich): boolean {
+  private tryToCloseRichSandwich(sandwich: TokenizableSandwich): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: sandwich.endPattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
