@@ -384,7 +384,23 @@ export class Tokenizer {
       }
     })
   }
-  
+
+  private tryToOpenRawTextBracket(sandwich: TokenizableSandwich): boolean {
+    return this.tryToOpenConvention({
+      goal: sandwich.goal,
+      pattern: sandwich.startPattern,
+      then: (bracket) => { this.buffer += bracket }
+    })
+  }
+
+  private tryToCloseRawTextBracket(sandwich: TokenizableSandwich, context: TokenizerContext): boolean {
+    return this.tryToCloseConvention({
+      pattern: sandwich.startPattern,
+      context,
+      then: (bracket) => { this.buffer += bracket }
+    })
+  }
+
   private closeContext(context: TokenizerContext): void {
     remove(this.openContexts, context)
   }
@@ -403,6 +419,24 @@ export class Tokenizer {
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.openContext(goal)
         then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+      }
+    })
+  }
+
+  private tryToCloseConvention(
+    args: {
+      pattern: RegExp,
+      context: TokenizerContext
+      then: OnTokenizerMatch
+    }
+  ): boolean {
+    const {  pattern, context, then } = args
+
+    return this.consumer.advanceAfterMatch({
+      pattern,
+      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+        then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        this.closeContext(context)
       }
     })
   }

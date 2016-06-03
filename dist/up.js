@@ -950,6 +950,22 @@ var Tokenizer = (function () {
             }
         });
     };
+    Tokenizer.prototype.tryToOpenRawTextBracket = function (sandwich) {
+        var _this = this;
+        return this.tryToOpenConvention({
+            goal: sandwich.goal,
+            pattern: sandwich.startPattern,
+            then: function (bracket) { _this.buffer += bracket; }
+        });
+    };
+    Tokenizer.prototype.tryToCloseRawTextBracket = function (sandwich, context) {
+        var _this = this;
+        return this.tryToCloseConvention({
+            pattern: sandwich.startPattern,
+            context: context,
+            then: function (bracket) { _this.buffer += bracket; }
+        });
+    };
     Tokenizer.prototype.closeContext = function (context) {
         CollectionHelpers_1.remove(this.openContexts, context);
     };
@@ -965,6 +981,21 @@ var Tokenizer = (function () {
                 }
                 _this.openContext(goal);
                 then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            }
+        });
+    };
+    Tokenizer.prototype.tryToCloseConvention = function (args) {
+        var _this = this;
+        var pattern = args.pattern, context = args.context, then = args.then;
+        return this.consumer.advanceAfterMatch({
+            pattern: pattern,
+            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                var captures = [];
+                for (var _i = 3; _i < arguments.length; _i++) {
+                    captures[_i - 3] = arguments[_i];
+                }
+                then.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                _this.closeContext(context);
             }
         });
     };
