@@ -1016,10 +1016,10 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToCloseRichBracket = function (bracket, context) {
         var _this = this;
         return this.tryToCloseConvention({
-            pattern: bracket.endPattern,
             context: context,
+            pattern: bracket.endPattern,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             thenAddAnyClosingTokens: function () {
-                _this.flushBufferToPlainTextToken();
                 var startToken = new Token_1.Token({ kind: bracket.convention.startTokenKind });
                 var endToken = new Token_1.Token({ kind: bracket.convention.endTokenKind });
                 startToken.associateWith(endToken);
@@ -1071,7 +1071,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseConvention = function (args) {
         var _this = this;
-        var pattern = args.pattern, context = args.context, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
+        var context = args.context, pattern = args.pattern, onCloseFlushBufferTo = args.onCloseFlushBufferTo, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
         return this.consumer.advanceAfterMatch({
             pattern: pattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1082,6 +1082,9 @@ var Tokenizer = (function () {
                 _this.closeContext({
                     context: context,
                     thenAddAnyClosingTokens: function () {
+                        if (onCloseFlushBufferTo != null) {
+                            _this.flushBufferToTokenOfKind(onCloseFlushBufferTo);
+                        }
                         thenAddAnyClosingTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
                     }
                 });

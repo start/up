@@ -311,18 +311,16 @@ export class Tokenizer {
 
   private tryToCloseRichBracket(bracket: TokenizableRichBracket, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
-      pattern: bracket.endPattern,
       context,
+      pattern: bracket.endPattern,
+      onCloseFlushBufferTo: TokenKind.PlainText,
       thenAddAnyClosingTokens: () => {
-        this.flushBufferToPlainTextToken()
-
-        // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
-        // bracket's node. We'll add those brackets here, along with the start and end tokens.
-
         const startToken = new Token({ kind: bracket.convention.startTokenKind })
         const endToken = new Token({ kind: bracket.convention.endTokenKind })
         startToken.associateWith(endToken)
-
+        
+        // Rich brackets are unique in that their delimiters (brackets) appear in the final AST inside the
+        // bracket's node.
         const startBracketToken = getPlainTextToken(bracket.rawStartBracket)
         const endBracketToken = getPlainTextToken(bracket.rawEndBracket)
 
@@ -391,12 +389,13 @@ export class Tokenizer {
 
   private tryToCloseConvention(
     args: {
-      pattern: RegExp,
       context: TokenizerContext,
+      pattern: RegExp,
+      onCloseFlushBufferTo?: TokenKind
       thenAddAnyClosingTokens: OnTokenizerMatch
     }
   ): boolean {
-    const {  pattern, context, thenAddAnyClosingTokens } = args
+    const {  context, pattern, onCloseFlushBufferTo, thenAddAnyClosingTokens } = args
 
     return this.consumer.advanceAfterMatch({
       pattern,
@@ -404,6 +403,10 @@ export class Tokenizer {
         this.closeContext({
           context,
           thenAddAnyClosingTokens: () => {
+            if (onCloseFlushBufferTo != null) {
+              this.flushBufferToTokenOfKind(onCloseFlushBufferTo)
+            }
+            
             thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
           }
         })
