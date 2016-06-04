@@ -1114,20 +1114,19 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.closeContext = function (args) {
         var contextToClose = args.contextToClose, closeInnerContexts = args.closeInnerContexts, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
-        for (var openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
-            var openContext = this.openContexts[openContextIndex];
-            var foundTheContextToClose = (openContext === contextToClose);
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            var context_1 = this.openContexts[i];
+            var foundTheContextToClose = (context_1 === contextToClose);
             if (foundTheContextToClose || closeInnerContexts) {
-                this.openContexts.splice(openContextIndex, 1);
+                this.openContexts.splice(i, 1);
             }
             if (foundTheContextToClose) {
                 thenAddAnyClosingTokens();
                 return;
             }
-            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+            if (context_1.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                 this.flushBufferToNakedUrlEndToken();
-                this.openContexts.splice(openContextIndex);
-                continue;
+                this.openContexts.splice(i);
             }
         }
     };
@@ -1183,8 +1182,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
-            var context_1 = this.openContexts.pop();
-            switch (context_1.goal) {
+            var context_2 = this.openContexts.pop();
+            switch (context_2.goal) {
                 case TokenizerGoal_1.TokenizerGoal.NakedUrl:
                     this.flushBufferToNakedUrlEndToken();
                     break;
@@ -1194,7 +1193,7 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_1);
+                    this.backtrackToBeforeContext(context_2);
                     return false;
             }
         }
@@ -1214,9 +1213,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            if (context_2.goal === goal) {
-                this.backtrackToBeforeContext(context_2);
+            var context_3 = this.openContexts.pop();
+            if (context_3.goal === goal) {
+                this.backtrackToBeforeContext(context_3);
                 return;
             }
         }

@@ -458,13 +458,12 @@ export class Tokenizer {
   ): void {
     const { contextToClose, closeInnerContexts, thenAddAnyClosingTokens } = args
 
-    for (let openContextIndex = this.openContexts.length - 1; openContextIndex >= 0; openContextIndex--) {
-      const openContext = this.openContexts[openContextIndex]
-
-      const foundTheContextToClose = (openContext === contextToClose)
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+      const foundTheContextToClose = (context === contextToClose)
 
       if (foundTheContextToClose || closeInnerContexts) {
-        this.openContexts.splice(openContextIndex, 1)
+        this.openContexts.splice(i, 1)
       }
 
       if (foundTheContextToClose) {
@@ -473,11 +472,9 @@ export class Tokenizer {
       }
 
       // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-      if (openContext.goal === TokenizerGoal.NakedUrl) {
+      if (context.goal === TokenizerGoal.NakedUrl) {
         this.flushBufferToNakedUrlEndToken()
-        this.openContexts.splice(openContextIndex)
-
-        continue
+        this.openContexts.splice(i)
       }
     }
   }
