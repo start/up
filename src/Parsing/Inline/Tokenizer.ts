@@ -165,11 +165,9 @@ export class Tokenizer {
 
   private tryToCloseInlineCode(context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
-      pattern: INLINE_CODE_DELIMITER_PATTERN,
       context,
-      thenAddAnyClosingTokens: () => {
-        this.createTokenAndAppend({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
-      }
+      pattern: INLINE_CODE_DELIMITER_PATTERN,
+      onCloseFlushBufferTo: TokenKind.InlineCode
     })
   }
 
@@ -392,7 +390,7 @@ export class Tokenizer {
       context: TokenizerContext,
       pattern: RegExp,
       onCloseFlushBufferTo?: TokenKind
-      thenAddAnyClosingTokens: OnTokenizerMatch
+      thenAddAnyClosingTokens?: OnTokenizerMatch
     }
   ): boolean {
     const {  context, pattern, onCloseFlushBufferTo, thenAddAnyClosingTokens } = args
@@ -407,7 +405,9 @@ export class Tokenizer {
               this.flushBufferToTokenOfKind(onCloseFlushBufferTo)
             }
             
-            thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+            if (thenAddAnyClosingTokens) {
+              thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+            }
           }
         })
       }

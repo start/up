@@ -883,13 +883,10 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToCloseInlineCode = function (context) {
-        var _this = this;
         return this.tryToCloseConvention({
-            pattern: INLINE_CODE_DELIMITER_PATTERN,
             context: context,
-            thenAddAnyClosingTokens: function () {
-                _this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.InlineCode, value: _this.flushBuffer() });
-            }
+            pattern: INLINE_CODE_DELIMITER_PATTERN,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
     };
     Tokenizer.prototype.appendCharToNakedUrl = function () {
@@ -1085,7 +1082,9 @@ var Tokenizer = (function () {
                         if (onCloseFlushBufferTo != null) {
                             _this.flushBufferToTokenOfKind(onCloseFlushBufferTo);
                         }
-                        thenAddAnyClosingTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                        if (thenAddAnyClosingTokens) {
+                            thenAddAnyClosingTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                        }
                     }
                 });
             }
