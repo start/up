@@ -12,7 +12,7 @@ export class TokenizableRichBracket {
   constructor(public convention: RichConvention, bracket: Bracket) {
     this.startPattern = getPattern(bracket.startPattern)
     this.endPattern = getPattern(bracket.endPattern)
-    this.rawEndBracket = bracket.start
+    this.rawStartBracket = bracket.start
     this.rawEndBracket = bracket.end
   }
 }

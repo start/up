@@ -845,7 +845,7 @@ var TokenizableRichBracket = (function () {
         this.convention = convention;
         this.startPattern = getPattern(bracket.startPattern);
         this.endPattern = getPattern(bracket.endPattern);
-        this.rawEndBracket = bracket.start;
+        this.rawStartBracket = bracket.start;
         this.rawEndBracket = bracket.end;
     }
     return TokenizableRichBracket;
