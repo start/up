@@ -1167,18 +1167,14 @@ var Tokenizer = (function () {
         return this.tryToOpenConvention({
             goal: sandwich.goal,
             pattern: sandwich.startPattern,
-            flushBufferToPlainTextTokenBeforeOpeningConvention: true,
-            thenAddAnyStartTokens: function () {
-            }
+            flushBufferToPlainTextTokenBeforeOpeningConvention: true
         });
     };
     Tokenizer.prototype.tryToOpenRichBracket = function (bracket) {
         return this.tryToOpenConvention({
             goal: bracket.convention.tokenizerGoal,
             pattern: bracket.startPattern,
-            flushBufferToPlainTextTokenBeforeOpeningConvention: true,
-            thenAddAnyStartTokens: function () {
-            }
+            flushBufferToPlainTextTokenBeforeOpeningConvention: true
         });
     };
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
@@ -1259,7 +1255,9 @@ var Tokenizer = (function () {
                     _this.flushBufferToPlainTextToken();
                 }
                 _this.openContext(goal);
-                thenAddAnyStartTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                if (thenAddAnyStartTokens) {
+                    thenAddAnyStartTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                }
             }
         });
     };
