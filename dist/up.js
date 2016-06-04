@@ -883,7 +883,7 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToCloseInlineCode = function (context) {
-        return this.tryToCloseConvention({
+        return this.tryToCloseContext({
             context: context,
             pattern: INLINE_CODE_DELIMITER_PATTERN,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
@@ -976,7 +976,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
         var _this = this;
-        return this.tryToCloseConvention({
+        return this.tryToCloseContext({
             pattern: sandwich.endPattern,
             context: context,
             thenAddAnyClosingTokens: function () {
@@ -1000,7 +1000,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseRawTextBracket = function (bracket, context) {
         var _this = this;
-        return this.tryToCloseConvention({
+        return this.tryToCloseContext({
             context: context,
             pattern: bracket.endPattern,
             thenAddAnyClosingTokens: function (bracket) { _this.buffer += bracket; }
@@ -1008,7 +1008,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseRichBracket = function (bracket, context) {
         var _this = this;
-        return this.tryToCloseConvention({
+        return this.tryToCloseContext({
             context: context,
             pattern: bracket.endPattern,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
@@ -1062,7 +1062,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryToCloseConvention = function (args) {
+    Tokenizer.prototype.tryToCloseContext = function (args) {
         var _this = this;
         var context = args.context, pattern = args.pattern, onCloseFlushBufferTo = args.onCloseFlushBufferTo, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
         return this.consumer.advanceAfterMatch({

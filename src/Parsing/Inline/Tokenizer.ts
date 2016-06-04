@@ -164,7 +164,7 @@ export class Tokenizer {
   }
 
   private tryToCloseInlineCode(context: TokenizerContext): boolean {
-    return this.tryToCloseConvention({
+    return this.tryToCloseContext({
       context,
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       onCloseFlushBufferTo: TokenKind.InlineCode
@@ -270,7 +270,7 @@ export class Tokenizer {
   }
 
   private tryToCloseRichSandwich(sandwich: TokenizableRichSandwich, context: TokenizerContext): boolean {
-    return this.tryToCloseConvention({
+    return this.tryToCloseContext({
       pattern: sandwich.endPattern,
       context,
       thenAddAnyClosingTokens: () => {
@@ -296,7 +296,7 @@ export class Tokenizer {
   }
 
   private tryToCloseRawTextBracket(bracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
-    return this.tryToCloseConvention({
+    return this.tryToCloseContext({
       context,
       pattern: bracket.endPattern,
       thenAddAnyClosingTokens: bracket => { this.buffer += bracket }
@@ -304,7 +304,7 @@ export class Tokenizer {
   }
 
   private tryToCloseRichBracket(bracket: TokenizableRichBracket, context: TokenizerContext): boolean {
-    return this.tryToCloseConvention({
+    return this.tryToCloseContext({
       context,
       pattern: bracket.endPattern,
       onCloseFlushBufferTo: TokenKind.PlainText,
@@ -381,7 +381,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseConvention(
+  private tryToCloseContext(
     args: {
       context: TokenizerContext,
       pattern: RegExp,
