@@ -983,7 +983,7 @@ var Tokenizer = (function () {
             pattern: sandwich.endPattern,
             context: context,
             thenAddAnyClosingTokens: function () {
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                _this.flushBufferToPlainTextToken();
                 var startToken = new Token_1.Token({ kind: sandwich.startTokenKind });
                 var endToken = new Token_1.Token({ kind: sandwich.endTokenKind });
                 startToken.associateWith(endToken);
@@ -1019,7 +1019,7 @@ var Tokenizer = (function () {
             pattern: bracket.endPattern,
             context: context,
             thenAddAnyClosingTokens: function () {
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                _this.flushBufferToPlainTextToken();
                 var startToken = new Token_1.Token({ kind: bracket.convention.startTokenKind });
                 var endToken = new Token_1.Token({ kind: bracket.convention.endTokenKind });
                 startToken.associateWith(endToken);
@@ -1060,7 +1060,7 @@ var Tokenizer = (function () {
                     captures[_i - 3] = arguments[_i];
                 }
                 if (flushBufferToPlainTextTokenBeforeOpening) {
-                    _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                    _this.flushBufferToPlainTextToken();
                 }
                 _this.openContext(goal);
                 if (thenAddAnyStartTokens) {
@@ -1115,7 +1115,7 @@ var Tokenizer = (function () {
                     return false;
             }
         }
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+        this.flushBufferToPlainTextToken();
         return true;
     };
     Tokenizer.prototype.backtrackToBeforeContext = function (context) {
@@ -1130,8 +1130,10 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
-        var urlAfterProtocol = this.flushBuffer();
-        this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol });
+        this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd);
+    };
+    Tokenizer.prototype.flushBufferToTokenOfKind = function (kind) {
+        this.createTokenAndAppend({ kind: kind, value: this.flushBuffer() });
     };
     Tokenizer.prototype.hasGoal = function (goal) {
         return this.openContexts.some(function (context) { return context.goal === goal; });
@@ -1153,7 +1155,7 @@ var Tokenizer = (function () {
                 else if (canCloseConvention) {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                _this.flushBufferToPlainTextToken();
                 _this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks });
             }
         });
@@ -1189,11 +1191,8 @@ var Tokenizer = (function () {
         this.buffer = '';
         return buffer;
     };
-    Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
-        var buffer = this.flushBuffer();
-        if (buffer) {
-            this.tokens.push(getPlainTextToken(buffer));
-        }
+    Tokenizer.prototype.flushBufferToPlainTextToken = function () {
+        this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.PlainText);
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }

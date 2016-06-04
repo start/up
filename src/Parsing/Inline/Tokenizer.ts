@@ -248,6 +248,7 @@ export class Tokenizer {
           this.flushBufferToNakedUrlEndToken()
         }
       })
+
       return true
     }
 
@@ -275,7 +276,7 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       thenAddAnyClosingTokens: () => {
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        this.flushBufferToPlainTextToken()
 
         const startToken = new Token({ kind: sandwich.startTokenKind })
         const endToken = new Token({ kind: sandwich.endTokenKind })
@@ -313,7 +314,7 @@ export class Tokenizer {
       pattern: bracket.endPattern,
       context,
       thenAddAnyClosingTokens: () => {
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        this.flushBufferToPlainTextToken()
 
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
@@ -376,7 +377,7 @@ export class Tokenizer {
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         if (flushBufferToPlainTextTokenBeforeOpening) {
-          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+          this.flushBufferToPlainTextToken()
         }
 
         this.openContext(goal)
@@ -444,7 +445,7 @@ export class Tokenizer {
       }
     }
 
-    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+    this.flushBufferToPlainTextToken()
     return true
   }
 
@@ -462,8 +463,11 @@ export class Tokenizer {
   }
 
   private flushBufferToNakedUrlEndToken(): void {
-    const urlAfterProtocol = this.flushBuffer()
-    this.createTokenAndAppend({ kind: TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol })
+    this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
+  }
+
+  private flushBufferToTokenOfKind(kind: TokenKind): void {
+    this.createTokenAndAppend({ kind, value: this.flushBuffer() })
   }
 
   private hasGoal(goal: TokenizerGoal): boolean {
@@ -497,7 +501,7 @@ export class Tokenizer {
           asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
         }
 
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        this.flushBufferToPlainTextToken()
         this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks })
       }
     })
@@ -544,12 +548,8 @@ export class Tokenizer {
     return buffer
   }
 
-  private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
-    const buffer = this.flushBuffer()
-
-    if (buffer) {
-      this.tokens.push(getPlainTextToken(buffer))
-    }
+  private flushBufferToPlainTextToken(): void {
+    this.flushBufferToTokenOfKind(TokenKind.PlainText)
   }
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
