@@ -13,4 +13,9 @@ export class Token {
     this.value = args.value
     this.correspondsToToken = args.correspondsToToken
   }
+  
+  associateWith(other: Token): void {
+    this.correspondsToToken = other
+    other.correspondsToToken = this
+  }
 }

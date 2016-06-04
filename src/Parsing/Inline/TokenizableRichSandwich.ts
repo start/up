@@ -12,11 +12,11 @@ export class TokenizableRichSandwich {
   endTokenKind: TokenKind
 
   constructor(
-args: {
-    startPattern: string,
-    endPattern: string,
-    richConvention: RichConvention
-  }
+    args: {
+      startPattern: string,
+      endPattern: string,
+      richConvention: RichConvention
+    }
   ) {
     this.goal = args.richConvention.tokenizerGoal
     this.startPattern = getPattern(args.startPattern)

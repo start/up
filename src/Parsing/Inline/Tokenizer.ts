@@ -190,7 +190,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.InlineCode,
       pattern: INLINE_CODE_DELIMITER_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: true
+      flushBufferToPlainTextTokenBeforeOpening: true
     })
   }
 
@@ -198,7 +198,7 @@ export class Tokenizer {
     return this.tryToCloseConvention({
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       context,
-      then: () => {
+      thenAddAnyClosingTokens: () => {
         this.createTokenAndAppend({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
       }
     })
@@ -304,7 +304,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_PROTOCOL_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+      flushBufferToPlainTextTokenBeforeOpening: true,
       thenAddAnyStartTokens: urlProtocol => {
         this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
       }
@@ -319,7 +319,7 @@ export class Tokenizer {
     // leading whitespace).
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
       this.closeContext({
-        contextToClose: context,
+        context,
         closeInnerContexts: true,
         thenAddAnyClosingTokens: () => {
           this.flushBufferToNakedUrlEndToken()
@@ -336,7 +336,7 @@ export class Tokenizer {
       return this.tryToOpenConvention({
         goal: media.goal,
         pattern: media.startPattern,
-        flushBufferToPlainTextTokenBeforeOpeningConvention: true,
+        flushBufferToPlainTextTokenBeforeOpening: true,
         thenAddAnyStartTokens: () => {
           this.createTokenAndAppend({ kind: media.startTokenKind })
         }
@@ -348,7 +348,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.MediaUrl,
       pattern: URL_ARROW_PATTERN_DEPCRECATED,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: false,
+      flushBufferToPlainTextTokenBeforeOpening: false,
       thenAddAnyStartTokens: () => {
         this.createTokenAndAppend({ kind: TokenKind.MediaDescription, value: this.flushBuffer() })
       }
@@ -360,7 +360,7 @@ export class Tokenizer {
       pattern: MEDIA_END_PATTERN_DEPCRECATED,
       then: () => {
         this.closeContext({
-          contextToClose: context,
+          context,
           thenAddAnyClosingTokens: () => {
             this.createTokenAndAppend({ kind: TokenKind.MediaUrlAndEnd, value: this.flushBuffer() })
           }
@@ -376,7 +376,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: true
+      flushBufferToPlainTextTokenBeforeOpening: true
     })
   }
 
@@ -384,7 +384,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: bracket.convention.tokenizerGoal,
       pattern: bracket.startPattern,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: true
+      flushBufferToPlainTextTokenBeforeOpening: true
     })
   }
 
@@ -392,14 +392,14 @@ export class Tokenizer {
     return this.tryToCloseConvention({
       pattern: sandwich.endPattern,
       context,
-      then: () => {
+      thenAddAnyClosingTokens: () => {
+        this.flushBufferToPlainTextToken()
+        
         const startToken = new Token({ kind: sandwich.startTokenKind })
         const endToken = new Token({ kind: sandwich.endTokenKind })
-        associate (startToken, endToken)
+        startToken.associateWith(endToken)
         
         this.insertTokenAtStartOfContext(context, startToken)
-
-        this.flushBufferToPlainTextToken()
         this.tokens.push(endToken)
       }
     })
@@ -409,7 +409,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: bracket.goal,
       pattern: bracket.startPattern,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: false,
+      flushBufferToPlainTextTokenBeforeOpening: false,
       thenAddAnyStartTokens: (bracket) => {
         this.buffer += bracket
       }
@@ -420,7 +420,7 @@ export class Tokenizer {
     return this.tryToCloseConvention({
       pattern: bracket.endPattern,
       context,
-      then: (bracket) => {
+      thenAddAnyClosingTokens: (bracket) => {
         this.buffer += bracket
       }
     })
@@ -430,7 +430,7 @@ export class Tokenizer {
     return this.tryToCloseConvention({
       pattern: bracket.endPattern,
       context,
-      then: () => {
+      thenAddAnyClosingTokens: () => {
         this.flushBufferToPlainTextToken()
         
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
@@ -438,7 +438,7 @@ export class Tokenizer {
         
         const startToken = new Token({ kind: bracket.convention.startTokenKind })
         const endToken = new Token({ kind: bracket.convention.endTokenKind })
-        associate(startToken, endToken)
+        startToken.associateWith(endToken)
         
         const startBracketToken = getPlainTextToken(bracket.rawStartBracket)
         const endBracketToken = getPlainTextToken(bracket.rawEndBracket)
@@ -451,12 +451,13 @@ export class Tokenizer {
 
   private closeContext(
     args: {
-      contextToClose: TokenizerContext,
+      context: TokenizerContext,
       closeInnerContexts?: boolean,
       thenAddAnyClosingTokens: () => void
     }
   ): void {
-    const { contextToClose, closeInnerContexts, thenAddAnyClosingTokens } = args
+    const { closeInnerContexts, thenAddAnyClosingTokens } = args
+    const contextToClose = args.context
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
@@ -483,16 +484,16 @@ export class Tokenizer {
     args: {
       goal: TokenizerGoal,
       pattern: RegExp,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: boolean
+      flushBufferToPlainTextTokenBeforeOpening: boolean
       thenAddAnyStartTokens?: OnTokenizerMatch
     }
   ): boolean {
-    const { goal, pattern, flushBufferToPlainTextTokenBeforeOpeningConvention, thenAddAnyStartTokens } = args
+    const { goal, pattern, flushBufferToPlainTextTokenBeforeOpening, thenAddAnyStartTokens } = args
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        if (flushBufferToPlainTextTokenBeforeOpeningConvention) {
+        if (flushBufferToPlainTextTokenBeforeOpening) {
           this.flushBufferToPlainTextToken()
         }
 
@@ -508,19 +509,19 @@ export class Tokenizer {
   private tryToCloseConvention(
     args: {
       pattern: RegExp,
-      context: TokenizerContext
-      then: OnTokenizerMatch
+      context: TokenizerContext,
+      thenAddAnyClosingTokens: OnTokenizerMatch
     }
   ): boolean {
-    const {  pattern, context, then } = args
+    const {  pattern, context, thenAddAnyClosingTokens } = args
 
     return this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         this.closeContext({
-          contextToClose: context,
+          context,
           thenAddAnyClosingTokens: () => {
-            then(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+            thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
           }
         })
       }
@@ -663,7 +664,9 @@ export class Tokenizer {
     }
   }
 
-  // This method always returns true, which allows us to use some cleaner boolean logic.
+  // This method always returns true. Why?
+  //
+  // It allows us to cleanly chain it with other boolean tokenizer methods, using this method as a last resort. 
   private bufferCurrentChar(): boolean {
     this.buffer += this.consumer.currentChar
     this.consumer.advanceTextIndex(1)
@@ -730,9 +733,4 @@ const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
 
 function getPlainTextToken(value: string) {
   return new Token({ kind: TokenKind.PlainText, value })
-}
-
-function associate(startToken: Token, endToken: Token): void {
-  startToken.correspondsToToken = endToken
-  endToken.correspondsToToken = startToken
 }
