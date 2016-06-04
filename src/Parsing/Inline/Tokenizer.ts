@@ -199,7 +199,7 @@ export class Tokenizer {
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       context,
       then: () => {
-        this.addToken({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
+        this.createTokenAndAppend({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
       }
     })
   }
@@ -306,7 +306,7 @@ export class Tokenizer {
       pattern: NAKED_URL_PROTOCOL_PATTERN,
       flushBufferToPlainTextTokenBeforeOpeningConvention: true,
       thenAddAnyStartTokens: urlProtocol => {
-        this.addToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+        this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
       }
     })
   }
@@ -338,7 +338,7 @@ export class Tokenizer {
         pattern: media.startPattern,
         flushBufferToPlainTextTokenBeforeOpeningConvention: true,
         thenAddAnyStartTokens: () => {
-          this.addToken({ kind: media.startTokenKind })
+          this.createTokenAndAppend({ kind: media.startTokenKind })
         }
       })
     })
@@ -350,7 +350,7 @@ export class Tokenizer {
       pattern: URL_ARROW_PATTERN_DEPCRECATED,
       flushBufferToPlainTextTokenBeforeOpeningConvention: false,
       thenAddAnyStartTokens: () => {
-        this.addToken({ kind: TokenKind.MediaDescription, value: this.flushBuffer() })
+        this.createTokenAndAppend({ kind: TokenKind.MediaDescription, value: this.flushBuffer() })
       }
     })
   }
@@ -362,7 +362,7 @@ export class Tokenizer {
         this.closeContext({
           contextToClose: context,
           thenAddAnyClosingTokens: () => {
-            this.addToken({ kind: TokenKind.MediaUrlAndEnd, value: this.flushBuffer() })
+            this.createTokenAndAppend({ kind: TokenKind.MediaUrlAndEnd, value: this.flushBuffer() })
           }
         })
 
@@ -393,10 +393,14 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       then: () => {
-        this.insertTokenAtStartOfContext(context, new Token({ kind: sandwich.startTokenKind }))
+        const startToken = new Token({ kind: sandwich.startTokenKind })
+        const endToken = new Token({ kind: sandwich.endTokenKind })
+        associate (startToken, endToken)
+        
+        this.insertTokenAtStartOfContext(context, startToken)
 
         this.flushBufferToPlainTextToken()
-        this.addToken({ kind: sandwich.endTokenKind })
+        this.tokens.push(endToken)
       }
     })
   }
@@ -432,11 +436,16 @@ export class Tokenizer {
         const startToken = new Token({ kind: bracket.convention.startTokenKind })
         const endToken = new Token({ kind: bracket.convention.endTokenKind })
         
+        associate(startToken, endToken)
+        
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
 
-        this.insertTokensAtStartOfContext(context, startToken, getPlainTextToken(bracket.rawStartBracket))
-        this.addTokens(getPlainTextToken(bracket.rawEndBracket), endToken)
+        this.insertTokensAtStartOfContext(
+          context, startToken, getPlainTextToken(bracket.rawStartBracket))
+        
+        this.tokens.push(
+          getPlainTextToken(bracket.rawEndBracket), endToken)
       }
     })
   }
@@ -592,7 +601,7 @@ export class Tokenizer {
     const urlAfterProtocol = this.flushBuffer()
 
     if (urlAfterProtocol) {
-      this.addToken({ kind: TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol })
+      this.createTokenAndAppend({ kind: TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol })
     }
   }
 
@@ -628,17 +637,13 @@ export class Tokenizer {
         }
 
         this.flushBufferToPlainTextToken()
-        this.addToken({ kind: asteriskTokenKind, value: asterisks })
+        this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks })
       }
     })
   }
 
-  private addToken(args: NewTokenArgs): void {
+  private createTokenAndAppend(args: NewTokenArgs): void {
     this.tokens.push(new Token(args))
-  }
-
-  private addTokens(...tokens: Token[]): void {
-    this.tokens.push(...tokens)
   }
 
   private insertTokenAtStartOfContext(context: TokenizerContext, token: Token): void {
@@ -682,7 +687,7 @@ export class Tokenizer {
     const buffer = this.flushBuffer()
 
     if (buffer) {
-      this.addToken(getPlainTextToken(buffer))
+      this.createTokenAndAppend(getPlainTextToken(buffer))
     }
   }
 
@@ -749,4 +754,9 @@ const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
 
 function getPlainTextToken(value: string) {
   return new Token({ kind: TokenKind.PlainText, value })
+}
+
+function associate(startToken: Token, endToken: Token): void {
+  startToken.correspondsToToken = endToken
+  endToken.correspondsToToken = startToken
 }

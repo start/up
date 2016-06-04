@@ -3,6 +3,6 @@ import { TokenKind } from './TokenKind'
 
 export interface NewTokenArgs {
   kind: TokenKind
-  value?: string
-  correspondsTo?: Token
+  value?: string,
+  correspondsToToken?: Token
 }
