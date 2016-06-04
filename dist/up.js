@@ -919,10 +919,10 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
         var _this = this;
         return this.tryToCloseContext({
-            pattern: sandwich.endPattern,
             context: context,
+            pattern: sandwich.endPattern,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             thenAddAnyClosingTokens: function () {
-                _this.flushBufferToPlainTextToken();
                 var startToken = new Token_1.Token({ kind: sandwich.startTokenKind });
                 var endToken = new Token_1.Token({ kind: sandwich.endTokenKind });
                 startToken.associateWith(endToken);
@@ -1117,7 +1117,8 @@ var Tokenizer = (function () {
         this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd);
     };
     Tokenizer.prototype.flushBufferToTokenOfKind = function (kind) {
-        this.createTokenAndAppend({ kind: kind, value: this.flushBuffer() });
+        this.createTokenAndAppend({ kind: kind, value: this.buffer });
+        this.buffer = '';
     };
     Tokenizer.prototype.hasGoal = function (goal) {
         return this.openContexts.some(function (context) { return context.goal === goal; });
@@ -1169,11 +1170,6 @@ var Tokenizer = (function () {
         this.buffer += this.consumer.currentChar;
         this.consumer.advanceTextIndex(1);
         return true;
-    };
-    Tokenizer.prototype.flushBuffer = function () {
-        var buffer = this.buffer;
-        this.buffer = '';
-        return buffer;
     };
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.PlainText);

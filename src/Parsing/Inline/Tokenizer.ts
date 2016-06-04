@@ -206,11 +206,10 @@ export class Tokenizer {
 
   private tryToCloseRichSandwich(sandwich: TokenizableRichSandwich, context: TokenizerContext): boolean {
     return this.tryToCloseContext({
-      pattern: sandwich.endPattern,
       context,
+      pattern: sandwich.endPattern,
+      onCloseFlushBufferTo: TokenKind.PlainText,
       thenAddAnyClosingTokens: () => {
-        this.flushBufferToPlainTextToken()
-
         const startToken = new Token({ kind: sandwich.startTokenKind })
         const endToken = new Token({ kind: sandwich.endTokenKind })
         startToken.associateWith(endToken)
@@ -319,12 +318,7 @@ export class Tokenizer {
     return false
   }
 
-  private closeContext(
-    args: {
-      context: TokenizerContext,
-      closeInnerContexts?: boolean
-    }
-  ): void {
+  private closeContext(args: { context: TokenizerContext, closeInnerContexts?: boolean}): void {
     const { closeInnerContexts } = args
     const contextToClose = args.context
 
@@ -452,7 +446,8 @@ export class Tokenizer {
   }
 
   private flushBufferToTokenOfKind(kind: TokenKind): void {
-    this.createTokenAndAppend({ kind, value: this.flushBuffer() })
+    this.createTokenAndAppend({ kind, value: this.buffer })
+    this.buffer = ''
   }
 
   private hasGoal(goal: TokenizerGoal): boolean {
@@ -515,13 +510,6 @@ export class Tokenizer {
     this.consumer.advanceTextIndex(1)
 
     return true
-  }
-
-  private flushBuffer(): string {
-    const buffer = this.buffer
-    this.buffer = ''
-
-    return buffer
   }
 
   private flushBufferToPlainTextToken(): void {
