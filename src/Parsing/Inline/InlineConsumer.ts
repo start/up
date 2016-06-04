@@ -49,6 +49,10 @@ export class InlineConsumer {
     const [match, ...captures] = result
 
     const charAfterMatch = this.entireText[this._textIndex + match.length]
+    
+    // If the next character in the raw source text is non-whitespace, we consider the match to be touching the
+    // beginning of a word. The next character can be anything, even be a backslash! We only care whether the
+    // match appears to be touching the beginning of something.
     const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
 
     if (then) {
@@ -65,6 +69,10 @@ export class InlineConsumer {
     this._currentChar = this._remainingText[0]
 
     const previousChar = this.entireText[this._textIndex - 1]
+    
+    // If the previous character in the raw source text was non-whitespace, we consider the current character to be
+    // touching the end of a word. We don't care whether the previous character was escaped or not; we only care about
+    // whether the current character appears to be touching the end of something.
     this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
   }
 }

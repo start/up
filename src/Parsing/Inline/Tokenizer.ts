@@ -312,7 +312,7 @@ export class Tokenizer {
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
       this.closeContext({ context, closeInnerContexts: true })
       this.flushBufferToNakedUrlEndToken()
-          
+      
       return true
     }
 
@@ -464,16 +464,7 @@ export class Tokenizer {
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
 
       then: (asterisks, isTouchingWordEnd, isTouchingWordStart) => {
-        // If the previous character in the raw source text was whitespace, this token cannot end any raised-voice
-        // conventions. That's because the token needs to look like it's touching the end of the text it's affecting.
-        //
-        // We're only concerned with how the asterisks appear in the surrounding raw text. Therefore, at least for now,
-        // we don't care whether any preceding whitespace is escaped or not.
         const canCloseConvention = isTouchingWordEnd
-
-        // Likewise, a token cannot begin any raised-voice conventions if the next character in the raw source text 
-        // is whitespace. That's because the token must look like it's touching the beginning of the text it's
-        // affecting. At least for now, the next raw character can even be a backslash!
         const canOpenConvention = isTouchingWordStart
 
         let asteriskTokenKind = TokenKind.PlainText
