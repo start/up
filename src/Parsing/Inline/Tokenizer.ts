@@ -361,7 +361,7 @@ export class Tokenizer {
           this.flushBufferToPlainTextToken()
         }
 
-        this.openContexts.push(new TokenizerContext(goal, this.getSnapshot()))
+        this.openContexts.push(new TokenizerContext(goal, this.getCurrentSnapshot()))
 
         if (thenAddAnyStartTokens) {
           thenAddAnyStartTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -396,7 +396,7 @@ export class Tokenizer {
     })
   }
 
-  private getSnapshot(): TokenizerSnapshot {
+  private getCurrentSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
       textIndex: this.consumer.textIndex,
       tokens: this.tokens,

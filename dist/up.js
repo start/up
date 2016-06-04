@@ -1048,7 +1048,7 @@ var Tokenizer = (function () {
                 if (flushBufferToPlainTextTokenBeforeOpening) {
                     _this.flushBufferToPlainTextToken();
                 }
-                _this.openContexts.push(new TokenizerContext_1.TokenizerContext(goal, _this.getSnapshot()));
+                _this.openContexts.push(new TokenizerContext_1.TokenizerContext(goal, _this.getCurrentSnapshot()));
                 if (thenAddAnyStartTokens) {
                     thenAddAnyStartTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
                 }
@@ -1075,7 +1075,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.getSnapshot = function () {
+    Tokenizer.prototype.getCurrentSnapshot = function () {
         return new TokenizerSnapshot_1.TokenizerSnapshot({
             textIndex: this.consumer.textIndex,
             tokens: this.tokens,
