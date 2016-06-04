@@ -572,8 +572,6 @@ export class Tokenizer {
   }
 
   private backtrackToBeforeContext(context: TokenizerContext): void {
-    context.reset()
-
     this.failedGoalTracker.registerFailure(context)
 
     this.tokens = context.snapshot.tokens
@@ -581,6 +579,10 @@ export class Tokenizer {
     this.buffer = context.snapshot.bufferedText
 
     this.consumer.textIndex = context.snapshot.textIndex
+    
+    for (const remainingContext of this.openContexts) {
+      remainingContext.reset() 
+    }
   }
 
   private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
@@ -592,8 +594,6 @@ export class Tokenizer {
         return
       }
     }
-
-    throw new Error(`Goal was missing: ${TokenizerGoal[goal]}`)
   }
 
   private flushBufferToNakedUrlEndToken(): void {

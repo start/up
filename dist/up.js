@@ -1202,12 +1202,15 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.backtrackToBeforeContext = function (context) {
-        context.reset();
         this.failedGoalTracker.registerFailure(context);
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
         this.buffer = context.snapshot.bufferedText;
         this.consumer.textIndex = context.snapshot.textIndex;
+        for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
+            var remainingContext = _a[_i];
+            remainingContext.reset();
+        }
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
@@ -1217,7 +1220,6 @@ var Tokenizer = (function () {
                 return;
             }
         }
-        throw new Error("Goal was missing: " + TokenizerGoal_1.TokenizerGoal[goal]);
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
         var urlAfterProtocol = this.flushBuffer();
