@@ -1,4 +1,4 @@
-import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../../Patterns'
+import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
 import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
@@ -34,7 +34,7 @@ export class Tokenizer {
   private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
-  // flushed to a token, asually a PlainTextToken.
+  // flushed to a token, usually a PlainTextToken.
   private buffer = ''
 
   private richBrackets = [
@@ -66,8 +66,8 @@ export class Tokenizer {
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
-
     this.configureConventions(config)
+    
     this.tokenize()
   }
 
@@ -587,9 +587,6 @@ const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
 
 const WHITESPACE_CHAR_PATTERN = new RegExp(
   WHITESPACE_CHAR)
-
-const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
-  NON_WHITESPACE_CHAR)
 
 
 function getPlainTextToken(value: string) {
