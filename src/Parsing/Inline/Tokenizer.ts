@@ -513,9 +513,7 @@ export class Tokenizer {
     this.tokens.splice(newTokenIndex, 0, token)
 
     for (const openContext of this.openContexts) {
-      if (openContext !== context) {
-        openContext.registerTokenInsertion({ atIndex: newTokenIndex })
-      }
+      openContext.registerTokenInsertion({ atIndex: newTokenIndex, forContext: context })
     }
   }
 

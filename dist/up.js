@@ -1166,9 +1166,7 @@ var Tokenizer = (function () {
         this.tokens.splice(newTokenIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
-            if (openContext !== context) {
-                openContext.registerTokenInsertion({ atIndex: newTokenIndex });
-            }
+            openContext.registerTokenInsertion({ atIndex: newTokenIndex, forContext: context });
         }
     };
     Tokenizer.prototype.insertTokensAtStartOfContext = function (context) {
@@ -1225,7 +1223,11 @@ var TokenizerContext = (function () {
         this.reset();
     }
     TokenizerContext.prototype.registerTokenInsertion = function (args) {
-        if (this.initialTokenIndex >= args.atIndex) {
+        var atIndex = args.atIndex, forContext = args.forContext;
+        if (this === forContext) {
+            return;
+        }
+        if (args.atIndex < this.initialTokenIndex) {
             this.initialTokenIndex += 1;
         }
     };
