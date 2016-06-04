@@ -47,10 +47,10 @@ export class Tokenizer {
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
   private rawTextBrackets = [
-    new TokenizableRawTextBracket(TokenizerGoal.ParenthesizedInRawText, PARENTHESIS),
-    new TokenizableRawTextBracket(TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET),
-    new TokenizableRawTextBracket(TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
-  ]
+    { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
+    { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
+    { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
+  ].map(args => new TokenizableRawTextBracket(args))
 
   // A rich sandwich:
   //
@@ -60,7 +60,6 @@ export class Tokenizer {
   // Some of rich sandwiches rely on user-configurable values, so we assign this field in the
   // `configureConventions` method where we have access to the user's config settings.
   private richSandwiches: TokenizableRichSandwich[]
-  
   
   // These conventions are for images, audio, and video. They also rely on user-configurable values.
   private mediaConventions: TokenizableMedia[]

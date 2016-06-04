@@ -722,10 +722,10 @@ function getPattern(pattern, flags) {
 "use strict";
 var Patterns_1 = require('../../Patterns');
 var TokenizableRawTextBracket = (function () {
-    function TokenizableRawTextBracket(goal, bracket) {
-        this.goal = goal;
-        this.startPattern = getPattern(bracket.startPattern);
-        this.endPattern = getPattern(bracket.endPattern);
+    function TokenizableRawTextBracket(args) {
+        this.goal = args.goal;
+        this.startPattern = getPattern(args.bracket.startPattern);
+        this.endPattern = getPattern(args.bracket.endPattern);
     }
     return TokenizableRawTextBracket;
 }());
@@ -800,10 +800,10 @@ var Tokenizer = (function () {
             new TokenizableRichBracket_1.TokenizableRichBracket(RichConventions_1.SQUARE_BRACKETED, SQUARE_BRACKET)
         ];
         this.rawTextBrackets = [
-            new TokenizableRawTextBracket_1.TokenizableRawTextBracket(TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, PARENTHESIS),
-            new TokenizableRawTextBracket_1.TokenizableRawTextBracket(TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET),
-            new TokenizableRawTextBracket_1.TokenizableRawTextBracket(TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
-        ];
+            { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
+            { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
+            { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
+        ].map(function (args) { return new TokenizableRawTextBracket_1.TokenizableRawTextBracket(args); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
         this.tokenize();
