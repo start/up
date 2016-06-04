@@ -6,7 +6,7 @@ import { StartMarker } from './StartMarker'
 
 export class EndMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
-    return this.tokenKinds.map(kind => new Token(kind))
+    return this.tokenKinds.map(kind => new Token({ kind }))
   }
 
   matchAnyApplicableStartMarkers(markers: RaisedVoiceMarker[]): void {

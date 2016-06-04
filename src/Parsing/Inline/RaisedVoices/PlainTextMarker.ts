@@ -4,6 +4,8 @@ import { RaisedVoiceMarker } from './RaisedVoiceMarker'
 
 export class PlainTextMarker extends RaisedVoiceMarker {
   tokens(): Token[] {
-    return [new Token(TokenKind.PlainText, this.originalAsterisks)]
+    return [
+      new Token({ kind: TokenKind.PlainText, value: this.originalAsterisks })
+    ]
   }
 }

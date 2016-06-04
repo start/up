@@ -331,7 +331,7 @@ var EndMarker = (function (_super) {
         _super.apply(this, arguments);
     }
     EndMarker.prototype.tokens = function () {
-        return this.tokenKinds.map(function (kind) { return new Token_1.Token(kind); });
+        return this.tokenKinds.map(function (kind) { return new Token_1.Token({ kind: kind }); });
     };
     EndMarker.prototype.matchAnyApplicableStartMarkers = function (markers) {
         var availableStartMarkersFromMostRecentToLeast = (markers
@@ -411,7 +411,9 @@ var PlainTextMarker = (function (_super) {
         _super.apply(this, arguments);
     }
     PlainTextMarker.prototype.tokens = function () {
-        return [new Token_1.Token(TokenKind_1.TokenKind.PlainText, this.originalAsterisks)];
+        return [
+            new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: this.originalAsterisks })
+        ];
     };
     return PlainTextMarker;
 }(RaisedVoiceMarker_1.RaisedVoiceMarker));
@@ -489,7 +491,7 @@ var StartMarker = (function (_super) {
     }
     StartMarker.prototype.tokens = function () {
         return (this.tokenKinds
-            .map(function (kind) { return new Token_1.Token(kind); })
+            .map(function (kind) { return new Token_1.Token({ kind: kind }); })
             .reverse());
     };
     StartMarker.prototype.startStressAndEmphasisTogether = function (countAsterisksInCommonWithEndMarker) {
@@ -648,9 +650,10 @@ exports.LINK = LINK;
 },{"../../SyntaxNodes/ActionNode":47,"../../SyntaxNodes/EmphasisNode":56,"../../SyntaxNodes/FootnoteNode":59,"../../SyntaxNodes/ParenthesizedNode":73,"../../SyntaxNodes/RevisionDeletionNode":75,"../../SyntaxNodes/RevisionInsertionNode":76,"../../SyntaxNodes/SpoilerNode":79,"../../SyntaxNodes/SquareBracketedNode":80,"../../SyntaxNodes/StressNode":81,"./TokenKind":19,"./TokenizerGoal":26}],14:[function(require,module,exports){
 "use strict";
 var Token = (function () {
-    function Token(kind, value) {
-        this.kind = kind;
-        this.value = value;
+    function Token(args) {
+        this.kind = args.kind;
+        this.value = args.value;
+        this.correspondsTo = args.correspondsTo;
     }
     return Token;
 }());
@@ -1015,7 +1018,7 @@ var Tokenizer = (function () {
                 _this.closeContext({
                     contextToClose: context,
                     thenAddAnyClosingTokens: function () {
-                        _this.addToken(TokenKind_1.TokenKind.InlineCode, _this.flushBuffer());
+                        _this.addToken({ kind: TokenKind_1.TokenKind.InlineCode, value: _this.flushBuffer() });
                     }
                 });
             }
@@ -1103,7 +1106,7 @@ var Tokenizer = (function () {
             pattern: NAKED_URL_PROTOCOL_PATTERN,
             flushBufferToPlainTextTokenBeforeOpeningConvention: true,
             thenAddAnyStartTokens: function (urlProtocol) {
-                _this.addToken(TokenKind_1.TokenKind.NakedUrlProtocolAndStart, urlProtocol);
+                _this.addToken({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol });
             }
         });
     };
@@ -1129,7 +1132,7 @@ var Tokenizer = (function () {
                 pattern: media.startPattern,
                 flushBufferToPlainTextTokenBeforeOpeningConvention: true,
                 thenAddAnyStartTokens: function () {
-                    _this.addToken(media.startTokenKind);
+                    _this.addToken({ kind: media.startTokenKind });
                 }
             });
         });
@@ -1141,7 +1144,7 @@ var Tokenizer = (function () {
             pattern: URL_ARROW_PATTERN_DEPCRECATED,
             flushBufferToPlainTextTokenBeforeOpeningConvention: false,
             thenAddAnyStartTokens: function () {
-                _this.addToken(TokenKind_1.TokenKind.MediaDescription, _this.flushBuffer());
+                _this.addToken({ kind: TokenKind_1.TokenKind.MediaDescription, value: _this.flushBuffer() });
             }
         });
     };
@@ -1153,7 +1156,7 @@ var Tokenizer = (function () {
                 _this.closeContext({
                     contextToClose: context,
                     thenAddAnyClosingTokens: function () {
-                        _this.addToken(TokenKind_1.TokenKind.MediaUrlAndEnd, _this.flushBuffer());
+                        _this.addToken({ kind: TokenKind_1.TokenKind.MediaUrlAndEnd, value: _this.flushBuffer() });
                     }
                 });
                 _this.openContexts.pop();
@@ -1184,9 +1187,9 @@ var Tokenizer = (function () {
             pattern: sandwich.endPattern,
             context: context,
             then: function () {
-                _this.insertTokenAtStartOfContext(context, sandwich.startTokenKind);
+                _this.insertTokenAtStartOfContext(context, new Token_1.Token({ kind: sandwich.startTokenKind }));
                 _this.flushBufferToPlainTextToken();
-                _this.addToken(sandwich.endTokenKind);
+                _this.addToken({ kind: sandwich.endTokenKind });
             }
         });
     };
@@ -1217,9 +1220,9 @@ var Tokenizer = (function () {
             pattern: bracket.endPattern,
             context: context,
             then: function () {
-                _this.insertTokensAtStartOfContext(context, new Token_1.Token(bracket.convention.startTokenKind), new Token_1.Token(TokenKind_1.TokenKind.PlainText, bracket.rawStartBracket));
+                _this.insertTokensAtStartOfContext(context, new Token_1.Token({ kind: bracket.convention.startTokenKind }), new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket.rawStartBracket }));
                 _this.flushBufferToPlainTextToken();
-                _this.addTokens(new Token_1.Token(TokenKind_1.TokenKind.PlainText, bracket.rawEndBracket), new Token_1.Token(bracket.convention.endTokenKind));
+                _this.addTokens(new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket.rawEndBracket }), new Token_1.Token({ kind: bracket.convention.endTokenKind }));
             }
         });
     };
@@ -1331,7 +1334,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
         var urlAfterProtocol = this.flushBuffer();
         if (urlAfterProtocol) {
-            this.addToken(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, urlAfterProtocol);
+            this.addToken({ kind: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol });
         }
     };
     Tokenizer.prototype.hasGoal = function (goal) {
@@ -1355,26 +1358,24 @@ var Tokenizer = (function () {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
                 _this.flushBufferToPlainTextToken();
-                _this.addToken(asteriskTokenKind, asterisks);
+                _this.addToken({ kind: asteriskTokenKind, value: asterisks });
             }
         });
     };
-    Tokenizer.prototype.addToken = function (kind, value) {
-        this.tokens.push(new Token_1.Token(kind, value));
+    Tokenizer.prototype.addToken = function (args) {
+        this.tokens.push(new Token_1.Token(args));
     };
     Tokenizer.prototype.addTokens = function () {
         var tokens = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             tokens[_i - 0] = arguments[_i];
         }
-        for (var _a = 0, tokens_1 = tokens; _a < tokens_1.length; _a++) {
-            var token = tokens_1[_a];
-            this.addToken(token.kind, token.value);
-        }
+        (_a = this.tokens).push.apply(_a, tokens);
+        var _a;
     };
-    Tokenizer.prototype.insertTokenAtStartOfContext = function (context, kind, value) {
+    Tokenizer.prototype.insertTokenAtStartOfContext = function (context, token) {
         var newTokenIndex = context.initialTokenIndex;
-        this.tokens.splice(newTokenIndex, 0, new Token_1.Token(kind, value));
+        this.tokens.splice(newTokenIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
             if (openContext !== context) {
@@ -1389,7 +1390,7 @@ var Tokenizer = (function () {
         }
         for (var i = tokens.length - 1; i >= 0; i--) {
             var token = tokens[i];
-            this.insertTokenAtStartOfContext(context, token.kind, token.value);
+            this.insertTokenAtStartOfContext(context, token);
         }
     };
     Tokenizer.prototype.bufferCurrentChar = function () {
@@ -1405,7 +1406,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         var buffer = this.flushBuffer();
         if (buffer) {
-            this.addToken(TokenKind_1.TokenKind.PlainText, buffer);
+            this.addToken({ kind: TokenKind_1.TokenKind.PlainText, value: buffer });
         }
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {

@@ -20,16 +20,15 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
+import { NewTokenArgs } from './NewTokenArgs'
 
 
 export class Tokenizer {
   tokens: Token[] = []
 
   private consumer: InlineConsumer
-  
+
   // Any time we open a new convention, we add it to `openContexts`.
-  //
-  // Most conventions need to be closed by the time we consume the last character of the text.
   private openContexts: TokenizerContext[] = []
 
   private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
@@ -61,7 +60,7 @@ export class Tokenizer {
     startPattern: CURLY_BRACKET.startPattern,
     endPattern: CURLY_BRACKET.endPattern
   })
-  
+
   private richBrackets = [
     new TokenizableRichBracket(PARENTHESIZED, PARENTHESIS),
     new TokenizableRichBracket(SQUARE_BRACKETED, SQUARE_BRACKET)
@@ -205,7 +204,7 @@ export class Tokenizer {
         this.closeContext({
           contextToClose: context,
           thenAddAnyClosingTokens: () => {
-            this.addToken(TokenKind.InlineCode, this.flushBuffer())
+            this.addToken({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
           }
         })
       }
@@ -314,7 +313,7 @@ export class Tokenizer {
       pattern: NAKED_URL_PROTOCOL_PATTERN,
       flushBufferToPlainTextTokenBeforeOpeningConvention: true,
       thenAddAnyStartTokens: urlProtocol => {
-        this.addToken(TokenKind.NakedUrlProtocolAndStart, urlProtocol)
+        this.addToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
       }
     })
   }
@@ -346,7 +345,7 @@ export class Tokenizer {
         pattern: media.startPattern,
         flushBufferToPlainTextTokenBeforeOpeningConvention: true,
         thenAddAnyStartTokens: () => {
-          this.addToken(media.startTokenKind)
+          this.addToken({ kind: media.startTokenKind })
         }
       })
     })
@@ -358,7 +357,7 @@ export class Tokenizer {
       pattern: URL_ARROW_PATTERN_DEPCRECATED,
       flushBufferToPlainTextTokenBeforeOpeningConvention: false,
       thenAddAnyStartTokens: () => {
-        this.addToken(TokenKind.MediaDescription, this.flushBuffer())
+        this.addToken({ kind: TokenKind.MediaDescription, value: this.flushBuffer() })
       }
     })
   }
@@ -370,7 +369,7 @@ export class Tokenizer {
         this.closeContext({
           contextToClose: context,
           thenAddAnyClosingTokens: () => {
-            this.addToken(TokenKind.MediaUrlAndEnd, this.flushBuffer())
+            this.addToken({ kind: TokenKind.MediaUrlAndEnd, value: this.flushBuffer() })
           }
         })
 
@@ -407,10 +406,10 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       then: () => {
-        this.insertTokenAtStartOfContext(context, sandwich.startTokenKind)
-        
+        this.insertTokenAtStartOfContext(context, new Token({ kind: sandwich.startTokenKind }))
+
         this.flushBufferToPlainTextToken()
-        this.addToken(sandwich.endTokenKind)
+        this.addToken({ kind: sandwich.endTokenKind })
       }
     })
   }
@@ -443,18 +442,18 @@ export class Tokenizer {
       then: () => {
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
-        
+
         this.insertTokensAtStartOfContext(
           context,
-          new Token(bracket.convention.startTokenKind),
-          new Token(TokenKind.PlainText, bracket.rawStartBracket))
-        
+          new Token({ kind: bracket.convention.startTokenKind }),
+          new Token({ kind: TokenKind.PlainText, value: bracket.rawStartBracket }))
+
         // To be clear, this plain text token appears after any tokens already added inside the rich bracket.
         this.flushBufferToPlainTextToken()
-        
+
         this.addTokens(
-          new Token(TokenKind.PlainText, bracket.rawEndBracket),
-          new Token(bracket.convention.endTokenKind))
+          new Token({ kind: TokenKind.PlainText, value: bracket.rawEndBracket }),
+          new Token({ kind: bracket.convention.endTokenKind }))
       }
     })
   }
@@ -607,14 +606,14 @@ export class Tokenizer {
     const urlAfterProtocol = this.flushBuffer()
 
     if (urlAfterProtocol) {
-      this.addToken(TokenKind.NakedUrlAfterProtocolAndEnd, urlAfterProtocol)
+      this.addToken({ kind: TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol })
     }
   }
 
   private hasGoal(goal: TokenizerGoal): boolean {
     return this.openContexts.some(context => context.goal === goal)
   }
-  
+
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -643,25 +642,23 @@ export class Tokenizer {
         }
 
         this.flushBufferToPlainTextToken()
-        this.addToken(asteriskTokenKind, asterisks)
+        this.addToken({ kind: asteriskTokenKind, value: asterisks })
       }
     })
   }
 
-  private addToken(kind: TokenKind, value?: string): void {
-    this.tokens.push(new Token(kind, value))
+  private addToken(args: NewTokenArgs): void {
+    this.tokens.push(new Token(args))
   }
 
   private addTokens(...tokens: Token[]): void {
-    for (const token of tokens) {
-      this.addToken(token.kind, token.value)
-    }
+    this.tokens.push(...tokens)
   }
 
-  private insertTokenAtStartOfContext(context: TokenizerContext, kind: TokenKind, value?: string): void {
+  private insertTokenAtStartOfContext(context: TokenizerContext, token: Token): void {
     const newTokenIndex = context.initialTokenIndex
-    
-    this.tokens.splice(newTokenIndex, 0, new Token(kind, value))
+
+    this.tokens.splice(newTokenIndex, 0, token)
 
     for (const openContext of this.openContexts) {
       if (openContext !== context) {
@@ -669,14 +666,14 @@ export class Tokenizer {
       }
     }
   }
-  
+
 
   private insertTokensAtStartOfContext(context: TokenizerContext, ...tokens: Token[]): void {
     // When we insert a token at the start of a context through `insertTokenAtStartOfContext`, that context's start
     // index isn't affected. To preserve the order the tokens appear in `tokens`, we'll insert them in reverse.
     for (let i = tokens.length - 1; i >= 0; i--) {
-      const token = tokens[i]      
-      this.insertTokenAtStartOfContext(context, token.kind, token.value)
+      const token = tokens[i]
+      this.insertTokenAtStartOfContext(context, token)
     }
   }
 
@@ -699,7 +696,7 @@ export class Tokenizer {
     const buffer = this.flushBuffer()
 
     if (buffer) {
-      this.addToken(TokenKind.PlainText, buffer)
+      this.addToken({ kind: TokenKind.PlainText, value: buffer })
     }
   }
 
@@ -733,10 +730,10 @@ const PARENTHESIS =
 
 const SQUARE_BRACKET =
   new Bracket('[', ']')
-  
+
 const CURLY_BRACKET =
   new Bracket('{', '}')
-  
+
 
 const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
   startsWith('`'))

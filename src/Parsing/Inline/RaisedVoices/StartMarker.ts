@@ -10,7 +10,7 @@ export class StartMarker extends RaisedVoiceMarker {
     // beginnings of conventions in reverse order. 
     return (
       this.tokenKinds
-        .map(kind => new Token(kind))
+        .map(kind => new Token({ kind }))
         .reverse()
     )
   }
