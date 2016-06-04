@@ -37,30 +37,6 @@ export class Tokenizer {
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
 
-  private footnoteConvention = new TokenizableRichSandwich({
-    richConvention: FOOTNOTE,
-    startPattern: ANY_WHITESPACE + escapeForRegex('(('),
-    endPattern: escapeForRegex('))')
-  })
-
-  private revisionDeletionConvention = new TokenizableRichSandwich({
-    richConvention: REVISION_DELETION,
-    startPattern: '~~',
-    endPattern: '~~'
-  })
-
-  private revisionInsertionConvention = new TokenizableRichSandwich({
-    richConvention: REVISION_INSERTION,
-    startPattern: escapeForRegex('++'),
-    endPattern: escapeForRegex('++')
-  })
-
-  private actionConvention = new TokenizableRichSandwich({
-    richConvention: ACTION,
-    startPattern: CURLY_BRACKET.startPattern,
-    endPattern: CURLY_BRACKET.endPattern
-  })
-
   private richBrackets = [
     new TokenizableRichBracket(PARENTHESIZED, PARENTHESIS),
     new TokenizableRichBracket(SQUARE_BRACKETED, SQUARE_BRACKET)
@@ -76,20 +52,18 @@ export class Tokenizer {
     new TokenizableRawTextBracket(TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
   ]
 
-  // The start pattern for the spoiler convention relies on a user-configurable value, so we assign
-  // this field in the `configureConventions` method where we have access to the user's config settings.
-  private spoilerConvention: TokenizableRichSandwich
-
-  // These conventions are for images, audio, and video
-  private mediaConventions: TokenizableMedia[]
-
   // A rich sandwich:
   //
   // 1. Can contain other inline conventions
   // 2. Involves just two delimiters: one to mark its start, and one to mark its end
   //
-  // We can't create the collection until the spoiler convention has been configured.
+  // Some of rich sandwiches rely on user-configurable values, so we assign this field in the
+  // `configureConventions` method where we have access to the user's config settings.
   private richSandwiches: TokenizableRichSandwich[]
+  
+  
+  // These conventions are for images, audio, and video. They also rely on user-configurable values.
+  private mediaConventions: TokenizableMedia[]
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -102,21 +76,30 @@ export class Tokenizer {
     this.mediaConventions =
       [AUDIO, IMAGE, VIDEO].map(media =>
         new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
-
-    this.spoilerConvention =
-      new TokenizableRichSandwich({
+        
+    this.richSandwiches = [
+      {
         richConvention: SPOILER,
         startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: SQUARE_BRACKET.endPattern
-      })
-
-    this.richSandwiches = [
-      this.spoilerConvention,
-      this.footnoteConvention,
-      this.revisionDeletionConvention,
-      this.revisionInsertionConvention,
-      this.actionConvention,
-    ]
+      }, {
+        richConvention: FOOTNOTE,
+        startPattern: ANY_WHITESPACE + escapeForRegex('(('),
+        endPattern: escapeForRegex('))')
+      }, {
+        richConvention: REVISION_DELETION,
+        startPattern: '~~',
+        endPattern: '~~'
+      }, {
+        richConvention: REVISION_INSERTION,
+        startPattern: escapeForRegex('++'),
+        endPattern: escapeForRegex('++')
+      }, {
+        richConvention: ACTION,
+        startPattern: CURLY_BRACKET.startPattern,
+        endPattern: CURLY_BRACKET.endPattern
+      }
+    ].map(args => new TokenizableRichSandwich(args))
   }
 
   private tokenize(): void {
@@ -292,8 +275,7 @@ export class Tokenizer {
   }
 
   private tryToCloseNakedUrl(context: TokenizerContext): boolean {
-    // Whitespace terminates naked URLs, but we don't advance past the whitespace character or do anything with it
-    // yet.
+    // Whitespace terminates naked URLs, but we don't advance past the whitespace character.
     //
     // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
     // leading whitespace).
@@ -440,8 +422,8 @@ export class Tokenizer {
     const contextToClose = args.context
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-      const foundTheContextToClose = (context === contextToClose)
+      const openContext = this.openContexts[i]
+      const foundTheContextToClose = (openContext === contextToClose)
 
       if (foundTheContextToClose || closeInnerContexts) {
         this.openContexts.splice(i, 1)
@@ -453,7 +435,7 @@ export class Tokenizer {
       }
 
       // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-      if (context.goal === TokenizerGoal.NakedUrl) {
+      if (openContext.goal === TokenizerGoal.NakedUrl) {
         this.flushBufferToNakedUrlEndToken()
         this.openContexts.splice(i)
       }

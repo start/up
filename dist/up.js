@@ -795,26 +795,6 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
-        this.footnoteConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
-            richConvention: RichConventions_1.FOOTNOTE,
-            startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
-            endPattern: Patterns_1.escapeForRegex('))')
-        });
-        this.revisionDeletionConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
-            richConvention: RichConventions_1.REVISION_DELETION,
-            startPattern: '~~',
-            endPattern: '~~'
-        });
-        this.revisionInsertionConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
-            richConvention: RichConventions_1.REVISION_INSERTION,
-            startPattern: Patterns_1.escapeForRegex('++'),
-            endPattern: Patterns_1.escapeForRegex('++')
-        });
-        this.actionConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
-            richConvention: RichConventions_1.ACTION,
-            startPattern: CURLY_BRACKET.startPattern,
-            endPattern: CURLY_BRACKET.endPattern
-        });
         this.richBrackets = [
             new TokenizableRichBracket_1.TokenizableRichBracket(RichConventions_1.PARENTHESIZED, PARENTHESIS),
             new TokenizableRichBracket_1.TokenizableRichBracket(RichConventions_1.SQUARE_BRACKETED, SQUARE_BRACKET)
@@ -833,19 +813,29 @@ var Tokenizer = (function () {
             [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
                 return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
             });
-        this.spoilerConvention =
-            new TokenizableRichSandwich_1.TokenizableRichSandwich({
+        this.richSandwiches = [
+            {
                 richConvention: RichConventions_1.SPOILER,
                 startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: SQUARE_BRACKET.endPattern
-            });
-        this.richSandwiches = [
-            this.spoilerConvention,
-            this.footnoteConvention,
-            this.revisionDeletionConvention,
-            this.revisionInsertionConvention,
-            this.actionConvention,
-        ];
+            }, {
+                richConvention: RichConventions_1.FOOTNOTE,
+                startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
+                endPattern: Patterns_1.escapeForRegex('))')
+            }, {
+                richConvention: RichConventions_1.REVISION_DELETION,
+                startPattern: '~~',
+                endPattern: '~~'
+            }, {
+                richConvention: RichConventions_1.REVISION_INSERTION,
+                startPattern: Patterns_1.escapeForRegex('++'),
+                endPattern: Patterns_1.escapeForRegex('++')
+            }, {
+                richConvention: RichConventions_1.ACTION,
+                startPattern: CURLY_BRACKET.startPattern,
+                endPattern: CURLY_BRACKET.endPattern
+            }
+        ].map(function (args) { return new TokenizableRichSandwich_1.TokenizableRichSandwich(args); });
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
@@ -1110,8 +1100,8 @@ var Tokenizer = (function () {
         var closeInnerContexts = args.closeInnerContexts, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
         var contextToClose = args.context;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_1 = this.openContexts[i];
-            var foundTheContextToClose = (context_1 === contextToClose);
+            var openContext = this.openContexts[i];
+            var foundTheContextToClose = (openContext === contextToClose);
             if (foundTheContextToClose || closeInnerContexts) {
                 this.openContexts.splice(i, 1);
             }
@@ -1119,7 +1109,7 @@ var Tokenizer = (function () {
                 thenAddAnyClosingTokens();
                 return;
             }
-            if (context_1.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                 this.flushBufferToNakedUrlEndToken();
                 this.openContexts.splice(i);
             }
@@ -1177,8 +1167,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            switch (context_2.goal) {
+            var context_1 = this.openContexts.pop();
+            switch (context_1.goal) {
                 case TokenizerGoal_1.TokenizerGoal.NakedUrl:
                     this.flushBufferToNakedUrlEndToken();
                     break;
@@ -1188,7 +1178,7 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.MediaUrl:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_2);
+                    this.backtrackToBeforeContext(context_1);
                     return false;
             }
         }
@@ -1208,9 +1198,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.failMostRecentContextWithGoalAndResetToBeforeIt = function (goal) {
         while (this.openContexts.length) {
-            var context_3 = this.openContexts.pop();
-            if (context_3.goal === goal) {
-                this.backtrackToBeforeContext(context_3);
+            var context_2 = this.openContexts.pop();
+            if (context_2.goal === goal) {
+                this.backtrackToBeforeContext(context_2);
                 return;
             }
         }
