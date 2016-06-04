@@ -133,7 +133,7 @@ export class Tokenizer {
     while (!this.isDone()) {
 
       this.tryToCollectEscapedChar()
-        || this.tryToCloseAnyOpenContext()
+        || this.tryToCloseOrAdvanceAnyOpenContext()
         || (this.hasGoal(TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
@@ -158,9 +158,9 @@ export class Tokenizer {
     return this.consumer.reachedEndOfText() && this.resolveOpenContexts()
   }
 
-  private tryToCloseAnyOpenContext(): boolean {
+  private tryToCloseOrAdvanceAnyOpenContext(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.tryToCloseContext(this.openContexts[i])) {
+      if (this.tryToCloseOrAdvanceContext(this.openContexts[i])) {
         return true
       }
     }
@@ -168,7 +168,7 @@ export class Tokenizer {
     return false
   }
 
-  private tryToCloseContext(context: TokenizerContext): boolean {
+  private tryToCloseOrAdvanceContext(context: TokenizerContext): boolean {
     const { goal } = context
 
     return (
@@ -577,7 +577,6 @@ export class Tokenizer {
     this.tokens = context.snapshot.tokens
     this.openContexts = context.snapshot.openContexts
     this.buffer = context.snapshot.bufferedText
-
     this.consumer.textIndex = context.snapshot.textIndex
     
     for (const remainingContext of this.openContexts) {

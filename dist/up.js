@@ -849,7 +849,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
-                || this.tryToCloseAnyOpenContext()
+                || this.tryToCloseOrAdvanceAnyOpenContext()
                 || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
@@ -868,15 +868,15 @@ var Tokenizer = (function () {
     Tokenizer.prototype.isDone = function () {
         return this.consumer.reachedEndOfText() && this.resolveOpenContexts();
     };
-    Tokenizer.prototype.tryToCloseAnyOpenContext = function () {
+    Tokenizer.prototype.tryToCloseOrAdvanceAnyOpenContext = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            if (this.tryToCloseContext(this.openContexts[i])) {
+            if (this.tryToCloseOrAdvanceContext(this.openContexts[i])) {
                 return true;
             }
         }
         return false;
     };
-    Tokenizer.prototype.tryToCloseContext = function (context) {
+    Tokenizer.prototype.tryToCloseOrAdvanceContext = function (context) {
         var goal = context.goal;
         return (this.tryToCloseRichSandwichCorrespondingToContext(context)
             || this.handleMediaCorrespondingToGoal(goal)
