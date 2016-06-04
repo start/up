@@ -66,24 +66,14 @@ export class Tokenizer {
     new TokenizableRichBracket(SQUARE_BRACKETED, SQUARE_BRACKET)
   ]
 
-  // Unlike the other bracket conventions, these don't produce special tokens.
+  // Unlike the rich bracket conventions, raw text bracket conventions don't produce special tokens.
   //
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
-
-  private parenthesizedRawTextConvention = new TokenizableRawTextBracket(
-    TokenizerGoal.ParenthesizedInRawText, PARENTHESIS)
-
-  private squareBracketedRawTextConvention = new TokenizableRawTextBracket(
-    TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET)
-
-  private curlyBracketedRawTextConvention = new TokenizableRawTextBracket(
-    TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
-
   private rawTextBrackets = [
-    this.parenthesizedRawTextConvention,
-    this.squareBracketedRawTextConvention,
-    this.curlyBracketedRawTextConvention
+    new TokenizableRawTextBracket(TokenizerGoal.ParenthesizedInRawText, PARENTHESIS),
+    new TokenizableRawTextBracket(TokenizerGoal.SquareBracketedInRawText, SQUARE_BRACKET),
+    new TokenizableRawTextBracket(TokenizerGoal.CurlyBracketedInRawText, CURLY_BRACKET)
   ]
 
   // The start pattern for the spoiler convention relies on a user-configurable value, so we assign
@@ -206,15 +196,13 @@ export class Tokenizer {
 
   private appendCharToNakedUrl(): boolean {
     return (
-      this.tryToOpenParenthesizedRawText()
-      || this.tryToOpenSquareBracketedRawText()
-      || this.tryToOpenCurlyBracketedRawText()
+      this.tryToOpenAnyRawTextBracket()
       || this.bufferCurrentChar())
   }
 
   private closeMediaOrAppendCharToUrl(context: TokenizerContext): boolean {
     return (
-      this.tryToOpenSquareBracketedRawText()
+      this.tryToOpenAnyRawTextBracket()
       || this.tryToCloseMedia(context)
       || this.bufferCurrentChar())
   }
@@ -244,7 +232,7 @@ export class Tokenizer {
   private handleMedia(media: TokenizableMedia): boolean {
     return (
       this.tryToOpenMediaUrl()
-      || this.tryToOpenSquareBracketedRawText()
+      || this.tryToOpenAnyRawTextBracket()
       || this.tryToCloseFalseMediaConvention(media.goal)
       || this.bufferCurrentChar())
   }
@@ -273,16 +261,8 @@ export class Tokenizer {
     return this.richBrackets.some(bracket => this.tryToOpenRichBracket(bracket))
   }
 
-  private tryToOpenParenthesizedRawText(): boolean {
-    return this.tryToOpenRawTextBracket(this.parenthesizedRawTextConvention)
-  }
-
-  private tryToOpenSquareBracketedRawText(): boolean {
-    return this.tryToOpenRawTextBracket(this.squareBracketedRawTextConvention)
-  }
-
-  private tryToOpenCurlyBracketedRawText(): boolean {
-    return this.tryToOpenRawTextBracket(this.curlyBracketedRawTextConvention)
+  private tryToOpenAnyRawTextBracket(): boolean {
+    return this.rawTextBrackets.some(bracket => this.tryToOpenRawTextBracket(bracket))
   }
 
   private tryToCollectEscapedChar(): boolean {
@@ -394,11 +374,11 @@ export class Tokenizer {
       context,
       thenAddAnyClosingTokens: () => {
         this.flushBufferToPlainTextToken()
-        
+
         const startToken = new Token({ kind: sandwich.startTokenKind })
         const endToken = new Token({ kind: sandwich.endTokenKind })
         startToken.associateWith(endToken)
-        
+
         this.insertTokenAtStartOfContext(context, startToken)
         this.tokens.push(endToken)
       }
@@ -432,14 +412,14 @@ export class Tokenizer {
       context,
       thenAddAnyClosingTokens: () => {
         this.flushBufferToPlainTextToken()
-        
+
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
-        
+
         const startToken = new Token({ kind: bracket.convention.startTokenKind })
         const endToken = new Token({ kind: bracket.convention.endTokenKind })
         startToken.associateWith(endToken)
-        
+
         const startBracketToken = getPlainTextToken(bracket.rawStartBracket)
         const endBracketToken = getPlainTextToken(bracket.rawEndBracket)
 
@@ -576,9 +556,9 @@ export class Tokenizer {
     this.openContexts = context.snapshot.openContexts
     this.buffer = context.snapshot.bufferedText
     this.consumer.textIndex = context.snapshot.textIndex
-    
+
     for (const remainingContext of this.openContexts) {
-      remainingContext.reset() 
+      remainingContext.reset()
     }
   }
 
