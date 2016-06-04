@@ -995,19 +995,15 @@ var Tokenizer = (function () {
             goal: bracket.goal,
             pattern: bracket.startPattern,
             flushBufferToPlainTextTokenBeforeOpening: false,
-            thenAddAnyStartTokens: function (bracket) {
-                _this.buffer += bracket;
-            }
+            thenAddAnyStartTokens: function (bracket) { _this.buffer += bracket; }
         });
     };
     Tokenizer.prototype.tryToCloseRawTextBracket = function (bracket, context) {
         var _this = this;
         return this.tryToCloseConvention({
-            pattern: bracket.endPattern,
             context: context,
-            thenAddAnyClosingTokens: function (bracket) {
-                _this.buffer += bracket;
-            }
+            pattern: bracket.endPattern,
+            thenAddAnyClosingTokens: function (bracket) { _this.buffer += bracket; }
         });
     };
     Tokenizer.prototype.tryToCloseRichBracket = function (bracket, context) {

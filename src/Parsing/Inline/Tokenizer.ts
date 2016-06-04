@@ -291,19 +291,15 @@ export class Tokenizer {
       goal: bracket.goal,
       pattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
-      thenAddAnyStartTokens: (bracket) => {
-        this.buffer += bracket
-      }
+      thenAddAnyStartTokens: bracket => { this.buffer += bracket }
     })
   }
 
   private tryToCloseRawTextBracket(bracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
-      pattern: bracket.endPattern,
       context,
-      thenAddAnyClosingTokens: (bracket) => {
-        this.buffer += bracket
-      }
+      pattern: bracket.endPattern,
+      thenAddAnyClosingTokens: bracket => { this.buffer += bracket }
     })
   }
 
