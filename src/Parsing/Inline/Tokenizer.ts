@@ -198,15 +198,11 @@ export class Tokenizer {
   }
 
   private tryToCloseInlineCode(context: TokenizerContext): boolean {
-    return this.consumer.advanceAfterMatch({
+    return this.tryToCloseConvention({
       pattern: INLINE_CODE_DELIMITER_PATTERN,
+      context,
       then: () => {
-        this.closeContext({
-          contextToClose: context,
-          thenAddAnyClosingTokens: () => {
-            this.addToken({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
-          }
-        })
+        this.addToken({ kind: TokenKind.InlineCode, value: this.flushBuffer() })
       }
     })
   }

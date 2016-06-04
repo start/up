@@ -1012,15 +1012,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseInlineCode = function (context) {
         var _this = this;
-        return this.consumer.advanceAfterMatch({
+        return this.tryToCloseConvention({
             pattern: INLINE_CODE_DELIMITER_PATTERN,
+            context: context,
             then: function () {
-                _this.closeContext({
-                    contextToClose: context,
-                    thenAddAnyClosingTokens: function () {
-                        _this.addToken({ kind: TokenKind_1.TokenKind.InlineCode, value: _this.flushBuffer() });
-                    }
-                });
+                _this.addToken({ kind: TokenKind_1.TokenKind.InlineCode, value: _this.flushBuffer() });
             }
         });
     };
