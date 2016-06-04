@@ -119,10 +119,9 @@ export class Tokenizer {
 
   private tryToOpenAnyConvention(): boolean {
     return (
-      this.tryToOpenMedia()
-      || this.tryToOpenInlineCode()
-      || this.tryToOpenAnyRichSandwich()
+      this.tryToOpenAnyRichSandwich()
       || this.tryToOpenAnyRichBracket()
+      || this.tryToOpenInlineCode()
       || this.tryToOpenNakedUrl())
   }
 
@@ -145,11 +144,9 @@ export class Tokenizer {
 
     return (
       this.tryToCloseRichSandwichCorrespondingToContext(context)
-      || this.handleMediaCorrespondingToGoal(goal)
       || this.tryToCloseRichBracketCorrespondingToContext(context)
       || this.tryToCloseRawTextBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
-      || ((goal === TokenizerGoal.MediaUrl) && this.closeMediaOrAppendCharToUrl(context))
       || ((goal === TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context))
     )
   }
@@ -182,13 +179,6 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private closeMediaOrAppendCharToUrl(context: TokenizerContext): boolean {
-    return (
-      this.tryToOpenAnyRawTextBracket()
-      || this.tryToCloseMedia(context)
-      || this.bufferCurrentChar())
-  }
-
   private tryToCloseRichSandwichCorrespondingToContext(context: TokenizerContext): boolean {
     return this.richSandwiches.some(richSandwich =>
       (richSandwich.goal === context.goal)
@@ -205,34 +195,6 @@ export class Tokenizer {
     return this.richBrackets.some(richBracket =>
       (richBracket.convention.tokenizerGoal === context.goal)
       && this.tryToCloseRichBracket(richBracket, context))
-  }
-
-  private handleMediaCorrespondingToGoal(goal: TokenizerGoal): boolean {
-    return this.mediaConventions.some(media => (media.goal === goal) && this.handleMedia(media))
-  }
-
-  private handleMedia(media: TokenizableMedia): boolean {
-    return (
-      this.tryToOpenMediaUrl()
-      || this.tryToOpenAnyRawTextBracket()
-      || this.tryToCloseFalseMediaConvention(media.goal)
-      || this.bufferCurrentChar())
-  }
-
-  private tryToCloseFalseMediaConvention(mediaGoal: TokenizerGoal): boolean {
-    if (!CLOSE_SQUARE_BRACKET_PATTERN.test(this.consumer.remainingText)) {
-      return false
-    }
-
-    // If we encounter a closing square bracket here, it means it's unmatched. If it were matched, it would have
-    // been consumed by a SquareBracketedInRawText context.
-    //
-    // Anyway, we're dealing with something like this: [audio: garbled]
-    //
-    // That is not a valid media convention, so we need to backtrack!
-
-    this.failMostRecentContextWithGoalAndResetToBeforeIt(mediaGoal)
-    return true
   }
 
   private tryToOpenAnyRichSandwich(): boolean {
@@ -290,47 +252,6 @@ export class Tokenizer {
     }
 
     return false
-  }
-
-  private tryToOpenMedia(): boolean {
-    return this.mediaConventions.some(media => {
-      return this.tryToOpenConvention({
-        goal: media.goal,
-        pattern: media.startPattern,
-        flushBufferToPlainTextTokenBeforeOpening: true,
-        thenAddAnyStartTokens: () => {
-          this.createTokenAndAppend({ kind: media.startTokenKind })
-        }
-      })
-    })
-  }
-
-  private tryToOpenMediaUrl(): boolean {
-    return this.tryToOpenConvention({
-      goal: TokenizerGoal.MediaUrl,
-      pattern: URL_ARROW_PATTERN_DEPCRECATED,
-      flushBufferToPlainTextTokenBeforeOpening: false,
-      thenAddAnyStartTokens: () => {
-        this.createTokenAndAppend({ kind: TokenKind.MediaDescription, value: this.flushBuffer() })
-      }
-    })
-  }
-
-  private tryToCloseMedia(context: TokenizerContext): boolean {
-    return this.consumer.advanceAfterMatch({
-      pattern: MEDIA_END_PATTERN_DEPCRECATED,
-      then: () => {
-        this.closeContext({
-          context,
-          thenAddAnyClosingTokens: () => {
-            this.createTokenAndAppend({ kind: TokenKind.MediaUrlAndEnd, value: this.flushBuffer() })
-          }
-        })
-
-        // Once the media URL's context is closed, the media's context is guaranteed to be innermost.
-        this.openContexts.pop()
-      }
-    })
   }
 
   private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
@@ -515,9 +436,6 @@ export class Tokenizer {
         case TokenizerGoal.ParenthesizedInRawText:
         case TokenizerGoal.SquareBracketedInRawText:
         case TokenizerGoal.CurlyBracketedInRawText:
-
-        // TODO: Update media tokenization  
-        case TokenizerGoal.MediaUrl:
           break;
 
         default:
@@ -540,17 +458,6 @@ export class Tokenizer {
 
     for (const remainingContext of this.openContexts) {
       remainingContext.reset()
-    }
-  }
-
-  private failMostRecentContextWithGoalAndResetToBeforeIt(goal: TokenizerGoal): void {
-    while (this.openContexts.length) {
-      const context = this.openContexts.pop()
-
-      if (context.goal === goal) {
-        this.backtrackToBeforeContext(context)
-        return
-      }
     }
   }
 
@@ -675,9 +582,6 @@ const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
 const URL_ARROW_PATTERN_DEPCRECATED = new RegExp(
   startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE))
 
-const MEDIA_END_PATTERN_DEPCRECATED = new RegExp(
-  startsWith(SQUARE_BRACKET.endPattern))
-
 const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
   startsWith('http' + optional('s') + '://'))
 
@@ -686,10 +590,6 @@ const WHITESPACE_CHAR_PATTERN = new RegExp(
 
 const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
   NON_WHITESPACE_CHAR)
-
-const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
-  startsWith(SQUARE_BRACKET.endPattern)
-)
 
 
 function getPlainTextToken(value: string) {
