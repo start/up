@@ -36,3 +36,15 @@ describe('A revision deletion', () => {
       ]))
   })
 })
+
+
+describe('An empty revision deletion', () => {
+  it('produces no syntax nodes', () => {
+    expect(Up.toAst('I have nothing to remove: ~~~~')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I have nothing to remove: ')
+      ])
+    )
+  })
+})
+
