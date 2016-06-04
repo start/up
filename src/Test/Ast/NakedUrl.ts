@@ -115,7 +115,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("is terminated by revision deletion closing", () => {
+  it("is terminated by revision insertion closing", () => {
     expect(Up.toAst('++I love... https://archive.org/fake++!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
