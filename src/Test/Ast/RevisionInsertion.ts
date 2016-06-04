@@ -36,3 +36,15 @@ describe('A revision insertion', () => {
       ]))
   })
 })
+
+
+describe('An empty revision insertion', () => {
+  it('produces no syntax nodes', () => {
+    expect(Up.toAst('I have nothing to add: ++++')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I have nothing to add: ')
+      ])
+    )
+  })
+})
+
