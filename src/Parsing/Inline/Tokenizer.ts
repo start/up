@@ -38,9 +38,9 @@ export class Tokenizer {
   private buffer = ''
 
   private richBrackets = [
-    new TokenizableRichBracket(PARENTHESIZED, PARENTHESIS),
-    new TokenizableRichBracket(SQUARE_BRACKETED, SQUARE_BRACKET)
-  ]
+    { convention: PARENTHESIZED, bracket: PARENTHESIS },
+    { convention: SQUARE_BRACKETED, bracket: SQUARE_BRACKET }
+  ].map(args => new TokenizableRichBracket(args))
 
   // Unlike the rich bracket conventions, raw text bracket conventions don't produce special tokens.
   //

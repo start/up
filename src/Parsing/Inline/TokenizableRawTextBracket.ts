@@ -8,9 +8,11 @@ export class TokenizableRawTextBracket {
   endPattern: RegExp
 
   constructor(args: { goal: TokenizerGoal, bracket: Bracket }) {
-    this.goal = args.goal
-    this.startPattern = getPattern(args.bracket.startPattern)
-    this.endPattern = getPattern(args.bracket.endPattern)
+    const { goal, bracket } = args
+    
+    this.goal = goal
+    this.startPattern = getPattern(bracket.startPattern)
+    this.endPattern = getPattern(bracket.endPattern)
   }
 }
 

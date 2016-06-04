@@ -723,9 +723,10 @@ function getPattern(pattern, flags) {
 var Patterns_1 = require('../../Patterns');
 var TokenizableRawTextBracket = (function () {
     function TokenizableRawTextBracket(args) {
-        this.goal = args.goal;
-        this.startPattern = getPattern(args.bracket.startPattern);
-        this.endPattern = getPattern(args.bracket.endPattern);
+        var goal = args.goal, bracket = args.bracket;
+        this.goal = goal;
+        this.startPattern = getPattern(bracket.startPattern);
+        this.endPattern = getPattern(bracket.endPattern);
     }
     return TokenizableRawTextBracket;
 }());
@@ -738,7 +739,8 @@ function getPattern(bracketPattern) {
 "use strict";
 var Patterns_1 = require('../../Patterns');
 var TokenizableRichBracket = (function () {
-    function TokenizableRichBracket(convention, bracket) {
+    function TokenizableRichBracket(args) {
+        var convention = args.convention, bracket = args.bracket;
         this.convention = convention;
         this.startPattern = getPattern(bracket.startPattern);
         this.endPattern = getPattern(bracket.endPattern);
@@ -796,9 +798,9 @@ var Tokenizer = (function () {
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
         this.richBrackets = [
-            new TokenizableRichBracket_1.TokenizableRichBracket(RichConventions_1.PARENTHESIZED, PARENTHESIS),
-            new TokenizableRichBracket_1.TokenizableRichBracket(RichConventions_1.SQUARE_BRACKETED, SQUARE_BRACKET)
-        ];
+            { convention: RichConventions_1.PARENTHESIZED, bracket: PARENTHESIS },
+            { convention: RichConventions_1.SQUARE_BRACKETED, bracket: SQUARE_BRACKET }
+        ].map(function (args) { return new TokenizableRichBracket_1.TokenizableRichBracket(args); });
         this.rawTextBrackets = [
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },

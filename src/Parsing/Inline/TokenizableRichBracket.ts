@@ -4,12 +4,16 @@ import { RichConvention } from './RichConvention'
 import { startsWith } from '../../Patterns'
 
 export class TokenizableRichBracket {
-  public startPattern: RegExp
-  public endPattern: RegExp
-  public rawStartBracket: string
-  public rawEndBracket: string
+  convention: RichConvention
+  startPattern: RegExp
+  endPattern: RegExp
+  rawStartBracket: string
+  rawEndBracket: string
   
-  constructor(public convention: RichConvention, bracket: Bracket) {
+  constructor(args: { convention: RichConvention, bracket: Bracket }) {
+    const { convention, bracket } = args
+    
+    this.convention = convention
     this.startPattern = getPattern(bracket.startPattern)
     this.endPattern = getPattern(bracket.endPattern)
     this.rawStartBracket = bracket.start
