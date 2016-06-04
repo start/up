@@ -117,12 +117,19 @@ export class Tokenizer {
         applyRaisedVoices(this.tokens))
   }
 
-  private tryToOpenAnyConvention(): boolean {
+  private tryToCollectEscapedChar(): boolean {
+    const ESCAPE_CHAR = '\\'
+
+    if (this.consumer.currentChar !== ESCAPE_CHAR) {
+      return false
+    }
+
+    this.consumer.advanceTextIndex(1)
+
     return (
-      this.tryToOpenAnyRichSandwich()
-      || this.tryToOpenAnyRichBracket()
-      || this.tryToOpenInlineCode()
-      || this.tryToOpenNakedUrl())
+      this.consumer.reachedEndOfText()
+      || this.bufferCurrentChar()
+    )
   }
 
   private isDone(): boolean {
@@ -151,8 +158,12 @@ export class Tokenizer {
     )
   }
 
-  private closeInlineCodeOrAppendCurrentChar(context: TokenizerContext): boolean {
-    return this.tryToCloseInlineCode(context) || this.bufferCurrentChar()
+  private tryToOpenAnyConvention(): boolean {
+    return (
+      this.tryToOpenInlineCode()
+      || this.tryToOpenAnyRichSandwich()
+      || this.tryToOpenAnyRichBracket()
+      || this.tryToOpenNakedUrl())
   }
 
   private tryToOpenInlineCode(): boolean {
@@ -163,6 +174,10 @@ export class Tokenizer {
     })
   }
 
+  private closeInlineCodeOrAppendCurrentChar(context: TokenizerContext): boolean {
+    return this.tryToCloseInlineCode(context) || this.bufferCurrentChar()
+  }
+
   private tryToCloseInlineCode(context: TokenizerContext): boolean {
     return this.tryToCloseContext({
       context,
@@ -171,86 +186,8 @@ export class Tokenizer {
     })
   }
 
-  private appendCharToNakedUrl(): boolean {
-    return (
-      this.tryToOpenAnyRawTextBracket()
-      || this.bufferCurrentChar())
-  }
-
-  private tryToCloseRichSandwichCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.richSandwiches.some(richSandwich =>
-      (richSandwich.goal === context.goal)
-      && this.tryToCloseRichSandwich(richSandwich, context))
-  }
-
-  private tryToCloseRawTextBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.rawTextBrackets.some(rawTextBracket =>
-      (rawTextBracket.goal === context.goal)
-      && this.tryToCloseRawTextBracket(rawTextBracket, context))
-  }
-
-  private tryToCloseRichBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.richBrackets.some(richBracket =>
-      (richBracket.convention.tokenizerGoal === context.goal)
-      && this.tryToCloseRichBracket(richBracket, context))
-  }
-
   private tryToOpenAnyRichSandwich(): boolean {
     return this.richSandwiches.some(sandwich => this.tryToOpenRichSandwich(sandwich))
-  }
-
-  private tryToOpenAnyRichBracket(): boolean {
-    return this.richBrackets.some(bracket => this.tryToOpenRichBracket(bracket))
-  }
-
-  private tryToOpenAnyRawTextBracket(): boolean {
-    return this.rawTextBrackets.some(bracket => this.tryToOpenRawTextBracket(bracket))
-  }
-
-  private tryToCollectEscapedChar(): boolean {
-    const ESCAPE_CHAR = '\\'
-
-    if (this.consumer.currentChar !== ESCAPE_CHAR) {
-      return false
-    }
-
-    this.consumer.advanceTextIndex(1)
-
-    return (
-      this.consumer.reachedEndOfText()
-      || this.bufferCurrentChar()
-    )
-  }
-
-  private tryToOpenNakedUrl(): boolean {
-    return this.tryToOpenContext({
-      goal: TokenizerGoal.NakedUrl,
-      pattern: NAKED_URL_PROTOCOL_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpening: true,
-      thenAddAnyStartTokens: urlProtocol => {
-        this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
-      }
-    })
-  }
-
-  private tryToCloseNakedUrl(context: TokenizerContext): boolean {
-    // Whitespace terminates naked URLs, but we don't advance past the whitespace character.
-    //
-    // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
-    // leading whitespace).
-    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-      this.closeContext({
-        context,
-        closeInnerContexts: true,
-        thenAddAnyClosingTokens: () => {
-          this.flushBufferToNakedUrlEndToken()
-        }
-      })
-
-      return true
-    }
-
-    return false
   }
 
   private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
@@ -261,12 +198,10 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRichBracket(bracket: TokenizableRichBracket): boolean {
-    return this.tryToOpenContext({
-      goal: bracket.convention.tokenizerGoal,
-      pattern: bracket.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: true
-    })
+  private tryToCloseRichSandwichCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.richSandwiches.some(richSandwich =>
+      (richSandwich.goal === context.goal)
+      && this.tryToCloseRichSandwich(richSandwich, context))
   }
 
   private tryToCloseRichSandwich(sandwich: TokenizableRichSandwich, context: TokenizerContext): boolean {
@@ -286,21 +221,22 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRawTextBracket(bracket: TokenizableRawTextBracket): boolean {
+  private tryToOpenAnyRichBracket(): boolean {
+    return this.richBrackets.some(bracket => this.tryToOpenRichBracket(bracket))
+  }
+
+  private tryToOpenRichBracket(bracket: TokenizableRichBracket): boolean {
     return this.tryToOpenContext({
-      goal: bracket.goal,
+      goal: bracket.convention.tokenizerGoal,
       pattern: bracket.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: false,
-      thenAddAnyStartTokens: bracket => { this.buffer += bracket }
+      flushBufferToPlainTextTokenBeforeOpening: true
     })
   }
 
-  private tryToCloseRawTextBracket(bracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
-    return this.tryToCloseContext({
-      context,
-      pattern: bracket.endPattern,
-      thenAddAnyClosingTokens: bracket => { this.buffer += bracket }
-    })
+  private tryToCloseRichBracketCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.richBrackets.some(richBracket =>
+      (richBracket.convention.tokenizerGoal === context.goal)
+      && this.tryToCloseRichBracket(richBracket, context))
   }
 
   private tryToCloseRichBracket(bracket: TokenizableRichBracket, context: TokenizerContext): boolean {
@@ -322,6 +258,70 @@ export class Tokenizer {
         this.tokens.push(endBracketToken, endToken)
       }
     })
+  }
+
+  private tryToOpenAnyRawTextBracket(): boolean {
+    return this.rawTextBrackets.some(bracket => this.tryToOpenRawTextBracket(bracket))
+  }
+
+  private tryToCloseRawTextBracketCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.rawTextBrackets.some(rawTextBracket =>
+      (rawTextBracket.goal === context.goal)
+      && this.tryToCloseRawTextBracket(rawTextBracket, context))
+  }
+
+  private tryToOpenRawTextBracket(bracket: TokenizableRawTextBracket): boolean {
+    return this.tryToOpenContext({
+      goal: bracket.goal,
+      pattern: bracket.startPattern,
+      flushBufferToPlainTextTokenBeforeOpening: false,
+      thenAddAnyStartTokens: bracket => { this.buffer += bracket }
+    })
+  }
+
+  private tryToCloseRawTextBracket(bracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
+    return this.tryToCloseContext({
+      context,
+      pattern: bracket.endPattern,
+      thenAddAnyClosingTokens: bracket => { this.buffer += bracket }
+    })
+  }
+
+  private tryToOpenNakedUrl(): boolean {
+    return this.tryToOpenContext({
+      goal: TokenizerGoal.NakedUrl,
+      pattern: NAKED_URL_PROTOCOL_PATTERN,
+      flushBufferToPlainTextTokenBeforeOpening: true,
+      thenAddAnyStartTokens: urlProtocol => {
+        this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+      }
+    })
+  }
+
+  private appendCharToNakedUrl(): boolean {
+    return (
+      this.tryToOpenAnyRawTextBracket()
+      || this.bufferCurrentChar())
+  }
+
+  private tryToCloseNakedUrl(context: TokenizerContext): boolean {
+    // Whitespace terminates naked URLs, but we don't advance past the whitespace character.
+    //
+    // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
+    // leading whitespace).
+    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
+      this.closeContext({
+        context,
+        closeInnerContexts: true,
+        thenAddAnyClosingTokens: () => {
+          this.flushBufferToNakedUrlEndToken()
+        }
+      })
+
+      return true
+    }
+
+    return false
   }
 
   private closeContext(
