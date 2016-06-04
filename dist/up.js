@@ -1208,9 +1208,11 @@ var Tokenizer = (function () {
             pattern: bracket.endPattern,
             context: context,
             then: function () {
-                _this.insertTokensAtStartOfContext(context, new Token_1.Token({ kind: bracket.convention.startTokenKind }), new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket.rawStartBracket }));
                 _this.flushBufferToPlainTextToken();
-                _this.addTokens(new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket.rawEndBracket }), new Token_1.Token({ kind: bracket.convention.endTokenKind }));
+                var startToken = new Token_1.Token({ kind: bracket.convention.startTokenKind });
+                var endToken = new Token_1.Token({ kind: bracket.convention.endTokenKind });
+                _this.insertTokensAtStartOfContext(context, startToken, getPlainTextToken(bracket.rawStartBracket));
+                _this.addTokens(getPlainTextToken(bracket.rawEndBracket), endToken);
             }
         });
     };
@@ -1396,7 +1398,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToPlainTextToken = function () {
         var buffer = this.flushBuffer();
         if (buffer) {
-            this.addToken({ kind: TokenKind_1.TokenKind.PlainText, value: buffer });
+            this.addToken(getPlainTextToken(buffer));
         }
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {
@@ -1427,6 +1429,9 @@ var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patte
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 var CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(Patterns_1.startsWith(SQUARE_BRACKET.endPattern));
+function getPlainTextToken(value) {
+    return new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: value });
+}
 
 },{"../../Patterns":46,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":19,"./TokenizableMedia":20,"./TokenizableRawTextBracket":21,"./TokenizableRichBracket":22,"./TokenizableSandwich":23,"./TokenizerContext":25,"./TokenizerGoal":26,"./TokenizerSnapshot":27,"./nestOverlappingConventions":29}],25:[function(require,module,exports){
 "use strict";

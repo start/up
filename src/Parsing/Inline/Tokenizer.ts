@@ -427,20 +427,16 @@ export class Tokenizer {
       pattern: bracket.endPattern,
       context,
       then: () => {
+        this.flushBufferToPlainTextToken()
+        
+        const startToken = new Token({ kind: bracket.convention.startTokenKind })
+        const endToken = new Token({ kind: bracket.convention.endTokenKind })
+        
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
 
-        this.insertTokensAtStartOfContext(
-          context,
-          new Token({ kind: bracket.convention.startTokenKind }),
-          new Token({ kind: TokenKind.PlainText, value: bracket.rawStartBracket }))
-
-        // To be clear, this plain text token appears after any tokens already added inside the rich bracket.
-        this.flushBufferToPlainTextToken()
-
-        this.addTokens(
-          new Token({ kind: TokenKind.PlainText, value: bracket.rawEndBracket }),
-          new Token({ kind: bracket.convention.endTokenKind }))
+        this.insertTokensAtStartOfContext(context, startToken, getPlainTextToken(bracket.rawStartBracket))
+        this.addTokens(getPlainTextToken(bracket.rawEndBracket), endToken)
       }
     })
   }
@@ -686,7 +682,7 @@ export class Tokenizer {
     const buffer = this.flushBuffer()
 
     if (buffer) {
-      this.addToken({ kind: TokenKind.PlainText, value: buffer })
+      this.addToken(getPlainTextToken(buffer))
     }
   }
 
@@ -749,3 +745,8 @@ const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
 const CLOSE_SQUARE_BRACKET_PATTERN = new RegExp(
   startsWith(SQUARE_BRACKET.endPattern)
 )
+
+
+function getPlainTextToken(value: string) {
+  return new Token({ kind: TokenKind.PlainText, value })
+}
