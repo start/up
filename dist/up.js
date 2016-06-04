@@ -1010,21 +1010,15 @@ var Tokenizer = (function () {
             || this.bufferCurrentChar());
     };
     Tokenizer.prototype.tryToCloseNakedUrl = function (context) {
-        var _this = this;
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-            this.closeContext({
-                context: context,
-                closeInnerContexts: true,
-                thenAddAnyClosingTokens: function () {
-                    _this.flushBufferToNakedUrlEndToken();
-                }
-            });
+            this.closeContext({ context: context, closeInnerContexts: true });
+            this.flushBufferToNakedUrlEndToken();
             return true;
         }
         return false;
     };
     Tokenizer.prototype.closeContext = function (args) {
-        var closeInnerContexts = args.closeInnerContexts, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
+        var closeInnerContexts = args.closeInnerContexts;
         var contextToClose = args.context;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var openContext = this.openContexts[i];
@@ -1033,7 +1027,6 @@ var Tokenizer = (function () {
                 this.openContexts.splice(i, 1);
             }
             if (foundTheContextToClose) {
-                thenAddAnyClosingTokens();
                 return;
             }
             if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
@@ -1072,17 +1065,13 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.closeContext({
-                    context: context,
-                    thenAddAnyClosingTokens: function () {
-                        if (onCloseFlushBufferTo != null) {
-                            _this.flushBufferToTokenOfKind(onCloseFlushBufferTo);
-                        }
-                        if (thenAddAnyClosingTokens) {
-                            thenAddAnyClosingTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
-                        }
-                    }
-                });
+                _this.closeContext({ context: context });
+                if (onCloseFlushBufferTo != null) {
+                    _this.flushBufferToTokenOfKind(onCloseFlushBufferTo);
+                }
+                if (thenAddAnyClosingTokens) {
+                    thenAddAnyClosingTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                }
             }
         });
     };

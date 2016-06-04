@@ -310,14 +310,9 @@ export class Tokenizer {
     // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
     // leading whitespace).
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-      this.closeContext({
-        context,
-        closeInnerContexts: true,
-        thenAddAnyClosingTokens: () => {
-          this.flushBufferToNakedUrlEndToken()
-        }
-      })
-
+      this.closeContext({ context, closeInnerContexts: true })
+      this.flushBufferToNakedUrlEndToken()
+          
       return true
     }
 
@@ -327,11 +322,10 @@ export class Tokenizer {
   private closeContext(
     args: {
       context: TokenizerContext,
-      closeInnerContexts?: boolean,
-      thenAddAnyClosingTokens: () => void
+      closeInnerContexts?: boolean
     }
   ): void {
-    const { closeInnerContexts, thenAddAnyClosingTokens } = args
+    const { closeInnerContexts } = args
     const contextToClose = args.context
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
@@ -343,7 +337,6 @@ export class Tokenizer {
       }
 
       if (foundTheContextToClose) {
-        thenAddAnyClosingTokens()
         return
       }
 
@@ -394,18 +387,15 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeContext({
-          context,
-          thenAddAnyClosingTokens: () => {
-            if (onCloseFlushBufferTo != null) {
-              this.flushBufferToTokenOfKind(onCloseFlushBufferTo)
-            }
+        this.closeContext({ context })
 
-            if (thenAddAnyClosingTokens) {
-              thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
-            }
-          }
-        })
+        if (onCloseFlushBufferTo != null) {
+          this.flushBufferToTokenOfKind(onCloseFlushBufferTo)
+        }
+
+        if (thenAddAnyClosingTokens) {
+          thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        }
       }
     })
   }
