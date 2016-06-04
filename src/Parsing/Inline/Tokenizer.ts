@@ -156,7 +156,7 @@ export class Tokenizer {
   }
 
   private tryToOpenInlineCode(): boolean {
-    return this.tryToOpenConvention({
+    return this.tryToOpenContext({
       goal: TokenizerGoal.InlineCode,
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       flushBufferToPlainTextTokenBeforeOpening: true
@@ -223,7 +223,7 @@ export class Tokenizer {
   }
 
   private tryToOpenNakedUrl(): boolean {
-    return this.tryToOpenConvention({
+    return this.tryToOpenContext({
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_PROTOCOL_PATTERN,
       flushBufferToPlainTextTokenBeforeOpening: true,
@@ -254,7 +254,7 @@ export class Tokenizer {
   }
 
   private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
-    return this.tryToOpenConvention({
+    return this.tryToOpenContext({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: true
@@ -262,7 +262,7 @@ export class Tokenizer {
   }
 
   private tryToOpenRichBracket(bracket: TokenizableRichBracket): boolean {
-    return this.tryToOpenConvention({
+    return this.tryToOpenContext({
       goal: bracket.convention.tokenizerGoal,
       pattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: true
@@ -287,7 +287,7 @@ export class Tokenizer {
   }
 
   private tryToOpenRawTextBracket(bracket: TokenizableRawTextBracket): boolean {
-    return this.tryToOpenConvention({
+    return this.tryToOpenContext({
       goal: bracket.goal,
       pattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
@@ -316,7 +316,7 @@ export class Tokenizer {
         const startToken = new Token({ kind: bracket.convention.startTokenKind })
         const endToken = new Token({ kind: bracket.convention.endTokenKind })
         startToken.associateWith(endToken)
-        
+
         // Rich brackets are unique in that their delimiters (brackets) appear in the final AST inside the
         // bracket's node.
         const startBracketToken = getPlainTextToken(bracket.rawStartBracket)
@@ -359,7 +359,7 @@ export class Tokenizer {
     }
   }
 
-  private tryToOpenConvention(
+  private tryToOpenContext(
     args: {
       goal: TokenizerGoal,
       pattern: RegExp,
@@ -376,7 +376,7 @@ export class Tokenizer {
           this.flushBufferToPlainTextToken()
         }
 
-        this.openContext(goal)
+        this.openContexts.push(new TokenizerContext(goal, this.getSnapshot()))
 
         if (thenAddAnyStartTokens) {
           thenAddAnyStartTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -404,7 +404,7 @@ export class Tokenizer {
             if (onCloseFlushBufferTo != null) {
               this.flushBufferToTokenOfKind(onCloseFlushBufferTo)
             }
-            
+
             if (thenAddAnyClosingTokens) {
               thenAddAnyClosingTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
             }
@@ -412,10 +412,6 @@ export class Tokenizer {
         })
       }
     })
-  }
-
-  private openContext(goal: TokenizerGoal): void {
-    this.openContexts.push(new TokenizerContext(goal, this.getSnapshot()))
   }
 
   private getSnapshot(): TokenizerSnapshot {
