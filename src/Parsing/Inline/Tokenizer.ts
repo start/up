@@ -433,19 +433,18 @@ export class Tokenizer {
       then: () => {
         this.flushBufferToPlainTextToken()
         
-        const startToken = new Token({ kind: bracket.convention.startTokenKind })
-        const endToken = new Token({ kind: bracket.convention.endTokenKind })
-        
-        associate(startToken, endToken)
-        
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
-
-        this.insertTokensAtStartOfContext(
-          context, startToken, getPlainTextToken(bracket.rawStartBracket))
         
-        this.tokens.push(
-          getPlainTextToken(bracket.rawEndBracket), endToken)
+        const startToken = new Token({ kind: bracket.convention.startTokenKind })
+        const endToken = new Token({ kind: bracket.convention.endTokenKind })
+        associate(startToken, endToken)
+        
+        const startBracketToken = getPlainTextToken(bracket.rawStartBracket)
+        const endBracketToken = getPlainTextToken(bracket.rawEndBracket)
+
+        this.insertTokensAtStartOfContext(context, startToken, startBracketToken)
+        this.tokens.push(endBracketToken, endToken)
       }
     })
   }
@@ -687,7 +686,7 @@ export class Tokenizer {
     const buffer = this.flushBuffer()
 
     if (buffer) {
-      this.createTokenAndAppend(getPlainTextToken(buffer))
+      this.tokens.push(getPlainTextToken(buffer))
     }
   }
 
