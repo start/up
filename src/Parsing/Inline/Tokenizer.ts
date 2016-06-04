@@ -190,10 +190,7 @@ export class Tokenizer {
     return this.tryToOpenConvention({
       goal: TokenizerGoal.InlineCode,
       pattern: INLINE_CODE_DELIMITER_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpeningConvention: true,
-      thenAddAnyStartTokens: () => {
-        this.flushBufferToPlainTextToken()
-      }
+      flushBufferToPlainTextTokenBeforeOpeningConvention: true
     })
   }
 

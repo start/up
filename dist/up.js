@@ -1000,14 +1000,10 @@ var Tokenizer = (function () {
         return this.tryToCloseInlineCode(context) || this.bufferCurrentChar();
     };
     Tokenizer.prototype.tryToOpenInlineCode = function () {
-        var _this = this;
         return this.tryToOpenConvention({
             goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
             pattern: INLINE_CODE_DELIMITER_PATTERN,
-            flushBufferToPlainTextTokenBeforeOpeningConvention: true,
-            thenAddAnyStartTokens: function () {
-                _this.flushBufferToPlainTextToken();
-            }
+            flushBufferToPlainTextTokenBeforeOpeningConvention: true
         });
     };
     Tokenizer.prototype.tryToCloseInlineCode = function (context) {
