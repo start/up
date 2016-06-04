@@ -337,6 +337,8 @@ export class Tokenizer {
       // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
       if (openContext.goal === TokenizerGoal.NakedUrl) {
         this.flushBufferToNakedUrlEndToken()
+        
+        // We need to close the naked URL's context, as well as the contexts of any raw text brackets inside it.
         this.openContexts.splice(i)
       }
     }
