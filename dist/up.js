@@ -205,12 +205,12 @@ var Parser = (function () {
             }
             if (token.kind === TokenKind_1.TokenKind.NakedUrlProtocolAndStart) {
                 var protocol = token.value;
-                if (!this.isNextTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd)) {
+                var nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex();
+                var urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value;
+                if (!urlAfterProtocol) {
                     this.nodes.push(new PlainTextNode_1.PlainTextNode(protocol));
                     continue;
                 }
-                var nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex();
-                var urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value;
                 var url = protocol + urlAfterProtocol;
                 if (!urlAfterProtocol) {
                     this.nodes.push(new PlainTextNode_1.PlainTextNode(url));
@@ -273,10 +273,6 @@ var Parser = (function () {
         this.setResult();
         var _a;
     }
-    Parser.prototype.isNextTokenOfKind = function (kind) {
-        return ((this.tokenIndex + 1) < this.tokens.length
-            && this.tokens[this.tokenIndex + 1].kind == kind);
-    };
     Parser.prototype.getNextTokenAndAdvanceIndex = function () {
         return this.tokens[++this.tokenIndex];
     };
@@ -987,7 +983,7 @@ var Tokenizer = (function () {
             pattern: sandwich.endPattern,
             context: context,
             thenAddAnyClosingTokens: function () {
-                _this.flushBufferToPlainTextToken();
+                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 var startToken = new Token_1.Token({ kind: sandwich.startTokenKind });
                 var endToken = new Token_1.Token({ kind: sandwich.endTokenKind });
                 startToken.associateWith(endToken);
@@ -1023,7 +1019,7 @@ var Tokenizer = (function () {
             pattern: bracket.endPattern,
             context: context,
             thenAddAnyClosingTokens: function () {
-                _this.flushBufferToPlainTextToken();
+                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 var startToken = new Token_1.Token({ kind: bracket.convention.startTokenKind });
                 var endToken = new Token_1.Token({ kind: bracket.convention.endTokenKind });
                 startToken.associateWith(endToken);
@@ -1064,7 +1060,7 @@ var Tokenizer = (function () {
                     captures[_i - 3] = arguments[_i];
                 }
                 if (flushBufferToPlainTextTokenBeforeOpening) {
-                    _this.flushBufferToPlainTextToken();
+                    _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 }
                 _this.openContext(goal);
                 if (thenAddAnyStartTokens) {
@@ -1119,7 +1115,7 @@ var Tokenizer = (function () {
                     return false;
             }
         }
-        this.flushBufferToPlainTextToken();
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
         return true;
     };
     Tokenizer.prototype.backtrackToBeforeContext = function (context) {
@@ -1135,9 +1131,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
         var urlAfterProtocol = this.flushBuffer();
-        if (urlAfterProtocol) {
-            this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol });
-        }
+        this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol });
     };
     Tokenizer.prototype.hasGoal = function (goal) {
         return this.openContexts.some(function (context) { return context.goal === goal; });
@@ -1159,7 +1153,7 @@ var Tokenizer = (function () {
                 else if (canCloseConvention) {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
-                _this.flushBufferToPlainTextToken();
+                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 _this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks });
             }
         });
@@ -1197,7 +1191,7 @@ var Tokenizer = (function () {
         this.buffer = '';
         return buffer;
     };
-    Tokenizer.prototype.flushBufferToPlainTextToken = function () {
+    Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
         var buffer = this.flushBuffer();
         if (buffer) {
             this.tokens.push(getPlainTextToken(buffer));

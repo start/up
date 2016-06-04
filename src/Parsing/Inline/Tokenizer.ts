@@ -60,14 +60,14 @@ export class Tokenizer {
   // Some of rich sandwiches rely on user-configurable values, so we assign this field in the
   // `configureConventions` method where we have access to the user's config settings.
   private richSandwiches: TokenizableRichSandwich[]
-  
+
   // These conventions are for images, audio, and video. They also rely on user-configurable values.
   private mediaConventions: TokenizableMedia[]
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
     this.configureConventions(config)
-    
+
     this.tokenize()
   }
 
@@ -75,7 +75,7 @@ export class Tokenizer {
     this.mediaConventions =
       [AUDIO, IMAGE, VIDEO].map(media =>
         new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
-        
+
     this.richSandwiches = [
       {
         richConvention: SPOILER,
@@ -275,7 +275,7 @@ export class Tokenizer {
       pattern: sandwich.endPattern,
       context,
       thenAddAnyClosingTokens: () => {
-        this.flushBufferToPlainTextToken()
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
         const startToken = new Token({ kind: sandwich.startTokenKind })
         const endToken = new Token({ kind: sandwich.endTokenKind })
@@ -313,7 +313,7 @@ export class Tokenizer {
       pattern: bracket.endPattern,
       context,
       thenAddAnyClosingTokens: () => {
-        this.flushBufferToPlainTextToken()
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
         // Rich brackets are unique in that their delimiters (brackets!) appear in the final AST inside the
         // bracket's node. We'll add those brackets here, along with the start and end tokens.
@@ -376,7 +376,7 @@ export class Tokenizer {
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         if (flushBufferToPlainTextTokenBeforeOpening) {
-          this.flushBufferToPlainTextToken()
+          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         }
 
         this.openContext(goal)
@@ -444,7 +444,7 @@ export class Tokenizer {
       }
     }
 
-    this.flushBufferToPlainTextToken()
+    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
     return true
   }
 
@@ -463,10 +463,7 @@ export class Tokenizer {
 
   private flushBufferToNakedUrlEndToken(): void {
     const urlAfterProtocol = this.flushBuffer()
-
-    if (urlAfterProtocol) {
-      this.createTokenAndAppend({ kind: TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol })
-    }
+    this.createTokenAndAppend({ kind: TokenKind.NakedUrlAfterProtocolAndEnd, value: urlAfterProtocol })
   }
 
   private hasGoal(goal: TokenizerGoal): boolean {
@@ -500,7 +497,7 @@ export class Tokenizer {
           asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
         }
 
-        this.flushBufferToPlainTextToken()
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks })
       }
     })
@@ -549,7 +546,7 @@ export class Tokenizer {
     return buffer
   }
 
-  private flushBufferToPlainTextToken(): void {
+  private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
     const buffer = this.flushBuffer()
 
     if (buffer) {

@@ -76,17 +76,14 @@ export class Parser {
       if (token.kind === TokenKind.NakedUrlProtocolAndStart) {
         const protocol = token.value
 
-        if (!this.isNextTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)) {
-          // If the next token isn't a TokenKind.NakedUrlAfterProtocolAndEnd token, it means the author of the
-          // document didn't include the rest of the URL.
-          //
+        const nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex()
+        const urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value
+
+        if (!urlAfterProtocol) {
           // There's no point in creating a link for a URL protocol alone, so we treat the protocol as plain text.
           this.nodes.push(new PlainTextNode(protocol))
           continue
         }
-
-        const nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex()
-        const urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value
 
         const url = protocol + urlAfterProtocol
 
@@ -182,12 +179,6 @@ export class Parser {
     }
 
     this.setResult()
-  }
-
-  private isNextTokenOfKind(kind: TokenKind): boolean {
-    return (
-      (this.tokenIndex + 1) < this.tokens.length
-      && this.tokens[this.tokenIndex + 1].kind == kind)
   }
 
   private getNextTokenAndAdvanceIndex(): Token {
