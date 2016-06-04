@@ -6,6 +6,8 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -197,6 +199,7 @@ describe('A naked URL followed by a space then a footnote', () => {
   })
 })
 
+
 describe('A naked URL inside a link', () => {
   it("does not need a space between itself and the closing bracket that follows", () => {
     expect(Up.toAst('[Trust me: https://inner.example.com/fake](https://outer.example.com/real)')).to.be.eql(
@@ -207,6 +210,28 @@ describe('A naked URL inside a link', () => {
             new PlainTextNode('inner.example.com/fake')
           ], 'https://inner.example.com/fake')
         ], 'https://outer.example.com/real')
+      ]))
+  })
+})
+
+
+describe('A naked URL terminated by another convention closing, followed by a non-whitespace character,', () => {
+  it('does not prevent other conventions from being evaluated afterward', () => {
+    expect(Up.toAst('I found a weird site (https://archive.org/fake). It had *way* too many tarantulas.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I found a weird site '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainTextNode(')')
+        ]),
+        new PlainTextNode('. It had '),
+        new EmphasisNode([
+          new PlainTextNode('way')
+        ]),
+        new PlainTextNode(' too many tarantulas.')
       ]))
   })
 })
