@@ -244,14 +244,14 @@ export class Tokenizer {
       pattern: bracket.endPattern,
       onCloseFlushBufferTo: TokenKind.PlainText,
       thenAddAnyClosingTokens: () => {
+        // Rich bracket conventions create syntax nodes, just like other conventions. But unlike other conventions,
+        // their syntax nodes contain their delimiters (brackets) as plain text.
+        const startBracketToken = new Token({ kind: TokenKind.PlainText, value: bracket.rawStartBracket })
+        const endBracketToken = new Token({ kind: TokenKind.PlainText, value: bracket.rawEndBracket })
+
         const startToken = new Token({ kind: bracket.convention.startTokenKind })
         const endToken = new Token({ kind: bracket.convention.endTokenKind })
         startToken.associateWith(endToken)
-
-        // Rich brackets are unique in that their delimiters (brackets) appear in the final AST inside the
-        // bracket's node.
-        const startBracketToken = getPlainTextToken(bracket.rawStartBracket)
-        const endBracketToken = getPlainTextToken(bracket.rawEndBracket)
 
         this.insertTokensAtStartOfContext(context, startToken, startBracketToken)
         this.tokens.push(endBracketToken, endToken)
@@ -548,8 +548,3 @@ const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
 
 const WHITESPACE_CHAR_PATTERN = new RegExp(
   WHITESPACE_CHAR)
-
-
-function getPlainTextToken(value: string) {
-  return new Token({ kind: TokenKind.PlainText, value })
-}

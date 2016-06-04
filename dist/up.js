@@ -956,11 +956,11 @@ var Tokenizer = (function () {
             pattern: bracket.endPattern,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             thenAddAnyClosingTokens: function () {
+                var startBracketToken = new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket.rawStartBracket });
+                var endBracketToken = new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket.rawEndBracket });
                 var startToken = new Token_1.Token({ kind: bracket.convention.startTokenKind });
                 var endToken = new Token_1.Token({ kind: bracket.convention.endTokenKind });
                 startToken.associateWith(endToken);
-                var startBracketToken = getPlainTextToken(bracket.rawStartBracket);
-                var endBracketToken = getPlainTextToken(bracket.rawEndBracket);
                 _this.insertTokensAtStartOfContext(context, startToken, startBracketToken);
                 _this.tokens.push(endBracketToken, endToken);
             }
@@ -1189,9 +1189,6 @@ var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1
 var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
-function getPlainTextToken(value) {
-    return new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: value });
-}
 
 },{"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableMedia":16,"./TokenizableRawTextBracket":17,"./TokenizableRichBracket":18,"./TokenizableRichSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
 "use strict";
