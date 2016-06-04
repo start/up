@@ -672,8 +672,8 @@ export class Tokenizer {
   
 
   private insertTokensAtStartOfContext(context: TokenizerContext, ...tokens: Token[]): void {
-    // Each subsequent token inserted ends up before the tokens already inserted, so we have to insert
-    // them in reverse order. 
+    // When we insert a token at the start of a context through `insertTokenAtStartOfContext`, that context's start
+    // index isn't affected. To preserve the order the tokens appear in `tokens`, we'll insert them in reverse.
     for (let i = tokens.length - 1; i >= 0; i--) {
       const token = tokens[i]      
       this.insertTokenAtStartOfContext(context, token.kind, token.value)
