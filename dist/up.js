@@ -751,17 +751,17 @@ function getPattern(bracketPattern) {
 },{"../../Patterns":42}],19:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../Patterns');
-var TokenizableSandwich = (function () {
-    function TokenizableSandwich(args) {
-        this.goal = args.goal;
+var TokenizableRichSandwich = (function () {
+    function TokenizableRichSandwich(args) {
+        this.goal = args.richConvention.tokenizerGoal;
         this.startPattern = getPattern(args.startPattern);
         this.endPattern = getPattern(args.endPattern);
-        this.startTokenKind = args.startTokenKind;
-        this.endTokenKind = args.endTokenKind;
+        this.startTokenKind = args.richConvention.startTokenKind;
+        this.endTokenKind = args.richConvention.endTokenKind;
     }
-    return TokenizableSandwich;
+    return TokenizableRichSandwich;
 }());
-exports.TokenizableSandwich = TokenizableSandwich;
+exports.TokenizableRichSandwich = TokenizableRichSandwich;
 function getPattern(pattern) {
     return new RegExp(Patterns_1.startsWith(pattern), 'i');
 }
@@ -774,7 +774,7 @@ var MediaConventions_1 = require('./MediaConventions');
 var applyRaisedVoices_1 = require('./RaisedVoices/applyRaisedVoices');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
 var TokenizerGoal_1 = require('./TokenizerGoal');
-var TokenizableSandwich_1 = require('./TokenizableSandwich');
+var TokenizableRichSandwich_1 = require('./TokenizableRichSandwich');
 var Bracket_1 = require('./Bracket');
 var TokenizableRawTextBracket_1 = require('./TokenizableRawTextBracket');
 var TokenizableRichBracket_1 = require('./TokenizableRichBracket');
@@ -791,22 +791,22 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
-        this.footnoteConvention = getRichSandwich({
+        this.footnoteConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
             richConvention: RichConventions_1.FOOTNOTE,
             startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
             endPattern: Patterns_1.escapeForRegex('))')
         });
-        this.revisionDeletionConvention = getRichSandwich({
+        this.revisionDeletionConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
             richConvention: RichConventions_1.REVISION_DELETION,
             startPattern: '~~',
             endPattern: '~~'
         });
-        this.revisionInsertionConvention = getRichSandwich({
+        this.revisionInsertionConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
             richConvention: RichConventions_1.REVISION_INSERTION,
             startPattern: Patterns_1.escapeForRegex('++'),
             endPattern: Patterns_1.escapeForRegex('++')
         });
-        this.actionConvention = getRichSandwich({
+        this.actionConvention = new TokenizableRichSandwich_1.TokenizableRichSandwich({
             richConvention: RichConventions_1.ACTION,
             startPattern: CURLY_BRACKET.startPattern,
             endPattern: CURLY_BRACKET.endPattern
@@ -833,7 +833,7 @@ var Tokenizer = (function () {
                 return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
             });
         this.spoilerConvention =
-            getRichSandwich({
+            new TokenizableRichSandwich_1.TokenizableRichSandwich({
                 richConvention: RichConventions_1.SPOILER,
                 startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: SQUARE_BRACKET.endPattern
@@ -1297,16 +1297,6 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
-function getRichSandwich(args) {
-    var startPattern = args.startPattern, endPattern = args.endPattern, richConvention = args.richConvention;
-    return new TokenizableSandwich_1.TokenizableSandwich({
-        goal: richConvention.tokenizerGoal,
-        startPattern: startPattern,
-        endPattern: endPattern,
-        startTokenKind: richConvention.startTokenKind,
-        endTokenKind: richConvention.endTokenKind
-    });
-}
 var PARENTHESIS = new Bracket_1.Bracket('(', ')');
 var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
 var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
@@ -1326,7 +1316,7 @@ function associate(startToken, endToken) {
     endToken.correspondsToToken = startToken;
 }
 
-},{"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableMedia":16,"./TokenizableRawTextBracket":17,"./TokenizableRichBracket":18,"./TokenizableSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
+},{"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableMedia":16,"./TokenizableRawTextBracket":17,"./TokenizableRichBracket":18,"./TokenizableRichSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(goal, snapshot) {

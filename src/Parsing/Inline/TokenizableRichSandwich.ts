@@ -1,9 +1,10 @@
 import { TokenKind } from './TokenKind'
 import { TokenizerGoal } from './TokenizerGoal'
+import { RichConvention } from './RichConvention'
 import { startsWith } from '../../Patterns'
 
 
-export class TokenizableSandwich {
+export class TokenizableRichSandwich {
   goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
@@ -11,19 +12,17 @@ export class TokenizableSandwich {
   endTokenKind: TokenKind
 
   constructor(
-    args: {
-      goal: TokenizerGoal
-      startPattern: string
-      endPattern: string
-      startTokenKind?: TokenKind
-      endTokenKind?: TokenKind
-    }
+args: {
+    startPattern: string,
+    endPattern: string,
+    richConvention: RichConvention
+  }
   ) {
-    this.goal = args.goal
+    this.goal = args.richConvention.tokenizerGoal
     this.startPattern = getPattern(args.startPattern)
     this.endPattern = getPattern(args.endPattern)
-    this.startTokenKind = args.startTokenKind
-    this.endTokenKind = args.endTokenKind
+    this.startTokenKind = args.richConvention.startTokenKind
+    this.endTokenKind = args.richConvention.endTokenKind
   }
 }
 

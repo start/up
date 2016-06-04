@@ -9,7 +9,7 @@ import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnTokenizerMatch } from './OnTokenizerMatch'
 import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
-import { TokenizableSandwich } from './TokenizableSandwich'
+import { TokenizableRichSandwich } from './TokenizableRichSandwich'
 import { Bracket } from './Bracket'
 import { TokenizableRawTextBracket } from './TokenizableRawTextBracket'
 import { TokenizableRichBracket } from './TokenizableRichBracket'
@@ -37,25 +37,25 @@ export class Tokenizer {
   // flushed to a token, asually a PlainTextToken.
   private buffer = ''
 
-  private footnoteConvention = getRichSandwich({
+  private footnoteConvention = new TokenizableRichSandwich({
     richConvention: FOOTNOTE,
     startPattern: ANY_WHITESPACE + escapeForRegex('(('),
     endPattern: escapeForRegex('))')
   })
 
-  private revisionDeletionConvention = getRichSandwich({
+  private revisionDeletionConvention = new TokenizableRichSandwich({
     richConvention: REVISION_DELETION,
     startPattern: '~~',
     endPattern: '~~'
   })
 
-  private revisionInsertionConvention = getRichSandwich({
+  private revisionInsertionConvention = new TokenizableRichSandwich({
     richConvention: REVISION_INSERTION,
     startPattern: escapeForRegex('++'),
     endPattern: escapeForRegex('++')
   })
 
-  private actionConvention = getRichSandwich({
+  private actionConvention = new TokenizableRichSandwich({
     richConvention: ACTION,
     startPattern: CURLY_BRACKET.startPattern,
     endPattern: CURLY_BRACKET.endPattern
@@ -88,7 +88,7 @@ export class Tokenizer {
 
   // The start pattern for the spoiler convention relies on a user-configurable value, so we assign
   // this field in the `configureConventions` method where we have access to the user's config settings.
-  private spoilerConvention: TokenizableSandwich
+  private spoilerConvention: TokenizableRichSandwich
 
   // These conventions are for images, audio, and video
   private mediaConventions: TokenizableMedia[]
@@ -99,7 +99,7 @@ export class Tokenizer {
   // 2. Involves just two delimiters: one to mark its start, and one to mark its end
   //
   // We can't create the collection until the spoiler convention has been configured.
-  private richSandwiches: TokenizableSandwich[]
+  private richSandwiches: TokenizableRichSandwich[]
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -114,7 +114,7 @@ export class Tokenizer {
         new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
 
     this.spoilerConvention =
-      getRichSandwich({
+      new TokenizableRichSandwich({
         richConvention: SPOILER,
         startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: SQUARE_BRACKET.endPattern
@@ -372,7 +372,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenRichSandwich(sandwich: TokenizableSandwich): boolean {
+  private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
     return this.tryToOpenConvention({
       goal: sandwich.goal,
       pattern: sandwich.startPattern,
@@ -388,7 +388,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRichSandwich(sandwich: TokenizableSandwich, context: TokenizerContext): boolean {
+  private tryToCloseRichSandwich(sandwich: TokenizableRichSandwich, context: TokenizerContext): boolean {
     return this.tryToCloseConvention({
       pattern: sandwich.endPattern,
       context,
@@ -689,25 +689,6 @@ export class Tokenizer {
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
-}
-
-
-function getRichSandwich(
-  args: {
-    startPattern: string,
-    endPattern: string,
-    richConvention: RichConvention
-  }
-): TokenizableSandwich {
-  const { startPattern, endPattern, richConvention } = args
-
-  return new TokenizableSandwich({
-    goal: richConvention.tokenizerGoal,
-    startPattern,
-    endPattern,
-    startTokenKind: richConvention.startTokenKind,
-    endTokenKind: richConvention.endTokenKind
-  })
 }
 
 
