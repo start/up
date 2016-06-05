@@ -11,7 +11,7 @@ import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableRichSandwich } from './TokenizableRichSandwich'
 import { Bracket } from './Bracket'
-import { TokenizableRawTextBracket } from './TokenizableRawTextBracket'
+import { TokenizableBracket } from './TokenizableBracket'
 import { TokenizableRichBracket } from './TokenizableRichBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
@@ -46,11 +46,18 @@ export class Tokenizer {
   //
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
-  private rawTextBrackets = [
+  private bracketsForInsideRawText = [
     { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
     { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
     { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-  ].map(args => new TokenizableRawTextBracket(args))
+  ].map(args => new TokenizableBracket(args))
+  
+  // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
+  private bracketedLinkUrls = [
+    { goal: TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
+    { goal: TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
+    { goal: TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
+  ].map(args => new TokenizableBracket(args))
 
   // A rich sandwich:
   //
@@ -260,16 +267,16 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyRawTextBracket(): boolean {
-    return this.rawTextBrackets.some(bracket => this.tryToOpenRawTextBracket(bracket))
+    return this.bracketsForInsideRawText.some(bracket => this.tryToOpenRawTextBracket(bracket))
   }
 
   private tryToCloseRawTextBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.rawTextBrackets.some(rawTextBracket =>
+    return this.bracketsForInsideRawText.some(rawTextBracket =>
       (rawTextBracket.goal === context.goal)
       && this.tryToCloseRawTextBracket(rawTextBracket, context))
   }
 
-  private tryToOpenRawTextBracket(bracket: TokenizableRawTextBracket): boolean {
+  private tryToOpenRawTextBracket(bracket: TokenizableBracket): boolean {
     return this.tryToOpenContext({
       goal: bracket.goal,
       pattern: bracket.startPattern,
@@ -278,7 +285,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(bracket: TokenizableRawTextBracket, context: TokenizerContext): boolean {
+  private tryToCloseRawTextBracket(bracket: TokenizableBracket, context: TokenizerContext): boolean {
     return this.tryToCloseContext({
       context,
       pattern: bracket.endPattern,

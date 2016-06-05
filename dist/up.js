@@ -700,6 +700,20 @@ var TokenKind = exports.TokenKind;
 },{}],16:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../Patterns');
+var TokenizableBracket = (function () {
+    function TokenizableBracket(args) {
+        var goal = args.goal, bracket = args.bracket;
+        this.goal = goal;
+        this.startPattern = Patterns_1.getRegExpStartingWith(bracket.startPattern);
+        this.endPattern = Patterns_1.getRegExpStartingWith(bracket.endPattern);
+    }
+    return TokenizableBracket;
+}());
+exports.TokenizableBracket = TokenizableBracket;
+
+},{"../../Patterns":42}],17:[function(require,module,exports){
+"use strict";
+var Patterns_1 = require('../../Patterns');
 var TokenizableMedia = (function () {
     function TokenizableMedia(media, localizedTerm) {
         this.startTokenKind = media.startTokenKind;
@@ -710,20 +724,6 @@ var TokenizableMedia = (function () {
     return TokenizableMedia;
 }());
 exports.TokenizableMedia = TokenizableMedia;
-
-},{"../../Patterns":42}],17:[function(require,module,exports){
-"use strict";
-var Patterns_1 = require('../../Patterns');
-var TokenizableRawTextBracket = (function () {
-    function TokenizableRawTextBracket(args) {
-        var goal = args.goal, bracket = args.bracket;
-        this.goal = goal;
-        this.startPattern = Patterns_1.getRegExpStartingWith(bracket.startPattern);
-        this.endPattern = Patterns_1.getRegExpStartingWith(bracket.endPattern);
-    }
-    return TokenizableRawTextBracket;
-}());
-exports.TokenizableRawTextBracket = TokenizableRawTextBracket;
 
 },{"../../Patterns":42}],18:[function(require,module,exports){
 "use strict";
@@ -767,7 +767,7 @@ var CollectionHelpers_1 = require('../../CollectionHelpers');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var TokenizableRichSandwich_1 = require('./TokenizableRichSandwich');
 var Bracket_1 = require('./Bracket');
-var TokenizableRawTextBracket_1 = require('./TokenizableRawTextBracket');
+var TokenizableBracket_1 = require('./TokenizableBracket');
 var TokenizableRichBracket_1 = require('./TokenizableRichBracket');
 var TokenizableMedia_1 = require('./TokenizableMedia');
 var FailedGoalTracker_1 = require('./FailedGoalTracker');
@@ -786,11 +786,16 @@ var Tokenizer = (function () {
             { convention: RichConventions_1.PARENTHESIZED, bracket: PARENTHESIS },
             { convention: RichConventions_1.SQUARE_BRACKETED, bracket: SQUARE_BRACKET }
         ].map(function (args) { return new TokenizableRichBracket_1.TokenizableRichBracket(args); });
-        this.rawTextBrackets = [
+        this.bracketsForInsideRawText = [
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
             { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-        ].map(function (args) { return new TokenizableRawTextBracket_1.TokenizableRawTextBracket(args); });
+        ].map(function (args) { return new TokenizableBracket_1.TokenizableBracket(args); });
+        this.bracketedLinkUrls = [
+            { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
+            { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
+            { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
+        ].map(function (args) { return new TokenizableBracket_1.TokenizableBracket(args); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
         this.tokenize();
@@ -957,11 +962,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenAnyRawTextBracket = function () {
         var _this = this;
-        return this.rawTextBrackets.some(function (bracket) { return _this.tryToOpenRawTextBracket(bracket); });
+        return this.bracketsForInsideRawText.some(function (bracket) { return _this.tryToOpenRawTextBracket(bracket); });
     };
     Tokenizer.prototype.tryToCloseRawTextBracketCorrespondingToContext = function (context) {
         var _this = this;
-        return this.rawTextBrackets.some(function (rawTextBracket) {
+        return this.bracketsForInsideRawText.some(function (rawTextBracket) {
             return (rawTextBracket.goal === context.goal)
                 && _this.tryToCloseRawTextBracket(rawTextBracket, context);
         });
@@ -1184,7 +1189,7 @@ var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.
 var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 
-},{"../../CollectionHelpers":1,"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableMedia":16,"./TokenizableRawTextBracket":17,"./TokenizableRichBracket":18,"./TokenizableRichSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableBracket":16,"./TokenizableMedia":17,"./TokenizableRichBracket":18,"./TokenizableRichSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(goal, snapshot) {
@@ -1220,15 +1225,18 @@ exports.TokenizerContext = TokenizerContext;
     TokenizerGoal[TokenizerGoal["ParenthesizedInRawText"] = 7] = "ParenthesizedInRawText";
     TokenizerGoal[TokenizerGoal["SquareBracketedInRawText"] = 8] = "SquareBracketedInRawText";
     TokenizerGoal[TokenizerGoal["CurlyBracketedInRawText"] = 9] = "CurlyBracketedInRawText";
-    TokenizerGoal[TokenizerGoal["Link"] = 10] = "Link";
-    TokenizerGoal[TokenizerGoal["LinkUrl"] = 11] = "LinkUrl";
-    TokenizerGoal[TokenizerGoal["RevisionInsertion"] = 12] = "RevisionInsertion";
-    TokenizerGoal[TokenizerGoal["RevisionDeletion"] = 13] = "RevisionDeletion";
-    TokenizerGoal[TokenizerGoal["Audio"] = 14] = "Audio";
-    TokenizerGoal[TokenizerGoal["Image"] = 15] = "Image";
-    TokenizerGoal[TokenizerGoal["Video"] = 16] = "Video";
-    TokenizerGoal[TokenizerGoal["MediaUrl"] = 17] = "MediaUrl";
-    TokenizerGoal[TokenizerGoal["NakedUrl"] = 18] = "NakedUrl";
+    TokenizerGoal[TokenizerGoal["ParenthesizedLinkUrl"] = 10] = "ParenthesizedLinkUrl";
+    TokenizerGoal[TokenizerGoal["SquareBracketedLinkUrl"] = 11] = "SquareBracketedLinkUrl";
+    TokenizerGoal[TokenizerGoal["CurlyBracketedLinkUrl"] = 12] = "CurlyBracketedLinkUrl";
+    TokenizerGoal[TokenizerGoal["Link"] = 13] = "Link";
+    TokenizerGoal[TokenizerGoal["LinkUrl"] = 14] = "LinkUrl";
+    TokenizerGoal[TokenizerGoal["RevisionInsertion"] = 15] = "RevisionInsertion";
+    TokenizerGoal[TokenizerGoal["RevisionDeletion"] = 16] = "RevisionDeletion";
+    TokenizerGoal[TokenizerGoal["Audio"] = 17] = "Audio";
+    TokenizerGoal[TokenizerGoal["Image"] = 18] = "Image";
+    TokenizerGoal[TokenizerGoal["Video"] = 19] = "Video";
+    TokenizerGoal[TokenizerGoal["MediaUrl"] = 20] = "MediaUrl";
+    TokenizerGoal[TokenizerGoal["NakedUrl"] = 21] = "NakedUrl";
 })(exports.TokenizerGoal || (exports.TokenizerGoal = {}));
 var TokenizerGoal = exports.TokenizerGoal;
 

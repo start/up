@@ -2,7 +2,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { Bracket } from './Bracket'
 import { getRegExpStartingWith } from '../../Patterns'
 
-export class TokenizableRawTextBracket {
+export class TokenizableBracket {
   goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
