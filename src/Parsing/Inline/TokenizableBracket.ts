@@ -2,6 +2,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { Bracket } from './Bracket'
 import { getRegExpStartingWith } from '../../Patterns'
 
+
 export class TokenizableBracket {
   goal: TokenizerGoal
   startPattern: RegExp

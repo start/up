@@ -42,16 +42,16 @@ export class Tokenizer {
     { convention: SQUARE_BRACKETED, bracket: SQUARE_BRACKET }
   ].map(args => new TokenizableRichBracket(args))
 
-  // Unlike the rich bracket conventions, raw text bracket conventions don't produce special tokens.
+  // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
   //
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
-  private bracketsForInsideRawText = [
+  private rawBrackets = [
     { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
     { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
     { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
   ].map(args => new TokenizableBracket(args))
-  
+
   // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
   private bracketedLinkUrls = [
     { goal: TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
@@ -159,7 +159,7 @@ export class Tokenizer {
     return (
       this.tryToCloseRichSandwichCorrespondingToContext(context)
       || this.tryToCloseRichBracketCorrespondingToContext(context)
-      || this.tryToCloseRawTextBracketCorrespondingToContext(context)
+      || this.tryToCloseRawBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
       || ((goal === TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context))
     )
@@ -267,16 +267,17 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyRawTextBracket(): boolean {
-    return this.bracketsForInsideRawText.some(bracket => this.tryToOpenRawTextBracket(bracket))
+    return this.rawBrackets.some(bracket =>
+      this.tryToOpenRawBracket(bracket))
   }
 
-  private tryToCloseRawTextBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.bracketsForInsideRawText.some(rawTextBracket =>
+  private tryToCloseRawBracketCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.rawBrackets.some(rawTextBracket =>
       (rawTextBracket.goal === context.goal)
-      && this.tryToCloseRawTextBracket(rawTextBracket, context))
+      && this.tryToCloseRawBracket(rawTextBracket, context))
   }
 
-  private tryToOpenRawTextBracket(bracket: TokenizableBracket): boolean {
+  private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
     return this.tryToOpenContext({
       goal: bracket.goal,
       pattern: bracket.startPattern,
@@ -285,7 +286,7 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawTextBracket(bracket: TokenizableBracket, context: TokenizerContext): boolean {
+  private tryToCloseRawBracket(bracket: TokenizableBracket, context: TokenizerContext): boolean {
     return this.tryToCloseContext({
       context,
       pattern: bracket.endPattern,
@@ -527,7 +528,7 @@ export class Tokenizer {
 
   private get isInsideNakedUrl(): boolean {
     const lastToken = last(this.tokens)
-    
+
     return lastToken && (lastToken.kind === TokenKind.NakedUrlProtocolAndStart)
   }
 }

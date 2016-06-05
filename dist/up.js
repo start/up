@@ -786,7 +786,7 @@ var Tokenizer = (function () {
             { convention: RichConventions_1.PARENTHESIZED, bracket: PARENTHESIS },
             { convention: RichConventions_1.SQUARE_BRACKETED, bracket: SQUARE_BRACKET }
         ].map(function (args) { return new TokenizableRichBracket_1.TokenizableRichBracket(args); });
-        this.bracketsForInsideRawText = [
+        this.rawBrackets = [
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
             { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
@@ -865,7 +865,7 @@ var Tokenizer = (function () {
         var goal = context.goal;
         return (this.tryToCloseRichSandwichCorrespondingToContext(context)
             || this.tryToCloseRichBracketCorrespondingToContext(context)
-            || this.tryToCloseRawTextBracketCorrespondingToContext(context)
+            || this.tryToCloseRawBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
             || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context)));
     };
@@ -962,16 +962,18 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenAnyRawTextBracket = function () {
         var _this = this;
-        return this.bracketsForInsideRawText.some(function (bracket) { return _this.tryToOpenRawTextBracket(bracket); });
-    };
-    Tokenizer.prototype.tryToCloseRawTextBracketCorrespondingToContext = function (context) {
-        var _this = this;
-        return this.bracketsForInsideRawText.some(function (rawTextBracket) {
-            return (rawTextBracket.goal === context.goal)
-                && _this.tryToCloseRawTextBracket(rawTextBracket, context);
+        return this.rawBrackets.some(function (bracket) {
+            return _this.tryToOpenRawBracket(bracket);
         });
     };
-    Tokenizer.prototype.tryToOpenRawTextBracket = function (bracket) {
+    Tokenizer.prototype.tryToCloseRawBracketCorrespondingToContext = function (context) {
+        var _this = this;
+        return this.rawBrackets.some(function (rawTextBracket) {
+            return (rawTextBracket.goal === context.goal)
+                && _this.tryToCloseRawBracket(rawTextBracket, context);
+        });
+    };
+    Tokenizer.prototype.tryToOpenRawBracket = function (bracket) {
         var _this = this;
         return this.tryToOpenContext({
             goal: bracket.goal,
@@ -980,7 +982,7 @@ var Tokenizer = (function () {
             onOpen: function (bracket) { _this.buffer += bracket; }
         });
     };
-    Tokenizer.prototype.tryToCloseRawTextBracket = function (bracket, context) {
+    Tokenizer.prototype.tryToCloseRawBracket = function (bracket, context) {
         var _this = this;
         return this.tryToCloseContext({
             context: context,
