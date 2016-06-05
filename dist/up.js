@@ -1163,16 +1163,6 @@ var Tokenizer = (function () {
             openContext.registerTokenInsertion({ atIndex: newTokenIndex, forContext: context });
         }
     };
-    Tokenizer.prototype.insertTokensAtStartOfContext = function (context) {
-        var tokens = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            tokens[_i - 1] = arguments[_i];
-        }
-        for (var i = tokens.length - 1; i >= 0; i--) {
-            var token = tokens[i];
-            this.insertTokenAtStartOfContext(context, token);
-        }
-    };
     Tokenizer.prototype.bufferCurrentChar = function () {
         this.buffer += this.consumer.currentChar;
         this.consumer.advanceTextIndex(1);
