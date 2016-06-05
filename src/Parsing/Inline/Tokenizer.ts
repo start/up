@@ -12,7 +12,6 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableRichSandwich } from './TokenizableRichSandwich'
 import { Bracket } from './Bracket'
 import { TokenizableBracket } from './TokenizableBracket'
-import { TokenizableRichBracket } from './TokenizableRichBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -36,11 +35,6 @@ export class Tokenizer {
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a PlainTextToken.
   private buffer = ''
-
-  private richBrackets = [
-    { convention: PARENTHESIZED, bracket: PARENTHESIS },
-    { convention: SQUARE_BRACKETED, bracket: SQUARE_BRACKET }
-  ].map(args => new TokenizableRichBracket(args))
 
   // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
   //
@@ -104,6 +98,15 @@ export class Tokenizer {
         richConvention: ACTION,
         startPattern: CURLY_BRACKET.startPattern,
         endPattern: CURLY_BRACKET.endPattern
+      },
+      {
+        richConvention: PARENTHESIZED,
+        startPattern: PARENTHESIS.startPattern,
+        endPattern: PARENTHESIS.endPattern
+      }, {
+        richConvention: SQUARE_BRACKETED,
+        startPattern: SQUARE_BRACKET.startPattern,
+        endPattern: SQUARE_BRACKET.endPattern
       }
     ].map(args => new TokenizableRichSandwich(args))
   }
@@ -118,6 +121,8 @@ export class Tokenizer {
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
     }
+
+    this.insertPlainTextTokensInsideBrackets()
 
     this.tokens =
       nestOverlappingConventions(
@@ -158,7 +163,6 @@ export class Tokenizer {
 
     return (
       this.tryToCloseRichSandwichCorrespondingToContext(context)
-      || this.tryToCloseRichBracketCorrespondingToContext(context)
       || this.tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context)
       || this.tryToCloseRawBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
@@ -171,7 +175,6 @@ export class Tokenizer {
       this.tryToOpenInlineCode()
       || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
       || this.tryToOpenAnyRichSandwich()
-      || this.tryToOpenAnyRichBracket()
       || this.tryToOpenNakedUrl())
   }
 
@@ -219,7 +222,7 @@ export class Tokenizer {
       pattern: bracketedLinkUrl.endPattern,
       thenAddAnyClosingTokens: () => {
         const url = this.flushBuffer()
-        
+
         // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
         //
         // We'll replace that end token and its corresponding start token with link tokens.
@@ -230,7 +233,7 @@ export class Tokenizer {
         lastToken.value = url
       }
     })
-    
+
     return didCloseLinkUrl || this.bufferCurrentChar()
   }
 
@@ -274,45 +277,6 @@ export class Tokenizer {
 
         this.insertTokenAtStartOfContext(context, startToken)
         this.tokens.push(endToken)
-      }
-    })
-  }
-
-  private tryToOpenAnyRichBracket(): boolean {
-    return this.richBrackets.some(bracket => this.tryToOpenRichBracket(bracket))
-  }
-
-  private tryToOpenRichBracket(bracket: TokenizableRichBracket): boolean {
-    return this.tryToOpenContext({
-      goal: bracket.convention.tokenizerGoal,
-      pattern: bracket.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: true
-    })
-  }
-
-  private tryToCloseRichBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.richBrackets.some(richBracket =>
-      (richBracket.convention.tokenizerGoal === context.goal)
-      && this.tryToCloseRichBracket(richBracket, context))
-  }
-
-  private tryToCloseRichBracket(bracket: TokenizableRichBracket, context: TokenizerContext): boolean {
-    return this.tryToCloseContext({
-      context,
-      pattern: bracket.endPattern,
-      onCloseFlushBufferTo: TokenKind.PlainText,
-      thenAddAnyClosingTokens: () => {
-        // Rich bracket conventions create syntax nodes, just like other conventions. But unlike other conventions,
-        // their syntax nodes contain their delimiters (brackets) as plain text.
-        const startBracketToken = new Token({ kind: TokenKind.PlainText, value: bracket.rawStartBracket })
-        const endBracketToken = new Token({ kind: TokenKind.PlainText, value: bracket.rawEndBracket })
-
-        const startToken = new Token({ kind: bracket.convention.startTokenKind })
-        const endToken = new Token({ kind: bracket.convention.endTokenKind })
-        startToken.associateWith(endToken)
-
-        this.insertTokensAtStartOfContext(context, startToken, startBracketToken)
-        this.tokens.push(endBracketToken, endToken)
       }
     })
   }
@@ -587,6 +551,30 @@ export class Tokenizer {
     const lastToken = last(this.tokens)
 
     return lastToken && (lastToken.kind === TokenKind.NakedUrlProtocolAndStart)
+  }
+
+  private insertPlainTextTokensInsideBrackets(): void {
+    // Rich bracket conventions create syntax nodes, just like other conventions. But unlike other conventions,
+    // their syntax nodes contain their delimiters (brackets) as plain text.
+    const resultTokens: Token[] = []
+
+    for (const token of this.tokens) {
+      function addBracketIfTokenIs(bracket: string, kind: TokenKind): void {
+        if (token.kind === kind) {
+          resultTokens.push(new Token({ kind: TokenKind.PlainText, value: bracket }))
+        }
+      }
+
+      addBracketIfTokenIs(')', PARENTHESIZED.endTokenKind)
+      addBracketIfTokenIs(']', SQUARE_BRACKETED.endTokenKind)
+
+      resultTokens.push(token)
+
+      addBracketIfTokenIs('(', PARENTHESIZED.startTokenKind)
+      addBracketIfTokenIs('[', SQUARE_BRACKETED.startTokenKind)
+    }
+
+    this.tokens = resultTokens
   }
 }
 
