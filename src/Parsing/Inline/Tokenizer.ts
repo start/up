@@ -36,6 +36,22 @@ export class Tokenizer {
   // flushed to a token, usually a PlainTextToken.
   private buffer = ''
 
+  private richBrackets = [
+    {
+      richConvention: PARENTHESIZED,
+      startPattern: PARENTHESIS.startPattern,
+      endPattern: PARENTHESIS.endPattern
+    }, {
+      richConvention: SQUARE_BRACKETED,
+      startPattern: SQUARE_BRACKET.startPattern,
+      endPattern: SQUARE_BRACKET.endPattern
+    },{
+        richConvention: ACTION,
+        startPattern: CURLY_BRACKET.startPattern,
+        endPattern: CURLY_BRACKET.endPattern
+      }
+  ].map(args => new TokenizableRichSandwich(args))
+
   // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
   //
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
@@ -60,7 +76,7 @@ export class Tokenizer {
   //
   // Some of rich sandwiches rely on user-configurable values, so we assign this field in the
   // `configureConventions` method where we have access to the user's config settings.
-  private richSandwiches: TokenizableRichSandwich[]
+  private richSandwichesExceptRichBrackets: TokenizableRichSandwich[]
 
   // These conventions are for images, audio, and video. They also rely on user-configurable values.
   private mediaConventions: TokenizableMedia[]
@@ -77,7 +93,7 @@ export class Tokenizer {
       [AUDIO, IMAGE, VIDEO].map(media =>
         new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
 
-    this.richSandwiches = [
+    this.richSandwichesExceptRichBrackets = [
       {
         richConvention: SPOILER,
         startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
@@ -94,19 +110,6 @@ export class Tokenizer {
         richConvention: REVISION_INSERTION,
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++')
-      }, {
-        richConvention: ACTION,
-        startPattern: CURLY_BRACKET.startPattern,
-        endPattern: CURLY_BRACKET.endPattern
-      },
-      {
-        richConvention: PARENTHESIZED,
-        startPattern: PARENTHESIS.startPattern,
-        endPattern: PARENTHESIS.endPattern
-      }, {
-        richConvention: SQUARE_BRACKETED,
-        startPattern: SQUARE_BRACKET.startPattern,
-        endPattern: SQUARE_BRACKET.endPattern
       }
     ].map(args => new TokenizableRichSandwich(args))
   }
@@ -164,6 +167,7 @@ export class Tokenizer {
     return (
       this.tryToCloseRichSandwichCorrespondingToContext(context)
       || this.tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context)
+      || this.tryToCloseRichBracketCorrespondingToContext(context)
       || this.tryToCloseRawBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
       || ((goal === TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context))
@@ -173,8 +177,9 @@ export class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.tryToOpenInlineCode()
-      || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
       || this.tryToOpenAnyRichSandwich()
+      || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
+      || this.tryToOpenAnyRichBracket()
       || this.tryToOpenNakedUrl())
   }
 
@@ -233,7 +238,7 @@ export class Tokenizer {
         lastToken.value = url
       }
     })
-    
+
     return didCloseLinkUrl || this.bufferRawText()
   }
 
@@ -247,8 +252,18 @@ export class Tokenizer {
     ], lastToken.kind)
   }
 
+  private tryToOpenAnyRichBracket(): boolean {
+    return this.richBrackets.some(bracket => this.tryToOpenRichSandwich(bracket))
+  }
+
+  private tryToCloseRichBracketCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.richBrackets.some(bracket =>
+      (bracket.goal === context.goal)
+      && this.tryToCloseRichSandwich(bracket, context))
+  }
+  
   private tryToOpenAnyRichSandwich(): boolean {
-    return this.richSandwiches.some(sandwich => this.tryToOpenRichSandwich(sandwich))
+    return this.richSandwichesExceptRichBrackets.some(sandwich => this.tryToOpenRichSandwich(sandwich))
   }
 
   private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
@@ -260,9 +275,9 @@ export class Tokenizer {
   }
 
   private tryToCloseRichSandwichCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.richSandwiches.some(richSandwich =>
-      (richSandwich.goal === context.goal)
-      && this.tryToCloseRichSandwich(richSandwich, context))
+    return this.richSandwichesExceptRichBrackets.some(sandwich =>
+      (sandwich.goal === context.goal)
+      && this.tryToCloseRichSandwich(sandwich, context))
   }
 
   private tryToCloseRichSandwich(sandwich: TokenizableRichSandwich, context: TokenizerContext): boolean {

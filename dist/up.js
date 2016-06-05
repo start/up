@@ -765,6 +765,21 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
+        this.richBrackets = [
+            {
+                richConvention: RichConventions_1.PARENTHESIZED,
+                startPattern: PARENTHESIS.startPattern,
+                endPattern: PARENTHESIS.endPattern
+            }, {
+                richConvention: RichConventions_1.SQUARE_BRACKETED,
+                startPattern: SQUARE_BRACKET.startPattern,
+                endPattern: SQUARE_BRACKET.endPattern
+            }, {
+                richConvention: RichConventions_1.ACTION,
+                startPattern: CURLY_BRACKET.startPattern,
+                endPattern: CURLY_BRACKET.endPattern
+            }
+        ].map(function (args) { return new TokenizableRichSandwich_1.TokenizableRichSandwich(args); });
         this.rawBrackets = [
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
@@ -784,7 +799,7 @@ var Tokenizer = (function () {
             [MediaConventions_1.AUDIO, MediaConventions_1.IMAGE, MediaConventions_1.VIDEO].map(function (media) {
                 return new TokenizableMedia_1.TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm));
             });
-        this.richSandwiches = [
+        this.richSandwichesExceptRichBrackets = [
             {
                 richConvention: RichConventions_1.SPOILER,
                 startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
@@ -801,19 +816,6 @@ var Tokenizer = (function () {
                 richConvention: RichConventions_1.REVISION_INSERTION,
                 startPattern: Patterns_1.escapeForRegex('++'),
                 endPattern: Patterns_1.escapeForRegex('++')
-            }, {
-                richConvention: RichConventions_1.ACTION,
-                startPattern: CURLY_BRACKET.startPattern,
-                endPattern: CURLY_BRACKET.endPattern
-            },
-            {
-                richConvention: RichConventions_1.PARENTHESIZED,
-                startPattern: PARENTHESIS.startPattern,
-                endPattern: PARENTHESIS.endPattern
-            }, {
-                richConvention: RichConventions_1.SQUARE_BRACKETED,
-                startPattern: SQUARE_BRACKET.startPattern,
-                endPattern: SQUARE_BRACKET.endPattern
             }
         ].map(function (args) { return new TokenizableRichSandwich_1.TokenizableRichSandwich(args); });
     };
@@ -854,14 +856,16 @@ var Tokenizer = (function () {
         var goal = context.goal;
         return (this.tryToCloseRichSandwichCorrespondingToContext(context)
             || this.tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context)
+            || this.tryToCloseRichBracketCorrespondingToContext(context)
             || this.tryToCloseRawBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
             || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context)));
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         return (this.tryToOpenInlineCode()
-            || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
             || this.tryToOpenAnyRichSandwich()
+            || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
+            || this.tryToOpenAnyRichBracket()
             || this.tryToOpenNakedUrl());
     };
     Tokenizer.prototype.tryToOpenInlineCode = function () {
@@ -922,9 +926,20 @@ var Tokenizer = (function () {
             TokenKind_1.TokenKind.ActionEnd
         ], lastToken.kind);
     };
+    Tokenizer.prototype.tryToOpenAnyRichBracket = function () {
+        var _this = this;
+        return this.richBrackets.some(function (bracket) { return _this.tryToOpenRichSandwich(bracket); });
+    };
+    Tokenizer.prototype.tryToCloseRichBracketCorrespondingToContext = function (context) {
+        var _this = this;
+        return this.richBrackets.some(function (bracket) {
+            return (bracket.goal === context.goal)
+                && _this.tryToCloseRichSandwich(bracket, context);
+        });
+    };
     Tokenizer.prototype.tryToOpenAnyRichSandwich = function () {
         var _this = this;
-        return this.richSandwiches.some(function (sandwich) { return _this.tryToOpenRichSandwich(sandwich); });
+        return this.richSandwichesExceptRichBrackets.some(function (sandwich) { return _this.tryToOpenRichSandwich(sandwich); });
     };
     Tokenizer.prototype.tryToOpenRichSandwich = function (sandwich) {
         return this.tryToOpenContext({
@@ -935,9 +950,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseRichSandwichCorrespondingToContext = function (context) {
         var _this = this;
-        return this.richSandwiches.some(function (richSandwich) {
-            return (richSandwich.goal === context.goal)
-                && _this.tryToCloseRichSandwich(richSandwich, context);
+        return this.richSandwichesExceptRichBrackets.some(function (sandwich) {
+            return (sandwich.goal === context.goal)
+                && _this.tryToCloseRichSandwich(sandwich, context);
         });
     };
     Tokenizer.prototype.tryToCloseRichSandwich = function (sandwich, context) {
