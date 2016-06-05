@@ -7,7 +7,7 @@ import { MediaConvention } from './MediaConvention'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { OnMatch } from './OnMatch'
-import { last, remove } from '../../CollectionHelpers'
+import { last, contains } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableRichSandwich } from './TokenizableRichSandwich'
 import { Bracket } from './Bracket'
@@ -159,6 +159,7 @@ export class Tokenizer {
     return (
       this.tryToCloseRichSandwichCorrespondingToContext(context)
       || this.tryToCloseRichBracketCorrespondingToContext(context)
+      || this.tryToCloseLinkUrlCorrespondingToContext(context)
       || this.tryToCloseRawBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
       || ((goal === TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context))
@@ -168,6 +169,7 @@ export class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.tryToOpenInlineCode()
+      || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
       || this.tryToOpenAnyRichSandwich()
       || this.tryToOpenAnyRichBracket()
       || this.tryToOpenNakedUrl())
@@ -191,6 +193,54 @@ export class Tokenizer {
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       onCloseFlushBufferTo: TokenKind.InlineCode
     })
+  }
+
+  private tryToOpenAnyLinkUrl(): boolean {
+    return this.bracketedLinkUrls.some(bracket => this.tryToOpenLinkUrl(bracket))
+  }
+
+  private tryToOpenLinkUrl(bracketedLinkUrl: TokenizableBracket): boolean {
+    return this.tryToOpenContext({
+      goal: bracketedLinkUrl.goal,
+      pattern: bracketedLinkUrl.startPattern,
+      flushBufferToPlainTextTokenBeforeOpening: false
+    })
+  }
+
+  private tryToCloseLinkUrlCorrespondingToContext(context: TokenizerContext): boolean {
+    return this.bracketedLinkUrls.some(bracket =>
+      (bracket.goal === context.goal)
+      && this.tryToCloseLinkUrl(bracket, context))
+  }
+
+  private tryToCloseLinkUrl(bracketedLinkUrl: TokenizableBracket, context: TokenizerContext): boolean {
+    return this.tryToCloseContext({
+      context,
+      pattern: bracketedLinkUrl.endPattern,
+      onCloseFlushBufferTo: TokenKind.PlainText,
+      thenAddAnyClosingTokens: () => {
+        // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
+        //
+        // Here, we'll replace that end token and its corresponding start token with link tokens.
+
+        const url = this.flushBuffer()
+        const lastToken = last(this.tokens)
+
+        lastToken.correspondsToToken.kind = TokenKind.LinkStart
+        lastToken.kind = TokenKind.LinkUrlAndEnd
+        lastToken.value = url
+      }
+    })
+  }
+
+  private isDirectlyFollowingLinkBrackets(): boolean {
+    const lastToken = last(this.tokens)
+
+    return lastToken && contains([
+      TokenKind.ParenthesizedEnd,
+      TokenKind.SquareBracketedEnd,
+      TokenKind.ActionEnd
+    ], lastToken.kind)
   }
 
   private tryToOpenAnyRichSandwich(): boolean {
@@ -455,9 +505,15 @@ export class Tokenizer {
     this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
   }
 
-  private flushBufferToTokenOfKind(kind: TokenKind): void {
-    this.createTokenAndAppend({ kind, value: this.buffer })
+  private flushBuffer(): string {
+    const buffer = this.buffer
     this.buffer = ''
+
+    return buffer
+  }
+
+  private flushBufferToTokenOfKind(kind: TokenKind): void {
+    this.createTokenAndAppend({ kind, value: this.flushBuffer() })
   }
 
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {

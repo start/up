@@ -15,10 +15,10 @@ function concat(collections) {
     var _a;
 }
 exports.concat = concat;
-function remove(items, itemToRemove) {
-    items.splice(items.indexOf(itemToRemove), 1);
+function contains(items, item) {
+    return (items.indexOf(item) !== -1);
 }
-exports.remove = remove;
+exports.contains = contains;
 
 },{}],2:[function(require,module,exports){
 "use strict";
@@ -865,12 +865,14 @@ var Tokenizer = (function () {
         var goal = context.goal;
         return (this.tryToCloseRichSandwichCorrespondingToContext(context)
             || this.tryToCloseRichBracketCorrespondingToContext(context)
+            || this.tryToCloseLinkUrlCorrespondingToContext(context)
             || this.tryToCloseRawBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
             || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context)));
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         return (this.tryToOpenInlineCode()
+            || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
             || this.tryToOpenAnyRichSandwich()
             || this.tryToOpenAnyRichBracket()
             || this.tryToOpenNakedUrl());
@@ -891,6 +893,47 @@ var Tokenizer = (function () {
             pattern: INLINE_CODE_DELIMITER_PATTERN,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
+    };
+    Tokenizer.prototype.tryToOpenAnyLinkUrl = function () {
+        var _this = this;
+        return this.bracketedLinkUrls.some(function (bracket) { return _this.tryToOpenLinkUrl(bracket); });
+    };
+    Tokenizer.prototype.tryToOpenLinkUrl = function (bracketedLinkUrl) {
+        return this.tryToOpenContext({
+            goal: bracketedLinkUrl.goal,
+            pattern: bracketedLinkUrl.startPattern,
+            flushBufferToPlainTextTokenBeforeOpening: false
+        });
+    };
+    Tokenizer.prototype.tryToCloseLinkUrlCorrespondingToContext = function (context) {
+        var _this = this;
+        return this.bracketedLinkUrls.some(function (bracket) {
+            return (bracket.goal === context.goal)
+                && _this.tryToCloseLinkUrl(bracket, context);
+        });
+    };
+    Tokenizer.prototype.tryToCloseLinkUrl = function (bracketedLinkUrl, context) {
+        var _this = this;
+        return this.tryToCloseContext({
+            context: context,
+            pattern: bracketedLinkUrl.endPattern,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
+            thenAddAnyClosingTokens: function () {
+                var url = _this.flushBuffer();
+                var lastToken = CollectionHelpers_1.last(_this.tokens);
+                lastToken.correspondsToToken.kind = TokenKind_1.TokenKind.LinkStart;
+                lastToken.kind = TokenKind_1.TokenKind.LinkUrlAndEnd;
+                lastToken.value = url;
+            }
+        });
+    };
+    Tokenizer.prototype.isDirectlyFollowingLinkBrackets = function () {
+        var lastToken = CollectionHelpers_1.last(this.tokens);
+        return lastToken && CollectionHelpers_1.contains([
+            TokenKind_1.TokenKind.ParenthesizedEnd,
+            TokenKind_1.TokenKind.SquareBracketedEnd,
+            TokenKind_1.TokenKind.ActionEnd
+        ], lastToken.kind);
     };
     Tokenizer.prototype.tryToOpenAnyRichSandwich = function () {
         var _this = this;
@@ -1112,9 +1155,13 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
         this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd);
     };
-    Tokenizer.prototype.flushBufferToTokenOfKind = function (kind) {
-        this.createTokenAndAppend({ kind: kind, value: this.buffer });
+    Tokenizer.prototype.flushBuffer = function () {
+        var buffer = this.buffer;
         this.buffer = '';
+        return buffer;
+    };
+    Tokenizer.prototype.flushBufferToTokenOfKind = function (kind) {
+        this.createTokenAndAppend({ kind: kind, value: this.flushBuffer() });
     };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
         var _this = this;

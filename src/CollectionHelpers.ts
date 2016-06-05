@@ -13,6 +13,6 @@ export function concat<T>(collections: T[][]): T[] {
   return [].concat([], ...collections)
 }
 
-export function remove<T>(items: T[], itemToRemove: T): void {
-  items.splice(items.indexOf(itemToRemove), 1)
+export function contains<T>(items: T[], item: T): boolean {
+  return (items.indexOf(item) !== -1)
 }
