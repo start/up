@@ -865,7 +865,7 @@ var Tokenizer = (function () {
         var goal = context.goal;
         return (this.tryToCloseRichSandwichCorrespondingToContext(context)
             || this.tryToCloseRichBracketCorrespondingToContext(context)
-            || this.tryToCloseLinkUrlCorrespondingToContext(context)
+            || this.tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context)
             || this.tryToCloseRawBracketCorrespondingToContext(context)
             || ((goal === TokenizerGoal_1.TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
             || ((goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context)));
@@ -905,19 +905,18 @@ var Tokenizer = (function () {
             flushBufferToPlainTextTokenBeforeOpening: false
         });
     };
-    Tokenizer.prototype.tryToCloseLinkUrlCorrespondingToContext = function (context) {
+    Tokenizer.prototype.tryToCloseOrAdvanceLinkUrlCorrespondingToContext = function (context) {
         var _this = this;
         return this.bracketedLinkUrls.some(function (bracket) {
             return (bracket.goal === context.goal)
-                && _this.tryToCloseLinkUrl(bracket, context);
+                && _this.tryToCloseOrAdvanceLinkUrl(bracket, context);
         });
     };
-    Tokenizer.prototype.tryToCloseLinkUrl = function (bracketedLinkUrl, context) {
+    Tokenizer.prototype.tryToCloseOrAdvanceLinkUrl = function (bracketedLinkUrl, context) {
         var _this = this;
-        return this.tryToCloseContext({
+        var didCloseLinkUrl = this.tryToCloseContext({
             context: context,
             pattern: bracketedLinkUrl.endPattern,
-            onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             thenAddAnyClosingTokens: function () {
                 var url = _this.flushBuffer();
                 var lastToken = CollectionHelpers_1.last(_this.tokens);
@@ -926,6 +925,7 @@ var Tokenizer = (function () {
                 lastToken.value = url;
             }
         });
+        return didCloseLinkUrl || this.bufferCurrentChar();
     };
     Tokenizer.prototype.isDirectlyFollowingLinkBrackets = function () {
         var lastToken = CollectionHelpers_1.last(this.tokens);

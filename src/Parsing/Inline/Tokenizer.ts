@@ -159,7 +159,7 @@ export class Tokenizer {
     return (
       this.tryToCloseRichSandwichCorrespondingToContext(context)
       || this.tryToCloseRichBracketCorrespondingToContext(context)
-      || this.tryToCloseLinkUrlCorrespondingToContext(context)
+      || this.tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context)
       || this.tryToCloseRawBracketCorrespondingToContext(context)
       || ((goal === TokenizerGoal.InlineCode) && this.closeInlineCodeOrAppendCurrentChar(context))
       || ((goal === TokenizerGoal.NakedUrl) && this.tryToCloseNakedUrl(context))
@@ -207,23 +207,22 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseLinkUrlCorrespondingToContext(context: TokenizerContext): boolean {
+  private tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context: TokenizerContext): boolean {
     return this.bracketedLinkUrls.some(bracket =>
       (bracket.goal === context.goal)
-      && this.tryToCloseLinkUrl(bracket, context))
+      && this.tryToCloseOrAdvanceLinkUrl(bracket, context))
   }
 
-  private tryToCloseLinkUrl(bracketedLinkUrl: TokenizableBracket, context: TokenizerContext): boolean {
-    return this.tryToCloseContext({
+  private tryToCloseOrAdvanceLinkUrl(bracketedLinkUrl: TokenizableBracket, context: TokenizerContext): boolean {
+    const didCloseLinkUrl = this.tryToCloseContext({
       context,
       pattern: bracketedLinkUrl.endPattern,
-      onCloseFlushBufferTo: TokenKind.PlainText,
       thenAddAnyClosingTokens: () => {
+        const url = this.flushBuffer()
+        
         // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
         //
-        // Here, we'll replace that end token and its corresponding start token with link tokens.
-
-        const url = this.flushBuffer()
+        // We'll replace that end token and its corresponding start token with link tokens.
         const lastToken = last(this.tokens)
 
         lastToken.correspondsToToken.kind = TokenKind.LinkStart
@@ -231,6 +230,8 @@ export class Tokenizer {
         lastToken.value = url
       }
     })
+    
+    return didCloseLinkUrl || this.bufferCurrentChar()
   }
 
   private isDirectlyFollowingLinkBrackets(): boolean {
