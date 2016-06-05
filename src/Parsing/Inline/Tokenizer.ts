@@ -116,7 +116,7 @@ export class Tokenizer {
 
       this.tryToCollectEscapedChar()
         || this.tryToCloseOrAdvanceAnyOpenContext()
-        || (this.isInsideNakedUrl && this.appendCharToNakedUrl())
+        || (this.hasGoal(TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
@@ -546,12 +546,10 @@ export class Tokenizer {
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
-
-  private get isInsideNakedUrl(): boolean {
-    const lastToken = last(this.tokens)
-
-    return lastToken && (lastToken.kind === TokenKind.NakedUrlProtocolAndStart)
-  }
+  
+  private hasGoal(goal: TokenizerGoal): boolean {
+    return this.openContexts.some(context => context.goal === goal)
+  } 
 
   private insertPlainTextTokensInsideBrackets(): void {
     // Rich bracket conventions create syntax nodes, just like other conventions. But unlike other conventions,

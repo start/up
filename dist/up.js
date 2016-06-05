@@ -821,7 +821,7 @@ var Tokenizer = (function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseOrAdvanceAnyOpenContext()
-                || (this.isInsideNakedUrl && this.appendCharToNakedUrl())
+                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
@@ -1170,14 +1170,9 @@ var Tokenizer = (function () {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         return !this.failedGoalTracker.hasFailed(goal, textIndex);
     };
-    Object.defineProperty(Tokenizer.prototype, "isInsideNakedUrl", {
-        get: function () {
-            var lastToken = CollectionHelpers_1.last(this.tokens);
-            return lastToken && (lastToken.kind === TokenKind_1.TokenKind.NakedUrlProtocolAndStart);
-        },
-        enumerable: true,
-        configurable: true
-    });
+    Tokenizer.prototype.hasGoal = function (goal) {
+        return this.openContexts.some(function (context) { return context.goal === goal; });
+    };
     Tokenizer.prototype.insertPlainTextTokensInsideBrackets = function () {
         var resultTokens = [];
         var _loop_1 = function(token) {
