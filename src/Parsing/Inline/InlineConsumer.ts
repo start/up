@@ -1,5 +1,5 @@
 import { NON_WHITESPACE_CHAR } from '../../Patterns'
-import { OnTextConsumerMatch } from './OnTextConsumerMatch'
+import { OnMatch } from './OnMatch'
 
 
 export class InlineConsumer {
@@ -37,7 +37,7 @@ export class InlineConsumer {
     return this._textIndex >= this.entireText.length
   }
 
-  advanceAfterMatch(args: { pattern: RegExp, then?: OnTextConsumerMatch }): boolean {
+  advanceAfterMatch(args: { pattern: RegExp, then?: OnMatch }): boolean {
     const { pattern, then } = args
 
     const result = pattern.exec(this._remainingText)

@@ -1,4 +1,4 @@
-export interface OnTextConsumerMatch {
+export interface OnMatch {
   (
     match: string,
     isTouchingWordEnd: boolean,

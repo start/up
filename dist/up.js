@@ -983,7 +983,7 @@ var Tokenizer = (function () {
             goal: bracket.goal,
             pattern: bracket.startPattern,
             flushBufferToPlainTextTokenBeforeOpening: false,
-            thenAddAnyStartTokens: function (bracket) { _this.buffer += bracket; }
+            onOpen: function (bracket) { _this.buffer += bracket; }
         });
     };
     Tokenizer.prototype.tryToCloseRawTextBracket = function (bracket, context) {
@@ -1000,7 +1000,7 @@ var Tokenizer = (function () {
             goal: TokenizerGoal_1.TokenizerGoal.NakedUrl,
             pattern: NAKED_URL_PROTOCOL_PATTERN,
             flushBufferToPlainTextTokenBeforeOpening: true,
-            thenAddAnyStartTokens: function (urlProtocol) {
+            onOpen: function (urlProtocol) {
                 _this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol });
             }
         });
@@ -1037,7 +1037,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenContext = function (args) {
         var _this = this;
-        var goal = args.goal, pattern = args.pattern, flushBufferToPlainTextTokenBeforeOpening = args.flushBufferToPlainTextTokenBeforeOpening, thenAddAnyStartTokens = args.thenAddAnyStartTokens;
+        var goal = args.goal, pattern = args.pattern, flushBufferToPlainTextTokenBeforeOpening = args.flushBufferToPlainTextTokenBeforeOpening, onOpen = args.onOpen;
         return this.canTry(goal) && this.consumer.advanceAfterMatch({
             pattern: pattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1049,8 +1049,8 @@ var Tokenizer = (function () {
                     _this.flushBufferToPlainTextToken();
                 }
                 _this.openContexts.push(new TokenizerContext_1.TokenizerContext(goal, _this.getCurrentSnapshot()));
-                if (thenAddAnyStartTokens) {
-                    thenAddAnyStartTokens.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                if (onOpen) {
+                    onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
                 }
             }
         });

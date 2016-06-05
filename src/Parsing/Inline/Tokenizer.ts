@@ -6,7 +6,7 @@ import { RichConvention } from './RichConvention'
 import { MediaConvention } from './MediaConvention'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
-import { OnTokenizerMatch } from './OnTokenizerMatch'
+import { OnMatch } from './OnMatch'
 import { last, remove } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableRichSandwich } from './TokenizableRichSandwich'
@@ -274,7 +274,7 @@ export class Tokenizer {
       goal: bracket.goal,
       pattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
-      thenAddAnyStartTokens: bracket => { this.buffer += bracket }
+      onOpen: bracket => { this.buffer += bracket }
     })
   }
 
@@ -291,7 +291,7 @@ export class Tokenizer {
       goal: TokenizerGoal.NakedUrl,
       pattern: NAKED_URL_PROTOCOL_PATTERN,
       flushBufferToPlainTextTokenBeforeOpening: true,
-      thenAddAnyStartTokens: urlProtocol => {
+      onOpen: urlProtocol => {
         this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
       }
     })
@@ -349,10 +349,10 @@ export class Tokenizer {
       goal: TokenizerGoal,
       pattern: RegExp,
       flushBufferToPlainTextTokenBeforeOpening: boolean
-      thenAddAnyStartTokens?: OnTokenizerMatch
+      onOpen?: OnMatch
     }
   ): boolean {
-    const { goal, pattern, flushBufferToPlainTextTokenBeforeOpening, thenAddAnyStartTokens } = args
+    const { goal, pattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = args
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern,
@@ -363,8 +363,8 @@ export class Tokenizer {
 
         this.openContexts.push(new TokenizerContext(goal, this.getCurrentSnapshot()))
 
-        if (thenAddAnyStartTokens) {
-          thenAddAnyStartTokens(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        if (onOpen) {
+          onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
         }
       }
     })
@@ -375,7 +375,7 @@ export class Tokenizer {
       context: TokenizerContext,
       pattern: RegExp,
       onCloseFlushBufferTo?: TokenKind
-      thenAddAnyClosingTokens?: OnTokenizerMatch
+      thenAddAnyClosingTokens?: OnMatch
     }
   ): boolean {
     const {  context, pattern, onCloseFlushBufferTo, thenAddAnyClosingTokens } = args
