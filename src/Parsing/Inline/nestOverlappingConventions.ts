@@ -50,9 +50,8 @@ class ConventionNester {
       splittableConventions.push(conventionNotToSplit)
     }
   }
-
-  // Massages convention tokens into a tree structure while preserving any overlapping conveyed by the author. This
-  // method assumes no tokens are missing.
+  
+  // This method assumes no tokens are missing.
   splitConventionsThatStartInsideAnotherConventionAndEndAfter(conventions: RichConvention[]): void {
     const unclosedStartTokens: Token[] = []
 
@@ -186,7 +185,9 @@ class ConventionNester {
     }
   }
 
-  // The purpose of this method is best explained in the `nestFreelySplittableConventions` method.
+  // This method's purpose is best explained in the `splitConventionsThatStartInsideAnotherConventionAndEndAfter`
+  // method.
+  //
   // In short, it chops conventions in two around the token at `index`, allowing conventions to be nested
   // properly (in a tree structure) while preserving the overlapping intended by the author.
   //
