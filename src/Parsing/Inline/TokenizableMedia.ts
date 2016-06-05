@@ -1,6 +1,6 @@
 import { MediaConvention } from './MediaConvention'
 import { TokenKind } from './TokenKind'
-import { escapeForRegex, startsWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../../Patterns'
+import { escapeForRegex, getRegExpStartingWith, atLeast, ANY_WHITESPACE, NON_WHITESPACE_CHAR } from '../../Patterns'
 import { TokenizerGoal } from './TokenizerGoal'
 
 
@@ -17,15 +17,11 @@ export class TokenizableMedia {
     this.startTokenKind = media.startTokenKind
     this.goal = media.goal
     
-    this.startPattern = getPattern(
+    this.startPattern = getRegExpStartingWith(
       escapeForRegex('[' + localizedTerm + ':') + ANY_WHITESPACE,
       'i')
 
-    this.endPattern = getPattern(
+    this.endPattern = getRegExpStartingWith(
       escapeForRegex(']'))
   }
-}
-
-function getPattern(pattern: string, flags?: string): RegExp {
-  return new RegExp(startsWith(pattern), flags)
 }

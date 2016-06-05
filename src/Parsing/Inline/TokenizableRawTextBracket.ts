@@ -1,6 +1,6 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { Bracket } from './Bracket'
-import { startsWith } from '../../Patterns'
+import { getRegExpStartingWith } from '../../Patterns'
 
 export class TokenizableRawTextBracket {
   goal: TokenizerGoal
@@ -11,11 +11,7 @@ export class TokenizableRawTextBracket {
     const { goal, bracket } = args
     
     this.goal = goal
-    this.startPattern = getPattern(bracket.startPattern)
-    this.endPattern = getPattern(bracket.endPattern)
+    this.startPattern = getRegExpStartingWith(bracket.startPattern)
+    this.endPattern = getRegExpStartingWith(bracket.endPattern)
   }
-}
-
-function getPattern(bracketPattern: string): RegExp {
-  return new RegExp(startsWith(bracketPattern))
 }

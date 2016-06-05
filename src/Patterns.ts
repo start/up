@@ -1,7 +1,3 @@
-function escapeForRegex(text: string): string {
-  return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
-}
-
 const group =
   (pattern: string) => `(?:${pattern})`
 
@@ -70,6 +66,16 @@ const NON_WHITESPACE_CHAR =
 const NON_BLANK =
   NON_WHITESPACE_CHAR
 
+
+function escapeForRegex(text: string): string {
+  return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
+}
+
+function getRegExpStartingWith(pattern: string, flags?: string): RegExp {
+  return new RegExp(startsWith(pattern), flags)
+}
+
+
 export {
   capture,
   optional,
@@ -80,6 +86,7 @@ export {
   streakOf,
   atLeast,
   escapeForRegex,
+  getRegExpStartingWith,
   NON_BLANK,
   BLANK,
   INLINE_WHITESPACE_CHAR,

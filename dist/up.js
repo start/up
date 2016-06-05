@@ -704,15 +704,12 @@ var TokenizableMedia = (function () {
     function TokenizableMedia(media, localizedTerm) {
         this.startTokenKind = media.startTokenKind;
         this.goal = media.goal;
-        this.startPattern = getPattern(Patterns_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE, 'i');
-        this.endPattern = getPattern(Patterns_1.escapeForRegex(']'));
+        this.startPattern = Patterns_1.getRegExpStartingWith(Patterns_1.escapeForRegex('[' + localizedTerm + ':') + Patterns_1.ANY_WHITESPACE, 'i');
+        this.endPattern = Patterns_1.getRegExpStartingWith(Patterns_1.escapeForRegex(']'));
     }
     return TokenizableMedia;
 }());
 exports.TokenizableMedia = TokenizableMedia;
-function getPattern(pattern, flags) {
-    return new RegExp(Patterns_1.startsWith(pattern), flags);
-}
 
 },{"../../Patterns":42}],17:[function(require,module,exports){
 "use strict";
@@ -721,15 +718,12 @@ var TokenizableRawTextBracket = (function () {
     function TokenizableRawTextBracket(args) {
         var goal = args.goal, bracket = args.bracket;
         this.goal = goal;
-        this.startPattern = getPattern(bracket.startPattern);
-        this.endPattern = getPattern(bracket.endPattern);
+        this.startPattern = Patterns_1.getRegExpStartingWith(bracket.startPattern);
+        this.endPattern = Patterns_1.getRegExpStartingWith(bracket.endPattern);
     }
     return TokenizableRawTextBracket;
 }());
 exports.TokenizableRawTextBracket = TokenizableRawTextBracket;
-function getPattern(bracketPattern) {
-    return new RegExp(Patterns_1.startsWith(bracketPattern));
-}
 
 },{"../../Patterns":42}],18:[function(require,module,exports){
 "use strict";
@@ -738,17 +732,14 @@ var TokenizableRichBracket = (function () {
     function TokenizableRichBracket(args) {
         var convention = args.convention, bracket = args.bracket;
         this.convention = convention;
-        this.startPattern = getPattern(bracket.startPattern);
-        this.endPattern = getPattern(bracket.endPattern);
+        this.startPattern = Patterns_1.getRegExpStartingWith(bracket.startPattern);
+        this.endPattern = Patterns_1.getRegExpStartingWith(bracket.endPattern);
         this.rawStartBracket = bracket.start;
         this.rawEndBracket = bracket.end;
     }
     return TokenizableRichBracket;
 }());
 exports.TokenizableRichBracket = TokenizableRichBracket;
-function getPattern(bracketPattern) {
-    return new RegExp(Patterns_1.startsWith(bracketPattern));
-}
 
 },{"../../Patterns":42}],19:[function(require,module,exports){
 "use strict";
@@ -756,17 +747,14 @@ var Patterns_1 = require('../../Patterns');
 var TokenizableRichSandwich = (function () {
     function TokenizableRichSandwich(args) {
         this.goal = args.richConvention.tokenizerGoal;
-        this.startPattern = getPattern(args.startPattern);
-        this.endPattern = getPattern(args.endPattern);
+        this.startPattern = Patterns_1.getRegExpStartingWith(args.startPattern, 'i');
+        this.endPattern = Patterns_1.getRegExpStartingWith(args.endPattern);
         this.startTokenKind = args.richConvention.startTokenKind;
         this.endTokenKind = args.richConvention.endTokenKind;
     }
     return TokenizableRichSandwich;
 }());
 exports.TokenizableRichSandwich = TokenizableRichSandwich;
-function getPattern(pattern) {
-    return new RegExp(Patterns_1.startsWith(pattern), 'i');
-}
 
 },{"../../Patterns":42}],20:[function(require,module,exports){
 "use strict";
@@ -2057,10 +2045,6 @@ exports.parseDocument = parseDocument;
 
 },{"../SyntaxNodes/DocumentNode":51,"./Outline/HeadingLeveler":26,"./Outline/getOutlineNodes":29}],42:[function(require,module,exports){
 "use strict";
-function escapeForRegex(text) {
-    return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
-}
-exports.escapeForRegex = escapeForRegex;
 var group = function (pattern) { return ("(?:" + pattern + ")"); };
 var capture = function (pattern) { return ("(" + pattern + ")"); };
 exports.capture = capture;
@@ -2107,6 +2091,14 @@ var NON_WHITESPACE_CHAR = '\\S';
 exports.NON_WHITESPACE_CHAR = NON_WHITESPACE_CHAR;
 var NON_BLANK = NON_WHITESPACE_CHAR;
 exports.NON_BLANK = NON_BLANK;
+function escapeForRegex(text) {
+    return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
+}
+exports.escapeForRegex = escapeForRegex;
+function getRegExpStartingWith(pattern, flags) {
+    return new RegExp(startsWith(pattern), flags);
+}
+exports.getRegExpStartingWith = getRegExpStartingWith;
 
 },{}],43:[function(require,module,exports){
 "use strict";

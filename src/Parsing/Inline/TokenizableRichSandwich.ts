@@ -1,7 +1,7 @@
 import { TokenKind } from './TokenKind'
 import { TokenizerGoal } from './TokenizerGoal'
 import { RichConvention } from './RichConvention'
-import { startsWith } from '../../Patterns'
+import { getRegExpStartingWith } from '../../Patterns'
 
 
 export class TokenizableRichSandwich {
@@ -19,13 +19,9 @@ export class TokenizableRichSandwich {
     }
   ) {
     this.goal = args.richConvention.tokenizerGoal
-    this.startPattern = getPattern(args.startPattern)
-    this.endPattern = getPattern(args.endPattern)
+    this.startPattern = getRegExpStartingWith(args.startPattern, 'i')
+    this.endPattern = getRegExpStartingWith(args.endPattern)
     this.startTokenKind = args.richConvention.startTokenKind
     this.endTokenKind = args.richConvention.endTokenKind
   }
-}
-
-function getPattern(pattern: string): RegExp {
-  return new RegExp(startsWith(pattern), 'i')
 }
