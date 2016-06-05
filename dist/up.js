@@ -907,8 +907,8 @@ var Tokenizer = (function () {
             thenAddAnyClosingTokens: function () {
                 var url = _this.flushBuffer();
                 var lastToken = CollectionHelpers_1.last(_this.tokens);
-                lastToken.correspondsToToken.kind = TokenKind_1.TokenKind.LinkStart;
-                lastToken.kind = TokenKind_1.TokenKind.LinkUrlAndEnd;
+                lastToken.correspondsToToken.kind = RichConventions_1.LINK.startTokenKind;
+                lastToken.kind = RichConventions_1.LINK.endTokenKind;
                 lastToken.value = url;
             }
         });
@@ -1206,7 +1206,6 @@ var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
 var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
 var INLINE_CODE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith('`'));
 var RAISED_VOICE_DELIMITER_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*'))));
-var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + '->' + Patterns_1.ANY_WHITESPACE));
 var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 

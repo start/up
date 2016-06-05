@@ -228,8 +228,8 @@ export class Tokenizer {
         // We'll replace that end token and its corresponding start token with link tokens.
         const lastToken = last(this.tokens)
 
-        lastToken.correspondsToToken.kind = TokenKind.LinkStart
-        lastToken.kind = TokenKind.LinkUrlAndEnd
+        lastToken.correspondsToToken.kind = LINK.startTokenKind
+        lastToken.kind = LINK.endTokenKind
         lastToken.value = url
       }
     })
@@ -594,9 +594,6 @@ const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
 
 const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
   startsWith(atLeast(1, escapeForRegex('*'))))
-
-const URL_ARROW_PATTERN_DEPCRECATED = new RegExp(
-  startsWith(ANY_WHITESPACE + '->' + ANY_WHITESPACE))
 
 const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
   startsWith('http' + optional('s') + '://'))
