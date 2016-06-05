@@ -775,6 +775,7 @@ var RichConventions_1 = require('./RichConventions');
 var MediaConventions_1 = require('./MediaConventions');
 var applyRaisedVoices_1 = require('./RaisedVoices/applyRaisedVoices');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
+var CollectionHelpers_1 = require('../../CollectionHelpers');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var TokenizableRichSandwich_1 = require('./TokenizableRichSandwich');
 var Bracket_1 = require('./Bracket');
@@ -839,7 +840,7 @@ var Tokenizer = (function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseOrAdvanceAnyOpenContext()
-                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
+                || (this.isInsideNakedUrl && this.appendCharToNakedUrl())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
@@ -1120,9 +1121,6 @@ var Tokenizer = (function () {
         this.createTokenAndAppend({ kind: kind, value: this.buffer });
         this.buffer = '';
     };
-    Tokenizer.prototype.hasGoal = function (goal) {
-        return this.openContexts.some(function (context) { return context.goal === goal; });
-    };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
@@ -1178,6 +1176,14 @@ var Tokenizer = (function () {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         return !this.failedGoalTracker.hasFailed(goal, textIndex);
     };
+    Object.defineProperty(Tokenizer.prototype, "isInsideNakedUrl", {
+        get: function () {
+            var lastToken = CollectionHelpers_1.last(this.tokens);
+            return lastToken && (lastToken.kind === TokenKind_1.TokenKind.NakedUrlProtocolAndStart);
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
@@ -1190,7 +1196,7 @@ var URL_ARROW_PATTERN_DEPCRECATED = new RegExp(Patterns_1.startsWith(Patterns_1.
 var NAKED_URL_PROTOCOL_PATTERN = new RegExp(Patterns_1.startsWith('http' + Patterns_1.optional('s') + '://'));
 var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 
-},{"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableMedia":16,"./TokenizableRawTextBracket":17,"./TokenizableRichBracket":18,"./TokenizableRichSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableMedia":16,"./TokenizableRawTextBracket":17,"./TokenizableRichBracket":18,"./TokenizableRichSandwich":19,"./TokenizerContext":21,"./TokenizerGoal":22,"./TokenizerSnapshot":23,"./nestOverlappingConventions":25}],21:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(goal, snapshot) {

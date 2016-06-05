@@ -106,7 +106,7 @@ export class Tokenizer {
 
       this.tryToCollectEscapedChar()
         || this.tryToCloseOrAdvanceAnyOpenContext()
-        || (this.hasGoal(TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
+        || (this.isInsideNakedUrl && this.appendCharToNakedUrl())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
@@ -311,14 +311,14 @@ export class Tokenizer {
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
       this.closeContext({ context, closeInnerContexts: true })
       this.flushBufferToNakedUrlEndToken()
-      
+
       return true
     }
 
     return false
   }
 
-  private closeContext(args: { context: TokenizerContext, closeInnerContexts?: boolean}): void {
+  private closeContext(args: { context: TokenizerContext, closeInnerContexts?: boolean }): void {
     const { closeInnerContexts } = args
     const contextToClose = args.context
 
@@ -337,7 +337,7 @@ export class Tokenizer {
       // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
       if (openContext.goal === TokenizerGoal.NakedUrl) {
         this.flushBufferToNakedUrlEndToken()
-        
+
         // We need to close the naked URL's context, as well as the contexts of any raw text brackets inside it.
         this.openContexts.splice(i)
       }
@@ -452,10 +452,6 @@ export class Tokenizer {
     this.buffer = ''
   }
 
-  private hasGoal(goal: TokenizerGoal): boolean {
-    return this.openContexts.some(context => context.goal === goal)
-  }
-
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -520,6 +516,12 @@ export class Tokenizer {
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
+  }
+
+  private get isInsideNakedUrl(): boolean {
+    const lastToken = last(this.tokens)
+    
+    return lastToken && (lastToken.kind === TokenKind.NakedUrlProtocolAndStart)
   }
 }
 
