@@ -161,15 +161,15 @@ var TokenKind_1 = require('./TokenKind');
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
-    RichConventions_1.STRESS,
-    RichConventions_1.EMPHASIS,
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE,
-    RichConventions_1.ACTION,
-    RichConventions_1.PARENTHESIZED,
-    RichConventions_1.SQUARE_BRACKETED
+    RichConventions_1.STRESS_CONVENTION,
+    RichConventions_1.EMPHASIS_CONVENTION,
+    RichConventions_1.REVISION_DELETION_CONVENTION,
+    RichConventions_1.REVISION_INSERTION_CONVENTION,
+    RichConventions_1.SPOILER_CONVENTION,
+    RichConventions_1.FOOTNOTE_CONVENTION,
+    RichConventions_1.ACTION_CONVENTION,
+    RichConventions_1.PARENTHESIZED_CONVENTION,
+    RichConventions_1.SQUARE_BRACKETED_CONVENTION
 ];
 var MEDIA_CONVENTIONS = [
     MediaConventions_1.AUDIO,
@@ -575,73 +575,73 @@ var ParenthesizedNode_1 = require('../../SyntaxNodes/ParenthesizedNode');
 var ActionNode_1 = require('../../SyntaxNodes/ActionNode');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var TokenKind_1 = require('./TokenKind');
-var EMPHASIS = {
+var EMPHASIS_CONVENTION = {
     NodeType: EmphasisNode_1.EmphasisNode,
     startTokenKind: TokenKind_1.TokenKind.EmphasisStart,
     endTokenKind: TokenKind_1.TokenKind.EmphasisEnd
 };
-exports.EMPHASIS = EMPHASIS;
-var STRESS = {
+exports.EMPHASIS_CONVENTION = EMPHASIS_CONVENTION;
+var STRESS_CONVENTION = {
     NodeType: StressNode_1.StressNode,
     startTokenKind: TokenKind_1.TokenKind.StressStart,
     endTokenKind: TokenKind_1.TokenKind.StressEnd
 };
-exports.STRESS = STRESS;
-var REVISION_DELETION = {
+exports.STRESS_CONVENTION = STRESS_CONVENTION;
+var REVISION_DELETION_CONVENTION = {
     NodeType: RevisionDeletionNode_1.RevisionDeletionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionDeletionStart,
     endTokenKind: TokenKind_1.TokenKind.RevisionDeletionEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionDeletion
 };
-exports.REVISION_DELETION = REVISION_DELETION;
-var REVISION_INSERTION = {
+exports.REVISION_DELETION_CONVENTION = REVISION_DELETION_CONVENTION;
+var REVISION_INSERTION_CONVENTION = {
     NodeType: RevisionInsertionNode_1.RevisionInsertionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionInsertionStart,
     endTokenKind: TokenKind_1.TokenKind.RevisionInsertionEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.RevisionInsertion
 };
-exports.REVISION_INSERTION = REVISION_INSERTION;
-var SPOILER = {
+exports.REVISION_INSERTION_CONVENTION = REVISION_INSERTION_CONVENTION;
+var SPOILER_CONVENTION = {
     NodeType: SpoilerNode_1.SpoilerNode,
     startTokenKind: TokenKind_1.TokenKind.SpoilerStart,
     endTokenKind: TokenKind_1.TokenKind.SpoilerEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Spoiler
 };
-exports.SPOILER = SPOILER;
-var FOOTNOTE = {
+exports.SPOILER_CONVENTION = SPOILER_CONVENTION;
+var FOOTNOTE_CONVENTION = {
     NodeType: FootnoteNode_1.FootnoteNode,
     startTokenKind: TokenKind_1.TokenKind.FootnoteStart,
     endTokenKind: TokenKind_1.TokenKind.FootnoteEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Footnote
 };
-exports.FOOTNOTE = FOOTNOTE;
-var PARENTHESIZED = {
+exports.FOOTNOTE_CONVENTION = FOOTNOTE_CONVENTION;
+var PARENTHESIZED_CONVENTION = {
     NodeType: ParenthesizedNode_1.ParenthesizedNode,
     startTokenKind: TokenKind_1.TokenKind.ParenthesizedStart,
     endTokenKind: TokenKind_1.TokenKind.ParenthesizedEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Parenthesized
 };
-exports.PARENTHESIZED = PARENTHESIZED;
-var SQUARE_BRACKETED = {
+exports.PARENTHESIZED_CONVENTION = PARENTHESIZED_CONVENTION;
+var SQUARE_BRACKETED_CONVENTION = {
     NodeType: SquareBracketedNode_1.SquareBracketedNode,
     startTokenKind: TokenKind_1.TokenKind.SquareBracketedStart,
     endTokenKind: TokenKind_1.TokenKind.SquareBracketedEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.SquareBracketed
 };
-exports.SQUARE_BRACKETED = SQUARE_BRACKETED;
-var ACTION = {
+exports.SQUARE_BRACKETED_CONVENTION = SQUARE_BRACKETED_CONVENTION;
+var ACTION_CONVENTION = {
     NodeType: ActionNode_1.ActionNode,
     startTokenKind: TokenKind_1.TokenKind.ActionStart,
     endTokenKind: TokenKind_1.TokenKind.ActionEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Action
 };
-exports.ACTION = ACTION;
-var LINK = {
+exports.ACTION_CONVENTION = ACTION_CONVENTION;
+var LINK_CONVENTION = {
     startTokenKind: TokenKind_1.TokenKind.LinkStart,
     endTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd,
     tokenizerGoal: TokenizerGoal_1.TokenizerGoal.Link
 };
-exports.LINK = LINK;
+exports.LINK_CONVENTION = LINK_CONVENTION;
 
 },{"../../SyntaxNodes/ActionNode":42,"../../SyntaxNodes/EmphasisNode":51,"../../SyntaxNodes/FootnoteNode":54,"../../SyntaxNodes/ParenthesizedNode":68,"../../SyntaxNodes/RevisionDeletionNode":70,"../../SyntaxNodes/RevisionInsertionNode":71,"../../SyntaxNodes/SpoilerNode":74,"../../SyntaxNodes/SquareBracketedNode":75,"../../SyntaxNodes/StressNode":76,"./TokenKind":15,"./TokenizerGoal":21}],14:[function(require,module,exports){
 "use strict";
@@ -767,15 +767,15 @@ var Tokenizer = (function () {
         this.buffer = '';
         this.richBrackets = [
             {
-                richConvention: RichConventions_1.PARENTHESIZED,
+                richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
                 endPattern: PARENTHESIS.endPattern
             }, {
-                richConvention: RichConventions_1.SQUARE_BRACKETED,
+                richConvention: RichConventions_1.SQUARE_BRACKETED_CONVENTION,
                 startPattern: SQUARE_BRACKET.startPattern,
                 endPattern: SQUARE_BRACKET.endPattern
             }, {
-                richConvention: RichConventions_1.ACTION,
+                richConvention: RichConventions_1.ACTION_CONVENTION,
                 startPattern: CURLY_BRACKET.startPattern,
                 endPattern: CURLY_BRACKET.endPattern
             }
@@ -801,19 +801,19 @@ var Tokenizer = (function () {
             });
         this.richSandwichesExceptRichBrackets = [
             {
-                richConvention: RichConventions_1.SPOILER,
+                richConvention: RichConventions_1.SPOILER_CONVENTION,
                 startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: SQUARE_BRACKET.endPattern
             }, {
-                richConvention: RichConventions_1.FOOTNOTE,
+                richConvention: RichConventions_1.FOOTNOTE_CONVENTION,
                 startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
                 endPattern: Patterns_1.escapeForRegex('))')
             }, {
-                richConvention: RichConventions_1.REVISION_DELETION,
+                richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
                 startPattern: '~~',
                 endPattern: '~~'
             }, {
-                richConvention: RichConventions_1.REVISION_INSERTION,
+                richConvention: RichConventions_1.REVISION_INSERTION_CONVENTION,
                 startPattern: Patterns_1.escapeForRegex('++'),
                 endPattern: Patterns_1.escapeForRegex('++')
             }
@@ -911,8 +911,8 @@ var Tokenizer = (function () {
             thenAddAnyClosingTokens: function () {
                 var url = _this.flushBuffer();
                 var lastToken = CollectionHelpers_1.last(_this.tokens);
-                lastToken.correspondsToToken.kind = RichConventions_1.LINK.startTokenKind;
-                lastToken.kind = RichConventions_1.LINK.endTokenKind;
+                lastToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
+                lastToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
                 lastToken.value = url;
             }
         });
@@ -1192,11 +1192,11 @@ var Tokenizer = (function () {
                     resultTokens.push(new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket }));
                 }
             }
-            addBracketIfTokenIs(')', RichConventions_1.PARENTHESIZED.endTokenKind);
-            addBracketIfTokenIs(']', RichConventions_1.SQUARE_BRACKETED.endTokenKind);
+            addBracketIfTokenIs(')', RichConventions_1.PARENTHESIZED_CONVENTION.endTokenKind);
+            addBracketIfTokenIs(']', RichConventions_1.SQUARE_BRACKETED_CONVENTION.endTokenKind);
             resultTokens.push(token);
-            addBracketIfTokenIs('(', RichConventions_1.PARENTHESIZED.startTokenKind);
-            addBracketIfTokenIs('[', RichConventions_1.SQUARE_BRACKETED.startTokenKind);
+            addBracketIfTokenIs('(', RichConventions_1.PARENTHESIZED_CONVENTION.startTokenKind);
+            addBracketIfTokenIs('[', RichConventions_1.SQUARE_BRACKETED_CONVENTION.startTokenKind);
         };
         for (var _i = 0, _a = this.tokens; _i < _a.length; _i++) {
             var token = _a[_i];
@@ -1297,16 +1297,16 @@ function nestOverlappingConventions(tokens) {
 }
 exports.nestOverlappingConventions = nestOverlappingConventions;
 var FREELY_SPLITTABLE_CONVENTIONS = [
-    RichConventions_1.REVISION_DELETION,
-    RichConventions_1.REVISION_INSERTION,
-    RichConventions_1.PARENTHESIZED,
-    RichConventions_1.SQUARE_BRACKETED,
+    RichConventions_1.REVISION_DELETION_CONVENTION,
+    RichConventions_1.REVISION_INSERTION_CONVENTION,
+    RichConventions_1.PARENTHESIZED_CONVENTION,
+    RichConventions_1.SQUARE_BRACKETED_CONVENTION,
 ];
 var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
-    RichConventions_1.LINK,
-    RichConventions_1.ACTION,
-    RichConventions_1.SPOILER,
-    RichConventions_1.FOOTNOTE
+    RichConventions_1.LINK_CONVENTION,
+    RichConventions_1.ACTION_CONVENTION,
+    RichConventions_1.SPOILER_CONVENTION,
+    RichConventions_1.FOOTNOTE_CONVENTION
 ];
 var ConventionNester = (function () {
     function ConventionNester(tokens) {

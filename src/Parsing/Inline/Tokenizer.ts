@@ -1,5 +1,5 @@
 import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
-import { REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, LINK, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
+import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
@@ -38,15 +38,15 @@ export class Tokenizer {
 
   private richBrackets = [
     {
-      richConvention: PARENTHESIZED,
+      richConvention: PARENTHESIZED_CONVENTION,
       startPattern: PARENTHESIS.startPattern,
       endPattern: PARENTHESIS.endPattern
     }, {
-      richConvention: SQUARE_BRACKETED,
+      richConvention: SQUARE_BRACKETED_CONVENTION,
       startPattern: SQUARE_BRACKET.startPattern,
       endPattern: SQUARE_BRACKET.endPattern
     }, {
-      richConvention: ACTION,
+      richConvention: ACTION_CONVENTION,
       startPattern: CURLY_BRACKET.startPattern,
       endPattern: CURLY_BRACKET.endPattern
     }
@@ -95,19 +95,19 @@ export class Tokenizer {
 
     this.richSandwichesExceptRichBrackets = [
       {
-        richConvention: SPOILER,
+        richConvention: SPOILER_CONVENTION,
         startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
         endPattern: SQUARE_BRACKET.endPattern
       }, {
-        richConvention: FOOTNOTE,
+        richConvention: FOOTNOTE_CONVENTION,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
         endPattern: escapeForRegex('))')
       }, {
-        richConvention: REVISION_DELETION,
+        richConvention: REVISION_DELETION_CONVENTION,
         startPattern: '~~',
         endPattern: '~~'
       }, {
-        richConvention: REVISION_INSERTION,
+        richConvention: REVISION_INSERTION_CONVENTION,
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++')
       }
@@ -233,8 +233,8 @@ export class Tokenizer {
         // We'll replace that end token and its corresponding start token with link tokens.
         const lastToken = last(this.tokens)
 
-        lastToken.correspondsToToken.kind = LINK.startTokenKind
-        lastToken.kind = LINK.endTokenKind
+        lastToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
+        lastToken.kind = LINK_CONVENTION.endTokenKind
         lastToken.value = url
       }
     })
@@ -570,13 +570,13 @@ export class Tokenizer {
         }
       }
 
-      addBracketIfTokenIs(')', PARENTHESIZED.endTokenKind)
-      addBracketIfTokenIs(']', SQUARE_BRACKETED.endTokenKind)
+      addBracketIfTokenIs(')', PARENTHESIZED_CONVENTION.endTokenKind)
+      addBracketIfTokenIs(']', SQUARE_BRACKETED_CONVENTION.endTokenKind)
 
       resultTokens.push(token)
 
-      addBracketIfTokenIs('(', PARENTHESIZED.startTokenKind)
-      addBracketIfTokenIs('[', SQUARE_BRACKETED.startTokenKind)
+      addBracketIfTokenIs('(', PARENTHESIZED_CONVENTION.startTokenKind)
+      addBracketIfTokenIs('[', SQUARE_BRACKETED_CONVENTION.startTokenKind)
     }
 
     this.tokens = resultTokens

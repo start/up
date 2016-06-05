@@ -1,4 +1,4 @@
-import { LINK, STRESS, EMPHASIS, REVISION_DELETION, REVISION_INSERTION, SPOILER, FOOTNOTE, PARENTHESIZED, SQUARE_BRACKETED, ACTION } from './RichConventions'
+import { LINK_CONVENTION, STRESS_CONVENTION, EMPHASIS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Token'
 import { TokenKind } from './TokenKind'
@@ -14,22 +14,22 @@ export function nestOverlappingConventions(tokens: Token[]): Token[] {
 
 // We're always okay with splitting these conventions.
 const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
-  REVISION_DELETION,
-  REVISION_INSERTION,
-  /*STRESS,
-  EMPHASIS,*/
-  PARENTHESIZED,
-  SQUARE_BRACKETED,
+  REVISION_DELETION_CONVENTION,
+  REVISION_INSERTION_CONVENTION,
+  /*STRESS_CONVENTION,
+  EMPHASIS_CONVENTION,*/
+  PARENTHESIZED_CONVENTION,
+  SQUARE_BRACKETED_CONVENTION,
 ]
 
 // We avoid splitting these conventions.
 //
 // The order is important: We'd rather split a link than a spoiler, and we'll never split a footnote.
 const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
-  LINK,
-  ACTION,
-  SPOILER,
-  FOOTNOTE
+  LINK_CONVENTION,
+  ACTION_CONVENTION,
+  SPOILER_CONVENTION,
+  FOOTNOTE_CONVENTION
 ]
 
 
