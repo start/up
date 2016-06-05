@@ -2,7 +2,7 @@ import { UpConfigArgs} from './UpConfigArgs'
 
 
 const DEFAULT_CONFIG: UpConfigArgs = {
-  documentName: <string>null,
+  documentName: null,
   
   i18n: {
     idWordDelimiter: '-',
