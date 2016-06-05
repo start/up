@@ -546,10 +546,17 @@ export class Tokenizer {
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
-  
-  private hasGoal(goal: TokenizerGoal): boolean {
-    return this.openContexts.some(context => context.goal === goal)
-  } 
+
+  private isTokenizingLinkUrl(): boolean {
+    return this.hasGoal(
+      TokenizerGoal.ParenthesizedLinkUrl,
+      TokenizerGoal.SquareBracketedLinkUrl,
+      TokenizerGoal.CurlyBracketedLinkUrl)
+  }
+
+  private hasGoal(...goals: TokenizerGoal[]): boolean {
+    return this.openContexts.some(context => contains(goals, context.goal))
+  }
 
   private insertPlainTextTokensInsideBrackets(): void {
     // Rich bracket conventions create syntax nodes, just like other conventions. But unlike other conventions,

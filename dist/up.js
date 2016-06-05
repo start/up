@@ -1170,8 +1170,15 @@ var Tokenizer = (function () {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         return !this.failedGoalTracker.hasFailed(goal, textIndex);
     };
-    Tokenizer.prototype.hasGoal = function (goal) {
-        return this.openContexts.some(function (context) { return context.goal === goal; });
+    Tokenizer.prototype.isTokenizingLinkUrl = function () {
+        return this.hasGoal(TokenizerGoal_1.TokenizerGoal.ParenthesizedLinkUrl, TokenizerGoal_1.TokenizerGoal.SquareBracketedLinkUrl, TokenizerGoal_1.TokenizerGoal.CurlyBracketedLinkUrl);
+    };
+    Tokenizer.prototype.hasGoal = function () {
+        var goals = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            goals[_i - 0] = arguments[_i];
+        }
+        return this.openContexts.some(function (context) { return CollectionHelpers_1.contains(goals, context.goal); });
     };
     Tokenizer.prototype.insertPlainTextTokensInsideBrackets = function () {
         var resultTokens = [];
