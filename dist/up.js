@@ -821,7 +821,7 @@ var Tokenizer = (function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseOrAdvanceAnyOpenContext()
-                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
+                || (this.hasGoal(TokenizerGoal_1.TokenizerGoal.NakedUrl) && this.bufferRawText())
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
@@ -912,7 +912,7 @@ var Tokenizer = (function () {
                 lastToken.value = url;
             }
         });
-        return didCloseLinkUrl || this.bufferCurrentChar();
+        return didCloseLinkUrl || this.bufferRawText();
     };
     Tokenizer.prototype.isDirectlyFollowingLinkBrackets = function () {
         var lastToken = CollectionHelpers_1.last(this.tokens);
@@ -996,7 +996,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.appendCharToNakedUrl = function () {
+    Tokenizer.prototype.bufferRawText = function () {
         return (this.tryToOpenAnyRawTextBracket()
             || this.bufferCurrentChar());
     };
@@ -1169,9 +1169,6 @@ var Tokenizer = (function () {
     Tokenizer.prototype.canTry = function (goal, textIndex) {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         return !this.failedGoalTracker.hasFailed(goal, textIndex);
-    };
-    Tokenizer.prototype.isTokenizingLinkUrl = function () {
-        return this.hasGoal(TokenizerGoal_1.TokenizerGoal.ParenthesizedLinkUrl, TokenizerGoal_1.TokenizerGoal.SquareBracketedLinkUrl, TokenizerGoal_1.TokenizerGoal.CurlyBracketedLinkUrl);
     };
     Tokenizer.prototype.hasGoal = function () {
         var goals = [];

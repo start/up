@@ -89,6 +89,20 @@ describe("A link's contents", () => {
 })
 
 
+describe("A link's URL", () => {
+  it('is not evaluated for other conventions', () => {
+    expect(Up.toAst('I like [this site][https://stackoverflow.com/?search=*hello*there].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com/?search=*hello*there'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
 describe('A link produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.toAst('I like [[only one] site][https://stackoverflow.com].')).to.be.eql(

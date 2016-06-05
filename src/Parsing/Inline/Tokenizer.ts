@@ -116,7 +116,7 @@ export class Tokenizer {
 
       this.tryToCollectEscapedChar()
         || this.tryToCloseOrAdvanceAnyOpenContext()
-        || (this.hasGoal(TokenizerGoal.NakedUrl) && this.appendCharToNakedUrl())
+        || (this.hasGoal(TokenizerGoal.NakedUrl) && this.bufferRawText())
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
@@ -233,8 +233,8 @@ export class Tokenizer {
         lastToken.value = url
       }
     })
-
-    return didCloseLinkUrl || this.bufferCurrentChar()
+    
+    return didCloseLinkUrl || this.bufferRawText()
   }
 
   private isDirectlyFollowingLinkBrackets(): boolean {
@@ -320,7 +320,7 @@ export class Tokenizer {
     })
   }
 
-  private appendCharToNakedUrl(): boolean {
+  private bufferRawText(): boolean {
     return (
       this.tryToOpenAnyRawTextBracket()
       || this.bufferCurrentChar())
@@ -545,13 +545,6 @@ export class Tokenizer {
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
-  }
-
-  private isTokenizingLinkUrl(): boolean {
-    return this.hasGoal(
-      TokenizerGoal.ParenthesizedLinkUrl,
-      TokenizerGoal.SquareBracketedLinkUrl,
-      TokenizerGoal.CurlyBracketedLinkUrl)
   }
 
   private hasGoal(...goals: TokenizerGoal[]): boolean {
