@@ -1052,7 +1052,7 @@ var Tokenizer = (function () {
                     captures[_i - 3] = arguments[_i];
                 }
                 if (flushBufferToPlainTextTokenBeforeOpening) {
-                    _this.flushBufferToPlainTextToken();
+                    _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 }
                 _this.openContexts.push(new TokenizerContext_1.TokenizerContext(goal, _this.getCurrentSnapshot()));
                 if (onOpen) {
@@ -1105,7 +1105,7 @@ var Tokenizer = (function () {
                     return false;
             }
         }
-        this.flushBufferToPlainTextToken();
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
         return true;
     };
     Tokenizer.prototype.backtrackToBeforeContext = function (context) {
@@ -1147,7 +1147,7 @@ var Tokenizer = (function () {
                 else if (canCloseConvention) {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
-                _this.flushBufferToPlainTextToken();
+                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 _this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks });
             }
         });
@@ -1178,8 +1178,10 @@ var Tokenizer = (function () {
         this.consumer.advanceTextIndex(1);
         return true;
     };
-    Tokenizer.prototype.flushBufferToPlainTextToken = function () {
-        this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.PlainText);
+    Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
+        if (this.buffer) {
+            this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.PlainText);
+        }
     };
     Tokenizer.prototype.canTry = function (goal, textIndex) {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }

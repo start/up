@@ -45,11 +45,11 @@ export class Tokenizer {
       richConvention: SQUARE_BRACKETED,
       startPattern: SQUARE_BRACKET.startPattern,
       endPattern: SQUARE_BRACKET.endPattern
-    },{
-        richConvention: ACTION,
-        startPattern: CURLY_BRACKET.startPattern,
-        endPattern: CURLY_BRACKET.endPattern
-      }
+    }, {
+      richConvention: ACTION,
+      startPattern: CURLY_BRACKET.startPattern,
+      endPattern: CURLY_BRACKET.endPattern
+    }
   ].map(args => new TokenizableRichSandwich(args))
 
   // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
@@ -261,7 +261,7 @@ export class Tokenizer {
       (bracket.goal === context.goal)
       && this.tryToCloseRichSandwich(bracket, context))
   }
-  
+
   private tryToOpenAnyRichSandwich(): boolean {
     return this.richSandwichesExceptRichBrackets.some(sandwich => this.tryToOpenRichSandwich(sandwich))
   }
@@ -396,7 +396,7 @@ export class Tokenizer {
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         if (flushBufferToPlainTextTokenBeforeOpening) {
-          this.flushBufferToPlainTextToken()
+          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         }
 
         this.openContexts.push(new TokenizerContext(goal, this.getCurrentSnapshot()))
@@ -464,7 +464,7 @@ export class Tokenizer {
       }
     }
 
-    this.flushBufferToPlainTextToken()
+    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
     return true
   }
 
@@ -514,7 +514,7 @@ export class Tokenizer {
           asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
         }
 
-        this.flushBufferToPlainTextToken()
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks })
       }
     })
@@ -554,8 +554,10 @@ export class Tokenizer {
     return true
   }
 
-  private flushBufferToPlainTextToken(): void {
-    this.flushBufferToTokenOfKind(TokenKind.PlainText)
+  private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
+    if (this.buffer) {
+      this.flushBufferToTokenOfKind(TokenKind.PlainText)
+    }
   }
 
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
