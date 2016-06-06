@@ -12,7 +12,7 @@ describe('The term that represents image conventions', () => {
       }
     })
     
-  it('comes from the "audio" config term', () => {
+  it('comes from the "image" config term', () => {
     const text = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(up.toAst(text)).to.be.eql(
