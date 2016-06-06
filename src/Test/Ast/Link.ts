@@ -143,7 +143,7 @@ describe('A link produced by curly brackets', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
-          new ParenthesizedNode([
+          new ActionNode([
             new PlainTextNode('faints')
           ]),
           new PlainTextNode(' this site')
