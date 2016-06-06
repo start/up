@@ -908,6 +908,7 @@ var Tokenizer = (function () {
         var didCloseLinkUrl = this.tryToCloseContext({
             context: context,
             pattern: bracketedLinkUrl.endPattern,
+            closeInnerContexts: true,
             thenAddAnyClosingTokens: function () {
                 var url = _this.flushBuffer();
                 var lastToken = CollectionHelpers_1.last(_this.tokens);
@@ -1065,7 +1066,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseContext = function (args) {
         var _this = this;
-        var context = args.context, pattern = args.pattern, onCloseFlushBufferTo = args.onCloseFlushBufferTo, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
+        var context = args.context, pattern = args.pattern, closeInnerContexts = args.closeInnerContexts, onCloseFlushBufferTo = args.onCloseFlushBufferTo, thenAddAnyClosingTokens = args.thenAddAnyClosingTokens;
         return this.consumer.advanceAfterMatch({
             pattern: pattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1073,7 +1074,7 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                _this.closeContext({ context: context });
+                _this.closeContext({ context: context, closeInnerContexts: closeInnerContexts });
                 if (onCloseFlushBufferTo != null) {
                     _this.flushBufferToTokenOfKind(onCloseFlushBufferTo);
                 }

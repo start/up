@@ -225,6 +225,7 @@ export class Tokenizer {
     const didCloseLinkUrl = this.tryToCloseContext({
       context,
       pattern: bracketedLinkUrl.endPattern,
+      closeInnerContexts: true,
       thenAddAnyClosingTokens: () => {
         const url = this.flushBuffer()
 
@@ -416,16 +417,17 @@ export class Tokenizer {
     args: {
       context: TokenizerContext,
       pattern: RegExp,
+      closeInnerContexts?: boolean
       onCloseFlushBufferTo?: TokenKind
       thenAddAnyClosingTokens?: OnMatch
     }
   ): boolean {
-    const {  context, pattern, onCloseFlushBufferTo, thenAddAnyClosingTokens } = args
+    const {  context, pattern, closeInnerContexts, onCloseFlushBufferTo, thenAddAnyClosingTokens } = args
 
     return this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeContext({ context })
+        this.closeContext({ context, closeInnerContexts })
 
         if (onCloseFlushBufferTo != null) {
           this.flushBufferToTokenOfKind(onCloseFlushBufferTo)
