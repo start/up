@@ -919,12 +919,14 @@ var Tokenizer = (function () {
         return didCloseLinkUrl || this.bufferRawText();
     };
     Tokenizer.prototype.isDirectlyFollowingLinkBrackets = function () {
-        var lastToken = CollectionHelpers_1.last(this.tokens);
-        return lastToken && CollectionHelpers_1.contains([
+        var linkableBrackets = [
             TokenKind_1.TokenKind.ParenthesizedEnd,
             TokenKind_1.TokenKind.SquareBracketedEnd,
             TokenKind_1.TokenKind.ActionEnd
-        ], lastToken.kind);
+        ];
+        return (this.buffer === ''
+            && this.tokens.length
+            && CollectionHelpers_1.contains(linkableBrackets, CollectionHelpers_1.last(this.tokens).kind));
     };
     Tokenizer.prototype.tryToOpenAnyRichBracket = function () {
         var _this = this;

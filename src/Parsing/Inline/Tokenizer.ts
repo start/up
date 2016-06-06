@@ -243,13 +243,17 @@ export class Tokenizer {
   }
 
   private isDirectlyFollowingLinkBrackets(): boolean {
-    const lastToken = last(this.tokens)
-
-    return lastToken && contains([
+    const linkableBrackets = [
       TokenKind.ParenthesizedEnd,
       TokenKind.SquareBracketedEnd,
       TokenKind.ActionEnd
-    ], lastToken.kind)
+    ]
+
+    return (
+      this.buffer === ''
+      && this.tokens.length
+      && contains(linkableBrackets, last(this.tokens).kind)
+    )
   }
 
   private tryToOpenAnyRichBracket(): boolean {
