@@ -6,6 +6,7 @@ import { RichConvention } from './RichConvention'
 import { MediaConvention } from './MediaConvention'
 import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
+import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnMatch } from './OnMatch'
 import { last, contains } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
@@ -125,11 +126,10 @@ export class Tokenizer {
         || this.bufferCurrentChar()
     }
 
-    this.insertPlainTextTokensInsideBrackets()
-
     this.tokens =
       nestOverlappingConventions(
-        applyRaisedVoices(this.tokens))
+        applyRaisedVoices(
+          insertBracketsInsideBracketedConventions(this.tokens)))
   }
 
   private tryToCollectEscapedChar(): boolean {
@@ -556,30 +556,6 @@ export class Tokenizer {
 
   private hasGoal(...goals: TokenizerGoal[]): boolean {
     return this.openContexts.some(context => contains(goals, context.goal))
-  }
-
-  private insertPlainTextTokensInsideBrackets(): void {
-    // Rich bracket conventions create syntax nodes, just like other conventions. But unlike other conventions,
-    // their syntax nodes contain their delimiters (brackets) as plain text.
-    const resultTokens: Token[] = []
-
-    for (const token of this.tokens) {
-      function addBracketIfTokenIs(bracket: string, kind: TokenKind): void {
-        if (token.kind === kind) {
-          resultTokens.push(new Token({ kind: TokenKind.PlainText, value: bracket }))
-        }
-      }
-
-      addBracketIfTokenIs(')', PARENTHESIZED_CONVENTION.endTokenKind)
-      addBracketIfTokenIs(']', SQUARE_BRACKETED_CONVENTION.endTokenKind)
-
-      resultTokens.push(token)
-
-      addBracketIfTokenIs('(', PARENTHESIZED_CONVENTION.startTokenKind)
-      addBracketIfTokenIs('[', SQUARE_BRACKETED_CONVENTION.startTokenKind)
-    }
-
-    this.tokens = resultTokens
   }
 }
 
