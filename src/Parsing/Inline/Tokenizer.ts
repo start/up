@@ -459,7 +459,7 @@ export class Tokenizer {
           break;
 
         default:
-          this.backtrackToBeforeContext(context)
+          this.resetToBeforeContext(context)
           return false
       }
     }
@@ -468,7 +468,7 @@ export class Tokenizer {
     return true
   }
 
-  private backtrackToBeforeContext(context: TokenizerContext): void {
+  private resetToBeforeContext(context: TokenizerContext): void {
     this.failedGoalTracker.registerFailure(context)
 
     this.tokens = context.snapshot.tokens
@@ -476,8 +476,8 @@ export class Tokenizer {
     this.buffer = context.snapshot.bufferedText
     this.consumer.textIndex = context.snapshot.textIndex
 
-    for (const remainingContext of this.openContexts) {
-      remainingContext.reset()
+    for (const context of this.openContexts) {
+      context.reset()
     }
   }
 

@@ -1101,22 +1101,22 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText:
                     break;
                 default:
-                    this.backtrackToBeforeContext(context_1);
+                    this.resetToBeforeContext(context_1);
                     return false;
             }
         }
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
         return true;
     };
-    Tokenizer.prototype.backtrackToBeforeContext = function (context) {
+    Tokenizer.prototype.resetToBeforeContext = function (context) {
         this.failedGoalTracker.registerFailure(context);
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
         this.buffer = context.snapshot.bufferedText;
         this.consumer.textIndex = context.snapshot.textIndex;
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var remainingContext = _a[_i];
-            remainingContext.reset();
+            var context_2 = _a[_i];
+            context_2.reset();
         }
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
