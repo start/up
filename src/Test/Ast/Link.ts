@@ -104,7 +104,7 @@ describe("A link's URL", () => {
 
 
 describe('A link produced by square brackets', () => {
-  it('can contain square bracketed text', () => {
+  it('can start with square bracketed text', () => {
     expect(Up.toAst('I like [[only one] site][https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -121,8 +121,8 @@ describe('A link produced by square brackets', () => {
 
 
 describe('A link produced by parentheses', () => {
-  it('can contain parenthesized text', () => {
-    expect(Up.toAst('I like ((only one))(https://stackoverflow.com).')).to.be.eql(
+  it('can start with parenthesized text', () => {
+    expect(Up.toAst('I like ((only one) site)(https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
