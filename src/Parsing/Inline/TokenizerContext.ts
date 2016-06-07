@@ -25,13 +25,13 @@ export class TokenizerContext {
     this.initialTokenIndex = snapshot.textIndex
     this.snapshot = snapshot
     this.goal = convention.goal
-    this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts
-    this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts
+    this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts || doNothing
+    this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts || doNothing
     this.endPattern = convention.endPattern
     this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern
     this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing
     this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo
-    this.onClose = convention.onClose
+    this.onClose = convention.onClose || doNothing
 
     this.reset()
   }
@@ -67,4 +67,9 @@ export class TokenizerContext {
   reset(): void {
     this.initialTokenIndex = this.snapshot.tokens.length
   }
+}
+
+
+function doNothing(): boolean {
+  return false
 }

@@ -23,6 +23,7 @@ import { InlineConsumer } from './InlineConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { NewTokenArgs } from './NewTokenArgs'
+import { TokenizableConvention } from './TokenizableConvention'
 
 
 export class Tokenizer {
@@ -375,21 +376,9 @@ export class Tokenizer {
   }
 
   private tryToOpenContext(
-    args: {
-      goal: TokenizerGoal
-      startPattern: RegExp
-      flushBufferToPlainTextTokenBeforeOpening: boolean
-      onOpen?: OnMatch
-      beforeTryingToCloseOuterContexts?: PerformContextSpecificTasks
-      afterTryingToCloseOuterContexts?: PerformContextSpecificTasks
-      endPattern: RegExp
-      doNotConsumeEndPattern?: boolean
-      closeInnerContextsWhenClosing?: boolean
-      onCloseFlushBufferTo?: TokenKind
-      onClose?: OnTokenizerContextClose
-    }
+    convention: TokenizableConvention
   ): boolean {
-    const { goal, startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen, beforeTryingToCloseOuterContexts, afterTryingToCloseOuterContexts, endPattern, doNotConsumeEndPattern, closeInnerContextsWhenClosing, onCloseFlushBufferTo, onClose } = args
+    const { goal, startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern: startPattern,
@@ -399,17 +388,7 @@ export class Tokenizer {
           this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         }
 
-        const context = new TokenizerContext({
-          goal,
-          beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts || doNothing,
-          afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts || doNothing,
-          endPattern,
-          doNotConsumeEndPattern,
-          closeInnerContextsWhenClosing,
-          onCloseFlushBufferTo,
-          onClose: onClose || doNothing
-        },
-        this.getCurrentSnapshot())
+        const context = new TokenizerContext(convention, this.getCurrentSnapshot())
 
         this.openContexts.push(context)
 
@@ -545,9 +524,6 @@ export class Tokenizer {
   }
 }
 
-function doNothing(): boolean {
-  return false
-}
 
 const PARENTHESIS =
   new Bracket('(', ')')

@@ -1030,9 +1030,9 @@ var Tokenizer = (function () {
             }
         }
     };
-    Tokenizer.prototype.tryToOpenContext = function (args) {
+    Tokenizer.prototype.tryToOpenContext = function (convention) {
         var _this = this;
-        var goal = args.goal, startPattern = args.startPattern, flushBufferToPlainTextTokenBeforeOpening = args.flushBufferToPlainTextTokenBeforeOpening, onOpen = args.onOpen, beforeTryingToCloseOuterContexts = args.beforeTryingToCloseOuterContexts, afterTryingToCloseOuterContexts = args.afterTryingToCloseOuterContexts, endPattern = args.endPattern, doNotConsumeEndPattern = args.doNotConsumeEndPattern, closeInnerContextsWhenClosing = args.closeInnerContextsWhenClosing, onCloseFlushBufferTo = args.onCloseFlushBufferTo, onClose = args.onClose;
+        var goal = convention.goal, startPattern = convention.startPattern, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return this.canTry(goal) && this.consumer.advanceAfterMatch({
             pattern: startPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1043,16 +1043,7 @@ var Tokenizer = (function () {
                 if (flushBufferToPlainTextTokenBeforeOpening) {
                     _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 }
-                var context = new TokenizerContext_1.TokenizerContext({
-                    goal: goal,
-                    beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts || doNothing,
-                    afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts || doNothing,
-                    endPattern: endPattern,
-                    doNotConsumeEndPattern: doNotConsumeEndPattern,
-                    closeInnerContextsWhenClosing: closeInnerContextsWhenClosing,
-                    onCloseFlushBufferTo: onCloseFlushBufferTo,
-                    onClose: onClose || doNothing
-                }, _this.getCurrentSnapshot());
+                var context = new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot());
                 _this.openContexts.push(context);
                 if (onOpen) {
                     onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
@@ -1166,9 +1157,6 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
-function doNothing() {
-    return false;
-}
 var PARENTHESIS = new Bracket_1.Bracket('(', ')');
 var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
 var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
@@ -1184,13 +1172,13 @@ var TokenizerContext = (function () {
         this.initialTokenIndex = snapshot.textIndex;
         this.snapshot = snapshot;
         this.goal = convention.goal;
-        this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts;
-        this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts;
+        this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts || doNothing;
+        this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts || doNothing;
         this.endPattern = convention.endPattern;
         this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern;
         this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing;
         this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo;
-        this.onClose = convention.onClose;
+        this.onClose = convention.onClose || doNothing;
         this.reset();
     }
     TokenizerContext.prototype.close = function () {
@@ -1211,6 +1199,9 @@ var TokenizerContext = (function () {
     return TokenizerContext;
 }());
 exports.TokenizerContext = TokenizerContext;
+function doNothing() {
+    return false;
+}
 
 },{}],21:[function(require,module,exports){
 "use strict";
