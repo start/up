@@ -5,28 +5,28 @@ import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
 export interface TokenizableConvention {
+  onlyOpenIf?: () => boolean
+
   startPattern: RegExp
   endPattern: RegExp
-  onlyOpenIf?: ShouldOpenConvention
+  
   flushBufferToPlainTextTokenBeforeOpening?: boolean
+  
   onOpen?: OnMatch
+  
   insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
   insteadOfTryingToOpenUsualConventions?: PerformConventionSpecificTasks
+  
   doNotConsumeEndPattern?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
+  
   onClose?: OnConventionClose
-  resolveWhenLeftUnclosed?: ResolveUnclosedConvention
+  
+  resolveWhenLeftUnclosed?: (context: TokenizerContext) => void
 }
 
-interface ResolveUnclosedConvention {
-  (context: TokenizerContext): void
-}
 
 interface PerformConventionSpecificTasks {
   (): void
-}
-
-interface ShouldOpenConvention {
-  (): boolean
 }
