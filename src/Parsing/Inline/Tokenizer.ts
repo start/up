@@ -450,6 +450,32 @@ export class Tokenizer {
     }
   }
 
+  private getConventionsForMediaDescription(
+    args: {
+      media: MediaConvention,
+      config: UpConfig
+    }
+  ): TokenizableConvention[] {
+    const { media, config } = args
+
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
+      startPattern: regExpStartingWith(bracket.startPattern + escapeForRegex(config.localizeTerm(media.nonLocalizedTerm)) + ':' + ANY_WHITESPACE, 'i'),
+      endPattern: regExpStartingWith(bracket.endPattern),
+
+      flushBufferToPlainTextTokenBeforeOpening: true,
+      onCloseFlushBufferTo: TokenKind.PlainText,
+
+      onClose: (context) => {
+        const description = this.flushBuffer()
+        const startToken = new Token({ kind: media.startTokenKind, value: description })
+
+        this.insertTokenAtStartOfContext(context, startToken)
+
+        // TODO: Open media URL
+      }
+    }))
+  }
+
   private getRawBracketConvention(bracket: Bracket): TokenizableConvention {
     return {
       startPattern: regExpStartingWith(bracket.startPattern),

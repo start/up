@@ -1026,6 +1026,21 @@ var Tokenizer = (function () {
             }
         };
     };
+    Tokenizer.prototype.getConventionsForMediaDescription = function (args) {
+        var _this = this;
+        var media = args.media, config = args.config;
+        return BRACKETS.map(function (bracket) { return ({
+            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern + Patterns_1.escapeForRegex(config.localizeTerm(media.nonLocalizedTerm)) + ':' + Patterns_1.ANY_WHITESPACE, 'i'),
+            endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
+            flushBufferToPlainTextTokenBeforeOpening: true,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
+            onClose: function (context) {
+                var description = _this.flushBuffer();
+                var startToken = new Token_1.Token({ kind: media.startTokenKind, value: description });
+                _this.insertTokenAtStartOfContext(context, startToken);
+            }
+        }); });
+    };
     Tokenizer.prototype.getRawBracketConvention = function (bracket) {
         var _this = this;
         return {
