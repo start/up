@@ -1808,7 +1808,7 @@ function parseDescriptionList(args) {
 exports.parseDescriptionList = parseDescriptionList;
 var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+var INDENTED_PATTERN = Patterns_1.regexStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":41,"../../SyntaxNodes/Description":46,"../../SyntaxNodes/DescriptionListItem":47,"../../SyntaxNodes/DescriptionListNode":48,"../../SyntaxNodes/DescriptionTerm":49,"../Inline/getInlineNodes":22,"./LineConsumer":26,"./getOutlineNodes":28,"./getRemainingLinesOfListItem":29,"./isLineFancyOutlineConvention":31}],36:[function(require,module,exports){
 "use strict";
@@ -2015,9 +2015,9 @@ function parseUnorderedList(args) {
     return true;
 }
 exports.parseUnorderedList = parseUnorderedList;
-var BULLET_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.optional(' ') + Patterns_1.either('\\*', '-', '\\+') + Patterns_1.INLINE_WHITESPACE_CHAR));
+var BULLET_PATTERN = Patterns_1.regexStartingWith(Patterns_1.optional(' ') + Patterns_1.either('\\*', '-', '\\+') + Patterns_1.INLINE_WHITESPACE_CHAR);
 var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+var INDENTED_PATTERN = Patterns_1.regexStartingWith(Patterns_1.INDENT);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
 },{"../../Patterns":41,"../../SyntaxNodes/UnorderedListItem":77,"../../SyntaxNodes/UnorderedListNode":78,"./LineConsumer":26,"./getOutlineNodes":28,"./getRemainingLinesOfListItem":29}],40:[function(require,module,exports){

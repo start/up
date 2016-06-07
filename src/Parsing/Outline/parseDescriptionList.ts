@@ -6,7 +6,7 @@ import { Description } from '../../SyntaxNodes/Description'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { optional, startsWith, either, NON_BLANK, BLANK, INDENT, STREAK } from '../../Patterns'
+import { optional, regexStartingWith, either, NON_BLANK, BLANK, INDENT, STREAK } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
@@ -100,5 +100,5 @@ const NON_BLANK_PATTERN = new RegExp(
 const BLANK_PATTERN = new RegExp(
   BLANK)
 
-const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT))
+const INDENTED_PATTERN =
+  regexStartingWith(INDENT)
