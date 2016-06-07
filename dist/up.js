@@ -1004,6 +1004,7 @@ var Tokenizer = (function () {
             afterTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             endPattern: NAKED_URL_TERMINATOR_PATTERN,
             doNotConsumeEndPattern: true,
+            closeInnerContextsWhenClosing: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd
         });
     };
