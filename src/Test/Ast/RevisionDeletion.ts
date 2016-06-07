@@ -38,7 +38,7 @@ describe('A revision deletion', () => {
 })
 
 
-describe('An unmatched revision deletion start delimiter', () => {
+describe('An unmatched revision deletion delimiter', () => {
   it('is preserved as plain text', () => {
     expect(Up.toAst('I like pizza~~but I never eat it.')).to.be.eql(
       insideDocumentAndParagraph([

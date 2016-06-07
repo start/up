@@ -36,3 +36,13 @@ describe('A revision insertion', () => {
       ]))
   })
 })
+
+
+describe('An unmatched revision insertion delimiter', () => {
+  it('is preserved as plain text', () => {
+    expect(Up.toAst('I like pizza++but I never eat it.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like pizza++but I never eat it.'),
+      ]))
+  })
+})
