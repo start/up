@@ -36,9 +36,9 @@ export class TokenizerContext {
     }
   }
 
-  resolve(): boolean {
-    if (this.convention.resolveWhenUnclosed) {
-      this.convention.resolveWhenUnclosed(this)
+  resolveWhenLeftUnclosed(): boolean {
+    if (this.convention.resolveWhenLeftUnclosed) {
+      this.convention.resolveWhenLeftUnclosed(this)
       return true
     }
 

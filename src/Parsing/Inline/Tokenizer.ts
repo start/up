@@ -143,7 +143,7 @@ export class Tokenizer {
   }
 
   private isDone(): boolean {
-    return this.consumer.reachedEndOfText() && this.resolveOpenContexts()
+    return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts()
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -229,7 +229,7 @@ export class Tokenizer {
   private tryToOpenLinkUrl(bracketedLinkUrl: TokenizableBracket): boolean {
     return this.tryToOpenContext({
       goal: bracketedLinkUrl.goal,
-      onlyOpenIf: () => this.isDirectlyFollowingLinkBrackets(),
+      onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
       startPattern: bracketedLinkUrl.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
@@ -251,7 +251,7 @@ export class Tokenizer {
     })
   }
 
-  private isDirectlyFollowingLinkBrackets(): boolean {
+  private isDirectlyFollowingLinkableBrackets(): boolean {
     const linkableBrackets = [
       TokenKind.ParenthesizedEnd,
       TokenKind.SquareBracketedEnd,
@@ -304,7 +304,7 @@ export class Tokenizer {
       onOpen: () => { this.buffer += bracket.open },
       endPattern: bracket.endPattern,
       onClose: () => { this.buffer += bracket.close },
-      resolveWhenUnclosed: () => true
+      resolveWhenLeftUnclosed: () => true
     })
   }
 
@@ -321,7 +321,7 @@ export class Tokenizer {
       doNotConsumeEndPattern: true,
       closeInnerContextsWhenClosing: true,
       onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
-      resolveWhenUnclosed: () => this.flushBufferToNakedUrlEndToken()
+      resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
     })
   }
 
@@ -362,11 +362,11 @@ export class Tokenizer {
     })
   }
 
-  private resolveOpenContexts(): boolean {
+  private resolveUnclosedContexts(): boolean {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (!context.resolve()) {
+      if (!context.resolveWhenLeftUnclosed()) {
         this.resetToBeforeContext(context)
         return false
       }
