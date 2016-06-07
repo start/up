@@ -1,4 +1,5 @@
 import { TokenizerGoal } from './TokenizerGoal'
+import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
 import { OnTokenizerContextClose } from './OnTokenizerContextClose'
@@ -8,39 +9,30 @@ export class TokenizerContext {
   goal: TokenizerGoal
   initialTokenIndex: number
   snapshot: TokenizerSnapshot
-  beforeTryingToCloseOuterContexts: PerformContextSpecificTasks 
-  afterTryingToCloseOuterContexts: PerformContextSpecificTasks 
+  beforeTryingToCloseOuterContexts: PerformContextSpecificTasks
+  afterTryingToCloseOuterContexts: PerformContextSpecificTasks
   endPattern: RegExp
   doNotConsumeEndPattern: boolean
   closeInnerContextsWhenClosing: boolean
   onCloseFlushBufferTo: TokenKind
-  
+
   private onClose: OnTokenizerContextClose
 
   constructor(
-    args: {
-      goal: TokenizerGoal
-      snapshot: TokenizerSnapshot
-      beforeTryingToCloseOuterContexts: PerformContextSpecificTasks 
-      afterTryingToCloseOuterContexts: PerformContextSpecificTasks
-      endPattern: RegExp
-      doNotConsumeEndPattern: boolean
-      closeInnerContextsWhenClosing: boolean
-      onCloseFlushBufferTo: TokenKind
-      onClose: OnTokenizerContextClose
-    }
+    convention: TokenizableConvention,
+    snapshot: TokenizerSnapshot
   ) {
-    this.goal = args.goal
-    this.initialTokenIndex = args.snapshot.textIndex
-    this.snapshot = args.snapshot
-    this.beforeTryingToCloseOuterContexts = args.beforeTryingToCloseOuterContexts
-    this.afterTryingToCloseOuterContexts = args.afterTryingToCloseOuterContexts
-    this.endPattern = args.endPattern
-    this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
-    this.closeInnerContextsWhenClosing = args.closeInnerContextsWhenClosing
-    this.onCloseFlushBufferTo = args.onCloseFlushBufferTo
-    this.onClose = args.onClose
-    
+    this.initialTokenIndex = snapshot.textIndex
+    this.snapshot = snapshot
+    this.goal = convention.goal
+    this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts
+    this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts
+    this.endPattern = convention.endPattern
+    this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern
+    this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing
+    this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo
+    this.onClose = convention.onClose
+
     this.reset()
   }
 
@@ -53,7 +45,7 @@ export class TokenizerContext {
 
     // Do we need to increment our initial index?
     const mustIncrementInitialIndex = (
-      
+
       // Well, if the token was inserted before our intial index, we certianly do.
       atIndex < this.initialTokenIndex
 

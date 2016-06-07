@@ -401,7 +401,6 @@ export class Tokenizer {
 
         const context = new TokenizerContext({
           goal,
-          snapshot: this.getCurrentSnapshot(),
           beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts || doNothing,
           afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts || doNothing,
           endPattern,
@@ -409,7 +408,8 @@ export class Tokenizer {
           closeInnerContextsWhenClosing,
           onCloseFlushBufferTo,
           onClose: onClose || doNothing
-        })
+        },
+        this.getCurrentSnapshot())
 
         this.openContexts.push(context)
 

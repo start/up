@@ -1045,7 +1045,6 @@ var Tokenizer = (function () {
                 }
                 var context = new TokenizerContext_1.TokenizerContext({
                     goal: goal,
-                    snapshot: _this.getCurrentSnapshot(),
                     beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts || doNothing,
                     afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts || doNothing,
                     endPattern: endPattern,
@@ -1053,7 +1052,7 @@ var Tokenizer = (function () {
                     closeInnerContextsWhenClosing: closeInnerContextsWhenClosing,
                     onCloseFlushBufferTo: onCloseFlushBufferTo,
                     onClose: onClose || doNothing
-                });
+                }, _this.getCurrentSnapshot());
                 _this.openContexts.push(context);
                 if (onOpen) {
                     onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
@@ -1181,17 +1180,17 @@ var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.W
 },{"../../CollectionHelpers":1,"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableBracket":16,"./TokenizableMedia":17,"./TokenizableRichSandwich":18,"./TokenizerContext":20,"./TokenizerGoal":21,"./TokenizerSnapshot":22,"./insertBracketsInsideBracketedConventions":24,"./nestOverlappingConventions":25}],20:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
-    function TokenizerContext(args) {
-        this.goal = args.goal;
-        this.initialTokenIndex = args.snapshot.textIndex;
-        this.snapshot = args.snapshot;
-        this.beforeTryingToCloseOuterContexts = args.beforeTryingToCloseOuterContexts;
-        this.afterTryingToCloseOuterContexts = args.afterTryingToCloseOuterContexts;
-        this.endPattern = args.endPattern;
-        this.doNotConsumeEndPattern = args.doNotConsumeEndPattern;
-        this.closeInnerContextsWhenClosing = args.closeInnerContextsWhenClosing;
-        this.onCloseFlushBufferTo = args.onCloseFlushBufferTo;
-        this.onClose = args.onClose;
+    function TokenizerContext(convention, snapshot) {
+        this.initialTokenIndex = snapshot.textIndex;
+        this.snapshot = snapshot;
+        this.goal = convention.goal;
+        this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts;
+        this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts;
+        this.endPattern = convention.endPattern;
+        this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern;
+        this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing;
+        this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo;
+        this.onClose = convention.onClose;
         this.reset();
     }
     TokenizerContext.prototype.close = function () {
