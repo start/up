@@ -224,10 +224,13 @@ describe("Unmatched opening parentheses in a link's URL", () => {
 
 
 describe('A link missing its final closing bracket', () => {
-  it('does not prevent conventions from being evaluated afterward', () => {
+  it('does not produce a link node and does not prevent conventions from being evaluated afterward', () => {
     expect(Up.toAst('[: Do this :][: smile! Anyway, why is *everyone* greeting mother earth?')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('[: Do this :][: smile! Anyway, why is '),
+        new SquareBracketedNode([
+        new PlainTextNode('[: Do this :]'),
+        ]),
+        new PlainTextNode('[: smile! Anyway, why is '),
         new EmphasisNode([
           new PlainTextNode('everyone')
         ]),
