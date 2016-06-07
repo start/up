@@ -13,7 +13,7 @@ export interface TokenizableConvention {
   flushBufferToPlainTextTokenBeforeOpening?: boolean
   onOpen?: OnMatch
   insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
-  insteadOfOpeningUsualContexts?: PerformConventionSpecificTasks
+  insteadOfTryingToOpenUsualConventions?: PerformConventionSpecificTasks
   doNotConsumeEndPattern?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind

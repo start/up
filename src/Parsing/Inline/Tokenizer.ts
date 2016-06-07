@@ -40,8 +40,8 @@ export class Tokenizer {
   private inlineCodeConvention = {
     goal: TokenizerGoal.InlineCode,
     startPattern: INLINE_CODE_DELIMITER_PATTERN,
-    endPattern: INLINE_CODE_DELIMITER_PATTERN,
     flushBufferToPlainTextTokenBeforeOpening: true,
+    endPattern: INLINE_CODE_DELIMITER_PATTERN,
     insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
     onCloseFlushBufferTo: TokenKind.InlineCode
   }
@@ -49,13 +49,11 @@ export class Tokenizer {
   private nakedUrlConvention: TokenizableConvention = {
     goal: TokenizerGoal.NakedUrl,
     startPattern: NAKED_URL_PROTOCOL_PATTERN,
-    flushBufferToPlainTextTokenBeforeOpening: true,
-    onOpen: urlProtocol => {
-      this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
-    },
-    insteadOfOpeningUsualContexts: () => this.bufferRawText(),
     endPattern: NAKED_URL_TERMINATOR_PATTERN,
     doNotConsumeEndPattern: true,
+    flushBufferToPlainTextTokenBeforeOpening: true,
+    onOpen: urlProtocol => this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol }),
+    insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
     closeInnerContextsWhenClosing: true,
     onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
@@ -397,7 +395,7 @@ export class Tokenizer {
   }
 
   private flushBufferToTokenOfKind(kind: TokenKind): void {
-    this.createTokenAndAppend({ kind, value: this.flushBuffer() })
+    this.appendNewToken({ kind, value: this.flushBuffer() })
   }
 
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
@@ -419,12 +417,12 @@ export class Tokenizer {
         }
 
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-        this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks })
+        this.appendNewToken({ kind: asteriskTokenKind, value: asterisks })
       }
     })
   }
 
-  private createTokenAndAppend(args: NewTokenArgs): void {
+  private appendNewToken(args: NewTokenArgs): void {
     this.tokens.push(new Token(args))
   }
 

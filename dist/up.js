@@ -760,21 +760,19 @@ var Tokenizer = (function () {
         this.inlineCodeConvention = {
             goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
             startPattern: INLINE_CODE_DELIMITER_PATTERN,
-            endPattern: INLINE_CODE_DELIMITER_PATTERN,
             flushBufferToPlainTextTokenBeforeOpening: true,
+            endPattern: INLINE_CODE_DELIMITER_PATTERN,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         };
         this.nakedUrlConvention = {
             goal: TokenizerGoal_1.TokenizerGoal.NakedUrl,
             startPattern: NAKED_URL_PROTOCOL_PATTERN,
-            flushBufferToPlainTextTokenBeforeOpening: true,
-            onOpen: function (urlProtocol) {
-                _this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol });
-            },
-            insteadOfOpeningUsualContexts: function () { return _this.bufferRawText(); },
             endPattern: NAKED_URL_TERMINATOR_PATTERN,
             doNotConsumeEndPattern: true,
+            flushBufferToPlainTextTokenBeforeOpening: true,
+            onOpen: function (urlProtocol) { return _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol }); },
+            insteadOfTryingToOpenUsualConventions: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); }
@@ -1046,7 +1044,7 @@ var Tokenizer = (function () {
         return buffer;
     };
     Tokenizer.prototype.flushBufferToTokenOfKind = function (kind) {
-        this.createTokenAndAppend({ kind: kind, value: this.flushBuffer() });
+        this.appendNewToken({ kind: kind, value: this.flushBuffer() });
     };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
@@ -1066,11 +1064,11 @@ var Tokenizer = (function () {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
                 _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                _this.createTokenAndAppend({ kind: asteriskTokenKind, value: asterisks });
+                _this.appendNewToken({ kind: asteriskTokenKind, value: asterisks });
             }
         });
     };
-    Tokenizer.prototype.createTokenAndAppend = function (args) {
+    Tokenizer.prototype.appendNewToken = function (args) {
         this.tokens.push(new Token_1.Token(args));
     };
     Tokenizer.prototype.insertTokenAtStartOfContext = function (context, token) {
@@ -1131,8 +1129,8 @@ var TokenizerContext = (function () {
         return false;
     };
     TokenizerContext.prototype.doInsteadOfTryingToOpenUsualContexts = function () {
-        if (this.convention.insteadOfOpeningUsualContexts) {
-            this.convention.insteadOfOpeningUsualContexts();
+        if (this.convention.insteadOfTryingToOpenUsualConventions) {
+            this.convention.insteadOfTryingToOpenUsualConventions();
             return true;
         }
         return false;

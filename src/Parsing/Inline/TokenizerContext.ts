@@ -22,8 +22,8 @@ export class TokenizerContext {
   }
 
   doInsteadOfTryingToOpenUsualContexts(): boolean {
-    if (this.convention.insteadOfOpeningUsualContexts) {
-      this.convention.insteadOfOpeningUsualContexts()
+    if (this.convention.insteadOfTryingToOpenUsualConventions) {
+      this.convention.insteadOfTryingToOpenUsualConventions()
       return true
     }
 
