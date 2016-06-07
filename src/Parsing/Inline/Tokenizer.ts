@@ -121,8 +121,8 @@ export class Tokenizer {
     while (!this.isDone()) {
 
       this.tryToCollectEscapedChar()
-        || this.tryToCloseOrAdvanceAnyOpenContext()
-        || (this.hasGoal(TokenizerGoal.NakedUrl) && this.bufferRawText())
+        || this.tryToCloseAnyContext()
+        || this.performAnyContextSpecificBehavior()
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
@@ -153,7 +153,7 @@ export class Tokenizer {
     return this.consumer.reachedEndOfText() && this.resolveOpenContexts()
   }
 
-  private tryToCloseOrAdvanceAnyOpenContext(): boolean {
+  private tryToCloseAnyContext(): boolean {
     let innerNakedUrlContextIndex: number = null
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
@@ -179,6 +179,11 @@ export class Tokenizer {
         }
 
         this.openContexts.splice(i, (context.closeInnerContextsWhenClosing ? null : 1))
+        return true
+      }
+
+      if (context.beforeTryingToCloseOuterContexts && context.beforeTryingToCloseOuterContexts()) {
+        return true
       }
 
       if (context.goal === TokenizerGoal.NakedUrl) {
