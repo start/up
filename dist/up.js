@@ -1057,7 +1057,11 @@ var Tokenizer = (function () {
                 if (flushBufferToPlainTextTokenBeforeOpening) {
                     _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 }
-                _this.openContexts.push(new TokenizerContext_1.TokenizerContext(goal, _this.getCurrentSnapshot()));
+                var context = new TokenizerContext_1.TokenizerContext({
+                    goal: goal,
+                    snapshot: _this.getCurrentSnapshot()
+                });
+                _this.openContexts.push(context);
                 if (onOpen) {
                     onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
                 }
@@ -1201,9 +1205,11 @@ var WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.WHITESPACE_CHAR);
 },{"../../CollectionHelpers":1,"../../Patterns":42,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableBracket":16,"./TokenizableMedia":17,"./TokenizableRichSandwich":18,"./TokenizerContext":20,"./TokenizerGoal":21,"./TokenizerSnapshot":22,"./insertBracketsInsideBracketedConventions":24,"./nestOverlappingConventions":25}],20:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
-    function TokenizerContext(goal, snapshot) {
-        this.goal = goal;
-        this.snapshot = snapshot;
+    function TokenizerContext(args) {
+        this.consumeEndPattern = true;
+        this.goal = args.goal;
+        this.snapshot = args.snapshot;
+        this.initialTokenIndex = args.snapshot.textIndex;
         this.reset();
     }
     TokenizerContext.prototype.registerTokenInsertion = function (args) {

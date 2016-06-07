@@ -2,12 +2,22 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export class TokenizerContext {
-  public initialTokenIndex: number
+  initialTokenIndex: number
+  goal: TokenizerGoal
+  snapshot: TokenizerSnapshot
+  endPattern: RegExp
+  consumeEndPattern = true
 
   constructor(
-    public goal: TokenizerGoal,
-    public snapshot: TokenizerSnapshot
+    args: {
+      goal: TokenizerGoal
+      snapshot: TokenizerSnapshot
+    }
   ) {
+    this.goal = args.goal
+    this.snapshot = args.snapshot
+    this.initialTokenIndex = args.snapshot.textIndex
+    
     this.reset()
   }
 

@@ -404,7 +404,12 @@ export class Tokenizer {
           this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         }
 
-        this.openContexts.push(new TokenizerContext(goal, this.getCurrentSnapshot()))
+        const context = new TokenizerContext({
+          goal,
+          snapshot: this.getCurrentSnapshot()
+        })
+
+        this.openContexts.push(context)
 
         if (onOpen) {
           onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
