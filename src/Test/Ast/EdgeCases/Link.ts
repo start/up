@@ -78,7 +78,7 @@ describe('A link with no URL', () => {
 
 describe('A link with a blank URL', () => {
   it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
-    expect(Up.toAst('[*Yggdra Union*][]  \t  ]')).to.be.eql(
+    expect(Up.toAst('[*Yggdra Union*][  \t  ]')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('Yggdra Union')
