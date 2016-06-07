@@ -12,8 +12,8 @@ export interface TokenizableConvention {
   onlyOpenIf?: ShouldOpenConvention
   flushBufferToPlainTextTokenBeforeOpening?: boolean
   onOpen?: OnMatch
-  beforeTryingToCloseOuterContexts?: PerformConventionSpecificTasks
-  afterTryingToCloseOuterContexts?: PerformConventionSpecificTasks
+  insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
+  insteadOfOpeningUsualContexts?: PerformConventionSpecificTasks
   doNotConsumeEndPattern?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
@@ -22,11 +22,11 @@ export interface TokenizableConvention {
 }
 
 interface ResolveUnclosedConvention {
-  (context: TokenizerContext): boolean
+  (context: TokenizerContext): void
 }
 
 interface PerformConventionSpecificTasks {
-  (): boolean
+  (): void
 }
 
 interface ShouldOpenConvention {

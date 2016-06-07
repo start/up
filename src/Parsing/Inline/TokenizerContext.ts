@@ -12,17 +12,19 @@ export class TokenizerContext {
     this.reset()
   }
 
-  doBeforeTryingToCloseOuterContexts(): boolean {
-    if (this.convention.beforeTryingToCloseOuterContexts) {
-      return this.convention.beforeTryingToCloseOuterContexts()
+  doIsteadOfTryingToCloseOuterContexts(): boolean {
+    if (this.convention.insteadOfTryingToCloseOuterContexts) {
+      this.convention.insteadOfTryingToCloseOuterContexts()
+      return true
     }
 
     return false
   }
 
-  doAfterTryingToCloseOuterContexts(): boolean {
-    if (this.convention.afterTryingToCloseOuterContexts) {
-      return this.convention.afterTryingToCloseOuterContexts()
+  doInsteadOfTryingToOpenUsualContexts(): boolean {
+    if (this.convention.insteadOfOpeningUsualContexts) {
+      this.convention.insteadOfOpeningUsualContexts()
+      return true
     }
 
     return false
@@ -36,7 +38,8 @@ export class TokenizerContext {
 
   resolve(): boolean {
     if (this.convention.resolveWhenUnclosed) {
-      return this.convention.resolveWhenUnclosed(this)
+      this.convention.resolveWhenUnclosed(this)
+      return true
     }
 
     return false

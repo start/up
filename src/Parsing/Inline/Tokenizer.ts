@@ -113,7 +113,7 @@ export class Tokenizer {
 
       this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
-        || this.performContextSpecificBehavior()
+        || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
@@ -125,9 +125,9 @@ export class Tokenizer {
           insertBracketsInsideBracketedConventions(this.tokens)))
   }
 
-  private performContextSpecificBehavior(): boolean {
+  private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
     return reversed(this.openContexts)
-      .some(context => context.doAfterTryingToCloseOuterContexts())
+      .some(context => context.doInsteadOfTryingToOpenUsualContexts())
   }
 
   private tryToCollectEscapedChar(): boolean {
@@ -178,7 +178,7 @@ export class Tokenizer {
         return true
       }
 
-      if (context.doBeforeTryingToCloseOuterContexts()) {
+      if (context.doIsteadOfTryingToCloseOuterContexts()) {
         return true
       }
 
@@ -216,7 +216,7 @@ export class Tokenizer {
       goal: TokenizerGoal.InlineCode,
       startPattern: INLINE_CODE_DELIMITER_PATTERN,
       flushBufferToPlainTextTokenBeforeOpening: true,
-      beforeTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
+      insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
       endPattern: INLINE_CODE_DELIMITER_PATTERN,
       onCloseFlushBufferTo: TokenKind.InlineCode
     })
@@ -232,7 +232,7 @@ export class Tokenizer {
       onlyOpenIf: () => this.isDirectlyFollowingLinkBrackets(),
       startPattern: bracketedLinkUrl.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
-      beforeTryingToCloseOuterContexts: () => this.bufferRawText(),
+      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       endPattern: bracketedLinkUrl.endPattern,
       closeInnerContextsWhenClosing: true,
 
@@ -316,7 +316,7 @@ export class Tokenizer {
       onOpen: urlProtocol => {
         this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
       },
-      afterTryingToCloseOuterContexts: () => this.bufferRawText(),
+      insteadOfOpeningUsualContexts: () => this.bufferRawText(),
       endPattern: NAKED_URL_TERMINATOR_PATTERN,
       doNotConsumeEndPattern: true,
       closeInnerContextsWhenClosing: true,
@@ -388,11 +388,9 @@ export class Tokenizer {
       context.reset()
     }
   }
-
-  // This method always returns true, which allows us to cleanly chain it with other boolean tokenizer methods. 
-  private flushBufferToNakedUrlEndToken(): boolean {
+ 
+  private flushBufferToNakedUrlEndToken(): void {
     this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
-    return true
   }
 
   private flushBuffer(): string {

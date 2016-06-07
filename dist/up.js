@@ -810,7 +810,7 @@ var Tokenizer = (function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseAnyConvention()
-                || this.performContextSpecificBehavior()
+                || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
@@ -818,9 +818,9 @@ var Tokenizer = (function () {
         this.tokens =
             nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(insertBracketsInsideBracketedConventions_1.insertBracketsInsideBracketedConventions(this.tokens)));
     };
-    Tokenizer.prototype.performContextSpecificBehavior = function () {
+    Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
         return CollectionHelpers_1.reversed(this.openContexts)
-            .some(function (context) { return context.doAfterTryingToCloseOuterContexts(); });
+            .some(function (context) { return context.doInsteadOfTryingToOpenUsualContexts(); });
     };
     Tokenizer.prototype.tryToCollectEscapedChar = function () {
         var ESCAPE_CHAR = '\\';
@@ -854,7 +854,7 @@ var Tokenizer = (function () {
                 }
                 return true;
             }
-            if (context_1.doBeforeTryingToCloseOuterContexts()) {
+            if (context_1.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
             }
             if (context_1.convention.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
@@ -891,7 +891,7 @@ var Tokenizer = (function () {
             goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
             startPattern: INLINE_CODE_DELIMITER_PATTERN,
             flushBufferToPlainTextTokenBeforeOpening: true,
-            beforeTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             endPattern: INLINE_CODE_DELIMITER_PATTERN,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
@@ -907,7 +907,7 @@ var Tokenizer = (function () {
             onlyOpenIf: function () { return _this.isDirectlyFollowingLinkBrackets(); },
             startPattern: bracketedLinkUrl.startPattern,
             flushBufferToPlainTextTokenBeforeOpening: false,
-            beforeTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             endPattern: bracketedLinkUrl.endPattern,
             closeInnerContextsWhenClosing: true,
             onClose: function () {
@@ -979,7 +979,7 @@ var Tokenizer = (function () {
             onOpen: function (urlProtocol) {
                 _this.createTokenAndAppend({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol });
             },
-            afterTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+            insteadOfOpeningUsualContexts: function () { return _this.bufferRawText(); },
             endPattern: NAKED_URL_TERMINATOR_PATTERN,
             doNotConsumeEndPattern: true,
             closeInnerContextsWhenClosing: true,
@@ -1044,7 +1044,6 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
         this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd);
-        return true;
     };
     Tokenizer.prototype.flushBuffer = function () {
         var buffer = this.buffer;
@@ -1129,15 +1128,17 @@ var TokenizerContext = (function () {
         this.snapshot = snapshot;
         this.reset();
     }
-    TokenizerContext.prototype.doBeforeTryingToCloseOuterContexts = function () {
-        if (this.convention.beforeTryingToCloseOuterContexts) {
-            return this.convention.beforeTryingToCloseOuterContexts();
+    TokenizerContext.prototype.doIsteadOfTryingToCloseOuterContexts = function () {
+        if (this.convention.insteadOfTryingToCloseOuterContexts) {
+            this.convention.insteadOfTryingToCloseOuterContexts();
+            return true;
         }
         return false;
     };
-    TokenizerContext.prototype.doAfterTryingToCloseOuterContexts = function () {
-        if (this.convention.afterTryingToCloseOuterContexts) {
-            return this.convention.afterTryingToCloseOuterContexts();
+    TokenizerContext.prototype.doInsteadOfTryingToOpenUsualContexts = function () {
+        if (this.convention.insteadOfOpeningUsualContexts) {
+            this.convention.insteadOfOpeningUsualContexts();
+            return true;
         }
         return false;
     };
@@ -1148,7 +1149,8 @@ var TokenizerContext = (function () {
     };
     TokenizerContext.prototype.resolve = function () {
         if (this.convention.resolveWhenUnclosed) {
-            return this.convention.resolveWhenUnclosed(this);
+            this.convention.resolveWhenUnclosed(this);
+            return true;
         }
         return false;
     };
