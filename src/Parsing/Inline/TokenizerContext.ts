@@ -9,13 +9,13 @@ export class TokenizerContext {
   goal: TokenizerGoal
   initialTokenIndex: number
   snapshot: TokenizerSnapshot
-  beforeTryingToCloseOuterContexts: PerformContextSpecificTasks
-  afterTryingToCloseOuterContexts: PerformContextSpecificTasks
   endPattern: RegExp
   doNotConsumeEndPattern: boolean
   closeInnerContextsWhenClosing: boolean
   onCloseFlushBufferTo: TokenKind
 
+  private beforeTryingToCloseOuterContexts: PerformContextSpecificTasks
+  private afterTryingToCloseOuterContexts: PerformContextSpecificTasks
   private onClose: OnTokenizerContextClose
 
   constructor(
@@ -25,19 +25,37 @@ export class TokenizerContext {
     this.initialTokenIndex = snapshot.textIndex
     this.snapshot = snapshot
     this.goal = convention.goal
-    this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts || doNothing
-    this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts || doNothing
+    this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts
+    this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts
     this.endPattern = convention.endPattern
     this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern
     this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing
     this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo
-    this.onClose = convention.onClose || doNothing
+    this.onClose = convention.onClose
 
     this.reset()
   }
 
+  doBeforeTryingToCloseOuterContexts(): boolean {
+    if (this.beforeTryingToCloseOuterContexts) {
+      return this.beforeTryingToCloseOuterContexts()
+    }
+
+    return false
+  }
+
+  doAfterTryingToCloseOuterContexts(): boolean {
+    if (this.afterTryingToCloseOuterContexts) {
+      return this.afterTryingToCloseOuterContexts()
+    }
+
+    return false
+  }
+
   close(): void {
-    this.onClose(this)
+    if (this.onClose) {
+      this.onClose(this)
+    }
   }
 
   registerTokenInsertion(args: { atIndex: number, onBehalfOfContext: TokenizerContext }) {
@@ -67,9 +85,4 @@ export class TokenizerContext {
   reset(): void {
     this.initialTokenIndex = this.snapshot.tokens.length
   }
-}
-
-
-function doNothing(): boolean {
-  return false
 }

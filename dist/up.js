@@ -837,7 +837,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.performContextSpecificBehavior = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_1 = this.openContexts[i];
-            if (context_1.afterTryingToCloseOuterContexts()) {
+            if (context_1.doAfterTryingToCloseOuterContexts()) {
                 return true;
             }
         }
@@ -876,7 +876,7 @@ var Tokenizer = (function () {
                 }
                 return true;
             }
-            if (openContext.beforeTryingToCloseOuterContexts()) {
+            if (openContext.doBeforeTryingToCloseOuterContexts()) {
                 return true;
             }
             if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
@@ -1172,17 +1172,31 @@ var TokenizerContext = (function () {
         this.initialTokenIndex = snapshot.textIndex;
         this.snapshot = snapshot;
         this.goal = convention.goal;
-        this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts || doNothing;
-        this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts || doNothing;
+        this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts;
+        this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts;
         this.endPattern = convention.endPattern;
         this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern;
         this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing;
         this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo;
-        this.onClose = convention.onClose || doNothing;
+        this.onClose = convention.onClose;
         this.reset();
     }
+    TokenizerContext.prototype.doBeforeTryingToCloseOuterContexts = function () {
+        if (this.beforeTryingToCloseOuterContexts) {
+            return this.beforeTryingToCloseOuterContexts();
+        }
+        return false;
+    };
+    TokenizerContext.prototype.doAfterTryingToCloseOuterContexts = function () {
+        if (this.afterTryingToCloseOuterContexts) {
+            return this.afterTryingToCloseOuterContexts();
+        }
+        return false;
+    };
     TokenizerContext.prototype.close = function () {
-        this.onClose(this);
+        if (this.onClose) {
+            this.onClose(this);
+        }
     };
     TokenizerContext.prototype.registerTokenInsertion = function (args) {
         var atIndex = args.atIndex, onBehalfOfContext = args.onBehalfOfContext;
@@ -1199,9 +1213,6 @@ var TokenizerContext = (function () {
     return TokenizerContext;
 }());
 exports.TokenizerContext = TokenizerContext;
-function doNothing() {
-    return false;
-}
 
 },{}],21:[function(require,module,exports){
 "use strict";

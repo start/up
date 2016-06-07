@@ -139,7 +139,7 @@ export class Tokenizer {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
 
-      if (context.afterTryingToCloseOuterContexts()) {
+      if (context.doAfterTryingToCloseOuterContexts()) {
         return true
       }
     }
@@ -198,7 +198,7 @@ export class Tokenizer {
         return true
       }
 
-      if (openContext.beforeTryingToCloseOuterContexts()) {
+      if (openContext.doBeforeTryingToCloseOuterContexts()) {
         return true
       }
 
