@@ -186,11 +186,11 @@ describe('Nested square bracketed text ending together with "]]"', () => {
       new DocumentNode([
         new ParagraphNode([
           new SquareBracketedNode([
-            new PlainTextNode("(I don't eat cereal. "),
-            new ParenthesizedNode([
-              new PlainTextNode("(Well, I do, but I pretend not to.)"),
+            new PlainTextNode("[I don't eat cereal. "),
+            new SquareBracketedNode([
+              new PlainTextNode("[Well, I do, but I pretend not to.]"),
             ]),
-            new PlainTextNode(')')
+            new PlainTextNode(']')
           ])
         ]),
       ]))
@@ -205,9 +205,9 @@ describe('Nested action text ending together with "}}"', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new ParenthesizedNode([
+          new ActionNode([
             new PlainTextNode("eats "),
-            new ParenthesizedNode([
+            new ActionNode([
               new PlainTextNode("dies"),
             ])
           ])
