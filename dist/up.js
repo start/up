@@ -783,11 +783,11 @@ var Tokenizer = (function () {
                 endPattern: CURLY_BRACKET.endPattern
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); });
-        this.rawBrackets = [
+        this.rawBracketConventions = [
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
             { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-        ].map(function (args) { return new TokenizableBracket_1.TokenizableBracket(args); });
+        ].map(function (args) { return _this.getRawBracketConvention(new TokenizableBracket_1.TokenizableBracket(args)); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
         this.tokenize();
@@ -955,11 +955,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenAnyRawTextBracket = function () {
         var _this = this;
-        return this.rawBrackets.some(function (bracket) { return _this.tryToOpenRawBracket(bracket); });
+        return this.rawBracketConventions.some(function (bracket) { return _this.tryToOpen(bracket); });
     };
-    Tokenizer.prototype.tryToOpenRawBracket = function (bracket) {
+    Tokenizer.prototype.getRawBracketConvention = function (bracket) {
         var _this = this;
-        return this.tryToOpen({
+        return {
             goal: bracket.goal,
             startPattern: bracket.startPattern,
             endPattern: bracket.endPattern,
@@ -967,7 +967,7 @@ var Tokenizer = (function () {
             onOpen: function () { _this.buffer += bracket.open; },
             onClose: function () { _this.buffer += bracket.close; },
             resolveWhenLeftUnclosed: function () { return true; }
-        });
+        };
     };
     Tokenizer.prototype.bufferRawText = function () {
         return this.tryToOpenAnyRawTextBracket() || this.bufferCurrentChar();

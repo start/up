@@ -97,11 +97,11 @@ export class Tokenizer {
   //
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
-  private rawBrackets = [
+  private rawBracketConventions = [
     { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
     { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
     { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-  ].map(args => new TokenizableBracket(args))
+  ].map(args => this.getRawBracketConvention(new TokenizableBracket(args)))
 
   // A rich sandwich:
   //
@@ -330,11 +330,11 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyRawTextBracket(): boolean {
-    return this.rawBrackets.some(bracket => this.tryToOpenRawBracket(bracket))
+    return this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
   }
 
-  private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
-    return this.tryToOpen({
+  private getRawBracketConvention(bracket: TokenizableBracket): TokenizableConvention {
+    return {
       goal: bracket.goal,
 
       startPattern: bracket.startPattern,
@@ -346,7 +346,7 @@ export class Tokenizer {
       onClose: () => { this.buffer += bracket.close },
 
       resolveWhenLeftUnclosed: () => true
-    })
+    }
   }
 
   private bufferRawText(): boolean {
