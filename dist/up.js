@@ -777,6 +777,11 @@ var Tokenizer = (function () {
             onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); }
         };
+        this.linkUrlConventions = [
+            { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
+            { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
+            { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
+        ].map(function (args) { return _this.getLinkUrlConvention(new TokenizableBracket_1.TokenizableBracket(args)); });
         this.richBrackets = [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -796,11 +801,6 @@ var Tokenizer = (function () {
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
             { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-        ].map(function (args) { return new TokenizableBracket_1.TokenizableBracket(args); });
-        this.bracketedLinkUrls = [
-            { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
-            { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
-            { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
         ].map(function (args) { return new TokenizableBracket_1.TokenizableBracket(args); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
@@ -908,11 +908,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenAnyLinkUrl = function () {
         var _this = this;
-        return this.bracketedLinkUrls.some(function (bracket) { return _this.tryToOpenLinkUrl(bracket); });
+        return this.linkUrlConventions.some(function (linkUrl) { return _this.tryToOpen(linkUrl); });
     };
-    Tokenizer.prototype.tryToOpenLinkUrl = function (bracketedLinkUrl) {
+    Tokenizer.prototype.getLinkUrlConvention = function (bracketedLinkUrl) {
         var _this = this;
-        return this.tryToOpen({
+        return {
             goal: bracketedLinkUrl.goal,
             onlyOpenIf: function () { return _this.isDirectlyFollowingLinkableBrackets(); },
             startPattern: bracketedLinkUrl.startPattern,
@@ -927,7 +927,7 @@ var Tokenizer = (function () {
                 lastToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
                 lastToken.value = url;
             }
-        });
+        };
     };
     Tokenizer.prototype.isDirectlyFollowingLinkableBrackets = function () {
         var linkableBrackets = [

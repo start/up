@@ -59,6 +59,13 @@ export class Tokenizer {
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
   }
 
+  // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
+  private linkUrlConventions = [
+    { goal: TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
+    { goal: TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
+    { goal: TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
+  ].map(args => this.getLinkUrlConvention(new TokenizableBracket(args)))
+
   private richBrackets = [
     {
       richConvention: PARENTHESIZED_CONVENTION,
@@ -83,13 +90,6 @@ export class Tokenizer {
     { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
     { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
     { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-  ].map(args => new TokenizableBracket(args))
-
-  // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
-  private bracketedLinkUrls = [
-    { goal: TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
-    { goal: TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
-    { goal: TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
   ].map(args => new TokenizableBracket(args))
 
   // A rich sandwich:
@@ -234,11 +234,11 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyLinkUrl(): boolean {
-    return this.bracketedLinkUrls.some(bracket => this.tryToOpenLinkUrl(bracket))
+    return this.linkUrlConventions.some(linkUrl => this.tryToOpen(linkUrl))
   }
 
-  private tryToOpenLinkUrl(bracketedLinkUrl: TokenizableBracket): boolean {
-    return this.tryToOpen({
+  private getLinkUrlConvention(bracketedLinkUrl: TokenizableBracket): TokenizableConvention {
+    return {
       goal: bracketedLinkUrl.goal,
       onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
       startPattern: bracketedLinkUrl.startPattern,
@@ -259,7 +259,7 @@ export class Tokenizer {
         lastToken.kind = LINK_CONVENTION.endTokenKind
         lastToken.value = url
       }
-    })
+    }
   }
 
   private isDirectlyFollowingLinkableBrackets(): boolean {
