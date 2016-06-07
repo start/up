@@ -11,7 +11,7 @@ import { OnMatch } from './OnMatch'
 import { last, contains, reversed } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { Bracket } from './Bracket'
-import { FailedGoalTracker } from './FailedGoalTracker'
+import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
@@ -29,7 +29,7 @@ export class Tokenizer {
   // Any time we open a new convention, we add it to `openContexts`.
   private openContexts: TokenizerContext[] = []
 
-  private failedGoalTracker: FailedGoalTracker = new FailedGoalTracker()
+  private failedConventionTracker: FailedConventionTracker = new FailedConventionTracker()
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a PlainTextToken.
@@ -357,7 +357,7 @@ export class Tokenizer {
     const { goal, startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
-      this.canTry(goal)
+      this.canTry(convention)
       && (!onlyOpenIf || onlyOpenIf())
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
@@ -401,7 +401,7 @@ export class Tokenizer {
   }
 
   private resetToBeforeContext(context: TokenizerContext): void {
-    this.failedGoalTracker.registerFailure(context)
+    this.failedConventionTracker.registerFailure(context)
 
     this.tokens = context.snapshot.tokens
     this.openContexts = context.snapshot.openContexts
@@ -480,8 +480,8 @@ export class Tokenizer {
     }
   }
 
-  private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
-    return !this.failedGoalTracker.hasFailed(goal, textIndex)
+  private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
+    return !this.failedConventionTracker.hasFailed(convention, textIndex)
   }
 }
 

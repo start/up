@@ -40,25 +40,25 @@ exports.Bracket = Bracket;
 
 },{"../../Patterns":39}],3:[function(require,module,exports){
 "use strict";
-var FailedGoalTracker = (function () {
-    function FailedGoalTracker() {
+var FailedConventionTracker = (function () {
+    function FailedConventionTracker() {
         this.failedGoalsByTextIndex = {};
     }
-    FailedGoalTracker.prototype.registerFailure = function (failedContext) {
+    FailedConventionTracker.prototype.registerFailure = function (failedContext) {
         var convention = failedContext.convention, snapshot = failedContext.snapshot;
         var textIndex = snapshot.textIndex;
         if (!this.failedGoalsByTextIndex[textIndex]) {
             this.failedGoalsByTextIndex[textIndex] = [];
         }
-        this.failedGoalsByTextIndex[textIndex].push(convention.goal);
+        this.failedGoalsByTextIndex[textIndex].push(convention);
     };
-    FailedGoalTracker.prototype.hasFailed = function (goal, textIndex) {
-        var failedGoals = (this.failedGoalsByTextIndex[textIndex] || []);
-        return failedGoals.some(function (failedGoal) { return failedGoal === goal; });
+    FailedConventionTracker.prototype.hasFailed = function (convention, textIndex) {
+        var failedConventions = (this.failedGoalsByTextIndex[textIndex] || []);
+        return failedConventions.some(function (failedConvention) { return failedConvention === convention; });
     };
-    return FailedGoalTracker;
+    return FailedConventionTracker;
 }());
-exports.FailedGoalTracker = FailedGoalTracker;
+exports.FailedConventionTracker = FailedConventionTracker;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -711,7 +711,7 @@ var insertBracketsInsideBracketedConventions_1 = require('./insertBracketsInside
 var CollectionHelpers_1 = require('../../CollectionHelpers');
 var TokenizerGoal_1 = require('./TokenizerGoal');
 var Bracket_1 = require('./Bracket');
-var FailedGoalTracker_1 = require('./FailedGoalTracker');
+var FailedConventionTracker_1 = require('./FailedConventionTracker');
 var TokenizerContext_1 = require('./TokenizerContext');
 var TokenizerSnapshot_1 = require('./TokenizerSnapshot');
 var InlineConsumer_1 = require('./InlineConsumer');
@@ -722,7 +722,7 @@ var Tokenizer = (function () {
         var _this = this;
         this.tokens = [];
         this.openContexts = [];
-        this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
+        this.failedConventionTracker = new FailedConventionTracker_1.FailedConventionTracker();
         this.buffer = '';
         this.inlineCodeConvention = {
             goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
@@ -959,7 +959,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpen = function (convention) {
         var _this = this;
         var goal = convention.goal, startPattern = convention.startPattern, onlyOpenIf = convention.onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
-        return (this.canTry(goal)
+        return (this.canTry(convention)
             && (!onlyOpenIf || onlyOpenIf())
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
@@ -998,7 +998,7 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.resetToBeforeContext = function (context) {
-        this.failedGoalTracker.registerFailure(context);
+        this.failedConventionTracker.registerFailure(context);
         this.tokens = context.snapshot.tokens;
         this.openContexts = context.snapshot.openContexts;
         this.buffer = context.snapshot.bufferedText;
@@ -1062,9 +1062,9 @@ var Tokenizer = (function () {
             this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.PlainText);
         }
     };
-    Tokenizer.prototype.canTry = function (goal, textIndex) {
+    Tokenizer.prototype.canTry = function (convention, textIndex) {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
-        return !this.failedGoalTracker.hasFailed(goal, textIndex);
+        return !this.failedConventionTracker.hasFailed(convention, textIndex);
     };
     return Tokenizer;
 }());
@@ -1077,7 +1077,7 @@ var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.at
 var NAKED_URL_PROTOCOL_PATTERN = Patterns_1.regExpStartingWith('http' + Patterns_1.optional('s') + '://');
 var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.WHITESPACE_CHAR);
 
-},{"../../CollectionHelpers":1,"../../Patterns":39,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerGoal":18,"./TokenizerSnapshot":19,"./insertBracketsInsideBracketedConventions":21,"./nestOverlappingConventions":22}],17:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../Patterns":39,"./Bracket":2,"./FailedConventionTracker":3,"./InlineConsumer":4,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerGoal":18,"./TokenizerSnapshot":19,"./insertBracketsInsideBracketedConventions":21,"./nestOverlappingConventions":22}],17:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(convention, snapshot) {
