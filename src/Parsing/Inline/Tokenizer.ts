@@ -206,7 +206,7 @@ export class Tokenizer {
         return true
       }
 
-      if (context.convention.goal === TokenizerGoal.NakedUrl) {
+      if (context.convention === this.nakedUrlConvention) {
         innerNakedUrlContextIndex = i
       }
     }

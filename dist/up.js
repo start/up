@@ -880,7 +880,7 @@ var Tokenizer = (function () {
             if (context_1.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
             }
-            if (context_1.convention.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+            if (context_1.convention === this.nakedUrlConvention) {
                 innerNakedUrlContextIndex = i;
             }
         }
