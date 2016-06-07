@@ -1034,24 +1034,26 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenContext = function (convention) {
         var _this = this;
-        var goal = convention.goal, startPattern = convention.startPattern, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
-        return this.canTry(goal) && this.consumer.advanceAfterMatch({
-            pattern: startPattern,
-            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
-                var captures = [];
-                for (var _i = 3; _i < arguments.length; _i++) {
-                    captures[_i - 3] = arguments[_i];
+        var goal = convention.goal, startPattern = convention.startPattern, onlyOpenIf = convention.onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
+        return (this.canTry(goal)
+            && (!onlyOpenIf || onlyOpenIf())
+            && this.consumer.advanceAfterMatch({
+                pattern: startPattern,
+                then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                    var captures = [];
+                    for (var _i = 3; _i < arguments.length; _i++) {
+                        captures[_i - 3] = arguments[_i];
+                    }
+                    if (flushBufferToPlainTextTokenBeforeOpening) {
+                        _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                    }
+                    var context = new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot());
+                    _this.openContexts.push(context);
+                    if (onOpen) {
+                        onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                    }
                 }
-                if (flushBufferToPlainTextTokenBeforeOpening) {
-                    _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                }
-                var context = new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot());
-                _this.openContexts.push(context);
-                if (onOpen) {
-                    onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
-                }
-            }
-        });
+            }));
     };
     Tokenizer.prototype.getCurrentSnapshot = function () {
         return new TokenizerSnapshot_1.TokenizerSnapshot({

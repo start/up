@@ -376,9 +376,12 @@ export class Tokenizer {
   }
 
   private tryToOpenContext(convention: TokenizableConvention): boolean {
-    const { goal, startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { goal, startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
-    return this.canTry(goal) && this.consumer.advanceAfterMatch({
+    return (
+      this.canTry(goal)
+      && (!onlyOpenIf || onlyOpenIf())
+      && this.consumer.advanceAfterMatch({
       pattern: startPattern,
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
@@ -395,6 +398,7 @@ export class Tokenizer {
         }
       }
     })
+    )
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {

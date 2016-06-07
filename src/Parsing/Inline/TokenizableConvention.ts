@@ -9,10 +9,11 @@ export interface TokenizableConvention {
   goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
+  onlyOpenIf?: ShouldOpenConvention
   flushBufferToPlainTextTokenBeforeOpening?: boolean
   onOpen?: OnMatch
-  beforeTryingToCloseOuterContexts?: PerformContextSpecificTasks
-  afterTryingToCloseOuterContexts?: PerformContextSpecificTasks
+  beforeTryingToCloseOuterContexts?: PerformConventionSpecificTasks
+  afterTryingToCloseOuterContexts?: PerformConventionSpecificTasks
   doNotConsumeEndPattern?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
@@ -24,6 +25,10 @@ interface ResolveUnclosedConvention {
   (context: TokenizerContext): boolean
 }
 
-interface PerformContextSpecificTasks {
+interface PerformConventionSpecificTasks {
+  (): boolean
+}
+
+interface ShouldOpenConvention {
   (): boolean
 }
