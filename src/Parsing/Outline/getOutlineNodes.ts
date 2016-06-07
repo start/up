@@ -10,7 +10,7 @@ import { parseBlockquote } from './parseBlockquote'
 import { parseUnorderedList } from './parseUnorderedList'
 import { parseOrderedList } from './parseOrderedList'
 import { parseDescriptionList } from './parseDescriptionList'
-import { startsWith, endsWith, BLANK, ANY_WHITESPACE, LINE_BREAK } from '../../Patterns'
+import { regExpStartingWith, regExpEndingWith, BLANK, ANY_WHITESPACE, LINE_BREAK } from '../../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
@@ -88,8 +88,8 @@ function trimOuterBlankLines(text: string): string {
 }
 
 
-const LEADING_BLANK_LINES_PATTERN = new RegExp(
-  startsWith(ANY_WHITESPACE + LINE_BREAK))
+const LEADING_BLANK_LINES_PATTERN =
+  regExpStartingWith(ANY_WHITESPACE + LINE_BREAK)
 
-const TRAILIN_BLANK_LINES_PATTERN = new RegExp(
-  endsWith(LINE_BREAK + ANY_WHITESPACE))
+const TRAILIN_BLANK_LINES_PATTERN =
+  regExpEndingWith(LINE_BREAK + ANY_WHITESPACE)

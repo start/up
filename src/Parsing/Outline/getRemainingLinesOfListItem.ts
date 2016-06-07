@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { getOutlineNodes } from './getOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from '../../Patterns'
+import { optional, regExpStartingWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT } from '../../Patterns'
 
 
 // All indented and/or blank lines should be included in a list item.
@@ -65,8 +65,8 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
 const BLANK_PATTERN = new RegExp(
   BLANK)
 
-const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT))
+const INDENTED_PATTERN =
+  regExpStartingWith(INDENT)
 
 
 interface OnSuccess {

@@ -1566,8 +1566,8 @@ function trimOuterBlankLines(text) {
         .replace(LEADING_BLANK_LINES_PATTERN, '')
         .replace(TRAILIN_BLANK_LINES_PATTERN, ''));
 }
-var LEADING_BLANK_LINES_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.ANY_WHITESPACE + Patterns_1.LINE_BREAK));
-var TRAILIN_BLANK_LINES_PATTERN = new RegExp(Patterns_1.endsWith(Patterns_1.LINE_BREAK + Patterns_1.ANY_WHITESPACE));
+var LEADING_BLANK_LINES_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.ANY_WHITESPACE + Patterns_1.LINE_BREAK);
+var TRAILIN_BLANK_LINES_PATTERN = Patterns_1.regExpEndingWith(Patterns_1.LINE_BREAK + Patterns_1.ANY_WHITESPACE);
 
 },{"../../CollectionHelpers":1,"../../Patterns":41,"../../SyntaxNodes/SectionSeparatorNode":73,"./LineConsumer":26,"./getHeadingParser":27,"./parseBlankLineSeparation":32,"./parseBlockquote":33,"./parseCodeBlock":34,"./parseDescriptionList":35,"./parseOrderedList":36,"./parseRegularLines":37,"./parseSectionSeparatorStreak":38,"./parseUnorderedList":39}],29:[function(require,module,exports){
 "use strict";
@@ -1613,7 +1613,7 @@ function getRemainingLinesOfListItem(args) {
 }
 exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+var INDENTED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":41,"./LineConsumer":26}],30:[function(require,module,exports){
 "use strict";
