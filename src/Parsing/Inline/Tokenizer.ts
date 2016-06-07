@@ -15,6 +15,7 @@ import { Bracket } from './Bracket'
 import { TokenizableBracket } from './TokenizableBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
+import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
@@ -389,10 +390,13 @@ export class Tokenizer {
 
   private tryToOpenContext(
     args: {
-      goal: TokenizerGoal,
-      pattern: RegExp,
+      goal: TokenizerGoal
+      pattern: RegExp
       flushBufferToPlainTextTokenBeforeOpening: boolean
       onOpen?: OnMatch
+      performContextSpecificTasks: PerformContextSpecificTasks 
+      endPattern: RegExp
+      doNotConsumeEndPattern?: boolean
     }
   ): boolean {
     const { goal, pattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = args
@@ -405,7 +409,6 @@ export class Tokenizer {
         }
 
         const context = new TokenizerContext({
-          goal,
           snapshot: this.getCurrentSnapshot()
         })
 
