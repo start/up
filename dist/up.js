@@ -41,12 +41,12 @@ var FailedGoalTracker = (function () {
         this.failedGoalsByTextIndex = {};
     }
     FailedGoalTracker.prototype.registerFailure = function (failedContext) {
-        var snapshot = failedContext.snapshot, goal = failedContext.goal;
+        var convention = failedContext.convention, snapshot = failedContext.snapshot;
         var textIndex = snapshot.textIndex;
         if (!this.failedGoalsByTextIndex[textIndex]) {
             this.failedGoalsByTextIndex[textIndex] = [];
         }
-        this.failedGoalsByTextIndex[textIndex].push(goal);
+        this.failedGoalsByTextIndex[textIndex].push(convention.goal);
     };
     FailedGoalTracker.prototype.hasFailed = function (goal, textIndex) {
         var failedGoals = (this.failedGoalsByTextIndex[textIndex] || []);
@@ -858,17 +858,17 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToCloseAnyContext = function () {
         var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var openContext = this.openContexts[i];
-            if (this.shouldCloseContext(openContext)) {
+            var context_2 = this.openContexts[i];
+            if (this.shouldCloseContext(context_2)) {
                 if (innerNakedUrlContextIndex != null) {
                     this.flushBufferToNakedUrlEndToken();
                     this.openContexts.splice(i);
                 }
-                if (openContext.onCloseFlushBufferTo != null) {
-                    this.flushBufferToTokenOfKind(openContext.onCloseFlushBufferTo);
+                if (context_2.convention.onCloseFlushBufferTo != null) {
+                    this.flushBufferToTokenOfKind(context_2.convention.onCloseFlushBufferTo);
                 }
-                openContext.close();
-                if (openContext.closeInnerContextsWhenClosing) {
+                context_2.close();
+                if (context_2.convention.closeInnerContextsWhenClosing) {
                     this.openContexts.splice(i);
                 }
                 else {
@@ -876,10 +876,10 @@ var Tokenizer = (function () {
                 }
                 return true;
             }
-            if (openContext.doBeforeTryingToCloseOuterContexts()) {
+            if (context_2.doBeforeTryingToCloseOuterContexts()) {
                 return true;
             }
-            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+            if (context_2.convention.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                 innerNakedUrlContextIndex = i;
             }
         }
@@ -888,13 +888,13 @@ var Tokenizer = (function () {
     Tokenizer.prototype.shouldCloseContext = function (context) {
         var _this = this;
         return this.consumer.advanceAfterMatch({
-            pattern: context.endPattern,
+            pattern: context.convention.endPattern,
             then: function (match, isTouchingWordEnd, isTouchingWordStart) {
                 var captures = [];
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                if (context.doNotConsumeEndPattern) {
+                if (context.convention.doNotConsumeEndPattern) {
                     _this.consumer.textIndex -= match.length;
                 }
             }
@@ -1024,7 +1024,7 @@ var Tokenizer = (function () {
             if (foundTheContextToClose) {
                 return;
             }
-            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+            if (openContext.convention.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                 this.flushBufferToNakedUrlEndToken();
                 this.openContexts.splice(i);
             }
@@ -1061,8 +1061,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            switch (context_2.goal) {
+            var context_3 = this.openContexts.pop();
+            switch (context_3.convention.goal) {
                 case TokenizerGoal_1.TokenizerGoal.NakedUrl:
                     this.flushBufferToNakedUrlEndToken();
                     break;
@@ -1071,7 +1071,7 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText:
                     break;
                 default:
-                    this.resetToBeforeContext(context_2);
+                    this.resetToBeforeContext(context_3);
                     return false;
             }
         }
@@ -1085,8 +1085,8 @@ var Tokenizer = (function () {
         this.buffer = context.snapshot.bufferedText;
         this.consumer.textIndex = context.snapshot.textIndex;
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_3 = _a[_i];
-            context_3.reset();
+            var context_4 = _a[_i];
+            context_4.reset();
         }
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
@@ -1152,7 +1152,7 @@ var Tokenizer = (function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             goals[_i - 0] = arguments[_i];
         }
-        return this.openContexts.some(function (context) { return CollectionHelpers_1.contains(goals, context.goal); });
+        return this.openContexts.some(function (context) { return CollectionHelpers_1.contains(goals, context.convention.goal); });
     };
     return Tokenizer;
 }());
@@ -1169,15 +1169,12 @@ var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.W
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(convention, snapshot) {
+        this.convention = convention;
+        this.snapshot = snapshot;
         this.initialTokenIndex = snapshot.textIndex;
         this.snapshot = snapshot;
-        this.goal = convention.goal;
         this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts;
         this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts;
-        this.endPattern = convention.endPattern;
-        this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern;
-        this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing;
-        this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo;
         this.onClose = convention.onClose;
         this.reset();
     }

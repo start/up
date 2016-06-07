@@ -6,31 +6,17 @@ import { OnTokenizerContextClose } from './OnTokenizerContextClose'
 import { TokenKind } from './TokenKind'
 
 export class TokenizerContext {
-  goal: TokenizerGoal
   initialTokenIndex: number
-  snapshot: TokenizerSnapshot
-  endPattern: RegExp
-  doNotConsumeEndPattern: boolean
-  closeInnerContextsWhenClosing: boolean
-  onCloseFlushBufferTo: TokenKind
 
   private beforeTryingToCloseOuterContexts: PerformContextSpecificTasks
   private afterTryingToCloseOuterContexts: PerformContextSpecificTasks
   private onClose: OnTokenizerContextClose
 
-  constructor(
-    convention: TokenizableConvention,
-    snapshot: TokenizerSnapshot
-  ) {
+  constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {
     this.initialTokenIndex = snapshot.textIndex
     this.snapshot = snapshot
-    this.goal = convention.goal
     this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts
     this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts
-    this.endPattern = convention.endPattern
-    this.doNotConsumeEndPattern = convention.doNotConsumeEndPattern
-    this.closeInnerContextsWhenClosing = convention.closeInnerContextsWhenClosing
-    this.onCloseFlushBufferTo = convention.onCloseFlushBufferTo
     this.onClose = convention.onClose
 
     this.reset()

@@ -170,9 +170,9 @@ export class Tokenizer {
     let innerNakedUrlContextIndex: number = null
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const openContext = this.openContexts[i]
+      const context = this.openContexts[i]
 
-      if (this.shouldCloseContext(openContext)) {
+      if (this.shouldCloseContext(context)) {
 
         // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
         if (innerNakedUrlContextIndex != null) {
@@ -183,13 +183,13 @@ export class Tokenizer {
           this.openContexts.splice(i)
         }
 
-        if (openContext.onCloseFlushBufferTo != null) {
-          this.flushBufferToTokenOfKind(openContext.onCloseFlushBufferTo)
+        if (context.convention.onCloseFlushBufferTo != null) {
+          this.flushBufferToTokenOfKind(context.convention.onCloseFlushBufferTo)
         }
 
-        openContext.close()
+        context.close()
 
-        if (openContext.closeInnerContextsWhenClosing) {
+        if (context.convention.closeInnerContextsWhenClosing) {
           this.openContexts.splice(i)
         } else {
           this.openContexts.splice(i, 1)
@@ -198,11 +198,11 @@ export class Tokenizer {
         return true
       }
 
-      if (openContext.doBeforeTryingToCloseOuterContexts()) {
+      if (context.doBeforeTryingToCloseOuterContexts()) {
         return true
       }
 
-      if (openContext.goal === TokenizerGoal.NakedUrl) {
+      if (context.convention.goal === TokenizerGoal.NakedUrl) {
         innerNakedUrlContextIndex = i
       }
     }
@@ -212,10 +212,10 @@ export class Tokenizer {
 
   private shouldCloseContext(context: TokenizerContext): boolean {
     return this.consumer.advanceAfterMatch({
-      pattern: context.endPattern,
+      pattern: context.convention.endPattern,
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        if (context.doNotConsumeEndPattern) {
+        if (context.convention.doNotConsumeEndPattern) {
           this.consumer.textIndex -= match.length
         }
       }
@@ -366,7 +366,7 @@ export class Tokenizer {
       }
 
       // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-      if (openContext.goal === TokenizerGoal.NakedUrl) {
+      if (openContext.convention.goal === TokenizerGoal.NakedUrl) {
         this.flushBufferToNakedUrlEndToken()
 
         // We need to close the naked URL's context, as well as the contexts of any raw text brackets inside it.
@@ -412,7 +412,7 @@ export class Tokenizer {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      switch (context.goal) {
+      switch (context.convention.goal) {
         case TokenizerGoal.NakedUrl:
           this.flushBufferToNakedUrlEndToken()
           break
@@ -520,7 +520,7 @@ export class Tokenizer {
   }
 
   private hasGoal(...goals: TokenizerGoal[]): boolean {
-    return this.openContexts.some(context => contains(goals, context.goal))
+    return this.openContexts.some(context => contains(goals, context.convention.goal))
   }
 }
 
