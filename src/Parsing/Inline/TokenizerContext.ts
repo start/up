@@ -1,7 +1,7 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
-import { OnMatch } from './OnMatch'
+import { OnTokenizerContextClose } from './OnTokenizerContextClose'
 import { TokenKind } from './TokenKind'
 
 export class TokenizerContext {
@@ -13,7 +13,7 @@ export class TokenizerContext {
   doNotConsumeEndPattern: boolean
   closeInnerContextsWhenClosing: boolean
   onCloseFlushBufferTo: TokenKind
-  onClose: OnMatch
+  onClose: OnTokenizerContextClose
 
   constructor(
     args: {
@@ -24,7 +24,7 @@ export class TokenizerContext {
       doNotConsumeEndPattern: boolean
       closeInnerContextsWhenClosing: boolean
       onCloseFlushBufferTo: TokenKind
-      onClose: OnMatch
+      onClose: OnTokenizerContextClose
     }
   ) {
     this.snapshot = args.snapshot

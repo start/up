@@ -16,6 +16,7 @@ import { TokenizableBracket } from './TokenizableBracket'
 import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
+import { OnTokenizerContextClose } from './OnTokenizerContextClose'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineConsumer } from './InlineConsumer'
@@ -219,6 +220,7 @@ export class Tokenizer {
       whileOpen: () => this.bufferRawText(),
       endPattern: bracketedLinkUrl.endPattern,
       closeInnerContextsWhenClosing: true,
+
       onClose: () => {
         const url = this.flushBuffer()
 
@@ -232,34 +234,6 @@ export class Tokenizer {
         lastToken.value = url
       }
     })
-  }
-
-  private tryToCloseOrAdvanceLinkUrlCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.bracketedLinkUrls.some(bracket =>
-      (bracket.goal === context.goal)
-      && this.tryToCloseOrAdvanceLinkUrl(bracket, context))
-  }
-
-  private tryToCloseOrAdvanceLinkUrl(bracketedLinkUrl: TokenizableBracket, context: TokenizerContext): boolean {
-    const didCloseLinkUrl = this.tryToCloseContext({
-      context,
-      pattern: bracketedLinkUrl.endPattern,
-      closeInnerContexts: true,
-      thenAddAnyClosingTokens: () => {
-        const url = this.flushBuffer()
-
-        // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
-        //
-        // We'll replace that end token and its corresponding start token with link tokens.
-        const lastToken = last(this.tokens)
-
-        lastToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
-        lastToken.kind = LINK_CONVENTION.endTokenKind
-        lastToken.value = url
-      }
-    })
-
-    return didCloseLinkUrl || this.bufferRawText()
   }
 
   private isDirectlyFollowingLinkBrackets(): boolean {
@@ -280,12 +254,6 @@ export class Tokenizer {
     return this.richBrackets.some(bracket => this.tryToOpenRichSandwich(bracket))
   }
 
-  private tryToCloseRichBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.richBrackets.some(bracket =>
-      (bracket.goal === context.goal)
-      && this.tryToCloseRichSandwich(bracket, context))
-  }
-
   private tryToOpenAnyRichSandwich(): boolean {
     return this.richSandwichesExceptRichBrackets.some(sandwich => this.tryToOpenRichSandwich(sandwich))
   }
@@ -294,29 +262,18 @@ export class Tokenizer {
     return this.tryToOpenContext({
       goal: sandwich.goal,
       startPattern: sandwich.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: true
-    })
-  }
-
-  private tryToCloseRichSandwichCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.richSandwichesExceptRichBrackets.some(sandwich =>
-      (sandwich.goal === context.goal)
-      && this.tryToCloseRichSandwich(sandwich, context))
-  }
-
-  private tryToCloseRichSandwich(sandwich: TokenizableRichSandwich, context: TokenizerContext): boolean {
-    return this.tryToCloseContext({
-      context,
-      pattern: sandwich.endPattern,
+      flushBufferToPlainTextTokenBeforeOpening: true,
+      endPattern: sandwich.endPattern,
       onCloseFlushBufferTo: TokenKind.PlainText,
-      thenAddAnyClosingTokens: () => {
+
+      onClose: (context) => {
         const startToken = new Token({ kind: sandwich.startTokenKind })
         const endToken = new Token({ kind: sandwich.endTokenKind })
         startToken.associateWith(endToken)
 
         this.insertTokenAtStartOfContext(context, startToken)
         this.tokens.push(endToken)
-      }
+      } 
     })
   }
 
@@ -417,7 +374,7 @@ export class Tokenizer {
       doNotConsumeEndPattern?: boolean
       closeInnerContextsWhenClosing?: boolean
       onCloseFlushBufferTo?: TokenKind
-      onClose?: OnMatch
+      onClose?: OnTokenizerContextClose
     }
   ): boolean {
     const { goal, startPattern,flushBufferToPlainTextTokenBeforeOpening, onOpen, whileOpen, endPattern, doNotConsumeEndPattern, closeInnerContextsWhenClosing, onCloseFlushBufferTo, onClose } = args
