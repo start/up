@@ -38,8 +38,8 @@ export class TokenizerContext {
   }
 
   resolve(): boolean {
-    if (this.convention.whenLeftUnclosed) {
-      return this.convention.whenLeftUnclosed(this)
+    if (this.convention.resolveWhenUnclosed) {
+      return this.convention.resolveWhenUnclosed(this)
     }
 
     return false

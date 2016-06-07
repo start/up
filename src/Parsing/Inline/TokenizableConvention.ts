@@ -18,5 +18,5 @@ export interface TokenizableConvention {
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
   onClose?: OnConventionClose
-  whenLeftUnclosed?: ResolveUnclosedConvention
+  resolveWhenUnclosed?: ResolveUnclosedConvention
 }

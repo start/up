@@ -322,7 +322,8 @@ export class Tokenizer {
       flushBufferToPlainTextTokenBeforeOpening: false,
       onOpen: () => { this.buffer += bracket.open },
       endPattern: bracket.endPattern,
-      onClose: () => { this.buffer += bracket.close }
+      onClose: () => { this.buffer += bracket.close },
+      resolveWhenUnclosed: () => true
     })
   }
 
@@ -338,7 +339,8 @@ export class Tokenizer {
       endPattern: NAKED_URL_TERMINATOR_PATTERN,
       doNotConsumeEndPattern: true,
       closeInnerContextsWhenClosing: true,
-      onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd
+      onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
+      resolveWhenUnclosed: () => this.flushBufferToNakedUrlEndToken()
     })
   }
 
@@ -411,20 +413,9 @@ export class Tokenizer {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      switch (context.convention.goal) {
-        case TokenizerGoal.NakedUrl:
-          this.flushBufferToNakedUrlEndToken()
-          break
-
-        // Raw bracketed text can be left unclosed
-        case TokenizerGoal.ParenthesizedInRawText:
-        case TokenizerGoal.SquareBracketedInRawText:
-        case TokenizerGoal.CurlyBracketedInRawText:
-          break;
-
-        default:
-          this.resetToBeforeContext(context)
-          return false
+      if (!context.resolve()) {
+        this.resetToBeforeContext(context)
+        return false
       }
     }
 
@@ -445,8 +436,9 @@ export class Tokenizer {
     }
   }
 
-  private flushBufferToNakedUrlEndToken(): void {
+  private flushBufferToNakedUrlEndToken(): boolean {
     this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
+    return true
   }
 
   private flushBuffer(): string {
