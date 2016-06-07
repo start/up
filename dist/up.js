@@ -828,8 +828,7 @@ var Tokenizer = (function () {
             return false;
         }
         this.consumer.advanceTextIndex(1);
-        return (this.consumer.reachedEndOfText()
-            || this.bufferCurrentChar());
+        return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
     Tokenizer.prototype.isDone = function () {
         return this.consumer.reachedEndOfText() && this.resolveOpenContexts();
@@ -989,8 +988,7 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.bufferRawText = function () {
-        return (this.tryToOpenAnyRawTextBracket()
-            || this.bufferCurrentChar());
+        return this.tryToOpenAnyRawTextBracket() || this.bufferCurrentChar();
     };
     Tokenizer.prototype.tryToOpenContext = function (convention) {
         var _this = this;

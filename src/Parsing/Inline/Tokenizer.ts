@@ -139,10 +139,7 @@ export class Tokenizer {
 
     this.consumer.advanceTextIndex(1)
 
-    return (
-      this.consumer.reachedEndOfText()
-      || this.bufferCurrentChar()
-    )
+    return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
   }
 
   private isDone(): boolean {
@@ -329,9 +326,7 @@ export class Tokenizer {
   }
 
   private bufferRawText(): boolean {
-    return (
-      this.tryToOpenAnyRawTextBracket()
-      || this.bufferCurrentChar())
+    return this.tryToOpenAnyRawTextBracket() || this.bufferCurrentChar()
   }
 
   private tryToOpenContext(convention: TokenizableConvention): boolean {
