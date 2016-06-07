@@ -752,10 +752,19 @@ var TokenKind_1 = require('./TokenKind');
 var Token_1 = require('./Token');
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
+        var _this = this;
         this.tokens = [];
         this.openContexts = [];
         this.failedGoalTracker = new FailedGoalTracker_1.FailedGoalTracker();
         this.buffer = '';
+        this.inlineCode = {
+            goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
+            startPattern: INLINE_CODE_DELIMITER_PATTERN,
+            endPattern: INLINE_CODE_DELIMITER_PATTERN,
+            flushBufferToPlainTextTokenBeforeOpening: true,
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
+        };
         this.richBrackets = [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -879,22 +888,11 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
-        return (this.tryToOpenInlineCode()
+        return (this.tryToOpenContext(this.inlineCode)
             || this.tryToOpenAnyRichSandwich()
             || this.tryToOpenAnyLinkUrl()
             || this.tryToOpenAnyRichBracket()
             || this.tryToOpenNakedUrl());
-    };
-    Tokenizer.prototype.tryToOpenInlineCode = function () {
-        var _this = this;
-        return this.tryToOpenContext({
-            goal: TokenizerGoal_1.TokenizerGoal.InlineCode,
-            startPattern: INLINE_CODE_DELIMITER_PATTERN,
-            flushBufferToPlainTextTokenBeforeOpening: true,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
-            endPattern: INLINE_CODE_DELIMITER_PATTERN,
-            onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
-        });
     };
     Tokenizer.prototype.tryToOpenAnyLinkUrl = function () {
         var _this = this;

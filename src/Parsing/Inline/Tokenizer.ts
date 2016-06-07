@@ -37,6 +37,15 @@ export class Tokenizer {
   // flushed to a token, usually a PlainTextToken.
   private buffer = ''
 
+  private inlineCode = {
+    goal: TokenizerGoal.InlineCode,
+    startPattern: INLINE_CODE_DELIMITER_PATTERN,
+    endPattern: INLINE_CODE_DELIMITER_PATTERN,
+    flushBufferToPlainTextTokenBeforeOpening: true,
+    insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
+    onCloseFlushBufferTo: TokenKind.InlineCode
+  }
+
   private richBrackets = [
     {
       richConvention: PARENTHESIZED_CONVENTION,
@@ -204,22 +213,11 @@ export class Tokenizer {
 
   private tryToOpenAnyConvention(): boolean {
     return (
-      this.tryToOpenInlineCode()
+      this.tryToOpenContext(this.inlineCode)
       || this.tryToOpenAnyRichSandwich()
       || this.tryToOpenAnyLinkUrl()
       || this.tryToOpenAnyRichBracket()
       || this.tryToOpenNakedUrl())
-  }
-
-  private tryToOpenInlineCode(): boolean {
-    return this.tryToOpenContext({
-      goal: TokenizerGoal.InlineCode,
-      startPattern: INLINE_CODE_DELIMITER_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpening: true,
-      insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
-      endPattern: INLINE_CODE_DELIMITER_PATTERN,
-      onCloseFlushBufferTo: TokenKind.InlineCode
-    })
   }
 
   private tryToOpenAnyLinkUrl(): boolean {
@@ -388,7 +386,7 @@ export class Tokenizer {
       context.reset()
     }
   }
- 
+
   private flushBufferToNakedUrlEndToken(): void {
     this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
   }
