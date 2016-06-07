@@ -1882,11 +1882,11 @@ function getExplicitOrdinal(rawListItem) {
 }
 var INTEGER_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.INTEGER));
 var BULLET = Patterns_1.either('#', Patterns_1.capture(Patterns_1.either(Patterns_1.INTEGER, '#') + Patterns_1.either('\\.', '\\)')));
-var BULLETED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR));
+var BULLETED_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR);
 var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(Patterns_1.INTEGER + '\\.');
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = new RegExp(Patterns_1.startsWith(Patterns_1.INDENT));
+var INDENTED_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":41,"../../SyntaxNodes/OrderedListItem":63,"../../SyntaxNodes/OrderedListNode":64,"./LineConsumer":26,"./getOutlineNodes":28,"./getRemainingLinesOfListItem":29}],37:[function(require,module,exports){
 "use strict";

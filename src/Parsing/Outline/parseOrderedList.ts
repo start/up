@@ -3,7 +3,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListOrder } from '../../SyntaxNodes/OrderedListOrder'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
-import { optional, startsWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from '../../Patterns'
+import { optional, getRegExpStartingWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
@@ -118,9 +118,9 @@ const BULLET =
     '#',
     capture(either(INTEGER, '#') + either('\\.', '\\)')))
 
-const BULLETED_PATTERN = new RegExp(
-  startsWith(
-    optional(' ') + BULLET + INLINE_WHITESPACE_CHAR))
+const BULLETED_PATTERN = 
+  getRegExpStartingWith(
+    optional(' ') + BULLET + INLINE_WHITESPACE_CHAR)
 
 const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
   INTEGER + '\\.')
@@ -131,5 +131,5 @@ const STREAK_PATTERN = new RegExp(
 const BLANK_LINE_PATTERN = new RegExp(
   BLANK)
 
-const INDENTED_PATTERN = new RegExp(
-  startsWith(INDENT))
+const INDENTED_PATTERN =
+  getRegExpStartingWith(INDENT)
