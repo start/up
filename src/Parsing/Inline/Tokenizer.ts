@@ -8,7 +8,7 @@ import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnMatch } from './OnMatch'
-import { last, contains } from '../../CollectionHelpers'
+import { last, contains, reversed } from '../../CollectionHelpers'
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableRichSandwich } from './TokenizableRichSandwich'
 import { Bracket } from './Bracket'
@@ -134,15 +134,8 @@ export class Tokenizer {
   }
 
   private performContextSpecificBehavior(): boolean {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-
-      if (context.doAfterTryingToCloseOuterContexts()) {
-        return true
-      }
-    }
-
-    return false
+    return reversed(this.openContexts)
+      .some(context => context.doAfterTryingToCloseOuterContexts())
   }
 
   private tryToCollectEscapedChar(): boolean {

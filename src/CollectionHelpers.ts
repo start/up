@@ -16,3 +16,7 @@ export function concat<T>(collections: T[][]): T[] {
 export function contains<T>(items: T[], item: T): boolean {
   return (items.indexOf(item) !== -1)
 }
+
+export function reversed<T>(items: T[]): T[] {
+  return items.slice().reverse()
+}
