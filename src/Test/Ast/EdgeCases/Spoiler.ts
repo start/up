@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
 describe('A spoiler convention', () => {
@@ -16,6 +17,20 @@ describe('A spoiler convention', () => {
             new PlainTextNode('Gary')
           ]),
           new PlainTextNode(' fights you'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+  
+  it('can directly follow square bracketed text', () => {
+    expect(Up.toAst('After you beat the Elite Four [in Pokemon Red/Blue/Yellow][SPOILER: you fight Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four '),
+        new SquareBracketedNode([
+          new PlainTextNode('[in Pokemon Red/Blue/Yellow]')
+        ]),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
         ]),
         new PlainTextNode('.')
       ]))
