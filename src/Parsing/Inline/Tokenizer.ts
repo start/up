@@ -25,85 +25,51 @@ export class Tokenizer {
 
   private consumer: InlineConsumer
 
-  // Any time we open a new convention, we add it to `openContexts`.
-  private openContexts: TokenizerContext[] = []
-
-  private failedConventionTracker: FailedConventionTracker = new FailedConventionTracker()
-
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a PlainTextToken.
   private buffer = ''
 
-  private inlineCodeConvention = {
-    startPattern: INLINE_CODE_DELIMITER_PATTERN,
-    endPattern: INLINE_CODE_DELIMITER_PATTERN,
+  // Any time we open a new convention, we create a new context for it and add it to this collection.
+  private openContexts: TokenizerContext[] = []
 
-    flushBufferToPlainTextTokenBeforeOpening: true,
+  // When a convention is missing its closing delimiter, we backtrack and add the convention to our
+  // `failedConventionTracker`.
+  private failedConventionTracker: FailedConventionTracker = new FailedConventionTracker()
 
-    insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
-    onCloseFlushBufferTo: TokenKind.InlineCode
-  }
 
-  private nakedUrlConvention: TokenizableConvention = {
-    startPattern: NAKED_URL_PROTOCOL_PATTERN,
-    endPattern: NAKED_URL_TERMINATOR_PATTERN,
+  // Most of our conventions are thrown in this collection. We try to open these conventions in order.
+  private conventions: TokenizableConvention[] = []
 
-    flushBufferToPlainTextTokenBeforeOpening: true,
-
-    onOpen: urlProtocol => {
-      this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
-    },
-
-    insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
-
-    doNotConsumeEndPattern: true,
-    onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
-    closeInnerContextsWhenClosing: true,
-
-    resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
-  }
-
-  // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
-  private linkUrlConventions = [
-    PARENTHESIS,
-    SQUARE_BRACKET,
-    CURLY_BRACKET
-  ].map(args => this.getLinkUrlConvention(args))
-
-  private richBracketConventions = [
-    {
-      richConvention: PARENTHESIZED_CONVENTION,
-      startPattern: PARENTHESIS.startPattern,
-      endPattern: PARENTHESIS.endPattern
-    }, {
-      richConvention: SQUARE_BRACKETED_CONVENTION,
-      startPattern: SQUARE_BRACKET.startPattern,
-      endPattern: SQUARE_BRACKET.endPattern
-    }, {
-      richConvention: ACTION_CONVENTION,
-      startPattern: CURLY_BRACKET.startPattern,
-      endPattern: CURLY_BRACKET.endPattern
-    }
-  ].map(args => this.getRichSandwichConvention(args))
-
-  // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
+  // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
   //
-  // They can only appear inside URLs or media conventions' descriptions, and they allow matching
-  // brackets to be included without having to escape any closing brackets.
+  // Most of our conventions are just thrown in the `conventions` collection, but we keep a direct reference
+  // to the naked URL convention to help us determine whether another convention contains a naked URL.
+  private nakedUrlConvention: TokenizableConvention = {
+      startPattern: NAKED_URL_PROTOCOL_PATTERN,
+      endPattern: NAKED_URL_TERMINATOR_PATTERN,
+
+      flushBufferToPlainTextTokenBeforeOpening: true,
+
+      onOpen: urlProtocol => {
+        this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+      },
+
+      insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
+
+      doNotConsumeEndPattern: true,
+      onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
+      closeInnerContextsWhenClosing: true,
+
+      resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
+    }
+
+  // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
+  // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
   private rawBracketConventions = [
     PARENTHESIS,
     SQUARE_BRACKET,
     CURLY_BRACKET
   ].map(args => this.getRawBracketConvention(args))
-
-  // A rich sandwich:
-  //
-  // 1. Can contain other inline conventions
-  // 2. Involves just two delimiters: one to mark its start, and one to mark its end
-  //
-  // Some of rich sandwiches rely on user-configurable values, so we assign this field in the
-  // `configureConventions` method where we have access to the user's config settings.
-  private richSandwichConventionsExceptRichBrackets: TokenizableConvention[]
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -113,7 +79,7 @@ export class Tokenizer {
   }
 
   private configureConventions(config: UpConfig): void {
-    this.richSandwichConventionsExceptRichBrackets = [
+    this.conventions.push(...[
       {
         richConvention: SPOILER_CONVENTION,
         startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
@@ -131,7 +97,41 @@ export class Tokenizer {
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++')
       }
-    ].map(args => this.getRichSandwichConvention(args))
+    ].map(args => this.getRichSandwichConvention(args)))
+
+    this.conventions.push({
+      startPattern: INLINE_CODE_DELIMITER_PATTERN,
+      endPattern: INLINE_CODE_DELIMITER_PATTERN,
+
+      flushBufferToPlainTextTokenBeforeOpening: true,
+
+      insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
+      onCloseFlushBufferTo: TokenKind.InlineCode
+    })
+
+    this.conventions.push(...[
+      PARENTHESIS,
+      SQUARE_BRACKET,
+      CURLY_BRACKET
+    ].map(args => this.getLinkUrlConvention(args)))
+
+    this.conventions.push(...[
+      {
+        richConvention: PARENTHESIZED_CONVENTION,
+        startPattern: PARENTHESIS.startPattern,
+        endPattern: PARENTHESIS.endPattern
+      }, {
+        richConvention: SQUARE_BRACKETED_CONVENTION,
+        startPattern: SQUARE_BRACKET.startPattern,
+        endPattern: SQUARE_BRACKET.endPattern
+      }, {
+        richConvention: ACTION_CONVENTION,
+        startPattern: CURLY_BRACKET.startPattern,
+        endPattern: CURLY_BRACKET.endPattern
+      }
+    ].map(args => this.getRichSandwichConvention(args)))
+
+    this.conventions.push(this.nakedUrlConvention)
   }
 
   private tokenize(): void {
@@ -229,16 +229,7 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyConvention(): boolean {
-    return (
-      this.tryToOpen(this.inlineCodeConvention)
-      || this.tryToOpenAnyRichSandwich()
-      || this.tryToOpenAnyLinkUrl()
-      || this.tryToOpenAnyRichBracket()
-      || this.tryToOpen(this.nakedUrlConvention))
-  }
-
-  private tryToOpenAnyLinkUrl(): boolean {
-    return this.linkUrlConventions.some(linkUrl => this.tryToOpen(linkUrl))
+    return this.conventions.some(convention => this.tryToOpen(convention))
   }
 
   private getLinkUrlConvention(bracket: Bracket): TokenizableConvention {
@@ -281,21 +272,13 @@ export class Tokenizer {
     )
   }
 
-  private tryToOpenAnyRichBracket(): boolean {
-    return this.richBracketConventions.some(bracket => this.tryToOpen(bracket))
-  }
-
-  private tryToOpenAnyRichSandwich(): boolean {
-    return this.richSandwichConventionsExceptRichBrackets.some(sandwich => this.tryToOpen(sandwich))
-  }
-
   private getRichSandwichConvention(
     args: {
       richConvention: RichConvention,
       startPattern: string,
       endPattern: string
     }
-): TokenizableConvention {
+  ): TokenizableConvention {
     const { richConvention, startPattern, endPattern } = args
 
     return {

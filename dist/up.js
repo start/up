@@ -709,16 +709,10 @@ var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
         this.tokens = [];
+        this.buffer = '';
         this.openContexts = [];
         this.failedConventionTracker = new FailedConventionTracker_1.FailedConventionTracker();
-        this.buffer = '';
-        this.inlineCodeConvention = {
-            startPattern: INLINE_CODE_DELIMITER_PATTERN,
-            endPattern: INLINE_CODE_DELIMITER_PATTERN,
-            flushBufferToPlainTextTokenBeforeOpening: true,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
-            onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
-        };
+        this.conventions = [];
         this.nakedUrlConvention = {
             startPattern: NAKED_URL_PROTOCOL_PATTERN,
             endPattern: NAKED_URL_TERMINATOR_PATTERN,
@@ -732,26 +726,6 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.linkUrlConventions = [
-            PARENTHESIS,
-            SQUARE_BRACKET,
-            CURLY_BRACKET
-        ].map(function (args) { return _this.getLinkUrlConvention(args); });
-        this.richBracketConventions = [
-            {
-                richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
-                startPattern: PARENTHESIS.startPattern,
-                endPattern: PARENTHESIS.endPattern
-            }, {
-                richConvention: RichConventions_1.SQUARE_BRACKETED_CONVENTION,
-                startPattern: SQUARE_BRACKET.startPattern,
-                endPattern: SQUARE_BRACKET.endPattern
-            }, {
-                richConvention: RichConventions_1.ACTION_CONVENTION,
-                startPattern: CURLY_BRACKET.startPattern,
-                endPattern: CURLY_BRACKET.endPattern
-            }
-        ].map(function (args) { return _this.getRichSandwichConvention(args); });
         this.rawBracketConventions = [
             PARENTHESIS,
             SQUARE_BRACKET,
@@ -763,7 +737,7 @@ var Tokenizer = (function () {
     }
     Tokenizer.prototype.configureConventions = function (config) {
         var _this = this;
-        this.richSandwichConventionsExceptRichBrackets = [
+        (_a = this.conventions).push.apply(_a, [
             {
                 richConvention: RichConventions_1.SPOILER_CONVENTION,
                 startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
@@ -781,7 +755,36 @@ var Tokenizer = (function () {
                 startPattern: Patterns_1.escapeForRegex('++'),
                 endPattern: Patterns_1.escapeForRegex('++')
             }
-        ].map(function (args) { return _this.getRichSandwichConvention(args); });
+        ].map(function (args) { return _this.getRichSandwichConvention(args); }));
+        this.conventions.push({
+            startPattern: INLINE_CODE_DELIMITER_PATTERN,
+            endPattern: INLINE_CODE_DELIMITER_PATTERN,
+            flushBufferToPlainTextTokenBeforeOpening: true,
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
+        });
+        (_b = this.conventions).push.apply(_b, [
+            PARENTHESIS,
+            SQUARE_BRACKET,
+            CURLY_BRACKET
+        ].map(function (args) { return _this.getLinkUrlConvention(args); }));
+        (_c = this.conventions).push.apply(_c, [
+            {
+                richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
+                startPattern: PARENTHESIS.startPattern,
+                endPattern: PARENTHESIS.endPattern
+            }, {
+                richConvention: RichConventions_1.SQUARE_BRACKETED_CONVENTION,
+                startPattern: SQUARE_BRACKET.startPattern,
+                endPattern: SQUARE_BRACKET.endPattern
+            }, {
+                richConvention: RichConventions_1.ACTION_CONVENTION,
+                startPattern: CURLY_BRACKET.startPattern,
+                endPattern: CURLY_BRACKET.endPattern
+            }
+        ].map(function (args) { return _this.getRichSandwichConvention(args); }));
+        this.conventions.push(this.nakedUrlConvention);
+        var _a, _b, _c;
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
@@ -856,15 +859,8 @@ var Tokenizer = (function () {
         });
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
-        return (this.tryToOpen(this.inlineCodeConvention)
-            || this.tryToOpenAnyRichSandwich()
-            || this.tryToOpenAnyLinkUrl()
-            || this.tryToOpenAnyRichBracket()
-            || this.tryToOpen(this.nakedUrlConvention));
-    };
-    Tokenizer.prototype.tryToOpenAnyLinkUrl = function () {
         var _this = this;
-        return this.linkUrlConventions.some(function (linkUrl) { return _this.tryToOpen(linkUrl); });
+        return this.conventions.some(function (convention) { return _this.tryToOpen(convention); });
     };
     Tokenizer.prototype.getLinkUrlConvention = function (bracket) {
         var _this = this;
@@ -893,14 +889,6 @@ var Tokenizer = (function () {
         return (this.buffer === ''
             && this.tokens.length
             && CollectionHelpers_1.contains(linkableBrackets, CollectionHelpers_1.last(this.tokens).kind));
-    };
-    Tokenizer.prototype.tryToOpenAnyRichBracket = function () {
-        var _this = this;
-        return this.richBracketConventions.some(function (bracket) { return _this.tryToOpen(bracket); });
-    };
-    Tokenizer.prototype.tryToOpenAnyRichSandwich = function () {
-        var _this = this;
-        return this.richSandwichConventionsExceptRichBrackets.some(function (sandwich) { return _this.tryToOpen(sandwich); });
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
