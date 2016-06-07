@@ -94,7 +94,7 @@ export class Tokenizer {
     this.conventions.push(
       ...this.getConventionsForRichBracketedTerm({
         richConvention: SPOILER_CONVENTION,
-        term: 'spoiler'
+        nonLocalizedTerm: 'spoiler'
       })
     )
 
@@ -408,15 +408,15 @@ export class Tokenizer {
   private getConventionsForRichBracketedTerm(
     args: {
       richConvention: RichConvention,
-      term: string
+      nonLocalizedTerm: string
     }
   ): TokenizableConvention[] {
-    const { richConvention, term } = args
+    const { richConvention, nonLocalizedTerm } = args
 
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention,
-        startPattern: bracket.startPattern + escapeForRegex(this.config.localizeTerm(term)) + ':' + ANY_WHITESPACE,
+        startPattern: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
         endPattern: bracket.endPattern
       }))
   }
@@ -450,7 +450,7 @@ export class Tokenizer {
 
   private getConventionsForMediaDescription(media: MediaConvention): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern + escapeForRegex(this.config.localizeTerm(media.nonLocalizedTerm)) + ':' + ANY_WHITESPACE, 'i'),
+      startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
@@ -479,6 +479,13 @@ export class Tokenizer {
 
       resolveWhenLeftUnclosed: () => true
     }
+  }
+
+  private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
+    return (
+      bracket.startPattern
+      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
+      + ANY_WHITESPACE)
   }
 }
 

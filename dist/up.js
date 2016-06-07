@@ -751,7 +751,7 @@ var Tokenizer = (function () {
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         (_b = this.conventions).push.apply(_b, this.getConventionsForRichBracketedTerm({
             richConvention: RichConventions_1.SPOILER_CONVENTION,
-            term: 'spoiler'
+            nonLocalizedTerm: 'spoiler'
         }));
         this.conventions.push({
             startPattern: INLINE_CODE_DELIMITER_PATTERN,
@@ -1000,11 +1000,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getConventionsForRichBracketedTerm = function (args) {
         var _this = this;
-        var richConvention = args.richConvention, term = args.term;
+        var richConvention = args.richConvention, nonLocalizedTerm = args.nonLocalizedTerm;
         return BRACKETS.map(function (bracket) {
             return _this.getRichSandwichConvention({
                 richConvention: richConvention,
-                startPattern: bracket.startPattern + Patterns_1.escapeForRegex(_this.config.localizeTerm(term)) + ':' + Patterns_1.ANY_WHITESPACE,
+                startPattern: _this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
                 endPattern: bracket.endPattern
             });
         });
@@ -1029,7 +1029,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getConventionsForMediaDescription = function (media) {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern + Patterns_1.escapeForRegex(_this.config.localizeTerm(media.nonLocalizedTerm)) + ':' + Patterns_1.ANY_WHITESPACE, 'i'),
+            startPattern: Patterns_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
             flushBufferToPlainTextTokenBeforeOpening: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
@@ -1050,6 +1050,11 @@ var Tokenizer = (function () {
             onClose: function () { _this.buffer += bracket.end; },
             resolveWhenLeftUnclosed: function () { return true; }
         };
+    };
+    Tokenizer.prototype.getBracketedTermStartPattern = function (nonLocalizedTerm, bracket) {
+        return (bracket.startPattern
+            + Patterns_1.escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
+            + Patterns_1.ANY_WHITESPACE);
     };
     return Tokenizer;
 }());
