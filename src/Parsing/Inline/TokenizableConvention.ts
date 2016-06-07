@@ -2,6 +2,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
 import { OnConventionClose } from './OnConventionClose'
+import { ResolveUnclosedConvention } from './ResolveUnclosedConvention'
 import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
@@ -17,4 +18,5 @@ export interface TokenizableConvention {
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
   onClose?: OnConventionClose
+  whenLeftUnclosed?: ResolveUnclosedConvention
 }

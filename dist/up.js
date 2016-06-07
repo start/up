@@ -1173,27 +1173,30 @@ var TokenizerContext = (function () {
         this.snapshot = snapshot;
         this.initialTokenIndex = snapshot.textIndex;
         this.snapshot = snapshot;
-        this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts;
-        this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts;
-        this.onClose = convention.onClose;
         this.reset();
     }
     TokenizerContext.prototype.doBeforeTryingToCloseOuterContexts = function () {
-        if (this.beforeTryingToCloseOuterContexts) {
-            return this.beforeTryingToCloseOuterContexts();
+        if (this.convention.beforeTryingToCloseOuterContexts) {
+            return this.convention.beforeTryingToCloseOuterContexts();
         }
         return false;
     };
     TokenizerContext.prototype.doAfterTryingToCloseOuterContexts = function () {
-        if (this.afterTryingToCloseOuterContexts) {
-            return this.afterTryingToCloseOuterContexts();
+        if (this.convention.afterTryingToCloseOuterContexts) {
+            return this.convention.afterTryingToCloseOuterContexts();
         }
         return false;
     };
     TokenizerContext.prototype.close = function () {
-        if (this.onClose) {
-            this.onClose(this);
+        if (this.convention.onClose) {
+            this.convention.onClose(this);
         }
+    };
+    TokenizerContext.prototype.resolve = function () {
+        if (this.convention.whenLeftUnclosed) {
+            return this.convention.whenLeftUnclosed(this);
+        }
+        return false;
     };
     TokenizerContext.prototype.registerTokenInsertion = function (args) {
         var atIndex = args.atIndex, onBehalfOfContext = args.onBehalfOfContext;

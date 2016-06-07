@@ -8,40 +8,41 @@ import { TokenKind } from './TokenKind'
 export class TokenizerContext {
   initialTokenIndex: number
 
-  private beforeTryingToCloseOuterContexts: PerformContextSpecificTasks
-  private afterTryingToCloseOuterContexts: PerformContextSpecificTasks
-  private onClose: OnConventionClose
-
   constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {
     this.initialTokenIndex = snapshot.textIndex
     this.snapshot = snapshot
-    this.beforeTryingToCloseOuterContexts = convention.beforeTryingToCloseOuterContexts
-    this.afterTryingToCloseOuterContexts = convention.afterTryingToCloseOuterContexts
-    this.onClose = convention.onClose
-
+    
     this.reset()
   }
 
   doBeforeTryingToCloseOuterContexts(): boolean {
-    if (this.beforeTryingToCloseOuterContexts) {
-      return this.beforeTryingToCloseOuterContexts()
+    if (this.convention.beforeTryingToCloseOuterContexts) {
+      return this.convention.beforeTryingToCloseOuterContexts()
     }
 
     return false
   }
 
   doAfterTryingToCloseOuterContexts(): boolean {
-    if (this.afterTryingToCloseOuterContexts) {
-      return this.afterTryingToCloseOuterContexts()
+    if (this.convention.afterTryingToCloseOuterContexts) {
+      return this.convention.afterTryingToCloseOuterContexts()
     }
 
     return false
   }
 
   close(): void {
-    if (this.onClose) {
-      this.onClose(this)
+    if (this.convention.onClose) {
+      this.convention.onClose(this)
     }
+  }
+
+  resolve(): boolean {
+    if (this.convention.whenLeftUnclosed) {
+      return this.convention.whenLeftUnclosed(this)
+    }
+
+    return false
   }
 
   registerTokenInsertion(args: { atIndex: number, onBehalfOfContext: TokenizerContext }) {
