@@ -735,10 +735,6 @@ var Tokenizer = (function () {
         var _this = this;
         (_a = this.conventions).push.apply(_a, [
             {
-                richConvention: RichConventions_1.SPOILER_CONVENTION,
-                startPattern: SQUARE_BRACKET.startPattern + Patterns_1.escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + Patterns_1.ANY_WHITESPACE,
-                endPattern: SQUARE_BRACKET.endPattern
-            }, {
                 richConvention: RichConventions_1.FOOTNOTE_CONVENTION,
                 startPattern: Patterns_1.ANY_WHITESPACE + Patterns_1.escapeForRegex('(('),
                 endPattern: Patterns_1.escapeForRegex('))')
@@ -752,6 +748,11 @@ var Tokenizer = (function () {
                 endPattern: Patterns_1.escapeForRegex('++')
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
+        (_b = this.conventions).push.apply(_b, this.getConventionsForBracketedTerm({
+            richConvention: RichConventions_1.SPOILER_CONVENTION,
+            term: 'spoiler',
+            config: config
+        }));
         this.conventions.push({
             startPattern: INLINE_CODE_DELIMITER_PATTERN,
             endPattern: INLINE_CODE_DELIMITER_PATTERN,
@@ -759,8 +760,8 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
-        (_b = this.conventions).push.apply(_b, BRACKETS.map(function (args) { return _this.getLinkUrlConvention(args); }));
-        (_c = this.conventions).push.apply(_c, [
+        (_c = this.conventions).push.apply(_c, BRACKETS.map(function (args) { return _this.getLinkUrlConvention(args); }));
+        (_d = this.conventions).push.apply(_d, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
@@ -776,7 +777,7 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
@@ -996,6 +997,17 @@ var Tokenizer = (function () {
                 lastToken.value = url;
             }
         };
+    };
+    Tokenizer.prototype.getConventionsForBracketedTerm = function (args) {
+        var _this = this;
+        var richConvention = args.richConvention, term = args.term, config = args.config;
+        return BRACKETS.map(function (bracket) {
+            return _this.getRichSandwichConvention({
+                richConvention: richConvention,
+                startPattern: bracket.startPattern + Patterns_1.escapeForRegex(config.localizeTerm(term)) + ':' + Patterns_1.ANY_WHITESPACE,
+                endPattern: bracket.endPattern
+            });
+        });
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;

@@ -77,10 +77,6 @@ export class Tokenizer {
   private configureConventions(config: UpConfig): void {
     this.conventions.push(...[
       {
-        richConvention: SPOILER_CONVENTION,
-        startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
-        endPattern: SQUARE_BRACKET.endPattern
-      }, {
         richConvention: FOOTNOTE_CONVENTION,
         startPattern: ANY_WHITESPACE + escapeForRegex('(('),
         endPattern: escapeForRegex('))')
@@ -94,6 +90,14 @@ export class Tokenizer {
         endPattern: escapeForRegex('++')
       }
     ].map(args => this.getRichSandwichConvention(args)))
+
+    this.conventions.push(
+      ...this.getConventionsForBracketedTerm({
+        richConvention: SPOILER_CONVENTION,
+        term: 'spoiler',
+        config
+      })
+    )
 
     this.conventions.push({
       startPattern: INLINE_CODE_DELIMITER_PATTERN,
@@ -400,6 +404,23 @@ export class Tokenizer {
         lastToken.value = url
       }
     }
+  }
+
+  private getConventionsForBracketedTerm(
+    args: {
+      richConvention: RichConvention,
+      term: string,
+      config: UpConfig
+    }
+  ): TokenizableConvention[] {
+    const { richConvention, term, config } = args
+
+    return BRACKETS.map(bracket =>
+      this.getRichSandwichConvention({
+        richConvention,
+        startPattern: bracket.startPattern + escapeForRegex(config.localizeTerm(term)) + ':' + ANY_WHITESPACE,
+        endPattern: bracket.endPattern
+      }))
   }
 
   private getRichSandwichConvention(
