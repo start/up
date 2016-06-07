@@ -7,6 +7,8 @@ export class TokenizableBracket {
   goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
+  open: string
+  close: string
 
   constructor(args: { goal: TokenizerGoal, bracket: Bracket }) {
     const { goal, bracket } = args
@@ -14,5 +16,7 @@ export class TokenizableBracket {
     this.goal = goal
     this.startPattern = getRegExpStartingWith(bracket.startPattern)
     this.endPattern = getRegExpStartingWith(bracket.endPattern)
+    this.open = bracket.start
+    this.close = bracket.end
   }
 }
