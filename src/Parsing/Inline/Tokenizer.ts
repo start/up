@@ -293,7 +293,9 @@ export class Tokenizer {
       goal: bracket.goal,
       startPattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
-      onOpen: bracket => { this.buffer += bracket }
+      onOpen: bracket => { this.buffer += bracket },
+      endPattern: bracket.endPattern,
+      onClose: (context, bracket) => { this.buffer += bracket }
     })
   }
 
