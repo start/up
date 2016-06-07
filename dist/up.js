@@ -1163,7 +1163,7 @@ var Tokenizer = (function () {
         this.tokens.splice(newTokenIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
-            openContext.registerTokenInsertion({ atIndex: newTokenIndex, forContext: context });
+            openContext.registerTokenInsertion({ atIndex: newTokenIndex, onBehalfOfContext: context });
         }
     };
     Tokenizer.prototype.bufferCurrentChar = function () {
@@ -1207,11 +1207,11 @@ var TokenizerContext = (function () {
         this.reset();
     }
     TokenizerContext.prototype.registerTokenInsertion = function (args) {
-        var atIndex = args.atIndex, forContext = args.forContext;
-        if (this === forContext) {
-            return;
-        }
-        if (args.atIndex < this.initialTokenIndex) {
+        var atIndex = args.atIndex, onBehalfOfContext = args.onBehalfOfContext;
+        var mustIncrementInitialIndex = (atIndex < this.initialTokenIndex
+            || (atIndex === this.initialTokenIndex
+                && onBehalfOfContext.snapshot.textIndex < this.snapshot.textIndex));
+        if (mustIncrementInitialIndex) {
             this.initialTokenIndex += 1;
         }
     };
