@@ -1,12 +1,12 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-
+import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
 
 export class TokenizerContext {
   initialTokenIndex: number
   goal: TokenizerGoal
   snapshot: TokenizerSnapshot
-  tryToAdvanceContext: TryToAdvanceContext 
+  performContextSpecificTasks: PerformContextSpecificTasks 
   endPattern: RegExp
   doNotConsumeEndPattern: boolean
 
@@ -14,7 +14,7 @@ export class TokenizerContext {
     args: {
       goal: TokenizerGoal
       snapshot: TokenizerSnapshot
-      tryToAdvanceContext?: TryToAdvanceContext 
+      performContextSpecificTasks?: PerformContextSpecificTasks 
       endPattern: RegExp
       doNotConsumeEndPattern?: boolean
     }
@@ -22,7 +22,7 @@ export class TokenizerContext {
     this.goal = args.goal
     this.snapshot = args.snapshot
     this.initialTokenIndex = args.snapshot.textIndex
-    this.tryToAdvanceContext = args.tryToAdvanceContext || (() => false)
+    this.performContextSpecificTasks = args.performContextSpecificTasks || (() => false)
     this.endPattern = this.endPattern
     this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
     
@@ -56,9 +56,4 @@ export class TokenizerContext {
   reset(): void {
     this.initialTokenIndex = this.snapshot.tokens.length
   }
-}
-
-
-interface TryToAdvanceContext {
-  (): boolean
 }
