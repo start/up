@@ -21,7 +21,7 @@ describe('The term that represents spoiler conventions', () => {
       ]))
   })
   
-  it('is always canse-insensivite', () => {
+  it('is case-insensitive even when custom', () => {
     const uppercase = '[RUINS ENDING: Ash fights Gary]'
     const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
     

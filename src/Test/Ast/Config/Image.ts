@@ -22,7 +22,7 @@ describe('The term that represents image conventions', () => {
     )
   })
     
-  it('is always case insensitive', () => {
+  it('is case-insensitive even when custom', () => {
     const lowercase = '[see: Chrono Cross logo][https://example.com/cc.png]'
     const misedCase = '[SeE: Chrono Cross logo][https://example.com/cc.png]'
 

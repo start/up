@@ -22,7 +22,7 @@ describe('The term that represents video conventions', () => {
     )
   })
     
-  it('is always case insensitive', () => {
+  it('is case-insensitive even when custom', () => {
     const lowercase = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
     const misedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
