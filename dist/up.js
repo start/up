@@ -1014,24 +1014,6 @@ var Tokenizer = (function () {
         return (this.tryToOpenAnyRawTextBracket()
             || this.bufferCurrentChar());
     };
-    Tokenizer.prototype.closeAndRemoveOpenContext = function (args) {
-        var closeInnerContexts = args.closeInnerContexts;
-        var contextToClose = args.context;
-        for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var openContext = this.openContexts[i];
-            var foundTheContextToClose = (openContext === contextToClose);
-            if (foundTheContextToClose || closeInnerContexts) {
-                this.openContexts.splice(i, 1);
-            }
-            if (foundTheContextToClose) {
-                return;
-            }
-            if (openContext.convention.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
-                this.flushBufferToNakedUrlEndToken();
-                this.openContexts.splice(i);
-            }
-        }
-    };
     Tokenizer.prototype.tryToOpenContext = function (convention) {
         var _this = this;
         var goal = convention.goal, startPattern = convention.startPattern, onlyOpenIf = convention.onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;

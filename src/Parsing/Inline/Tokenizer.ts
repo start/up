@@ -343,32 +343,6 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private closeAndRemoveOpenContext(args: { context: TokenizerContext, closeInnerContexts?: boolean }): void {
-    const { closeInnerContexts } = args
-    const contextToClose = args.context
-
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const openContext = this.openContexts[i]
-      const foundTheContextToClose = (openContext === contextToClose)
-
-      if (foundTheContextToClose || closeInnerContexts) {
-        this.openContexts.splice(i, 1)
-      }
-
-      if (foundTheContextToClose) {
-        return
-      }
-
-      // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-      if (openContext.convention.goal === TokenizerGoal.NakedUrl) {
-        this.flushBufferToNakedUrlEndToken()
-
-        // We need to close the naked URL's context, as well as the contexts of any raw text brackets inside it.
-        this.openContexts.splice(i)
-      }
-    }
-  }
-
   private tryToOpenContext(convention: TokenizableConvention): boolean {
     const { goal, startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
