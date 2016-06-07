@@ -2,7 +2,7 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
-import { OnTokenizerContextClose } from './OnTokenizerContextClose'
+import { OnConventionClose } from './OnConventionClose'
 import { TokenKind } from './TokenKind'
 
 export class TokenizerContext {
@@ -10,7 +10,7 @@ export class TokenizerContext {
 
   private beforeTryingToCloseOuterContexts: PerformContextSpecificTasks
   private afterTryingToCloseOuterContexts: PerformContextSpecificTasks
-  private onClose: OnTokenizerContextClose
+  private onClose: OnConventionClose
 
   constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {
     this.initialTokenIndex = snapshot.textIndex

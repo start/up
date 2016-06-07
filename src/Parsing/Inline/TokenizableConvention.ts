@@ -1,7 +1,7 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
-import { OnTokenizerContextClose } from './OnTokenizerContextClose'
+import { OnConventionClose } from './OnConventionClose'
 import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
@@ -16,5 +16,5 @@ export interface TokenizableConvention {
   doNotConsumeEndPattern?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
-  onClose?: OnTokenizerContextClose
+  onClose?: OnConventionClose
 }

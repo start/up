@@ -1,5 +1,5 @@
 import { TokenizerContext } from './TokenizerContext'
 
-export interface OnTokenizerContextClose {
+export interface OnConventionClose {
   (context: TokenizerContext): void
 }
