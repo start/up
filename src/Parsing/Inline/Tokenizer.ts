@@ -67,14 +67,14 @@ export class Tokenizer {
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
   private rawBracketConventions = BRACKETS.map(args => this.getRawBracketConvention(args))
 
-  constructor(entireText: string, config: UpConfig) {
+  constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
-    this.configureConventions(config)
+    this.configureConventions()
 
     this.tokenize()
   }
 
-  private configureConventions(config: UpConfig): void {
+  private configureConventions(): void {
     this.conventions.push(...[
       {
         richConvention: FOOTNOTE_CONVENTION,
@@ -94,8 +94,7 @@ export class Tokenizer {
     this.conventions.push(
       ...this.getConventionsForRichBracketedTerm({
         richConvention: SPOILER_CONVENTION,
-        term: 'spoiler',
-        config
+        term: 'spoiler'
       })
     )
 
@@ -409,16 +408,15 @@ export class Tokenizer {
   private getConventionsForRichBracketedTerm(
     args: {
       richConvention: RichConvention,
-      term: string,
-      config: UpConfig
+      term: string
     }
   ): TokenizableConvention[] {
-    const { richConvention, term, config } = args
+    const { richConvention, term } = args
 
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention,
-        startPattern: bracket.startPattern + escapeForRegex(config.localizeTerm(term)) + ':' + ANY_WHITESPACE,
+        startPattern: bracket.startPattern + escapeForRegex(this.config.localizeTerm(term)) + ':' + ANY_WHITESPACE,
         endPattern: bracket.endPattern
       }))
   }
@@ -450,16 +448,9 @@ export class Tokenizer {
     }
   }
 
-  private getConventionsForMediaDescription(
-    args: {
-      media: MediaConvention,
-      config: UpConfig
-    }
-  ): TokenizableConvention[] {
-    const { media, config } = args
-
+  private getConventionsForMediaDescription(media: MediaConvention): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern + escapeForRegex(config.localizeTerm(media.nonLocalizedTerm)) + ':' + ANY_WHITESPACE, 'i'),
+      startPattern: regExpStartingWith(bracket.startPattern + escapeForRegex(this.config.localizeTerm(media.nonLocalizedTerm)) + ':' + ANY_WHITESPACE, 'i'),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,

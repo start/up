@@ -708,6 +708,7 @@ var Token_1 = require('./Token');
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
+        this.config = config;
         this.tokens = [];
         this.buffer = '';
         this.openContexts = [];
@@ -728,10 +729,10 @@ var Tokenizer = (function () {
         };
         this.rawBracketConventions = BRACKETS.map(function (args) { return _this.getRawBracketConvention(args); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
-        this.configureConventions(config);
+        this.configureConventions();
         this.tokenize();
     }
-    Tokenizer.prototype.configureConventions = function (config) {
+    Tokenizer.prototype.configureConventions = function () {
         var _this = this;
         (_a = this.conventions).push.apply(_a, [
             {
@@ -750,8 +751,7 @@ var Tokenizer = (function () {
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         (_b = this.conventions).push.apply(_b, this.getConventionsForRichBracketedTerm({
             richConvention: RichConventions_1.SPOILER_CONVENTION,
-            term: 'spoiler',
-            config: config
+            term: 'spoiler'
         }));
         this.conventions.push({
             startPattern: INLINE_CODE_DELIMITER_PATTERN,
@@ -1000,11 +1000,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getConventionsForRichBracketedTerm = function (args) {
         var _this = this;
-        var richConvention = args.richConvention, term = args.term, config = args.config;
+        var richConvention = args.richConvention, term = args.term;
         return BRACKETS.map(function (bracket) {
             return _this.getRichSandwichConvention({
                 richConvention: richConvention,
-                startPattern: bracket.startPattern + Patterns_1.escapeForRegex(config.localizeTerm(term)) + ':' + Patterns_1.ANY_WHITESPACE,
+                startPattern: bracket.startPattern + Patterns_1.escapeForRegex(_this.config.localizeTerm(term)) + ':' + Patterns_1.ANY_WHITESPACE,
                 endPattern: bracket.endPattern
             });
         });
@@ -1026,11 +1026,10 @@ var Tokenizer = (function () {
             }
         };
     };
-    Tokenizer.prototype.getConventionsForMediaDescription = function (args) {
+    Tokenizer.prototype.getConventionsForMediaDescription = function (media) {
         var _this = this;
-        var media = args.media, config = args.config;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern + Patterns_1.escapeForRegex(config.localizeTerm(media.nonLocalizedTerm)) + ':' + Patterns_1.ANY_WHITESPACE, 'i'),
+            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern + Patterns_1.escapeForRegex(_this.config.localizeTerm(media.nonLocalizedTerm)) + ':' + Patterns_1.ANY_WHITESPACE, 'i'),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
             flushBufferToPlainTextTokenBeforeOpening: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
