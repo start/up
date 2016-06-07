@@ -71,7 +71,7 @@ function escapeForRegex(text: string): string {
   return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
 }
 
-function getRegExpStartingWith(pattern: string, flags?: string): RegExp {
+function regexStartingWith(pattern: string, flags?: string): RegExp {
   return new RegExp(startsWith(pattern), flags)
 }
 
@@ -86,7 +86,7 @@ export {
   streakOf,
   atLeast,
   escapeForRegex,
-  getRegExpStartingWith,
+  regexStartingWith,
   NON_BLANK,
   BLANK,
   INLINE_WHITESPACE_CHAR,

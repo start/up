@@ -708,8 +708,8 @@ var TokenizableBracket = (function () {
     function TokenizableBracket(args) {
         var goal = args.goal, bracket = args.bracket;
         this.goal = goal;
-        this.startPattern = Patterns_1.getRegExpStartingWith(bracket.startPattern);
-        this.endPattern = Patterns_1.getRegExpStartingWith(bracket.endPattern);
+        this.startPattern = Patterns_1.regexStartingWith(bracket.startPattern);
+        this.endPattern = Patterns_1.regexStartingWith(bracket.endPattern);
         this.open = bracket.start;
         this.close = bracket.end;
     }
@@ -723,8 +723,8 @@ var Patterns_1 = require('../../Patterns');
 var TokenizableRichSandwich = (function () {
     function TokenizableRichSandwich(args) {
         this.goal = args.richConvention.tokenizerGoal;
-        this.startPattern = Patterns_1.getRegExpStartingWith(args.startPattern, 'i');
-        this.endPattern = Patterns_1.getRegExpStartingWith(args.endPattern);
+        this.startPattern = Patterns_1.regexStartingWith(args.startPattern, 'i');
+        this.endPattern = Patterns_1.regexStartingWith(args.endPattern);
         this.startTokenKind = args.richConvention.startTokenKind;
         this.endTokenKind = args.richConvention.endTokenKind;
     }
@@ -1114,10 +1114,10 @@ exports.Tokenizer = Tokenizer;
 var PARENTHESIS = new Bracket_1.Bracket('(', ')');
 var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
 var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
-var INLINE_CODE_DELIMITER_PATTERN = Patterns_1.getRegExpStartingWith('`');
-var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*')));
-var NAKED_URL_PROTOCOL_PATTERN = Patterns_1.getRegExpStartingWith('http' + Patterns_1.optional('s') + '://');
-var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.WHITESPACE_CHAR);
+var INLINE_CODE_DELIMITER_PATTERN = Patterns_1.regexStartingWith('`');
+var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.regexStartingWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*')));
+var NAKED_URL_PROTOCOL_PATTERN = Patterns_1.regexStartingWith('http' + Patterns_1.optional('s') + '://');
+var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.regexStartingWith(Patterns_1.WHITESPACE_CHAR);
 
 },{"../../CollectionHelpers":1,"../../Patterns":41,"./Bracket":2,"./FailedGoalTracker":3,"./InlineConsumer":4,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizableBracket":16,"./TokenizableRichSandwich":17,"./TokenizerContext":19,"./TokenizerGoal":20,"./TokenizerSnapshot":21,"./insertBracketsInsideBracketedConventions":23,"./nestOverlappingConventions":24}],19:[function(require,module,exports){
 "use strict";
@@ -1882,11 +1882,11 @@ function getExplicitOrdinal(rawListItem) {
 }
 var INTEGER_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.INTEGER));
 var BULLET = Patterns_1.either('#', Patterns_1.capture(Patterns_1.either(Patterns_1.INTEGER, '#') + Patterns_1.either('\\.', '\\)')));
-var BULLETED_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR);
+var BULLETED_PATTERN = Patterns_1.regexStartingWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR);
 var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(Patterns_1.INTEGER + '\\.');
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
-var INDENTED_PATTERN = Patterns_1.getRegExpStartingWith(Patterns_1.INDENT);
+var INDENTED_PATTERN = Patterns_1.regexStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":41,"../../SyntaxNodes/OrderedListItem":63,"../../SyntaxNodes/OrderedListNode":64,"./LineConsumer":26,"./getOutlineNodes":28,"./getRemainingLinesOfListItem":29}],37:[function(require,module,exports){
 "use strict";
@@ -2085,10 +2085,10 @@ function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }
 exports.escapeForRegex = escapeForRegex;
-function getRegExpStartingWith(pattern, flags) {
+function regexStartingWith(pattern, flags) {
     return new RegExp(startsWith(pattern), flags);
 }
-exports.getRegExpStartingWith = getRegExpStartingWith;
+exports.regexStartingWith = regexStartingWith;
 
 },{}],42:[function(require,module,exports){
 "use strict";
