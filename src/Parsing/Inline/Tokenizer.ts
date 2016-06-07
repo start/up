@@ -110,7 +110,7 @@ export class Tokenizer {
   //
   // Some of rich sandwiches rely on user-configurable values, so we assign this field in the
   // `configureConventions` method where we have access to the user's config settings.
-  private richSandwichesExceptRichBrackets: TokenizableRichSandwich[]
+  private richSandwichConventionsExceptRichBrackets: TokenizableConvention[]
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -120,7 +120,7 @@ export class Tokenizer {
   }
 
   private configureConventions(config: UpConfig): void {
-    this.richSandwichesExceptRichBrackets = [
+    this.richSandwichConventionsExceptRichBrackets = [
       {
         richConvention: SPOILER_CONVENTION,
         startPattern: SQUARE_BRACKET.startPattern + escapeForRegex(config.settings.i18n.terms.spoiler) + ':' + ANY_WHITESPACE,
@@ -138,7 +138,7 @@ export class Tokenizer {
         startPattern: escapeForRegex('++'),
         endPattern: escapeForRegex('++')
       }
-    ].map(args => new TokenizableRichSandwich(args))
+    ].map(args => this.getRichSandwichConvention(args))
   }
 
   private tokenize(): void {
@@ -297,26 +297,7 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyRichSandwich(): boolean {
-    return this.richSandwichesExceptRichBrackets.some(sandwich => this.tryToOpenRichSandwich(sandwich))
-  }
-
-  private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
-    return this.tryToOpen({
-      goal: sandwich.goal,
-      startPattern: sandwich.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: true,
-      endPattern: sandwich.endPattern,
-      onCloseFlushBufferTo: TokenKind.PlainText,
-
-      onClose: (context) => {
-        const startToken = new Token({ kind: sandwich.startTokenKind })
-        const endToken = new Token({ kind: sandwich.endTokenKind })
-        startToken.associateWith(endToken)
-
-        this.insertTokenAtStartOfContext(context, startToken)
-        this.tokens.push(endToken)
-      }
-    })
+    return this.richSandwichConventionsExceptRichBrackets.some(sandwich => this.tryToOpen(sandwich))
   }
 
   private getRichSandwichConvention(
@@ -332,7 +313,7 @@ export class Tokenizer {
       goal: richConvention.tokenizerGoal,
 
       startPattern: regExpStartingWith(startPattern, 'i'),
-      endPattern: regExpStartingWith(endPattern, 'i'),
+      endPattern: regExpStartingWith(endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
       onCloseFlushBufferTo: TokenKind.PlainText,
@@ -347,7 +328,7 @@ export class Tokenizer {
       }
     }
   }
-  
+
   private tryToOpenAnyRawTextBracket(): boolean {
     return this.rawBrackets.some(bracket => this.tryToOpenRawBracket(bracket))
   }
