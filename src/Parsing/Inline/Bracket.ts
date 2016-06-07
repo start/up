@@ -1,5 +1,4 @@
 import { TokenKind } from './TokenKind'
-import { TokenizerGoal } from './TokenizerGoal'
 import { escapeForRegex } from '../../Patterns'
 
 

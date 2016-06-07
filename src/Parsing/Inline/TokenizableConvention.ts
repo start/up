@@ -1,4 +1,3 @@
-import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { OnConventionClose } from './OnConventionClose'
 import { TokenizerContext } from './TokenizerContext'
@@ -6,7 +5,6 @@ import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
 export interface TokenizableConvention {
-  goal: TokenizerGoal
   startPattern: RegExp
   endPattern: RegExp
   onlyOpenIf?: ShouldOpenConvention

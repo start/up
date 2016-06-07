@@ -1,4 +1,3 @@
-import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerContext } from './TokenizerContext'
 import { Token } from './Token'
 

@@ -9,7 +9,6 @@ import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnMatch } from './OnMatch'
 import { last, contains, reversed } from '../../CollectionHelpers'
-import { TokenizerGoal } from './TokenizerGoal'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -36,8 +35,6 @@ export class Tokenizer {
   private buffer = ''
 
   private inlineCodeConvention = {
-    goal: TokenizerGoal.InlineCode,
-
     startPattern: INLINE_CODE_DELIMITER_PATTERN,
     endPattern: INLINE_CODE_DELIMITER_PATTERN,
 
@@ -48,8 +45,6 @@ export class Tokenizer {
   }
 
   private nakedUrlConvention: TokenizableConvention = {
-    goal: TokenizerGoal.NakedUrl,
-
     startPattern: NAKED_URL_PROTOCOL_PATTERN,
     endPattern: NAKED_URL_TERMINATOR_PATTERN,
 
@@ -70,9 +65,9 @@ export class Tokenizer {
 
   // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
   private linkUrlConventions = [
-    { goal: TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
-    { goal: TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
-    { goal: TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
+    PARENTHESIS,
+    SQUARE_BRACKET,
+    CURLY_BRACKET
   ].map(args => this.getLinkUrlConvention(args))
 
   private richBracketConventions = [
@@ -96,9 +91,9 @@ export class Tokenizer {
   // They can only appear inside URLs or media conventions' descriptions, and they allow matching
   // brackets to be included without having to escape any closing brackets.
   private rawBracketConventions = [
-    { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
-    { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
-    { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
+    PARENTHESIS,
+    SQUARE_BRACKET,
+    CURLY_BRACKET
   ].map(args => this.getRawBracketConvention(args))
 
   // A rich sandwich:
@@ -246,12 +241,8 @@ export class Tokenizer {
     return this.linkUrlConventions.some(linkUrl => this.tryToOpen(linkUrl))
   }
 
-  private getLinkUrlConvention(args: { goal: TokenizerGoal, bracket: Bracket }): TokenizableConvention {
-    const { goal, bracket } = args
-
+  private getLinkUrlConvention(bracket: Bracket): TokenizableConvention {
     return {
-      goal,
-
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
@@ -308,8 +299,6 @@ export class Tokenizer {
     const { richConvention, startPattern, endPattern } = args
 
     return {
-      goal: richConvention.tokenizerGoal,
-
       startPattern: regExpStartingWith(startPattern, 'i'),
       endPattern: regExpStartingWith(endPattern),
 
@@ -331,12 +320,8 @@ export class Tokenizer {
     return this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
   }
 
-  private getRawBracketConvention(args: { goal: TokenizerGoal, bracket: Bracket }): TokenizableConvention {
-    const { goal, bracket } = args
-
+  private getRawBracketConvention(bracket: Bracket): TokenizableConvention {
     return {
-      goal,
-
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
@@ -354,7 +339,7 @@ export class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { goal, startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)

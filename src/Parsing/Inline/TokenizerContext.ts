@@ -1,4 +1,3 @@
-import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 

@@ -9,7 +9,6 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { TokenizerGoal } from './TokenizerGoal'
 import { TokenKind } from './TokenKind'
 
 
@@ -28,56 +27,48 @@ const STRESS_CONVENTION: RichConvention = {
 const REVISION_DELETION_CONVENTION: RichConvention = {
   NodeType: RevisionDeletionNode,
   startTokenKind: TokenKind.RevisionDeletionStart,
-  endTokenKind: TokenKind.RevisionDeletionEnd,
-  tokenizerGoal: TokenizerGoal.RevisionDeletion
+  endTokenKind: TokenKind.RevisionDeletionEnd
 }
 
 const REVISION_INSERTION_CONVENTION: RichConvention = {
   NodeType: RevisionInsertionNode,
   startTokenKind: TokenKind.RevisionInsertionStart,
-  endTokenKind: TokenKind.RevisionInsertionEnd,
-  tokenizerGoal: TokenizerGoal.RevisionInsertion
+  endTokenKind: TokenKind.RevisionInsertionEnd
 }
 
 const SPOILER_CONVENTION: RichConvention = {
   NodeType: SpoilerNode,
   startTokenKind: TokenKind.SpoilerStart,
-  endTokenKind: TokenKind.SpoilerEnd,
-  tokenizerGoal: TokenizerGoal.Spoiler
+  endTokenKind: TokenKind.SpoilerEnd
 }
 
 const FOOTNOTE_CONVENTION : RichConvention= {
   NodeType: FootnoteNode,
   startTokenKind: TokenKind.FootnoteStart,
-  endTokenKind: TokenKind.FootnoteEnd,
-  tokenizerGoal: TokenizerGoal.Footnote
+  endTokenKind: TokenKind.FootnoteEnd
 }
 
 const PARENTHESIZED_CONVENTION: RichConvention =  {
   NodeType: ParenthesizedNode,
   startTokenKind: TokenKind.ParenthesizedStart,
-  endTokenKind: TokenKind.ParenthesizedEnd,
-  tokenizerGoal: TokenizerGoal.Parenthesized
+  endTokenKind: TokenKind.ParenthesizedEnd
 }
 
 const SQUARE_BRACKETED_CONVENTION: RichConvention =  {
   NodeType: SquareBracketedNode,
   startTokenKind: TokenKind.SquareBracketedStart,
-  endTokenKind: TokenKind.SquareBracketedEnd,
-  tokenizerGoal: TokenizerGoal.SquareBracketed
+  endTokenKind: TokenKind.SquareBracketedEnd
 }
 
 const ACTION_CONVENTION: RichConvention =  {
   NodeType: ActionNode,
   startTokenKind: TokenKind.ActionStart,
-  endTokenKind: TokenKind.ActionEnd,
-  tokenizerGoal: TokenizerGoal.Action
+  endTokenKind: TokenKind.ActionEnd
 }
 
 const LINK_CONVENTION: RichConvention =  {
   startTokenKind: TokenKind.LinkStart,
-  endTokenKind: TokenKind.LinkUrlAndEnd,
-  tokenizerGoal: TokenizerGoal.Link
+  endTokenKind: TokenKind.LinkUrlAndEnd
 }
 
 export {
