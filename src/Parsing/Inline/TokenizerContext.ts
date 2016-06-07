@@ -14,7 +14,8 @@ export class TokenizerContext {
   doNotConsumeEndPattern: boolean
   closeInnerContextsWhenClosing: boolean
   onCloseFlushBufferTo: TokenKind
-  onClose: OnTokenizerContextClose
+  
+  private onClose: OnTokenizerContextClose
 
   constructor(
     args: {
@@ -41,6 +42,10 @@ export class TokenizerContext {
     this.onClose = args.onClose
     
     this.reset()
+  }
+
+  close(): void {
+    this.onClose(this)
   }
 
   registerTokenInsertion(args: { atIndex: number, onBehalfOfContext: TokenizerContext }) {

@@ -178,7 +178,7 @@ export class Tokenizer {
           this.flushBufferToNakedUrlEndToken()
 
           // We need to close the naked URL's context, as well as the contexts of any raw text brackets
-          //  inside it.
+          // inside it.
           this.openContexts.splice(i)
         }
 
@@ -186,7 +186,7 @@ export class Tokenizer {
           this.flushBufferToTokenOfKind(context.onCloseFlushBufferTo)
         }
 
-      context.onClose(context)
+        context.close()
 
         this.openContexts.splice(i, (context.closeInnerContextsWhenClosing ? null : 1))
         return true

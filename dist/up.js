@@ -867,7 +867,7 @@ var Tokenizer = (function () {
                 if (context_2.onCloseFlushBufferTo != null) {
                     this.flushBufferToTokenOfKind(context_2.onCloseFlushBufferTo);
                 }
-                context_2.onClose(context_2);
+                context_2.close();
                 this.openContexts.splice(i, (context_2.closeInnerContextsWhenClosing ? null : 1));
                 return true;
             }
@@ -1188,6 +1188,9 @@ var TokenizerContext = (function () {
         this.onClose = args.onClose;
         this.reset();
     }
+    TokenizerContext.prototype.close = function () {
+        this.onClose(this);
+    };
     TokenizerContext.prototype.registerTokenInsertion = function (args) {
         var atIndex = args.atIndex, onBehalfOfContext = args.onBehalfOfContext;
         var mustIncrementInitialIndex = (atIndex < this.initialTokenIndex
