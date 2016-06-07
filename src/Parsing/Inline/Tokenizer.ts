@@ -1,4 +1,4 @@
-import { escapeForRegex, startsWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
+import { escapeForRegex, getRegExpStartingWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
@@ -281,13 +281,7 @@ export class Tokenizer {
     return this.rawBrackets.some(bracket =>
       this.tryToOpenRawBracket(bracket))
   }
-
-  private tryToCloseRawBracketCorrespondingToContext(context: TokenizerContext): boolean {
-    return this.rawBrackets.some(rawTextBracket =>
-      (rawTextBracket.goal === context.goal)
-      && this.tryToCloseRawBracket(rawTextBracket, context))
-  }
-
+  
   private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
     return this.tryToOpenContext({
       goal: bracket.goal,
@@ -299,14 +293,6 @@ export class Tokenizer {
     })
   }
 
-  private tryToCloseRawBracket(bracket: TokenizableBracket, context: TokenizerContext): boolean {
-    return this.tryToCloseContext({
-      context,
-      pattern: bracket.endPattern,
-      thenAddAnyClosingTokens: bracket => { this.buffer += bracket }
-    })
-  }
-
   private tryToOpenNakedUrl(): boolean {
     return this.tryToOpenContext({
       goal: TokenizerGoal.NakedUrl,
@@ -314,7 +300,11 @@ export class Tokenizer {
       flushBufferToPlainTextTokenBeforeOpening: true,
       onOpen: urlProtocol => {
         this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
-      }
+      },
+      whileOpen: () => this.bufferRawText(),
+      endPattern: NAKED_URL_TERMINATOR_PATTERN,
+      doNotConsumeEndPattern: true,
+      onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd
     })
   }
 
@@ -322,21 +312,6 @@ export class Tokenizer {
     return (
       this.tryToOpenAnyRawTextBracket()
       || this.bufferCurrentChar())
-  }
-
-  private tryToCloseNakedUrl(context: TokenizerContext): boolean {
-    // Whitespace terminates naked URLs, but we don't advance past the whitespace character.
-    //
-    // Instead, we leave the whitespace to be matched by another convention (e.g. a footnote, which consumes any
-    // leading whitespace).
-    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-      this.closeContext({ context, closeInnerContexts: true })
-      this.flushBufferToNakedUrlEndToken()
-
-      return true
-    }
-
-    return false
   }
 
   private closeContext(args: { context: TokenizerContext, closeInnerContexts?: boolean }): void {
@@ -572,14 +547,14 @@ const CURLY_BRACKET =
   new Bracket('{', '}')
 
 
-const INLINE_CODE_DELIMITER_PATTERN = new RegExp(
-  startsWith('`'))
+const INLINE_CODE_DELIMITER_PATTERN =
+  getRegExpStartingWith('`')
 
-const RAISED_VOICE_DELIMITER_PATTERN = new RegExp(
-  startsWith(atLeast(1, escapeForRegex('*'))))
+const RAISED_VOICE_DELIMITER_PATTERN =
+  getRegExpStartingWith(atLeast(1, escapeForRegex('*')))
 
-const NAKED_URL_PROTOCOL_PATTERN = new RegExp(
-  startsWith('http' + optional('s') + '://'))
+const NAKED_URL_PROTOCOL_PATTERN =
+  getRegExpStartingWith('http' + optional('s') + '://')
 
-const WHITESPACE_CHAR_PATTERN = new RegExp(
-  WHITESPACE_CHAR)
+const NAKED_URL_TERMINATOR_PATTERN =
+  getRegExpStartingWith(WHITESPACE_CHAR)
