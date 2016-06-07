@@ -56,17 +56,17 @@ export class Tokenizer {
     endPattern: NAKED_URL_TERMINATOR_PATTERN,
 
     flushBufferToPlainTextTokenBeforeOpening: true,
-    
+
     onOpen: urlProtocol => {
       this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
     },
-    
+
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
 
     doNotConsumeEndPattern: true,
     onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
     closeInnerContextsWhenClosing: true,
-    
+
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
 
@@ -91,7 +91,7 @@ export class Tokenizer {
       startPattern: CURLY_BRACKET.startPattern,
       endPattern: CURLY_BRACKET.endPattern
     }
-  ].map(args => this.getRichSandwichConvention(new TokenizableRichSandwich(args)))
+  ].map(args => this.getRichSandwichConvention(args))
 
   // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
   //
@@ -259,7 +259,7 @@ export class Tokenizer {
 
       flushBufferToPlainTextTokenBeforeOpening: false,
       onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
-      
+
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
 
@@ -319,19 +319,27 @@ export class Tokenizer {
     })
   }
 
-  private getRichSandwichConvention(sandwich: TokenizableRichSandwich): TokenizableConvention {
-    return {
-      goal: sandwich.goal,
+  private getRichSandwichConvention(
+    args: {
+      richConvention: RichConvention,
+      startPattern: string,
+      endPattern: string
+    }
+): TokenizableConvention {
+    const { richConvention, startPattern, endPattern } = args
 
-      startPattern: sandwich.startPattern,
-      endPattern: sandwich.endPattern,
+    return {
+      goal: richConvention.tokenizerGoal,
+
+      startPattern: regExpStartingWith(startPattern, 'i'),
+      endPattern: regExpStartingWith(endPattern, 'i'),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
       onCloseFlushBufferTo: TokenKind.PlainText,
 
       onClose: (context) => {
-        const startToken = new Token({ kind: sandwich.startTokenKind })
-        const endToken = new Token({ kind: sandwich.endTokenKind })
+        const startToken = new Token({ kind: richConvention.startTokenKind })
+        const endToken = new Token({ kind: richConvention.endTokenKind })
         startToken.associateWith(endToken)
 
         this.insertTokenAtStartOfContext(context, startToken)
@@ -339,6 +347,7 @@ export class Tokenizer {
       }
     }
   }
+  
   private tryToOpenAnyRawTextBracket(): boolean {
     return this.rawBrackets.some(bracket => this.tryToOpenRawBracket(bracket))
   }

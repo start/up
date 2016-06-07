@@ -798,7 +798,7 @@ var Tokenizer = (function () {
                 startPattern: CURLY_BRACKET.startPattern,
                 endPattern: CURLY_BRACKET.endPattern
             }
-        ].map(function (args) { return _this.getRichSandwichConvention(new TokenizableRichSandwich_1.TokenizableRichSandwich(args)); });
+        ].map(function (args) { return _this.getRichSandwichConvention(args); });
         this.rawBrackets = [
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
@@ -967,17 +967,18 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.getRichSandwichConvention = function (sandwich) {
+    Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
+        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern;
         return {
-            goal: sandwich.goal,
-            startPattern: sandwich.startPattern,
-            endPattern: sandwich.endPattern,
+            goal: richConvention.tokenizerGoal,
+            startPattern: Patterns_1.regExpStartingWith(startPattern, 'i'),
+            endPattern: Patterns_1.regExpStartingWith(endPattern, 'i'),
             flushBufferToPlainTextTokenBeforeOpening: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             onClose: function (context) {
-                var startToken = new Token_1.Token({ kind: sandwich.startTokenKind });
-                var endToken = new Token_1.Token({ kind: sandwich.endTokenKind });
+                var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
+                var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
                 startToken.associateWith(endToken);
                 _this.insertTokenAtStartOfContext(context, startToken);
                 _this.tokens.push(endToken);
