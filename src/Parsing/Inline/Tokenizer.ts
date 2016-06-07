@@ -37,13 +37,28 @@ export class Tokenizer {
   // flushed to a token, usually a PlainTextToken.
   private buffer = ''
 
-  private inlineCode = {
+  private inlineCodeConvention = {
     goal: TokenizerGoal.InlineCode,
     startPattern: INLINE_CODE_DELIMITER_PATTERN,
     endPattern: INLINE_CODE_DELIMITER_PATTERN,
     flushBufferToPlainTextTokenBeforeOpening: true,
     insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
     onCloseFlushBufferTo: TokenKind.InlineCode
+  }
+
+  private nakedUrlConvention: TokenizableConvention = {
+    goal: TokenizerGoal.NakedUrl,
+    startPattern: NAKED_URL_PROTOCOL_PATTERN,
+    flushBufferToPlainTextTokenBeforeOpening: true,
+    onOpen: urlProtocol => {
+      this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+    },
+    insteadOfOpeningUsualContexts: () => this.bufferRawText(),
+    endPattern: NAKED_URL_TERMINATOR_PATTERN,
+    doNotConsumeEndPattern: true,
+    closeInnerContextsWhenClosing: true,
+    onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
+    resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
   }
 
   private richBrackets = [
@@ -213,11 +228,11 @@ export class Tokenizer {
 
   private tryToOpenAnyConvention(): boolean {
     return (
-      this.tryToOpenContext(this.inlineCode)
+      this.tryToOpen(this.inlineCodeConvention)
       || this.tryToOpenAnyRichSandwich()
       || this.tryToOpenAnyLinkUrl()
       || this.tryToOpenAnyRichBracket()
-      || this.tryToOpenNakedUrl())
+      || this.tryToOpen(this.nakedUrlConvention))
   }
 
   private tryToOpenAnyLinkUrl(): boolean {
@@ -225,7 +240,7 @@ export class Tokenizer {
   }
 
   private tryToOpenLinkUrl(bracketedLinkUrl: TokenizableBracket): boolean {
-    return this.tryToOpenContext({
+    return this.tryToOpen({
       goal: bracketedLinkUrl.goal,
       onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
       startPattern: bracketedLinkUrl.startPattern,
@@ -272,7 +287,7 @@ export class Tokenizer {
   }
 
   private tryToOpenRichSandwich(sandwich: TokenizableRichSandwich): boolean {
-    return this.tryToOpenContext({
+    return this.tryToOpen({
       goal: sandwich.goal,
       startPattern: sandwich.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: true,
@@ -295,7 +310,7 @@ export class Tokenizer {
   }
 
   private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
-    return this.tryToOpenContext({
+    return this.tryToOpen({
       goal: bracket.goal,
       startPattern: bracket.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
@@ -306,28 +321,11 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenNakedUrl(): boolean {
-    return this.tryToOpenContext({
-      goal: TokenizerGoal.NakedUrl,
-      startPattern: NAKED_URL_PROTOCOL_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpening: true,
-      onOpen: urlProtocol => {
-        this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
-      },
-      insteadOfOpeningUsualContexts: () => this.bufferRawText(),
-      endPattern: NAKED_URL_TERMINATOR_PATTERN,
-      doNotConsumeEndPattern: true,
-      closeInnerContextsWhenClosing: true,
-      onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
-      resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
-    })
-  }
-
   private bufferRawText(): boolean {
     return this.tryToOpenAnyRawTextBracket() || this.bufferCurrentChar()
   }
 
-  private tryToOpenContext(convention: TokenizableConvention): boolean {
+  private tryToOpen(convention: TokenizableConvention): boolean {
     const { goal, startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
