@@ -101,7 +101,7 @@ export class Tokenizer {
     { goal: TokenizerGoal.ParenthesizedInRawText, bracket: PARENTHESIS },
     { goal: TokenizerGoal.SquareBracketedInRawText, bracket: SQUARE_BRACKET },
     { goal: TokenizerGoal.CurlyBracketedInRawText, bracket: CURLY_BRACKET }
-  ].map(args => this.getRawBracketConvention(new TokenizableBracket(args)))
+  ].map(args => this.getRawBracketConvention(args))
 
   // A rich sandwich:
   //
@@ -333,17 +333,19 @@ export class Tokenizer {
     return this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
   }
 
-  private getRawBracketConvention(bracket: TokenizableBracket): TokenizableConvention {
-    return {
-      goal: bracket.goal,
+  private getRawBracketConvention(args: { goal: TokenizerGoal, bracket: Bracket }): TokenizableConvention {
+    const { goal, bracket } = args
 
-      startPattern: bracket.startPattern,
-      endPattern: bracket.endPattern,
+    return {
+      goal,
+
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: false,
 
-      onOpen: () => { this.buffer += bracket.open },
-      onClose: () => { this.buffer += bracket.close },
+      onOpen: () => { this.buffer += bracket.start },
+      onClose: () => { this.buffer += bracket.end },
 
       resolveWhenLeftUnclosed: () => true
     }
