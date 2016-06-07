@@ -155,6 +155,25 @@ export class Tokenizer {
 
   private tryToCloseOrAdvanceAnyOpenContext(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+
+      const foundEndPattern = this.consumer.advanceAfterMatch({
+        pattern: context.endPattern,
+
+        then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+          if (context.doNotConsumeEndPattern) {
+            this.consumer.textIndex -= match.length
+          }
+
+
+          if (context.onCloseFlushBufferTo != null) {
+            this.flushBufferToTokenOfKind(context.onCloseFlushBufferTo)
+          }
+
+          context.onClose(context, match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+        }
+      })
+
       if (this.tryToCloseOrAdvanceContext(this.openContexts[i])) {
         return true
       }
@@ -190,7 +209,7 @@ export class Tokenizer {
       goal: TokenizerGoal.InlineCode,
       startPattern: INLINE_CODE_DELIMITER_PATTERN,
       flushBufferToPlainTextTokenBeforeOpening: true,
-      whileOpen: () => this.bufferCurrentChar(),
+      beforeTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
       endPattern: INLINE_CODE_DELIMITER_PATTERN,
       onCloseFlushBufferTo: TokenKind.InlineCode
     })
@@ -217,7 +236,7 @@ export class Tokenizer {
       goal: bracketedLinkUrl.goal,
       startPattern: bracketedLinkUrl.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
-      whileOpen: () => this.bufferRawText(),
+      beforeTryingToCloseOuterContexts: () => this.bufferRawText(),
       endPattern: bracketedLinkUrl.endPattern,
       closeInnerContextsWhenClosing: true,
 
@@ -273,7 +292,7 @@ export class Tokenizer {
 
         this.insertTokenAtStartOfContext(context, startToken)
         this.tokens.push(endToken)
-      } 
+      }
     })
   }
 
@@ -281,7 +300,7 @@ export class Tokenizer {
     return this.rawBrackets.some(bracket =>
       this.tryToOpenRawBracket(bracket))
   }
-  
+
   private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
     return this.tryToOpenContext({
       goal: bracket.goal,
@@ -301,7 +320,7 @@ export class Tokenizer {
       onOpen: urlProtocol => {
         this.createTokenAndAppend({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
       },
-      whileOpen: () => this.bufferRawText(),
+      afterTryingToCloseOuterContexts: () => this.bufferRawText(),
       endPattern: NAKED_URL_TERMINATOR_PATTERN,
       doNotConsumeEndPattern: true,
       onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd
@@ -314,7 +333,7 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  private closeContext(args: { context: TokenizerContext, closeInnerContexts?: boolean }): void {
+  private closeAndRemoveOpenContext(args: { context: TokenizerContext, closeInnerContexts?: boolean }): void {
     const { closeInnerContexts } = args
     const contextToClose = args.context
 
@@ -346,7 +365,8 @@ export class Tokenizer {
       startPattern: RegExp
       flushBufferToPlainTextTokenBeforeOpening: boolean
       onOpen?: OnMatch
-      whileOpen?: PerformContextSpecificTasks
+      beforeTryingToCloseOuterContexts?: PerformContextSpecificTasks 
+      afterTryingToCloseOuterContexts?: PerformContextSpecificTasks
       endPattern: RegExp
       doNotConsumeEndPattern?: boolean
       closeInnerContextsWhenClosing?: boolean
@@ -354,11 +374,11 @@ export class Tokenizer {
       onClose?: OnTokenizerContextClose
     }
   ): boolean {
-    const { goal, startPattern,flushBufferToPlainTextTokenBeforeOpening, onOpen, whileOpen, endPattern, doNotConsumeEndPattern, closeInnerContextsWhenClosing, onCloseFlushBufferTo, onClose } = args
+    const { goal, startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen, beforeTryingToCloseOuterContexts, afterTryingToCloseOuterContexts, endPattern, doNotConsumeEndPattern, closeInnerContextsWhenClosing, onCloseFlushBufferTo, onClose } = args
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern: startPattern,
-      
+
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
         if (flushBufferToPlainTextTokenBeforeOpening) {
           this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
@@ -367,12 +387,13 @@ export class Tokenizer {
         const context = new TokenizerContext({
           goal,
           snapshot: this.getCurrentSnapshot(),
-          whileOpen: whileOpen || (() => false),
+          beforeTryingToCloseOuterContexts,
+          afterTryingToCloseOuterContexts,
           endPattern,
           doNotConsumeEndPattern,
           closeInnerContextsWhenClosing,
           onCloseFlushBufferTo,
-          onClose: onClose || (() => {})
+          onClose: onClose || (() => { })
         })
 
         this.openContexts.push(context)
@@ -398,7 +419,7 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern,
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        this.closeContext({ context, closeInnerContexts })
+        this.closeAndRemoveOpenContext({ context, closeInnerContexts })
 
         if (onCloseFlushBufferTo != null) {
           this.flushBufferToTokenOfKind(onCloseFlushBufferTo)

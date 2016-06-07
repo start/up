@@ -8,7 +8,8 @@ export class TokenizerContext {
   goal: TokenizerGoal
   initialTokenIndex: number
   snapshot: TokenizerSnapshot
-  whileOpen: PerformContextSpecificTasks 
+  beforeTryingToCloseOuterContexts: PerformContextSpecificTasks 
+  afterTryingToCloseOuterContexts: PerformContextSpecificTasks 
   endPattern: RegExp
   doNotConsumeEndPattern: boolean
   closeInnerContextsWhenClosing: boolean
@@ -19,7 +20,8 @@ export class TokenizerContext {
     args: {
       goal: TokenizerGoal
       snapshot: TokenizerSnapshot
-      whileOpen: PerformContextSpecificTasks 
+      beforeTryingToCloseOuterContexts: PerformContextSpecificTasks 
+      afterTryingToCloseOuterContexts: PerformContextSpecificTasks
       endPattern: RegExp
       doNotConsumeEndPattern: boolean
       closeInnerContextsWhenClosing: boolean
@@ -29,7 +31,8 @@ export class TokenizerContext {
   ) {
     this.snapshot = args.snapshot
     this.initialTokenIndex = args.snapshot.textIndex
-    this.whileOpen = args.whileOpen
+    this.beforeTryingToCloseOuterContexts = args.beforeTryingToCloseOuterContexts
+    this.afterTryingToCloseOuterContexts = args.afterTryingToCloseOuterContexts
     this.endPattern = this.endPattern
     this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
     this.closeInnerContextsWhenClosing = args.closeInnerContextsWhenClosing
