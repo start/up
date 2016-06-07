@@ -224,7 +224,7 @@ export class Tokenizer {
     return (
       this.tryToOpenInlineCode()
       || this.tryToOpenAnyRichSandwich()
-      || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
+      || this.tryToOpenAnyLinkUrl()
       || this.tryToOpenAnyRichBracket()
       || this.tryToOpenNakedUrl())
   }
@@ -247,6 +247,7 @@ export class Tokenizer {
   private tryToOpenLinkUrl(bracketedLinkUrl: TokenizableBracket): boolean {
     return this.tryToOpenContext({
       goal: bracketedLinkUrl.goal,
+      onlyOpenIf: () => this.isDirectlyFollowingLinkBrackets(),
       startPattern: bracketedLinkUrl.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
       beforeTryingToCloseOuterContexts: () => this.bufferRawText(),
@@ -382,22 +383,22 @@ export class Tokenizer {
       this.canTry(goal)
       && (!onlyOpenIf || onlyOpenIf())
       && this.consumer.advanceAfterMatch({
-      pattern: startPattern,
+        pattern: startPattern,
 
-      then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        if (flushBufferToPlainTextTokenBeforeOpening) {
-          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
+          if (flushBufferToPlainTextTokenBeforeOpening) {
+            this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+          }
+
+          const context = new TokenizerContext(convention, this.getCurrentSnapshot())
+
+          this.openContexts.push(context)
+
+          if (onOpen) {
+            onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
+          }
         }
-
-        const context = new TokenizerContext(convention, this.getCurrentSnapshot())
-
-        this.openContexts.push(context)
-
-        if (onOpen) {
-          onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
-        }
-      }
-    })
+      })
     )
   }
 

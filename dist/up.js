@@ -903,7 +903,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         return (this.tryToOpenInlineCode()
             || this.tryToOpenAnyRichSandwich()
-            || (this.isDirectlyFollowingLinkBrackets() && this.tryToOpenAnyLinkUrl())
+            || this.tryToOpenAnyLinkUrl()
             || this.tryToOpenAnyRichBracket()
             || this.tryToOpenNakedUrl());
     };
@@ -926,6 +926,7 @@ var Tokenizer = (function () {
         var _this = this;
         return this.tryToOpenContext({
             goal: bracketedLinkUrl.goal,
+            onlyOpenIf: function () { return _this.isDirectlyFollowingLinkBrackets(); },
             startPattern: bracketedLinkUrl.startPattern,
             flushBufferToPlainTextTokenBeforeOpening: false,
             beforeTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
