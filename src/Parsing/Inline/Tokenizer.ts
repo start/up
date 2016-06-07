@@ -122,7 +122,7 @@ export class Tokenizer {
 
       this.tryToCollectEscapedChar()
         || this.tryToCloseAnyContext()
-        || this.performAnyContextSpecificBehavior()
+        || this.performContextSpecificBehavior()
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
@@ -134,11 +134,11 @@ export class Tokenizer {
           insertBracketsInsideBracketedConventions(this.tokens)))
   }
 
-  private performAnyContextSpecificBehavior(): boolean {
+  private performContextSpecificBehavior(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
 
-      if (context.afterTryingToCloseOuterContexts && context.afterTryingToCloseOuterContexts()) {
+      if (context.afterTryingToCloseOuterContexts()) {
         return true
       }
     }
@@ -186,15 +186,13 @@ export class Tokenizer {
           this.flushBufferToTokenOfKind(context.onCloseFlushBufferTo)
         }
 
-        if (context.onClose) {
-          context.onClose(context)
-        }
+      context.onClose(context)
 
         this.openContexts.splice(i, (context.closeInnerContextsWhenClosing ? null : 1))
         return true
       }
 
-      if (context.beforeTryingToCloseOuterContexts && context.beforeTryingToCloseOuterContexts()) {
+      if (context.beforeTryingToCloseOuterContexts()) {
         return true
       }
 
@@ -398,13 +396,13 @@ export class Tokenizer {
         const context = new TokenizerContext({
           goal,
           snapshot: this.getCurrentSnapshot(),
-          beforeTryingToCloseOuterContexts,
-          afterTryingToCloseOuterContexts,
+          beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts || doNothing,
+          afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts || doNothing,
           endPattern,
           doNotConsumeEndPattern,
           closeInnerContextsWhenClosing,
           onCloseFlushBufferTo,
-          onClose
+          onClose: onClose || doNothing
         })
 
         this.openContexts.push(context)
@@ -541,6 +539,9 @@ export class Tokenizer {
   }
 }
 
+function doNothing(): boolean {
+  return false
+}
 
 const PARENTHESIS =
   new Bracket('(', ')')

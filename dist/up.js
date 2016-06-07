@@ -826,7 +826,7 @@ var Tokenizer = (function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseAnyContext()
-                || this.performAnyContextSpecificBehavior()
+                || this.performContextSpecificBehavior()
                 || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
@@ -834,10 +834,10 @@ var Tokenizer = (function () {
         this.tokens =
             nestOverlappingConventions_1.nestOverlappingConventions(applyRaisedVoices_1.applyRaisedVoices(insertBracketsInsideBracketedConventions_1.insertBracketsInsideBracketedConventions(this.tokens)));
     };
-    Tokenizer.prototype.performAnyContextSpecificBehavior = function () {
+    Tokenizer.prototype.performContextSpecificBehavior = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_1 = this.openContexts[i];
-            if (context_1.afterTryingToCloseOuterContexts && context_1.afterTryingToCloseOuterContexts()) {
+            if (context_1.afterTryingToCloseOuterContexts()) {
                 return true;
             }
         }
@@ -867,13 +867,11 @@ var Tokenizer = (function () {
                 if (context_2.onCloseFlushBufferTo != null) {
                     this.flushBufferToTokenOfKind(context_2.onCloseFlushBufferTo);
                 }
-                if (context_2.onClose) {
-                    context_2.onClose(context_2);
-                }
+                context_2.onClose(context_2);
                 this.openContexts.splice(i, (context_2.closeInnerContextsWhenClosing ? null : 1));
                 return true;
             }
-            if (context_2.beforeTryingToCloseOuterContexts && context_2.beforeTryingToCloseOuterContexts()) {
+            if (context_2.beforeTryingToCloseOuterContexts()) {
                 return true;
             }
             if (context_2.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
@@ -1042,13 +1040,13 @@ var Tokenizer = (function () {
                 var context = new TokenizerContext_1.TokenizerContext({
                     goal: goal,
                     snapshot: _this.getCurrentSnapshot(),
-                    beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts,
-                    afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts,
+                    beforeTryingToCloseOuterContexts: beforeTryingToCloseOuterContexts || doNothing,
+                    afterTryingToCloseOuterContexts: afterTryingToCloseOuterContexts || doNothing,
                     endPattern: endPattern,
                     doNotConsumeEndPattern: doNotConsumeEndPattern,
                     closeInnerContextsWhenClosing: closeInnerContextsWhenClosing,
                     onCloseFlushBufferTo: onCloseFlushBufferTo,
-                    onClose: onClose
+                    onClose: onClose || doNothing
                 });
                 _this.openContexts.push(context);
                 if (onOpen) {
@@ -1163,6 +1161,9 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
+function doNothing() {
+    return false;
+}
 var PARENTHESIS = new Bracket_1.Bracket('(', ')');
 var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
 var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
