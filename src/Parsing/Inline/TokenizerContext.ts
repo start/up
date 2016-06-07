@@ -1,9 +1,6 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { PerformContextSpecificTasks } from './PerformContextSpecificTasks'
-import { OnConventionClose } from './OnConventionClose'
-import { TokenKind } from './TokenKind'
 
 export class TokenizerContext {
   initialTokenIndex: number
