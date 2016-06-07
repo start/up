@@ -70,27 +70,3 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
       ]))
   })
 })
-
-
-describe('A link and a spoiler using the same type of brackets', () => {
-  it("can overlap (assuming the link starts first)", () => {
-    const text =
-      'In Pokémon Red, [Gary Oak [SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly] throughout the game.'
-
-    expect(Up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('In Pokémon Red, '),
-        new LinkNode([
-          new PlainTextNode('Gary Oak ')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new SpoilerNode([
-          new LinkNode([
-            new PlainTextNode('loses to Ash Ketchum')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-          new PlainTextNode(' repeatedly')
-        ]),
-        new PlainTextNode(' throughout the game.')
-      ])
-    )
-  })
-})
