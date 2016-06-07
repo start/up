@@ -188,7 +188,10 @@ export class Tokenizer {
     return this.tryToOpenContext({
       goal: TokenizerGoal.InlineCode,
       startPattern: INLINE_CODE_DELIMITER_PATTERN,
-      flushBufferToPlainTextTokenBeforeOpening: true
+      flushBufferToPlainTextTokenBeforeOpening: true,
+      whileOpen: () => this.bufferCurrentChar(),
+      endPattern: INLINE_CODE_DELIMITER_PATTERN,
+      onCloseFlushBufferTo: TokenKind.InlineCode
     })
   }
 
@@ -394,15 +397,15 @@ export class Tokenizer {
       startPattern: RegExp
       flushBufferToPlainTextTokenBeforeOpening: boolean
       onOpen?: OnMatch
-      performContextSpecificTasks?: PerformContextSpecificTasks
+      whileOpen?: PerformContextSpecificTasks
       endPattern: RegExp
       doNotConsumeEndPattern?: boolean
       closeInnerContextsToo?: boolean
       onCloseFlushBufferTo?: TokenKind
-      onClose: OnMatch
+      onClose?: OnMatch
     }
   ): boolean {
-    const { goal, startPattern,flushBufferToPlainTextTokenBeforeOpening, onOpen, performContextSpecificTasks, endPattern, doNotConsumeEndPattern, closeInnerContextsToo, onCloseFlushBufferTo, onClose } = args
+    const { goal, startPattern,flushBufferToPlainTextTokenBeforeOpening, onOpen, whileOpen, endPattern, doNotConsumeEndPattern, closeInnerContextsToo, onCloseFlushBufferTo, onClose } = args
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern: startPattern,
@@ -415,12 +418,12 @@ export class Tokenizer {
         const context = new TokenizerContext({
           goal,
           snapshot: this.getCurrentSnapshot(),
-          performContextSpecificTasks: performContextSpecificTasks || (() => false),
+          whileOpen: whileOpen || (() => false),
           endPattern,
           doNotConsumeEndPattern,
           closeInnerContextsToo,
           onCloseFlushBufferTo,
-          onClose
+          onClose: onClose || (() => {})
         })
 
         this.openContexts.push(context)
