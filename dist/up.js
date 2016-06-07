@@ -748,7 +748,7 @@ var Tokenizer = (function () {
                 endPattern: Patterns_1.escapeForRegex('++')
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
-        (_b = this.conventions).push.apply(_b, this.getConventionsForBracketedTerm({
+        (_b = this.conventions).push.apply(_b, this.getConventionsForRichBracketedTerm({
             richConvention: RichConventions_1.SPOILER_CONVENTION,
             term: 'spoiler',
             config: config
@@ -998,7 +998,7 @@ var Tokenizer = (function () {
             }
         };
     };
-    Tokenizer.prototype.getConventionsForBracketedTerm = function (args) {
+    Tokenizer.prototype.getConventionsForRichBracketedTerm = function (args) {
         var _this = this;
         var richConvention = args.richConvention, term = args.term, config = args.config;
         return BRACKETS.map(function (bracket) {

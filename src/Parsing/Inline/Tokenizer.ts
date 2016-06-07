@@ -92,7 +92,7 @@ export class Tokenizer {
     ].map(args => this.getRichSandwichConvention(args)))
 
     this.conventions.push(
-      ...this.getConventionsForBracketedTerm({
+      ...this.getConventionsForRichBracketedTerm({
         richConvention: SPOILER_CONVENTION,
         term: 'spoiler',
         config
@@ -406,7 +406,7 @@ export class Tokenizer {
     }
   }
 
-  private getConventionsForBracketedTerm(
+  private getConventionsForRichBracketedTerm(
     args: {
       richConvention: RichConvention,
       term: string,
