@@ -13,7 +13,6 @@ import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizableRichSandwich } from './TokenizableRichSandwich'
 import { Bracket } from './Bracket'
 import { TokenizableBracket } from './TokenizableBracket'
-import { TokenizableMedia } from './TokenizableMedia'
 import { FailedGoalTracker } from './FailedGoalTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
@@ -80,9 +79,6 @@ export class Tokenizer {
   // `configureConventions` method where we have access to the user's config settings.
   private richSandwichesExceptRichBrackets: TokenizableRichSandwich[]
 
-  // These conventions are for images, audio, and video. They also rely on user-configurable values.
-  private mediaConventions: TokenizableMedia[]
-
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
     this.configureConventions(config)
@@ -91,10 +87,6 @@ export class Tokenizer {
   }
 
   private configureConventions(config: UpConfig): void {
-    this.mediaConventions =
-      [AUDIO, IMAGE, VIDEO].map(media =>
-        new TokenizableMedia(media, config.localizeTerm(media.nonLocalizedTerm)))
-
     this.richSandwichesExceptRichBrackets = [
       {
         richConvention: SPOILER_CONVENTION,
@@ -120,7 +112,7 @@ export class Tokenizer {
     while (!this.isDone()) {
 
       this.tryToCollectEscapedChar()
-        || this.tryToCloseAnyContext()
+        || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehavior()
         || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
@@ -157,7 +149,7 @@ export class Tokenizer {
     return this.consumer.reachedEndOfText() && this.resolveOpenContexts()
   }
 
-  private tryToCloseAnyContext(): boolean {
+  private tryToCloseAnyConvention(): boolean {
     let innerNakedUrlContextIndex: number = null
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
@@ -304,8 +296,7 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyRawTextBracket(): boolean {
-    return this.rawBrackets.some(bracket =>
-      this.tryToOpenRawBracket(bracket))
+    return this.rawBrackets.some(bracket => this.tryToOpenRawBracket(bracket))
   }
 
   private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
@@ -357,9 +348,7 @@ export class Tokenizer {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
 
-          const context = new TokenizerContext(convention, this.getCurrentSnapshot())
-
-          this.openContexts.push(context)
+          this.openContexts.push(new TokenizerContext(convention, this.getCurrentSnapshot()))
 
           if (onOpen) {
             onOpen(match, isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -405,6 +394,7 @@ export class Tokenizer {
     }
   }
 
+  // This method always returns true, which allows us to cleanly chain it with other boolean tokenizer methods. 
   private flushBufferToNakedUrlEndToken(): boolean {
     this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
     return true
@@ -459,9 +449,7 @@ export class Tokenizer {
     }
   }
 
-  // This method always returns true. Why?
-  //
-  // It allows us to cleanly chain it with other boolean tokenizer methods, using this method as a last resort. 
+  // This method always returns true, which allows us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
     this.buffer += this.consumer.currentChar
     this.consumer.advanceTextIndex(1)
