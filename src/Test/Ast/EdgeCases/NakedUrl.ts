@@ -89,7 +89,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
 
 
 describe("Unmatched opening parentheses in a naked URL", () => {
-  it('does not prevent parenthesis from closing a subsequent naked URL', () => {
+  it('do not prevent parenthesis from closing a subsequent naked URL', () => {
     const text = '((Well, https://www.example.com/a(normal(url is better than https://w3.org))'
 
     const footnote = new FootnoteNode([
@@ -117,7 +117,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
 
 
 describe("Unmatched opening parentheses in a naked URL closed by another convention closing", () => {
-  it('does not prevent parenthesis from closing a subsequent naked URL', () => {
+  it('do not prevent parenthesis from closing a subsequent naked URL', () => {
     const text = "((Well, ++https://www.example.com/a(normal(url++'s better than https://w3.org))"
 
     const footnote = new FootnoteNode([
