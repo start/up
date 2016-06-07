@@ -5,31 +5,35 @@ import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
 export class TokenizerContext {
+  goal: TokenizerGoal
   initialTokenIndex: number
   snapshot: TokenizerSnapshot
   performContextSpecificTasks: PerformContextSpecificTasks 
   endPattern: RegExp
   doNotConsumeEndPattern: boolean
-  closeInnerContexts: boolean
-  onCloseFlushBufferTo: boolean
+  closeInnerContextsToo: boolean
+  onCloseFlushBufferTo: TokenKind
   onClose: OnMatch
 
   constructor(
     args: {
+      goal: TokenizerGoal
       snapshot: TokenizerSnapshot
-      performContextSpecificTasks?: PerformContextSpecificTasks 
+      performContextSpecificTasks: PerformContextSpecificTasks 
       endPattern: RegExp
-      doNotConsumeEndPattern?: boolean
-      closeInnerContexts?: boolean
-      onCloseFlushBufferTo?: TokenKind
+      doNotConsumeEndPattern: boolean
+      closeInnerContextsToo: boolean
+      onCloseFlushBufferTo: TokenKind
       onClose: OnMatch
     }
   ) {
     this.snapshot = args.snapshot
     this.initialTokenIndex = args.snapshot.textIndex
-    this.performContextSpecificTasks = args.performContextSpecificTasks || (() => false)
+    this.performContextSpecificTasks = args.performContextSpecificTasks
     this.endPattern = this.endPattern
     this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
+    this.closeInnerContextsToo = args.closeInnerContextsToo
+    this.onCloseFlushBufferTo = args.onCloseFlushBufferTo
     this.onClose = args.onClose
     
     this.reset()
