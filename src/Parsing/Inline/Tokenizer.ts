@@ -169,9 +169,9 @@ export class Tokenizer {
     let innerNakedUrlContextIndex: number = null
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
+      const openContext = this.openContexts[i]
 
-      if (this.shouldCloseContext(context)) {
+      if (this.shouldCloseContext(openContext)) {
 
         // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
         if (innerNakedUrlContextIndex != null) {
@@ -182,21 +182,26 @@ export class Tokenizer {
           this.openContexts.splice(i)
         }
 
-        if (context.onCloseFlushBufferTo != null) {
-          this.flushBufferToTokenOfKind(context.onCloseFlushBufferTo)
+        if (openContext.onCloseFlushBufferTo != null) {
+          this.flushBufferToTokenOfKind(openContext.onCloseFlushBufferTo)
         }
 
-        context.close()
+        openContext.close()
 
-        this.openContexts.splice(i, (context.closeInnerContextsWhenClosing ? null : 1))
+        if (openContext.closeInnerContextsWhenClosing) {
+          this.openContexts.splice(i)
+        } else {
+          this.openContexts.splice(i, 1)
+        }
+
         return true
       }
 
-      if (context.beforeTryingToCloseOuterContexts()) {
+      if (openContext.beforeTryingToCloseOuterContexts()) {
         return true
       }
 
-      if (context.goal === TokenizerGoal.NakedUrl) {
+      if (openContext.goal === TokenizerGoal.NakedUrl) {
         innerNakedUrlContextIndex = i
       }
     }

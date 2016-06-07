@@ -858,23 +858,28 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToCloseAnyContext = function () {
         var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_2 = this.openContexts[i];
-            if (this.shouldCloseContext(context_2)) {
+            var openContext = this.openContexts[i];
+            if (this.shouldCloseContext(openContext)) {
                 if (innerNakedUrlContextIndex != null) {
                     this.flushBufferToNakedUrlEndToken();
                     this.openContexts.splice(i);
                 }
-                if (context_2.onCloseFlushBufferTo != null) {
-                    this.flushBufferToTokenOfKind(context_2.onCloseFlushBufferTo);
+                if (openContext.onCloseFlushBufferTo != null) {
+                    this.flushBufferToTokenOfKind(openContext.onCloseFlushBufferTo);
                 }
-                context_2.close();
-                this.openContexts.splice(i, (context_2.closeInnerContextsWhenClosing ? null : 1));
+                openContext.close();
+                if (openContext.closeInnerContextsWhenClosing) {
+                    this.openContexts.splice(i);
+                }
+                else {
+                    this.openContexts.splice(i, 1);
+                }
                 return true;
             }
-            if (context_2.beforeTryingToCloseOuterContexts()) {
+            if (openContext.beforeTryingToCloseOuterContexts()) {
                 return true;
             }
-            if (context_2.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
+            if (openContext.goal === TokenizerGoal_1.TokenizerGoal.NakedUrl) {
                 innerNakedUrlContextIndex = i;
             }
         }
@@ -1065,8 +1070,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveOpenContexts = function () {
         while (this.openContexts.length) {
-            var context_3 = this.openContexts.pop();
-            switch (context_3.goal) {
+            var context_2 = this.openContexts.pop();
+            switch (context_2.goal) {
                 case TokenizerGoal_1.TokenizerGoal.NakedUrl:
                     this.flushBufferToNakedUrlEndToken();
                     break;
@@ -1075,7 +1080,7 @@ var Tokenizer = (function () {
                 case TokenizerGoal_1.TokenizerGoal.CurlyBracketedInRawText:
                     break;
                 default:
-                    this.resetToBeforeContext(context_3);
+                    this.resetToBeforeContext(context_2);
                     return false;
             }
         }
@@ -1089,8 +1094,8 @@ var Tokenizer = (function () {
         this.buffer = context.snapshot.bufferedText;
         this.consumer.textIndex = context.snapshot.textIndex;
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_4 = _a[_i];
-            context_4.reset();
+            var context_3 = _a[_i];
+            context_3.reset();
         }
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
