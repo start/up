@@ -39,24 +39,35 @@ export class Tokenizer {
 
   private inlineCodeConvention = {
     goal: TokenizerGoal.InlineCode,
+
     startPattern: INLINE_CODE_DELIMITER_PATTERN,
-    flushBufferToPlainTextTokenBeforeOpening: true,
     endPattern: INLINE_CODE_DELIMITER_PATTERN,
+
+    flushBufferToPlainTextTokenBeforeOpening: true,
+
     insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
     onCloseFlushBufferTo: TokenKind.InlineCode
   }
 
   private nakedUrlConvention: TokenizableConvention = {
     goal: TokenizerGoal.NakedUrl,
+
     startPattern: NAKED_URL_PROTOCOL_PATTERN,
     endPattern: NAKED_URL_TERMINATOR_PATTERN,
-    doNotConsumeEndPattern: true,
+
     flushBufferToPlainTextTokenBeforeOpening: true,
-    onOpen: urlProtocol => this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol }),
+    
+    onOpen: urlProtocol => {
+      this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+    },
+    
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
-    closeInnerContextsWhenClosing: true,
+
+    doNotConsumeEndPattern: true,
     onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
-    resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
+    closeInnerContextsWhenClosing: true,
+    
+    resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
 
   // Link's URLs can be paranthesized, square bracketed, or curly bracketed.
@@ -66,7 +77,7 @@ export class Tokenizer {
     { goal: TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
   ].map(args => this.getLinkUrlConvention(args))
 
-  private richBrackets = [
+  private richBracketConventions = [
     {
       richConvention: PARENTHESIZED_CONVENTION,
       startPattern: PARENTHESIS.startPattern,
@@ -80,7 +91,7 @@ export class Tokenizer {
       startPattern: CURLY_BRACKET.startPattern,
       endPattern: CURLY_BRACKET.endPattern
     }
-  ].map(args => new TokenizableRichSandwich(args))
+  ].map(args => this.getRichSandwichConvention(new TokenizableRichSandwich(args)))
 
   // Unlike the rich bracket conventions, these bracket conventions don't produce special tokens.
   //
@@ -242,10 +253,13 @@ export class Tokenizer {
 
     return {
       goal,
+
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
-      onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
+
       flushBufferToPlainTextTokenBeforeOpening: false,
+      onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
+      
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
 
@@ -279,7 +293,7 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyRichBracket(): boolean {
-    return this.richBrackets.some(bracket => this.tryToOpenRichSandwich(bracket))
+    return this.richBracketConventions.some(bracket => this.tryToOpen(bracket))
   }
 
   private tryToOpenAnyRichSandwich(): boolean {
@@ -305,6 +319,26 @@ export class Tokenizer {
     })
   }
 
+  private getRichSandwichConvention(sandwich: TokenizableRichSandwich): TokenizableConvention {
+    return {
+      goal: sandwich.goal,
+
+      startPattern: sandwich.startPattern,
+      endPattern: sandwich.endPattern,
+
+      flushBufferToPlainTextTokenBeforeOpening: true,
+      onCloseFlushBufferTo: TokenKind.PlainText,
+
+      onClose: (context) => {
+        const startToken = new Token({ kind: sandwich.startTokenKind })
+        const endToken = new Token({ kind: sandwich.endTokenKind })
+        startToken.associateWith(endToken)
+
+        this.insertTokenAtStartOfContext(context, startToken)
+        this.tokens.push(endToken)
+      }
+    }
+  }
   private tryToOpenAnyRawTextBracket(): boolean {
     return this.rawBrackets.some(bracket => this.tryToOpenRawBracket(bracket))
   }
@@ -312,11 +346,15 @@ export class Tokenizer {
   private tryToOpenRawBracket(bracket: TokenizableBracket): boolean {
     return this.tryToOpen({
       goal: bracket.goal,
+
       startPattern: bracket.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: false,
-      onOpen: () => { this.buffer += bracket.open },
       endPattern: bracket.endPattern,
+
+      flushBufferToPlainTextTokenBeforeOpening: false,
+
+      onOpen: () => { this.buffer += bracket.open },
       onClose: () => { this.buffer += bracket.close },
+
       resolveWhenLeftUnclosed: () => true
     })
   }
