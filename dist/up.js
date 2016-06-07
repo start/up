@@ -1708,7 +1708,7 @@ function isLineProperlyBlockquoted(line, delimiters) {
     return TRAILING_SPACE_PATTERN.test(delimiters) || (line === delimiters);
 }
 var BLOCKQUOTE_DELIMITER = '>' + Patterns_1.optional(Patterns_1.INLINE_WHITESPACE_CHAR);
-var ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(Patterns_1.capture(Patterns_1.startsWith((Patterns_1.atLeast(1, BLOCKQUOTE_DELIMITER)))));
+var ALL_BLOCKQUOTE_DELIMITERS_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.capture(Patterns_1.atLeast(1, BLOCKQUOTE_DELIMITER)));
 var FIRST_BLOCKQUOTE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith(BLOCKQUOTE_DELIMITER);
 var TRAILING_SPACE_PATTERN = Patterns_1.regExpEndingWith(Patterns_1.INLINE_WHITESPACE_CHAR);
 

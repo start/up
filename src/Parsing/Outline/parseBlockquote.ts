@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
-import { startsWith, regExpStartingWith, regExpEndingWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../../Patterns'
+import { regExpStartingWith, regExpEndingWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -28,11 +28,11 @@ export function parseBlockquote(args: OutlineParserArgs): boolean {
 
   // Within blockquotes, heading levels are reset
   const headingLeveler = new HeadingLeveler()
-  
+
   args.then([
     new BlockquoteNode(getOutlineNodes(rawBlockquoteContent, headingLeveler, args.config))],
     consumer.textIndex)
-    
+
   return true
 }
 
@@ -58,9 +58,9 @@ function isLineProperlyBlockquoted(line: string, delimiters: string): boolean {
 const BLOCKQUOTE_DELIMITER =
   '>' + optional(INLINE_WHITESPACE_CHAR)
 
-const ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(
-  capture(
-    startsWith((atLeast(1, BLOCKQUOTE_DELIMITER)))))
+const ALL_BLOCKQUOTE_DELIMITERS_PATTERN =
+  regExpStartingWith(
+    capture(atLeast(1, BLOCKQUOTE_DELIMITER)))
 
 const FIRST_BLOCKQUOTE_DELIMITER_PATTERN =
   regExpStartingWith(BLOCKQUOTE_DELIMITER)
