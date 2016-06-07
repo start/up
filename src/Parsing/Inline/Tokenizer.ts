@@ -1,4 +1,4 @@
-import { escapeForRegex, regexStartingWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
+import { escapeForRegex, regExpStartingWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
@@ -479,13 +479,13 @@ const CURLY_BRACKET =
 
 
 const INLINE_CODE_DELIMITER_PATTERN =
-  regexStartingWith('`')
+  regExpStartingWith('`')
 
 const RAISED_VOICE_DELIMITER_PATTERN =
-  regexStartingWith(atLeast(1, escapeForRegex('*')))
+  regExpStartingWith(atLeast(1, escapeForRegex('*')))
 
 const NAKED_URL_PROTOCOL_PATTERN =
-  regexStartingWith('http' + optional('s') + '://')
+  regExpStartingWith('http' + optional('s') + '://')
 
 const NAKED_URL_TERMINATOR_PATTERN =
-  regexStartingWith(WHITESPACE_CHAR)
+  regExpStartingWith(WHITESPACE_CHAR)

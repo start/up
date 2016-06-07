@@ -3,7 +3,7 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
-import { optional, regexStartingWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from '../../Patterns'
+import { optional, regExpStartingWith, either, INLINE_WHITESPACE_CHAR, BLANK, INDENT, STREAK } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -63,7 +63,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
 
 
 const BULLET_PATTERN =
-  regexStartingWith(
+  regExpStartingWith(
     optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
   )
 
@@ -71,7 +71,7 @@ const BLANK_LINE_PATTERN = new RegExp(
   BLANK)
 
 const INDENTED_PATTERN =
-  regexStartingWith(INDENT)
+  regExpStartingWith(INDENT)
 
 const STREAK_PATTERN = new RegExp(
   STREAK)

@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
-import { startsWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../../Patterns'
+import { startsWith, regExpStartingWith, regExpEndingWith, endsWith, optional, atLeast, capture, INLINE_WHITESPACE_CHAR, NON_WHITESPACE_CHAR } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -62,8 +62,8 @@ const ALL_BLOCKQUOTE_DELIMITERS_PATTERN = new RegExp(
   capture(
     startsWith((atLeast(1, BLOCKQUOTE_DELIMITER)))))
 
-const FIRST_BLOCKQUOTE_DELIMITER_PATTERN = new RegExp(
-  startsWith(BLOCKQUOTE_DELIMITER))
+const FIRST_BLOCKQUOTE_DELIMITER_PATTERN =
+  regExpStartingWith(BLOCKQUOTE_DELIMITER)
 
-const TRAILING_SPACE_PATTERN = new RegExp(
-  endsWith(INLINE_WHITESPACE_CHAR))
+const TRAILING_SPACE_PATTERN =
+  regExpEndingWith(INLINE_WHITESPACE_CHAR)
