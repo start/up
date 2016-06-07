@@ -1,22 +1,30 @@
 import { TokenizerGoal } from './TokenizerGoal'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
+
 export class TokenizerContext {
   initialTokenIndex: number
   goal: TokenizerGoal
   snapshot: TokenizerSnapshot
+  tryToAdvanceContext: TryToAdvanceContext 
   endPattern: RegExp
-  consumeEndPattern = true
+  doNotConsumeEndPattern: boolean
 
   constructor(
     args: {
       goal: TokenizerGoal
       snapshot: TokenizerSnapshot
+      tryToAdvanceContext?: TryToAdvanceContext 
+      endPattern: RegExp
+      doNotConsumeEndPattern?: boolean
     }
   ) {
     this.goal = args.goal
     this.snapshot = args.snapshot
     this.initialTokenIndex = args.snapshot.textIndex
+    this.tryToAdvanceContext = args.tryToAdvanceContext || (() => false)
+    this.endPattern = this.endPattern
+    this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
     
     this.reset()
   }
@@ -24,7 +32,7 @@ export class TokenizerContext {
   registerTokenInsertion(args: { atIndex: number, onBehalfOfContext: TokenizerContext }) {
     const { atIndex, onBehalfOfContext } = args
 
-    // Should we increment our initial index?
+    // Do we need to increment our initial index?
     const mustIncrementInitialIndex = (
       
       // Well, if the token was inserted before our intial index, we certianly do.
@@ -48,4 +56,9 @@ export class TokenizerContext {
   reset(): void {
     this.initialTokenIndex = this.snapshot.tokens.length
   }
+}
+
+
+interface TryToAdvanceContext {
+  (): boolean
 }
