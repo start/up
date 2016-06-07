@@ -29,11 +29,12 @@ export class TokenizerContext {
       onClose: OnTokenizerContextClose
     }
   ) {
-    this.snapshot = args.snapshot
+    this.goal = args.goal
     this.initialTokenIndex = args.snapshot.textIndex
+    this.snapshot = args.snapshot
     this.beforeTryingToCloseOuterContexts = args.beforeTryingToCloseOuterContexts
     this.afterTryingToCloseOuterContexts = args.afterTryingToCloseOuterContexts
-    this.endPattern = this.endPattern
+    this.endPattern = args.endPattern
     this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
     this.closeInnerContextsWhenClosing = args.closeInnerContextsWhenClosing
     this.onCloseFlushBufferTo = args.onCloseFlushBufferTo

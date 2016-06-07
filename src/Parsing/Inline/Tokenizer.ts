@@ -134,6 +134,18 @@ export class Tokenizer {
           insertBracketsInsideBracketedConventions(this.tokens)))
   }
 
+  private performAnyContextSpecificBehavior(): boolean {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+
+      if (context.afterTryingToCloseOuterContexts && context.afterTryingToCloseOuterContexts()) {
+        return true
+      }
+    }
+
+    return false
+  }
+
   private tryToCollectEscapedChar(): boolean {
     const ESCAPE_CHAR = '\\'
 
