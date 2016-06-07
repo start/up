@@ -215,7 +215,22 @@ export class Tokenizer {
     return this.tryToOpenContext({
       goal: bracketedLinkUrl.goal,
       startPattern: bracketedLinkUrl.startPattern,
-      flushBufferToPlainTextTokenBeforeOpening: false
+      flushBufferToPlainTextTokenBeforeOpening: false,
+      whileOpen: () => this.bufferRawText(),
+      endPattern: bracketedLinkUrl.endPattern,
+      closeInnerContextsWhenClosing: true,
+      onClose: () => {
+        const url = this.flushBuffer()
+
+        // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
+        //
+        // We'll replace that end token and its corresponding start token with link tokens.
+        const lastToken = last(this.tokens)
+
+        lastToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
+        lastToken.kind = LINK_CONVENTION.endTokenKind
+        lastToken.value = url
+      }
     })
   }
 
@@ -400,12 +415,12 @@ export class Tokenizer {
       whileOpen?: PerformContextSpecificTasks
       endPattern: RegExp
       doNotConsumeEndPattern?: boolean
-      closeInnerContextsToo?: boolean
+      closeInnerContextsWhenClosing?: boolean
       onCloseFlushBufferTo?: TokenKind
       onClose?: OnMatch
     }
   ): boolean {
-    const { goal, startPattern,flushBufferToPlainTextTokenBeforeOpening, onOpen, whileOpen, endPattern, doNotConsumeEndPattern, closeInnerContextsToo, onCloseFlushBufferTo, onClose } = args
+    const { goal, startPattern,flushBufferToPlainTextTokenBeforeOpening, onOpen, whileOpen, endPattern, doNotConsumeEndPattern, closeInnerContextsWhenClosing, onCloseFlushBufferTo, onClose } = args
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({
       pattern: startPattern,
@@ -421,7 +436,7 @@ export class Tokenizer {
           whileOpen: whileOpen || (() => false),
           endPattern,
           doNotConsumeEndPattern,
-          closeInnerContextsToo,
+          closeInnerContextsWhenClosing,
           onCloseFlushBufferTo,
           onClose: onClose || (() => {})
         })

@@ -11,7 +11,7 @@ export class TokenizerContext {
   whileOpen: PerformContextSpecificTasks 
   endPattern: RegExp
   doNotConsumeEndPattern: boolean
-  closeInnerContextsToo: boolean
+  closeInnerContextsWhenClosing: boolean
   onCloseFlushBufferTo: TokenKind
   onClose: OnMatch
 
@@ -22,7 +22,7 @@ export class TokenizerContext {
       whileOpen: PerformContextSpecificTasks 
       endPattern: RegExp
       doNotConsumeEndPattern: boolean
-      closeInnerContextsToo: boolean
+      closeInnerContextsWhenClosing: boolean
       onCloseFlushBufferTo: TokenKind
       onClose: OnMatch
     }
@@ -32,7 +32,7 @@ export class TokenizerContext {
     this.whileOpen = args.whileOpen
     this.endPattern = this.endPattern
     this.doNotConsumeEndPattern = args.doNotConsumeEndPattern
-    this.closeInnerContextsToo = args.closeInnerContextsToo
+    this.closeInnerContextsWhenClosing = args.closeInnerContextsWhenClosing
     this.onCloseFlushBufferTo = args.onCloseFlushBufferTo
     this.onClose = args.onClose
     
