@@ -64,7 +64,7 @@ export class Tokenizer {
     { goal: TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
     { goal: TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
     { goal: TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
-  ].map(args => this.getLinkUrlConvention(new TokenizableBracket(args)))
+  ].map(args => this.getLinkUrlConvention(args))
 
   private richBrackets = [
     {
@@ -237,14 +237,16 @@ export class Tokenizer {
     return this.linkUrlConventions.some(linkUrl => this.tryToOpen(linkUrl))
   }
 
-  private getLinkUrlConvention(bracketedLinkUrl: TokenizableBracket): TokenizableConvention {
+  private getLinkUrlConvention(args: { goal: TokenizerGoal, bracket: Bracket }): TokenizableConvention {
+    const { goal, bracket } = args
+
     return {
-      goal: bracketedLinkUrl.goal,
+      goal,
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
       onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
-      startPattern: bracketedLinkUrl.startPattern,
       flushBufferToPlainTextTokenBeforeOpening: false,
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      endPattern: bracketedLinkUrl.endPattern,
       closeInnerContextsWhenClosing: true,
 
       onClose: () => {

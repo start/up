@@ -781,7 +781,7 @@ var Tokenizer = (function () {
             { goal: TokenizerGoal_1.TokenizerGoal.ParenthesizedLinkUrl, bracket: PARENTHESIS },
             { goal: TokenizerGoal_1.TokenizerGoal.SquareBracketedLinkUrl, bracket: SQUARE_BRACKET },
             { goal: TokenizerGoal_1.TokenizerGoal.CurlyBracketedLinkUrl, bracket: CURLY_BRACKET }
-        ].map(function (args) { return _this.getLinkUrlConvention(new TokenizableBracket_1.TokenizableBracket(args)); });
+        ].map(function (args) { return _this.getLinkUrlConvention(args); });
         this.richBrackets = [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -910,15 +910,16 @@ var Tokenizer = (function () {
         var _this = this;
         return this.linkUrlConventions.some(function (linkUrl) { return _this.tryToOpen(linkUrl); });
     };
-    Tokenizer.prototype.getLinkUrlConvention = function (bracketedLinkUrl) {
+    Tokenizer.prototype.getLinkUrlConvention = function (args) {
         var _this = this;
+        var goal = args.goal, bracket = args.bracket;
         return {
-            goal: bracketedLinkUrl.goal,
+            goal: goal,
+            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
+            endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIf: function () { return _this.isDirectlyFollowingLinkableBrackets(); },
-            startPattern: bracketedLinkUrl.startPattern,
             flushBufferToPlainTextTokenBeforeOpening: false,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
-            endPattern: bracketedLinkUrl.endPattern,
             closeInnerContextsWhenClosing: true,
             onClose: function () {
                 var url = _this.flushBuffer();
