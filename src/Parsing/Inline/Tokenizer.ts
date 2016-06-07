@@ -65,11 +65,7 @@ export class Tokenizer {
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
-  private rawBracketConventions = [
-    PARENTHESIS,
-    SQUARE_BRACKET,
-    CURLY_BRACKET
-  ].map(args => this.getRawBracketConvention(args))
+  private rawBracketConventions = BRACKETS.map(args => this.getRawBracketConvention(args))
 
   constructor(entireText: string, config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -109,11 +105,8 @@ export class Tokenizer {
       onCloseFlushBufferTo: TokenKind.InlineCode
     })
 
-    this.conventions.push(...[
-      PARENTHESIS,
-      SQUARE_BRACKET,
-      CURLY_BRACKET
-    ].map(args => this.getLinkUrlConvention(args)))
+    this.conventions.push(
+      ...BRACKETS.map(args => this.getLinkUrlConvention(args)))
 
     this.conventions.push(...[
       {
@@ -462,6 +455,12 @@ const SQUARE_BRACKET =
 
 const CURLY_BRACKET =
   new Bracket('{', '}')
+
+const BRACKETS = [
+  PARENTHESIS,
+  SQUARE_BRACKET,
+  CURLY_BRACKET
+]
 
 
 const INLINE_CODE_DELIMITER_PATTERN =

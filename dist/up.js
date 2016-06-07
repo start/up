@@ -726,11 +726,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.rawBracketConventions = [
-            PARENTHESIS,
-            SQUARE_BRACKET,
-            CURLY_BRACKET
-        ].map(function (args) { return _this.getRawBracketConvention(args); });
+        this.rawBracketConventions = BRACKETS.map(function (args) { return _this.getRawBracketConvention(args); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions(config);
         this.tokenize();
@@ -763,11 +759,7 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
-        (_b = this.conventions).push.apply(_b, [
-            PARENTHESIS,
-            SQUARE_BRACKET,
-            CURLY_BRACKET
-        ].map(function (args) { return _this.getLinkUrlConvention(args); }));
+        (_b = this.conventions).push.apply(_b, BRACKETS.map(function (args) { return _this.getLinkUrlConvention(args); }));
         (_c = this.conventions).push.apply(_c, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -1041,6 +1033,11 @@ exports.Tokenizer = Tokenizer;
 var PARENTHESIS = new Bracket_1.Bracket('(', ')');
 var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
 var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
+var BRACKETS = [
+    PARENTHESIS,
+    SQUARE_BRACKET,
+    CURLY_BRACKET
+];
 var INLINE_CODE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith('`');
 var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*')));
 var NAKED_URL_PROTOCOL_PATTERN = Patterns_1.regExpStartingWith('http' + Patterns_1.optional('s') + '://');
