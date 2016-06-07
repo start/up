@@ -45,23 +45,23 @@ export class Tokenizer {
   // Most of our conventions are just thrown in the `conventions` collection, but we keep a direct reference
   // to the naked URL convention to help us determine whether another convention contains a naked URL.
   private nakedUrlConvention: TokenizableConvention = {
-      startPattern: NAKED_URL_PROTOCOL_PATTERN,
-      endPattern: NAKED_URL_TERMINATOR_PATTERN,
+    startPattern: NAKED_URL_PROTOCOL_PATTERN,
+    endPattern: NAKED_URL_TERMINATOR_PATTERN,
 
-      flushBufferToPlainTextTokenBeforeOpening: true,
+    flushBufferToPlainTextTokenBeforeOpening: true,
 
-      onOpen: urlProtocol => {
-        this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
-      },
+    onOpen: urlProtocol => {
+      this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+    },
 
-      insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
+    insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
 
-      doNotConsumeEndPattern: true,
-      onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
-      closeInnerContextsWhenClosing: true,
+    doNotConsumeEndPattern: true,
+    onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
+    closeInnerContextsWhenClosing: true,
 
-      resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
-    }
+    resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
+  }
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
@@ -144,9 +144,8 @@ export class Tokenizer {
           insertBracketsInsideBracketedConventions(this.tokens)))
   }
 
-  private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
-    return reversed(this.openContexts)
-      .some(context => context.doInsteadOfTryingToOpenUsualContexts())
+  private isDone(): boolean {
+    return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts()
   }
 
   private tryToCollectEscapedChar(): boolean {
@@ -159,10 +158,6 @@ export class Tokenizer {
     this.consumer.advanceTextIndex(1)
 
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
-  }
-
-  private isDone(): boolean {
-    return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts()
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -221,34 +216,13 @@ export class Tokenizer {
     })
   }
 
-  private tryToOpenAnyConvention(): boolean {
-    return this.conventions.some(convention => this.tryToOpen(convention))
+  private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
+    return reversed(this.openContexts)
+      .some(context => context.doInsteadOfTryingToOpenUsualContexts())
   }
 
-  private getLinkUrlConvention(bracket: Bracket): TokenizableConvention {
-    return {
-      startPattern: regExpStartingWith(bracket.startPattern),
-      endPattern: regExpStartingWith(bracket.endPattern),
-
-      flushBufferToPlainTextTokenBeforeOpening: false,
-      onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
-
-      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      closeInnerContextsWhenClosing: true,
-
-      onClose: () => {
-        const url = this.flushBuffer()
-
-        // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
-        //
-        // We'll replace that end token and its corresponding start token with link tokens.
-        const lastToken = last(this.tokens)
-
-        lastToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
-        lastToken.kind = LINK_CONVENTION.endTokenKind
-        lastToken.value = url
-      }
-    }
+  private tryToOpenAnyConvention(): boolean {
+    return this.conventions.some(convention => this.tryToOpen(convention))
   }
 
   private isDirectlyFollowingLinkableBrackets(): boolean {
@@ -265,53 +239,18 @@ export class Tokenizer {
     )
   }
 
-  private getRichSandwichConvention(
-    args: {
-      richConvention: RichConvention,
-      startPattern: string,
-      endPattern: string
-    }
-  ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern } = args
-
-    return {
-      startPattern: regExpStartingWith(startPattern, 'i'),
-      endPattern: regExpStartingWith(endPattern),
-
-      flushBufferToPlainTextTokenBeforeOpening: true,
-      onCloseFlushBufferTo: TokenKind.PlainText,
-
-      onClose: (context) => {
-        const startToken = new Token({ kind: richConvention.startTokenKind })
-        const endToken = new Token({ kind: richConvention.endTokenKind })
-        startToken.associateWith(endToken)
-
-        this.insertTokenAtStartOfContext(context, startToken)
-        this.tokens.push(endToken)
-      }
-    }
-  }
-
-  private tryToOpenAnyRawTextBracket(): boolean {
-    return this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
-  }
-
-  private getRawBracketConvention(bracket: Bracket): TokenizableConvention {
-    return {
-      startPattern: regExpStartingWith(bracket.startPattern),
-      endPattern: regExpStartingWith(bracket.endPattern),
-
-      flushBufferToPlainTextTokenBeforeOpening: false,
-
-      onOpen: () => { this.buffer += bracket.start },
-      onClose: () => { this.buffer += bracket.end },
-
-      resolveWhenLeftUnclosed: () => true
-    }
-  }
-
   private bufferRawText(): boolean {
-    return this.tryToOpenAnyRawTextBracket() || this.bufferCurrentChar()
+    return (
+      this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
+      || this.bufferCurrentChar())
+  }
+
+  // This method always returns true, which allows us to cleanly chain it with other boolean tokenizer methods. 
+  private bufferCurrentChar(): boolean {
+    this.buffer += this.consumer.currentChar
+    this.consumer.advanceTextIndex(1)
+
+    return true
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
@@ -336,6 +275,10 @@ export class Tokenizer {
         }
       })
     )
+  }
+
+  private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
+    return !this.failedConventionTracker.hasFailed(convention, textIndex)
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
@@ -374,6 +317,10 @@ export class Tokenizer {
     }
   }
 
+  private appendNewToken(args: NewTokenArgs): void {
+    this.tokens.push(new Token(args))
+  }
+
   private flushBufferToNakedUrlEndToken(): void {
     this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
   }
@@ -387,6 +334,22 @@ export class Tokenizer {
 
   private flushBufferToTokenOfKind(kind: TokenKind): void {
     this.appendNewToken({ kind, value: this.flushBuffer() })
+  }
+
+  private insertTokenAtStartOfContext(context: TokenizerContext, token: Token): void {
+    const newTokenIndex = context.initialTokenIndex
+
+    this.tokens.splice(newTokenIndex, 0, token)
+
+    for (const openContext of this.openContexts) {
+      openContext.registerTokenInsertion({ atIndex: newTokenIndex, onBehalfOfContext: context })
+    }
+  }
+
+  private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
+    if (this.buffer) {
+      this.flushBufferToTokenOfKind(TokenKind.PlainText)
+    }
   }
 
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
@@ -413,36 +376,71 @@ export class Tokenizer {
     })
   }
 
-  private appendNewToken(args: NewTokenArgs): void {
-    this.tokens.push(new Token(args))
-  }
+  private getLinkUrlConvention(bracket: Bracket): TokenizableConvention {
+    return {
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
 
-  private insertTokenAtStartOfContext(context: TokenizerContext, token: Token): void {
-    const newTokenIndex = context.initialTokenIndex
+      flushBufferToPlainTextTokenBeforeOpening: false,
+      onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
 
-    this.tokens.splice(newTokenIndex, 0, token)
+      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+      closeInnerContextsWhenClosing: true,
 
-    for (const openContext of this.openContexts) {
-      openContext.registerTokenInsertion({ atIndex: newTokenIndex, onBehalfOfContext: context })
+      onClose: () => {
+        const url = this.flushBuffer()
+
+        // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
+        //
+        // We'll replace that end token and its corresponding start token with link tokens.
+        const lastToken = last(this.tokens)
+
+        lastToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
+        lastToken.kind = LINK_CONVENTION.endTokenKind
+        lastToken.value = url
+      }
     }
   }
 
-  // This method always returns true, which allows us to cleanly chain it with other boolean tokenizer methods. 
-  private bufferCurrentChar(): boolean {
-    this.buffer += this.consumer.currentChar
-    this.consumer.advanceTextIndex(1)
+  private getRichSandwichConvention(
+    args: {
+      richConvention: RichConvention,
+      startPattern: string,
+      endPattern: string
+    }
+  ): TokenizableConvention {
+    const { richConvention, startPattern, endPattern } = args
 
-    return true
-  }
+    return {
+      startPattern: regExpStartingWith(startPattern, 'i'),
+      endPattern: regExpStartingWith(endPattern),
 
-  private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
-    if (this.buffer) {
-      this.flushBufferToTokenOfKind(TokenKind.PlainText)
+      flushBufferToPlainTextTokenBeforeOpening: true,
+      onCloseFlushBufferTo: TokenKind.PlainText,
+
+      onClose: (context) => {
+        const startToken = new Token({ kind: richConvention.startTokenKind })
+        const endToken = new Token({ kind: richConvention.endTokenKind })
+        startToken.associateWith(endToken)
+
+        this.insertTokenAtStartOfContext(context, startToken)
+        this.tokens.push(endToken)
+      }
     }
   }
 
-  private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
-    return !this.failedConventionTracker.hasFailed(convention, textIndex)
+  private getRawBracketConvention(bracket: Bracket): TokenizableConvention {
+    return {
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
+
+      flushBufferToPlainTextTokenBeforeOpening: false,
+
+      onOpen: () => { this.buffer += bracket.start },
+      onClose: () => { this.buffer += bracket.end },
+
+      resolveWhenLeftUnclosed: () => true
+    }
   }
 }
 
