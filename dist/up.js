@@ -1093,13 +1093,6 @@ var Tokenizer = (function () {
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         return !this.failedGoalTracker.hasFailed(goal, textIndex);
     };
-    Tokenizer.prototype.hasGoal = function () {
-        var goals = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            goals[_i - 0] = arguments[_i];
-        }
-        return this.openContexts.some(function (context) { return CollectionHelpers_1.contains(goals, context.convention.goal); });
-    };
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;

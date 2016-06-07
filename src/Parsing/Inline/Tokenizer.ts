@@ -453,10 +453,6 @@ export class Tokenizer {
   private canTry(goal: TokenizerGoal, textIndex = this.consumer.textIndex): boolean {
     return !this.failedGoalTracker.hasFailed(goal, textIndex)
   }
-
-  private hasGoal(...goals: TokenizerGoal[]): boolean {
-    return this.openContexts.some(context => contains(goals, context.convention.goal))
-  }
 }
 
 
