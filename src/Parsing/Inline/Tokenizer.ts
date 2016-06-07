@@ -376,9 +376,7 @@ export class Tokenizer {
     }
   }
 
-  private tryToOpenContext(
-    convention: TokenizableConvention
-  ): boolean {
+  private tryToOpenContext(convention: TokenizableConvention): boolean {
     const { goal, startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return this.canTry(goal) && this.consumer.advanceAfterMatch({

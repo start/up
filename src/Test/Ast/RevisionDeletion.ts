@@ -38,6 +38,16 @@ describe('A revision deletion', () => {
 })
 
 
+describe('An unmatched revision deletion start delimiter', () => {
+  it('is preserved as plain text', () => {
+    expect(Up.toAst('I like pizza~~but I never eat it.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like pizza~~but I never eat it.'),
+      ]))
+  })
+})
+
+
 describe('An empty revision deletion', () => {
   it('produces no syntax nodes', () => {
     expect(Up.toAst('I have nothing to remove: ~~~~')).to.be.eql(
