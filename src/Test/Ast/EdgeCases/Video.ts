@@ -64,6 +64,7 @@ describe('An otherwise valid video convention with a space between its bracketed
           new SquareBracketedNode([
             new PlainTextNode('[video: on]')
           ]),
+          new PlainTextNode(' '),
           new SquareBracketedNode([
             new PlainTextNode('[-_o]')
           ]),

@@ -63,6 +63,7 @@ describe('An otherwise valid audio convention with a space between its bracketed
           new SquareBracketedNode([
             new PlainTextNode('[audio: zzz]')
           ]),
+          new PlainTextNode(' '),
           new SquareBracketedNode([
             new PlainTextNode('[-_-]')
           ]),

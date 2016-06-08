@@ -64,6 +64,7 @@ describe('An otherwise valid image convention with a space between its bracketed
           new SquareBracketedNode([
             new PlainTextNode('[image: maymay]')
           ]),
+          new PlainTextNode(' '),
           new SquareBracketedNode([
             new PlainTextNode('[o_o]')
           ]),
