@@ -808,40 +808,40 @@ var Tokenizer = (function () {
         var _this = this;
         var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_1 = this.openContexts[i];
-            if (this.shouldCloseContext(context_1)) {
+            var openContext = this.openContexts[i];
+            if (this.shouldCloseContext(openContext)) {
                 if (innerNakedUrlContextIndex != null) {
                     this.flushBufferToNakedUrlEndToken();
                     this.openContexts.splice(i);
                 }
-                if (context_1.convention.onCloseFlushBufferTo != null) {
-                    this.flushBufferToTokenOfKind(context_1.convention.onCloseFlushBufferTo);
+                if (openContext.convention.onCloseFlushBufferTo != null) {
+                    this.flushBufferToTokenOfKind(openContext.convention.onCloseFlushBufferTo);
                 }
-                context_1.close();
-                var conventionsToTryTransitioningTo = context_1.convention.onCloseFailIfCannotTransitionInto;
-                if (conventionsToTryTransitioningTo) {
-                    var canTransition = conventionsToTryTransitioningTo.some(function (convention) { return _this.tryToOpen(convention); });
-                    if (!canTransition) {
+                openContext.close();
+                var conventionsToTryTransformingTo = openContext.convention.onCloseFailIfCannotTranformInto;
+                if (conventionsToTryTransformingTo) {
+                    var isAbleToTransform = conventionsToTryTransformingTo.some(function (convention) { return _this.tryToOpen(convention); });
+                    if (!isAbleToTransform) {
                         this.openContexts.splice(i);
-                        this.resetToBeforeContext(context_1);
+                        this.resetToBeforeContext(openContext);
                         return true;
                     }
-                    context_1.convention = this.openContexts.pop().convention;
-                    if (context_1.convention.closeInnerContextsWhenClosing) {
+                    openContext.convention = this.openContexts.pop().convention;
+                    if (openContext.convention.closeInnerContextsWhenClosing) {
                         this.openContexts.splice(i + 1);
                         return true;
                     }
                 }
                 this.openContexts.splice(i, 1);
-                if (context_1.convention.closeInnerContextsWhenClosing) {
+                if (openContext.convention.closeInnerContextsWhenClosing) {
                     this.openContexts.splice(i);
                 }
                 return true;
             }
-            if (context_1.doIsteadOfTryingToCloseOuterContexts()) {
+            if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
             }
-            if (context_1.convention === this.nakedUrlConvention) {
+            if (openContext.convention === this.nakedUrlConvention) {
                 innerNakedUrlContextIndex = i;
             }
         }
@@ -912,7 +912,14 @@ var Tokenizer = (function () {
             }));
     };
     Tokenizer.prototype.canTry = function (convention, textIndex) {
+        var _this = this;
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
+        var conventionsThisOneTransformTo = convention.onCloseFailIfCannotTranformInto;
+        var hasFailedAfterTransitioning = (conventionsThisOneTransformTo
+            && conventionsThisOneTransformTo.some(function (convention) { return _this.failedConventionTracker.hasFailed(convention, textIndex); }));
+        if (hasFailedAfterTransitioning) {
+            return false;
+        }
         return !this.failedConventionTracker.hasFailed(convention, textIndex);
     };
     Tokenizer.prototype.getCurrentSnapshot = function () {
@@ -925,9 +932,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.resolveUnclosedContexts = function () {
         while (this.openContexts.length) {
-            var context_2 = this.openContexts.pop();
-            if (!context_2.resolveWhenLeftUnclosed()) {
-                this.resetToBeforeContext(context_2);
+            var context_1 = this.openContexts.pop();
+            if (!context_1.resolveWhenLeftUnclosed()) {
+                this.resetToBeforeContext(context_1);
                 return false;
             }
         }
@@ -941,8 +948,8 @@ var Tokenizer = (function () {
         this.buffer = context.snapshot.bufferedText;
         this.consumer.textIndex = context.snapshot.textIndex;
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_3 = _a[_i];
-            context_3.reset();
+            var context_2 = _a[_i];
+            context_2.reset();
         }
     };
     Tokenizer.prototype.appendNewToken = function (args) {
@@ -1049,7 +1056,7 @@ var Tokenizer = (function () {
                 flushBufferToPlainTextTokenBeforeOpening: true,
                 insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
                 closeInnerContextsWhenClosing: true,
-                onCloseFailIfCannotTransitionInto: _this.mediaUrlConventions,
+                onCloseFailIfCannotTranformInto: _this.mediaUrlConventions,
                 onCloseFlushBufferTo: media.descriptionAndStartTokenKind,
             }); });
         }));

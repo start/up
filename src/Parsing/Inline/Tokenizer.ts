@@ -178,9 +178,9 @@ export class Tokenizer {
     let innerNakedUrlContextIndex: number = null
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
+      const openContext = this.openContexts[i]
 
-      if (this.shouldCloseContext(context)) {
+      if (this.shouldCloseContext(openContext)) {
 
         // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
         if (innerNakedUrlContextIndex != null) {
@@ -191,33 +191,32 @@ export class Tokenizer {
           this.openContexts.splice(i)
         }
 
-        if (context.convention.onCloseFlushBufferTo != null) {
-          this.flushBufferToTokenOfKind(context.convention.onCloseFlushBufferTo)
+        if (openContext.convention.onCloseFlushBufferTo != null) {
+          this.flushBufferToTokenOfKind(openContext.convention.onCloseFlushBufferTo)
         }
 
-        context.close()
+        openContext.close()
 
-        const conventionsToTryTransitioningTo =
-          context.convention.onCloseFailIfCannotTransitionInto
+        const conventionsToTryTransformingTo =
+          openContext.convention.onCloseFailIfCannotTranformInto
 
-        if (conventionsToTryTransitioningTo) {
+        if (conventionsToTryTransformingTo) {
+          const isAbleToTransform =
+            conventionsToTryTransformingTo.some(convention => this.tryToOpen(convention))
 
-          const canTransition =
-            conventionsToTryTransitioningTo.some(convention => this.tryToOpen(convention))
-
-          if (!canTransition) {
-            // If we couldn't transition, it's time to fail.
+          if (!isAbleToTransform) {
+            // We couldn't transform, so it's time to fail.
             this.openContexts.splice(i)
-            this.resetToBeforeContext(context)
+            this.resetToBeforeContext(openContext)
 
             return true
           }
 
-          // We didn't actually want a new context with the new convention! Instead, we want to replace this
-          // context's convention.
-          context.convention = this.openContexts.pop().convention
+          // So... we've just opened a new context for the convention we're transforming into. However, we
+          // actually want to replace this context's convention with the new one instead.
+          openContext.convention = this.openContexts.pop().convention
 
-          if (context.convention.closeInnerContextsWhenClosing) {
+          if (openContext.convention.closeInnerContextsWhenClosing) {
             this.openContexts.splice(i + 1)
             return true
           }
@@ -225,7 +224,7 @@ export class Tokenizer {
 
         this.openContexts.splice(i, 1)
 
-        if (context.convention.closeInnerContextsWhenClosing) {
+        if (openContext.convention.closeInnerContextsWhenClosing) {
           // If we've just removed the context at `i` above, its first inner context will now be at `i`.           
           this.openContexts.splice(i)
         }
@@ -233,11 +232,11 @@ export class Tokenizer {
         return true
       }
 
-      if (context.doIsteadOfTryingToCloseOuterContexts()) {
+      if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
         return true
       }
 
-      if (context.convention === this.nakedUrlConvention) {
+      if (openContext.convention === this.nakedUrlConvention) {
         innerNakedUrlContextIndex = i
       }
     }
@@ -313,8 +312,27 @@ export class Tokenizer {
   }
 
   private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
-    return !this.failedConventionTracker.hasFailed(convention, textIndex)
-  }
+    const conventionsThisOneTransformTo =
+      convention.onCloseFailIfCannotTranformInto
+
+    // If this convention transforms into other conventions, then it can fail as itself *or* fail
+    // post-transformation as of those conventions.
+    //
+    // If a convention fails post-transformation, we don't try it again to see if it could transform
+    // into a different convention. If it fails once, we move on. This logic is subject to change,
+    // but for now, because all of our "post-transformation" conventions have incompatible start
+    // patterns, there's no point in trying again.
+    const hasFailedAfterTransitioning = (
+      conventionsThisOneTransformTo
+      && conventionsThisOneTransformTo.some(convention => this.failedConventionTracker.hasFailed(convention, textIndex))
+    )
+
+    if (hasFailedAfterTransitioning) {
+      return false
+    }
+
+      return !this.failedConventionTracker.hasFailed(convention, textIndex)
+    }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
@@ -498,7 +516,7 @@ export class Tokenizer {
           insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
 
           closeInnerContextsWhenClosing: true,
-          onCloseFailIfCannotTransitionInto: this.mediaUrlConventions,
+          onCloseFailIfCannotTranformInto: this.mediaUrlConventions,
           onCloseFlushBufferTo: media.descriptionAndStartTokenKind,
         }))))
   }
