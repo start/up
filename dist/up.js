@@ -727,7 +727,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.rawBracketConventions = BRACKETS.map(function (args) { return _this.getRawBracketConvention(args); });
+        this.rawBracketConventions = BRACKETS.map(function (bracket) { return _this.getRawBracketConvention(bracket); });
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -1035,8 +1035,21 @@ var Tokenizer = (function () {
             startPattern: Patterns_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
             flushBufferToPlainTextTokenBeforeOpening: true,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
-            onCloseFlushBufferTo: media.startTokenKind
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+            closeInnerContextsWhenClosing: true,
+            onCloseFlushBufferTo: media.startTokenKind,
+            onCloseFailIfCannotTransitionTo: _this.getConventionsForMediaUrl()
+        }); });
+    };
+    Tokenizer.prototype.getConventionsForMediaUrl = function () {
+        var _this = this;
+        return BRACKETS.map(function (bracket) { return ({
+            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
+            endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
+            flushBufferToPlainTextTokenBeforeOpening: true,
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+            closeInnerContextsWhenClosing: true,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.MediaUrlAndEnd
         }); });
     };
     Tokenizer.prototype.getRawBracketConvention = function (bracket) {

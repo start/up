@@ -65,7 +65,7 @@ export class Tokenizer {
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
-  private rawBracketConventions = BRACKETS.map(args => this.getRawBracketConvention(args))
+  private rawBracketConventions = BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
 
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -468,9 +468,26 @@ export class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
+
+      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+
+      closeInnerContextsWhenClosing: true,
+      onCloseFlushBufferTo: media.startTokenKind,
+
+      onCloseFailIfCannotTransitionTo: this.getConventionsForMediaUrl()
+    }))
+  }
+
+  private getConventionsForMediaUrl(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
+
+      flushBufferToPlainTextTokenBeforeOpening: true,
       
-      insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
-      onCloseFlushBufferTo: media.startTokenKind
+      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+      closeInnerContextsWhenClosing: true,      
+      onCloseFlushBufferTo: TokenKind.MediaUrlAndEnd
     }))
   }
 
