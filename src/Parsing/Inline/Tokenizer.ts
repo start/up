@@ -197,11 +197,11 @@ export class Tokenizer {
 
         context.close()
 
-        const conventionsToTryTransitioningTo = context.convention.onCloseFailIfCannotTransitionInto
+        const conventionsToTryTransitioningTo =
+          context.convention.onCloseFailIfCannotTransitionInto
 
-        if (!conventionsToTryTransitioningTo) {
-          this.openContexts.splice(i, 1)
-        } else {
+        if (conventionsToTryTransitioningTo) {
+
           const canTransition =
             conventionsToTryTransitioningTo.some(convention => this.tryToOpen(convention))
 
@@ -216,7 +216,14 @@ export class Tokenizer {
           // We didn't actually want a new context with the new convention! Instead, we want to replace this
           // context's convention.
           context.convention = this.openContexts.pop().convention
+
+          if (context.convention.closeInnerContextsWhenClosing) {
+            this.openContexts.splice(i + 1)
+            return true
+          }
         }
+
+        this.openContexts.splice(i, 1)
 
         if (context.convention.closeInnerContextsWhenClosing) {
           // If we've just removed the context at `i` above, its first inner context will now be at `i`.           

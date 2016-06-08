@@ -819,10 +819,7 @@ var Tokenizer = (function () {
                 }
                 context_1.close();
                 var conventionsToTryTransitioningTo = context_1.convention.onCloseFailIfCannotTransitionInto;
-                if (!conventionsToTryTransitioningTo) {
-                    this.openContexts.splice(i, 1);
-                }
-                else {
+                if (conventionsToTryTransitioningTo) {
                     var canTransition = conventionsToTryTransitioningTo.some(function (convention) { return _this.tryToOpen(convention); });
                     if (!canTransition) {
                         this.openContexts.splice(i);
@@ -830,7 +827,12 @@ var Tokenizer = (function () {
                         return true;
                     }
                     context_1.convention = this.openContexts.pop().convention;
+                    if (context_1.convention.closeInnerContextsWhenClosing) {
+                        this.openContexts.splice(i + 1);
+                        return true;
+                    }
                 }
+                this.openContexts.splice(i, 1);
                 if (context_1.convention.closeInnerContextsWhenClosing) {
                     this.openContexts.splice(i);
                 }
