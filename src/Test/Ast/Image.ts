@@ -104,7 +104,7 @@ describe('An image URL (enclosed in parentheses)', () => {
   it('can contain nested matching parentheses', () => {
     expect(Up.toAst('[image: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.be.eql(
       new DocumentNode([
-        new ImageNode('ghosts eating luggage', 'http://example.com/?(state=[NE))'),
+        new ImageNode('ghosts eating luggage', 'http://example.com/?(state=(NE))'),
       ]))
   })
 })

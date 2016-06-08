@@ -138,7 +138,7 @@ describe("A video URL (enclosed by parentheses)", () => {
   it('can contain nested matching parentheses', () => {
     expect(Up.toAst('[video: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.be.eql(
       new DocumentNode([
-        new VideoNode('ghosts eating luggage', 'http://example.com/?(state=[NE))'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/?(state=(NE))'),
       ]))
   })
 })

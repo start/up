@@ -138,7 +138,7 @@ describe('An audio URL (enclosed in parentheses)', () => {
   it('can contain nested matching parentheses', () => {
     expect(Up.toAst('[audio: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.be.eql(
       new DocumentNode([
-        new AudioNode('ghosts eating luggage', 'http://example.com/?(state=[NE))'),
+        new AudioNode('ghosts eating luggage', 'http://example.com/?(state=(NE))'),
       ]))
   })
 })
