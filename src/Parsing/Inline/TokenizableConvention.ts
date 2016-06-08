@@ -20,8 +20,11 @@ export interface TokenizableConvention {
   doNotConsumeEndPattern?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFlushBufferTo?: TokenKind
+  onCloseFailIfCannotTransitionTo?: TokenizableConvention[]
   
   onClose?: OnConventionClose
+
+  
   
   resolveWhenLeftUnclosed?: (context: TokenizerContext) => void
 }

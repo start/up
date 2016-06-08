@@ -186,11 +186,22 @@ export class Tokenizer {
 
         context.close()
 
-        if (context.convention.closeInnerContextsWhenClosing) {
-          this.openContexts.splice(i)
-        } else {
+
+        let shouldRemoveContext = true
+
+        if (context.convention.onCloseFailIfCannotTransitionTo) {
+          // TODO
+        } 
+
+        if (shouldRemoveContext) {
           this.openContexts.splice(i, 1)
         }
+
+        if (context.convention.closeInnerContextsWhenClosing) {
+          // If we've just removed the context at `i` above, it's first inner context will now be at `i`.           
+          this.openContexts.splice(i)
+        }
+
 
         return true
       }
@@ -227,7 +238,7 @@ export class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return this.conventions.some(convention => this.tryToOpen(convention))
   }
-  
+
   private isDirectlyFollowing(...kinds: TokenKind[]): boolean {
     return (
       this.buffer === ''
@@ -379,7 +390,7 @@ export class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: false,
-      
+
       onlyOpenIf: () => this.isDirectlyFollowing(
         TokenKind.ParenthesizedEnd,
         TokenKind.SquareBracketedEnd,

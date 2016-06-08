@@ -815,11 +815,14 @@ var Tokenizer = (function () {
                     this.flushBufferToTokenOfKind(context_1.convention.onCloseFlushBufferTo);
                 }
                 context_1.close();
+                var shouldRemoveContext = true;
+                if (context_1.convention.onCloseFailIfCannotTransitionTo) {
+                }
+                if (shouldRemoveContext) {
+                    this.openContexts.splice(i, 1);
+                }
                 if (context_1.convention.closeInnerContextsWhenClosing) {
                     this.openContexts.splice(i);
-                }
-                else {
-                    this.openContexts.splice(i, 1);
                 }
                 return true;
             }
