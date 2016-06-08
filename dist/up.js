@@ -694,6 +694,7 @@ var TokenKind = exports.TokenKind;
 "use strict";
 var Patterns_1 = require('../../Patterns');
 var RichConventions_1 = require('./RichConventions');
+var MediaConventions_1 = require('./MediaConventions');
 var applyRaisedVoices_1 = require('./RaisedVoices/applyRaisedVoices');
 var nestOverlappingConventions_1 = require('./nestOverlappingConventions');
 var insertBracketsInsideBracketedConventions_1 = require('./insertBracketsInsideBracketedConventions');
@@ -761,7 +762,12 @@ var Tokenizer = (function () {
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
         (_c = this.conventions).push.apply(_c, BRACKETS.map(function (args) { return _this.getLinkUrlConvention(args); }));
-        (_d = this.conventions).push.apply(_d, [
+        (_d = this.conventions).push.apply(_d, CollectionHelpers_1.concat([
+            MediaConventions_1.AUDIO,
+            MediaConventions_1.IMAGE,
+            MediaConventions_1.VIDEO
+        ].map(function (media) { return _this.getConventionsForMediaDescription(media); })));
+        (_e = this.conventions).push.apply(_e, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
@@ -777,7 +783,7 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
@@ -1093,7 +1099,7 @@ var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.at
 var NAKED_URL_PROTOCOL_PATTERN = Patterns_1.regExpStartingWith('http' + Patterns_1.optional('s') + '://');
 var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.WHITESPACE_CHAR);
 
-},{"../../CollectionHelpers":1,"../../Patterns":38,"./Bracket":2,"./FailedConventionTracker":3,"./InlineConsumer":4,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerSnapshot":18,"./insertBracketsInsideBracketedConventions":20,"./nestOverlappingConventions":21}],17:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../Patterns":38,"./Bracket":2,"./FailedConventionTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerSnapshot":18,"./insertBracketsInsideBracketedConventions":20,"./nestOverlappingConventions":21}],17:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(convention, snapshot) {

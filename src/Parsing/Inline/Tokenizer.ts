@@ -8,7 +8,7 @@ import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnMatch } from './OnMatch'
-import { last, contains, reversed } from '../../CollectionHelpers'
+import { last, concat, contains, reversed } from '../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -111,6 +111,13 @@ export class Tokenizer {
     this.conventions.push(
       ...BRACKETS.map(args => this.getLinkUrlConvention(args)))
 
+    this.conventions.push(
+      ...concat([
+        AUDIO,
+        IMAGE,
+        VIDEO
+      ].map(media => this.getConventionsForMediaDescription(media))))
+
     this.conventions.push(...[
       {
         richConvention: PARENTHESIZED_CONVENTION,
@@ -205,7 +212,7 @@ export class Tokenizer {
 
           // We didn't actually want a new context with the new convention! Instead, we wanted to replace this
           // context's convention.
-          context.convention = this.openContexts.pop().convention          
+          context.convention = this.openContexts.pop().convention
         }
 
         if (shouldRemoveContext) {
