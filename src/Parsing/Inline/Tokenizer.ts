@@ -65,7 +65,9 @@ export class Tokenizer {
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
-  private rawBracketConventions = BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
+  private rawBracketConventions = this.getRawBracketConventions()
+
+  private mediaUrlConventions = this.getMediaUrlConventions()
 
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -109,14 +111,14 @@ export class Tokenizer {
     })
 
     this.conventions.push(
-      ...BRACKETS.map(args => this.getLinkUrlConvention(args)))
+      ...this.getLinkUrlConventions())
 
     this.conventions.push(
       ...concat([
         AUDIO,
         IMAGE,
         VIDEO
-      ].map(media => this.getConventionsForMediaDescription(media))))
+      ].map(media => this.getMediaDescriptionConventions(media))))
 
     this.conventions.push(...[
       {
@@ -210,9 +212,10 @@ export class Tokenizer {
             return true
           }
 
-          // We didn't actually want a new context with the new convention! Instead, we wanted to replace this
+          // We didn't actually want a new context with the new convention! Instead, we want to replace this
           // context's convention.
           context.convention = this.openContexts.pop().convention
+          shouldRemoveContext = false
         }
 
         if (shouldRemoveContext) {
@@ -220,7 +223,7 @@ export class Tokenizer {
         }
 
         if (context.convention.closeInnerContextsWhenClosing) {
-          // If we've just removed the context at `i` above, it's first inner context will now be at `i`.           
+          // If we've just removed the context at `i` above, its first inner context will now be at `i`.           
           this.openContexts.splice(i)
         }
 
@@ -406,12 +409,10 @@ export class Tokenizer {
     })
   }
 
-  private getLinkUrlConvention(bracket: Bracket): TokenizableConvention {
-    return {
+  private getLinkUrlConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
-
-      flushBufferToPlainTextTokenBeforeOpening: false,
 
       onlyOpenIf: () => this.isDirectlyFollowing(
         TokenKind.ParenthesizedEnd,
@@ -434,7 +435,7 @@ export class Tokenizer {
         lastToken.kind = LINK_CONVENTION.endTokenKind
         lastToken.value = url
       }
-    }
+    }))
   }
 
   private getConventionsForRichBracketedTerm(
@@ -484,7 +485,7 @@ export class Tokenizer {
     }
   }
 
-  private getConventionsForMediaDescription(media: MediaConvention): TokenizableConvention[] {
+  private getMediaDescriptionConventions(media: MediaConvention): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
       endPattern: regExpStartingWith(bracket.endPattern),
@@ -496,11 +497,11 @@ export class Tokenizer {
       closeInnerContextsWhenClosing: true,
       onCloseFlushBufferTo: media.startTokenKind,
 
-      onCloseFailIfCannotTransitionInto: this.getConventionsForMediaUrl()
+      onCloseFailIfCannotTransitionInto: this.mediaUrlConventions
     }))
   }
 
-  private getConventionsForMediaUrl(): TokenizableConvention[] {
+  private getMediaUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
@@ -513,18 +514,16 @@ export class Tokenizer {
     }))
   }
 
-  private getRawBracketConvention(bracket: Bracket): TokenizableConvention {
-    return {
+  private getRawBracketConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
-
-      flushBufferToPlainTextTokenBeforeOpening: false,
 
       onOpen: () => { this.buffer += bracket.start },
       onClose: () => { this.buffer += bracket.end },
 
       resolveWhenLeftUnclosed: () => true
-    }
+    }))
   }
 
   private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {

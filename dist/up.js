@@ -728,7 +728,8 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.rawBracketConventions = BRACKETS.map(function (bracket) { return _this.getRawBracketConvention(bracket); });
+        this.rawBracketConventions = this.getRawBracketConventions();
+        this.mediaUrlConventions = this.getMediaUrlConventions();
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -761,12 +762,12 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
-        (_c = this.conventions).push.apply(_c, BRACKETS.map(function (args) { return _this.getLinkUrlConvention(args); }));
+        (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
         (_d = this.conventions).push.apply(_d, CollectionHelpers_1.concat([
             MediaConventions_1.AUDIO,
             MediaConventions_1.IMAGE,
             MediaConventions_1.VIDEO
-        ].map(function (media) { return _this.getConventionsForMediaDescription(media); })));
+        ].map(function (media) { return _this.getMediaDescriptionConventions(media); })));
         (_e = this.conventions).push.apply(_e, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -832,6 +833,7 @@ var Tokenizer = (function () {
                         return true;
                     }
                     context_1.convention = this.openContexts.pop().convention;
+                    shouldRemoveContext = false;
                 }
                 if (shouldRemoveContext) {
                     this.openContexts.splice(i, 1);
@@ -997,12 +999,11 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.getLinkUrlConvention = function (bracket) {
+    Tokenizer.prototype.getLinkUrlConventions = function () {
         var _this = this;
-        return {
+        return BRACKETS.map(function (bracket) { return ({
             startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
-            flushBufferToPlainTextTokenBeforeOpening: false,
             onlyOpenIf: function () { return _this.isDirectlyFollowing(TokenKind_1.TokenKind.ParenthesizedEnd, TokenKind_1.TokenKind.SquareBracketedEnd, TokenKind_1.TokenKind.ActionEnd); },
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
@@ -1013,7 +1014,7 @@ var Tokenizer = (function () {
                 lastToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
                 lastToken.value = url;
             }
-        };
+        }); });
     };
     Tokenizer.prototype.getConventionsForRichBracketedTerm = function (args) {
         var _this = this;
@@ -1044,7 +1045,7 @@ var Tokenizer = (function () {
             }
         };
     };
-    Tokenizer.prototype.getConventionsForMediaDescription = function (media) {
+    Tokenizer.prototype.getMediaDescriptionConventions = function (media) {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
             startPattern: Patterns_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
@@ -1053,10 +1054,10 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onCloseFlushBufferTo: media.startTokenKind,
-            onCloseFailIfCannotTransitionInto: _this.getConventionsForMediaUrl()
+            onCloseFailIfCannotTransitionInto: _this.mediaUrlConventions
         }); });
     };
-    Tokenizer.prototype.getConventionsForMediaUrl = function () {
+    Tokenizer.prototype.getMediaUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
             startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
@@ -1067,16 +1068,15 @@ var Tokenizer = (function () {
             onCloseFlushBufferTo: TokenKind_1.TokenKind.MediaUrlAndEnd
         }); });
     };
-    Tokenizer.prototype.getRawBracketConvention = function (bracket) {
+    Tokenizer.prototype.getRawBracketConventions = function () {
         var _this = this;
-        return {
+        return BRACKETS.map(function (bracket) { return ({
             startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
-            flushBufferToPlainTextTokenBeforeOpening: false,
             onOpen: function () { _this.buffer += bracket.start; },
             onClose: function () { _this.buffer += bracket.end; },
             resolveWhenLeftUnclosed: function () { return true; }
-        };
+        }); });
     };
     Tokenizer.prototype.getBracketedTermStartPattern = function (nonLocalizedTerm, bracket) {
         return (bracket.startPattern
