@@ -209,7 +209,11 @@ export class Tokenizer {
             this.openContexts.splice(i)
             this.resetToBeforeContext(openContext)
 
-            return true
+            // We've just reset the tokenizer to where it was before we opened this convention.
+            //
+            // We know we won't be able to close any open conventions at our current position, because if
+            // we could, we would have done so the first time around.
+            return false
           }
 
           // So... we've just opened a new context for the convention we're transforming into. However, we

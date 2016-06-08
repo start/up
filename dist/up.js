@@ -824,7 +824,7 @@ var Tokenizer = (function () {
                     if (!isAbleToTransform) {
                         this.openContexts.splice(i);
                         this.resetToBeforeContext(openContext);
-                        return true;
+                        return false;
                     }
                     openContext.convention = this.openContexts.pop().convention;
                     if (openContext.convention.closeInnerContextsWhenClosing) {
