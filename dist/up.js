@@ -823,9 +823,11 @@ var Tokenizer = (function () {
                     this.flushBufferToTokenOfKind(context_1.convention.onCloseFlushBufferTo);
                 }
                 context_1.close();
-                var shouldRemoveContext = true;
                 var conventionsToTryTransitioningTo = context_1.convention.onCloseFailIfCannotTransitionInto;
-                if (conventionsToTryTransitioningTo) {
+                if (!conventionsToTryTransitioningTo) {
+                    this.openContexts.splice(i, 1);
+                }
+                else {
                     var canTransition = conventionsToTryTransitioningTo.some(function (convention) { return _this.tryToOpen(convention); });
                     if (!canTransition) {
                         this.openContexts.splice(i);
@@ -833,10 +835,6 @@ var Tokenizer = (function () {
                         return true;
                     }
                     context_1.convention = this.openContexts.pop().convention;
-                    shouldRemoveContext = false;
-                }
-                if (shouldRemoveContext) {
-                    this.openContexts.splice(i, 1);
                 }
                 if (context_1.convention.closeInnerContextsWhenClosing) {
                     this.openContexts.splice(i);
