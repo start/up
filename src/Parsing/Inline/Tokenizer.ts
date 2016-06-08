@@ -189,9 +189,24 @@ export class Tokenizer {
 
         let shouldRemoveContext = true
 
-        if (context.convention.onCloseFailIfCannotTransitionTo) {
-          // TODO
-        } 
+        const conventionsToTryTransitioningTo = context.convention.onCloseFailIfCannotTransitionInto
+
+        if (conventionsToTryTransitioningTo) {
+          const canTransition =
+            conventionsToTryTransitioningTo.some(convention => this.tryToOpen(convention))
+
+          if (!canTransition) {
+            // If we couldn't transition, we've got to fail. It's in the field name!
+            this.openContexts.splice(i)
+            this.resetToBeforeContext(context)
+
+            return true
+          }
+
+          // We didn't actually want a new context with the new convention! Instead, we wanted to replace this
+          // context's convention.
+          context.convention = this.openContexts.pop().convention          
+        }
 
         if (shouldRemoveContext) {
           this.openContexts.splice(i, 1)
@@ -474,7 +489,7 @@ export class Tokenizer {
       closeInnerContextsWhenClosing: true,
       onCloseFlushBufferTo: media.startTokenKind,
 
-      onCloseFailIfCannotTransitionTo: this.getConventionsForMediaUrl()
+      onCloseFailIfCannotTransitionInto: this.getConventionsForMediaUrl()
     }))
   }
 
@@ -484,9 +499,9 @@ export class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
-      
+
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      closeInnerContextsWhenClosing: true,      
+      closeInnerContextsWhenClosing: true,
       onCloseFlushBufferTo: TokenKind.MediaUrlAndEnd
     }))
   }

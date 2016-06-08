@@ -803,6 +803,7 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
     Tokenizer.prototype.tryToCloseAnyConvention = function () {
+        var _this = this;
         var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_1 = this.openContexts[i];
@@ -816,7 +817,15 @@ var Tokenizer = (function () {
                 }
                 context_1.close();
                 var shouldRemoveContext = true;
-                if (context_1.convention.onCloseFailIfCannotTransitionTo) {
+                var conventionsToTryTransitioningTo = context_1.convention.onCloseFailIfCannotTransitionInto;
+                if (conventionsToTryTransitioningTo) {
+                    var canTransition = conventionsToTryTransitioningTo.some(function (convention) { return _this.tryToOpen(convention); });
+                    if (!canTransition) {
+                        this.openContexts.splice(i);
+                        this.resetToBeforeContext(context_1);
+                        return true;
+                    }
+                    context_1.convention = this.openContexts.pop().convention;
                 }
                 if (shouldRemoveContext) {
                     this.openContexts.splice(i, 1);
@@ -1038,7 +1047,7 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onCloseFlushBufferTo: media.startTokenKind,
-            onCloseFailIfCannotTransitionTo: _this.getConventionsForMediaUrl()
+            onCloseFailIfCannotTransitionInto: _this.getConventionsForMediaUrl()
         }); });
     };
     Tokenizer.prototype.getConventionsForMediaUrl = function () {
