@@ -855,15 +855,14 @@ var Tokenizer = (function () {
         var _this = this;
         return this.conventions.some(function (convention) { return _this.tryToOpen(convention); });
     };
-    Tokenizer.prototype.isDirectlyFollowingLinkableBrackets = function () {
-        var linkableBrackets = [
-            TokenKind_1.TokenKind.ParenthesizedEnd,
-            TokenKind_1.TokenKind.SquareBracketedEnd,
-            TokenKind_1.TokenKind.ActionEnd
-        ];
+    Tokenizer.prototype.isDirectlyFollowing = function () {
+        var kinds = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            kinds[_i - 0] = arguments[_i];
+        }
         return (this.buffer === ''
             && this.tokens.length
-            && CollectionHelpers_1.contains(linkableBrackets, CollectionHelpers_1.last(this.tokens).kind));
+            && CollectionHelpers_1.contains(kinds, CollectionHelpers_1.last(this.tokens).kind));
     };
     Tokenizer.prototype.bufferRawText = function () {
         var _this = this;
@@ -986,7 +985,7 @@ var Tokenizer = (function () {
             startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
             flushBufferToPlainTextTokenBeforeOpening: false,
-            onlyOpenIf: function () { return _this.isDirectlyFollowingLinkableBrackets(); },
+            onlyOpenIf: function () { return _this.isDirectlyFollowing(TokenKind_1.TokenKind.ParenthesizedEnd, TokenKind_1.TokenKind.SquareBracketedEnd, TokenKind_1.TokenKind.ActionEnd); },
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function () {

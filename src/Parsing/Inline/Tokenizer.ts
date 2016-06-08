@@ -227,18 +227,12 @@ export class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return this.conventions.some(convention => this.tryToOpen(convention))
   }
-
-  private isDirectlyFollowingLinkableBrackets(): boolean {
-    const linkableBrackets = [
-      TokenKind.ParenthesizedEnd,
-      TokenKind.SquareBracketedEnd,
-      TokenKind.ActionEnd
-    ]
-
+  
+  private isDirectlyFollowing(...kinds: TokenKind[]): boolean {
     return (
       this.buffer === ''
       && this.tokens.length
-      && contains(linkableBrackets, last(this.tokens).kind)
+      && contains(kinds, last(this.tokens).kind)
     )
   }
 
@@ -385,7 +379,12 @@ export class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: false,
-      onlyOpenIf: () => this.isDirectlyFollowingLinkableBrackets(),
+      
+      onlyOpenIf: () => this.isDirectlyFollowing(
+        TokenKind.ParenthesizedEnd,
+        TokenKind.SquareBracketedEnd,
+        TokenKind.ActionEnd
+      ),
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
