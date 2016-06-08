@@ -218,8 +218,9 @@ export class Tokenizer {
 
           if (openContext.convention.closeInnerContextsWhenClosing) {
             this.openContexts.splice(i + 1)
-            return true
           }
+
+          return true
         }
 
         this.openContexts.splice(i, 1)
@@ -331,8 +332,8 @@ export class Tokenizer {
       return false
     }
 
-      return !this.failedConventionTracker.hasFailed(convention, textIndex)
-    }
+    return !this.failedConventionTracker.hasFailed(convention, textIndex)
+  }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
     return new TokenizerSnapshot({
