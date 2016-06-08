@@ -407,7 +407,7 @@ export class Tokenizer {
 
   private getConventionsForRichBracketedTerm(
     args: {
-      richConvention: RichConvention,
+      richConvention: RichConvention
       nonLocalizedTerm: string
     }
   ): TokenizableConvention[] {
@@ -417,21 +417,25 @@ export class Tokenizer {
       this.getRichSandwichConvention({
         richConvention,
         startPattern: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
-        endPattern: bracket.endPattern
+        endPattern: bracket.endPattern,
+        startPatternContainsATerm: true
       }))
   }
 
   private getRichSandwichConvention(
     args: {
-      richConvention: RichConvention,
-      startPattern: string,
+      richConvention: RichConvention
+      startPattern: string
       endPattern: string
+      startPatternContainsATerm?: boolean
     }
   ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern } = args
+    const { richConvention, startPattern, endPattern, startPatternContainsATerm } = args
 
     return {
-      startPattern: regExpStartingWith(startPattern, 'i'),
+      // Some of our rich sandwich conventions use a localized term in their start pattern, and we want those
+      // terms to be case-insensitive. No other start or end patterns need to be case-insensitive.
+      startPattern: regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
       endPattern: regExpStartingWith(endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,

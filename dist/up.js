@@ -1005,15 +1005,16 @@ var Tokenizer = (function () {
             return _this.getRichSandwichConvention({
                 richConvention: richConvention,
                 startPattern: _this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
-                endPattern: bracket.endPattern
+                endPattern: bracket.endPattern,
+                startPatternContainsATerm: true
             });
         });
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
-        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern;
+        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern, startPatternContainsATerm = args.startPatternContainsATerm;
         return {
-            startPattern: Patterns_1.regExpStartingWith(startPattern, 'i'),
+            startPattern: Patterns_1.regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
             endPattern: Patterns_1.regExpStartingWith(endPattern),
             flushBufferToPlainTextTokenBeforeOpening: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
