@@ -6,5 +6,5 @@ export class MediaConvention {
   constructor(
     public nonLocalizedTerm: string,
     public NodeType: MediaSyntaxNodeType,
-    public startTokenKind: TokenKind) { }
+    public descriptionAndStartTokenKind: TokenKind) { }
 }

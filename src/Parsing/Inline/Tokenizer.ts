@@ -492,7 +492,7 @@ export class Tokenizer {
 
           closeInnerContextsWhenClosing: true,
           onCloseFailIfCannotTransitionInto: this.mediaUrlConventions,
-          onCloseFlushBufferTo: media.startTokenKind,
+          onCloseFlushBufferTo: media.descriptionAndStartTokenKind,
         }))))
   }
 

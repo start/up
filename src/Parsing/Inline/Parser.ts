@@ -134,14 +134,11 @@ export class Parser {
 
 
       for (const media of MEDIA_CONVENTIONS) {
-        if (token.kind === media.startTokenKind) {
-          // The next token will be a MediaDescription token...
-          let description = this.getNextTokenAndAdvanceIndex().value.trim()
+        if (token.kind === media.descriptionAndStartTokenKind) {
+          let description = token.value.trim()
 
-          // ... And the next token will be a MediaUrlAndEnd token!
+          // The next token will be a MediaUrlAndEnd token.
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
-
-          // Alright. Now we can start producing our media syntax node!
 
           if (!url) {
             // If there's no URL, there's nothing meaningful to include in the document

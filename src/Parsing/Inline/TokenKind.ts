@@ -1,16 +1,15 @@
 export enum TokenKind {
   ActionEnd = 1,
   ActionStart,
-  AudioStart,
+  AudioDescriptionAndStart,
   EmphasisEnd,
   EmphasisStart,
   FootnoteEnd,
   FootnoteStart,
-  ImageStart,
+  ImageDescriptionAndStart,
   InlineCode,
   LinkUrlAndEnd,
   LinkStart,
-  MediaDescription,
   MediaUrlAndEnd,
   NakedUrlAfterProtocolAndEnd,
   NakedUrlProtocolAndStart,
@@ -30,5 +29,5 @@ export enum TokenKind {
   SquareBracketedStart,
   StressEnd,
   StressStart,
-  VideoStart
+  VideoDescriptionAndStart
 }

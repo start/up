@@ -4,9 +4,9 @@ import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
-const AUDIO = new MediaConvention('audio', AudioNode, TokenKind.AudioStart)
-const IMAGE = new MediaConvention('image', ImageNode, TokenKind.ImageStart)
-const VIDEO = new MediaConvention('video', VideoNode, TokenKind.VideoStart)
+const AUDIO = new MediaConvention('audio', AudioNode, TokenKind.AudioDescriptionAndStart)
+const IMAGE = new MediaConvention('image', ImageNode, TokenKind.ImageDescriptionAndStart)
+const VIDEO = new MediaConvention('video', VideoNode, TokenKind.VideoDescriptionAndStart)
 
 export {
   AUDIO,

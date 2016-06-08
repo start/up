@@ -129,10 +129,10 @@ var NON_WHITESPACE_CHAR_PATTERN = new RegExp(Patterns_1.NON_WHITESPACE_CHAR);
 },{"../../Patterns":38}],5:[function(require,module,exports){
 "use strict";
 var MediaConvention = (function () {
-    function MediaConvention(nonLocalizedTerm, NodeType, startTokenKind) {
+    function MediaConvention(nonLocalizedTerm, NodeType, descriptionAndStartTokenKind) {
         this.nonLocalizedTerm = nonLocalizedTerm;
         this.NodeType = NodeType;
-        this.startTokenKind = startTokenKind;
+        this.descriptionAndStartTokenKind = descriptionAndStartTokenKind;
     }
     return MediaConvention;
 }());
@@ -145,11 +145,11 @@ var TokenKind_1 = require('./TokenKind');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, TokenKind_1.TokenKind.AudioStart);
+var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, TokenKind_1.TokenKind.AudioDescriptionAndStart);
 exports.AUDIO = AUDIO;
-var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, TokenKind_1.TokenKind.ImageStart);
+var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, TokenKind_1.TokenKind.ImageDescriptionAndStart);
 exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, TokenKind_1.TokenKind.VideoStart);
+var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, TokenKind_1.TokenKind.VideoDescriptionAndStart);
 exports.VIDEO = VIDEO;
 
 },{"../../SyntaxNodes/AudioNode":40,"../../SyntaxNodes/ImageNode":53,"../../SyntaxNodes/VideoNode":76,"./MediaConvention":5,"./TokenKind":15}],7:[function(require,module,exports){
@@ -244,8 +244,8 @@ var Parser = (function () {
             }
             for (var _i = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _i < MEDIA_CONVENTIONS_1.length; _i++) {
                 var media = MEDIA_CONVENTIONS_1[_i];
-                if (token.kind === media.startTokenKind) {
-                    var description = this.getNextTokenAndAdvanceIndex().value.trim();
+                if (token.kind === media.descriptionAndStartTokenKind) {
+                    var description = token.value.trim();
                     var url = this.getNextTokenAndAdvanceIndex().value.trim();
                     if (!url) {
                         continue LoopTokens;
@@ -657,36 +657,35 @@ exports.Token = Token;
 (function (TokenKind) {
     TokenKind[TokenKind["ActionEnd"] = 1] = "ActionEnd";
     TokenKind[TokenKind["ActionStart"] = 2] = "ActionStart";
-    TokenKind[TokenKind["AudioStart"] = 3] = "AudioStart";
+    TokenKind[TokenKind["AudioDescriptionAndStart"] = 3] = "AudioDescriptionAndStart";
     TokenKind[TokenKind["EmphasisEnd"] = 4] = "EmphasisEnd";
     TokenKind[TokenKind["EmphasisStart"] = 5] = "EmphasisStart";
     TokenKind[TokenKind["FootnoteEnd"] = 6] = "FootnoteEnd";
     TokenKind[TokenKind["FootnoteStart"] = 7] = "FootnoteStart";
-    TokenKind[TokenKind["ImageStart"] = 8] = "ImageStart";
+    TokenKind[TokenKind["ImageDescriptionAndStart"] = 8] = "ImageDescriptionAndStart";
     TokenKind[TokenKind["InlineCode"] = 9] = "InlineCode";
     TokenKind[TokenKind["LinkUrlAndEnd"] = 10] = "LinkUrlAndEnd";
     TokenKind[TokenKind["LinkStart"] = 11] = "LinkStart";
-    TokenKind[TokenKind["MediaDescription"] = 12] = "MediaDescription";
-    TokenKind[TokenKind["MediaUrlAndEnd"] = 13] = "MediaUrlAndEnd";
-    TokenKind[TokenKind["NakedUrlAfterProtocolAndEnd"] = 14] = "NakedUrlAfterProtocolAndEnd";
-    TokenKind[TokenKind["NakedUrlProtocolAndStart"] = 15] = "NakedUrlProtocolAndStart";
-    TokenKind[TokenKind["ParenthesizedEnd"] = 16] = "ParenthesizedEnd";
-    TokenKind[TokenKind["ParenthesizedStart"] = 17] = "ParenthesizedStart";
-    TokenKind[TokenKind["PlainText"] = 18] = "PlainText";
-    TokenKind[TokenKind["PotentialRaisedVoiceEnd"] = 19] = "PotentialRaisedVoiceEnd";
-    TokenKind[TokenKind["PotentialRaisedVoiceStartOrEnd"] = 20] = "PotentialRaisedVoiceStartOrEnd";
-    TokenKind[TokenKind["PotentialRaisedVoiceStart"] = 21] = "PotentialRaisedVoiceStart";
-    TokenKind[TokenKind["RevisionDeletionEnd"] = 22] = "RevisionDeletionEnd";
-    TokenKind[TokenKind["RevisionDeletionStart"] = 23] = "RevisionDeletionStart";
-    TokenKind[TokenKind["RevisionInsertionEnd"] = 24] = "RevisionInsertionEnd";
-    TokenKind[TokenKind["RevisionInsertionStart"] = 25] = "RevisionInsertionStart";
-    TokenKind[TokenKind["SpoilerEnd"] = 26] = "SpoilerEnd";
-    TokenKind[TokenKind["SpoilerStart"] = 27] = "SpoilerStart";
-    TokenKind[TokenKind["SquareBracketedEnd"] = 28] = "SquareBracketedEnd";
-    TokenKind[TokenKind["SquareBracketedStart"] = 29] = "SquareBracketedStart";
-    TokenKind[TokenKind["StressEnd"] = 30] = "StressEnd";
-    TokenKind[TokenKind["StressStart"] = 31] = "StressStart";
-    TokenKind[TokenKind["VideoStart"] = 32] = "VideoStart";
+    TokenKind[TokenKind["MediaUrlAndEnd"] = 12] = "MediaUrlAndEnd";
+    TokenKind[TokenKind["NakedUrlAfterProtocolAndEnd"] = 13] = "NakedUrlAfterProtocolAndEnd";
+    TokenKind[TokenKind["NakedUrlProtocolAndStart"] = 14] = "NakedUrlProtocolAndStart";
+    TokenKind[TokenKind["ParenthesizedEnd"] = 15] = "ParenthesizedEnd";
+    TokenKind[TokenKind["ParenthesizedStart"] = 16] = "ParenthesizedStart";
+    TokenKind[TokenKind["PlainText"] = 17] = "PlainText";
+    TokenKind[TokenKind["PotentialRaisedVoiceEnd"] = 18] = "PotentialRaisedVoiceEnd";
+    TokenKind[TokenKind["PotentialRaisedVoiceStartOrEnd"] = 19] = "PotentialRaisedVoiceStartOrEnd";
+    TokenKind[TokenKind["PotentialRaisedVoiceStart"] = 20] = "PotentialRaisedVoiceStart";
+    TokenKind[TokenKind["RevisionDeletionEnd"] = 21] = "RevisionDeletionEnd";
+    TokenKind[TokenKind["RevisionDeletionStart"] = 22] = "RevisionDeletionStart";
+    TokenKind[TokenKind["RevisionInsertionEnd"] = 23] = "RevisionInsertionEnd";
+    TokenKind[TokenKind["RevisionInsertionStart"] = 24] = "RevisionInsertionStart";
+    TokenKind[TokenKind["SpoilerEnd"] = 25] = "SpoilerEnd";
+    TokenKind[TokenKind["SpoilerStart"] = 26] = "SpoilerStart";
+    TokenKind[TokenKind["SquareBracketedEnd"] = 27] = "SquareBracketedEnd";
+    TokenKind[TokenKind["SquareBracketedStart"] = 28] = "SquareBracketedStart";
+    TokenKind[TokenKind["StressEnd"] = 29] = "StressEnd";
+    TokenKind[TokenKind["StressStart"] = 30] = "StressStart";
+    TokenKind[TokenKind["VideoDescriptionAndStart"] = 31] = "VideoDescriptionAndStart";
 })(exports.TokenKind || (exports.TokenKind = {}));
 var TokenKind = exports.TokenKind;
 
@@ -1049,7 +1048,7 @@ var Tokenizer = (function () {
                 insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
                 closeInnerContextsWhenClosing: true,
                 onCloseFailIfCannotTransitionInto: _this.mediaUrlConventions,
-                onCloseFlushBufferTo: media.startTokenKind,
+                onCloseFlushBufferTo: media.descriptionAndStartTokenKind,
             }); });
         }));
     };
