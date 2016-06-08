@@ -763,11 +763,7 @@ var Tokenizer = (function () {
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
         (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
-        (_d = this.conventions).push.apply(_d, CollectionHelpers_1.concat([
-            MediaConventions_1.AUDIO,
-            MediaConventions_1.IMAGE,
-            MediaConventions_1.VIDEO
-        ].map(function (media) { return _this.getMediaDescriptionConventions(media); })));
+        (_d = this.conventions).push.apply(_d, this.getMediaDescriptionConventions());
         (_e = this.conventions).push.apply(_e, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -1043,17 +1039,19 @@ var Tokenizer = (function () {
             }
         };
     };
-    Tokenizer.prototype.getMediaDescriptionConventions = function (media) {
+    Tokenizer.prototype.getMediaDescriptionConventions = function () {
         var _this = this;
-        return BRACKETS.map(function (bracket) { return ({
-            startPattern: Patterns_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
-            endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
-            flushBufferToPlainTextTokenBeforeOpening: true,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
-            closeInnerContextsWhenClosing: true,
-            onCloseFlushBufferTo: media.startTokenKind,
-            onCloseFailIfCannotTransitionInto: _this.mediaUrlConventions
-        }); });
+        return CollectionHelpers_1.concat([MediaConventions_1.IMAGE, MediaConventions_1.VIDEO, MediaConventions_1.AUDIO].map(function (media) {
+            return BRACKETS.map(function (bracket) { return ({
+                startPattern: Patterns_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
+                endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
+                flushBufferToPlainTextTokenBeforeOpening: true,
+                insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+                closeInnerContextsWhenClosing: true,
+                onCloseFailIfCannotTransitionInto: _this.mediaUrlConventions,
+                onCloseFlushBufferTo: media.startTokenKind,
+            }); });
+        }));
     };
     Tokenizer.prototype.getMediaUrlConventions = function () {
         var _this = this;

@@ -67,6 +67,12 @@ export class Tokenizer {
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
   private rawBracketConventions = this.getRawBracketConventions()
 
+  // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
+  // description reaches its final bracket, we try to convert that media description context into a media URL
+  // context.
+  //
+  // If that fails (either because their isn't an opening bracket for the media URL, or because there isn't a
+  // closing bracket), we backtrack to the beginning of the media description. 
   private mediaUrlConventions = this.getMediaUrlConventions()
 
   constructor(entireText: string, private config: UpConfig) {
@@ -114,11 +120,7 @@ export class Tokenizer {
       ...this.getLinkUrlConventions())
 
     this.conventions.push(
-      ...concat([
-        AUDIO,
-        IMAGE,
-        VIDEO
-      ].map(media => this.getMediaDescriptionConventions(media))))
+      ...this.getMediaDescriptionConventions())
 
     this.conventions.push(...[
       {
@@ -214,7 +216,7 @@ export class Tokenizer {
           // We didn't actually want a new context with the new convention! Instead, we want to replace this
           // context's convention.
           context.convention = this.openContexts.pop().convention
-        } 
+        }
 
         if (context.convention.closeInnerContextsWhenClosing) {
           // If we've just removed the context at `i` above, its first inner context will now be at `i`.           
@@ -478,20 +480,20 @@ export class Tokenizer {
     }
   }
 
-  private getMediaDescriptionConventions(media: MediaConvention): TokenizableConvention[] {
-    return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
-      endPattern: regExpStartingWith(bracket.endPattern),
+  private getMediaDescriptionConventions(): TokenizableConvention[] {
+    return concat(
+      [IMAGE, VIDEO, AUDIO].map(media =>
+        BRACKETS.map(bracket => (<TokenizableConvention>{
+          startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
+          endPattern: regExpStartingWith(bracket.endPattern),
 
-      flushBufferToPlainTextTokenBeforeOpening: true,
+          flushBufferToPlainTextTokenBeforeOpening: true,
+          insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
 
-      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-
-      closeInnerContextsWhenClosing: true,
-      onCloseFlushBufferTo: media.startTokenKind,
-
-      onCloseFailIfCannotTransitionInto: this.mediaUrlConventions
-    }))
+          closeInnerContextsWhenClosing: true,
+          onCloseFailIfCannotTransitionInto: this.mediaUrlConventions,
+          onCloseFlushBufferTo: media.startTokenKind,
+        }))))
   }
 
   private getMediaUrlConventions(): TokenizableConvention[] {
