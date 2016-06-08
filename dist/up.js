@@ -1035,12 +1035,8 @@ var Tokenizer = (function () {
             startPattern: Patterns_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
             flushBufferToPlainTextTokenBeforeOpening: true,
-            onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
-            onClose: function (context) {
-                var description = _this.flushBuffer();
-                var startToken = new Token_1.Token({ kind: media.startTokenKind, value: description });
-                _this.insertTokenAtStartOfContext(context, startToken);
-            }
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
+            onCloseFlushBufferTo: media.startTokenKind
         }); });
     };
     Tokenizer.prototype.getRawBracketConvention = function (bracket) {

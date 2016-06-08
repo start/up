@@ -468,16 +468,9 @@ export class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
-      onCloseFlushBufferTo: TokenKind.PlainText,
-
-      onClose: (context) => {
-        const description = this.flushBuffer()
-        const startToken = new Token({ kind: media.startTokenKind, value: description })
-
-        this.insertTokenAtStartOfContext(context, startToken)
-
-        // TODO: Open media URL
-      }
+      
+      insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
+      onCloseFlushBufferTo: media.startTokenKind
     }))
   }
 
