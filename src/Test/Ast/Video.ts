@@ -102,7 +102,7 @@ describe('A video description (enclosed by curly brackets)', () => {
   })
 
   it('can contain nested matching curly brackets', () => {
-    expect(Up.toAst('(video: {ghosts {eating}} {{luggage}}}[http://example.com/?state=NE]')).to.be.eql(
+    expect(Up.toAst('{video: {ghosts {eating}} {{luggage}}}[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
         new VideoNode('{ghosts {eating}} {{luggage}}', 'http://example.com/?state=NE'),
       ]))
