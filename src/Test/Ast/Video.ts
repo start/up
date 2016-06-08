@@ -94,8 +94,8 @@ describe('A video description (enclosed by parentheses)', () => {
 
 
 describe('A video description (enclosed by curly brackets)', () => {
-  it('can contain matching square brackets', () => {
-    expect(Up.toAst('{video: ghosts eating {luggage}[http://example.com/?state=NE]')).to.be.eql(
+  it('can contain matching curly brackets', () => {
+    expect(Up.toAst('{video: ghosts eating {luggage}}[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating {luggage}', 'http://example.com/?state=NE'),
       ]))
