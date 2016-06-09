@@ -204,31 +204,8 @@ export class Tokenizer {
         const conventionsToTryTransformingTo =
           openContext.convention.onCloseFailIfCannotTranformInto
 
-        if (conventionsToTryTransformingTo) {
-          const isAbleToTransform =
-            conventionsToTryTransformingTo.some(convention => this.tryToOpen(convention))
-
-          if (!isAbleToTransform) {
-            // We couldn't transform, so it's time to fail.
-            this.openContexts.splice(i)
-            this.resetToBeforeContext(openContext)
-
-            // We've just reset the tokenizer to where it was before we opened this convention.
-            //
-            // We know we won't be able to close any open conventions at our current position, because if
-            // we could, we would have done so the first time around.
-            return false
-          }
-
-          // So... we've just opened a new context for the convention we're transforming into. However, we
-          // actually want to replace this context's convention with the new one instead.
-          openContext.convention = this.openContexts.pop().convention
-
-          if (openContext.convention.closeInnerContextsWhenClosing) {
-            this.openContexts.splice(i + 1)
-          }
-
-          return true
+        if (openContext.convention.onCloseFailIfCannotTranformInto) {
+          return this.tryToTransformConvention(i)
         }
 
         this.openContexts.splice(i, 1)
@@ -263,6 +240,35 @@ export class Tokenizer {
         }
       }
     })
+  }
+
+  private tryToTransformConvention(openContextIndex: number): boolean {
+    const context = this.openContexts[openContextIndex]
+
+    const couldTransform =
+      context.convention.onCloseFailIfCannotTranformInto.some(convention => this.tryToOpen(convention))
+
+    if (!couldTransform) {
+      // We couldn't transform, so it's time to fail.
+      this.openContexts.splice(openContextIndex)
+      this.resetToBeforeContext(context)
+
+      // We've just reset the tokenizer to where it was before we opened this convention.
+      //
+      // We know we won't be able to close any open conventions at our current position, because if
+      // we could, we would have done so the first time around.
+      return false
+    }
+
+    // So... we've just opened a new context for the convention we're transforming into. However, we
+    // actually want to replace this context's convention with the new one instead.
+    context.convention = this.openContexts.pop().convention
+
+    if (context.convention.closeInnerContextsWhenClosing) {
+      this.openContexts.splice(openContextIndex + 1)
+    }
+
+    return true
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
@@ -547,7 +553,7 @@ export class Tokenizer {
         const endToken = new Token({ kind: richConvention.endTokenKind })
         startToken.associateWith(endToken)
 
-        this.insertToken({ context, token: startToken, atIndex: context.initialTokenIndex})
+        this.insertToken({ context, token: startToken, atIndex: context.initialTokenIndex })
         this.tokens.push(endToken)
       }
     }

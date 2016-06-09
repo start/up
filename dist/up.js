@@ -805,7 +805,6 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
     Tokenizer.prototype.tryToCloseAnyConvention = function () {
-        var _this = this;
         var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var openContext = this.openContexts[i];
@@ -819,18 +818,8 @@ var Tokenizer = (function () {
                 }
                 openContext.close();
                 var conventionsToTryTransformingTo = openContext.convention.onCloseFailIfCannotTranformInto;
-                if (conventionsToTryTransformingTo) {
-                    var isAbleToTransform = conventionsToTryTransformingTo.some(function (convention) { return _this.tryToOpen(convention); });
-                    if (!isAbleToTransform) {
-                        this.openContexts.splice(i);
-                        this.resetToBeforeContext(openContext);
-                        return false;
-                    }
-                    openContext.convention = this.openContexts.pop().convention;
-                    if (openContext.convention.closeInnerContextsWhenClosing) {
-                        this.openContexts.splice(i + 1);
-                    }
-                    return true;
+                if (openContext.convention.onCloseFailIfCannotTranformInto) {
+                    return this.tryToTransformConvention(i);
                 }
                 this.openContexts.splice(i, 1);
                 if (openContext.convention.closeInnerContextsWhenClosing) {
@@ -861,6 +850,21 @@ var Tokenizer = (function () {
                 }
             }
         });
+    };
+    Tokenizer.prototype.tryToTransformConvention = function (openContextIndex) {
+        var _this = this;
+        var context = this.openContexts[openContextIndex];
+        var couldTransform = context.convention.onCloseFailIfCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
+        if (!couldTransform) {
+            this.openContexts.splice(openContextIndex);
+            this.resetToBeforeContext(context);
+            return false;
+        }
+        context.convention = this.openContexts.pop().convention;
+        if (context.convention.closeInnerContextsWhenClosing) {
+            this.openContexts.splice(openContextIndex + 1);
+        }
+        return true;
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
         return CollectionHelpers_1.reversed(this.openContexts)
