@@ -3,6 +3,8 @@ import { UpConfigSettings} from './UpConfigSettings'
 
 const DEFAULT_CONFIG: UpConfigSettings = {
   documentName: null,
+
+  relativeUrlBase: '',
   
   i18n: {
     idWordDelimiter: '-',

@@ -2875,6 +2875,7 @@ function toHtml(textOrNode, config) {
 "use strict";
 var DEFAULT_CONFIG = {
     documentName: null,
+    relativeUrlBase: '',
     i18n: {
         idWordDelimiter: '-',
         terms: {

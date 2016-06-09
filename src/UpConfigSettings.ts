@@ -1,5 +1,7 @@
 export interface UpConfigSettings {
   documentName?: string
+  
+  relativeUrlBase?: string
 
   i18n?: {
     idWordDelimiter?: string
