@@ -2867,7 +2867,7 @@ exports.isWhitespace = isWhitespace;
 },{"./PlainTextNode":68}],80:[function(require,module,exports){
 "use strict";
 var parseDocument_1 = require('./Parsing/parseDocument');
-var HtmlWriter_1 = require('./Writer/HtmlWriter');
+var HtmlWriter_1 = require('./Writers/HtmlWriter');
 var UpConfig_1 = require('./UpConfig');
 var Up = (function () {
     function Up(settings) {
@@ -2899,7 +2899,7 @@ function toHtml(textOrNode, config) {
     return new HtmlWriter_1.HtmlWriter(config).write(node);
 }
 
-},{"./Parsing/parseDocument":37,"./UpConfig":81,"./Writer/HtmlWriter":82}],81:[function(require,module,exports){
+},{"./Parsing/parseDocument":37,"./UpConfig":81,"./Writers/HtmlWriter":82}],81:[function(require,module,exports){
 "use strict";
 var DEFAULT_CONFIG = {
     documentName: null,

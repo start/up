@@ -33,7 +33,6 @@ import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { HtmlWriter } from '../../Writer/HtmlWriter'
 
 
 describe('An empty document node', () => {
