@@ -14,6 +14,7 @@ export interface UpConfigSettings {
       spoiler?: string
       footnote?: string
       footnoteReference?: string
+      
       [term: string]: string
     }
   }

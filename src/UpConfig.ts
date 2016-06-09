@@ -25,8 +25,8 @@ const DEFAULT_CONFIG: UpConfigSettings = {
 export class UpConfig {
   public settings: UpConfigSettings
 
-  constructor(configArgs?: UpConfigSettings, defaults = DEFAULT_CONFIG) {
-    this.settings = merge(defaults, configArgs)
+  constructor(settings?: UpConfigSettings, defaultSettings = DEFAULT_CONFIG) {
+    this.settings = merge(defaultSettings, settings)
   }
   
   withChanges(changes: UpConfigSettings): UpConfig {

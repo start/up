@@ -2842,20 +2842,20 @@ var parseDocument_1 = require('./Parsing/parseDocument');
 var HtmlWriter_1 = require('./Writer/HtmlWriter');
 var UpConfig_1 = require('./UpConfig');
 var Up = (function () {
-    function Up(config) {
-        this.config = new UpConfig_1.UpConfig(config);
+    function Up(settings) {
+        this.config = new UpConfig_1.UpConfig(settings);
     }
-    Up.toAst = function (text, configChanges) {
-        return this.defaultUp.toAst(text, configChanges);
+    Up.toAst = function (text, changedSettings) {
+        return this.defaultUp.toAst(text, changedSettings);
     };
-    Up.toHtml = function (textOrNode, configChanges) {
-        return this.defaultUp.toHtml(textOrNode, configChanges);
+    Up.toHtml = function (textOrNode, changedSettings) {
+        return this.defaultUp.toHtml(textOrNode, changedSettings);
     };
-    Up.prototype.toAst = function (text, configChanges) {
-        return toAst(text, this.config.withChanges(configChanges));
+    Up.prototype.toAst = function (text, changedSettings) {
+        return toAst(text, this.config.withChanges(changedSettings));
     };
-    Up.prototype.toHtml = function (textOrNode, configChanges) {
-        return toHtml(textOrNode, this.config.withChanges(configChanges));
+    Up.prototype.toHtml = function (textOrNode, changedSettings) {
+        return toHtml(textOrNode, this.config.withChanges(changedSettings));
     };
     Up.defaultUp = new Up();
     return Up;
@@ -2890,9 +2890,9 @@ var DEFAULT_CONFIG = {
     }
 };
 var UpConfig = (function () {
-    function UpConfig(configArgs, defaults) {
-        if (defaults === void 0) { defaults = DEFAULT_CONFIG; }
-        this.settings = merge(defaults, configArgs);
+    function UpConfig(settings, defaultSettings) {
+        if (defaultSettings === void 0) { defaultSettings = DEFAULT_CONFIG; }
+        this.settings = merge(defaultSettings, settings);
     }
     UpConfig.prototype.withChanges = function (changes) {
         return new UpConfig(changes, this.settings);

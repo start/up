@@ -9,27 +9,27 @@ import { UpConfigSettings } from './UpConfigSettings'
 export class Up {
   private static defaultUp: Up = new Up()
 
-  static toAst(text: string, configChanges?: UpConfigSettings): DocumentNode {
-    return this.defaultUp.toAst(text, configChanges)
+  static toAst(text: string, changedSettings?: UpConfigSettings): DocumentNode {
+    return this.defaultUp.toAst(text, changedSettings)
   }
 
-  static toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigSettings): string {
-    return this.defaultUp.toHtml(textOrNode, configChanges)
+  static toHtml(textOrNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
+    return this.defaultUp.toHtml(textOrNode, changedSettings)
   }
 
 
   private config: UpConfig
 
-  constructor(config?: UpConfigSettings) {
-    this.config = new UpConfig(config)
+  constructor(settings?: UpConfigSettings) {
+    this.config = new UpConfig(settings)
   }
 
-  toAst(text: string, configChanges?: UpConfigSettings): DocumentNode {
-    return toAst(text, this.config.withChanges(configChanges))
+  toAst(text: string, changedSettings?: UpConfigSettings): DocumentNode {
+    return toAst(text, this.config.withChanges(changedSettings))
   }
 
-  toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigSettings): string {
-    return toHtml(textOrNode, this.config.withChanges(configChanges))
+  toHtml(textOrNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
+    return toHtml(textOrNode, this.config.withChanges(changedSettings))
   }
 }
 
