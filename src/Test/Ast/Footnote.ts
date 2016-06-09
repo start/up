@@ -43,6 +43,33 @@ describe('Inside a paragraph, text surrounded by 2 parentheses', () => {
 })
 
 
+describe('A paragraph with two footnotes', () => {
+  it("contains two footnote nodes, and produces a single footnote block node after the paragraph for both footnotes", () => {
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have. ((Except for Mondays.))"
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1),
+      new FootnoteNode([
+        new PlainTextNode('Except for Mondays.')
+      ], 2)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnotes[0],
+          new PlainTextNode(" Never have."),
+          footnotes[1]
+        ]),
+        new FootnoteBlockNode(footnotes)
+      ]))
+  })
+})
+
+
 describe('Text surrounded by 2 square brackets', () => {
   it("produces a footnote node", () => {
     const text = "I don't eat cereal. [[Well, I do, but I pretend not to.]] Never have."
