@@ -241,13 +241,13 @@ describe('A link missing its final closing bracket', () => {
 
 
 describe("Bracketed text followed by a parenthesized URL starting with an open parenthesis (that gets matched at some point before the URL ends)", () => {
-  it('produce a link node', () => {
+  it('produce a link node (whose URL is prefixed by the default scheme)', () => {
     expect(Up.toAst('See the [documentation]((parenthetical)operators).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('See the '),
         new LinkNode([
           new PlainTextNode('documentation')
-        ], '(parenthetical)operators'),
+        ], 'https://(parenthetical)operators'),
         new PlainTextNode('.')
       ]))
   })
