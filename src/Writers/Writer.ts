@@ -38,7 +38,7 @@ import { UpConfig } from '../UpConfig'
 
 export abstract class Writer {
   
-  constructor(public config: UpConfig) { }
+  constructor(private config: UpConfig) { }
 
   write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
