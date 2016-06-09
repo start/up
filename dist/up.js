@@ -2037,32 +2037,52 @@ exports.parseDocument = parseDocument;
 
 },{"../SyntaxNodes/DocumentNode":47,"./Outline/HeadingLeveler":22,"./Outline/getOutlineNodes":25}],38:[function(require,module,exports){
 "use strict";
-var group = function (pattern) { return ("(?:" + pattern + ")"); };
-var capture = function (pattern) { return ("(" + pattern + ")"); };
+function group(pattern) {
+    return "(?:" + pattern + ")";
+}
+function capture(pattern) {
+    return "(" + pattern + ")";
+}
 exports.capture = capture;
-var optional = function (pattern) { return group(pattern) + '?'; };
+function optional(pattern) {
+    return group(pattern) + '?';
+}
 exports.optional = optional;
-var all = function (pattern) { return group(pattern) + '*'; };
+function all(pattern) {
+    return group(pattern) + '*';
+}
 exports.all = all;
-var atLeast = function (count, pattern) { return group(pattern) + ("{" + count + ",}"); };
+function atLeast(count, pattern) {
+    return group(pattern) + ("{" + count + ",}");
+}
 exports.atLeast = atLeast;
-var exactly = function (count, pattern) { return group(pattern) + ("{" + count + "}"); };
+function exactly(count, pattern) {
+    return group(pattern) + ("{" + count + "}");
+}
 exports.exactly = exactly;
-var either = function () {
+function either() {
     var patterns = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         patterns[_i - 0] = arguments[_i];
     }
     return group(patterns.join('|'));
-};
+}
 exports.either = either;
-var solely = function (pattern) { return '^' + pattern + INLINE_WHITESPACE + '$'; };
+function solely(pattern) {
+    return '^' + pattern + INLINE_WHITESPACE + '$';
+}
 exports.solely = solely;
-var streakOf = function (charPattern) { return solely(atLeast(3, charPattern)); };
+function streakOf(charPattern) {
+    return solely(atLeast(3, charPattern));
+}
 exports.streakOf = streakOf;
-var startsWith = function (pattern) { return '^' + pattern; };
+function startsWith(pattern) {
+    return '^' + pattern;
+}
 exports.startsWith = startsWith;
-var endsWith = function (pattern) { return pattern + '$'; };
+function endsWith(pattern) {
+    return pattern + '$';
+}
 exports.endsWith = endsWith;
 var INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
 exports.INLINE_WHITESPACE_CHAR = INLINE_WHITESPACE_CHAR;

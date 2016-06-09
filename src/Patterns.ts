@@ -1,39 +1,50 @@
-const group =
-  (pattern: string) => `(?:${pattern})`
+function group(pattern: string): string {
+  return `(?:${pattern})`
+}
 
-const capture =
-  (pattern: string) => `(${pattern})`
+function capture(pattern: string): string {
+  return `(${pattern})`
+}
 
-const optional =
-  (pattern: string) => group(pattern) + '?'
+function optional(pattern: string): string {
+  return group(pattern) + '?'
+}
 
-const all =
-  (pattern: string) => group(pattern) + '*'
+function all(pattern: string): string {
+  return group(pattern) + '*'
+}
 
-const atLeast =
-  (count: number, pattern: string) => group(pattern) + `{${count},}`
+function atLeast(count: number, pattern: string): string {
+  return group(pattern) + `{${count},}`
+}
 
-const exactly =
-  (count: number, pattern: string) => group(pattern) + `{${count}}`
+function exactly(count: number, pattern: string): string {
+  return group(pattern) + `{${count}}`
+}
 
-const either =
-  (...patterns: string[]) => group(patterns.join('|'))
+function either(...patterns: string[]): string {
+  return group(patterns.join('|'))
+}
 
-const solely =
-  (pattern: string) => '^' + pattern + INLINE_WHITESPACE + '$'
+function solely(pattern: string) {
+  return '^' + pattern + INLINE_WHITESPACE + '$'
+}
 
-const streakOf =
-  (charPattern: string) => solely(atLeast(3, charPattern))
+function streakOf(charPattern: string): string {
+  return solely(atLeast(3, charPattern))
+}
 
-const startsWith =
-  (pattern: string) => '^' + pattern
+function startsWith(pattern: string): string {
+  return '^' + pattern
+}
 
-const endsWith =
-  (pattern: string) => pattern + '$'
+function endsWith(pattern: string): string {
+  return pattern + '$'
+}
 
 const INLINE_WHITESPACE_CHAR =
   '[^\\S\\n]'
-  
+
 const WHITESPACE_CHAR =
   '\\s'
 
@@ -90,29 +101,29 @@ function regExpEndingWith(pattern: string, flags?: string): RegExp {
 
 
 export {
-  capture,
-  optional,
-  either,
-  solely,
-  startsWith,
-  endsWith,
-  streakOf,
-  all,
-  atLeast,
-  exactly,
-  escapeForRegex,
-  regExpStartingWith,
-  regExpEndingWith,
-  NON_BLANK_PATTERN,
-  BLANK_PATTERN,
-  INLINE_WHITESPACE_CHAR,
-  WHITESPACE_CHAR,
-  NON_WHITESPACE_CHAR,
-  INDENT,
-  ANY_WHITESPACE,
-  STREAK,
-  INTEGER,
-  LINE_BREAK,
-  LETTER,
-  DIGIT
+capture,
+optional,
+either,
+solely,
+startsWith,
+endsWith,
+streakOf,
+all,
+atLeast,
+exactly,
+escapeForRegex,
+regExpStartingWith,
+regExpEndingWith,
+NON_BLANK_PATTERN,
+BLANK_PATTERN,
+INLINE_WHITESPACE_CHAR,
+WHITESPACE_CHAR,
+NON_WHITESPACE_CHAR,
+INDENT,
+ANY_WHITESPACE,
+STREAK,
+INTEGER,
+LINE_BREAK,
+LETTER,
+DIGIT
 }
