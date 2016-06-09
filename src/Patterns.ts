@@ -13,6 +13,9 @@ const any =
 const atLeast =
   (count: number, pattern: string) => group(pattern) + `{${count},}`
 
+const exactly =
+  (count: number, pattern: string) => group(pattern) + `{${count}}`
+
 const either =
   (...patterns: string[]) => group(patterns.join('|'))
 
@@ -89,6 +92,7 @@ export {
   endsWith,
   streakOf,
   atLeast,
+  exactly,
   escapeForRegex,
   regExpStartingWith,
   regExpEndingWith,

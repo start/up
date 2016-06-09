@@ -1,4 +1,4 @@
-import { escapeForRegex, regExpStartingWith, optional, atLeast, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
+import { escapeForRegex, regExpStartingWith, optional, atLeast, exactly, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
@@ -87,12 +87,11 @@ export class Tokenizer {
   }
 
   private configureConventions(): void {
+    this.conventions.push(
+      ...this.getFootnoteConventions())
+
     this.conventions.push(...[
       {
-        richConvention: FOOTNOTE_CONVENTION,
-        startPattern: ANY_WHITESPACE + escapeForRegex('(('),
-        endPattern: escapeForRegex('))')
-      }, {
         richConvention: REVISION_DELETION_CONVENTION,
         startPattern: '~~',
         endPattern: '~~'
@@ -519,6 +518,15 @@ export class Tokenizer {
         this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken, context })
       }
     }))
+  }
+
+  private getFootnoteConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket =>
+      this.getRichSandwichConvention({
+        richConvention: FOOTNOTE_CONVENTION,
+        startPattern: ANY_WHITESPACE + exactly(2, bracket.startPattern),
+        endPattern: exactly(2, bracket.endPattern)
+      }))
   }
 
   private getConventionsForRichBracketedTerm(
