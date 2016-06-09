@@ -129,7 +129,7 @@ describe('A URL starting with a slash', () => {
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], ' /chrono-cross:the-game')
+        ], '/chrono-cross:the-game')
       ])
     )
   })
