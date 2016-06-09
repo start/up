@@ -1469,7 +1469,6 @@ exports.LineConsumer = LineConsumer;
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var HeadingNode_1 = require('../../SyntaxNodes/HeadingNode');
-var PatternPieces_1 = require('../../PatternPieces');
 var Patterns_1 = require('../../Patterns');
 var getInlineNodes_1 = require('../Inline/getInlineNodes');
 var isLineFancyOutlineConvention_1 = require('./isLineFancyOutlineConvention');
@@ -1479,7 +1478,7 @@ function getHeadingParser(headingLeveler) {
         var consumer = new LineConsumer_1.LineConsumer(args.text);
         var optionalOverline;
         consumer.consumeLine({
-            pattern: STREAK_PATTERN,
+            pattern: Patterns_1.STREAK_PATTERN,
             then: function (line) { optionalOverline = line; }
         });
         var rawContent;
@@ -1489,7 +1488,7 @@ function getHeadingParser(headingLeveler) {
             then: function (line) { rawContent = line; }
         })
             && consumer.consumeLine({
-                if: function (line) { return (STREAK_PATTERN.test(line)
+                if: function (line) { return (Patterns_1.STREAK_PATTERN.test(line)
                     && isUnderlineConsistentWithOverline(optionalOverline, line)); },
                 then: function (line) { underline = line; }
             }));
@@ -1508,9 +1507,8 @@ exports.getHeadingParser = getHeadingParser;
 function isUnderlineConsistentWithOverline(overline, underline) {
     return !overline || (getSortedUnderlineChars_1.getSortedUnderlineChars(overline) === getSortedUnderlineChars_1.getSortedUnderlineChars(underline));
 }
-var STREAK_PATTERN = new RegExp(PatternPieces_1.STREAK);
 
-},{"../../PatternPieces":39,"../../Patterns":40,"../../SyntaxNodes/HeadingNode":54,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./getSortedUnderlineChars":27,"./isLineFancyOutlineConvention":28}],25:[function(require,module,exports){
+},{"../../Patterns":40,"../../SyntaxNodes/HeadingNode":54,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./getSortedUnderlineChars":27,"./isLineFancyOutlineConvention":28}],25:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
@@ -1830,6 +1828,7 @@ var OrderedListItem_1 = require('../../SyntaxNodes/OrderedListItem');
 var getOutlineNodes_1 = require('./getOutlineNodes');
 var PatternHelpers_1 = require('../../PatternHelpers');
 var PatternPieces_1 = require('../../PatternPieces');
+var Patterns_1 = require('../../Patterns');
 var getRemainingLinesOfListItem_1 = require('./getRemainingLinesOfListItem');
 function parseOrderedList(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
@@ -1838,7 +1837,7 @@ function parseOrderedList(args) {
         var rawListItem = new RawListItem();
         var isLineBulleted = consumer.consumeLine({
             pattern: BULLETED_PATTERN,
-            if: function (line) { return !STREAK_PATTERN.test(line); },
+            if: function (line) { return !Patterns_1.STREAK_PATTERN.test(line); },
             then: function (line, bullet) {
                 rawListItem.bullet = bullet;
                 rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''));
@@ -1897,10 +1896,9 @@ var INTEGER_PATTERN = new RegExp(PatternHelpers_1.capture(PatternPieces_1.INTEGE
 var BULLET = PatternHelpers_1.either('#', PatternHelpers_1.capture(PatternHelpers_1.either(PatternPieces_1.INTEGER, '#') + PatternHelpers_1.either('\\.', '\\)')));
 var BULLETED_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + BULLET + PatternPieces_1.INLINE_WHITESPACE_CHAR);
 var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(PatternPieces_1.INTEGER + '\\.');
-var STREAK_PATTERN = new RegExp(PatternPieces_1.STREAK);
 var INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.INDENT);
 
-},{"../../PatternHelpers":38,"../../PatternPieces":39,"../../SyntaxNodes/OrderedListItem":62,"../../SyntaxNodes/OrderedListNode":63,"./LineConsumer":23,"./getOutlineNodes":25,"./getRemainingLinesOfListItem":26}],34:[function(require,module,exports){
+},{"../../PatternHelpers":38,"../../PatternPieces":39,"../../Patterns":40,"../../SyntaxNodes/OrderedListItem":62,"../../SyntaxNodes/OrderedListNode":63,"./LineConsumer":23,"./getOutlineNodes":25,"./getRemainingLinesOfListItem":26}],34:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var isWhitespace_1 = require('../../SyntaxNodes/isWhitespace');
@@ -1909,7 +1907,6 @@ var ParagraphNode_1 = require('../../SyntaxNodes/ParagraphNode');
 var LineBlockNode_1 = require('../../SyntaxNodes/LineBlockNode');
 var Line_1 = require('../../SyntaxNodes/Line');
 var getInlineNodes_1 = require('../Inline/getInlineNodes');
-var PatternPieces_1 = require('../../PatternPieces');
 var Patterns_1 = require('../../Patterns');
 var isLineFancyOutlineConvention_1 = require('./isLineFancyOutlineConvention');
 function parseRegularLines(args) {
@@ -1960,25 +1957,23 @@ exports.parseRegularLines = parseRegularLines;
 function isMediaSyntaxNode(node) {
     return node instanceof MediaSyntaxNode_1.MediaSyntaxNode;
 }
-var STREAK_PATTERN = new RegExp(PatternPieces_1.STREAK);
 
-},{"../../PatternPieces":39,"../../Patterns":40,"../../SyntaxNodes/Line":58,"../../SyntaxNodes/LineBlockNode":59,"../../SyntaxNodes/MediaSyntaxNode":61,"../../SyntaxNodes/ParagraphNode":66,"../../SyntaxNodes/isWhitespace":79,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./isLineFancyOutlineConvention":28}],35:[function(require,module,exports){
+},{"../../Patterns":40,"../../SyntaxNodes/Line":58,"../../SyntaxNodes/LineBlockNode":59,"../../SyntaxNodes/MediaSyntaxNode":61,"../../SyntaxNodes/ParagraphNode":66,"../../SyntaxNodes/isWhitespace":79,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./isLineFancyOutlineConvention":28}],35:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
-var PatternPieces_1 = require('../../PatternPieces');
+var Patterns_1 = require('../../Patterns');
 function parseSectionSeparatorStreak(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
-    if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
+    if (!consumer.consumeLine({ pattern: Patterns_1.STREAK_PATTERN })) {
         return false;
     }
     args.then([new SectionSeparatorNode_1.SectionSeparatorNode()], consumer.textIndex);
     return true;
 }
 exports.parseSectionSeparatorStreak = parseSectionSeparatorStreak;
-var STREAK_PATTERN = new RegExp(PatternPieces_1.STREAK);
 
-},{"../../PatternPieces":39,"../../SyntaxNodes/SectionSeparatorNode":72,"./LineConsumer":23}],36:[function(require,module,exports){
+},{"../../Patterns":40,"../../SyntaxNodes/SectionSeparatorNode":72,"./LineConsumer":23}],36:[function(require,module,exports){
 "use strict";
 var LineConsumer_1 = require('./LineConsumer');
 var UnorderedListNode_1 = require('../../SyntaxNodes/UnorderedListNode');
@@ -1987,6 +1982,7 @@ var getOutlineNodes_1 = require('./getOutlineNodes');
 var getRemainingLinesOfListItem_1 = require('./getRemainingLinesOfListItem');
 var PatternHelpers_1 = require('../../PatternHelpers');
 var PatternPieces_1 = require('../../PatternPieces');
+var Patterns_1 = require('../../Patterns');
 function parseUnorderedList(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
     var rawListItemsContents = [];
@@ -1994,7 +1990,7 @@ function parseUnorderedList(args) {
         var rawListItemLines = [];
         var isLineBulleted = consumer.consumeLine({
             pattern: BULLET_PATTERN,
-            if: function (line) { return !STREAK_PATTERN.test(line); },
+            if: function (line) { return !Patterns_1.STREAK_PATTERN.test(line); },
             then: function (line) { return rawListItemLines.push(line.replace(BULLET_PATTERN, '')); }
         });
         if (!isLineBulleted) {
@@ -2030,9 +2026,8 @@ function parseUnorderedList(args) {
 exports.parseUnorderedList = parseUnorderedList;
 var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.either('\\*', '-', '\\+') + PatternPieces_1.INLINE_WHITESPACE_CHAR);
 var INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.INDENT);
-var STREAK_PATTERN = new RegExp(PatternPieces_1.STREAK);
 
-},{"../../PatternHelpers":38,"../../PatternPieces":39,"../../SyntaxNodes/UnorderedListItem":76,"../../SyntaxNodes/UnorderedListNode":77,"./LineConsumer":23,"./getOutlineNodes":25,"./getRemainingLinesOfListItem":26}],37:[function(require,module,exports){
+},{"../../PatternHelpers":38,"../../PatternPieces":39,"../../Patterns":40,"../../SyntaxNodes/UnorderedListItem":76,"../../SyntaxNodes/UnorderedListNode":77,"./LineConsumer":23,"./getOutlineNodes":25,"./getRemainingLinesOfListItem":26}],37:[function(require,module,exports){
 "use strict";
 var getOutlineNodes_1 = require('./Outline/getOutlineNodes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
@@ -2047,10 +2042,10 @@ exports.parseDocument = parseDocument;
 
 },{"../SyntaxNodes/DocumentNode":49,"./Outline/HeadingLeveler":22,"./Outline/getOutlineNodes":25}],38:[function(require,module,exports){
 "use strict";
-var PatternPieces_1 = require('./PatternPieces');
 function group(pattern) {
     return "(?:" + pattern + ")";
 }
+exports.group = group;
 function capture(pattern) {
     return "(" + pattern + ")";
 }
@@ -2079,22 +2074,10 @@ function either() {
     return group(patterns.join('|'));
 }
 exports.either = either;
-function solely(pattern) {
-    return '^' + pattern + PatternPieces_1.INLINE_WHITESPACE + '$';
-}
-exports.solely = solely;
 function streakOf(charPattern) {
     return solely(atLeast(3, charPattern));
 }
 exports.streakOf = streakOf;
-function startsWith(pattern) {
-    return '^' + pattern;
-}
-exports.startsWith = startsWith;
-function endsWith(pattern) {
-    return pattern + '$';
-}
-exports.endsWith = endsWith;
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }
@@ -2107,6 +2090,18 @@ function regExpEndingWith(pattern, flags) {
     return new RegExp(endsWith(pattern), flags);
 }
 exports.regExpEndingWith = regExpEndingWith;
+var PatternPieces_1 = require('./PatternPieces');
+function solely(pattern) {
+    return '^' + pattern + INLINE_WHITESPACE + '$';
+}
+exports.solely = solely;
+function startsWith(pattern) {
+    return '^' + pattern;
+}
+function endsWith(pattern) {
+    return pattern + '$';
+}
+var INLINE_WHITESPACE = all(PatternPieces_1.INLINE_WHITESPACE_CHAR);
 
 },{"./PatternPieces":39}],39:[function(require,module,exports){
 "use strict";
@@ -2117,17 +2112,12 @@ var WHITESPACE_CHAR = '\\s';
 exports.WHITESPACE_CHAR = WHITESPACE_CHAR;
 var ANY_WHITESPACE = PatternHelpers_1.all('\\s');
 exports.ANY_WHITESPACE = ANY_WHITESPACE;
-var INLINE_WHITESPACE = PatternHelpers_1.all(INLINE_WHITESPACE_CHAR);
-exports.INLINE_WHITESPACE = INLINE_WHITESPACE;
 var LINE_BREAK = '\n';
 exports.LINE_BREAK = LINE_BREAK;
 var INDENT = PatternHelpers_1.either('  ', '\t');
 exports.INDENT = INDENT;
-var STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
 var INTEGER = '\\d+';
 exports.INTEGER = INTEGER;
-var STREAK = PatternHelpers_1.solely(PatternHelpers_1.atLeast(3, STREAK_CHAR + ANY_WHITESPACE));
-exports.STREAK = STREAK;
 var LETTER = '[a-zA-Z]';
 exports.LETTER = LETTER;
 var DIGIT = '\\d';
@@ -2136,12 +2126,16 @@ exports.DIGIT = DIGIT;
 },{"./PatternHelpers":38}],40:[function(require,module,exports){
 "use strict";
 var PatternHelpers_1 = require('./PatternHelpers');
+var PatternPieces_1 = require('./PatternPieces');
+var STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
+var STREAK_PATTERN = new RegExp(PatternHelpers_1.solely(PatternHelpers_1.atLeast(3, STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE)));
+exports.STREAK_PATTERN = STREAK_PATTERN;
 var BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.BLANK_PATTERN = BLANK_PATTERN;
 var NON_BLANK_PATTERN = /\S/;
 exports.NON_BLANK_PATTERN = NON_BLANK_PATTERN;
 
-},{"./PatternHelpers":38}],41:[function(require,module,exports){
+},{"./PatternHelpers":38,"./PatternPieces":39}],41:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];

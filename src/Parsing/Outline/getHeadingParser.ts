@@ -3,8 +3,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { either } from '../../PatternHelpers'
-import { STREAK } from '../../PatternPieces'
-import { NON_BLANK_PATTERN } from '../../Patterns'
+import { STREAK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
@@ -86,6 +85,3 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
   return !overline || (getSortedUnderlineChars(overline) === getSortedUnderlineChars(underline))
 }
-
-const STREAK_PATTERN = new RegExp(
-  STREAK)

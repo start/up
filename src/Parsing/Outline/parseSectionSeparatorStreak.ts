@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { STREAK } from '../../PatternPieces'
+import { STREAK_PATTERN } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -17,6 +17,3 @@ export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
   return true
 }
 
-
-const STREAK_PATTERN = new RegExp(
-  STREAK)

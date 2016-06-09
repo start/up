@@ -1,5 +1,12 @@
-import { solely } from './PatternHelpers'
+import { solely, either, atLeast } from './PatternHelpers'
+import { ANY_WHITESPACE } from './PatternPieces'
 
+
+const STREAK_CHAR =
+  either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
+
+const STREAK_PATTERN = new RegExp(
+  solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE)))
 
 const BLANK_PATTERN = new RegExp(
   solely(''))
@@ -11,6 +18,7 @@ const NON_BLANK_PATTERN =
 
 
 export {
-  NON_BLANK_PATTERN,
+  STREAK_PATTERN,
   BLANK_PATTERN,
+  NON_BLANK_PATTERN
 }

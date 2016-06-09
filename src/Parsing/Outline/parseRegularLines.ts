@@ -7,8 +7,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/getInlineNodes'
-import { STREAK } from '../../PatternPieces'
-import { NON_BLANK_PATTERN } from '../../Patterns'
+import { STREAK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -132,7 +131,3 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
 function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
   return node instanceof MediaSyntaxNode
 }
-
-
-const STREAK_PATTERN = new RegExp(
-  STREAK)
