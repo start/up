@@ -38,8 +38,9 @@ export class Tokenizer {
   // `failedConventionTracker`.
   private failedConventionTracker: FailedConventionTracker = new FailedConventionTracker()
 
-  // Most of our conventions are thrown in this collection. We try to open these conventions in order. The
-  // conventions not included in this collection are:
+  // Most of our conventions are thrown in this collection. We try to open these conventions in order.
+  //
+  // The conventions not included in this collection are:
   //
   // 1. Raw bracket conventions (explained below)
   // 2. Media URL conventions (explained below)
