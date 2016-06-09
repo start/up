@@ -2112,7 +2112,7 @@ exports.DIGIT = DIGIT;
 var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
 var STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
-var STREAK_PATTERN = new RegExp(PatternHelpers_1.solely(PatternHelpers_1.atLeast(3, STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE)));
+var STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
 exports.STREAK_PATTERN = STREAK_PATTERN;
 var BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.BLANK_PATTERN = BLANK_PATTERN;

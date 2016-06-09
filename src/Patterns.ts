@@ -1,4 +1,4 @@
-import { solely, either, atLeast, regExpStartingWith } from './PatternHelpers'
+import { solely, either, atLeast, streakOf, regExpStartingWith } from './PatternHelpers'
 import { ANY_WHITESPACE } from './PatternPieces'
 
 
@@ -6,7 +6,7 @@ const STREAK_CHAR =
   either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
 
 const STREAK_PATTERN = new RegExp(
-  solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE)))
+  streakOf(STREAK_CHAR + ANY_WHITESPACE))
 
 const BLANK_PATTERN = new RegExp(
   solely(''))
