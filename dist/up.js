@@ -3115,13 +3115,13 @@ var HtmlWriter = (function (_super) {
 exports.HtmlWriter = HtmlWriter;
 function htmlElement(tagName, content, attrs) {
     if (attrs === void 0) { attrs = {}; }
-    return "" + htmlTag(tagName, attrs) + content + "</" + tagName + ">";
+    return "" + htmlStartTag(tagName, attrs) + content + "</" + tagName + ">";
 }
 function htmlElementWithNoEndTag(tagName, attrs) {
     if (attrs === void 0) { attrs = {}; }
-    return htmlTag(tagName, attrs);
+    return htmlStartTag(tagName, attrs);
 }
-function htmlTag(tagName, attrs) {
+function htmlStartTag(tagName, attrs) {
     var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
     return "<" + tagNameWithAttrs + ">";
 }

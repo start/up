@@ -56,7 +56,7 @@ export class HtmlWriter extends Writer {
   protected unorderedList(node: UnorderedListNode): string {
     return htmlElement(
       'ul',
-      node.listItems.map((listItem) => this.unorderedListItem(listItem)).join('')
+      node.listItems.map(listItem => this.unorderedListItem(listItem)).join('')
     )
   }
 
@@ -74,7 +74,7 @@ export class HtmlWriter extends Writer {
 
     return htmlElement(
       'ol',
-      node.listItems.map((listItem) => this.orderedListItem(listItem)).join(''),
+      node.listItems.map(listItem => this.orderedListItem(listItem)).join(''),
       attrs
     )
   }
@@ -82,14 +82,14 @@ export class HtmlWriter extends Writer {
   protected descriptionList(node: DescriptionListNode): string {
     return htmlElement(
       'dl',
-      node.listItems.map((listItem) => this.descriptionListItem(listItem)).join('')
+      node.listItems.map(listItem => this.descriptionListItem(listItem)).join('')
     )
   }
 
   protected lineBlock(node: LineBlockNode): string {
     return htmlElement(
       'div',
-      node.lines.map((line) => this.line(line)).join(''),
+      node.lines.map(line => this.line(line)).join(''),
       { [dataAttr('lines')]: null }
     )
   }
@@ -216,7 +216,7 @@ export class HtmlWriter extends Writer {
 
   private descriptionListItem(listItem: DescriptionListItem): string {
     return (
-      listItem.terms.map((term) => this.descriptionTerm(term)).join('')
+      listItem.terms.map(term => this.descriptionTerm(term)).join('')
       + this.description(listItem.description)
     )
   }
@@ -288,14 +288,14 @@ export class HtmlWriter extends Writer {
 
 
 function htmlElement(tagName: string, content: string, attrs: any = {}): string {
-  return `${htmlTag(tagName, attrs)}${content}</${tagName}>`
+  return `${htmlStartTag(tagName, attrs)}${content}</${tagName}>`
 }
 
 function htmlElementWithNoEndTag(tagName: string, attrs: any = {}): string {
-  return htmlTag(tagName, attrs)
+  return htmlStartTag(tagName, attrs)
 }
 
-function htmlTag(tagName: string, attrs: any): string {
+function htmlStartTag(tagName: string, attrs: any): string {
   const tagNameWithAttrs =
     [tagName].concat(htmlAttrs(attrs)).join(' ')
 
