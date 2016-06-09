@@ -1,5 +1,5 @@
 import { TokenKind } from './TokenKind'
-import { escapeForRegex } from '../../Patterns'
+import { escapeForRegex } from '../../PatternHelpers'
 
 
 export class Bracket {

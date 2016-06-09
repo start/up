@@ -1,4 +1,4 @@
-import { NON_WHITESPACE_CHAR } from '../../Patterns'
+import { NON_BLANK_PATTERN } from '../../Patterns'
 import { OnMatch } from './OnMatch'
 
 
@@ -53,7 +53,7 @@ export class InlineConsumer {
     // If the next character in the raw source text is non-whitespace, we consider the match to be touching the
     // beginning of a word. The next character can be anything, even be a backslash! We only care whether the
     // match appears to be touching the beginning of something.
-    const isTouchingWordStart = NON_WHITESPACE_CHAR_PATTERN.test(charAfterMatch)
+    const isTouchingWordStart = NON_BLANK_PATTERN.test(charAfterMatch)
 
     if (then) {
       then(match, this.isTouchingWordEnd, isTouchingWordStart, ...captures)
@@ -73,9 +73,6 @@ export class InlineConsumer {
     // If the previous character in the raw source text was non-whitespace, we consider the current character to be
     // touching the end of a word. We don't care whether the previous character was escaped or not; we only care about
     // whether the current character appears to be touching the end of something.
-    this.isTouchingWordEnd = NON_WHITESPACE_CHAR_PATTERN.test(previousChar)
+    this.isTouchingWordEnd = NON_BLANK_PATTERN.test(previousChar)
   }
 }
-
-const NON_WHITESPACE_CHAR_PATTERN = new RegExp(
-  NON_WHITESPACE_CHAR)
