@@ -51,7 +51,7 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic][radical dreamers.webm]'
+    const text = '[video: Chrono Cross ending cinematic](radical dreamers.webm)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -76,7 +76,7 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.))[cereals/lucky-charms?show=nutrition] Never have."
+    const text = "I don't eat cereal. ((Well, I eat one.))(cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([

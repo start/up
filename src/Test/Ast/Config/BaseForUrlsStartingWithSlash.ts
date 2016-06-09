@@ -13,7 +13,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 const up = new Up({
-  baseForUrlsStartingWithSlash: 'https://forum.com/post/10/'
+  baseForUrlsStartingWithSlash: 'ftp://example.com'
 })
 
 
@@ -25,42 +25,42 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'https://forum.com/post/10/wiki/Chrono_Chross')
+        ], 'ftp://example.comwiki/Chrono_Chross')
       ])
     )
   })
 
-  it('is prefixed to schemeless image URLs', () => {
+  it('is prefixed to image URLs that start with a slash', () => {
     const text = '[image: Chrono Cross logo](/cc-logo.png)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://forum.com/post/10/cc-logo.png')
+        new ImageNode('Chrono Cross logo', 'ftp://example.comcc-logo.png')
       ])
     )
   })
 
-  it('is prefixed to schemeless audio URLs', () => {
+  it('is prefixed to audio URLs that start with a slash', () => {
     const text = '[audio: Chrono Cross ending theme](/radical dreamers.mp3)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://forum.com/post/10/radical dreamers.mp3')
+        new ImageNode('Chrono Cross logo', 'ftp://example.comradical dreamers.mp3')
       ])
     )
   })
 
-  it('is prefixed to schemeless video URLs', () => {
+  it('is prefixed to video URLs that start with a slash', () => {
     const text = '[video: Chrono Cross ending cinematic][/radical dreamers.webm]'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'https://forum.com/post/10/radical dreamers.webm')
+        new ImageNode('Chrono Cross ending cinematic', 'ftp://example.comradical dreamers.webm')
       ])
     )
   })
 
-  it('is prefixed to schemeless linkified spoiler URLs', () => {
+  it('is prefixed to linkified spoiler URLs that start with a slash', () => {
     const text = 'Walter White produces [SPOILER: Blue Sky meth](/wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -69,19 +69,19 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'https://forum.com/post/10/wiki/Blue_Sky')
+          ], 'ftp://example.comwiki/Blue_Sky')
         ])
       ])
     )
   })
 
-  it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.))[cereals/lucky-charms?show=nutrition] Never have."
+  it("is prefixed to linkified footnote URLs that start with a slash", () => {
+    const text = "I don't eat cereal. ((Well, I eat one.))[/cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I eat one.')
-      ], 'http://cereals/lucky-charms?show=nutrition')
+      ], 'ftp://example.comcereals/lucky-charms?show=nutrition')
     ], 1)
 
     expect(Up.toAst(text)).to.be.eql(

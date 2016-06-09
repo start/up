@@ -48,7 +48,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it('is prefixed to schemeless video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic][radical dreamers.mp3]'
+    const text = '[video: Chrono Cross ending cinematic](radical dreamers.mp3)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -73,7 +73,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.))[cereals/lucky-charms?show=nutrition] Never have."
+    const text = "I don't eat cereal. ((Well, I eat one.))(cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -121,15 +121,15 @@ describe('A URL starting with a letter; followed by letters, numbers, periods, p
 })
 
 
-describe('A starting with a slash', () => {
+describe('A URL starting with a slash', () => {
   it('does not have a scheme, but is prefixed instead by the base for URLs starting with a slash (which defaults to nothing)', () => {
-    const text = '[Chrono Cross][/chrono-cross:the-game)'
+    const text = '[Chrono Cross](/chrono-cross:the-game)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], ' https://wiki/chrono-cross:the-game')
+        ], ' /chrono-cross:the-game')
       ])
     )
   })
@@ -138,7 +138,7 @@ describe('A starting with a slash', () => {
 
 describe('A URL not starting with a slash, but with a slash before its first colon', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross][wiki/chrono-cross:the-game)'
+    const text = '[Chrono Cross](wiki/chrono-cross:the-game)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
