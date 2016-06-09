@@ -1150,7 +1150,7 @@ var BRACKETS = [
 var INLINE_CODE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith('`');
 var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*')));
 var NAKED_URL_SCHEME_PATTERN = Patterns_1.regExpStartingWith('http' + Patterns_1.optional('s') + '://');
-var URL_SCHEME_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.LETTER + Patterns_1.all(Patterns_1.either(Patterns_1.LETTER, Patterns_1.DIGIT, '-', Patterns_1.escapeForRegex('+'))) + ':');
+var URL_SCHEME_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.LETTER + Patterns_1.all(Patterns_1.either(Patterns_1.LETTER, Patterns_1.DIGIT, '-', Patterns_1.escapeForRegex('+'), Patterns_1.escapeForRegex('.'))) + ':');
 var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.WHITESPACE_CHAR);
 
 },{"../../CollectionHelpers":1,"../../Patterns":38,"./Bracket":2,"./FailedConventionTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerSnapshot":18,"./insertBracketsInsideBracketedConventions":20,"./nestOverlappingConventions":21}],17:[function(require,module,exports){

@@ -675,7 +675,7 @@ const NAKED_URL_SCHEME_PATTERN =
 
 const URL_SCHEME_PATTERN =
   regExpStartingWith(
-    LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'))) + ':')
+    LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.'))) + ':')
 
 const NAKED_URL_TERMINATOR_PATTERN =
   regExpStartingWith(WHITESPACE_CHAR)
