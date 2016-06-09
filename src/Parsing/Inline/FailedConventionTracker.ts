@@ -1,26 +1,27 @@
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerContext } from './TokenizerContext'
 
+
 export class FailedConventionTracker {
-  private failedGoalsByTextIndex: FailedGoalsByTextIndex = {}
+  private failedConventionsByTextIndex: FailedConventionsByTextIndex = {}
   
-  registerFailure(failedContext: TokenizerContext): void {
-    const { convention, snapshot } = failedContext
+  registerFailure(contextOfFailedConvention: TokenizerContext): void {
+    const { convention, snapshot } = contextOfFailedConvention
     const { textIndex } = snapshot
     
-    if (!this.failedGoalsByTextIndex[textIndex]) {
-      this.failedGoalsByTextIndex[textIndex] = []
+    if (!this.failedConventionsByTextIndex[textIndex]) {
+      this.failedConventionsByTextIndex[textIndex] = []
     }
     
-    this.failedGoalsByTextIndex[textIndex].push(convention)
+    this.failedConventionsByTextIndex[textIndex].push(convention)
   }
   
   hasFailed(convention: TokenizableConvention, textIndex: number): boolean {
-    const failedConventions = (this.failedGoalsByTextIndex[textIndex] || [])
+    const failedConventions = (this.failedConventionsByTextIndex[textIndex] || [])
     return failedConventions.some(failedConvention => failedConvention === convention)
   }
 }
 
-interface FailedGoalsByTextIndex {
+interface FailedConventionsByTextIndex {
   [textIndex: number]: TokenizableConvention[]
 }

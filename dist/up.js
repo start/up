@@ -42,18 +42,18 @@ exports.Bracket = Bracket;
 "use strict";
 var FailedConventionTracker = (function () {
     function FailedConventionTracker() {
-        this.failedGoalsByTextIndex = {};
+        this.failedConventionsByTextIndex = {};
     }
-    FailedConventionTracker.prototype.registerFailure = function (failedContext) {
-        var convention = failedContext.convention, snapshot = failedContext.snapshot;
+    FailedConventionTracker.prototype.registerFailure = function (contextOfFailedConvention) {
+        var convention = contextOfFailedConvention.convention, snapshot = contextOfFailedConvention.snapshot;
         var textIndex = snapshot.textIndex;
-        if (!this.failedGoalsByTextIndex[textIndex]) {
-            this.failedGoalsByTextIndex[textIndex] = [];
+        if (!this.failedConventionsByTextIndex[textIndex]) {
+            this.failedConventionsByTextIndex[textIndex] = [];
         }
-        this.failedGoalsByTextIndex[textIndex].push(convention);
+        this.failedConventionsByTextIndex[textIndex].push(convention);
     };
     FailedConventionTracker.prototype.hasFailed = function (convention, textIndex) {
-        var failedConventions = (this.failedGoalsByTextIndex[textIndex] || []);
+        var failedConventions = (this.failedConventionsByTextIndex[textIndex] || []);
         return failedConventions.some(function (failedConvention) { return failedConvention === convention; });
     };
     return FailedConventionTracker;
