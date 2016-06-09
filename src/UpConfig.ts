@@ -1,7 +1,7 @@
-import { UpConfigArgs} from './UpConfigArgs'
+import { UpConfigSettings} from './UpConfigSettings'
 
 
-const DEFAULT_CONFIG: UpConfigArgs = {
+const DEFAULT_CONFIG: UpConfigSettings = {
   documentName: null,
   
   i18n: {
@@ -20,13 +20,13 @@ const DEFAULT_CONFIG: UpConfigArgs = {
 
 
 export class UpConfig {
-  public settings: UpConfigArgs
+  public settings: UpConfigSettings
 
-  constructor(configArgs?: UpConfigArgs, defaults = DEFAULT_CONFIG) {
+  constructor(configArgs?: UpConfigSettings, defaults = DEFAULT_CONFIG) {
     this.settings = merge(defaults, configArgs)
   }
   
-  withChanges(changes: UpConfigArgs): UpConfig {
+  withChanges(changes: UpConfigSettings): UpConfig {
     return new UpConfig(changes, this.settings)
   }
 

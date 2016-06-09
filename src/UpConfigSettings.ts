@@ -1,4 +1,4 @@
-export interface UpConfigArgs {
+export interface UpConfigSettings {
   documentName?: string
 
   i18n?: {

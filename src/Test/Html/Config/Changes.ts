@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { UpConfigArgs } from '../../../UpConfigArgs'
+import { UpConfigSettings } from '../../../UpConfigSettings'
 import Up from '../../../index'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -9,8 +9,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     node: SyntaxNode,
     htmlFromDefaultSettings: string
-    configChanges: UpConfigArgs,
-    conflictingConfigChanges: UpConfigArgs
+    configChanges: UpConfigSettings,
+    conflictingConfigChanges: UpConfigSettings
   }
 ): void {
 

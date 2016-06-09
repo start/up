@@ -3,32 +3,32 @@ import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 import { HtmlWriter } from './Writer/HtmlWriter'
 import { UpConfig } from './UpConfig'
-import { UpConfigArgs } from './UpConfigArgs'
+import { UpConfigSettings } from './UpConfigSettings'
 
 
 export class Up {
   private static defaultUp: Up = new Up()
 
-  static toAst(text: string, configChanges?: UpConfigArgs): DocumentNode {
+  static toAst(text: string, configChanges?: UpConfigSettings): DocumentNode {
     return this.defaultUp.toAst(text, configChanges)
   }
 
-  static toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigArgs): string {
+  static toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigSettings): string {
     return this.defaultUp.toHtml(textOrNode, configChanges)
   }
 
 
   private config: UpConfig
 
-  constructor(config?: UpConfigArgs) {
+  constructor(config?: UpConfigSettings) {
     this.config = new UpConfig(config)
   }
 
-  toAst(text: string, configChanges?: UpConfigArgs): DocumentNode {
+  toAst(text: string, configChanges?: UpConfigSettings): DocumentNode {
     return toAst(text, this.config.withChanges(configChanges))
   }
 
-  toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigArgs): string {
+  toHtml(textOrNode: string | SyntaxNode, configChanges?: UpConfigSettings): string {
     return toHtml(textOrNode, this.config.withChanges(configChanges))
   }
 }

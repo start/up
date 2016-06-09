@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { UpConfigArgs } from '../../../UpConfigArgs'
+import { UpConfigSettings } from '../../../UpConfigSettings'
 import Up from '../../../index'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
@@ -11,8 +11,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     text: string,
     textForDefaultSettings: string
-    configChanges: UpConfigArgs,
-    conflictingConfigChanges: UpConfigArgs
+    configChanges: UpConfigSettings,
+    conflictingConfigChanges: UpConfigSettings
   }
 ): void {
 
@@ -115,7 +115,7 @@ describe('The "video" config term', () => {
       }
     }
   })
-  const configChanges: UpConfigArgs = {
+  const configChanges: UpConfigSettings = {
     i18n: {
       terms: { video: 'movie' }
     }
