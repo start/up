@@ -808,21 +808,21 @@ var Tokenizer = (function () {
         var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var openContext = this.openContexts[i];
+            var convention = openContext.convention;
             if (this.shouldCloseContext(openContext)) {
                 if (innerNakedUrlContextIndex != null) {
                     this.flushBufferToNakedUrlEndToken();
                     this.openContexts.splice(i);
                 }
-                if (openContext.convention.onCloseFlushBufferTo != null) {
-                    this.flushBufferToTokenOfKind(openContext.convention.onCloseFlushBufferTo);
+                if (convention.onCloseFlushBufferTo != null) {
+                    this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo);
                 }
                 openContext.close();
-                var conventionsToTryTransformingTo = openContext.convention.onCloseFailIfCannotTranformInto;
-                if (openContext.convention.onCloseFailIfCannotTranformInto) {
+                if (convention.onCloseFailIfCannotTranformInto) {
                     return this.tryToTransformConvention(i);
                 }
                 this.openContexts.splice(i, 1);
-                if (openContext.convention.closeInnerContextsWhenClosing) {
+                if (convention.closeInnerContextsWhenClosing) {
                     this.openContexts.splice(i);
                 }
                 return true;
@@ -830,7 +830,7 @@ var Tokenizer = (function () {
             if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
             }
-            if (openContext.convention === this.nakedUrlConvention) {
+            if (convention === this.nakedUrlConvention) {
                 innerNakedUrlContextIndex = i;
             }
         }
