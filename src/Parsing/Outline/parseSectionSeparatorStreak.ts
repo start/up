@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { STREAK_PATTERN } from '../../Patterns'
+import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -9,7 +9,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function parseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
 
-  if (!consumer.consumeLine({ pattern: STREAK_PATTERN })) {
+  if (!consumer.consumeLine({ pattern: DIVIDER_STREAK_PATTERN })) {
     return false
   }
 

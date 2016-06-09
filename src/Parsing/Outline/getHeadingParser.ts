@@ -3,7 +3,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { either } from '../../PatternHelpers'
-import { STREAK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
+import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
@@ -21,7 +21,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     let optionalOverline: string
 
     consumer.consumeLine({
-      pattern: STREAK_PATTERN,
+      pattern: DIVIDER_STREAK_PATTERN,
       then: line => { optionalOverline = line }
     })
 
@@ -39,7 +39,7 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
       // Parse the underline
       && consumer.consumeLine({
         if: line => (
-          STREAK_PATTERN.test(line)
+          DIVIDER_STREAK_PATTERN.test(line)
           && isUnderlineConsistentWithOverline(optionalOverline, line)),
         then: line => { underline = line }
       })

@@ -2,11 +2,11 @@ import { solely, either, atLeast, streakOf, regExpStartingWith } from './Pattern
 import { ANY_WHITESPACE } from './PatternPieces'
 
 
-const STREAK_CHAR =
+const DIVIDER_STREAK_CHAR =
   either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
 
-const STREAK_PATTERN = new RegExp(
-  streakOf(STREAK_CHAR + ANY_WHITESPACE))
+const DIVIDER_STREAK_PATTERN = new RegExp(
+  streakOf(DIVIDER_STREAK_CHAR + ANY_WHITESPACE))
 
 const BLANK_PATTERN = new RegExp(
   solely(''))
@@ -24,7 +24,7 @@ const INDENTED_PATTERN =
 
 
 export {
-  STREAK_PATTERN,
+  DIVIDER_STREAK_PATTERN,
   BLANK_PATTERN,
   NON_BLANK_PATTERN,
   INDENTED_PATTERN

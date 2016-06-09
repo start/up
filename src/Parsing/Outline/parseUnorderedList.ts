@@ -5,7 +5,7 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 import { optional, regExpStartingWith, either } from '../../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
-import { INDENTED_PATTERN, STREAK_PATTERN } from '../../Patterns'
+import { INDENTED_PATTERN, DIVIDER_STREAK_PATTERN } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -25,7 +25,7 @@ export function parseUnorderedList(args: OutlineParserArgs): boolean {
 
     const isLineBulleted = consumer.consumeLine({
       pattern: BULLET_PATTERN,
-      if: line => !STREAK_PATTERN.test(line),
+      if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: line => rawListItemLines.push(line.replace(BULLET_PATTERN, ''))
     })
 

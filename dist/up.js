@@ -1478,7 +1478,7 @@ function getHeadingParser(headingLeveler) {
         var consumer = new LineConsumer_1.LineConsumer(args.text);
         var optionalOverline;
         consumer.consumeLine({
-            pattern: Patterns_1.STREAK_PATTERN,
+            pattern: Patterns_1.DIVIDER_STREAK_PATTERN,
             then: function (line) { optionalOverline = line; }
         });
         var rawContent;
@@ -1488,7 +1488,7 @@ function getHeadingParser(headingLeveler) {
             then: function (line) { rawContent = line; }
         })
             && consumer.consumeLine({
-                if: function (line) { return (Patterns_1.STREAK_PATTERN.test(line)
+                if: function (line) { return (Patterns_1.DIVIDER_STREAK_PATTERN.test(line)
                     && isUnderlineConsistentWithOverline(optionalOverline, line)); },
                 then: function (line) { underline = line; }
             }));
@@ -1831,7 +1831,7 @@ function parseOrderedList(args) {
         var rawListItem = new RawListItem();
         var isLineBulleted = consumer.consumeLine({
             pattern: BULLETED_PATTERN,
-            if: function (line) { return !Patterns_1.STREAK_PATTERN.test(line); },
+            if: function (line) { return !Patterns_1.DIVIDER_STREAK_PATTERN.test(line); },
             then: function (line, bullet) {
                 rawListItem.bullet = bullet;
                 rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''));
@@ -1958,7 +1958,7 @@ var SectionSeparatorNode_1 = require('../../SyntaxNodes/SectionSeparatorNode');
 var Patterns_1 = require('../../Patterns');
 function parseSectionSeparatorStreak(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
-    if (!consumer.consumeLine({ pattern: Patterns_1.STREAK_PATTERN })) {
+    if (!consumer.consumeLine({ pattern: Patterns_1.DIVIDER_STREAK_PATTERN })) {
         return false;
     }
     args.then([new SectionSeparatorNode_1.SectionSeparatorNode()], consumer.textIndex);
@@ -1983,7 +1983,7 @@ function parseUnorderedList(args) {
         var rawListItemLines = [];
         var isLineBulleted = consumer.consumeLine({
             pattern: BULLET_PATTERN,
-            if: function (line) { return !Patterns_1.STREAK_PATTERN.test(line); },
+            if: function (line) { return !Patterns_1.DIVIDER_STREAK_PATTERN.test(line); },
             then: function (line) { return rawListItemLines.push(line.replace(BULLET_PATTERN, '')); }
         });
         if (!isLineBulleted) {
@@ -2111,9 +2111,9 @@ exports.DIGIT = DIGIT;
 "use strict";
 var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
-var STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
-var STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
-exports.STREAK_PATTERN = STREAK_PATTERN;
+var DIVIDER_STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
+var DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
+exports.DIVIDER_STREAK_PATTERN = DIVIDER_STREAK_PATTERN;
 var BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.BLANK_PATTERN = BLANK_PATTERN;
 var NON_BLANK_PATTERN = /\S/;
