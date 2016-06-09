@@ -126,6 +126,10 @@ export class Tokenizer {
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
 
+    this.conventions.push(
+      ...this.getLinkifyingUrlConventions()
+    )
+
     this.conventions.push(...[
       {
         richConvention: PARENTHESIZED_CONVENTION,
@@ -509,7 +513,7 @@ export class Tokenizer {
 
         const indexOfOriginalEndToken = this.tokens.length - 1
         this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken, context })
-	      
+
         const originalStartToken = last(this.tokens).correspondsToToken
         const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
         this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken, context })

@@ -32,9 +32,8 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
 })
 
 
-describe('A footnote produced by doubly parenthesized, square bracketed, or curly bracketed text followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
+describe('Any footnote followed by a bracketed URL', () => {
   it('produces a footnote node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the footnote can be different from the type of bracket surrounding the URL', () => {
-    
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I do, but I pretend not to.')

@@ -763,7 +763,8 @@ var Tokenizer = (function () {
         });
         (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
         (_d = this.conventions).push.apply(_d, this.getMediaDescriptionConventions());
-        (_e = this.conventions).push.apply(_e, [
+        (_e = this.conventions).push.apply(_e, this.getLinkifyingUrlConventions());
+        (_f = this.conventions).push.apply(_f, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
@@ -779,7 +780,7 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f;
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
