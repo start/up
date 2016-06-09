@@ -18,6 +18,18 @@ describe('The "relativeUrlBase" config setting', () => {
     'relativeUrlBase': 'https://example.com/'
   })
 
+  it('is used as a prefix for relative link URLs', () => {
+    const text = '[Chrono Cross](wiki/Chrono_Chross)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], 'https://example.com/wiki/Chrono_Chross')
+      ])
+    )
+  })
+
   it('is used as a prefix for relative image URLs', () => {
     const text = '[image: Chrono Cross logo](cc-logo.png)'
 
