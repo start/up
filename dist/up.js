@@ -3278,7 +3278,6 @@ window.Up = index_1.default;
 },{"./index":85}],85:[function(require,module,exports){
 "use strict";
 var Up_1 = require('./Up');
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Up_1.Up;
 
 },{"./Up":80}]},{},[84]);
