@@ -45,3 +45,20 @@ describe('Any spoiler followed immediately by a parenthesized/bracketed URL', ()
     })
   })
 })
+
+
+describe('A spoiler directly followed by aother spoiler', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][SPOILER: and win].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new SpoilerNode([
+          new PlainTextNode('and win')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
