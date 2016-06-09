@@ -4,8 +4,8 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 import { optional, regExpStartingWith, either } from '../../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR, INDENT } from '../../PatternPieces'
-import { STREAK_PATTERN } from '../../Patterns'
+import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
+import { INDENTED_PATTERN, STREAK_PATTERN } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -68,6 +68,3 @@ const BULLET_PATTERN =
   regExpStartingWith(
     optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR
   )
-
-const INDENTED_PATTERN =
-  regExpStartingWith(INDENT)

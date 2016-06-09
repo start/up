@@ -1,4 +1,4 @@
-import { solely, either, atLeast } from './PatternHelpers'
+import { solely, either, atLeast, regExpStartingWith } from './PatternHelpers'
 import { ANY_WHITESPACE } from './PatternPieces'
 
 
@@ -16,9 +16,16 @@ const BLANK_PATTERN = new RegExp(
 const NON_BLANK_PATTERN =
   /\S/
 
+const INDENT =
+  either('  ', '\t')
+
+const INDENTED_PATTERN =
+  regExpStartingWith(INDENT)
+
 
 export {
   STREAK_PATTERN,
   BLANK_PATTERN,
-  NON_BLANK_PATTERN
+  NON_BLANK_PATTERN,
+  INDENTED_PATTERN
 }

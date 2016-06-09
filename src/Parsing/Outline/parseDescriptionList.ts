@@ -7,8 +7,7 @@ import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { optional, regExpStartingWith, either } from '../../PatternHelpers'
-import { INDENT } from '../../PatternPieces'
-import { STREAK_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
+import { INDENTED_PATTERN, STREAK_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
@@ -94,7 +93,3 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
   args.then([new DescriptionListNode(listItems)], lengthParsed)
   return true
 }
-
-
-const INDENTED_PATTERN =
-  regExpStartingWith(INDENT)

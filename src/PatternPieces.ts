@@ -13,9 +13,6 @@ const ANY_WHITESPACE =
 const LINE_BREAK =
   '\n'
 
-const INDENT =
-  either('  ', '\t')
-
 const INTEGER =
   '\\d+'
 
@@ -29,7 +26,6 @@ const DIGIT =
 export {
   INLINE_WHITESPACE_CHAR,
   WHITESPACE_CHAR,
-  INDENT,
   ANY_WHITESPACE,
   INTEGER,
   LINE_BREAK,
