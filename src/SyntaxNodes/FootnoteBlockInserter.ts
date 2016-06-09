@@ -29,7 +29,7 @@ import { concat } from '../CollectionHelpers'
 // We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block. 
 
 export class FootnoteBlockInserter {
-  private footnoteReferenceNumberSequence = new Sequence({ start: 1 })
+  private currentFootnoteReferenceNumber = 1
 
   constructor(documentNode: DocumentNode) {
     this.produceFootnoteBlocks(documentNode)
@@ -85,7 +85,7 @@ export class FootnoteBlockInserter {
 
     for (const node of nodes) {
       if (node instanceof FootnoteNode) {
-        node.referenceNumber = this.footnoteReferenceNumberSequence.next()
+        node.referenceNumber = this.currentFootnoteReferenceNumber++
         footnotes.push(node)
       }
     }
@@ -147,19 +147,6 @@ export class FootnoteBlockInserter {
     }
 
     return footnoteBlock
-  }
-}
-
-
-class Sequence {
-  public nextValue: number
-
-  constructor(args: { start: number }) {
-    this.nextValue = args.start
-  }
-
-  next(): number {
-    return this.nextValue++
   }
 }
 

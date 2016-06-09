@@ -2297,7 +2297,7 @@ var FootnoteBlockNode_1 = require('./FootnoteBlockNode');
 var CollectionHelpers_1 = require('../CollectionHelpers');
 var FootnoteBlockInserter = (function () {
     function FootnoteBlockInserter(documentNode) {
-        this.footnoteReferenceNumberSequence = new Sequence({ start: 1 });
+        this.currentFootnoteReferenceNumber = 1;
         this.produceFootnoteBlocks(documentNode);
     }
     FootnoteBlockInserter.prototype.produceFootnoteBlocks = function (outlineNodeContainer) {
@@ -2336,7 +2336,7 @@ var FootnoteBlockInserter = (function () {
         for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
             var node = nodes_1[_i];
             if (node instanceof FootnoteNode_1.FootnoteNode) {
-                node.referenceNumber = this.footnoteReferenceNumberSequence.next();
+                node.referenceNumber = this.currentFootnoteReferenceNumber++;
                 footnotes.push(node);
             }
         }
@@ -2376,15 +2376,6 @@ var FootnoteBlockInserter = (function () {
     return FootnoteBlockInserter;
 }());
 exports.FootnoteBlockInserter = FootnoteBlockInserter;
-var Sequence = (function () {
-    function Sequence(args) {
-        this.nextValue = args.start;
-    }
-    Sequence.prototype.next = function () {
-        return this.nextValue++;
-    };
-    return Sequence;
-}());
 
 },{"../CollectionHelpers":1,"./BlockquoteNode":43,"./DescriptionListNode":47,"./FootnoteBlockNode":52,"./FootnoteNode":53,"./HeadingNode":54,"./LineBlockNode":59,"./OrderedListNode":63,"./ParagraphNode":66,"./UnorderedListNode":77}],52:[function(require,module,exports){
 "use strict";
