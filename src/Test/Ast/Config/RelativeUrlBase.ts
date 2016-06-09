@@ -94,4 +94,16 @@ describe('The "relativeUrlBase" config setting', () => {
         new FootnoteBlockNode([footnote])
       ]))
   })
+
+  it('is not prefixed to URLs with an explicit scheme', () => {
+    const text = '[Chrono Cross](https://localhost/wiki/Chrono_Chross)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], 'https://localhost/wiki/Chrono_Chross')
+      ])
+    )
+  })
 })
