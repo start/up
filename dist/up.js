@@ -975,6 +975,7 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.applyConfigSettingsToUrl = function (url) {
+        url = url.trim();
         if (!url) {
             return url;
         }

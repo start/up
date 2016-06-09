@@ -428,10 +428,12 @@ export class Tokenizer {
   }
 
   private applyConfigSettingsToUrl(url: string): string {
+    url = url.trim()
+
     if (!url) {
       return url
     }
-    
+
     if (url[0] === '/') {
       return this.config.settings.baseForUrlsStartingWithSlash + url
     }
