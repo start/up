@@ -1484,7 +1484,7 @@ function getHeadingParser(headingLeveler) {
         var rawContent;
         var underline;
         var hasContentAndUnderline = (consumer.consumeLine({
-            pattern: NON_BLANK_PATTERN,
+            pattern: Patterns_1.NON_BLANK_PATTERN,
             then: function (line) { rawContent = line; }
         })
             && consumer.consumeLine({
@@ -1507,7 +1507,6 @@ exports.getHeadingParser = getHeadingParser;
 function isUnderlineConsistentWithOverline(overline, underline) {
     return !overline || (getSortedUnderlineChars_1.getSortedUnderlineChars(overline) === getSortedUnderlineChars_1.getSortedUnderlineChars(underline));
 }
-var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
 },{"../../Patterns":38,"../../SyntaxNodes/HeadingNode":52,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./getSortedUnderlineChars":27,"./isLineFancyOutlineConvention":28}],25:[function(require,module,exports){
@@ -1767,7 +1766,7 @@ function parseDescriptionList(args) {
         var rawTerms = [];
         while (!consumer.reachedEndOfText()) {
             var isTerm = consumer.consumeLine({
-                pattern: NON_BLANK_PATTERN,
+                pattern: Patterns_1.NON_BLANK_PATTERN,
                 if: function (line) { return !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
                 then: function (line) { return rawTerms.push(line); }
             });
@@ -1816,7 +1815,6 @@ function parseDescriptionList(args) {
     return true;
 }
 exports.parseDescriptionList = parseDescriptionList;
-var NON_BLANK_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.INDENT);
 
@@ -1916,7 +1914,7 @@ function parseRegularLines(args) {
     var _loop_1 = function() {
         var inlineNodes;
         var wasLineConsumed = consumer.consumeLine({
-            pattern: NON_BLANK_LINE_PATTERN,
+            pattern: Patterns_1.NON_BLANK_PATTERN,
             if: function (line) { return !isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
             then: function (line) { return inlineNodes = getInlineNodes_1.getInlineNodes(line, args.config); }
         });
@@ -1957,7 +1955,6 @@ exports.parseRegularLines = parseRegularLines;
 function isMediaSyntaxNode(node) {
     return node instanceof MediaSyntaxNode_1.MediaSyntaxNode;
 }
-var NON_BLANK_LINE_PATTERN = new RegExp(Patterns_1.NON_BLANK);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
 },{"../../Patterns":38,"../../SyntaxNodes/Line":56,"../../SyntaxNodes/LineBlockNode":57,"../../SyntaxNodes/MediaSyntaxNode":59,"../../SyntaxNodes/ParagraphNode":64,"../../SyntaxNodes/isWhitespace":77,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./isLineFancyOutlineConvention":28}],35:[function(require,module,exports){
@@ -2096,8 +2093,8 @@ var LETTER = '[a-zA-Z]';
 exports.LETTER = LETTER;
 var DIGIT = '\\d';
 exports.DIGIT = DIGIT;
-var NON_BLANK = NON_WHITESPACE_CHAR;
-exports.NON_BLANK = NON_BLANK;
+var NON_BLANK_PATTERN = new RegExp(NON_WHITESPACE_CHAR);
+exports.NON_BLANK_PATTERN = NON_BLANK_PATTERN;
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }

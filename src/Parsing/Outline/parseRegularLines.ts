@@ -7,7 +7,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/getInlineNodes'
-import { NON_BLANK, STREAK } from '../../Patterns'
+import { NON_BLANK_PATTERN, STREAK } from '../../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -52,7 +52,7 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
     let inlineNodes: InlineSyntaxNode[]
     
     const wasLineConsumed = consumer.consumeLine({
-      pattern: NON_BLANK_LINE_PATTERN,
+      pattern: NON_BLANK_PATTERN,
       if: line => !isLineFancyOutlineConvention(line, args.config),
       then: line => inlineNodes = getInlineNodes(line, args.config)
     })
@@ -132,9 +132,6 @@ function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
   return node instanceof MediaSyntaxNode
 }
 
-
-const NON_BLANK_LINE_PATTERN = new RegExp(
-  NON_BLANK)
 
 const STREAK_PATTERN = new RegExp(
   STREAK)

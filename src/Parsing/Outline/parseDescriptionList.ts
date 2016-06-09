@@ -6,7 +6,7 @@ import { Description } from '../../SyntaxNodes/Description'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { optional, regExpStartingWith, either, NON_BLANK, BLANK, INDENT, STREAK } from '../../Patterns'
+import { optional, regExpStartingWith, either, BLANK, NON_BLANK_PATTERN, INDENT, STREAK } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
@@ -93,9 +93,6 @@ export function parseDescriptionList(args: OutlineParserArgs): boolean {
   return true
 }
 
-
-const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK)
 
 const BLANK_PATTERN = new RegExp(
   BLANK)

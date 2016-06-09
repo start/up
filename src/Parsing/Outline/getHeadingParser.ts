@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { either, NON_BLANK, STREAK } from '../../Patterns'
+import { either, STREAK, NON_BLANK_PATTERN } from '../../Patterns'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
@@ -84,10 +84,6 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
   return !overline || (getSortedUnderlineChars(overline) === getSortedUnderlineChars(underline))
 }
-
-
-const NON_BLANK_PATTERN = new RegExp(
-  NON_BLANK)
 
 const STREAK_PATTERN = new RegExp(
   STREAK)

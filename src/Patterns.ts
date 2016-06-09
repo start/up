@@ -72,8 +72,8 @@ const DIGIT =
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
-const NON_BLANK =
-  NON_WHITESPACE_CHAR
+const NON_BLANK_PATTERN =
+  new RegExp(NON_WHITESPACE_CHAR)
 
 
 function escapeForRegex(text: string): string {
@@ -103,7 +103,7 @@ export {
   escapeForRegex,
   regExpStartingWith,
   regExpEndingWith,
-  NON_BLANK,
+  NON_BLANK_PATTERN,
   BLANK,
   INLINE_WHITESPACE_CHAR,
   WHITESPACE_CHAR,

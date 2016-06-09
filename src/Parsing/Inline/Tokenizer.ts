@@ -1,4 +1,4 @@
-import { escapeForRegex, regExpStartingWith, all, either, optional, atLeast, exactly, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT } from '../../Patterns'
+import { escapeForRegex, regExpStartingWith, all, either, optional, atLeast, exactly, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT, NON_BLANK_PATTERN } from '../../Patterns'
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
