@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import { UpConfigSettings } from '../../../UpConfigSettings'
 import Up from '../../../index'
+import { UpConfigSettings } from '../../../UpConfigSettings'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 
