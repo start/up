@@ -16,7 +16,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 describe('The default URL scheme ("https://" unless changed via config setting)', () => {
   it('is prefixed to schemeless link URLs', () => {
-    const text = '[Chrono Cross](localhost/Chrono_Chross)'
+    const text = '[Chrono Cross](localhost/wiki/Chrono_Chross)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
@@ -42,7 +42,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new AudioNode('Chrono Cross logo', 'https://prod-web-2/radical dreamers.mp3')
+        new AudioNode('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
       ])
     )
   })
@@ -58,7 +58,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
-    const text = 'Walter White produces [SPOILER: Blue Sky meth](localhost/Blue_Sky)'
+    const text = 'Walter White produces [SPOILER: Blue Sky meth](localhost/wiki/Blue_Sky)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
@@ -66,7 +66,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'http://localhost/wiki/Blue_Sky')
+          ], 'https://localhost/wiki/Blue_Sky')
         ])
       ])
     )
@@ -78,7 +78,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I eat one.')
-      ], 'http://prod-web-4/lucky-charms?show=nutrition')
+      ], 'https://prod-web-4/cereals/lucky-charms?show=nutrition')
     ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -153,13 +153,13 @@ describe('A URL not starting with a slash, but with a slash before its first col
 
 describe('A URL with an underscore before its first colon', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross][admin:123abc@localhost/wiki/chrono-cross:the-game)'
+    const text = '[Chrono Cross](super_admin:123abc@localhost/wiki/chrono-cross:the-game)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'https://admin:123abc@localhost/wiki/chrono-cross:the-game')
+        ], 'https://super_admin:123abc@localhost/wiki/chrono-cross:the-game')
       ])
     )
   })
@@ -183,7 +183,7 @@ describe('A URL starting with a number but otherwise looking like it has a schem
 
 describe('A URL with no colon (and not starting with a slash)', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross][localhost/wiki/ChronoChross:TheGame)'
+    const text = '[Chrono Cross](localhost/wiki/ChronoChross:TheGame)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
