@@ -962,12 +962,12 @@ var Tokenizer = (function () {
     Tokenizer.prototype.flushBufferToTokenOfKind = function (kind) {
         this.appendNewToken({ kind: kind, value: this.flushBuffer() });
     };
-    Tokenizer.prototype.insertTokenAtStartOfContext = function (context, token) {
-        var newTokenIndex = context.initialTokenIndex;
-        this.tokens.splice(newTokenIndex, 0, token);
+    Tokenizer.prototype.insertToken = function (args) {
+        var context = args.context, token = args.token, atIndex = args.atIndex;
+        this.tokens.splice(atIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
-            openContext.registerTokenInsertion({ atIndex: newTokenIndex, onBehalfOfContext: context });
+            openContext.registerTokenInsertion({ atIndex: atIndex, onBehalfOfContext: context });
         }
     };
     Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
@@ -1062,7 +1062,7 @@ var Tokenizer = (function () {
                 var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
                 var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
                 startToken.associateWith(endToken);
-                _this.insertTokenAtStartOfContext(context, startToken);
+                _this.insertToken({ context: context, token: startToken, atIndex: context.initialTokenIndex });
                 _this.tokens.push(endToken);
             }
         };

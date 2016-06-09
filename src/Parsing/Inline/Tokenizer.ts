@@ -71,7 +71,7 @@ export class Tokenizer {
     },
 
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
- 
+
     leaveEndPatternForAnotherConventionToConsume: true,
     onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
     closeInnerContextsWhenClosing: true,
@@ -398,13 +398,18 @@ export class Tokenizer {
     this.appendNewToken({ kind, value: this.flushBuffer() })
   }
 
-  private insertTokenAtStartOfContext(context: TokenizerContext, token: Token): void {
-    const newTokenIndex = context.initialTokenIndex
+  private insertToken(
+    args: {
+      context: TokenizerContext,
+      token: Token,
+      atIndex: number
+    }): void {
+    const { context, token, atIndex } = args
 
-    this.tokens.splice(newTokenIndex, 0, token)
+    this.tokens.splice(atIndex, 0, token)
 
     for (const openContext of this.openContexts) {
-      openContext.registerTokenInsertion({ atIndex: newTokenIndex, onBehalfOfContext: context })
+      openContext.registerTokenInsertion({ atIndex, onBehalfOfContext: context })
     }
   }
 
@@ -487,6 +492,7 @@ export class Tokenizer {
 
       onClose: () => {
         const url = this.flushBuffer()
+
         const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
         const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
         linkStartToken.associateWith(linkEndToken)
@@ -496,7 +502,6 @@ export class Tokenizer {
         // We'll insert a link end token right before the end token, and we'll insert a link start token right after
         // the corresponding start token.
         const lastToken = last(this.tokens)
-
       }
     }))
   }
@@ -542,7 +547,7 @@ export class Tokenizer {
         const endToken = new Token({ kind: richConvention.endTokenKind })
         startToken.associateWith(endToken)
 
-        this.insertTokenAtStartOfContext(context, startToken)
+        this.insertToken({ context, token: startToken, atIndex: context.initialTokenIndex})
         this.tokens.push(endToken)
       }
     }
