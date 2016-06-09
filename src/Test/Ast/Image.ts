@@ -49,16 +49,6 @@ describe('An image produced by parentheses, square brackets, or curly brackets f
 })
 
 
-describe('An image with a relative URL containing spaces and no extension', () => {
-  it('is parsed correctly', () => {
-    expect(Up.toAst('[image: haunted house](haunted house)')).to.be.eql(
-      new DocumentNode([
-        new ImageNode('haunted house', 'haunted house'),
-      ]))
-  })
-})
-
-
 describe('An image description (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('[image: haunted [house]](http://example.com/?state=NE)')).to.be.eql(

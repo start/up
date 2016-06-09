@@ -49,16 +49,6 @@ describe('Audio produced by parentheses, square brackets, or curly brackets foll
 })
 
 
-describe('Audio with a relative URL containing spaces and no extension', () => {
-  it('is parsed correctly', () => {
-    expect(Up.toAst('[audio: ghostly howling](ghostly howling)')).to.be.eql(
-      new DocumentNode([
-        new AudioNode('ghostly howling', 'ghostly howling'),
-      ]))
-  })
-})
-
-
 describe('An audio description (enclosed in parentheses)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.be.eql(

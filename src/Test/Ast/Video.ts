@@ -49,16 +49,6 @@ describe('A video produced by parentheses, square brackets, or curly brackets fo
 })
 
 
-describe('A video with a relative URL containing spaces and no extension', () => {
-  it('is parsed correctly', () => {
-    expect(Up.toAst('[video: ghosts eating luggage](ghosts eating luggage)')).to.be.eql(
-      new DocumentNode([
-        new VideoNode('ghosts eating luggage', 'ghosts eating luggage'),
-      ]))
-  })
-})
-
-
 describe('A video description produced by square brackets', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('[video: ghosts eating [luggage]](http://example.com/?state=NE)')).to.be.eql(
