@@ -1,34 +1,23 @@
 import { all, either } from './PatternHelpers'
 
 
-const INLINE_WHITESPACE_CHAR =
+export const INLINE_WHITESPACE_CHAR =
   '[^\\S\\n]'
 
-const WHITESPACE_CHAR =
+export const WHITESPACE_CHAR =
   '\\s'
 
-const ANY_WHITESPACE =
+export const ANY_WHITESPACE =
   all('\\s')
 
-const LINE_BREAK =
+export const LINE_BREAK =
   '\n'
 
-const INTEGER =
+export const INTEGER =
   '\\d+'
 
-const LETTER =
+export const LETTER =
   '[a-zA-Z]'
 
-const DIGIT =
+export const DIGIT =
   '\\d'
-
-
-export {
-  INLINE_WHITESPACE_CHAR,
-  WHITESPACE_CHAR,
-  ANY_WHITESPACE,
-  INTEGER,
-  LINE_BREAK,
-  LETTER,
-  DIGIT
-}

@@ -144,12 +144,9 @@ var TokenKind_1 = require('./TokenKind');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-var AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, TokenKind_1.TokenKind.AudioDescriptionAndStart);
-exports.AUDIO = AUDIO;
-var IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, TokenKind_1.TokenKind.ImageDescriptionAndStart);
-exports.IMAGE = IMAGE;
-var VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, TokenKind_1.TokenKind.VideoDescriptionAndStart);
-exports.VIDEO = VIDEO;
+exports.AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, TokenKind_1.TokenKind.AudioDescriptionAndStart);
+exports.IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, TokenKind_1.TokenKind.ImageDescriptionAndStart);
+exports.VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, TokenKind_1.TokenKind.VideoDescriptionAndStart);
 
 },{"../../SyntaxNodes/AudioNode":42,"../../SyntaxNodes/ImageNode":55,"../../SyntaxNodes/VideoNode":78,"./MediaConvention":5,"./TokenKind":15}],7:[function(require,module,exports){
 "use strict";
@@ -571,65 +568,55 @@ var SquareBracketedNode_1 = require('../../SyntaxNodes/SquareBracketedNode');
 var ParenthesizedNode_1 = require('../../SyntaxNodes/ParenthesizedNode');
 var ActionNode_1 = require('../../SyntaxNodes/ActionNode');
 var TokenKind_1 = require('./TokenKind');
-var EMPHASIS_CONVENTION = {
+exports.EMPHASIS_CONVENTION = {
     NodeType: EmphasisNode_1.EmphasisNode,
     startTokenKind: TokenKind_1.TokenKind.EmphasisStart,
     endTokenKind: TokenKind_1.TokenKind.EmphasisEnd
 };
-exports.EMPHASIS_CONVENTION = EMPHASIS_CONVENTION;
-var STRESS_CONVENTION = {
+exports.STRESS_CONVENTION = {
     NodeType: StressNode_1.StressNode,
     startTokenKind: TokenKind_1.TokenKind.StressStart,
     endTokenKind: TokenKind_1.TokenKind.StressEnd
 };
-exports.STRESS_CONVENTION = STRESS_CONVENTION;
-var REVISION_DELETION_CONVENTION = {
+exports.REVISION_DELETION_CONVENTION = {
     NodeType: RevisionDeletionNode_1.RevisionDeletionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionDeletionStart,
     endTokenKind: TokenKind_1.TokenKind.RevisionDeletionEnd
 };
-exports.REVISION_DELETION_CONVENTION = REVISION_DELETION_CONVENTION;
-var REVISION_INSERTION_CONVENTION = {
+exports.REVISION_INSERTION_CONVENTION = {
     NodeType: RevisionInsertionNode_1.RevisionInsertionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionInsertionStart,
     endTokenKind: TokenKind_1.TokenKind.RevisionInsertionEnd
 };
-exports.REVISION_INSERTION_CONVENTION = REVISION_INSERTION_CONVENTION;
-var SPOILER_CONVENTION = {
+exports.SPOILER_CONVENTION = {
     NodeType: SpoilerNode_1.SpoilerNode,
     startTokenKind: TokenKind_1.TokenKind.SpoilerStart,
     endTokenKind: TokenKind_1.TokenKind.SpoilerEnd
 };
-exports.SPOILER_CONVENTION = SPOILER_CONVENTION;
-var FOOTNOTE_CONVENTION = {
+exports.FOOTNOTE_CONVENTION = {
     NodeType: FootnoteNode_1.FootnoteNode,
     startTokenKind: TokenKind_1.TokenKind.FootnoteStart,
     endTokenKind: TokenKind_1.TokenKind.FootnoteEnd
 };
-exports.FOOTNOTE_CONVENTION = FOOTNOTE_CONVENTION;
-var PARENTHESIZED_CONVENTION = {
+exports.PARENTHESIZED_CONVENTION = {
     NodeType: ParenthesizedNode_1.ParenthesizedNode,
     startTokenKind: TokenKind_1.TokenKind.ParenthesizedStart,
     endTokenKind: TokenKind_1.TokenKind.ParenthesizedEnd
 };
-exports.PARENTHESIZED_CONVENTION = PARENTHESIZED_CONVENTION;
-var SQUARE_BRACKETED_CONVENTION = {
+exports.SQUARE_BRACKETED_CONVENTION = {
     NodeType: SquareBracketedNode_1.SquareBracketedNode,
     startTokenKind: TokenKind_1.TokenKind.SquareBracketedStart,
     endTokenKind: TokenKind_1.TokenKind.SquareBracketedEnd
 };
-exports.SQUARE_BRACKETED_CONVENTION = SQUARE_BRACKETED_CONVENTION;
-var ACTION_CONVENTION = {
+exports.ACTION_CONVENTION = {
     NodeType: ActionNode_1.ActionNode,
     startTokenKind: TokenKind_1.TokenKind.ActionStart,
     endTokenKind: TokenKind_1.TokenKind.ActionEnd
 };
-exports.ACTION_CONVENTION = ACTION_CONVENTION;
-var LINK_CONVENTION = {
+exports.LINK_CONVENTION = {
     startTokenKind: TokenKind_1.TokenKind.LinkStart,
     endTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd
 };
-exports.LINK_CONVENTION = LINK_CONVENTION;
 
 },{"../../SyntaxNodes/ActionNode":41,"../../SyntaxNodes/EmphasisNode":50,"../../SyntaxNodes/FootnoteNode":53,"../../SyntaxNodes/ParenthesizedNode":67,"../../SyntaxNodes/RevisionDeletionNode":69,"../../SyntaxNodes/RevisionInsertionNode":70,"../../SyntaxNodes/SpoilerNode":73,"../../SyntaxNodes/SquareBracketedNode":74,"../../SyntaxNodes/StressNode":75,"./TokenKind":15}],14:[function(require,module,exports){
 "use strict";
@@ -2091,35 +2078,24 @@ exports.solely = solely;
 },{"./PatternPieces":39}],39:[function(require,module,exports){
 "use strict";
 var PatternHelpers_1 = require('./PatternHelpers');
-var INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
-exports.INLINE_WHITESPACE_CHAR = INLINE_WHITESPACE_CHAR;
-var WHITESPACE_CHAR = '\\s';
-exports.WHITESPACE_CHAR = WHITESPACE_CHAR;
-var ANY_WHITESPACE = PatternHelpers_1.all('\\s');
-exports.ANY_WHITESPACE = ANY_WHITESPACE;
-var LINE_BREAK = '\n';
-exports.LINE_BREAK = LINE_BREAK;
-var INTEGER = '\\d+';
-exports.INTEGER = INTEGER;
-var LETTER = '[a-zA-Z]';
-exports.LETTER = LETTER;
-var DIGIT = '\\d';
-exports.DIGIT = DIGIT;
+exports.INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
+exports.WHITESPACE_CHAR = '\\s';
+exports.ANY_WHITESPACE = PatternHelpers_1.all('\\s');
+exports.LINE_BREAK = '\n';
+exports.INTEGER = '\\d+';
+exports.LETTER = '[a-zA-Z]';
+exports.DIGIT = '\\d';
 
 },{"./PatternHelpers":38}],40:[function(require,module,exports){
 "use strict";
 var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
 var DIVIDER_STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
-var DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
-exports.DIVIDER_STREAK_PATTERN = DIVIDER_STREAK_PATTERN;
-var BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
-exports.BLANK_PATTERN = BLANK_PATTERN;
-var NON_BLANK_PATTERN = /\S/;
-exports.NON_BLANK_PATTERN = NON_BLANK_PATTERN;
+exports.DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
+exports.BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
+exports.NON_BLANK_PATTERN = /\S/;
 var INDENT = PatternHelpers_1.either('  ', '\t');
-var INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
-exports.INDENTED_PATTERN = INDENTED_PATTERN;
+exports.INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
 
 },{"./PatternHelpers":38,"./PatternPieces":39}],41:[function(require,module,exports){
 "use strict";
