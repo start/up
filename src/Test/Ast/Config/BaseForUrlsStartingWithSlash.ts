@@ -84,7 +84,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
       ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),

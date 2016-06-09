@@ -45,7 +45,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new AudioNode('Chrono Cross logo', 'my-app:radical dreamers.mp3')
+        new AudioNode('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
       ])
     )
   })
@@ -81,10 +81,10 @@ describe('The "defaultUrlScheme" config setting', () => {
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I eat one.')
-      ], 'http://cereals/lucky-charms?show=nutrition')
+      ], 'my-app:cereals/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
