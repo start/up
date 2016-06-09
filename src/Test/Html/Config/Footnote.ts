@@ -12,7 +12,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="reply-11-footnote-reference-3" data-up-footnote-reference><a href="#reply-11-footnote-3">3</a></sup>')
+      '<sup id="reply-11-footnote-reference-3" class="up-footnote-reference"><a href="#reply-11-footnote-3">3</a></sup>')
   })
 })
 
@@ -28,7 +28,7 @@ it("are delimited by specified the ID word delimiter", () => {
     const node = new FootnoteNode([], 3)
     
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="footnote::reference::3" data-up-footnote-reference><a href="#footnote::3">3</a></sup>')
+      '<sup id="footnote::reference::3" class="up-footnote-reference"><a href="#footnote::3">3</a></sup>')
   })
 })
 
@@ -45,7 +45,7 @@ it("are delimited by specified the ID word delimiter", () => {
     })
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="reply::11::footnote::reference::3" data-up-footnote-reference><a href="#reply::11::footnote::3">3</a></sup>')
+      '<sup id="reply::11::footnote::reference::3" class="up-footnote-reference"><a href="#reply::11::footnote::3">3</a></sup>')
   })
 })
 
@@ -61,7 +61,7 @@ describe("A footnote reference's ID", () => {
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="ref-3" data-up-footnote-reference><a href="#footnote-3">3</a></sup>')
+      '<sup id="ref-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup>')
   })
 })
 
@@ -78,7 +78,7 @@ describe('Separate words in the provided term for "footnote reference"', () => {
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="fn_ref_3" data-up-footnote-reference><a href="#footnote_3">3</a></sup>')
+      '<sup id="fn_ref_3" class="up-footnote-reference"><a href="#footnote_3">3</a></sup>')
   })
 })
 
@@ -94,6 +94,6 @@ describe("The ID of the footnote referenced by a footnote reference", () => {
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="footnote-reference-3" data-up-footnote-reference><a href="#fn-3">3</a></sup>')
+      '<sup id="footnote-reference-3" class="up-footnote-reference"><a href="#fn-3">3</a></sup>')
   })
 })
