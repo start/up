@@ -1,4 +1,4 @@
-import { escapeForRegex, regExpStartingWith, optional, atLeast, exactly, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../Patterns'
+import { escapeForRegex, regExpStartingWith, all, either, optional, atLeast, exactly, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT } from '../../Patterns'
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
@@ -650,6 +650,10 @@ const RAISED_VOICE_DELIMITER_PATTERN =
 
 const NAKED_URL_SCHEME_PATTERN =
   regExpStartingWith('http' + optional('s') + '://')
+
+const URL_SCHEME_PATTERN =
+  regExpStartingWith(
+    LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'))) + ':')
 
 const NAKED_URL_TERMINATOR_PATTERN =
   regExpStartingWith(WHITESPACE_CHAR)

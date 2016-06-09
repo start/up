@@ -7,7 +7,7 @@ const capture =
 const optional =
   (pattern: string) => group(pattern) + '?'
 
-const any =
+const all =
   (pattern: string) => group(pattern) + '*'
 
 const atLeast =
@@ -38,10 +38,10 @@ const WHITESPACE_CHAR =
   '\\s'
 
 const ANY_WHITESPACE =
-  any('\\s')
+  all('\\s')
 
 const INLINE_WHITESPACE =
-  any('[^\\S\\n]')
+  all('[^\\S\\n]')
 
 const LINE_BREAK =
   '\n'
@@ -63,6 +63,12 @@ const STREAK =
 
 const NON_WHITESPACE_CHAR =
   '\\S'
+
+const LETTER =
+  '[a-zA-Z]'
+
+const DIGIT =
+  '\\d'
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
@@ -91,6 +97,7 @@ export {
   startsWith,
   endsWith,
   streakOf,
+  all,
   atLeast,
   exactly,
   escapeForRegex,
@@ -106,4 +113,6 @@ export {
   STREAK,
   INTEGER,
   LINE_BREAK,
+  LETTER,
+  DIGIT
 }
