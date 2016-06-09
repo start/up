@@ -205,20 +205,16 @@ var Parser = (function () {
                 }
                 continue;
             }
-            if (token.kind === TokenKind_1.TokenKind.NakedUrlProtocolAndStart) {
-                var protocol = token.value;
-                var nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex();
-                var urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value;
-                if (!urlAfterProtocol) {
-                    this.nodes.push(new PlainTextNode_1.PlainTextNode(protocol));
+            if (token.kind === TokenKind_1.TokenKind.NakedUrlSchemeAndStart) {
+                var urlScheme = token.value;
+                var nakedUrlAfterSchemeToken = this.getNextTokenAndAdvanceIndex();
+                var urlAfterScheme = nakedUrlAfterSchemeToken.value;
+                if (!urlAfterScheme) {
+                    this.nodes.push(new PlainTextNode_1.PlainTextNode(urlScheme));
                     continue;
                 }
-                var url = protocol + urlAfterProtocol;
-                if (!urlAfterProtocol) {
-                    this.nodes.push(new PlainTextNode_1.PlainTextNode(url));
-                    continue;
-                }
-                var contents = [new PlainTextNode_1.PlainTextNode(urlAfterProtocol)];
+                var url = urlScheme + urlAfterScheme;
+                var contents = [new PlainTextNode_1.PlainTextNode(urlAfterScheme)];
                 this.nodes.push(new LinkNode_1.LinkNode(contents, url));
                 continue;
             }
@@ -667,8 +663,8 @@ exports.Token = Token;
     TokenKind[TokenKind["LinkUrlAndEnd"] = 10] = "LinkUrlAndEnd";
     TokenKind[TokenKind["LinkStart"] = 11] = "LinkStart";
     TokenKind[TokenKind["MediaUrlAndEnd"] = 12] = "MediaUrlAndEnd";
-    TokenKind[TokenKind["NakedUrlAfterProtocolAndEnd"] = 13] = "NakedUrlAfterProtocolAndEnd";
-    TokenKind[TokenKind["NakedUrlProtocolAndStart"] = 14] = "NakedUrlProtocolAndStart";
+    TokenKind[TokenKind["NakedUrlAfterSchemeAndEnd"] = 13] = "NakedUrlAfterSchemeAndEnd";
+    TokenKind[TokenKind["NakedUrlSchemeAndStart"] = 14] = "NakedUrlSchemeAndStart";
     TokenKind[TokenKind["ParenthesizedEnd"] = 15] = "ParenthesizedEnd";
     TokenKind[TokenKind["ParenthesizedStart"] = 16] = "ParenthesizedStart";
     TokenKind[TokenKind["PlainText"] = 17] = "PlainText";
@@ -717,15 +713,15 @@ var Tokenizer = (function () {
         this.rawBracketConventions = this.getRawBracketConventions();
         this.mediaUrlConventions = this.getMediaUrlConventions();
         this.nakedUrlConvention = {
-            startPattern: NAKED_URL_PROTOCOL_PATTERN,
+            startPattern: NAKED_URL_SCHEME_PATTERN,
             endPattern: NAKED_URL_TERMINATOR_PATTERN,
             flushBufferToPlainTextTokenBeforeOpening: true,
-            onOpen: function (urlProtocol) {
-                _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol });
+            onOpen: function (urlScheme) {
+                _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlSchemeAndStart, value: urlScheme });
             },
             insteadOfTryingToOpenUsualConventions: function () { return _this.bufferRawText(); },
             leaveEndPatternForAnotherConventionToConsume: true,
-            onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd,
+            onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterSchemeAndEnd,
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
@@ -955,7 +951,7 @@ var Tokenizer = (function () {
         this.tokens.push(new Token_1.Token(args));
     };
     Tokenizer.prototype.flushBufferToNakedUrlEndToken = function () {
-        this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd);
+        this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.NakedUrlAfterSchemeAndEnd);
     };
     Tokenizer.prototype.flushBuffer = function () {
         var buffer = this.buffer;
@@ -1137,7 +1133,7 @@ var BRACKETS = [
 ];
 var INLINE_CODE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith('`');
 var RAISED_VOICE_DELIMITER_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.atLeast(1, Patterns_1.escapeForRegex('*')));
-var NAKED_URL_PROTOCOL_PATTERN = Patterns_1.regExpStartingWith('http' + Patterns_1.optional('s') + '://');
+var NAKED_URL_SCHEME_PATTERN = Patterns_1.regExpStartingWith('http' + Patterns_1.optional('s') + '://');
 var NAKED_URL_TERMINATOR_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.WHITESPACE_CHAR);
 
 },{"../../CollectionHelpers":1,"../../Patterns":38,"./Bracket":2,"./FailedConventionTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerSnapshot":18,"./insertBracketsInsideBracketedConventions":20,"./nestOverlappingConventions":21}],17:[function(require,module,exports){

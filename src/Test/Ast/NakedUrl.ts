@@ -12,7 +12,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 
 describe('A naked URL', () => {
-  it('produces a link node. The content of the link is the URL minus its protocol', () => {
+  it('produces a link node. The content of the link is the URL minus its scheme', () => {
     expect(Up.toAst('https://archive.org')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([

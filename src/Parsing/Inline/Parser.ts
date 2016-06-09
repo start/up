@@ -73,27 +73,22 @@ export class Parser {
         continue
       }
 
-      if (token.kind === TokenKind.NakedUrlProtocolAndStart) {
-        const protocol = token.value
+      if (token.kind === TokenKind.NakedUrlSchemeAndStart) {
+        const urlScheme = token.value
 
-        const nakedUrlAfterProtocolAndEndToken = this.getNextTokenAndAdvanceIndex()
-        const urlAfterProtocol = nakedUrlAfterProtocolAndEndToken.value
+        // The next token will be a TokenKind.NakedUrlAfterSchemeAndEnd
+        const nakedUrlAfterSchemeToken = this.getNextTokenAndAdvanceIndex()
+        const urlAfterScheme = nakedUrlAfterSchemeToken.value
 
-        if (!urlAfterProtocol) {
-          // There's no point in creating a link for a URL protocol alone, so we treat the protocol as plain text.
-          this.nodes.push(new PlainTextNode(protocol))
+        if (!urlAfterScheme) {
+          // There's no point in creating a link for a URL scheme alone, so we treat the scheme as plain text.
+          this.nodes.push(new PlainTextNode(urlScheme))
           continue
         }
 
-        const url = protocol + urlAfterProtocol
+        const url = urlScheme + urlAfterScheme
 
-        if (!urlAfterProtocol) {
-          // As a rule, naked URLs consisting only of a protocol are treated as plain text.
-          this.nodes.push(new PlainTextNode(url))
-          continue
-        }
-
-        const contents = [new PlainTextNode(urlAfterProtocol)]
+        const contents = [new PlainTextNode(urlAfterScheme)]
         this.nodes.push(new LinkNode(contents, url))
 
         continue

@@ -13,7 +13,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('A naked URL containing another URL', () => {
-  it("produces a single link node. In the link's contnet, the second URL's protocol is preserved", () => {
+  it("produces a single link node. In the link's contnet, the second URL's scheme is preserved", () => {
     expect(Up.toAst('https://web.archive.org/web/19961222145127/http://www.nintendo.com/')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
@@ -146,17 +146,17 @@ describe("Unmatched opening parentheses in a naked URL closed by another convent
 })
 
 
-describe('A paragraph ending with a naked URL protocol (without the rest of the URL)', () => {
+describe('A paragraph ending with a naked URL scheme (without the rest of the URL)', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('This is a URL protocol: http://')).to.be.eql(
+    expect(Up.toAst('This is a URL scheme: http://')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('This is a URL protocol: http://')
+        new PlainTextNode('This is a URL scheme: http://')
       ]))
   })
 })
 
 
-describe('A naked URL protocol followed by a space', () => {
+describe('A naked URL scheme followed by a space', () => {
   it("is preserved as plain text", () => {
     expect(Up.toAst('http:// ')).to.be.eql(
       insideDocumentAndParagraph([
@@ -166,12 +166,12 @@ describe('A naked URL protocol followed by a space', () => {
 })
 
 
-describe('A naked URL protocol (only) immediately followed by another convention closing', () => {
+describe('A naked URL scheme (only) immediately followed by another convention closing', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('++A URL protocol: http://++')).to.be.eql(
+    expect(Up.toAst('++A URL scheme: http://++')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
-          new PlainTextNode('A URL protocol: http://')
+          new PlainTextNode('A URL scheme: http://')
         ])
       ]))
   })

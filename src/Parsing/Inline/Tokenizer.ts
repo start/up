@@ -61,19 +61,19 @@ export class Tokenizer {
   // but we keep a direct reference to the naked URL convention to help us determine whether another
   // convention contains a naked URL.
   private nakedUrlConvention: TokenizableConvention = {
-    startPattern: NAKED_URL_PROTOCOL_PATTERN,
+    startPattern: NAKED_URL_SCHEME_PATTERN,
     endPattern: NAKED_URL_TERMINATOR_PATTERN,
 
     flushBufferToPlainTextTokenBeforeOpening: true,
 
-    onOpen: urlProtocol => {
-      this.appendNewToken({ kind: TokenKind.NakedUrlProtocolAndStart, value: urlProtocol })
+    onOpen: urlScheme => {
+      this.appendNewToken({ kind: TokenKind.NakedUrlSchemeAndStart, value: urlScheme })
     },
 
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
 
     leaveEndPatternForAnotherConventionToConsume: true,
-    onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
+    onCloseFlushBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
     closeInnerContextsWhenClosing: true,
 
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
@@ -392,7 +392,7 @@ export class Tokenizer {
   }
 
   private flushBufferToNakedUrlEndToken(): void {
-    this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterProtocolAndEnd)
+    this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterSchemeAndEnd)
   }
 
   private flushBuffer(): string {
@@ -648,7 +648,7 @@ const INLINE_CODE_DELIMITER_PATTERN =
 const RAISED_VOICE_DELIMITER_PATTERN =
   regExpStartingWith(atLeast(1, escapeForRegex('*')))
 
-const NAKED_URL_PROTOCOL_PATTERN =
+const NAKED_URL_SCHEME_PATTERN =
   regExpStartingWith('http' + optional('s') + '://')
 
 const NAKED_URL_TERMINATOR_PATTERN =
