@@ -5,7 +5,7 @@ import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
 export interface TokenizableConvention {
-  onlyOpenIf?: () => boolean
+  onlyOpenIfDirectlyFollowing?: TokenKind[]
 
   startPattern: RegExp
   endPattern: RegExp

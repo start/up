@@ -274,7 +274,7 @@ export class Tokenizer {
     return this.conventions.some(convention => this.tryToOpen(convention))
   }
 
-  private isDirectlyFollowing(...kinds: TokenKind[]): boolean {
+  private isDirectlyFollowing(kinds: TokenKind[]): boolean {
     return (
       this.buffer === ''
       && this.tokens.length
@@ -297,11 +297,11 @@ export class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, onlyOpenIfDirectlyFollowing, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)
-      && (!onlyOpenIf || onlyOpenIf())
+      && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing))
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
@@ -443,11 +443,11 @@ export class Tokenizer {
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIf: () => this.isDirectlyFollowing(
+      onlyOpenIfDirectlyFollowing: [
         TokenKind.ParenthesizedEnd,
         TokenKind.SquareBracketedEnd,
         TokenKind.ActionEnd
-      ),
+      ],
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,

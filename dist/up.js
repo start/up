@@ -870,11 +870,7 @@ var Tokenizer = (function () {
         var _this = this;
         return this.conventions.some(function (convention) { return _this.tryToOpen(convention); });
     };
-    Tokenizer.prototype.isDirectlyFollowing = function () {
-        var kinds = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            kinds[_i - 0] = arguments[_i];
-        }
+    Tokenizer.prototype.isDirectlyFollowing = function (kinds) {
         return (this.buffer === ''
             && this.tokens.length
             && CollectionHelpers_1.contains(kinds, CollectionHelpers_1.last(this.tokens).kind));
@@ -891,9 +887,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpen = function (convention) {
         var _this = this;
-        var startPattern = convention.startPattern, onlyOpenIf = convention.onlyOpenIf, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
+        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowing = convention.onlyOpenIfDirectlyFollowing, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return (this.canTry(convention)
-            && (!onlyOpenIf || onlyOpenIf())
+            && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing))
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
                 then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1006,7 +1002,11 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
             endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
-            onlyOpenIf: function () { return _this.isDirectlyFollowing(TokenKind_1.TokenKind.ParenthesizedEnd, TokenKind_1.TokenKind.SquareBracketedEnd, TokenKind_1.TokenKind.ActionEnd); },
+            onlyOpenIfDirectlyFollowing: [
+                TokenKind_1.TokenKind.ParenthesizedEnd,
+                TokenKind_1.TokenKind.SquareBracketedEnd,
+                TokenKind_1.TokenKind.ActionEnd
+            ],
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function () {
