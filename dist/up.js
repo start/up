@@ -1018,6 +1018,26 @@ var Tokenizer = (function () {
             }
         }); });
     };
+    Tokenizer.prototype.getLinkifyingUrlConventions = function () {
+        var _this = this;
+        return BRACKETS.map(function (bracket) { return ({
+            startPattern: Patterns_1.regExpStartingWith(bracket.startPattern),
+            endPattern: Patterns_1.regExpStartingWith(bracket.endPattern),
+            onlyOpenIfDirectlyFollowing: [
+                TokenKind_1.TokenKind.SpoilerEnd,
+                TokenKind_1.TokenKind.FootnoteEnd,
+            ],
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+            closeInnerContextsWhenClosing: true,
+            onClose: function () {
+                var url = _this.flushBuffer();
+                var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });
+                var linkStartToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.startTokenKind });
+                linkStartToken.associateWith(linkEndToken);
+                var lastToken = CollectionHelpers_1.last(_this.tokens);
+            }
+        }); });
+    };
     Tokenizer.prototype.getConventionsForRichBracketedTerm = function (args) {
         var _this = this;
         var richConvention = args.richConvention, nonLocalizedTerm = args.nonLocalizedTerm;

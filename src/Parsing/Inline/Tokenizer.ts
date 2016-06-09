@@ -467,6 +467,40 @@ export class Tokenizer {
     }))
   }
 
+  // Okay, this method name is a bit confusing.
+  //
+  // Spoilers and footnotes can be "linkified" by immediately following their closing bracket with a
+  // parenthesized/bracketed URL. They remain spoilers and footnotes, but their entire contents are placed into
+  //  a link. 
+  private getLinkifyingUrlConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
+
+      onlyOpenIfDirectlyFollowing: [
+        TokenKind.SpoilerEnd,
+        TokenKind.FootnoteEnd,
+      ],
+
+      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+      closeInnerContextsWhenClosing: true,
+
+      onClose: () => {
+        const url = this.flushBuffer()
+        const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
+        const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
+        linkStartToken.associateWith(linkEndToken)
+
+        // The last token is guaranteed to be a SpoilerEnd, or FootnoteEnd token.
+        //
+        // We'll insert a link end token right before the end token, and we'll insert a link start token right after
+        // the corresponding start token.
+        const lastToken = last(this.tokens)
+
+      }
+    }))
+  }
+
   private getConventionsForRichBracketedTerm(
     args: {
       richConvention: RichConvention
