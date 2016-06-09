@@ -3254,8 +3254,7 @@ var Writer = (function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             parts[_i - 0] = arguments[_i];
         }
-        var allParts = [this.config.settings.documentName].concat(parts);
-        var rawId = allParts.join(' ');
+        var rawId = [this.config.settings.documentName].concat(parts).join(' ');
         return (rawId
             .trim()
             .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter));

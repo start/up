@@ -183,8 +183,8 @@ export abstract class Writer {
   abstract plainText(node: PlainTextNode): string
 
   protected getId(...parts: string[]): string {
-    const allParts = [this.config.settings.documentName].concat(parts)
-    const rawId = allParts.join(' ')
+    const rawId =
+      [this.config.settings.documentName].concat(parts).join(' ')
 
     return (
       rawId
