@@ -22,6 +22,26 @@ import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
+describe('Text surrounded by 2 parentheses', () => {
+  it("produces a footnote node", () => {
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
 describe('Text surrounded by 2 square brackets', () => {
   it("produces a footnote node", () => {
     const text = "I don't eat cereal. [[Well, I do, but I pretend not to.]] Never have."
