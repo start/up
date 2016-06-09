@@ -1,4 +1,4 @@
-import { all, either, solely, atLeast } from './PatternHelpers'
+import { all, either } from './PatternHelpers'
 
 
 const INLINE_WHITESPACE_CHAR =

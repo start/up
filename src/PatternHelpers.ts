@@ -35,25 +35,17 @@ export function escapeForRegex(text: string): string {
 }
 
 export function regExpStartingWith(pattern: string, flags?: string): RegExp {
-  return new RegExp(startsWith(pattern), flags)
+  return new RegExp('^' + pattern, flags)
 }
 
 export function regExpEndingWith(pattern: string, flags?: string): RegExp {
-  return new RegExp(endsWith(pattern), flags)
+  return new RegExp(pattern + '$', flags)
 }
 
 import { INLINE_WHITESPACE_CHAR } from './PatternPieces'
 
 export function solely(pattern: string) {
   return '^' + pattern + INLINE_WHITESPACE + '$'
-}
-
-function startsWith(pattern: string): string {
-  return '^' + pattern
-}
-
-function endsWith(pattern: string): string {
-  return pattern + '$'
 }
 
 

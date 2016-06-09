@@ -2083,11 +2083,11 @@ function escapeForRegex(text) {
 }
 exports.escapeForRegex = escapeForRegex;
 function regExpStartingWith(pattern, flags) {
-    return new RegExp(startsWith(pattern), flags);
+    return new RegExp('^' + pattern, flags);
 }
 exports.regExpStartingWith = regExpStartingWith;
 function regExpEndingWith(pattern, flags) {
-    return new RegExp(endsWith(pattern), flags);
+    return new RegExp(pattern + '$', flags);
 }
 exports.regExpEndingWith = regExpEndingWith;
 var PatternPieces_1 = require('./PatternPieces');
@@ -2095,12 +2095,6 @@ function solely(pattern) {
     return '^' + pattern + INLINE_WHITESPACE + '$';
 }
 exports.solely = solely;
-function startsWith(pattern) {
-    return '^' + pattern;
-}
-function endsWith(pattern) {
-    return pattern + '$';
-}
 var INLINE_WHITESPACE = all(PatternPieces_1.INLINE_WHITESPACE_CHAR);
 
 },{"./PatternPieces":39}],39:[function(require,module,exports){
