@@ -90,7 +90,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'div',
       node.lines.map(line => this.line(line)).join(''),
-      { [dataAttr('lines')]: null }
+      { [cssClass('lines')]: null }
     )
   }
 
@@ -139,11 +139,11 @@ export class HtmlWriter extends Writer {
   }
 
   protected action(node: ActionNode): string {
-    return this.htmlElement('span', node.children, { [dataAttr('action')]: null })
+    return this.htmlElement('span', node.children, { [cssClass('action')]: null })
   }
 
   protected spoiler(node: SpoilerNode): string {
-    return this.htmlElement('span', node.children, { [dataAttr('spoiler')]: null })
+    return this.htmlElement('span', node.children, { [cssClass('spoiler')]: null })
   }
 
   protected footnoteReference(node: FootnoteNode): string {
@@ -153,7 +153,7 @@ export class HtmlWriter extends Writer {
       'sup',
       [innerLinkNode], {
         id: this.footnoteReferenceId(node.referenceNumber),
-        [dataAttr('footnote-reference')]: null
+        [cssClass('footnote-reference')]: null
       })
   }
 
@@ -161,7 +161,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)).join(''),
-      { [dataAttr('footnotes')]: null })
+      { [cssClass('footnotes')]: null })
   }
 
   protected link(node: LinkNode): string {
@@ -197,7 +197,7 @@ export class HtmlWriter extends Writer {
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, dataAttributeName: string): string {
-    return this.htmlElement('span', bracketed.children, { [dataAttr(dataAttributeName)]: null })
+    return this.htmlElement('span', bracketed.children, { [cssClass(dataAttributeName)]: null })
   }
 
   private unorderedListItem(listItem: UnorderedListItem): string {
@@ -316,6 +316,6 @@ function internalUrl(id: string): string {
   return '#' + id
 }
 
-function dataAttr(name: string): string {
-  return 'data-up-' + name
+function cssClass(name: string): string {
+  return `class="up-${name}"`
 }

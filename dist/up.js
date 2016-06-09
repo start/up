@@ -2969,7 +2969,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
-        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), (_a = {}, _a[dataAttr('lines')] = null, _a));
+        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), (_a = {}, _a[cssClass('lines')] = null, _a));
         var _a;
     };
     HtmlWriter.prototype.codeBlock = function (node) {
@@ -3006,11 +3006,11 @@ var HtmlWriter = (function (_super) {
         return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.action = function (node) {
-        return this.htmlElement('span', node.children, (_a = {}, _a[dataAttr('action')] = null, _a));
+        return this.htmlElement('span', node.children, (_a = {}, _a[cssClass('action')] = null, _a));
         var _a;
     };
     HtmlWriter.prototype.spoiler = function (node) {
-        return this.htmlElement('span', node.children, (_a = {}, _a[dataAttr('spoiler')] = null, _a));
+        return this.htmlElement('span', node.children, (_a = {}, _a[cssClass('spoiler')] = null, _a));
         var _a;
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
@@ -3018,14 +3018,14 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('sup', [innerLinkNode], (_a = {
                 id: this.footnoteReferenceId(node.referenceNumber)
             },
-            _a[dataAttr('footnote-reference')] = null,
+            _a[cssClass('footnote-reference')] = null,
             _a
         ));
         var _a;
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), (_a = {}, _a[dataAttr('footnotes')] = null, _a));
+        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), (_a = {}, _a[cssClass('footnotes')] = null, _a));
         var _a;
     };
     HtmlWriter.prototype.link = function (node) {
@@ -3053,7 +3053,7 @@ var HtmlWriter = (function (_super) {
         return node.text;
     };
     HtmlWriter.prototype.bracketed = function (bracketed, dataAttributeName) {
-        return this.htmlElement('span', bracketed.children, (_a = {}, _a[dataAttr(dataAttributeName)] = null, _a));
+        return this.htmlElement('span', bracketed.children, (_a = {}, _a[cssClass(dataAttributeName)] = null, _a));
         var _a;
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
@@ -3135,8 +3135,8 @@ function htmlAttrs(attrs) {
 function internalUrl(id) {
     return '#' + id;
 }
-function dataAttr(name) {
-    return 'data-up-' + name;
+function cssClass(name) {
+    return "class=\"up-" + name + "\"";
 }
 
 },{"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/OrderedListOrder":64,"../SyntaxNodes/PlainTextNode":68,"./Writer":83}],83:[function(require,module,exports){
