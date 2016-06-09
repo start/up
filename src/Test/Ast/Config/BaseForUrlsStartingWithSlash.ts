@@ -45,7 +45,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new AudioNode('Chrono Cross logo', 'ftp://example.com/radical dreamers.mp3')
+        new AudioNode('Chrono Cross ending theme', 'ftp://example.com/radical dreamers.mp3')
       ])
     )
   })
@@ -69,7 +69,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'ftp://example.comw/iki/Blue_Sky')
+          ], 'ftp://example.com/wiki/Blue_Sky')
         ])
       ])
     )
