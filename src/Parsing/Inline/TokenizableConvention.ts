@@ -1,8 +1,8 @@
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { OnConventionClose } from './OnConventionClose'
 import { TokenizerContext } from './TokenizerContext'
 import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
+
 
 export interface TokenizableConvention {
   onlyOpenIfDirectlyFollowing?: TokenKind[]
@@ -22,12 +22,15 @@ export interface TokenizableConvention {
   onCloseFailIfCannotTranformInto?: TokenizableConvention[]
   onCloseFlushBufferTo?: TokenKind
   
-  onClose?: OnConventionClose
-
-  resolveWhenLeftUnclosed?: (context: TokenizerContext) => void
+  onClose?: OnConventionEvent
+  resolveWhenLeftUnclosed?: OnConventionEvent
 }
 
 
 interface PerformConventionSpecificTasks {
   (): void
+}
+
+interface OnConventionEvent {
+  (context: TokenizerContext): void
 }
