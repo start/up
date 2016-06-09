@@ -45,9 +45,5 @@ export function regExpEndingWith(pattern: string, flags?: string): RegExp {
 import { INLINE_WHITESPACE_CHAR } from './PatternPieces'
 
 export function solely(pattern: string) {
-  return '^' + pattern + INLINE_WHITESPACE + '$'
+  return '^' + pattern + all(INLINE_WHITESPACE_CHAR) + '$'
 }
-
-
-const INLINE_WHITESPACE =
-  all(INLINE_WHITESPACE_CHAR)

@@ -2084,10 +2084,9 @@ function regExpEndingWith(pattern, flags) {
 exports.regExpEndingWith = regExpEndingWith;
 var PatternPieces_1 = require('./PatternPieces');
 function solely(pattern) {
-    return '^' + pattern + INLINE_WHITESPACE + '$';
+    return '^' + pattern + all(PatternPieces_1.INLINE_WHITESPACE_CHAR) + '$';
 }
 exports.solely = solely;
-var INLINE_WHITESPACE = all(PatternPieces_1.INLINE_WHITESPACE_CHAR);
 
 },{"./PatternPieces":39}],39:[function(require,module,exports){
 "use strict";
