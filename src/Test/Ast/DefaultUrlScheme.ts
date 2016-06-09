@@ -16,49 +16,49 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 describe('The default URL scheme ("https://" unless changed via config setting)', () => {
   it('is prefixed to schemeless link URLs', () => {
-    const text = '[Chrono Cross](wiki/Chrono_Chross)'
+    const text = '[Chrono Cross](localhost/Chrono_Chross)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'https://example.com/wiki/Chrono_Chross')
+        ], 'https://localhost/wiki/Chrono_Chross')
       ])
     )
   })
 
   it('is prefixed to schemeless image URLs', () => {
-    const text = '[image: Chrono Cross logo](cc-logo.png)'
+    const text = '[image: Chrono Cross logo](prod-web-2/cc-logo.png)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://example.com/cc-logo.png')
+        new ImageNode('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
       ])
     )
   })
 
   it('is prefixed to schemeless audio URLs', () => {
-    const text = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
+    const text = '[audio: Chrono Cross ending theme](prod-web-2/radical dreamers.mp3)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://example.com/radical dreamers.mp3')
+        new ImageNode('Chrono Cross logo', 'https://prod-web-2/radical dreamers.mp3')
       ])
     )
   })
 
   it('is prefixed to schemeless video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic](radical dreamers.mp3)'
+    const text = '[video: Chrono Cross ending cinematic](prod-web-2/radical dreamers.mp3)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'https://example.com/radical dreamers.mp3')
+        new ImageNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
       ])
     )
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
-    const text = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
+    const text = 'Walter White produces [SPOILER: Blue Sky meth](localhost/Blue_Sky)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
@@ -66,19 +66,19 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'http://example,com/wiki/Blue_Sky')
+          ], 'http://localhost/wiki/Blue_Sky')
         ])
       ])
     )
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.))(cereals/lucky-charms?show=nutrition) Never have."
+    const text = "I don't eat cereal. ((Well, I eat one.))(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I eat one.')
-      ], 'http://example.com/cereals/lucky-charms?show=nutrition')
+      ], 'http://prod-web-4/lucky-charms?show=nutrition')
     ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
