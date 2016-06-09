@@ -405,9 +405,9 @@ export class Tokenizer {
 
   private insertToken(
     args: {
-      context: TokenizerContext,
-      token: Token,
+      token: Token
       atIndex: number
+      context: TokenizerContext
     }): void {
     const { context, token, atIndex } = args
 
@@ -495,7 +495,7 @@ export class Tokenizer {
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
 
-      onClose: () => {
+      onClose: (context) => {
         const url = this.flushBuffer()
 
         const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
@@ -504,9 +504,15 @@ export class Tokenizer {
 
         // The last token is guaranteed to be a SpoilerEnd, or FootnoteEnd token.
         //
-        // We'll insert a link end token right before the end token, and we'll insert a link start token right after
-        // the corresponding start token.
-        const lastToken = last(this.tokens)
+        // We'll insert a link end token right before the original end token, and we'll insert a link start token
+        // right after the corresponding start token.
+
+        const indexOfOriginalEndToken = this.tokens.length - 1
+        this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken, context })
+	      
+        const originalStartToken = last(this.tokens).correspondsToToken
+        const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
+        this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken, context })
       }
     }))
   }
@@ -552,7 +558,7 @@ export class Tokenizer {
         const endToken = new Token({ kind: richConvention.endTokenKind })
         startToken.associateWith(endToken)
 
-        this.insertToken({ context, token: startToken, atIndex: context.initialTokenIndex })
+        this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context })
         this.tokens.push(endToken)
       }
     }

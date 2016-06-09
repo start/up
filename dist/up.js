@@ -1034,12 +1034,16 @@ var Tokenizer = (function () {
             ],
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
-            onClose: function () {
+            onClose: function (context) {
                 var url = _this.flushBuffer();
                 var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });
                 var linkStartToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.startTokenKind });
                 linkStartToken.associateWith(linkEndToken);
-                var lastToken = CollectionHelpers_1.last(_this.tokens);
+                var indexOfOriginalEndToken = _this.tokens.length - 1;
+                _this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken, context: context });
+                var originalStartToken = CollectionHelpers_1.last(_this.tokens).correspondsToToken;
+                var indexAfterOriginalStartToken = _this.tokens.indexOf(originalStartToken) + 1;
+                _this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken, context: context });
             }
         }); });
     };
@@ -1067,7 +1071,7 @@ var Tokenizer = (function () {
                 var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
                 var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
                 startToken.associateWith(endToken);
-                _this.insertToken({ context: context, token: startToken, atIndex: context.initialTokenIndex });
+                _this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context: context });
                 _this.tokens.push(endToken);
             }
         };
