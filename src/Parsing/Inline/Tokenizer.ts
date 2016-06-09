@@ -36,14 +36,30 @@ export class Tokenizer {
   // `failedConventionTracker`.
   private failedConventionTracker: FailedConventionTracker = new FailedConventionTracker()
 
-
-  // Most of our conventions are thrown in this collection. We try to open these conventions in order.
+  // Most of our conventions are thrown in this collection. We try to open these conventions in order. The
+  // conventions not included in this collection are:
+  //
+  // 1. Raw bracket conventions (explained below)
+  // 2. Media URL conventions (explained below)
   private conventions: TokenizableConvention[] = []
+
+  // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
+  // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
+  private rawBracketConventions = this.getRawBracketConventions()
+
+  // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
+  // description reaches its final bracket, we try to convert that media description context into a media URL
+  // context.
+  //
+  // If that fails (either because there isn't an opening bracket for the media URL, or because there isn't a
+  // closing bracket), we backtrack to the beginning of the media convention and try something else. 
+  private mediaUrlConventions = this.getMediaUrlConventions()
 
   // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
   //
-  // Most of our conventions are just thrown in the `conventions` collection, but we keep a direct reference
-  // to the naked URL convention to help us determine whether another convention contains a naked URL.
+  // Most of our conventions are just thrown in the `conventions` collection (and this one is, too),
+  // but we keep a direct reference to the naked URL convention to help us determine whether another
+  // convention contains a naked URL.
   private nakedUrlConvention: TokenizableConvention = {
     startPattern: NAKED_URL_PROTOCOL_PATTERN,
     endPattern: NAKED_URL_TERMINATOR_PATTERN,
@@ -55,25 +71,13 @@ export class Tokenizer {
     },
 
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
-
-    doNotConsumeEndPattern: true,
+ 
+    leaveEndPatternForAnotherConventionToConsume: true,
     onCloseFlushBufferTo: TokenKind.NakedUrlAfterProtocolAndEnd,
     closeInnerContextsWhenClosing: true,
 
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
-
-  // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
-  // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
-  private rawBracketConventions = this.getRawBracketConventions()
-
-  // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
-  // description reaches its final bracket, we try to convert that media description context into a media URL
-  // context.
-  //
-  // If that fails (either because their isn't an opening bracket for the media URL, or because there isn't a
-  // closing bracket), we backtrack to the beginning of the media description. 
-  private mediaUrlConventions = this.getMediaUrlConventions()
 
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineConsumer(entireText)
@@ -254,7 +258,7 @@ export class Tokenizer {
       pattern: context.convention.endPattern,
 
       then: (match, isTouchingWordEnd, isTouchingWordStart, ...captures) => {
-        if (context.convention.doNotConsumeEndPattern) {
+        if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
           this.consumer.textIndex -= match.length
         }
       }

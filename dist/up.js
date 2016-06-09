@@ -714,6 +714,8 @@ var Tokenizer = (function () {
         this.openContexts = [];
         this.failedConventionTracker = new FailedConventionTracker_1.FailedConventionTracker();
         this.conventions = [];
+        this.rawBracketConventions = this.getRawBracketConventions();
+        this.mediaUrlConventions = this.getMediaUrlConventions();
         this.nakedUrlConvention = {
             startPattern: NAKED_URL_PROTOCOL_PATTERN,
             endPattern: NAKED_URL_TERMINATOR_PATTERN,
@@ -722,13 +724,11 @@ var Tokenizer = (function () {
                 _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlProtocolAndStart, value: urlProtocol });
             },
             insteadOfTryingToOpenUsualConventions: function () { return _this.bufferRawText(); },
-            doNotConsumeEndPattern: true,
+            leaveEndPatternForAnotherConventionToConsume: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterProtocolAndEnd,
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.rawBracketConventions = this.getRawBracketConventions();
-        this.mediaUrlConventions = this.getMediaUrlConventions();
         this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -856,7 +856,7 @@ var Tokenizer = (function () {
                 for (var _i = 3; _i < arguments.length; _i++) {
                     captures[_i - 3] = arguments[_i];
                 }
-                if (context.convention.doNotConsumeEndPattern) {
+                if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
                     _this.consumer.textIndex -= match.length;
                 }
             }

@@ -17,7 +17,7 @@ export interface TokenizableConvention {
   insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
   insteadOfTryingToOpenUsualConventions?: PerformConventionSpecificTasks
   
-  doNotConsumeEndPattern?: boolean
+  leaveEndPatternForAnotherConventionToConsume?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFailIfCannotTranformInto?: TokenizableConvention[]
   onCloseFlushBufferTo?: TokenKind
