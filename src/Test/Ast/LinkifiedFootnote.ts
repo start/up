@@ -61,3 +61,29 @@ describe('A footnote produced by doubly parenthesized, square bracketed, or curl
     })
   })
 })
+
+
+describe('A footnote directly followed by another footnote (with no spaces in between)', () => {
+  it("is not linkified", () => {
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))((Everyone does. It isn't a big deal.))"
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1),
+      new FootnoteNode([
+        new PlainTextNode("Everyone does. It isn't a big deal.")
+      ], 2)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnotes[0],
+          footnotes[1]
+        ]),
+        new FootnoteBlockNode(footnotes)
+      ]))
+  })
+})
