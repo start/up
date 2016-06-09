@@ -45,7 +45,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'my-app:radical dreamers.mp3')
+        new AudioNode('Chrono Cross logo', 'my-app:radical dreamers.mp3')
       ])
     )
   })
@@ -55,7 +55,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
+        new VideoNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
       ])
     )
   })

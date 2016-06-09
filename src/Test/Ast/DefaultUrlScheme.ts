@@ -42,7 +42,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://prod-web-2/radical dreamers.mp3')
+        new AudioNode('Chrono Cross logo', 'https://prod-web-2/radical dreamers.mp3')
       ])
     )
   })
@@ -52,7 +52,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
+        new VideoNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
       ])
     )
   })

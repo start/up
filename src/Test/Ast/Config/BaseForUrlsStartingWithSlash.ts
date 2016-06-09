@@ -45,7 +45,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'ftp://example.com/radical dreamers.mp3')
+        new AudioNode('Chrono Cross logo', 'ftp://example.com/radical dreamers.mp3')
       ])
     )
   })
@@ -55,7 +55,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
+        new VideoNode('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
       ])
     )
   })
