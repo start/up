@@ -427,6 +427,22 @@ export class Tokenizer {
     }
   }
 
+  private applyConfigSettingsToUrl(url: string): string {
+    if (!url) {
+      return url
+    }
+    
+    if (url[0] === '/') {
+      return this.config.settings.baseForUrlsStartingWithSlash + url
+    }
+
+    if (!URL_SCHEME_PATTERN.test(url)) {
+      return this.config.settings.defaultUrlScheme + url
+    }
+
+    return url
+  }
+
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -466,7 +482,7 @@ export class Tokenizer {
       closeInnerContextsWhenClosing: true,
 
       onClose: () => {
-        const url = this.flushBuffer()
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
         // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
         //
@@ -499,7 +515,7 @@ export class Tokenizer {
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
-        const url = this.flushBuffer()
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
         const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
         const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
@@ -601,7 +617,11 @@ export class Tokenizer {
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
-      onCloseFlushBufferTo: TokenKind.MediaUrlAndEnd
+      
+      onClose: () => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        this.appendNewToken({ kind: TokenKind.MediaUrlAndEnd, value: url })
+      }
     }))
   }
 

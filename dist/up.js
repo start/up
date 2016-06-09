@@ -974,6 +974,18 @@ var Tokenizer = (function () {
             this.flushBufferToTokenOfKind(TokenKind_1.TokenKind.PlainText);
         }
     };
+    Tokenizer.prototype.applyConfigSettingsToUrl = function (url) {
+        if (!url) {
+            return url;
+        }
+        if (url[0] === '/') {
+            return this.config.settings.baseForUrlsStartingWithSlash + url;
+        }
+        if (!URL_SCHEME_PATTERN.test(url)) {
+            return this.config.settings.defaultUrlScheme + url;
+        }
+        return url;
+    };
     Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
@@ -1009,7 +1021,7 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function () {
-                var url = _this.flushBuffer();
+                var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 var originalEndToken = CollectionHelpers_1.last(_this.tokens);
                 originalEndToken.value = url;
                 originalEndToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
@@ -1029,7 +1041,7 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
-                var url = _this.flushBuffer();
+                var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });
                 var linkStartToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.startTokenKind });
                 linkStartToken.associateWith(linkEndToken);
@@ -1102,7 +1114,10 @@ var Tokenizer = (function () {
             flushBufferToPlainTextTokenBeforeOpening: true,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
-            onCloseFlushBufferTo: TokenKind_1.TokenKind.MediaUrlAndEnd
+            onClose: function () {
+                var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
+                _this.appendNewToken({ kind: TokenKind_1.TokenKind.MediaUrlAndEnd, value: url });
+            }
         }); });
     };
     Tokenizer.prototype.getRawBracketConventions = function () {
