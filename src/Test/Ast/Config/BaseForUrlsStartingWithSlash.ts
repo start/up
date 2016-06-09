@@ -13,55 +13,55 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 const up = new Up({
-  defaultUrlScheme: 'my-app:'
+  baseForUrlsStartingWithSlash: 'https://forum.com/post/10/'
 })
 
 
-describe('The "defaultUrlScheme" config setting', () => {
-  it('is prefixed to schemeless link URLs', () => {
-    const text = '[Chrono Cross](wiki/Chrono_Chross)'
+describe('The "baseForUrlsStartingWithSlash" config setting', () => {
+  it('is prefixed to link URLs that start with a slash', () => {
+    const text = '[Chrono Cross](/wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'my-app:wiki/Chrono_Chross')
+        ], 'https://forum.com/post/10/wiki/Chrono_Chross')
       ])
     )
   })
 
   it('is prefixed to schemeless image URLs', () => {
-    const text = '[image: Chrono Cross logo](cc-logo.png)'
+    const text = '[image: Chrono Cross logo](/cc-logo.png)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'my-app:cc-logo.png')
+        new ImageNode('Chrono Cross logo', 'https://forum.com/post/10/cc-logo.png')
       ])
     )
   })
 
   it('is prefixed to schemeless audio URLs', () => {
-    const text = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
+    const text = '[audio: Chrono Cross ending theme](/radical dreamers.mp3)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'my-app:radical dreamers.mp3')
+        new ImageNode('Chrono Cross logo', 'https://forum.com/post/10/radical dreamers.mp3')
       ])
     )
   })
 
   it('is prefixed to schemeless video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic][radical dreamers.webm]'
+    const text = '[video: Chrono Cross ending cinematic][/radical dreamers.webm]'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
+        new ImageNode('Chrono Cross ending cinematic', 'https://forum.com/post/10/radical dreamers.webm')
       ])
     )
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
-    const text = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
+    const text = 'Walter White produces [SPOILER: Blue Sky meth](/wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
@@ -69,7 +69,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'my-app:wiki/Blue_Sky')
+          ], 'https://forum.com/post/10/wiki/Blue_Sky')
         ])
       ])
     )
@@ -95,14 +95,26 @@ describe('The "defaultUrlScheme" config setting', () => {
       ]))
   })
 
-  it('is not prefixed to URLs with an explicit scheme', () => {
-    const text = '[Chrono Cross](their-app:localhost/wiki/Chrono_Chross)'
+  it('is not prefixed to schemeless URLs not starting with a slash (the default URL scheme is prefixed instead)', () => {
+    const text = '[Chrono Cross](localhost/wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'their-app:localhost/wiki/Chrono_Chross')
+        ], 'https://localhost/wiki/Chrono_Chross')
+      ])
+    )
+  })
+
+  it('is not prefixed to URLs that have a scheme (which by definition cannot start with a slash)', () => {
+    const text = '[Chrono Cross](my-app:localhost/wiki/Chrono_Chross)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], 'my-app:localhost/wiki/Chrono_Chross')
       ])
     )
   })
