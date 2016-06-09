@@ -25,7 +25,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'ftp://example.comwiki/Chrono_Chross')
+        ], 'ftp://example.com/wiki/Chrono_Chross')
       ])
     )
   })
@@ -35,7 +35,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'ftp://example.comcc-logo.png')
+        new ImageNode('Chrono Cross logo', 'ftp://example.com/cc-logo.png')
       ])
     )
   })
@@ -45,7 +45,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'ftp://example.comradical dreamers.mp3')
+        new ImageNode('Chrono Cross logo', 'ftp://example.com/radical dreamers.mp3')
       ])
     )
   })
@@ -55,7 +55,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'ftp://example.comradical dreamers.webm')
+        new ImageNode('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
       ])
     )
   })
@@ -69,7 +69,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'ftp://example.comwiki/Blue_Sky')
+          ], 'ftp://example.comw/iki/Blue_Sky')
         ])
       ])
     )
@@ -81,7 +81,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I eat one.')
-      ], 'ftp://example.comcereals/lucky-charms?show=nutrition')
+      ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
     ], 1)
 
     expect(Up.toAst(text)).to.be.eql(

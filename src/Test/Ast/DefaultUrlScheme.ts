@@ -144,7 +144,7 @@ describe('A URL not starting with a slash, but with a slash before its first col
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], ' https://wiki/chrono-cross:the-game')
+        ], 'https://wiki/chrono-cross:the-game')
       ])
     )
   })
@@ -159,7 +159,7 @@ describe('A URL with an underscore before its first colon', () => {
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], ' https://admin:123abc@localhost/wiki/chrono-cross:the-game')
+        ], 'https://admin:123abc@localhost/wiki/chrono-cross:the-game')
       ])
     )
   })
@@ -174,7 +174,7 @@ describe('A URL starting with a number but otherwise looking like it has a schem
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], ' https://4wiki:wiki/Chrono_Chross')
+        ], 'https://4wiki:wiki/Chrono_Chross')
       ])
     )
   })
@@ -189,7 +189,7 @@ describe('A URL with no colon (and not starting with a slash)', () => {
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], ' https://localhost/wiki/ChronoChross:TheGame')
+        ], 'https://localhost/wiki/ChronoChross:TheGame')
       ])
     )
   })
