@@ -276,6 +276,14 @@ export class HtmlWriter extends Writer {
       (html, child) => html + this.write(child),
       '')
   }
+
+  private footnoteId(referenceNumber: number): string {
+    return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber)
+  }
+
+  private footnoteReferenceId(referenceNumber: number): string {
+    return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber)
+  }
 }
 
 

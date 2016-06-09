@@ -37,11 +37,47 @@ import { UpConfig } from '../UpConfig'
 
 
 export abstract class Writer {
-
-  constructor(private config: UpConfig) { }
+  constructor(protected config: UpConfig) { }
 
   write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
+  }
+
+  protected abstract document(node: DocumentNode): string
+  protected abstract blockquote(node: BlockquoteNode): string
+  protected abstract unorderedList(node: UnorderedListNode): string
+  protected abstract orderedList(node: OrderedListNode): string
+  protected abstract descriptionList(node: DescriptionListNode): string
+  protected abstract lineBlock(node: LineBlockNode): string
+  protected abstract codeBlock(node: CodeBlockNode): string
+  protected abstract paragraph(node: ParagraphNode): string
+  protected abstract heading(node: HeadingNode): string
+  protected abstract sectionSeparator(node: SectionSeparatorNode): string
+  protected abstract emphasis(node: EmphasisNode): string
+  protected abstract stress(node: StressNode): string
+  protected abstract inlineCode(node: InlineCodeNode): string
+  protected abstract revisionInsertion(node: RevisionInsertionNode): string
+  protected abstract revisionDeletion(node: RevisionDeletionNode): string
+  protected abstract parenthesized(node: ParenthesizedNode): string
+  protected abstract squareBracketed(node: SquareBracketedNode): string
+  protected abstract action(node: ActionNode): string
+  protected abstract spoiler(node: SpoilerNode): string
+  protected abstract footnoteReference(node: FootnoteNode): string
+  protected abstract footnoteBlock(node: FootnoteBlockNode): string
+  protected abstract link(node: LinkNode): string
+  protected abstract image(node: ImageNode): string
+  protected abstract audio(node: AudioNode): string
+  protected abstract video(node: VideoNode): string
+  protected abstract plainText(node: PlainTextNode): string
+
+  protected getId(...parts: any[]): string {
+    const rawId =
+      [this.config.settings.documentName].concat(parts).join(' ')
+
+    return (
+      rawId
+        .trim()
+        .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter))
   }
 
   private dispatchWrite(node: SyntaxNode): string {
@@ -153,50 +189,5 @@ export abstract class Writer {
     }
 
     throw new Error("Unrecognized syntax node")
-  }
-
-  protected abstract document(node: DocumentNode): string
-  protected abstract blockquote(node: BlockquoteNode): string
-  protected abstract unorderedList(node: UnorderedListNode): string
-  protected abstract orderedList(node: OrderedListNode): string
-  protected abstract descriptionList(node: DescriptionListNode): string
-  protected abstract lineBlock(node: LineBlockNode): string
-  protected abstract codeBlock(node: CodeBlockNode): string
-  protected abstract paragraph(node: ParagraphNode): string
-  protected abstract heading(node: HeadingNode): string
-  protected abstract sectionSeparator(node: SectionSeparatorNode): string
-  protected abstract emphasis(node: EmphasisNode): string
-  protected abstract stress(node: StressNode): string
-  protected abstract inlineCode(node: InlineCodeNode): string
-  protected abstract revisionInsertion(node: RevisionInsertionNode): string
-  protected abstract revisionDeletion(node: RevisionDeletionNode): string
-  protected abstract parenthesized(node: ParenthesizedNode): string
-  protected abstract squareBracketed(node: SquareBracketedNode): string
-  protected abstract action(node: ActionNode): string
-  protected abstract spoiler(node: SpoilerNode): string
-  protected abstract footnoteReference(node: FootnoteNode): string
-  protected abstract footnoteBlock(node: FootnoteBlockNode): string
-  protected abstract link(node: LinkNode): string
-  protected abstract image(node: ImageNode): string
-  protected abstract audio(node: AudioNode): string
-  protected abstract video(node: VideoNode): string
-  protected abstract plainText(node: PlainTextNode): string
-
-  protected footnoteId(referenceNumber: number): string {
-    return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber)
-  }
-
-  protected footnoteReferenceId(referenceNumber: number): string {
-    return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber)
-  }
-
-  private getId(...parts: any[]): string {
-    const rawId =
-      [this.config.settings.documentName].concat(parts).join(' ')
-
-    return (
-      rawId
-        .trim()
-        .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter))
   }
 }

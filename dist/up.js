@@ -3104,6 +3104,12 @@ var HtmlWriter = (function (_super) {
         var _this = this;
         return nodes.reduce(function (html, child) { return html + _this.write(child); }, '');
     };
+    HtmlWriter.prototype.footnoteId = function (referenceNumber) {
+        return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber);
+    };
+    HtmlWriter.prototype.footnoteReferenceId = function (referenceNumber) {
+        return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber);
+    };
     return HtmlWriter;
 }(Writer_1.Writer));
 exports.HtmlWriter = HtmlWriter;
@@ -3167,6 +3173,16 @@ var Writer = (function () {
     }
     Writer.prototype.write = function (node) {
         return this.dispatchWrite(node);
+    };
+    Writer.prototype.getId = function () {
+        var parts = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            parts[_i - 0] = arguments[_i];
+        }
+        var rawId = [this.config.settings.documentName].concat(parts).join(' ');
+        return (rawId
+            .trim()
+            .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter));
     };
     Writer.prototype.dispatchWrite = function (node) {
         if (node instanceof DocumentNode_1.DocumentNode) {
@@ -3248,22 +3264,6 @@ var Writer = (function () {
             return this.plainText(node);
         }
         throw new Error("Unrecognized syntax node");
-    };
-    Writer.prototype.footnoteId = function (referenceNumber) {
-        return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber);
-    };
-    Writer.prototype.footnoteReferenceId = function (referenceNumber) {
-        return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber);
-    };
-    Writer.prototype.getId = function () {
-        var parts = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            parts[_i - 0] = arguments[_i];
-        }
-        var rawId = [this.config.settings.documentName].concat(parts).join(' ');
-        return (rawId
-            .trim()
-            .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter));
     };
     return Writer;
 }());
