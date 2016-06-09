@@ -3249,6 +3249,12 @@ var Writer = (function () {
         }
         throw new Error("Unrecognized syntax node");
     };
+    Writer.prototype.footnoteId = function (referenceNumber) {
+        return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber);
+    };
+    Writer.prototype.footnoteReferenceId = function (referenceNumber) {
+        return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber);
+    };
     Writer.prototype.getId = function () {
         var parts = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -3258,12 +3264,6 @@ var Writer = (function () {
         return (rawId
             .trim()
             .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter));
-    };
-    Writer.prototype.footnoteId = function (referenceNumber) {
-        return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber.toString());
-    };
-    Writer.prototype.footnoteReferenceId = function (referenceNumber) {
-        return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber.toString());
     };
     return Writer;
 }());

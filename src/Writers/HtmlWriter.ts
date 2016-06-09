@@ -45,22 +45,22 @@ export class HtmlWriter extends Writer {
     super(config)
   }
 
-  document(node: DocumentNode): string {
+  protected document(node: DocumentNode): string {
     return this.htmlElements(node.children)
   }
 
-  blockquote(node: BlockquoteNode): string {
+  protected blockquote(node: BlockquoteNode): string {
     return this.htmlElement('blockquote', node.children)
   }
 
-  unorderedList(node: UnorderedListNode): string {
+  protected unorderedList(node: UnorderedListNode): string {
     return htmlElement(
       'ul',
       node.listItems.map((listItem) => this.unorderedListItem(listItem)).join('')
     )
   }
 
-  orderedList(node: OrderedListNode): string {
+  protected orderedList(node: OrderedListNode): string {
     const attrs: { start?: number, reversed?: any } = {}
 
     const start = node.start()
@@ -79,14 +79,14 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  descriptionList(node: DescriptionListNode): string {
+  protected descriptionList(node: DescriptionListNode): string {
     return htmlElement(
       'dl',
       node.listItems.map((listItem) => this.descriptionListItem(listItem)).join('')
     )
   }
 
-  lineBlock(node: LineBlockNode): string {
+  protected lineBlock(node: LineBlockNode): string {
     return htmlElement(
       'div',
       node.lines.map((line) => this.line(line)).join(''),
@@ -94,59 +94,59 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  codeBlock(node: CodeBlockNode): string {
+  protected codeBlock(node: CodeBlockNode): string {
     return htmlElement('pre', htmlElement('code', node.text))
   }
 
-  paragraph(node: ParagraphNode): string {
+  protected paragraph(node: ParagraphNode): string {
     return this.htmlElement('p', node.children)
   }
 
-  heading(node: HeadingNode): string {
+  protected heading(node: HeadingNode): string {
     return this.htmlElement('h' + Math.min(6, node.level), node.children)
   }
 
-  sectionSeparator(node: SectionSeparatorNode): string {
+  protected sectionSeparator(node: SectionSeparatorNode): string {
     return htmlElementWithNoEndTag('hr')
   }
 
-  emphasis(node: EmphasisNode): string {
+  protected emphasis(node: EmphasisNode): string {
     return this.htmlElement('em', node.children)
   }
 
-  stress(node: StressNode): string {
+  protected stress(node: StressNode): string {
     return this.htmlElement('strong', node.children)
   }
 
-  inlineCode(node: InlineCodeNode): string {
+  protected inlineCode(node: InlineCodeNode): string {
     return htmlElement('code', node.text)
   }
 
-  revisionInsertion(node: RevisionInsertionNode): string {
+  protected revisionInsertion(node: RevisionInsertionNode): string {
     return this.htmlElement('ins', node.children)
   }
 
-  revisionDeletion(node: RevisionDeletionNode): string {
+  protected revisionDeletion(node: RevisionDeletionNode): string {
     return this.htmlElement('del', node.children)
   }
 
-  parenthesized(node: ParenthesizedNode): string {
+  protected parenthesized(node: ParenthesizedNode): string {
     return this.bracketed(node, 'parenthesized')
   }
 
-  squareBracketed(node: SquareBracketedNode): string {
+  protected squareBracketed(node: SquareBracketedNode): string {
     return this.bracketed(node, 'square-bracketed')
   }
 
-  action(node: ActionNode): string {
+  protected action(node: ActionNode): string {
     return this.htmlElement('span', node.children, { [dataAttr('action')]: null })
   }
 
-  spoiler(node: SpoilerNode): string {
+  protected spoiler(node: SpoilerNode): string {
     return this.htmlElement('span', node.children, { [dataAttr('spoiler')]: null })
   }
 
-  footnoteReference(node: FootnoteNode): string {
+  protected footnoteReference(node: FootnoteNode): string {
     const innerLinkNode = this.footnoteReferenceInnerLink(node)
 
     return this.htmlElement(
@@ -157,14 +157,14 @@ export class HtmlWriter extends Writer {
       })
   }
 
-  footnoteBlock(node: FootnoteBlockNode): string {
+  protected footnoteBlock(node: FootnoteBlockNode): string {
     return htmlElement(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)).join(''),
       { [dataAttr('footnotes')]: null })
   }
 
-  link(node: LinkNode): string {
+  protected link(node: LinkNode): string {
     if (this.isInsideLink) {
       return node.children.map(child => this.write(child)).join('')
     }
@@ -176,23 +176,23 @@ export class HtmlWriter extends Writer {
     return html
   }
 
-  image(node: ImageNode): string {
+  protected image(node: ImageNode): string {
     return htmlElementWithNoEndTag('img', { src: node.url, alt: node.description, title: node.description })
   }
 
-  audio(node: AudioNode): string {
+  protected audio(node: AudioNode): string {
     const { description, url } = node
 
     return this.htmlElement('audio', this.mediaFallback(description, url), { src: url, title: description })
   }
 
-  video(node: VideoNode): string {
+  protected video(node: VideoNode): string {
     const { description, url } = node
 
     return this.htmlElement('video', this.mediaFallback(description, url), { src: url, title: description })
   }
 
-  plainText(node: PlainTextNode): string {
+  protected plainText(node: PlainTextNode): string {
     return node.text
   }
 
