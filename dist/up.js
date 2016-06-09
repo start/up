@@ -2117,7 +2117,7 @@ var WHITESPACE_CHAR = '\\s';
 exports.WHITESPACE_CHAR = WHITESPACE_CHAR;
 var ANY_WHITESPACE = PatternHelpers_1.all('\\s');
 exports.ANY_WHITESPACE = ANY_WHITESPACE;
-var INLINE_WHITESPACE = PatternHelpers_1.all('[^\\S\\n]');
+var INLINE_WHITESPACE = PatternHelpers_1.all(INLINE_WHITESPACE_CHAR);
 exports.INLINE_WHITESPACE = INLINE_WHITESPACE;
 var LINE_BREAK = '\n';
 exports.LINE_BREAK = LINE_BREAK;
@@ -2128,8 +2128,6 @@ var INTEGER = '\\d+';
 exports.INTEGER = INTEGER;
 var STREAK = PatternHelpers_1.solely(PatternHelpers_1.atLeast(3, STREAK_CHAR + ANY_WHITESPACE));
 exports.STREAK = STREAK;
-var NON_WHITESPACE_CHAR = '\\S';
-exports.NON_WHITESPACE_CHAR = NON_WHITESPACE_CHAR;
 var LETTER = '[a-zA-Z]';
 exports.LETTER = LETTER;
 var DIGIT = '\\d';
@@ -2138,13 +2136,12 @@ exports.DIGIT = DIGIT;
 },{"./PatternHelpers":38}],40:[function(require,module,exports){
 "use strict";
 var PatternHelpers_1 = require('./PatternHelpers');
-var PatternPieces_1 = require('./PatternPieces');
-var NON_BLANK_PATTERN = new RegExp(PatternPieces_1.NON_WHITESPACE_CHAR);
-exports.NON_BLANK_PATTERN = NON_BLANK_PATTERN;
 var BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.BLANK_PATTERN = BLANK_PATTERN;
+var NON_BLANK_PATTERN = /\S/;
+exports.NON_BLANK_PATTERN = NON_BLANK_PATTERN;
 
-},{"./PatternHelpers":38,"./PatternPieces":39}],41:[function(require,module,exports){
+},{"./PatternHelpers":38}],41:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];

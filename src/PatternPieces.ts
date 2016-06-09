@@ -11,7 +11,7 @@ const ANY_WHITESPACE =
   all('\\s')
 
 const INLINE_WHITESPACE =
-  all('[^\\S\\n]')
+  all(INLINE_WHITESPACE_CHAR)
 
 const LINE_BREAK =
   '\n'
@@ -28,9 +28,6 @@ const INTEGER =
 const STREAK =
   solely(atLeast(3, STREAK_CHAR + ANY_WHITESPACE))
 
-const NON_WHITESPACE_CHAR =
-  '\\S'
-
 const LETTER =
   '[a-zA-Z]'
 
@@ -42,7 +39,6 @@ export {
   INLINE_WHITESPACE_CHAR,
   INLINE_WHITESPACE,
   WHITESPACE_CHAR,
-  NON_WHITESPACE_CHAR,
   INDENT,
   ANY_WHITESPACE,
   STREAK,
