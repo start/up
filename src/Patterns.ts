@@ -1,9 +1,16 @@
-import { solely, either, atLeast, streakOf, regExpStartingWith } from './PatternHelpers'
+import { solely, either, streakOf, regExpStartingWith } from './PatternHelpers'
 import { ANY_WHITESPACE } from './PatternPieces'
 
 
 const DIVIDER_STREAK_CHAR =
   either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_')
+
+const INDENT =
+  either('  ', '\t')
+
+
+export const INDENTED_PATTERN =
+  regExpStartingWith(INDENT)
 
 export const DIVIDER_STREAK_PATTERN = new RegExp(
   streakOf(DIVIDER_STREAK_CHAR + ANY_WHITESPACE))
@@ -11,14 +18,5 @@ export const DIVIDER_STREAK_PATTERN = new RegExp(
 export const BLANK_PATTERN = new RegExp(
   solely(''))
 
-// We don't need to check for the start or end of the string, because if a line
-// contains a non-whitespace character anywhere in it, it's not blank.
 export const NON_BLANK_PATTERN =
   /\S/
-
-const INDENT =
-  either('  ', '\t')
-
-export const INDENTED_PATTERN =
-  regExpStartingWith(INDENT)
-  

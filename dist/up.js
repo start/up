@@ -2091,11 +2091,11 @@ exports.DIGIT = '\\d';
 var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
 var DIVIDER_STREAK_CHAR = PatternHelpers_1.either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
+var INDENT = PatternHelpers_1.either('  ', '\t');
+exports.INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
 exports.DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
 exports.BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.NON_BLANK_PATTERN = /\S/;
-var INDENT = PatternHelpers_1.either('  ', '\t');
-exports.INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
 
 },{"./PatternHelpers":38,"./PatternPieces":39}],41:[function(require,module,exports){
 "use strict";
