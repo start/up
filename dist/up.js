@@ -736,18 +736,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.configureConventions = function () {
         var _this = this;
         (_a = this.conventions).push.apply(_a, this.getFootnoteConventions());
-        (_b = this.conventions).push.apply(_b, [
-            {
-                richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
-                startPattern: '~~',
-                endPattern: '~~'
-            }, {
-                richConvention: RichConventions_1.REVISION_INSERTION_CONVENTION,
-                startPattern: Patterns_1.escapeForRegex('++'),
-                endPattern: Patterns_1.escapeForRegex('++')
-            }
-        ].map(function (args) { return _this.getRichSandwichConvention(args); }));
-        (_c = this.conventions).push.apply(_c, this.getConventionsForRichBracketedTerm({
+        (_b = this.conventions).push.apply(_b, this.getConventionsForRichBracketedTerm({
             richConvention: RichConventions_1.SPOILER_CONVENTION,
             nonLocalizedTerm: 'spoiler'
         }));
@@ -758,10 +747,10 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
-        (_d = this.conventions).push.apply(_d, this.getLinkUrlConventions());
-        (_e = this.conventions).push.apply(_e, this.getMediaDescriptionConventions());
-        (_f = this.conventions).push.apply(_f, this.getLinkifyingUrlConventions());
-        (_g = this.conventions).push.apply(_g, [
+        (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
+        (_d = this.conventions).push.apply(_d, this.getMediaDescriptionConventions());
+        (_e = this.conventions).push.apply(_e, this.getLinkifyingUrlConventions());
+        (_f = this.conventions).push.apply(_f, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
@@ -774,6 +763,17 @@ var Tokenizer = (function () {
                 richConvention: RichConventions_1.ACTION_CONVENTION,
                 startPattern: CURLY_BRACKET.startPattern,
                 endPattern: CURLY_BRACKET.endPattern
+            }
+        ].map(function (args) { return _this.getRichSandwichConvention(args); }));
+        (_g = this.conventions).push.apply(_g, [
+            {
+                richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
+                startPattern: '~~',
+                endPattern: '~~'
+            }, {
+                richConvention: RichConventions_1.REVISION_INSERTION_CONVENTION,
+                startPattern: Patterns_1.escapeForRegex('++'),
+                endPattern: Patterns_1.escapeForRegex('++')
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);

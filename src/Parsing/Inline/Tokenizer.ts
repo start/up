@@ -90,18 +90,6 @@ export class Tokenizer {
     this.conventions.push(
       ...this.getFootnoteConventions())
 
-    this.conventions.push(...[
-      {
-        richConvention: REVISION_DELETION_CONVENTION,
-        startPattern: '~~',
-        endPattern: '~~'
-      }, {
-        richConvention: REVISION_INSERTION_CONVENTION,
-        startPattern: escapeForRegex('++'),
-        endPattern: escapeForRegex('++')
-      }
-    ].map(args => this.getRichSandwichConvention(args)))
-
     this.conventions.push(
       ...this.getConventionsForRichBracketedTerm({
         richConvention: SPOILER_CONVENTION,
@@ -126,8 +114,7 @@ export class Tokenizer {
       ...this.getMediaDescriptionConventions())
 
     this.conventions.push(
-      ...this.getLinkifyingUrlConventions()
-    )
+      ...this.getLinkifyingUrlConventions())
 
     this.conventions.push(...[
       {
@@ -145,7 +132,20 @@ export class Tokenizer {
       }
     ].map(args => this.getRichSandwichConvention(args)))
 
-    this.conventions.push(this.nakedUrlConvention)
+    this.conventions.push(...[
+      {
+        richConvention: REVISION_DELETION_CONVENTION,
+        startPattern: '~~',
+        endPattern: '~~'
+      }, {
+        richConvention: REVISION_INSERTION_CONVENTION,
+        startPattern: escapeForRegex('++'),
+        endPattern: escapeForRegex('++')
+      }
+    ].map(args => this.getRichSandwichConvention(args)))
+
+    this.conventions.push(
+      this.nakedUrlConvention)
   }
 
   private tokenize(): void {
