@@ -173,7 +173,7 @@ describe('A description list', () => {
 
 
 describe('A line block node', () => {
-  it('produces a div element with an empty data-up-lines attribute, containing a div element for each line', () => {
+  it('produces a div element with an "up-lines" class, containing a div element for each line', () => {
     const node = new LineBlockNode([
       new Line([
         new PlainTextNode('Hollow')
@@ -182,7 +182,7 @@ describe('A line block node', () => {
         new PlainTextNode('Fangs')
       ])
     ])
-    expect(Up.toHtml(node)).to.be.eql('<div data-up-lines><div>Hollow</div><div>Fangs</div></div>')
+    expect(Up.toHtml(node)).to.be.eql('<div class="up-lines"><div>Hollow</div><div>Fangs</div></div>')
   })
 })
 
@@ -320,25 +320,25 @@ describe('A revision deletion node', () => {
 
 
 describe('A parenthesized node', () => {
-  it('produces a span element with a data-up-parenthesized attribute', () => {
+  it('produces a span element with an "up-parenthesized" class', () => {
     const node = new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
-    expect(Up.toHtml(node)).to.be.eql('<span data-up-parenthesized>(Koopa Tropa)</span>')
+    expect(Up.toHtml(node)).to.be.eql('<span class="up-parenthesized">(Koopa Tropa)</span>')
   })
 })
 
 
 describe('A square bracketed node', () => {
-  it('produces a span element with a data-up-square-bracketed attribute', () => {
+  it('produces a span element with an "up-square-bracketed" class', () => {
     const node = new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
-    expect(Up.toHtml(node)).to.be.eql('<span data-up-square-bracketed>[Koopa Tropa]</span>')
+    expect(Up.toHtml(node)).to.be.eql('<span class="up-square-bracketed">[Koopa Tropa]</span>')
   })
 })
 
 
 describe('An action node', () => {
-  it('produces a span element with a data-up-action attribute', () => {
+  it('produces a span element with an "up-action" class', () => {
     const node = new ActionNode([new PlainTextNode('dies')])
-    expect(Up.toHtml(node)).to.be.eql('<span data-up-action>dies</span>')
+    expect(Up.toHtml(node)).to.be.eql('<span class="up-action">dies</span>')
   })
 })
 
@@ -352,17 +352,17 @@ describe('A link node', () => {
 
 
 describe('A footnote node', () => {
-  it("produces a sup element (with a data-up-footnote-reference attribute and an ID indicating its reference number), containing a link that contains the reference number and points to the footnote", () => {
+  it("produces a sup element (with an 'up-footnote-reference' class and an ID indicating its reference number), containing a link that contains the reference number and points to the footnote", () => {
     const node = new FootnoteNode([], 3)
-    expect(Up.toHtml(node)).to.be.eql('<sup id="footnote-reference-3" data-up-footnote-reference><a href="#footnote-3">3</a></sup>')
+    expect(Up.toHtml(node)).to.be.eql('<sup id="footnote-reference-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup>')
   })
 })
 
 
 describe('A footnote block node', () => {
-  it("produces a dl element with a data-up-footnotes attribute", () => {
+  it("produces a dl element with an 'up-footnotes' class", () => {
     const node = new FootnoteBlockNode([])
-    expect(Up.toHtml(node)).to.be.eql('<dl data-up-footnotes></dl>')
+    expect(Up.toHtml(node)).to.be.eql('<dl class="up-footnotes"></dl>')
   })
 })
 
@@ -380,7 +380,7 @@ describe("Each footnote in a footnote block", () => {
       ])
 
     const html =
-      '<dl data-up-footnotes>'
+      '<dl class="up-footnotes">'
       + '<dt id="footnote-2"><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
       + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
@@ -417,9 +417,9 @@ describe('A video node', () => {
 
 
 describe('A spoiler node', () => {
-  it('produces a span element with an empty data-up-spoiler attribute', () => {
+  it('produces a span element with an "up-spoiler" class', () => {
     const node = new SpoilerNode([new PlainTextNode('45.9%')])
-    expect(Up.toHtml(node)).to.be.eql('<span data-up-spoiler>45.9%</span>')
+    expect(Up.toHtml(node)).to.be.eql('<span class="up-spoiler">45.9%</span>')
   })
 })
 
