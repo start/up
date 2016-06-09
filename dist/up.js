@@ -2875,7 +2875,8 @@ function toHtml(textOrNode, config) {
 "use strict";
 var DEFAULT_CONFIG = {
     documentName: null,
-    relativeUrlBase: '',
+    defaultUrlScheme: 'https://',
+    baseForUrlsStartingWithSlash: '',
     i18n: {
         idWordDelimiter: '-',
         terms: {

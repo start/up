@@ -4,7 +4,8 @@ import { UpConfigSettings} from './UpConfigSettings'
 const DEFAULT_CONFIG: UpConfigSettings = {
   documentName: null,
 
-  relativeUrlBase: '',
+  defaultUrlScheme: 'https://',
+  baseForUrlsStartingWithSlash: '',  
   
   i18n: {
     idWordDelimiter: '-',

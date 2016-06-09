@@ -1,7 +1,8 @@
 export interface UpConfigSettings {
   documentName?: string
   
-  relativeUrlBase?: string
+  defaultUrlScheme?: string
+  baseForUrlsStartingWithSlash?: string
 
   i18n?: {
     idWordDelimiter?: string

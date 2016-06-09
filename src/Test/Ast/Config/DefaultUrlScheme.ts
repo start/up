@@ -12,13 +12,13 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
+const up = new Up({
+  defaultUrlScheme: 'https://example.com/'
+})
+
 
 describe('The "relativeUrlBase" config setting', () => {
-  const up = new Up({
-    'relativeUrlBase': 'https://example.com/'
-  })
-
-  it('is used as a prefix for relative link URLs', () => {
+  it('is prefixed to relative link URLs', () => {
     const text = '[Chrono Cross](wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -30,7 +30,7 @@ describe('The "relativeUrlBase" config setting', () => {
     )
   })
 
-  it('is used as a prefix for relative image URLs', () => {
+  it('is prefixed to relative image URLs', () => {
     const text = '[image: Chrono Cross logo](cc-logo.png)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -40,7 +40,7 @@ describe('The "relativeUrlBase" config setting', () => {
     )
   })
 
-  it('is used as a prefix for relative audio URLs', () => {
+  it('is prefixed to relative audio URLs', () => {
     const text = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -50,7 +50,7 @@ describe('The "relativeUrlBase" config setting', () => {
     )
   })
 
-  it('is used as a prefix for relative video URLs', () => {
+  it('is prefixed to relative video URLs', () => {
     const text = '[video: Chrono Cross ending cinematic][radical dreamers.mp3]'
 
     expect(up.toAst(text)).to.be.eql(
@@ -60,7 +60,7 @@ describe('The "relativeUrlBase" config setting', () => {
     )
   })
 
-  it('is used as a prefix for linkified spoiler URLs', () => {
+  it('is prefixed to linkified spoiler URLs', () => {
     const text = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -75,7 +75,7 @@ describe('The "relativeUrlBase" config setting', () => {
     )
   })
 
-  it("is used as a prefix for linkified footnote URLs", () => {
+  it("is prefixed to linkified footnote URLs", () => {
     const text = "I don't eat cereal. ((Well, I eat one.))[cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
