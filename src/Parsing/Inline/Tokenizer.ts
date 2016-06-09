@@ -183,7 +183,7 @@ export class Tokenizer {
 
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const openContext = this.openContexts[i]
-      const { convention } = openContext 
+      const { convention } = openContext
 
       if (this.shouldCloseContext(openContext)) {
 
@@ -203,7 +203,7 @@ export class Tokenizer {
         openContext.close()
 
         if (convention.onCloseFailIfCannotTranformInto) {
-          return this.tryToTransformConvention(i)
+          return this.tryToTransformConvention({ belongingToContextAtIndex: i })
         }
 
         this.openContexts.splice(i, 1)
@@ -240,7 +240,8 @@ export class Tokenizer {
     })
   }
 
-  private tryToTransformConvention(openContextIndex: number): boolean {
+  private tryToTransformConvention(args: { belongingToContextAtIndex: number }): boolean {
+    const openContextIndex = args.belongingToContextAtIndex
     const context = this.openContexts[openContextIndex]
 
     const couldTransform =

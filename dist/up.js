@@ -819,7 +819,7 @@ var Tokenizer = (function () {
                 }
                 openContext.close();
                 if (convention.onCloseFailIfCannotTranformInto) {
-                    return this.tryToTransformConvention(i);
+                    return this.tryToTransformConvention({ belongingToContextAtIndex: i });
                 }
                 this.openContexts.splice(i, 1);
                 if (convention.closeInnerContextsWhenClosing) {
@@ -851,8 +851,9 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.tryToTransformConvention = function (openContextIndex) {
+    Tokenizer.prototype.tryToTransformConvention = function (args) {
         var _this = this;
+        var openContextIndex = args.belongingToContextAtIndex;
         var context = this.openContexts[openContextIndex];
         var couldTransform = context.convention.onCloseFailIfCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
         if (!couldTransform) {
