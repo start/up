@@ -13,54 +13,54 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 const up = new Up({
-  defaultUrlScheme: 'https://example.com/'
+  defaultUrlScheme: 'my-app:'
 })
 
 
-describe('The "relativeUrlBase" config setting', () => {
-  it('is prefixed to relative link URLs', () => {
+describe('The "defaultUrlScheme" config setting', () => {
+  it('is prefixed to schemeless link URLs', () => {
     const text = '[Chrono Cross](wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'https://example.com/wiki/Chrono_Chross')
+        ], 'my-app:wiki/Chrono_Chross')
       ])
     )
   })
 
-  it('is prefixed to relative image URLs', () => {
+  it('is prefixed to schemeless image URLs', () => {
     const text = '[image: Chrono Cross logo](cc-logo.png)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://example.com/cc-logo.png')
+        new ImageNode('Chrono Cross logo', 'my-app:cc-logo.png')
       ])
     )
   })
 
-  it('is prefixed to relative audio URLs', () => {
+  it('is prefixed to schemeless audio URLs', () => {
     const text = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross logo', 'https://example.com/radical dreamers.mp3')
+        new ImageNode('Chrono Cross logo', 'my-app:radical dreamers.mp3')
       ])
     )
   })
 
-  it('is prefixed to relative video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic][radical dreamers.mp3]'
+  it('is prefixed to schemeless video URLs', () => {
+    const text = '[video: Chrono Cross ending cinematic][radical dreamers.webm]'
 
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ImageNode('Chrono Cross ending cinematic', 'https://example.com/radical dreamers.mp3')
+        new ImageNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
       ])
     )
   })
 
-  it('is prefixed to linkified spoiler URLs', () => {
+  it('is prefixed to schemeless linkified spoiler URLs', () => {
     const text = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -69,19 +69,19 @@ describe('The "relativeUrlBase" config setting', () => {
         new SpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
-          ], 'http://example,com/wiki/Blue_Sky')
+          ], 'my-app:wiki/Blue_Sky')
         ])
       ])
     )
   })
 
-  it("is prefixed to linkified footnote URLs", () => {
+  it("is prefixed to schemeless linkified footnote URLs", () => {
     const text = "I don't eat cereal. ((Well, I eat one.))[cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Well, I eat one.')
-      ], 'http://example.com/cereals/lucky-charms?show=nutrition')
+      ], 'http://cereals/lucky-charms?show=nutrition')
     ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -96,13 +96,13 @@ describe('The "relativeUrlBase" config setting', () => {
   })
 
   it('is not prefixed to URLs with an explicit scheme', () => {
-    const text = '[Chrono Cross](https://localhost/wiki/Chrono_Chross)'
+    const text = '[Chrono Cross](their-app:localhost/wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'https://localhost/wiki/Chrono_Chross')
+        ], 'their-app::localhost/wiki/Chrono_Chross')
       ])
     )
   })
