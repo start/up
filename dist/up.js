@@ -1011,10 +1011,10 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             onClose: function () {
                 var url = _this.flushBuffer();
-                var lastToken = CollectionHelpers_1.last(_this.tokens);
-                lastToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
-                lastToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
-                lastToken.value = url;
+                var originalEndToken = CollectionHelpers_1.last(_this.tokens);
+                originalEndToken.value = url;
+                originalEndToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
+                originalEndToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
             }
         }); });
     };

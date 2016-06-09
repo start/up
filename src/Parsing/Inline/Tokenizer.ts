@@ -458,11 +458,11 @@ export class Tokenizer {
         // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
         //
         // We'll replace that end token and its corresponding start token with link tokens.
-        const lastToken = last(this.tokens)
+        const originalEndToken = last(this.tokens)
+        originalEndToken.value = url
+        originalEndToken.kind = LINK_CONVENTION.endTokenKind
 
-        lastToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
-        lastToken.kind = LINK_CONVENTION.endTokenKind
-        lastToken.value = url
+        originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
       }
     }))
   }
