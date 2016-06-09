@@ -46,9 +46,6 @@ const INLINE_WHITESPACE =
 const LINE_BREAK =
   '\n'
 
-const BLANK =
-  solely('')
-
 const INDENT =
   either('  ', '\t')
 
@@ -72,8 +69,11 @@ const DIGIT =
 
 // We don't need to check for the start or end of the string, because if a line
 // contains a non-whitespace character anywhere in it, it's not blank.
-const NON_BLANK_PATTERN =
-  new RegExp(NON_WHITESPACE_CHAR)
+const NON_BLANK_PATTERN = new RegExp(
+  NON_WHITESPACE_CHAR)
+
+const BLANK_PATTERN = new RegExp(
+  solely(''))
 
 
 function escapeForRegex(text: string): string {
@@ -104,7 +104,7 @@ export {
   regExpStartingWith,
   regExpEndingWith,
   NON_BLANK_PATTERN,
-  BLANK,
+  BLANK_PATTERN,
   INLINE_WHITESPACE_CHAR,
   WHITESPACE_CHAR,
   NON_WHITESPACE_CHAR,

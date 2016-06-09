@@ -1589,7 +1589,7 @@ function getRemainingLinesOfListItem(args) {
     var lengthParsed = 0;
     while (!consumer.reachedEndOfText()) {
         var wasLineBlank = consumer.consumeLine({
-            pattern: BLANK_PATTERN,
+            pattern: Patterns_1.BLANK_PATTERN,
             then: function (line) { return lines.push(line); }
         });
         if (wasLineBlank) {
@@ -1621,7 +1621,6 @@ function getRemainingLinesOfListItem(args) {
     return true;
 }
 exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":38,"./LineConsumer":23}],27:[function(require,module,exports){
@@ -1672,7 +1671,7 @@ var Patterns_1 = require('../../Patterns');
 function parseBlankLineSeparation(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
     var countBlankLines = 0;
-    while (consumer.consumeLine({ pattern: BLANK_PATTERN })) {
+    while (consumer.consumeLine({ pattern: Patterns_1.BLANK_PATTERN })) {
         countBlankLines += 1;
     }
     if (!countBlankLines) {
@@ -1686,7 +1685,6 @@ function parseBlankLineSeparation(args) {
     return true;
 }
 exports.parseBlankLineSeparation = parseBlankLineSeparation;
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 
 },{"../../Patterns":38,"../../SyntaxNodes/SectionSeparatorNode":70,"./LineConsumer":23}],30:[function(require,module,exports){
 "use strict";
@@ -1780,7 +1778,7 @@ function parseDescriptionList(args) {
         var rawDescriptionLines = [];
         var hasDescription = consumer.consumeLine({
             pattern: INDENTED_PATTERN,
-            if: function (line) { return !BLANK_PATTERN.test(line); },
+            if: function (line) { return !Patterns_1.BLANK_PATTERN.test(line); },
             then: function (line) { return rawDescriptionLines.push(line.replace(INDENTED_PATTERN, '')); }
         });
         if (!hasDescription) {
@@ -1815,7 +1813,6 @@ function parseDescriptionList(args) {
     return true;
 }
 exports.parseDescriptionList = parseDescriptionList;
-var BLANK_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":38,"../../SyntaxNodes/Description":43,"../../SyntaxNodes/DescriptionListItem":44,"../../SyntaxNodes/DescriptionListNode":45,"../../SyntaxNodes/DescriptionTerm":46,"../Inline/getInlineNodes":19,"./LineConsumer":23,"./getOutlineNodes":25,"./getRemainingLinesOfListItem":26,"./isLineFancyOutlineConvention":28}],33:[function(require,module,exports){
@@ -1893,7 +1890,6 @@ var BULLET = Patterns_1.either('#', Patterns_1.capture(Patterns_1.either(Pattern
 var BULLETED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.optional(' ') + BULLET + Patterns_1.INLINE_WHITESPACE_CHAR);
 var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(Patterns_1.INTEGER + '\\.');
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
-var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.INDENT);
 
 },{"../../Patterns":38,"../../SyntaxNodes/OrderedListItem":60,"../../SyntaxNodes/OrderedListNode":61,"./LineConsumer":23,"./getOutlineNodes":25,"./getRemainingLinesOfListItem":26}],34:[function(require,module,exports){
@@ -2023,7 +2019,6 @@ function parseUnorderedList(args) {
 }
 exports.parseUnorderedList = parseUnorderedList;
 var BULLET_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.optional(' ') + Patterns_1.either('\\*', '-', '\\+') + Patterns_1.INLINE_WHITESPACE_CHAR);
-var BLANK_LINE_PATTERN = new RegExp(Patterns_1.BLANK);
 var INDENTED_PATTERN = Patterns_1.regExpStartingWith(Patterns_1.INDENT);
 var STREAK_PATTERN = new RegExp(Patterns_1.STREAK);
 
@@ -2078,8 +2073,6 @@ exports.ANY_WHITESPACE = ANY_WHITESPACE;
 var INLINE_WHITESPACE = all('[^\\S\\n]');
 var LINE_BREAK = '\n';
 exports.LINE_BREAK = LINE_BREAK;
-var BLANK = solely('');
-exports.BLANK = BLANK;
 var INDENT = either('  ', '\t');
 exports.INDENT = INDENT;
 var STREAK_CHAR = either('#', '=', '-', '\\+', '~', '\\*', '\\^', '@', ':', '_');
@@ -2095,6 +2088,8 @@ var DIGIT = '\\d';
 exports.DIGIT = DIGIT;
 var NON_BLANK_PATTERN = new RegExp(NON_WHITESPACE_CHAR);
 exports.NON_BLANK_PATTERN = NON_BLANK_PATTERN;
+var BLANK_PATTERN = new RegExp(solely(''));
+exports.BLANK_PATTERN = BLANK_PATTERN;
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }

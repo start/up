@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { BLANK } from '../../Patterns'
+import { BLANK_PATTERN } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -35,7 +35,3 @@ export function parseBlankLineSeparation(args: OutlineParserArgs): boolean {
   args.then(nodes, consumer.textIndex)
   return true
 }
-
-
-const BLANK_PATTERN = new RegExp(
-  BLANK) 

@@ -3,7 +3,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListOrder } from '../../SyntaxNodes/OrderedListOrder'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
-import { optional, regExpStartingWith, either, capture, INLINE_WHITESPACE_CHAR, BLANK, INDENT, INTEGER, STREAK } from '../../Patterns'
+import { optional, regExpStartingWith, either, capture, INLINE_WHITESPACE_CHAR, INDENT, INTEGER, STREAK } from '../../Patterns'
 import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
@@ -127,9 +127,6 @@ const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
 
 const STREAK_PATTERN = new RegExp(
   STREAK)
-
-const BLANK_LINE_PATTERN = new RegExp(
-  BLANK)
 
 const INDENTED_PATTERN =
   regExpStartingWith(INDENT)
