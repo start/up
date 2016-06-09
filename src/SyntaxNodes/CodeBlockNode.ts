@@ -1,5 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
+
 export class CodeBlockNode extends OutlineSyntaxNode {
   constructor(public text: string) {
     super()

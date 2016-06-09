@@ -1,6 +1,7 @@
 import { TokenizerContext } from './TokenizerContext'
 import { Token } from './Token'
 
+
 export class TokenizerSnapshot {
   textIndex: number
   tokens: Token[]

@@ -1,5 +1,6 @@
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 
+
 export interface MediaSyntaxNodeType {
   new(description: string, url: string): MediaSyntaxNode
 }
@@ -10,5 +11,4 @@ export abstract class MediaSyntaxNode {
   inlineSyntaxNode(): void { }
   
   constructor(public description: string, public url: string) { }
-  
 }
