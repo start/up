@@ -51,7 +51,7 @@ export const NSFW_CONVENTION: RichConvention = {
 }
 
 export const NSFL_CONVENTION: RichConvention = {
-  NodeType: NotSafeForWorkNode,
+  NodeType: NotSafeForLifeNode,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd
 }
