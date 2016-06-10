@@ -4,6 +4,8 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { NotSafeForWorkNode } from '../../../SyntaxNodes/NotSafeForWorkNode'
+import { NotSafeForLifeNode } from '../../../SyntaxNodes/NotSafeForLifeNode'
 
 
 
@@ -66,6 +68,50 @@ describe("The words in the ID of a spoiler's checkbox (on both the checkbox and 
       '<span class="up-spoiler up-revealable">'
       + '<label for="up_spoiler_1">toggle spoiler</label>'
       + '<input id="up_spoiler_1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("The words in the ID of a NSFW conventions's checkbox (on both the checkbox and the label)", () => {
+  it("are delimited by specified the ID word delimiter", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '_'
+      }
+    })
+
+    const node = new NotSafeForWorkNode([])
+
+    const html =
+      '<span class="up-nsfw up-revealable">'
+      + '<label for="up_nsfw_1">toggle nsfw</label>'
+      + '<input id="up_nsfw_1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("The words in the ID of a NSFL conventions's checkbox (on both the checkbox and the label)", () => {
+  it("are delimited by specified the ID word delimiter", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '_'
+      }
+    })
+
+    const node = new NotSafeForLifeNode([])
+
+    const html =
+      '<span class="up-nsfl up-revealable">'
+      + '<label for="up_nsfl_1">toggle nsfl</label>'
+      + '<input id="up_nsfl_1" type="checkbox">'
       + '<span></span>'
       + '</span>'
 
