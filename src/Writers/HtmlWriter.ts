@@ -77,8 +77,9 @@ export class HtmlWriter extends Writer {
 
   protected orderedList(node: OrderedListNode): string {
     const attrs: { start?: number, reversed?: any } = {}
-
+    
     const start = node.start()
+
     if (start != null) {
       attrs.start = start
     }
@@ -105,7 +106,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'div',
       node.lines.map(line => this.line(line)).join(''),
-      { [cssClass('lines')]: null }
+      { class: cssClass('lines') }
     )
   }
 
@@ -154,13 +155,13 @@ export class HtmlWriter extends Writer {
   }
 
   protected action(node: ActionNode): string {
-    return this.htmlElement('span', node.children, { [cssClass('action')]: null })
+    return this.htmlElement('span', node.children, { class: cssClass('action') })
   }
 
   protected spoiler(node: SpoilerNode): string {
     this.spoilerCount += 1
-    
-    return this.htmlElement('span', node.children, { [cssClass('spoiler')]: null })
+
+    return this.htmlElement('span', node.children, { class: cssClass('spoiler') })
   }
 
   protected footnoteReference(node: FootnoteNode): string {
@@ -170,7 +171,7 @@ export class HtmlWriter extends Writer {
       'sup',
       [innerLinkNode], {
         id: this.footnoteReferenceId(node.referenceNumber),
-        [cssClass('footnote-reference')]: null
+        class: cssClass('footnote-reference')
       })
   }
 
@@ -178,7 +179,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)).join(''),
-      { [cssClass('footnotes')]: null })
+      { class : cssClass('footnotes') })
   }
 
   protected link(node: LinkNode): string {
@@ -213,8 +214,8 @@ export class HtmlWriter extends Writer {
     return node.text
   }
 
-  private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, dataAttributeName: string): string {
-    return this.htmlElement('span', bracketed.children, { [cssClass(dataAttributeName)]: null })
+  private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
+    return this.htmlElement('span', bracketed.children, { class: cssClass(bracketName) })
   }
 
   private unorderedListItem(listItem: UnorderedListItem): string {
@@ -333,6 +334,7 @@ function internalUrl(id: string): string {
   return '#' + id
 }
 
-function cssClass(name: string): string {
-  return `class="up-${name}"`
+function cssClass(...names: string[]): string {
+  // We always prefix our class names with 'up-' regardless of the provided document name.
+  return names.map(name => 'up-' + name).join(' ')
 }

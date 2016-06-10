@@ -2970,8 +2970,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
-        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), (_a = {}, _a[cssClass('lines')] = null, _a));
-        var _a;
+        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), { class: cssClass('lines') });
     };
     HtmlWriter.prototype.codeBlock = function (node) {
         return htmlElement('pre', htmlElement('code', node.text));
@@ -3007,28 +3006,22 @@ var HtmlWriter = (function (_super) {
         return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.action = function (node) {
-        return this.htmlElement('span', node.children, (_a = {}, _a[cssClass('action')] = null, _a));
-        var _a;
+        return this.htmlElement('span', node.children, { class: cssClass('action') });
     };
     HtmlWriter.prototype.spoiler = function (node) {
         this.spoilerCount += 1;
-        return this.htmlElement('span', node.children, (_a = {}, _a[cssClass('spoiler')] = null, _a));
-        var _a;
+        return this.htmlElement('span', node.children, { class: cssClass('spoiler') });
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
-        return this.htmlElement('sup', [innerLinkNode], (_a = {
-                id: this.footnoteReferenceId(node.referenceNumber)
-            },
-            _a[cssClass('footnote-reference')] = null,
-            _a
-        ));
-        var _a;
+        return this.htmlElement('sup', [innerLinkNode], {
+            id: this.footnoteReferenceId(node.referenceNumber),
+            class: cssClass('footnote-reference')
+        });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), (_a = {}, _a[cssClass('footnotes')] = null, _a));
-        var _a;
+        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { class: cssClass('footnotes') });
     };
     HtmlWriter.prototype.link = function (node) {
         var _this = this;
@@ -3054,9 +3047,8 @@ var HtmlWriter = (function (_super) {
     HtmlWriter.prototype.plainText = function (node) {
         return node.text;
     };
-    HtmlWriter.prototype.bracketed = function (bracketed, dataAttributeName) {
-        return this.htmlElement('span', bracketed.children, (_a = {}, _a[cssClass(dataAttributeName)] = null, _a));
-        var _a;
+    HtmlWriter.prototype.bracketed = function (bracketed, bracketName) {
+        return this.htmlElement('span', bracketed.children, { class: cssClass(bracketName) });
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
         return this.htmlElement('li', listItem.children);
@@ -3137,8 +3129,12 @@ function htmlAttrs(attrs) {
 function internalUrl(id) {
     return '#' + id;
 }
-function cssClass(name) {
-    return "class=\"up-" + name + "\"";
+function cssClass() {
+    var names = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        names[_i - 0] = arguments[_i];
+    }
+    return names.map(function (name) { return 'up-' + name; }).join(' ');
 }
 
 },{"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/OrderedListOrder":64,"../SyntaxNodes/PlainTextNode":68,"./Writer":83}],83:[function(require,module,exports){
