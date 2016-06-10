@@ -6,6 +6,26 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe("A footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
+  it("are prefixed with the default document name 'up' if none was provided", () => {
+    const node =
+      new FootnoteBlockNode([
+        new FootnoteNode([
+          new PlainTextNode("Arwings"),
+        ], 2),
+        new FootnoteNode([
+          new PlainTextNode("Killer Bees"),
+        ], 3),
+      ])
+
+    const html =
+      '<dl class="up-footnotes">'
+      + '<dt id="up-footnote-2"><a href="#up-footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      + '</dl>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+
   it("are prefixed with the provided document name", () => {
     const up = new Up({
       documentName: 'reply-11'

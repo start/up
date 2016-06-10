@@ -4,6 +4,13 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {   
+    const node = new FootnoteNode([], 3)
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>')
+  })
+
   it("are prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
