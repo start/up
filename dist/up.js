@@ -734,10 +734,18 @@ var Tokenizer = (function () {
     Tokenizer.prototype.configureConventions = function () {
         var _this = this;
         (_a = this.conventions).push.apply(_a, this.getFootnoteConventions());
-        (_b = this.conventions).push.apply(_b, this.getConventionsForRichBracketedTerm({
-            richConvention: RichConventions_1.SPOILER_CONVENTION,
-            nonLocalizedTerm: 'spoiler'
-        }));
+        (_b = this.conventions).push.apply(_b, CollectionHelpers_1.concat([
+            {
+                richConvention: RichConventions_1.SPOILER_CONVENTION,
+                nonLocalizedTerm: 'spoiler'
+            }, {
+                richConvention: RichConventions_1.NSFW_CONVENTION,
+                nonLocalizedTerm: 'nsfw'
+            }, {
+                richConvention: RichConventions_1.NSFL_CONVENTION,
+                nonLocalizedTerm: 'nsfl'
+            }
+        ].map(function (args) { return _this.getConventionsForRichBracketedTerm(args); })));
         this.conventions.push({
             startPattern: INLINE_CODE_DELIMITER_PATTERN,
             endPattern: INLINE_CODE_DELIMITER_PATTERN,
@@ -1039,6 +1047,8 @@ var Tokenizer = (function () {
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: [
                 TokenKind_1.TokenKind.SpoilerEnd,
+                TokenKind_1.TokenKind.NsfwEnd,
+                TokenKind_1.TokenKind.NsflEnd,
                 TokenKind_1.TokenKind.FootnoteEnd,
             ],
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
@@ -1274,6 +1284,8 @@ var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
     RichConventions_1.LINK_CONVENTION,
     RichConventions_1.ACTION_CONVENTION,
     RichConventions_1.SPOILER_CONVENTION,
+    RichConventions_1.NSFW_CONVENTION,
+    RichConventions_1.NSFL_CONVENTION,
     RichConventions_1.FOOTNOTE_CONVENTION
 ];
 var ConventionNester = (function () {

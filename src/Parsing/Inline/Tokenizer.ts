@@ -1,4 +1,4 @@
-import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
+import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { escapeForRegex, regExpStartingWith, all, either, optional, atLeast, exactly } from '../../PatternHelpers'
 import { ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
@@ -93,12 +93,18 @@ export class Tokenizer {
     this.conventions.push(
       ...this.getFootnoteConventions())
 
-    this.conventions.push(
-      ...this.getConventionsForRichBracketedTerm({
+    this.conventions.push(...concat([
+      {
         richConvention: SPOILER_CONVENTION,
         nonLocalizedTerm: 'spoiler'
-      })
-    )
+      },{
+        richConvention: NSFW_CONVENTION,
+        nonLocalizedTerm: 'nsfw'
+      },{
+        richConvention: NSFL_CONVENTION,
+        nonLocalizedTerm: 'nsfl'
+      }
+    ].map(args => this.getConventionsForRichBracketedTerm(args))))
 
     this.conventions.push({
       startPattern: INLINE_CODE_DELIMITER_PATTERN,
@@ -503,9 +509,9 @@ export class Tokenizer {
 
   // Okay, this method name is a bit confusing.
   //
-  // Spoilers and footnotes can be "linkified" by immediately following their closing bracket with a
-  // parenthesized/bracketed URL. They remain spoilers and footnotes, but their entire contents are placed into
-  //  a link. 
+  // Spoilers, NSFW/NSFL conventions, and footnotes can be "linkified" by immediately following their closing bracket
+  // with a parenthesized/bracketed URL. They remain spoilers, NSFW/NSFL conventions, or footnotes, but their entire
+  // contents are placed into a link. 
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
@@ -513,6 +519,8 @@ export class Tokenizer {
 
       onlyOpenIfDirectlyFollowing: [
         TokenKind.SpoilerEnd,
+        TokenKind.NsfwEnd,
+        TokenKind.NsflEnd,
         TokenKind.FootnoteEnd,
       ],
 
