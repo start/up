@@ -252,3 +252,59 @@ describe('The "toggleNsfw" config term', () => {
     }
   })
 })
+
+
+describe('The "nsfl" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new NotSafeForLifeNode([]),
+    htmlFromDefaultSettings:
+      '<span class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>',
+    configChanges: {
+      i18n: {
+        terms: {
+          nsfl: 'look away'
+        }
+      }
+    },
+    
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          nsfl: 'explicit'
+        }
+      }
+    }
+  })
+})
+
+
+describe('The "togglensfl" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new NotSafeForLifeNode([]),
+    htmlFromDefaultSettings:
+      '<span class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>',
+    configChanges: {
+      i18n: {
+        terms: {
+          togglensfl: 'see/hide'
+        }
+      }
+    },
+    
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          togglensfl: 'show nsfl?'
+        }
+      }
+    }
+  })
+})
