@@ -28,7 +28,7 @@ it("are delimited by specified the ID word delimiter", () => {
     const node = new FootnoteNode([], 3)
     
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="footnote::reference::3" class="up-footnote-reference"><a href="#footnote::3">3</a></sup>')
+      '<sup id="up::footnote::reference::3" class="up-footnote-reference"><a href="#up::footnote::3">3</a></sup>')
   })
 })
 

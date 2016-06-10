@@ -68,7 +68,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new FootnoteNode([], 3),
-    htmlFromDefaultSettings: '<sup id="footnote-reference-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup>',
+    htmlFromDefaultSettings: '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>',
     configChanges: {
       documentName: 'reply 11'
     },
