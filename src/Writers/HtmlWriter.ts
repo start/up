@@ -78,7 +78,7 @@ export class HtmlWriter extends Writer {
 
   protected orderedList(node: OrderedListNode): string {
     const attrs: { start?: number, reversed?: any } = {}
-    
+
     const start = node.start()
 
     if (start != null) {
@@ -166,9 +166,9 @@ export class HtmlWriter extends Writer {
 
     return this.revealableConvent({
       conventionTerm: terms.spoiler,
+      termForTogglingVisibility: terms.toggleSpoiler,
       conventionCount: this.spoilerCount,
-      termForTogglingVisibility: null,
-      children: node.children
+      revealableChildren: node.children
     })
   }
 
@@ -187,7 +187,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)).join(''),
-      { class : cssClass('footnotes') })
+      { class: cssClass('footnotes') })
   }
 
   protected link(node: LinkNode): string {
@@ -296,21 +296,22 @@ export class HtmlWriter extends Writer {
   private revealableConvent(
     args: {
       conventionTerm: string
-      conventionCount: number
       termForTogglingVisibility: string
-      children: InlineSyntaxNode[]
-  }
+      conventionCount: number
+      revealableChildren: InlineSyntaxNode[]
+    }
   ): string {
-    const { conventionTerm, conventionCount, termForTogglingVisibility, children } = args
-
+    const { conventionTerm, conventionCount, termForTogglingVisibility, revealableChildren } = args
     const checkboxId = this.getId(conventionTerm, conventionCount)
 
-    return this.htmlElement(
+    const htmlForTogglingVisibility =
+      `<label for="${checkboxId}">${termForTogglingVisibility}</label>`
+      + `<input id="${checkboxId}" type="checkbox">`
+
+    return htmlElement(
       'span',
-      [
-        
-      ],
-      { class: cssClass(conventionTerm, 'revealable')})
+      htmlForTogglingVisibility + this.htmlElement('span', revealableChildren),
+      { class: cssClass(conventionTerm, 'revealable') })
   }
 
   private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {

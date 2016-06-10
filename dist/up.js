@@ -2879,6 +2879,7 @@ var DEFAULT_CONFIG = {
             audio: 'audio',
             video: 'video',
             spoiler: 'spoiler',
+            toggleSpoiler: 'toggle spoiler',
             footnote: 'footnote',
             footnoteReference: 'footnote reference'
         }
@@ -3013,9 +3014,9 @@ var HtmlWriter = (function (_super) {
         var terms = this.config.settings.i18n.terms;
         return this.revealableConvent({
             conventionTerm: terms.spoiler,
+            termForTogglingVisibility: terms.toggleSpoiler,
             conventionCount: this.spoilerCount,
-            termForTogglingVisibility: null,
-            children: node.children
+            revealableChildren: node.children
         });
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
@@ -3097,9 +3098,11 @@ var HtmlWriter = (function (_super) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
     };
     HtmlWriter.prototype.revealableConvent = function (args) {
-        var conventionTerm = args.conventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, children = args.children;
+        var conventionTerm = args.conventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, revealableChildren = args.revealableChildren;
         var checkboxId = this.getId(conventionTerm, conventionCount);
-        return this.htmlElement('span', [], { class: cssClass(conventionTerm, 'revealable') });
+        var htmlForTogglingVisibility = ("<label for=\"" + checkboxId + "\">" + termForTogglingVisibility + "</label>")
+            + ("<input id=\"" + checkboxId + "\" type=\"checkbox\">");
+        return htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: cssClass(conventionTerm, 'revealable') });
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }

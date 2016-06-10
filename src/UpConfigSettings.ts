@@ -12,6 +12,7 @@ export interface UpConfigSettings {
       audio?: string
       video?: string
       spoiler?: string
+      toggleSpoiler?: string
       footnote?: string
       footnoteReference?: string
       

@@ -15,6 +15,7 @@ const DEFAULT_CONFIG: UpConfigSettings = {
       audio: 'audio',
       video: 'video',
       spoiler: 'spoiler',
+      toggleSpoiler: 'toggle spoiler',
       footnote: 'footnote',
       footnoteReference: 'footnote reference'
     }
