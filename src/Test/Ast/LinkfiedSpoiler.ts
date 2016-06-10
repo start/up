@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph, expectEveryCombinationOf } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
 
 
 describe('A spoiler followed immediately by a parenthesized/bracketd URL', () => {
@@ -59,6 +60,20 @@ describe('A spoiler directly followed by aother spoiler', () => {
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A spoiler directly followed by a media convention', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
       ]))
   })
 })
