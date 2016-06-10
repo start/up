@@ -152,8 +152,7 @@ describe('The "spoiler" config term', () => {
       + '<label for="up-spoiler-1">toggle spoiler</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
       + '<span></span>'
-      + '</span>'
-,
+      + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -172,7 +171,6 @@ describe('The "spoiler" config term', () => {
 })
 
 
-
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new SpoilerNode([]),
@@ -181,8 +179,7 @@ describe('The "toggleSpoiler" config term', () => {
       + '<label for="up-spoiler-1">toggle spoiler</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
       + '<span></span>'
-      + '</span>'
-,
+      + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -194,6 +191,62 @@ describe('The "toggleSpoiler" config term', () => {
       i18n: {
         terms: {
           toggleSpoiler: 'see spoiler?'
+        }
+      }
+    }
+  })
+})
+
+
+describe('The "nsfw" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new NotSafeForWorkNode([]),
+    htmlFromDefaultSettings:
+      '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>',
+    configChanges: {
+      i18n: {
+        terms: {
+          nsfw: 'look away'
+        }
+      }
+    },
+    
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          nsfw: 'explicit'
+        }
+      }
+    }
+  })
+})
+
+
+describe('The "toggleNsfw" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new NotSafeForWorkNode([]),
+    htmlFromDefaultSettings:
+      '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>',
+    configChanges: {
+      i18n: {
+        terms: {
+          toggleNsfw: 'see/hide'
+        }
+      }
+    },
+    
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          toggleNsfw: 'show nsfw?'
         }
       }
     }
