@@ -417,9 +417,17 @@ describe('A video node', () => {
 
 
 describe('A spoiler node', () => {
-  it('produces a span element with an "up-spoiler" class', () => {
+  it('produces a span element (with "up-spoiler" and "up-revealable" classes), containing a label (with the text "toggle spoiler"), an associated checkbox, and a span element containing the spoiler contents', () => {
     const node = new SpoilerNode([new PlainTextNode('45.9%')])
-    expect(Up.toHtml(node)).to.be.eql('<span class="up-spoiler">45.9%</span>')
+
+    const html =
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<span>45.9%</span>'
+      + '</span>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
   })
 })
 
