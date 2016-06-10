@@ -15,6 +15,8 @@ import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
+import { NotSafeForWorkNode } from '../SyntaxNodes/NotSafeForWorkNode'
+import { NotSafeForLifeNode } from '../SyntaxNodes/NotSafeForLifeNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
@@ -62,6 +64,8 @@ export abstract class Writer {
   protected abstract squareBracketed(node: SquareBracketedNode): string
   protected abstract action(node: ActionNode): string
   protected abstract spoiler(node: SpoilerNode): string
+  protected abstract nsfw(node: NotSafeForWorkNode): string
+  protected abstract nsfl(node: NotSafeForLifeNode): string
   protected abstract footnoteReference(node: FootnoteNode): string
   protected abstract footnoteBlock(node: FootnoteBlockNode): string
   protected abstract link(node: LinkNode): string
@@ -182,6 +186,14 @@ export abstract class Writer {
 
     if (node instanceof SpoilerNode) {
       return this.spoiler(node)
+    }
+
+    if (node instanceof NotSafeForWorkNode) {
+      return this.nsfw(node)
+    }
+
+    if (node instanceof NotSafeForLifeNode) {
+      return this.nsfl(node)
     }
 
     if (node instanceof PlainTextNode) {

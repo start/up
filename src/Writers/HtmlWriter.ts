@@ -13,6 +13,8 @@ import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
+import { NotSafeForWorkNode } from '../SyntaxNodes/NotSafeForWorkNode'
+import { NotSafeForLifeNode } from '../SyntaxNodes/NotSafeForLifeNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
@@ -56,6 +58,10 @@ export class HtmlWriter extends Writer {
   // Each Writer class is only used once per document, so we'll just keep track by incrementing a counter each
   // time we write a spoiler.
   private spoilerCount = 0
+
+  // We produce similar markup for NSFW and NSFL conventions.
+  private nsfwCount = 0
+  private nsflCount = 0
 
   constructor(config?: UpConfig) {
     super(config)
@@ -160,14 +166,28 @@ export class HtmlWriter extends Writer {
   }
 
   protected spoiler(node: SpoilerNode): string {
-    this.spoilerCount += 1
-
-    const { terms } = this.config.settings.i18n
-
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
-      termForTogglingVisibility: terms.toggleSpoiler,
-      conventionCount: this.spoilerCount,
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      conventionCount: ++this.spoilerCount,
+      revealableChildren: node.children
+    })
+  }
+
+  protected nsfw(node: NotSafeForWorkNode): string {
+    return this.revealableConvent({
+      nonLocalizedConventionTerm: 'nsfw',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      conventionCount: ++this.nsfwCount,
+      revealableChildren: node.children
+    })
+  }
+
+  protected nsfl(node: NotSafeForLifeNode): string {
+    return this.revealableConvent({
+      nonLocalizedConventionTerm: 'nsfl',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      conventionCount: ++this.nsflCount,
       revealableChildren: node.children
     })
   }

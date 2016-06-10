@@ -452,13 +452,13 @@ describe('A NSFW node', () => {
 
 describe('A NSFL node', () => {
   it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle nsfl"), an associated checkbox, and a span element containing the NSFL contents', () => {
-    const node = new NotSafeForWorkNode([new PlainTextNode('rotting Gary')])
+    const node = new NotSafeForLifeNode([new PlainTextNode('rotting Gary')])
 
     const html =
       '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle nsfl</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
-      + '<span>naked Gary</span>'
+      + '<span>rotting Gary</span>'
       + '</span>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
