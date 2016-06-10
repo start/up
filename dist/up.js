@@ -561,6 +561,7 @@ function comapreMarkersDescending(a, b) {
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
 var EmphasisNode_1 = require('../../SyntaxNodes/EmphasisNode');
 var SpoilerNode_1 = require('../../SyntaxNodes/SpoilerNode');
+var NotSafeForWorkNode_1 = require('../../SyntaxNodes/NotSafeForWorkNode');
 var FootnoteNode_1 = require('../../SyntaxNodes/FootnoteNode');
 var RevisionDeletionNode_1 = require('../../SyntaxNodes/RevisionDeletionNode');
 var RevisionInsertionNode_1 = require('../../SyntaxNodes/RevisionInsertionNode');
@@ -593,6 +594,16 @@ exports.SPOILER_CONVENTION = {
     startTokenKind: TokenKind_1.TokenKind.SpoilerStart,
     endTokenKind: TokenKind_1.TokenKind.SpoilerEnd
 };
+exports.NSFW_CONVENTION = {
+    NodeType: NotSafeForWorkNode_1.NotSafeForWorkNode,
+    startTokenKind: TokenKind_1.TokenKind.NsfwStart,
+    endTokenKind: TokenKind_1.TokenKind.NsfwEnd
+};
+exports.NSFL_CONVENTION = {
+    NodeType: NotSafeForWorkNode_1.NotSafeForWorkNode,
+    startTokenKind: TokenKind_1.TokenKind.NsflStart,
+    endTokenKind: TokenKind_1.TokenKind.NsflEnd
+};
 exports.FOOTNOTE_CONVENTION = {
     NodeType: FootnoteNode_1.FootnoteNode,
     startTokenKind: TokenKind_1.TokenKind.FootnoteStart,
@@ -618,7 +629,7 @@ exports.LINK_CONVENTION = {
     endTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd
 };
 
-},{"../../SyntaxNodes/ActionNode":41,"../../SyntaxNodes/EmphasisNode":50,"../../SyntaxNodes/FootnoteNode":53,"../../SyntaxNodes/ParenthesizedNode":69,"../../SyntaxNodes/RevisionDeletionNode":71,"../../SyntaxNodes/RevisionInsertionNode":72,"../../SyntaxNodes/SpoilerNode":75,"../../SyntaxNodes/SquareBracketedNode":76,"../../SyntaxNodes/StressNode":77,"./TokenKind":15}],14:[function(require,module,exports){
+},{"../../SyntaxNodes/ActionNode":41,"../../SyntaxNodes/EmphasisNode":50,"../../SyntaxNodes/FootnoteNode":53,"../../SyntaxNodes/NotSafeForWorkNode":63,"../../SyntaxNodes/ParenthesizedNode":69,"../../SyntaxNodes/RevisionDeletionNode":71,"../../SyntaxNodes/RevisionInsertionNode":72,"../../SyntaxNodes/SpoilerNode":75,"../../SyntaxNodes/SquareBracketedNode":76,"../../SyntaxNodes/StressNode":77,"./TokenKind":15}],14:[function(require,module,exports){
 "use strict";
 var Token = (function () {
     function Token(args) {
@@ -663,11 +674,15 @@ exports.Token = Token;
     TokenKind[TokenKind["RevisionInsertionStart"] = 24] = "RevisionInsertionStart";
     TokenKind[TokenKind["SpoilerEnd"] = 25] = "SpoilerEnd";
     TokenKind[TokenKind["SpoilerStart"] = 26] = "SpoilerStart";
-    TokenKind[TokenKind["SquareBracketedEnd"] = 27] = "SquareBracketedEnd";
-    TokenKind[TokenKind["SquareBracketedStart"] = 28] = "SquareBracketedStart";
-    TokenKind[TokenKind["StressEnd"] = 29] = "StressEnd";
-    TokenKind[TokenKind["StressStart"] = 30] = "StressStart";
-    TokenKind[TokenKind["VideoDescriptionAndStart"] = 31] = "VideoDescriptionAndStart";
+    TokenKind[TokenKind["NsfwStart"] = 27] = "NsfwStart";
+    TokenKind[TokenKind["NsfwEnd"] = 28] = "NsfwEnd";
+    TokenKind[TokenKind["NsflStart"] = 29] = "NsflStart";
+    TokenKind[TokenKind["NsflEnd"] = 30] = "NsflEnd";
+    TokenKind[TokenKind["SquareBracketedEnd"] = 31] = "SquareBracketedEnd";
+    TokenKind[TokenKind["SquareBracketedStart"] = 32] = "SquareBracketedStart";
+    TokenKind[TokenKind["StressEnd"] = 33] = "StressEnd";
+    TokenKind[TokenKind["StressStart"] = 34] = "StressStart";
+    TokenKind[TokenKind["VideoDescriptionAndStart"] = 35] = "VideoDescriptionAndStart";
 })(exports.TokenKind || (exports.TokenKind = {}));
 var TokenKind = exports.TokenKind;
 
