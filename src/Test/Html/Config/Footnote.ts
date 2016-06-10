@@ -21,6 +21,17 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     expect(up.toHtml(node)).to.be.eql(
       '<sup id="reply-11-footnote-reference-3" class="up-footnote-reference"><a href="#reply-11-footnote-3">3</a></sup>')
   })
+
+  it("are not prefixed with a document name if a blank one was provided", () => {
+    const up = new Up({
+      documentName: ''
+    })
+    
+    const node = new FootnoteNode([], 3)
+
+    expect(up.toHtml(node)).to.be.eql(
+      '<sup id="footnote-reference-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup>')
+  })
 })
 
 
