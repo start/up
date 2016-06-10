@@ -86,3 +86,36 @@ describe("Multiple spoilers in a document", () => {
     expect(Up.toHtml(node)).to.be.eql(html)
   })
 })
+
+
+describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
+  it("reset each time a new document is written", () => {
+    const up = new Up()
+    
+    const node =
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Hello, '),
+          new SpoilerNode([
+            new PlainTextNode('Red')
+          ]),
+          new PlainTextNode('. We meet for the '),
+          new SpoilerNode([
+            new EmphasisNode([
+              new PlainTextNode('eighth')
+            ])
+          ]),
+          new PlainTextNode(' time.')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('Hello, '),
+          new SpoilerNode([
+            new PlainTextNode('Blue')
+          ]),
+          new PlainTextNode('.'),
+        ])
+      ])
+
+    expect(up.toHtml(node)).to.be.eql(up.toHtml(node))
+  })
+})
