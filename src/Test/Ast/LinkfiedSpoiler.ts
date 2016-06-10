@@ -1,10 +1,14 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryCombinationOf } from './Helpers'
+import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('A spoiler followed immediately by a parenthesized/bracketd URL', () => {
@@ -74,6 +78,31 @@ describe('A spoiler directly followed by a media convention', () => {
           new PlainTextNode('you fight Gary')
         ]),
         new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
+      ]))
+  })
+})
+
+
+describe('A spoiler directly followed by a footnote', () => {
+  it("is not linkified", () => {
+    const text = "After you beat the Elite Four, [SPOILER: you fight Gary]((Or whatever you name him.))"
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode('Or whatever you name him.')
+      ], 1)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("After you beat the Elite Four, "),
+                  new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+          footnotes[0],
+        ]),
+        new FootnoteBlockNode(footnotes)
       ]))
   })
 })

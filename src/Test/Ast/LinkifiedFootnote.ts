@@ -113,7 +113,7 @@ describe('A footnote directly followed by a media convention', () => {
 })
 
 
-describe('A footnote directly followed by a spoiler convention', () => {
+describe('A footnote directly followed by a spoiler', () => {
   it("is not linkified", () => {
     const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
 
