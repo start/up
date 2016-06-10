@@ -7,6 +7,7 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
@@ -32,7 +33,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
 })
 
 
-describe('Any footnote followed by a bracketed URL', () => {
+describe('Any footnote followed by a bracketed/parenthesized URL', () => {
   it('produces a footnote node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the footnote can be different from the type of bracket surrounding the URL', () => {
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -81,6 +82,29 @@ describe('A footnote directly followed by another footnote (with no spaces in be
           new PlainTextNode("I don't eat cereal."),
           footnotes[0],
           footnotes[1]
+        ]),
+        new FootnoteBlockNode(footnotes)
+      ]))
+  })
+})
+
+
+describe('A footnote directly followed by a media convention', () => {
+  it("is not linkified", () => {
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[video: me not eating cereal](https://example.com/v/123)"
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnotes[0],
+          new VideoNode('me not eating cereal', 'https://example.com/v/123')
         ]),
         new FootnoteBlockNode(footnotes)
       ]))
