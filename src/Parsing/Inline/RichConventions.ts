@@ -2,8 +2,8 @@ import { RichConvention } from './RichConvention'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { NotSafeForWorkNode } from '../../SyntaxNodes/NotSafeForWorkNode'
-import { NotSafeForLifeNode } from '../../SyntaxNodes/NotSafeForLifeNode'
+import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../SyntaxNodes/NsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
@@ -45,13 +45,13 @@ export const SPOILER_CONVENTION: RichConvention = {
 }
 
 export const NSFW_CONVENTION: RichConvention = {
-  NodeType: NotSafeForWorkNode,
+  NodeType: NsfwNode,
   startTokenKind: TokenKind.NsfwStart,
   endTokenKind: TokenKind.NsfwEnd
 }
 
 export const NSFL_CONVENTION: RichConvention = {
-  NodeType: NotSafeForLifeNode,
+  NodeType: NsflNode,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd
 }

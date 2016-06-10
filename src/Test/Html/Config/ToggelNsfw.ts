@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { NotSafeForWorkNode } from '../../../SyntaxNodes/NotSafeForWorkNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 
 
 describe("The text in a NSFW convention's label", () => {
@@ -14,7 +14,7 @@ describe("The text in a NSFW convention's label", () => {
       }
     })
 
-    const node = new NotSafeForWorkNode([])
+    const node = new NsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'

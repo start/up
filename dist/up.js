@@ -563,8 +563,8 @@ function comapreMarkersDescending(a, b) {
 var StressNode_1 = require('../../SyntaxNodes/StressNode');
 var EmphasisNode_1 = require('../../SyntaxNodes/EmphasisNode');
 var SpoilerNode_1 = require('../../SyntaxNodes/SpoilerNode');
-var NotSafeForWorkNode_1 = require('../../SyntaxNodes/NotSafeForWorkNode');
-var NotSafeForLifeNode_1 = require('../../SyntaxNodes/NotSafeForLifeNode');
+var NsfwNode_1 = require('../../SyntaxNodes/NsfwNode');
+var NsflNode_1 = require('../../SyntaxNodes/NsflNode');
 var FootnoteNode_1 = require('../../SyntaxNodes/FootnoteNode');
 var RevisionDeletionNode_1 = require('../../SyntaxNodes/RevisionDeletionNode');
 var RevisionInsertionNode_1 = require('../../SyntaxNodes/RevisionInsertionNode');
@@ -598,12 +598,12 @@ exports.SPOILER_CONVENTION = {
     endTokenKind: TokenKind_1.TokenKind.SpoilerEnd
 };
 exports.NSFW_CONVENTION = {
-    NodeType: NotSafeForWorkNode_1.NotSafeForWorkNode,
+    NodeType: NsfwNode_1.NsfwNode,
     startTokenKind: TokenKind_1.TokenKind.NsfwStart,
     endTokenKind: TokenKind_1.TokenKind.NsfwEnd
 };
 exports.NSFL_CONVENTION = {
-    NodeType: NotSafeForLifeNode_1.NotSafeForLifeNode,
+    NodeType: NsflNode_1.NsflNode,
     startTokenKind: TokenKind_1.TokenKind.NsflStart,
     endTokenKind: TokenKind_1.TokenKind.NsflEnd
 };
@@ -632,7 +632,7 @@ exports.LINK_CONVENTION = {
     endTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd
 };
 
-},{"../../SyntaxNodes/ActionNode":41,"../../SyntaxNodes/EmphasisNode":50,"../../SyntaxNodes/FootnoteNode":53,"../../SyntaxNodes/NotSafeForLifeNode":62,"../../SyntaxNodes/NotSafeForWorkNode":63,"../../SyntaxNodes/ParenthesizedNode":69,"../../SyntaxNodes/RevisionDeletionNode":71,"../../SyntaxNodes/RevisionInsertionNode":72,"../../SyntaxNodes/SpoilerNode":75,"../../SyntaxNodes/SquareBracketedNode":76,"../../SyntaxNodes/StressNode":77,"./TokenKind":15}],14:[function(require,module,exports){
+},{"../../SyntaxNodes/ActionNode":41,"../../SyntaxNodes/EmphasisNode":50,"../../SyntaxNodes/FootnoteNode":53,"../../SyntaxNodes/NsflNode":62,"../../SyntaxNodes/NsfwNode":63,"../../SyntaxNodes/ParenthesizedNode":69,"../../SyntaxNodes/RevisionDeletionNode":71,"../../SyntaxNodes/RevisionInsertionNode":72,"../../SyntaxNodes/SpoilerNode":75,"../../SyntaxNodes/SquareBracketedNode":76,"../../SyntaxNodes/StressNode":77,"./TokenKind":15}],14:[function(require,module,exports){
 "use strict";
 var Token = (function () {
     function Token(args) {
@@ -2564,15 +2564,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var RichInlineSyntaxNode_1 = require('./RichInlineSyntaxNode');
-var NotSafeForLifeNode = (function (_super) {
-    __extends(NotSafeForLifeNode, _super);
-    function NotSafeForLifeNode() {
+var NsflNode = (function (_super) {
+    __extends(NsflNode, _super);
+    function NsflNode() {
         _super.apply(this, arguments);
         this.NOT_SAFE_FOR_LIFE = null;
     }
-    return NotSafeForLifeNode;
+    return NsflNode;
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
-exports.NotSafeForLifeNode = NotSafeForLifeNode;
+exports.NsflNode = NsflNode;
 
 },{"./RichInlineSyntaxNode":73}],63:[function(require,module,exports){
 "use strict";
@@ -2582,15 +2582,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var RichInlineSyntaxNode_1 = require('./RichInlineSyntaxNode');
-var NotSafeForWorkNode = (function (_super) {
-    __extends(NotSafeForWorkNode, _super);
-    function NotSafeForWorkNode() {
+var NsfwNode = (function (_super) {
+    __extends(NsfwNode, _super);
+    function NsfwNode() {
         _super.apply(this, arguments);
         this.NOT_SAFE_FOR_WORK = null;
     }
-    return NotSafeForWorkNode;
+    return NsfwNode;
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
-exports.NotSafeForWorkNode = NotSafeForWorkNode;
+exports.NsfwNode = NsfwNode;
 
 },{"./RichInlineSyntaxNode":73}],64:[function(require,module,exports){
 "use strict";
@@ -3257,8 +3257,8 @@ var ParenthesizedNode_1 = require('../SyntaxNodes/ParenthesizedNode');
 var SquareBracketedNode_1 = require('../SyntaxNodes/SquareBracketedNode');
 var ActionNode_1 = require('../SyntaxNodes/ActionNode');
 var SpoilerNode_1 = require('../SyntaxNodes/SpoilerNode');
-var NotSafeForWorkNode_1 = require('../SyntaxNodes/NotSafeForWorkNode');
-var NotSafeForLifeNode_1 = require('../SyntaxNodes/NotSafeForLifeNode');
+var NsfwNode_1 = require('../SyntaxNodes/NsfwNode');
+var NsflNode_1 = require('../SyntaxNodes/NsflNode');
 var FootnoteNode_1 = require('../SyntaxNodes/FootnoteNode');
 var FootnoteBlockNode_1 = require('../SyntaxNodes/FootnoteBlockNode');
 var ParagraphNode_1 = require('../SyntaxNodes/ParagraphNode');
@@ -3363,10 +3363,10 @@ var Writer = (function () {
         if (node instanceof SpoilerNode_1.SpoilerNode) {
             return this.spoiler(node);
         }
-        if (node instanceof NotSafeForWorkNode_1.NotSafeForWorkNode) {
+        if (node instanceof NsfwNode_1.NsfwNode) {
             return this.nsfw(node);
         }
-        if (node instanceof NotSafeForLifeNode_1.NotSafeForLifeNode) {
+        if (node instanceof NsflNode_1.NsflNode) {
             return this.nsfl(node);
         }
         if (node instanceof PlainTextNode_1.PlainTextNode) {
@@ -3378,7 +3378,7 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/ActionNode":41,"../SyntaxNodes/AudioNode":42,"../SyntaxNodes/BlockquoteNode":43,"../SyntaxNodes/CodeBlockNode":44,"../SyntaxNodes/DescriptionListNode":47,"../SyntaxNodes/DocumentNode":49,"../SyntaxNodes/EmphasisNode":50,"../SyntaxNodes/FootnoteBlockNode":52,"../SyntaxNodes/FootnoteNode":53,"../SyntaxNodes/HeadingNode":54,"../SyntaxNodes/ImageNode":55,"../SyntaxNodes/InlineCodeNode":56,"../SyntaxNodes/LineBlockNode":59,"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/NotSafeForLifeNode":62,"../SyntaxNodes/NotSafeForWorkNode":63,"../SyntaxNodes/OrderedListNode":65,"../SyntaxNodes/ParagraphNode":68,"../SyntaxNodes/ParenthesizedNode":69,"../SyntaxNodes/PlainTextNode":70,"../SyntaxNodes/RevisionDeletionNode":71,"../SyntaxNodes/RevisionInsertionNode":72,"../SyntaxNodes/SectionSeparatorNode":74,"../SyntaxNodes/SpoilerNode":75,"../SyntaxNodes/SquareBracketedNode":76,"../SyntaxNodes/StressNode":77,"../SyntaxNodes/UnorderedListNode":79,"../SyntaxNodes/VideoNode":80}],86:[function(require,module,exports){
+},{"../SyntaxNodes/ActionNode":41,"../SyntaxNodes/AudioNode":42,"../SyntaxNodes/BlockquoteNode":43,"../SyntaxNodes/CodeBlockNode":44,"../SyntaxNodes/DescriptionListNode":47,"../SyntaxNodes/DocumentNode":49,"../SyntaxNodes/EmphasisNode":50,"../SyntaxNodes/FootnoteBlockNode":52,"../SyntaxNodes/FootnoteNode":53,"../SyntaxNodes/HeadingNode":54,"../SyntaxNodes/ImageNode":55,"../SyntaxNodes/InlineCodeNode":56,"../SyntaxNodes/LineBlockNode":59,"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/NsflNode":62,"../SyntaxNodes/NsfwNode":63,"../SyntaxNodes/OrderedListNode":65,"../SyntaxNodes/ParagraphNode":68,"../SyntaxNodes/ParenthesizedNode":69,"../SyntaxNodes/PlainTextNode":70,"../SyntaxNodes/RevisionDeletionNode":71,"../SyntaxNodes/RevisionInsertionNode":72,"../SyntaxNodes/SectionSeparatorNode":74,"../SyntaxNodes/SpoilerNode":75,"../SyntaxNodes/SquareBracketedNode":76,"../SyntaxNodes/StressNode":77,"../SyntaxNodes/UnorderedListNode":79,"../SyntaxNodes/VideoNode":80}],86:[function(require,module,exports){
 "use strict";
 var index_1 = require('./index');
 window.Up = index_1.default;

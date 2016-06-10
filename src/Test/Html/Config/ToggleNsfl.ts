@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { NotSafeForLifeNode } from '../../../SyntaxNodes/NotSafeForLifeNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
 describe("The text in a NSFL convention's label", () => {
@@ -14,7 +14,7 @@ describe("The text in a NSFL convention's label", () => {
       }
     })
 
-    const node = new NotSafeForLifeNode([])
+    const node = new NsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'

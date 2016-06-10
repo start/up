@@ -15,8 +15,8 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
-import { NotSafeForWorkNode } from '../../SyntaxNodes/NotSafeForWorkNode'
-import { NotSafeForLifeNode } from '../../SyntaxNodes/NotSafeForLifeNode'
+import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../SyntaxNodes/NsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -436,7 +436,7 @@ describe('A spoiler node', () => {
 
 describe('A NSFW node', () => {
   it('produces a span element (with "up-nsfw" and "up-revealable" classes), containing a label (with the text "toggle nsfw"), an associated checkbox, and a span element containing the NSFW contents', () => {
-    const node = new NotSafeForWorkNode([new PlainTextNode('naked Gary')])
+    const node = new NsfwNode([new PlainTextNode('naked Gary')])
 
     const html =
       '<span class="up-nsfw up-revealable">'
@@ -452,7 +452,7 @@ describe('A NSFW node', () => {
 
 describe('A NSFL node', () => {
   it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle nsfl"), an associated checkbox, and a span element containing the NSFL contents', () => {
-    const node = new NotSafeForLifeNode([new PlainTextNode('rotting Gary')])
+    const node = new NsflNode([new PlainTextNode('rotting Gary')])
 
     const html =
       '<span class="up-nsfl up-revealable">'

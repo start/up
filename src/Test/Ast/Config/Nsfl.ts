@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { NotSafeForLifeNode } from '../../../SyntaxNodes/NotSafeForLifeNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
 describe('The term that represents NSFL conventions', () => {
@@ -15,7 +15,7 @@ describe('The term that represents NSFL conventions', () => {
   it('comes from the "nsfw" config term ', () => {
     expect(up.toAst('[ruins life: Ash eats rotting Gary]')).to.be.eql(
       insideDocumentAndParagraph([
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('Ash eats rotting Gary')
         ])
       ]))

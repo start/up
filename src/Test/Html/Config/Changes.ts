@@ -4,8 +4,8 @@ import { UpConfigSettings } from '../../../UpConfigSettings'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-import { NotSafeForWorkNode } from '../../../SyntaxNodes/NotSafeForWorkNode'
-import { NotSafeForLifeNode } from '../../../SyntaxNodes/NotSafeForLifeNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -200,7 +200,7 @@ describe('The "toggleSpoiler" config term', () => {
 
 describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NotSafeForWorkNode([]),
+    node: new NsfwNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle nsfw</label>'
@@ -228,7 +228,7 @@ describe('The "nsfw" config term', () => {
 
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NotSafeForWorkNode([]),
+    node: new NsfwNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle nsfw</label>'
@@ -256,7 +256,7 @@ describe('The "toggleNsfw" config term', () => {
 
 describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NotSafeForLifeNode([]),
+    node: new NsflNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle nsfl</label>'
@@ -284,7 +284,7 @@ describe('The "nsfl" config term', () => {
 
 describe('The "togglensfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NotSafeForLifeNode([]),
+    node: new NsflNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle nsfl</label>'

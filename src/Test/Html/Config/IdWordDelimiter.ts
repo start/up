@@ -4,8 +4,8 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-import { NotSafeForWorkNode } from '../../../SyntaxNodes/NotSafeForWorkNode'
-import { NotSafeForLifeNode } from '../../../SyntaxNodes/NotSafeForLifeNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
 
@@ -84,7 +84,7 @@ describe("The words in the ID of a NSFW conventions's checkbox (on both the chec
       }
     })
 
-    const node = new NotSafeForWorkNode([])
+    const node = new NsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'
@@ -106,7 +106,7 @@ describe("The words in the ID of a NSFL conventions's checkbox (on both the chec
       }
     })
 
-    const node = new NotSafeForLifeNode([])
+    const node = new NsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'

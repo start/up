@@ -1,6 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class NotSafeForWorkNode extends RichInlineSyntaxNode {
+export class NsfwNode extends RichInlineSyntaxNode {
   private NOT_SAFE_FOR_WORK: any = null
 }

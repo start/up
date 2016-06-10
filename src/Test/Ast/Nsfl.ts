@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { NotSafeForLifeNode } from '../../SyntaxNodes/NotSafeForLifeNode'
+import { NsflNode } from '../../SyntaxNodes/NsflNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
@@ -15,7 +15,7 @@ describe('Square bracketed text starting with "nsfl:"', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat a rotting Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat a rotting Gary')
         ]),
         new PlainTextNode('.')
@@ -28,7 +28,7 @@ describe('Parenthesized text starting with "nsfl:"', () => {
     expect(Up.toAst('After you beat the Elite Four, (NSFL: you eat a rotting Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat a rotting Gary')
         ]),
         new PlainTextNode('.')
@@ -41,7 +41,7 @@ describe('Curly bracketed text starting with "nsfl:"', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFL: you eat a rotting Gary}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat a rotting Gary')
         ]),
         new PlainTextNode('.')
@@ -62,7 +62,7 @@ describe('An NSFL convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat [image: rotting Gary](https://example.com/ummmm.png)].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat '),
           new ImageNode('rotting Gary', 'https://example.com/ummmm.png'),
         ]),
@@ -74,9 +74,9 @@ describe('An NSFL convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat [NSFL: a rotting Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat '),
-          new NotSafeForLifeNode([
+          new NsflNode([
             new PlainTextNode('a rotting Gary')
           ]),
         ]),
@@ -91,7 +91,7 @@ describe('A NSFL convention produced by square brackets', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat [and finish] a rotting Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat '),
           new SquareBracketedNode([
             new PlainTextNode('[and finish]')
@@ -109,7 +109,7 @@ describe('A NSFL convnetion produced by parentheses', () => {
     expect(Up.toAst('After you beat the Elite Four, (NSFL: you eat (and finish) a rotting Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you eat '),
           new ParenthesizedNode([
             new PlainTextNode('(and finish)')
@@ -127,7 +127,7 @@ describe('A NSFL convention produced by curly brackets', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFL: you still have to eat a rotting Gary {sigh}}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForLifeNode([
+        new NsflNode([
           new PlainTextNode('you still have to eat a rotting Gary '),
           new ActionNode([
             new PlainTextNode('sigh')

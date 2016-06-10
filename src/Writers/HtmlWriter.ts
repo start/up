@@ -13,8 +13,8 @@ import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../SyntaxNodes/SpoilerNode'
-import { NotSafeForWorkNode } from '../SyntaxNodes/NotSafeForWorkNode'
-import { NotSafeForLifeNode } from '../SyntaxNodes/NotSafeForLifeNode'
+import { NsfwNode } from '../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../SyntaxNodes/NsflNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
@@ -174,7 +174,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfw(node: NotSafeForWorkNode): string {
+  protected nsfw(node: NsfwNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfw',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
@@ -183,7 +183,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfl(node: NotSafeForLifeNode): string {
+  protected nsfl(node: NsflNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfl',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,

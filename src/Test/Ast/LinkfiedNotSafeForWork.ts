@@ -5,7 +5,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { NotSafeForWorkNode } from '../../SyntaxNodes/NotSafeForWorkNode'
+import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -16,7 +16,7 @@ describe('A NSFW convention followed immediately by a parenthesized/bracketd URL
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForWorkNode([
+        new NsfwNode([
           new LinkNode([
             new PlainTextNode('you wrestle naked Gary')
           ], 'http://example.com/finalbattle')
@@ -41,7 +41,7 @@ describe('Any NSFW convention followed immediately by a parenthesized/bracketed 
         '{http://example.com/finalbattle}'
       ],
       toProduce: insideDocumentAndParagraph([
-        new NotSafeForWorkNode([
+        new NsfwNode([
           new LinkNode([
             new PlainTextNode('you wrestle naked Gary')
           ], 'http://example.com/finalbattle')
@@ -57,10 +57,10 @@ describe('A NSFW convention directly followed by another NSFW convention', () =>
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForWorkNode([
+        new NsfwNode([
           new PlainTextNode('you wrestle naked Gary')
         ]),
-        new NotSafeForWorkNode([
+        new NsfwNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')
@@ -74,7 +74,7 @@ describe('A NSFW convention directly followed by a media convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NotSafeForWorkNode([
+        new NsfwNode([
           new PlainTextNode('you wrestle naked Gary')
         ]),
         new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
@@ -97,7 +97,7 @@ describe('A NSFW convention directly followed by a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
-          new NotSafeForWorkNode([
+          new NsfwNode([
             new PlainTextNode('you wrestle naked Gary')
           ]),
           footnotes[0],
