@@ -22,6 +22,7 @@ export class FailedConventionTracker {
   }
 }
 
+
 interface FailedConventionsByTextIndex {
   [textIndex: number]: TokenizableConvention[]
 }

@@ -2,7 +2,7 @@ import { NON_BLANK_PATTERN } from '../../Patterns'
 import { OnMatch } from './OnMatch'
 
 
-export class InlineConsumer {
+export class InlineTextConsumer {
   private _textIndex = 0
   private _remainingText: string
   private _currentChar: string

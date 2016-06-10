@@ -63,13 +63,13 @@ exports.FailedConventionTracker = FailedConventionTracker;
 },{}],4:[function(require,module,exports){
 "use strict";
 var Patterns_1 = require('../../Patterns');
-var InlineConsumer = (function () {
-    function InlineConsumer(entireText) {
+var InlineTextConsumer = (function () {
+    function InlineTextConsumer(entireText) {
         this.entireText = entireText;
         this._textIndex = 0;
         this.textIndex = 0;
     }
-    Object.defineProperty(InlineConsumer.prototype, "textIndex", {
+    Object.defineProperty(InlineTextConsumer.prototype, "textIndex", {
         get: function () {
             return this._textIndex;
         },
@@ -80,27 +80,27 @@ var InlineConsumer = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(InlineConsumer.prototype, "remainingText", {
+    Object.defineProperty(InlineTextConsumer.prototype, "remainingText", {
         get: function () {
             return this._remainingText;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(InlineConsumer.prototype, "currentChar", {
+    Object.defineProperty(InlineTextConsumer.prototype, "currentChar", {
         get: function () {
             return this._currentChar;
         },
         enumerable: true,
         configurable: true
     });
-    InlineConsumer.prototype.advanceTextIndex = function (length) {
+    InlineTextConsumer.prototype.advanceTextIndex = function (length) {
         this.textIndex += length;
     };
-    InlineConsumer.prototype.reachedEndOfText = function () {
+    InlineTextConsumer.prototype.reachedEndOfText = function () {
         return this._textIndex >= this.entireText.length;
     };
-    InlineConsumer.prototype.advanceAfterMatch = function (args) {
+    InlineTextConsumer.prototype.advanceAfterMatch = function (args) {
         var pattern = args.pattern, then = args.then;
         var result = pattern.exec(this._remainingText);
         if (!result) {
@@ -115,15 +115,15 @@ var InlineConsumer = (function () {
         this.advanceTextIndex(match.length);
         return true;
     };
-    InlineConsumer.prototype.updateComputedTextFields = function () {
+    InlineTextConsumer.prototype.updateComputedTextFields = function () {
         this._remainingText = this.entireText.substr(this._textIndex);
         this._currentChar = this._remainingText[0];
         var previousChar = this.entireText[this._textIndex - 1];
         this.isTouchingWordEnd = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
     };
-    return InlineConsumer;
+    return InlineTextConsumer;
 }());
-exports.InlineConsumer = InlineConsumer;
+exports.InlineTextConsumer = InlineTextConsumer;
 
 },{"../../Patterns":40}],5:[function(require,module,exports){
 "use strict";
@@ -703,7 +703,7 @@ var Bracket_1 = require('./Bracket');
 var FailedConventionTracker_1 = require('./FailedConventionTracker');
 var TokenizerContext_1 = require('./TokenizerContext');
 var TokenizerSnapshot_1 = require('./TokenizerSnapshot');
-var InlineConsumer_1 = require('./InlineConsumer');
+var InlineTextConsumer_1 = require('./InlineTextConsumer');
 var TokenKind_1 = require('./TokenKind');
 var Token_1 = require('./Token');
 var Tokenizer = (function () {
@@ -730,7 +730,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.consumer = new InlineConsumer_1.InlineConsumer(entireText);
+        this.consumer = new InlineTextConsumer_1.InlineTextConsumer(entireText);
         this.configureConventions();
         this.tokenize();
     }
@@ -1168,7 +1168,7 @@ var NAKED_URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith('http' + Patt
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.'))) + ':');
 var NAKED_URL_TERMINATOR_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR);
 
-},{"../../CollectionHelpers":1,"../../PatternHelpers":38,"../../PatternPieces":39,"./Bracket":2,"./FailedConventionTracker":3,"./InlineConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerSnapshot":18,"./insertBracketsInsideBracketedConventions":20,"./nestOverlappingConventions":21}],17:[function(require,module,exports){
+},{"../../CollectionHelpers":1,"../../PatternHelpers":38,"../../PatternPieces":39,"./Bracket":2,"./FailedConventionTracker":3,"./InlineTextConsumer":4,"./MediaConventions":6,"./RaisedVoices/applyRaisedVoices":12,"./RichConventions":13,"./Token":14,"./TokenKind":15,"./TokenizerContext":17,"./TokenizerSnapshot":18,"./insertBracketsInsideBracketedConventions":20,"./nestOverlappingConventions":21}],17:[function(require,module,exports){
 "use strict";
 var TokenizerContext = (function () {
     function TokenizerContext(convention, snapshot) {

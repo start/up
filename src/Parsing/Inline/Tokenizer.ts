@@ -15,7 +15,7 @@ import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { InlineConsumer } from './InlineConsumer'
+import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { NewTokenArgs } from './NewTokenArgs'
@@ -25,7 +25,7 @@ import { TokenizableConvention } from './TokenizableConvention'
 export class Tokenizer {
   tokens: Token[] = []
 
-  private consumer: InlineConsumer
+  private consumer: InlineTextConsumer
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a PlainTextToken.
@@ -83,7 +83,7 @@ export class Tokenizer {
   }
 
   constructor(entireText: string, private config: UpConfig) {
-    this.consumer = new InlineConsumer(entireText)
+    this.consumer = new InlineTextConsumer(entireText)
     this.configureConventions()
 
     this.tokenize()
