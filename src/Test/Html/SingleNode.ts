@@ -352,9 +352,9 @@ describe('A link node', () => {
 
 
 describe('A footnote node', () => {
-  it("produces a sup element (with an 'up-footnote-reference' class and an ID indicating its reference number), containing a link that contains the reference number and points to the footnote", () => {
+  it("produces a sup element (with an 'up-footnote-reference' class and an ID indicating its reference number) containing a link that contains the reference number and points to the footnote", () => {
     const node = new FootnoteNode([], 3)
-    expect(Up.toHtml(node)).to.be.eql('<sup id="footnote-reference-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup>')
+    expect(Up.toHtml(node)).to.be.eql('<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>')
   })
 })
 
@@ -381,8 +381,8 @@ describe("Each footnote in a footnote block", () => {
 
     const html =
       '<dl class="up-footnotes">'
-      + '<dt id="footnote-2"><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
-      + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      + '<dt id="up-footnote-2"><a href="#up-footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
