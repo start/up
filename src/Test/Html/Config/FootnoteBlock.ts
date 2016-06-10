@@ -6,7 +6,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe("A footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
-  it("are prefixed with the default document name 'up' if none was provided", () => {
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
@@ -45,6 +45,30 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       '<dl class="up-footnotes">'
       + '<dt id="reply-11-footnote-2"><a href="#reply-11-footnote-reference-2">2</a></dt><dd>Arwings</dd>'
       + '<dt id="reply-11-footnote-3"><a href="#reply-11-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      + '</dl>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+  it("are not prefixed with a document name if a blank name was provided", () => {
+    const up = new Up({
+      documentName: ''
+    })
+    
+    const node =
+      new FootnoteBlockNode([
+        new FootnoteNode([
+          new PlainTextNode("Arwings"),
+        ], 2),
+        new FootnoteNode([
+          new PlainTextNode("Killer Bees"),
+        ], 3),
+      ])
+
+    const html =
+      '<dl class="up-footnotes">'
+      + '<dt id="footnote-2"><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)

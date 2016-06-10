@@ -22,7 +22,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<sup id="reply-11-footnote-reference-3" class="up-footnote-reference"><a href="#reply-11-footnote-3">3</a></sup>')
   })
 
-  it("are not prefixed with a document name if a blank one was provided", () => {
+  it("are not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ''
     })
