@@ -52,7 +52,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
   it("are not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
-      documentName: ''
+      documentName: ' \t'
     })
     
     const node =
