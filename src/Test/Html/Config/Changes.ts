@@ -4,6 +4,8 @@ import { UpConfigSettings } from '../../../UpConfigSettings'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { NotSafeForWorkNode } from '../../../SyntaxNodes/NotSafeForWorkNode'
+import { NotSafeForLifeNode } from '../../../SyntaxNodes/NotSafeForLifeNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -162,7 +164,7 @@ describe('The "spoiler" config term', () => {
     conflictingConfigChanges: {
       i18n: {
         terms: {
-          footnote: 'ruins ending'
+          spoiler: 'ruins ending'
         }
       }
     }
@@ -184,14 +186,14 @@ describe('The "toggleSpoiler" config term', () => {
     configChanges: {
       i18n: {
         terms: {
-          spoiler: 'show/hide'
+          toggleSpoiler: 'show/hide'
         }
       }
     },
     conflictingConfigChanges: {
       i18n: {
         terms: {
-          footnote: 'see spoiler?'
+          toggleSpoiler: 'see spoiler?'
         }
       }
     }
