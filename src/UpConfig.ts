@@ -2,7 +2,7 @@ import { UpConfigSettings} from './UpConfigSettings'
 
 
 const DEFAULT_CONFIG: UpConfigSettings = {
-  documentName: null,
+  documentName: 'up',
 
   defaultUrlScheme: 'https://',
   baseForUrlsStartingWithSlash: '',  

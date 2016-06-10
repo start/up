@@ -2869,7 +2869,7 @@ function toHtml(textOrNode, config) {
 },{"./Parsing/parseDocument":37,"./UpConfig":81,"./Writers/HtmlWriter":82}],81:[function(require,module,exports){
 "use strict";
 var DEFAULT_CONFIG = {
-    documentName: null,
+    documentName: 'up',
     defaultUrlScheme: 'https://',
     baseForUrlsStartingWithSlash: '',
     i18n: {
