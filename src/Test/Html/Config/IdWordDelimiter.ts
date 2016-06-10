@@ -52,7 +52,7 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
 })
 
 
-describe("The words in the ID of spoiler's checkbox (on both the checkbox and the label)", () => {
+describe("The words in the ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {

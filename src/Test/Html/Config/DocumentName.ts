@@ -3,6 +3,7 @@ import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
@@ -102,6 +103,57 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       + '<dt id="footnote-2"><a href="#footnote-reference-2">2</a></dt><dd>Arwings</dd>'
       + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+    const node = new SpoilerNode([])
+    
+    const html =
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+
+
+  it("are prefixed with the document name, if one was provided", () => {
+    const up = new Up({
+      documentName: 'reply-11'
+    })
+
+    const node = new SpoilerNode([])
+    
+    const html =
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="reply-11-spoiler-1">toggle spoiler</label>'
+      + '<input id="reply-11-spoiler-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+  it("are not prefixed with a document name if a blank name was provided", () => {
+    const up = new Up({
+      documentName: ' \t'
+    })
+
+    const node = new SpoilerNode([])
+    
+    const html =
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="spoiler-1">toggle spoiler</label>'
+      + '<input id="spoiler-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
