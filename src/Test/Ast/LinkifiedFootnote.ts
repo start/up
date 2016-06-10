@@ -8,6 +8,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
@@ -105,6 +106,31 @@ describe('A footnote directly followed by a media convention', () => {
           new PlainTextNode("I don't eat cereal."),
           footnotes[0],
           new VideoNode('me not eating cereal', 'https://example.com/v/123')
+        ]),
+        new FootnoteBlockNode(footnotes)
+      ]))
+  })
+})
+
+
+describe('A footnote directly followed by a spoiler convention', () => {
+  it("is not linkified", () => {
+    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnotes[0],
+          new SpoilerNode([
+            new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
+          ])
         ]),
         new FootnoteBlockNode(footnotes)
       ]))
