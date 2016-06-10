@@ -214,7 +214,7 @@ var Parser = (function () {
                 this.nodes.push(new LinkNode_1.LinkNode(contents, url));
                 continue;
             }
-            if (token.kind === TokenKind_1.TokenKind.LinkStart) {
+            if (token.kind === RichConventions_1.LINK_CONVENTION.startTokenKind) {
                 var result = this.parse({ untilTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd });
                 var contents = result.nodes;
                 var hasContents = isNotPureWhitespace(contents);

@@ -1,4 +1,4 @@
-import { STRESS_CONVENTION, EMPHASIS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, FOOTNOTE_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
+import { LINK_CONVENTION, STRESS_CONVENTION, EMPHASIS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -94,7 +94,7 @@ export class Parser {
         continue
       }
 
-      if (token.kind === TokenKind.LinkStart) {
+      if (token.kind === LINK_CONVENTION.startTokenKind) {
         const result = this.parse({ untilTokenKind: TokenKind.LinkUrlAndEnd })
 
         let contents = result.nodes
