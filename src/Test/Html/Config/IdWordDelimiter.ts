@@ -3,10 +3,12 @@ import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+
 
 
 describe("The words in a footnote reference's ID (as well as the ID of the footnote it points to)", () => {
-it("are delimited by specified the ID word delimiter", () => {
+  it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '::'
@@ -14,7 +16,7 @@ it("are delimited by specified the ID word delimiter", () => {
     })
 
     const node = new FootnoteNode([], 3)
-    
+
     expect(up.toHtml(node)).to.be.eql(
       '<sup id="up::footnote::reference::3" class="up-footnote-reference"><a href="#up::footnote::3">3</a></sup>')
   })
@@ -28,7 +30,7 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
         idWordDelimiter: '::'
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
@@ -50,8 +52,30 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
 })
 
 
+describe("The words in the ID of spoiler's checkbox (on both the checkbox and the label)", () => {
+  it("are delimited by specified the ID word delimiter", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '_'
+      }
+    })
+
+    const node = new SpoilerNode([])
+
+    const html =
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="up_spoiler_1">toggle spoiler</label>'
+      + '<input id="up_spoiler_1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
 describe("In a footnote reference, separate words in the provided document name", () => {
-it("are delimited by specified the ID word delimiter", () => {
+  it("are delimited by specified the ID word delimiter", () => {
     const node = new FootnoteNode([], 3)
 
     const up = new Up({
@@ -75,7 +99,7 @@ describe("In a footnote block, separate words in the provided document name", ()
         idWordDelimiter: '::'
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
@@ -105,7 +129,7 @@ describe('In a footnote reference, separate words in the provided term for "foot
         terms: { footnoteReference: 'fn ref' }
       }
     })
-    
+
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
@@ -122,7 +146,7 @@ describe('In a footnote block, separate words in the provided term for "footnote
         terms: { footnoteReference: 'fn ref' }
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
