@@ -13,17 +13,17 @@ describe('The term that represents NSFL conventions', () => {
     })
     
   it('comes from the "nsfw" config term ', () => {
-    expect(up.toAst('[ruins life: Ash eats rotten Gary]')).to.be.eql(
+    expect(up.toAst('[ruins life: Ash eats rotting Gary]')).to.be.eql(
       insideDocumentAndParagraph([
         new NotSafeForLifeNode([
-          new PlainTextNode('Ash eats rotten Gary')
+          new PlainTextNode('Ash eats rotting Gary')
         ])
       ]))
   })
   
   it('is case-insensitive even when custom', () => {
-    const uppercase = '[RUINS LIFE: Ash eats rotten Gary]'
-    const mixedCase = '[RuINs LiFe: Ash eats rotten Gary]'
+    const uppercase = '[RUINS LIFE: Ash eats rotting Gary]'
+    const mixedCase = '[RuINs LiFe: Ash eats rotting Gary]'
     
     expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
   })
