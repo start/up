@@ -15,6 +15,8 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { NotSafeForWorkNode } from '../../SyntaxNodes/NotSafeForWorkNode'
+import { NotSafeForLifeNode } from '../../SyntaxNodes/NotSafeForLifeNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -425,6 +427,38 @@ describe('A spoiler node', () => {
       + '<label for="up-spoiler-1">toggle spoiler</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
       + '<span>45.9%</span>'
+      + '</span>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe('A NSFW node', () => {
+  it('produces a span element (with "up-nsfw" and "up-revealable" classes), containing a label (with the text "toggle nsfw"), an associated checkbox, and a span element containing the NSFW contents', () => {
+    const node = new NotSafeForWorkNode([new PlainTextNode('naked Gary')])
+
+    const html =
+      '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<span>naked Gary</span>'
+      + '</span>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe('A NSFL node', () => {
+  it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle nsfl"), an associated checkbox, and a span element containing the NSFL contents', () => {
+    const node = new NotSafeForWorkNode([new PlainTextNode('rotting Gary')])
+
+    const html =
+      '<span class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
+      + '<span>naked Gary</span>'
       + '</span>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
