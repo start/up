@@ -33,6 +33,7 @@ import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { UpConfig } from '../UpConfig'
 
 
@@ -41,7 +42,7 @@ export class HtmlWriter extends Writer {
   // We don't create an anchor element for the inner link.
   private isInsideLink = false
 
-  // Our spoiler markup doesn't require JavaScript (and works perfectly for screen-readers):
+  // Our spoiler markup doesn't require JavaScript (just CSS), and it works perfectly well for screen-readers:
   //
   // <span class="up-spoiler up-revealable">
   //   <label for="up-spoiler-1">toggle spoiler</label>
@@ -161,7 +162,14 @@ export class HtmlWriter extends Writer {
   protected spoiler(node: SpoilerNode): string {
     this.spoilerCount += 1
 
-    return this.htmlElement('span', node.children, { class: cssClass('spoiler') })
+    const { terms } = this.config.settings.i18n
+
+    return this.revealableConvent({
+      conventionTerm: terms.spoiler,
+      conventionCount: this.spoilerCount,
+      termForTogglingVisibility: null,
+      children: node.children
+    })
   }
 
   protected footnoteReference(node: FootnoteNode): string {
@@ -285,6 +293,26 @@ export class HtmlWriter extends Writer {
     return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
+  private revealableConvent(
+    args: {
+      conventionTerm: string
+      conventionCount: number
+      termForTogglingVisibility: string
+      children: InlineSyntaxNode[]
+  }
+  ): string {
+    const { conventionTerm, conventionCount, termForTogglingVisibility, children } = args
+
+    const checkboxId = this.getId(conventionTerm, conventionCount)
+
+    return this.htmlElement(
+      'span',
+      [
+        
+      ],
+      { class: cssClass(conventionTerm, 'revealable')})
+  }
+
   private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
     return htmlElement(tagName, this.htmlElements(children), attrs)
   }
@@ -336,5 +364,7 @@ function internalUrl(id: string): string {
 
 function cssClass(...names: string[]): string {
   // We always prefix our class names with 'up-' regardless of the provided document name.
-  return names.map(name => 'up-' + name).join(' ')
+  return names
+    .map(name => 'up-' + name)
+    .join(' ')
 }
