@@ -168,3 +168,32 @@ describe('The "spoiler" config term', () => {
     }
   })
 })
+
+
+
+describe('The "toggleSpoiler" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new SpoilerNode([]),
+    htmlFromDefaultSettings:
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+,
+    configChanges: {
+      i18n: {
+        terms: {
+          spoiler: 'show/hide'
+        }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          footnote: 'see spoiler?'
+        }
+      }
+    }
+  })
+})
