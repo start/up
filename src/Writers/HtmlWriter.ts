@@ -41,6 +41,21 @@ export class HtmlWriter extends Writer {
   // We don't create an anchor element for the inner link.
   private isInsideLink = false
 
+  // Our spoiler markup doesn't require JavaScript (and works perfectly for screen-readers):
+  //
+  // <span class="up-spoiler up-revealable">
+  //   <label for="up-spoiler-1">toggle spoiler</label>
+  //   <input id="up-spoiler-1" type="checkbox">
+  //   <span>Ash fights Gary</span>
+  // </span>
+  //
+  // Unfortunately, this solution requires generating unique IDs to associate each spoiler's label with its
+  // checkbox.
+  //
+  // Each Writer class is only used once per document, so we'll just keep track by incrementing a counter each
+  // time we write a spoiler.
+  private spoilerCount = 0
+
   constructor(config?: UpConfig) {
     super(config)
   }
@@ -143,6 +158,8 @@ export class HtmlWriter extends Writer {
   }
 
   protected spoiler(node: SpoilerNode): string {
+    this.spoilerCount += 1
+    
     return this.htmlElement('span', node.children, { [cssClass('spoiler')]: null })
   }
 

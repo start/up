@@ -2940,6 +2940,7 @@ var HtmlWriter = (function (_super) {
     function HtmlWriter(config) {
         _super.call(this, config);
         this.isInsideLink = false;
+        this.spoilerCount = 0;
     }
     HtmlWriter.prototype.document = function (node) {
         return this.htmlElements(node.children);
@@ -3010,6 +3011,7 @@ var HtmlWriter = (function (_super) {
         var _a;
     };
     HtmlWriter.prototype.spoiler = function (node) {
+        this.spoilerCount += 1;
         return this.htmlElement('span', node.children, (_a = {}, _a[cssClass('spoiler')] = null, _a));
         var _a;
     };
