@@ -13,6 +13,10 @@ export interface UpConfigSettings {
       video?: string
       spoiler?: string
       toggleSpoiler?: string
+      nsfw?: string
+      toggleNsfw?: string
+      nsfl?: string
+      toggleNsfl?: string
       footnote?: string
       footnoteReference?: string
       

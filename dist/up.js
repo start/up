@@ -2880,6 +2880,10 @@ var DEFAULT_CONFIG = {
             video: 'video',
             spoiler: 'spoiler',
             toggleSpoiler: 'toggle spoiler',
+            nsfw: 'nsfw',
+            toggleNsfw: 'toggle nsfw',
+            nsfl: 'nsfl',
+            toggleNsfl: 'toggle nsfl',
             footnote: 'footnote',
             footnoteReference: 'footnote reference'
         }
