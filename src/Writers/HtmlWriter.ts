@@ -165,7 +165,7 @@ export class HtmlWriter extends Writer {
     const { terms } = this.config.settings.i18n
 
     return this.revealableConvent({
-      conventionTerm: terms.spoiler,
+      nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: terms.toggleSpoiler,
       conventionCount: this.spoilerCount,
       revealableChildren: node.children
@@ -295,14 +295,16 @@ export class HtmlWriter extends Writer {
 
   private revealableConvent(
     args: {
-      conventionTerm: string
+      nonLocalizedConventionTerm: string
       termForTogglingVisibility: string
       conventionCount: number
       revealableChildren: InlineSyntaxNode[]
     }
   ): string {
-    const { conventionTerm, conventionCount, termForTogglingVisibility, revealableChildren } = args
-    const checkboxId = this.getId(conventionTerm, conventionCount)
+    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren } = args
+    
+    const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
+    const checkboxId = this.getId(localizedTerm, conventionCount)
 
     const htmlForTogglingVisibility =
       `<label for="${checkboxId}">${termForTogglingVisibility}</label>`
@@ -311,7 +313,7 @@ export class HtmlWriter extends Writer {
     return htmlElement(
       'span',
       htmlForTogglingVisibility + this.htmlElement('span', revealableChildren),
-      { class: cssClass(conventionTerm, 'revealable') })
+      { class: cssClass(nonLocalizedConventionTerm, 'revealable') })
   }
 
   private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {

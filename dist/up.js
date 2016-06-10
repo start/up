@@ -3013,7 +3013,7 @@ var HtmlWriter = (function (_super) {
         this.spoilerCount += 1;
         var terms = this.config.settings.i18n.terms;
         return this.revealableConvent({
-            conventionTerm: terms.spoiler,
+            nonLocalizedConventionTerm: 'spoiler',
             termForTogglingVisibility: terms.toggleSpoiler,
             conventionCount: this.spoilerCount,
             revealableChildren: node.children
@@ -3098,11 +3098,12 @@ var HtmlWriter = (function (_super) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
     };
     HtmlWriter.prototype.revealableConvent = function (args) {
-        var conventionTerm = args.conventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, revealableChildren = args.revealableChildren;
-        var checkboxId = this.getId(conventionTerm, conventionCount);
+        var nonLocalizedConventionTerm = args.nonLocalizedConventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, revealableChildren = args.revealableChildren;
+        var localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm);
+        var checkboxId = this.getId(localizedTerm, conventionCount);
         var htmlForTogglingVisibility = ("<label for=\"" + checkboxId + "\">" + termForTogglingVisibility + "</label>")
             + ("<input id=\"" + checkboxId + "\" type=\"checkbox\">");
-        return htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: cssClass(conventionTerm, 'revealable') });
+        return htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: cssClass(nonLocalizedConventionTerm, 'revealable') });
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }
