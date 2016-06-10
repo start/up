@@ -3,6 +3,7 @@ import Up from '../../../index'
 import { UpConfigSettings } from '../../../UpConfigSettings'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -134,6 +135,34 @@ describe('The "footnote" config term', () => {
       i18n: {
         terms: {
           footnote: 'note'
+        }
+      }
+    }
+  })
+})
+
+
+describe('The "spoiler" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    node: new SpoilerNode([]),
+    htmlFromDefaultSettings:
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+,
+    configChanges: {
+      i18n: {
+        terms: {
+          spoiler: 'look away'
+        }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          footnote: 'ruins ending'
         }
       }
     }
