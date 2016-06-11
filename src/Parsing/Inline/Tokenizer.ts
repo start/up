@@ -534,10 +534,8 @@ export class Tokenizer {
         const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
         linkStartToken.associateWith(linkEndToken)
 
-        // The last token is guaranteed to be a SpoilerEnd, or FootnoteEnd token.
-        //
-        // We'll insert a link end token right before the original end token, and we'll insert a link start token
-        // right after the corresponding start token.
+        // We'll insert our new link end token right before the original end token, and we'll insert a our new link
+        // start token right after the original end token's corresponding start token.
 
         const indexOfOriginalEndToken = this.tokens.length - 1
         this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken, context })
