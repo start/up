@@ -53,7 +53,7 @@ describe("Inside a NSFW convention's label, all instances of < and &", () => {
       }
     })
 
-    const node = new SpoilerNode([])
+    const node = new NsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'
@@ -75,7 +75,7 @@ describe("Inside a NSFL convention's label, all instances of < and &", () => {
       }
     })
 
-    const node = new SpoilerNode([])
+    const node = new NsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'

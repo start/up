@@ -2999,7 +2999,7 @@ function merge(base, changes) {
 "use strict";
 function htmlElement(tagName, content, attrs) {
     if (attrs === void 0) { attrs = {}; }
-    return "" + htmlStartTag(tagName, attrs) + content + "</" + tagName + ">";
+    return htmlElementWithAlreadyEscapedChildren(tagName, [escapeHtmlContent(content)], attrs);
 }
 exports.htmlElement = htmlElement;
 function singleTagHtmlElement(tagName, attrs) {
@@ -3007,6 +3007,11 @@ function singleTagHtmlElement(tagName, attrs) {
     return htmlStartTag(tagName, attrs);
 }
 exports.singleTagHtmlElement = singleTagHtmlElement;
+function htmlElementWithAlreadyEscapedChildren(tagName, escapedChildren, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    return htmlStartTag(tagName, attrs) + escapedChildren.join('') + ("</" + tagName + ">");
+}
+exports.htmlElementWithAlreadyEscapedChildren = htmlElementWithAlreadyEscapedChildren;
 function internalFragmentUrl(id) {
     return '#' + id;
 }
@@ -3063,14 +3068,14 @@ var HtmlWriter = (function (_super) {
         this.nsflCount = 0;
     }
     HtmlWriter.prototype.document = function (node) {
-        return this.htmlElements(node.children);
+        return this.htmlElements(node.children).join('');
     };
     HtmlWriter.prototype.blockquote = function (node) {
         return this.htmlElement('blockquote', node.children);
     };
     HtmlWriter.prototype.unorderedList = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElement('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }).join(''));
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }));
     };
     HtmlWriter.prototype.orderedList = function (node) {
         var _this = this;
@@ -3082,18 +3087,18 @@ var HtmlWriter = (function (_super) {
         if (node.order() === OrderedListOrder_1.OrderedListOrder.Descrending) {
             attrs.reversed = null;
         }
-        return HtmlHelpers_1.htmlElement('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }).join(''), attrs);
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }), attrs);
     };
     HtmlWriter.prototype.descriptionList = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElement('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }).join(''));
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }));
     };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), { class: HtmlHelpers_1.cssClass('lines') });
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('div', node.lines.map(function (line) { return _this.line(line); }), { class: HtmlHelpers_1.cssClass('lines') });
     };
     HtmlWriter.prototype.codeBlock = function (node) {
-        return HtmlHelpers_1.htmlElement('pre', HtmlHelpers_1.htmlElement('code', node.text));
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('pre', [HtmlHelpers_1.htmlElement('code', node.text)]);
     };
     HtmlWriter.prototype.paragraph = function (node) {
         return this.htmlElement('p', node.children);
@@ -3161,7 +3166,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { class: HtmlHelpers_1.cssClass('footnotes') });
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }), { class: HtmlHelpers_1.cssClass('footnotes') });
     };
     HtmlWriter.prototype.link = function (node) {
         var _this = this;
@@ -3234,17 +3239,18 @@ var HtmlWriter = (function (_super) {
         var nonLocalizedConventionTerm = args.nonLocalizedConventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, revealableChildren = args.revealableChildren;
         var localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm);
         var checkboxId = this.getId(localizedTerm, conventionCount);
-        var htmlForTogglingVisibility = HtmlHelpers_1.htmlElement('label', termForTogglingVisibility, { for: checkboxId })
-            + HtmlHelpers_1.singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' });
-        return HtmlHelpers_1.htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('span', [
+            HtmlHelpers_1.htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
+            HtmlHelpers_1.singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
+            this.htmlElement('span', revealableChildren)], { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }
-        return HtmlHelpers_1.htmlElement(tagName, this.htmlElements(children), attrs);
+        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren(tagName, this.htmlElements(children), attrs);
     };
     HtmlWriter.prototype.htmlElements = function (nodes) {
         var _this = this;
-        return nodes.reduce(function (html, child) { return html + _this.write(child); }, '');
+        return nodes.map(function (node) { return _this.write(node); });
     };
     HtmlWriter.prototype.footnoteId = function (referenceNumber) {
         return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber);

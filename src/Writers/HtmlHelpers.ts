@@ -1,9 +1,13 @@
 export function htmlElement(tagName: string, content: string, attrs: any = {}): string {
-  return `${htmlStartTag(tagName, attrs)}${content}</${tagName}>`
+  return htmlElementWithAlreadyEscapedChildren(tagName, [escapeHtmlContent(content)], attrs)
 }
 
 export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
   return htmlStartTag(tagName, attrs)
+}
+
+export function htmlElementWithAlreadyEscapedChildren(tagName: string, escapedChildren: string[], attrs: any = {}): string {
+  return htmlStartTag(tagName, attrs) + escapedChildren.join('') + `</${tagName}>`
 }
 
 export function internalFragmentUrl(id: string): string {

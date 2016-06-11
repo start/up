@@ -37,7 +37,7 @@ import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { UpConfig } from '../UpConfig'
-import { htmlElement, singleTagHtmlElement, cssClass, internalFragmentUrl, escapeHtmlContent} from './HtmlHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, cssClass, internalFragmentUrl, escapeHtmlContent} from './HtmlHelpers'
 
 export class HtmlWriter extends Writer {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
@@ -68,7 +68,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected document(node: DocumentNode): string {
-    return this.htmlElements(node.children)
+    return this.htmlElements(node.children).join('')
   }
 
   protected blockquote(node: BlockquoteNode): string {
@@ -76,9 +76,9 @@ export class HtmlWriter extends Writer {
   }
 
   protected unorderedList(node: UnorderedListNode): string {
-    return htmlElement(
+    return htmlElementWithAlreadyEscapedChildren(
       'ul',
-      node.listItems.map(listItem => this.unorderedListItem(listItem)).join('')
+      node.listItems.map(listItem => this.unorderedListItem(listItem))
     )
   }
 
@@ -96,30 +96,31 @@ export class HtmlWriter extends Writer {
       attrs.reversed = null
     }
 
-    return htmlElement(
+    return htmlElementWithAlreadyEscapedChildren(
       'ol',
-      node.listItems.map(listItem => this.orderedListItem(listItem)).join(''),
+      node.listItems.map(listItem => this.orderedListItem(listItem)),
       attrs
     )
   }
 
   protected descriptionList(node: DescriptionListNode): string {
-    return htmlElement(
+    return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      node.listItems.map(listItem => this.descriptionListItem(listItem)).join('')
+      node.listItems.map(listItem => this.descriptionListItem(listItem))
     )
   }
 
   protected lineBlock(node: LineBlockNode): string {
-    return htmlElement(
+    return htmlElementWithAlreadyEscapedChildren(
       'div',
-      node.lines.map(line => this.line(line)).join(''),
-      { class: cssClass('lines') }
-    )
+      node.lines.map(line => this.line(line)),
+      { class: cssClass('lines') })
   }
 
   protected codeBlock(node: CodeBlockNode): string {
-    return htmlElement('pre', htmlElement('code', node.text))
+    return htmlElementWithAlreadyEscapedChildren(
+      'pre',
+      [htmlElement('code', node.text)])
   }
 
   protected paragraph(node: ParagraphNode): string {
@@ -205,9 +206,9 @@ export class HtmlWriter extends Writer {
   }
 
   protected footnoteBlock(node: FootnoteBlockNode): string {
-    return htmlElement(
+    return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      node.footnotes.map(footnote => this.footnote(footnote)).join(''),
+      node.footnotes.map(footnote => this.footnote(footnote)),
       { class: cssClass('footnotes') })
   }
 
@@ -323,28 +324,24 @@ export class HtmlWriter extends Writer {
     }
   ): string {
     const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren } = args
-    
+
     const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
     const checkboxId = this.getId(localizedTerm, conventionCount)
 
-    const htmlForTogglingVisibility =
-      htmlElement('label', termForTogglingVisibility, { for: checkboxId })
-      + singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
-
-    return htmlElement(
-      'span',
-      htmlForTogglingVisibility + this.htmlElement('span', revealableChildren),
+    return htmlElementWithAlreadyEscapedChildren(
+      'span', [
+        htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
+        singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
+        this.htmlElement('span', revealableChildren)],
       { class: cssClass(nonLocalizedConventionTerm, 'revealable') })
   }
 
   private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
-    return htmlElement(tagName, this.htmlElements(children), attrs)
+    return htmlElementWithAlreadyEscapedChildren(tagName, this.htmlElements(children), attrs)
   }
 
-  private htmlElements(nodes: SyntaxNode[]): string {
-    return nodes.reduce(
-      (html, child) => html + this.write(child),
-      '')
+  private htmlElements(nodes: SyntaxNode[]): string[] {
+    return nodes.map(node => this.write(node))
   }
 
   private footnoteId(referenceNumber: number): string {
