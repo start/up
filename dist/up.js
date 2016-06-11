@@ -3138,7 +3138,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('video', this.mediaFallback(description, url), { src: url, title: description });
     };
     HtmlWriter.prototype.plainText = function (node) {
-        return node.text;
+        return escapeHtmlContent(node.text);
     };
     HtmlWriter.prototype.bracketed = function (bracketed, bracketName) {
         return this.htmlElement('span', bracketed.children, { class: cssClass(bracketName) });
@@ -3238,6 +3238,13 @@ function cssClass() {
     return names
         .map(function (name) { return 'up-' + name; })
         .join(' ');
+}
+var ESCAPED_HTML_ENTITIES_BY_ENTITY = {
+    '&': '&amp;',
+    '<': '&lt;',
+};
+function escapeHtmlContent(content) {
+    return content.replace(/[&<]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
 }
 
 },{"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/OrderedListOrder":66,"../SyntaxNodes/PlainTextNode":70,"./Writer":85}],85:[function(require,module,exports){

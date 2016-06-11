@@ -239,7 +239,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected plainText(node: PlainTextNode): string {
-    return node.text
+    return escapeHtmlContent(node.text)
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
@@ -390,4 +390,13 @@ function cssClass(...names: string[]): string {
   return names
     .map(name => 'up-' + name)
     .join(' ')
+}
+
+const ESCAPED_HTML_ENTITIES_BY_ENTITY: { [entity: string]: string } = {
+  '&': '&amp;',
+  '<': '&lt;',
+}
+
+function escapeHtmlContent(content: string): string {
+  return content.replace(/[&<]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]) 
 }
