@@ -55,11 +55,11 @@ export class HtmlWriter extends Writer {
   // Unfortunately, this solution requires generating unique IDs to associate each spoiler's label with its
   // checkbox.
   //
-  // Each Writer class is only used once per document, so we'll just keep track by incrementing a counter each
-  // time we write a spoiler.
+  // Each Writer class is only used once per document, so we'll just increment a counter each time we write a
+  // spoiler, appending the counter's value to the checkbox's ID.
   private spoilerCount = 0
 
-  // We produce similar markup for NSFW and NSFL conventions.
+  // We produce similar markup for NSFW and NSFL conventions, so they both need counters, too.
   private nsfwCount = 0
   private nsflCount = 0
 
