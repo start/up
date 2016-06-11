@@ -92,6 +92,7 @@ export class HtmlWriter extends Writer {
     }
 
     if (node.order() === OrderedListOrder.Descrending) {
+      // This adds a "reversed" attribute without a value.
       attrs.reversed = null
     }
 
@@ -327,8 +328,8 @@ export class HtmlWriter extends Writer {
     const checkboxId = this.getId(localizedTerm, conventionCount)
 
     const htmlForTogglingVisibility =
-      `<label for="${checkboxId}">${termForTogglingVisibility}</label>`
-      + `<input id="${checkboxId}" type="checkbox">`
+      htmlElement('label', termForTogglingVisibility, { for: checkboxId })
+      + singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
 
     return htmlElement(
       'span',

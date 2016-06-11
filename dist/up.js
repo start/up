@@ -3234,8 +3234,8 @@ var HtmlWriter = (function (_super) {
         var nonLocalizedConventionTerm = args.nonLocalizedConventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, revealableChildren = args.revealableChildren;
         var localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm);
         var checkboxId = this.getId(localizedTerm, conventionCount);
-        var htmlForTogglingVisibility = ("<label for=\"" + checkboxId + "\">" + termForTogglingVisibility + "</label>")
-            + ("<input id=\"" + checkboxId + "\" type=\"checkbox\">");
+        var htmlForTogglingVisibility = HtmlHelpers_1.htmlElement('label', termForTogglingVisibility, { for: checkboxId })
+            + HtmlHelpers_1.singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' });
         return HtmlHelpers_1.htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
