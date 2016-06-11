@@ -21,18 +21,12 @@ export function cssClass(...names: string[]): string {
     .join(' ')
 }
 
-const ESCAPED_HTML_ENTITIES_BY_ENTITY: { [entity: string]: string } = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '"': '&quot;',
-}
-
 export function escapeHtmlContent(content: string): string {
-  return content.replace(/[&<]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity])
+  return htmlEscape(content, /[&<]/g)
 }
 
 function escapeHtmlAttrValue(attrValue: any): string {
-  return String(attrValue).replace(/[&"]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity])
+  return htmlEscape(String(attrValue), /[&"]/g)
 }
 
 function htmlStartTag(tagName: string, attrs: any): string {
@@ -53,4 +47,14 @@ function htmlAttr(attrs: any, attrName: string): string {
     value == null
       ? attrName
       : `${attrName}="${escapeHtmlAttrValue(value)}"`)
+}
+
+const ESCAPED_HTML_ENTITIES_BY_CHAR: { [entity: string]: string } = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '"': '&quot;',
+}
+
+function htmlEscape(html: string, charsToEscape: RegExp): string {
+  return html.replace(charsToEscape, char => ESCAPED_HTML_ENTITIES_BY_CHAR[char])
 }

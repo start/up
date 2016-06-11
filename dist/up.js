@@ -3026,17 +3026,12 @@ function cssClass() {
         .join(' ');
 }
 exports.cssClass = cssClass;
-var ESCAPED_HTML_ENTITIES_BY_ENTITY = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '"': '&quot;',
-};
 function escapeHtmlContent(content) {
-    return content.replace(/[&<]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
+    return htmlEscape(content, /[&<]/g);
 }
 exports.escapeHtmlContent = escapeHtmlContent;
 function escapeHtmlAttrValue(attrValue) {
-    return String(attrValue).replace(/[&"]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
+    return htmlEscape(String(attrValue), /[&"]/g);
 }
 function htmlStartTag(tagName, attrs) {
     var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
@@ -3050,6 +3045,14 @@ function htmlAttr(attrs, attrName) {
     return (value == null
         ? attrName
         : attrName + "=\"" + escapeHtmlAttrValue(value) + "\"");
+}
+var ESCAPED_HTML_ENTITIES_BY_CHAR = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '"': '&quot;',
+};
+function htmlEscape(html, charsToEscape) {
+    return html.replace(charsToEscape, function (char) { return ESCAPED_HTML_ENTITIES_BY_CHAR[char]; });
 }
 
 },{}],85:[function(require,module,exports){
