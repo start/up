@@ -1,7 +1,7 @@
 import { parseDocument } from './Parsing/parseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
-import { HtmlWriter } from './Writers/HtmlWriter'
+import { HtmlWriter } from './Writers//Html/HtmlWriter'
 import { UpConfig } from './UpConfig'
 import { UpConfigSettings } from './UpConfigSettings'
 

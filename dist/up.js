@@ -2900,7 +2900,7 @@ exports.isWhitespace = isWhitespace;
 },{"./PlainTextNode":70}],82:[function(require,module,exports){
 "use strict";
 var parseDocument_1 = require('./Parsing/parseDocument');
-var HtmlWriter_1 = require('./Writers/HtmlWriter');
+var HtmlWriter_1 = require('./Writers//Html/HtmlWriter');
 var UpConfig_1 = require('./UpConfig');
 var Up = (function () {
     function Up(settings) {
@@ -2932,7 +2932,7 @@ function toHtml(textOrNode, config) {
     return new HtmlWriter_1.HtmlWriter(config).write(node);
 }
 
-},{"./Parsing/parseDocument":37,"./UpConfig":83,"./Writers/HtmlWriter":85}],83:[function(require,module,exports){
+},{"./Parsing/parseDocument":37,"./UpConfig":83,"./Writers//Html/HtmlWriter":85}],83:[function(require,module,exports){
 "use strict";
 var DEFAULT_CONFIG = {
     documentName: 'up',
@@ -3062,10 +3062,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var LinkNode_1 = require('../SyntaxNodes/LinkNode');
-var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
-var OrderedListOrder_1 = require('../SyntaxNodes/OrderedListOrder');
-var Writer_1 = require('./Writer');
+var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
+var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
+var OrderedListOrder_1 = require('../../SyntaxNodes/OrderedListOrder');
+var Writer_1 = require('../Writer');
 var HtmlHelpers_1 = require('./HtmlHelpers');
 var HtmlWriter = (function (_super) {
     __extends(HtmlWriter, _super);
@@ -3271,7 +3271,7 @@ var HtmlWriter = (function (_super) {
 }(Writer_1.Writer));
 exports.HtmlWriter = HtmlWriter;
 
-},{"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/OrderedListOrder":66,"../SyntaxNodes/PlainTextNode":70,"./HtmlHelpers":84,"./Writer":86}],86:[function(require,module,exports){
+},{"../../SyntaxNodes/LinkNode":60,"../../SyntaxNodes/OrderedListOrder":66,"../../SyntaxNodes/PlainTextNode":70,"../Writer":86,"./HtmlHelpers":84}],86:[function(require,module,exports){
 "use strict";
 var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var ImageNode_1 = require('../SyntaxNodes/ImageNode');
