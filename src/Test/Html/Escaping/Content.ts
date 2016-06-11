@@ -1,5 +1,9 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
+import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
@@ -92,16 +96,35 @@ describe("Inside a NSFL convention's label, all instances of < and &", () => {
 })
 
 
-describe('Nested inside several nested inline nodes, all instances of < and & inside a plain text node', () => {
+describe('Nested within several inline nodes, all instances of < and & inside a plain text node', () => {
   it('are escaped', () => {
-    const node = new EmphasisNode([
-      new StressNode([
-        new RevisionDeletionNode([
-          new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const node =
+      new EmphasisNode([
+        new StressNode([
+          new RevisionDeletionNode([
+            new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+          ])
         ])
       ])
-    ])
 
     expect(Up.toHtml(node)).to.be.eql('<em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em>')
+  })
+})
+
+
+describe('Nested within several outline nodes, all instances of < and & inside a plain text node', () => {
+  it('are escaped', () => {
+    const node =
+      new BlockquoteNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+            ])
+          ])
+        ])
+      ])
+
+    expect(Up.toHtml(node)).to.be.eql('<blockquote><ul><li><p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p></li></ul></blockquote>')
   })
 })
