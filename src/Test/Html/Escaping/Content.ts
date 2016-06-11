@@ -2,6 +2,9 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
@@ -85,5 +88,20 @@ describe("Inside a NSFL convention's label, all instances of < and &", () => {
       + '</span>'
 
     expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe('Nested inside several nested inline nodes, all instances of < and & inside a plain text node', () => {
+  it('are escaped', () => {
+    const node = new EmphasisNode([
+      new StressNode([
+        new RevisionDeletionNode([
+          new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        ])
+      ])
+    ])
+
+    expect(Up.toHtml(node)).to.be.eql('<em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em>')
   })
 })
