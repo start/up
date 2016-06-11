@@ -5,6 +5,9 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
 describe("Within a link's src attribute, all instances of \" and &", () => {
@@ -17,7 +20,7 @@ describe("Within a link's src attribute, all instances of \" and &", () => {
 })
 
 
-describe("Within a link's src attribute, <, ', and >", () => {
+describe("Within a link's href attribute, <, ', and >", () => {
   it("are not escaped", () => {
     const node = new LinkNode([], "https://example.com/?z='<span>'")
 
@@ -83,5 +86,44 @@ describe("Within an image's title and alt attributes, all instances of \" and &"
 
     expect(Up.toHtml(node)).to.be.eql(
       '<img src="" alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
+  })
+})
+
+
+describe("Within the href attribute of a backlink in a footnote block (which contains the 'footnoteReference' config term), all instances of \" and &", () => {
+  it('are escaped', () => {
+    const up = new Up({
+      i18n: {
+        terms: { footnoteReference: 'look "up" & read & remember' }
+      }
+    })
+    
+    const node =
+      new FootnoteBlockNode([
+        new FootnoteNode([], 2)
+      ])
+
+    const html =
+      '<dl class="up-footnotes">'
+      + '<dt id="up-footnote-2"><a href="#up-look-&quot;up&quot;-&amp;-read-&amp;-remember-2">2</a></dt><dd></dd>'
+      + '</dl>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("Within the href attribute of a footnote reference's link (which contains the 'footnote' config term), all instances of \" and &", () => {
+  it('are escaped', () => {
+    const up = new Up({
+      i18n: {
+        terms: { footnote: 'look "down" & read & learn' }
+      }
+    })
+    
+    const node = new FootnoteNode([], 3)
+
+    expect(up.toHtml(node)).to.be.eql(
+      '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-look-&quot;down&quot;-&amp;-read-&amp;-learn-3">3</a></sup>')
   })
 })
