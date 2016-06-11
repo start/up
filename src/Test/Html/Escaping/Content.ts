@@ -2,6 +2,8 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
 describe('Inside plain text nodes, all instances of < and &', () => {
@@ -35,6 +37,50 @@ describe("Inside a spoiler's label, all instances of < and &", () => {
       '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("Inside a NSFW convention's label, all instances of < and &", () => {
+  it("are escaped", () => {
+    const up = new Up({
+      i18n: {
+        terms: { toggleNsfw: '<_< & show & hide' }
+      }
+    })
+
+    const node = new SpoilerNode([])
+
+    const html =
+      '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">&lt;_&lt; &amp; show &amp; hide</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<span></span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("Inside a NSFL convention's label, all instances of < and &", () => {
+  it("are escaped", () => {
+    const up = new Up({
+      i18n: {
+        terms: { toggleNsfl: '<_< & show & hide' }
+      }
+    })
+
+    const node = new SpoilerNode([])
+
+    const html =
+      '<span class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">&lt;_&lt; &amp; show &amp; hide</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
 
