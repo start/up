@@ -12,6 +12,7 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
 
 describe('Within a plain text node, all instances of < and &', () => {
@@ -133,9 +134,19 @@ describe('Nested within several outline nodes, all instances of < and & inside a
 
 describe("Within a video's description within its fallback link, all instances of < and &", () => {
   it('are escaped', () => {
-    const node =              new VideoNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', 'https://example.com/vid1')
-      
+    const node = new VideoNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', 'https://example.com/vid1')
+
     expect(Up.toHtml(node)).to.be.eql(
       '<video src="https://example.com/vid1" title="4 & 5 < 10, and 6 & 7 < 10. Coincidence?"><a href="https://example.com/vid1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></video>')
+  })
+})
+
+
+describe("Within a video's description within its fallback link, all instances of < and &", () => {
+  it('are escaped', () => {
+    const node = new AudioNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', 'https://example.com/clip1')
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<audio src="https://example.com/clip1" title="4 & 5 < 10, and 6 & 7 < 10. Coincidence?"><a href="https://example.com/clip1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></audio>')
   })
 })
