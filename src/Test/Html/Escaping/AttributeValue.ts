@@ -90,7 +90,7 @@ describe("Within an image's title and alt attributes, all instances of \" and &"
 })
 
 
-describe("Within the href attribute of a backlink in a footnote block (which contains the 'footnoteReference' config term), all instances of \" and &", () => {
+describe("Within the href attribute of a backlink in a footnote block, all instances of \" and &", () => {
   it('are escaped', () => {
     const up = new Up({
       i18n: {
@@ -113,7 +113,7 @@ describe("Within the href attribute of a backlink in a footnote block (which con
 })
 
 
-describe("Within the id attribute of a footnote in a footnote block (which contains the 'footnote' config term), all instances of \" and &", () => {
+describe("Within the id attribute of a footnote in a footnote block, all instances of \" and &", () => {
   it('are escaped', () => {
     const up = new Up({
       i18n: {
@@ -136,7 +136,7 @@ describe("Within the id attribute of a footnote in a footnote block (which conta
 })
 
 
-describe("Within the href attribute of a footnote reference's link (which contains the 'footnote' config term), all instances of \" and &", () => {
+describe("Within the href attribute of a footnote reference's link, all instances of \" and &", () => {
   it('are escaped', () => {
     const up = new Up({
       i18n: {
@@ -152,7 +152,7 @@ describe("Within the href attribute of a footnote reference's link (which contai
 })
 
 
-describe("Within the id attribute of a footnote reference (which contains the 'footnoteReference' config term), all instances of \" and &", () => {
+describe("Within the id attribute of a footnote reference, all instances of \" and &", () => {
   it('are escaped', () => {
     const up = new Up({
       i18n: {

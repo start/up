@@ -98,8 +98,8 @@ describe("Within a NSFL convention's label, all instances of < and &", () => {
 })
 
 
-describe('Nested within several inline nodes, all instances of < and & inside a plain text node', () => {
-  it('are escaped', () => {
+describe('Inside a plain text node itself nested within several inline nodes, all instances of < and &', () => {
+  it('are escaped once', () => {
     const node =
       new EmphasisNode([
         new StressNode([
@@ -114,8 +114,8 @@ describe('Nested within several inline nodes, all instances of < and & inside a 
 })
 
 
-describe('Nested within several outline nodes, all instances of < and & inside a plain text node', () => {
-  it('are escaped', () => {
+describe('Inside a plain text node itself nested within several outline nodes, all instances of < and &', () => {
+  it('are escaped once', () => {
     const node =
       new BlockquoteNode([
         new UnorderedListNode([
