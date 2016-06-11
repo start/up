@@ -12,7 +12,7 @@ describe("Within a video's description in its title attribute, all instances of 
     const node = new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/vid1')
 
     expect(Up.toHtml(node)).to.be.eql(
-      '<video src="https://example.com/vid1" title="John said, &quot;1 and 2 > 0. I can\'t believe it."><a href="https://example.com/vid1">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
+      '<video src="https://example.com/vid1" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="https://example.com/vid1">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
   })
 })
 
@@ -22,6 +22,6 @@ describe("Within an audio convention's description in its title attribute, all i
     const node = new AudioNode('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/clip1')
 
     expect(Up.toHtml(node)).to.be.eql(
-      '<audio src="https://example.com/clip1" title="John said, &quot;1 and 2 > 0. I can\'t believe it."><a href="https://example.com/clip1">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
+      '<audio src="https://example.com/clip1" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="https://example.com/clip1">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
   })
 })

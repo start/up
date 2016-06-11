@@ -3029,21 +3029,27 @@ exports.cssClass = cssClass;
 var ESCAPED_HTML_ENTITIES_BY_ENTITY = {
     '&': '&amp;',
     '<': '&lt;',
+    '"': '&quot;',
 };
 function escapeHtmlContent(content) {
     return content.replace(/[&<]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
 }
 exports.escapeHtmlContent = escapeHtmlContent;
+function escapeHtmlAttrValue(attrValue) {
+    return String(attrValue).replace(/[&"]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
+}
 function htmlStartTag(tagName, attrs) {
     var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
     return "<" + tagNameWithAttrs + ">";
 }
 function htmlAttrs(attrs) {
-    return (Object.keys(attrs)
-        .map(function (key) {
-        var value = attrs[key];
-        return (value == null ? key : key + "=\"" + value + "\"");
-    }));
+    return Object.keys(attrs).map(function (attrName) { return htmlAttr(attrs, attrName); });
+}
+function htmlAttr(attrs, attrName) {
+    var value = attrs[attrName];
+    return (value == null
+        ? attrName
+        : attrName + "=\"" + escapeHtmlAttrValue(value) + "\"");
 }
 
 },{}],85:[function(require,module,exports){

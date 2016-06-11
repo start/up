@@ -24,12 +24,16 @@ export function cssClass(...names: string[]): string {
 const ESCAPED_HTML_ENTITIES_BY_ENTITY: { [entity: string]: string } = {
   '&': '&amp;',
   '<': '&lt;',
+  '"': '&quot;',
 }
 
 export function escapeHtmlContent(content: string): string {
-  return content.replace(/[&<]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]) 
+  return content.replace(/[&<]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity])
 }
 
+function escapeHtmlAttrValue(attrValue: any): string {
+  return String(attrValue).replace(/[&"]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity])
+}
 
 function htmlStartTag(tagName: string, attrs: any): string {
   const tagNameWithAttrs =
@@ -39,11 +43,14 @@ function htmlStartTag(tagName: string, attrs: any): string {
 }
 
 function htmlAttrs(attrs: any): string[] {
+  return Object.keys(attrs).map(attrName => htmlAttr(attrs, attrName))
+}
+
+function htmlAttr(attrs: any, attrName: string): string {
+  const value = attrs[attrName]
+
   return (
-    Object.keys(attrs)
-      .map(key => {
-        const value = attrs[key]
-        return (value == null ? key : `${key}="${value}"`)
-      })
-  )
+    value == null
+      ? attrName
+      : `${attrName}="${escapeHtmlAttrValue(value)}"`)
 }
