@@ -7,7 +7,6 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 
 
-
 describe('Text surrounded by 3 asterisks', () => {
   it('is shouted, and produces a stress node containing an emphasis node containing the text', () => {
     expect(Up.toAst('Xamarin is now ***free***!')).to.be.eql(
@@ -22,6 +21,7 @@ describe('Text surrounded by 3 asterisks', () => {
       ]))
   })
 })
+
 
 describe('Shouted text', () => {
   it('can be surrounded by more than 3 asterisks', () => {
@@ -115,6 +115,7 @@ describe('Shouted text inside of stressed text', () => {
   })
 })
 
+
 describe('Text that is both emphasized and stressed', () => {
   it('can have both nodes closed with 3 asterisks', () => {
     expect(Up.toAst('Xamarin is **now *free***!')).to.be.eql(
@@ -206,6 +207,7 @@ describe('Emphasized and stressed text', () => {
   })
 })
 
+
 describe('Stressed and emphasized text', () => {
   it('can be closed by 3 asterisks', () => {
     expect(Up.toAst('**He has won *six in a row!***')).to.be.eql(
@@ -231,6 +233,7 @@ describe('Stressed and emphasized text', () => {
       ]))
   })
 })
+
 
 describe('Doubly emphasized text', () => {
   it('can be closed by 2 asterisks', () => {
@@ -270,6 +273,7 @@ describe('Doubly emphasized text', () => {
   })
 })
 
+
 describe('Doubly stressed text', () => {
   it('can be closed by 4 asterisks', () => {
     expect(Up.toAst('**He has won **six in a row!****')).to.be.eql(
@@ -296,6 +300,7 @@ describe('Doubly stressed text', () => {
   })
 })
 
+
 describe('Two nested raised-voice conventions, both starting with 2 asterisks', () => {
   it('can be closed by 3 asterisks, resulting in the inner text being stressed and the outer text emphasized', () => {
     expect(Up.toAst('**He has won **six in a row!***')).to.be.eql(
@@ -309,6 +314,7 @@ describe('Two nested raised-voice conventions, both starting with 2 asterisks', 
       ]))
   })
 })
+
 
 describe('Triply emphasized text', () => {
   it('can be closed by 3 asterisks', () => {
@@ -341,6 +347,7 @@ describe('Triply emphasized text', () => {
       ]))
   })
 })
+
 
 describe('Quadruple asterisks followed by 4 separate single closing asterisks', () => {
   it('produces 4 nested emphasis nodes', () => {
