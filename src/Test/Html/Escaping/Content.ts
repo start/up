@@ -11,9 +11,10 @@ import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 
 
-describe('Inside plain text nodes, all instances of < and &', () => {
+describe('Within a plain text node, all instances of < and &', () => {
   it('are escaped by replacing them with "&lt;" and "&amp;", respectively', () => {
     const node = new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
     expect(Up.toHtml(node)).to.be.eql('4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?')
@@ -21,7 +22,7 @@ describe('Inside plain text nodes, all instances of < and &', () => {
 })
 
 
-describe('Inside a plain text node, >, \', and "', () => {
+describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
     const text = 'John said, "1 and 2 > 0. I can\'t believe it."'
     const node = new PlainTextNode(text)
@@ -30,7 +31,7 @@ describe('Inside a plain text node, >, \', and "', () => {
 })
 
 
-describe("Inside a spoiler's label, all instances of < and &", () => {
+describe("Within a spoiler's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up({
       i18n: {
@@ -52,7 +53,7 @@ describe("Inside a spoiler's label, all instances of < and &", () => {
 })
 
 
-describe("Inside a NSFW convention's label, all instances of < and &", () => {
+describe("Within a NSFW convention's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up({
       i18n: {
@@ -74,7 +75,7 @@ describe("Inside a NSFW convention's label, all instances of < and &", () => {
 })
 
 
-describe("Inside a NSFL convention's label, all instances of < and &", () => {
+describe("Within a NSFL convention's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up({
       i18n: {
@@ -126,5 +127,15 @@ describe('Nested within several outline nodes, all instances of < and & inside a
       ])
 
     expect(Up.toHtml(node)).to.be.eql('<blockquote><ul><li><p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p></li></ul></blockquote>')
+  })
+})
+
+
+describe("Within a video's description within its fallback link, all instances of < and &", () => {
+  it('are escaped', () => {
+    const node =              new VideoNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', 'https://example.com/vid1')
+      
+    expect(Up.toHtml(node)).to.be.eql(
+      '<video src="https://example.com/vid1" title="4 & 5 < 10, and 6 & 7 < 10. Coincidence?"><a href="https://example.com/vid1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></video>')
   })
 })
