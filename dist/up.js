@@ -2932,7 +2932,7 @@ function toHtml(textOrNode, config) {
     return new HtmlWriter_1.HtmlWriter(config).write(node);
 }
 
-},{"./Parsing/parseDocument":37,"./UpConfig":83,"./Writers/HtmlWriter":84}],83:[function(require,module,exports){
+},{"./Parsing/parseDocument":37,"./UpConfig":83,"./Writers/HtmlWriter":85}],83:[function(require,module,exports){
 "use strict";
 var DEFAULT_CONFIG = {
     documentName: 'up',
@@ -2997,6 +2997,52 @@ function merge(base, changes) {
 
 },{}],84:[function(require,module,exports){
 "use strict";
+function htmlElement(tagName, content, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    return "" + htmlStartTag(tagName, attrs) + content + "</" + tagName + ">";
+}
+exports.htmlElement = htmlElement;
+function htmlElementWithNoEndTag(tagName, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    return htmlStartTag(tagName, attrs);
+}
+exports.htmlElementWithNoEndTag = htmlElementWithNoEndTag;
+function internalUrl(id) {
+    return '#' + id;
+}
+exports.internalUrl = internalUrl;
+function cssClass() {
+    var names = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        names[_i - 0] = arguments[_i];
+    }
+    return names
+        .map(function (name) { return 'up-' + name; })
+        .join(' ');
+}
+exports.cssClass = cssClass;
+var ESCAPED_HTML_ENTITIES_BY_ENTITY = {
+    '&': '&amp;',
+    '<': '&lt;',
+};
+function escapeHtmlContent(content) {
+    return content.replace(/[&<]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
+}
+exports.escapeHtmlContent = escapeHtmlContent;
+function htmlStartTag(tagName, attrs) {
+    var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
+    return "<" + tagNameWithAttrs + ">";
+}
+function htmlAttrs(attrs) {
+    return (Object.keys(attrs)
+        .map(function (key) {
+        var value = attrs[key];
+        return (value == null ? key : key + "=\"" + value + "\"");
+    }));
+}
+
+},{}],85:[function(require,module,exports){
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -3006,6 +3052,7 @@ var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
 var OrderedListOrder_1 = require('../SyntaxNodes/OrderedListOrder');
 var Writer_1 = require('./Writer');
+var HtmlHelpers_1 = require('./HtmlHelpers');
 var HtmlWriter = (function (_super) {
     __extends(HtmlWriter, _super);
     function HtmlWriter(config) {
@@ -3023,7 +3070,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.unorderedList = function (node) {
         var _this = this;
-        return htmlElement('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }).join(''));
+        return HtmlHelpers_1.htmlElement('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }).join(''));
     };
     HtmlWriter.prototype.orderedList = function (node) {
         var _this = this;
@@ -3035,18 +3082,18 @@ var HtmlWriter = (function (_super) {
         if (node.order() === OrderedListOrder_1.OrderedListOrder.Descrending) {
             attrs.reversed = null;
         }
-        return htmlElement('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }).join(''), attrs);
+        return HtmlHelpers_1.htmlElement('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }).join(''), attrs);
     };
     HtmlWriter.prototype.descriptionList = function (node) {
         var _this = this;
-        return htmlElement('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }).join(''));
+        return HtmlHelpers_1.htmlElement('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }).join(''));
     };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
-        return htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), { class: cssClass('lines') });
+        return HtmlHelpers_1.htmlElement('div', node.lines.map(function (line) { return _this.line(line); }).join(''), { class: HtmlHelpers_1.cssClass('lines') });
     };
     HtmlWriter.prototype.codeBlock = function (node) {
-        return htmlElement('pre', htmlElement('code', node.text));
+        return HtmlHelpers_1.htmlElement('pre', HtmlHelpers_1.htmlElement('code', node.text));
     };
     HtmlWriter.prototype.paragraph = function (node) {
         return this.htmlElement('p', node.children);
@@ -3055,7 +3102,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('h' + Math.min(6, node.level), node.children);
     };
     HtmlWriter.prototype.sectionSeparator = function (node) {
-        return htmlElementWithNoEndTag('hr');
+        return HtmlHelpers_1.htmlElementWithNoEndTag('hr');
     };
     HtmlWriter.prototype.emphasis = function (node) {
         return this.htmlElement('em', node.children);
@@ -3064,7 +3111,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('strong', node.children);
     };
     HtmlWriter.prototype.inlineCode = function (node) {
-        return htmlElement('code', node.text);
+        return HtmlHelpers_1.htmlElement('code', node.text);
     };
     HtmlWriter.prototype.revisionInsertion = function (node) {
         return this.htmlElement('ins', node.children);
@@ -3079,7 +3126,7 @@ var HtmlWriter = (function (_super) {
         return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.action = function (node) {
-        return this.htmlElement('span', node.children, { class: cssClass('action') });
+        return this.htmlElement('span', node.children, { class: HtmlHelpers_1.cssClass('action') });
     };
     HtmlWriter.prototype.spoiler = function (node) {
         return this.revealableConvent({
@@ -3109,12 +3156,12 @@ var HtmlWriter = (function (_super) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
         return this.htmlElement('sup', [innerLinkNode], {
             id: this.footnoteReferenceId(node.referenceNumber),
-            class: cssClass('footnote-reference')
+            class: HtmlHelpers_1.cssClass('footnote-reference')
         });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { class: cssClass('footnotes') });
+        return HtmlHelpers_1.htmlElement('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }).join(''), { class: HtmlHelpers_1.cssClass('footnotes') });
     };
     HtmlWriter.prototype.link = function (node) {
         var _this = this;
@@ -3127,7 +3174,7 @@ var HtmlWriter = (function (_super) {
         return html;
     };
     HtmlWriter.prototype.image = function (node) {
-        return htmlElementWithNoEndTag('img', { src: node.url, alt: node.description, title: node.description });
+        return HtmlHelpers_1.htmlElementWithNoEndTag('img', { src: node.url, alt: node.description, title: node.description });
     };
     HtmlWriter.prototype.audio = function (node) {
         var description = node.description, url = node.url;
@@ -3138,10 +3185,10 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('video', this.mediaFallback(description, url), { src: url, title: description });
     };
     HtmlWriter.prototype.plainText = function (node) {
-        return escapeHtmlContent(node.text);
+        return HtmlHelpers_1.escapeHtmlContent(node.text);
     };
     HtmlWriter.prototype.bracketed = function (bracketed, bracketName) {
-        return this.htmlElement('span', bracketed.children, { class: cssClass(bracketName) });
+        return this.htmlElement('span', bracketed.children, { class: HtmlHelpers_1.cssClass(bracketName) });
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
         return this.htmlElement('li', listItem.children);
@@ -3169,7 +3216,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteReferenceInnerLink = function (footnoteReference) {
         var referenceNumber = footnoteReference.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.footnoteId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
         var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.footnoteId(footnote.referenceNumber) });
@@ -3178,7 +3225,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
         var referenceNumber = footnote.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], internalUrl(this.footnoteReferenceId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalUrl(this.footnoteReferenceId(referenceNumber)));
     };
     HtmlWriter.prototype.mediaFallback = function (content, url) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
@@ -3189,11 +3236,11 @@ var HtmlWriter = (function (_super) {
         var checkboxId = this.getId(localizedTerm, conventionCount);
         var htmlForTogglingVisibility = ("<label for=\"" + checkboxId + "\">" + termForTogglingVisibility + "</label>")
             + ("<input id=\"" + checkboxId + "\" type=\"checkbox\">");
-        return htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: cssClass(nonLocalizedConventionTerm, 'revealable') });
+        return HtmlHelpers_1.htmlElement('span', htmlForTogglingVisibility + this.htmlElement('span', revealableChildren), { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
     };
     HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }
-        return htmlElement(tagName, this.htmlElements(children), attrs);
+        return HtmlHelpers_1.htmlElement(tagName, this.htmlElements(children), attrs);
     };
     HtmlWriter.prototype.htmlElements = function (nodes) {
         var _this = this;
@@ -3208,46 +3255,8 @@ var HtmlWriter = (function (_super) {
     return HtmlWriter;
 }(Writer_1.Writer));
 exports.HtmlWriter = HtmlWriter;
-function htmlElement(tagName, content, attrs) {
-    if (attrs === void 0) { attrs = {}; }
-    return "" + htmlStartTag(tagName, attrs) + content + "</" + tagName + ">";
-}
-function htmlElementWithNoEndTag(tagName, attrs) {
-    if (attrs === void 0) { attrs = {}; }
-    return htmlStartTag(tagName, attrs);
-}
-function htmlStartTag(tagName, attrs) {
-    var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
-    return "<" + tagNameWithAttrs + ">";
-}
-function htmlAttrs(attrs) {
-    return (Object.keys(attrs)
-        .map(function (key) {
-        var value = attrs[key];
-        return (value == null ? key : key + "=\"" + value + "\"");
-    }));
-}
-function internalUrl(id) {
-    return '#' + id;
-}
-function cssClass() {
-    var names = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        names[_i - 0] = arguments[_i];
-    }
-    return names
-        .map(function (name) { return 'up-' + name; })
-        .join(' ');
-}
-var ESCAPED_HTML_ENTITIES_BY_ENTITY = {
-    '&': '&amp;',
-    '<': '&lt;',
-};
-function escapeHtmlContent(content) {
-    return content.replace(/[&<]/g, function (entity) { return ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]; });
-}
 
-},{"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/OrderedListOrder":66,"../SyntaxNodes/PlainTextNode":70,"./Writer":85}],85:[function(require,module,exports){
+},{"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/OrderedListOrder":66,"../SyntaxNodes/PlainTextNode":70,"./HtmlHelpers":84,"./Writer":86}],86:[function(require,module,exports){
 "use strict";
 var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var ImageNode_1 = require('../SyntaxNodes/ImageNode');
@@ -3385,14 +3394,14 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/ActionNode":41,"../SyntaxNodes/AudioNode":42,"../SyntaxNodes/BlockquoteNode":43,"../SyntaxNodes/CodeBlockNode":44,"../SyntaxNodes/DescriptionListNode":47,"../SyntaxNodes/DocumentNode":49,"../SyntaxNodes/EmphasisNode":50,"../SyntaxNodes/FootnoteBlockNode":52,"../SyntaxNodes/FootnoteNode":53,"../SyntaxNodes/HeadingNode":54,"../SyntaxNodes/ImageNode":55,"../SyntaxNodes/InlineCodeNode":56,"../SyntaxNodes/LineBlockNode":59,"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/NsflNode":62,"../SyntaxNodes/NsfwNode":63,"../SyntaxNodes/OrderedListNode":65,"../SyntaxNodes/ParagraphNode":68,"../SyntaxNodes/ParenthesizedNode":69,"../SyntaxNodes/PlainTextNode":70,"../SyntaxNodes/RevisionDeletionNode":71,"../SyntaxNodes/RevisionInsertionNode":72,"../SyntaxNodes/SectionSeparatorNode":74,"../SyntaxNodes/SpoilerNode":75,"../SyntaxNodes/SquareBracketedNode":76,"../SyntaxNodes/StressNode":77,"../SyntaxNodes/UnorderedListNode":79,"../SyntaxNodes/VideoNode":80}],86:[function(require,module,exports){
+},{"../SyntaxNodes/ActionNode":41,"../SyntaxNodes/AudioNode":42,"../SyntaxNodes/BlockquoteNode":43,"../SyntaxNodes/CodeBlockNode":44,"../SyntaxNodes/DescriptionListNode":47,"../SyntaxNodes/DocumentNode":49,"../SyntaxNodes/EmphasisNode":50,"../SyntaxNodes/FootnoteBlockNode":52,"../SyntaxNodes/FootnoteNode":53,"../SyntaxNodes/HeadingNode":54,"../SyntaxNodes/ImageNode":55,"../SyntaxNodes/InlineCodeNode":56,"../SyntaxNodes/LineBlockNode":59,"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/NsflNode":62,"../SyntaxNodes/NsfwNode":63,"../SyntaxNodes/OrderedListNode":65,"../SyntaxNodes/ParagraphNode":68,"../SyntaxNodes/ParenthesizedNode":69,"../SyntaxNodes/PlainTextNode":70,"../SyntaxNodes/RevisionDeletionNode":71,"../SyntaxNodes/RevisionInsertionNode":72,"../SyntaxNodes/SectionSeparatorNode":74,"../SyntaxNodes/SpoilerNode":75,"../SyntaxNodes/SquareBracketedNode":76,"../SyntaxNodes/StressNode":77,"../SyntaxNodes/UnorderedListNode":79,"../SyntaxNodes/VideoNode":80}],87:[function(require,module,exports){
 "use strict";
 var index_1 = require('./index');
 window.Up = index_1.default;
 
-},{"./index":87}],87:[function(require,module,exports){
+},{"./index":88}],88:[function(require,module,exports){
 "use strict";
 var Up_1 = require('./Up');
 exports.default = Up_1.Up;
 
-},{"./Up":82}]},{},[86]);
+},{"./Up":82}]},{},[87]);

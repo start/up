@@ -37,7 +37,7 @@ import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { UpConfig } from '../UpConfig'
-
+import { htmlElement, htmlElementWithNoEndTag, cssClass, internalUrl, escapeHtmlContent} from './HtmlHelpers'
 
 export class HtmlWriter extends Writer {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
@@ -353,50 +353,4 @@ export class HtmlWriter extends Writer {
   private footnoteReferenceId(referenceNumber: number): string {
     return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber)
   }
-}
-
-
-function htmlElement(tagName: string, content: string, attrs: any = {}): string {
-  return `${htmlStartTag(tagName, attrs)}${content}</${tagName}>`
-}
-
-function htmlElementWithNoEndTag(tagName: string, attrs: any = {}): string {
-  return htmlStartTag(tagName, attrs)
-}
-
-function htmlStartTag(tagName: string, attrs: any): string {
-  const tagNameWithAttrs =
-    [tagName].concat(htmlAttrs(attrs)).join(' ')
-
-  return `<${tagNameWithAttrs}>`
-}
-
-function htmlAttrs(attrs: any): string[] {
-  return (
-    Object.keys(attrs)
-      .map(key => {
-        const value = attrs[key]
-        return (value == null ? key : `${key}="${value}"`)
-      })
-  )
-}
-
-function internalUrl(id: string): string {
-  return '#' + id
-}
-
-function cssClass(...names: string[]): string {
-  // We always prefix our class names with 'up-' regardless of the provided document name.
-  return names
-    .map(name => 'up-' + name)
-    .join(' ')
-}
-
-const ESCAPED_HTML_ENTITIES_BY_ENTITY: { [entity: string]: string } = {
-  '&': '&amp;',
-  '<': '&lt;',
-}
-
-function escapeHtmlContent(content: string): string {
-  return content.replace(/[&<]/g, entity => ESCAPED_HTML_ENTITIES_BY_ENTITY[entity]) 
 }
