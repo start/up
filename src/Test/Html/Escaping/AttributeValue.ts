@@ -17,6 +17,16 @@ describe("Within a link's src attribute, all instances of \" and &", () => {
 })
 
 
+describe("Within a link's src attribute, <, ', and >", () => {
+  it("are not escaped", () => {
+    const node = new LinkNode([], "https://example.com/?z='<span>'")
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<a href="https://example.com/?z=\'<span>\'"></a>')
+  })
+})
+
+
 describe("Within a video's description in its title attribute, all instances of \" and &", () => {
   it("are escaped (but they're not escaped within the fallback link)", () => {
     const node = new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
