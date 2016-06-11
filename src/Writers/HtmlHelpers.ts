@@ -2,11 +2,11 @@ export function htmlElement(tagName: string, content: string, attrs: any = {}): 
   return `${htmlStartTag(tagName, attrs)}${content}</${tagName}>`
 }
 
-export function htmlElementWithNoEndTag(tagName: string, attrs: any = {}): string {
+export function htmlElementWithNoContentOrEndTag(tagName: string, attrs: any = {}): string {
   return htmlStartTag(tagName, attrs)
 }
 
-export function internalUrl(id: string): string {
+export function internalFragmentUrl(id: string): string {
   return '#' + id
 }
 

@@ -3002,15 +3002,15 @@ function htmlElement(tagName, content, attrs) {
     return "" + htmlStartTag(tagName, attrs) + content + "</" + tagName + ">";
 }
 exports.htmlElement = htmlElement;
-function htmlElementWithNoEndTag(tagName, attrs) {
+function htmlElementWithNoContentOrEndTag(tagName, attrs) {
     if (attrs === void 0) { attrs = {}; }
     return htmlStartTag(tagName, attrs);
 }
-exports.htmlElementWithNoEndTag = htmlElementWithNoEndTag;
-function internalUrl(id) {
+exports.htmlElementWithNoContentOrEndTag = htmlElementWithNoContentOrEndTag;
+function internalFragmentUrl(id) {
     return '#' + id;
 }
-exports.internalUrl = internalUrl;
+exports.internalFragmentUrl = internalFragmentUrl;
 function cssClass() {
     var names = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -3102,7 +3102,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('h' + Math.min(6, node.level), node.children);
     };
     HtmlWriter.prototype.sectionSeparator = function (node) {
-        return HtmlHelpers_1.htmlElementWithNoEndTag('hr');
+        return HtmlHelpers_1.htmlElementWithNoContentOrEndTag('hr');
     };
     HtmlWriter.prototype.emphasis = function (node) {
         return this.htmlElement('em', node.children);
@@ -3174,7 +3174,7 @@ var HtmlWriter = (function (_super) {
         return html;
     };
     HtmlWriter.prototype.image = function (node) {
-        return HtmlHelpers_1.htmlElementWithNoEndTag('img', { src: node.url, alt: node.description, title: node.description });
+        return HtmlHelpers_1.htmlElementWithNoContentOrEndTag('img', { src: node.url, alt: node.description, title: node.description });
     };
     HtmlWriter.prototype.audio = function (node) {
         var description = node.description, url = node.url;
@@ -3216,7 +3216,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteReferenceInnerLink = function (footnoteReference) {
         var referenceNumber = footnoteReference.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalUrl(this.footnoteId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalFragmentUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
         var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.footnoteId(footnote.referenceNumber) });
@@ -3225,7 +3225,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
         var referenceNumber = footnote.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalUrl(this.footnoteReferenceId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalFragmentUrl(this.footnoteReferenceId(referenceNumber)));
     };
     HtmlWriter.prototype.mediaFallback = function (content, url) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
