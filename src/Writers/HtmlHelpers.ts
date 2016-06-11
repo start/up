@@ -2,7 +2,7 @@ export function htmlElement(tagName: string, content: string, attrs: any = {}): 
   return `${htmlStartTag(tagName, attrs)}${content}</${tagName}>`
 }
 
-export function htmlElementWithNoContentOrEndTag(tagName: string, attrs: any = {}): string {
+export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
   return htmlStartTag(tagName, attrs)
 }
 

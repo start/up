@@ -37,7 +37,7 @@ import { Writer } from './Writer'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { UpConfig } from '../UpConfig'
-import { htmlElement, htmlElementWithNoContentOrEndTag, cssClass, internalFragmentUrl, escapeHtmlContent} from './HtmlHelpers'
+import { htmlElement, singleTagHtmlElement, cssClass, internalFragmentUrl, escapeHtmlContent} from './HtmlHelpers'
 
 export class HtmlWriter extends Writer {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
@@ -130,7 +130,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected sectionSeparator(node: SectionSeparatorNode): string {
-    return htmlElementWithNoContentOrEndTag('hr')
+    return singleTagHtmlElement('hr')
   }
 
   protected emphasis(node: EmphasisNode): string {
@@ -223,7 +223,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected image(node: ImageNode): string {
-    return htmlElementWithNoContentOrEndTag('img', { src: node.url, alt: node.description, title: node.description })
+    return singleTagHtmlElement('img', { src: node.url, alt: node.description, title: node.description })
   }
 
   protected audio(node: AudioNode): string {

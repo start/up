@@ -3002,11 +3002,11 @@ function htmlElement(tagName, content, attrs) {
     return "" + htmlStartTag(tagName, attrs) + content + "</" + tagName + ">";
 }
 exports.htmlElement = htmlElement;
-function htmlElementWithNoContentOrEndTag(tagName, attrs) {
+function singleTagHtmlElement(tagName, attrs) {
     if (attrs === void 0) { attrs = {}; }
     return htmlStartTag(tagName, attrs);
 }
-exports.htmlElementWithNoContentOrEndTag = htmlElementWithNoContentOrEndTag;
+exports.singleTagHtmlElement = singleTagHtmlElement;
 function internalFragmentUrl(id) {
     return '#' + id;
 }
@@ -3102,7 +3102,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElement('h' + Math.min(6, node.level), node.children);
     };
     HtmlWriter.prototype.sectionSeparator = function (node) {
-        return HtmlHelpers_1.htmlElementWithNoContentOrEndTag('hr');
+        return HtmlHelpers_1.singleTagHtmlElement('hr');
     };
     HtmlWriter.prototype.emphasis = function (node) {
         return this.htmlElement('em', node.children);
@@ -3174,7 +3174,7 @@ var HtmlWriter = (function (_super) {
         return html;
     };
     HtmlWriter.prototype.image = function (node) {
-        return HtmlHelpers_1.htmlElementWithNoContentOrEndTag('img', { src: node.url, alt: node.description, title: node.description });
+        return HtmlHelpers_1.singleTagHtmlElement('img', { src: node.url, alt: node.description, title: node.description });
     };
     HtmlWriter.prototype.audio = function (node) {
         var description = node.description, url = node.url;
