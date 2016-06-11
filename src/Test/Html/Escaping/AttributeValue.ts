@@ -113,6 +113,30 @@ describe("Within the href attribute of a backlink in a footnote block (which con
 })
 
 
+describe("Within the id attribute of a footnote in a footnote block (which contains the 'footnote' config term), all instances of \" and &", () => {
+  it('are escaped', () => {
+    const up = new Up({
+      i18n: {
+        terms: { footnote: 'look "down" & read & learn' }
+      }
+    })
+    
+    const node =
+      new FootnoteBlockNode([
+        new FootnoteNode([], 2)
+      ])
+
+    const html =
+      '<dl class="up-footnotes">'
+      + '<dt id="up-look-&quot;down&quot;-&amp;-read-&amp;-learn-2"><a href="#up-footnote-reference-2">2</a></dt><dd></dd>'
+      + '</dl>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+
 describe("Within the href attribute of a footnote reference's link (which contains the 'footnote' config term), all instances of \" and &", () => {
   it('are escaped', () => {
     const up = new Up({
