@@ -132,8 +132,8 @@ describe('Nested within several outline nodes, all instances of < and & inside a
 })
 
 
-describe("Within a video's description within its fallback link, all instances of < and &", () => {
-  it('are escaped', () => {
+describe("Within a video's description in its fallback link, all instances of < and &", () => {
+  it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
     const node = new VideoNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', 'https://example.com/vid1')
 
     expect(Up.toHtml(node)).to.be.eql(
@@ -142,8 +142,8 @@ describe("Within a video's description within its fallback link, all instances o
 })
 
 
-describe("Within a video's description within its fallback link, all instances of < and &", () => {
-  it('are escaped', () => {
+describe("Within an audio convention's description in its fallback link, all instances of < and &", () => {
+  it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
     const node = new AudioNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', 'https://example.com/clip1')
 
     expect(Up.toHtml(node)).to.be.eql(
