@@ -3071,7 +3071,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElements(node.children).join('');
     };
     HtmlWriter.prototype.blockquote = function (node) {
-        return this.htmlElement('blockquote', node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('blockquote', node.children);
     };
     HtmlWriter.prototype.unorderedList = function (node) {
         var _this = this;
@@ -3101,28 +3101,28 @@ var HtmlWriter = (function (_super) {
         return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('pre', [HtmlHelpers_1.htmlElement('code', node.text)]);
     };
     HtmlWriter.prototype.paragraph = function (node) {
-        return this.htmlElement('p', node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('p', node.children);
     };
     HtmlWriter.prototype.heading = function (node) {
-        return this.htmlElement('h' + Math.min(6, node.level), node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('h' + Math.min(6, node.level), node.children);
     };
     HtmlWriter.prototype.sectionSeparator = function (node) {
         return HtmlHelpers_1.singleTagHtmlElement('hr');
     };
     HtmlWriter.prototype.emphasis = function (node) {
-        return this.htmlElement('em', node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('em', node.children);
     };
     HtmlWriter.prototype.stress = function (node) {
-        return this.htmlElement('strong', node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('strong', node.children);
     };
     HtmlWriter.prototype.inlineCode = function (node) {
         return HtmlHelpers_1.htmlElement('code', node.text);
     };
     HtmlWriter.prototype.revisionInsertion = function (node) {
-        return this.htmlElement('ins', node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('ins', node.children);
     };
     HtmlWriter.prototype.revisionDeletion = function (node) {
-        return this.htmlElement('del', node.children);
+        return this.htmlElementWithAlreadyEscapedChildren('del', node.children);
     };
     HtmlWriter.prototype.parenthesized = function (node) {
         return this.bracketed(node, 'parenthesized');
@@ -3131,7 +3131,7 @@ var HtmlWriter = (function (_super) {
         return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.action = function (node) {
-        return this.htmlElement('span', node.children, { class: HtmlHelpers_1.cssClass('action') });
+        return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: HtmlHelpers_1.cssClass('action') });
     };
     HtmlWriter.prototype.spoiler = function (node) {
         return this.revealableConvent({
@@ -3159,7 +3159,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteReference = function (node) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
-        return this.htmlElement('sup', [innerLinkNode], {
+        return this.htmlElementWithAlreadyEscapedChildren('sup', [innerLinkNode], {
             id: this.footnoteReferenceId(node.referenceNumber),
             class: HtmlHelpers_1.cssClass('footnote-reference')
         });
@@ -3174,7 +3174,7 @@ var HtmlWriter = (function (_super) {
             return node.children.map(function (child) { return _this.write(child); }).join('');
         }
         this.isInsideLink = true;
-        var html = this.htmlElement('a', node.children, { href: node.url });
+        var html = this.htmlElementWithAlreadyEscapedChildren('a', node.children, { href: node.url });
         this.isInsideLink = false;
         return html;
     };
@@ -3183,27 +3183,27 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.audio = function (node) {
         var description = node.description, url = node.url;
-        return this.htmlElement('audio', this.mediaFallback(description, url), { src: url, title: description });
+        return this.htmlElementWithAlreadyEscapedChildren('audio', this.mediaFallback(description, url), { src: url, title: description });
     };
     HtmlWriter.prototype.video = function (node) {
         var description = node.description, url = node.url;
-        return this.htmlElement('video', this.mediaFallback(description, url), { src: url, title: description });
+        return this.htmlElementWithAlreadyEscapedChildren('video', this.mediaFallback(description, url), { src: url, title: description });
     };
     HtmlWriter.prototype.plainText = function (node) {
         return HtmlHelpers_1.escapeHtmlContent(node.text);
     };
     HtmlWriter.prototype.bracketed = function (bracketed, bracketName) {
-        return this.htmlElement('span', bracketed.children, { class: HtmlHelpers_1.cssClass(bracketName) });
+        return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: HtmlHelpers_1.cssClass(bracketName) });
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
-        return this.htmlElement('li', listItem.children);
+        return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children);
     };
     HtmlWriter.prototype.orderedListItem = function (listItem) {
         var attrs = {};
         if (listItem.ordinal != null) {
             attrs.value = listItem.ordinal;
         }
-        return this.htmlElement('li', listItem.children, attrs);
+        return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children, attrs);
     };
     HtmlWriter.prototype.descriptionListItem = function (listItem) {
         var _this = this;
@@ -3211,21 +3211,21 @@ var HtmlWriter = (function (_super) {
             + this.description(listItem.description));
     };
     HtmlWriter.prototype.descriptionTerm = function (term) {
-        return this.htmlElement('dt', term.children);
+        return this.htmlElementWithAlreadyEscapedChildren('dt', term.children);
     };
     HtmlWriter.prototype.description = function (description) {
-        return this.htmlElement('dd', description.children);
+        return this.htmlElementWithAlreadyEscapedChildren('dd', description.children);
     };
     HtmlWriter.prototype.line = function (line) {
-        return this.htmlElement('div', line.children);
+        return this.htmlElementWithAlreadyEscapedChildren('div', line.children);
     };
     HtmlWriter.prototype.footnoteReferenceInnerLink = function (footnoteReference) {
         var referenceNumber = footnoteReference.referenceNumber;
         return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalFragmentUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
-        var termHtml = this.htmlElement('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.footnoteId(footnote.referenceNumber) });
-        var descriptionHtml = this.htmlElement('dd', footnote.children);
+        var termHtml = this.htmlElementWithAlreadyEscapedChildren('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.footnoteId(footnote.referenceNumber) });
+        var descriptionHtml = this.htmlElementWithAlreadyEscapedChildren('dd', footnote.children);
         return termHtml + descriptionHtml;
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
@@ -3242,9 +3242,9 @@ var HtmlWriter = (function (_super) {
         return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('span', [
             HtmlHelpers_1.htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
             HtmlHelpers_1.singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
-            this.htmlElement('span', revealableChildren)], { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
+            this.htmlElementWithAlreadyEscapedChildren('span', revealableChildren)], { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
     };
-    HtmlWriter.prototype.htmlElement = function (tagName, children, attrs) {
+    HtmlWriter.prototype.htmlElementWithAlreadyEscapedChildren = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }
         return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren(tagName, this.htmlElements(children), attrs);
     };
