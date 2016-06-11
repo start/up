@@ -33,11 +33,12 @@ import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
-import { Writer } from '../Writer'
+import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { UpConfig } from '../../UpConfig'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, cssClass, internalFragmentUrl, escapeHtmlContent} from './HtmlHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl} from './WritingHelpers'
+import { escapeHtmlContent } from './EscapingHelpers'
 
 export class HtmlWriter extends Writer {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
@@ -114,7 +115,7 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(
       'div',
       node.lines.map(line => this.line(line)),
-      { class: cssClass('lines') })
+      { class: classAttrValue('lines') })
   }
 
   protected codeBlock(node: CodeBlockNode): string {
@@ -164,7 +165,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected action(node: ActionNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: cssClass('action') })
+    return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: classAttrValue('action') })
   }
 
   protected spoiler(node: SpoilerNode): string {
@@ -201,7 +202,7 @@ export class HtmlWriter extends Writer {
       'sup',
       [innerLinkNode], {
         id: this.footnoteReferenceId(node.referenceNumber),
-        class: cssClass('footnote-reference')
+        class: classAttrValue('footnote-reference')
       })
   }
 
@@ -209,7 +210,7 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)),
-      { class: cssClass('footnotes') })
+      { class: classAttrValue('footnotes') })
   }
 
   protected link(node: LinkNode): string {
@@ -245,7 +246,7 @@ export class HtmlWriter extends Writer {
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
-    return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: cssClass(bracketName) })
+    return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: classAttrValue(bracketName) })
   }
 
   private unorderedListItem(listItem: UnorderedListItem): string {
@@ -333,7 +334,7 @@ export class HtmlWriter extends Writer {
         htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
         singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
         this.htmlElementWithAlreadyEscapedChildren('span', revealableChildren)],
-      { class: cssClass(nonLocalizedConventionTerm, 'revealable') })
+      { class: classAttrValue(nonLocalizedConventionTerm, 'revealable') })
   }
 
   private htmlElementWithAlreadyEscapedChildren(tagName: string, children: SyntaxNode[], attrs: any = {}): string {

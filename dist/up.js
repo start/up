@@ -2997,35 +2997,6 @@ function merge(base, changes) {
 
 },{}],84:[function(require,module,exports){
 "use strict";
-function htmlElement(tagName, content, attrs) {
-    if (attrs === void 0) { attrs = {}; }
-    return htmlElementWithAlreadyEscapedChildren(tagName, [escapeHtmlContent(content)], attrs);
-}
-exports.htmlElement = htmlElement;
-function singleTagHtmlElement(tagName, attrs) {
-    if (attrs === void 0) { attrs = {}; }
-    return htmlStartTag(tagName, attrs);
-}
-exports.singleTagHtmlElement = singleTagHtmlElement;
-function htmlElementWithAlreadyEscapedChildren(tagName, escapedChildren, attrs) {
-    if (attrs === void 0) { attrs = {}; }
-    return htmlStartTag(tagName, attrs) + escapedChildren.join('') + ("</" + tagName + ">");
-}
-exports.htmlElementWithAlreadyEscapedChildren = htmlElementWithAlreadyEscapedChildren;
-function internalFragmentUrl(id) {
-    return '#' + id;
-}
-exports.internalFragmentUrl = internalFragmentUrl;
-function cssClass() {
-    var names = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        names[_i - 0] = arguments[_i];
-    }
-    return names
-        .map(function (name) { return 'up-' + name; })
-        .join(' ');
-}
-exports.cssClass = cssClass;
 function escapeHtmlContent(content) {
     return htmlEscape(content, /[&<]/g);
 }
@@ -3033,27 +3004,15 @@ exports.escapeHtmlContent = escapeHtmlContent;
 function escapeHtmlAttrValue(attrValue) {
     return htmlEscape(String(attrValue), /[&"]/g);
 }
-function htmlStartTag(tagName, attrs) {
-    var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
-    return "<" + tagNameWithAttrs + ">";
-}
-function htmlAttrs(attrs) {
-    return Object.keys(attrs).map(function (attrName) { return htmlAttr(attrs, attrName); });
-}
-function htmlAttr(attrs, attrName) {
-    var value = attrs[attrName];
-    return (value == null
-        ? attrName
-        : attrName + "=\"" + escapeHtmlAttrValue(value) + "\"");
+exports.escapeHtmlAttrValue = escapeHtmlAttrValue;
+function htmlEscape(html, charsToEscape) {
+    return html.replace(charsToEscape, function (char) { return ESCAPED_HTML_ENTITIES_BY_CHAR[char]; });
 }
 var ESCAPED_HTML_ENTITIES_BY_CHAR = {
     '&': '&amp;',
     '<': '&lt;',
     '"': '&quot;',
 };
-function htmlEscape(html, charsToEscape) {
-    return html.replace(charsToEscape, function (char) { return ESCAPED_HTML_ENTITIES_BY_CHAR[char]; });
-}
 
 },{}],85:[function(require,module,exports){
 "use strict";
@@ -3065,8 +3024,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var PlainTextNode_1 = require('../../SyntaxNodes/PlainTextNode');
 var OrderedListOrder_1 = require('../../SyntaxNodes/OrderedListOrder');
-var Writer_1 = require('../Writer');
-var HtmlHelpers_1 = require('./HtmlHelpers');
+var Writer_1 = require('.././Writer');
+var WritingHelpers_1 = require('./WritingHelpers');
+var EscapingHelpers_1 = require('./EscapingHelpers');
 var HtmlWriter = (function (_super) {
     __extends(HtmlWriter, _super);
     function HtmlWriter(config) {
@@ -3084,7 +3044,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.unorderedList = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }));
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('ul', node.listItems.map(function (listItem) { return _this.unorderedListItem(listItem); }));
     };
     HtmlWriter.prototype.orderedList = function (node) {
         var _this = this;
@@ -3096,18 +3056,18 @@ var HtmlWriter = (function (_super) {
         if (node.order() === OrderedListOrder_1.OrderedListOrder.Descrending) {
             attrs.reversed = null;
         }
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }), attrs);
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('ol', node.listItems.map(function (listItem) { return _this.orderedListItem(listItem); }), attrs);
     };
     HtmlWriter.prototype.descriptionList = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }));
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('dl', node.listItems.map(function (listItem) { return _this.descriptionListItem(listItem); }));
     };
     HtmlWriter.prototype.lineBlock = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('div', node.lines.map(function (line) { return _this.line(line); }), { class: HtmlHelpers_1.cssClass('lines') });
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('div', node.lines.map(function (line) { return _this.line(line); }), { class: WritingHelpers_1.classAttrValue('lines') });
     };
     HtmlWriter.prototype.codeBlock = function (node) {
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('pre', [HtmlHelpers_1.htmlElement('code', node.text)]);
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('pre', [WritingHelpers_1.htmlElement('code', node.text)]);
     };
     HtmlWriter.prototype.paragraph = function (node) {
         return this.htmlElementWithAlreadyEscapedChildren('p', node.children);
@@ -3116,7 +3076,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElementWithAlreadyEscapedChildren('h' + Math.min(6, node.level), node.children);
     };
     HtmlWriter.prototype.sectionSeparator = function (node) {
-        return HtmlHelpers_1.singleTagHtmlElement('hr');
+        return WritingHelpers_1.singleTagHtmlElement('hr');
     };
     HtmlWriter.prototype.emphasis = function (node) {
         return this.htmlElementWithAlreadyEscapedChildren('em', node.children);
@@ -3125,7 +3085,7 @@ var HtmlWriter = (function (_super) {
         return this.htmlElementWithAlreadyEscapedChildren('strong', node.children);
     };
     HtmlWriter.prototype.inlineCode = function (node) {
-        return HtmlHelpers_1.htmlElement('code', node.text);
+        return WritingHelpers_1.htmlElement('code', node.text);
     };
     HtmlWriter.prototype.revisionInsertion = function (node) {
         return this.htmlElementWithAlreadyEscapedChildren('ins', node.children);
@@ -3140,7 +3100,7 @@ var HtmlWriter = (function (_super) {
         return this.bracketed(node, 'square-bracketed');
     };
     HtmlWriter.prototype.action = function (node) {
-        return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: HtmlHelpers_1.cssClass('action') });
+        return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: WritingHelpers_1.classAttrValue('action') });
     };
     HtmlWriter.prototype.spoiler = function (node) {
         return this.revealableConvent({
@@ -3170,12 +3130,12 @@ var HtmlWriter = (function (_super) {
         var innerLinkNode = this.footnoteReferenceInnerLink(node);
         return this.htmlElementWithAlreadyEscapedChildren('sup', [innerLinkNode], {
             id: this.footnoteReferenceId(node.referenceNumber),
-            class: HtmlHelpers_1.cssClass('footnote-reference')
+            class: WritingHelpers_1.classAttrValue('footnote-reference')
         });
     };
     HtmlWriter.prototype.footnoteBlock = function (node) {
         var _this = this;
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }), { class: HtmlHelpers_1.cssClass('footnotes') });
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('dl', node.footnotes.map(function (footnote) { return _this.footnote(footnote); }), { class: WritingHelpers_1.classAttrValue('footnotes') });
     };
     HtmlWriter.prototype.link = function (node) {
         var _this = this;
@@ -3188,7 +3148,7 @@ var HtmlWriter = (function (_super) {
         return html;
     };
     HtmlWriter.prototype.image = function (node) {
-        return HtmlHelpers_1.singleTagHtmlElement('img', { src: node.url, alt: node.description, title: node.description });
+        return WritingHelpers_1.singleTagHtmlElement('img', { src: node.url, alt: node.description, title: node.description });
     };
     HtmlWriter.prototype.audio = function (node) {
         var description = node.description, url = node.url;
@@ -3199,10 +3159,10 @@ var HtmlWriter = (function (_super) {
         return this.htmlElementWithAlreadyEscapedChildren('video', this.mediaFallback(description, url), { src: url, title: description });
     };
     HtmlWriter.prototype.plainText = function (node) {
-        return HtmlHelpers_1.escapeHtmlContent(node.text);
+        return EscapingHelpers_1.escapeHtmlContent(node.text);
     };
     HtmlWriter.prototype.bracketed = function (bracketed, bracketName) {
-        return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: HtmlHelpers_1.cssClass(bracketName) });
+        return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: WritingHelpers_1.classAttrValue(bracketName) });
     };
     HtmlWriter.prototype.unorderedListItem = function (listItem) {
         return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children);
@@ -3230,7 +3190,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteReferenceInnerLink = function (footnoteReference) {
         var referenceNumber = footnoteReference.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalFragmentUrl(this.footnoteId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], WritingHelpers_1.internalFragmentUrl(this.footnoteId(referenceNumber)));
     };
     HtmlWriter.prototype.footnote = function (footnote) {
         var termHtml = this.htmlElementWithAlreadyEscapedChildren('dt', [this.footnoteLinkBackToReference(footnote)], { id: this.footnoteId(footnote.referenceNumber) });
@@ -3239,7 +3199,7 @@ var HtmlWriter = (function (_super) {
     };
     HtmlWriter.prototype.footnoteLinkBackToReference = function (footnote) {
         var referenceNumber = footnote.referenceNumber;
-        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], HtmlHelpers_1.internalFragmentUrl(this.footnoteReferenceId(referenceNumber)));
+        return new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(referenceNumber.toString())], WritingHelpers_1.internalFragmentUrl(this.footnoteReferenceId(referenceNumber)));
     };
     HtmlWriter.prototype.mediaFallback = function (content, url) {
         return [new LinkNode_1.LinkNode([new PlainTextNode_1.PlainTextNode(content)], url)];
@@ -3248,14 +3208,14 @@ var HtmlWriter = (function (_super) {
         var nonLocalizedConventionTerm = args.nonLocalizedConventionTerm, conventionCount = args.conventionCount, termForTogglingVisibility = args.termForTogglingVisibility, revealableChildren = args.revealableChildren;
         var localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm);
         var checkboxId = this.getId(localizedTerm, conventionCount);
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren('span', [
-            HtmlHelpers_1.htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
-            HtmlHelpers_1.singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
-            this.htmlElementWithAlreadyEscapedChildren('span', revealableChildren)], { class: HtmlHelpers_1.cssClass(nonLocalizedConventionTerm, 'revealable') });
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren('span', [
+            WritingHelpers_1.htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
+            WritingHelpers_1.singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
+            this.htmlElementWithAlreadyEscapedChildren('span', revealableChildren)], { class: WritingHelpers_1.classAttrValue(nonLocalizedConventionTerm, 'revealable') });
     };
     HtmlWriter.prototype.htmlElementWithAlreadyEscapedChildren = function (tagName, children, attrs) {
         if (attrs === void 0) { attrs = {}; }
-        return HtmlHelpers_1.htmlElementWithAlreadyEscapedChildren(tagName, this.htmlElements(children), attrs);
+        return WritingHelpers_1.htmlElementWithAlreadyEscapedChildren(tagName, this.htmlElements(children), attrs);
     };
     HtmlWriter.prototype.htmlElements = function (nodes) {
         var _this = this;
@@ -3271,7 +3231,53 @@ var HtmlWriter = (function (_super) {
 }(Writer_1.Writer));
 exports.HtmlWriter = HtmlWriter;
 
-},{"../../SyntaxNodes/LinkNode":60,"../../SyntaxNodes/OrderedListOrder":66,"../../SyntaxNodes/PlainTextNode":70,"../Writer":86,"./HtmlHelpers":84}],86:[function(require,module,exports){
+},{"../../SyntaxNodes/LinkNode":60,"../../SyntaxNodes/OrderedListOrder":66,"../../SyntaxNodes/PlainTextNode":70,".././Writer":87,"./EscapingHelpers":84,"./WritingHelpers":86}],86:[function(require,module,exports){
+"use strict";
+var EscapingHelpers_1 = require('./EscapingHelpers');
+function htmlElement(tagName, content, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    return htmlElementWithAlreadyEscapedChildren(tagName, [EscapingHelpers_1.escapeHtmlContent(content)], attrs);
+}
+exports.htmlElement = htmlElement;
+function htmlElementWithAlreadyEscapedChildren(tagName, escapedChildren, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    return htmlStartTag(tagName, attrs) + escapedChildren.join('') + ("</" + tagName + ">");
+}
+exports.htmlElementWithAlreadyEscapedChildren = htmlElementWithAlreadyEscapedChildren;
+function singleTagHtmlElement(tagName, attrs) {
+    if (attrs === void 0) { attrs = {}; }
+    return htmlStartTag(tagName, attrs);
+}
+exports.singleTagHtmlElement = singleTagHtmlElement;
+function classAttrValue() {
+    var names = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        names[_i - 0] = arguments[_i];
+    }
+    return names
+        .map(function (name) { return 'up-' + name; })
+        .join(' ');
+}
+exports.classAttrValue = classAttrValue;
+function internalFragmentUrl(id) {
+    return '#' + id;
+}
+exports.internalFragmentUrl = internalFragmentUrl;
+function htmlStartTag(tagName, attrs) {
+    var tagNameWithAttrs = [tagName].concat(htmlAttrs(attrs)).join(' ');
+    return "<" + tagNameWithAttrs + ">";
+}
+function htmlAttrs(attrs) {
+    return Object.keys(attrs).map(function (attrName) { return htmlAttr(attrs, attrName); });
+}
+function htmlAttr(attrs, attrName) {
+    var value = attrs[attrName];
+    return (value == null
+        ? attrName
+        : attrName + "=\"" + EscapingHelpers_1.escapeHtmlAttrValue(value) + "\"");
+}
+
+},{"./EscapingHelpers":84}],87:[function(require,module,exports){
 "use strict";
 var LinkNode_1 = require('../SyntaxNodes/LinkNode');
 var ImageNode_1 = require('../SyntaxNodes/ImageNode');
@@ -3409,14 +3415,14 @@ var Writer = (function () {
 }());
 exports.Writer = Writer;
 
-},{"../SyntaxNodes/ActionNode":41,"../SyntaxNodes/AudioNode":42,"../SyntaxNodes/BlockquoteNode":43,"../SyntaxNodes/CodeBlockNode":44,"../SyntaxNodes/DescriptionListNode":47,"../SyntaxNodes/DocumentNode":49,"../SyntaxNodes/EmphasisNode":50,"../SyntaxNodes/FootnoteBlockNode":52,"../SyntaxNodes/FootnoteNode":53,"../SyntaxNodes/HeadingNode":54,"../SyntaxNodes/ImageNode":55,"../SyntaxNodes/InlineCodeNode":56,"../SyntaxNodes/LineBlockNode":59,"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/NsflNode":62,"../SyntaxNodes/NsfwNode":63,"../SyntaxNodes/OrderedListNode":65,"../SyntaxNodes/ParagraphNode":68,"../SyntaxNodes/ParenthesizedNode":69,"../SyntaxNodes/PlainTextNode":70,"../SyntaxNodes/RevisionDeletionNode":71,"../SyntaxNodes/RevisionInsertionNode":72,"../SyntaxNodes/SectionSeparatorNode":74,"../SyntaxNodes/SpoilerNode":75,"../SyntaxNodes/SquareBracketedNode":76,"../SyntaxNodes/StressNode":77,"../SyntaxNodes/UnorderedListNode":79,"../SyntaxNodes/VideoNode":80}],87:[function(require,module,exports){
+},{"../SyntaxNodes/ActionNode":41,"../SyntaxNodes/AudioNode":42,"../SyntaxNodes/BlockquoteNode":43,"../SyntaxNodes/CodeBlockNode":44,"../SyntaxNodes/DescriptionListNode":47,"../SyntaxNodes/DocumentNode":49,"../SyntaxNodes/EmphasisNode":50,"../SyntaxNodes/FootnoteBlockNode":52,"../SyntaxNodes/FootnoteNode":53,"../SyntaxNodes/HeadingNode":54,"../SyntaxNodes/ImageNode":55,"../SyntaxNodes/InlineCodeNode":56,"../SyntaxNodes/LineBlockNode":59,"../SyntaxNodes/LinkNode":60,"../SyntaxNodes/NsflNode":62,"../SyntaxNodes/NsfwNode":63,"../SyntaxNodes/OrderedListNode":65,"../SyntaxNodes/ParagraphNode":68,"../SyntaxNodes/ParenthesizedNode":69,"../SyntaxNodes/PlainTextNode":70,"../SyntaxNodes/RevisionDeletionNode":71,"../SyntaxNodes/RevisionInsertionNode":72,"../SyntaxNodes/SectionSeparatorNode":74,"../SyntaxNodes/SpoilerNode":75,"../SyntaxNodes/SquareBracketedNode":76,"../SyntaxNodes/StressNode":77,"../SyntaxNodes/UnorderedListNode":79,"../SyntaxNodes/VideoNode":80}],88:[function(require,module,exports){
 "use strict";
 var index_1 = require('./index');
 window.Up = index_1.default;
 
-},{"./index":88}],88:[function(require,module,exports){
+},{"./index":89}],89:[function(require,module,exports){
 "use strict";
 var Up_1 = require('./Up');
 exports.default = Up_1.Up;
 
-},{"./Up":82}]},{},[87]);
+},{"./Up":82}]},{},[88]);
