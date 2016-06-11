@@ -27,8 +27,18 @@ describe("Within a link's src attribute, <, ', and >", () => {
 })
 
 
-describe("Within a video's description in its title attribute, all instances of \" and &", () => {
-  it("are escaped (but they're not escaped within the fallback link)", () => {
+describe("Within an audio convention's src attribute, all instances of \" and &", () => {
+  it("are escaped (and they're escaped within the fallback link src attribute)", () => {
+    const node = new AudioNode('', 'https://example.com/?x&y&z="hi"')
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<audio src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
+  })
+})
+
+
+describe("Within a video's title attribute, all instances of \" and &", () => {
+  it("are escaped (but they're not escaped within the fallback link's contents)", () => {
     const node = new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
 
     expect(Up.toHtml(node)).to.be.eql(
@@ -37,8 +47,8 @@ describe("Within a video's description in its title attribute, all instances of 
 })
 
 
-describe("Within an audio convention's description in its title attribute, all instances of \" and &", () => {
-  it("are escaped (but they're not escaped within the fallback link)", () => {
+describe("Within an audio convention's detitle attribute, all instances of \" and &", () => {
+  it("are escaped (but they're not escaped within the fallback link's contents)", () => {
     const node = new AudioNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
 
     expect(Up.toHtml(node)).to.be.eql(
