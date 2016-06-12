@@ -93,46 +93,6 @@ describe('Overlapped stressed and deleted text', () => {
 })
 
 
-describe('Overlapped stressed and parenthesized text', () => {
-  it('produce a stress node, a nested parenthesized node, then a non-nested parenthesized node', () => {
-    expect(Up.toAst('I **love (drinking** whole) milk.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I '),
-        new StressNode([
-          new PlainTextNode('love '),
-          new ParenthesizedNode([
-            new PlainTextNode('(drinking')
-          ])
-        ]),
-        new ParenthesizedNode([
-          new PlainTextNode(' whole)')
-        ]),
-        new PlainTextNode(' milk.')
-      ]))
-  })
-})
-
-
-describe('Overlapped stressed and square bracketed text', () => {
-  it('produce a stress node, a nested square bracketed node, then a non-nested square bracketed node', () => {
-    expect(Up.toAst('I **love [drinking** whole] milk.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I '),
-        new StressNode([
-          new PlainTextNode('love '),
-          new SquareBracketedNode([
-            new PlainTextNode('[drinking')
-          ])
-        ]),
-        new SquareBracketedNode([
-          new PlainTextNode(' whole]')
-        ]),
-        new PlainTextNode(' milk.')
-      ]))
-  })
-})
-
-
 describe('Overlapped stressed, deleted, and inserted text', () => {
   it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
     expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
