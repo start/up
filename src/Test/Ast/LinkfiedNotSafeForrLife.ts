@@ -6,6 +6,8 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { NsflNode } from '../../SyntaxNodes/NsflNode'
+import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -61,6 +63,40 @@ describe('A NSFL convention directly followed by another NSFL convention', () =>
           new PlainTextNode('you eat rotting Gary')
         ]),
         new NsflNode([
+          new PlainTextNode('and win')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A NSFL convention directly followed by a spoiler convention', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][SPOILER: and win].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsflNode([
+          new PlainTextNode('you eat rotting Gary')
+        ]),
+        new SpoilerNode([
+          new PlainTextNode('and win')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A NSFL convention directly followed by a NSFW convention', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFW: and win].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsflNode([
+          new PlainTextNode('you eat rotting Gary')
+        ]),
+        new NsfwNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')
