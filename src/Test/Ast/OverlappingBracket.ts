@@ -14,7 +14,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Overlapped stressed and parenthesized text', () => {
-  it('produce a stress node, a nested parenthesized node, then a non-nested parenthesized node', () => {
+  it('splits the parenthesized node because it opened after the stress node', () => {
     expect(Up.toAst('I **love (drinking** whole) milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -34,7 +34,7 @@ describe('Overlapped stressed and parenthesized text', () => {
 
 
 describe('Overlapped stressed and square bracketed text', () => {
-  it('produce a stress node, a nested square bracketed node, then a non-nested square bracketed node', () => {
+  it('splits the square bracketed node because it opened after the stress node', () => {
     expect(Up.toAst('I **love [drinking** whole] milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),

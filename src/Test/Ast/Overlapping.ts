@@ -14,7 +14,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Overlapped stressed and deleted text', () => {
-  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
+  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node. The revision deletion node is split because it opened second', () => {
     expect(Up.toAst('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -34,7 +34,7 @@ describe('Overlapped stressed and deleted text', () => {
 
 
 describe('Overlapped emphasized and stressed text', () => {
-  it('produce an emphasis node, a nested stress node, then a non-nested stress node', () => {
+  it('split the stress node because it opened second', () => {
     expect(Up.toAst('I *love **drinking* whole** milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -54,7 +54,7 @@ describe('Overlapped emphasized and stressed text', () => {
 
 
 describe('Overlapped stressed and emphasized text', () => {
-  it('produce a stress node, a nested emphasis node, then a non-nested emphasis node', () => {
+  it('split the emphasis node because it opened second', () => {
     expect(Up.toAst('I **love *drinking** whole* milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -94,7 +94,7 @@ describe('Overlapped stressed and deleted text', () => {
 
 
 describe('Overlapped stressed, deleted, and inserted text', () => {
-  it('produce chaos. But when a node is "cut" by its parent ending, another node of the same type follows its parent', () => {
+  it("split the revision deletion node once and the revision insertion node twice, becuase earlier conventions aren't split by later ones", () => {
     expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
