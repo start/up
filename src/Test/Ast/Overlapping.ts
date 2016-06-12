@@ -7,10 +7,8 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Overlapped stressed and deleted text', () => {
