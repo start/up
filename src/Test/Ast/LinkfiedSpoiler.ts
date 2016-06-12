@@ -6,6 +6,8 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../SyntaxNodes/NsflNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -61,6 +63,40 @@ describe('A spoiler directly followed by another spoiler', () => {
           new PlainTextNode('you fight Gary')
         ]),
         new SpoilerNode([
+          new PlainTextNode('and win')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A spoiler directly followed by a NSFW convention', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][NSFW: and win].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new NsfwNode([
+          new PlainTextNode('and win')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A spoiler directly followed by a NSFL convention', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][NSFL: and win].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new NsflNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')
