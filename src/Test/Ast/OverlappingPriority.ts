@@ -418,3 +418,145 @@ describe('A footnote that overlaps a NSFW convention', () => {
     )
   })
 })
+
+
+describe('A NSFL convention that overlaps a link', () => {
+  it("splits the link node, not the NSFL convention node", () => {
+    expect(Up.toAst('(NSFL: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsflNode([
+          new PlainTextNode('Gary loses to '),
+          new LinkNode([
+            new PlainTextNode('Ash')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
+        ]),
+        new LinkNode([
+          new PlainTextNode(' Ketchum')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
+      ])
+    )
+  })
+})
+
+
+describe('A link that overlaps a NSFL convention', () => {
+  it("splits the link node, not the NSFL convention node", () => {
+    const text =
+      'In Pokémon Red, [Gary Oak {NSFL: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, '),
+        new LinkNode([
+          new PlainTextNode('Gary Oak ')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+        new NsflNode([
+          new LinkNode([
+            new PlainTextNode('loses to Ash Ketchum')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+          new PlainTextNode(' repeatedly')
+        ]),
+        new PlainTextNode(' throughout the game.')
+      ])
+    )
+  })
+})
+
+
+describe('A NSFL convention that overlaps action text', () => {
+  it("splits the action text node, not the NSFL convention node", () => {
+    expect(Up.toAst('In Pokémon Red, [NSFL: Gary Oak {loses] badly}')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, '),
+        new NsflNode([
+          new PlainTextNode('Gary Oak '),
+          new ActionNode([
+            new PlainTextNode('loses')
+          ])
+        ]),
+        new ActionNode([
+          new PlainTextNode(' badly')
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Action text that overlaps a NSFL convention', () => {
+  it("splits the action node, not the NSFL convention node", () => {
+    const text =
+      'In Pokémon Red, Gary Oak {loses [NSFL: badly} to Ash Ketchum]'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, Gary Oak '),
+        new ActionNode([
+          new PlainTextNode('loses ')
+        ]),
+        new NsflNode([
+          new ActionNode([
+            new PlainTextNode('badly')
+          ]),
+          new PlainTextNode(' to Ash Ketchum')
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('A NSFL convention that overlaps a footnote', () => {
+  it("splits the NSFL convention node, not the footnote node", () => {
+    const text = '[NSFL: Gary loses to Ash ((Ketchum] is his last name))'
+
+    const footnote =
+      new FootnoteNode([
+        new NsflNode([
+          new PlainTextNode('Ketchum')
+        ]),
+        new PlainTextNode(' is his last name')
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new NsflNode([
+            new PlainTextNode('Gary loses to Ash'),
+          ]),
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ])
+    )
+  })
+})
+
+
+describe('A footnote that overlaps a NSFL convention', () => {
+  it("splits the NSFL convention node, not the footnote node", () => {
+    const text = 'Eventually, I will think of one ((reasonable [NSFL: and realistic)) example of a] footnote that overlaps a NSFL convention.'
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode('reasonable '),
+        new NsflNode([
+          new PlainTextNode('and realistic')
+        ]),
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Eventually, I will think of one'),
+          footnote,
+          new NsflNode([
+            new PlainTextNode(' example of a'),
+          ]),
+          new PlainTextNode(' footnote that overlaps a NSFL convention.'),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ])
+    )
+  })
+})
