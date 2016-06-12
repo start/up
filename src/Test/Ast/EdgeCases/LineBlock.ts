@@ -69,21 +69,6 @@ Roses are red
 })
 
 
-describe('A line with an escaped line break followed by another line', () => {
-  it('do not produce a line block node', () => {
-    const text = `
-Roses are red\\
-Violets are blue`
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-            new PlainTextNode('Roses are red\nViolets are blue')
-        ]),
-      ]))
-  })
-})
-
-
 describe('Within a line block, a line with an escaped line break followed by another line', () => {
   it('are considered part of the same line', () => {
     const text = `
