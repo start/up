@@ -46,10 +46,6 @@ export abstract class RaisedVoiceMarker {
   }
   
   payForStressAndEmphasisTogether(countAsterisksInCommonWithMatchingDelimiter: number): void {
-    if (countAsterisksInCommonWithMatchingDelimiter < STRESS_AND_EMPHASIS_TOGETHER_COST) {
-      throw new Error(`Marker at index ${this.originalTokenIndex} only spent ${countAsterisksInCommonWithMatchingDelimiter} to open stress and emphasis`)
-    }
-    
     this.pay(countAsterisksInCommonWithMatchingDelimiter)
   }
   
