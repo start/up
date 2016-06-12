@@ -23,6 +23,7 @@ describe('Square bracketed text starting with "spoiler:"', () => {
   })
 })
 
+
 describe('Parenthesized text starting with "spoiler:"', () => {
   it('is put inside a spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.be.eql(
@@ -35,6 +36,7 @@ describe('Parenthesized text starting with "spoiler:"', () => {
       ]))
   })
 })
+
 
 describe('Curly bracketed text starting with "spoiler:"', () => {
   it('is put inside a spoiler node', () => {

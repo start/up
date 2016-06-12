@@ -23,6 +23,7 @@ describe('Square bracketed text starting with "nsfw:"', () => {
   })
 })
 
+
 describe('Parenthesized text starting with "nsfw:"', () => {
   it('is put inside a nsfw node', () => {
     expect(Up.toAst('After you beat the Elite Four, (NSFW: you wrestle a naked Gary).')).to.be.eql(
@@ -35,6 +36,7 @@ describe('Parenthesized text starting with "nsfw:"', () => {
       ]))
   })
 })
+
 
 describe('Curly bracketed text starting with "nsfw:"', () => {
   it('is put inside a NSFW node', () => {
