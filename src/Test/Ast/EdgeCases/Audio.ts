@@ -128,3 +128,20 @@ describe("Unmatched opening parentheses in an audio URL", () => {
       ]))
   })
 })
+
+
+describe('A full audio conventions (description and URL) directly followed by another parenthesized link', () => {
+  it('is not "linkified" like a spoiler would be. Instead, it produces an audio node followed by a parenthesized naked URL', () => {
+    expect(Up.toAst('[audio: ghostly howling](http://example.com/ghosts.ogg)(http://bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon))')).to.be.eql(
+      insideDocumentAndParagraph([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)'),
+          new PlainTextNode(')')          
+        ])
+      ]))
+  })
+})
