@@ -93,6 +93,46 @@ describe('Overlapped stressed and deleted text', () => {
 })
 
 
+describe('Overlapped stressed and parenthesized text', () => {
+  it('splits the parenthesized node because it opened after the stress node', () => {
+    expect(Up.toAst('I **love (drinking** whole) milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new ParenthesizedNode([
+            new PlainTextNode('(drinking')
+          ])
+        ]),
+        new ParenthesizedNode([
+          new PlainTextNode(' whole)')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed and square bracketed text', () => {
+  it('splits the square bracketed node because it opened after the stress node', () => {
+    expect(Up.toAst('I **love [drinking** whole] milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new SquareBracketedNode([
+            new PlainTextNode('[drinking')
+          ])
+        ]),
+        new SquareBracketedNode([
+          new PlainTextNode(' whole]')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
 describe('Overlapped stressed, deleted, and inserted text', () => {
   it("split the revision deletion node once and the revision insertion node twice, becuase earlier conventions aren't split by later ones", () => {
     expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
