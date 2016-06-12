@@ -10,6 +10,8 @@ import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../SyntaxNodes/NsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -267,6 +269,149 @@ describe('A footnote that overlaps a spoiler', () => {
             new PlainTextNode(' example of a'),
           ]),
           new PlainTextNode(' footnote that overlaps a spoiler.'),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ])
+    )
+  })
+})
+
+
+
+describe('A NSFW convention that overlaps a link', () => {
+  it("splits the link node, not the NSFW convention node", () => {
+    expect(Up.toAst('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsfwNode([
+          new PlainTextNode('Gary loses to '),
+          new LinkNode([
+            new PlainTextNode('Ash')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
+        ]),
+        new LinkNode([
+          new PlainTextNode(' Ketchum')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
+      ])
+    )
+  })
+})
+
+
+describe('A link that overlaps a NSFW convention', () => {
+  it("splits the link node, not the NSFW convention node", () => {
+    const text =
+      'In Pokémon Red, [Gary Oak {NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, '),
+        new LinkNode([
+          new PlainTextNode('Gary Oak ')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+        new NsfwNode([
+          new LinkNode([
+            new PlainTextNode('loses to Ash Ketchum')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+          new PlainTextNode(' repeatedly')
+        ]),
+        new PlainTextNode(' throughout the game.')
+      ])
+    )
+  })
+})
+
+
+describe('A NSFW convention that overlaps action text', () => {
+  it("splits the action text node, not the NSFW convention node", () => {
+    expect(Up.toAst('In Pokémon Red, [NSFW: Gary Oak {loses] badly}')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, '),
+        new NsfwNode([
+          new PlainTextNode('Gary Oak '),
+          new ActionNode([
+            new PlainTextNode('loses')
+          ])
+        ]),
+        new ActionNode([
+          new PlainTextNode(' badly')
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Action text that overlaps a NSFW convention', () => {
+  it("splits the action node, not the NSFW convention node", () => {
+    const text =
+      'In Pokémon Red, Gary Oak {loses [NSFW: badly} to Ash Ketchum]'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, Gary Oak '),
+        new ActionNode([
+          new PlainTextNode('loses ')
+        ]),
+        new NsfwNode([
+          new ActionNode([
+            new PlainTextNode('badly')
+          ]),
+          new PlainTextNode(' to Ash Ketchum')
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('A NSFW convention that overlaps a footnote', () => {
+  it("splits the NSFW convention node, not the footnote node", () => {
+    const text = '[NSFW: Gary loses to Ash ((Ketchum] is his last name))'
+
+    const footnote =
+      new FootnoteNode([
+        new NsfwNode([
+          new PlainTextNode('Ketchum')
+        ]),
+        new PlainTextNode(' is his last name')
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new NsfwNode([
+            new PlainTextNode('Gary loses to Ash'),
+          ]),
+          footnote
+        ]),
+        new FootnoteBlockNode([footnote])
+      ])
+    )
+  })
+})
+
+
+describe('A footnote that overlaps a NSFW convention', () => {
+  it("splits the NSFW convention node, not the footnote node", () => {
+    const text = 'Eventually, I will think of one ((reasonable [NSFW: and realistic)) example of a] footnote that overlaps a NSFW convention.'
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode('reasonable '),
+        new NsfwNode([
+          new PlainTextNode('and realistic')
+        ]),
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Eventually, I will think of one'),
+          footnote,
+          new NsfwNode([
+            new PlainTextNode(' example of a'),
+          ]),
+          new PlainTextNode(' footnote that overlaps a NSFW convention.'),
         ]),
         new FootnoteBlockNode([footnote])
       ])
