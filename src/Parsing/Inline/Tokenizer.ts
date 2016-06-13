@@ -97,10 +97,10 @@ export class Tokenizer {
       {
         richConvention: SPOILER_CONVENTION,
         nonLocalizedTerm: 'spoiler'
-      },{
+      }, {
         richConvention: NSFW_CONVENTION,
         nonLocalizedTerm: 'nsfw'
-      },{
+      }, {
         richConvention: NSFL_CONVENTION,
         nonLocalizedTerm: 'nsfl'
       }
@@ -305,7 +305,7 @@ export class Tokenizer {
     return this.conventions.some(convention => this.tryToOpen(convention))
   }
 
-  private isDirectlyFollowing(kinds: TokenKind[]): boolean {
+  private isDirectlyFollowingTokenOfKind(kinds: TokenKind[]): boolean {
     return (
       this.buffer === ''
       && this.tokens.length
@@ -328,20 +328,33 @@ export class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfPrecedingNonWhitespace, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)
-      && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowingTokenOfKind))
+      && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind))
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
         then: (match, isDirectlyPrecedingNonWhitespace, ...captures) => {
+          if (onlyOpenIfPrecedingNonWhitespace && !isDirectlyPrecedingNonWhitespace) {
+            this.consumer.textIndex -= match.length
+            return
+          }
+
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
 
-          this.openContexts.push(new TokenizerContext(convention, this.getCurrentSnapshot()))
+          // The text consumer doesn't update its text index until after the post-match callback.
+          const currentSnapshot = new TokenizerSnapshot({
+            textIndex: this.consumer.textIndex,
+            tokens: this.tokens,
+            openContexts: this.openContexts,
+            bufferedText: this.buffer
+          })
+
+          this.openContexts.push(new TokenizerContext(convention, currentSnapshot))
 
           if (onOpen) {
             onOpen(match, isDirectlyPrecedingNonWhitespace, ...captures)
@@ -372,15 +385,6 @@ export class Tokenizer {
     }
 
     return !this.failedConventionTracker.hasFailed(convention, textIndex)
-  }
-
-  private getCurrentSnapshot(): TokenizerSnapshot {
-    return new TokenizerSnapshot({
-      textIndex: this.consumer.textIndex,
-      tokens: this.tokens,
-      openContexts: this.openContexts,
-      bufferedText: this.buffer
-    })
   }
 
   private resetToBeforeContext(context: TokenizerContext): void {
@@ -635,7 +639,7 @@ export class Tokenizer {
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
-      
+
       onClose: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
         this.appendNewToken({ kind: TokenKind.MediaUrlAndEnd, value: url })

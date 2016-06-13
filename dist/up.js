@@ -893,7 +893,7 @@ var Tokenizer = (function () {
         var _this = this;
         return this.conventions.some(function (convention) { return _this.tryToOpen(convention); });
     };
-    Tokenizer.prototype.isDirectlyFollowing = function (kinds) {
+    Tokenizer.prototype.isDirectlyFollowingTokenOfKind = function (kinds) {
         return (this.buffer === ''
             && this.tokens.length
             && CollectionHelpers_1.contains(kinds, CollectionHelpers_1.last(this.tokens).kind));
@@ -910,9 +910,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpen = function (convention) {
         var _this = this;
-        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
+        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfPrecedingNonWhitespace = convention.onlyOpenIfPrecedingNonWhitespace, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return (this.canTry(convention)
-            && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowingTokenOfKind))
+            && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind))
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
                 then: function (match, isDirectlyPrecedingNonWhitespace) {
@@ -920,10 +920,20 @@ var Tokenizer = (function () {
                     for (var _i = 2; _i < arguments.length; _i++) {
                         captures[_i - 2] = arguments[_i];
                     }
+                    if (onlyOpenIfPrecedingNonWhitespace && !isDirectlyPrecedingNonWhitespace) {
+                        _this.consumer.textIndex -= match.length;
+                        return;
+                    }
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                     }
-                    _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot()));
+                    var currentSnapshot = new TokenizerSnapshot_1.TokenizerSnapshot({
+                        textIndex: _this.consumer.textIndex,
+                        tokens: _this.tokens,
+                        openContexts: _this.openContexts,
+                        bufferedText: _this.buffer
+                    });
+                    _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, currentSnapshot));
                     if (onOpen) {
                         onOpen.apply(void 0, [match, isDirectlyPrecedingNonWhitespace].concat(captures));
                     }
@@ -940,14 +950,6 @@ var Tokenizer = (function () {
             return false;
         }
         return !this.failedConventionTracker.hasFailed(convention, textIndex);
-    };
-    Tokenizer.prototype.getCurrentSnapshot = function () {
-        return new TokenizerSnapshot_1.TokenizerSnapshot({
-            textIndex: this.consumer.textIndex,
-            tokens: this.tokens,
-            openContexts: this.openContexts,
-            bufferedText: this.buffer
-        });
     };
     Tokenizer.prototype.resetToBeforeContext = function (context) {
         this.failedConventionTracker.registerFailure(context);
