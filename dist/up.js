@@ -856,16 +856,12 @@ var Tokenizer = (function () {
         var contextIndex = args.atIndex;
         var openContext = this.openContexts[contextIndex];
         var convention = openContext.convention;
-        var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i > contextIndex; i--) {
             if (this.openContexts[i].convention === this.nakedUrlConvention) {
-                innerNakedUrlContextIndex = i;
+                this.flushBufferToNakedUrlEndToken();
+                this.openContexts.splice(i);
                 break;
             }
-        }
-        if (innerNakedUrlContextIndex != null) {
-            this.flushBufferToNakedUrlEndToken();
-            this.openContexts.splice(contextIndex);
         }
         if (convention.onCloseFlushBufferTo != null) {
             this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo);

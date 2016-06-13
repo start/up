@@ -209,7 +209,7 @@ export class Tokenizer {
 
       if (this.shouldCloseContext(openContext)) {
         // If `closeOrUndoContext` fails, it resets the tokenizer to where it was before we opened the
-        // context and returns false.
+        // context, then returns false.
         //
         // We know we won't be able to close any outer conventions at our current position, because we
         // already failed to do so when we opened the now-failed context.
@@ -237,7 +237,7 @@ export class Tokenizer {
     })
   }
 
-  // This method returns true if the context could be closed.
+  // This method returns true if the context was able to be closed.
   //
   // Otherwise, the tokenizer is reset to where it was before the context was opened, and this method
   // returns false. 
@@ -246,22 +246,16 @@ export class Tokenizer {
     const openContext = this.openContexts[contextIndex]
     const { convention } = openContext
 
-    let innerNakedUrlContextIndex: number = null
-
     for (let i = this.openContexts.length - 1; i > contextIndex; i--) {
       if (this.openContexts[i].convention === this.nakedUrlConvention) {
-        innerNakedUrlContextIndex = i
+        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
+        this.flushBufferToNakedUrlEndToken()
+
+        // We need to close the naked URL's context, as well as the contexts of any raw text brackets
+        // inside it.
+        this.openContexts.splice(i)
         break
       }
-    }
-
-    // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-    if (innerNakedUrlContextIndex != null) {
-      this.flushBufferToNakedUrlEndToken()
-
-      // We need to close the naked URL's context, as well as the contexts of any raw text brackets
-      // inside it.
-      this.openContexts.splice(contextIndex)
     }
 
     if (convention.onCloseFlushBufferTo != null) {
