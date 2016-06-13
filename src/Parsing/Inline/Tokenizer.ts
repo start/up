@@ -338,11 +338,6 @@ export class Tokenizer {
         onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
 
         then: (match, isDirectlyPrecedingNonWhitespace, ...captures) => {
-          if (onlyOpenIfPrecedingNonWhitespace && !isDirectlyPrecedingNonWhitespace) {
-            this.consumer.textIndex -= match.length
-            return
-          }
-
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }

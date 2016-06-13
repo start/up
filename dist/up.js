@@ -923,10 +923,6 @@ var Tokenizer = (function () {
                     for (var _i = 2; _i < arguments.length; _i++) {
                         captures[_i - 2] = arguments[_i];
                     }
-                    if (onlyOpenIfPrecedingNonWhitespace && !isDirectlyPrecedingNonWhitespace) {
-                        _this.consumer.textIndex -= match.length;
-                        return;
-                    }
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                     }
