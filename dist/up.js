@@ -912,7 +912,6 @@ var Tokenizer = (function () {
         var _this = this;
         var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfPrecedingNonWhitespace = convention.onlyOpenIfPrecedingNonWhitespace, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return (this.canTry(convention)
-            && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind))
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
                 then: function (match, isDirectlyPrecedingNonWhitespace) {
@@ -949,7 +948,9 @@ var Tokenizer = (function () {
         if (hasFailedAfterTransitioning) {
             return false;
         }
-        return !this.failedConventionTracker.hasFailed(convention, textIndex);
+        var onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind;
+        return (!this.failedConventionTracker.hasFailed(convention, textIndex)
+            && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind)));
     };
     Tokenizer.prototype.resetToBeforeContext = function (context) {
         this.failedConventionTracker.registerFailure(context);

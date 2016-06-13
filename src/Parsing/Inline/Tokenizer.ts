@@ -332,7 +332,6 @@ export class Tokenizer {
 
     return (
       this.canTry(convention)
-      && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind))
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
@@ -384,7 +383,12 @@ export class Tokenizer {
       return false
     }
 
-    return !this.failedConventionTracker.hasFailed(convention, textIndex)
+    const { onlyOpenIfDirectlyFollowingTokenOfKind } = convention
+
+    return (
+      !this.failedConventionTracker.hasFailed(convention, textIndex)
+      && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind))
+    )
   }
 
   private resetToBeforeContext(context: TokenizerContext): void {
