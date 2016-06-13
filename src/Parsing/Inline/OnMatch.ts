@@ -1,3 +1,3 @@
 export interface OnMatch {
-  (match: string, matchPrecedesNonWhitespace: boolean, ...captures: string[]): void
+  (match: string, ...captures: string[]): void
 }

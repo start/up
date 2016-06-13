@@ -120,7 +120,7 @@ var InlineTextConsumer = (function () {
             return false;
         }
         if (thenBeforeAdvancingTextIndex) {
-            thenBeforeAdvancingTextIndex.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
+            thenBeforeAdvancingTextIndex.apply(void 0, [match].concat(captures));
         }
         this.advanceTextIndex(match.length);
         return true;
@@ -647,18 +647,10 @@ var Tokenizer = (function () {
         var _this = this;
         return false && this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            onlyIfPrecedingNonWhitespace: true,
-            thenBeforeAdvancingTextIndex: function (asterisks, matchPrecedesNonWhitespace) {
+            thenBeforeAdvancingTextIndex: function (asterisks) {
                 var canCloseConvention = _this.consumer.isFollowingNonWhitespace;
-                var canOpenConvention = matchPrecedesNonWhitespace;
                 var asteriskTokenKind = TokenKind_1.TokenKind.PlainText;
-                if (canOpenConvention && canCloseConvention) {
-                    asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceStartOrEnd;
-                }
-                else if (canOpenConvention) {
-                    asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceStart;
-                }
-                else if (canCloseConvention) {
+                if (canCloseConvention) {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
                 }
                 _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
@@ -695,10 +687,10 @@ var Tokenizer = (function () {
         return (this.canTry(convention)
             && this.consumer.consume({
                 pattern: startPattern,
-                thenBeforeAdvancingTextIndex: function (match, matchPrecedesNonWhitespace) {
+                thenBeforeAdvancingTextIndex: function (match) {
                     var captures = [];
-                    for (var _i = 2; _i < arguments.length; _i++) {
-                        captures[_i - 2] = arguments[_i];
+                    for (var _i = 1; _i < arguments.length; _i++) {
+                        captures[_i - 1] = arguments[_i];
                     }
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
@@ -711,7 +703,7 @@ var Tokenizer = (function () {
                     });
                     _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, currentSnapshot));
                     if (onOpen) {
-                        onOpen.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
+                        onOpen.apply(void 0, [match].concat(captures));
                     }
                 }
             }));

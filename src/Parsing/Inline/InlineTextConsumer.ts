@@ -66,7 +66,7 @@ export class InlineTextConsumer {
     }
 
     if (thenBeforeAdvancingTextIndex) {
-      thenBeforeAdvancingTextIndex(match, matchPrecedesNonWhitespace, ...captures)
+      thenBeforeAdvancingTextIndex(match, ...captures)
     }
 
     this.advanceTextIndex(match.length)

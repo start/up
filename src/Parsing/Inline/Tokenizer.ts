@@ -309,19 +309,12 @@ export class Tokenizer {
     return false && this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
 
-      onlyIfPrecedingNonWhitespace: true,
-
-      thenBeforeAdvancingTextIndex: (asterisks, matchPrecedesNonWhitespace) => {
+      thenBeforeAdvancingTextIndex: (asterisks) => {
         const canCloseConvention = this.consumer.isFollowingNonWhitespace
-        const canOpenConvention = matchPrecedesNonWhitespace
-
+        
         let asteriskTokenKind = TokenKind.PlainText
 
-        if (canOpenConvention && canCloseConvention) {
-          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStartOrEnd
-        } else if (canOpenConvention) {
-          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStart
-        } else if (canCloseConvention) {
+        if (canCloseConvention) {
           asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
         }
 
@@ -370,7 +363,7 @@ export class Tokenizer {
       && this.consumer.consume({
         pattern: startPattern,
 
-        thenBeforeAdvancingTextIndex: (match, matchPrecedesNonWhitespace, ...captures) => {
+        thenBeforeAdvancingTextIndex: (match, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
@@ -386,7 +379,7 @@ export class Tokenizer {
           this.openContexts.push(new TokenizerContext(convention, currentSnapshot))
 
           if (onOpen) {
-            onOpen(match, matchPrecedesNonWhitespace, ...captures)
+            onOpen(match, ...captures)
           }
         }
       })
