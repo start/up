@@ -657,6 +657,15 @@ var Tokenizer = (function () {
     Tokenizer.prototype.spendDelimiterToTryToCloseAnyRaisedVoices = function (delimiter) {
         return false;
     };
+    Tokenizer.prototype.encloseWithin = function (convention, context) {
+        var startTokenKind = convention.startTokenKind, endTokenKind = convention.endTokenKind;
+        this.insertToken({
+            token: new Token_1.Token({ kind: startTokenKind }),
+            atIndex: context.initialTokenIndex,
+            context: context
+        });
+        this.appendNewToken({ kind: endTokenKind });
+    };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
         return CollectionHelpers_1.reversed(this.openContexts)
             .some(function (context) { return context.doInsteadOfTryingToOpenUsualContexts(); });

@@ -324,7 +324,7 @@ export class Tokenizer {
   }
 
   private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
-  /*  const unspentDelimiterLength = delimiter.length
+    /*const unspentDelimiterLength = delimiter.length
 
     const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
       this.openContexts
@@ -334,7 +334,7 @@ export class Tokenizer {
 
     const { EMPHASIS_COST, STRESS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } = RaisedVoiceContext
 
-    if (unspentDelimiterLength === EMPHASIS_COST) {
+    if (unspentDelimiterLength === RaisedVoiceContext.EMPHASIS_COST) {
 
       // If an end marker has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
       //
@@ -347,23 +347,17 @@ export class Tokenizer {
       // that has 2 asterisks to spend. But this fallback happens later.
 
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
-      
+
         if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
-          const emphasisToken = new Token({ kind: EMPHASIS_CONVENTION.startTokenKind })
-
-          this.insertToken({
-            token: emphasisToken,
-            atIndex: context.initialTokenIndex,
-            context
-          })
-
+          this.encloseWithin(EMPHASIS_CONVENTION, context)
           context.payForEmphasis()
+          // TODO: REMOVE CONTEXT
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
           return true
         }
       }
-    } else if (this.canIndicateStressButNotBothTogether()) {
+    } else if (unspentDelimiterLength === RaisedVoiceContext.STRESS_COST) {
 
       // If an end marker has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
       // and emphasis at the saem time.
@@ -375,19 +369,22 @@ export class Tokenizer {
       // Only if we can't find one, then we'll match with a marker that has just 1 asterisk to spend. But this
       // fallback happens later.
 
-      for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
-        if (startMarker.canIndicateStress()) {
-          this.endStress(startMarker)
+      for (const context of raisedVoiceContextsFromMostRecentToLeast) {
+        if (context.canOnlyAffordStress()) {
+          this.encloseWithin(STRESS_CONVENTION, context)
+          context.payForEmphasis
+          // TODO: REMOVE CONTEXT
+
 
           // Considering we could only afford to indicate stress, we have nothing left to do.
           return
         }
       }
-
+    }
 
     // From here on out, if this end marker can match with a start marker, it will. It'll try to match as
     // many asterisks at once as it can.
-    
+
     for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
       if (!unspentDelimiterLength) {
         // Once this marker has matched all of its asterisks, its work is done. Let's bail.
@@ -410,8 +407,23 @@ export class Tokenizer {
       }
     }*/
 
-      return false
-    }
+    return false
+  }
+
+  private encloseWithin(
+    convention: { startTokenKind: TokenKind, endTokenKind: TokenKind },
+    context: TokenizerContext
+  ): void {
+    const { startTokenKind, endTokenKind } = convention
+
+    this.insertToken({
+      token: new Token({ kind: startTokenKind }),
+      atIndex: context.initialTokenIndex,
+      context
+    })
+
+    this.appendNewToken({ kind: endTokenKind })
+  }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
     return reversed(this.openContexts)
