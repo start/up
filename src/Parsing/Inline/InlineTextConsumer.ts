@@ -59,14 +59,14 @@ export class InlineTextConsumer {
     const [match, ...captures] = result
 
     const charAfterMatch = this.entireText[this._textIndex + match.length]
-    const isPrecedingNonWhitespace = NON_BLANK_PATTERN.test(charAfterMatch)
+    const matchPrecedesNonWhitespace = NON_BLANK_PATTERN.test(charAfterMatch)
 
-    if (onlyIfPrecedingNonWhitespace && !isPrecedingNonWhitespace) {
+    if (onlyIfPrecedingNonWhitespace && !matchPrecedesNonWhitespace) {
       return false
     }
 
     if (then) {
-      then(match, ...captures)
+      then(match, matchPrecedesNonWhitespace, ...captures)
     }
 
     this.advanceTextIndex(match.length)

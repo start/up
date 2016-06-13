@@ -224,16 +224,16 @@ export class Tokenizer {
 
 
   private shouldCloseContext(context: TokenizerContext): boolean {
-    // If there's no end pattern, we aren't going to try to close the context here.
-    const endPattern = context.convention.endPattern
+    // If there's no convention associated with this context, we aren't going to try to close it here.
+    const { convention } = context
 
     return (
-      endPattern
+      convention
       && this.consumer.advanceAfterMatch({
-        pattern: endPattern,
+        pattern: convention.endPattern,
 
         then: match => {
-          if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
+          if (convention.leaveEndPatternForAnotherConventionToConsume) {
             this.consumer.textIndex -= match.length
           }
         }
@@ -310,7 +310,27 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
-    return false
+    return false &&  this.consumer.advanceAfterMatch({
+      pattern: RAISED_VOICE_DELIMITER_PATTERN,
+
+      then: (asterisks, matchPrecedesNonWhitespace) => {
+        const canCloseConvention = this.consumer.isFollowingNonWhitespace
+        const canOpenConvention = matchPrecedesNonWhitespace
+
+        let asteriskTokenKind = TokenKind.PlainText
+
+        if (canOpenConvention && canCloseConvention) {
+          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStartOrEnd
+        } else if (canOpenConvention) {
+          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStart
+        } else if (canCloseConvention) {
+          asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
+        }
+
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        this.appendNewToken({ kind: asteriskTokenKind, value: asterisks })
+      }
+    })
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
@@ -345,16 +365,14 @@ export class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfStartPatternPrecedesNonWhitespace, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
-        onlyIfPrecedingNonWhitespace: onlyOpenIfStartPatternPrecedesNonWhitespace,
-
-        then: (match, ...captures) => {
+        then: (match, matchPrecedesNonWhitespace, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
@@ -370,7 +388,7 @@ export class Tokenizer {
           this.openContexts.push(new TokenizerContext(convention, currentSnapshot))
 
           if (onOpen) {
-            onOpen(match, ...captures)
+            onOpen(match, matchPrecedesNonWhitespace, ...captures)
           }
         }
       })

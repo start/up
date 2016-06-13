@@ -6,10 +6,9 @@ import { TokenKind } from './TokenKind'
 
 export interface TokenizableConvention {
   onlyOpenIfDirectlyFollowingTokenOfKind?: TokenKind[]
-  onlyOpenIfStartPatternPrecedesNonWhitespace?: boolean
 
   startPattern: RegExp
-  endPattern?: RegExp
+  endPattern: RegExp
   
   flushBufferToPlainTextTokenBeforeOpening?: boolean
   

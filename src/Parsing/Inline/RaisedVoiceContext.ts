@@ -2,6 +2,8 @@ import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TokenizerContext } from './TokenizerContext'
 
+
+// TODO: Explain
 export class RaisedVoiceContext extends TokenizerContext {
   initialTokenIndex: number
   countRemainingDelimiterChars: number
@@ -13,6 +15,24 @@ export class RaisedVoiceContext extends TokenizerContext {
   ) {
     super(convention, snapshot)
     this.reset()
+  }
+
+  doIsteadOfTryingToCloseOuterContexts(): boolean {
+    return false
+  }
+
+  doInsteadOfTryingToOpenUsualContexts(): boolean {
+    return false
+  }
+
+  close(): void {
+    if (this.countRemainingDelimiterChars === this.delimiterLength) {
+      
+    }
+  }
+
+  resolveWhenLeftUnclosed(): boolean {
+    return false
   }
 
   reset(): void {
