@@ -181,7 +181,7 @@ describe('Shouted text starting with 3 asterisks with its stress ended early', (
 })
 
 
-describe('Emphasized and stressed text', () => {
+describe('Text that is emphasized then stressed', () => {
   it('can be closed by 3 asterisks', () => {
     expect(Up.toAst('*He has won **six in a row!***')).to.be.eql(
       insideDocumentAndParagraph([
@@ -208,7 +208,7 @@ describe('Emphasized and stressed text', () => {
 })
 
 
-describe('Stressed and emphasized text', () => {
+describe('Text that is stressed then emphasized', () => {
   it('can be closed by 3 asterisks', () => {
     expect(Up.toAst('**He has won *six in a row!***')).to.be.eql(
       insideDocumentAndParagraph([
