@@ -66,7 +66,7 @@ var Patterns_1 = require('../../Patterns');
 var InlineTextConsumer = (function () {
     function InlineTextConsumer(entireText) {
         this.entireText = entireText;
-        this._textIndex = 0;
+        this._isTouchingWordEnd = false;
         this.textIndex = 0;
     }
     Object.defineProperty(InlineTextConsumer.prototype, "textIndex", {
@@ -94,6 +94,13 @@ var InlineTextConsumer = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(InlineTextConsumer.prototype, "isTouchingWordEnd", {
+        get: function () {
+            return this._isTouchingWordEnd;
+        },
+        enumerable: true,
+        configurable: true
+    });
     InlineTextConsumer.prototype.advanceTextIndex = function (length) {
         this.textIndex += length;
     };
@@ -110,7 +117,7 @@ var InlineTextConsumer = (function () {
         var charAfterMatch = this.entireText[this._textIndex + match.length];
         var isTouchingWordStart = Patterns_1.NON_BLANK_PATTERN.test(charAfterMatch);
         if (then) {
-            then.apply(void 0, [match, this.isTouchingWordEnd, isTouchingWordStart].concat(captures));
+            then.apply(void 0, [match, isTouchingWordStart].concat(captures));
         }
         this.advanceTextIndex(match.length);
         return true;
@@ -119,7 +126,7 @@ var InlineTextConsumer = (function () {
         this._remainingText = this.entireText.substr(this._textIndex);
         this._currentChar = this._remainingText[0];
         var previousChar = this.entireText[this._textIndex - 1];
-        this.isTouchingWordEnd = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
+        this._isTouchingWordEnd = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
     };
     return InlineTextConsumer;
 }());
@@ -855,10 +862,10 @@ var Tokenizer = (function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
             pattern: context.convention.endPattern,
-            then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+            then: function (match, isTouchingWordEnd) {
                 var captures = [];
-                for (var _i = 3; _i < arguments.length; _i++) {
-                    captures[_i - 3] = arguments[_i];
+                for (var _i = 2; _i < arguments.length; _i++) {
+                    captures[_i - 2] = arguments[_i];
                 }
                 if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
                     _this.consumer.textIndex -= match.length;
@@ -912,17 +919,17 @@ var Tokenizer = (function () {
             && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowingTokenOfKind))
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
-                then: function (match, isTouchingWordEnd, isTouchingWordStart) {
+                then: function (match, isTouchingWordStart) {
                     var captures = [];
-                    for (var _i = 3; _i < arguments.length; _i++) {
-                        captures[_i - 3] = arguments[_i];
+                    for (var _i = 2; _i < arguments.length; _i++) {
+                        captures[_i - 2] = arguments[_i];
                     }
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                     }
                     _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot()));
                     if (onOpen) {
-                        onOpen.apply(void 0, [match, isTouchingWordEnd, isTouchingWordStart].concat(captures));
+                        onOpen.apply(void 0, [match, isTouchingWordStart].concat(captures));
                     }
                 }
             }));
@@ -1001,8 +1008,8 @@ var Tokenizer = (function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            then: function (asterisks, isTouchingWordEnd, isTouchingWordStart) {
-                var canCloseConvention = isTouchingWordEnd;
+            then: function (asterisks, isTouchingWordStart) {
+                var canCloseConvention = _this.consumer.isTouchingWordEnd;
                 var canOpenConvention = isTouchingWordStart;
                 var asteriskTokenKind = TokenKind_1.TokenKind.PlainText;
                 if (canOpenConvention && canCloseConvention) {

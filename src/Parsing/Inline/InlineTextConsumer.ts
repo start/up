@@ -3,12 +3,12 @@ import { OnMatch } from './OnMatch'
 
 
 export class InlineTextConsumer {
-  private _textIndex = 0
+  private _textIndex: number
   private _remainingText: string
   private _currentChar: string
-  private isTouchingWordEnd: boolean
+  private _isTouchingWordEnd = false
 
-  constructor(private entireText: string) {  
+  constructor(private entireText: string) {
     this.textIndex = 0
   }
   
@@ -27,6 +27,10 @@ export class InlineTextConsumer {
   
   get currentChar(): string {
     return this._currentChar
+  }
+  
+  get isTouchingWordEnd(): boolean {
+    return this._isTouchingWordEnd
   }
 
   advanceTextIndex(length: number): void {
@@ -56,7 +60,7 @@ export class InlineTextConsumer {
     const isTouchingWordStart = NON_BLANK_PATTERN.test(charAfterMatch)
 
     if (then) {
-      then(match, this.isTouchingWordEnd, isTouchingWordStart, ...captures)
+      then(match, isTouchingWordStart, ...captures)
     }
 
     this.advanceTextIndex(match.length)
@@ -73,6 +77,6 @@ export class InlineTextConsumer {
     // If the previous character in the raw source text was non-whitespace, we consider the current character to be
     // touching the end of a word. We don't care whether the previous character was escaped or not; we only care about
     // whether the current character appears to be touching the end of something.
-    this.isTouchingWordEnd = NON_BLANK_PATTERN.test(previousChar)
+    this._isTouchingWordEnd = NON_BLANK_PATTERN.test(previousChar)
   }
 }

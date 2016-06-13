@@ -1,8 +1,7 @@
 export interface OnMatch {
   (
     match: string,
-    isTouchingWordEnd: boolean,
-    isTouchingWordStart: boolean,
+    isMatchTouchingWordStart: boolean,
     ...captures: string[]
   ): void
 }
