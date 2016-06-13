@@ -5,6 +5,13 @@ import { TokenizerContext } from './TokenizerContext'
 
 // TODO: Explain
 export class RaisedVoiceContext extends TokenizerContext {
+
+  static EMPHASIS_COST = 1
+  static STRESS_COST = 2
+  static STRESS_AND_EMPHASIS_TOGETHER_COST = (
+    RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST
+  )
+
   initialTokenIndex: number
   unspentDelimiterLength: number
 
@@ -19,11 +26,43 @@ export class RaisedVoiceContext extends TokenizerContext {
     }
   ) {
     super(null, args.snapshot)
-    
+
     this.delimiter = args.delimeter
     this.convertDelimiterToPlainText = args.treatDelimiterAsPlainText
 
     this.reset()
+  }
+
+  canOnlyAffordEmphasis(): boolean {
+    return this.unspentDelimiterLength === RaisedVoiceContext.EMPHASIS_COST
+  }
+
+  canOnlyAffordStress(): boolean {
+    return this.unspentDelimiterLength === RaisedVoiceContext.STRESS_COST
+  }
+
+  canAffordBothEmphasisAndStressTogether(): boolean {
+    return this.unspentDelimiterLength >= RaisedVoiceContext.STRESS_AND_EMPHASIS_TOGETHER_COST
+  }
+
+  canAfford(delimiterLength: number): boolean {
+    return this.unspentDelimiterLength >= delimiterLength
+  }
+
+  payForEmphasis(): void {
+    this.pay(RaisedVoiceContext.EMPHASIS_COST)
+  }
+
+  payForStress(): void {
+    this.pay(RaisedVoiceContext.STRESS_COST)
+  }
+
+  pay(delimiterLength: number): void {
+    if (!this.canAfford(delimiterLength)) {
+      throw new Error('Cannot afford: ' + delimiterLength)
+    }
+
+    this.unspentDelimiterLength -= delimiterLength
   }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {

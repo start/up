@@ -1,4 +1,4 @@
-import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
+import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
 import { escapeForRegex, regExpStartingWith, all, either, optional, atLeast, exactly } from '../../PatternHelpers'
 import { ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
@@ -324,7 +324,7 @@ export class Tokenizer {
   }
 
   private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
-   /* const unspentDelimiterLength = delimiter.length
+  /*  const unspentDelimiterLength = delimiter.length
 
     const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
       this.openContexts
@@ -332,12 +332,10 @@ export class Tokenizer {
         .reverse()
     )
 
-    const EMPHASIS_COST = 1
-    const STRESS_COST = 2
-    const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
+    const { EMPHASIS_COST, STRESS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } = RaisedVoiceContext
 
     if (unspentDelimiterLength === EMPHASIS_COST) {
-      
+
       // If an end marker has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
       //
       // For these end markers, we want to prioritize matching with the nearest start marker that either:
@@ -347,17 +345,26 @@ export class Tokenizer {
       //
       // If we can't find any start markers that satisfy the above criteria, then we'll settle for a start marker
       // that has 2 asterisks to spend. But this fallback happens later.
-      
-      for (const raisedVoiceContext of raisedVoiceContextsFromMostRecentToLeast) {
-        if (raisedVoiceContext.unspentDelimiterLength || raisedVoiceContext.canIndicateStressAndEmphasisTogether()) {
-          this.endEmphasis(raisedVoiceContext)
 
-          // Considering we could only afford to indicate emphasis, we have nothing left to do.
-          return
+      for (const context of raisedVoiceContextsFromMostRecentToLeast) {
+      
+        if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
+          const emphasisToken = new Token({ kind: EMPHASIS_CONVENTION.startTokenKind })
+
+          this.insertToken({
+            token: emphasisToken,
+            atIndex: context.initialTokenIndex,
+            context
+          })
+
+          context.payForEmphasis()
+
+          // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
+          return true
         }
       }
     } else if (this.canIndicateStressButNotBothTogether()) {
-      
+
       // If an end marker has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
       // and emphasis at the saem time.
       //
@@ -367,18 +374,44 @@ export class Tokenizer {
       //
       // Only if we can't find one, then we'll match with a marker that has just 1 asterisk to spend. But this
       // fallback happens later.
-      
+
       for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
         if (startMarker.canIndicateStress()) {
           this.endStress(startMarker)
-          
+
           // Considering we could only afford to indicate stress, we have nothing left to do.
           return
         }
       }
-*/
-    return false
-  }
+
+
+    // From here on out, if this end marker can match with a start marker, it will. It'll try to match as
+    // many asterisks at once as it can.
+    
+    for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
+      if (!unspentDelimiterLength) {
+        // Once this marker has matched all of its asterisks, its work is done. Let's bail.
+        break
+      }
+
+      if (this.canIndicateStressAndEmphasisTogether() && startMarker.canIndicateStressAndEmphasisTogether()) {
+        this.startStressAndEmphasisTogether(startMarker)
+        continue
+      }
+
+      if (this.canIndicateStress() && startMarker.canIndicateStress()) {
+        this.endStress(startMarker)
+        continue
+      }
+
+      if (this.canIndicateEmphasis() && startMarker.canIndicateEmphasis()) {
+        this.endEmphasis(startMarker)
+        continue
+      }
+    }*/
+
+      return false
+    }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
     return reversed(this.openContexts)
