@@ -227,18 +227,14 @@ export class Tokenizer {
     // If there's no convention associated with this context, we aren't going to try to close it here.
     const { convention } = context
 
-    return (
-      convention
-      && this.consumer.advanceAfterMatch({
-        pattern: convention.endPattern,
-
-        then: match => {
-          if (convention.leaveEndPatternForAnotherConventionToConsume) {
-            this.consumer.textIndex -= match.length
-          }
+    return convention && this.consumer.consume({
+      pattern: convention.endPattern,
+      thenBeforeAdvancingTextIndex: match => {
+        if (convention.leaveEndPatternForAnotherConventionToConsume) {
+          this.consumer.textIndex -= match.length
         }
-      })
-    )
+      }
+    })
   }
 
   // This method returns true if the context was able to be closed.
@@ -310,10 +306,12 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
-    return false &&  this.consumer.advanceAfterMatch({
+    return false && this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
 
-      then: (asterisks, matchPrecedesNonWhitespace) => {
+      onlyIfPrecedingNonWhitespace: true,
+
+      thenBeforeAdvancingTextIndex: (asterisks, matchPrecedesNonWhitespace) => {
         const canCloseConvention = this.consumer.isFollowingNonWhitespace
         const canOpenConvention = matchPrecedesNonWhitespace
 
@@ -369,10 +367,10 @@ export class Tokenizer {
 
     return (
       this.canTry(convention)
-      && this.consumer.advanceAfterMatch({
+      && this.consumer.consume({
         pattern: startPattern,
 
-        then: (match, matchPrecedesNonWhitespace, ...captures) => {
+        thenBeforeAdvancingTextIndex: (match, matchPrecedesNonWhitespace, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }

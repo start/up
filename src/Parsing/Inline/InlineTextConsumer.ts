@@ -41,14 +41,14 @@ export class InlineTextConsumer {
     return this._textIndex >= this.entireText.length
   }
 
-  advanceAfterMatch(
+  consume(
     args: {
       pattern: RegExp,
       onlyIfPrecedingNonWhitespace?: boolean
-      then?: OnMatch
+      thenBeforeAdvancingTextIndex?: OnMatch
     }
   ): boolean {
-    const { pattern, onlyIfPrecedingNonWhitespace, then } = args
+    const { pattern, onlyIfPrecedingNonWhitespace, thenBeforeAdvancingTextIndex } = args
 
     const result = pattern.exec(this._remainingText)
 
@@ -65,8 +65,8 @@ export class InlineTextConsumer {
       return false
     }
 
-    if (then) {
-      then(match, matchPrecedesNonWhitespace, ...captures)
+    if (thenBeforeAdvancingTextIndex) {
+      thenBeforeAdvancingTextIndex(match, matchPrecedesNonWhitespace, ...captures)
     }
 
     this.advanceTextIndex(match.length)

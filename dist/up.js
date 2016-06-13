@@ -107,8 +107,8 @@ var InlineTextConsumer = (function () {
     InlineTextConsumer.prototype.reachedEndOfText = function () {
         return this._textIndex >= this.entireText.length;
     };
-    InlineTextConsumer.prototype.advanceAfterMatch = function (args) {
-        var pattern = args.pattern, onlyIfPrecedingNonWhitespace = args.onlyIfPrecedingNonWhitespace, then = args.then;
+    InlineTextConsumer.prototype.consume = function (args) {
+        var pattern = args.pattern, onlyIfPrecedingNonWhitespace = args.onlyIfPrecedingNonWhitespace, thenBeforeAdvancingTextIndex = args.thenBeforeAdvancingTextIndex;
         var result = pattern.exec(this._remainingText);
         if (!result) {
             return false;
@@ -119,8 +119,8 @@ var InlineTextConsumer = (function () {
         if (onlyIfPrecedingNonWhitespace && !matchPrecedesNonWhitespace) {
             return false;
         }
-        if (then) {
-            then.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
+        if (thenBeforeAdvancingTextIndex) {
+            thenBeforeAdvancingTextIndex.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
         }
         this.advanceTextIndex(match.length);
         return true;
@@ -594,15 +594,14 @@ var Tokenizer = (function () {
     Tokenizer.prototype.shouldCloseContext = function (context) {
         var _this = this;
         var convention = context.convention;
-        return (convention
-            && this.consumer.advanceAfterMatch({
-                pattern: convention.endPattern,
-                then: function (match) {
-                    if (convention.leaveEndPatternForAnotherConventionToConsume) {
-                        _this.consumer.textIndex -= match.length;
-                    }
+        return convention && this.consumer.consume({
+            pattern: convention.endPattern,
+            thenBeforeAdvancingTextIndex: function (match) {
+                if (convention.leaveEndPatternForAnotherConventionToConsume) {
+                    _this.consumer.textIndex -= match.length;
                 }
-            }));
+            }
+        });
     };
     Tokenizer.prototype.closeOrUndoContext = function (args) {
         var contextIndex = args.atIndex;
@@ -646,9 +645,10 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseAnyRaisedVoices = function () {
         var _this = this;
-        return false && this.consumer.advanceAfterMatch({
+        return false && this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            then: function (asterisks, matchPrecedesNonWhitespace) {
+            onlyIfPrecedingNonWhitespace: true,
+            thenBeforeAdvancingTextIndex: function (asterisks, matchPrecedesNonWhitespace) {
                 var canCloseConvention = _this.consumer.isFollowingNonWhitespace;
                 var canOpenConvention = matchPrecedesNonWhitespace;
                 var asteriskTokenKind = TokenKind_1.TokenKind.PlainText;
@@ -693,9 +693,9 @@ var Tokenizer = (function () {
         var _this = this;
         var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return (this.canTry(convention)
-            && this.consumer.advanceAfterMatch({
+            && this.consumer.consume({
                 pattern: startPattern,
-                then: function (match, matchPrecedesNonWhitespace) {
+                thenBeforeAdvancingTextIndex: function (match, matchPrecedesNonWhitespace) {
                     var captures = [];
                     for (var _i = 2; _i < arguments.length; _i++) {
                         captures[_i - 2] = arguments[_i];
