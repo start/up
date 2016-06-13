@@ -171,3 +171,19 @@ describe('Conventions that completely overlap', () => {
     )
   })
 })
+
+
+describe("Overlapping conventions in which the first convention overlaps the second only by the second's start token", () => {
+  it('are treated as though the first convention ends before the second', () => {
+    expect(Up.toAst('++Oh ~~++why would you do this?~~')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new PlainTextNode('Oh ')
+        ]),
+        new RevisionDeletionNode([
+          new PlainTextNode('why would you do this?')
+        ])
+      ])
+    )
+  })
+})
