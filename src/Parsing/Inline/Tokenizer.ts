@@ -13,6 +13,7 @@ import { last, concat, contains, reversed } from '../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
+import { RaisedVoiceContext } from './RaisedVoiceContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
@@ -219,7 +220,7 @@ export class Tokenizer {
       }
     }
 
-    return this.tryToCloseAnyRaisedVoices()
+    return this.tryToCloseAnyRaisedVoiceContexts()
   }
 
 
@@ -305,14 +306,31 @@ export class Tokenizer {
     return true
   }
 
-  private tryToCloseAnyRaisedVoices(): boolean {
-    return false && this.consumer.consume({
+  private tryToCloseAnyRaisedVoiceContexts(): boolean {
+    if (1) {
+      return false
+    }
+
+    return this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       onlyIfMatchFollowsNonWhitespace: true,
-
-      thenBeforeAdvancingTextIndex: (asterisks) => {
+      
+      thenBeforeAdvancingTextIndex: asterisks => {
+        this.useDelimiterToTryToCloseAnyRaisedVoiceContexts(asterisks)
       }
     })
+  }
+
+  private useDelimiterToTryToCloseAnyRaisedVoiceContexts(delimiter: string): boolean {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+
+      if (context instanceof RaisedVoiceContext) {
+        
+      }
+    }
+
+    return false
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
