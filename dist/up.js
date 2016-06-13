@@ -833,7 +833,7 @@ var Tokenizer = (function () {
             var openContext = this.openContexts[i];
             var convention = openContext.convention;
             if (this.shouldCloseContext(openContext)) {
-                return this.closeContext({ atIndex: i });
+                return this.closeOrUndoContext({ atIndex: i });
             }
             if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
@@ -852,7 +852,7 @@ var Tokenizer = (function () {
             }
         });
     };
-    Tokenizer.prototype.closeContext = function (args) {
+    Tokenizer.prototype.closeOrUndoContext = function (args) {
         var contextIndex = args.atIndex;
         var openContext = this.openContexts[contextIndex];
         var convention = openContext.convention;

@@ -208,7 +208,12 @@ export class Tokenizer {
       const { convention } = openContext
 
       if (this.shouldCloseContext(openContext)) {
-        return this.closeContext({ atIndex: i })
+        // If `closeOrUndoContext` fails, it resets the tokenizer to where it was before we opened the
+        // context and returns false.
+        //
+        // We know we won't be able to close any outer conventions at our current position, because we
+        // already failed to do so when we opened the now-failed context.
+        return this.closeOrUndoContext({ atIndex: i })
       }
 
       if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
@@ -232,7 +237,11 @@ export class Tokenizer {
     })
   }
 
-  private closeContext(args: { atIndex: number }): boolean {
+  // This method returns true if the context could be closed.
+  //
+  // Otherwise, the tokenizer is reset to where it was before the context was opened, and this method
+  // returns false. 
+  private closeOrUndoContext(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
     const openContext = this.openContexts[contextIndex]
     const { convention } = openContext
@@ -288,10 +297,6 @@ export class Tokenizer {
       this.openContexts.splice(contextIndex)
       this.resetToBeforeContext(context)
 
-      // We've just reset the tokenizer to where it was before we opened this convention.
-      //
-      // We know we won't be able to close any open conventions at our current position, because if
-      // we could, we would have done so the first time around.
       return false
     }
 
