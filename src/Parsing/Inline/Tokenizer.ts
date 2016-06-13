@@ -178,6 +178,20 @@ export class Tokenizer {
     return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts()
   }
 
+  private resolveUnclosedContexts(): boolean {
+    while (this.openContexts.length) {
+      const context = this.openContexts.pop()
+
+      if (!context.resolveWhenLeftUnclosed()) {
+        this.resetToBeforeContext(context)
+        return false
+      }
+    }
+
+    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+    return true
+  }
+
   private tryToCollectEscapedChar(): boolean {
     const ESCAPE_CHAR = '\\'
 
@@ -367,20 +381,6 @@ export class Tokenizer {
       openContexts: this.openContexts,
       bufferedText: this.buffer
     })
-  }
-
-  private resolveUnclosedContexts(): boolean {
-    while (this.openContexts.length) {
-      const context = this.openContexts.pop()
-
-      if (!context.resolveWhenLeftUnclosed()) {
-        this.resetToBeforeContext(context)
-        return false
-      }
-    }
-
-    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-    return true
   }
 
   private resetToBeforeContext(context: TokenizerContext): void {
@@ -573,6 +573,13 @@ export class Tokenizer {
       }))
   }
 
+  private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
+    return (
+      bracket.startPattern
+      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
+      + ANY_WHITESPACE)
+  }
+
   private getRichSandwichConvention(
     args: {
       richConvention: RichConvention
@@ -646,13 +653,6 @@ export class Tokenizer {
 
       resolveWhenLeftUnclosed: () => true
     }))
-  }
-
-  private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
-    return (
-      bracket.startPattern
-      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
-      + ANY_WHITESPACE)
   }
 }
 

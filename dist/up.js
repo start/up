@@ -800,6 +800,17 @@ var Tokenizer = (function () {
     Tokenizer.prototype.isDone = function () {
         return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts();
     };
+    Tokenizer.prototype.resolveUnclosedContexts = function () {
+        while (this.openContexts.length) {
+            var context_1 = this.openContexts.pop();
+            if (!context_1.resolveWhenLeftUnclosed()) {
+                this.resetToBeforeContext(context_1);
+                return false;
+            }
+        }
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+        return true;
+    };
     Tokenizer.prototype.tryToCollectEscapedChar = function () {
         var ESCAPE_CHAR = '\\';
         if (this.consumer.currentChar !== ESCAPE_CHAR) {
@@ -934,17 +945,6 @@ var Tokenizer = (function () {
             openContexts: this.openContexts,
             bufferedText: this.buffer
         });
-    };
-    Tokenizer.prototype.resolveUnclosedContexts = function () {
-        while (this.openContexts.length) {
-            var context_1 = this.openContexts.pop();
-            if (!context_1.resolveWhenLeftUnclosed()) {
-                this.resetToBeforeContext(context_1);
-                return false;
-            }
-        }
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-        return true;
     };
     Tokenizer.prototype.resetToBeforeContext = function (context) {
         this.failedConventionTracker.registerFailure(context);
@@ -1088,6 +1088,11 @@ var Tokenizer = (function () {
             });
         });
     };
+    Tokenizer.prototype.getBracketedTermStartPattern = function (nonLocalizedTerm, bracket) {
+        return (bracket.startPattern
+            + PatternHelpers_1.escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
+            + PatternPieces_1.ANY_WHITESPACE);
+    };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
         var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern, startPatternContainsATerm = args.startPatternContainsATerm;
@@ -1142,11 +1147,6 @@ var Tokenizer = (function () {
             onClose: function () { _this.buffer += bracket.end; },
             resolveWhenLeftUnclosed: function () { return true; }
         }); });
-    };
-    Tokenizer.prototype.getBracketedTermStartPattern = function (nonLocalizedTerm, bracket) {
-        return (bracket.startPattern
-            + PatternHelpers_1.escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
-            + PatternPieces_1.ANY_WHITESPACE);
     };
     return Tokenizer;
 }());
