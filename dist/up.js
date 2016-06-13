@@ -589,18 +589,20 @@ var Tokenizer = (function () {
                 return true;
             }
         }
-        return false;
+        return this.tryToCloseAnyRaisedVoices();
     };
     Tokenizer.prototype.shouldCloseContext = function (context) {
         var _this = this;
-        return this.consumer.advanceAfterMatch({
-            pattern: context.convention.endPattern,
-            then: function (match) {
-                if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
-                    _this.consumer.textIndex -= match.length;
+        var endPattern = context.convention.endPattern;
+        return (endPattern
+            && this.consumer.advanceAfterMatch({
+                pattern: endPattern,
+                then: function (match) {
+                    if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
+                        _this.consumer.textIndex -= match.length;
+                    }
                 }
-            }
-        });
+            }));
     };
     Tokenizer.prototype.closeOrUndoContext = function (args) {
         var contextIndex = args.atIndex;
@@ -641,6 +643,9 @@ var Tokenizer = (function () {
             this.openContexts.splice(contextIndex + 1);
         }
         return true;
+    };
+    Tokenizer.prototype.tryToCloseAnyRaisedVoices = function () {
+        return false;
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
         return CollectionHelpers_1.reversed(this.openContexts)

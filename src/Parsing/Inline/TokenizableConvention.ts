@@ -9,7 +9,7 @@ export interface TokenizableConvention {
   onlyOpenIfStartPatternPrecedesNonWhitespace?: boolean
 
   startPattern: RegExp
-  endPattern: RegExp
+  endPattern?: RegExp
   
   flushBufferToPlainTextTokenBeforeOpening?: boolean
   

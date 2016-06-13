@@ -219,20 +219,26 @@ export class Tokenizer {
       }
     }
 
-    return false
+    return this.tryToCloseAnyRaisedVoices()
   }
 
 
   private shouldCloseContext(context: TokenizerContext): boolean {
-    return this.consumer.advanceAfterMatch({
-      pattern: context.convention.endPattern,
+    // If there's no end pattern, we aren't going to try to close the context here.
+    const endPattern = context.convention.endPattern
 
-      then: match => {
-        if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
-          this.consumer.textIndex -= match.length
+    return (
+      endPattern
+      && this.consumer.advanceAfterMatch({
+        pattern: endPattern,
+
+        then: match => {
+          if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
+            this.consumer.textIndex -= match.length
+          }
         }
-      }
-    })
+      })
+    )
   }
 
   // This method returns true if the context was able to be closed.
@@ -301,6 +307,10 @@ export class Tokenizer {
     }
 
     return true
+  }
+
+  private tryToCloseAnyRaisedVoices(): boolean {
+    return false
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
