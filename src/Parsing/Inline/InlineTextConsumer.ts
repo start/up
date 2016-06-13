@@ -44,11 +44,11 @@ export class InlineTextConsumer {
   advanceAfterMatch(
     args: {
       pattern: RegExp,
-      onlyIfDirectlyPreceedingNonWhitespace?: boolean
+      onlyIfPrecedingNonWhitespace?: boolean
       then?: OnMatch
     }
   ): boolean {
-    const { pattern, onlyIfDirectlyPreceedingNonWhitespace, then } = args
+    const { pattern, onlyIfPrecedingNonWhitespace, then } = args
 
     const result = pattern.exec(this._remainingText)
 
@@ -61,7 +61,7 @@ export class InlineTextConsumer {
     const charAfterMatch = this.entireText[this._textIndex + match.length]
     const isPrecedingNonWhitespace = NON_BLANK_PATTERN.test(charAfterMatch)
 
-    if (onlyIfDirectlyPreceedingNonWhitespace && !isPrecedingNonWhitespace) {
+    if (onlyIfPrecedingNonWhitespace && !isPrecedingNonWhitespace) {
       return false
     }
 

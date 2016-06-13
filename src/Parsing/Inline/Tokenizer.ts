@@ -335,6 +335,8 @@ export class Tokenizer {
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
+        onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
+
         then: (match, isDirectlyPrecedingNonWhitespace, ...captures) => {
           if (onlyOpenIfPrecedingNonWhitespace && !isDirectlyPrecedingNonWhitespace) {
             this.consumer.textIndex -= match.length

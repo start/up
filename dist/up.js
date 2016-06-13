@@ -108,7 +108,7 @@ var InlineTextConsumer = (function () {
         return this._textIndex >= this.entireText.length;
     };
     InlineTextConsumer.prototype.advanceAfterMatch = function (args) {
-        var pattern = args.pattern, onlyIfDirectlyPreceedingNonWhitespace = args.onlyIfDirectlyPreceedingNonWhitespace, then = args.then;
+        var pattern = args.pattern, onlyIfPrecedingNonWhitespace = args.onlyIfPrecedingNonWhitespace, then = args.then;
         var result = pattern.exec(this._remainingText);
         if (!result) {
             return false;
@@ -116,7 +116,7 @@ var InlineTextConsumer = (function () {
         var match = result[0], captures = result.slice(1);
         var charAfterMatch = this.entireText[this._textIndex + match.length];
         var isPrecedingNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(charAfterMatch);
-        if (onlyIfDirectlyPreceedingNonWhitespace && !isPrecedingNonWhitespace) {
+        if (onlyIfPrecedingNonWhitespace && !isPrecedingNonWhitespace) {
             return false;
         }
         if (then) {
@@ -917,6 +917,7 @@ var Tokenizer = (function () {
         return (this.canTry(convention)
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
+                onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
                 then: function (match, isDirectlyPrecedingNonWhitespace) {
                     var captures = [];
                     for (var _i = 2; _i < arguments.length; _i++) {
