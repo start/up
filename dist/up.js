@@ -657,14 +657,12 @@ var Tokenizer = (function () {
     Tokenizer.prototype.spendDelimiterToTryToCloseAnyRaisedVoices = function (delimiter) {
         return false;
     };
-    Tokenizer.prototype.encloseWithin = function (convention, context) {
-        var startTokenKind = convention.startTokenKind, endTokenKind = convention.endTokenKind;
-        this.insertToken({
-            token: new Token_1.Token({ kind: startTokenKind }),
-            atIndex: context.initialTokenIndex,
-            context: context
-        });
-        this.appendNewToken({ kind: endTokenKind });
+    Tokenizer.prototype.encloseWithin = function (richConvention, context) {
+        var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
+        var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
+        startToken.associateWith(endToken);
+        this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context: context });
+        this.tokens.push(endToken);
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
         return CollectionHelpers_1.reversed(this.openContexts)
@@ -863,11 +861,7 @@ var Tokenizer = (function () {
             flushBufferToPlainTextTokenBeforeOpening: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             onClose: function (context) {
-                var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
-                var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
-                startToken.associateWith(endToken);
-                _this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context: context });
-                _this.tokens.push(endToken);
+                _this.encloseWithin(richConvention, context);
             }
         };
     };

@@ -410,19 +410,13 @@ export class Tokenizer {
     return false
   }
 
-  private encloseWithin(
-    convention: { startTokenKind: TokenKind, endTokenKind: TokenKind },
-    context: TokenizerContext
-  ): void {
-    const { startTokenKind, endTokenKind } = convention
+  private encloseWithin(richConvention: RichConvention, context: TokenizerContext): void {
+    const startToken = new Token({ kind: richConvention.startTokenKind })
+    const endToken = new Token({ kind: richConvention.endTokenKind })
+    startToken.associateWith(endToken)
 
-    this.insertToken({
-      token: new Token({ kind: startTokenKind }),
-      atIndex: context.initialTokenIndex,
-      context
-    })
-
-    this.appendNewToken({ kind: endTokenKind })
+    this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context })
+    this.tokens.push(endToken)
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
@@ -708,12 +702,7 @@ export class Tokenizer {
       onCloseFlushBufferTo: TokenKind.PlainText,
 
       onClose: (context) => {
-        const startToken = new Token({ kind: richConvention.startTokenKind })
-        const endToken = new Token({ kind: richConvention.endTokenKind })
-        startToken.associateWith(endToken)
-
-        this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context })
-        this.tokens.push(endToken)
+        this.encloseWithin(richConvention, context)
       }
     }
   }
