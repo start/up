@@ -829,33 +829,14 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
     Tokenizer.prototype.tryToCloseAnyConvention = function () {
-        var innerNakedUrlContextIndex = null;
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var openContext = this.openContexts[i];
             var convention = openContext.convention;
             if (this.shouldCloseContext(openContext)) {
-                if (innerNakedUrlContextIndex != null) {
-                    this.flushBufferToNakedUrlEndToken();
-                    this.openContexts.splice(i);
-                }
-                if (convention.onCloseFlushBufferTo != null) {
-                    this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo);
-                }
-                openContext.close();
-                if (convention.onCloseFailIfCannotTranformInto) {
-                    return this.tryToTransformConvention({ belongingToContextAtIndex: i });
-                }
-                this.openContexts.splice(i, 1);
-                if (convention.closeInnerContextsWhenClosing) {
-                    this.openContexts.splice(i);
-                }
-                return true;
+                return this.closeContext({ atIndex: i });
             }
             if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
-            }
-            if (convention === this.nakedUrlConvention) {
-                innerNakedUrlContextIndex = i;
             }
         }
         return false;
@@ -871,19 +852,47 @@ var Tokenizer = (function () {
             }
         });
     };
+    Tokenizer.prototype.closeContext = function (args) {
+        var contextIndex = args.atIndex;
+        var openContext = this.openContexts[contextIndex];
+        var convention = openContext.convention;
+        var innerNakedUrlContextIndex = null;
+        for (var i = this.openContexts.length - 1; i > contextIndex; i--) {
+            if (this.openContexts[i].convention === this.nakedUrlConvention) {
+                innerNakedUrlContextIndex = i;
+                break;
+            }
+        }
+        if (innerNakedUrlContextIndex != null) {
+            this.flushBufferToNakedUrlEndToken();
+            this.openContexts.splice(contextIndex);
+        }
+        if (convention.onCloseFlushBufferTo != null) {
+            this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo);
+        }
+        openContext.close();
+        if (convention.onCloseFailIfCannotTranformInto) {
+            return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex });
+        }
+        this.openContexts.splice(contextIndex, 1);
+        if (convention.closeInnerContextsWhenClosing) {
+            this.openContexts.splice(contextIndex);
+        }
+        return true;
+    };
     Tokenizer.prototype.tryToTransformConvention = function (args) {
         var _this = this;
-        var openContextIndex = args.belongingToContextAtIndex;
-        var context = this.openContexts[openContextIndex];
+        var contextIndex = args.belongingToContextAtIndex;
+        var context = this.openContexts[contextIndex];
         var couldTransform = context.convention.onCloseFailIfCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
         if (!couldTransform) {
-            this.openContexts.splice(openContextIndex);
+            this.openContexts.splice(contextIndex);
             this.resetToBeforeContext(context);
             return false;
         }
         context.convention = this.openContexts.pop().convention;
         if (context.convention.closeInnerContextsWhenClosing) {
-            this.openContexts.splice(openContextIndex + 1);
+            this.openContexts.splice(contextIndex + 1);
         }
         return true;
     };

@@ -159,7 +159,6 @@ export class Tokenizer {
 
   private tokenize(): void {
     while (!this.isDone()) {
-
       this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
@@ -204,54 +203,22 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyConvention(): boolean {
-    let innerNakedUrlContextIndex: number = null
-
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const openContext = this.openContexts[i]
       const { convention } = openContext
 
       if (this.shouldCloseContext(openContext)) {
-
-        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-        if (innerNakedUrlContextIndex != null) {
-          this.flushBufferToNakedUrlEndToken()
-
-          // We need to close the naked URL's context, as well as the contexts of any raw text brackets
-          // inside it.
-          this.openContexts.splice(i)
-        }
-
-        if (convention.onCloseFlushBufferTo != null) {
-          this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo)
-        }
-
-        openContext.close()
-
-        if (convention.onCloseFailIfCannotTranformInto) {
-          return this.tryToTransformConvention({ belongingToContextAtIndex: i })
-        }
-
-        this.openContexts.splice(i, 1)
-
-        if (convention.closeInnerContextsWhenClosing) {
-          // If we've just removed the context at `i` above, its first inner context will now be at `i`.           
-          this.openContexts.splice(i)
-        }
-
-        return true
+        return this.closeContext({ atIndex: i })
       }
 
       if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
         return true
       }
-
-      if (convention === this.nakedUrlConvention) {
-        innerNakedUrlContextIndex = i
-      }
     }
 
     return false
   }
+
 
   private shouldCloseContext(context: TokenizerContext): boolean {
     return this.consumer.advanceAfterMatch({
@@ -265,16 +232,60 @@ export class Tokenizer {
     })
   }
 
+  private closeContext(args: { atIndex: number }): boolean {
+    const contextIndex = args.atIndex
+    const openContext = this.openContexts[contextIndex]
+    const { convention } = openContext
+
+    let innerNakedUrlContextIndex: number = null
+
+    for (let i = this.openContexts.length - 1; i > contextIndex; i--) {
+      if (this.openContexts[i].convention === this.nakedUrlConvention) {
+        innerNakedUrlContextIndex = i
+        break
+      }
+    }
+
+    // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
+    if (innerNakedUrlContextIndex != null) {
+      this.flushBufferToNakedUrlEndToken()
+
+      // We need to close the naked URL's context, as well as the contexts of any raw text brackets
+      // inside it.
+      this.openContexts.splice(contextIndex)
+    }
+
+    if (convention.onCloseFlushBufferTo != null) {
+      this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo)
+    }
+
+    openContext.close()
+
+    if (convention.onCloseFailIfCannotTranformInto) {
+      return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex })
+    }
+
+    this.openContexts.splice(contextIndex, 1)
+
+    if (convention.closeInnerContextsWhenClosing) {
+      // Since we just removed the context at `contextIndex`, its inner contexts will now start at
+      // `contextIndex`.           
+      this.openContexts.splice(contextIndex)
+    }
+
+    return true
+  }
+
   private tryToTransformConvention(args: { belongingToContextAtIndex: number }): boolean {
-    const openContextIndex = args.belongingToContextAtIndex
-    const context = this.openContexts[openContextIndex]
+    const contextIndex = args.belongingToContextAtIndex
+    const context = this.openContexts[contextIndex]
 
     const couldTransform =
       context.convention.onCloseFailIfCannotTranformInto.some(convention => this.tryToOpen(convention))
 
     if (!couldTransform) {
       // We couldn't transform, so it's time to fail.
-      this.openContexts.splice(openContextIndex)
+      this.openContexts.splice(contextIndex)
       this.resetToBeforeContext(context)
 
       // We've just reset the tokenizer to where it was before we opened this convention.
@@ -289,7 +300,7 @@ export class Tokenizer {
     context.convention = this.openContexts.pop().convention
 
     if (context.convention.closeInnerContextsWhenClosing) {
-      this.openContexts.splice(openContextIndex + 1)
+      this.openContexts.splice(contextIndex + 1)
     }
 
     return true
@@ -458,31 +469,31 @@ export class Tokenizer {
     return url
   }
 
-/*
-  private tryToTokenizeRaisedVoicePlaceholders(): boolean {
-    return this.consumer.advanceAfterMatch({
-      pattern: RAISED_VOICE_DELIMITER_PATTERN,
-
-      then: (asterisks, isPrecedingNonWhitespace) => {
-        const canCloseConvention = this.consumer.isFollowingNonWhitespace
-        const canOpenConvention = isPrecedingNonWhitespace
-
-        let asteriskTokenKind = TokenKind.PlainText
-
-        if (canOpenConvention && canCloseConvention) {
-          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStartOrEnd
-        } else if (canOpenConvention) {
-          asteriskTokenKind = TokenKind.PotentialRaisedVoiceStart
-        } else if (canCloseConvention) {
-          asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
+  /*
+    private tryToTokenizeRaisedVoicePlaceholders(): boolean {
+      return this.consumer.advanceAfterMatch({
+        pattern: RAISED_VOICE_DELIMITER_PATTERN,
+  
+        then: (asterisks, isPrecedingNonWhitespace) => {
+          const canCloseConvention = this.consumer.isFollowingNonWhitespace
+          const canOpenConvention = isPrecedingNonWhitespace
+  
+          let asteriskTokenKind = TokenKind.PlainText
+  
+          if (canOpenConvention && canCloseConvention) {
+            asteriskTokenKind = TokenKind.PotentialRaisedVoiceStartOrEnd
+          } else if (canOpenConvention) {
+            asteriskTokenKind = TokenKind.PotentialRaisedVoiceStart
+          } else if (canCloseConvention) {
+            asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
+          }
+  
+          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+          this.appendNewToken({ kind: asteriskTokenKind, value: asterisks })
         }
-
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-        this.appendNewToken({ kind: asteriskTokenKind, value: asterisks })
-      }
-    })
-  }
-  */
+      })
+    }
+    */
 
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
