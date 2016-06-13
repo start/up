@@ -66,7 +66,7 @@ var Patterns_1 = require('../../Patterns');
 var InlineTextConsumer = (function () {
     function InlineTextConsumer(entireText) {
         this.entireText = entireText;
-        this._isFollowingNonWhitespace = false;
+        this.isFollowingNonWhitespace = false;
         this.textIndex = 0;
     }
     Object.defineProperty(InlineTextConsumer.prototype, "textIndex", {
@@ -94,13 +94,6 @@ var InlineTextConsumer = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(InlineTextConsumer.prototype, "isFollowingNonWhitespace", {
-        get: function () {
-            return this._isFollowingNonWhitespace;
-        },
-        enumerable: true,
-        configurable: true
-    });
     InlineTextConsumer.prototype.advanceTextIndex = function (length) {
         this.textIndex += length;
     };
@@ -108,7 +101,10 @@ var InlineTextConsumer = (function () {
         return this._textIndex >= this.entireText.length;
     };
     InlineTextConsumer.prototype.consume = function (args) {
-        var pattern = args.pattern, onlyIfPrecedingNonWhitespace = args.onlyIfPrecedingNonWhitespace, thenBeforeAdvancingTextIndex = args.thenBeforeAdvancingTextIndex;
+        var pattern = args.pattern, onlyIfMatchFollowsNonWhitespace = args.onlyIfMatchFollowsNonWhitespace, onlyIfMatchPrecedesNonWhitespace = args.onlyIfMatchPrecedesNonWhitespace, thenBeforeAdvancingTextIndex = args.thenBeforeAdvancingTextIndex;
+        if (onlyIfMatchFollowsNonWhitespace && !this.isFollowingNonWhitespace) {
+            return false;
+        }
         var result = pattern.exec(this._remainingText);
         if (!result) {
             return false;
@@ -116,7 +112,7 @@ var InlineTextConsumer = (function () {
         var match = result[0], captures = result.slice(1);
         var charAfterMatch = this.entireText[this._textIndex + match.length];
         var matchPrecedesNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(charAfterMatch);
-        if (onlyIfPrecedingNonWhitespace && !matchPrecedesNonWhitespace) {
+        if (onlyIfMatchPrecedesNonWhitespace && !matchPrecedesNonWhitespace) {
             return false;
         }
         if (thenBeforeAdvancingTextIndex) {
@@ -129,7 +125,7 @@ var InlineTextConsumer = (function () {
         this._remainingText = this.entireText.substr(this._textIndex);
         this._currentChar = this._remainingText[0];
         var previousChar = this.entireText[this._textIndex - 1];
-        this._isFollowingNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
+        this.isFollowingNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
     };
     return InlineTextConsumer;
 }());
@@ -644,17 +640,10 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.tryToCloseAnyRaisedVoices = function () {
-        var _this = this;
         return false && this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
+            onlyIfMatchFollowsNonWhitespace: true,
             thenBeforeAdvancingTextIndex: function (asterisks) {
-                var canCloseConvention = _this.consumer.isFollowingNonWhitespace;
-                var asteriskTokenKind = TokenKind_1.TokenKind.PlainText;
-                if (canCloseConvention) {
-                    asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
-                }
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                _this.appendNewToken({ kind: asteriskTokenKind, value: asterisks });
             }
         });
     };

@@ -308,18 +308,9 @@ export class Tokenizer {
   private tryToCloseAnyRaisedVoices(): boolean {
     return false && this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
+      onlyIfMatchFollowsNonWhitespace: true,
 
       thenBeforeAdvancingTextIndex: (asterisks) => {
-        const canCloseConvention = this.consumer.isFollowingNonWhitespace
-        
-        let asteriskTokenKind = TokenKind.PlainText
-
-        if (canCloseConvention) {
-          asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
-        }
-
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-        this.appendNewToken({ kind: asteriskTokenKind, value: asterisks })
       }
     })
   }
@@ -484,32 +475,6 @@ export class Tokenizer {
 
     return url
   }
-
-  /*
-    private tryToTokenizeRaisedVoicePlaceholders(): boolean {
-      return this.consumer.advanceAfterMatch({
-        pattern: RAISED_VOICE_DELIMITER_PATTERN,
-  
-        then: (asterisks, isPrecedingNonWhitespace) => {
-          const canCloseConvention = this.consumer.isFollowingNonWhitespace
-          const canOpenConvention = isPrecedingNonWhitespace
-  
-          let asteriskTokenKind = TokenKind.PlainText
-  
-          if (canOpenConvention && canCloseConvention) {
-            asteriskTokenKind = TokenKind.PotentialRaisedVoiceStartOrEnd
-          } else if (canOpenConvention) {
-            asteriskTokenKind = TokenKind.PotentialRaisedVoiceStart
-          } else if (canCloseConvention) {
-            asteriskTokenKind = TokenKind.PotentialRaisedVoiceEnd
-          }
-  
-          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-          this.appendNewToken({ kind: asteriskTokenKind, value: asterisks })
-        }
-      })
-    }
-    */
 
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
