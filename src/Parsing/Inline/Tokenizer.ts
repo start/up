@@ -6,7 +6,6 @@ import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { UpConfig } from '../../UpConfig'
 import { RichConvention } from './RichConvention'
 import { MediaConvention } from './MediaConvention'
-import { applyRaisedVoices }  from './RaisedVoices/applyRaisedVoices'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnMatch } from './OnMatch'
@@ -168,8 +167,7 @@ export class Tokenizer {
 
     this.tokens =
       nestOverlappingConventions(
-        applyRaisedVoices(
-          insertBracketsInsideBracketedConventions(this.tokens)))
+        insertBracketsInsideBracketedConventions(this.tokens))
   }
 
   private isDone(): boolean {
