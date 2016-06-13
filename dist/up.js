@@ -907,9 +907,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpen = function (convention) {
         var _this = this;
-        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowing = convention.onlyOpenIfDirectlyFollowing, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
+        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return (this.canTry(convention)
-            && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing))
+            && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowingTokenOfKind))
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
                 then: function (match, isTouchingWordEnd, isTouchingWordStart) {
@@ -1024,7 +1024,7 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
-            onlyOpenIfDirectlyFollowing: [
+            onlyOpenIfDirectlyFollowingTokenOfKind: [
                 TokenKind_1.TokenKind.ParenthesizedEnd,
                 TokenKind_1.TokenKind.SquareBracketedEnd,
                 TokenKind_1.TokenKind.ActionEnd
@@ -1045,7 +1045,7 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
-            onlyOpenIfDirectlyFollowing: [
+            onlyOpenIfDirectlyFollowingTokenOfKind: [
                 TokenKind_1.TokenKind.SpoilerEnd,
                 TokenKind_1.TokenKind.NsfwEnd,
                 TokenKind_1.TokenKind.NsflEnd,
