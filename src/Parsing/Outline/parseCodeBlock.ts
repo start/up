@@ -9,7 +9,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function parseCodeBlock(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
 
-  if (!consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
+  if (!consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
     return false
   }
 
@@ -17,12 +17,12 @@ export function parseCodeBlock(args: OutlineParserArgs): boolean {
 
   // Keep consuming lines until we get to the closing code fence
   while (!consumer.reachedEndOfText()) {
-    if (consumer.consumeLine({ pattern: CODE_FENCE_PATTERN })) {
+    if (consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
       args.then([new CodeBlockNode(codeLines.join('\n'))], consumer.textIndex)
       return true
     }
 
-    consumer.consumeLine({
+    consumer.consume({
       then: line => codeLines.push(line)
     })
   }

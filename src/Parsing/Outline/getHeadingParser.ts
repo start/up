@@ -20,8 +20,8 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
     // First, let's parse the optional overline.
     let optionalOverline: string
 
-    consumer.consumeLine({
-      pattern: DIVIDER_STREAK_PATTERN,
+    consumer.consume({
+      linePattern: DIVIDER_STREAK_PATTERN,
       then: line => { optionalOverline = line }
     })
 
@@ -31,13 +31,13 @@ export function getHeadingParser(headingLeveler: HeadingLeveler): OutlineParser 
 
     const hasContentAndUnderline = (
       // Parse the content
-      consumer.consumeLine({
-        pattern: NON_BLANK_PATTERN,
+      consumer.consume({
+        linePattern: NON_BLANK_PATTERN,
         then: line => { rawContent = line }
       })
 
       // Parse the underline
-      && consumer.consumeLine({
+      && consumer.consume({
         if: line => (
           DIVIDER_STREAK_PATTERN.test(line)
           && isUnderlineConsistentWithOverline(optionalOverline, line)),

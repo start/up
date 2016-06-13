@@ -27,9 +27,9 @@ export class LineConsumer {
     return this.textIndex >= this.entireText.length
   }
   
-  consumeLine(
+  consume(
     args: {
-      pattern?: RegExp,
+      linePattern?: RegExp,
       if?: ShouldConsumeLine,
       then?: OnConsume
     }
@@ -37,6 +37,8 @@ export class LineConsumer {
     if (this.reachedEndOfText()) {
       return false
     }
+
+    const { linePattern, then } = args
 
     let fullLine: string
     let lineWithoutTerminatingLineBreak: string
@@ -65,8 +67,8 @@ export class LineConsumer {
 
     let captures: string[] = []
 
-    if (args.pattern) {
-      const results = args.pattern.exec(lineWithoutTerminatingLineBreak)
+    if (linePattern) {
+      const results = linePattern.exec(lineWithoutTerminatingLineBreak)
 
       if (!results) {
         return false
@@ -81,8 +83,8 @@ export class LineConsumer {
 
     this.advanceTextIndex(fullLine.length)
 
-    if (args.then) {
-      args.then(lineWithoutTerminatingLineBreak, ...captures)
+    if (then) {
+      then(lineWithoutTerminatingLineBreak, ...captures)
     }
 
     return true

@@ -24,8 +24,8 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   while (!consumer.reachedEndOfText()) {
     let rawListItem = new RawListItem()
 
-    const isLineBulleted = consumer.consumeLine({
-      pattern: BULLETED_PATTERN,
+    const isLineBulleted = consumer.consume({
+      linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: (line, bullet) => {
         rawListItem.bullet = bullet

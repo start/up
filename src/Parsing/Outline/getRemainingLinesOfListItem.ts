@@ -17,8 +17,8 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
   let lengthParsed = 0
 
   while (!consumer.reachedEndOfText()) {
-    const wasLineBlank = consumer.consumeLine({
-      pattern: BLANK_PATTERN,
+    const wasLineBlank = consumer.consume({
+      linePattern: BLANK_PATTERN,
       then: line => lines.push(line)
     })
 
@@ -27,8 +27,8 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
       continue
     }
 
-    const wasLineIndented = consumer.consumeLine({
-      pattern: INDENTED_PATTERN,
+    const wasLineIndented = consumer.consume({
+      linePattern: INDENTED_PATTERN,
       then: line => lines.push(line)
     })
 
