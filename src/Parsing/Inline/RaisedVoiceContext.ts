@@ -8,12 +8,19 @@ export class RaisedVoiceContext extends TokenizerContext {
   initialTokenIndex: number
   countRemainingDelimiterChars: number
 
+  private delimiter: string
+  private convertDelimiterToPlainText: ConvertDelimiterToPlainText
+
   constructor(
-    public convention: TokenizableConvention,
-    public snapshot: TokenizerSnapshot,
-    private delimiterLength: number
+    args: {
+      delimeter: number
+      convertDelimiterToPlainText: ConvertDelimiterToPlainText
+      snapshot: TokenizerSnapshot
+    }
   ) {
-    super(convention, snapshot)
+    super(null, args.snapshot)
+    
+    this.convertDelimiterToPlainText = args.convertDelimiterToPlainText
     this.reset()
   }
 
@@ -25,18 +32,23 @@ export class RaisedVoiceContext extends TokenizerContext {
     return false
   }
 
-  close(): void {
-    if (this.countRemainingDelimiterChars === this.delimiterLength) {
-      
-    }
-  }
+  close(): void { }
 
   resolveWhenLeftUnclosed(): boolean {
-    return false
+    if (this.countRemainingDelimiterChars === this.delimiter.length) {
+      this.convertDelimiterToPlainText(this.delimiter)
+    }
+
+    return true
   }
 
   reset(): void {
     super.reset()
-    this.countRemainingDelimiterChars = this.delimiterLength
+    this.countRemainingDelimiterChars = this.delimiter.length
   }
+}
+
+
+interface ConvertDelimiterToPlainText {
+  (delimiter: string): void
 }
