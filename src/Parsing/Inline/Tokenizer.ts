@@ -163,7 +163,6 @@ export class Tokenizer {
       this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
-        || this.tryToTokenizeRaisedVoicePlaceholders()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()
     }
@@ -337,7 +336,7 @@ export class Tokenizer {
 
         onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
 
-        then: (match, isDirectlyPrecedingNonWhitespace, ...captures) => {
+        then: (match, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
@@ -353,7 +352,7 @@ export class Tokenizer {
           this.openContexts.push(new TokenizerContext(convention, currentSnapshot))
 
           if (onOpen) {
-            onOpen(match, isDirectlyPrecedingNonWhitespace, ...captures)
+            onOpen(match, ...captures)
           }
         }
       })
@@ -459,6 +458,7 @@ export class Tokenizer {
     return url
   }
 
+/*
   private tryToTokenizeRaisedVoicePlaceholders(): boolean {
     return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -482,6 +482,7 @@ export class Tokenizer {
       }
     })
   }
+  */
 
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{

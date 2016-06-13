@@ -120,7 +120,7 @@ var InlineTextConsumer = (function () {
             return false;
         }
         if (then) {
-            then.apply(void 0, [match, isPrecedingNonWhitespace].concat(captures));
+            then.apply(void 0, [match].concat(captures));
         }
         this.advanceTextIndex(match.length);
         return true;
@@ -800,7 +800,6 @@ var Tokenizer = (function () {
             this.tryToCollectEscapedChar()
                 || this.tryToCloseAnyConvention()
                 || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
-                || this.tryToTokenizeRaisedVoicePlaceholders()
                 || this.tryToOpenAnyConvention()
                 || this.bufferCurrentChar();
         }
@@ -918,10 +917,10 @@ var Tokenizer = (function () {
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
                 onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
-                then: function (match, isDirectlyPrecedingNonWhitespace) {
+                then: function (match) {
                     var captures = [];
-                    for (var _i = 2; _i < arguments.length; _i++) {
-                        captures[_i - 2] = arguments[_i];
+                    for (var _i = 1; _i < arguments.length; _i++) {
+                        captures[_i - 1] = arguments[_i];
                     }
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
@@ -934,7 +933,7 @@ var Tokenizer = (function () {
                     });
                     _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, currentSnapshot));
                     if (onOpen) {
-                        onOpen.apply(void 0, [match, isDirectlyPrecedingNonWhitespace].concat(captures));
+                        onOpen.apply(void 0, [match].concat(captures));
                     }
                 }
             }));
@@ -1002,28 +1001,6 @@ var Tokenizer = (function () {
             return this.config.settings.defaultUrlScheme + url;
         }
         return url;
-    };
-    Tokenizer.prototype.tryToTokenizeRaisedVoicePlaceholders = function () {
-        var _this = this;
-        return this.consumer.advanceAfterMatch({
-            pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            then: function (asterisks, isPrecedingNonWhitespace) {
-                var canCloseConvention = _this.consumer.isFollowingNonWhitespace;
-                var canOpenConvention = isPrecedingNonWhitespace;
-                var asteriskTokenKind = TokenKind_1.TokenKind.PlainText;
-                if (canOpenConvention && canCloseConvention) {
-                    asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceStartOrEnd;
-                }
-                else if (canOpenConvention) {
-                    asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceStart;
-                }
-                else if (canCloseConvention) {
-                    asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceEnd;
-                }
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                _this.appendNewToken({ kind: asteriskTokenKind, value: asterisks });
-            }
-        });
     };
     Tokenizer.prototype.getLinkUrlConventions = function () {
         var _this = this;
