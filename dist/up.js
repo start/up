@@ -66,7 +66,7 @@ var Patterns_1 = require('../../Patterns');
 var InlineTextConsumer = (function () {
     function InlineTextConsumer(entireText) {
         this.entireText = entireText;
-        this._isTouchingWordEnd = false;
+        this._isFollowingNonWhitespace = false;
         this.textIndex = 0;
     }
     Object.defineProperty(InlineTextConsumer.prototype, "textIndex", {
@@ -94,9 +94,9 @@ var InlineTextConsumer = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(InlineTextConsumer.prototype, "isTouchingWordEnd", {
+    Object.defineProperty(InlineTextConsumer.prototype, "isFollowingNonWhitespace", {
         get: function () {
-            return this._isTouchingWordEnd;
+            return this._isFollowingNonWhitespace;
         },
         enumerable: true,
         configurable: true
@@ -115,9 +115,9 @@ var InlineTextConsumer = (function () {
         }
         var match = result[0], captures = result.slice(1);
         var charAfterMatch = this.entireText[this._textIndex + match.length];
-        var isTouchingWordStart = Patterns_1.NON_BLANK_PATTERN.test(charAfterMatch);
+        var isPrecedingNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(charAfterMatch);
         if (then) {
-            then.apply(void 0, [match, isTouchingWordStart].concat(captures));
+            then.apply(void 0, [match, isPrecedingNonWhitespace].concat(captures));
         }
         this.advanceTextIndex(match.length);
         return true;
@@ -126,7 +126,7 @@ var InlineTextConsumer = (function () {
         this._remainingText = this.entireText.substr(this._textIndex);
         this._currentChar = this._remainingText[0];
         var previousChar = this.entireText[this._textIndex - 1];
-        this._isTouchingWordEnd = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
+        this._isFollowingNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
     };
     return InlineTextConsumer;
 }());
@@ -862,11 +862,7 @@ var Tokenizer = (function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
             pattern: context.convention.endPattern,
-            then: function (match, isTouchingWordEnd) {
-                var captures = [];
-                for (var _i = 2; _i < arguments.length; _i++) {
-                    captures[_i - 2] = arguments[_i];
-                }
+            then: function (match) {
                 if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
                     _this.consumer.textIndex -= match.length;
                 }
@@ -919,7 +915,7 @@ var Tokenizer = (function () {
             && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowingTokenOfKind))
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
-                then: function (match, isTouchingWordStart) {
+                then: function (match, isDirectlyPrecedingNonWhitespace) {
                     var captures = [];
                     for (var _i = 2; _i < arguments.length; _i++) {
                         captures[_i - 2] = arguments[_i];
@@ -929,7 +925,7 @@ var Tokenizer = (function () {
                     }
                     _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot()));
                     if (onOpen) {
-                        onOpen.apply(void 0, [match, isTouchingWordStart].concat(captures));
+                        onOpen.apply(void 0, [match, isDirectlyPrecedingNonWhitespace].concat(captures));
                     }
                 }
             }));
@@ -1008,9 +1004,9 @@ var Tokenizer = (function () {
         var _this = this;
         return this.consumer.advanceAfterMatch({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            then: function (asterisks, isTouchingWordStart) {
-                var canCloseConvention = _this.consumer.isTouchingWordEnd;
-                var canOpenConvention = isTouchingWordStart;
+            then: function (asterisks, isPrecedingNonWhitespace) {
+                var canCloseConvention = _this.consumer.isFollowingNonWhitespace;
+                var canOpenConvention = isPrecedingNonWhitespace;
                 var asteriskTokenKind = TokenKind_1.TokenKind.PlainText;
                 if (canOpenConvention && canCloseConvention) {
                     asteriskTokenKind = TokenKind_1.TokenKind.PotentialRaisedVoiceStartOrEnd;

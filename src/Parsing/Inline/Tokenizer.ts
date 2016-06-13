@@ -258,7 +258,7 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: context.convention.endPattern,
 
-      then: (match, isTouchingWordEnd, ...captures) => {
+      then: match => {
         if (context.convention.leaveEndPatternForAnotherConventionToConsume) {
           this.consumer.textIndex -= match.length
         }
@@ -336,7 +336,7 @@ export class Tokenizer {
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
-        then: (match, isTouchingWordStart, ...captures) => {
+        then: (match, isDirectlyPrecedingNonWhitespace, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
@@ -344,7 +344,7 @@ export class Tokenizer {
           this.openContexts.push(new TokenizerContext(convention, this.getCurrentSnapshot()))
 
           if (onOpen) {
-            onOpen(match, isTouchingWordStart, ...captures)
+            onOpen(match, isDirectlyPrecedingNonWhitespace, ...captures)
           }
         }
       })
@@ -458,9 +458,9 @@ export class Tokenizer {
     return this.consumer.advanceAfterMatch({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
 
-      then: (asterisks, isTouchingWordStart) => {
-        const canCloseConvention = this.consumer.isTouchingWordEnd
-        const canOpenConvention = isTouchingWordStart
+      then: (asterisks, isPrecedingNonWhitespace) => {
+        const canCloseConvention = this.consumer.isFollowingNonWhitespace
+        const canOpenConvention = isPrecedingNonWhitespace
 
         let asteriskTokenKind = TokenKind.PlainText
 
