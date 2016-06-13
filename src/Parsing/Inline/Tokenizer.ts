@@ -220,7 +220,7 @@ export class Tokenizer {
       }
     }
 
-    return this.tryToCloseAnyRaisedVoiceContexts()
+    return this.tryToCloseAnyRaisedVoices()
   }
 
 
@@ -306,7 +306,7 @@ export class Tokenizer {
     return true
   }
 
-  private tryToCloseAnyRaisedVoiceContexts(): boolean {
+  private tryToCloseAnyRaisedVoices(): boolean {
     if (1) {
       return false
     }
@@ -314,22 +314,69 @@ export class Tokenizer {
     return this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       onlyIfMatchFollowsNonWhitespace: true,
-      
+
       thenBeforeAdvancingTextIndex: asterisks => {
-        this.useDelimiterToTryToCloseAnyRaisedVoiceContexts(asterisks)
+        if (!this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks)) {
+          this.consumer.textIndex -= asterisks.length
+        }
       }
     })
   }
 
-  private useDelimiterToTryToCloseAnyRaisedVoiceContexts(delimiter: string): boolean {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
+  private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
+   /* const unspentDelimiterLength = delimiter.length
 
-      if (context instanceof RaisedVoiceContext) {
-        
+    const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
+      this.openContexts
+        .filter(context => context instanceof RaisedVoiceContext)
+        .reverse()
+    )
+
+    const EMPHASIS_COST = 1
+    const STRESS_COST = 2
+    const STRESS_AND_EMPHASIS_TOGETHER_COST = STRESS_COST + EMPHASIS_COST
+
+    if (unspentDelimiterLength === EMPHASIS_COST) {
+      
+      // If an end marker has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
+      //
+      // For these end markers, we want to prioritize matching with the nearest start marker that either:
+      //
+      // 1. Can also only indicate emphasis (1 asterisk to spend)
+      // 2. Can indicate both emphasis and stress together (3+ asterisks to spend)
+      //
+      // If we can't find any start markers that satisfy the above criteria, then we'll settle for a start marker
+      // that has 2 asterisks to spend. But this fallback happens later.
+      
+      for (const raisedVoiceContext of raisedVoiceContextsFromMostRecentToLeast) {
+        if (raisedVoiceContext.unspentDelimiterLength || raisedVoiceContext.canIndicateStressAndEmphasisTogether()) {
+          this.endEmphasis(raisedVoiceContext)
+
+          // Considering we could only afford to indicate emphasis, we have nothing left to do.
+          return
+        }
       }
-    }
-
+    } else if (this.canIndicateStressButNotBothTogether()) {
+      
+      // If an end marker has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
+      // and emphasis at the saem time.
+      //
+      // For these end markers, we want to prioritize matching with the nearest start marker that can indicate
+      // stress. It's okay if that start marker can indicate both stress and emphasis at the same time! As long
+      // as it can indicate stress, we're good. 
+      //
+      // Only if we can't find one, then we'll match with a marker that has just 1 asterisk to spend. But this
+      // fallback happens later.
+      
+      for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
+        if (startMarker.canIndicateStress()) {
+          this.endStress(startMarker)
+          
+          // Considering we could only afford to indicate stress, we have nothing left to do.
+          return
+        }
+      }
+*/
     return false
   }
 

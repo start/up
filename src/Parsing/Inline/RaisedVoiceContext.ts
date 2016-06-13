@@ -6,21 +6,23 @@ import { TokenizerContext } from './TokenizerContext'
 // TODO: Explain
 export class RaisedVoiceContext extends TokenizerContext {
   initialTokenIndex: number
-  countRemainingDelimiterChars: number
+  unspentDelimiterLength: number
 
   private delimiter: string
-  private convertDelimiterToPlainText: ConvertDelimiterToPlainText
+  private convertDelimiterToPlainText: TreatDelimiterAsPlainText
 
   constructor(
     args: {
-      delimeter: number
-      convertDelimiterToPlainText: ConvertDelimiterToPlainText
+      delimeter: string
+      treatDelimiterAsPlainText: TreatDelimiterAsPlainText
       snapshot: TokenizerSnapshot
     }
   ) {
     super(null, args.snapshot)
     
-    this.convertDelimiterToPlainText = args.convertDelimiterToPlainText
+    this.delimiter = args.delimeter
+    this.convertDelimiterToPlainText = args.treatDelimiterAsPlainText
+
     this.reset()
   }
 
@@ -35,7 +37,7 @@ export class RaisedVoiceContext extends TokenizerContext {
   close(): void { }
 
   resolveWhenLeftUnclosed(): boolean {
-    if (this.countRemainingDelimiterChars === this.delimiter.length) {
+    if (this.unspentDelimiterLength === this.delimiter.length) {
       this.convertDelimiterToPlainText(this.delimiter)
     }
 
@@ -44,11 +46,11 @@ export class RaisedVoiceContext extends TokenizerContext {
 
   reset(): void {
     super.reset()
-    this.countRemainingDelimiterChars = this.delimiter.length
+    this.unspentDelimiterLength = this.delimiter.length
   }
 }
 
 
-interface ConvertDelimiterToPlainText {
+interface TreatDelimiterAsPlainText {
   (delimiter: string): void
 }
