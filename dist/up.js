@@ -912,11 +912,11 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpen = function (convention) {
         var _this = this;
-        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfPrecedingNonWhitespace = convention.onlyOpenIfPrecedingNonWhitespace, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
+        var startPattern = convention.startPattern, onlyOpenIfDirectlyFollowingTokenOfKind = convention.onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfStartPatternPrecedesNonWhitespace = convention.onlyOpenIfStartPatternPrecedesNonWhitespace, flushBufferToPlainTextTokenBeforeOpening = convention.flushBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
         return (this.canTry(convention)
             && this.consumer.advanceAfterMatch({
                 pattern: startPattern,
-                onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
+                onlyIfPrecedingNonWhitespace: onlyOpenIfStartPatternPrecedesNonWhitespace,
                 then: function (match) {
                     var captures = [];
                     for (var _i = 1; _i < arguments.length; _i++) {

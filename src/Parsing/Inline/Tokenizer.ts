@@ -327,14 +327,14 @@ export class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfPrecedingNonWhitespace, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, onlyOpenIfStartPatternPrecedesNonWhitespace, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)
       && this.consumer.advanceAfterMatch({
         pattern: startPattern,
 
-        onlyIfPrecedingNonWhitespace: onlyOpenIfPrecedingNonWhitespace,
+        onlyIfPrecedingNonWhitespace: onlyOpenIfStartPatternPrecedesNonWhitespace,
 
         then: (match, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
