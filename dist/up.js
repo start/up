@@ -333,8 +333,8 @@ var RaisedVoiceContext = (function (_super) {
     __extends(RaisedVoiceContext, _super);
     function RaisedVoiceContext(args) {
         _super.call(this, null, args.snapshot);
-        this.openingDelimiter = args.delimeter;
-        this.convertDelimiterToPlainText = args.treatOpeningDelimiterAsPlainText;
+        this.openingDelimiter = args.delimiter;
+        this.treatDelimiterAsPlainText = args.treatDelimiterAsPlainText;
         this.reset();
     }
     RaisedVoiceContext.prototype.doIsteadOfTryingToCloseOuterContexts = function () {
@@ -346,7 +346,7 @@ var RaisedVoiceContext = (function (_super) {
     RaisedVoiceContext.prototype.close = function () { };
     RaisedVoiceContext.prototype.resolveWhenLeftUnclosed = function () {
         if (this.unspentOpeningDelimiterLength === this.openingDelimiter.length) {
-            this.convertDelimiterToPlainText(this.openingDelimiter);
+            this.treatDelimiterAsPlainText(this);
         }
         return true;
     };
@@ -378,7 +378,7 @@ var RaisedVoiceContext = (function (_super) {
     RaisedVoiceContext.prototype.payForStress = function () {
         this.pay(RaisedVoiceContext.STRESS_COST);
     };
-    RaisedVoiceContext.prototype.payForEmphasisAndStressTogether = function (closingDelimiterLength) {
+    RaisedVoiceContext.prototype.payForEmphasisAndStressTogetherAndGetCost = function (closingDelimiterLength) {
         var lengthInCommon = Math.min(this.unspentOpeningDelimiterLength, closingDelimiterLength);
         this.pay(lengthInCommon);
         return lengthInCommon;
@@ -778,7 +778,8 @@ var Tokenizer = (function () {
             if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context_4.canAffordBothEmphasisAndStressTogether()) {
                 this.encloseWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
                 this.encloseWithin(RichConventions_1.STRESS_CONVENTION, context_4);
-                unspentDelimiterLength -= context_4.payForEmphasisAndStressTogether(unspentDelimiterLength);
+                unspentDelimiterLength -=
+                    context_4.payForEmphasisAndStressTogetherAndGetCost(unspentDelimiterLength);
                 continue;
             }
             if (unspentDelimiterLength >= STRESS_COST && context_4.canAffordStress()) {
@@ -818,7 +819,29 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         var _this = this;
-        return this.conventions.some(function (convention) { return _this.tryToOpen(convention); });
+        return (this.conventions.some(function (convention) { return _this.tryToOpen(convention); })
+            || this.tryToOpenRaisedVoiceContext());
+    };
+    Tokenizer.prototype.tryToOpenRaisedVoiceContext = function () {
+        var _this = this;
+        return this.consumer.consume({
+            pattern: RAISED_VOICE_DELIMITER_PATTERN,
+            onlyIfMatchPrecedesNonWhitespace: true,
+            thenBeforeAdvancingTextIndex: function (delimiter) {
+                var raisedVoiceContext = new RaisedVoiceContext_1.RaisedVoiceContext({
+                    delimiter: delimiter,
+                    treatDelimiterAsPlainText: function (context) {
+                        _this.insertToken({
+                            token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter }),
+                            atIndex: context.initialTokenIndex,
+                            context: context
+                        });
+                    },
+                    snapshot: _this.getCurrentSnapshot()
+                });
+                _this.openContexts.push();
+            }
+        });
     };
     Tokenizer.prototype.isDirectlyFollowingTokenOfKind = function (kinds) {
         return (this.buffer === ''
@@ -849,18 +872,20 @@ var Tokenizer = (function () {
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                     }
-                    var currentSnapshot = new TokenizerSnapshot_1.TokenizerSnapshot({
-                        textIndex: _this.consumer.textIndex,
-                        tokens: _this.tokens,
-                        openContexts: _this.openContexts,
-                        bufferedText: _this.buffer
-                    });
-                    _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, currentSnapshot));
+                    _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot()));
                     if (onOpen) {
                         onOpen.apply(void 0, [match].concat(captures));
                     }
                 }
             }));
+    };
+    Tokenizer.prototype.getCurrentSnapshot = function () {
+        return new TokenizerSnapshot_1.TokenizerSnapshot({
+            textIndex: this.consumer.textIndex,
+            tokens: this.tokens,
+            openContexts: this.openContexts,
+            bufferedText: this.buffer
+        });
     };
     Tokenizer.prototype.canTry = function (convention, textIndex) {
         var _this = this;

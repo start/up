@@ -1,6 +1,7 @@
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TokenizerContext } from './TokenizerContext'
+import { OnConventionEvent } from './OnConventionEvent'
 
 
 // TODO: Explain
@@ -11,24 +12,23 @@ export class RaisedVoiceContext extends TokenizerContext {
   static STRESS_AND_EMPHASIS_TOGETHER_COST = (
     RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST)
 
-
   initialTokenIndex: number
 
   private openingDelimiter: string
   private unspentOpeningDelimiterLength: number
-  private convertDelimiterToPlainText: TreatOpeningDelimiterAsPlainText
+  private treatDelimiterAsPlainText: OnConventionEvent
 
   constructor(
     args: {
-      delimeter: string
-      treatOpeningDelimiterAsPlainText: TreatOpeningDelimiterAsPlainText
+      delimiter: string
+      treatDelimiterAsPlainText: OnConventionEvent
       snapshot: TokenizerSnapshot
     }
   ) {
     super(null, args.snapshot)
 
-    this.openingDelimiter = args.delimeter
-    this.convertDelimiterToPlainText = args.treatOpeningDelimiterAsPlainText
+    this.openingDelimiter = args.delimiter
+    this.treatDelimiterAsPlainText = args.treatDelimiterAsPlainText
 
     this.reset()
   }
@@ -45,9 +45,9 @@ export class RaisedVoiceContext extends TokenizerContext {
 
   resolveWhenLeftUnclosed(): boolean {
     if (this.unspentOpeningDelimiterLength === this.openingDelimiter.length) {
-      this.convertDelimiterToPlainText(this.openingDelimiter)
+      this.treatDelimiterAsPlainText(this)
     }
-
+    
     return true
   }
 
@@ -97,7 +97,7 @@ export class RaisedVoiceContext extends TokenizerContext {
   // matched by other delimiters.
   //
   // This method returns the number of characters both delimiters have in common. 
-  payForEmphasisAndStressTogether(closingDelimiterLength: number): number {
+  payForEmphasisAndStressTogetherAndGetCost(closingDelimiterLength: number): number {
 
     const lengthInCommon =
       Math.min(this.unspentOpeningDelimiterLength, closingDelimiterLength)
@@ -118,11 +118,6 @@ export class RaisedVoiceContext extends TokenizerContext {
 
     this.unspentOpeningDelimiterLength -= delimiterLength
   }
-}
-
-
-interface TreatOpeningDelimiterAsPlainText {
-  (delimiter: string): void
 }
 
 

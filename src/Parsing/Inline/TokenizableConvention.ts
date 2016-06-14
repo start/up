@@ -1,5 +1,6 @@
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TokenizerContext } from './TokenizerContext'
+import { OnConventionEvent } from './OnConventionEvent'
 import { OnMatch } from './OnMatch'
 import { TokenKind } from './TokenKind'
 
@@ -29,8 +30,4 @@ export interface TokenizableConvention {
 
 interface PerformConventionSpecificTasks {
   (): void
-}
-
-interface OnConventionEvent {
-  (context: TokenizerContext): void
 }

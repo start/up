@@ -347,8 +347,6 @@ export class Tokenizer {
         if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
           this.encloseWithin(EMPHASIS_CONVENTION, context)
           context.payForEmphasis()
-          
-          
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
           unspentDelimiterLength = 0
@@ -370,8 +368,8 @@ export class Tokenizer {
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
         if (context.canOnlyAffordStress()) {
           this.encloseWithin(STRESS_CONVENTION, context)
-          context.payForStress()      
-          
+          context.payForStress()
+
           // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
           unspentDelimiterLength = 0
           break
@@ -391,15 +389,16 @@ export class Tokenizer {
       if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context.canAffordBothEmphasisAndStressTogether()) {
         this.encloseWithin(EMPHASIS_CONVENTION, context)
         this.encloseWithin(STRESS_CONVENTION, context)
-        
-        unspentDelimiterLength -= context.payForEmphasisAndStressTogether(unspentDelimiterLength)
+
+        unspentDelimiterLength -=
+          context.payForEmphasisAndStressTogetherAndGetCost(unspentDelimiterLength)
 
         continue
       }
 
       if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
         this.encloseWithin(STRESS_CONVENTION, context)
-        
+
         context.payForStress()
         unspentDelimiterLength -= STRESS_COST
 
@@ -408,7 +407,7 @@ export class Tokenizer {
 
       if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
         this.encloseWithin(EMPHASIS_CONVENTION, context)
-        
+
         context.payForEmphasis()
         unspentDelimiterLength -= EMPHASIS_COST
 
@@ -447,7 +446,31 @@ export class Tokenizer {
   }
 
   private tryToOpenAnyConvention(): boolean {
-    return this.conventions.some(convention => this.tryToOpen(convention))
+    return (
+      this.conventions.some(convention => this.tryToOpen(convention))
+      || this.tryToOpenRaisedVoiceContext())
+  }
+
+  private tryToOpenRaisedVoiceContext(): boolean {
+    return this.consumer.consume({
+      pattern: RAISED_VOICE_DELIMITER_PATTERN,
+      onlyIfMatchPrecedesNonWhitespace: true,
+
+      thenBeforeAdvancingTextIndex: delimiter => {
+        const raisedVoiceContext = new RaisedVoiceContext({
+          delimiter,
+          treatDelimiterAsPlainText: context => {
+            this.insertToken({
+              token: new Token({ kind: TokenKind.PlainText, value: delimiter }),
+              atIndex: context.initialTokenIndex,
+              context: context
+            })
+          },
+          snapshot: this.getCurrentSnapshot()
+        })
+        this.openContexts.push()
+      }
+    })
   }
 
   private isDirectlyFollowingTokenOfKind(kinds: TokenKind[]): boolean {
@@ -485,15 +508,7 @@ export class Tokenizer {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
 
-          // The text consumer doesn't update its text index until after the post-match callback.
-          const currentSnapshot = new TokenizerSnapshot({
-            textIndex: this.consumer.textIndex,
-            tokens: this.tokens,
-            openContexts: this.openContexts,
-            bufferedText: this.buffer
-          })
-
-          this.openContexts.push(new TokenizerContext(convention, currentSnapshot))
+          this.openContexts.push(new TokenizerContext(convention, this.getCurrentSnapshot()))
 
           if (onOpen) {
             onOpen(match, ...captures)
@@ -501,6 +516,15 @@ export class Tokenizer {
         }
       })
     )
+  }
+
+  private getCurrentSnapshot(): TokenizerSnapshot {
+    return new TokenizerSnapshot({
+      textIndex: this.consumer.textIndex,
+      tokens: this.tokens,
+      openContexts: this.openContexts,
+      bufferedText: this.buffer
+    })
   }
 
   private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
