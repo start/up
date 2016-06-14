@@ -9,60 +9,28 @@ export class RaisedVoiceContext extends TokenizerContext {
   static EMPHASIS_COST = 1
   static STRESS_COST = 2
   static STRESS_AND_EMPHASIS_TOGETHER_COST = (
-    RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST
-  )
+    RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST)
+
 
   initialTokenIndex: number
-  unspentDelimiterLength: number
 
-  private delimiter: string
-  private convertDelimiterToPlainText: TreatDelimiterAsPlainText
+  private openingDelimiter: string
+  private unspentOpeningDelimiterLength: number
+  private convertDelimiterToPlainText: TreatOpeningDelimiterAsPlainText
 
   constructor(
     args: {
       delimeter: string
-      treatDelimiterAsPlainText: TreatDelimiterAsPlainText
+      treatOpeningDelimiterAsPlainText: TreatOpeningDelimiterAsPlainText
       snapshot: TokenizerSnapshot
     }
   ) {
     super(null, args.snapshot)
 
-    this.delimiter = args.delimeter
-    this.convertDelimiterToPlainText = args.treatDelimiterAsPlainText
+    this.openingDelimiter = args.delimeter
+    this.convertDelimiterToPlainText = args.treatOpeningDelimiterAsPlainText
 
     this.reset()
-  }
-
-  canOnlyAffordEmphasis(): boolean {
-    return this.unspentDelimiterLength === RaisedVoiceContext.EMPHASIS_COST
-  }
-
-  canOnlyAffordStress(): boolean {
-    return this.unspentDelimiterLength === RaisedVoiceContext.STRESS_COST
-  }
-
-  canAffordBothEmphasisAndStressTogether(): boolean {
-    return this.unspentDelimiterLength >= RaisedVoiceContext.STRESS_AND_EMPHASIS_TOGETHER_COST
-  }
-
-  canAfford(delimiterLength: number): boolean {
-    return this.unspentDelimiterLength >= delimiterLength
-  }
-
-  payForEmphasis(): void {
-    this.pay(RaisedVoiceContext.EMPHASIS_COST)
-  }
-
-  payForStress(): void {
-    this.pay(RaisedVoiceContext.STRESS_COST)
-  }
-
-  pay(delimiterLength: number): void {
-    if (!this.canAfford(delimiterLength)) {
-      throw new Error('Cannot afford: ' + delimiterLength)
-    }
-
-    this.unspentDelimiterLength -= delimiterLength
   }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {
@@ -76,8 +44,8 @@ export class RaisedVoiceContext extends TokenizerContext {
   close(): void { }
 
   resolveWhenLeftUnclosed(): boolean {
-    if (this.unspentDelimiterLength === this.delimiter.length) {
-      this.convertDelimiterToPlainText(this.delimiter)
+    if (this.unspentOpeningDelimiterLength === this.openingDelimiter.length) {
+      this.convertDelimiterToPlainText(this.openingDelimiter)
     }
 
     return true
@@ -85,11 +53,76 @@ export class RaisedVoiceContext extends TokenizerContext {
 
   reset(): void {
     super.reset()
-    this.unspentDelimiterLength = this.delimiter.length
+    this.unspentOpeningDelimiterLength = this.openingDelimiter.length
+  }
+
+  isFullySpent(): boolean {
+    return !!this.unspentOpeningDelimiterLength
+  }
+
+  canAffordEmphasis(): boolean {
+    return this.unspentOpeningDelimiterLength >= RaisedVoiceContext.EMPHASIS_COST
+  }
+
+  canAffordStress(): boolean {
+    return this.unspentOpeningDelimiterLength >= RaisedVoiceContext.STRESS_COST
+  }
+
+  canOnlyAffordEmphasis(): boolean {
+    return this.unspentOpeningDelimiterLength === RaisedVoiceContext.EMPHASIS_COST
+  }
+
+  canOnlyAffordStress(): boolean {
+    return this.unspentOpeningDelimiterLength === RaisedVoiceContext.STRESS_COST
+  }
+
+  canAffordBothEmphasisAndStressTogether(): boolean {
+    return this.unspentOpeningDelimiterLength >= RaisedVoiceContext.STRESS_AND_EMPHASIS_TOGETHER_COST
+  }
+
+  payForEmphasis(): void {
+    this.pay(RaisedVoiceContext.EMPHASIS_COST)
+  }
+
+  payForStress(): void {
+    this.pay(RaisedVoiceContext.STRESS_COST)
+  }
+
+  payForEmphasisAndStressTogether(closingDelimiterLength: number): void {
+    // When matching delimiters each have 3 or more characters to spend, their contents become stressed and emphasized,
+    // and they cancel out as many of each other's delimiter characters as possible.
+    //
+    // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
+    //
+    // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be subsequently
+    // matched by other delimiters.
+    const lengthInCommon =
+      Math.min(this.unspentOpeningDelimiterLength, closingDelimiterLength)
+
+    this.pay(lengthInCommon)
+  }
+
+  private canAfford(delimiterLength: number): boolean {
+    return this.unspentOpeningDelimiterLength >= delimiterLength
+  }
+
+  private pay(delimiterLength: number): void {
+    if (!this.canAfford(delimiterLength)) {
+      throw new Error('Cannot afford: ' + delimiterLength)
+    }
+
+    this.unspentOpeningDelimiterLength -= delimiterLength
   }
 }
 
 
-interface TreatDelimiterAsPlainText {
+interface TreatOpeningDelimiterAsPlainText {
   (delimiter: string): void
 }
+
+
+const EMPHASIS_COST = 1
+const STRESS_COST = 2
+const STRESS_AND_EMPHASIS_TOGETHER_COST = (
+  RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST
+)

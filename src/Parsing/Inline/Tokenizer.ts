@@ -9,7 +9,7 @@ import { MediaConvention } from './MediaConvention'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnMatch } from './OnMatch'
-import { last, concat, contains, reversed } from '../../CollectionHelpers'
+import { last, concat, contains, reversed, remove } from '../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
@@ -324,7 +324,7 @@ export class Tokenizer {
   }
 
   private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
-    /*const unspentDelimiterLength = delimiter.length
+    const unspentDelimiterLength = delimiter.length
 
     const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
       this.openContexts
@@ -354,7 +354,7 @@ export class Tokenizer {
           // TODO: REMOVE CONTEXT
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
-          return true
+          break
         }
       }
     } else if (unspentDelimiterLength === RaisedVoiceContext.STRESS_COST) {
@@ -377,7 +377,7 @@ export class Tokenizer {
 
 
           // Considering we could only afford to indicate stress, we have nothing left to do.
-          return
+          break
         }
       }
     }
@@ -385,29 +385,46 @@ export class Tokenizer {
     // From here on out, if this end marker can match with a start marker, it will. It'll try to match as
     // many asterisks at once as it can.
 
-    for (const startMarker of availableStartMarkersFromMostRecentToLeast) {
+    for (const context of raisedVoiceContextsFromMostRecentToLeast) {
       if (!unspentDelimiterLength) {
         // Once this marker has matched all of its asterisks, its work is done. Let's bail.
         break
       }
 
-      if (this.canIndicateStressAndEmphasisTogether() && startMarker.canIndicateStressAndEmphasisTogether()) {
-        this.startStressAndEmphasisTogether(startMarker)
+      if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context.canAffordBothEmphasisAndStressTogether()) {
+        this.encloseWithin(EMPHASIS_CONVENTION, context)
+        this.encloseWithin(STRESS_CONVENTION, context)
+        context.payForEmphasisAndStressTogether(unspentDelimiterLength)
+
         continue
       }
 
-      if (this.canIndicateStress() && startMarker.canIndicateStress()) {
-        this.endStress(startMarker)
+      if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
+        this.encloseWithin(STRESS_CONVENTION, context)
+        context.payForStress()
+
         continue
       }
 
-      if (this.canIndicateEmphasis() && startMarker.canIndicateEmphasis()) {
-        this.endEmphasis(startMarker)
+      if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
+        this.encloseWithin(EMPHASIS_CONVENTION, context)
+        context.payForEmphasis()
+
         continue
       }
-    }*/
+    }
 
-    return false
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+
+      if ((context instanceof RaisedVoiceContext) && context.isFullySpent()) {
+        // Once a raised voice context has spent all the characters from its start delimieter, we
+        // remove from our list of open contexts. There's nothing left for it to do. 
+        this.openContexts.splice(i, 1)
+      }
+    }
+
+    return true
   }
 
   private encloseWithin(richConvention: RichConvention, context: TokenizerContext): void {
