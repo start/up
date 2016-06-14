@@ -448,10 +448,11 @@ export class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
-      || this.tryToOpenRaisedVoiceContext())
+      || this.tryToHandleRaisedVoiceDelimiter())
   }
 
-  private tryToOpenRaisedVoiceContext(): boolean {
+  private tryToHandleRaisedVoiceDelimiter(): boolean {
+    // TODO: Refactor
     return this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       onlyIfMatchPrecedesNonWhitespace: true,
@@ -468,7 +469,13 @@ export class Tokenizer {
           },
           snapshot: this.getCurrentSnapshot()
         })
+
         this.openContexts.push()
+      }
+    }) || this.consumer.consume({
+      pattern: RAISED_VOICE_DELIMITER_PATTERN,
+      thenBeforeAdvancingTextIndex: delimiter => {
+        this.appendNewToken({ kind: TokenKind.PlainText, value: delimiter })
       }
     })
   }

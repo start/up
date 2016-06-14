@@ -820,9 +820,9 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         var _this = this;
         return (this.conventions.some(function (convention) { return _this.tryToOpen(convention); })
-            || this.tryToOpenRaisedVoiceContext());
+            || this.tryToHandleRaisedVoiceDelimiter());
     };
-    Tokenizer.prototype.tryToOpenRaisedVoiceContext = function () {
+    Tokenizer.prototype.tryToHandleRaisedVoiceDelimiter = function () {
         var _this = this;
         return this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -840,6 +840,11 @@ var Tokenizer = (function () {
                     snapshot: _this.getCurrentSnapshot()
                 });
                 _this.openContexts.push();
+            }
+        }) || this.consumer.consume({
+            pattern: RAISED_VOICE_DELIMITER_PATTERN,
+            thenBeforeAdvancingTextIndex: function (delimiter) {
+                _this.appendNewToken({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter });
             }
         });
     };
