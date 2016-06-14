@@ -830,7 +830,7 @@ var Tokenizer = (function () {
         var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
         var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
         startToken.associateWith(endToken);
-        this.insertToken({ token: startToken, context: context });
+        this.insertToken({ token: startToken, atIndex: context.initialTokenIndex });
         this.tokens.push(endToken);
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
@@ -855,7 +855,10 @@ var Tokenizer = (function () {
                 _this.openContexts.push(new RaisedVoiceContext_1.RaisedVoiceContext({
                     delimiter: delimiter,
                     treatDelimiterAsPlainText: function (context) {
-                        _this.insertToken({ token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter }), context: context });
+                        _this.insertToken({
+                            token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter }),
+                            atIndex: context.initialTokenIndex
+                        });
                     },
                     snapshot: _this.getCurrentSnapshot()
                 }));
@@ -945,15 +948,12 @@ var Tokenizer = (function () {
         this.appendNewToken({ kind: kind, value: this.flushBuffer() });
     };
     Tokenizer.prototype.insertToken = function (args) {
-        var context = args.context, token = args.token;
+        var token = args.token;
         var atIndex = args.atIndex;
-        if (atIndex == null) {
-            atIndex = context.initialTokenIndex;
-        }
         this.tokens.splice(atIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
-            openContext.registerTokenInsertion({ atIndex: atIndex, onBehalfOfContext: context });
+            openContext.registerTokenInsertion({ atIndex: atIndex });
         }
     };
     Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
@@ -1014,10 +1014,10 @@ var Tokenizer = (function () {
                 var linkStartToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.startTokenKind });
                 linkStartToken.associateWith(linkEndToken);
                 var indexOfOriginalEndToken = _this.tokens.length - 1;
-                _this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken, context: context });
+                _this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken });
                 var originalStartToken = CollectionHelpers_1.last(_this.tokens).correspondsToToken;
                 var indexAfterOriginalStartToken = _this.tokens.indexOf(originalStartToken) + 1;
-                _this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken, context: context });
+                _this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken });
             }
         }); });
     };
@@ -1153,11 +1153,7 @@ var TokenizerContext = (function () {
         return false;
     };
     TokenizerContext.prototype.registerTokenInsertion = function (args) {
-        var atIndex = args.atIndex, onBehalfOfContext = args.onBehalfOfContext;
-        var mustIncrementInitialIndex = (atIndex < this.initialTokenIndex
-            || (atIndex === this.initialTokenIndex
-                && onBehalfOfContext.snapshot.textIndex < this.snapshot.textIndex));
-        if (mustIncrementInitialIndex) {
+        if (args.atIndex < this.initialTokenIndex) {
             this.initialTokenIndex += 1;
         }
     };

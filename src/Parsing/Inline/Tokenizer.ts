@@ -474,7 +474,7 @@ export class Tokenizer {
     const endToken = new Token({ kind: richConvention.endTokenKind })
     startToken.associateWith(endToken)
 
-    this.insertToken({ token: startToken, context })
+    this.insertToken({ token: startToken, atIndex: context.initialTokenIndex })
     this.tokens.push(endToken)
   }
 
@@ -509,7 +509,10 @@ export class Tokenizer {
           new RaisedVoiceContext({
             delimiter,
             treatDelimiterAsPlainText: context => {
-              this.insertToken({ token: new Token({ kind: TokenKind.PlainText, value: delimiter }), context })
+              this.insertToken({
+                token: new Token({ kind: TokenKind.PlainText, value: delimiter }),
+                atIndex: context.initialTokenIndex
+              })
             },
             snapshot: this.getCurrentSnapshot()
           }))
@@ -632,23 +635,14 @@ export class Tokenizer {
     this.appendNewToken({ kind, value: this.flushBuffer() })
   }
 
-  private insertToken(
-    args: {
-      token: Token
-      atIndex?: number
-      context: TokenizerContext
-    }): void {
-    const { context, token } = args
+  private insertToken(args: { token: Token, atIndex: number }): void {
+    const { token } = args
     let { atIndex } = args
-
-    if (atIndex == null) {
-      atIndex = context.initialTokenIndex
-    }
 
     this.tokens.splice(atIndex, 0, token)
 
     for (const openContext of this.openContexts) {
-      openContext.registerTokenInsertion({ atIndex, onBehalfOfContext: context })
+      openContext.registerTokenInsertion({ atIndex })
     }
   }
 
@@ -736,11 +730,11 @@ export class Tokenizer {
         // start token right after the original end token's corresponding start token.
 
         const indexOfOriginalEndToken = this.tokens.length - 1
-        this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken, context })
+        this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
 
         const originalStartToken = last(this.tokens).correspondsToToken
         const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
-        this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken, context })
+        this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
       }
     }))
   }

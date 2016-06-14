@@ -133,12 +133,13 @@ describe('Overlapped stressed and square bracketed text', () => {
 
 describe('Overlapped stressed, deleted, and inserted text', () => {
   it("split the revision deletion node once and the revision insertion node twice, becuase earlier conventions aren't split by later ones", () => {
-    expect(Up.toAst('I **love ~~++drinking** whole~~ milk++ all the time.')).to.be.eql(
+    expect(Up.toAst('I **love ~~covertly ++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
+            new PlainTextNode('covertly '),
             new RevisionInsertionNode([
               new PlainTextNode('drinking')
             ])
@@ -159,11 +160,11 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
 
 
 describe('Conventions that completely overlap', () => {
-  it('are nested in the order they started, and do not create an empty node at the end', () => {
+  it('are nested in the order they ended, and do not produce an empty node at the beginning', () => {
     expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
       insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new StressNode([
+        new StressNode([
+          new RevisionInsertionNode([
             new PlainTextNode('Why would you do this?')
           ])
         ])
@@ -182,6 +183,22 @@ describe("Overlapping conventions in which the first convention overlaps the sec
         ]),
         new RevisionDeletionNode([
           new PlainTextNode('why would you do this?')
+        ])
+      ])
+    )
+  })
+})
+
+
+describe("Conventions in which the first convention overlaps the second only by the first's start token", () => {
+  it('are treated as though the first convention is inside the second (and thus not overlapping)', () => {
+    expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new RevisionDeletionNode([
+            new PlainTextNode('Oh')
+          ]),
+          new PlainTextNode(' why would you do this?')
         ])
       ])
     )

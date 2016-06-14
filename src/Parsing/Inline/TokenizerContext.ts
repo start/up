@@ -43,26 +43,8 @@ export class TokenizerContext {
     return false
   }
 
-  registerTokenInsertion(args: { atIndex: number, onBehalfOfContext: TokenizerContext }) {
-    const { atIndex, onBehalfOfContext } = args
-
-    // Do we need to increment our initial index?
-    const mustIncrementInitialIndex = (
-
-      // Well, if the token was inserted before our intial index, we certianly do.
-      atIndex < this.initialTokenIndex
-
-      || (
-        // But what if the token was inserted *at* our initial index?
-        atIndex === this.initialTokenIndex
-
-        // In that case, we'll only update our initial index if the token is being inserted on behalf
-        // of a context that was opened before this one.
-        && onBehalfOfContext.snapshot.textIndex < this.snapshot.textIndex
-      )
-    )
-
-    if (mustIncrementInitialIndex) {
+  registerTokenInsertion(args: { atIndex: number }) {
+    if (args.atIndex < this.initialTokenIndex) {
       this.initialTokenIndex += 1
     }
   }
