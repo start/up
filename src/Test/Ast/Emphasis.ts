@@ -6,7 +6,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
-describe('Text surrounded by asterisks', () => {
+describe('Text surrounded by single asterisks', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.toAst('Hello, *world*!!')).to.be.eql(
       insideDocumentAndParagraph([

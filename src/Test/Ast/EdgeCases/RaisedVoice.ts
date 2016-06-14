@@ -157,6 +157,34 @@ describe('A raised voice convention starting with 3 asterisks', () => {
 })
 
 
+describe('A single starting asterisk', () => {
+  it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
+    expect(Up.toAst('A *bread*** to believe in')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('A '),
+        new EmphasisNode([
+          new PlainTextNode('bread'),
+        ]),
+        new PlainTextNode(' to believe in')
+      ]))
+  })
+})
+
+
+describe('Double starting asterisks', () => {
+  it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
+    expect(Up.toAst('A **bread*** to believe in')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('A '),
+        new StressNode([
+          new PlainTextNode('bread'),
+        ]),
+        new PlainTextNode(' to believe in')
+      ]))
+  })
+})
+
+
 describe('Shouted text inside of stressed text', () => {
   it('can have its inner stress node closed early', () => {
     expect(Up.toAst('**Please ***stop** eating the cardboard* immediately**')).to.be.eql(
