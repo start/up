@@ -746,16 +746,21 @@ var Tokenizer = (function () {
         return didCloseAnyRaisedVoices;
     };
     Tokenizer.prototype.spendDelimiterToTryToCloseAnyRaisedVoices = function (delimiter) {
+        var _this = this;
         var unspentDelimiterLength = delimiter.length;
         var raisedVoiceContextsFromMostRecentToLeast = (this.openContexts
             .filter(function (context) { return context instanceof RaisedVoiceContext_1.RaisedVoiceContext; })
             .reverse());
         var EMPHASIS_COST = RaisedVoiceContext_1.RaisedVoiceContext.EMPHASIS_COST, STRESS_COST = RaisedVoiceContext_1.RaisedVoiceContext.STRESS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST = RaisedVoiceContext_1.RaisedVoiceContext.STRESS_AND_EMPHASIS_TOGETHER_COST;
+        var encloseContextWithin = function (richConvention, context) {
+            _this.closeAnyNakedUrlContext();
+            _this.encloseContextWithin(richConvention, context);
+        };
         if (unspentDelimiterLength === RaisedVoiceContext_1.RaisedVoiceContext.EMPHASIS_COST) {
             for (var _i = 0, raisedVoiceContextsFromMostRecentToLeast_1 = raisedVoiceContextsFromMostRecentToLeast; _i < raisedVoiceContextsFromMostRecentToLeast_1.length; _i++) {
                 var context_2 = raisedVoiceContextsFromMostRecentToLeast_1[_i];
                 if (context_2.canOnlyAffordEmphasis() || context_2.canAffordBothEmphasisAndStressTogether()) {
-                    this.encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_2);
+                    encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_2);
                     context_2.payForEmphasis();
                     unspentDelimiterLength = 0;
                     break;
@@ -766,7 +771,7 @@ var Tokenizer = (function () {
             for (var _a = 0, raisedVoiceContextsFromMostRecentToLeast_2 = raisedVoiceContextsFromMostRecentToLeast; _a < raisedVoiceContextsFromMostRecentToLeast_2.length; _a++) {
                 var context_3 = raisedVoiceContextsFromMostRecentToLeast_2[_a];
                 if (context_3.canAffordStress()) {
-                    this.encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_3);
+                    encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_3);
                     context_3.payForStress();
                     unspentDelimiterLength = 0;
                     break;
@@ -779,20 +784,20 @@ var Tokenizer = (function () {
                 break;
             }
             if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context_4.canAffordBothEmphasisAndStressTogether()) {
-                this.encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
-                this.encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_4);
+                encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
+                encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_4);
                 unspentDelimiterLength -=
                     context_4.payForEmphasisAndStressTogetherAndGetCost(unspentDelimiterLength);
                 continue;
             }
             if (unspentDelimiterLength >= STRESS_COST && context_4.canAffordStress()) {
-                this.encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_4);
+                encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_4);
                 unspentDelimiterLength -= STRESS_COST;
                 context_4.payForStress();
                 continue;
             }
             if (unspentDelimiterLength >= EMPHASIS_COST && context_4.canAffordEmphasis()) {
-                this.encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
+                encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
                 unspentDelimiterLength -= EMPHASIS_COST;
                 context_4.payForEmphasis();
                 continue;
@@ -806,6 +811,14 @@ var Tokenizer = (function () {
             var context_5 = this.openContexts[i];
             if ((context_5 instanceof RaisedVoiceContext_1.RaisedVoiceContext) && context_5.isFullySpent()) {
                 this.openContexts.splice(i, 1);
+            }
+        }
+    };
+    Tokenizer.prototype.closeAnyNakedUrlContext = function () {
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            if (this.openContexts[i].convention === this.nakedUrlConvention) {
+                this.flushBufferToNakedUrlEndToken();
+                this.openContexts.splice(i);
             }
         }
     };

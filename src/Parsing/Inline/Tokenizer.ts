@@ -326,6 +326,8 @@ export class Tokenizer {
   }
 
   private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
+    // TODO: Refactor
+
     let unspentDelimiterLength = delimiter.length
 
     const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
@@ -335,6 +337,11 @@ export class Tokenizer {
     )
 
     const { EMPHASIS_COST, STRESS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } = RaisedVoiceContext
+
+    const encloseContextWithin = (richConvention: RichConvention, context: TokenizerContext) => {
+      this.closeAnyNakedUrlContext()
+      this.encloseContextWithin(richConvention, context)
+    }
 
     if (unspentDelimiterLength === RaisedVoiceContext.EMPHASIS_COST) {
 
@@ -350,7 +357,7 @@ export class Tokenizer {
 
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
         if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
-          this.encloseContextWithin(EMPHASIS_CONVENTION, context)
+          encloseContextWithin(EMPHASIS_CONVENTION, context)
           context.payForEmphasis()
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
@@ -372,7 +379,7 @@ export class Tokenizer {
 
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
         if (context.canAffordStress()) {
-          this.encloseContextWithin(STRESS_CONVENTION, context)
+          encloseContextWithin(STRESS_CONVENTION, context)
           context.payForStress()
 
           // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
@@ -392,8 +399,8 @@ export class Tokenizer {
       }
 
       if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context.canAffordBothEmphasisAndStressTogether()) {
-        this.encloseContextWithin(EMPHASIS_CONVENTION, context)
-        this.encloseContextWithin(STRESS_CONVENTION, context)
+        encloseContextWithin(EMPHASIS_CONVENTION, context)
+        encloseContextWithin(STRESS_CONVENTION, context)
 
         unspentDelimiterLength -=
           context.payForEmphasisAndStressTogetherAndGetCost(unspentDelimiterLength)
@@ -402,7 +409,7 @@ export class Tokenizer {
       }
 
       if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
-        this.encloseContextWithin(STRESS_CONVENTION, context)
+        encloseContextWithin(STRESS_CONVENTION, context)
 
         unspentDelimiterLength -= STRESS_COST
         context.payForStress()
@@ -411,7 +418,7 @@ export class Tokenizer {
       }
 
       if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
-        this.encloseContextWithin(EMPHASIS_CONVENTION, context)
+        encloseContextWithin(EMPHASIS_CONVENTION, context)
 
         unspentDelimiterLength -= EMPHASIS_COST
         context.payForEmphasis()
@@ -433,6 +440,20 @@ export class Tokenizer {
 
       if ((context instanceof RaisedVoiceContext) && context.isFullySpent()) {
         this.openContexts.splice(i, 1)
+      }
+    }
+  }
+
+// TODO: Remove
+  private closeAnyNakedUrlContext(): void {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      if (this.openContexts[i].convention === this.nakedUrlConvention) {
+        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
+        this.flushBufferToNakedUrlEndToken()
+
+        // We need to close the naked URL's context, as well as the contexts of any raw text brackets
+        // inside it.
+        this.openContexts.splice(i)
       }
     }
   }
