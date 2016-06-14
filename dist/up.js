@@ -75,7 +75,7 @@ var Patterns_1 = require('../../Patterns');
 var InlineTextConsumer = (function () {
     function InlineTextConsumer(entireText) {
         this.entireText = entireText;
-        this.isFollowingNonWhitespace = false;
+        this._isFollowingNonWhitespace = false;
         this.textIndex = 0;
     }
     Object.defineProperty(InlineTextConsumer.prototype, "textIndex", {
@@ -103,6 +103,13 @@ var InlineTextConsumer = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(InlineTextConsumer.prototype, "isFollowingNonWhitespace", {
+        get: function () {
+            return this._isFollowingNonWhitespace;
+        },
+        enumerable: true,
+        configurable: true
+    });
     InlineTextConsumer.prototype.advanceTextIndex = function (length) {
         this.textIndex += length;
     };
@@ -110,10 +117,7 @@ var InlineTextConsumer = (function () {
         return this._textIndex >= this.entireText.length;
     };
     InlineTextConsumer.prototype.consume = function (args) {
-        var pattern = args.pattern, onlyIfMatchFollowsNonWhitespace = args.onlyIfMatchFollowsNonWhitespace, onlyIfMatchPrecedesNonWhitespace = args.onlyIfMatchPrecedesNonWhitespace, thenBeforeAdvancingTextIndex = args.thenBeforeAdvancingTextIndex;
-        if (onlyIfMatchFollowsNonWhitespace && !this.isFollowingNonWhitespace) {
-            return false;
-        }
+        var pattern = args.pattern, thenBeforeAdvancingTextIndex = args.thenBeforeAdvancingTextIndex;
         var result = pattern.exec(this._remainingText);
         if (!result) {
             return false;
@@ -121,11 +125,8 @@ var InlineTextConsumer = (function () {
         var match = result[0], captures = result.slice(1);
         var charAfterMatch = this.entireText[this._textIndex + match.length];
         var matchPrecedesNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(charAfterMatch);
-        if (onlyIfMatchPrecedesNonWhitespace && !matchPrecedesNonWhitespace) {
-            return false;
-        }
         if (thenBeforeAdvancingTextIndex) {
-            thenBeforeAdvancingTextIndex.apply(void 0, [match].concat(captures));
+            thenBeforeAdvancingTextIndex.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
         }
         this.advanceTextIndex(match.length);
         return true;
@@ -134,7 +135,7 @@ var InlineTextConsumer = (function () {
         this._remainingText = this.entireText.substr(this._textIndex);
         this._currentChar = this._remainingText[0];
         var previousChar = this.entireText[this._textIndex - 1];
-        this.isFollowingNonWhitespace = (previousChar && Patterns_1.NON_BLANK_PATTERN.test(previousChar));
+        this._isFollowingNonWhitespace = (previousChar && Patterns_1.NON_BLANK_PATTERN.test(previousChar));
     };
     return InlineTextConsumer;
 }());
@@ -732,10 +733,12 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseAnyRaisedVoices = function () {
         var _this = this;
+        if (!this.consumer.isFollowingNonWhitespace) {
+            return false;
+        }
         var didCloseAnyRaisedVoices = false;
         this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            onlyIfMatchFollowsNonWhitespace: true,
             thenBeforeAdvancingTextIndex: function (asterisks) {
                 didCloseAnyRaisedVoices = _this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks);
                 if (!didCloseAnyRaisedVoices) {
@@ -843,8 +846,11 @@ var Tokenizer = (function () {
         var _this = this;
         return this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            onlyIfMatchPrecedesNonWhitespace: true,
-            thenBeforeAdvancingTextIndex: function (delimiter) {
+            thenBeforeAdvancingTextIndex: function (delimiter, matchPrecedesNonWhitespace) {
+                if (!matchPrecedesNonWhitespace) {
+                    _this.buffer += delimiter;
+                    return;
+                }
                 _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                 _this.openContexts.push(new RaisedVoiceContext_1.RaisedVoiceContext({
                     delimiter: delimiter,
@@ -853,11 +859,6 @@ var Tokenizer = (function () {
                     },
                     snapshot: _this.getCurrentSnapshot()
                 }));
-            }
-        }) || this.consumer.consume({
-            pattern: RAISED_VOICE_DELIMITER_PATTERN,
-            thenBeforeAdvancingTextIndex: function (delimiter) {
-                _this.buffer += delimiter;
             }
         });
     };
@@ -882,17 +883,17 @@ var Tokenizer = (function () {
         return (this.canTry(convention)
             && this.consumer.consume({
                 pattern: startPattern,
-                thenBeforeAdvancingTextIndex: function (match) {
+                thenBeforeAdvancingTextIndex: function (match, matchPrecedesNonWhitespace) {
                     var captures = [];
-                    for (var _i = 1; _i < arguments.length; _i++) {
-                        captures[_i - 1] = arguments[_i];
+                    for (var _i = 2; _i < arguments.length; _i++) {
+                        captures[_i - 2] = arguments[_i];
                     }
                     if (flushBufferToPlainTextTokenBeforeOpening) {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                     }
                     _this.openContexts.push(new TokenizerContext_1.TokenizerContext(convention, _this.getCurrentSnapshot()));
                     if (onOpen) {
-                        onOpen.apply(void 0, [match].concat(captures));
+                        onOpen.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
                     }
                 }
             }));

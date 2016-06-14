@@ -6,7 +6,7 @@ export class InlineTextConsumer {
   private _textIndex: number
   private _remainingText: string
   private _currentChar: string
-  private isFollowingNonWhitespace = false
+  private _isFollowingNonWhitespace = false
 
   constructor(private entireText: string) {
     this.textIndex = 0
@@ -29,6 +29,10 @@ export class InlineTextConsumer {
     return this._currentChar
   }
 
+  get isFollowingNonWhitespace(): boolean {
+    return this._isFollowingNonWhitespace
+  }
+
   advanceTextIndex(length: number): void {
     this.textIndex += length
   }
@@ -40,16 +44,10 @@ export class InlineTextConsumer {
   consume(
     args: {
       pattern: RegExp,
-      onlyIfMatchFollowsNonWhitespace?: boolean
-      onlyIfMatchPrecedesNonWhitespace?: boolean
       thenBeforeAdvancingTextIndex?: OnMatch
     }
   ): boolean {
-    const { pattern, onlyIfMatchFollowsNonWhitespace, onlyIfMatchPrecedesNonWhitespace, thenBeforeAdvancingTextIndex } = args
-
-    if (onlyIfMatchFollowsNonWhitespace && !this.isFollowingNonWhitespace) {
-      return false
-    }
+    const { pattern, thenBeforeAdvancingTextIndex } = args
 
     const result = pattern.exec(this._remainingText)
 
@@ -62,12 +60,8 @@ export class InlineTextConsumer {
     const charAfterMatch = this.entireText[this._textIndex + match.length]
     const matchPrecedesNonWhitespace = NON_BLANK_PATTERN.test(charAfterMatch)
 
-    if (onlyIfMatchPrecedesNonWhitespace && !matchPrecedesNonWhitespace) {
-      return false
-    }
-
     if (thenBeforeAdvancingTextIndex) {
-      thenBeforeAdvancingTextIndex(match, ...captures)
+      thenBeforeAdvancingTextIndex(match, matchPrecedesNonWhitespace, ...captures)
     }
 
     this.advanceTextIndex(match.length)
@@ -80,6 +74,6 @@ export class InlineTextConsumer {
     this._currentChar = this._remainingText[0]
 
     const previousChar = this.entireText[this._textIndex - 1] 
-    this.isFollowingNonWhitespace = (previousChar && NON_BLANK_PATTERN.test(previousChar))
+    this._isFollowingNonWhitespace = (previousChar && NON_BLANK_PATTERN.test(previousChar))
   }
 }

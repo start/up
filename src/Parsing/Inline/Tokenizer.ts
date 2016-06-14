@@ -22,6 +22,8 @@ import { NewTokenArgs } from './NewTokenArgs'
 import { TokenizableConvention } from './TokenizableConvention'
 
 
+// TODO: Completely refactor raised voice logic
+
 export class Tokenizer {
   tokens: Token[] = []
 
@@ -225,7 +227,8 @@ export class Tokenizer {
 
 
   private shouldCloseContext(context: TokenizerContext): boolean {
-    // If there's no convention associated with this context, we aren't going to try to close it here.
+    // If there's no convention associated with this context, we aren't going to try to close the context
+    // here.
     const { convention } = context
 
     return convention && this.consumer.consume({
@@ -307,11 +310,17 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
+    if (!this.consumer.isFollowingNonWhitespace) {
+      // For a delimiter to close any raised voice conventions, it must look like it's touching the end
+      // of some content. If instead, the delimiter is directly following whitespace (or is the first
+      // character the text), we don't try to close anything with it.
+      return false
+    }
+
     let didCloseAnyRaisedVoices = false
 
     this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
-      onlyIfMatchFollowsNonWhitespace: true,
 
       thenBeforeAdvancingTextIndex: asterisks => {
         didCloseAnyRaisedVoices = this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks)
@@ -444,7 +453,7 @@ export class Tokenizer {
     }
   }
 
-// TODO: Remove
+  // TODO: Remove
   private closeAnyNakedUrlContext(): void {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       if (this.openContexts[i].convention === this.nakedUrlConvention) {
@@ -484,9 +493,16 @@ export class Tokenizer {
     // TODO: Refactor!!
     return this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
-      onlyIfMatchPrecedesNonWhitespace: true,
 
-      thenBeforeAdvancingTextIndex: delimiter => {
+      thenBeforeAdvancingTextIndex: (delimiter, matchPrecedesNonWhitespace) => {
+        if (!matchPrecedesNonWhitespace) {
+          // If the match doesn't precede non-whitespace, then we treat the delimiter as plain text.
+          // We already know the delimiter wasn't able to close any raised voice conventions, and we
+          // we now know if can't open any, either.
+          this.buffer += delimiter
+          return
+        }
+
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
         this.openContexts.push(
@@ -497,11 +513,6 @@ export class Tokenizer {
             },
             snapshot: this.getCurrentSnapshot()
           }))
-      }
-    }) || this.consumer.consume({
-      pattern: RAISED_VOICE_DELIMITER_PATTERN,
-      thenBeforeAdvancingTextIndex: delimiter => {
-        this.buffer += delimiter
       }
     })
   }
@@ -537,7 +548,7 @@ export class Tokenizer {
       && this.consumer.consume({
         pattern: startPattern,
 
-        thenBeforeAdvancingTextIndex: (match, ...captures) => {
+        thenBeforeAdvancingTextIndex: (match, matchPrecedesNonWhitespace, ...captures) => {
           if (flushBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
@@ -545,7 +556,7 @@ export class Tokenizer {
           this.openContexts.push(new TokenizerContext(convention, this.getCurrentSnapshot()))
 
           if (onOpen) {
-            onOpen(match, ...captures)
+            onOpen(match, matchPrecedesNonWhitespace, ...captures)
           }
         }
       })
