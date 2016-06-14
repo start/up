@@ -169,6 +169,32 @@ describe('A naked URL', () => {
       ]))
   })
 
+  it('is closed by 3 or more asterisks closing emphasis', () => {
+    expect(Up.toAst('*I love https://archive.org/fake***!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new EmphasisNode([
+          new PlainTextNode('I love '),
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+
+  it('is closed by 3 or more asterisks closing emphasis', () => {
+    expect(Up.toAst('**I love https://archive.org/fake***!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
+          new PlainTextNode('I love '),
+          new LinkNode([
+            new PlainTextNode('archive.org/fake')
+          ], 'https://archive.org/fake')
+        ]),
+        new PlainTextNode('!')
+      ]))
+  })
+
   it("can contain unescaped asterisks if not inside an emphasis convention", () => {
     expect(Up.toAst('https://example.org/a*normal*url')).to.be.eql(
       insideDocumentAndParagraph([
