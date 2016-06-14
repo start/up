@@ -88,18 +88,23 @@ export class RaisedVoiceContext extends TokenizerContext {
     this.pay(RaisedVoiceContext.STRESS_COST)
   }
 
-  payForEmphasisAndStressTogether(closingDelimiterLength: number): void {
-    // When matching delimiters each have 3 or more characters to spend, their contents become stressed and emphasized,
-    // and they cancel out as many of each other's delimiter characters as possible.
-    //
-    // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
-    //
-    // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be subsequently
-    // matched by other delimiters.
+  // When matching delimiters each have 3 or more characters to spend, their contents become stressed and emphasized,
+  // and they cancel out as many of each other's delimiter characters as possible.
+  //
+  // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
+  //
+  // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be subsequently
+  // matched by other delimiters.
+  //
+  // This method returns the number of characters both delimiters have in common. 
+  payForEmphasisAndStressTogether(closingDelimiterLength: number): number {
+
     const lengthInCommon =
       Math.min(this.unspentOpeningDelimiterLength, closingDelimiterLength)
 
     this.pay(lengthInCommon)
+
+    return lengthInCommon
   }
 
   private canAfford(delimiterLength: number): boolean {

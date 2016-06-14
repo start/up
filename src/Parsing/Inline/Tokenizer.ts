@@ -307,10 +307,6 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
-    if (1) {
-      return false
-    }
-
     return this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       onlyIfMatchFollowsNonWhitespace: true,
@@ -324,7 +320,7 @@ export class Tokenizer {
   }
 
   private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
-    const unspentDelimiterLength = delimiter.length
+    let unspentDelimiterLength = delimiter.length
 
     const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
       this.openContexts
@@ -351,9 +347,11 @@ export class Tokenizer {
         if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
           this.encloseWithin(EMPHASIS_CONVENTION, context)
           context.payForEmphasis()
-          // TODO: REMOVE CONTEXT
+          
+          
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
+          unspentDelimiterLength = 0
           break
         }
       }
@@ -372,11 +370,10 @@ export class Tokenizer {
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
         if (context.canOnlyAffordStress()) {
           this.encloseWithin(STRESS_CONVENTION, context)
-          context.payForEmphasis
-          // TODO: REMOVE CONTEXT
-
-
-          // Considering we could only afford to indicate stress, we have nothing left to do.
+          context.payForStress()      
+          
+          // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
+          unspentDelimiterLength = 0
           break
         }
       }
@@ -394,37 +391,45 @@ export class Tokenizer {
       if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context.canAffordBothEmphasisAndStressTogether()) {
         this.encloseWithin(EMPHASIS_CONVENTION, context)
         this.encloseWithin(STRESS_CONVENTION, context)
-        context.payForEmphasisAndStressTogether(unspentDelimiterLength)
+        
+        unspentDelimiterLength -= context.payForEmphasisAndStressTogether(unspentDelimiterLength)
 
         continue
       }
 
       if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
         this.encloseWithin(STRESS_CONVENTION, context)
+        
         context.payForStress()
+        unspentDelimiterLength -= STRESS_COST
 
         continue
       }
 
       if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
         this.encloseWithin(EMPHASIS_CONVENTION, context)
+        
         context.payForEmphasis()
+        unspentDelimiterLength -= EMPHASIS_COST
 
         continue
       }
     }
 
+    this.removeFullySpentRaisedVoiceContexts()
+    return true
+  }
+
+  // Once a raised voice context has spent all the characters from its start delimieter, we
+  // remove from our list of open contexts. There's nothing left for it to do. 
+  private removeFullySpentRaisedVoiceContexts(): void {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const context = this.openContexts[i]
 
       if ((context instanceof RaisedVoiceContext) && context.isFullySpent()) {
-        // Once a raised voice context has spent all the characters from its start delimieter, we
-        // remove from our list of open contexts. There's nothing left for it to do. 
         this.openContexts.splice(i, 1)
       }
     }
-
-    return true
   }
 
   private encloseWithin(richConvention: RichConvention, context: TokenizerContext): void {

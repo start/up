@@ -381,6 +381,7 @@ var RaisedVoiceContext = (function (_super) {
     RaisedVoiceContext.prototype.payForEmphasisAndStressTogether = function (closingDelimiterLength) {
         var lengthInCommon = Math.min(this.unspentOpeningDelimiterLength, closingDelimiterLength);
         this.pay(lengthInCommon);
+        return lengthInCommon;
     };
     RaisedVoiceContext.prototype.canAfford = function (delimiterLength) {
         return this.unspentOpeningDelimiterLength >= delimiterLength;
@@ -731,9 +732,6 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseAnyRaisedVoices = function () {
         var _this = this;
-        if (1) {
-            return false;
-        }
         return this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
             onlyIfMatchFollowsNonWhitespace: true,
@@ -756,6 +754,7 @@ var Tokenizer = (function () {
                 if (context_2.canOnlyAffordEmphasis() || context_2.canAffordBothEmphasisAndStressTogether()) {
                     this.encloseWithin(RichConventions_1.EMPHASIS_CONVENTION, context_2);
                     context_2.payForEmphasis();
+                    unspentDelimiterLength = 0;
                     break;
                 }
             }
@@ -765,7 +764,8 @@ var Tokenizer = (function () {
                 var context_3 = raisedVoiceContextsFromMostRecentToLeast_2[_a];
                 if (context_3.canOnlyAffordStress()) {
                     this.encloseWithin(RichConventions_1.STRESS_CONVENTION, context_3);
-                    context_3.payForEmphasis;
+                    context_3.payForStress();
+                    unspentDelimiterLength = 0;
                     break;
                 }
             }
@@ -778,27 +778,32 @@ var Tokenizer = (function () {
             if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context_4.canAffordBothEmphasisAndStressTogether()) {
                 this.encloseWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
                 this.encloseWithin(RichConventions_1.STRESS_CONVENTION, context_4);
-                context_4.payForEmphasisAndStressTogether(unspentDelimiterLength);
+                unspentDelimiterLength -= context_4.payForEmphasisAndStressTogether(unspentDelimiterLength);
                 continue;
             }
             if (unspentDelimiterLength >= STRESS_COST && context_4.canAffordStress()) {
                 this.encloseWithin(RichConventions_1.STRESS_CONVENTION, context_4);
                 context_4.payForStress();
+                unspentDelimiterLength -= STRESS_COST;
                 continue;
             }
             if (unspentDelimiterLength >= EMPHASIS_COST && context_4.canAffordEmphasis()) {
                 this.encloseWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
                 context_4.payForEmphasis();
+                unspentDelimiterLength -= EMPHASIS_COST;
                 continue;
             }
         }
+        this.removeFullySpentRaisedVoiceContexts();
+        return true;
+    };
+    Tokenizer.prototype.removeFullySpentRaisedVoiceContexts = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             var context_5 = this.openContexts[i];
             if ((context_5 instanceof RaisedVoiceContext_1.RaisedVoiceContext) && context_5.isFullySpent()) {
                 this.openContexts.splice(i, 1);
             }
         }
-        return true;
     };
     Tokenizer.prototype.encloseWithin = function (richConvention, context) {
         var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
