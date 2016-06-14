@@ -29,8 +29,7 @@ export class RaisedVoiceContext extends TokenizerContext {
 
     this.openingDelimiter = args.delimiter
     this.treatDelimiterAsPlainText = args.treatDelimiterAsPlainText
-
-    this.reset()
+    this.unspentOpeningDelimiterLength = this.openingDelimiter.length
   }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {
@@ -47,7 +46,7 @@ export class RaisedVoiceContext extends TokenizerContext {
     if (this.unspentOpeningDelimiterLength === this.openingDelimiter.length) {
       this.treatDelimiterAsPlainText(this)
     }
-    
+
     return true
   }
 

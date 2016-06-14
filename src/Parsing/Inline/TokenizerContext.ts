@@ -7,8 +7,7 @@ export class TokenizerContext {
   constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {
     this.initialTokenIndex = snapshot.textIndex
     this.snapshot = snapshot
-    
-    this.reset()
+    this.initialTokenIndex = this.snapshot.tokens.length
   }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {

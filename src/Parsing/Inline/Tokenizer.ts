@@ -452,24 +452,20 @@ export class Tokenizer {
   }
 
   private tryToHandleRaisedVoiceDelimiter(): boolean {
-    // TODO: Refactor
+    // TODO: Refactor!!
     return this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       onlyIfMatchPrecedesNonWhitespace: true,
 
       thenBeforeAdvancingTextIndex: delimiter => {
-        const raisedVoiceContext = new RaisedVoiceContext({
-          delimiter,
-          treatDelimiterAsPlainText: context => {
-            this.insertToken({
-              token: new Token({ kind: TokenKind.PlainText, value: delimiter }),
-              context: context
-            })
-          },
-          snapshot: this.getCurrentSnapshot()
-        })
-
-        this.openContexts.push(raisedVoiceContext)
+        this.openContexts.push(
+          new RaisedVoiceContext({
+            delimiter,
+            treatDelimiterAsPlainText: context => {
+              this.insertToken({ token: new Token({ kind: TokenKind.PlainText, value: delimiter }), context })
+            },
+            snapshot: this.getCurrentSnapshot()
+          }))
       }
     }) || this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,

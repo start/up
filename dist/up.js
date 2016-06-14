@@ -335,7 +335,7 @@ var RaisedVoiceContext = (function (_super) {
         _super.call(this, null, args.snapshot);
         this.openingDelimiter = args.delimiter;
         this.treatDelimiterAsPlainText = args.treatDelimiterAsPlainText;
-        this.reset();
+        this.unspentOpeningDelimiterLength = this.openingDelimiter.length;
     }
     RaisedVoiceContext.prototype.doIsteadOfTryingToCloseOuterContexts = function () {
         return false;
@@ -828,17 +828,13 @@ var Tokenizer = (function () {
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
             onlyIfMatchPrecedesNonWhitespace: true,
             thenBeforeAdvancingTextIndex: function (delimiter) {
-                var raisedVoiceContext = new RaisedVoiceContext_1.RaisedVoiceContext({
+                _this.openContexts.push(new RaisedVoiceContext_1.RaisedVoiceContext({
                     delimiter: delimiter,
                     treatDelimiterAsPlainText: function (context) {
-                        _this.insertToken({
-                            token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter }),
-                            context: context
-                        });
+                        _this.insertToken({ token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter }), context: context });
                     },
                     snapshot: _this.getCurrentSnapshot()
-                });
-                _this.openContexts.push(raisedVoiceContext);
+                }));
             }
         }) || this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
@@ -1109,7 +1105,7 @@ var TokenizerContext = (function () {
         this.snapshot = snapshot;
         this.initialTokenIndex = snapshot.textIndex;
         this.snapshot = snapshot;
-        this.reset();
+        this.initialTokenIndex = this.snapshot.tokens.length;
     }
     TokenizerContext.prototype.doIsteadOfTryingToCloseOuterContexts = function () {
         if (this.convention.insteadOfTryingToCloseOuterContexts) {
