@@ -469,7 +469,7 @@ export class Tokenizer {
           snapshot: this.getCurrentSnapshot()
         })
 
-        this.openContexts.push()
+        this.openContexts.push(raisedVoiceContext)
       }
     }) || this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,

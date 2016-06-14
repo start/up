@@ -838,7 +838,7 @@ var Tokenizer = (function () {
                     },
                     snapshot: _this.getCurrentSnapshot()
                 });
-                _this.openContexts.push();
+                _this.openContexts.push(raisedVoiceContext);
             }
         }) || this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
