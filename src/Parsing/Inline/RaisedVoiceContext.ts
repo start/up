@@ -56,7 +56,7 @@ export class RaisedVoiceContext extends TokenizerContext {
   }
 
   isFullySpent(): boolean {
-    return !!this.unspentOpeningDelimiterLength
+    return !this.unspentOpeningDelimiterLength
   }
 
   canAffordEmphasis(): boolean {

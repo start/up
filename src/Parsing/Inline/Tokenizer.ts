@@ -343,9 +343,8 @@ export class Tokenizer {
       // that has 2 asterisks to spend. But this fallback happens later.
 
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
-
         if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
-          this.encloseWithin(EMPHASIS_CONVENTION, context)
+          this.encloseContextWithin(EMPHASIS_CONVENTION, context)
           context.payForEmphasis()
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
@@ -366,8 +365,8 @@ export class Tokenizer {
       // fallback happens later.
 
       for (const context of raisedVoiceContextsFromMostRecentToLeast) {
-        if (context.canOnlyAffordStress()) {
-          this.encloseWithin(STRESS_CONVENTION, context)
+        if (context.canAffordStress()) {
+          this.encloseContextWithin(STRESS_CONVENTION, context)
           context.payForStress()
 
           // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
@@ -387,8 +386,8 @@ export class Tokenizer {
       }
 
       if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context.canAffordBothEmphasisAndStressTogether()) {
-        this.encloseWithin(EMPHASIS_CONVENTION, context)
-        this.encloseWithin(STRESS_CONVENTION, context)
+        this.encloseContextWithin(EMPHASIS_CONVENTION, context)
+        this.encloseContextWithin(STRESS_CONVENTION, context)
 
         unspentDelimiterLength -=
           context.payForEmphasisAndStressTogetherAndGetCost(unspentDelimiterLength)
@@ -397,7 +396,7 @@ export class Tokenizer {
       }
 
       if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
-        this.encloseWithin(STRESS_CONVENTION, context)
+        this.encloseContextWithin(STRESS_CONVENTION, context)
 
         context.payForStress()
         unspentDelimiterLength -= STRESS_COST
@@ -406,7 +405,7 @@ export class Tokenizer {
       }
 
       if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
-        this.encloseWithin(EMPHASIS_CONVENTION, context)
+        this.encloseContextWithin(EMPHASIS_CONVENTION, context)
 
         context.payForEmphasis()
         unspentDelimiterLength -= EMPHASIS_COST
@@ -431,7 +430,9 @@ export class Tokenizer {
     }
   }
 
-  private encloseWithin(richConvention: RichConvention, context: TokenizerContext): void {
+  private encloseContextWithin(richConvention: RichConvention, context: TokenizerContext): void {
+    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+
     const startToken = new Token({ kind: richConvention.startTokenKind })
     const endToken = new Token({ kind: richConvention.endTokenKind })
     startToken.associateWith(endToken)
@@ -458,6 +459,8 @@ export class Tokenizer {
       onlyIfMatchPrecedesNonWhitespace: true,
 
       thenBeforeAdvancingTextIndex: delimiter => {
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+
         this.openContexts.push(
           new RaisedVoiceContext({
             delimiter,
@@ -470,6 +473,7 @@ export class Tokenizer {
     }) || this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: delimiter => {
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
         this.appendNewToken({ kind: TokenKind.PlainText, value: delimiter })
       }
     })
@@ -755,7 +759,7 @@ export class Tokenizer {
       onCloseFlushBufferTo: TokenKind.PlainText,
 
       onClose: (context) => {
-        this.encloseWithin(richConvention, context)
+        this.encloseContextWithin(richConvention, context)
       }
     }
   }
