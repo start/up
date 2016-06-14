@@ -97,7 +97,6 @@ export class RaisedVoiceContext extends TokenizerContext {
   //
   // This method returns the number of characters both delimiters have in common. 
   payForEmphasisAndStressTogetherAndGetCost(closingDelimiterLength: number): number {
-
     const lengthInCommon =
       Math.min(this.unspentOpeningDelimiterLength, closingDelimiterLength)
 

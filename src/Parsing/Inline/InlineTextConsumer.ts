@@ -80,6 +80,6 @@ export class InlineTextConsumer {
     this._currentChar = this._remainingText[0]
 
     const previousChar = this.entireText[this._textIndex - 1] 
-    this.isFollowingNonWhitespace = NON_BLANK_PATTERN.test(previousChar)
+    this.isFollowingNonWhitespace = (previousChar && NON_BLANK_PATTERN.test(previousChar))
   }
 }

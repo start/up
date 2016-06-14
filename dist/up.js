@@ -134,7 +134,7 @@ var InlineTextConsumer = (function () {
         this._remainingText = this.entireText.substr(this._textIndex);
         this._currentChar = this._remainingText[0];
         var previousChar = this.entireText[this._textIndex - 1];
-        this.isFollowingNonWhitespace = Patterns_1.NON_BLANK_PATTERN.test(previousChar);
+        this.isFollowingNonWhitespace = (previousChar && Patterns_1.NON_BLANK_PATTERN.test(previousChar));
     };
     return InlineTextConsumer;
 }());
@@ -732,15 +732,18 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToCloseAnyRaisedVoices = function () {
         var _this = this;
-        return this.consumer.consume({
+        var didCloseAnyRaisedVoices = false;
+        this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
             onlyIfMatchFollowsNonWhitespace: true,
             thenBeforeAdvancingTextIndex: function (asterisks) {
-                if (!_this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks)) {
+                didCloseAnyRaisedVoices = _this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks);
+                if (!didCloseAnyRaisedVoices) {
                     _this.consumer.textIndex -= asterisks.length;
                 }
             }
         });
+        return didCloseAnyRaisedVoices;
     };
     Tokenizer.prototype.spendDelimiterToTryToCloseAnyRaisedVoices = function (delimiter) {
         var unspentDelimiterLength = delimiter.length;
@@ -784,19 +787,19 @@ var Tokenizer = (function () {
             }
             if (unspentDelimiterLength >= STRESS_COST && context_4.canAffordStress()) {
                 this.encloseContextWithin(RichConventions_1.STRESS_CONVENTION, context_4);
-                context_4.payForStress();
                 unspentDelimiterLength -= STRESS_COST;
+                context_4.payForStress();
                 continue;
             }
             if (unspentDelimiterLength >= EMPHASIS_COST && context_4.canAffordEmphasis()) {
                 this.encloseContextWithin(RichConventions_1.EMPHASIS_CONVENTION, context_4);
-                context_4.payForEmphasis();
                 unspentDelimiterLength -= EMPHASIS_COST;
+                context_4.payForEmphasis();
                 continue;
             }
         }
         this.removeFullySpentRaisedVoiceContexts();
-        return true;
+        return unspentDelimiterLength !== delimiter.length;
     };
     Tokenizer.prototype.removeFullySpentRaisedVoiceContexts = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -841,8 +844,7 @@ var Tokenizer = (function () {
         }) || this.consumer.consume({
             pattern: RAISED_VOICE_DELIMITER_PATTERN,
             thenBeforeAdvancingTextIndex: function (delimiter) {
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                _this.appendNewToken({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter });
+                _this.buffer += delimiter;
             }
         });
     };
@@ -1212,6 +1214,8 @@ exports.nestOverlappingConventions = nestOverlappingConventions;
 var FREELY_SPLITTABLE_CONVENTIONS = [
     RichConventions_1.REVISION_DELETION_CONVENTION,
     RichConventions_1.REVISION_INSERTION_CONVENTION,
+    RichConventions_1.STRESS_CONVENTION,
+    RichConventions_1.EMPHASIS_CONVENTION,
     RichConventions_1.PARENTHESIZED_CONVENTION,
     RichConventions_1.SQUARE_BRACKETED_CONVENTION,
 ];

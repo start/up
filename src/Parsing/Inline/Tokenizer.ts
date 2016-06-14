@@ -307,16 +307,22 @@ export class Tokenizer {
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
-    return this.consumer.consume({
+    let didCloseAnyRaisedVoices = false
+
+    this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       onlyIfMatchFollowsNonWhitespace: true,
 
       thenBeforeAdvancingTextIndex: asterisks => {
-        if (!this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks)) {
+        didCloseAnyRaisedVoices = this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks)
+
+        if (!didCloseAnyRaisedVoices) {
           this.consumer.textIndex -= asterisks.length
         }
       }
     })
+
+    return didCloseAnyRaisedVoices
   }
 
   private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
@@ -398,8 +404,8 @@ export class Tokenizer {
       if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
         this.encloseContextWithin(STRESS_CONVENTION, context)
 
-        context.payForStress()
         unspentDelimiterLength -= STRESS_COST
+        context.payForStress()
 
         continue
       }
@@ -407,15 +413,16 @@ export class Tokenizer {
       if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
         this.encloseContextWithin(EMPHASIS_CONVENTION, context)
 
-        context.payForEmphasis()
         unspentDelimiterLength -= EMPHASIS_COST
+        context.payForEmphasis()
 
         continue
       }
     }
 
     this.removeFullySpentRaisedVoiceContexts()
-    return true
+
+    return unspentDelimiterLength !== delimiter.length
   }
 
   // Once a raised voice context has spent all the characters from its start delimieter, we
@@ -473,8 +480,7 @@ export class Tokenizer {
     }) || this.consumer.consume({
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: delimiter => {
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-        this.appendNewToken({ kind: TokenKind.PlainText, value: delimiter })
+        this.buffer += delimiter
       }
     })
   }
@@ -506,6 +512,7 @@ export class Tokenizer {
 
     return (
       this.canTry(convention)
+
       && this.consumer.consume({
         pattern: startPattern,
 
