@@ -436,7 +436,7 @@ export class Tokenizer {
     const endToken = new Token({ kind: richConvention.endTokenKind })
     startToken.associateWith(endToken)
 
-    this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context })
+    this.insertToken({ token: startToken, context })
     this.tokens.push(endToken)
   }
 
@@ -463,7 +463,6 @@ export class Tokenizer {
           treatDelimiterAsPlainText: context => {
             this.insertToken({
               token: new Token({ kind: TokenKind.PlainText, value: delimiter }),
-              atIndex: context.initialTokenIndex,
               context: context
             })
           },
@@ -597,10 +596,15 @@ export class Tokenizer {
   private insertToken(
     args: {
       token: Token
-      atIndex: number
+      atIndex?: number
       context: TokenizerContext
     }): void {
-    const { context, token, atIndex } = args
+    const { context, token } = args
+    let { atIndex } = args
+
+    if (atIndex == null) {
+      atIndex = context.initialTokenIndex
+    }
 
     this.tokens.splice(atIndex, 0, token)
 

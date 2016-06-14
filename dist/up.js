@@ -810,7 +810,7 @@ var Tokenizer = (function () {
         var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
         var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
         startToken.associateWith(endToken);
-        this.insertToken({ token: startToken, atIndex: context.initialTokenIndex, context: context });
+        this.insertToken({ token: startToken, context: context });
         this.tokens.push(endToken);
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
@@ -833,7 +833,6 @@ var Tokenizer = (function () {
                     treatDelimiterAsPlainText: function (context) {
                         _this.insertToken({
                             token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: delimiter }),
-                            atIndex: context.initialTokenIndex,
                             context: context
                         });
                     },
@@ -931,7 +930,11 @@ var Tokenizer = (function () {
         this.appendNewToken({ kind: kind, value: this.flushBuffer() });
     };
     Tokenizer.prototype.insertToken = function (args) {
-        var context = args.context, token = args.token, atIndex = args.atIndex;
+        var context = args.context, token = args.token;
+        var atIndex = args.atIndex;
+        if (atIndex == null) {
+            atIndex = context.initialTokenIndex;
+        }
         this.tokens.splice(atIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
