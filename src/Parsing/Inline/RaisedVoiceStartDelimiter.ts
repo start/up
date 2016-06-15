@@ -11,6 +11,14 @@ export class RaisedVoiceStartDelimiter {
     this.unspentDelimiterLength = delimiter.length
   }
 
+  canAfford(delimiterLength: number): boolean {
+    return this.unspentDelimiterLength >= delimiterLength
+  }
+
+  canOnlyAfford(delimiterLength: number): boolean {
+    return this.unspentDelimiterLength === delimiterLength
+  }
+
   pay(delimiterLength: number): void {
     this.unspentDelimiterLength -= 1
   }
