@@ -3,8 +3,7 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export class RaisedVoiceStartDelimiter {
   initialTokenIndex: number
-
-  private unspentDelimiterLength: number
+  unspentDelimiterLength: number
 
   constructor(private delimiter: string, private snapshot: TokenizerSnapshot) {
     this.initialTokenIndex = this.snapshot.tokens.length
