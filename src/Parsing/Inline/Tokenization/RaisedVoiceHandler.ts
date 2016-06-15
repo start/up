@@ -2,39 +2,30 @@ import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
 import { RichConvention } from '../RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
-import { RaisedVoiceHandlerSnapshot } from './RaisedVoiceHandlerSnapshot'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { escapeForRegex, regExpStartingWith, atLeast } from '../../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 
-const EMPHASIS_COST = 1
-const STRESS_COST = 2
-
-// "Shouting" is when text is emphasized and stressed at the same time, ***like this***.
-//
-// Shouting has some special rules explained in the `tryToCloseAnyRaisedVoices` method.
-const MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST
-
-
 export class RaisedVoiceHandler {
   delimiterPattern: RegExp
 
-  private startDelimiters: RaisedVoiceStartDelimiter[] = []
   private encloseWithin: EncloseWithin
   private insertPlainTextToken: InsertPlainTextToken
 
   constructor(
-    args: {
-      delimiterChar: string,
+    private originalArgs: {
+      delimiterChar: string
       encloseWithin: EncloseWithin
       insertPlainTextTokenAt: InsertPlainTextToken
-    }) {
-    const {delimiterChar, encloseWithin } = args
+    },
+    private startDelimiters: RaisedVoiceStartDelimiter[] = []
+  ) {
+    const {delimiterChar, encloseWithin } = originalArgs
 
     this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(delimiterChar)))
-    this.encloseWithin = args.encloseWithin
-    this.insertPlainTextToken = args.insertPlainTextTokenAt
+    this.encloseWithin = originalArgs.encloseWithin
+    this.insertPlainTextToken = originalArgs.insertPlainTextTokenAt
   }
 
   addStartDelimiter(delimiter: string, tokenIndex: number) {
@@ -163,13 +154,10 @@ export class RaisedVoiceHandler {
     }
   }
 
-  getCurrentSnapshot(): RaisedVoiceHandlerSnapshot {
-    return new RaisedVoiceHandlerSnapshot(this.startDelimiters)
-  }
-
-  reset(snapshot: RaisedVoiceHandlerSnapshot): void {
-    this.startDelimiters =
-      snapshot.startDelimitersFromMostToLeastRecent
+  clone(): RaisedVoiceHandler {
+    return new RaisedVoiceHandler(
+      this.originalArgs,
+      this.startDelimiters.map(delimiter => delimiter.clone()))
   }
 
   private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {
@@ -197,6 +185,11 @@ export class RaisedVoiceHandler {
     }
   }
 }
+
+
+const EMPHASIS_COST = 1
+const STRESS_COST = 2
+const MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST
 
 
 interface EncloseWithin {

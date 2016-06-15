@@ -472,7 +472,7 @@ export class Tokenizer {
       textIndex: this.consumer.textIndex,
       tokens: this.tokens,
       openContexts: this.openContexts.map(context => context.clone()),
-      raisedVoiceHandlerSnapshots: this.raisedVoiceHandlers.map(handler => handler.getCurrentSnapshot()),
+      raisedVoiceHandlers: this.raisedVoiceHandlers.map(handler => handler.clone()),
       buffer: this.buffer
     })
   }
@@ -513,11 +513,8 @@ export class Tokenizer {
     this.tokens = snapshot.tokens
     this.buffer = snapshot.buffer
     this.consumer.textIndex = snapshot.textIndex
-    this.openContexts = snapshot.openContexts 
-
-    for (let i = 0; i < this.raisedVoiceHandlers.length; i++) {
-      this.raisedVoiceHandlers[i].reset(snapshot.raisedVoiceHandlerSnapshots[i])
-    }
+    this.openContexts = snapshot.openContexts
+    this.raisedVoiceHandlers = snapshot.raisedVoiceHandlers
   }
 
   private appendNewToken(args: NewTokenArgs): void {

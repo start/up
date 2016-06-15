@@ -1,5 +1,5 @@
 import { ConventionContext } from './ConventionContext'
-import { RaisedVoiceHandlerSnapshot } from './RaisedVoiceHandlerSnapshot'
+import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 import { Token } from './Token'
 
 
@@ -7,7 +7,7 @@ export class TokenizerSnapshot {
   textIndex: number
   tokens: Token[]
   openContexts: ConventionContext[]
-  raisedVoiceHandlerSnapshots: RaisedVoiceHandlerSnapshot[]
+  raisedVoiceHandlers: RaisedVoiceHandler[]
   buffer: string
 
   constructor(
@@ -15,14 +15,14 @@ export class TokenizerSnapshot {
       textIndex: number
       tokens: Token[]
       openContexts: ConventionContext[]
-      raisedVoiceHandlerSnapshots: RaisedVoiceHandlerSnapshot[]
+      raisedVoiceHandlers: RaisedVoiceHandler[]
       buffer: string
     }
   ) {
     this.textIndex = args.textIndex
     this.tokens = args.tokens.slice()
     this.openContexts = args.openContexts
-    this.raisedVoiceHandlerSnapshots = args.raisedVoiceHandlerSnapshots
+    this.raisedVoiceHandlers = args.raisedVoiceHandlers
     this.buffer = args.buffer
   }
 }
