@@ -9,11 +9,11 @@ import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNod
 
 describe('Emphasized text containing an unmatched openining delimiter requiring backtracking', () => {
   it('is put inside an emphasis node', () => {
-    expect(Up.toAst('Hello, *my ++world*!!')).to.be.eql(
+    expect(Up.toAst('Hello, *my ((world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
-          new PlainTextNode('my ++world')
+          new PlainTextNode('my ((world')
         ]),
         new PlainTextNode('!!')
       ]))
@@ -23,7 +23,7 @@ describe('Emphasized text containing an unmatched openining delimiter requiring 
 
 describe('A convention overlapping emphasis (containing an unmatched openining delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
-    expect(Up.toAst('++Hello, *my++ ~~world*!!')).to.be.eql(
+    expect(Up.toAst('++Hello, *my++ ((world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new PlainTextNode('Hello, '),
@@ -32,7 +32,7 @@ describe('A convention overlapping emphasis (containing an unmatched openining d
           ]),
         ]),
         new EmphasisNode([
-          new PlainTextNode(' ~~world')
+          new PlainTextNode(' ((world')
         ]),
         new PlainTextNode('!!')
       ]))
@@ -42,7 +42,7 @@ describe('A convention overlapping emphasis (containing an unmatched openining d
 
 describe('A convention overlapping double emphasis (with both emphasis conventions enclosing an unmatched openining delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
-    expect(Up.toAst('++Hello, **my++ ~~lovely* world*!!')).to.be.eql(
+    expect(Up.toAst('++Hello, **my++ ((lovely* world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new PlainTextNode('Hello, '),
@@ -54,7 +54,7 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
         ]),
         new EmphasisNode([
           new EmphasisNode([
-            new PlainTextNode(' ~~lovely')
+            new PlainTextNode(' ((lovely')
           ]),
           new PlainTextNode(' world')
         ]),
@@ -66,7 +66,7 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
 
 describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched openining delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
-    expect(Up.toAst('++Hello, **my++ lovely* ~~world*!!')).to.be.eql(
+    expect(Up.toAst('++Hello, **my++ lovely* ((world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new PlainTextNode('Hello, '),
@@ -80,7 +80,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
           new EmphasisNode([
             new PlainTextNode(' lovely')
           ]),
-          new PlainTextNode(' ~~world')
+          new PlainTextNode(' ((world')
         ]),
         new PlainTextNode('!!')
       ]))
@@ -90,7 +90,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
 
 describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched openining delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
-    expect(Up.toAst('++Hello, **my++ lovely* ~~world*!!*')).to.be.eql(
+    expect(Up.toAst('++Hello, **my++ lovely* ((world*!!*')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new PlainTextNode('Hello, '),
@@ -104,7 +104,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
           new EmphasisNode([
             new PlainTextNode(' lovely')
           ]),
-          new PlainTextNode(' ~~world')
+          new PlainTextNode(' ((world')
         ]),
         new PlainTextNode('!!*')
       ]))
