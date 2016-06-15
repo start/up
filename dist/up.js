@@ -444,14 +444,14 @@ var RaisedVoiceStartDelimiter = (function () {
         this.tokenIndex = this.snapshot.tokens.length;
         this.unspentLength = text.length;
     }
-    RaisedVoiceStartDelimiter.prototype.canAfford = function (delimiterLength) {
-        return this.unspentLength >= delimiterLength;
+    RaisedVoiceStartDelimiter.prototype.canAfford = function (cost) {
+        return this.unspentLength >= cost;
     };
-    RaisedVoiceStartDelimiter.prototype.canOnlyAfford = function (delimiterLength) {
-        return this.unspentLength === delimiterLength;
+    RaisedVoiceStartDelimiter.prototype.canOnlyAfford = function (cost) {
+        return this.unspentLength === cost;
     };
-    RaisedVoiceStartDelimiter.prototype.pay = function (delimiterLength) {
-        this.unspentLength -= 1;
+    RaisedVoiceStartDelimiter.prototype.pay = function (cost) {
+        this.unspentLength -= cost;
     };
     RaisedVoiceStartDelimiter.prototype.isUnused = function () {
         return this.unspentLength === this.text.length;
@@ -466,6 +466,7 @@ var RaisedVoiceStartDelimiter = (function () {
     };
     RaisedVoiceStartDelimiter.prototype.reset = function () {
         this.tokenIndex = this.snapshot.tokens.length;
+        this.unspentLength = Text.length;
     };
     return RaisedVoiceStartDelimiter;
 }());

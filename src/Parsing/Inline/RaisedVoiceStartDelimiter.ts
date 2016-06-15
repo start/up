@@ -10,16 +10,16 @@ export class RaisedVoiceStartDelimiter {
     this.unspentLength = text.length
   }
 
-  canAfford(delimiterLength: number): boolean {
-    return this.unspentLength >= delimiterLength
+  canAfford(cost: number): boolean {
+    return this.unspentLength >= cost
   }
 
-  canOnlyAfford(delimiterLength: number): boolean {
-    return this.unspentLength === delimiterLength
+  canOnlyAfford(cost: number): boolean {
+    return this.unspentLength === cost
   }
 
-  pay(delimiterLength: number): void {
-    this.unspentLength -= 1
+  pay(cost: number): void {
+    this.unspentLength -= cost
   }
 
   isUnused(): boolean {
@@ -38,5 +38,6 @@ export class RaisedVoiceStartDelimiter {
 
   reset(): void {
     this.tokenIndex = this.snapshot.tokens.length
+    this.unspentLength = Text.length
   }
 }
