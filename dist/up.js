@@ -397,7 +397,7 @@ var RaisedVoiceHandler = (function () {
             this.applyEmphasis(startDelimiter);
             unspentEndDelimiterLength -= EMPHASIS_COST;
         }
-        return unspentEndDelimiterLength !== endDelimiter.length;
+        return unspentEndDelimiterLength < endDelimiter.length;
     };
     RaisedVoiceHandler.prototype.treatUnusedStartDelimitersAsPlainText = function () {
         for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {

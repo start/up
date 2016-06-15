@@ -61,7 +61,7 @@ export class RaisedVoiceHandler {
         if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
           this.applyEmphasis(startDelimiter)
 
-          // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
+          // Considering this end delimiter could only afford to indicate emphasis, we have nothing left to do.
           return true
         }
       }
@@ -81,7 +81,7 @@ export class RaisedVoiceHandler {
         if (startDelimiter.canAfford(STRESS_COST)) {
           this.applyStress(startDelimiter)
 
-          // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
+          // Considering this end delimiter could only afford to indicate stress, we have nothing left to do.
           return true
         }
       }
@@ -143,7 +143,7 @@ export class RaisedVoiceHandler {
       unspentEndDelimiterLength -= EMPHASIS_COST
     }
 
-    return unspentEndDelimiterLength !== endDelimiter.length
+    return unspentEndDelimiterLength < endDelimiter.length
   }
 
   treatUnusedStartDelimitersAsPlainText(): void {
