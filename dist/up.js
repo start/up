@@ -444,14 +444,11 @@ var RaisedVoiceStartDelimiter_1 = require('./RaisedVoiceStartDelimiter');
 var PatternHelpers_1 = require('../../../PatternHelpers');
 var CollectionHelpers_1 = require('../../../CollectionHelpers');
 var RaisedVoiceHandler = (function () {
-    function RaisedVoiceHandler(originalArgs, startDelimiters) {
+    function RaisedVoiceHandler(args, startDelimiters) {
         if (startDelimiters === void 0) { startDelimiters = []; }
-        this.originalArgs = originalArgs;
+        this.args = args;
         this.startDelimiters = startDelimiters;
-        var delimiterChar = originalArgs.delimiterChar, encloseWithin = originalArgs.encloseWithin;
-        this.delimiterPattern = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.escapeForRegex(delimiterChar)));
-        this.encloseWithin = originalArgs.encloseWithin;
-        this.insertPlainTextToken = originalArgs.insertPlainTextTokenAt;
+        this.delimiterPattern = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.escapeForRegex(args.delimiterChar)));
     }
     RaisedVoiceHandler.prototype.addStartDelimiter = function (delimiter, tokenIndex) {
         this.startDelimiters.push(new RaisedVoiceStartDelimiter_1.RaisedVoiceStartDelimiter(delimiter, tokenIndex));
@@ -512,7 +509,7 @@ var RaisedVoiceHandler = (function () {
         for (var _i = 0, _a = this.startDelimiters; _i < _a.length; _i++) {
             var startDelimiter = _a[_i];
             if (startDelimiter.isUnused()) {
-                this.insertPlainTextToken({
+                this.args.insertPlainTextTokenAt({
                     text: startDelimiter.text,
                     atIndex: startDelimiter.tokenIndex
                 });
@@ -520,7 +517,10 @@ var RaisedVoiceHandler = (function () {
         }
     };
     RaisedVoiceHandler.prototype.clone = function () {
-        return new RaisedVoiceHandler(this.originalArgs, this.startDelimiters.map(function (delimiter) { return delimiter.clone(); }));
+        return new RaisedVoiceHandler(this.args, this.startDelimiters.map(function (delimiter) { return delimiter.clone(); }));
+    };
+    RaisedVoiceHandler.prototype.encloseWithin = function (args) {
+        this.args.encloseWithin(args);
     };
     RaisedVoiceHandler.prototype.applyEmphasis = function (startDelimiter) {
         this.applyConvention(startDelimiter, RichConventions_1.EMPHASIS_CONVENTION, EMPHASIS_COST);

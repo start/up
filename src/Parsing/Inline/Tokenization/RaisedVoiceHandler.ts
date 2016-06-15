@@ -10,22 +10,15 @@ import { remove } from '../../../CollectionHelpers'
 export class RaisedVoiceHandler {
   delimiterPattern: RegExp
 
-  private encloseWithin: EncloseWithin
-  private insertPlainTextToken: InsertPlainTextToken
-
   constructor(
-    private originalArgs: {
+    private args: {
       delimiterChar: string
       encloseWithin: EncloseWithin
       insertPlainTextTokenAt: InsertPlainTextToken
     },
     private startDelimiters: RaisedVoiceStartDelimiter[] = []
   ) {
-    const {delimiterChar, encloseWithin } = originalArgs
-
-    this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(delimiterChar)))
-    this.encloseWithin = originalArgs.encloseWithin
-    this.insertPlainTextToken = originalArgs.insertPlainTextTokenAt
+    this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(args.delimiterChar)))
   }
 
   addStartDelimiter(delimiter: string, tokenIndex: number) {
@@ -91,7 +84,7 @@ export class RaisedVoiceHandler {
 
     let unspentEndDelimiterLength = endDelimiter.length
 
-    // Once this delimiter has matched all of its characters, its work is done, so we terminate the loop.
+    // Once this delimiter has spent all of its characters, it has nothing left to do, so we terminate the loop.
     for (let i = this.startDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
       const startDelimiter = this.startDelimiters[i]
 
@@ -146,7 +139,7 @@ export class RaisedVoiceHandler {
   treatUnusedStartDelimitersAsPlainText(): void {
     for (const startDelimiter of this.startDelimiters) {
       if (startDelimiter.isUnused()) {
-        this.insertPlainTextToken({
+        this.args.insertPlainTextTokenAt({
           text: startDelimiter.text,
           atIndex: startDelimiter.tokenIndex
         })
@@ -156,8 +149,12 @@ export class RaisedVoiceHandler {
 
   clone(): RaisedVoiceHandler {
     return new RaisedVoiceHandler(
-      this.originalArgs,
+      this.args,
       this.startDelimiters.map(delimiter => delimiter.clone()))
+  }
+
+  private encloseWithin(args: EncloseWithinArgs) {
+    this.args.encloseWithin(args)
   }
 
   private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {
