@@ -57,3 +57,17 @@ describe('An asterisk touching the beginning of a word with a matching asterisk 
     )
   })
 })
+
+
+describe('Emphasized text containing an unmatched openining delimiter (that requries backtracking)', () => {
+  it('is put inside an emphasis node', () => {
+    expect(Up.toAst('Hello, *my ++world*!!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, '),
+        new EmphasisNode([
+          new PlainTextNode('my ++world')
+        ]),
+        new PlainTextNode('!!')
+      ]))
+  })
+})
