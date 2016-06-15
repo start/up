@@ -399,9 +399,6 @@ var RaisedVoiceContext = (function (_super) {
     return RaisedVoiceContext;
 }(TokenizerContext_1.TokenizerContext));
 exports.RaisedVoiceContext = RaisedVoiceContext;
-var EMPHASIS_COST = 1;
-var STRESS_COST = 2;
-var STRESS_AND_EMPHASIS_TOGETHER_COST = (RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST);
 
 },{"./TokenizerContext":13}],9:[function(require,module,exports){
 "use strict";

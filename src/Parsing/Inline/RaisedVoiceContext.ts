@@ -117,10 +117,3 @@ export class RaisedVoiceContext extends TokenizerContext {
     this.unspentOpeningDelimiterLength -= delimiterLength
   }
 }
-
-
-const EMPHASIS_COST = 1
-const STRESS_COST = 2
-const STRESS_AND_EMPHASIS_TOGETHER_COST = (
-  RaisedVoiceContext.STRESS_COST + RaisedVoiceContext.EMPHASIS_COST
-)
