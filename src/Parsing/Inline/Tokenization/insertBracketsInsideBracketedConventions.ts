@@ -1,4 +1,4 @@
-import { PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION } from './RichConventions'
+import { PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION } from '../RichConventions'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 

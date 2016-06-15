@@ -1,11 +1,11 @@
-import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from './RichConventions'
-import { RichConvention } from './RichConvention'
+import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
+import { RichConvention } from '../RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 import { RaisedVoiceHandlerSnapshot } from './RaisedVoiceHandlerSnapshot'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
-import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
-import { remove } from '../../CollectionHelpers'
+import { escapeForRegex, regExpStartingWith, atLeast } from '../../../PatternHelpers'
+import { remove } from '../../../CollectionHelpers'
 
 
 const EMPHASIS_COST = 1

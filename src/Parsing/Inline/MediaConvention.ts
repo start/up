@@ -1,4 +1,4 @@
-import { TokenKind } from './TokenKind'
+import { TokenKind } from './Tokenization/TokenKind'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 

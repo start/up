@@ -11,7 +11,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { TokenKind } from './TokenKind'
+import { TokenKind } from './Tokenization/TokenKind'
 
 
 export const EMPHASIS_CONVENTION: RichConvention = {

@@ -1,6 +1,7 @@
 import { TokenKind } from './TokenKind'
 import { NewTokenArgs } from './NewTokenArgs'
 
+
 export class Token {
   public kind: TokenKind
   public value: string

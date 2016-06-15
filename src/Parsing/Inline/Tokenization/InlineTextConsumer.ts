@@ -1,4 +1,4 @@
-import { NON_BLANK_PATTERN } from '../../Patterns'
+import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { OnMatch } from './OnMatch'
 
 
