@@ -9,21 +9,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 
-describe('A link URL starting with a slash', () => {
-  it('has no added prefix by default, because the default "baseForUrlsStartingWithSlash" config setting is blank', () => {
-    const text = '[Chrono Cross](/wiki/Chrono_Chross)'
-
-    expect(Up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
-        ], '/wiki/Chrono_Chross')
-      ])
-    )
-  })
-})
-
-
 describe('An audio URL starting with a slash', () => {
   it('has no added prefix by default, because the default "baseForUrlsStartingWithSlash" config setting is blank', () => {
     const text = '[audio: Chrono Cross ending theme](/wiki/Chrono_Chross.mp3)'

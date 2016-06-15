@@ -9,7 +9,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-describe('Bracketed/parenthesized text, followed immediately by another instance of bracketed/parenthesized text,', () => {
+describe('Bracketed/parenthesized text, immediately followed by another instance of bracketed/parenthesized text,', () => {
   it("produces a link node. The first bracketed text is treated as the link's contents, and the second is treated as the link's URL", () => {
     expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -22,8 +22,67 @@ describe('Bracketed/parenthesized text, followed immediately by another instance
   })
 })
 
+
+describe('Bracketed/parenthesized text, immediately followed by another instance of bracketed/parenthesized text with no URL scheme', () => {
+  it("produces a link node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
+    expect(Up.toAst('I like [this site](stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('Bracketed/parenthesized text, immediately followed by another instance of bracketed/parenthesized text starting with a slash', () => {
+  it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
+    const text = '[Chrono Cross](/wiki/Chrono_Chross)'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], '/wiki/Chrono_Chross')
+      ])
+    )
+  })
+})
+
+
+describe('Bracketed/parenthesized text, immediately followed by another instance of bracketed/parenthesized text starting with a fragment identifier ("#")', () => {
+  it('has no added prefix by default, because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank', () => {
+    const text = '[Chrono Cross](#wiki-Chrono_Chross)'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], '#wiki-Chrono_Chross')
+      ])
+    )
+  })
+})
+
+
+describe('Bracketed/parenthesized text, immediately followed by another instance of bracketed/parenthesized text with a URL scheme other than "http://" or "https://"', () => {
+  it("produces a link node with its URL preserved", () => {
+    expect(Up.toAst('I like [getting email](mailto:daniel@wants.email).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('getting email')
+        ], 'mailto:daniel@wants.email'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
 describe('Bracketed/parenthesized text, followed by whitespace, followed by a bracketed/parenthesized URL starting with "http://" or "https://"', () => {
-  it("produces a link node.", () => {
+  it("produces a link node", () => {
     expect(Up.toAst('I like [this site] (https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -52,7 +111,7 @@ describe('Bracketed/parenthesized text followed by a space followed by more brac
 })
 
 
-describe('Parenthesized, square bracketed, or curly bracketed text followed immediately by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
+describe('Parenthesized, square bracketed, or curly bracketed text immediately followed by a parenthesized, a square bracketed, or a curly bracketed URL', () => {
   it('produces a link node. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL', () => {
     expectEveryCombinationOf({
       firstHalves: [
