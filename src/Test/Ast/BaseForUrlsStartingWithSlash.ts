@@ -61,7 +61,7 @@ describe('A video URL starting with a slash', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross intro', '/wiki/Chrono_Chross.webm')
-        ])
+      ])
     )
   })
 })

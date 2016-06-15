@@ -13,7 +13,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 
-describe('A URL starting with a fragment identifier', () => {
+describe('A URL starting with a fragment identifier ("#")', () => {
   it('has no added prefix by default, because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank', () => {
     const text = '[Chrono Cross](#wiki-Chrono_Chross)'
 
@@ -22,6 +22,45 @@ describe('A URL starting with a fragment identifier', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], '#wiki-Chrono_Chross')
+      ])
+    )
+  })
+})
+
+
+describe('An audio URL starting with a fragment identifier', () => {
+  it('has no added prefix by default, because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank', () => {
+    const text = '[audio: Chrono Cross ending theme](#wiki/Chrono_Chross.mp3)'
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new AudioNode('Chrono Cross ending theme', '#wiki/Chrono_Chross.mp3')
+      ])
+    )
+  })
+})
+
+
+describe('An image URL starting with a fragment identifier', () => {
+  it('has no added prefix by default, because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank', () => {
+    const text = '[image: Chrono Cross title screen](#wiki/Chrono_Chross.png)'
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ImageNode('Chrono Cross title screen', '#wiki/Chrono_Chross.png')
+      ])
+    )
+  })
+})
+
+
+describe('A video URL starting with a fragment identifier', () => {
+  it('has no added prefix by default, because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank', () => {
+    const text = '[video: Chrono Cross intro](#wiki/Chrono_Chross.webm)'
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new VideoNode('Chrono Cross intro', '#wiki/Chrono_Chross.webm')
       ])
     )
   })
