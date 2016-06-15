@@ -372,7 +372,7 @@ export class Tokenizer {
   }
 
   private encloseContextWithin(richConvention: RichConvention, context: ConventionContext): void {
-    this.encloseWithin({ richConvention, startingBackAt: context.initialTokenIndex })
+    this.encloseWithin({ richConvention, startingBackAt: context.startTokenIndex })
   }
 
   private encloseWithin(args: EncloseWithinArgs): void {

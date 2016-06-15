@@ -1,13 +1,14 @@
 import { TokenizableConvention } from './TokenizableConvention'
+import { ConventionContextSnapshot } from './ConventionContextSnapshot'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export class ConventionContext {
-  initialTokenIndex: number
+  startTokenIndex: number
 
   constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {
-    this.initialTokenIndex = snapshot.textIndex
+    this.startTokenIndex = snapshot.textIndex
     this.snapshot = snapshot
-    this.initialTokenIndex = this.snapshot.tokens.length
+    this.startTokenIndex = this.snapshot.tokens.length
   }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {
@@ -44,12 +45,16 @@ export class ConventionContext {
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
-    if (args.atIndex < this.initialTokenIndex) {
-      this.initialTokenIndex += 1
+    if (args.atIndex < this.startTokenIndex) {
+      this.startTokenIndex += 1
     }
   }
 
+  getCurrentSnapshot(): ConventionContextSnapshot {
+    return new ConventionContextSnapshot(this.startTokenIndex)
+  }
+
   reset(): void {
-    this.initialTokenIndex = this.snapshot.tokens.length
+    this.startTokenIndex = this.snapshot.tokens.length
   }
 }
