@@ -16,7 +16,7 @@ const STRESS_AND_EMPHASIS_TOGETHER_COST = EMPHASIS_COST + STRESS_COST
 export class RaisedVoiceHandler {
   delimiterPattern: RegExp
 
-  private startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[] = []
+  private startDelimiters: RaisedVoiceStartDelimiter[] = []
   private encloseWithin: EncloseWithin
   private insertPlainTextToken: InsertPlainTextToken
 
@@ -34,12 +34,12 @@ export class RaisedVoiceHandler {
   }
 
   addStartDelimiter(delimiter: string, tokenIndex: number) {
-    this.startDelimitersFromMostToLeastRecent.unshift(
+    this.startDelimiters.push(
       new RaisedVoiceStartDelimiter(delimiter, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
-    for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
+    for (const startDelimiter of this.startDelimiters) {
       startDelimiter.registerTokenInsertion(args.atIndex)
     }
   }
@@ -57,7 +57,9 @@ export class RaisedVoiceHandler {
       // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
       // that has 2 characters to spend. But this fallback happens later.
 
-      for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
+      for (let i = this.startDelimiters.length - 1; i >= 0; i--) {
+        const startDelimiter = this.startDelimiters[i]
+
         if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
           this.applyEmphasis(startDelimiter)
 
@@ -77,7 +79,9 @@ export class RaisedVoiceHandler {
       // Only if we can't find one, then we'll match with a delimiter that has just 1 character to spend. But this
       // fallback happens later.
 
-      for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
+      for (let i = this.startDelimiters.length - 1; i >= 0; i--) {
+        const startDelimiter = this.startDelimiters[i]
+
         if (startDelimiter.canAfford(STRESS_COST)) {
           this.applyStress(startDelimiter)
 
@@ -92,11 +96,9 @@ export class RaisedVoiceHandler {
 
     let unspentEndDelimiterLength = endDelimiter.length
 
-    for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
-      if (!unspentEndDelimiterLength) {
-        // Once this delimiter has matched all of its characters, its work is done. Let's bail.
-        break
-      }
+    // Once this delimiter has matched all of its characters, its work is done, so we terminate the loop.
+    for (let i = this.startDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
+      const startDelimiter = this.startDelimiters[i]
 
       if (
         unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST
@@ -147,7 +149,7 @@ export class RaisedVoiceHandler {
   }
 
   treatUnusedStartDelimitersAsPlainText(): void {
-    for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
+    for (const startDelimiter of this.startDelimiters) {
       if (startDelimiter.isUnused()) {
         this.insertPlainTextToken({
           text: startDelimiter.text,
@@ -158,11 +160,11 @@ export class RaisedVoiceHandler {
   }
 
   getCurrentSnapshot(): RaisedVoiceHandlerSnapshot {
-    return new RaisedVoiceHandlerSnapshot(this.startDelimitersFromMostToLeastRecent)
+    return new RaisedVoiceHandlerSnapshot(this.startDelimiters)
   }
 
   reset(snapshot: RaisedVoiceHandlerSnapshot): void {
-    this.startDelimitersFromMostToLeastRecent =
+    this.startDelimiters =
       snapshot.startDelimitersFromMostToLeastRecent
   }
 
@@ -187,7 +189,7 @@ export class RaisedVoiceHandler {
     startDelimiter.pay(cost)
 
     if (startDelimiter.isFullySpent()) {
-      remove(this.startDelimitersFromMostToLeastRecent, startDelimiter)
+      remove(this.startDelimiters, startDelimiter)
     }
   }
 }

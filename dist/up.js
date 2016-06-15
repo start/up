@@ -334,25 +334,25 @@ var STRESS_COST = 2;
 var STRESS_AND_EMPHASIS_TOGETHER_COST = EMPHASIS_COST + STRESS_COST;
 var RaisedVoiceHandler = (function () {
     function RaisedVoiceHandler(args) {
-        this.startDelimitersFromMostToLeastRecent = [];
+        this.startDelimiters = [];
         var delimiterChar = args.delimiterChar, encloseWithin = args.encloseWithin;
         this.delimiterPattern = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.escapeForRegex(delimiterChar)));
         this.encloseWithin = args.encloseWithin;
         this.insertPlainTextToken = args.insertPlainTextTokenAt;
     }
     RaisedVoiceHandler.prototype.addStartDelimiter = function (delimiter, tokenIndex) {
-        this.startDelimitersFromMostToLeastRecent.unshift(new RaisedVoiceStartDelimiter_1.RaisedVoiceStartDelimiter(delimiter, tokenIndex));
+        this.startDelimiters.push(new RaisedVoiceStartDelimiter_1.RaisedVoiceStartDelimiter(delimiter, tokenIndex));
     };
     RaisedVoiceHandler.prototype.registerTokenInsertion = function (args) {
-        for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.startDelimiters; _i < _a.length; _i++) {
             var startDelimiter = _a[_i];
             startDelimiter.registerTokenInsertion(args.atIndex);
         }
     };
     RaisedVoiceHandler.prototype.tryToCloseAnyRaisedVoices = function (endDelimiter) {
         if (endDelimiter.length === EMPHASIS_COST) {
-            for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {
-                var startDelimiter = _a[_i];
+            for (var i = this.startDelimiters.length - 1; i >= 0; i--) {
+                var startDelimiter = this.startDelimiters[i];
                 if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
                     this.applyEmphasis(startDelimiter);
                     return true;
@@ -360,8 +360,8 @@ var RaisedVoiceHandler = (function () {
             }
         }
         else if (endDelimiter.length === STRESS_COST) {
-            for (var _b = 0, _c = this.startDelimitersFromMostToLeastRecent; _b < _c.length; _b++) {
-                var startDelimiter = _c[_b];
+            for (var i = this.startDelimiters.length - 1; i >= 0; i--) {
+                var startDelimiter = this.startDelimiters[i];
                 if (startDelimiter.canAfford(STRESS_COST)) {
                     this.applyStress(startDelimiter);
                     return true;
@@ -369,11 +369,8 @@ var RaisedVoiceHandler = (function () {
             }
         }
         var unspentEndDelimiterLength = endDelimiter.length;
-        for (var _d = 0, _e = this.startDelimitersFromMostToLeastRecent; _d < _e.length; _d++) {
-            var startDelimiter = _e[_d];
-            if (!unspentEndDelimiterLength) {
-                break;
-            }
+        for (var i = this.startDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
+            var startDelimiter = this.startDelimiters[i];
             if (unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST
                 && startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
                 this.encloseWithin({
@@ -400,7 +397,7 @@ var RaisedVoiceHandler = (function () {
         return unspentEndDelimiterLength < endDelimiter.length;
     };
     RaisedVoiceHandler.prototype.treatUnusedStartDelimitersAsPlainText = function () {
-        for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.startDelimiters; _i < _a.length; _i++) {
             var startDelimiter = _a[_i];
             if (startDelimiter.isUnused()) {
                 this.insertPlainTextToken({
@@ -411,10 +408,10 @@ var RaisedVoiceHandler = (function () {
         }
     };
     RaisedVoiceHandler.prototype.getCurrentSnapshot = function () {
-        return new RaisedVoiceHandlerSnapshot_1.RaisedVoiceHandlerSnapshot(this.startDelimitersFromMostToLeastRecent);
+        return new RaisedVoiceHandlerSnapshot_1.RaisedVoiceHandlerSnapshot(this.startDelimiters);
     };
     RaisedVoiceHandler.prototype.reset = function (snapshot) {
-        this.startDelimitersFromMostToLeastRecent =
+        this.startDelimiters =
             snapshot.startDelimitersFromMostToLeastRecent;
     };
     RaisedVoiceHandler.prototype.applyEmphasis = function (startDelimiter) {
@@ -433,7 +430,7 @@ var RaisedVoiceHandler = (function () {
     RaisedVoiceHandler.prototype.applyCostThenRemoveFromCollectionIfFullySpent = function (startDelimiter, cost) {
         startDelimiter.pay(cost);
         if (startDelimiter.isFullySpent()) {
-            CollectionHelpers_1.remove(this.startDelimitersFromMostToLeastRecent, startDelimiter);
+            CollectionHelpers_1.remove(this.startDelimiters, startDelimiter);
         }
     };
     return RaisedVoiceHandler;
@@ -443,9 +440,9 @@ exports.RaisedVoiceHandler = RaisedVoiceHandler;
 },{"../../CollectionHelpers":1,"../../PatternHelpers":36,"./RaisedVoiceHandlerSnapshot":9,"./RaisedVoiceStartDelimiter":10,"./RichConventions":11}],9:[function(require,module,exports){
 "use strict";
 var RaisedVoiceHandlerSnapshot = (function () {
-    function RaisedVoiceHandlerSnapshot(startDelimitersFromMostToLeastRecent) {
+    function RaisedVoiceHandlerSnapshot(startDelimiters) {
         this.startDelimitersFromMostToLeastRecent =
-            startDelimitersFromMostToLeastRecent.map(function (delimiter) { return delimiter.clone(); });
+            startDelimiters.map(function (delimiter) { return delimiter.clone(); });
     }
     return RaisedVoiceHandlerSnapshot;
 }());

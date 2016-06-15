@@ -4,8 +4,8 @@ import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 export class RaisedVoiceHandlerSnapshot {
   public startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[]
 
-  constructor(startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[]) {
+  constructor(startDelimiters: RaisedVoiceStartDelimiter[]) {
     this.startDelimitersFromMostToLeastRecent =
-      startDelimitersFromMostToLeastRecent.map(delimiter => delimiter.clone())
+      startDelimiters.map(delimiter => delimiter.clone())
   }
 }
