@@ -4,7 +4,9 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
+import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 
 
 describe('Emphasized text containing an unmatched openining delimiter requiring backtracking', () => {
@@ -107,6 +109,34 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
           new PlainTextNode(' ((world')
         ]),
         new PlainTextNode('!!*')
+      ]))
+  })
+})
+
+
+describe('An unmathced start delimiter (requiring backtracking) followed by overlapped stressed, deleted, and inserted text', () => {
+  it("Is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
+    expect(Up.toAst('{{I **love ~~covertly ++drinking** whole~~ milk++ all the time.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('{{I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new PlainTextNode('covertly '),
+            new RevisionInsertionNode([
+              new PlainTextNode('drinking')
+            ])
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new RevisionInsertionNode([
+            new PlainTextNode(' whole')
+          ])
+        ]),
+        new RevisionInsertionNode([
+          new PlainTextNode(' milk')
+        ]),
+        new PlainTextNode(' all the time.')
       ]))
   })
 })
