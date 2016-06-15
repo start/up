@@ -15,10 +15,10 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 describe('Bracketed text followed by a space followed by a bracketed URL', () => {
   it('does not produce a link node', () => {
-    expect(Up.toAst('[-_-] [o_o]')).to.be.eql(
+    expect(Up.toAst('[^-^] [o_o]')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
-          new PlainTextNode('[-_-]')
+          new PlainTextNode('[^-^]')
         ]),
         new PlainTextNode(' '),
         new SquareBracketedNode([
