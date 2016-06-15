@@ -68,7 +68,7 @@ export class RaisedVoiceHandler {
     } else if (endDelimiter.length === STRESS_COST) {
 
       // If an end delimiter is just 2 characters long, it can indicate stress, but it can't indicate both stress
-      // and emphasis at the saem time.
+      // and emphasis at the same time.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
       // stress. It's okay if that start delimiter can indicate both stress and emphasis at the same time! As long
@@ -136,9 +136,9 @@ export class RaisedVoiceHandler {
         continue
       }
 
-      // We know we have at least 1 end delimiter character  to spend; otherwise, we would have terminated the loop. And we
-      // know that every start delimiter in our collection has at least 1 character to spend; otherwise, it would have been
-      // removed.
+      // We know we have at least 1 end delimiter character to spend; otherwise, we would have terminated the loop. And we
+      // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
+      // would have been removed from `startDelimitersFromMostToLeastRecent`.
       this.applyEmphasis(startDelimiter)
       unspentEndDelimiterLength -= EMPHASIS_COST
     }
