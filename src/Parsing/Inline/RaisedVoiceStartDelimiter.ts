@@ -6,7 +6,8 @@ export class RaisedVoiceStartDelimiter {
   unspentLength: number
 
   constructor(public text: string, private initialTokenIndex: number) {
-    this.reset()
+    this.tokenIndex = this.initialTokenIndex
+    this.unspentLength = this.text.length
   }
 
   canAfford(cost: number): boolean {
@@ -33,10 +34,5 @@ export class RaisedVoiceStartDelimiter {
     if (atIndex < this.tokenIndex) {
       this.tokenIndex += 1
     }
-  }
-
-  reset(): void {
-    this.tokenIndex = this.initialTokenIndex
-    this.unspentLength = this.text.length
   }
 }

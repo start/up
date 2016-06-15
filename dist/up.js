@@ -412,6 +412,11 @@ var RaisedVoiceHandler = (function () {
             }
         }
     };
+    RaisedVoiceHandler.prototype.getCurrentSnapshot = function () {
+        return {
+            startDelimitersFromMostToLeastRecent: this.startDelimitersFromMostToLeastRecent.slice()
+        };
+    };
     RaisedVoiceHandler.prototype.applyEmphasis = function (startDelimiter) {
         this.applyConvention(startDelimiter, RichConventions_1.EMPHASIS_CONVENTION, EMPHASIS_COST);
     };
@@ -441,7 +446,8 @@ var RaisedVoiceStartDelimiter = (function () {
     function RaisedVoiceStartDelimiter(text, initialTokenIndex) {
         this.text = text;
         this.initialTokenIndex = initialTokenIndex;
-        this.reset();
+        this.tokenIndex = this.initialTokenIndex;
+        this.unspentLength = this.text.length;
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (cost) {
         return this.unspentLength >= cost;
@@ -462,10 +468,6 @@ var RaisedVoiceStartDelimiter = (function () {
         if (atIndex < this.tokenIndex) {
             this.tokenIndex += 1;
         }
-    };
-    RaisedVoiceStartDelimiter.prototype.reset = function () {
-        this.tokenIndex = this.initialTokenIndex;
-        this.unspentLength = this.text.length;
     };
     return RaisedVoiceStartDelimiter;
 }());

@@ -2,6 +2,7 @@ import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from './RichConventions'
 import { RichConvention } from './RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
+import { RaisedVoiceHandlerSnapshot } from './RaisedVoiceHandlerSnapshot'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
 import { remove } from '../../CollectionHelpers'
@@ -88,7 +89,7 @@ export class RaisedVoiceHandler {
 
     // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
     // many characters at once as it can.
-    
+
     let unspentEndDelimiterLength = endDelimiter.length
 
     for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
@@ -154,6 +155,12 @@ export class RaisedVoiceHandler {
           atIndex: startDelimiter.tokenIndex
         })
       }
+    }
+  }
+
+  getCurrentSnapshot(): RaisedVoiceHandlerSnapshot {
+    return {
+      startDelimitersFromMostToLeastRecent: this.startDelimitersFromMostToLeastRecent.slice()
     }
   }
 
