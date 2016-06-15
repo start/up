@@ -4,12 +4,6 @@ function last(items) {
     return items[items.length - 1];
 }
 exports.last = last;
-function swap(items, index1, index2) {
-    var firstItem = items[index1];
-    items[index1] = items[index2];
-    items[index2] = firstItem;
-}
-exports.swap = swap;
 function concat(collections) {
     return (_a = []).concat.apply(_a, [[]].concat(collections));
     var _a;
