@@ -1,7 +1,7 @@
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TokenizerContext } from './TokenizerContext'
 import { OnConventionEvent } from './OnConventionEvent'
-import { OnMatch } from './OnMatch'
+import { OnTextMatch } from './OnTextMatch'
 import { TokenKind } from './TokenKind'
 
 
@@ -13,7 +13,7 @@ export interface TokenizableConvention {
   
   flushBufferToPlainTextTokenBeforeOpening?: boolean
   
-  onOpen?: OnMatch
+  onOpen?: OnTextMatch
   
   insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
   insteadOfTryingToOpenUsualConventions?: PerformConventionSpecificTasks

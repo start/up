@@ -1,5 +1,5 @@
 import { NON_BLANK_PATTERN } from '../../../Patterns'
-import { OnMatch } from './OnMatch'
+import { OnTextMatch } from './OnTextMatch'
 
 
 export class InlineTextConsumer {
@@ -44,7 +44,7 @@ export class InlineTextConsumer {
   consume(
     args: {
       pattern: RegExp,
-      thenBeforeAdvancingTextIndex?: OnMatch
+      thenBeforeAdvancingTextIndex?: OnTextMatch
     }
   ): boolean {
     const { pattern, thenBeforeAdvancingTextIndex } = args
