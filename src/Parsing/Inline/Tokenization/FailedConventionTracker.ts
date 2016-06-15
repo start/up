@@ -1,11 +1,11 @@
 import { TokenizableConvention } from './TokenizableConvention'
-import { TokenizerContext } from './TokenizerContext'
+import { ConventionContext } from './ConventionContext'
 
 
 export class FailedConventionTracker {
   private failedConventionsByTextIndex: FailedConventionsByTextIndex = {}
   
-  registerFailure(contextOfFailedConvention: TokenizerContext): void {
+  registerFailure(contextOfFailedConvention: ConventionContext): void {
     const { convention, snapshot } = contextOfFailedConvention
     const { textIndex } = snapshot
     

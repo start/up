@@ -1,7 +1,7 @@
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
-export class TokenizerContext {
+export class ConventionContext {
   initialTokenIndex: number
 
   constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {

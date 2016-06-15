@@ -1,4 +1,4 @@
-import { TokenizerContext } from './TokenizerContext'
+import { ConventionContext } from './ConventionContext'
 import { RaisedVoiceHandlerSnapshot } from './RaisedVoiceHandlerSnapshot'
 import { Token } from './Token'
 
@@ -6,7 +6,7 @@ import { Token } from './Token'
 export class TokenizerSnapshot {
   textIndex: number
   tokens: Token[]
-  openContexts: TokenizerContext[]
+  openContexts: ConventionContext[]
   raisedVoiceHandlerSnapshots: RaisedVoiceHandlerSnapshot[]
   buffer: string
 
@@ -14,7 +14,7 @@ export class TokenizerSnapshot {
     args: {
       textIndex: number
       tokens: Token[]
-      openContexts: TokenizerContext[]
+      openContexts: ConventionContext[]
       raisedVoiceHandlerSnapshots: RaisedVoiceHandlerSnapshot[]
       buffer: string
     }

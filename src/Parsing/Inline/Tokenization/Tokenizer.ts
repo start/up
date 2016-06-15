@@ -12,7 +12,7 @@ import { OnTextMatch } from './OnTextMatch'
 import { last, concat, contains, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
-import { TokenizerContext } from './TokenizerContext'
+import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
@@ -33,7 +33,7 @@ export class Tokenizer {
   private buffer = ''
 
   // Any time we open a new convention, we create a new context for it and add it to this collection.
-  private openContexts: TokenizerContext[] = []
+  private openContexts: ConventionContext[] = []
 
   // When a convention is missing its closing delimiter, we backtrack and add the convention to our
   // `failedConventionTracker`.
@@ -251,7 +251,7 @@ export class Tokenizer {
   }
 
 
-  private shouldCloseContext(context: TokenizerContext): boolean {
+  private shouldCloseContext(context: ConventionContext): boolean {
     const { convention } = context
 
     return this.consumer.consume({
@@ -371,7 +371,7 @@ export class Tokenizer {
     }
   }
 
-  private encloseContextWithin(richConvention: RichConvention, context: TokenizerContext): void {
+  private encloseContextWithin(richConvention: RichConvention, context: ConventionContext): void {
     this.encloseWithin({ richConvention, startingBackAt: context.initialTokenIndex })
   }
 
@@ -457,7 +457,7 @@ export class Tokenizer {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
 
-          this.openContexts.push(new TokenizerContext(convention, this.getCurrentSnapshot()))
+          this.openContexts.push(new ConventionContext(convention, this.getCurrentSnapshot()))
 
           if (onOpen) {
             onOpen(match, matchPrecedesNonWhitespace, ...captures)
@@ -505,7 +505,7 @@ export class Tokenizer {
     )
   }
 
-  private resetToBeforeContext(context: TokenizerContext): void {
+  private resetToBeforeContext(context: ConventionContext): void {
     this.failedConventionTracker.registerFailure(context)
 
     const { snapshot } = context
