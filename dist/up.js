@@ -454,10 +454,11 @@ exports.RaisedVoiceHandlerSnapshot = RaisedVoiceHandlerSnapshot;
 },{}],10:[function(require,module,exports){
 "use strict";
 var RaisedVoiceStartDelimiter = (function () {
-    function RaisedVoiceStartDelimiter(text, tokenIndex) {
+    function RaisedVoiceStartDelimiter(text, tokenIndex, unspentLength) {
+        if (unspentLength === void 0) { unspentLength = text.length; }
         this.text = text;
         this.tokenIndex = tokenIndex;
-        this.unspentLength = this.text.length;
+        this.unspentLength = unspentLength;
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (cost) {
         return this.unspentLength >= cost;
@@ -480,9 +481,7 @@ var RaisedVoiceStartDelimiter = (function () {
         }
     };
     RaisedVoiceStartDelimiter.prototype.clone = function () {
-        var clone = new RaisedVoiceStartDelimiter(this.text, this.tokenIndex);
-        clone.unspentLength = this.unspentLength;
-        return clone;
+        return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex, this.unspentLength);
     };
     return RaisedVoiceStartDelimiter;
 }());

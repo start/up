@@ -1,12 +1,5 @@
-import { TokenizerSnapshot } from './TokenizerSnapshot'
-
-
 export class RaisedVoiceStartDelimiter {
-  unspentLength: number
-
-  constructor(public text: string, public tokenIndex: number) {
-    this.unspentLength = this.text.length
-  }
+  constructor(public text: string, public tokenIndex: number, public unspentLength = text.length) { }
 
   canAfford(cost: number): boolean {
     return this.unspentLength >= cost
@@ -35,9 +28,6 @@ export class RaisedVoiceStartDelimiter {
   }
 
   clone(): RaisedVoiceStartDelimiter {
-    const clone = new RaisedVoiceStartDelimiter(this.text, this.tokenIndex)
-    clone.unspentLength = this.unspentLength
-
-    return clone
+    return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex, this.unspentLength)
   } 
 }
