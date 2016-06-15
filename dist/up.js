@@ -2922,6 +2922,7 @@ var DEFAULT_CONFIG = {
     documentName: 'up',
     defaultUrlScheme: 'https://',
     baseForUrlsStartingWithSlash: '',
+    baseForUrlsStartingWithFragmentIdentifier: '',
     i18n: {
         idWordDelimiter: '-',
         terms: {

@@ -6,6 +6,7 @@ const DEFAULT_CONFIG: UpConfigSettings = {
 
   defaultUrlScheme: 'https://',
   baseForUrlsStartingWithSlash: '',  
+  baseForUrlsStartingWithFragmentIdentifier: '',  
   
   i18n: {
     idWordDelimiter: '-',
