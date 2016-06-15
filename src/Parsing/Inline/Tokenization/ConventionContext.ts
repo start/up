@@ -1,15 +1,11 @@
 import { TokenizableConvention } from './TokenizableConvention'
-import { ConventionContextSnapshot } from './ConventionContextSnapshot'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 export class ConventionContext {
-  startTokenIndex: number
-
-  constructor(public convention: TokenizableConvention, public snapshot: TokenizerSnapshot) {
-    this.startTokenIndex = snapshot.textIndex
-    this.snapshot = snapshot
-    this.startTokenIndex = this.snapshot.tokens.length
-  }
+  constructor(
+    public convention: TokenizableConvention,
+    public snapshot: TokenizerSnapshot,
+    public startTokenIndex = snapshot.tokens.length) { }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {
     if (this.convention.insteadOfTryingToCloseOuterContexts) {
@@ -50,11 +46,7 @@ export class ConventionContext {
     }
   }
 
-  getCurrentSnapshot(): ConventionContextSnapshot {
-    return new ConventionContextSnapshot(this.startTokenIndex)
-  }
-
-  reset(snapshot: ConventionContextSnapshot): void {
-    this.startTokenIndex = snapshot.startTokenIndex
+  clone(): ConventionContext {
+    return new ConventionContext(this.convention, this.snapshot, this.startTokenIndex)
   }
 }
