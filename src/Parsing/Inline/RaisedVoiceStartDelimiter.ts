@@ -2,11 +2,9 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 
 export class RaisedVoiceStartDelimiter {
-  tokenIndex: number
   unspentLength: number
 
-  constructor(public text: string, private initialTokenIndex: number) {
-    this.tokenIndex = this.initialTokenIndex
+  constructor(public text: string, public tokenIndex: number) {
     this.unspentLength = this.text.length
   }
 
@@ -37,6 +35,6 @@ export class RaisedVoiceStartDelimiter {
   }
 
   clone(): RaisedVoiceStartDelimiter {
-    return new RaisedVoiceStartDelimiter(this.text, this.initialTokenIndex)
+    return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex)
   } 
 }

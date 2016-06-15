@@ -454,10 +454,9 @@ exports.RaisedVoiceHandlerSnapshot = RaisedVoiceHandlerSnapshot;
 },{}],10:[function(require,module,exports){
 "use strict";
 var RaisedVoiceStartDelimiter = (function () {
-    function RaisedVoiceStartDelimiter(text, initialTokenIndex) {
+    function RaisedVoiceStartDelimiter(text, tokenIndex) {
         this.text = text;
-        this.initialTokenIndex = initialTokenIndex;
-        this.tokenIndex = this.initialTokenIndex;
+        this.tokenIndex = tokenIndex;
         this.unspentLength = this.text.length;
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (cost) {
@@ -481,7 +480,7 @@ var RaisedVoiceStartDelimiter = (function () {
         }
     };
     RaisedVoiceStartDelimiter.prototype.clone = function () {
-        return new RaisedVoiceStartDelimiter(this.text, this.initialTokenIndex);
+        return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex);
     };
     return RaisedVoiceStartDelimiter;
 }());
