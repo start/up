@@ -121,21 +121,6 @@ describe('A URL starting with a letter; followed by letters, numbers, periods, p
 })
 
 
-describe('A URL starting with a slash', () => {
-  it('does not have a scheme, but is prefixed instead by the base for URLs starting with a slash (which defaults to nothing)', () => {
-    const text = '[Chrono Cross](/chrono-cross:the-game)'
-
-    expect(Up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
-        ], '/chrono-cross:the-game')
-      ])
-    )
-  })
-})
-
-
 describe('A URL not starting with a slash, but with a slash before its first colon', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
     const text = '[Chrono Cross](wiki/chrono-cross:the-game)'

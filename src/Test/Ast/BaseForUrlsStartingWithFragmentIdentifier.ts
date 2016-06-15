@@ -13,15 +13,15 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 
-describe('A URL starting with a slash', () => {
-  it('has no added prefix by default, because the default "baseForUrlsStartingWithSlash" config setting is blank', () => {
-    const text = '[Chrono Cross](/wiki/Chrono_Chross)'
+describe('A URL starting with a fragment identifier', () => {
+  it('has no added prefix by default, because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank', () => {
+    const text = '[Chrono Cross](#wiki-Chrono_Chross)'
 
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], '/wiki/Chrono_Chross')
+        ], '#wiki-Chrono_Chross')
       ])
     )
   })
