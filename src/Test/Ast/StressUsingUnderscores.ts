@@ -62,4 +62,5 @@ describe('Stressed text', () => {
         ]),
         new PlainTextNode('!')
       ]))
-  })})
+  })
+})
