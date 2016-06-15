@@ -83,7 +83,11 @@ export class Tokenizer {
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
 
-  // TODO: Explain
+  // "Raised voices" means emphasis and stress.
+  //
+  // We handle emphasis and stress in a manner incompatible with the rest of our conventions, so we
+  // keep the raised voice logic separate (inside RaisedVoiceHandler). More information can be
+  // found in that class.
   private raisedVoiceHandler = new RaisedVoiceHandler({
       delimiterChar: '*',
 
