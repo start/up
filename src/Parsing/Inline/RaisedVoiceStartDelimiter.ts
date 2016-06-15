@@ -35,4 +35,8 @@ export class RaisedVoiceStartDelimiter {
       this.tokenIndex += 1
     }
   }
+
+  clone(): RaisedVoiceStartDelimiter {
+    return new RaisedVoiceStartDelimiter(this.text, this.initialTokenIndex)
+  } 
 }

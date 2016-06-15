@@ -1,6 +1,11 @@
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 
 
-export interface RaisedVoiceHandlerSnapshot {
-  startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[]
+export class RaisedVoiceHandlerSnapshot {
+  public startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[]
+
+  constructor(startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[]) {
+    this.startDelimitersFromMostToLeastRecent =
+      startDelimitersFromMostToLeastRecent.map(delimiter => delimiter.clone())
+  }
 }

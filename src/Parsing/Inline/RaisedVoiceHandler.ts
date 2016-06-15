@@ -159,9 +159,12 @@ export class RaisedVoiceHandler {
   }
 
   getCurrentSnapshot(): RaisedVoiceHandlerSnapshot {
-    return {
-      startDelimitersFromMostToLeastRecent: this.startDelimitersFromMostToLeastRecent.slice()
-    }
+    return new RaisedVoiceHandlerSnapshot(this.startDelimitersFromMostToLeastRecent)
+  }
+
+  reset(snapshot: RaisedVoiceHandlerSnapshot): void {
+    this.startDelimitersFromMostToLeastRecent =
+      snapshot.startDelimitersFromMostToLeastRecent
   }
 
   private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {

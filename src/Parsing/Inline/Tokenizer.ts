@@ -460,7 +460,8 @@ export class Tokenizer {
       textIndex: this.consumer.textIndex,
       tokens: this.tokens,
       openContexts: this.openContexts,
-      bufferedText: this.buffer
+      raisedVoiceHandlerSnapshot: this.raisedVoiceHandler.getCurrentSnapshot(),
+      buffer: this.buffer
     })
   }
 
@@ -495,14 +496,19 @@ export class Tokenizer {
   private resetToBeforeContext(context: TokenizerContext): void {
     this.failedConventionTracker.registerFailure(context)
 
-    this.tokens = context.snapshot.tokens
-    this.openContexts = context.snapshot.openContexts
-    this.buffer = context.snapshot.bufferedText
-    this.consumer.textIndex = context.snapshot.textIndex
+    const { snapshot } = context
+
+    this.tokens = snapshot.tokens
+    this.openContexts = snapshot.openContexts
+    this.buffer = snapshot.buffer
+    this.consumer.textIndex = snapshot.textIndex
 
     for (const context of this.openContexts) {
+      // TODO: Fix bug
       context.reset()
     }
+
+    this.raisedVoiceHandler.reset(snapshot.raisedVoiceHandlerSnapshot)
   }
 
   private appendNewToken(args: NewTokenArgs): void {
