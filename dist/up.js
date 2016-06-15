@@ -354,11 +354,7 @@ var RaisedVoiceHandler = (function () {
             for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {
                 var startDelimiter = _a[_i];
                 if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
-                    this.encloseWithin({
-                        richConvention: RichConventions_1.EMPHASIS_CONVENTION,
-                        startingBackAt: startDelimiter.tokenIndex
-                    });
-                    this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST);
+                    this.applyEmphasis(startDelimiter);
                     return true;
                 }
             }
@@ -367,11 +363,7 @@ var RaisedVoiceHandler = (function () {
             for (var _b = 0, _c = this.startDelimitersFromMostToLeastRecent; _b < _c.length; _b++) {
                 var startDelimiter = _c[_b];
                 if (startDelimiter.canAfford(STRESS_COST)) {
-                    this.encloseWithin({
-                        richConvention: RichConventions_1.STRESS_CONVENTION,
-                        startingBackAt: startDelimiter.tokenIndex
-                    });
-                    this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST);
+                    this.applyStress(startDelimiter);
                     return true;
                 }
             }
@@ -397,21 +389,13 @@ var RaisedVoiceHandler = (function () {
                 continue;
             }
             if (unspentEndDelimiterLength >= STRESS_COST && startDelimiter.canAfford(STRESS_COST)) {
-                this.encloseWithin({
-                    richConvention: RichConventions_1.STRESS_CONVENTION,
-                    startingBackAt: startDelimiter.tokenIndex
-                });
+                this.applyStress(startDelimiter);
                 unspentEndDelimiterLength -= STRESS_COST;
-                this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST);
                 continue;
             }
             if (unspentEndDelimiterLength >= EMPHASIS_COST && startDelimiter.canAfford(EMPHASIS_COST)) {
-                this.encloseWithin({
-                    richConvention: RichConventions_1.EMPHASIS_CONVENTION,
-                    startingBackAt: startDelimiter.tokenIndex
-                });
+                this.applyEmphasis(startDelimiter);
                 unspentEndDelimiterLength -= EMPHASIS_COST;
-                this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST);
                 continue;
             }
         }
@@ -428,8 +412,21 @@ var RaisedVoiceHandler = (function () {
             }
         }
     };
-    RaisedVoiceHandler.prototype.applyCostThenRemoveFromCollectionIfFullySpent = function (startDelimiter, delimiterLengthToPay) {
-        startDelimiter.pay(delimiterLengthToPay);
+    RaisedVoiceHandler.prototype.applyEmphasis = function (startDelimiter) {
+        this.applyConvention(startDelimiter, RichConventions_1.EMPHASIS_CONVENTION, EMPHASIS_COST);
+    };
+    RaisedVoiceHandler.prototype.applyStress = function (startDelimiter) {
+        this.applyConvention(startDelimiter, RichConventions_1.STRESS_CONVENTION, STRESS_COST);
+    };
+    RaisedVoiceHandler.prototype.applyConvention = function (startDelimiter, richConvention, cost) {
+        this.encloseWithin({
+            richConvention: richConvention,
+            startingBackAt: startDelimiter.tokenIndex
+        });
+        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost);
+    };
+    RaisedVoiceHandler.prototype.applyCostThenRemoveFromCollectionIfFullySpent = function (startDelimiter, cost) {
+        startDelimiter.pay(cost);
         if (startDelimiter.isFullySpent()) {
             CollectionHelpers_1.remove(this.startDelimitersFromMostToLeastRecent, startDelimiter);
         }

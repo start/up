@@ -1,4 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from './RichConventions'
+import { RichConvention } from './RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TokenizerContext } from './TokenizerContext'
@@ -64,12 +65,7 @@ export class RaisedVoiceHandler {
 
       for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
         if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
-          this.encloseWithin({
-            richConvention: EMPHASIS_CONVENTION,
-            startingBackAt: startDelimiter.tokenIndex
-          })
-
-          this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST)
+          this.applyEmphasis(startDelimiter)
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
           return true
@@ -89,12 +85,7 @@ export class RaisedVoiceHandler {
 
       for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
         if (startDelimiter.canAfford(STRESS_COST)) {
-          this.encloseWithin({
-            richConvention: STRESS_CONVENTION,
-            startingBackAt: startDelimiter.tokenIndex
-          })
-
-          this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
+          this.applyStress(startDelimiter)
 
           // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
           return true
@@ -143,25 +134,15 @@ export class RaisedVoiceHandler {
       }
 
       if (unspentEndDelimiterLength >= STRESS_COST && startDelimiter.canAfford(STRESS_COST)) {
-        this.encloseWithin({
-          richConvention: STRESS_CONVENTION,
-          startingBackAt: startDelimiter.tokenIndex
-        })
-
+        this.applyStress(startDelimiter)
         unspentEndDelimiterLength -= STRESS_COST
-        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
 
         continue
       }
 
       if (unspentEndDelimiterLength >= EMPHASIS_COST && startDelimiter.canAfford(EMPHASIS_COST)) {
-        this.encloseWithin({
-          richConvention: EMPHASIS_CONVENTION,
-          startingBackAt: startDelimiter.tokenIndex
-        })
-
+        this.applyEmphasis(startDelimiter)
         unspentEndDelimiterLength -= EMPHASIS_COST
-        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST)
 
         continue
       }
@@ -181,8 +162,25 @@ export class RaisedVoiceHandler {
     }
   }
 
-  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: RaisedVoiceStartDelimiter, delimiterLengthToPay: number): void {
-    startDelimiter.pay(delimiterLengthToPay)
+  private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {
+    this.applyConvention(startDelimiter, EMPHASIS_CONVENTION, EMPHASIS_COST)
+  }
+
+  private applyStress(startDelimiter: RaisedVoiceStartDelimiter): void {
+    this.applyConvention(startDelimiter, STRESS_CONVENTION, STRESS_COST)
+  }
+
+  private applyConvention(startDelimiter: RaisedVoiceStartDelimiter, richConvention: RichConvention, cost: number): void {
+    this.encloseWithin({
+      richConvention,
+      startingBackAt: startDelimiter.tokenIndex
+    })
+
+    this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
+  }
+
+  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: RaisedVoiceStartDelimiter, cost: number): void {
+    startDelimiter.pay(cost)
 
     if (startDelimiter.isFullySpent()) {
       remove(this.startDelimitersFromMostToLeastRecent, startDelimiter)
