@@ -572,8 +572,12 @@ export class Tokenizer {
       return url
     }
 
-    if (url[0] === '/') {
-      return this.config.settings.baseForUrlsStartingWithSlash + url
+    switch (url[0]) {
+      case '/':
+        return this.config.settings.baseForUrlsStartingWithSlash + url
+
+      case '#':
+        return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url
     }
 
     if (!URL_SCHEME_PATTERN.test(url)) {

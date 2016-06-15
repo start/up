@@ -1003,8 +1003,11 @@ var Tokenizer = (function () {
         if (!url) {
             return url;
         }
-        if (url[0] === '/') {
-            return this.config.settings.baseForUrlsStartingWithSlash + url;
+        switch (url[0]) {
+            case '/':
+                return this.config.settings.baseForUrlsStartingWithSlash + url;
+            case '#':
+                return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url;
         }
         if (!URL_SCHEME_PATTERN.test(url)) {
             return this.config.settings.defaultUrlScheme + url;
