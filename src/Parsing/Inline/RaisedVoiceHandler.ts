@@ -27,7 +27,19 @@ export class RaisedVoiceHandler {
     this.encloseWithin = args.encloseWithin
   }
 
+  addStartDelimiter(delimiter: string, snapshot: TokenizerSnapshot) {
+    this.startDelimiters.push(new RaisedVoiceStartDelimiter(delimiter, snapshot))
+  }
 
+  registerTokenInsertion(args: { atIndex: number }) {
+    for (const startDelimiter of this.startDelimiters) {
+    startDelimiter.registerTokenInsertion( args.atIndex)
+    }
+  }
+
+  tryToCloseAnyRaisedVoices(): boolean {
+    return true
+  }
 }
 
 
