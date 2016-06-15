@@ -86,3 +86,27 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
       ]))
   })
 })
+
+
+describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched openining delimiter requiring backtracking) followed by an extra closing asterisk', () => {
+  it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
+    expect(Up.toAst('++Hello, **my++ lovely* ~~world*!!*')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new PlainTextNode('Hello, '),
+          new EmphasisNode([
+            new EmphasisNode([
+              new PlainTextNode('my')
+            ])
+          ]),
+        ]),
+        new EmphasisNode([
+          new EmphasisNode([
+            new PlainTextNode(' lovely')
+          ]),
+          new PlainTextNode(' ~~world')
+        ]),
+        new PlainTextNode('!!*')
+      ]))
+  })
+})
