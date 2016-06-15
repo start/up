@@ -6,7 +6,7 @@ import { OnConventionEvent } from './OnConventionEvent'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
-
+import { remove } from '../../CollectionHelpers'
 
 
 const EMPHASIS_COST = 1
@@ -40,18 +40,17 @@ export class RaisedVoiceHandler {
   tryToCloseAnyRaisedVoices(endDelimiter: string): boolean {
     let unspentEndDelimiterLength = endDelimiter.length
 
-
     if (unspentEndDelimiterLength === EMPHASIS_COST) {
 
-      // If an end marker has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
+      // If an end delimiter has only 1 character available to spend, it can only indicate (i.e. afford) emphasis.
       //
-      // For these end markers, we want to prioritize matching with the nearest start marker that either:
+      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
       //
-      // 1. Can also only indicate emphasis (1 asterisk to spend)
-      // 2. Can indicate both emphasis and stress together (3+ asterisks to spend)
+      // 1. Can also only indicate emphasis (1 character to spend)
+      // 2. Can indicate both emphasis and stress together (3+ characters to spend)
       //
-      // If we can't find any start markers that satisfy the above criteria, then we'll settle for a start marker
-      // that has 2 asterisks to spend. But this fallback happens later.
+      // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
+      // that has 2 characters to spend. But this fallback happens later.
 
       for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
         if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
@@ -60,9 +59,8 @@ export class RaisedVoiceHandler {
             startingBackAt: startDelimiter.initialTokenIndex
           })
 
-
-          startDelimiter.pay(EMPHASIS_COST)
           unspentEndDelimiterLength = 0
+          this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST)
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
           return true
@@ -70,14 +68,14 @@ export class RaisedVoiceHandler {
       }
     } else if (unspentEndDelimiterLength === STRESS_COST) {
 
-      // If an end marker has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
+      // If an end delimiter has only 2 characters to spend, it can indicate stress, but it can't indicate both stress
       // and emphasis at the saem time.
       //
-      // For these end markers, we want to prioritize matching with the nearest start marker that can indicate
-      // stress. It's okay if that start marker can indicate both stress and emphasis at the same time! As long
+      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
+      // stress. It's okay if that start delimiter can indicate both stress and emphasis at the same time! As long
       // as it can indicate stress, we're good. 
       //
-      // Only if we can't find one, then we'll match with a marker that has just 1 asterisk to spend. But this
+      // Only if we can't find one, then we'll match with a delimiter that has just 1 character to spend. But this
       // fallback happens later.
 
       for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
@@ -87,9 +85,8 @@ export class RaisedVoiceHandler {
             startingBackAt: startDelimiter.initialTokenIndex
           })
 
-
-          startDelimiter.pay(STRESS_COST)
           unspentEndDelimiterLength = 0
+          this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
 
           // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
           return true
@@ -97,25 +94,26 @@ export class RaisedVoiceHandler {
       }
     }
 
-    // From here on out, if this end marker can match with a start marker, it will. It'll try to match as
-    // many asterisks at once as it can.
+    // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
+    // many characters at once as it can.
 
     for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
       if (!unspentEndDelimiterLength) {
-        // Once this marker has matched all of its asterisks, its work is done. Let's bail.
+        // Once this delimiter has matched all of its characters, its work is done. Let's bail.
         return true
       }
 
-      if ((unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
+      if (
+        unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST
+        && startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)
+      ) {
         // When matching delimiters each have 3 or more characters to spend, their contents become stressed and emphasized,
         // and they cancel out as many of each other's delimiter characters as possible.
         //
-        // Therefore, surrounding text with 3 asterisks has the same effect as surrounding text with 10.
+        // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10.
         //
         // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be subsequently
         // matched by other delimiters.
-        //
-        // This method returns the number of characters both delimiters have in common.
 
         this.encloseWithin({
           richConvention: EMPHASIS_CONVENTION,
@@ -130,8 +128,8 @@ export class RaisedVoiceHandler {
         const lengthInCommon =
           Math.min(startDelimiter.unspentDelimiterLength, unspentEndDelimiterLength)
 
-        startDelimiter.pay(lengthInCommon)
         unspentEndDelimiterLength -= lengthInCommon
+        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, lengthInCommon)
 
         continue
       }
@@ -143,7 +141,7 @@ export class RaisedVoiceHandler {
         })
 
         unspentEndDelimiterLength -= STRESS_COST
-        startDelimiter.pay(STRESS_COST)
+        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
 
         continue
       }
@@ -155,13 +153,21 @@ export class RaisedVoiceHandler {
         })
 
         unspentEndDelimiterLength -= EMPHASIS_COST
-        startDelimiter.pay(STRESS_COST)
+        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
 
         continue
       }
     }
 
     return unspentEndDelimiterLength !== endDelimiter.length
+  }
+
+  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: RaisedVoiceStartDelimiter, delimiterLengthToPay: number): void {
+    startDelimiter.pay(delimiterLengthToPay)
+
+    if (startDelimiter.isFullySpent()) {
+      remove(this.startDelimitersFromMostToLeastRecent, startDelimiter)
+    }
   }
 }
 
