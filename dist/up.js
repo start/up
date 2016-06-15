@@ -441,8 +441,7 @@ var RaisedVoiceStartDelimiter = (function () {
     function RaisedVoiceStartDelimiter(text, snapshot) {
         this.text = text;
         this.snapshot = snapshot;
-        this.tokenIndex = this.snapshot.tokens.length;
-        this.unspentLength = text.length;
+        this.reset();
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (cost) {
         return this.unspentLength >= cost;
@@ -466,7 +465,7 @@ var RaisedVoiceStartDelimiter = (function () {
     };
     RaisedVoiceStartDelimiter.prototype.reset = function () {
         this.tokenIndex = this.snapshot.tokens.length;
-        this.unspentLength = Text.length;
+        this.unspentLength = this.text.length;
     };
     return RaisedVoiceStartDelimiter;
 }());
