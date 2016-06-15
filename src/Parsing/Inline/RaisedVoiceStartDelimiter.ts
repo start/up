@@ -5,9 +5,9 @@ export class RaisedVoiceStartDelimiter {
   tokenIndex: number
   unspentDelimiterLength: number
 
-  constructor(public delimiter: string, private snapshot: TokenizerSnapshot) {
+  constructor(public text: string, private snapshot: TokenizerSnapshot) {
     this.tokenIndex = this.snapshot.tokens.length
-    this.unspentDelimiterLength = delimiter.length
+    this.unspentDelimiterLength = text.length
   }
 
   canAfford(delimiterLength: number): boolean {
@@ -23,7 +23,7 @@ export class RaisedVoiceStartDelimiter {
   }
 
   isUnused(): boolean {
-    return this.unspentDelimiterLength === this.delimiter.length
+    return this.unspentDelimiterLength === this.text.length
   }
 
   isFullySpent(): boolean {

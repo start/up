@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from './RichConventions'
-import { escapeForRegex, regExpStartingWith, all, either, optional, atLeast, exactly } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, all, either, optional, exactly } from '../../PatternHelpers'
 import { ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
@@ -340,7 +340,7 @@ export class Tokenizer {
     let didCloseAnyRaisedVoices = false
 
     this.consumer.consume({
-      pattern: RAISED_VOICE_DELIMITER_PATTERN,
+      pattern: this.raisedVoiceHandler.delimiterPattern,
 
       thenBeforeAdvancingTextIndex: asterisks => {
         didCloseAnyRaisedVoices = this.raisedVoiceHandler.tryToCloseAnyRaisedVoices(asterisks)
@@ -399,7 +399,7 @@ export class Tokenizer {
   private tryToHandleRaisedVoiceDelimiter(): boolean {
     // TODO: Refactor!!
     return this.consumer.consume({
-      pattern: RAISED_VOICE_DELIMITER_PATTERN,
+      pattern: this.raisedVoiceHandler.delimiterPattern,
 
       thenBeforeAdvancingTextIndex: (delimiter, matchPrecedesNonWhitespace) => {
         if (!matchPrecedesNonWhitespace) {
@@ -540,6 +540,8 @@ export class Tokenizer {
     for (const openContext of this.openContexts) {
       openContext.registerTokenInsertion({ atIndex })
     }
+
+    this.raisedVoiceHandler.registerTokenInsertion({ atIndex })
   }
 
   private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
@@ -758,9 +760,6 @@ const BRACKETS = [
 
 const INLINE_CODE_DELIMITER_PATTERN =
   regExpStartingWith('`')
-
-const RAISED_VOICE_DELIMITER_PATTERN =
-  regExpStartingWith(atLeast(1, escapeForRegex('*')))
 
 const NAKED_URL_SCHEME_PATTERN =
   regExpStartingWith('http' + optional('s') + '://')

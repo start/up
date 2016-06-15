@@ -358,7 +358,6 @@ var RaisedVoiceHandler = (function () {
                         richConvention: RichConventions_1.EMPHASIS_CONVENTION,
                         startingBackAt: startDelimiter.tokenIndex
                     });
-                    unspentEndDelimiterLength = 0;
                     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST);
                     return true;
                 }
@@ -372,7 +371,6 @@ var RaisedVoiceHandler = (function () {
                         richConvention: RichConventions_1.STRESS_CONVENTION,
                         startingBackAt: startDelimiter.tokenIndex
                     });
-                    unspentEndDelimiterLength = 0;
                     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST);
                     return true;
                 }
@@ -424,7 +422,7 @@ var RaisedVoiceHandler = (function () {
             var startDelimiter = _a[_i];
             if (startDelimiter.isUnused()) {
                 this.insertPlainTextToken({
-                    text: startDelimiter.delimiter,
+                    text: startDelimiter.text,
                     atIndex: startDelimiter.tokenIndex
                 });
             }
@@ -443,11 +441,11 @@ exports.RaisedVoiceHandler = RaisedVoiceHandler;
 },{"../../CollectionHelpers":1,"../../PatternHelpers":35,"./RaisedVoiceStartDelimiter":9,"./RichConventions":10}],9:[function(require,module,exports){
 "use strict";
 var RaisedVoiceStartDelimiter = (function () {
-    function RaisedVoiceStartDelimiter(delimiter, snapshot) {
-        this.delimiter = delimiter;
+    function RaisedVoiceStartDelimiter(text, snapshot) {
+        this.text = text;
         this.snapshot = snapshot;
         this.tokenIndex = this.snapshot.tokens.length;
-        this.unspentDelimiterLength = delimiter.length;
+        this.unspentDelimiterLength = text.length;
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (delimiterLength) {
         return this.unspentDelimiterLength >= delimiterLength;
@@ -459,7 +457,7 @@ var RaisedVoiceStartDelimiter = (function () {
         this.unspentDelimiterLength -= 1;
     };
     RaisedVoiceStartDelimiter.prototype.isUnused = function () {
-        return this.unspentDelimiterLength === this.delimiter.length;
+        return this.unspentDelimiterLength === this.text.length;
     };
     RaisedVoiceStartDelimiter.prototype.isFullySpent = function () {
         return this.unspentDelimiterLength <= 0;
@@ -825,7 +823,7 @@ var Tokenizer = (function () {
         }
         var didCloseAnyRaisedVoices = false;
         this.consumer.consume({
-            pattern: RAISED_VOICE_DELIMITER_PATTERN,
+            pattern: this.raisedVoiceHandler.delimiterPattern,
             thenBeforeAdvancingTextIndex: function (asterisks) {
                 didCloseAnyRaisedVoices = _this.raisedVoiceHandler.tryToCloseAnyRaisedVoices(asterisks);
                 if (!didCloseAnyRaisedVoices) {
@@ -867,7 +865,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToHandleRaisedVoiceDelimiter = function () {
         var _this = this;
         return this.consumer.consume({
-            pattern: RAISED_VOICE_DELIMITER_PATTERN,
+            pattern: this.raisedVoiceHandler.delimiterPattern,
             thenBeforeAdvancingTextIndex: function (delimiter, matchPrecedesNonWhitespace) {
                 if (!matchPrecedesNonWhitespace) {
                     _this.buffer += delimiter;
@@ -968,6 +966,7 @@ var Tokenizer = (function () {
             var openContext = _a[_i];
             openContext.registerTokenInsertion({ atIndex: atIndex });
         }
+        this.raisedVoiceHandler.registerTokenInsertion({ atIndex: atIndex });
     };
     Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
         if (this.buffer) {
@@ -1124,7 +1123,6 @@ var BRACKETS = [
     CURLY_BRACKET
 ];
 var INLINE_CODE_DELIMITER_PATTERN = PatternHelpers_1.regExpStartingWith('`');
-var RAISED_VOICE_DELIMITER_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.escapeForRegex('*')));
 var NAKED_URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.'))) + ':');
 var NAKED_URL_TERMINATOR_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR);

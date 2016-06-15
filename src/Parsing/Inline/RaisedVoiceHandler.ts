@@ -69,7 +69,6 @@ export class RaisedVoiceHandler {
             startingBackAt: startDelimiter.tokenIndex
           })
 
-          unspentEndDelimiterLength = 0
           this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST)
 
           // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
@@ -95,7 +94,6 @@ export class RaisedVoiceHandler {
             startingBackAt: startDelimiter.tokenIndex
           })
 
-          unspentEndDelimiterLength = 0
           this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
 
           // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
@@ -176,7 +174,7 @@ export class RaisedVoiceHandler {
     for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
       if (startDelimiter.isUnused()) {
         this.insertPlainTextToken({
-          text: startDelimiter.delimiter,
+          text: startDelimiter.text,
           atIndex: startDelimiter.tokenIndex
         })
       }
