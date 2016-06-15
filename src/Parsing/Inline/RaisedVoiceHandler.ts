@@ -161,7 +161,7 @@ export class RaisedVoiceHandler {
         })
 
         unspentEndDelimiterLength -= EMPHASIS_COST
-        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST)
+        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST)
 
         continue
       }

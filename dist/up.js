@@ -411,7 +411,7 @@ var RaisedVoiceHandler = (function () {
                     startingBackAt: startDelimiter.tokenIndex
                 });
                 unspentEndDelimiterLength -= EMPHASIS_COST;
-                this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, STRESS_COST);
+                this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, EMPHASIS_COST);
                 continue;
             }
         }
@@ -767,7 +767,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.shouldCloseContext = function (context) {
         var _this = this;
         var convention = context.convention;
-        return convention && this.consumer.consume({
+        return this.consumer.consume({
             pattern: convention.endPattern,
             thenBeforeAdvancingTextIndex: function (match) {
                 if (convention.leaveEndPatternForAnotherConventionToConsume) {

@@ -247,11 +247,9 @@ export class Tokenizer {
 
 
   private shouldCloseContext(context: TokenizerContext): boolean {
-    // If there's no convention associated with this context, we aren't going to try to close the context
-    // here.
     const { convention } = context
 
-    return convention && this.consumer.consume({
+    return this.consumer.consume({
       pattern: convention.endPattern,
       thenBeforeAdvancingTextIndex: match => {
         if (convention.leaveEndPatternForAnotherConventionToConsume) {
@@ -397,7 +395,6 @@ export class Tokenizer {
   }
 
   private tryToHandleRaisedVoiceDelimiter(): boolean {
-    // TODO: Refactor!!
     return this.consumer.consume({
       pattern: this.raisedVoiceHandler.delimiterPattern,
 
