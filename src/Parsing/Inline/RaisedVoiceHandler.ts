@@ -18,13 +18,23 @@ export class RaisedVoiceHandler {
   delimiterPattern: RegExp
 
   private startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[] = []
-  private encloseWithin: EncloseWithin
 
-  constructor(args: { delimiterChar: string, encloseWithin: EncloseWithin }) {
+  // TODO: Improve interfaces
+  private encloseWithin: EncloseWithin
+  private insertPlainTextToken: InsertPlainTextToken
+
+
+  constructor(
+    args: {
+      delimiterChar: string,
+      encloseWithin: EncloseWithin
+      insertPlainTextTokenAt: InsertPlainTextToken
+    }) {
     const {delimiterChar, encloseWithin } = args
 
     this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(delimiterChar)))
     this.encloseWithin = args.encloseWithin
+    this.insertPlainTextToken = args.insertPlainTextTokenAt
   }
 
   addStartDelimiter(delimiter: string, snapshot: TokenizerSnapshot) {
@@ -56,7 +66,7 @@ export class RaisedVoiceHandler {
         if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
           this.encloseWithin({
             richConvention: EMPHASIS_CONVENTION,
-            startingBackAt: startDelimiter.initialTokenIndex
+            startingBackAt: startDelimiter.tokenIndex
           })
 
           unspentEndDelimiterLength = 0
@@ -82,7 +92,7 @@ export class RaisedVoiceHandler {
         if (startDelimiter.canAfford(STRESS_COST)) {
           this.encloseWithin({
             richConvention: STRESS_CONVENTION,
-            startingBackAt: startDelimiter.initialTokenIndex
+            startingBackAt: startDelimiter.tokenIndex
           })
 
           unspentEndDelimiterLength = 0
@@ -117,12 +127,12 @@ export class RaisedVoiceHandler {
 
         this.encloseWithin({
           richConvention: EMPHASIS_CONVENTION,
-          startingBackAt: startDelimiter.initialTokenIndex
+          startingBackAt: startDelimiter.tokenIndex
         })
 
         this.encloseWithin({
           richConvention: STRESS_CONVENTION,
-          startingBackAt: startDelimiter.initialTokenIndex
+          startingBackAt: startDelimiter.tokenIndex
         })
 
         const lengthInCommon =
@@ -137,7 +147,7 @@ export class RaisedVoiceHandler {
       if (unspentEndDelimiterLength >= STRESS_COST && startDelimiter.canAfford(STRESS_COST)) {
         this.encloseWithin({
           richConvention: STRESS_CONVENTION,
-          startingBackAt: startDelimiter.initialTokenIndex
+          startingBackAt: startDelimiter.tokenIndex
         })
 
         unspentEndDelimiterLength -= STRESS_COST
@@ -149,7 +159,7 @@ export class RaisedVoiceHandler {
       if (unspentEndDelimiterLength >= EMPHASIS_COST && startDelimiter.canAfford(EMPHASIS_COST)) {
         this.encloseWithin({
           richConvention: EMPHASIS_CONVENTION,
-          startingBackAt: startDelimiter.initialTokenIndex
+          startingBackAt: startDelimiter.tokenIndex
         })
 
         unspentEndDelimiterLength -= EMPHASIS_COST
@@ -160,6 +170,17 @@ export class RaisedVoiceHandler {
     }
 
     return unspentEndDelimiterLength !== endDelimiter.length
+  }
+
+  treatUnusedStartDelimitersAsPlainText(): void {
+    for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
+      if (startDelimiter.isUnused()) {
+        this.insertPlainTextToken({
+          text: startDelimiter.delimiter,
+          atIndex: startDelimiter.tokenIndex
+        })
+      }
+    }
   }
 
   private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: RaisedVoiceStartDelimiter, delimiterLengthToPay: number): void {
@@ -174,4 +195,8 @@ export class RaisedVoiceHandler {
 
 interface EncloseWithin {
   (args: EncloseWithinArgs): void
+}
+
+interface InsertPlainTextToken {
+  (args: { text: string, atIndex: number }): void
 }

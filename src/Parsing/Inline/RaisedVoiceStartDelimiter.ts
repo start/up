@@ -2,11 +2,11 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 
 export class RaisedVoiceStartDelimiter {
-  initialTokenIndex: number
+  tokenIndex: number
   unspentDelimiterLength: number
 
-  constructor(private delimiter: string, private snapshot: TokenizerSnapshot) {
-    this.initialTokenIndex = this.snapshot.tokens.length
+  constructor(public delimiter: string, private snapshot: TokenizerSnapshot) {
+    this.tokenIndex = this.snapshot.tokens.length
     this.unspentDelimiterLength = delimiter.length
   }
 
@@ -22,17 +22,21 @@ export class RaisedVoiceStartDelimiter {
     this.unspentDelimiterLength -= 1
   }
 
+  isUnused(): boolean {
+    return this.unspentDelimiterLength === this.delimiter.length
+  }
+
   isFullySpent(): boolean {
     return this.unspentDelimiterLength <= 0
   }
 
   registerTokenInsertion(atIndex: number) {
-    if (atIndex < this.initialTokenIndex) {
-      this.initialTokenIndex += 1
+    if (atIndex < this.tokenIndex) {
+      this.tokenIndex += 1
     }
   }
 
   reset(): void {
-    this.initialTokenIndex = this.snapshot.tokens.length
+    this.tokenIndex = this.snapshot.tokens.length
   }
 }

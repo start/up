@@ -13,7 +13,6 @@ import { last, concat, contains, reversed, remove } from '../../CollectionHelper
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { TokenizerContext } from './TokenizerContext'
-import { RaisedVoiceContext } from './RaisedVoiceContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
@@ -21,6 +20,7 @@ import { Token } from './Token'
 import { NewTokenArgs } from './NewTokenArgs'
 import { TokenizableConvention } from './TokenizableConvention'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
+import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
 // TODO: Completely refactor raised voice logic
@@ -84,6 +84,23 @@ export class Tokenizer {
 
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
+
+  // TODO: Explain
+  private raisedVoiceHandler = new RaisedVoiceHandler({
+      delimiterChar: '*',
+
+      encloseWithin: (args) => {
+        this.closeAnyNakedUrlContext()
+        this.encloseWithin(args)
+      },
+
+      insertPlainTextTokenAt: (args) => {
+        this.insertToken({
+          token: new Token({ kind: TokenKind.PlainText, value: args.text}),
+          atIndex: args.atIndex
+        })
+      }
+    })
 
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineTextConsumer(entireText)
@@ -189,6 +206,8 @@ export class Tokenizer {
     }
 
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+    this.raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText()
+    
     return true
   }
 
@@ -324,7 +343,7 @@ export class Tokenizer {
       pattern: RAISED_VOICE_DELIMITER_PATTERN,
 
       thenBeforeAdvancingTextIndex: asterisks => {
-        didCloseAnyRaisedVoices = this.spendDelimiterToTryToCloseAnyRaisedVoices(asterisks)
+        didCloseAnyRaisedVoices = this.raisedVoiceHandler.tryToCloseAnyRaisedVoices(asterisks)
 
         if (!didCloseAnyRaisedVoices) {
           this.consumer.textIndex -= asterisks.length
@@ -333,125 +352,6 @@ export class Tokenizer {
     })
 
     return didCloseAnyRaisedVoices
-  }
-
-  private spendDelimiterToTryToCloseAnyRaisedVoices(delimiter: string): boolean {
-    // TODO: Refactor
-
-    let unspentDelimiterLength = delimiter.length
-
-    const raisedVoiceContextsFromMostRecentToLeast = <RaisedVoiceContext[]>(
-      this.openContexts
-        .filter(context => context instanceof RaisedVoiceContext)
-        .reverse()
-    )
-
-    const { EMPHASIS_COST, STRESS_COST, STRESS_AND_EMPHASIS_TOGETHER_COST } = RaisedVoiceContext
-
-    const encloseContextWithin = (richConvention: RichConvention, context: TokenizerContext) => {
-      this.closeAnyNakedUrlContext()
-      this.encloseContextWithin(richConvention, context)
-    }
-
-    if (unspentDelimiterLength === RaisedVoiceContext.EMPHASIS_COST) {
-
-      // If an end marker has only 1 asterisk available to spend, it can only indicate (i.e. afford) emphasis.
-      //
-      // For these end markers, we want to prioritize matching with the nearest start marker that either:
-      //
-      // 1. Can also only indicate emphasis (1 asterisk to spend)
-      // 2. Can indicate both emphasis and stress together (3+ asterisks to spend)
-      //
-      // If we can't find any start markers that satisfy the above criteria, then we'll settle for a start marker
-      // that has 2 asterisks to spend. But this fallback happens later.
-
-      for (const context of raisedVoiceContextsFromMostRecentToLeast) {
-        if (context.canOnlyAffordEmphasis() || context.canAffordBothEmphasisAndStressTogether()) {
-          encloseContextWithin(EMPHASIS_CONVENTION, context)
-          context.payForEmphasis()
-
-          // Considering this delimiter could only afford to indicate emphasis, we have nothing left to do.
-          unspentDelimiterLength = 0
-          break
-        }
-      }
-    } else if (unspentDelimiterLength === RaisedVoiceContext.STRESS_COST) {
-
-      // If an end marker has only 2 asterisks to spend, it can indicate stress, but it can't indicate both stress
-      // and emphasis at the saem time.
-      //
-      // For these end markers, we want to prioritize matching with the nearest start marker that can indicate
-      // stress. It's okay if that start marker can indicate both stress and emphasis at the same time! As long
-      // as it can indicate stress, we're good. 
-      //
-      // Only if we can't find one, then we'll match with a marker that has just 1 asterisk to spend. But this
-      // fallback happens later.
-
-      for (const context of raisedVoiceContextsFromMostRecentToLeast) {
-        if (context.canAffordStress()) {
-          encloseContextWithin(STRESS_CONVENTION, context)
-          context.payForStress()
-
-          // Considering this delimiter could only afford to indicate stress, we have nothing left to do.
-          unspentDelimiterLength = 0
-          break
-        }
-      }
-    }
-
-    // From here on out, if this end marker can match with a start marker, it will. It'll try to match as
-    // many asterisks at once as it can.
-
-    for (const context of raisedVoiceContextsFromMostRecentToLeast) {
-      if (!unspentDelimiterLength) {
-        // Once this marker has matched all of its asterisks, its work is done. Let's bail.
-        break
-      }
-
-      if ((unspentDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST) && context.canAffordBothEmphasisAndStressTogether()) {
-        encloseContextWithin(EMPHASIS_CONVENTION, context)
-        encloseContextWithin(STRESS_CONVENTION, context)
-
-        unspentDelimiterLength -=
-          context.payForEmphasisAndStressTogetherAndGetCost(unspentDelimiterLength)
-
-        continue
-      }
-
-      if (unspentDelimiterLength >= STRESS_COST && context.canAffordStress()) {
-        encloseContextWithin(STRESS_CONVENTION, context)
-
-        unspentDelimiterLength -= STRESS_COST
-        context.payForStress()
-
-        continue
-      }
-
-      if (unspentDelimiterLength >= EMPHASIS_COST && context.canAffordEmphasis()) {
-        encloseContextWithin(EMPHASIS_CONVENTION, context)
-
-        unspentDelimiterLength -= EMPHASIS_COST
-        context.payForEmphasis()
-
-        continue
-      }
-    }
-
-    this.removeFullySpentRaisedVoiceContexts()
-
-    return unspentDelimiterLength !== delimiter.length
-  }
-
-  // Once a raised voice context has spent all the characters from its start delimieter, we
-  // remove from our list of open contexts. There's nothing left for it to do. 
-  private removeFullySpentRaisedVoiceContexts(): void {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-
-      if ((context instanceof RaisedVoiceContext) && context.isFullySpent()) {
-        this.openContexts.splice(i, 1)
-      }
-    }
   }
 
   // TODO: Remove
@@ -511,18 +411,7 @@ export class Tokenizer {
         }
 
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-
-        this.openContexts.push(
-          new RaisedVoiceContext({
-            delimiter,
-            treatDelimiterAsPlainText: context => {
-              this.insertToken({
-                token: new Token({ kind: TokenKind.PlainText, value: delimiter }),
-                atIndex: context.initialTokenIndex
-              })
-            },
-            snapshot: this.getCurrentSnapshot()
-          }))
+        this.raisedVoiceHandler.addStartDelimiter(delimiter, this.getCurrentSnapshot())
       }
     })
   }
