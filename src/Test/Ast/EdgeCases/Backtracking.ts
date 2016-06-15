@@ -181,3 +181,31 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
       ]))
   })
 })
+
+
+describe('Overlapped stressed, deleted, and inserted text, with an unmatched start delimiter (requiring backtracking) inside the revision insertion convention', () => {
+  it("Is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
+    expect(Up.toAst('I **love ~~covertly ++drinking** {{ whole~~ milk++ all the time.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new PlainTextNode('covertly '),
+            new RevisionInsertionNode([
+              new PlainTextNode('drinking')
+            ])
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new RevisionInsertionNode([
+            new PlainTextNode(' {{ whole')
+          ])
+        ]),
+        new RevisionInsertionNode([
+          new PlainTextNode(' milk')
+        ]),
+        new PlainTextNode(' all the time.')
+      ]))
+  })
+})
