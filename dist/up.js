@@ -349,8 +349,7 @@ var RaisedVoiceHandler = (function () {
         }
     };
     RaisedVoiceHandler.prototype.tryToCloseAnyRaisedVoices = function (endDelimiter) {
-        var unspentEndDelimiterLength = endDelimiter.length;
-        if (unspentEndDelimiterLength === EMPHASIS_COST) {
+        if (endDelimiter.length === EMPHASIS_COST) {
             for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {
                 var startDelimiter = _a[_i];
                 if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
@@ -359,7 +358,7 @@ var RaisedVoiceHandler = (function () {
                 }
             }
         }
-        else if (unspentEndDelimiterLength === STRESS_COST) {
+        else if (endDelimiter.length === STRESS_COST) {
             for (var _b = 0, _c = this.startDelimitersFromMostToLeastRecent; _b < _c.length; _b++) {
                 var startDelimiter = _c[_b];
                 if (startDelimiter.canAfford(STRESS_COST)) {
@@ -368,6 +367,7 @@ var RaisedVoiceHandler = (function () {
                 }
             }
         }
+        var unspentEndDelimiterLength = endDelimiter.length;
         for (var _d = 0, _e = this.startDelimitersFromMostToLeastRecent; _d < _e.length; _d++) {
             var startDelimiter = _e[_d];
             if (!unspentEndDelimiterLength) {
@@ -384,8 +384,8 @@ var RaisedVoiceHandler = (function () {
                     startingBackAt: startDelimiter.tokenIndex
                 });
                 var lengthInCommon = Math.min(startDelimiter.unspentLength, unspentEndDelimiterLength);
-                unspentEndDelimiterLength -= lengthInCommon;
                 this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, lengthInCommon);
+                unspentEndDelimiterLength -= lengthInCommon;
                 continue;
             }
             if (unspentEndDelimiterLength >= STRESS_COST && startDelimiter.canAfford(STRESS_COST)) {
@@ -646,7 +646,7 @@ var Tokenizer = (function () {
         this.raisedVoiceHandler = new RaisedVoiceHandler_1.RaisedVoiceHandler({
             delimiterChar: '*',
             encloseWithin: function (args) {
-                _this.closeAnyNakedUrlContext();
+                _this.closeNakedUrlContextIfOneIsOpen();
                 _this.encloseWithin(args);
             },
             insertPlainTextTokenAt: function (args) {
@@ -830,7 +830,7 @@ var Tokenizer = (function () {
         });
         return didCloseAnyRaisedVoices;
     };
-    Tokenizer.prototype.closeAnyNakedUrlContext = function () {
+    Tokenizer.prototype.closeNakedUrlContextIfOneIsOpen = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
             if (this.openContexts[i].convention === this.nakedUrlConvention) {
                 this.flushBufferToNakedUrlEndToken();

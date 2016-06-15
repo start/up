@@ -19,10 +19,8 @@ export class RaisedVoiceHandler {
   delimiterPattern: RegExp
 
   private startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[] = []
-
   private encloseWithin: EncloseWithin
   private insertPlainTextToken: InsertPlainTextToken
-
 
   constructor(
     args: {
@@ -38,7 +36,8 @@ export class RaisedVoiceHandler {
   }
 
   addStartDelimiter(delimiter: string, snapshot: TokenizerSnapshot) {
-    this.startDelimitersFromMostToLeastRecent.unshift(new RaisedVoiceStartDelimiter(delimiter, snapshot))
+    this.startDelimitersFromMostToLeastRecent.unshift(
+      new RaisedVoiceStartDelimiter(delimiter, snapshot))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
@@ -48,11 +47,9 @@ export class RaisedVoiceHandler {
   }
 
   tryToCloseAnyRaisedVoices(endDelimiter: string): boolean {
-    let unspentEndDelimiterLength = endDelimiter.length
+    if (endDelimiter.length === EMPHASIS_COST) {
 
-    if (unspentEndDelimiterLength === EMPHASIS_COST) {
-
-      // If an end delimiter has only 1 character available to spend, it can only indicate (i.e. afford) emphasis.
+      // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) emphasis.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
       //
@@ -70,9 +67,9 @@ export class RaisedVoiceHandler {
           return true
         }
       }
-    } else if (unspentEndDelimiterLength === STRESS_COST) {
+    } else if (endDelimiter.length === STRESS_COST) {
 
-      // If an end delimiter has only 2 characters to spend, it can indicate stress, but it can't indicate both stress
+      // If an end delimiter is just 2 characters long, it can indicate stress, but it can't indicate both stress
       // and emphasis at the saem time.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
@@ -94,6 +91,8 @@ export class RaisedVoiceHandler {
 
     // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
     // many characters at once as it can.
+    
+    let unspentEndDelimiterLength = endDelimiter.length
 
     for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
       if (!unspentEndDelimiterLength) {
@@ -126,8 +125,8 @@ export class RaisedVoiceHandler {
         const lengthInCommon =
           Math.min(startDelimiter.unspentLength, unspentEndDelimiterLength)
 
-        unspentEndDelimiterLength -= lengthInCommon
         this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, lengthInCommon)
+        unspentEndDelimiterLength -= lengthInCommon
 
         continue
       }

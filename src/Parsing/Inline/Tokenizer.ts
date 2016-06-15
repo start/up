@@ -23,8 +23,6 @@ import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
-// TODO: Completely refactor raised voice logic
-
 export class Tokenizer {
   tokens: Token[] = []
 
@@ -90,7 +88,7 @@ export class Tokenizer {
       delimiterChar: '*',
 
       encloseWithin: (args) => {
-        this.closeAnyNakedUrlContext()
+        this.closeNakedUrlContextIfOneIsOpen()
         this.encloseWithin(args)
       },
 
@@ -352,11 +350,9 @@ export class Tokenizer {
     return didCloseAnyRaisedVoices
   }
 
-  // TODO: Remove
-  private closeAnyNakedUrlContext(): void {
+  private closeNakedUrlContextIfOneIsOpen(): void {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       if (this.openContexts[i].convention === this.nakedUrlConvention) {
-        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
         this.flushBufferToNakedUrlEndToken()
 
         // We need to close the naked URL's context, as well as the contexts of any raw text brackets
