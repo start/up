@@ -9,8 +9,8 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-describe('Bracketed/parenthesized text followed immediately by a bracketed/parenthesized URL', () => {
-  it('produces a link node', () => {
+describe('Bracketed/parenthesized text, followed immediately by another instance of bracketed/parenthesized text,', () => {
+  it("produces a link node. The first bracketed text is treated as the link's contents, and the second is treated as the link's URL", () => {
     expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -18,6 +18,35 @@ describe('Bracketed/parenthesized text followed immediately by a bracketed/paren
           new PlainTextNode('this site')
         ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
+      ]))
+  })
+})
+
+describe('Bracketed/parenthesized text, followed by whitespace, followed by a bracketed/parenthesized URL starting with "http://" or "https://"', () => {
+  it("produces a link node.", () => {
+    expect(Up.toAst('I like [this site] (https://stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('Bracketed/parenthesized text followed by a space followed by more bracketed text not starting with "http://" or "https://"', () => {
+  it('does not produce a link node', () => {
+    expect(Up.toAst('[hello] [goodbye]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[hello]')
+        ]),
+        new PlainTextNode(' '),
+        new SquareBracketedNode([
+          new PlainTextNode('[goodbye]')
+        ]),
       ]))
   })
 })
