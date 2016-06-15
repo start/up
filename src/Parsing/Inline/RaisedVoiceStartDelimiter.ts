@@ -5,7 +5,7 @@ export class RaisedVoiceStartDelimiter {
   tokenIndex: number
   unspentLength: number
 
-  constructor(public text: string, private snapshot: TokenizerSnapshot) {
+  constructor(public text: string, private initialTokenIndex: number) {
     this.reset()
   }
 
@@ -36,7 +36,7 @@ export class RaisedVoiceStartDelimiter {
   }
 
   reset(): void {
-    this.tokenIndex = this.snapshot.tokens.length
+    this.tokenIndex = this.initialTokenIndex
     this.unspentLength = this.text.length
   }
 }

@@ -404,7 +404,7 @@ export class Tokenizer {
         }
 
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-        this.raisedVoiceHandler.addStartDelimiter(delimiter, this.getCurrentSnapshot())
+        this.raisedVoiceHandler.addStartDelimiter(delimiter, this.tokens.length)
       }
     })
   }

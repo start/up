@@ -339,8 +339,8 @@ var RaisedVoiceHandler = (function () {
         this.encloseWithin = args.encloseWithin;
         this.insertPlainTextToken = args.insertPlainTextTokenAt;
     }
-    RaisedVoiceHandler.prototype.addStartDelimiter = function (delimiter, snapshot) {
-        this.startDelimitersFromMostToLeastRecent.unshift(new RaisedVoiceStartDelimiter_1.RaisedVoiceStartDelimiter(delimiter, snapshot));
+    RaisedVoiceHandler.prototype.addStartDelimiter = function (delimiter, tokenIndex) {
+        this.startDelimitersFromMostToLeastRecent.unshift(new RaisedVoiceStartDelimiter_1.RaisedVoiceStartDelimiter(delimiter, tokenIndex));
     };
     RaisedVoiceHandler.prototype.registerTokenInsertion = function (args) {
         for (var _i = 0, _a = this.startDelimitersFromMostToLeastRecent; _i < _a.length; _i++) {
@@ -438,9 +438,9 @@ exports.RaisedVoiceHandler = RaisedVoiceHandler;
 },{"../../CollectionHelpers":1,"../../PatternHelpers":35,"./RaisedVoiceStartDelimiter":9,"./RichConventions":10}],9:[function(require,module,exports){
 "use strict";
 var RaisedVoiceStartDelimiter = (function () {
-    function RaisedVoiceStartDelimiter(text, snapshot) {
+    function RaisedVoiceStartDelimiter(text, initialTokenIndex) {
         this.text = text;
-        this.snapshot = snapshot;
+        this.initialTokenIndex = initialTokenIndex;
         this.reset();
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (cost) {
@@ -464,7 +464,7 @@ var RaisedVoiceStartDelimiter = (function () {
         }
     };
     RaisedVoiceStartDelimiter.prototype.reset = function () {
-        this.tokenIndex = this.snapshot.tokens.length;
+        this.tokenIndex = this.initialTokenIndex;
         this.unspentLength = this.text.length;
     };
     return RaisedVoiceStartDelimiter;
@@ -869,7 +869,7 @@ var Tokenizer = (function () {
                     return;
                 }
                 _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                _this.raisedVoiceHandler.addStartDelimiter(delimiter, _this.getCurrentSnapshot());
+                _this.raisedVoiceHandler.addStartDelimiter(delimiter, _this.tokens.length);
             }
         });
     };

@@ -1,9 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from './RichConventions'
 import { RichConvention } from './RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
-import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { TokenizerContext } from './TokenizerContext'
-import { OnConventionEvent } from './OnConventionEvent'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
@@ -35,9 +32,9 @@ export class RaisedVoiceHandler {
     this.insertPlainTextToken = args.insertPlainTextTokenAt
   }
 
-  addStartDelimiter(delimiter: string, snapshot: TokenizerSnapshot) {
+  addStartDelimiter(delimiter: string, tokenIndex: number) {
     this.startDelimitersFromMostToLeastRecent.unshift(
-      new RaisedVoiceStartDelimiter(delimiter, snapshot))
+      new RaisedVoiceStartDelimiter(delimiter, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
