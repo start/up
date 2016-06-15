@@ -20,7 +20,6 @@ export class RaisedVoiceHandler {
 
   private startDelimitersFromMostToLeastRecent: RaisedVoiceStartDelimiter[] = []
 
-  // TODO: Improve interfaces
   private encloseWithin: EncloseWithin
   private insertPlainTextToken: InsertPlainTextToken
 
@@ -99,7 +98,7 @@ export class RaisedVoiceHandler {
     for (const startDelimiter of this.startDelimitersFromMostToLeastRecent) {
       if (!unspentEndDelimiterLength) {
         // Once this delimiter has matched all of its characters, its work is done. Let's bail.
-        return true
+        break
       }
 
       if (
@@ -125,7 +124,7 @@ export class RaisedVoiceHandler {
         })
 
         const lengthInCommon =
-          Math.min(startDelimiter.unspentDelimiterLength, unspentEndDelimiterLength)
+          Math.min(startDelimiter.unspentLength, unspentEndDelimiterLength)
 
         unspentEndDelimiterLength -= lengthInCommon
         this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, lengthInCommon)

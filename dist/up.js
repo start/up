@@ -371,7 +371,7 @@ var RaisedVoiceHandler = (function () {
         for (var _d = 0, _e = this.startDelimitersFromMostToLeastRecent; _d < _e.length; _d++) {
             var startDelimiter = _e[_d];
             if (!unspentEndDelimiterLength) {
-                return true;
+                break;
             }
             if (unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST
                 && startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
@@ -383,7 +383,7 @@ var RaisedVoiceHandler = (function () {
                     richConvention: RichConventions_1.STRESS_CONVENTION,
                     startingBackAt: startDelimiter.tokenIndex
                 });
-                var lengthInCommon = Math.min(startDelimiter.unspentDelimiterLength, unspentEndDelimiterLength);
+                var lengthInCommon = Math.min(startDelimiter.unspentLength, unspentEndDelimiterLength);
                 unspentEndDelimiterLength -= lengthInCommon;
                 this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, lengthInCommon);
                 continue;
@@ -442,22 +442,22 @@ var RaisedVoiceStartDelimiter = (function () {
         this.text = text;
         this.snapshot = snapshot;
         this.tokenIndex = this.snapshot.tokens.length;
-        this.unspentDelimiterLength = text.length;
+        this.unspentLength = text.length;
     }
     RaisedVoiceStartDelimiter.prototype.canAfford = function (delimiterLength) {
-        return this.unspentDelimiterLength >= delimiterLength;
+        return this.unspentLength >= delimiterLength;
     };
     RaisedVoiceStartDelimiter.prototype.canOnlyAfford = function (delimiterLength) {
-        return this.unspentDelimiterLength === delimiterLength;
+        return this.unspentLength === delimiterLength;
     };
     RaisedVoiceStartDelimiter.prototype.pay = function (delimiterLength) {
-        this.unspentDelimiterLength -= 1;
+        this.unspentLength -= 1;
     };
     RaisedVoiceStartDelimiter.prototype.isUnused = function () {
-        return this.unspentDelimiterLength === this.text.length;
+        return this.unspentLength === this.text.length;
     };
     RaisedVoiceStartDelimiter.prototype.isFullySpent = function () {
-        return this.unspentDelimiterLength <= 0;
+        return this.unspentLength === 0;
     };
     RaisedVoiceStartDelimiter.prototype.registerTokenInsertion = function (atIndex) {
         if (atIndex < this.tokenIndex) {
