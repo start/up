@@ -136,12 +136,11 @@ export class RaisedVoiceHandler {
         continue
       }
 
-      if (unspentEndDelimiterLength >= EMPHASIS_COST && startDelimiter.canAfford(EMPHASIS_COST)) {
-        this.applyEmphasis(startDelimiter)
-        unspentEndDelimiterLength -= EMPHASIS_COST
-
-        continue
-      }
+      // We know we have at least 1 end delimiter character  to spend; otherwise, we would have terminated the loop. And we
+      // know that every start delimiter in our collection has at least 1 character to spend; otherwise, it would have been
+      // removed.
+      this.applyEmphasis(startDelimiter)
+      unspentEndDelimiterLength -= EMPHASIS_COST
     }
 
     return unspentEndDelimiterLength !== endDelimiter.length

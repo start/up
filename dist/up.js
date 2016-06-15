@@ -394,11 +394,8 @@ var RaisedVoiceHandler = (function () {
                 unspentEndDelimiterLength -= STRESS_COST;
                 continue;
             }
-            if (unspentEndDelimiterLength >= EMPHASIS_COST && startDelimiter.canAfford(EMPHASIS_COST)) {
-                this.applyEmphasis(startDelimiter);
-                unspentEndDelimiterLength -= EMPHASIS_COST;
-                continue;
-            }
+            this.applyEmphasis(startDelimiter);
+            unspentEndDelimiterLength -= EMPHASIS_COST;
         }
         return unspentEndDelimiterLength !== endDelimiter.length;
     };
