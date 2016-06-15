@@ -35,6 +35,9 @@ export class RaisedVoiceStartDelimiter {
   }
 
   clone(): RaisedVoiceStartDelimiter {
-    return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex)
+    const clone = new RaisedVoiceStartDelimiter(this.text, this.tokenIndex)
+    clone.unspentLength = this.unspentLength
+
+    return clone
   } 
 }

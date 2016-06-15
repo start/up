@@ -480,7 +480,9 @@ var RaisedVoiceStartDelimiter = (function () {
         }
     };
     RaisedVoiceStartDelimiter.prototype.clone = function () {
-        return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex);
+        var clone = new RaisedVoiceStartDelimiter(this.text, this.tokenIndex);
+        clone.unspentLength = this.unspentLength;
+        return clone;
     };
     return RaisedVoiceStartDelimiter;
 }());
