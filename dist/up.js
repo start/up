@@ -399,7 +399,7 @@ var PatternHelpers_1 = require('../../../PatternHelpers');
 var CollectionHelpers_1 = require('../../../CollectionHelpers');
 var EMPHASIS_COST = 1;
 var STRESS_COST = 2;
-var STRESS_AND_EMPHASIS_TOGETHER_COST = EMPHASIS_COST + STRESS_COST;
+var MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST;
 var RaisedVoiceHandler = (function () {
     function RaisedVoiceHandler(args) {
         this.startDelimiters = [];
@@ -421,7 +421,7 @@ var RaisedVoiceHandler = (function () {
         if (endDelimiter.length === EMPHASIS_COST) {
             for (var i = this.startDelimiters.length - 1; i >= 0; i--) {
                 var startDelimiter = this.startDelimiters[i];
-                if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
+                if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(MIN_SHOUTING_COST)) {
                     this.applyEmphasis(startDelimiter);
                     return true;
                 }
@@ -439,8 +439,7 @@ var RaisedVoiceHandler = (function () {
         var unspentEndDelimiterLength = endDelimiter.length;
         for (var i = this.startDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
             var startDelimiter = this.startDelimiters[i];
-            if (unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST
-                && startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
+            if (unspentEndDelimiterLength >= MIN_SHOUTING_COST && startDelimiter.canAfford(MIN_SHOUTING_COST)) {
                 this.encloseWithin({
                     richConvention: RichConventions_1.EMPHASIS_CONVENTION,
                     startingBackAt: startDelimiter.tokenIndex

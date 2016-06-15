@@ -10,7 +10,11 @@ import { remove } from '../../../CollectionHelpers'
 
 const EMPHASIS_COST = 1
 const STRESS_COST = 2
-const STRESS_AND_EMPHASIS_TOGETHER_COST = EMPHASIS_COST + STRESS_COST
+
+// "Shouting" is when text is emphasized and stressed at the same time, ***like this***.
+//
+// Shouting has some special rules explained in the `tryToCloseAnyRaisedVoices` method.
+const MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST
 
 
 export class RaisedVoiceHandler {
@@ -60,7 +64,7 @@ export class RaisedVoiceHandler {
       for (let i = this.startDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.startDelimiters[i]
 
-        if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)) {
+        if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(MIN_SHOUTING_COST)) {
           this.applyEmphasis(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate emphasis, we have nothing left to do.
@@ -100,14 +104,14 @@ export class RaisedVoiceHandler {
     for (let i = this.startDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
       const startDelimiter = this.startDelimiters[i]
 
-      if (
-        unspentEndDelimiterLength >= STRESS_AND_EMPHASIS_TOGETHER_COST
-        && startDelimiter.canAfford(STRESS_AND_EMPHASIS_TOGETHER_COST)
-      ) {
-        // When matching delimiters each have 3 or more characters to spend, their contents become stressed and emphasized,
-        // and they cancel out as many of each other's delimiter characters as possible.
+      if (unspentEndDelimiterLength >= MIN_SHOUTING_COST && startDelimiter.canAfford(MIN_SHOUTING_COST)) {
+        // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
+        // (stressed and emphasized). Shouting delimiters cancel out as many of each other's characters as possible.
         //
-        // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10.
+        // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
+        //
+        // 1. This is ***emphasized and stressed***.
+        // 2. This is also **********emphasized and stressed**********.
         //
         // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be subsequently
         // matched by other delimiters.

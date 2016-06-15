@@ -85,9 +85,8 @@ export class Tokenizer {
 
   // "Raised voices" means emphasis and stress.
   //
-  // We handle emphasis and stress in a manner incompatible with the rest of our conventions, so we
-  // keep the raised voice logic separate (inside RaisedVoiceHandler). More information can be
-  // found in that class.
+  // We handle emphasis and stress in a manner incompatible with the rest of our conventions, so we throw
+  // all that special logic into the RaisedVoiceHandler class. More information can be found in that class.
   private raisedVoiceHandlers = ['*', '_'].map(
     delimiterChar => new RaisedVoiceHandler({
       delimiterChar,
@@ -409,7 +408,8 @@ export class Tokenizer {
           if (!matchPrecedesNonWhitespace) {
             // If the match doesn't precede non-whitespace, then we treat the delimiter as plain text.
             // We already know the delimiter wasn't able to close any raised voice conventions, and we
-            // we now know if can't open any, either.
+            // we now know it can't open any, either (because the delimiter needs to look like it's
+            // touching the beginning of some content).
             this.buffer += delimiter
             return
           }
