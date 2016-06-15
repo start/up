@@ -20,6 +20,7 @@ import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { NewTokenArgs } from './NewTokenArgs'
 import { TokenizableConvention } from './TokenizableConvention'
+import { EncloseWithinArgs } from './EncloseWithinArgs'
 
 
 // TODO: Completely refactor raised voice logic
@@ -471,7 +472,7 @@ export class Tokenizer {
     this.encloseWithin({ richConvention, startingBackAt: context.initialTokenIndex})
   }
 
-  private encloseWithin(args: { richConvention: RichConvention, startingBackAt: number }): void {
+  private encloseWithin(args: EncloseWithinArgs): void {
     const { richConvention, startingBackAt } = args
     
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
