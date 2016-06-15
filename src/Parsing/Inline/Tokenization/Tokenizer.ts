@@ -471,7 +471,7 @@ export class Tokenizer {
     return new TokenizerSnapshot({
       textIndex: this.consumer.textIndex,
       tokens: this.tokens,
-      openContexts: this.openContexts,
+      conventionContextSnapshots: this.openContexts.map(context => context.getCurrentSnapshot()),
       raisedVoiceHandlerSnapshots: this.raisedVoiceHandlers.map(handler => handler.getCurrentSnapshot()),
       buffer: this.buffer
     })
@@ -511,13 +511,12 @@ export class Tokenizer {
     const { snapshot } = context
 
     this.tokens = snapshot.tokens
-    this.openContexts = snapshot.openContexts
     this.buffer = snapshot.buffer
     this.consumer.textIndex = snapshot.textIndex
+    this.openContexts.slice(snapshot.conventionContextSnapshots.length)
 
-    for (const context of this.openContexts) {
-      // TODO: Fix bug
-      context.reset()
+    for (let i = 0; i < snapshot.conventionContextSnapshots.length; i++) {
+      this.openContexts[i].reset(snapshot.conventionContextSnapshots[i])
     }
 
     for (let i = 0; i < this.raisedVoiceHandlers.length; i++) {

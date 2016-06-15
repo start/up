@@ -156,7 +156,7 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
 
 
 describe('Overlapped stressed, deleted, and inserted text, with an unmatched start delimiter (requiring backtracking) inside the revision deletion convention', () => {
-  it("Is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
+  it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.toAst('I **love ~~covertly {{ ++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -184,7 +184,7 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
 
 
 describe('Overlapped stressed, deleted, and inserted text, with an unmatched start delimiter (requiring backtracking) inside the revision insertion convention', () => {
-  it("Is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
+  it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.toAst('I **love ~~covertly ++drinking** {{ whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),

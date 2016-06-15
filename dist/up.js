@@ -341,8 +341,8 @@ var ConventionContext = (function () {
     ConventionContext.prototype.getCurrentSnapshot = function () {
         return new ConventionContextSnapshot_1.ConventionContextSnapshot(this.startTokenIndex);
     };
-    ConventionContext.prototype.reset = function () {
-        this.startTokenIndex = this.snapshot.tokens.length;
+    ConventionContext.prototype.reset = function (snapshot) {
+        this.startTokenIndex = snapshot.startTokenIndex;
     };
     return ConventionContext;
 }());
@@ -988,7 +988,7 @@ var Tokenizer = (function () {
         return new TokenizerSnapshot_1.TokenizerSnapshot({
             textIndex: this.consumer.textIndex,
             tokens: this.tokens,
-            openContexts: this.openContexts,
+            conventionContextSnapshots: this.openContexts.map(function (context) { return context.getCurrentSnapshot(); }),
             raisedVoiceHandlerSnapshots: this.raisedVoiceHandlers.map(function (handler) { return handler.getCurrentSnapshot(); }),
             buffer: this.buffer
         });
@@ -1010,12 +1010,11 @@ var Tokenizer = (function () {
         this.failedConventionTracker.registerFailure(context);
         var snapshot = context.snapshot;
         this.tokens = snapshot.tokens;
-        this.openContexts = snapshot.openContexts;
         this.buffer = snapshot.buffer;
         this.consumer.textIndex = snapshot.textIndex;
-        for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
-            var context_2 = _a[_i];
-            context_2.reset();
+        this.openContexts.slice(snapshot.conventionContextSnapshots.length);
+        for (var i = 0; i < snapshot.conventionContextSnapshots.length; i++) {
+            this.openContexts[i].reset(snapshot.conventionContextSnapshots[i]);
         }
         for (var i = 0; i < this.raisedVoiceHandlers.length; i++) {
             this.raisedVoiceHandlers[i].reset(snapshot.raisedVoiceHandlerSnapshots[i]);
@@ -1216,7 +1215,7 @@ var TokenizerSnapshot = (function () {
     function TokenizerSnapshot(args) {
         this.textIndex = args.textIndex;
         this.tokens = args.tokens.slice();
-        this.openContexts = args.openContexts.slice();
+        this.conventionContextSnapshots = args.conventionContextSnapshots;
         this.raisedVoiceHandlerSnapshots = args.raisedVoiceHandlerSnapshots;
         this.buffer = args.buffer;
     }

@@ -54,7 +54,7 @@ export class ConventionContext {
     return new ConventionContextSnapshot(this.startTokenIndex)
   }
 
-  reset(): void {
-    this.startTokenIndex = this.snapshot.tokens.length
+  reset(snapshot: ConventionContextSnapshot): void {
+    this.startTokenIndex = snapshot.startTokenIndex
   }
 }
