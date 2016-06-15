@@ -823,11 +823,15 @@ var Tokenizer = (function () {
         }
     };
     Tokenizer.prototype.encloseContextWithin = function (richConvention, context) {
+        this.encloseWithin({ richConvention: richConvention, startingBackAt: context.initialTokenIndex });
+    };
+    Tokenizer.prototype.encloseWithin = function (args) {
+        var richConvention = args.richConvention, startingBackAt = args.startingBackAt;
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
         var startToken = new Token_1.Token({ kind: richConvention.startTokenKind });
         var endToken = new Token_1.Token({ kind: richConvention.endTokenKind });
         startToken.associateWith(endToken);
-        this.insertToken({ token: startToken, atIndex: context.initialTokenIndex });
+        this.insertToken({ token: startToken, atIndex: startingBackAt });
         this.tokens.push(endToken);
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {

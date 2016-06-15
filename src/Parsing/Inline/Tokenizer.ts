@@ -468,13 +468,19 @@ export class Tokenizer {
   }
 
   private encloseContextWithin(richConvention: RichConvention, context: TokenizerContext): void {
+    this.encloseWithin({ richConvention, startingBackAt: context.initialTokenIndex})
+  }
+
+  private encloseWithin(args: { richConvention: RichConvention, startingBackAt: number }): void {
+    const { richConvention, startingBackAt } = args
+    
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
     const startToken = new Token({ kind: richConvention.startTokenKind })
     const endToken = new Token({ kind: richConvention.endTokenKind })
     startToken.associateWith(endToken)
 
-    this.insertToken({ token: startToken, atIndex: context.initialTokenIndex })
+    this.insertToken({ token: startToken, atIndex: startingBackAt })
     this.tokens.push(endToken)
   }
 
