@@ -17,7 +17,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
-describe('Overlapped emphasized and linked text', () => {
+describe('Overlapped emphasized (using asterisks) and linked text', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -37,7 +37,7 @@ describe('Overlapped emphasized and linked text', () => {
 })
 
 
-describe('Overlapped linked and emphasized text', () => {
+describe('Overlapped linked and emphasized text (using asterisks)', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -56,8 +56,46 @@ describe('Overlapped linked and emphasized text', () => {
   })
 })
 
+describe('Overlapped emphasized (using underscores) and linked text', () => {
+  it('splits the emphasis node, not the link node', () => {
+    expect(Up.toAst('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I do '),
+        new EmphasisNode([
+          new PlainTextNode('not '),
+        ]),
+        new LinkNode([
+          new EmphasisNode([
+            new PlainTextNode('care'),
+          ]),
+          new PlainTextNode(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainTextNode(' all.')
+      ]))
+  })
+})
 
-describe('Overlapped stressed and action text', () => {
+describe('Overlapped linked and emphasized text (using underscores)', () => {
+  it('splits the emphasis node, not the link node', () => {
+    expect(Up.toAst('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('This '),
+        new LinkNode([
+          new PlainTextNode('trash '),
+          new EmphasisNode([
+            new PlainTextNode('can'),
+          ]),
+        ], 'https://en.wikipedia.org/wiki/Waste_container'),
+        new EmphasisNode([
+          new PlainTextNode(' not'),
+        ]),
+        new PlainTextNode(' stay here.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed (using asterisks) and action text', () => {
   it('splits the stress node, not the action node', () => {
     expect(Up.toAst('I **hate {huge** sigh} this.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -77,9 +115,49 @@ describe('Overlapped stressed and action text', () => {
 })
 
 
-describe('Overlapped stressed and action text', () => {
+describe('Overlapped stressed (using asterisks) and action text', () => {
   it('splits the stress node, not the action node', () => {
     expect(Up.toAst('I {sigh **loudly} sing**.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new ActionNode([
+          new PlainTextNode('sigh '),
+          new StressNode([
+            new PlainTextNode('loudly')
+          ]),
+        ]),
+        new StressNode([
+          new PlainTextNode(' sing'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed (using underscores) and action text', () => {
+  it('splits the stress node, not the action node', () => {
+    expect(Up.toAst('I __hate {huge__ sigh} this.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('hate '),
+        ]),
+        new ActionNode([
+          new StressNode([
+            new PlainTextNode('huge')
+          ]),
+          new PlainTextNode(' sigh')
+        ]),
+        new PlainTextNode(' this.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed (using underscores) and action text', () => {
+  it('splits the stress node, not the action node', () => {
+    expect(Up.toAst('I {sigh __loudly} sing__.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new ActionNode([
