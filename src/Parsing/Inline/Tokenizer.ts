@@ -88,8 +88,9 @@ export class Tokenizer {
   // We handle emphasis and stress in a manner incompatible with the rest of our conventions, so we
   // keep the raised voice logic separate (inside RaisedVoiceHandler). More information can be
   // found in that class.
-  private raisedVoiceHandler = new RaisedVoiceHandler({
-      delimiterChar: '*',
+  private raisedVoiceHandlers = ['*', '_'].map(
+    delimiterChar => new RaisedVoiceHandler({
+      delimiterChar,
 
       encloseWithin: (args) => {
         this.closeNakedUrlContextIfOneIsOpen()
@@ -98,11 +99,11 @@ export class Tokenizer {
 
       insertPlainTextTokenAt: (args) => {
         this.insertToken({
-          token: new Token({ kind: TokenKind.PlainText, value: args.text}),
+          token: new Token({ kind: TokenKind.PlainText, value: args.text }),
           atIndex: args.atIndex
         })
       }
-    })
+    }))
 
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineTextConsumer(entireText)
@@ -208,8 +209,11 @@ export class Tokenizer {
     }
 
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-    this.raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText()
-    
+
+    for (const raisedVoiceHandler of this.raisedVoiceHandlers) {
+      raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText()
+    }
+
     return true
   }
 
@@ -337,21 +341,23 @@ export class Tokenizer {
       return false
     }
 
-    let didCloseAnyRaisedVoices = false
+    return this.raisedVoiceHandlers.some(handler => {
+      let didCloseAnyRaisedVoices = false
 
-    this.consumer.consume({
-      pattern: this.raisedVoiceHandler.delimiterPattern,
+      this.consumer.consume({
+        pattern: handler.delimiterPattern,
 
-      thenBeforeAdvancingTextIndex: asterisks => {
-        didCloseAnyRaisedVoices = this.raisedVoiceHandler.tryToCloseAnyRaisedVoices(asterisks)
+        thenBeforeAdvancingTextIndex: delimiter => {
+          didCloseAnyRaisedVoices = handler.tryToCloseAnyRaisedVoices(delimiter)
 
-        if (!didCloseAnyRaisedVoices) {
-          this.consumer.textIndex -= asterisks.length
+          if (!didCloseAnyRaisedVoices) {
+            this.consumer.textIndex -= delimiter.length
+          }
         }
-      }
-    })
+      })
 
-    return didCloseAnyRaisedVoices
+      return didCloseAnyRaisedVoices
+    })
   }
 
   private closeNakedUrlContextIfOneIsOpen(): void {
@@ -367,12 +373,12 @@ export class Tokenizer {
   }
 
   private encloseContextWithin(richConvention: RichConvention, context: TokenizerContext): void {
-    this.encloseWithin({ richConvention, startingBackAt: context.initialTokenIndex})
+    this.encloseWithin({ richConvention, startingBackAt: context.initialTokenIndex })
   }
 
   private encloseWithin(args: EncloseWithinArgs): void {
     const { richConvention, startingBackAt } = args
-    
+
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
     const startToken = new Token({ kind: richConvention.startTokenKind })
@@ -395,22 +401,24 @@ export class Tokenizer {
   }
 
   private tryToHandleRaisedVoiceDelimiter(): boolean {
-    return this.consumer.consume({
-      pattern: this.raisedVoiceHandler.delimiterPattern,
+    return this.raisedVoiceHandlers.some(handler =>
+      this.consumer.consume({
+        pattern: handler.delimiterPattern,
 
-      thenBeforeAdvancingTextIndex: (delimiter, matchPrecedesNonWhitespace) => {
-        if (!matchPrecedesNonWhitespace) {
-          // If the match doesn't precede non-whitespace, then we treat the delimiter as plain text.
-          // We already know the delimiter wasn't able to close any raised voice conventions, and we
-          // we now know if can't open any, either.
-          this.buffer += delimiter
-          return
+        thenBeforeAdvancingTextIndex: (delimiter, matchPrecedesNonWhitespace) => {
+          if (!matchPrecedesNonWhitespace) {
+            // If the match doesn't precede non-whitespace, then we treat the delimiter as plain text.
+            // We already know the delimiter wasn't able to close any raised voice conventions, and we
+            // we now know if can't open any, either.
+            this.buffer += delimiter
+            return
+          }
+
+          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+          handler.addStartDelimiter(delimiter, this.tokens.length)
         }
-
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-        this.raisedVoiceHandler.addStartDelimiter(delimiter, this.tokens.length)
-      }
-    })
+      })
+    )
   }
 
   private isDirectlyFollowingTokenOfKind(kinds: TokenKind[]): boolean {
@@ -464,7 +472,7 @@ export class Tokenizer {
       textIndex: this.consumer.textIndex,
       tokens: this.tokens,
       openContexts: this.openContexts,
-      raisedVoiceHandlerSnapshot: this.raisedVoiceHandler.getCurrentSnapshot(),
+      raisedVoiceHandlerSnapshots: this.raisedVoiceHandlers.map(handler => handler.getCurrentSnapshot()),
       buffer: this.buffer
     })
   }
@@ -512,7 +520,9 @@ export class Tokenizer {
       context.reset()
     }
 
-    this.raisedVoiceHandler.reset(snapshot.raisedVoiceHandlerSnapshot)
+    for (let i = 0; i < this.raisedVoiceHandlers.length; i++) {
+      this.raisedVoiceHandlers[i].reset(snapshot.raisedVoiceHandlerSnapshots[i])
+    }
   }
 
   private appendNewToken(args: NewTokenArgs): void {
@@ -544,7 +554,9 @@ export class Tokenizer {
       openContext.registerTokenInsertion({ atIndex })
     }
 
-    this.raisedVoiceHandler.registerTokenInsertion({ atIndex })
+    for (const raisedVoiceHandler of this.raisedVoiceHandlers) {
+      raisedVoiceHandler.registerTokenInsertion({ atIndex })
+    }
   }
 
   private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {

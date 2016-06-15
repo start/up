@@ -7,7 +7,7 @@ export class TokenizerSnapshot {
   textIndex: number
   tokens: Token[]
   openContexts: TokenizerContext[]
-  raisedVoiceHandlerSnapshot: RaisedVoiceHandlerSnapshot
+  raisedVoiceHandlerSnapshots: RaisedVoiceHandlerSnapshot[]
   buffer: string
 
   constructor(
@@ -15,14 +15,14 @@ export class TokenizerSnapshot {
       textIndex: number
       tokens: Token[]
       openContexts: TokenizerContext[]
-      raisedVoiceHandlerSnapshot: RaisedVoiceHandlerSnapshot
+      raisedVoiceHandlerSnapshots: RaisedVoiceHandlerSnapshot[]
       buffer: string
     }
   ) {
     this.textIndex = args.textIndex
     this.tokens = args.tokens.slice()
     this.openContexts = args.openContexts.slice()
-    this.raisedVoiceHandlerSnapshot = args.raisedVoiceHandlerSnapshot
+    this.raisedVoiceHandlerSnapshots = args.raisedVoiceHandlerSnapshots
     this.buffer = args.buffer
   }
 }

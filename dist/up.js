@@ -656,8 +656,8 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
-        this.raisedVoiceHandler = new RaisedVoiceHandler_1.RaisedVoiceHandler({
-            delimiterChar: '*',
+        this.raisedVoiceHandlers = ['*', '_'].map(function (delimiterChar) { return new RaisedVoiceHandler_1.RaisedVoiceHandler({
+            delimiterChar: delimiterChar,
             encloseWithin: function (args) {
                 _this.closeNakedUrlContextIfOneIsOpen();
                 _this.encloseWithin(args);
@@ -668,7 +668,7 @@ var Tokenizer = (function () {
                     atIndex: args.atIndex
                 });
             }
-        });
+        }); });
         this.consumer = new InlineTextConsumer_1.InlineTextConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -750,7 +750,10 @@ var Tokenizer = (function () {
             }
         }
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-        this.raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText();
+        for (var _i = 0, _a = this.raisedVoiceHandlers; _i < _a.length; _i++) {
+            var raisedVoiceHandler = _a[_i];
+            raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText();
+        }
         return true;
     };
     Tokenizer.prototype.tryToCollectEscapedChar = function () {
@@ -831,17 +834,19 @@ var Tokenizer = (function () {
         if (!this.consumer.isFollowingNonWhitespace) {
             return false;
         }
-        var didCloseAnyRaisedVoices = false;
-        this.consumer.consume({
-            pattern: this.raisedVoiceHandler.delimiterPattern,
-            thenBeforeAdvancingTextIndex: function (asterisks) {
-                didCloseAnyRaisedVoices = _this.raisedVoiceHandler.tryToCloseAnyRaisedVoices(asterisks);
-                if (!didCloseAnyRaisedVoices) {
-                    _this.consumer.textIndex -= asterisks.length;
+        return this.raisedVoiceHandlers.some(function (handler) {
+            var didCloseAnyRaisedVoices = false;
+            _this.consumer.consume({
+                pattern: handler.delimiterPattern,
+                thenBeforeAdvancingTextIndex: function (delimiter) {
+                    didCloseAnyRaisedVoices = handler.tryToCloseAnyRaisedVoices(delimiter);
+                    if (!didCloseAnyRaisedVoices) {
+                        _this.consumer.textIndex -= delimiter.length;
+                    }
                 }
-            }
+            });
+            return didCloseAnyRaisedVoices;
         });
-        return didCloseAnyRaisedVoices;
     };
     Tokenizer.prototype.closeNakedUrlContextIfOneIsOpen = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -874,16 +879,18 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToHandleRaisedVoiceDelimiter = function () {
         var _this = this;
-        return this.consumer.consume({
-            pattern: this.raisedVoiceHandler.delimiterPattern,
-            thenBeforeAdvancingTextIndex: function (delimiter, matchPrecedesNonWhitespace) {
-                if (!matchPrecedesNonWhitespace) {
-                    _this.buffer += delimiter;
-                    return;
+        return this.raisedVoiceHandlers.some(function (handler) {
+            return _this.consumer.consume({
+                pattern: handler.delimiterPattern,
+                thenBeforeAdvancingTextIndex: function (delimiter, matchPrecedesNonWhitespace) {
+                    if (!matchPrecedesNonWhitespace) {
+                        _this.buffer += delimiter;
+                        return;
+                    }
+                    _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                    handler.addStartDelimiter(delimiter, _this.tokens.length);
                 }
-                _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                _this.raisedVoiceHandler.addStartDelimiter(delimiter, _this.tokens.length);
-            }
+            });
         });
     };
     Tokenizer.prototype.isDirectlyFollowingTokenOfKind = function (kinds) {
@@ -927,7 +934,7 @@ var Tokenizer = (function () {
             textIndex: this.consumer.textIndex,
             tokens: this.tokens,
             openContexts: this.openContexts,
-            raisedVoiceHandlerSnapshot: this.raisedVoiceHandler.getCurrentSnapshot(),
+            raisedVoiceHandlerSnapshots: this.raisedVoiceHandlers.map(function (handler) { return handler.getCurrentSnapshot(); }),
             buffer: this.buffer
         });
     };
@@ -955,7 +962,9 @@ var Tokenizer = (function () {
             var context_2 = _a[_i];
             context_2.reset();
         }
-        this.raisedVoiceHandler.reset(snapshot.raisedVoiceHandlerSnapshot);
+        for (var i = 0; i < this.raisedVoiceHandlers.length; i++) {
+            this.raisedVoiceHandlers[i].reset(snapshot.raisedVoiceHandlerSnapshots[i]);
+        }
     };
     Tokenizer.prototype.appendNewToken = function (args) {
         this.tokens.push(new Token_1.Token(args));
@@ -979,7 +988,10 @@ var Tokenizer = (function () {
             var openContext = _a[_i];
             openContext.registerTokenInsertion({ atIndex: atIndex });
         }
-        this.raisedVoiceHandler.registerTokenInsertion({ atIndex: atIndex });
+        for (var _b = 0, _c = this.raisedVoiceHandlers; _b < _c.length; _b++) {
+            var raisedVoiceHandler = _c[_b];
+            raisedVoiceHandler.registerTokenInsertion({ atIndex: atIndex });
+        }
     };
     Tokenizer.prototype.flushBufferToPlainTextTokenIfBufferIsNotEmpty = function () {
         if (this.buffer) {
@@ -1195,7 +1207,7 @@ var TokenizerSnapshot = (function () {
         this.textIndex = args.textIndex;
         this.tokens = args.tokens.slice();
         this.openContexts = args.openContexts.slice();
-        this.raisedVoiceHandlerSnapshot = args.raisedVoiceHandlerSnapshot;
+        this.raisedVoiceHandlerSnapshots = args.raisedVoiceHandlerSnapshots;
         this.buffer = args.buffer;
     }
     return TokenizerSnapshot;
