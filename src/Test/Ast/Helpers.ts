@@ -30,19 +30,20 @@ export function expectEveryCombinationOf(
 
 export function expectEveryCombinationOfBrackets(
   args: {
-    brackets: Bracket[],
-    secondPartBrackets?: Bracket[]
+    bracketsForFirstPart?: Bracket[],
+    bracketsForSecondPart?: Bracket[]
     firstPartToWrapInBrackets: string
     partsToPutInBetween?: string[]
     secondPartToWrapInBrackets: string
     toProduce: DocumentNode
   }) {
-  const { brackets, firstPartToWrapInBrackets, secondPartToWrapInBrackets, toProduce } = args
+  const { firstPartToWrapInBrackets, secondPartToWrapInBrackets, toProduce } = args
   const partsToPutInBetween = args.partsToPutInBetween || ['']
-  const secondPartBrackets = args.secondPartBrackets || brackets
+  const bracketsForFirstPart = args.bracketsForFirstPart || NORMAL_BRACKETS
+  const bracketsForSecondPart = args.bracketsForSecondPart || NORMAL_BRACKETS
 
-  for (const bracketForFirstPart of brackets) {
-    for (const bracketForSecondPart of secondPartBrackets) {
+  for (const bracketForFirstPart of bracketsForFirstPart) {
+    for (const bracketForSecondPart of bracketsForSecondPart) {
       for (const partToPutInBetween of partsToPutInBetween) {
         const text =
           wrapInBracket(firstPartToWrapInBrackets, bracketForFirstPart)
@@ -56,11 +57,17 @@ export function expectEveryCombinationOfBrackets(
 }
 
 
-function wrapInBracket(text: string, bracket: Bracket): string {
-  return bracket.open + text + bracket.close
-}
+const NORMAL_BRACKETS = [
+  { open: '(', close: ')' },
+  { open: '[', close: ']' },
+  { open: '{', close: '}' }
+]
 
 interface Bracket {
   open: string
   close: string
+}
+
+function wrapInBracket(text: string, bracket: Bracket): string {
+  return bracket.open + text + bracket.close
 }

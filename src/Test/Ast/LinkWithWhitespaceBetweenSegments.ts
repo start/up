@@ -9,17 +9,9 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-const linkBrackets = [
-  { open: '(', close: ')' },
-  { open: '[', close: ']' },
-  { open: '{', close: '}' }
-]
-
-
 describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with "http://" or "https://")', () => {
   it('produces a link node', () => {
     expectEveryCombinationOfBrackets({
-      brackets: linkBrackets,
       firstPartToWrapInBrackets: 'this site',
       partsToPutInBetween: ['  ', '\t', ' \t '],
       secondPartToWrapInBrackets: 'https://stackoverflow.com',
