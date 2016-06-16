@@ -96,7 +96,7 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 })
 
 
-describe('Bracketed text, followed by any whitespace, followed by another instance of bracketed text (containing no whitespace and starting with "http://" or "https://")', () => {
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with "http://" or "https://")', () => {
   it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       brackets: linkBrackets,
@@ -112,6 +112,21 @@ describe('Bracketed text, followed by any whitespace, followed by another instan
   })
 })
 
+
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with anything other than "http://" or "https://")', () => {
+  it('does not produce a link node', () => {
+    expect(Up.toAst('[no] (ftp://example.com)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[no]')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('(ftp://example.com)')
+        ]),
+      ]))
+  })
+})
 
 
 describe('Bracketed/parenthesized text followed by a space followed by more bracketed text not starting with "http://" or "https://"', () => {
