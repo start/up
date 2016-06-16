@@ -10,14 +10,14 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Bracketed text immediately followed by another instance of bracketed text', () => {
-  it("produces a link node. The first bracketed text is the link's contents, and the second is the URL. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL", () => {
+  it("produces a link node. The first bracketed text is the link's contents, and the second is the URL. The type of bracket surrounding the contents can be different from the type of bracket surrounding the URL", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
-      secondPartToWrapInBrackets: 'https://stackoverflow.com',
+      secondPartToWrapInBrackets: 'http://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
-        ], 'https://stackoverflow.com')
+        ], 'http://stackoverflow.com')
       ])
     })
   })
@@ -135,6 +135,17 @@ describe("A link's URL", () => {
         new LinkNode([
           new PlainTextNode('this site')
         ], 'https://stackoverflow.com/?search=*hello*there'),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  it('can contain spaces (assuming the bracketed URL directly follows the bracketed content)', () => {
+    expect(Up.toAst('I like [this site][https://stackoverflow.com/?search=hello there].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com/?search=hello there'),
         new PlainTextNode('.')
       ]))
   })
