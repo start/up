@@ -29,7 +29,7 @@ describe('An image that is the only convention on its line', () => {
 
 
 describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text', () => {
-  it("produces an audio node. The type of bracket enclosing the description can be different from the type of bracket enclosing the URL", () => {
+  it("produces an image node. The type of bracket enclosing the description can be different from the type of bracket enclosing the URL", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghosts eating luggage',
       secondPartToWrapInBrackets: 'http://example.com/hauntedhouse.svg',
@@ -42,7 +42,7 @@ describe('Bracketed text starting with "image:" immediately followed by another 
 
 
 describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text with no URL scheme', () => {
-  it("produces an audio node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
+  it("produces an image node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghosts eating luggage',
       secondPartToWrapInBrackets: 'example.com/hauntedhouse.ogg',
@@ -55,7 +55,7 @@ describe('Bracketed text starting with "image:" immediately followed by another 
 
 
 describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text starting with a slash', () => {
-  it('produces an audio node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
+  it('produces an image node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghosts eating luggage',
       secondPartToWrapInBrackets: '/hauntedhouse.png',
@@ -68,7 +68,7 @@ describe('Bracketed text starting with "image:" immediately followed by another 
 
 
 describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text starting with a fragment identifier ("#")', () => {
-  it('produces an audio node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+  it('produces an image node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghosts eating luggage',
       secondPartToWrapInBrackets: '#hauntedhouse.png',
