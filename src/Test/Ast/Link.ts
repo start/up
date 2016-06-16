@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOf } from './Helpers'
+import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets, expectEveryCombinationOf } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -9,20 +9,16 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-
 describe('Bracketed text immediately followed by another instance of bracketed text', () => {
   it("produces a link node. The first bracketed text is the link's contents, and the second is the URL. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL", () => {
-    expectEveryCombinationOf({
-      firstHalves: [
-        '[this site]',
-        '(this site)',
-        '{this site}'
+    expectEveryCombinationOfBrackets({
+      brackets: [
+        { open: '(', close: ')' },
+        { open: '[', close: ']' },
+        { open: '{', close: '}' }
       ],
-      secondHalves: [
-        '[https://stackoverflow.com]',
-        '(https://stackoverflow.com)',
-        '{https://stackoverflow.com}'
-      ],
+      firstPart: 'this site',
+      secondPart: 'https://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
