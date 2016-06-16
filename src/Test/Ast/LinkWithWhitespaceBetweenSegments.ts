@@ -26,7 +26,7 @@ describe('Bracketed text, followed by whitespace, followed by another instance o
 
 
 describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with a scheme other than "http://" or "https://")', () => {
-  it('does not produce a link node, because of the whitespace in the URL', () => {
+  it('does not produce a link node', () => {
     expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
