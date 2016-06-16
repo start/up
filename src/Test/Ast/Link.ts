@@ -25,7 +25,7 @@ describe('Bracketed text immediately followed by another instance of bracketed t
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
-        ], 'https://stackoverflow.com'),
+        ], 'https://stackoverflow.com')
       ])
     })
   })
@@ -41,7 +41,7 @@ describe('Bracketed text immediately followed by another instance of bracketed t
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
-        ], 'https://stackoverflow.com'),
+        ], 'https://stackoverflow.com')
       ])
     })
   })
@@ -50,21 +50,14 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 
 describe('Bracketed text immediately followed by another instance of bracketed text starting with a slash', () => {
   it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
-    expectEveryCombinationOf({
-      firstHalves: [
-        '[this site]',
-        '(this site)',
-        '{this site}'
-      ],
-      secondHalves: [
-        '[/some-page]',
-        '(/some-page)',
-        '{/some-page}'
-      ],
+    expectEveryCombinationOfBrackets({
+      brackets: linkBrackets,
+      firstPartToWrapInBrackets: 'this site',
+      secondPartToWrapInBrackets: '/some-page',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
-        ], '/some-page'),
+        ], '/some-page')
       ])
     })
   })
@@ -73,21 +66,14 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 
 describe('Bracketed text immediately followed by another instance of bracketed text starting with a fragment identifier ("#")', () => {
   it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
-    expectEveryCombinationOf({
-      firstHalves: [
-        '[this site]',
-        '(this site)',
-        '{this site}'
-      ],
-      secondHalves: [
-        '[#some-page]',
-        '(#some-page)',
-        '{#some-page}'
-      ],
+    expectEveryCombinationOfBrackets({
+      brackets: linkBrackets,
+      firstPartToWrapInBrackets: 'this site',
+      secondPartToWrapInBrackets: '#some-page',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
-        ], '#some-page'),
+        ], '#some-page')
       ])
     })
   })
@@ -95,22 +81,15 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 
 
 describe('Bracketed text immediately followed by another instance of bracketed text with a URL scheme other than "http://" or "https://"', () => {
-  it("produces a link node with its URL preserved", () => {
-    expectEveryCombinationOf({
-      firstHalves: [
-        '[email me]',
-        '(email me)',
-        '{email me}'
-      ],
-      secondHalves: [
-        '[mailto:daniel@wants.email]',
-        '(mailto:daniel@wants.email)',
-        '{mailto:daniel@wants.email}'
-      ],
+  it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+    expectEveryCombinationOfBrackets({
+      brackets: linkBrackets,
+      firstPartToWrapInBrackets: 'email me',
+      secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('email me')
-        ], 'mailto:daniel@wants.email'),
+        ], 'mailto:daniel@wants.email')
       ])
     })
   })
@@ -118,22 +97,16 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 
 
 describe('Bracketed text, followed by any whitespace, followed by another instance of bracketed text (containing no whitespace and starting with "http://" or "https://")', () => {
-  it("produces a link node", () => {
-    expectEveryCombinationOf({
-      firstHalves: [
-        '[this site]  ',
-        '(this site) \t',
-        '{this site}     '
-      ],
-      secondHalves: [
-        '[https://stackoverflow.com]',
-        '(https://stackoverflow.com)',
-        '{https://stackoverflow.com}'
-      ],
+  it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+    expectEveryCombinationOfBrackets({
+      brackets: linkBrackets,
+      firstPartToWrapInBrackets: 'this site',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: 'https://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
-        ], 'https://stackoverflow.com'),
+        ], 'https://stackoverflow.com')
       ])
     })
   })
