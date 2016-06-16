@@ -6,7 +6,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-describe('Bracketed/parenthesized text starting with "audio:" followed by a bracketed/parenthesized URL', () => {
+describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
   it('produces an audio node with the description and URL', () => {
     expect(Up.toAst('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -29,7 +29,7 @@ describe('An audio convention that is the only convention on its line', () => {
 
 
 describe('Bracketed text starting with "audio:" immediately followed by another instance of bracketed text', () => {
-  it("produces an audio node. The first bracketed text is the audio's description, and the second is the URL. The type of bracket surrounding the description can be different from the type of bracket surrounding the URL", () => {
+  it("produces an audio node. The type of bracket enclosing the description can be different from the type of bracket enclosing the URL", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'audio: ghostly howling',
       secondPartToWrapInBrackets: 'http://example.com/ghosts.ogg',
