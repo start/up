@@ -9,16 +9,19 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
+const linkBrackets = [
+  { open: '(', close: ')' },
+  { open: '[', close: ']' },
+  { open: '{', close: '}' }
+]
+
+
 describe('Bracketed text immediately followed by another instance of bracketed text', () => {
   it("produces a link node. The first bracketed text is the link's contents, and the second is the URL. The type of bracket surrounding the text can be different from the type of bracket surrounding the URL", () => {
     expectEveryCombinationOfBrackets({
-      brackets: [
-        { open: '(', close: ')' },
-        { open: '[', close: ']' },
-        { open: '{', close: '}' }
-      ],
-      firstPart: 'this site',
-      secondPart: 'https://stackoverflow.com',
+      brackets: linkBrackets,
+      firstPartToWrapInBrackets: 'this site',
+      secondPartToWrapInBrackets: 'https://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
@@ -31,17 +34,10 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 
 describe('Bracketed text immediately followed by another instance of bracketed text with no URL scheme', () => {
   it("produces a link node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
-    expectEveryCombinationOf({
-      firstHalves: [
-        '[this site]',
-        '(this site)',
-        '{this site}'
-      ],
-      secondHalves: [
-        '[stackoverflow.com]',
-        '(stackoverflow.com)',
-        '{stackoverflow.com}'
-      ],
+    expectEveryCombinationOfBrackets({
+      brackets: linkBrackets,
+      firstPartToWrapInBrackets: 'this site',
+      secondPartToWrapInBrackets: 'stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')

@@ -30,22 +30,24 @@ export function expectEveryCombinationOf(
 
 export function expectEveryCombinationOfBrackets(
   args: {
-    brackets: Bracket[]
-    firstPart: string,
-    partsToPutInBetween?: string[],
-    secondPart: string,
+    brackets: Bracket[],
+    secondPartBrackets?: Bracket[]
+    firstPartToWrapInBrackets: string
+    partsToPutInBetween?: string[]
+    secondPartToWrapInBrackets: string
     toProduce: DocumentNode
   }) {
-  const { brackets, firstPart, secondPart, toProduce } = args
+  const { brackets, firstPartToWrapInBrackets, secondPartToWrapInBrackets, toProduce } = args
   const partsToPutInBetween = args.partsToPutInBetween || ['']
+  const secondPartBrackets = args.secondPartBrackets || brackets
 
   for (const bracketForFirstPart of brackets) {
-    for (const bracketForSecondPart of brackets) {
+    for (const bracketForSecondPart of secondPartBrackets) {
       for (const partToPutInBetween of partsToPutInBetween) {
         const text =
-          wrapInBracket(firstPart, bracketForFirstPart)
+          wrapInBracket(firstPartToWrapInBrackets, bracketForFirstPart)
           + partToPutInBetween
-          + wrapInBracket(secondPart, bracketForSecondPart)
+          + wrapInBracket(secondPartToWrapInBrackets, bracketForSecondPart)
 
         expect(Up.toAst(text)).to.be.eql(toProduce)
       }
