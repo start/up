@@ -9,8 +9,22 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
+describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
+  it("produces a link node. The first bracketed text is treated as the link's contents, and the second is treated as the link's URL", () => {
+    expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com'),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
 describe('Bracketed text immediately followed by another instance of bracketed text', () => {
-  it("produces a link node. The first bracketed text is the link's contents, and the second is the URL. The type of bracket surrounding the contents can be different from the type of bracket surrounding the URL", () => {
+  it("produces a link node regardless of the type of bracket enclosing the content and the type of bracket enclosing the URL", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
       secondPartToWrapInBrackets: 'http://stackoverflow.com',
