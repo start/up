@@ -80,6 +80,19 @@ describe('Bracketed text starting with "audio:" immediately followed by another 
 })
 
 
+describe("An audio convention's URL", () => {
+  it("can contain spaces, assuming the bracketed URL directly follows the bracketed description", () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'audio: ghostly howling',
+      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.ogg',
+      toProduce: new DocumentNode([
+        new AudioNode('ghostly howling', 'http://example.com/scary ghosts.ogg')
+      ])
+    })
+  })
+})
+
+
 describe('An audio description (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toAst('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.be.eql(
