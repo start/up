@@ -81,7 +81,7 @@ describe('Bracketed text starting with "audio:" immediately followed by another 
 
 
 describe('An audio description (enclosed in parentheses)', () => {
-  it('can contain matching square brackets', () => {
+  it('can contain matching parentheses', () => {
     expect(Up.toAst('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.be.eql(
       new DocumentNode([
         new AudioNode('(ghostly) howling', 'http://example.com/?state=NE'),

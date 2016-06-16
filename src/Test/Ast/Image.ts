@@ -66,6 +66,40 @@ describe('An image description (enclosed in square brackets)', () => {
 })
 
 
+describe('An image description (enclosed by parentheses)', () => {
+  it('can contain matching parenthes\es', () => {
+    expect(Up.toAst('(image: ghosts eating (luggage))[http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghosts eating (luggage)', 'http://example.com/?state=NE'),
+      ]))
+  })
+
+  it('can contain nested matching parentheses', () => {
+    expect(Up.toAst('(image: (ghosts (eating)) ((luggage)))[http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('(ghosts (eating)) ((luggage))', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
+describe('An image description (enclosed by curly brackets)', () => {
+  it('can contain matching curly brackets', () => {
+    expect(Up.toAst('{image: ghosts eating {luggage}}[http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghosts eating {luggage}', 'http://example.com/?state=NE'),
+      ]))
+  })
+
+  it('can contain nested matching curly brackets', () => {
+    expect(Up.toAst('{image: {ghosts {eating}} {{luggage}}}[http://example.com/?state=NE]')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('{ghosts {eating}} {{luggage}}', 'http://example.com/?state=NE'),
+      ]))
+  })
+})
+
+
 describe('An image URL (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toAst('(image: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.be.eql(
