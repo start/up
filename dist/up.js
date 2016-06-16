@@ -695,6 +695,13 @@ var Tokenizer = (function () {
                 });
             }
         }); });
+        this.onLinkClose = function () {
+            var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
+            var originalEndToken = CollectionHelpers_1.last(_this.tokens);
+            originalEndToken.value = url;
+            originalEndToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
+            originalEndToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
+        };
         this.consumer = new InlineTextConsumer_1.InlineTextConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -1046,15 +1053,8 @@ var Tokenizer = (function () {
             ],
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
-            onClose: function () { _this.onLinkClose(); }
+            onClose: _this.onLinkClose
         }); });
-    };
-    Tokenizer.prototype.onLinkClose = function () {
-        var url = this.applyConfigSettingsToUrl(this.flushBuffer());
-        var originalEndToken = CollectionHelpers_1.last(this.tokens);
-        originalEndToken.value = url;
-        originalEndToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
-        originalEndToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
     };
     Tokenizer.prototype.getLinkifyingUrlConventions = function () {
         var _this = this;

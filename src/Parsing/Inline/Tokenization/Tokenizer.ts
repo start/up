@@ -593,11 +593,11 @@ export class Tokenizer {
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
 
-      onClose: () => { this.onLinkClose() }
+      onClose: this.onLinkClose
     }))
   }
 
-  private onLinkClose(): void {
+  private onLinkClose = () => {
     const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
     // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
