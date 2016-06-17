@@ -158,3 +158,19 @@ describe('Bracketed text, followed by whitespace, followed by another instance o
       ]))
   })
 })
+
+
+describe("A link's URL, when separated from its content by whitespace,", () => {
+  it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'this search',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: 'https://stackoverflow.com/search=see\\ plus\\ plus',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('this search')
+        ], 'https://stackoverflow.com/search=see plus plus')
+      ])
+    })
+  })
+})
