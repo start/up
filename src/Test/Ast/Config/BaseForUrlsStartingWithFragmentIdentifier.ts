@@ -5,6 +5,8 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -67,6 +69,36 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode('Blue Sky meth')
+          ], 'https://example.com/page#wiki/Blue_Sky')
+        ])
+      ])
+    )
+  })
+
+  it('is prefixed to linkified NSFW URLs that start with a hash mark', () => {
+    const text = 'Walter White produces [NSFW: Blue Sky meth](#wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new NsfwNode([
+          new LinkNode([
+            new PlainTextNode('Blue Sky meth')
+          ], 'https://example.com/page#wiki/Blue_Sky')
+        ])
+      ])
+    )
+  })
+
+  it('is prefixed to linkified NSFL URLs that start with a hash mark', () => {
+    const text = 'Walter White produces [NSFL: Blue Sky meth](#wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new NsflNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')

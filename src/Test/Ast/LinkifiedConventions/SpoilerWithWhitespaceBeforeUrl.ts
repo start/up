@@ -14,7 +14,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
   context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
     specify('we assume the author did not indent to produce a link, so the spoiler node is not linkified', () => {
-      expect(Up.toAst('[spoiler: something terrible] (really)')).to.be.eql(
+      expect(Up.toAst('[SPOILER: something terrible] (really)')).to.be.eql(
         insideDocumentAndParagraph([
           new SpoilerNode([
             new PlainTextNode('something terrible')
@@ -31,7 +31,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
   context('More specifically, the URL must satisfy one of the following conditions:', () => {
     specify('it has a scheme', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'spoiler: something terrible',
+        firstPartToWrapInBrackets: 'SPOILER: something terrible',
         partsToPutInBetween: ['  ', '\t', ' \t '],
         secondPartToWrapInBrackets: 'app:wiki/terrible-thing',
         toProduce: insideDocumentAndParagraph([
@@ -47,7 +47,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
     describe('When the URL has a scheme, the URL', () => {
       it('must not contain any spaces', () => {
-        expect(Up.toAst('[spoiler: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
+        expect(Up.toAst('[SPOILER: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
           insideDocumentAndParagraph([
             new SpoilerNode([
               new PlainTextNode('something terrible')
@@ -66,7 +66,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
       it('can consisting solely of digits after the scheme', () => {
         expectEveryCombinationOfBrackets({
-          firstPartToWrapInBrackets: 'spoiler: spooky phone call',
+          firstPartToWrapInBrackets: 'SPOILER: spooky phone call',
           partsToPutInBetween: ['  ', '\t', ' \t '],
           secondPartToWrapInBrackets: 'tel:5555555555',
           toProduce: insideDocumentAndParagraph([
@@ -83,7 +83,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
     specify('it starts with a slash', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'spoiler: something terrible',
+        firstPartToWrapInBrackets: 'SPOILER: something terrible',
         partsToPutInBetween: ['  ', '\t', ' \t '],
         secondPartToWrapInBrackets: '/wiki/something-terrible',
         toProduce: insideDocumentAndParagraph([
@@ -99,7 +99,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
     describe('When the URL starts with a slash, the URL', () => {
       it('must not contain any spaces', () => {
-        expect(Up.toAst('[spoiler: something terrible] (/r9k/ created it)')).to.be.eql(
+        expect(Up.toAst('[SPOILER: something terrible] (/r9k/ created it)')).to.be.eql(
           insideDocumentAndParagraph([
             new SpoilerNode([
               new PlainTextNode('something terrible')
@@ -114,7 +114,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
       specify('can consist solely of digits after the slash', () => {
         expectEveryCombinationOfBrackets({
-          firstPartToWrapInBrackets: 'spoiler: Model 3 theft',
+          firstPartToWrapInBrackets: 'SPOILER: Model 3 theft',
           partsToPutInBetween: ['  ', '\t', ' \t '],
           secondPartToWrapInBrackets: '/3',
           toProduce: insideDocumentAndParagraph([
@@ -131,7 +131,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
     specify('it starts with a hash mark ("#")', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'spoiler: something terrible',
+        firstPartToWrapInBrackets: 'SPOILER: something terrible',
         partsToPutInBetween: ['  ', '\t', ' \t '],
         secondPartToWrapInBrackets: '#wiki/something-terrible',
         toProduce: insideDocumentAndParagraph([
@@ -147,7 +147,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 
     describe('When the URL starts with a hash mark ("#"), the URL', () => {
       it('must not otherwise consist solely of digits', () => {
-        expect(Up.toAst('[spoiler: something terrible] (#14)')).to.be.eql(
+        expect(Up.toAst('[SPOILER: something terrible] (#14)')).to.be.eql(
           insideDocumentAndParagraph([
             new SpoilerNode([
               new PlainTextNode('something terrible')
@@ -161,7 +161,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
       })
 
       it('must not contain any spaces', () => {
-        expect(Up.toAst('[spoiler: something terrible] (#starcraft2 was never trending)')).to.be.eql(
+        expect(Up.toAst('[SPOILER: something terrible] (#starcraft2 was never trending)')).to.be.eql(
           insideDocumentAndParagraph([
             new SpoilerNode([
               new PlainTextNode('something terrible')
@@ -181,7 +181,7 @@ context('A linkified s can have whitespace between itself and its bracketed URL 
 describe("A spoiler's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'spoiler: something terrible',
+      firstPartToWrapInBrackets: 'SPOILER: something terrible',
       partsToPutInBetween: ['  ', '\t', ' \t '],
       secondPartToWrapInBrackets: 'https://stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
