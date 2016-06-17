@@ -28,52 +28,69 @@ describe('A video that is the only convention on its line', () => {
 })
 
 
-describe('Bracketed text starting with "video:" immediately followed by another instance of bracketed text', () => {
-  it("produces a video node. The type of bracket enclosing the description can be different from the type of bracket enclosing the URL", () => {
+describe("The brackets enclosing a video convention's description and URL", () => {
+  it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghosts eating luggage',
-      secondPartToWrapInBrackets: 'http://example.com/hauntedhouse.webm',
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
       toProduce: new DocumentNode([
-        new VideoNode('ghosts eating luggage', 'http://example.com/hauntedhouse.webm')
+        new VideoNode('ghostly howling', 'http://example.com/ghosts.svg')
       ])
     })
   })
 })
 
 
-describe('Bracketed text starting with "video:" immediately followed by another instance of bracketed text with no URL scheme', () => {
-  it("produces a video node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
+describe("A video convention", () => {
+  it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghosts eating luggage',
-      secondPartToWrapInBrackets: 'example.com/hauntedhouse.ogg',
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
       toProduce: new DocumentNode([
-        new VideoNode('ghosts eating luggage', 'https://example.com/hauntedhouse.ogg')
+        new VideoNode('ghostly howling', 'http://example.com/ghosts.svg')
       ])
     })
   })
 })
 
 
-describe('Bracketed text starting with "video:" immediately followed by another instance of bracketed text starting with a slash', () => {
-  it('produces a video node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
+describe('A video URL with no URL scheme', () => {
+  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghosts eating luggage',
-      secondPartToWrapInBrackets: '/hauntedhouse.webm',
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'example.com/ghosts.svg',
       toProduce: new DocumentNode([
-        new VideoNode('ghosts eating luggage', '/hauntedhouse.webm')
+        new VideoNode('ghostly howling', 'https://example.com/ghosts.svg')
       ])
     })
   })
 })
 
 
-describe('Bracketed text starting with "video:" immediately followed by another instance of bracketed text starting with a fragment identifier ("#")', () => {
-  it('produces a video node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+describe('A video URL starting with a slash', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghosts eating luggage',
-      secondPartToWrapInBrackets: '#hauntedhouse.webm',
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: '/howling.svg',
       toProduce: new DocumentNode([
-        new VideoNode('ghosts eating luggage', '#hauntedhouse.webm')
+        new VideoNode('ghostly howling', '/howling.mp3')
+      ])
+    })
+  })
+})
+
+
+describe('A video URL starting with a fragment identifier ("#")', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: '#howling.mp3',
+      toProduce: new DocumentNode([
+        new VideoNode('ghostly howling', '#howling.mp3')
       ])
     })
   })
@@ -81,12 +98,27 @@ describe('Bracketed text starting with "video:" immediately followed by another 
 
 
 describe("A video convention's URL", () => {
-  it("can contain spaces, assuming the bracketed URL directly follows the bracketed description", () => {
+  it("can contain spaces", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghosts eating luggage',
-      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.webm',
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.svg',
       toProduce: new DocumentNode([
-        new VideoNode('ghosts eating luggage', 'http://example.com/scary ghosts.webm')
+        new VideoNode('ghostly howling', 'http://example.com/scary ghosts.svg')
+      ])
+    })
+  })
+})
+
+
+describe("A video convention's URL", () => {
+  it("does not need to have an extension", () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'video: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/ghosts',
+      toProduce: new DocumentNode([
+        new VideoNode('ghostly howling', 'http://example.com/ghosts')
       ])
     })
   })
