@@ -669,14 +669,6 @@ var COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.NSFL_CONVENTION,
     RichConventions_1.FOOTNOTE_CONVENTION
 ];
-var PARENTHESIS = new Bracket_1.Bracket('(', ')');
-var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
-var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
-var BRACKETS = [
-    PARENTHESIS,
-    SQUARE_BRACKET,
-    CURLY_BRACKET
-];
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -1203,13 +1195,21 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
-var URL_SLASH = '/';
-var URL_HASHMARK = '#';
 var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.optional('//');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
-var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
+var URL_SLASH = '/';
+var URL_HASHMARK = '#';
 var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASHMARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
+var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
+var PARENTHESIS = new Bracket_1.Bracket('(', ')');
+var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
+var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
+var BRACKETS = [
+    PARENTHESIS,
+    SQUARE_BRACKET,
+    CURLY_BRACKET
+];
 
 },{"../../../CollectionHelpers":1,"../../../PatternHelpers":35,"../../../PatternPieces":36,"../MediaConventions":3,"../RichConventions":5,"./Bracket":6,"./ConventionContext":7,"./FailedConventionTracker":8,"./InlineTextConsumer":9,"./RaisedVoiceHandler":10,"./Token":12,"./TokenKind":13,"./TokenizerSnapshot":15,"./insertBracketsInsideBracketedConventions":16,"./nestOverlappingConventions":17}],15:[function(require,module,exports){
 "use strict";

@@ -41,24 +41,6 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
 ]
 
 
-// Many of our conventions rely on brackets. Here they are!
-
-const PARENTHESIS =
-  new Bracket('(', ')')
-
-const SQUARE_BRACKET =
-  new Bracket('[', ']')
-
-const CURLY_BRACKET =
-  new Bracket('{', '}')
-
-const BRACKETS = [
-  PARENTHESIS,
-  SQUARE_BRACKET,
-  CURLY_BRACKET
-]
-
-
 export class Tokenizer {
   tokens: Token[] = []
 
@@ -476,7 +458,7 @@ export class Tokenizer {
       || this.bufferCurrentChar())
   }
 
-  // This method always returns true, which allows us to cleanly chain it with other boolean tokenizer methods. 
+  // This method always returns true to allow us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
     this.buffer += this.consumer.currentChar
     this.consumer.advanceTextIndex(1)
@@ -678,6 +660,8 @@ export class Tokenizer {
 
       insteadOfTryingToCloseOuterContexts: (context) => {
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
+          // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
+          // backtrack.
           this.backtrackToBeforeContext(context)
           return
         }
@@ -713,7 +697,7 @@ export class Tokenizer {
   }
 
   // For more information about the purpose of this method, see the comment for
-  // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL` at the top of this file.
+  // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL`.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
@@ -849,26 +833,49 @@ export class Tokenizer {
 }
 
 
-const URL_SLASH =
-  '/'
-  
-const URL_HASHMARK =
-  '#'
-
 const URL_SCHEME_NAME =
   LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
 
 const URL_SCHEME =
   URL_SCHEME_NAME + ':' + optional('//')
 
+// Checking for a URL scheme is important when:
+//
+// 1. Applying URL config settings
+// 2. Determining whether a bracketed URL is actually a URL
+//
+// Naked URLs don't use this pattern. They must only start with "http://"" or "https://".
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
+
+// For the same two reasons, it's important for us to determine whether a URL starts with a slash or a
+// hashmark.
+const URL_SLASH = '/'
+const URL_HASHMARK = '#'
+
+// We don't assume URL hashmarks like "#10" were intended to be URLs. For more information, see the comments
+// for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method
+const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
+  new RegExp(
+    solely(URL_HASHMARK + atLeast(1, DIGIT)))
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
-// For more information, see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions`
-// method. In short, we don't assume URL hashmarks like "#10" were intended to be URLs. 
-const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
-  new RegExp(
-    solely(URL_HASHMARK + atLeast(1, DIGIT)))
+
+// Many of our conventions rely on brackets. Here they are!
+
+const PARENTHESIS =
+  new Bracket('(', ')')
+
+const SQUARE_BRACKET =
+  new Bracket('[', ']')
+
+const CURLY_BRACKET =
+  new Bracket('{', '}')
+
+const BRACKETS = [
+  PARENTHESIS,
+  SQUARE_BRACKET,
+  CURLY_BRACKET
+]
