@@ -9,10 +9,6 @@ function concat(collections) {
     var _a;
 }
 exports.concat = concat;
-function contains(items, item) {
-    return (items.indexOf(item) !== -1);
-}
-exports.contains = contains;
 function reversed(items) {
     return items.slice().reverse();
 }
@@ -907,8 +903,7 @@ var Tokenizer = (function () {
         this.tokens.push(endToken);
     };
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
-        return CollectionHelpers_1.reversed(this.openContexts)
-            .some(function (context) { return context.doInsteadOfTryingToOpenUsualContexts(); });
+        return CollectionHelpers_1.reversed(this.openContexts).some(function (context) { return context.doInsteadOfTryingToOpenUsualContexts(); });
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         var _this = this;

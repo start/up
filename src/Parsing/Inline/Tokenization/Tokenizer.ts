@@ -9,7 +9,7 @@ import { MediaConvention } from '../MediaConvention'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { OnTextMatch } from './OnTextMatch'
-import { last, concat, contains, reversed } from '../../../CollectionHelpers'
+import { last, concat, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
@@ -410,8 +410,7 @@ export class Tokenizer {
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
-    return reversed(this.openContexts)
-      .some(context => context.doInsteadOfTryingToOpenUsualContexts())
+    return reversed(this.openContexts).some(context => context.doInsteadOfTryingToOpenUsualContexts())
   }
 
   private tryToOpenAnyConvention(): boolean {
