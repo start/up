@@ -609,7 +609,7 @@ export class Tokenizer {
       case URL_SLASH:
         return this.config.settings.baseForUrlsStartingWithSlash + url
 
-      case URL_FRAGMENT_IDENTIFIER:
+      case URL_HASHMARK:
         return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url
     }
 
@@ -656,17 +656,19 @@ export class Tokenizer {
   // 1. First, the URL must either:
   //    * Have a scheme (like "mailto:" or "https://")
   //    * Start with a slash
-  //    * Start with a fragment identifier ("#")
+  //    * Start with a URL hashmark ("#")
   //
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
-  // 3. Third, if the URL starts with a fragment identifier, it must not otherwise consist solely of
-  //    digits.
+  // 3. Third, if the URL starts with a URL hashmark, it must not otherwise consist solely of digits.
   private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(
         SOME_WHITESPACE + bracket.startPattern + capture(
-          either(URL_SCHEME, URL_SLASH, URL_FRAGMENT_IDENTIFIER))),
+          either(
+            URL_SCHEME,
+            URL_SLASH,
+            URL_HASHMARK))),
 
       endPattern: regExpStartingWith(bracket.endPattern),
 
@@ -688,7 +690,8 @@ export class Tokenizer {
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN.test(url)) {
+        if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+          // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
         }
@@ -848,13 +851,15 @@ export class Tokenizer {
 
 const URL_SLASH =
   '/'
-
-const URL_FRAGMENT_IDENTIFIER =
+  
+const URL_HASHMARK =
   '#'
 
-const URL_SCHEME =
+const URL_SCHEME_NAME =
   LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
-  + ':' + optional('//')
+
+const URL_SCHEME =
+  URL_SCHEME_NAME + ':' + optional('//')
 
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
@@ -862,6 +867,8 @@ const URL_SCHEME_PATTERN =
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
-const NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN =
+// For more information, see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions`
+// method. In short, we don't assume URL hashmarks like "#10" were intended to be URLs. 
+const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
   new RegExp(
-    solely(URL_FRAGMENT_IDENTIFIER + atLeast(1, DIGIT)))
+    solely(URL_HASHMARK + atLeast(1, DIGIT)))

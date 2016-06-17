@@ -68,7 +68,7 @@ describe('A link URL starting with a slash', () => {
 })
 
 
-describe('A link URL starting with a fragment identifier ("#")', () => {
+describe('A link URL starting with a URL hashmark ("#")', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
