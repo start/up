@@ -23,8 +23,8 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text, 
 })
 
 
-describe('Bracketed text immediately followed by another instance of bracketed text', () => {
-  it("produces a link node regardless of the type of bracket enclosing the content and the type of bracket enclosing the URL", () => {
+describe("The brackets enclosing a link's description and URL", () => {
+  it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
       secondPartToWrapInBrackets: 'http://stackoverflow.com',
@@ -38,8 +38,8 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 })
 
 
-describe('Bracketed text immediately followed by another instance of bracketed text with no URL scheme', () => {
-  it("produces a link node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
+describe('A link URL with no scheme', () => {
+  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
       secondPartToWrapInBrackets: 'stackoverflow.com',
@@ -53,8 +53,8 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 })
 
 
-describe('Bracketed text immediately followed by another instance of bracketed text starting with a slash', () => {
-  it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
+describe('A link URL starting with a slash', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
       secondPartToWrapInBrackets: '/some-page',
@@ -68,8 +68,8 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 })
 
 
-describe('Bracketed text immediately followed by another instance of bracketed text starting with a fragment identifier ("#")', () => {
-  it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+describe('A link URL starting with a fragment identifier ("#")', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this site',
       secondPartToWrapInBrackets: '#some-page',
@@ -83,8 +83,8 @@ describe('Bracketed text immediately followed by another instance of bracketed t
 })
 
 
-describe('Bracketed text immediately followed by another instance of bracketed text with a URL scheme other than "http://" or "https://"', () => {
-  it('produces a link whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+describe('A link URL with a URL scheme other than "http://" or "https://"', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'email me',
       secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
