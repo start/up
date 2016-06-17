@@ -9,99 +9,86 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with "http://" or "https://")', () => {
-  it('produces a link node', () => {
-    expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'this site',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'https://stackoverflow.com',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
-        ], 'https://stackoverflow.com')
-      ])
+context('A link can have whitespace between its bracketed content and bracketed URL if its URL contains no whitespace.', () => {
+  context('Additionally, the URL must satisfy one of the following conditions:', () => {
+    context('It has a scheme', () => {
+      expectEveryCombinationOfBrackets({
+        firstPartToWrapInBrackets: 'email me',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('email me')
+          ], 'mailto:daniel@wants.email')
+        ])
+      })
+
+      it('even when otherwise consisting solely of digits', () => {
+        expectEveryCombinationOfBrackets({
+          firstPartToWrapInBrackets: 'call me',
+          partsToPutInBetween: ['  ', '\t', ' \t '],
+          secondPartToWrapInBrackets: 'tel:5555555555',
+          toProduce: insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('call me')
+            ], 'tel:5555555555')
+          ])
+        })
+      })
     })
-  })
-})
 
+    context('It starts with a slash', () => {
+      expectEveryCombinationOfBrackets({
+        firstPartToWrapInBrackets: 'Chrono Trigger',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        secondPartToWrapInBrackets: '/wiki/chrono-trigger',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('Chrono Trigger')
+          ], '/wiki/chrono-trigger')
+        ])
+      })
 
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a URL scheme other than "http://" or "https://")', () => {
-  it('produces a link node', () => {
-    expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'email me',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('email me')
-        ], 'mailto:daniel@wants.email')
-      ])
+      specify('even when otherwise consisting solely of digits', () => {
+        expectEveryCombinationOfBrackets({
+          firstPartToWrapInBrackets: 'Model 3',
+          partsToPutInBetween: ['  ', '\t', ' \t '],
+          secondPartToWrapInBrackets: '/3',
+          toProduce: insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('Model 3')
+            ], '/3')
+          ])
+        })
+      })
     })
-  })
-})
 
+    context('It starts with a fragment identifier ("#")', () => {
+      expectEveryCombinationOfBrackets({
+        firstPartToWrapInBrackets: 'Chrono Trigger',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        secondPartToWrapInBrackets: '#wiki/chrono-trigger',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('Chrono Trigger')
+          ], '#wiki/chrono-trigger')
+        ])
+      })
 
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a slash")', () => {
-  it('produces a link node', () => {
-    expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'Model 3',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '/3',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Model 3')
-        ], '/3')
-      ])
+      specify('and does not otherwise consist solely of digits', () => {
+        expect(Up.toAst('[sic] (#14)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new PlainTextNode('[sic]')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(#14)')
+            ]),
+          ])
+        )
+      })
     })
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (starting with a slash and otherwise containing only digits")', () => {
-  it('produces a link node', () => {
-    expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '/wiki/chrono-trigger',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Trigger')
-        ], '/wiki/chrono-trigger')
-      ])
-    })
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a fragment identifier ("#")', () => {
-  it('produces a link node', () => {
-    expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '#wiki/chrono-trigger',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Trigger')
-        ], '#wiki/chrono-trigger')
-      ])
-    })
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (starting with a fragment identifier ("#") and otherwise containing only digits', () => {
-  it('does not produce a link node', () => {
-    expect(Up.toAst('[sic] (#14)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[sic]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('(#14)')
-        ]),
-      ])
-    )
   })
 })
 
