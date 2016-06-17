@@ -202,7 +202,7 @@ export class Tokenizer {
       const context = this.openContexts.pop()
 
       if (!context.resolveWhenLeftUnclosed()) {
-        this.resetToBeforeContext(context)
+        this.backtrackToBeforeContext(context)
         return false
       }
     }
@@ -316,7 +316,7 @@ export class Tokenizer {
     if (!couldTransform) {
       // We couldn't transform, so it's time to fail.
       this.openContexts.splice(contextIndex)
-      this.resetToBeforeContext(context)
+      this.backtrackToBeforeContext(context)
 
       return false
     }
@@ -391,6 +391,23 @@ export class Tokenizer {
   private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
     return reversed(this.openContexts)
       .some(context => context.doInsteadOfTryingToOpenUsualContexts())
+  }
+
+  private tryToFailAnyConvention(): boolean {
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
+      const failurePattern = context.convention.failIfContains
+
+      if (!failurePattern || !failurePattern.test(this.consumer.remainingText)) {
+        continue
+      }
+
+      // Welp, we've failed this convention. Let's backtrack.
+      this.backtrackToBeforeContext(context)
+      return true
+    }
+
+    return false
   }
 
   private tryToOpenAnyConvention(): boolean {
@@ -505,7 +522,7 @@ export class Tokenizer {
     )
   }
 
-  private resetToBeforeContext(context: ConventionContext): void {
+  private backtrackToBeforeContext(context: ConventionContext): void {
     this.failedConventionTracker.registerFailure(context)
 
     const { snapshot } = context

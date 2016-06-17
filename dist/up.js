@@ -778,7 +778,7 @@ var Tokenizer = (function () {
         while (this.openContexts.length) {
             var context_1 = this.openContexts.pop();
             if (!context_1.resolveWhenLeftUnclosed()) {
-                this.resetToBeforeContext(context_1);
+                this.backtrackToBeforeContext(context_1);
                 return false;
             }
         }
@@ -853,7 +853,7 @@ var Tokenizer = (function () {
         var couldTransform = context.convention.onCloseFailIfCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
         if (!couldTransform) {
             this.openContexts.splice(contextIndex);
-            this.resetToBeforeContext(context);
+            this.backtrackToBeforeContext(context);
             return false;
         }
         context.convention = this.openContexts.pop().convention;
@@ -904,6 +904,18 @@ var Tokenizer = (function () {
     Tokenizer.prototype.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts = function () {
         return CollectionHelpers_1.reversed(this.openContexts)
             .some(function (context) { return context.doInsteadOfTryingToOpenUsualContexts(); });
+    };
+    Tokenizer.prototype.tryToFailAnyConvention = function () {
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            var context_2 = this.openContexts[i];
+            var failurePattern = context_2.convention.failIfContains;
+            if (!failurePattern || !failurePattern.test(this.consumer.remainingText)) {
+                continue;
+            }
+            this.backtrackToBeforeContext(context_2);
+            return true;
+        }
+        return false;
     };
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         var _this = this;
@@ -984,7 +996,7 @@ var Tokenizer = (function () {
         return (!this.failedConventionTracker.hasFailed(convention, textIndex)
             && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind)));
     };
-    Tokenizer.prototype.resetToBeforeContext = function (context) {
+    Tokenizer.prototype.backtrackToBeforeContext = function (context) {
         this.failedConventionTracker.registerFailure(context);
         var snapshot = context.snapshot;
         this.tokens = snapshot.tokens;

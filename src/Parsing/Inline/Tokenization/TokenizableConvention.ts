@@ -16,6 +16,8 @@ export interface TokenizableConvention {
   
   insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
   insteadOfTryingToOpenUsualConventions?: PerformConventionSpecificTasks
+
+  failIfContains?: RegExp
   
   leaveEndPatternForAnotherConventionToConsume?: boolean
   closeInnerContextsWhenClosing?: boolean
