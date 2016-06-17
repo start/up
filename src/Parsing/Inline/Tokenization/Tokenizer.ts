@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, all, either, optional, exactly, capture } from '../../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, all, either, optional, atLeast, exactly, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
@@ -582,6 +582,12 @@ export class Tokenizer {
     return url
   }
 
+  // These conventions are for link URLs that directly follow linked content:
+  //
+  // You should try [Typescript](http://www.typescriptlang.org).
+  //
+  // We allow whitespace between a link's content and its URL, but that isn't handled by these
+  // conventions. For that, see `getLinkUrlSeparatedFromContentByWhitespaceConventions`.
   private getLinkUrlDirectlyFollowingContentConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
@@ -603,7 +609,19 @@ export class Tokenizer {
     }))
   }
 
-  private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
+  // Normally, a link's URL directly follows its content.
+  //
+  // However, if we're very sure that the author is intending to produce a link, we allow whitespace
+  // between the content and the URL:
+  //
+  // You should try [Typescript] (http://www.typescriptlang.org).
+  //
+  // To ensure the author is actually intending to produce a link, we apply two extra rules if there
+  // is any whitespace between a link's content and its URL:
+  //
+  // 1. The URL must not contain any unescaped whitespace.
+  // 2. If the URL starts with a fragment identifier ("#"), it must not consist solely of digits.
+  private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] { 
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(
         SOME_WHITESPACE + bracket.startPattern + capture(
@@ -620,10 +638,9 @@ export class Tokenizer {
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       insteadOfTryingToCloseOuterContexts: (context) => {
-        // To prevent unintended links, if a link's URL doesn't directly follow the link's contents,
-        // the URL cannot contain whitesapce. 
         if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
           this.backtrackToBeforeContext(context)
+          return
         }
 
         this.bufferRawText()
@@ -633,6 +650,12 @@ export class Tokenizer {
 
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+
+        if (NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN.test(url)) {
+          this.backtrackToBeforeContext(context)
+          return
+        }
+
         this.closeLink(url)
       }
     }))
@@ -834,3 +857,7 @@ const NAKED_URL_TERMINATOR_PATTERN =
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
+
+const NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN =
+  new RegExp(
+    solely(URL_FRAGMENT_IDENTIFIER + atLeast(1, DIGIT)))

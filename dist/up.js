@@ -1067,12 +1067,17 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function (context) {
                 if (WHITESPACE_CHAR_PATTERN.test(_this.consumer.currentChar)) {
                     _this.backtrackToBeforeContext(context);
+                    return;
                 }
                 _this.bufferRawText();
             },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
+                if (NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN.test(url)) {
+                    _this.backtrackToBeforeContext(context);
+                    return;
+                }
                 _this.closeLink(url);
             }
         }); });
@@ -1207,6 +1212,7 @@ var URL_SCHEME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var NAKED_URL_TERMINATOR_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR);
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
+var NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_FRAGMENT_IDENTIFIER + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
 
 },{"../../../CollectionHelpers":1,"../../../PatternHelpers":35,"../../../PatternPieces":36,"../MediaConventions":3,"../RichConventions":5,"./Bracket":6,"./ConventionContext":7,"./FailedConventionTracker":8,"./InlineTextConsumer":9,"./RaisedVoiceHandler":10,"./Token":12,"./TokenKind":13,"./TokenizerSnapshot":15,"./insertBracketsInsideBracketedConventions":16,"./nestOverlappingConventions":17}],15:[function(require,module,exports){
 "use strict";
