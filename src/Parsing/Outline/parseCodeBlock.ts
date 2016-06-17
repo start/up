@@ -31,5 +31,5 @@ export function parseCodeBlock(args: OutlineParserArgs): boolean {
 }
 
 
-const CODE_FENCE_PATTERN = new RegExp(
-  streakOf('`'))
+const CODE_FENCE_PATTERN =
+  new RegExp(streakOf('`'))

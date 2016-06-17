@@ -113,8 +113,8 @@ function getExplicitOrdinal(rawListItem: RawListItem): number {
 }
 
 
-const INTEGER_PATTERN = new RegExp(
-  capture(INTEGER))
+const INTEGER_PATTERN =
+  new RegExp(capture(INTEGER))
 
 const BULLET =
   either(
