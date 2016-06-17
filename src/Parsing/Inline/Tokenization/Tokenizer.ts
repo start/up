@@ -139,7 +139,7 @@ export class Tokenizer {
     })
 
     this.conventions.push(
-      ...this.getLinkUrlConventions())
+      ...this.getLinkUrlDirectlyFollowingContentConventions())
 
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
@@ -596,7 +596,7 @@ export class Tokenizer {
     return url
   }
 
-  private getLinkUrlConventions(): TokenizableConvention[] {
+  private getLinkUrlDirectlyFollowingContentConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
@@ -606,6 +606,26 @@ export class Tokenizer {
         TokenKind.SquareBracketedEnd,
         TokenKind.ActionEnd
       ],
+
+      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+      closeInnerContextsWhenClosing: true,
+
+      onClose: this.onLinkClose
+    }))
+  }
+
+  private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
+      startPattern: regExpStartingWith(ANY_WHITESPACE + bracket.startPattern + URL_SCHEME_PATTERN),
+      endPattern: regExpStartingWith(bracket.endPattern),
+
+      onlyOpenIfDirectlyFollowingTokenOfKind: [
+        TokenKind.ParenthesizedEnd,
+        TokenKind.SquareBracketedEnd,
+        TokenKind.ActionEnd
+      ],
+
+      failIfContains: regExpStartingWith(WHITESPACE_CHAR),
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,

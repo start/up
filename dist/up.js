@@ -728,7 +728,7 @@ var Tokenizer = (function () {
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
-        (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
+        (_c = this.conventions).push.apply(_c, this.getLinkUrlDirectlyFollowingContentConventions());
         (_d = this.conventions).push.apply(_d, this.getMediaDescriptionConventions());
         (_e = this.conventions).push.apply(_e, this.getLinkifyingUrlConventions());
         (_f = this.conventions).push.apply(_f, [
@@ -1053,7 +1053,7 @@ var Tokenizer = (function () {
         }
         return url;
     };
-    Tokenizer.prototype.getLinkUrlConventions = function () {
+    Tokenizer.prototype.getLinkUrlDirectlyFollowingContentConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
@@ -1063,6 +1063,22 @@ var Tokenizer = (function () {
                 TokenKind_1.TokenKind.SquareBracketedEnd,
                 TokenKind_1.TokenKind.ActionEnd
             ],
+            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
+            closeInnerContextsWhenClosing: true,
+            onClose: _this.onLinkClose
+        }); });
+    };
+    Tokenizer.prototype.getLinkUrlSeparatedFromContentByWhitespaceConventions = function () {
+        var _this = this;
+        return BRACKETS.map(function (bracket) { return ({
+            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE + bracket.startPattern + URL_SCHEME_PATTERN),
+            endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
+            onlyOpenIfDirectlyFollowingTokenOfKind: [
+                TokenKind_1.TokenKind.ParenthesizedEnd,
+                TokenKind_1.TokenKind.SquareBracketedEnd,
+                TokenKind_1.TokenKind.ActionEnd
+            ],
+            failIfContains: PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR),
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: _this.onLinkClose
