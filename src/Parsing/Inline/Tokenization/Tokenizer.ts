@@ -65,8 +65,8 @@ export class Tokenizer {
   // but we keep a direct reference to the naked URL convention to help us determine whether another
   // convention contains a naked URL.
   private nakedUrlConvention: TokenizableConvention = {
-    startPattern: NAKED_URL_SCHEME_PATTERN,
-    endPattern: NAKED_URL_TERMINATOR_PATTERN,
+    startPattern: regExpStartingWith('http' + optional('s') + '://'),
+    endPattern: regExpStartingWith(WHITESPACE_CHAR),
 
     flushBufferToPlainTextTokenBeforeOpening: true,
 
@@ -129,8 +129,8 @@ export class Tokenizer {
     ].map(args => this.getConventionsForRichBracketedTerm(args))))
 
     this.conventions.push({
-      startPattern: INLINE_CODE_DELIMITER_PATTERN,
-      endPattern: INLINE_CODE_DELIMITER_PATTERN,
+      startPattern: regExpStartingWith('`'),
+      endPattern: regExpStartingWith('`'),
 
       flushBufferToPlainTextTokenBeforeOpening: true,
 
@@ -849,21 +849,12 @@ const URL_SLASH =
 const URL_FRAGMENT_IDENTIFIER =
   '#'
 
-const INLINE_CODE_DELIMITER_PATTERN =
-  regExpStartingWith('`')
-
-const NAKED_URL_SCHEME_PATTERN =
-  regExpStartingWith('http' + optional('s') + '://')
-
 const URL_SCHEME =
   LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
   + ':' + optional('//')
 
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
-
-const NAKED_URL_TERMINATOR_PATTERN =
-  regExpStartingWith(WHITESPACE_CHAR)
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)

@@ -670,8 +670,8 @@ var Tokenizer = (function () {
         this.rawBracketConventions = this.getRawBracketConventions();
         this.mediaUrlConventions = this.getMediaUrlConventions();
         this.nakedUrlConvention = {
-            startPattern: NAKED_URL_SCHEME_PATTERN,
-            endPattern: NAKED_URL_TERMINATOR_PATTERN,
+            startPattern: PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://'),
+            endPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR),
             flushBufferToPlainTextTokenBeforeOpening: true,
             onOpen: function (urlScheme) {
                 _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlSchemeAndStart, value: urlScheme });
@@ -715,8 +715,8 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getConventionsForRichBracketedTerm(args); })));
         this.conventions.push({
-            startPattern: INLINE_CODE_DELIMITER_PATTERN,
-            endPattern: INLINE_CODE_DELIMITER_PATTERN,
+            startPattern: PatternHelpers_1.regExpStartingWith('`'),
+            endPattern: PatternHelpers_1.regExpStartingWith('`'),
             flushBufferToPlainTextTokenBeforeOpening: true,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
@@ -1205,12 +1205,9 @@ var BRACKETS = [
 ];
 var URL_SLASH = '/';
 var URL_FRAGMENT_IDENTIFIER = '#';
-var INLINE_CODE_DELIMITER_PATTERN = PatternHelpers_1.regExpStartingWith('`');
-var NAKED_URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://');
 var URL_SCHEME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')))
     + ':' + PatternHelpers_1.optional('//');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
-var NAKED_URL_TERMINATOR_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR);
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
 var NUMBER_LIKELY_MASQUERADING_AS_A_LINK_FRAGMENT_IDENTIFIIER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_FRAGMENT_IDENTIFIER + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
 
