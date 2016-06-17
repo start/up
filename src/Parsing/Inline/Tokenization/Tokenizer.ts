@@ -396,23 +396,6 @@ export class Tokenizer {
       .some(context => context.doInsteadOfTryingToOpenUsualContexts())
   }
 
-  private tryToFailAnyConvention(): boolean {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
-      const failurePattern = context.convention.failIfContains
-
-      if (!failurePattern || !failurePattern.test(this.consumer.remainingText)) {
-        continue
-      }
-
-      // Welp, we've failed this convention. Let's backtrack.
-      this.backtrackToBeforeContext(context)
-      return true
-    }
-
-    return false
-  }
-
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
@@ -636,9 +619,16 @@ export class Tokenizer {
 
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
-      failIfContains: regExpStartingWith(WHITESPACE_CHAR),
+      insteadOfTryingToCloseOuterContexts: (context) => {
+        // To prevent unintended links, if a link's URL doesn't directly follow the link's contents,
+        // the URL cannot contain whitesapce. 
+        if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
+          this.backtrackToBeforeContext(context)
+        }
 
-      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+        this.bufferRawText()
+      },
+
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -841,3 +831,6 @@ const URL_SCHEME_PATTERN =
 
 const NAKED_URL_TERMINATOR_PATTERN =
   regExpStartingWith(WHITESPACE_CHAR)
+
+const WHITESPACE_CHAR_PATTERN =
+  new RegExp(WHITESPACE_CHAR)

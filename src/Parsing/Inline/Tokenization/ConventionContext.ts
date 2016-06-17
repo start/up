@@ -9,7 +9,7 @@ export class ConventionContext {
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {
     if (this.convention.insteadOfTryingToCloseOuterContexts) {
-      this.convention.insteadOfTryingToCloseOuterContexts()
+      this.convention.insteadOfTryingToCloseOuterContexts(this)
       return true
     }
 
@@ -18,7 +18,7 @@ export class ConventionContext {
 
   doInsteadOfTryingToOpenUsualContexts(): boolean {
     if (this.convention.insteadOfTryingToOpenUsualConventions) {
-      this.convention.insteadOfTryingToOpenUsualConventions()
+      this.convention.insteadOfTryingToOpenUsualConventions(this)
       return true
     }
 

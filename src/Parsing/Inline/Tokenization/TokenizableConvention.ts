@@ -14,25 +14,19 @@ export interface TokenizableConvention {
   
   onOpen?: OnTextMatch
   
-  insteadOfTryingToCloseOuterContexts?: PerformConventionSpecificTasks
-  insteadOfTryingToOpenUsualConventions?: PerformConventionSpecificTasks
-
-  failIfContains?: RegExp
+  insteadOfTryingToCloseOuterContexts?: OnConventionEvent
+  insteadOfTryingToOpenUsualConventions?: OnConventionEvent
   
   leaveEndPatternForAnotherConventionToConsume?: boolean
   closeInnerContextsWhenClosing?: boolean
   onCloseFailIfCannotTranformInto?: TokenizableConvention[]
   onCloseFlushBufferTo?: TokenKind
   
-  onClose?: OnConventionClosingEvent
-  resolveWhenLeftUnclosed?: OnConventionClosingEvent
+  onClose?: OnConventionEvent
+  resolveWhenLeftUnclosed?: OnConventionEvent
 }
 
 
-interface PerformConventionSpecificTasks {
-  (): void
-}
-
-export interface OnConventionClosingEvent {
+interface OnConventionEvent {
   (context: ConventionContext): void
 }
