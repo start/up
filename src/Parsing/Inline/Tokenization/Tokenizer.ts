@@ -168,6 +168,9 @@ export class Tokenizer {
     this.conventions.push(
       ...this.getLinkifyingUrlConventions())
 
+    this.conventions.push(
+      ...this.getLinkifyingUrlSeparatedByWhitespaceConventions())
+
     this.conventions.push(...[
       {
         richConvention: PARENTHESIZED_CONVENTION,
@@ -644,13 +647,7 @@ export class Tokenizer {
   // 3. Third, if the URL starts with a URL hash mark, it must not otherwise consist solely of digits.
   private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(
-        SOME_WHITESPACE + bracket.startPattern + capture(
-          either(
-            URL_SCHEME,
-            URL_SLASH,
-            URL_HASH_MARK))),
-
+      startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -682,6 +679,15 @@ export class Tokenizer {
         this.closeLink(url)
       }
     }))
+  }
+
+  private getBracketedUrlFollowingWhitespacePattern(bracket: Bracket): RegExp {
+    return regExpStartingWith(
+      SOME_WHITESPACE + bracket.startPattern + capture(
+        either(
+          URL_SCHEME,
+          URL_SLASH,
+          URL_HASH_MARK)))
   }
 
   private closeLink(url: string) {
@@ -719,7 +725,7 @@ export class Tokenizer {
   // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL`.
   private getLinkifyingUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern),
+      startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,

@@ -732,7 +732,8 @@ var Tokenizer = (function () {
         (_d = this.conventions).push.apply(_d, this.getLinkUrlSeparatedFromContentByWhitespaceConventions());
         (_e = this.conventions).push.apply(_e, this.getMediaDescriptionConventions());
         (_f = this.conventions).push.apply(_f, this.getLinkifyingUrlConventions());
-        (_g = this.conventions).push.apply(_g, [
+        (_g = this.conventions).push.apply(_g, this.getLinkifyingUrlSeparatedByWhitespaceConventions());
+        (_h = this.conventions).push.apply(_h, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
@@ -747,7 +748,7 @@ var Tokenizer = (function () {
                 endPattern: CURLY_BRACKET.endPattern
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
-        (_h = this.conventions).push.apply(_h, [
+        (_j = this.conventions).push.apply(_j, [
             {
                 richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
                 startPattern: '~~',
@@ -759,7 +760,7 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);
-        var _a, _b, _c, _d, _e, _f, _g, _h;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
@@ -1060,7 +1061,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkUrlSeparatedFromContentByWhitespaceConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK))),
+            startPattern: _this.getBracketedUrlFollowingWhitespacePattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
@@ -1081,6 +1082,9 @@ var Tokenizer = (function () {
                 _this.closeLink(url);
             }
         }); });
+    };
+    Tokenizer.prototype.getBracketedUrlFollowingWhitespacePattern = function (bracket) {
+        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK)));
     };
     Tokenizer.prototype.closeLink = function (url) {
         var originalEndToken = CollectionHelpers_1.last(this.tokens);
@@ -1105,7 +1109,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkifyingUrlSeparatedByWhitespaceConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
+            startPattern: _this.getBracketedUrlFollowingWhitespacePattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },

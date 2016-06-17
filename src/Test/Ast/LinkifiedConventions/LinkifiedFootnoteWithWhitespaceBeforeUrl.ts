@@ -22,7 +22,7 @@ const FOOTNOTE_BRACKETS = [
 
 
 context('A linkified footnote can have whitespace between its content and bracketed URL under certain conditions.', () => {
-  
+
   context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
     specify('we assume the author did not indent to produce a link, so the footnote is not linkified', () => {
       const footnote = new FootnoteNode([
@@ -65,7 +65,7 @@ context('A linkified footnote can have whitespace between its content and bracke
     })
 
 
-    describe('When the URL has a scheme', () => {
+    describe('When the URL has a scheme, the URL', () => {
       it('must not contain any spaces', () => {
         const footnote = new FootnoteNode([
           new PlainTextNode('the phone was dead')
@@ -81,7 +81,7 @@ context('A linkified footnote can have whitespace between its content and bracke
                 new LinkNode([
                   new PlainTextNode('stackoverflow.com')
                 ], 'https://stackoverflow.com'),
-                new PlainTextNode(' is nice)')
+                new PlainTextNode(' is where I learned)')
               ]),
             ]),
             new FootnoteBlockNode([footnote])
@@ -119,7 +119,7 @@ context('A linkified footnote can have whitespace between its content and bracke
 
       expectEveryCombinationOfBrackets({
         bracketsForFirstPart: FOOTNOTE_BRACKETS,
-        firstPartToWrapInBrackets: 'Chrono Trigger',
+        firstPartToWrapInBrackets: 'the phone was dead',
         partsToPutInBetween: ['  ', '\t', ' \t '],
         secondPartToWrapInBrackets: '/wiki/dead-phone',
         toProduce: new DocumentNode([
@@ -130,7 +130,7 @@ context('A linkified footnote can have whitespace between its content and bracke
     })
 
 
-    describe('When the URL starts with a slash', () => {
+    describe('When the URL starts with a slash, the URL', () => {
       it('must not contain any spaces', () => {
         const footnote = new FootnoteNode([
           new PlainTextNode('the phone was dead')
@@ -151,15 +151,20 @@ context('A linkified footnote can have whitespace between its content and bracke
       })
 
       it('can consist solely of digits after the slash', () => {
+        const footnote = new FootnoteNode([
+          new LinkNode([
+            new PlainTextNode('the phone was dead')
+          ], '/5555555555')
+        ], 1)
+
         expectEveryCombinationOfBrackets({
           bracketsForFirstPart: FOOTNOTE_BRACKETS,
           firstPartToWrapInBrackets: 'the phone was dead',
           partsToPutInBetween: ['  ', '\t', ' \t '],
           secondPartToWrapInBrackets: '/5555555555',
-          toProduce: insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('Model 3')
-            ], '/3')
+          toProduce: new DocumentNode([
+            new ParagraphNode([footnote]),
+            new FootnoteBlockNode([footnote])
           ])
         })
       })
@@ -186,7 +191,7 @@ context('A linkified footnote can have whitespace between its content and bracke
     })
 
 
-    describe('When the URL starts with a hash mark ("#")', () => {
+    describe('When the URL starts with a hash mark ("#"), the URL', () => {
       it('must not otherwise consist solely of digits', () => {
         const footnote = new FootnoteNode([
           new PlainTextNode('the phone was dead')
@@ -196,6 +201,7 @@ context('A linkified footnote can have whitespace between its content and bracke
           new DocumentNode([
             new ParagraphNode([
               footnote,
+              new PlainTextNode(' '),
               new ParenthesizedNode([
                 new PlainTextNode('(#14)')
               ]),

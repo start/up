@@ -42,7 +42,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
 
-    describe('When the URL has a scheme', () => {
+    describe('When the URL has a scheme, the URL', () => {
       it('must not contain any spaces', () => {
         expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
           insideDocumentAndParagraph([
@@ -90,7 +90,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
 
-    describe('When the URL starts with a slash', () => {
+    describe('When the URL starts with a slash, the URL', () => {
       it('must not contain any spaces', () => {
         expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
           insideDocumentAndParagraph([
@@ -134,7 +134,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
 
-    describe('When the URL starts with a hash mark ("#")', () => {
+    describe('When the URL starts with a hash mark ("#"), the URL', () => {
       it('must not otherwise consist solely of digits', () => {
         expect(Up.toAst('[sic] (#14)')).to.be.eql(
           insideDocumentAndParagraph([
