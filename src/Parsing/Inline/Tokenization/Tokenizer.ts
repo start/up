@@ -710,21 +710,63 @@ export class Tokenizer {
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
-        const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
-        linkStartToken.associateWith(linkEndToken)
-
-        // We'll insert our new link end token right before the original end token, and we'll insert a our new link
-        // start token right after the original end token's corresponding start token.
-
-        const indexOfOriginalEndToken = this.tokens.length - 1
-        this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
-
-        const originalStartToken = last(this.tokens).correspondsToToken
-        const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
-        this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
+        this.closeLinkifyingUrl(url)
       }
     }))
+  }
+
+  // For more information about the purpose of this method, see the comment for
+  // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL`.
+  private getLinkifyingUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => (<TokenizableConvention>{
+      startPattern: regExpStartingWith(bracket.startPattern),
+      endPattern: regExpStartingWith(bracket.endPattern),
+
+      onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+
+      onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+
+      insteadOfTryingToCloseOuterContexts: (context) => {
+        if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
+          // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
+          // backtrack.
+          this.backtrackToBeforeContext(context)
+          return
+        }
+
+        this.bufferRawText()
+      },
+
+      closeInnerContextsWhenClosing: true,
+
+      onClose: (context) => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+
+        if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+          // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
+          this.backtrackToBeforeContext(context)
+          return
+        }
+
+        this.closeLinkifyingUrl(url)
+      }
+    }))
+  }
+
+  private closeLinkifyingUrl(url: string): void {
+    const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
+    const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
+    linkStartToken.associateWith(linkEndToken)
+
+    // We'll insert our new link end token right before the original end token, and we'll insert a our new link
+    // start token right after the original end token's corresponding start token.
+
+    const indexOfOriginalEndToken = this.tokens.length - 1
+    this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
+
+    const originalStartToken = last(this.tokens).correspondsToToken
+    const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
+    this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
   }
 
   private getFootnoteConventions(): TokenizableConvention[] {

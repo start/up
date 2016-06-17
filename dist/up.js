@@ -1098,16 +1098,44 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });
-                var linkStartToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.startTokenKind });
-                linkStartToken.associateWith(linkEndToken);
-                var indexOfOriginalEndToken = _this.tokens.length - 1;
-                _this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken });
-                var originalStartToken = CollectionHelpers_1.last(_this.tokens).correspondsToToken;
-                var indexAfterOriginalStartToken = _this.tokens.indexOf(originalStartToken) + 1;
-                _this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken });
+                _this.closeLinkifyingUrl(url);
             }
         }); });
+    };
+    Tokenizer.prototype.getLinkifyingUrlSeparatedByWhitespaceConventions = function () {
+        var _this = this;
+        return BRACKETS.map(function (bracket) { return ({
+            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
+            endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
+            onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+            onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
+            insteadOfTryingToCloseOuterContexts: function (context) {
+                if (WHITESPACE_CHAR_PATTERN.test(_this.consumer.currentChar)) {
+                    _this.backtrackToBeforeContext(context);
+                    return;
+                }
+                _this.bufferRawText();
+            },
+            closeInnerContextsWhenClosing: true,
+            onClose: function (context) {
+                var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
+                if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+                    _this.backtrackToBeforeContext(context);
+                    return;
+                }
+                _this.closeLinkifyingUrl(url);
+            }
+        }); });
+    };
+    Tokenizer.prototype.closeLinkifyingUrl = function (url) {
+        var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });
+        var linkStartToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.startTokenKind });
+        linkStartToken.associateWith(linkEndToken);
+        var indexOfOriginalEndToken = this.tokens.length - 1;
+        this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken });
+        var originalStartToken = CollectionHelpers_1.last(this.tokens).correspondsToToken;
+        var indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1;
+        this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken });
     };
     Tokenizer.prototype.getFootnoteConventions = function () {
         var _this = this;
