@@ -144,6 +144,23 @@ describe('Bracketed text, followed by whitespace, followed by another instance o
 })
 
 
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with a fragment identifier)', () => {
+  it('does not produce a link node', () => {
+    expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[yeah]')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('(#starcraft2 was never trending)')
+        ]),
+      ])
+    )
+  })
+})
+
+
 describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and not starting with a scheme, a slash, or a fragment identifier)', () => {
   it('does not produces a link node', () => {
     expect(Up.toAst('[no] (really)')).to.be.eql(

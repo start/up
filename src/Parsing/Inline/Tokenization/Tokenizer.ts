@@ -649,6 +649,9 @@ export class Tokenizer {
   }
 
   private closeLink(url: string) {
+    // We know the last token is a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
+    //
+    // We'll replace that end token and its corresponding start token with link tokens.
     const originalEndToken = last(this.tokens)
     originalEndToken.value = url
     originalEndToken.kind = LINK_CONVENTION.endTokenKind
