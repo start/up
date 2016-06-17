@@ -711,13 +711,10 @@ export class Tokenizer {
     }))
   }
 
-  // Just like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
+  // Similar to link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
   // between the linkifying URL and the original convention.
   //
-  // For more information, see:
-  //
-  // 1. `getLinkifyingUrlConventions`
-  // 2. `getLinkUrlConventions`
+  // For more information, see `getLinkifyingUrlConventions` and `getLinkUrlConventions`.
   private getLinkifyingUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
