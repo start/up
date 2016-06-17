@@ -729,9 +729,10 @@ var Tokenizer = (function () {
             onCloseFlushBufferTo: TokenKind_1.TokenKind.InlineCode
         });
         (_c = this.conventions).push.apply(_c, this.getLinkUrlDirectlyFollowingContentConventions());
-        (_d = this.conventions).push.apply(_d, this.getMediaDescriptionConventions());
-        (_e = this.conventions).push.apply(_e, this.getLinkifyingUrlConventions());
-        (_f = this.conventions).push.apply(_f, [
+        (_d = this.conventions).push.apply(_d, this.getLinkUrlSeparatedFromContentByWhitespaceConventions());
+        (_e = this.conventions).push.apply(_e, this.getMediaDescriptionConventions());
+        (_f = this.conventions).push.apply(_f, this.getLinkifyingUrlConventions());
+        (_g = this.conventions).push.apply(_g, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
                 startPattern: PARENTHESIS.startPattern,
@@ -746,7 +747,7 @@ var Tokenizer = (function () {
                 endPattern: CURLY_BRACKET.endPattern
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
-        (_g = this.conventions).push.apply(_g, [
+        (_h = this.conventions).push.apply(_h, [
             {
                 richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
                 startPattern: '~~',
@@ -758,7 +759,7 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
@@ -1043,9 +1044,9 @@ var Tokenizer = (function () {
             return url;
         }
         switch (url[0]) {
-            case '/':
+            case URL_SLASH:
                 return this.config.settings.baseForUrlsStartingWithSlash + url;
-            case '#':
+            case URL_FRAGMENT_IDENTIFIER:
                 return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url;
         }
         if (!URL_SCHEME_PATTERN.test(url)) {
@@ -1071,7 +1072,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkUrlSeparatedFromContentByWhitespaceConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE + bracket.startPattern + URL_SCHEME_PATTERN),
+            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_FRAGMENT_IDENTIFIER))),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowingTokenOfKind: [
                 TokenKind_1.TokenKind.ParenthesizedEnd,
@@ -1199,9 +1200,13 @@ var BRACKETS = [
     SQUARE_BRACKET,
     CURLY_BRACKET
 ];
+var URL_SLASH = '/';
+var URL_FRAGMENT_IDENTIFIER = '#';
 var INLINE_CODE_DELIMITER_PATTERN = PatternHelpers_1.regExpStartingWith('`');
 var NAKED_URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://');
-var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.'))) + ':' + PatternHelpers_1.optional('//'));
+var URL_SCHEME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')))
+    + ':' + PatternHelpers_1.optional('//');
+var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var NAKED_URL_TERMINATOR_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR);
 
 },{"../../../CollectionHelpers":1,"../../../PatternHelpers":35,"../../../PatternPieces":36,"../MediaConventions":3,"../RichConventions":5,"./Bracket":6,"./ConventionContext":7,"./FailedConventionTracker":8,"./InlineTextConsumer":9,"./RaisedVoiceHandler":10,"./Token":12,"./TokenKind":13,"./TokenizerSnapshot":15,"./insertBracketsInsideBracketedConventions":16,"./nestOverlappingConventions":17}],15:[function(require,module,exports){
@@ -2098,7 +2103,8 @@ exports.solely = solely;
 var PatternHelpers_1 = require('./PatternHelpers');
 exports.INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
 exports.WHITESPACE_CHAR = '\\s';
-exports.ANY_WHITESPACE = PatternHelpers_1.all('\\s');
+exports.ANY_WHITESPACE = PatternHelpers_1.all(exports.WHITESPACE_CHAR);
+exports.SOME_WHITESPACE = PatternHelpers_1.atLeast(1, exports.WHITESPACE_CHAR);
 exports.LINE_BREAK = '\n';
 exports.INTEGER = '\\d+';
 exports.LETTER = '[a-zA-Z]';

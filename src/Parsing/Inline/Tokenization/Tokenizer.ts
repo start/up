@@ -1,6 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, all, either, optional, exactly } from '../../../PatternHelpers'
-import { ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../../PatternPieces'
+import { escapeForRegex, regExpStartingWith, all, either, optional, exactly, capture } from '../../../PatternHelpers'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { UpConfig } from '../../../UpConfig'
@@ -140,6 +140,9 @@ export class Tokenizer {
 
     this.conventions.push(
       ...this.getLinkUrlDirectlyFollowingContentConventions())
+
+    this.conventions.push(
+      ...this.getLinkUrlSeparatedFromContentByWhitespaceConventions())
 
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
@@ -582,10 +585,10 @@ export class Tokenizer {
     }
 
     switch (url[0]) {
-      case '/':
+      case URL_SLASH:
         return this.config.settings.baseForUrlsStartingWithSlash + url
 
-      case '#':
+      case URL_FRAGMENT_IDENTIFIER:
         return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url
     }
 
@@ -616,7 +619,8 @@ export class Tokenizer {
 
   private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(ANY_WHITESPACE + bracket.startPattern + URL_SCHEME_PATTERN),
+      startPattern: regExpStartingWith(
+        SOME_WHITESPACE + bracket.startPattern + capture(either(URL_SCHEME, URL_SLASH, URL_FRAGMENT_IDENTIFIER))),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowingTokenOfKind: [
@@ -808,15 +812,24 @@ const BRACKETS = [
 ]
 
 
+const URL_SLASH =
+  '/'
+
+const URL_FRAGMENT_IDENTIFIER =
+  '#'
+
 const INLINE_CODE_DELIMITER_PATTERN =
   regExpStartingWith('`')
 
 const NAKED_URL_SCHEME_PATTERN =
   regExpStartingWith('http' + optional('s') + '://')
 
+const URL_SCHEME =
+    LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
+    + ':' + optional('//')
+
 const URL_SCHEME_PATTERN =
-  regExpStartingWith(
-    LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.'))) + ':' + optional('//'))
+  regExpStartingWith(URL_SCHEME)
 
 const NAKED_URL_TERMINATOR_PATTERN =
   regExpStartingWith(WHITESPACE_CHAR)
