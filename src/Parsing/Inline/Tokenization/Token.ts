@@ -3,9 +3,9 @@ import { NewTokenArgs } from './NewTokenArgs'
 
 
 export class Token {
-  public kind: TokenKind
-  public value: string
-  public correspondsToToken: Token
+  kind: TokenKind
+  value: string
+  correspondsToToken: Token
 
   constructor(
     args: NewTokenArgs

@@ -72,8 +72,8 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 
 
 class RawListItem {
-  public bullet: string;
-  public lines: string[] = [];
+  bullet: string;
+  lines: string[] = [];
 
   content(): string {
     // This loses the final line break, but trailing blank lines are always ignored when parsing
