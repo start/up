@@ -46,6 +46,10 @@ declare var it: Mocha.ITestDefinition;
 declare var xit: Mocha.ITestDefinition;
 // alias for `it`
 declare var test: Mocha.ITestDefinition;
+
+// This declaration was added manually. Please see this pull request for more info:
+//
+// https://github.com/DefinitelyTyped/DefinitelyTyped/pull/9691
 declare var specify: Mocha.ITestDefinition;
 
 declare function before(action: () => void): void;
