@@ -1079,6 +1079,7 @@ var Tokenizer = (function () {
                 TokenKind_1.TokenKind.SquareBracketedEnd,
                 TokenKind_1.TokenKind.ActionEnd
             ],
+            onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failIfContains: PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR),
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,

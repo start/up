@@ -620,7 +620,9 @@ export class Tokenizer {
   private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(
-        SOME_WHITESPACE + bracket.startPattern + capture(either(URL_SCHEME, URL_SLASH, URL_FRAGMENT_IDENTIFIER))),
+        SOME_WHITESPACE + bracket.startPattern + capture(
+          either(URL_SCHEME, URL_SLASH, URL_FRAGMENT_IDENTIFIER))),
+
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowingTokenOfKind: [
@@ -628,6 +630,8 @@ export class Tokenizer {
         TokenKind.SquareBracketedEnd,
         TokenKind.ActionEnd
       ],
+
+      onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failIfContains: regExpStartingWith(WHITESPACE_CHAR),
 
@@ -825,8 +829,8 @@ const NAKED_URL_SCHEME_PATTERN =
   regExpStartingWith('http' + optional('s') + '://')
 
 const URL_SCHEME =
-    LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
-    + ':' + optional('//')
+  LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
+  + ':' + optional('//')
 
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
