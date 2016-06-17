@@ -1171,7 +1171,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getMediaUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
+            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE + bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             flushBufferToPlainTextTokenBeforeOpening: true,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },

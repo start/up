@@ -76,7 +76,7 @@ describe('An image URL starting with a slash', () => {
       partsToPutInBetween: [' ', '\t', '  \t '],
       secondPartToWrapInBrackets: '/howling.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghostly howling', '/howling.mp3')
+        new ImageNode('ghostly howling', '/howling.svg')
       ])
     })
   })
@@ -88,9 +88,9 @@ describe('An image URL starting with a fragment identifier ("#")', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '#howling.mp3',
+      secondPartToWrapInBrackets: '#howling.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghostly howling', '#howling.mp3')
+        new ImageNode('ghostly howling', '#howling.svg')
       ])
     })
   })

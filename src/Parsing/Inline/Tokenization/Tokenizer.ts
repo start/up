@@ -788,7 +788,7 @@ export class Tokenizer {
 
   private getMediaUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern),
+      startPattern: regExpStartingWith(ANY_WHITESPACE + bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       flushBufferToPlainTextTokenBeforeOpening: true,

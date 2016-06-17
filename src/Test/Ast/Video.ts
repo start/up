@@ -32,9 +32,9 @@ describe("The brackets enclosing a video convention's description and URL", () =
   it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',
-      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
+      secondPartToWrapInBrackets: 'http://example.com/ghosts.webm',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', 'http://example.com/ghosts.svg')
+        new VideoNode('ghostly howling', 'http://example.com/ghosts.webm')
       ])
     })
   })
@@ -46,9 +46,9 @@ describe("A video convention", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
+      secondPartToWrapInBrackets: 'http://example.com/ghosts.webm',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', 'http://example.com/ghosts.svg')
+        new VideoNode('ghostly howling', 'http://example.com/ghosts.webm')
       ])
     })
   })
@@ -60,9 +60,9 @@ describe('A video URL with no URL scheme', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'example.com/ghosts.svg',
+      secondPartToWrapInBrackets: 'example.com/ghosts.webm',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', 'https://example.com/ghosts.svg')
+        new VideoNode('ghostly howling', 'https://example.com/ghosts.webm')
       ])
     })
   })
@@ -74,9 +74,9 @@ describe('A video URL starting with a slash', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '/howling.svg',
+      secondPartToWrapInBrackets: '/howling.webm',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', '/howling.mp3')
+        new VideoNode('ghostly howling', '/howling.webm')
       ])
     })
   })
@@ -88,9 +88,9 @@ describe('A video URL starting with a fragment identifier ("#")', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '#howling.mp3',
+      secondPartToWrapInBrackets: '#howling.webm',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', '#howling.mp3')
+        new VideoNode('ghostly howling', '#howling.webm')
       ])
     })
   })
@@ -102,9 +102,9 @@ describe("A video convention's URL", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.svg',
+      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.webm',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', 'http://example.com/scary ghosts.svg')
+        new VideoNode('ghostly howling', 'http://example.com/scary ghosts.webm')
       ])
     })
   })
