@@ -613,7 +613,10 @@ export class Tokenizer {
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
 
-      onClose: this.onLinkClose
+      onClose: () => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        this.closeLink(url)
+      }
     }))
   }
 
@@ -638,16 +641,14 @@ export class Tokenizer {
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
 
-      onClose: this.onLinkClose
+      onClose: (context) => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        this.closeLink(url)
+      }
     }))
   }
 
-  private onLinkClose = () => {
-    const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-    // The last token is guaranteed to be a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
-    //
-    // We'll replace that end token and its corresponding start token with link tokens.
+  private closeLink(url: string) {
     const originalEndToken = last(this.tokens)
     originalEndToken.value = url
     originalEndToken.kind = LINK_CONVENTION.endTokenKind

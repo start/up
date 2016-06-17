@@ -695,13 +695,6 @@ var Tokenizer = (function () {
                 });
             }
         }); });
-        this.onLinkClose = function () {
-            var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-            var originalEndToken = CollectionHelpers_1.last(_this.tokens);
-            originalEndToken.value = url;
-            originalEndToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
-            originalEndToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
-        };
         this.consumer = new InlineTextConsumer_1.InlineTextConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -1066,7 +1059,10 @@ var Tokenizer = (function () {
             ],
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
-            onClose: _this.onLinkClose
+            onClose: function () {
+                var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
+                _this.closeLink(url);
+            }
         }); });
     };
     Tokenizer.prototype.getLinkUrlSeparatedFromContentByWhitespaceConventions = function () {
@@ -1083,8 +1079,17 @@ var Tokenizer = (function () {
             failIfContains: PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR),
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
-            onClose: _this.onLinkClose
+            onClose: function (context) {
+                var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
+                _this.closeLink(url);
+            }
         }); });
+    };
+    Tokenizer.prototype.closeLink = function (url) {
+        var originalEndToken = CollectionHelpers_1.last(this.tokens);
+        originalEndToken.value = url;
+        originalEndToken.kind = RichConventions_1.LINK_CONVENTION.endTokenKind;
+        originalEndToken.correspondsToToken.kind = RichConventions_1.LINK_CONVENTION.startTokenKind;
     };
     Tokenizer.prototype.getLinkifyingUrlConventions = function () {
         var _this = this;
