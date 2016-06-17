@@ -108,10 +108,7 @@ describe("A video convention's URL", () => {
       ])
     })
   })
-})
-
-
-describe("A video convention's URL", () => {
+  
   it("does not need to have an extension", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',

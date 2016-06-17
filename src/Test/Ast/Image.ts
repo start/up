@@ -108,10 +108,7 @@ describe("An image convention's URL", () => {
       ])
     })
   })
-})
 
-
-describe("An image convention's URL", () => {
   it("does not need to have an extension", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghostly howling',

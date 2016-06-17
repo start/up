@@ -108,10 +108,7 @@ describe("An audio convention's URL", () => {
       ])
     })
   })
-})
 
-
-describe("An audio convention's URL", () => {
   it("does not need to have an extension", () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'audio: ghostly howling',
