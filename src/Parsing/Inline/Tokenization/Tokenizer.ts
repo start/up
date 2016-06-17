@@ -612,16 +612,23 @@ export class Tokenizer {
   // Normally, a link's URL directly follows its content.
   //
   // However, if we're very sure that the author is intending to produce a link, we allow whitespace
-  // between the content and the URL:
+  // between the content and the URL. For example:
   //
   // You should try [Typescript] (http://www.typescriptlang.org).
   //
-  // To ensure the author is actually intending to produce a link, we apply two extra rules if there
-  // is any whitespace between a link's content and its URL:
+  // To ensure the author actually intends to produce a link, we apply some extra rules if there is
+  // any whitespace between a link's content and its URL.
   //
-  // 1. The URL must not contain any unescaped whitespace.
-  // 2. If the URL starts with a fragment identifier ("#"), it must not consist solely of digits.
-  private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] { 
+  // 1. First, the URL must either:
+  //    * Have a scheme (like "mailto:" or "https://")
+  //    * Start with a slash
+  //    * Start with a fragment identifier ("#")
+  //
+  // 2. Second, the URL must not contain any unescaped whitespace.
+  //
+  // 3. Third, if the URL starts with a fragment identifier, it must not otherwise consist solely of
+  //    digits.
+  private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(
         SOME_WHITESPACE + bracket.startPattern + capture(
