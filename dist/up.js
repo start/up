@@ -772,6 +772,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
+                || this.tryToSkipContentThatCannotTriggerAnyChanges()
                 || this.tryToCloseAnyConvention()
                 || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
                 || this.tryToOpenAnyConvention()
@@ -805,6 +806,13 @@ var Tokenizer = (function () {
         }
         this.consumer.advanceTextIndex(1);
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
+    };
+    Tokenizer.prototype.tryToSkipContentThatCannotTriggerAnyChanges = function () {
+        var _this = this;
+        return this.consumer.consume({
+            pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
+            thenBeforeAdvancingTextIndex: function (match) { _this.buffer += match; }
+        });
     };
     Tokenizer.prototype.tryToCloseAnyConvention = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -1232,6 +1240,13 @@ var BRACKETS = [
     SQUARE_BRACKET,
     CURLY_BRACKET
 ];
+var PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
+    BRACKETS.map(function (bracket) { return bracket.startPattern; }),
+    BRACKETS.map(function (bracket) { return bracket.endPattern; }),
+    ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
+    [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
+]);
+var CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.charOtherThan(PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)));
 
 },{"../../../CollectionHelpers":1,"../../../PatternHelpers":35,"../../../PatternPieces":36,"../MediaConventions":3,"../RichConventions":5,"./Bracket":6,"./ConventionContext":7,"./FailedConventionTracker":8,"./InlineTextConsumer":9,"./RaisedVoiceHandler":10,"./Token":12,"./TokenKind":13,"./TokenizerSnapshot":15,"./insertBracketsInsideBracketedConventions":16,"./nestOverlappingConventions":17}],15:[function(require,module,exports){
 "use strict";
@@ -2105,6 +2120,10 @@ function streakOf(charPattern) {
     return solely(atLeast(3, charPattern));
 }
 exports.streakOf = streakOf;
+function charOtherThan(charPatterns) {
+    return "[^" + charPatterns.join('') + "]";
+}
+exports.charOtherThan = charOtherThan;
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }

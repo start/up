@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, all, either, optional, atLeast, exactly, capture } from '../../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, all, either, optional, atLeast, exactly, charOtherThan, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
@@ -206,6 +206,7 @@ export class Tokenizer {
   private tokenize(): void {
     while (!this.isDone()) {
       this.tryToCollectEscapedChar()
+      || this.tryToSkipContentThatCannotTriggerAnyChanges()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
         || this.tryToOpenAnyConvention()
@@ -250,6 +251,13 @@ export class Tokenizer {
     this.consumer.advanceTextIndex(1)
 
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
+  }
+
+  private tryToSkipContentThatCannotTriggerAnyChanges(): boolean {
+    return this.consumer.consume({
+      pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
+      thenBeforeAdvancingTextIndex: match => { this.buffer += match }
+    })
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -918,3 +926,19 @@ const BRACKETS = [
   SQUARE_BRACKET,
   CURLY_BRACKET
 ]
+
+// The following patterns represent every character that can start or end any convention.  
+//
+// The "h" is for the start of naked URLs.
+const PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = 
+  concat([
+    BRACKETS.map(bracket => bracket.startPattern),
+    BRACKETS.map(bracket => bracket.endPattern),
+    ['*', '+', '\\'].map(escapeForRegex),
+    [WHITESPACE_CHAR, '_', '`', '~', 'h']
+  ])
+
+
+const CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN =
+  regExpStartingWith(atLeast(1,
+    charOtherThan(PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)))

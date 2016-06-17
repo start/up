@@ -30,6 +30,10 @@ export function streakOf(charPattern: string): string {
   return solely(atLeast(3, charPattern))
 }
 
+export function charOtherThan(charPatterns: string[]): string {
+  return `[^${charPatterns.join('')}]`
+}
+
 export function escapeForRegex(text: string): string {
   return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
 }
