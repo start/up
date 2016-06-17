@@ -1835,12 +1835,12 @@ function parseOrderedList(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
     var rawListItems = [];
     var _loop_1 = function() {
-        var rawListItem = new RawListItem();
+        var rawListItem;
         var isLineBulleted = consumer.consume({
             linePattern: BULLETED_PATTERN,
             if: function (line) { return !Patterns_1.DIVIDER_STREAK_PATTERN.test(line); },
             then: function (line, bullet) {
-                rawListItem.bullet = bullet;
+                rawListItem = new RawListItem(bullet);
                 rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''));
             }
         });
@@ -1877,7 +1877,8 @@ function parseOrderedList(args) {
 }
 exports.parseOrderedList = parseOrderedList;
 var RawListItem = (function () {
-    function RawListItem() {
+    function RawListItem(bullet) {
+        this.bullet = bullet;
         this.lines = [];
     }
     RawListItem.prototype.content = function () {
@@ -1896,7 +1897,7 @@ function getExplicitOrdinal(rawListItem) {
 var INTEGER_PATTERN = new RegExp(PatternHelpers_1.capture(PatternPieces_1.INTEGER));
 var BULLET = PatternHelpers_1.either('#', PatternHelpers_1.capture(PatternHelpers_1.either(PatternPieces_1.INTEGER, '#') + PatternHelpers_1.either('\\.', '\\)')));
 var BULLETED_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + BULLET + PatternPieces_1.INLINE_WHITESPACE_CHAR);
-var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(PatternPieces_1.INTEGER + '\\.');
+var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.INTEGER + '\\.');
 
 },{"../../PatternHelpers":35,"../../PatternPieces":36,"../../Patterns":37,"../../SyntaxNodes/OrderedListItem":61,"../../SyntaxNodes/OrderedListNode":62,"./LineConsumer":20,"./getOutlineNodes":22,"./getRemainingLinesOfListItem":23}],31:[function(require,module,exports){
 "use strict";

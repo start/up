@@ -7,9 +7,7 @@ export class Token {
   value: string
   correspondsToToken: Token
 
-  constructor(
-    args: NewTokenArgs
-  ) {
+  constructor(args: NewTokenArgs) {
     this.kind = args.kind
     this.value = args.value
     this.correspondsToToken = args.correspondsToToken

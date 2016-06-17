@@ -22,13 +22,13 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
   const rawListItems: RawListItem[] = []
 
   while (!consumer.reachedEndOfText()) {
-    let rawListItem = new RawListItem()
+    let rawListItem: RawListItem
 
     const isLineBulleted = consumer.consume({
       linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: (line, bullet) => {
-        rawListItem.bullet = bullet
+        rawListItem = new RawListItem(bullet)
         rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''))
       }
     })
@@ -72,12 +72,13 @@ export function parseOrderedList(args: OutlineParserArgs): boolean {
 
 
 class RawListItem {
-  bullet: string;
-  lines: string[] = [];
+  lines: string[] = []
+
+  constructor(public bullet: string) { }
 
   content(): string {
     // This loses the final line break, but trailing blank lines are always ignored when parsing
-    // for outline conventions.
+    // outline conventions.
     return this.lines.join('\n')
   }
 }
@@ -120,9 +121,9 @@ const BULLET =
     '#',
     capture(either(INTEGER, '#') + either('\\.', '\\)')))
 
-const BULLETED_PATTERN = 
+const BULLETED_PATTERN =
   regExpStartingWith(
     optional(' ') + BULLET + INLINE_WHITESPACE_CHAR)
 
-const INTEGER_FOLLOWED_BY_PERIOD_PATTERN = new RegExp(
-  INTEGER + '\\.')
+const INTEGER_FOLLOWED_BY_PERIOD_PATTERN =
+  regExpStartingWith(INTEGER + '\\.')
