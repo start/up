@@ -10,8 +10,24 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 context('A link can have whitespace between its bracketed content and bracketed URL under certain conditions.', () => {
-  context('The URL must satisfy one of the following:', () => {
 
+  context('If the URL does not have a scheme, does not start with a slash, or does not start with a fragment identifier ("#")', () => {
+    specify('we assume the author did not indent to produce a link, so no link node is produced', () => {
+      expect(Up.toAst('[no] (really)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[no]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(really)')
+          ]),
+        ]))
+    })
+  })
+
+
+  context('More specifically, the URL must satisfy one of the following conditions:', () => {
     context('It has a scheme', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'email me',
@@ -22,19 +38,6 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('email me')
           ], 'mailto:daniel@wants.email')
         ])
-      })
-
-      specify('even when otherwise consisting solely of digits', () => {
-        expectEveryCombinationOfBrackets({
-          firstPartToWrapInBrackets: 'call me',
-          partsToPutInBetween: ['  ', '\t', ' \t '],
-          secondPartToWrapInBrackets: 'tel:5555555555',
-          toProduce: insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('call me')
-            ], 'tel:5555555555')
-          ])
-        })
       })
 
       specify('and does not contain any spaces', () => {
@@ -54,6 +57,19 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ])
         )
       })
+
+      specify('but it can consisting solely of digits after the scheme', () => {
+        expectEveryCombinationOfBrackets({
+          firstPartToWrapInBrackets: 'call me',
+          partsToPutInBetween: ['  ', '\t', ' \t '],
+          secondPartToWrapInBrackets: 'tel:5555555555',
+          toProduce: insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('call me')
+            ], 'tel:5555555555')
+          ])
+        })
+      })
     })
 
 
@@ -69,19 +85,6 @@ context('A link can have whitespace between its bracketed content and bracketed 
         ])
       })
 
-      specify('even when otherwise consisting solely of digits', () => {
-        expectEveryCombinationOfBrackets({
-          firstPartToWrapInBrackets: 'Model 3',
-          partsToPutInBetween: ['  ', '\t', ' \t '],
-          secondPartToWrapInBrackets: '/3',
-          toProduce: insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('Model 3')
-            ], '/3')
-          ])
-        })
-      })
-
       specify('and does not contain any spaces', () => {
         expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
           insideDocumentAndParagraph([
@@ -95,8 +98,21 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ])
         )
       })
+
+      specify('but it can consist solely of digits after the slash', () => {
+        expectEveryCombinationOfBrackets({
+          firstPartToWrapInBrackets: 'Model 3',
+          partsToPutInBetween: ['  ', '\t', ' \t '],
+          secondPartToWrapInBrackets: '/3',
+          toProduce: insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('Model 3')
+            ], '/3')
+          ])
+        })
+      })
     })
-    
+
 
     context('It starts with a fragment identifier ("#")', () => {
       expectEveryCombinationOfBrackets({
@@ -138,22 +154,6 @@ context('A link can have whitespace between its bracketed content and bracketed 
         )
       })
     })
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and not starting with a scheme, a slash, or a fragment identifier)', () => {
-  it('does not produces a link node', () => {
-    expect(Up.toAst('[no] (really)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[no]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('(really)')
-        ]),
-      ]))
   })
 })
 
