@@ -1,22 +1,23 @@
 import { expect } from 'chai'
-import Up from '../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from './Helpers'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
+import Up from '../../../index'
+import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '../Helpers'
+import { LinkNode } from '../../../SyntaxNodes/LinkNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
-context('A link can have whitespace between its bracketed content and bracketed URL under certain conditions.', () => {
+context('A linkified NSFL convention can have whitespace between itself and its bracketed URL under certain conditions.', () => {
 
   context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
-    specify('we assume the author did not indent to produce a link, so no link node is produced', () => {
-      expect(Up.toAst('[no] (really)')).to.be.eql(
+    specify('we assume the author did not indent to produce a link, so no NSFL convention node is not linkfieds', () => {
+      expect(Up.toAst('[NSFL: something terrible] (really)')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new PlainTextNode('[no]')
+          new NsflNode([
+            new PlainTextNode('[something terrible]')
           ]),
           new PlainTextNode(' '),
           new ParenthesizedNode([
@@ -167,7 +168,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 })
 
 
-describe("A link's URL, when separated from its content by whitespace,", () => {
+describe("A NSFL convention's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'this search',

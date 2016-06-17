@@ -21,7 +21,7 @@ const FOOTNOTE_BRACKETS = [
 ]
 
 
-context('A linkified footnote can have whitespace between its content and bracketed URL under certain conditions.', () => {
+context('A linkified footnote can have whitespace between itself and its bracketed URL under certain conditions.', () => {
 
   context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
     specify('we assume the author did not indent to produce a link, so the footnote is not linkified', () => {
@@ -45,7 +45,7 @@ context('A linkified footnote can have whitespace between its content and bracke
 
 
   context('More specifically, the URL must satisfy one of the following conditions:', () => {
-    it('has a scheme', () => {
+    specify('it has a scheme', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
           new PlainTextNode('the phone was dead')
@@ -66,7 +66,7 @@ context('A linkified footnote can have whitespace between its content and bracke
 
 
     describe('When the URL has a scheme, the URL', () => {
-      it('must not contain any spaces', () => {
+      specify('it must not contain any spaces', () => {
         const footnote = new FootnoteNode([
           new PlainTextNode('the phone was dead')
         ], 1)
@@ -110,7 +110,7 @@ context('A linkified footnote can have whitespace between its content and bracke
     })
 
 
-    it('starts with a slash', () => {
+    specify('it starts with a slash', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
           new PlainTextNode('the phone was dead')
@@ -171,7 +171,7 @@ context('A linkified footnote can have whitespace between its content and bracke
     })
 
 
-    it('starts with a ahsh mark ("#")', () => {
+    specify('it starts with a hash mark ("#")', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
           new PlainTextNode('the phone was dead')
