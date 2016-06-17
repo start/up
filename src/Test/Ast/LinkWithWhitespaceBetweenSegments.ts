@@ -25,7 +25,88 @@ describe('Bracketed text, followed by whitespace, followed by another instance o
 })
 
 
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with a scheme other than "http://" or "https://")', () => {
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a URL scheme other than "http://" or "https://")', () => {
+  it('produces a link node', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'email me',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('email me')
+        ], 'mailto:daniel@wants.email')
+      ])
+    })
+  })
+})
+
+
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a slash")', () => {
+  it('produces a link node', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'Model 3',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '/3',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Model 3')
+        ], '/3')
+      ])
+    })
+  })
+})
+
+
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (starting with a slash and otherwise containing only digits")', () => {
+  it('produces a link node', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '/wiki/chrono-trigger',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Trigger')
+        ], '/wiki/chrono-trigger')
+      ])
+    })
+  })
+})
+
+
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a fragment identifier ("#")', () => {
+  it('produces a link node', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '#wiki/chrono-trigger',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Trigger')
+        ], '#wiki/chrono-trigger')
+      ])
+    })
+  })
+})
+
+
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (starting with a fragment identifier ("#") and otherwise containing only digits', () => {
+  it('does not produce a link node', () => {
+    expect(Up.toAst('[sic] (#14)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[sic]')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('(#14)')
+        ]),
+      ])
+    )
+  })
+})
+
+
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with "http://" or "https://")', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
       insideDocumentAndParagraph([
@@ -40,55 +121,25 @@ describe('Bracketed text, followed by whitespace, followed by another instance o
           ], 'https://stackoverflow.com'),
           new PlainTextNode(' is nice)')
         ]),
-      ]))
+      ])
+    )
   })
 })
 
 
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a scheme other than "http://" or "https://")', () => {
+describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with a slash)', () => {
   it('does not produce a link node', () => {
-    expect(Up.toAst('[no] (ftp://example.com)')).to.be.eql(
+    expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
-          new PlainTextNode('[no]')
+          new PlainTextNode('[yeah]')
         ]),
         new PlainTextNode(' '),
         new ParenthesizedNode([
-          new PlainTextNode('(ftp://example.com)')
+          new PlainTextNode('(/r9k/ inspires geniune pity)')
         ]),
-      ]))
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a slash)', () => {
-  it('does not produces a link node', () => {
-    expect(Up.toAst('[no] (/some-page)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[no]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('(/some-page)')
-        ]),
-      ]))
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing no whitespace and starting with a fragment identifier ("#"))', () => {
-  it('does not produces a link node', () => {
-    expect(Up.toAst('[no] (#some-page)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[no]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('(#some-page)')
-        ]),
-      ]))
+      ])
+    )
   })
 })
 
