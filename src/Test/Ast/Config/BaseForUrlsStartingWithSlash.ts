@@ -32,6 +32,18 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
     )
   })
 
+  it('is prefixed to link URLs that start with a slash when the link content and URL are separated by whitespace', () => {
+    const text = '[Chrono Cross] (/wiki/Chrono_Chross)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], 'ftp://example.com/wiki/Chrono_Chross')
+      ])
+    )
+  })
+
   it('is prefixed to image URLs that start with a slash', () => {
     const text = '[image: Chrono Cross logo](/cc-logo.png)'
 
@@ -60,6 +72,71 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new VideoNode('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
       ])
     )
+  })
+
+  it('is prefixed to linkified spoiler URLs that start with a slash when the spoiler part and the URL are separated by whitespace', () => {
+    const text = 'Walter White produces [SPOILER: Blue Sky meth] (/wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode('Blue Sky meth')
+          ], 'ftp://example.com/wiki/Blue_Sky')
+        ])
+      ])
+    )
+  })
+
+  it('is prefixed to linkified NSFW URLs that start with a slash when the NSFW part and the URL are separated by whitespace', () => {
+    const text = 'Walter White produces [NSFW: Blue Sky meth] (/wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new NsfwNode([
+          new LinkNode([
+            new PlainTextNode('Blue Sky meth')
+          ], 'ftp://example.com/wiki/Blue_Sky')
+        ])
+      ])
+    )
+  })
+
+  it('is prefixed to linkified NSFL URLs that start with a slash when the NSFL part and the URL are separated by whitespace', () => {
+    const text = 'Walter White produces [NSFL: Blue Sky meth] (/wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new NsflNode([
+          new LinkNode([
+            new PlainTextNode('Blue Sky meth')
+          ], 'ftp://example.com/wiki/Blue_Sky')
+        ])
+      ])
+    )
+  })
+
+  it("is prefixed to linkified footnote URLs that start with a slash when the footnote part and the URL are separated by whitespace", () => {
+    const text = "I don't eat cereal. ((Well, I eat one.)) [/cereals/lucky-charms?show=nutrition] Never have."
+
+    const footnote = new FootnoteNode([
+      new LinkNode([
+        new PlainTextNode('Well, I eat one.')
+      ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
+    ], 1)
+
+    expect(up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
   })
 
   it('is prefixed to linkified spoiler URLs that start with a slash', () => {
