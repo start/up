@@ -28,7 +28,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   context('More specifically, the URL must satisfy one of the following conditions:', () => {
-    context('It has a scheme', () => {
+    it('has a scheme', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'email me',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -39,8 +39,11 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ], 'mailto:daniel@wants.email')
         ])
       })
+    })
 
-      specify('and does not contain any spaces', () => {
+
+    describe('When the URL has a scheme', () => {
+      it('must not contain any spaces', () => {
         expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
@@ -58,7 +61,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         )
       })
 
-      specify('but it can consisting solely of digits after the scheme', () => {
+      it('can consisting solely of digits after the scheme', () => {
         expectEveryCombinationOfBrackets({
           firstPartToWrapInBrackets: 'call me',
           partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -73,7 +76,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
 
-    context('It starts with a slash', () => {
+    it('starts with a slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'Chrono Trigger',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -84,8 +87,11 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ], '/wiki/chrono-trigger')
         ])
       })
+    })
 
-      specify('and does not contain any spaces', () => {
+
+    describe('When the URL starts with a slash', () => {
+      it('must not contain any spaces', () => {
         expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
@@ -99,7 +105,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         )
       })
 
-      specify('but it can consist solely of digits after the slash', () => {
+      specify('can consist solely of digits after the slash', () => {
         expectEveryCombinationOfBrackets({
           firstPartToWrapInBrackets: 'Model 3',
           partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -114,7 +120,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
 
-    context('It starts with a hash mark ("#")', () => {
+    it('starts with a hash mark ("#")', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'Chrono Trigger',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -125,8 +131,11 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ], '#wiki/chrono-trigger')
         ])
       })
+    })
 
-      specify('and does not otherwise consist solely of digits', () => {
+
+    describe('When the URL starts with a hash mark ("#")', () => {
+      it('must not otherwise consist solely of digits', () => {
         expect(Up.toAst('[sic] (#14)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
@@ -140,7 +149,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         )
       })
 
-      specify('and does not contain any spaces', () => {
+      it('must not contain any spaces', () => {
         expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
