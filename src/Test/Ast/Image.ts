@@ -28,52 +28,69 @@ describe('An image that is the only convention on its line', () => {
 })
 
 
-describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text', () => {
-  it("produces an image node. The type of bracket enclosing the description can be different from the type of bracket enclosing the URL", () => {
+describe("The brackets enclosing an image convention's description and URL", () => {
+  it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghosts eating luggage',
-      secondPartToWrapInBrackets: 'http://example.com/hauntedhouse.svg',
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghosts eating luggage', 'http://example.com/hauntedhouse.svg')
+        new ImageNode('ghostly howling', 'http://example.com/ghosts.svg')
       ])
     })
   })
 })
 
 
-describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text with no URL scheme', () => {
-  it("produces an image node with its URL prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
+describe("An image convention", () => {
+  it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghosts eating luggage',
-      secondPartToWrapInBrackets: 'example.com/hauntedhouse.ogg',
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghosts eating luggage', 'https://example.com/hauntedhouse.ogg')
+        new ImageNode('ghostly howling', 'http://example.com/ghosts.svg')
       ])
     })
   })
 })
 
 
-describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text starting with a slash', () => {
-  it('produces an image node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
+describe('An image URL with no URL scheme', () => {
+  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghosts eating luggage',
-      secondPartToWrapInBrackets: '/hauntedhouse.png',
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'example.com/ghosts.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghosts eating luggage', '/hauntedhouse.png')
+        new ImageNode('ghostly howling', 'https://example.com/ghosts.svg')
       ])
     })
   })
 })
 
 
-describe('Bracketed text starting with "image:" immediately followed by another instance of bracketed text starting with a fragment identifier ("#")', () => {
-  it('produces an image node whose URL has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+describe('An image URL starting with a slash', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghosts eating luggage',
-      secondPartToWrapInBrackets: '#hauntedhouse.png',
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: '/howling.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghosts eating luggage', '#hauntedhouse.png')
+        new ImageNode('ghostly howling', '/howling.mp3')
+      ])
+    })
+  })
+})
+
+
+describe('An image URL starting with a fragment identifier ("#")', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: '#howling.mp3',
+      toProduce: new DocumentNode([
+        new ImageNode('ghostly howling', '#howling.mp3')
       ])
     })
   })
@@ -81,12 +98,27 @@ describe('Bracketed text starting with "image:" immediately followed by another 
 
 
 describe("An image convention's URL", () => {
-  it("can contain spaces, assuming the bracketed URL directly follows the bracketed description", () => {
+  it("can contain spaces", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghosts eating luggage',
-      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.gif',
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghosts eating luggage', 'http://example.com/scary ghosts.gif')
+        new ImageNode('ghostly howling', 'http://example.com/scary ghosts.svg')
+      ])
+    })
+  })
+})
+
+
+describe("An image convention's URL", () => {
+  it("does not need to have an extension", () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'image: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/ghosts',
+      toProduce: new DocumentNode([
+        new ImageNode('ghostly howling', 'http://example.com/ghosts')
       ])
     })
   })
