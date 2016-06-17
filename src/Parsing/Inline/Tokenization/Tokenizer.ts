@@ -590,7 +590,7 @@ export class Tokenizer {
       case URL_SLASH:
         return this.config.settings.baseForUrlsStartingWithSlash + url
 
-      case URL_HASHMARK:
+      case URL_HASH_MARK:
         return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url
     }
 
@@ -637,11 +637,11 @@ export class Tokenizer {
   // 1. First, the URL must either:
   //    * Have a scheme (like "mailto:" or "https://")
   //    * Start with a slash
-  //    * Start with a URL hashmark ("#")
+  //    * Start with a hash mark ("#")
   //
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
-  // 3. Third, if the URL starts with a URL hashmark, it must not otherwise consist solely of digits.
+  // 3. Third, if the URL starts with a URL hash mark, it must not otherwise consist solely of digits.
   private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(
@@ -649,7 +649,7 @@ export class Tokenizer {
           either(
             URL_SCHEME,
             URL_SLASH,
-            URL_HASHMARK))),
+            URL_HASH_MARK))),
 
       endPattern: regExpStartingWith(bracket.endPattern),
 
@@ -848,15 +848,15 @@ const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
 
 // For the same two reasons, it's important for us to determine whether a URL starts with a slash or a
-// hashmark.
+// hash mark.
 const URL_SLASH = '/'
-const URL_HASHMARK = '#'
+const URL_HASH_MARK = '#'
 
-// We don't assume URL hashmarks like "#10" were intended to be URLs. For more information, see the comments
-// for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method
+// We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more information,
+// see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method.
 const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
   new RegExp(
-    solely(URL_HASHMARK + atLeast(1, DIGIT)))
+    solely(URL_HASH_MARK + atLeast(1, DIGIT)))
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)

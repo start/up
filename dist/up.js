@@ -1035,7 +1035,7 @@ var Tokenizer = (function () {
         switch (url[0]) {
             case URL_SLASH:
                 return this.config.settings.baseForUrlsStartingWithSlash + url;
-            case URL_HASHMARK:
+            case URL_HASH_MARK:
                 return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url;
         }
         if (!URL_SCHEME_PATTERN.test(url)) {
@@ -1060,7 +1060,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkUrlSeparatedFromContentByWhitespaceConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASHMARK))),
+            startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK))),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
@@ -1194,8 +1194,8 @@ var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpe
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.optional('//');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var URL_SLASH = '/';
-var URL_HASHMARK = '#';
-var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASHMARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
+var URL_HASH_MARK = '#';
+var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
 var PARENTHESIS = new Bracket_1.Bracket('(', ')');
 var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');

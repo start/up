@@ -18,7 +18,7 @@ const up = new Up({
 
 
 describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () => {
-  it('is prefixed to link URLs that start with a URL hashmark ("#")', () => {
+  it('is prefixed to link URLs that start with a hash mark ("#")', () => {
     const text = '[Chrono Cross](#wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -60,7 +60,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     )
   })
 
-  it('is prefixed to linkified spoiler URLs that start with a URL hashmark', () => {
+  it('is prefixed to linkified spoiler URLs that start with a hash mark', () => {
     const text = 'Walter White produces [SPOILER: Blue Sky meth](#wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -75,7 +75,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     )
   })
 
-  it("is prefixed to linkified footnote URLs that start with a URL hashmark", () => {
+  it("is prefixed to linkified footnote URLs that start with a hash mark", () => {
     const text = "I don't eat cereal. ((Well, I eat one.))[#cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
@@ -95,7 +95,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       ]))
   })
 
-  it('is not prefixed to schemeless URLs not starting with a URL hashmark (the default URL scheme is prefixed instead)', () => {
+  it('is not prefixed to schemeless URLs not starting with a hash mark (the default URL scheme is prefixed instead)', () => {
     const text = '[Chrono Cross](localhost#wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -107,7 +107,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     )
   })
 
-  it('is not prefixed to URLs that have a scheme (which by definition cannot start with a URL hashmark)', () => {
+  it('is not prefixed to URLs that have a scheme (which by definition cannot start with a hash mark)', () => {
     const text = '[Chrono Cross](my-app:localhost/wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(

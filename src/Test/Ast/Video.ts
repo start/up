@@ -83,7 +83,7 @@ describe('A video URL starting with a slash', () => {
 })
 
 
-describe('A video URL starting with a URL hashmark ("#")', () => {
+describe('A video URL starting with a hash mark ("#")', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'video: ghostly howling',

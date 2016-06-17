@@ -83,7 +83,7 @@ describe('An image URL starting with a slash', () => {
 })
 
 
-describe('An image URL starting with a URL hashmark ("#")', () => {
+describe('An image URL starting with a hash mark ("#")', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'image: ghostly howling',
