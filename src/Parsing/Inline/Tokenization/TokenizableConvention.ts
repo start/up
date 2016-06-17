@@ -2,10 +2,11 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './OnTextMatch'
 import { TokenKind } from './TokenKind'
+import { RichConvention } from '../RichConvention'
 
 
 export interface TokenizableConvention {
-  onlyOpenIfDirectlyFollowingTokenOfKind?: TokenKind[]
+  onlyOpenIfDirectlyFollowing?: RichConvention[]
 
   startPattern: RegExp
   endPattern: RegExp

@@ -424,12 +424,14 @@ export class Tokenizer {
     )
   }
 
-  private isDirectlyFollowingTokenOfKind(kinds: TokenKind[]): boolean {
-    return (
-      this.buffer === ''
-      && this.tokens.length
-      && contains(kinds, last(this.tokens).kind)
-    )
+  private isDirectlyFollowing(conventions: RichConvention[]): boolean {
+    if (this.buffer || !this.tokens.length) {
+      return false
+    }
+
+    const lastToken = last(this.tokens)
+
+    return conventions.some(convention => lastToken.kind === convention.endTokenKind)
   }
 
   private bufferRawText(): boolean {
@@ -447,7 +449,7 @@ export class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, onlyOpenIfDirectlyFollowingTokenOfKind, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)
@@ -500,11 +502,11 @@ export class Tokenizer {
       return false
     }
 
-    const { onlyOpenIfDirectlyFollowingTokenOfKind } = convention
+    const { onlyOpenIfDirectlyFollowing } = convention
 
     return (
       !this.failedConventionTracker.hasFailed(convention, textIndex)
-      && (!onlyOpenIfDirectlyFollowingTokenOfKind || this.isDirectlyFollowingTokenOfKind(onlyOpenIfDirectlyFollowingTokenOfKind))
+      && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing))
     )
   }
 
@@ -593,11 +595,7 @@ export class Tokenizer {
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIfDirectlyFollowingTokenOfKind: [
-        TokenKind.ParenthesizedEnd,
-        TokenKind.SquareBracketedEnd,
-        TokenKind.ActionEnd
-      ],
+      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
@@ -636,11 +634,7 @@ export class Tokenizer {
 
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIfDirectlyFollowingTokenOfKind: [
-        TokenKind.ParenthesizedEnd,
-        TokenKind.SquareBracketedEnd,
-        TokenKind.ActionEnd
-      ],
+      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL,
 
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
@@ -689,12 +683,7 @@ export class Tokenizer {
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIfDirectlyFollowingTokenOfKind: [
-        TokenKind.SpoilerEnd,
-        TokenKind.NsfwEnd,
-        TokenKind.NsflEnd,
-        TokenKind.FootnoteEnd,
-      ],
+      onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENT_CAN_BE_LINKIFIED,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
@@ -822,6 +811,20 @@ export class Tokenizer {
     }))
   }
 }
+
+
+const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL = [
+  PARENTHESIZED_CONVENTION,
+  SQUARE_BRACKETED_CONVENTION,
+  ACTION_CONVENTION
+]
+
+const COVENTIONS_WHOSE_CONTENT_CAN_BE_LINKIFIED = [
+  SPOILER_CONVENTION,
+  NSFW_CONVENTION,
+  NSFL_CONVENTION,
+  FOOTNOTE_CONVENTION
+]
 
 
 const PARENTHESIS =
