@@ -56,24 +56,6 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid audio convention with a space between its bracketed description and its bracketed URL', () => {
-  it('is treated as plain text', () => {
-    expect(Up.toAst('[audio: zzz] [-_-]')).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new SquareBracketedNode([
-            new PlainTextNode('[audio: zzz]')
-          ]),
-          new PlainTextNode(' '),
-          new SquareBracketedNode([
-            new PlainTextNode('[-_-]')
-          ]),
-        ])
-      ]))
-  })
-})
-
-
 describe('An otherwise valid audio convention with mismatched brackets surrounding its description', () => {
   it('does not produce an audio node', () => {
     expect(Up.toAst('I like [audio: ghosts}(http://example.com/ghosts.ogg).')).to.be.eql(

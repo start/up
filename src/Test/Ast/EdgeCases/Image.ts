@@ -56,24 +56,6 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid image convention with a space between its bracketed description and its bracketed URL', () => {
-  it('is treated as plain text', () => {
-    expect(Up.toAst('[image: maymay] [o_o]')).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new SquareBracketedNode([
-            new PlainTextNode('[image: maymay]')
-          ]),
-          new PlainTextNode(' '),
-          new SquareBracketedNode([
-            new PlainTextNode('[o_o]')
-          ]),
-        ])
-      ]))
-  })
-})
-
-
 describe('An otherwise valid image convention with mismatched brackets surrounding its description', () => {
   it('does not produce an image node', () => {
     expect(Up.toAst('I like [image: ghosts}(http://example.com/ghosts.svg).')).to.be.eql(

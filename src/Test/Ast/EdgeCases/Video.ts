@@ -56,24 +56,6 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid video convention with a space between its bracketed description and its bracketed URL', () => {
-  it('is treated as plain text', () => {
-    expect(Up.toAst('[video: on] [-_o]')).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new SquareBracketedNode([
-            new PlainTextNode('[video: on]')
-          ]),
-          new PlainTextNode(' '),
-          new SquareBracketedNode([
-            new PlainTextNode('[-_o]')
-          ]),
-        ])
-      ]))
-  })
-})
-
-
 describe('An otherwise valid video convention with mismatched brackets surrounding its description', () => {
   it('does not produce an video node', () => {
     expect(Up.toAst('I like [video: ghosts}(http://example.com/ghosts.webm).')).to.be.eql(
