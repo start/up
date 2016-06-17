@@ -1201,7 +1201,7 @@ var BRACKETS = [
 ];
 var INLINE_CODE_DELIMITER_PATTERN = PatternHelpers_1.regExpStartingWith('`');
 var NAKED_URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://');
-var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.'))) + ':');
+var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.'))) + ':' + PatternHelpers_1.optional('//'));
 var NAKED_URL_TERMINATOR_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR);
 
 },{"../../../CollectionHelpers":1,"../../../PatternHelpers":35,"../../../PatternPieces":36,"../MediaConventions":3,"../RichConventions":5,"./Bracket":6,"./ConventionContext":7,"./FailedConventionTracker":8,"./InlineTextConsumer":9,"./RaisedVoiceHandler":10,"./Token":12,"./TokenKind":13,"./TokenizerSnapshot":15,"./insertBracketsInsideBracketedConventions":16,"./nestOverlappingConventions":17}],15:[function(require,module,exports){
