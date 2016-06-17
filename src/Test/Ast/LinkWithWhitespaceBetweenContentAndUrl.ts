@@ -9,8 +9,9 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-context('A link can have whitespace between its bracketed content and bracketed URL if its URL contains no whitespace.', () => {
-  context('Additionally, the URL must satisfy one of the following conditions:', () => {
+context('A link can have whitespace between its bracketed content and bracketed URL under certain conditions.', () => {
+  context('The URL must satisfy one of the following:', () => {
+
     context('It has a scheme', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'email me',
@@ -23,7 +24,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         ])
       })
 
-      it('even when otherwise consisting solely of digits', () => {
+      specify('even when otherwise consisting solely of digits', () => {
         expectEveryCombinationOfBrackets({
           firstPartToWrapInBrackets: 'call me',
           partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -35,7 +36,26 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ])
         })
       })
+
+      specify('and does not contain any spaces', () => {
+        expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new PlainTextNode('[agreed]')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('('),
+              new LinkNode([
+                new PlainTextNode('stackoverflow.com')
+              ], 'https://stackoverflow.com'),
+              new PlainTextNode(' is nice)')
+            ]),
+          ])
+        )
+      })
     })
+
 
     context('It starts with a slash', () => {
       expectEveryCombinationOfBrackets({
@@ -61,7 +81,22 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ])
         })
       })
+
+      specify('and does not contain any spaces', () => {
+        expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new PlainTextNode('[yeah]')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(/r9k/ inspires geniune pity)')
+            ]),
+          ])
+        )
+      })
     })
+    
 
     context('It starts with a fragment identifier ("#")', () => {
       expectEveryCombinationOfBrackets({
@@ -88,62 +123,21 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ])
         )
       })
+
+      specify('and does not contain any spaces', () => {
+        expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new PlainTextNode('[yeah]')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(#starcraft2 was never trending)')
+            ]),
+          ])
+        )
+      })
     })
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with "http://" or "https://")', () => {
-  it('does not produce a link node', () => {
-    expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[agreed]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('stackoverflow.com')
-          ], 'https://stackoverflow.com'),
-          new PlainTextNode(' is nice)')
-        ]),
-      ])
-    )
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with a slash)', () => {
-  it('does not produce a link node', () => {
-    expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[yeah]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('(/r9k/ inspires geniune pity)')
-        ]),
-      ])
-    )
-  })
-})
-
-
-describe('Bracketed text, followed by whitespace, followed by another instance of bracketed text (containing whitespace and starting with a fragment identifier)', () => {
-  it('does not produce a link node', () => {
-    expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new SquareBracketedNode([
-          new PlainTextNode('[yeah]')
-        ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('(#starcraft2 was never trending)')
-        ]),
-      ])
-    )
   })
 })
 
