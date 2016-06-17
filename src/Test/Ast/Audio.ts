@@ -111,6 +111,20 @@ describe("An audio convention's URL", () => {
 })
 
 
+describe("An audio convention's URL", () => {
+  it("does not need to have an extension", () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'audio: ghostly howling',
+      partsToPutInBetween: [' ', '\t', '  \t '],
+      secondPartToWrapInBrackets: 'http://example.com/ghosts',
+      toProduce: new DocumentNode([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts')
+      ])
+    })
+  })
+})
+
+
 describe('An audio description (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toAst('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.be.eql(
