@@ -157,7 +157,7 @@ export class Tokenizer {
     })
 
     this.conventions.push(
-      ...this.getLinkUrlDirectlyFollowingContentConventions())
+      ...this.getLinkUrlConventions())
 
     this.conventions.push(
       ...this.getLinkUrlSeparatedFromContentByWhitespaceConventions())
@@ -610,7 +610,7 @@ export class Tokenizer {
   //
   // We allow whitespace between a link's content and its URL, but that isn't handled by these
   // conventions. For that, see `getLinkUrlSeparatedFromContentByWhitespaceConventions`.
-  private getLinkUrlDirectlyFollowingContentConventions(): TokenizableConvention[] {
+  private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
@@ -651,20 +651,9 @@ export class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
-      insteadOfTryingToCloseOuterContexts: (context) => {
-        if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-          // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
-          // backtrack.
-          this.backtrackToBeforeContext(context)
-          return
-        }
-
-        this.bufferRawText()
-      },
-
+      insteadOfTryingToCloseOuterContexts: this.bufferRawTextAndBacktrackIfThereIsWhitespace,
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -681,6 +670,7 @@ export class Tokenizer {
     }))
   }
 
+  // This pattern captures the URL prefix.
   private getBracketedUrlFollowingWhitespacePattern(bracket: Bracket): RegExp {
     return regExpStartingWith(
       SOME_WHITESPACE + bracket.startPattern + capture(
@@ -701,8 +691,8 @@ export class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // For more information about the purpose of this method, see the comment for
-  // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL`.
+  // Certain conventions can be  "linkified" if followed by a bracketed URL. The original conventions aren't
+  // replaced, but their entire contents are placed inside a link.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
@@ -721,28 +711,22 @@ export class Tokenizer {
     }))
   }
 
-  // For more information about the purpose of this method, see the comment for
-  // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL`.
+  // Just like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
+  // between the linkifying URL and the original convention.
+  //
+  // For more information, see:
+  //
+  // 1. `getLinkifyingUrlConventions`
+  // 2. `getLinkUrlConventions`
   private getLinkifyingUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
-      insteadOfTryingToCloseOuterContexts: (context) => {
-        if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-          // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
-          // backtrack.
-          this.backtrackToBeforeContext(context)
-          return
-        }
-
-        this.bufferRawText()
-      },
-
+      insteadOfTryingToCloseOuterContexts: this.bufferRawTextAndBacktrackIfThereIsWhitespace,
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -757,6 +741,17 @@ export class Tokenizer {
         this.closeLinkifyingUrl(url)
       }
     }))
+  }
+
+  private bufferRawTextAndBacktrackIfThereIsWhitespace = (context: ConventionContext) => {
+    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
+      // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
+      // backtrack.
+      this.backtrackToBeforeContext(context)
+      return
+    }
+
+    this.bufferRawText()
   }
 
   private closeLinkifyingUrl(url: string): void {
