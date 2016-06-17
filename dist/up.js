@@ -658,6 +658,25 @@ var InlineTextConsumer_1 = require('./InlineTextConsumer');
 var TokenKind_1 = require('./TokenKind');
 var Token_1 = require('./Token');
 var RaisedVoiceHandler_1 = require('./RaisedVoiceHandler');
+var CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
+    RichConventions_1.PARENTHESIZED_CONVENTION,
+    RichConventions_1.SQUARE_BRACKETED_CONVENTION,
+    RichConventions_1.ACTION_CONVENTION
+];
+var COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
+    RichConventions_1.SPOILER_CONVENTION,
+    RichConventions_1.NSFW_CONVENTION,
+    RichConventions_1.NSFL_CONVENTION,
+    RichConventions_1.FOOTNOTE_CONVENTION
+];
+var PARENTHESIS = new Bracket_1.Bracket('(', ')');
+var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
+var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
+var BRACKETS = [
+    PARENTHESIS,
+    SQUARE_BRACKET,
+    CURLY_BRACKET
+];
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -1042,7 +1061,7 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
-            onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL,
+            onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function () {
@@ -1056,7 +1075,7 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_FRAGMENT_IDENTIFIER))),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
-            onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL,
+            onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             insteadOfTryingToCloseOuterContexts: function (context) {
                 if (WHITESPACE_CHAR_PATTERN.test(_this.consumer.currentChar)) {
@@ -1087,7 +1106,7 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
-            onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENT_CAN_BE_LINKIFIED,
+            onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
@@ -1184,25 +1203,6 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 exports.Tokenizer = Tokenizer;
-var CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL = [
-    RichConventions_1.PARENTHESIZED_CONVENTION,
-    RichConventions_1.SQUARE_BRACKETED_CONVENTION,
-    RichConventions_1.ACTION_CONVENTION
-];
-var COVENTIONS_WHOSE_CONTENT_CAN_BE_LINKIFIED = [
-    RichConventions_1.SPOILER_CONVENTION,
-    RichConventions_1.NSFW_CONVENTION,
-    RichConventions_1.NSFL_CONVENTION,
-    RichConventions_1.FOOTNOTE_CONVENTION
-];
-var PARENTHESIS = new Bracket_1.Bracket('(', ')');
-var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
-var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
-var BRACKETS = [
-    PARENTHESIS,
-    SQUARE_BRACKET,
-    CURLY_BRACKET
-];
 var URL_SLASH = '/';
 var URL_FRAGMENT_IDENTIFIER = '#';
 var URL_SCHEME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')))

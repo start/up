@@ -23,6 +23,42 @@ import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
+// When tokenizing a link, we always start with one of the following conventions. If followed by a
+// (valid!) bracketed URL, the original convention is replaced by a link.
+const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
+  PARENTHESIZED_CONVENTION,
+  SQUARE_BRACKETED_CONVENTION,
+  ACTION_CONVENTION
+]
+
+// In contrast, the following conventions are "linkified" if followed by a bracketed URL. The original
+// conventions aren't replaced, but their entire contents are placed inside a link.
+const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
+  SPOILER_CONVENTION,
+  NSFW_CONVENTION,
+  NSFL_CONVENTION,
+  FOOTNOTE_CONVENTION
+]
+
+
+// Many of our conventions rely on brackets. Here they are!
+
+const PARENTHESIS =
+  new Bracket('(', ')')
+
+const SQUARE_BRACKET =
+  new Bracket('[', ']')
+
+const CURLY_BRACKET =
+  new Bracket('{', '}')
+
+const BRACKETS = [
+  PARENTHESIS,
+  SQUARE_BRACKET,
+  CURLY_BRACKET
+]
+
+
 export class Tokenizer {
   tokens: Token[] = []
 
@@ -595,7 +631,7 @@ export class Tokenizer {
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL,
+      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
@@ -634,7 +670,7 @@ export class Tokenizer {
 
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL,
+      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
 
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
@@ -673,17 +709,14 @@ export class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // Okay, this method name is a bit confusing.
-  //
-  // Spoilers, NSFW/NSFL conventions, and footnotes can be "linkified" by immediately following their closing bracket
-  // with a parenthesized/bracketed URL. They remain spoilers, NSFW/NSFL conventions, or footnotes, but their entire
-  // contents are placed into a link. 
+  // For more information about the purpose of this method, see the comment for
+  // `COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL` at the top of this file.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENT_CAN_BE_LINKIFIED,
+      onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
       closeInnerContextsWhenClosing: true,
@@ -811,36 +844,6 @@ export class Tokenizer {
     }))
   }
 }
-
-
-const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_URL = [
-  PARENTHESIZED_CONVENTION,
-  SQUARE_BRACKETED_CONVENTION,
-  ACTION_CONVENTION
-]
-
-const COVENTIONS_WHOSE_CONTENT_CAN_BE_LINKIFIED = [
-  SPOILER_CONVENTION,
-  NSFW_CONVENTION,
-  NSFL_CONVENTION,
-  FOOTNOTE_CONVENTION
-]
-
-
-const PARENTHESIS =
-  new Bracket('(', ')')
-
-const SQUARE_BRACKET =
-  new Bracket('[', ']')
-
-const CURLY_BRACKET =
-  new Bracket('{', '}')
-
-const BRACKETS = [
-  PARENTHESIS,
-  SQUARE_BRACKET,
-  CURLY_BRACKET
-]
 
 
 const URL_SLASH =
