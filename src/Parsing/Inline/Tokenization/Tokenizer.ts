@@ -938,20 +938,10 @@ const WHITESPACE_CHAR_PATTERN =
 
 
 // Many of our conventions rely on brackets. Here they are!
-
-const PARENTHESIS =
-  new Bracket('(', ')')
-
-const SQUARE_BRACKET =
-  new Bracket('[', ']')
-
-const CURLY_BRACKET =
-  new Bracket('{', '}')
-
 const BRACKETS = [
-  PARENTHESIS,
-  SQUARE_BRACKET,
-  CURLY_BRACKET
+  new Bracket('(', ')'),
+  new Bracket('[', ']'),
+  new Bracket('{', '}')
 ]
 
 // The following patterns represent every character that can start or end any convention.  

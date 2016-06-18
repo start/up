@@ -1249,13 +1249,10 @@ var URL_SLASH = '/';
 var URL_HASH_MARK = '#';
 var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
-var PARENTHESIS = new Bracket_1.Bracket('(', ')');
-var SQUARE_BRACKET = new Bracket_1.Bracket('[', ']');
-var CURLY_BRACKET = new Bracket_1.Bracket('{', '}');
 var BRACKETS = [
-    PARENTHESIS,
-    SQUARE_BRACKET,
-    CURLY_BRACKET
+    new Bracket_1.Bracket('(', ')'),
+    new Bracket_1.Bracket('[', ']'),
+    new Bracket_1.Bracket('{', '}')
 ];
 var PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
     BRACKETS.map(function (bracket) { return bracket.startPattern; }),
