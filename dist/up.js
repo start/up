@@ -2620,7 +2620,7 @@ var NsflNode = (function (_super) {
     __extends(NsflNode, _super);
     function NsflNode() {
         _super.apply(this, arguments);
-        this.NOT_SAFE_FOR_LIFE = null;
+        this.NSFL = null;
     }
     return NsflNode;
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
@@ -2638,7 +2638,7 @@ var NsfwNode = (function (_super) {
     __extends(NsfwNode, _super);
     function NsfwNode() {
         _super.apply(this, arguments);
-        this.NOT_SAFE_FOR_WORK = null;
+        this.NSFW = null;
     }
     return NsfwNode;
 }(RichInlineSyntaxNode_1.RichInlineSyntaxNode));
