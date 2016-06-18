@@ -206,7 +206,7 @@ export class Tokenizer {
   private tokenize(): void {
     while (!this.isDone()) {
       this.tryToCollectEscapedChar()
-      || this.tryToSkipContentThatCannotTriggerAnyChanges()
+        || this.tryToBufferContentThatCannotTriggerAnyChanges()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
         || this.tryToOpenAnyConvention()
@@ -253,7 +253,7 @@ export class Tokenizer {
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
   }
 
-  private tryToSkipContentThatCannotTriggerAnyChanges(): boolean {
+  private tryToBufferContentThatCannotTriggerAnyChanges(): boolean {
     return this.consumer.consume({
       pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
       thenBeforeAdvancingTextIndex: match => { this.buffer += match }
@@ -944,17 +944,17 @@ const BRACKETS = [
   new Bracket('{', '}')
 ]
 
+
 // The following patterns represent every character that can start or end any convention.  
 //
 // The "h" is for the start of naked URLs.
-const PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = 
+const PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION =
   concat([
     BRACKETS.map(bracket => bracket.startPattern),
     BRACKETS.map(bracket => bracket.endPattern),
     ['*', '+', '\\'].map(escapeForRegex),
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])
-
 
 const CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN =
   regExpStartingWith(atLeast(1,

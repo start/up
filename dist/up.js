@@ -772,7 +772,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
             this.tryToCollectEscapedChar()
-                || this.tryToSkipContentThatCannotTriggerAnyChanges()
+                || this.tryToBufferContentThatCannotTriggerAnyChanges()
                 || this.tryToCloseAnyConvention()
                 || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
                 || this.tryToOpenAnyConvention()
@@ -807,7 +807,7 @@ var Tokenizer = (function () {
         this.consumer.advanceTextIndex(1);
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
-    Tokenizer.prototype.tryToSkipContentThatCannotTriggerAnyChanges = function () {
+    Tokenizer.prototype.tryToBufferContentThatCannotTriggerAnyChanges = function () {
         var _this = this;
         return this.consumer.consume({
             pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
