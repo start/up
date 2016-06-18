@@ -11,7 +11,7 @@ import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   const up = new Up({
-    baseForUrlsStartingWithFragmentIdentifier: 'https://example.com/page'
+    baseForUrlsStartingWithHashMark: 'https://example.com/page'
   })
 
   it("does not affect a footnote reference's link to its footnote", () => {

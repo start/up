@@ -602,7 +602,7 @@ export class Tokenizer {
         return this.config.settings.baseForUrlsStartingWithSlash + url
 
       case URL_HASH_MARK:
-        return this.config.settings.baseForUrlsStartingWithFragmentIdentifier + url
+        return this.config.settings.baseForUrlsStartingWithHashMark + url
     }
 
     if (!URL_SCHEME_PATTERN.test(url)) {

@@ -15,7 +15,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 const up = new Up({
-  baseForUrlsStartingWithFragmentIdentifier: 'https://example.com/page'
+  baseForUrlsStartingWithHashMark: 'https://example.com/page'
 })
 
 

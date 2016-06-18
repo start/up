@@ -3,7 +3,7 @@ export interface UpConfigSettings {
   
   defaultUrlScheme?: string
   baseForUrlsStartingWithSlash?: string
-  baseForUrlsStartingWithFragmentIdentifier?: string
+  baseForUrlsStartingWithHashMark?: string
 
   i18n?: {
     idWordDelimiter?: string
