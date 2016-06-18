@@ -174,31 +174,30 @@ export class Tokenizer {
     this.conventions.push(...[
       {
         richConvention: PARENTHESIZED_CONVENTION,
-        startPattern: PARENTHESIS.startPattern,
-        endPattern: PARENTHESIS.endPattern
+        startDelimiter: '(',
+        endDelimiter: ')'
       }, {
         richConvention: SQUARE_BRACKETED_CONVENTION,
-        startPattern: SQUARE_BRACKET.startPattern,
-        endPattern: SQUARE_BRACKET.endPattern
+        startDelimiter: '[',
+        endDelimiter: ']'
       }, {
         richConvention: ACTION_CONVENTION,
-        startPattern: CURLY_BRACKET.startPattern,
-        endPattern: CURLY_BRACKET.endPattern
+        startDelimiter: '{',
+        endDelimiter: '}'
       }
-    ].map(args => this.getRichSandwichConvention(args)))
+    ].map(args => this.getRichSandwichConventionNotRequiringBacktracking(args)))
 
     this.conventions.push(...[
       {
         richConvention: REVISION_DELETION_CONVENTION,
-        startPattern: '~~',
-        endPattern: '~~',
+        startDelimiter: '~~',
+        endDelimiter: '~~',
       }, {
         richConvention: REVISION_INSERTION_CONVENTION,
-        startPattern: escapeForRegex('++'),
-        endPattern: escapeForRegex('++'),
-        resolveWhenLeftUnclosed: (context: ConventionContext) =>  this.insertPlainTextTokenAtContextStart('++', context)
+        startDelimiter: '++',
+        endDelimiter: '++',
       }
-    ].map(args => this.getRichSandwichConvention(args)))
+    ].map(args => this.getRichSandwichConventionNotRequiringBacktracking(args)))
 
     this.conventions.push(
       this.nakedUrlConvention)
@@ -814,6 +813,23 @@ export class Tokenizer {
       bracket.startPattern
       + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
       + ANY_WHITESPACE)
+  }
+
+  private getRichSandwichConventionNotRequiringBacktracking(
+    args: {
+      richConvention: RichConvention
+      startDelimiter: string
+      endDelimiter: string
+    }
+  ): TokenizableConvention {
+    const { richConvention, startDelimiter, endDelimiter } = args
+
+    return this.getRichSandwichConvention({
+      richConvention,
+      startPattern: escapeForRegex(startDelimiter),
+      endPattern: escapeForRegex(endDelimiter),
+      resolveWhenLeftUnclosed: (context) => this.insertPlainTextTokenAtContextStart(startDelimiter, context)
+    })
   }
 
   private getRichSandwichConvention(

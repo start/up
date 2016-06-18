@@ -743,30 +743,29 @@ var Tokenizer = (function () {
         (_h = this.conventions).push.apply(_h, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
-                startPattern: PARENTHESIS.startPattern,
-                endPattern: PARENTHESIS.endPattern
+                startDelimiter: '(',
+                endDelimiter: ')'
             }, {
                 richConvention: RichConventions_1.SQUARE_BRACKETED_CONVENTION,
-                startPattern: SQUARE_BRACKET.startPattern,
-                endPattern: SQUARE_BRACKET.endPattern
+                startDelimiter: '[',
+                endDelimiter: ']'
             }, {
                 richConvention: RichConventions_1.ACTION_CONVENTION,
-                startPattern: CURLY_BRACKET.startPattern,
-                endPattern: CURLY_BRACKET.endPattern
+                startDelimiter: '{',
+                endDelimiter: '}'
             }
-        ].map(function (args) { return _this.getRichSandwichConvention(args); }));
+        ].map(function (args) { return _this.getRichSandwichConventionNotRequiringBacktracking(args); }));
         (_j = this.conventions).push.apply(_j, [
             {
                 richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
-                startPattern: '~~',
-                endPattern: '~~',
+                startDelimiter: '~~',
+                endDelimiter: '~~',
             }, {
                 richConvention: RichConventions_1.REVISION_INSERTION_CONVENTION,
-                startPattern: PatternHelpers_1.escapeForRegex('++'),
-                endPattern: PatternHelpers_1.escapeForRegex('++'),
-                resolveWhenLeftUnclosed: function (context) { return _this.insertPlainTextTokenAtContextStart('++', context); }
+                startDelimiter: '++',
+                endDelimiter: '++',
             }
-        ].map(function (args) { return _this.getRichSandwichConvention(args); }));
+        ].map(function (args) { return _this.getRichSandwichConventionNotRequiringBacktracking(args); }));
         this.conventions.push(this.nakedUrlConvention);
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     };
@@ -1177,6 +1176,16 @@ var Tokenizer = (function () {
         return (bracket.startPattern
             + PatternHelpers_1.escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
             + PatternPieces_1.ANY_WHITESPACE);
+    };
+    Tokenizer.prototype.getRichSandwichConventionNotRequiringBacktracking = function (args) {
+        var _this = this;
+        var richConvention = args.richConvention, startDelimiter = args.startDelimiter, endDelimiter = args.endDelimiter;
+        return this.getRichSandwichConvention({
+            richConvention: richConvention,
+            startPattern: PatternHelpers_1.escapeForRegex(startDelimiter),
+            endPattern: PatternHelpers_1.escapeForRegex(endDelimiter),
+            resolveWhenLeftUnclosed: function (context) { return _this.insertPlainTextTokenAtContextStart(startDelimiter, context); }
+        });
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
