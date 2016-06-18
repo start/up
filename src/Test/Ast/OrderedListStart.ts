@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
+
 function listStart(text: string): number {
   const list = <OrderedListNode>Up.toAst(text).children[0]
   return list.start()

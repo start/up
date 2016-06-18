@@ -1,6 +1,5 @@
 import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { OrderedListOrder } from './OrderedListOrder'
 
 
 export class OrderedListNode extends OutlineSyntaxNode {
@@ -29,3 +28,9 @@ export class OrderedListNode extends OutlineSyntaxNode {
 
   private ORDERED_LIST: any = null
 }
+
+export enum OrderedListOrder {
+  Ascending,
+  Descrending
+}
+

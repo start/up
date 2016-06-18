@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListOrder } from '../../SyntaxNodes/OrderedListOrder'
+import { OrderedListNode, OrderedListOrder } from '../../SyntaxNodes/OrderedListNode'
+
 
 function listOrder(text: string): OrderedListOrder {
   const list = <OrderedListNode>Up.toAst(text).children[0]
