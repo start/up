@@ -759,11 +759,12 @@ var Tokenizer = (function () {
             {
                 richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
                 startPattern: '~~',
-                endPattern: '~~'
+                endPattern: '~~',
             }, {
                 richConvention: RichConventions_1.REVISION_INSERTION_CONVENTION,
                 startPattern: PatternHelpers_1.escapeForRegex('++'),
-                endPattern: PatternHelpers_1.escapeForRegex('++')
+                endPattern: PatternHelpers_1.escapeForRegex('++'),
+                resolveWhenLeftUnclosed: function (context) { return _this.insertPlainTextTokenAtContextStart('++', context); }
             }
         ].map(function (args) { return _this.getRichSandwichConvention(args); }));
         this.conventions.push(this.nakedUrlConvention);
@@ -1059,6 +1060,12 @@ var Tokenizer = (function () {
         }
         return url;
     };
+    Tokenizer.prototype.insertPlainTextTokenAtContextStart = function (text, context) {
+        this.insertToken({
+            token: new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: text }),
+            atIndex: context.startTokenIndex
+        });
+    };
     Tokenizer.prototype.getLinkUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
@@ -1173,7 +1180,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
-        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern, startPatternContainsATerm = args.startPatternContainsATerm;
+        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern, startPatternContainsATerm = args.startPatternContainsATerm, resolveWhenLeftUnclosed = args.resolveWhenLeftUnclosed;
         return {
             startPattern: PatternHelpers_1.regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
             endPattern: PatternHelpers_1.regExpStartingWith(endPattern),
@@ -1181,7 +1188,8 @@ var Tokenizer = (function () {
             onCloseFlushBufferTo: TokenKind_1.TokenKind.PlainText,
             onClose: function (context) {
                 _this.encloseContextWithin(richConvention, context);
-            }
+            },
+            resolveWhenLeftUnclosed: resolveWhenLeftUnclosed
         };
     };
     Tokenizer.prototype.getMediaDescriptionConventions = function () {

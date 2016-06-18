@@ -28,6 +28,6 @@ export interface TokenizableConvention {
 }
 
 
-interface OnConventionEvent {
+export interface OnConventionEvent {
   (context: ConventionContext): void
 }

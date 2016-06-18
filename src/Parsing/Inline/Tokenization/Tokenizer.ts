@@ -18,7 +18,7 @@ import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { NewTokenArgs } from './NewTokenArgs'
-import { TokenizableConvention } from './TokenizableConvention'
+import { TokenizableConvention, OnConventionEvent } from './TokenizableConvention'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
@@ -191,11 +191,12 @@ export class Tokenizer {
       {
         richConvention: REVISION_DELETION_CONVENTION,
         startPattern: '~~',
-        endPattern: '~~'
+        endPattern: '~~',
       }, {
         richConvention: REVISION_INSERTION_CONVENTION,
         startPattern: escapeForRegex('++'),
-        endPattern: escapeForRegex('++')
+        endPattern: escapeForRegex('++'),
+        resolveWhenLeftUnclosed: (context: ConventionContext) =>  this.insertPlainTextTokenAtContextStart('++', context)
       }
     ].map(args => this.getRichSandwichConvention(args)))
 
@@ -612,6 +613,13 @@ export class Tokenizer {
     return url
   }
 
+  private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {
+    this.insertToken({
+      token: new Token({ kind: TokenKind.PlainText, value: text }),
+      atIndex: context.startTokenIndex
+    })
+  }
+
   // These conventions are for link URLs that directly follow linked content:
   //
   // You should try [Typescript](http://www.typescriptlang.org).
@@ -814,9 +822,10 @@ export class Tokenizer {
       startPattern: string
       endPattern: string
       startPatternContainsATerm?: boolean
+      resolveWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern, startPatternContainsATerm } = args
+    const { richConvention, startPattern, endPattern, startPatternContainsATerm, resolveWhenLeftUnclosed } = args
 
     return {
       // Some of our rich sandwich conventions use a localized term in their start pattern, and we want those
@@ -829,7 +838,9 @@ export class Tokenizer {
 
       onClose: (context) => {
         this.encloseContextWithin(richConvention, context)
-      }
+      },
+
+      resolveWhenLeftUnclosed
     }
   }
 
