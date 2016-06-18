@@ -1,7 +1,7 @@
 import { UpConfigSettings} from './UpConfigSettings'
 
 
-const DEFAULT_CONFIG: UpConfigSettings = {
+const DEFAULT_SETTINGS: UpConfigSettings = {
   documentName: 'up',
 
   defaultUrlScheme: 'https://',
@@ -31,7 +31,7 @@ const DEFAULT_CONFIG: UpConfigSettings = {
 export class UpConfig {
   public settings: UpConfigSettings
 
-  constructor(settings?: UpConfigSettings, defaultSettings = DEFAULT_CONFIG) {
+  constructor(settings?: UpConfigSettings, defaultSettings = DEFAULT_SETTINGS) {
     this.settings = merge(defaultSettings, settings)
   }
   

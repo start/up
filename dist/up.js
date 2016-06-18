@@ -2986,7 +2986,7 @@ function toHtml(textOrNode, config) {
 
 },{"./Parsing/parseDocument":34,"./UpConfig":80,"./Writers//Html/HtmlWriter":82}],80:[function(require,module,exports){
 "use strict";
-var DEFAULT_CONFIG = {
+var DEFAULT_SETTINGS = {
     documentName: 'up',
     defaultUrlScheme: 'https://',
     baseForUrlsStartingWithSlash: '',
@@ -3010,7 +3010,7 @@ var DEFAULT_CONFIG = {
 };
 var UpConfig = (function () {
     function UpConfig(settings, defaultSettings) {
-        if (defaultSettings === void 0) { defaultSettings = DEFAULT_CONFIG; }
+        if (defaultSettings === void 0) { defaultSettings = DEFAULT_SETTINGS; }
         this.settings = merge(defaultSettings, settings);
     }
     UpConfig.prototype.withChanges = function (changes) {
