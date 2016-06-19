@@ -189,10 +189,10 @@ const STRESS_COST = 2
 const MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST
 
 
-interface EncloseWithin {
+export interface EncloseWithin {
   (args: EncloseWithinArgs): void
 }
 
-interface InsertPlainTextToken {
+export interface InsertPlainTextToken {
   (args: { text: string, atIndex: number }): void
 }

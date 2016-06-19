@@ -221,7 +221,7 @@ function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSynt
 
 
 
-interface ParseResult {
+export interface ParseResult {
   nodes: InlineSyntaxNode[]
   countTokensParsed: number
 }

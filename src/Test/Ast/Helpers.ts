@@ -63,11 +63,12 @@ const NORMAL_BRACKETS = [
   { open: '{', close: '}' }
 ]
 
-interface Bracket {
-  open: string
-  close: string
-}
 
 function wrapInBracket(text: string, bracket: Bracket): string {
   return bracket.open + text + bracket.close
+}
+
+export interface Bracket {
+  open: string
+  close: string
 }

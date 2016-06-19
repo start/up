@@ -92,10 +92,10 @@ export class LineConsumer {
 }
 
 
-interface ShouldConsumeLine {
+export interface ShouldConsumeLine {
   (line: string, ...captures: string[]): boolean
 }
 
-interface OnConsume {
+export interface OnConsume {
   (text: string, ...captures: string[]): void
 }

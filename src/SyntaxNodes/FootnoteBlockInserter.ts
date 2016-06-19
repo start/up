@@ -151,10 +151,10 @@ export class FootnoteBlockInserter {
 }
 
 
-interface OutlineNodeContainer {
+export interface OutlineNodeContainer {
   children: OutlineSyntaxNode[]
 }
 
-interface InlineNodeContainer {
+export interface InlineNodeContainer {
   children: InlineSyntaxNode[]
 }

@@ -64,6 +64,6 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
 }
 
 
-interface OnSuccess {
+export interface OnSuccess {
   (lines: string[], lengthParsed: number, shouldTerminateList: boolean): void
 }
