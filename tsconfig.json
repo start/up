@@ -12,7 +12,7 @@
     "sourceMap": true
   },
   "exclude": [
-    "node_module",
+    "node_modules",
     "typings/browser",
     "typings/browser.d.ts"
   ]

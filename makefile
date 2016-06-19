@@ -1,5 +1,7 @@
 .PHONY: clean install all
 
+LOCAL_MODULES = ./node_modules/.bin/
+
 all: test
 
 clean:
@@ -7,8 +9,8 @@ clean:
 
 install: clean
 	mkdir -p built dist
-	tsc
-	./node_modules/.bin/browserify built/browser.js --outfile dist/up.js
+	$(LOCAL_MODULES)/tsc
+	$(LOCAL_MODULES)/browserify built/browser.js --outfile dist/up.js
 
 test: install
 	npm test
