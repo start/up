@@ -27,3 +27,6 @@ package: test
 # We include a trailing slash after the `built` directory to ensure its contents are copied
 # directly into `lib`, instead of into a `built` directory inside of `lib`. 
 	rsync -am --include='*.js' --include='*.d.ts' --include='*/' --exclude='*' $(BUILT)/ $(LIB)
+
+# Delete any code from the `lib` directory that doesn't need to be published to npm
+	rm -rf $(LIB)/{Test,browser.{js,d.ts}}
