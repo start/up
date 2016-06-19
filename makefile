@@ -1,17 +1,23 @@
-.PHONY: clean install all
+.PHONY: clean install all test package
+
+BUILT = built
+FOR_BROWSER = for-browser
 
 LOCAL_MODULES = ./node_modules/.bin/
 
 all: test
 
 clean:
-	rm -rf built dist
+	rm -rf $(BUILT) $(FOR_BROWSER) 
 
 install: clean
-	mkdir -p built dist
+	mkdir $(BUILT)
 	$(LOCAL_MODULES)/tsc
-	$(LOCAL_MODULES)/browserify built/browser.js --outfile dist/up.js
 
 test: install
 	npm test
+
+package: test
+	mkdir $(FOR_BROWSER)
+	$(LOCAL_MODULES)/browserify $(BUILT)/browser.js --outfile $(FOR_BROWSER)/up.js
 
