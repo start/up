@@ -3,7 +3,7 @@
   "name": "up",
   "version": "0.0.0",
   "description": "Up is a lightweight markup language for writing in plain text",
-  "main": "built/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --recursive ./built/Test"
   },
