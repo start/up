@@ -1,7 +1,8 @@
 {
+  "private": true,
   "name": "up",
   "description": "Up is a lightweight markup language for writing in plain text",
-  "main": "built/index.js",
+  "main": "for-browser/up.js",
   "authors": [
     "Daniel Miller <daniel@wants.email>"
   ],
@@ -13,14 +14,8 @@
     "formatting"
   ],
   "homepage": "https://github.com/start/up",
-  "private": true,
   "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests",
-    "src",
-    "typings"
+    "**/*",
+    "!for-browser"
   ]
 }
