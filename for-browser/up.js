@@ -80,7 +80,7 @@ var Parser = (function () {
         this.nodes = [];
         this.tokens = args.tokens;
         var untilTokenKind = args.untilTokenKind;
-        LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
+        TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
             var token = this.tokens[this.tokenIndex];
             this.countTokensParsed = this.tokenIndex + 1;
             switch (token.kind) {
@@ -140,13 +140,13 @@ var Parser = (function () {
                     var description = token.value.trim();
                     var url = this.getNextTokenAndAdvanceIndex().value.trim();
                     if (!url) {
-                        continue LoopTokens;
+                        continue TokenLoop;
                     }
                     if (!description) {
                         description = url;
                     }
                     this.nodes.push(new media.NodeType(description, url));
-                    continue LoopTokens;
+                    continue TokenLoop;
                 }
             }
             for (var _b = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _b < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _b++) {
@@ -156,7 +156,7 @@ var Parser = (function () {
                     if (result.nodes.length) {
                         this.nodes.push(new richConvention.NodeType(result.nodes));
                     }
-                    continue LoopTokens;
+                    continue TokenLoop;
                 }
             }
         }

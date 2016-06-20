@@ -48,7 +48,7 @@ export class Parser {
     this.tokens = args.tokens
     const { untilTokenKind } = args
 
-    LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
+    TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
@@ -139,7 +139,7 @@ export class Parser {
 
           if (!url) {
             // If there's no URL, there's nothing meaningful to include in the document
-            continue LoopTokens
+            continue TokenLoop
           }
 
           if (!description) {
@@ -148,7 +148,7 @@ export class Parser {
           }
 
           this.nodes.push(new media.NodeType(description, url))
-          continue LoopTokens
+          continue TokenLoop
         }
       }
 
@@ -161,7 +161,7 @@ export class Parser {
             this.nodes.push(new richConvention.NodeType(result.nodes))
           }
 
-          continue LoopTokens
+          continue TokenLoop
         }
       }
     }
