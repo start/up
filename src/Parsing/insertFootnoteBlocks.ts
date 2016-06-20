@@ -1,18 +1,18 @@
-import { SectionSeparatorNode } from './SectionSeparatorNode'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { ParagraphNode } from './ParagraphNode'
-import { BlockquoteNode } from './BlockquoteNode'
-import { LineBlockNode } from './LineBlockNode'
-import { HeadingNode } from './HeadingNode'
-import { UnorderedListNode } from './UnorderedListNode'
-import { OrderedListNode } from './OrderedListNode'
-import { DescriptionListNode } from './DescriptionListNode'
-import { DescriptionListItem } from './DescriptionListItem'
-import { FootnoteNode } from './FootnoteNode'
-import { FootnoteBlockNode } from './FootnoteBlockNode'
+import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
+import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
+import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
+import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
+import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
+import { HeadingNode } from '../SyntaxNodes/HeadingNode'
+import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
+import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
+import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
+import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { getOutlineNodes } from '../Parsing/Outline/getOutlineNodes'
-import { DocumentNode } from './DocumentNode'
+import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { concat } from '../CollectionHelpers'
 
 
@@ -26,9 +26,15 @@ import { concat } from '../CollectionHelpers'
 //    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote
 //    are placed into a footnote block inside the blockquote after the paragraph.
 //
-// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block. 
+// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block.
 
-export class FootnoteBlockInserter {
+
+export function insertFootnoteBlocks(documentNode: DocumentNode): void {
+  new FootnoteBlockInserter(documentNode)
+}
+
+
+class FootnoteBlockInserter {
   private currentFootnoteReferenceNumber = 1
 
   constructor(documentNode: DocumentNode) {
