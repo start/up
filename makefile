@@ -1,29 +1,30 @@
-.PHONY: clean build all test
+.PHONY: all clean build test
 
-BUILT = built
-FOR_BROWSER = for-browser
-LIB = lib
+local_modules_dir = ./node_modules/.bin
 
-LOCAL_MODULES = ./node_modules/.bin/
+compiled_dir = compiled
+bower_publish_dir = for-browser
+npm_publish_dir = lib
+
+all_our_build_dirs = $(compiled_dir) $(bower_publish_dir) $(npm_publish_dir)
 
 all: test
 
 clean:
-	rm -rf $(BUILT) $(FOR_BROWSER) $(LIB) 
+	rm -rf $(all_our_build_dirs) 
 
 build: clean
-	mkdir $(BUILT) $(FOR_BROWSER) $(LIB)
-	$(LOCAL_MODULES)/tsc
-	$(LOCAL_MODULES)/browserify $(BUILT)/browser.js --outfile $(FOR_BROWSER)/up.js
+	mkdir $(all_our_build_dirs)	
+	$(local_modules_dir)/tsc
+	$(local_modules_dir)/browserify $(compiled_dir)/browser.js --outfile $(bower_publish_dir)/up.js
 
-# Copy all JavaScript files and TypeScript type declaration files to the `lib` directory.
+# Copy all JavaScript files and TypeScript type declaration files to `npm_publish_dir`.
 #
-# We include a trailing slash after the `built` directory to ensure its contents are copied
-# directly into `lib`, instead of into a `built` directory inside of `lib`. 
-	rsync -am --include='*.js' --include='*.d.ts' --include='*/' --exclude='*' $(BUILT)/ $(LIB)
+# We include a trailing slash after `compiled_dir` to ensure only its contents are copied (instead of itself).
+	rsync -am --include='*.js' --include='*.d.ts' --include='*/' --exclude='*' $(compiled_dir)/ $(npm_publish_dir)
 
-# Delete any code from the `lib` directory that doesn't need to be published to npm
-	rm -rf $(LIB)/{Test,browser.{js,d.ts}}
+# Delete any code from `npm_publish_dir` that doesn't need to be published to npm.
+	rm -rf $(npm_publish_dir)/{Test,browser.{js,d.ts}}
 
 test: build
 	npm test

@@ -7,7 +7,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
-    "outDir": "built",
+    "outDir": "compiled",
     "rootDir": "src",
     "sourceMap": true,
     "declaration": true
