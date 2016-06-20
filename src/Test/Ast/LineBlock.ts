@@ -8,6 +8,8 @@ import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 
@@ -17,6 +19,7 @@ describe('Consecutive non-blank lines', () => {
     const text = `
 Roses are red
 Violets are blue`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
@@ -39,8 +42,8 @@ describe('Lines in a line block', () => {
 Roses are red
 Violets are **blue**
 Lyrics have lines
-And addresses do, too
-`
+And addresses do, too`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
@@ -62,13 +65,14 @@ And addresses do, too
         ]),
       ]))
   })
-  
+
   it('can be blank if at least one of the whitespace characters is escaped', () => {
     const text = `
 Roses are red
  \\\t\t
  \\\t\t
 Violets are blue`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
@@ -90,14 +94,15 @@ Violets are blue`
 })
 
 
-describe('A section separator streak', () => {
-  it('can separate two line blocks', () => {
+context('A line block can be split in two by', () => {
+  it('a section separator streak', () => {
     const text = `
 Roses are red
 Violets are blue
 #~#~#~#~#~#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
@@ -119,11 +124,8 @@ And addresses do, too`
         ]),
       ]))
   })
-})
 
-
-describe('A line solely consisting solely of media conventions inserted in the middle of a line block', () => {
-  it('splits the line block in two', () => {
+  it('A line consisting solely of media conventions', () => {
     const text = `
 1234 Spooky Street
 Pepe, PA 17101
@@ -162,11 +164,8 @@ You're in for a fright`
         ])
       ]))
   })
-})
 
-
-describe('A line solely consisting solely of media conventions and whitespace inserted in the middle of a line block', () => {
-  it('splits the line block in two', () => {
+  it('a line consisting solely of media conventions and whitespace', () => {
     const text = `
 1234 Spooky Street
 Pepe, PA 17101
