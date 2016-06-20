@@ -12,22 +12,6 @@ export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): DocumentN
   ])
 }
 
-export function expectEveryCombinationOf(
-  args: {
-    firstHalves: string[],
-    secondHalves: string[],
-    toProduce: DocumentNode
-  }) {
-  const { firstHalves, secondHalves, toProduce } = args
-
-  for (const firstHalf of firstHalves) {
-    for (const secondHalf of secondHalves) {
-      expect(Up.toAst(firstHalf + secondHalf)).to.be.eql(toProduce)
-    }
-  }
-}
-
-
 export function expectEveryCombinationOfBrackets(
   args: {
     bracketsForFirstPart?: Bracket[],
@@ -56,6 +40,10 @@ export function expectEveryCombinationOfBrackets(
   }
 }
 
+export interface Bracket {
+  open: string
+  close: string
+}
 
 const NORMAL_BRACKETS = [
   { open: '(', close: ')' },
@@ -63,12 +51,6 @@ const NORMAL_BRACKETS = [
   { open: '{', close: '}' }
 ]
 
-
 function wrapInBracket(text: string, bracket: Bracket): string {
   return bracket.open + text + bracket.close
-}
-
-export interface Bracket {
-  open: string
-  close: string
 }
