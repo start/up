@@ -12,8 +12,8 @@ import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 context('A linkified NSFL convention can have whitespace between itself and its bracketed URL only under certain conditions.', () => {
 
-  context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
-    specify('we assume the author did not indent to produce a link, so the NSFL convention node is not linkified', () => {
+  context('If the URL does not have a scheme, does not start with a slash, and does not start with a hash mark ("#")', () => {
+    specify('we assume the author did not indent to linkify the NSFL convention', () => {
       expect(Up.toAst('[NSFL: something terrible] (really)')).to.be.eql(
         insideDocumentAndParagraph([
           new NsflNode([

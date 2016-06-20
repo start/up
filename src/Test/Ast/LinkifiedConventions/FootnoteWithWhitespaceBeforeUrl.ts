@@ -22,8 +22,8 @@ const FOOTNOTE_BRACKETS = [
 
 context('A linkified footnote can have whitespace between itself and its bracketed URL only under certain conditions.', () => {
 
-  context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
-    specify('we assume the author did not indent to produce a link, so the footnote is not linkified', () => {
+  context('If the URL does not have a scheme, does not start with a slash, and does not start with a hash mark ("#")', () => {
+    specify('we assume the author did not indent to linkify the footnote', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('the phone was dead')
       ], 1)
