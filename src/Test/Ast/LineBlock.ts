@@ -245,6 +245,50 @@ You're in for a fright`
       ]))
   })
 
+  specify('a single-line ordered list', () => {
+    const text = `
+1234 Spooky Street
+Pepe, PA 17101
+1) Never post your address unless you subsequently post poetry.
+Roses are red
+Skeltals are white
+If you stay here
+You're in for a fright`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('1234 Spooky Street')
+          ]),
+          new Line([
+            new PlainTextNode('Pepe, PA 17101')
+          ])
+        ]),
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Never post your address unless you subsequently post poetry.')
+            ])
+          ], 1)
+        ]),
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Skeltals are white')
+          ]),
+          new Line([
+            new PlainTextNode('If you stay here')
+          ]),
+          new Line([
+            new PlainTextNode("You're in for a fright")
+          ]),
+        ])
+      ]))
+  })
+
   specify('a line consisting solely of media conventions', () => {
     const text = `
 1234 Spooky Street
