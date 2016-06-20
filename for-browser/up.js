@@ -1627,7 +1627,7 @@ function getRemainingLinesOfListItem(args) {
         lengthParsed = consumer.textIndex;
     }
     if (!lines.length) {
-        return false;
+        return;
     }
     var countTrailingBlankLines = lines.length - countLinesIncluded;
     var shouldTerminateList = countTrailingBlankLines >= 2;
@@ -1639,7 +1639,6 @@ function getRemainingLinesOfListItem(args) {
         .slice(0, countLinesIncluded)
         .map(function (line) { return line.replace(Patterns_1.INDENTED_PATTERN, ''); });
     args.then(resultLines, lengthParsed, shouldTerminateList);
-    return true;
 }
 exports.getRemainingLinesOfListItem = getRemainingLinesOfListItem;
 

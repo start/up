@@ -8,8 +8,15 @@ import { INDENTED_PATTERN, BLANK_PATTERN } from '../../Patterns'
 // All indented and/or blank lines should be included in a list item.
 //
 // However, if there are 2 or more trailing blank lines, they should *not* be included. Instead,
-// they indicate the end of the list.
-export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess }): boolean {
+// they indicate the end of the whole list.
+//
+// Returns false if no lines could be included.
+export function getRemainingLinesOfListItem(
+  args: {
+    text: string,
+    then: (lines: string[], lengthParsed: number, shouldTerminateList: boolean) => void
+  }
+): void {
   const consumer = new LineConsumer(args.text)
   const lines: string[] = []
 
@@ -43,7 +50,7 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
   }
 
   if (!lines.length) {
-    return false
+    return
   }
 
   const countTrailingBlankLines = lines.length - countLinesIncluded
@@ -60,10 +67,4 @@ export function getRemainingLinesOfListItem(args: {text: string, then: OnSuccess
     .map(line => line.replace(INDENTED_PATTERN, ''))
 
   args.then(resultLines, lengthParsed, shouldTerminateList)
-  return true
-}
-
-
-export interface OnSuccess {
-  (lines: string[], lengthParsed: number, shouldTerminateList: boolean): void
 }
