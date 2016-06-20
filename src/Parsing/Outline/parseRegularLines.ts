@@ -43,23 +43,29 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   // line blocks only examine each line individually, the line is accepted.
   //
   // TODO: Handle code blocks and description lists?
-  
+
   const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
   let terminatingNodes: OutlineSyntaxNode[] = []
 
+  // We don't need to ensure that the first line would be parsed as a regular paragraph. We already
+  // it know would be (that's why this function was called!). 
+  let isOnFirstLine = true
+
   while (true) {
     let inlineNodes: InlineSyntaxNode[]
-    
+
     const wasLineConsumed = consumer.consume({
       linePattern: NON_BLANK_PATTERN,
-      if: line => !isLineFancyOutlineConvention(line, args.config),
+      if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
       then: line => inlineNodes = getInlineNodes(line, args.config)
     })
-    
+
+    isOnFirstLine = false
+
     // Sometimes, a non-blank line can produce no syntax nodes. The following non-blank conventions
     // produce no syntax nodes:
     //
-    // 1. Empty sandwich conventions
+    // 1. Empty sandwich conventions (e.g. revision insertion)
     // 2. Empty inline code
     // 3. Media conventions missing their URL
     // 4. Links missing their content and their URL
@@ -75,7 +81,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     if (!wasLineConsumed || !inlineNodes.length) {
       break
     }
-    
+
     // If a media convention is the only convention on a line, we treat it as an outline convention
     // rather than pretending it's a paragraph.
     //
@@ -84,18 +90,17 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     // line block, the media convention is not included in the line block 
     //
     // Similarly, if a line consists solely of multiple media conventions, we outline all of them.
-    
+
     const doesLineConsistSolelyOfMediaConventions = (
       inlineNodes.every(node => isWhitespace(node) || isMediaSyntaxNode(node))
       && inlineNodes.some(isMediaSyntaxNode)
     )
-    
+
     if (doesLineConsistSolelyOfMediaConventions) {
       terminatingNodes = <MediaSyntaxNode[]>inlineNodes.filter(isMediaSyntaxNode)
-      
       break
     }
-    
+
     inlineNodesPerRegularLine.push(inlineNodes)
   }
 

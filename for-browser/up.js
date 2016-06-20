@@ -1697,13 +1697,15 @@ function parseRegularLines(args) {
     var consumer = new LineConsumer_1.LineConsumer(args.text);
     var inlineNodesPerRegularLine = [];
     var terminatingNodes = [];
+    var isOnFirstLine = true;
     var _loop_1 = function() {
         var inlineNodes;
         var wasLineConsumed = consumer.consume({
             linePattern: Patterns_1.NON_BLANK_PATTERN,
-            if: function (line) { return !isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
+            if: function (line) { return isOnFirstLine || !isLineFancyOutlineConvention_1.isLineFancyOutlineConvention(line, args.config); },
             then: function (line) { return inlineNodes = getInlineNodes_1.getInlineNodes(line, args.config); }
         });
+        isOnFirstLine = false;
         if (!wasLineConsumed || !inlineNodes.length) {
             return "break";
         }
