@@ -6,7 +6,6 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 import { optional, regExpStartingWith, either } from '../../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
 import { INDENTED_PATTERN, DIVIDER_STREAK_PATTERN } from '../../Patterns'
-import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

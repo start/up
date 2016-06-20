@@ -14,7 +14,6 @@ import { regExpStartingWith, regExpEndingWith } from '../../PatternHelpers'
 import { ANY_WHITESPACE, LINE_BREAK, } from '../../PatternPieces'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
-import { OutlineParser } from './OutlineParser'
 import { UpConfig } from '../../UpConfig'
 
 

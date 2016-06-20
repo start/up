@@ -1,6 +1,5 @@
 import { LineConsumer } from './LineConsumer'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { OutlineParser } from './OutlineParser'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { either } from '../../PatternHelpers'
 import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
