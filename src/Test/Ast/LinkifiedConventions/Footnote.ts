@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { expectEveryCombinationOf, expectEveryCombinationOfBrackets } from '../Helpers'
+import { expectEveryCombinationOfBrackets } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
