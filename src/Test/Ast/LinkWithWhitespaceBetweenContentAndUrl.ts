@@ -9,7 +9,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-context('A link can have whitespace between its bracketed content and bracketed URL under certain conditions.', () => {
+context('A link can have whitespace between its bracketed content and bracketed URL only under certain conditions.', () => {
 
   context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
     specify('we assume the author did not indent to produce a link, so no link node is produced', () => {

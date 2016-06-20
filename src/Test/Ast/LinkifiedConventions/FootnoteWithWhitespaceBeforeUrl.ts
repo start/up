@@ -13,7 +13,6 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
-
 const FOOTNOTE_BRACKETS = [
   { open: '((', close: '))' },
   { open: '[[', close: ']]' },
@@ -21,7 +20,7 @@ const FOOTNOTE_BRACKETS = [
 ]
 
 
-context('A linkified footnote can have whitespace between itself and its bracketed URL under certain conditions.', () => {
+context('A linkified footnote can have whitespace between itself and its bracketed URL only under certain conditions.', () => {
 
   context('If the URL does not have a scheme, does not start with a slash, or does not start with a hash mark ("#")', () => {
     specify('we assume the author did not indent to produce a link, so the footnote is not linkified', () => {
