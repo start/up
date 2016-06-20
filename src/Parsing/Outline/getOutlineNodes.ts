@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
-import { getHeadingParser } from './getHeadingParser'
+import { parseHeading } from './parseHeading'
 import { parseBlankLineSeparation } from './parseBlankLineSeparation'
 import { parseRegularLines } from './parseRegularLines'
 import { parseCodeBlock } from './parseCodeBlock'
@@ -17,30 +17,30 @@ import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 
 
+const OUTLINE_CONVENETION_PARSERS = [
+  parseBlankLineSeparation,
+  parseHeading,
+  parseUnorderedList,
+  parseOrderedList,
+  parseSectionSeparatorStreak,
+  parseCodeBlock,
+  parseBlockquote,
+  parseDescriptionList,
+  parseRegularLines,
+]
+
+
 export function getOutlineNodes(
   text: string,
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
-  
-  const outlineParsers = [
-    parseBlankLineSeparation,
-    getHeadingParser(headingLeveler),
-    parseUnorderedList,
-    parseOrderedList,
-    parseSectionSeparatorStreak,
-    parseCodeBlock,
-    parseBlockquote,
-    parseDescriptionList,
-    parseRegularLines,
-  ]
 
   const consumer = new LineConsumer(trimOuterBlankLines(text))
   const nodes: OutlineSyntaxNode[] = []
 
   while (!consumer.reachedEndOfText()) {
-    for (let parseOutlineConvention of outlineParsers) {
-
+    for (let parseOutlineConvention of OUTLINE_CONVENETION_PARSERS) {
       const wasConventionFound =
         parseOutlineConvention({
           text: consumer.remainingText,
