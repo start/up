@@ -89,10 +89,9 @@ var Parser = (function () {
                 return;
             }
             if (token.kind === TokenKind_1.TokenKind.PlainText) {
-                if (!token.value) {
-                    continue;
+                if (token.value) {
+                    this.nodes.push(new PlainTextNode_1.PlainTextNode(token.value));
                 }
-                this.nodes.push(new PlainTextNode_1.PlainTextNode(token.value));
                 continue;
             }
             if (token.kind === TokenKind_1.TokenKind.InlineCode) {

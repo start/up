@@ -14,6 +14,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { RichConvention } from './RichConvention'
 
 
+// This includes every rich convention except for links, because links have that pesky URL to deal with.
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS_CONVENTION,
   EMPHASIS_CONVENTION,
@@ -58,11 +59,10 @@ export class Parser {
       }
 
       if (token.kind === TokenKind.PlainText) {
-        if (!token.value) {
-          continue
+        if (token.value) {
+          this.nodes.push(new PlainTextNode(token.value))
         }
 
-        this.nodes.push(new PlainTextNode(token.value))
         continue
       }
 
@@ -83,7 +83,7 @@ export class Parser {
         const urlAfterScheme = nakedUrlAfterSchemeToken.value
 
         if (!urlAfterScheme) {
-          // There's no point in creating a link for a URL scheme alone, so we treat the scheme as plain text.
+          // There's no point in creating a link for a URL scheme alone, so we treat the scheme as plain text
           this.nodes.push(new PlainTextNode(urlScheme))
           continue
         }
@@ -198,6 +198,12 @@ export class Parser {
 }
 
 
+export interface ParseResult {
+  nodes: InlineSyntaxNode[]
+  countTokensParsed: number
+}
+
+
 function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
   return !nodes.every(isWhitespace)
 }
@@ -217,11 +223,4 @@ function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSynt
   }
 
   return resultNodes
-}
-
-
-
-export interface ParseResult {
-  nodes: InlineSyntaxNode[]
-  countTokensParsed: number
 }

@@ -14,7 +14,7 @@ import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 export function tryToParseHeading(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
 
-  // First, let's parse the optional overline.
+  // First, let's parse the optional overline...
   let optionalOverline: string
 
   consumer.consume({
@@ -26,13 +26,13 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   let underline: string
 
   const hasContentAndUnderline = (
-    // Parse the content
+    // Now, let's parse the content...
     consumer.consume({
       linePattern: NON_BLANK_PATTERN,
       then: line => { rawContent = line }
     })
 
-    // Parse the underline
+    // And parse the underline!
     && consumer.consume({
       if: line => (
         DIVIDER_STREAK_PATTERN.test(line)
