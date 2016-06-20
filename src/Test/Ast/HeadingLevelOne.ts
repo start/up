@@ -94,7 +94,7 @@ Hello, world!
       ]))
   })
 
-  it('must contain spaces if the underline does not contains spaces', () => {
+  it('must contain spaces if the underline contains spaces', () => {
     const text = `
 -------------
 Hello, world!
