@@ -2,9 +2,8 @@ import { TokenKind } from './Tokenization/TokenKind'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
-export class MediaConvention {
-  constructor(
-    public nonLocalizedTerm: string,
-    public NodeType: MediaSyntaxNodeType,
-    public descriptionAndStartTokenKind: TokenKind) { }
+export interface MediaConvention {
+  nonLocalizedTerm: string
+  NodeType: MediaSyntaxNodeType
+  descriptionAndStartTokenKind: TokenKind
 }

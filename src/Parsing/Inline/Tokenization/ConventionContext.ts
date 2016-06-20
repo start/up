@@ -1,6 +1,7 @@
 import { TokenizableConvention } from './TokenizableConvention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
+
 export class ConventionContext {
   constructor(
     public convention: TokenizableConvention,
