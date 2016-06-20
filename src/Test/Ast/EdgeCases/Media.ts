@@ -28,7 +28,7 @@ describe('A line consisting solely of media conventions', () => {
 describe('A line consisting solely of media conventions and optional whitespace', () => {
   it('produces a node for each convention and includes each directly into the outline, rather than squeezing them all into a paragraph', () => {
     const text =
-      '[audio: ghostly howling][http://example.com/ghosts.ogg] \t [image: haunted house][http://example.com/hauntedhouse.svg] \t [video: ghosts eating luggage][http://example.com/poltergeists.webm] '
+      ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([

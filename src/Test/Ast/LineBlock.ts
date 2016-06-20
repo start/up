@@ -163,3 +163,46 @@ You're in for a fright`
       ]))
   })
 })
+
+
+describe('A line solely consisting solely of media conventions and whitespace inserted in the middle of a line block', () => {
+  it('splits the line block in two', () => {
+    const text = `
+1234 Spooky Street
+Pepe, PA 17101
+ \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t 
+Roses are red
+Skeltals are white
+If you stay here
+You're in for a fright`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('1234 Spooky Street')
+          ]),
+          new Line([
+            new PlainTextNode('Pepe, PA 17101')
+          ])
+        ]),
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Skeltals are white')
+          ]),
+          new Line([
+            new PlainTextNode('If you stay here')
+          ]),
+          new Line([
+            new PlainTextNode("You're in for a fright")
+          ]),
+        ])
+      ]))
+  })
+})
