@@ -91,7 +91,7 @@ export class Parser {
         const url = urlScheme + urlAfterScheme
 
         const contents = [new PlainTextNode(urlAfterScheme)]
-        this.nodes.push(new LinkNode(contents, url))
+        this.nodes.push(new LINK_CONVENTION.NodeType(contents, url))
 
         continue
       }

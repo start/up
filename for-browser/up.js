@@ -111,7 +111,7 @@ var Parser = (function () {
                 }
                 var url = urlScheme + urlAfterScheme;
                 var contents = [new PlainTextNode_1.PlainTextNode(urlAfterScheme)];
-                this.nodes.push(new LinkNode_1.LinkNode(contents, url));
+                this.nodes.push(new RichConventions_1.LINK_CONVENTION.NodeType(contents, url));
                 continue;
             }
             if (token.kind === RichConventions_1.LINK_CONVENTION.startTokenKind) {
@@ -217,6 +217,7 @@ var RevisionInsertionNode_1 = require('../../SyntaxNodes/RevisionInsertionNode')
 var SquareBracketedNode_1 = require('../../SyntaxNodes/SquareBracketedNode');
 var ParenthesizedNode_1 = require('../../SyntaxNodes/ParenthesizedNode');
 var ActionNode_1 = require('../../SyntaxNodes/ActionNode');
+var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
 var TokenKind_1 = require('./Tokenization/TokenKind');
 exports.EMPHASIS_CONVENTION = {
     NodeType: EmphasisNode_1.EmphasisNode,
@@ -274,11 +275,12 @@ exports.ACTION_CONVENTION = {
     endTokenKind: TokenKind_1.TokenKind.ActionEnd
 };
 exports.LINK_CONVENTION = {
+    NodeType: LinkNode_1.LinkNode,
     startTokenKind: TokenKind_1.TokenKind.LinkStart,
     endTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd
 };
 
-},{"../../SyntaxNodes/ActionNode":39,"../../SyntaxNodes/EmphasisNode":48,"../../SyntaxNodes/FootnoteNode":50,"../../SyntaxNodes/NsflNode":59,"../../SyntaxNodes/NsfwNode":60,"../../SyntaxNodes/ParenthesizedNode":65,"../../SyntaxNodes/RevisionDeletionNode":67,"../../SyntaxNodes/RevisionInsertionNode":68,"../../SyntaxNodes/SpoilerNode":71,"../../SyntaxNodes/SquareBracketedNode":72,"../../SyntaxNodes/StressNode":73,"./Tokenization/TokenKind":13}],6:[function(require,module,exports){
+},{"../../SyntaxNodes/ActionNode":39,"../../SyntaxNodes/EmphasisNode":48,"../../SyntaxNodes/FootnoteNode":50,"../../SyntaxNodes/LinkNode":57,"../../SyntaxNodes/NsflNode":59,"../../SyntaxNodes/NsfwNode":60,"../../SyntaxNodes/ParenthesizedNode":65,"../../SyntaxNodes/RevisionDeletionNode":67,"../../SyntaxNodes/RevisionInsertionNode":68,"../../SyntaxNodes/SpoilerNode":71,"../../SyntaxNodes/SquareBracketedNode":72,"../../SyntaxNodes/StressNode":73,"./Tokenization/TokenKind":13}],6:[function(require,module,exports){
 "use strict";
 var PatternHelpers_1 = require('../../../PatternHelpers');
 var Bracket = (function () {
