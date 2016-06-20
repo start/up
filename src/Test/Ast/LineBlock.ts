@@ -12,6 +12,8 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 
@@ -271,6 +273,50 @@ You're in for a fright`
               new PlainTextNode('Never post your address unless you subsequently post poetry.')
             ])
           ], 1)
+        ]),
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Skeltals are white')
+          ]),
+          new Line([
+            new PlainTextNode('If you stay here')
+          ]),
+          new Line([
+            new PlainTextNode("You're in for a fright")
+          ]),
+        ])
+      ]))
+  })
+
+  specify('a single-line unordered list', () => {
+    const text = `
+1234 Spooky Street
+Pepe, PA 17101
+* Never post your address unless you subsequently post poetry.
+Roses are red
+Skeltals are white
+If you stay here
+You're in for a fright`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('1234 Spooky Street')
+          ]),
+          new Line([
+            new PlainTextNode('Pepe, PA 17101')
+          ])
+        ]),
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Never post your address unless you subsequently post poetry.')
+            ])
+          ])
         ]),
         new LineBlockNode([
           new Line([
