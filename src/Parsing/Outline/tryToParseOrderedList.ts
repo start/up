@@ -16,7 +16,7 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 // with multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines.
-export function parseOrderedList(args: OutlineParserArgs): boolean {
+export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
   const rawListItems: RawListItem[] = []
 

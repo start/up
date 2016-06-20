@@ -6,7 +6,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Code blocks are surrounded (underlined and overlined) by streaks of backticks
-export function parseCodeBlock(args: OutlineParserArgs): boolean {
+export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
 
   if (!consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {

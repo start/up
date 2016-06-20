@@ -22,7 +22,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // Lyrics have line
 // And addresses do, too
 
-export function parseRegularLines(args: OutlineParserArgs): boolean {
+export function parseRegularLines(args: OutlineParserArgs): void {
   const consumer = new LineConsumer(args.text)
 
   // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
@@ -110,7 +110,7 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
       // nodes or consisted solely of media nodes, then there won't any other lines left over to
       // produce a paragraph or a line block.
       args.then(terminatingNodes, lengthConsumed)
-      return true
+      return
 
     case 1:
       regularLinesResultNode = new ParagraphNode(inlineNodesPerRegularLine[0])
@@ -124,7 +124,6 @@ export function parseRegularLines(args: OutlineParserArgs): boolean {
   }
 
   args.then([regularLinesResultNode].concat(terminatingNodes), lengthConsumed)
-  return true
 }
 
 

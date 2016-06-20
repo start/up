@@ -12,7 +12,7 @@ import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 
 
 // If text is underlined, it's treated as a heading. Headings can have an optional overline, too.
-export function parseHeading(args: OutlineParserArgs): boolean {
+export function tryToParseHeading(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
 
   // First, let's parse the optional overline.

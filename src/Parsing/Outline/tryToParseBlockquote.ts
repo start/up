@@ -10,7 +10,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any convention,
 // even other blockquotes! They're like mini-documents.
-export function parseBlockquote(args: OutlineParserArgs): boolean {
+export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
   const rawBlockquoteLines: string[] = []
 

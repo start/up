@@ -1,17 +1,17 @@
-import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
-import { parseBlankLineSeparation } from './parseBlankLineSeparation'
-import { parseBlockquote } from './parseBlockquote'
-import { parseUnorderedList } from './parseUnorderedList'
-import { parseOrderedList } from './parseOrderedList'
+import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
+import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
+import { tryToParseBlockquote } from './tryToParseBlockquote'
+import { tryToParseUnorderedList } from './tryToParseUnorderedList'
+import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
-  parseUnorderedList,
-  parseOrderedList,
-  parseSectionSeparatorStreak,
-  parseBlockquote
+  tryToParseUnorderedList,
+  trytoParseOrderedList,
+  tryToParseSectionSeparatorStreak,
+  tryToParseBlockquote
 ]
 
 

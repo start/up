@@ -1,32 +1,32 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { parseSectionSeparatorStreak } from './parseSectionSeparatorStreak'
-import { parseHeading } from './parseHeading'
-import { parseBlankLineSeparation } from './parseBlankLineSeparation'
+import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
+import { tryToParseHeading } from './tryToParseHeading'
+import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
+import { tryToParseCodeBlock } from './tryToParseCodeBlock'
+import { tryToParseBlockquote } from './tryToParseBlockquote'
+import { tryToParseUnorderedList } from './tryToParseUnorderedList'
+import { trytoParseOrderedList } from './tryToParseOrderedList'
+import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { parseRegularLines } from './parseRegularLines'
-import { parseCodeBlock } from './parseCodeBlock'
-import { parseBlockquote } from './parseBlockquote'
-import { parseUnorderedList } from './parseUnorderedList'
-import { parseOrderedList } from './parseOrderedList'
-import { parseDescriptionList } from './parseDescriptionList'
 import { regExpStartingWith, regExpEndingWith } from '../../PatternHelpers'
 import { ANY_WHITESPACE, LINE_BREAK, } from '../../PatternPieces'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
+import { OutlineParser } from './OutlineParser'
 import { UpConfig } from '../../UpConfig'
 
 
-const OUTLINE_CONVENETION_PARSERS = [
-  parseBlankLineSeparation,
-  parseHeading,
-  parseUnorderedList,
-  parseOrderedList,
-  parseSectionSeparatorStreak,
-  parseCodeBlock,
-  parseBlockquote,
-  parseDescriptionList,
-  parseRegularLines,
+const OUTLINE_CONVENTIONS = [
+  tryToParseBlankLineSeparation,
+  tryToParseHeading,
+  tryToParseUnorderedList,
+  trytoParseOrderedList,
+  tryToParseSectionSeparatorStreak,
+  tryToParseCodeBlock,
+  tryToParseBlockquote,
+  tryToParseDescriptionList,
 ]
 
 
@@ -40,21 +40,18 @@ export function getOutlineNodes(
   const nodes: OutlineSyntaxNode[] = []
 
   while (!consumer.reachedEndOfText()) {
-    for (let parseOutlineConvention of OUTLINE_CONVENETION_PARSERS) {
-      const wasConventionFound =
-        parseOutlineConvention({
-          text: consumer.remainingText,
-          headingLeveler,
-          config,
-          then: (newNodes, lengthParsed) => {
-            nodes.push(...newNodes)
-            consumer.advanceTextIndex(lengthParsed)
-          }
-        })
-
-      if (wasConventionFound) {
-        break
+    const outlineParserArgs = {
+      text: consumer.remainingText,
+      headingLeveler,
+      config,
+      then: (newNodes: OutlineSyntaxNode[], lengthParsed: number) => {
+        nodes.push(...newNodes)
+        consumer.advanceTextIndex(lengthParsed)
       }
+    }
+
+    if (!OUTLINE_CONVENTIONS.some(tryToParse => tryToParse(outlineParserArgs))) {
+      parseRegularLines(outlineParserArgs)
     }
   }
 
@@ -82,10 +79,9 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
 
 
 function trimOuterBlankLines(text: string): string {
-  return (
-    text
-      .replace(LEADING_BLANK_LINES_PATTERN, '')
-      .replace(TRAILIN_BLANK_LINES_PATTERN, ''))
+  return text
+    .replace(LEADING_BLANK_LINES_PATTERN, '')
+    .replace(TRAILIN_BLANK_LINES_PATTERN, '')
 }
 
 

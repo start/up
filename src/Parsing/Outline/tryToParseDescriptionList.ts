@@ -18,7 +18,7 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 // Terms are left-aligned; descriptions are indented and directly follow the corresponding terms.
 //
 // Multiple terms can be associated with a single description.
-export function parseDescriptionList(args: OutlineParserArgs): boolean {
+export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
   const listItems: DescriptionListItem[] = []
   let lengthParsed = 0

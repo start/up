@@ -16,7 +16,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // with multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines.
-export function parseUnorderedList(args: OutlineParserArgs): boolean {
+export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
   const rawListItemsContents: string[] = []
 
