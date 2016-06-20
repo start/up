@@ -10,8 +10,7 @@ import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 
 describe('Consecutive lines each bulleted by a number sign', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!
 # Goodbye, world!`
     expect(Up.toAst(text)).to.be.eql(
@@ -36,8 +35,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
 
 describe('Consecutive lines each bulleted by a number sign followed by a period', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
-    const text =
-      `
+    const text = `
 #. Hello, Lavender Town!
 #. Goodbye, Lavender Town!`
     expect(Up.toAst(text)).to.be.eql(
@@ -62,8 +60,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
 
 describe('Consecutive lines each bulleted by a number sign followed by a right paren', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
-    const text =
-      `
+    const text = `
 #) Hello, Celadon City!
 #) Goodbye, Celadon City!`
     expect(Up.toAst(text)).to.be.eql(
@@ -88,8 +85,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a right p
 
 describe('Consecutive lines each bulleted by an integer followed by a period', () => {
   it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
-    const text =
-      `
+    const text = `
 1. Hello, Celadon City!
 2. Goodbye, Celadon City!`
     expect(Up.toAst(text)).to.be.eql(
@@ -114,8 +110,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
 
 describe('Consecutive lines each bulleted by an integer followed by a right paren', () => {
   it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
-    const text =
-      `
+    const text = `
 1) Hello, Celadon City!
 2) Goodbye, Celadon City!`
     expect(Up.toAst(text)).to.be.eql(
@@ -140,8 +135,7 @@ describe('Consecutive lines each bulleted by an integer followed by a right pare
 
 describe('A single line bulleted by a number sign', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -180,8 +174,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
 
 describe('A single line bulleted by a number sign followed by a right paren', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
-    const text =
-      `
+    const text = `
 #) Hello, Celadon City!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -200,8 +193,7 @@ describe('A single line bulleted by a number sign followed by a right paren', ()
 
 describe('A single line bulleted by an integer followed by a period', () => {
   it('produces a paragraph, not an ordered list', () => {
-    const text =
-      `
+    const text = `
 1783. Not a good year for Great Britain.`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -216,8 +208,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
 
 describe('A single line bulleted by an integer followed by a right paren', () => {
   it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
-    const text =
-      `
+    const text = `
 1) Hello, Celadon City!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -236,8 +227,7 @@ describe('A single line bulleted by an integer followed by a right paren', () =>
 
 describe('The 5 different bullet types', () => {
   it('can be combined in the same ordered list', () => {
-    const text =
-      `
+    const text = `
 1. Hello, Celadon City!
 2) Hello, Couriway Town!
 #) Hello, Cinnabar Island!
@@ -250,7 +240,7 @@ describe('The 5 different bullet types', () => {
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
-          ], 1),    
+          ], 1),
           new OrderedListItem([
             new ParagraphNode([
               new PlainTextNode('Hello, Couriway Town!')
@@ -280,8 +270,7 @@ describe('The 5 different bullet types', () => {
 
 describe('An ordered list', () => {
   it('is evaluated for inline conventions', () => {
-    const text =
-      `
+    const text = `
 # Hello, World *1-2*!
 # Goodbye, World *1-2*!`
     expect(Up.toAst(text)).to.be.eql(
@@ -309,10 +298,9 @@ describe('An ordered list', () => {
       ])
     )
   })
-  
+
   it('can be directly followed by a paragraph', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!
 # Goodbye, world!
 Hello, World 1-2!`
