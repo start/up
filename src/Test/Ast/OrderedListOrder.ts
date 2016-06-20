@@ -10,8 +10,7 @@ function listOrder(text: string): OrderedListOrder {
 
 describe('An ordered list with non-numeral bullets', () => {
   it('is automatically in ascending order', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!
 #. Goodbye, world!
 #) Goodbye, world!`
@@ -21,8 +20,7 @@ describe('An ordered list with non-numeral bullets', () => {
 
 describe('An ordered list with non-numeral bullets and a single numeral bullet', () => {
   it('is automatically in ascending order', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!
 2. Goodbye, world!
 #) Goodbye, world!`
@@ -32,8 +30,7 @@ describe('An ordered list with non-numeral bullets and a single numeral bullet',
 
 describe('An ordered list with non-numeral bullets and 2 single numeral bullet', () => {
   it('is ascending if the 2 numeral bullets are ascending', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!
 2. Goodbye, world!
 #) Goodbye, world!
@@ -42,8 +39,7 @@ describe('An ordered list with non-numeral bullets and 2 single numeral bullet',
   })
   
   it('is ascending if the 2 numeral bullets are ascending', () => {
-    const text =
-      `
+    const text = `
 # Hello, world!
 5. Goodbye, world!
 #) Goodbye, world!
@@ -54,16 +50,14 @@ describe('An ordered list with non-numeral bullets and 2 single numeral bullet',
 
 describe('An ordered list with 2 non-numeral bullets', () => {
   it('is ascending if the 2 numeral bullets are ascending', () => {
-    const text =
-      `
+    const text = `
 2. Hello, world!
 4) Goodbye, world!`
     expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
   
   it('is descending if the 2 numeral bullets are descending', () => {
-    const text =
-      `
+    const text = `
 5. Hello, world!
 1) Goodbye, world!`
     expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
@@ -72,8 +66,7 @@ describe('An ordered list with 2 non-numeral bullets', () => {
 
 describe('An ordered list with more than 2 numeral bullets', () => {
   it('is ascending if the first 2 numeral bullets are ascending', () => {
-    const text =
-      `
+    const text = `
 2. Hello, world!
 4) Goodbye, world!
 1. Goodbye, world!`
@@ -81,8 +74,7 @@ describe('An ordered list with more than 2 numeral bullets', () => {
   })
   
   it('is descending if the first 2 numeral bullets are descending', () => {
-    const text =
-      `
+    const text = `
 5. Hello, world!
 4) Goodbye, world!
 10. Goodbye, world!`

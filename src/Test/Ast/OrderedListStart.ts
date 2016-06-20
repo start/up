@@ -11,8 +11,7 @@ function listStart(text: string): number {
 
 describe('An ordered list that does not start with a numeral bullet', () => {
   it('does not have an explicit starting ordinal', () => {
-    const text =
-      `
+    const text = `
 #. Hello, world!
 # Goodbye, world!
 #) Goodbye, world!`
@@ -20,8 +19,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
   })
 
   it('does not have an explicit starting ordinal even if the second list item has a numeral bullet', () => {
-    const text =
-      `
+    const text = `
 #. Hello, world!
 5) Goodbye, world!
 #) Goodbye, world!`
@@ -32,8 +30,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
 
 describe('An ordered list that starts with a numeral bullet', () => {
   it('has an explicit starting ordinal equal to the numeral value', () => {
-    const text =
-      `
+    const text = `
 10) Hello, world!
 #. Goodbye, world!
 #) Goodbye, world!`
