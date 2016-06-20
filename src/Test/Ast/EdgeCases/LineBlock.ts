@@ -49,7 +49,7 @@ Violets are blue`
         ]),
       ]))
   })
-  
+
   it('does not impact the parsing of the previous line', () => {
     const text = `
 Roses are red
@@ -94,7 +94,7 @@ And addresses do, too`
 })
 
 
-describe('An empty line with an escaped line break followed by another empty line', () => {  
+describe('An empty line with an escaped line break followed by another empty line', () => {
   it('are considered part of the same line and can be included in a line block', () => {
     const text = `
 Roses are red
@@ -117,3 +117,35 @@ Violets are blue`
       ]))
   })
 })
+
+
+describe('A line block', () => [
+  it('can contain an escaped section separator streak', () => {
+    const text = `
+Roses are red
+Violets are blue
+\\#~#~#~#~#~#~#~#~#
+Lyrics have lines
+And addresses do, too`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Violets are blue')
+          ]),
+          new Line([
+            new PlainTextNode('#~#~#~#~#~#~#~#~#')
+          ]),
+          new Line([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new Line([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ]),
+      ]))
+  })
+])
