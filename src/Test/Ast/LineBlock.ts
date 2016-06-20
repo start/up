@@ -4,6 +4,8 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
@@ -95,7 +97,83 @@ Violets are blue`
 
 
 context('A line block can be split in two by', () => {
-  it('a section separator streak', () => {
+
+  specify('a single blank line', () => {
+    const text = `
+1234 Spooky Street
+Pepe, PA 17101
+ \t 
+Roses are red
+Skeltals are white
+If you stay here
+You're in for a fright`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('1234 Spooky Street')
+          ]),
+          new Line([
+            new PlainTextNode('Pepe, PA 17101')
+          ])
+        ]),
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Skeltals are white')
+          ]),
+          new Line([
+            new PlainTextNode('If you stay here')
+          ]),
+          new Line([
+            new PlainTextNode("You're in for a fright")
+          ]),
+        ])
+      ]))
+  })
+
+  specify('two blank lines', () => {
+    const text = `
+1234 Spooky Street
+Pepe, PA 17101
+ \t
+  \t
+Roses are red
+Skeltals are white
+If you stay here
+You're in for a fright`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('1234 Spooky Street')
+          ]),
+          new Line([
+            new PlainTextNode('Pepe, PA 17101')
+          ])
+        ]),
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Skeltals are white')
+          ]),
+          new Line([
+            new PlainTextNode('If you stay here')
+          ]),
+          new Line([
+            new PlainTextNode("You're in for a fright")
+          ]),
+        ])
+      ]))
+  })
+
+  specify('a section separator streak', () => {
     const text = `
 Roses are red
 Violets are blue
@@ -125,7 +203,49 @@ And addresses do, too`
       ]))
   })
 
-  it('A line consisting solely of media conventions', () => {
+  specify('a single-line blockquote', () => {
+    const text = `
+1234 Spooky Street
+Pepe, PA 17101
+> posting your address on the internet in the current year
+Roses are red
+Skeltals are white
+If you stay here
+You're in for a fright`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('1234 Spooky Street')
+          ]),
+          new Line([
+            new PlainTextNode('Pepe, PA 17101')
+          ])
+        ]),
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode('posting your address on the internet in the current year')
+          ])
+        ]),
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Skeltals are white')
+          ]),
+          new Line([
+            new PlainTextNode('If you stay here')
+          ]),
+          new Line([
+            new PlainTextNode("You're in for a fright")
+          ]),
+        ])
+      ]))
+  })
+
+  specify('a line consisting solely of media conventions', () => {
     const text = `
 1234 Spooky Street
 Pepe, PA 17101
@@ -165,7 +285,7 @@ You're in for a fright`
       ]))
   })
 
-  it('a line consisting solely of media conventions and whitespace', () => {
+  specify('a line consisting solely of media conventions and whitespace', () => {
     const text = `
 1234 Spooky Street
 Pepe, PA 17101
