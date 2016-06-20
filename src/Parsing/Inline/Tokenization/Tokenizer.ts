@@ -2,7 +2,7 @@ import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, R
 import { escapeForRegex, regExpStartingWith, solely, all, either, optional, atLeast, exactly, charOtherThan, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
-import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
+import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
 import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
 import { MediaConvention } from '../MediaConvention'
@@ -862,7 +862,7 @@ export class Tokenizer {
 
   private getMediaDescriptionConventions(): TokenizableConvention[] {
     return concat(
-      [IMAGE, VIDEO, AUDIO].map(media =>
+      [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => (<TokenizableConvention>{
           startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
           endPattern: regExpStartingWith(bracket.endPattern),

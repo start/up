@@ -5,11 +5,11 @@ import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
-export const AUDIO =
+export const AUDIO_CONVENTION =
   new MediaConvention('audio', AudioNode, TokenKind.AudioDescriptionAndStart)
 
-export const IMAGE =
+export const IMAGE_CONVENTION =
   new MediaConvention('image', ImageNode, TokenKind.ImageDescriptionAndStart)
 
-export const VIDEO =
+export const VIDEO_CONVENTION =
   new MediaConvention('video', VideoNode, TokenKind.VideoDescriptionAndStart)

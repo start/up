@@ -42,9 +42,9 @@ var TokenKind_1 = require('./Tokenization/TokenKind');
 var AudioNode_1 = require('../../SyntaxNodes/AudioNode');
 var ImageNode_1 = require('../../SyntaxNodes/ImageNode');
 var VideoNode_1 = require('../../SyntaxNodes/VideoNode');
-exports.AUDIO = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, TokenKind_1.TokenKind.AudioDescriptionAndStart);
-exports.IMAGE = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, TokenKind_1.TokenKind.ImageDescriptionAndStart);
-exports.VIDEO = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, TokenKind_1.TokenKind.VideoDescriptionAndStart);
+exports.AUDIO_CONVENTION = new MediaConvention_1.MediaConvention('audio', AudioNode_1.AudioNode, TokenKind_1.TokenKind.AudioDescriptionAndStart);
+exports.IMAGE_CONVENTION = new MediaConvention_1.MediaConvention('image', ImageNode_1.ImageNode, TokenKind_1.TokenKind.ImageDescriptionAndStart);
+exports.VIDEO_CONVENTION = new MediaConvention_1.MediaConvention('video', VideoNode_1.VideoNode, TokenKind_1.TokenKind.VideoDescriptionAndStart);
 
 },{"../../SyntaxNodes/AudioNode":40,"../../SyntaxNodes/ImageNode":52,"../../SyntaxNodes/VideoNode":76,"./MediaConvention":2,"./Tokenization/TokenKind":13}],4:[function(require,module,exports){
 "use strict";
@@ -70,68 +70,70 @@ var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.SQUARE_BRACKETED_CONVENTION
 ];
 var MEDIA_CONVENTIONS = [
-    MediaConventions_1.AUDIO,
-    MediaConventions_1.IMAGE,
-    MediaConventions_1.VIDEO
+    MediaConventions_1.AUDIO_CONVENTION,
+    MediaConventions_1.IMAGE_CONVENTION,
+    MediaConventions_1.VIDEO_CONVENTION
 ];
 var Parser = (function () {
     function Parser(args) {
         this.tokenIndex = 0;
         this.countTokensParsed = 0;
         this.nodes = [];
-        var untilTokenKind = args.untilTokenKind;
         this.tokens = args.tokens;
+        var untilTokenKind = args.untilTokenKind;
         LoopTokens: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
             var token = this.tokens[this.tokenIndex];
             this.countTokensParsed = this.tokenIndex + 1;
-            if (token.kind === untilTokenKind) {
-                this.setResult();
-                return;
-            }
-            if (token.kind === TokenKind_1.TokenKind.PlainText) {
-                if (token.value) {
-                    this.nodes.push(new PlainTextNode_1.PlainTextNode(token.value));
+            switch (token.kind) {
+                case untilTokenKind: {
+                    this.setResult();
+                    return;
                 }
-                continue;
-            }
-            if (token.kind === TokenKind_1.TokenKind.InlineCode) {
-                if (token.value) {
-                    this.nodes.push(new InlineCodeNode_1.InlineCodeNode(token.value));
-                }
-                continue;
-            }
-            if (token.kind === TokenKind_1.TokenKind.NakedUrlSchemeAndStart) {
-                var urlScheme = token.value;
-                var nakedUrlAfterSchemeToken = this.getNextTokenAndAdvanceIndex();
-                var urlAfterScheme = nakedUrlAfterSchemeToken.value;
-                if (!urlAfterScheme) {
-                    this.nodes.push(new PlainTextNode_1.PlainTextNode(urlScheme));
+                case TokenKind_1.TokenKind.PlainText: {
+                    if (token.value) {
+                        this.nodes.push(new PlainTextNode_1.PlainTextNode(token.value));
+                    }
                     continue;
                 }
-                var url = urlScheme + urlAfterScheme;
-                var contents = [new PlainTextNode_1.PlainTextNode(urlAfterScheme)];
-                this.nodes.push(new RichConventions_1.LINK_CONVENTION.NodeType(contents, url));
-                continue;
-            }
-            if (token.kind === RichConventions_1.LINK_CONVENTION.startTokenKind) {
-                var result = this.parse({ untilTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd });
-                var contents = result.nodes;
-                var hasContents = isNotPureWhitespace(contents);
-                var linkUrlAndEndToken = this.tokens[this.tokenIndex];
-                var url = linkUrlAndEndToken.value.trim();
-                var hasUrl = !!url;
-                if (!hasContents && !hasUrl) {
+                case TokenKind_1.TokenKind.InlineCode: {
+                    if (token.value) {
+                        this.nodes.push(new InlineCodeNode_1.InlineCodeNode(token.value));
+                    }
                     continue;
                 }
-                if (hasContents && !hasUrl) {
-                    (_a = this.nodes).push.apply(_a, contents);
+                case TokenKind_1.TokenKind.NakedUrlSchemeAndStart: {
+                    var urlScheme = token.value;
+                    var nakedUrlAfterSchemeToken = this.getNextTokenAndAdvanceIndex();
+                    var urlAfterScheme = nakedUrlAfterSchemeToken.value;
+                    if (!urlAfterScheme) {
+                        this.nodes.push(new PlainTextNode_1.PlainTextNode(urlScheme));
+                        continue;
+                    }
+                    var url = urlScheme + urlAfterScheme;
+                    var contents = [new PlainTextNode_1.PlainTextNode(urlAfterScheme)];
+                    this.nodes.push(new RichConventions_1.LINK_CONVENTION.NodeType(contents, url));
                     continue;
                 }
-                if (!hasContents && hasUrl) {
-                    contents = [new PlainTextNode_1.PlainTextNode(url)];
+                case RichConventions_1.LINK_CONVENTION.startTokenKind: {
+                    var result = this.parse({ untilTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd });
+                    var contents = result.nodes;
+                    var hasContents = isNotPureWhitespace(contents);
+                    var linkUrlAndEndToken = this.tokens[this.tokenIndex];
+                    var url = linkUrlAndEndToken.value.trim();
+                    var hasUrl = !!url;
+                    if (!hasContents && !hasUrl) {
+                        continue;
+                    }
+                    if (hasContents && !hasUrl) {
+                        (_a = this.nodes).push.apply(_a, contents);
+                        continue;
+                    }
+                    if (!hasContents && hasUrl) {
+                        contents = [new PlainTextNode_1.PlainTextNode(url)];
+                    }
+                    this.nodes.push(new LinkNode_1.LinkNode(contents, url));
+                    continue;
                 }
-                this.nodes.push(new LinkNode_1.LinkNode(contents, url));
-                continue;
             }
             for (var _i = 0, MEDIA_CONVENTIONS_1 = MEDIA_CONVENTIONS; _i < MEDIA_CONVENTIONS_1.length; _i++) {
                 var media = MEDIA_CONVENTIONS_1[_i];
@@ -1204,7 +1206,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getMediaDescriptionConventions = function () {
         var _this = this;
-        return CollectionHelpers_1.concat([MediaConventions_1.IMAGE, MediaConventions_1.VIDEO, MediaConventions_1.AUDIO].map(function (media) {
+        return CollectionHelpers_1.concat([MediaConventions_1.IMAGE_CONVENTION, MediaConventions_1.VIDEO_CONVENTION, MediaConventions_1.AUDIO_CONVENTION].map(function (media) {
             return BRACKETS.map(function (bracket) { return ({
                 startPattern: PatternHelpers_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
                 endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
