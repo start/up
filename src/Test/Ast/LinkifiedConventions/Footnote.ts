@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { expectEveryCombinationOf } from '../Helpers'
+import { expectEveryCombinationOf, expectEveryCombinationOfBrackets } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -11,6 +11,13 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+
+
+const FOOTNOTE_BRACKETS = [
+  { open: '((', close: '))' },
+  { open: '[[', close: ']]' },
+  { open: '{{', close: '}}' }
+]
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
@@ -43,22 +50,14 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 'http://example.com/luckycharms')
     ], 1)
-    
-    expectEveryCombinationOf({
-      firstHalves: [
-        '((Well, I do, but I pretend not to.))',
-        '[[Well, I do, but I pretend not to.]]',
-        '{{Well, I do, but I pretend not to.}}'
-      ],
-      secondHalves: [
-        '[http://example.com/luckycharms]',
-        '(http://example.com/luckycharms)',
-        '{http://example.com/luckycharms}'
-      ],
+
+    expectEveryCombinationOfBrackets({
+      bracketsForFirstPart: FOOTNOTE_BRACKETS,
+      firstPartToWrapInBrackets: 'Well, I do, but I pretend not to.',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: 'http://example.com/luckycharms',
       toProduce: new DocumentNode([
-        new ParagraphNode([
-          footnote
-        ]),
+        new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
       ])
     })
