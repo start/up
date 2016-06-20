@@ -2,6 +2,9 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
@@ -149,3 +152,22 @@ And addresses do, too`
       ]))
   })
 ])
+
+
+describe('A paragraph directly followed by a line consisting solely of media conventions', () => {
+  it('does not produce a line block node', () => {
+    const text = `
+You'll never believe this fake evidence!
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ]),
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      ]))
+  })
+})
