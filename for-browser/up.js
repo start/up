@@ -3477,5 +3477,6 @@ window.Up = index_1.default;
 "use strict";
 var Up_1 = require('./Up');
 exports.default = Up_1.Up;
+exports.Up = Up_1.Up;
 
 },{"./Up":78}]},{},[84]);

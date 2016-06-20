@@ -1,4 +1,4 @@
-.PHONY: clean install all test package
+.PHONY: clean build all test
 
 BUILT = built
 FOR_BROWSER = for-browser
@@ -6,22 +6,16 @@ LIB = lib
 
 LOCAL_MODULES = ./node_modules/.bin/
 
-all: package
+all: test
 
 clean:
 	rm -rf $(BUILT) $(FOR_BROWSER) $(LIB) 
 
-install: clean
-	mkdir $(BUILT)
+build: clean
+	mkdir $(BUILT) $(FOR_BROWSER) $(LIB)
 	$(LOCAL_MODULES)/tsc
-
-test: install
-	npm test
-
-package: test
-	mkdir $(FOR_BROWSER) $(LIB)
 	$(LOCAL_MODULES)/browserify $(BUILT)/browser.js --outfile $(FOR_BROWSER)/up.js
-	
+
 # Copy all JavaScript files and TypeScript type declaration files to the `lib` directory.
 #
 # We include a trailing slash after the `built` directory to ensure its contents are copied
@@ -30,3 +24,6 @@ package: test
 
 # Delete any code from the `lib` directory that doesn't need to be published to npm
 	rm -rf $(LIB)/{Test,browser.{js,d.ts}}
+
+test: build
+	npm test

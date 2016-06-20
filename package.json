@@ -8,7 +8,8 @@
     "lib"
   ],
   "scripts": {
-    "test": "mocha --recursive ./built/Test"
+    "test": "mocha --recursive ./built/Test",
+    "posttest": "mocha ./package-tests.js"    
   },
   "keywords": [
     "markup",
