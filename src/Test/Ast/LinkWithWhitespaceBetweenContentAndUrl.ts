@@ -9,160 +9,156 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-context('A link can have whitespace between its bracketed content and bracketed URL only under certain conditions.', () => {
+context('A link can have whitespace between its bracketed content and bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
 
-  context('If the URL does not have a scheme, does not start with a slash, and does not start with a hash mark ("#")', () => {
-    specify('we assume the author did not indent to produce a link, so no link node is produced', () => {
-      expect(Up.toAst('[no] (really)')).to.be.eql(
-        insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new PlainTextNode('[no]')
-          ]),
-          new PlainTextNode(' '),
-          new ParenthesizedNode([
-            new PlainTextNode('(really)')
-          ]),
-        ]))
+  specify('It has a scheme', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'email me',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('email me')
+        ], 'mailto:daniel@wants.email')
+      ])
     })
   })
 
 
-  context('More specifically, the URL must satisfy one of the following conditions:', () => {
-    specify('it has a scheme', () => {
-      expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'email me',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
-        toProduce: insideDocumentAndParagraph([
-          new LinkNode([
-            new PlainTextNode('email me')
-          ], 'mailto:daniel@wants.email')
-        ])
-      })
-    })
-
-
-    describe('When the URL has a scheme, the URL', () => {
-      it('must not contain any spaces', () => {
-        expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new SquareBracketedNode([
-              new PlainTextNode('[agreed]')
-            ]),
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('('),
-              new LinkNode([
-                new PlainTextNode('stackoverflow.com')
-              ], 'https://stackoverflow.com'),
-              new PlainTextNode(' is nice)')
-            ]),
-          ])
-        )
-      })
-
-      it('can consisting solely of digits after the scheme', () => {
-        expectEveryCombinationOfBrackets({
-          firstPartToWrapInBrackets: 'call me',
-          partsToPutInBetween: ['  ', '\t', ' \t '],
-          secondPartToWrapInBrackets: 'tel:5555555555',
-          toProduce: insideDocumentAndParagraph([
+  describe('When the URL has a scheme, the URL', () => {
+    it('must not contain any spaces', () => {
+      expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[agreed]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('('),
             new LinkNode([
-              new PlainTextNode('call me')
-            ], 'tel:5555555555')
-          ])
-        })
-      })
+              new PlainTextNode('stackoverflow.com')
+            ], 'https://stackoverflow.com'),
+            new PlainTextNode(' is nice)')
+          ]),
+        ])
+      )
     })
 
-
-    specify('it starts with a slash', () => {
+    it('can consisting solely of digits after the scheme', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'Chrono Trigger',
+        firstPartToWrapInBrackets: 'call me',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '/wiki/chrono-trigger',
+        secondPartToWrapInBrackets: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
-            new PlainTextNode('Chrono Trigger')
-          ], '/wiki/chrono-trigger')
+            new PlainTextNode('call me')
+          ], 'tel:5555555555')
         ])
       })
     })
+  })
 
 
-    describe('When the URL starts with a slash, the URL', () => {
-      it('must not contain any spaces', () => {
-        expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new SquareBracketedNode([
-              new PlainTextNode('[yeah]')
-            ]),
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('(/r9k/ inspires geniune pity)')
-            ]),
-          ])
-        )
-      })
+  specify('It starts with a slash', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '/wiki/chrono-trigger',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Trigger')
+        ], '/wiki/chrono-trigger')
+      ])
+    })
+  })
 
-      specify('can consist solely of digits after the slash', () => {
-        expectEveryCombinationOfBrackets({
-          firstPartToWrapInBrackets: 'Model 3',
-          partsToPutInBetween: ['  ', '\t', ' \t '],
-          secondPartToWrapInBrackets: '/3',
-          toProduce: insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('Model 3')
-            ], '/3')
-          ])
-        })
-      })
+
+  describe('When the URL starts with a slash, the URL', () => {
+    it('must not contain any spaces', () => {
+      expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[yeah]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/r9k/ inspires geniune pity)')
+          ]),
+        ])
+      )
     })
 
-
-    specify('it starts with a hash mark ("#")', () => {
+    specify('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'Chrono Trigger',
+        firstPartToWrapInBrackets: 'Model 3',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '#wiki/chrono-trigger',
+        secondPartToWrapInBrackets: '/3',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
-            new PlainTextNode('Chrono Trigger')
-          ], '#wiki/chrono-trigger')
+            new PlainTextNode('Model 3')
+          ], '/3')
         ])
       })
     })
+  })
 
 
-    describe('When the URL starts with a hash mark ("#"), the URL', () => {
-      it('must not otherwise consist solely of digits', () => {
-        expect(Up.toAst('[sic] (#14)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new SquareBracketedNode([
-              new PlainTextNode('[sic]')
-            ]),
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('(#14)')
-            ]),
-          ])
-        )
-      })
-
-      it('must not contain any spaces', () => {
-        expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new SquareBracketedNode([
-              new PlainTextNode('[yeah]')
-            ]),
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('(#starcraft2 was never trending)')
-            ]),
-          ])
-        )
-      })
+  specify('It starts with a hash mark ("#")', () => {
+    expectEveryCombinationOfBrackets({
+      firstPartToWrapInBrackets: 'Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '#wiki/chrono-trigger',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Trigger')
+        ], '#wiki/chrono-trigger')
+      ])
     })
+  })
+
+
+  describe('When the URL starts with a hash mark ("#"), the URL', () => {
+    it('must not otherwise consist solely of digits', () => {
+      expect(Up.toAst('[sic] (#14)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[sic]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#14)')
+          ]),
+        ])
+      )
+    })
+
+    it('must not contain any spaces', () => {
+      expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[yeah]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#starcraft2 was never trending)')
+          ]),
+        ])
+      )
+    })
+  })
+
+
+  specify('If none of the conditions are satisfied, no link node is produced', () => {
+    expect(Up.toAst('[no] (really)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[no]')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('(really)')
+        ]),
+      ]))
   })
 })
 

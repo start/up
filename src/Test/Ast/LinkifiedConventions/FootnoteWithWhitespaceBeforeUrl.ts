@@ -20,215 +20,211 @@ const FOOTNOTE_BRACKETS = [
 ]
 
 
-context('A linkified footnote can have whitespace between itself and its bracketed URL only under certain conditions.', () => {
+context('A linkified footnote can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
 
-  context('If the URL does not have a scheme, does not start with a slash, and does not start with a hash mark ("#")', () => {
-    specify('we assume the author did not indent to linkify the footnote', () => {
+  specify('It has a scheme', () => {
+    const footnote = new FootnoteNode([
+      new LinkNode([
+        new PlainTextNode('the phone was dead')
+      ], 'tel:555-555-5555')
+    ], 1)
+
+    expectEveryCombinationOfBrackets({
+      bracketsForFirstPart: FOOTNOTE_BRACKETS,
+      firstPartToWrapInBrackets: 'the phone was dead',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: 'tel:555-555-5555',
+      toProduce: new DocumentNode([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ])
+    })
+  })
+
+
+  describe('When the URL has a scheme, the URL', () => {
+    specify('It must not contain any spaces', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('the phone was dead')
       ], 1)
 
-      expect(Up.toAst('((the phone was dead)) (really)')).to.be.eql(
+      expect(Up.toAst('((the phone was dead)) (https://stackoverflow.com is where I learned)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
             new ParenthesizedNode([
-              new PlainTextNode('(really)')
+              new PlainTextNode('('),
+              new LinkNode([
+                new PlainTextNode('stackoverflow.com')
+              ], 'https://stackoverflow.com'),
+              new PlainTextNode(' is where I learned)')
             ]),
           ]),
           new FootnoteBlockNode([footnote])
-        ]))
+        ])
+      )
+    })
+
+    it('can consisting solely of digits after the scheme', () => {
+      const footnote = new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('the phone was dead')
+        ], 'tel:5555555555')
+      ], 1)
+
+      expectEveryCombinationOfBrackets({
+        bracketsForFirstPart: FOOTNOTE_BRACKETS,
+        firstPartToWrapInBrackets: 'the phone was dead',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        secondPartToWrapInBrackets: 'tel:5555555555',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote]),
+          new FootnoteBlockNode([footnote])
+        ])
+      })
     })
   })
 
 
-  context('More specifically, the URL must satisfy one of the following conditions:', () => {
-    specify('it has a scheme', () => {
+  specify('It starts with a slash', () => {
+    const footnote = new FootnoteNode([
+      new LinkNode([
+        new PlainTextNode('the phone was dead')
+      ], '/wiki/dead-phone')
+    ], 1)
+
+    expectEveryCombinationOfBrackets({
+      bracketsForFirstPart: FOOTNOTE_BRACKETS,
+      firstPartToWrapInBrackets: 'the phone was dead',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '/wiki/dead-phone',
+      toProduce: new DocumentNode([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ])
+    })
+  })
+
+
+  describe('When the URL starts with a slash, the URL', () => {
+    it('must not contain any spaces', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('the phone was dead')
+      ], 1)
+
+      expect(Up.toAst('((the phone was dead)) (/r9k/ was talking about it)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(/r9k/ was talking about it)'),
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
+    it('can consist solely of digits after the slash', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
           new PlainTextNode('the phone was dead')
-        ], 'tel:555-555-5555')
+        ], '/5555555555')
       ], 1)
 
       expectEveryCombinationOfBrackets({
         bracketsForFirstPart: FOOTNOTE_BRACKETS,
         firstPartToWrapInBrackets: 'the phone was dead',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: 'tel:555-555-5555',
+        secondPartToWrapInBrackets: '/5555555555',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ])
       })
     })
+  })
 
 
-    describe('When the URL has a scheme, the URL', () => {
-      specify('it must not contain any spaces', () => {
-        const footnote = new FootnoteNode([
-          new PlainTextNode('the phone was dead')
-        ], 1)
+  specify('It starts with a hash mark ("#")', () => {
+    const footnote = new FootnoteNode([
+      new LinkNode([
+        new PlainTextNode('the phone was dead')
+      ], '#wiki/dead-phone')
+    ], 1)
 
-        expect(Up.toAst('((the phone was dead)) (https://stackoverflow.com is where I learned)')).to.be.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              footnote,
-              new PlainTextNode(' '),
-              new ParenthesizedNode([
-                new PlainTextNode('('),
-                new LinkNode([
-                  new PlainTextNode('stackoverflow.com')
-                ], 'https://stackoverflow.com'),
-                new PlainTextNode(' is where I learned)')
-              ]),
-            ]),
-            new FootnoteBlockNode([footnote])
-          ])
-        )
-      })
-
-      it('can consisting solely of digits after the scheme', () => {
-        const footnote = new FootnoteNode([
-          new LinkNode([
-            new PlainTextNode('the phone was dead')
-          ], 'tel:5555555555')
-        ], 1)
-
-        expectEveryCombinationOfBrackets({
-          bracketsForFirstPart: FOOTNOTE_BRACKETS,
-          firstPartToWrapInBrackets: 'the phone was dead',
-          partsToPutInBetween: ['  ', '\t', ' \t '],
-          secondPartToWrapInBrackets: 'tel:5555555555',
-          toProduce: new DocumentNode([
-            new ParagraphNode([footnote]),
-            new FootnoteBlockNode([footnote])
-          ])
-        })
-      })
+    expectEveryCombinationOfBrackets({
+      bracketsForFirstPart: FOOTNOTE_BRACKETS,
+      firstPartToWrapInBrackets: 'the phone was dead',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      secondPartToWrapInBrackets: '#wiki/dead-phone',
+      toProduce: new DocumentNode([
+        new ParagraphNode([footnote,]),
+        new FootnoteBlockNode([footnote])
+      ])
     })
+  })
 
 
-    specify('it starts with a slash', () => {
+  describe('When the URL starts with a hash mark ("#"), the URL', () => {
+    it('must not otherwise consist solely of digits', () => {
       const footnote = new FootnoteNode([
-        new LinkNode([
-          new PlainTextNode('the phone was dead')
-        ], '/wiki/dead-phone')
+        new PlainTextNode('the phone was dead')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        bracketsForFirstPart: FOOTNOTE_BRACKETS,
-        firstPartToWrapInBrackets: 'the phone was dead',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '/wiki/dead-phone',
-        toProduce: new DocumentNode([
-          new ParagraphNode([footnote]),
+      expect(Up.toAst('((the phone was dead)) (#14)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(#14)')
+            ]),
+          ]),
           new FootnoteBlockNode([footnote])
         ])
-      })
+      )
     })
 
-
-    describe('When the URL starts with a slash, the URL', () => {
-      it('must not contain any spaces', () => {
-        const footnote = new FootnoteNode([
-          new PlainTextNode('the phone was dead')
-        ], 1)
-
-        expect(Up.toAst('((the phone was dead)) (/r9k/ was talking about it)')).to.be.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              footnote,
-              new PlainTextNode(' '),
-              new ParenthesizedNode([
-                new PlainTextNode('(/r9k/ was talking about it)'),
-              ]),
-            ]),
-            new FootnoteBlockNode([footnote])
-          ])
-        )
-      })
-
-      it('can consist solely of digits after the slash', () => {
-        const footnote = new FootnoteNode([
-          new LinkNode([
-            new PlainTextNode('the phone was dead')
-          ], '/5555555555')
-        ], 1)
-
-        expectEveryCombinationOfBrackets({
-          bracketsForFirstPart: FOOTNOTE_BRACKETS,
-          firstPartToWrapInBrackets: 'the phone was dead',
-          partsToPutInBetween: ['  ', '\t', ' \t '],
-          secondPartToWrapInBrackets: '/5555555555',
-          toProduce: new DocumentNode([
-            new ParagraphNode([footnote]),
-            new FootnoteBlockNode([footnote])
-          ])
-        })
-      })
-    })
-
-
-    specify('it starts with a hash mark ("#")', () => {
+    it('must not contain any spaces', () => {
       const footnote = new FootnoteNode([
-        new LinkNode([
-          new PlainTextNode('the phone was dead')
-        ], '#wiki/dead-phone')
+        new PlainTextNode('the game was dead')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        bracketsForFirstPart: FOOTNOTE_BRACKETS,
-        firstPartToWrapInBrackets: 'the phone was dead',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '#wiki/dead-phone',
-        toProduce: new DocumentNode([
-          new ParagraphNode([footnote,]),
+      expect(Up.toAst('((the game was dead)) (#starcraft2 was never trending)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(#starcraft2 was never trending)')
+            ]),
+          ]),
           new FootnoteBlockNode([footnote])
         ])
-      })
+      )
     })
+  })
 
 
-    describe('When the URL starts with a hash mark ("#"), the URL', () => {
-      it('must not otherwise consist solely of digits', () => {
-        const footnote = new FootnoteNode([
-          new PlainTextNode('the phone was dead')
-        ], 1)
+  specify('If none of the conditions are satisfied, the footnote is not linkified', () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('the phone was dead')
+    ], 1)
 
-        expect(Up.toAst('((the phone was dead)) (#14)')).to.be.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              footnote,
-              new PlainTextNode(' '),
-              new ParenthesizedNode([
-                new PlainTextNode('(#14)')
-              ]),
-            ]),
-            new FootnoteBlockNode([footnote])
-          ])
-        )
-      })
-
-      it('must not contain any spaces', () => {
-        const footnote = new FootnoteNode([
-          new PlainTextNode('the game was dead')
-        ], 1)
-
-        expect(Up.toAst('((the game was dead)) (#starcraft2 was never trending)')).to.be.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              footnote,
-              new PlainTextNode(' '),
-              new ParenthesizedNode([
-                new PlainTextNode('(#starcraft2 was never trending)')
-              ]),
-            ]),
-            new FootnoteBlockNode([footnote])
-          ])
-        )
-      })
-    })
+    expect(Up.toAst('((the phone was dead)) (really)')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote,
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(really)')
+          ]),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
   })
 })
 

@@ -31,7 +31,7 @@ describe('A spoiler followed immediately by a parenthesized/bracketd URL', () =>
 
 describe('Any spoiler followed immediately by a parenthesized/bracketed URL', () => {
   it('produces a spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
-        expectEveryCombinationOfBrackets({
+    expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'SPOILER: you fight Gary',
       partsToPutInBetween: ['  ', '\t', ' \t '],
       secondPartToWrapInBrackets: 'http://example.com/finalbattle',
