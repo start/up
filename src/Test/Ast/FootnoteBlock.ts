@@ -222,6 +222,7 @@ describe('Footnotes in a blockquote', () => {
   })
 })
 
+
 describe('Footnotes nested inside 2 or more outline conventions nested inside a blockquote', () => {
   it("produce footnote blocks inside the blockquote after all the appropriate outline conventions", () => {
     const text = `
@@ -440,6 +441,69 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
           ])
         ]),
         new FootnoteBlockNode(footnotesInUnorderedList),
+        new SectionSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode("I wear glasses"),
+          footnoteInParagraph,
+          new PlainTextNode(" even while working out."),
+        ]),
+        new FootnoteBlockNode([footnoteInParagraph])
+      ]))
+  })
+})
+
+
+describe("The reference numbers of non-nested footnotes inside a blockquote inside another outline convention", () => {
+  it('are higher than the reference numbers of preceding footnotes in the same outer outline convention. The fact that their footnote block appears first is irrelevant', () => {
+    const text = `
+* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+
+  It's too expensive.
+
+* > I don't eat ((Or touch.)) pumpkins.
+
+------------------------
+
+I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+
+    const footnoteInUnorderedList = new FootnoteNode([
+      new PlainTextNode("Well, I do, but I pretend not to."),
+    ], 1)
+
+    const footnoteInBlockquote = new FootnoteNode([
+      new PlainTextNode("Or touch."),
+    ], 2)
+
+    const footnoteInParagraph = new FootnoteNode([
+      new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+    ], 3)
+
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat cereal."),
+              footnoteInUnorderedList,
+              new PlainTextNode(" Never have."),
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expensive.")
+            ])
+          ]),
+          new UnorderedListItem([
+            new BlockquoteNode([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat"),
+                footnoteInBlockquote,
+                new PlainTextNode(" pumpkins."),
+              ]),
+              new FootnoteBlockNode([footnoteInBlockquote])
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([footnoteInUnorderedList]),
         new SectionSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode("I wear glasses"),
