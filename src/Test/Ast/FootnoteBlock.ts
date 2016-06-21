@@ -418,7 +418,6 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
         new PlainTextNode("It's actually been a dream of mine ever since I was young."),
       ], 3)
 
-
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -477,7 +476,6 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
     const footnoteInParagraph = new FootnoteNode([
       new PlainTextNode("It's actually been a dream of mine ever since I was young."),
     ], 3)
-
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -551,7 +549,6 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
     const footnoteInParagraph = new FootnoteNode([
       new PlainTextNode("It's actually been a dream of mine ever since I was young."),
     ], 5)
-
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
