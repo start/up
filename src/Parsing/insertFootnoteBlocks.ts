@@ -22,9 +22,9 @@ import { concat } from '../CollectionHelpers'
 //    outline conventions) are placed into a footnote block directly following that top-level outline
 //    convention. Blockquotes are the exception to this rule, because...
 //
-// 2. Blocknotes are considere mini-documents! Therefore, that first rule is applied all top-level outline
+// 2. Blocknotes are considered mini-documents! Therefore, that first rule is applied all top-level outline
 //    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote
-//    are placed into a footnote block inside the blockquote after the paragraph.
+//    are placed into a footnote block inside that blockquote after the paragraph. Phew.
 //
 // We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block.
 

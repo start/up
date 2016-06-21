@@ -2186,8 +2186,7 @@ var HeadingLeveler_1 = require('./Outline/HeadingLeveler');
 var insertFootnoteBlocks_1 = require('./insertFootnoteBlocks');
 var getOutlineNodes_1 = require('./Outline/getOutlineNodes');
 function parseDocument(text, config) {
-    var documentChildren = getOutlineNodes_1.getOutlineNodes(text, new HeadingLeveler_1.HeadingLeveler(), config);
-    var documentNode = new DocumentNode_1.DocumentNode(documentChildren);
+    var documentNode = new DocumentNode_1.DocumentNode(getOutlineNodes_1.getOutlineNodes(text, new HeadingLeveler_1.HeadingLeveler(), config));
     insertFootnoteBlocks_1.insertFootnoteBlocks(documentNode);
     return documentNode;
 }

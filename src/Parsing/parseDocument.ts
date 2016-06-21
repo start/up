@@ -5,10 +5,11 @@ import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { UpConfig } from '../UpConfig'
 
 export function parseDocument(text: string, config: UpConfig): DocumentNode {
-  const documentChildren = getOutlineNodes(text, new HeadingLeveler(), config)
-  
-  const documentNode = new DocumentNode(documentChildren)
+  const documentNode =
+    new DocumentNode(
+      getOutlineNodes(text, new HeadingLeveler(), config))
+
   insertFootnoteBlocks(documentNode)
-  
+
   return documentNode
 }
