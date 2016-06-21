@@ -12,6 +12,8 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
@@ -99,6 +101,20 @@ Charmander
               new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
+        ])
+      ])
+    )
+  })
+
+  specify('produce an ordered list node containing ordered list item nodes', () => {
+    expect(Up.toAst('1)  \t Hello, Lavender Town!')).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Lavender Town!')
+            ])
+          ], 1)
         ])
       ])
     )
