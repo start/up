@@ -11,11 +11,13 @@ export class RaisedVoiceHandler {
   delimiterPattern: RegExp
 
   constructor(
+    // We save `args` to make it easier to clone this object. 
     private args: {
       delimiterChar: string
       encloseWithin: EncloseWithin
       insertPlainTextTokenAt: InsertPlainTextToken
     },
+    
     private startDelimiters: RaisedVoiceStartDelimiter[] = []
   ) {
     this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(args.delimiterChar)))
