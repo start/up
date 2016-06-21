@@ -482,6 +482,166 @@ var TokenKind = exports.TokenKind;
 
 },{}],12:[function(require,module,exports){
 "use strict";
+var TokenizerSnapshot = (function () {
+    function TokenizerSnapshot(args) {
+        this.textIndex = args.textIndex;
+        this.tokens = args.tokens.slice();
+        this.openContexts = args.openContexts;
+        this.raisedVoiceHandlers = args.raisedVoiceHandlers;
+        this.buffer = args.buffer;
+    }
+    return TokenizerSnapshot;
+}());
+exports.TokenizerSnapshot = TokenizerSnapshot;
+
+},{}],13:[function(require,module,exports){
+"use strict";
+var RichConventions_1 = require('../RichConventions');
+var TokenKind_1 = require('./TokenKind');
+var Token_1 = require('./Token');
+function insertBracketsInsideBracketedConventions(tokens) {
+    var resultTokens = [];
+    var _loop_1 = function(token) {
+        function addBracketIfTokenIs(kind, bracket) {
+            if (token.kind === kind) {
+                resultTokens.push(new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket }));
+            }
+        }
+        addBracketIfTokenIs(RichConventions_1.PARENTHESIZED_CONVENTION.endTokenKind, ')');
+        addBracketIfTokenIs(RichConventions_1.SQUARE_BRACKETED_CONVENTION.endTokenKind, ']');
+        resultTokens.push(token);
+        addBracketIfTokenIs(RichConventions_1.PARENTHESIZED_CONVENTION.startTokenKind, '(');
+        addBracketIfTokenIs(RichConventions_1.SQUARE_BRACKETED_CONVENTION.startTokenKind, '[');
+    };
+    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
+        var token = tokens_1[_i];
+        _loop_1(token);
+    }
+    return resultTokens;
+}
+exports.insertBracketsInsideBracketedConventions = insertBracketsInsideBracketedConventions;
+
+},{"../RichConventions":3,"./Token":10,"./TokenKind":11}],14:[function(require,module,exports){
+"use strict";
+var RichConventions_1 = require('../RichConventions');
+function nestOverlappingConventions(tokens) {
+    return new ConventionNester(tokens).tokens;
+}
+exports.nestOverlappingConventions = nestOverlappingConventions;
+var FREELY_SPLITTABLE_CONVENTIONS = [
+    RichConventions_1.REVISION_DELETION_CONVENTION,
+    RichConventions_1.REVISION_INSERTION_CONVENTION,
+    RichConventions_1.STRESS_CONVENTION,
+    RichConventions_1.EMPHASIS_CONVENTION,
+    RichConventions_1.PARENTHESIZED_CONVENTION,
+    RichConventions_1.SQUARE_BRACKETED_CONVENTION,
+];
+var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
+    RichConventions_1.LINK_CONVENTION,
+    RichConventions_1.ACTION_CONVENTION,
+    RichConventions_1.SPOILER_CONVENTION,
+    RichConventions_1.NSFW_CONVENTION,
+    RichConventions_1.NSFL_CONVENTION,
+    RichConventions_1.FOOTNOTE_CONVENTION
+];
+var ConventionNester = (function () {
+    function ConventionNester(tokens) {
+        this.tokens = tokens;
+        this.tokens = tokens.slice();
+        var splittableConventions = FREELY_SPLITTABLE_CONVENTIONS.slice();
+        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(splittableConventions);
+        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
+            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
+            this.resolveOverlapping(splittableConventions, conventionNotToSplit);
+            splittableConventions.push(conventionNotToSplit);
+        }
+    }
+    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
+        var unclosedStartTokens = [];
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            var token = this.tokens[tokenIndex];
+            if (doesTokenStartConvention(token, conventions)) {
+                unclosedStartTokens.push(token);
+                continue;
+            }
+            if (!doesTokenEndConvention(token, conventions)) {
+                continue;
+            }
+            var endTokensOfOverlappingConventions = [];
+            for (var i = unclosedStartTokens.length - 1; i >= 0; i--) {
+                var unclosedStartToken = unclosedStartTokens[i];
+                if (unclosedStartToken.correspondsToToken === token) {
+                    unclosedStartTokens.splice(i, 1);
+                    break;
+                }
+                endTokensOfOverlappingConventions.push(unclosedStartToken.correspondsToToken);
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventions);
+            var countOverlapping = endTokensOfOverlappingConventions.length;
+            tokenIndex += (2 * countOverlapping);
+        }
+    };
+    ConventionNester.prototype.resolveOverlapping = function (splittableConventions, conventionNotToSplit) {
+        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
+            var potentialHeroStartToken = this.tokens[tokenIndex];
+            var isStartTokenForHeroConvention = potentialHeroStartToken.kind === conventionNotToSplit.startTokenKind;
+            if (!isStartTokenForHeroConvention) {
+                continue;
+            }
+            var heroStartIndex = tokenIndex;
+            var heroEndIndex = void 0;
+            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
+                var potentialHeroEndToken = this.tokens[i];
+                var isEndTokenForHeroConvention = potentialHeroEndToken.kind === conventionNotToSplit.endTokenKind;
+                if (isEndTokenForHeroConvention) {
+                    heroEndIndex = i;
+                    break;
+                }
+            }
+            var overlappingStartingBefore = [];
+            var overlappingStartingInside = [];
+            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
+                var token = this.tokens[indexInsideHero];
+                if (doesTokenStartConvention(token, splittableConventions)) {
+                    overlappingStartingInside.push(token.correspondsToToken);
+                    continue;
+                }
+                if (doesTokenEndConvention(token, splittableConventions)) {
+                    if (overlappingStartingInside.length) {
+                        overlappingStartingInside.pop();
+                        continue;
+                    }
+                    overlappingStartingBefore.push(token);
+                }
+            }
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
+            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
+            var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
+            tokenIndex = heroEndIndex + countTokensAdded;
+        }
+    };
+    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, endTokensFromMostRecentToLeast) {
+        var startTokens = endTokensFromMostRecentToLeast
+            .map(function (endToken) { return endToken.correspondsToToken; })
+            .reverse();
+        this.insertTokens(index + 1, startTokens);
+        this.insertTokens(index, endTokensFromMostRecentToLeast);
+    };
+    ConventionNester.prototype.insertTokens = function (index, contextualizedTokens) {
+        (_a = this.tokens).splice.apply(_a, [index, 0].concat(contextualizedTokens));
+        var _a;
+    };
+    return ConventionNester;
+}());
+function doesTokenStartConvention(token, conventions) {
+    return (conventions.some(function (convention) { return token.kind === convention.startTokenKind; }));
+}
+function doesTokenEndConvention(token, conventions) {
+    return (conventions.some(function (convention) { return token.kind === convention.endTokenKind; }));
+}
+
+},{"../RichConventions":3}],15:[function(require,module,exports){
+"use strict";
 var RichConventions_1 = require('../RichConventions');
 var PatternHelpers_1 = require('../../PatternHelpers');
 var PatternPieces_1 = require('../../PatternPieces');
@@ -508,6 +668,10 @@ var COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.NSFL_CONVENTION,
     RichConventions_1.FOOTNOTE_CONVENTION
 ];
+function tokenize(text, config) {
+    return new Tokenizer(text, config).tokens;
+}
+exports.tokenize = tokenize;
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -1084,7 +1248,6 @@ var Tokenizer = (function () {
     };
     return Tokenizer;
 }());
-exports.Tokenizer = Tokenizer;
 var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.optional('//');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
@@ -1105,177 +1268,16 @@ var PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_
 ]);
 var CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.charOtherThan(PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)));
 
-},{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":13,"./insertBracketsInsideBracketedConventions":14,"./nestOverlappingConventions":15}],13:[function(require,module,exports){
+},{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
 "use strict";
-var TokenizerSnapshot = (function () {
-    function TokenizerSnapshot(args) {
-        this.textIndex = args.textIndex;
-        this.tokens = args.tokens.slice();
-        this.openContexts = args.openContexts;
-        this.raisedVoiceHandlers = args.raisedVoiceHandlers;
-        this.buffer = args.buffer;
-    }
-    return TokenizerSnapshot;
-}());
-exports.TokenizerSnapshot = TokenizerSnapshot;
-
-},{}],14:[function(require,module,exports){
-"use strict";
-var RichConventions_1 = require('../RichConventions');
-var TokenKind_1 = require('./TokenKind');
-var Token_1 = require('./Token');
-function insertBracketsInsideBracketedConventions(tokens) {
-    var resultTokens = [];
-    var _loop_1 = function(token) {
-        function addBracketIfTokenIs(kind, bracket) {
-            if (token.kind === kind) {
-                resultTokens.push(new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket }));
-            }
-        }
-        addBracketIfTokenIs(RichConventions_1.PARENTHESIZED_CONVENTION.endTokenKind, ')');
-        addBracketIfTokenIs(RichConventions_1.SQUARE_BRACKETED_CONVENTION.endTokenKind, ']');
-        resultTokens.push(token);
-        addBracketIfTokenIs(RichConventions_1.PARENTHESIZED_CONVENTION.startTokenKind, '(');
-        addBracketIfTokenIs(RichConventions_1.SQUARE_BRACKETED_CONVENTION.startTokenKind, '[');
-    };
-    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-        var token = tokens_1[_i];
-        _loop_1(token);
-    }
-    return resultTokens;
-}
-exports.insertBracketsInsideBracketedConventions = insertBracketsInsideBracketedConventions;
-
-},{"../RichConventions":3,"./Token":10,"./TokenKind":11}],15:[function(require,module,exports){
-"use strict";
-var RichConventions_1 = require('../RichConventions');
-function nestOverlappingConventions(tokens) {
-    return new ConventionNester(tokens).tokens;
-}
-exports.nestOverlappingConventions = nestOverlappingConventions;
-var FREELY_SPLITTABLE_CONVENTIONS = [
-    RichConventions_1.REVISION_DELETION_CONVENTION,
-    RichConventions_1.REVISION_INSERTION_CONVENTION,
-    RichConventions_1.STRESS_CONVENTION,
-    RichConventions_1.EMPHASIS_CONVENTION,
-    RichConventions_1.PARENTHESIZED_CONVENTION,
-    RichConventions_1.SQUARE_BRACKETED_CONVENTION,
-];
-var CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
-    RichConventions_1.LINK_CONVENTION,
-    RichConventions_1.ACTION_CONVENTION,
-    RichConventions_1.SPOILER_CONVENTION,
-    RichConventions_1.NSFW_CONVENTION,
-    RichConventions_1.NSFL_CONVENTION,
-    RichConventions_1.FOOTNOTE_CONVENTION
-];
-var ConventionNester = (function () {
-    function ConventionNester(tokens) {
-        this.tokens = tokens;
-        this.tokens = tokens.slice();
-        var splittableConventions = FREELY_SPLITTABLE_CONVENTIONS.slice();
-        this.splitConventionsThatStartInsideAnotherConventionAndEndAfter(splittableConventions);
-        for (var _i = 0, CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1 = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT; _i < CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1.length; _i++) {
-            var conventionNotToSplit = CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT_1[_i];
-            this.resolveOverlapping(splittableConventions, conventionNotToSplit);
-            splittableConventions.push(conventionNotToSplit);
-        }
-    }
-    ConventionNester.prototype.splitConventionsThatStartInsideAnotherConventionAndEndAfter = function (conventions) {
-        var unclosedStartTokens = [];
-        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            var token = this.tokens[tokenIndex];
-            if (doesTokenStartConvention(token, conventions)) {
-                unclosedStartTokens.push(token);
-                continue;
-            }
-            if (!doesTokenEndConvention(token, conventions)) {
-                continue;
-            }
-            var endTokensOfOverlappingConventions = [];
-            for (var i = unclosedStartTokens.length - 1; i >= 0; i--) {
-                var unclosedStartToken = unclosedStartTokens[i];
-                if (unclosedStartToken.correspondsToToken === token) {
-                    unclosedStartTokens.splice(i, 1);
-                    break;
-                }
-                endTokensOfOverlappingConventions.push(unclosedStartToken.correspondsToToken);
-            }
-            this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventions);
-            var countOverlapping = endTokensOfOverlappingConventions.length;
-            tokenIndex += (2 * countOverlapping);
-        }
-    };
-    ConventionNester.prototype.resolveOverlapping = function (splittableConventions, conventionNotToSplit) {
-        for (var tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
-            var potentialHeroStartToken = this.tokens[tokenIndex];
-            var isStartTokenForHeroConvention = potentialHeroStartToken.kind === conventionNotToSplit.startTokenKind;
-            if (!isStartTokenForHeroConvention) {
-                continue;
-            }
-            var heroStartIndex = tokenIndex;
-            var heroEndIndex = void 0;
-            for (var i = heroStartIndex + 1; i < this.tokens.length; i++) {
-                var potentialHeroEndToken = this.tokens[i];
-                var isEndTokenForHeroConvention = potentialHeroEndToken.kind === conventionNotToSplit.endTokenKind;
-                if (isEndTokenForHeroConvention) {
-                    heroEndIndex = i;
-                    break;
-                }
-            }
-            var overlappingStartingBefore = [];
-            var overlappingStartingInside = [];
-            for (var indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-                var token = this.tokens[indexInsideHero];
-                if (doesTokenStartConvention(token, splittableConventions)) {
-                    overlappingStartingInside.push(token.correspondsToToken);
-                    continue;
-                }
-                if (doesTokenEndConvention(token, splittableConventions)) {
-                    if (overlappingStartingInside.length) {
-                        overlappingStartingInside.pop();
-                        continue;
-                    }
-                    overlappingStartingBefore.push(token);
-                }
-            }
-            this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside);
-            this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore);
-            var countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length);
-            tokenIndex = heroEndIndex + countTokensAdded;
-        }
-    };
-    ConventionNester.prototype.closeAndReopenConventionsAroundTokenAtIndex = function (index, endTokensFromMostRecentToLeast) {
-        var startTokens = endTokensFromMostRecentToLeast
-            .map(function (endToken) { return endToken.correspondsToToken; })
-            .reverse();
-        this.insertTokens(index + 1, startTokens);
-        this.insertTokens(index, endTokensFromMostRecentToLeast);
-    };
-    ConventionNester.prototype.insertTokens = function (index, contextualizedTokens) {
-        (_a = this.tokens).splice.apply(_a, [index, 0].concat(contextualizedTokens));
-        var _a;
-    };
-    return ConventionNester;
-}());
-function doesTokenStartConvention(token, conventions) {
-    return (conventions.some(function (convention) { return token.kind === convention.startTokenKind; }));
-}
-function doesTokenEndConvention(token, conventions) {
-    return (conventions.some(function (convention) { return token.kind === convention.endTokenKind; }));
-}
-
-},{"../RichConventions":3}],16:[function(require,module,exports){
-"use strict";
-var Tokenizer_1 = require('./Tokenization/Tokenizer');
+var tokenize_1 = require('./Tokenization/tokenize');
 var parse_1 = require('./parse');
 function getInlineNodes(text, config) {
-    var tokens = (new Tokenizer_1.Tokenizer(text, config)).tokens;
-    return parse_1.parse(tokens);
+    return parse_1.parse(tokenize_1.tokenize(text, config));
 }
 exports.getInlineNodes = getInlineNodes;
 
-},{"./Tokenization/Tokenizer":12,"./parse":17}],17:[function(require,module,exports){
+},{"./Tokenization/tokenize":15,"./parse":17}],17:[function(require,module,exports){
 "use strict";
 var RichConventions_1 = require('./RichConventions');
 var MediaConventions_1 = require('./MediaConventions');

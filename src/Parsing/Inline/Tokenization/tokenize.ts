@@ -41,7 +41,12 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
 ]
 
 
-export class Tokenizer {
+export function tokenize(text: string, config: UpConfig): Token[] {
+  return new Tokenizer(text, config).tokens
+}
+
+
+class Tokenizer {
   tokens: Token[] = []
 
   private consumer: InlineTextConsumer
