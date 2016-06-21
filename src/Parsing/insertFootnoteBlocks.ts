@@ -23,10 +23,21 @@ import { concat } from '../CollectionHelpers'
 //    convention. Blockquotes are the exception to this rule, because...
 //
 // 2. Blocknotes are considered mini-documents! Therefore, that first rule is applied all top-level outline
-//    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote
-//    are placed into a footnote block inside that blockquote after the paragraph. Phew.
+//    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote are
+//    placed into a footnote block inside that blockquote, after that paragraph. Phew.
 //
-// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote block.
+// 3. It's contrived, but footnotes can reference other footnotes. For example:
+//
+//    I'm normal. ((That said, I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.)) Really.
+//
+//    The nesting can be arbitrarily deep.
+//
+//    Any nested footnotes are added to end of the footnote block containing the outer footnote, after all of
+//    the non-nested footnotes. Then, any (doubly) nested footnotes inside of *those* footnotes are added to
+//    the end of that same footnote block, and the process repeats until no more nested footnotes are found.  
+//
+// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote
+// block.
 
 
 export function insertFootnoteBlocks(documentNode: DocumentNode): void {
@@ -130,18 +141,6 @@ class FootnoteBlockInserter {
   }
 
   getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
-    // It's contrived, but footnotes can reference other footnotes.
-    //
-    // For example:
-    //
-    // Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.)) Really.
-    //
-    // The nesting can be arbitrarily deep.
-    //
-    // Any nested footnotes are added to end of the footnote block, after all of the original footnotes. Then, any (doubly)
-    // nested footnotes inside of *those* footnotes are added to the end, and the process repeats until no more nested
-    // footnotes are found.
-
     const footnoteBlock = new FootnoteBlockNode(footnotes)
 
     for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
