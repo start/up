@@ -13,11 +13,12 @@ import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 
 
 describe('An unordered list with a single item', () => {
-  it('can be sandwched by section separator streaks', () => {
+  it('can be sandwched by identical section separator streaks without producing a heading', () => {
     const text = `
 -----------
 * Mittens
 -----------`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
@@ -43,6 +44,7 @@ Violets are blue
 - Nebraska
 Lyrics have lines
 And addresses do, too`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
@@ -86,8 +88,8 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 
 
 - Clinton
-- Sanders
-`
+- Sanders`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -128,8 +130,8 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 
 
 - Clinton
-- Sanders
-`
+- Sanders`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -164,11 +166,11 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 
 describe('A code block in a list item', () => {
   it('produces a code block node with unindented content', () => {
-    const text =
-      `
+    const text = `
 * \`\`\`
   const x = 0
   \`\`\``
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -181,8 +183,7 @@ describe('A code block in a list item', () => {
   })
 
   it('can have 3 consecutive blank lines', () => {
-    const text =
-      `
+    const text = `
 * \`\`\`
   const x = 0
 
@@ -190,6 +191,7 @@ describe('A code block in a list item', () => {
 
   const y = 0
   \`\`\``
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([

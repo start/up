@@ -9,11 +9,12 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
 describe('An ordered list with a single item', () => {
-  it('can be sandwched by section separator streaks', () => {
+  it('can be sandwched by identical section separator streaks without producing a heading', () => {
     const text = `
 -----------
 # Mittens
 -----------`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
@@ -39,6 +40,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 
 # Clinton
 # Sanders`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
@@ -80,6 +82,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 
 # Clinton
 # Sanders`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
