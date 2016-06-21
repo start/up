@@ -14,6 +14,16 @@ describe('A normal line of text', () => {
 })
 
 
+describe('Any leading whitespace in a paragraph', () => {
+  it('is removed', () => {
+    expect(Up.toAst(" \t I'm just a normal guy who eats only when it's raining outside.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I'm just a normal guy who eats only when it's raining outside.")
+      ]))
+  })
+})
+
+
 describe('A line of text ending with an escaped line break directly followed by another line of text', () => {
   it('produce a paragraph node, not a line block node', () => {
     const text = `
