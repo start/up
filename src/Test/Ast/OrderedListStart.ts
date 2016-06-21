@@ -15,6 +15,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
 #. Hello, world!
 # Goodbye, world!
 #) Goodbye, world!`
+
     expect(listStart(text)).to.be.eql(null)
   })
 
@@ -23,6 +24,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
 #. Hello, world!
 5) Goodbye, world!
 #) Goodbye, world!`
+
     expect(listStart(text)).to.be.eql(null)
   })
 })
@@ -34,6 +36,7 @@ describe('An ordered list that starts with a numeral bullet', () => {
 10) Hello, world!
 #. Goodbye, world!
 #) Goodbye, world!`
+
     expect(listStart(text)).to.be.eql(10)
   })
 })
