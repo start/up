@@ -2094,47 +2094,47 @@ var DescriptionListNode_1 = require('../SyntaxNodes/DescriptionListNode');
 var FootnoteNode_1 = require('../SyntaxNodes/FootnoteNode');
 var FootnoteBlockNode_1 = require('../SyntaxNodes/FootnoteBlockNode');
 var CollectionHelpers_1 = require('../CollectionHelpers');
-function insertFootnoteBlocks(documentNode) {
-    new FootnoteBlockInserter(documentNode);
+function handleFootnotes(documentNode) {
+    new FootnoteHandler(documentNode);
 }
-exports.insertFootnoteBlocks = insertFootnoteBlocks;
-var FootnoteBlockInserter = (function () {
-    function FootnoteBlockInserter(documentNode) {
+exports.handleFootnotes = handleFootnotes;
+var FootnoteHandler = (function () {
+    function FootnoteHandler(documentNode) {
         this.currentFootnoteReferenceNumber = 1;
-        this.produceFootnoteBlocks(documentNode);
+        this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode);
     }
-    FootnoteBlockInserter.prototype.produceFootnoteBlocks = function (outlineNodeContainer) {
+    FootnoteHandler.prototype.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers = function (outlineNodeContainer) {
         var outlineNodesWithFootnoteBlocks = [];
         for (var _i = 0, _a = outlineNodeContainer.children; _i < _a.length; _i++) {
             var outlineNode = _a[_i];
             outlineNodesWithFootnoteBlocks.push(outlineNode);
-            var footnotesForNextFootnoteBlock = this.getBlocklessFootnotesFromOutlineNode(outlineNode);
+            var footnotesForNextFootnoteBlock = this.handleFootnotesInOutlineNodeAndGetBlockless(outlineNode);
             if (footnotesForNextFootnoteBlock.length) {
                 outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock));
             }
         }
         outlineNodeContainer.children = outlineNodesWithFootnoteBlocks;
     };
-    FootnoteBlockInserter.prototype.getBlocklessFootnotesFromOutlineNode = function (node) {
+    FootnoteHandler.prototype.handleFootnotesInOutlineNodeAndGetBlockless = function (node) {
         if ((node instanceof ParagraphNode_1.ParagraphNode) || (node instanceof HeadingNode_1.HeadingNode)) {
-            return this.getTopLevelFootnotesAndAssignThemReferenceNumbers(node.children);
+            return this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(node.children);
         }
         if (node instanceof LineBlockNode_1.LineBlockNode) {
             return this.getFootnotesFromInlineNodeContainers(node.lines);
         }
         if (node instanceof BlockquoteNode_1.BlockquoteNode) {
-            this.produceFootnoteBlocks(node);
+            this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node);
             return [];
         }
         if ((node instanceof UnorderedListNode_1.UnorderedListNode) || (node instanceof OrderedListNode_1.OrderedListNode)) {
-            return this.getBlocklessFootnotesFromOutlineNodeContainers(node.listItems);
+            return this.handleFootnotesInOutlineNodeContainersAndGetBlockless(node.listItems);
         }
         if (node instanceof DescriptionListNode_1.DescriptionListNode) {
-            return this.getBlocklessFootnotesFromDescriptionList(node);
+            return this.handleFootnotesInDescriptionListAndGetBlockless(node);
         }
         return [];
     };
-    FootnoteBlockInserter.prototype.getTopLevelFootnotesAndAssignThemReferenceNumbers = function (nodes) {
+    FootnoteHandler.prototype.getTopLevelFootnotesAndAssignTheirReferenceNumbers = function (nodes) {
         var footnotes = [];
         for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
             var node = nodes_1[_i];
@@ -2145,54 +2145,54 @@ var FootnoteBlockInserter = (function () {
         }
         return footnotes;
     };
-    FootnoteBlockInserter.prototype.getFootnotesFromInlineNodeContainers = function (containers) {
+    FootnoteHandler.prototype.getFootnotesFromInlineNodeContainers = function (containers) {
         var _this = this;
-        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getTopLevelFootnotesAndAssignThemReferenceNumbers(container.children); }));
+        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(container.children); }));
     };
-    FootnoteBlockInserter.prototype.getBlocklessFootnotesFromOutlineNodeContainers = function (containers) {
+    FootnoteHandler.prototype.handleFootnotesInOutlineNodeContainersAndGetBlockless = function (containers) {
         var _this = this;
-        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.getBlocklessFootnotesFromOutlineNodes(container.children); }));
+        return CollectionHelpers_1.concat(containers.map(function (container) { return _this.HandleFootnotesInOutlineNodesAndGetBlockless(container.children); }));
     };
-    FootnoteBlockInserter.prototype.getBlocklessFootnotesFromDescriptionList = function (list) {
+    FootnoteHandler.prototype.handleFootnotesInDescriptionListAndGetBlockless = function (list) {
         var _this = this;
-        return CollectionHelpers_1.concat(list.listItems.map(function (item) { return _this.getBlocklessFootnotesFromDescriptionListItem(item); }));
+        return CollectionHelpers_1.concat(list.listItems.map(function (item) { return _this.handleFootnotesInDescriptionListItemAndGetBlockless(item); }));
     };
-    FootnoteBlockInserter.prototype.getBlocklessFootnotesFromDescriptionListItem = function (item) {
+    FootnoteHandler.prototype.handleFootnotesInDescriptionListItemAndGetBlockless = function (item) {
         var footnotesFromTerms = this.getFootnotesFromInlineNodeContainers(item.terms);
-        var footnotesFromDescription = this.getBlocklessFootnotesFromOutlineNodes(item.description.children);
+        var footnotesFromDescription = this.HandleFootnotesInOutlineNodesAndGetBlockless(item.description.children);
         return footnotesFromTerms.concat(footnotesFromDescription);
     };
-    FootnoteBlockInserter.prototype.getBlocklessFootnotesFromOutlineNodes = function (nodes) {
+    FootnoteHandler.prototype.HandleFootnotesInOutlineNodesAndGetBlockless = function (nodes) {
         var _this = this;
-        return CollectionHelpers_1.concat(nodes.map(function (node) { return _this.getBlocklessFootnotesFromOutlineNode(node); }));
+        return CollectionHelpers_1.concat(nodes.map(function (node) { return _this.handleFootnotesInOutlineNodeAndGetBlockless(node); }));
     };
-    FootnoteBlockInserter.prototype.getFootnoteBlock = function (footnotes) {
+    FootnoteHandler.prototype.getFootnoteBlock = function (footnotes) {
         var footnoteBlock = new FootnoteBlockNode_1.FootnoteBlockNode(footnotes);
         for (var i = 0; i < footnoteBlock.footnotes.length; i++) {
             var footnote = footnoteBlock.footnotes[i];
-            var nestedFootnotes = this.getTopLevelFootnotesAndAssignThemReferenceNumbers(footnote.children);
+            var nestedFootnotes = this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(footnote.children);
             (_a = footnoteBlock.footnotes).push.apply(_a, nestedFootnotes);
         }
         return footnoteBlock;
         var _a;
     };
-    return FootnoteBlockInserter;
+    return FootnoteHandler;
 }());
 
 },{"../CollectionHelpers":1,"../SyntaxNodes/BlockquoteNode":40,"../SyntaxNodes/DescriptionListNode":44,"../SyntaxNodes/FootnoteBlockNode":48,"../SyntaxNodes/FootnoteNode":49,"../SyntaxNodes/HeadingNode":50,"../SyntaxNodes/LineBlockNode":55,"../SyntaxNodes/OrderedListNode":61,"../SyntaxNodes/ParagraphNode":63,"../SyntaxNodes/UnorderedListNode":74}],34:[function(require,module,exports){
 "use strict";
+var handleFootnotes_1 = require('./handleFootnotes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
 var HeadingLeveler_1 = require('./Outline/HeadingLeveler');
-var insertFootnoteBlocks_1 = require('./insertFootnoteBlocks');
 var getOutlineNodes_1 = require('./Outline/getOutlineNodes');
 function parseDocument(text, config) {
     var documentNode = new DocumentNode_1.DocumentNode(getOutlineNodes_1.getOutlineNodes(text, new HeadingLeveler_1.HeadingLeveler(), config));
-    insertFootnoteBlocks_1.insertFootnoteBlocks(documentNode);
+    handleFootnotes_1.handleFootnotes(documentNode);
     return documentNode;
 }
 exports.parseDocument = parseDocument;
 
-},{"../SyntaxNodes/DocumentNode":46,"./Outline/HeadingLeveler":18,"./Outline/getOutlineNodes":20,"./insertFootnoteBlocks":33}],35:[function(require,module,exports){
+},{"../SyntaxNodes/DocumentNode":46,"./Outline/HeadingLeveler":18,"./Outline/getOutlineNodes":20,"./handleFootnotes":33}],35:[function(require,module,exports){
 "use strict";
 function group(pattern) {
     return "(?:" + pattern + ")";
