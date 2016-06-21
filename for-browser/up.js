@@ -669,7 +669,8 @@ var COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.FOOTNOTE_CONVENTION
 ];
 function tokenize(text, config) {
-    return new Tokenizer(text, config).tokens;
+    var textWithoutLeadingWhitespace = text.replace(LEADING_WHITESPACE_PATTERN, '');
+    return new Tokenizer(textWithoutLeadingWhitespace, config).tokens;
 }
 exports.tokenize = tokenize;
 var Tokenizer = (function () {
@@ -1248,6 +1249,7 @@ var Tokenizer = (function () {
     };
     return Tokenizer;
 }());
+var LEADING_WHITESPACE_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE);
 var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.optional('//');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);

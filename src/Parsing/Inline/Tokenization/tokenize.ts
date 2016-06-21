@@ -42,7 +42,10 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
 
 
 export function tokenize(text: string, config: UpConfig): Token[] {
-  return new Tokenizer(text, config).tokens
+  const textWithoutLeadingWhitespace =
+    text.replace(LEADING_WHITESPACE_PATTERN, '')
+  
+  return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
 }
 
 
@@ -911,6 +914,9 @@ class Tokenizer {
   }
 }
 
+
+const LEADING_WHITESPACE_PATTERN =
+  regExpStartingWith(ANY_WHITESPACE)
 
 const URL_SCHEME_NAME =
   LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
