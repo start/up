@@ -12,11 +12,11 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
 
 describe('Consecutive bulleted lines', () => {
-  it('produce an unordered list node containing unordered list item nodes', () => {
-    const text =
-      `
+  it('produce an unordered list node containing unordered list items', () => {
+    const text = `
 * Hello, world!
 * Goodbye, world!`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -39,16 +39,15 @@ describe('Consecutive bulleted lines', () => {
 
 describe('List items in an unordered list', () => {
   it('can be separated by 1 blank line', () => {
-    const textWithSeparator =
-      `
+    const textWithSeparator = `
 * Hello, world!
 
 * Goodbye, world!`
 
-    const textWithoutSeparator =
-      `
+    const textWithoutSeparator = `
 * Hello, world!
 * Goodbye, world!`
+
     expect(Up.toAst(textWithSeparator)).to.be.eql(Up.toAst(textWithoutSeparator))
   })
 })
@@ -56,8 +55,7 @@ describe('List items in an unordered list', () => {
 
 describe('A single bulleted line', () => {
   it('produces an unordered list node containing a single unordered list item', () => {
-    const text = '* Hello, world!'
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst('* Hello, world!')).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -72,14 +70,14 @@ describe('A single bulleted line', () => {
 })
 
 
-describe('A bulleted line followed by an indented line', () => {
-  it('are parsed like a document and placed in the same unordered list item node', () => {
-    const text =
-      `
+describe('An indented line immediately following an ordered list item line', () => {
+  it('is part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
+    const text = `
 * Hello, world!
   ============
 * Roses are red
   Violets are blue`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -105,17 +103,19 @@ describe('A bulleted line followed by an indented line', () => {
 })
 
 
-describe('A bulleted line followed by multiple indented lines', () => {
-  it('are placed the same bulleted list item node', () => {
-    const text =
-      `
+describe('Multiple indented or blank lines immediately following an unordered list item line', () => {
+  it('are part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
+    const text = `
 * Hello, world!
   ============
 
   It is really late, and I am really tired.
 
+  Really.
+
 * Goodbye, world!
   ===============`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -125,6 +125,9 @@ describe('A bulleted line followed by multiple indented lines', () => {
             ], 1),
             new ParagraphNode([
               new PlainTextNode('It is really late, and I am really tired.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Really.')
             ])
           ]),
           new UnorderedListItem([
@@ -141,18 +144,17 @@ describe('A bulleted line followed by multiple indented lines', () => {
 
 describe('An unordered list item containing multiple indented lines', () => {
   it('does not need a blank line to separate it from the following list item', () => {
-    const itemsWithSeparator =
-      `* Hello, world!
-  ============
+    const itemsWithSeparator = `
+* Hello, world!
+  =============
 
   It is really late, and I am really tired.
 * Goodbye, world!
-  ==============`
-  
-    const itemsWithoutSeparator =
-      `
+  ===============`
+
+    const itemsWithoutSeparator = `
 * Hello, world!
-  ============
+  =============
 
   It is really late, and I am really tired.
 
@@ -161,9 +163,8 @@ describe('An unordered list item containing multiple indented lines', () => {
     expect(Up.toAst(itemsWithoutSeparator)).to.be.eql(Up.toAst(itemsWithSeparator))
   })
 
-  it('can contain a nested unordered list that uses the same type of bullet as the top-level list item', () => {
-    const text =
-      `
+  it('can contain a nested unordered list that uses the same type of bullet used by its containing list item', () => {
+    const text = `
 * Hello, world!
   =============
 
@@ -174,6 +175,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 
 * Goodbye, world!
   ===============`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -211,8 +213,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 
 describe('An unordered list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
-    const text = '* *Hello*, world!'
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst('* *Hello*, world!')).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListItem([
@@ -232,10 +233,10 @@ describe('An unordered list item with an asterisk bullet', () => {
 
 describe('An unordered list', () => {
   it('is evaluated for inline conventions', () => {
-    const text =
-      `
+    const text = `
 * Hello, World *1-2*!
 * Goodbye, World *1-2*!`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
@@ -263,11 +264,11 @@ describe('An unordered list', () => {
   })
 
   it('can be directly followed by a paragraph', () => {
-    const text =
-      `
+    const text = `
 * Hello, world!
 * Goodbye, world!
 Hello, World 1-2!`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
