@@ -1,5 +1,6 @@
 import { getSortedUnderlineChars } from './getSortedUnderlineChars' 
 
+
 export class HeadingLeveler {
   private registeredUnderlineChars: string[] = []
 
