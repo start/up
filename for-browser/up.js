@@ -2266,12 +2266,13 @@ var FootnoteHandler = (function () {
 },{"../CollectionHelpers":1,"../SyntaxNodes/BlockquoteNode":41,"../SyntaxNodes/DescriptionListNode":45,"../SyntaxNodes/FootnoteBlockNode":49,"../SyntaxNodes/FootnoteNode":50,"../SyntaxNodes/HeadingNode":51,"../SyntaxNodes/LineBlockNode":56,"../SyntaxNodes/OrderedListNode":62,"../SyntaxNodes/ParagraphNode":64,"../SyntaxNodes/UnorderedListNode":75}],37:[function(require,module,exports){
 "use strict";
 var PlainTextNode_1 = require('../SyntaxNodes/PlainTextNode');
+var Patterns_1 = require('./Patterns');
 function isWhitespace(node) {
-    return (node instanceof PlainTextNode_1.PlainTextNode) && !/\S/.test(node.text);
+    return (node instanceof PlainTextNode_1.PlainTextNode) && Patterns_1.BLANK_PATTERN.test(node.text);
 }
 exports.isWhitespace = isWhitespace;
 
-},{"../SyntaxNodes/PlainTextNode":66}],38:[function(require,module,exports){
+},{"../SyntaxNodes/PlainTextNode":66,"./Patterns":35}],38:[function(require,module,exports){
 "use strict";
 var handleFootnotes_1 = require('./handleFootnotes');
 var DocumentNode_1 = require('../SyntaxNodes/DocumentNode');
