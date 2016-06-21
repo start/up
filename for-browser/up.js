@@ -116,18 +116,15 @@ var Parser = (function () {
                 case RichConventions_1.LINK_CONVENTION.startTokenKind: {
                     var result = this.parse({ untilTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd });
                     var contents = result.nodes;
-                    var hasContents = isNotPureWhitespace(contents);
-                    var linkUrlAndEndToken = this.tokens[this.tokenIndex];
-                    var url = linkUrlAndEndToken.value.trim();
-                    var hasUrl = !!url;
-                    if (!hasContents && !hasUrl) {
+                    var hasContent = isNotPureWhitespace(contents);
+                    var url = this.tokens[this.tokenIndex].value.trim();
+                    if (!url) {
+                        if (hasContent) {
+                            (_a = this.nodes).push.apply(_a, contents);
+                        }
                         continue;
                     }
-                    if (hasContents && !hasUrl) {
-                        (_a = this.nodes).push.apply(_a, contents);
-                        continue;
-                    }
-                    if (!hasContents && hasUrl) {
+                    if (!hasContent) {
                         contents = [new PlainTextNode_1.PlainTextNode(url)];
                     }
                     this.nodes.push(new LinkNode_1.LinkNode(contents, url));

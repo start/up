@@ -100,28 +100,24 @@ export class Parser {
           const result = this.parse({ untilTokenKind: TokenKind.LinkUrlAndEnd })
 
           let contents = result.nodes
-          const hasContents = isNotPureWhitespace(contents)
+          const hasContent = isNotPureWhitespace(contents)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
-          const linkUrlAndEndToken = this.tokens[this.tokenIndex]
+          let url = this.tokens[this.tokenIndex].value.trim()
 
-          let url = linkUrlAndEndToken.value.trim()
-          const hasUrl = !!url
+          if (!url) {
+            if (hasContent) {
+              // If the link has content but no URL, we include the content directly in the document without
+              // producing a link node
+              this.nodes.push(...contents)
+            }
 
-          if (!hasContents && !hasUrl) {
-            // If there's no content and no URL, there's nothing meaninful to include in the document
+            // If the link has neither content nor a URL, there's nothing meaninful to include in the document
             continue
           }
 
-          if (hasContents && !hasUrl) {
-            // If there's content but no URL, we include the content directly in the document without producing
-            // a link node
-            this.nodes.push(...contents)
-            continue
-          }
-
-          if (!hasContents && hasUrl) {
-            // If there's no content but we have a URL, we'll use the URL for the content
+          if (!hasContent) {
+            // If the link has a URL but no content, we use the URL for the content
             contents = [new PlainTextNode(url)]
           }
 
