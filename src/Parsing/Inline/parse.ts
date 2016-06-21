@@ -14,6 +14,12 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { RichConvention } from './RichConvention'
 
 
+// Returns a collection of inline syntax nodes representing inline conventions.
+export function parse(tokens: Token[]): InlineSyntaxNode[] {
+  return new Parser({ tokens }).result.nodes
+}
+
+
 // This includes every rich convention except for links, because links have that pesky URL to deal with.
 const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
   STRESS_CONVENTION,
@@ -34,10 +40,6 @@ const MEDIA_CONVENTIONS = [
   IMAGE_CONVENTION,
   VIDEO_CONVENTION
 ]
-
-export function parse(tokens: Token[]): InlineSyntaxNode[] {
-  return new Parser({ tokens }).result.nodes
-}
 
 
 class Parser {
@@ -198,7 +200,7 @@ class Parser {
 }
 
 
-export interface ParseResult {
+interface ParseResult {
   nodes: InlineSyntaxNode[]
   countTokensParsed: number
 }

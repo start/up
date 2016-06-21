@@ -23,6 +23,18 @@ import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
+// Returns a collection of tokens representing inline conventions and their components.
+//
+// Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
+// For more information about this process, see the comments in `nestOverlappingConventions.ts`.
+export function tokenize(text: string, config: UpConfig): Token[] {
+  const textWithoutLeadingWhitespace =
+    text.replace(LEADING_WHITESPACE_PATTERN, '')
+  
+  return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
+}
+
+
 // When tokenizing a link, we always start with one of the following conventions. If followed by a
 // (valid!) bracketed URL, the original convention is replaced by a link.
 const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
@@ -39,14 +51,6 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
   NSFL_CONVENTION,
   FOOTNOTE_CONVENTION
 ]
-
-
-export function tokenize(text: string, config: UpConfig): Token[] {
-  const textWithoutLeadingWhitespace =
-    text.replace(LEADING_WHITESPACE_PATTERN, '')
-  
-  return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
-}
 
 
 class Tokenizer {

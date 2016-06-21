@@ -657,6 +657,11 @@ var InlineTextConsumer_1 = require('./InlineTextConsumer');
 var TokenKind_1 = require('./TokenKind');
 var Token_1 = require('./Token');
 var RaisedVoiceHandler_1 = require('./RaisedVoiceHandler');
+function tokenize(text, config) {
+    var textWithoutLeadingWhitespace = text.replace(LEADING_WHITESPACE_PATTERN, '');
+    return new Tokenizer(textWithoutLeadingWhitespace, config).tokens;
+}
+exports.tokenize = tokenize;
 var CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.PARENTHESIZED_CONVENTION,
     RichConventions_1.SQUARE_BRACKETED_CONVENTION,
@@ -668,11 +673,6 @@ var COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.NSFL_CONVENTION,
     RichConventions_1.FOOTNOTE_CONVENTION
 ];
-function tokenize(text, config) {
-    var textWithoutLeadingWhitespace = text.replace(LEADING_WHITESPACE_PATTERN, '');
-    return new Tokenizer(textWithoutLeadingWhitespace, config).tokens;
-}
-exports.tokenize = tokenize;
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -1289,6 +1289,10 @@ var CollectionHelpers_1 = require('../../CollectionHelpers');
 var TokenKind_1 = require('./Tokenization/TokenKind');
 var InlineCodeNode_1 = require('../../SyntaxNodes/InlineCodeNode');
 var LinkNode_1 = require('../../SyntaxNodes/LinkNode');
+function parse(tokens) {
+    return new Parser({ tokens: tokens }).result.nodes;
+}
+exports.parse = parse;
 var RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
     RichConventions_1.STRESS_CONVENTION,
     RichConventions_1.EMPHASIS_CONVENTION,
@@ -1307,10 +1311,6 @@ var MEDIA_CONVENTIONS = [
     MediaConventions_1.IMAGE_CONVENTION,
     MediaConventions_1.VIDEO_CONVENTION
 ];
-function parse(tokens) {
-    return new Parser({ tokens: tokens }).result.nodes;
-}
-exports.parse = parse;
 var Parser = (function () {
     function Parser(args) {
         this.tokenIndex = 0;
