@@ -11,19 +11,19 @@ export function insertBracketsInsideBracketedConventions(tokens: Token[]): Token
   const resultTokens: Token[] = []
 
   for (const token of tokens) {
-    function addBracketIfTokenIs(bracket: string, kind: TokenKind): void {
+    function addBracketIfTokenIs(kind: TokenKind, bracket: string): void {
       if (token.kind === kind) {
         resultTokens.push(new Token({ kind: TokenKind.PlainText, value: bracket }))
       }
     }
 
-    addBracketIfTokenIs(')', PARENTHESIZED_CONVENTION.endTokenKind)
-    addBracketIfTokenIs(']', SQUARE_BRACKETED_CONVENTION.endTokenKind)
+    addBracketIfTokenIs(PARENTHESIZED_CONVENTION.endTokenKind, ')')
+    addBracketIfTokenIs(SQUARE_BRACKETED_CONVENTION.endTokenKind, ']')
 
     resultTokens.push(token)
 
-    addBracketIfTokenIs('(', PARENTHESIZED_CONVENTION.startTokenKind)
-    addBracketIfTokenIs('[', SQUARE_BRACKETED_CONVENTION.startTokenKind)
+    addBracketIfTokenIs(PARENTHESIZED_CONVENTION.startTokenKind, '(')
+    addBracketIfTokenIs(SQUARE_BRACKETED_CONVENTION.startTokenKind, '[')
   }
 
   return resultTokens

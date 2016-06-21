@@ -1283,16 +1283,16 @@ var Token_1 = require('./Token');
 function insertBracketsInsideBracketedConventions(tokens) {
     var resultTokens = [];
     var _loop_1 = function(token) {
-        function addBracketIfTokenIs(bracket, kind) {
+        function addBracketIfTokenIs(kind, bracket) {
             if (token.kind === kind) {
                 resultTokens.push(new Token_1.Token({ kind: TokenKind_1.TokenKind.PlainText, value: bracket }));
             }
         }
-        addBracketIfTokenIs(')', RichConventions_1.PARENTHESIZED_CONVENTION.endTokenKind);
-        addBracketIfTokenIs(']', RichConventions_1.SQUARE_BRACKETED_CONVENTION.endTokenKind);
+        addBracketIfTokenIs(RichConventions_1.PARENTHESIZED_CONVENTION.endTokenKind, ')');
+        addBracketIfTokenIs(RichConventions_1.SQUARE_BRACKETED_CONVENTION.endTokenKind, ']');
         resultTokens.push(token);
-        addBracketIfTokenIs('(', RichConventions_1.PARENTHESIZED_CONVENTION.startTokenKind);
-        addBracketIfTokenIs('[', RichConventions_1.SQUARE_BRACKETED_CONVENTION.startTokenKind);
+        addBracketIfTokenIs(RichConventions_1.PARENTHESIZED_CONVENTION.startTokenKind, '(');
+        addBracketIfTokenIs(RichConventions_1.SQUARE_BRACKETED_CONVENTION.startTokenKind, '[');
     };
     for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
         var token = tokens_1[_i];
