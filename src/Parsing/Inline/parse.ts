@@ -35,8 +35,12 @@ const MEDIA_CONVENTIONS = [
   VIDEO_CONVENTION
 ]
 
+export function parse(tokens: Token[]): InlineSyntaxNode[] {
+  return new Parser({ tokens }).result.nodes
+}
 
-export class Parser {
+
+class Parser {
   result: ParseResult
 
   private tokens: Token[]

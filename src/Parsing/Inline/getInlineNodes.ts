@@ -1,11 +1,11 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { Tokenizer } from './Tokenization/Tokenizer'
-import { Parser} from './Parser'
+import { parse} from './parse'
 import { UpConfig } from '../../UpConfig'
 
 
 export function getInlineNodes(text: string, config: UpConfig): InlineSyntaxNode[] {
   const { tokens } = new Tokenizer(text, config)
 
-  return new Parser({ tokens }).result.nodes
+  return parse(tokens)
 }
