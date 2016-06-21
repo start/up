@@ -2084,7 +2084,7 @@ function tryToParseUnorderedList(args) {
     return true;
 }
 exports.tryToParseUnorderedList = tryToParseUnorderedList;
-var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.either('\\*', '-', '\\+') + PatternPieces_1.INLINE_WHITESPACE_CHAR);
+var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.either('\\*', '-', '\\+', '•') + PatternPieces_1.INLINE_WHITESPACE_CHAR);
 
 },{"../../SyntaxNodes/UnorderedListItem":74,"../../SyntaxNodes/UnorderedListNode":75,"../PatternHelpers":33,"../PatternPieces":34,"../Patterns":35,"./LineConsumer":19,"./getOutlineNodes":20,"./getRemainingLinesOfListItem":21}],33:[function(require,module,exports){
 "use strict";

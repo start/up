@@ -65,4 +65,4 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
 const BULLET_PATTERN =
   regExpStartingWith(
-    optional(' ') + either('\\*', '-', '\\+') + INLINE_WHITESPACE_CHAR)
+    optional(' ') + either('\\*', '-', '\\+', '•') + INLINE_WHITESPACE_CHAR)

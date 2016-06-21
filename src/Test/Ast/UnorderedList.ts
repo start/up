@@ -112,6 +112,64 @@ context('Unordered list bullets can be:', () => {
       ])
     )
   })
+
+  specify('Actual bullet characters', () => {
+    const text = `
+• Hello, world!
+• Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+
+  specify('A mix of any of the above', () => {
+    const text = `
+* Buy milk
+- Buy bread
++ Buy tendies
+• Buy happiness`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy milk')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy bread')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy tendies')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy happiness')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
 })
 
 
