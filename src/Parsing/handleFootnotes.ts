@@ -80,7 +80,7 @@ class FootnoteHandler {
       outlineNodesWithFootnoteBlocks.push(outlineNode)
 
       const footnotesForNextFootnoteBlock =
-        this.handleFootnotesInOutlineNodeAndGetBlockless(outlineNode)
+        this.handleOutlineNodeAndGetBlocklessFootnotes(outlineNode)
 
       if (footnotesForNextFootnoteBlock.length) {
         outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock))
@@ -90,13 +90,13 @@ class FootnoteHandler {
     outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
   }
 
-  handleFootnotesInOutlineNodeAndGetBlockless(node: OutlineSyntaxNode): FootnoteNode[] {
+  handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
       return this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(node.children)
     }
 
     if (node instanceof LineBlockNode) {
-      return this.getFootnotesFromInlineNodeContainers(node.lines)
+      return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines)
     }
     
     if (node instanceof BlockquoteNode) {
@@ -107,11 +107,11 @@ class FootnoteHandler {
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.handleFootnotesInOutlineNodeContainersAndGetBlockless(node.listItems)
+      return this.handleOutlineNodeContainersAndGetBlocklessFootnotes(node.listItems)
     }
 
     if (node instanceof DescriptionListNode) {
-      return this.handleFootnotesInDescriptionListAndGetBlockless(node)
+      return this.handleDescriptionListAndGetBlocklessFootnotes(node)
     }
     
     return []
@@ -130,34 +130,34 @@ class FootnoteHandler {
     return footnotes
   }
 
-  getFootnotesFromInlineNodeContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
+  getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineNodeContainer[]): FootnoteNode[] {
     return concat(
       containers.map(container => this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(container.children)))
   }
 
-  handleFootnotesInOutlineNodeContainersAndGetBlockless(containers: OutlineNodeContainer[]): FootnoteNode[] {
+  handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineNodeContainer[]): FootnoteNode[] {
     return concat(
-      containers.map(container => this.HandleFootnotesInOutlineNodesAndGetBlockless(container.children)))
+      containers.map(container => this.handleOutlineNodesAndGetBlocklessFootnotes(container.children)))
   }
 
-  handleFootnotesInDescriptionListAndGetBlockless(list: DescriptionListNode): FootnoteNode[] {
+  handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode): FootnoteNode[] {
     return concat(
-      list.listItems.map(item => this.handleFootnotesInDescriptionListItemAndGetBlockless(item)))
+      list.listItems.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item)))
   }
 
-  handleFootnotesInDescriptionListItemAndGetBlockless(item: DescriptionListItem): FootnoteNode[] {
+  handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListItem): FootnoteNode[] {
     const footnotesFromTerms =
-      this.getFootnotesFromInlineNodeContainers(item.terms)
+      this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(item.terms)
 
     const footnotesFromDescription =
-      this.HandleFootnotesInOutlineNodesAndGetBlockless(item.description.children)
+      this.handleOutlineNodesAndGetBlocklessFootnotes(item.description.children)
 
     return footnotesFromTerms.concat(footnotesFromDescription)
   }
 
-  HandleFootnotesInOutlineNodesAndGetBlockless(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
+  handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
     return concat(
-      nodes.map(node => this.handleFootnotesInOutlineNodeAndGetBlockless(node)))
+      nodes.map(node => this.handleOutlineNodeAndGetBlocklessFootnotes(node)))
   }
 
   getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
