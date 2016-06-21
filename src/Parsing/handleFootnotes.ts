@@ -1,4 +1,3 @@
-import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
@@ -11,7 +10,6 @@ import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
-import { getOutlineNodes } from '../Parsing/Outline/getOutlineNodes'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { concat } from '../CollectionHelpers'
 
