@@ -12,6 +12,8 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
 
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is often ignored. This is true for:", () => {
@@ -54,7 +56,7 @@ Skeltals are white
   specify('Headings', () => {
     const text = `
  \t Hello, world!
-~~~~~~~~~~~~`
+~~~~~~~~~~~~~~~`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -97,6 +99,20 @@ Charmander
               new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
+        ])
+      ])
+    )
+  })
+
+  specify('Lines in an unordered list item', () => {
+    expect(Up.toAst('*  \t Buy milk')).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy milk')
+            ])
+          ])
         ])
       ])
     )
