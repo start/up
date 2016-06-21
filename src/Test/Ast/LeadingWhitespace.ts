@@ -23,10 +23,10 @@ context("Indentation is important for many outline conventions. However, once th
 
   specify('Line blocks', () => {
     const text = `
- Roses are red
- Skeltals are white
-\t If you stay here
-You're in for a fright`
+  \t Roses are red
+Skeltals are white
+ \t  If you stay here
+ You're in for a fright`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
