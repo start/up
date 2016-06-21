@@ -14,6 +14,38 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 describe('Consecutive bulleted lines', () => {
   it('produce an unordered list node containing unordered list items', () => {
     const text = `
+* Buy milk
+* Buy bread
+* Buy tendies`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy milk')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy bread')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Buy tendies')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+
+context('Unordered list bullets can be:', () => {
+  specify('Asterisks', () => {
+    const text = `
 * Hello, world!
 * Goodbye, world!`
 
@@ -34,7 +66,54 @@ describe('Consecutive bulleted lines', () => {
       ])
     )
   })
+
+  specify('Hyphens', () => {
+    const text = `
+- Hello, world!
+- Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+
+  specify('Plus signs', () => {
+    const text = `
++ Hello, world!
++ Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ]),
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
 })
+
 
 
 describe('List items in an unordered list', () => {

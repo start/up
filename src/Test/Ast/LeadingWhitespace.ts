@@ -47,7 +47,7 @@ Skeltals are white
       ]))
   })
 
-  it('Headings', () => {
+  specify('Headings', () => {
     const text = `
  \t Hello, world!
 ~~~~~~~~~~~~`
