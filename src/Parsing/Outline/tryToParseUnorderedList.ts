@@ -3,7 +3,7 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
-import { optional, regExpStartingWith, either } from '../PatternHelpers'
+import { optional, regExpStartingWith, anyCharacterOf, escapeForRegex } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { INDENTED_PATTERN, DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -31,9 +31,9 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     if (!isLineBulleted) {
       break
     }
-    
+
     let isListTerminated = false
-    
+
     getRemainingLinesOfListItem({
       text: consumer.remainingText,
       then: (lines, lengthParsed, shouldTerminateList) => {
@@ -44,7 +44,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     })
 
     rawListItemsContents.push(rawListItemLines.join('\n'))
-    
+
     if (isListTerminated) {
       break
     }
@@ -57,12 +57,15 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   const listItems =
     rawListItemsContents.map((rawContents) =>
       new UnorderedListItem(getOutlineNodes(rawContents, args.headingLeveler, args.config)))
- 
+
   args.then([new UnorderedListNode(listItems)], consumer.textIndex)
   return true
 }
 
 
+const BULLET_CHARS =
+  ['*', '-', '+', '•'].map(char => escapeForRegex(char))
+
 const BULLET_PATTERN =
   regExpStartingWith(
-    optional(' ') + either('\\*', '-', '\\+', '•') + INLINE_WHITESPACE_CHAR)
+    optional(' ') + anyCharacterOf(BULLET_CHARS) + INLINE_WHITESPACE_CHAR)

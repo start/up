@@ -30,11 +30,11 @@ export function streakOf(charPattern: string): string {
   return solely(atLeast(3, charPattern))
 }
 
-export function char(charPatterns: string[]): string {
+export function anyCharacterOf(charPatterns: string[]): string {
   return `[${charPatterns.join('')}]`
 }
 
-export function charOtherThan(charPatterns: string[]): string {
+export function anyCharacterOtherThan(charPatterns: string[]): string {
   return `[^${charPatterns.join('')}]`
 }
 

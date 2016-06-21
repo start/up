@@ -1262,13 +1262,13 @@ var BRACKETS = [
     new Bracket_1.Bracket('[', ']'),
     new Bracket_1.Bracket('{', '}')
 ];
-var PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
+var CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
     BRACKETS.map(function (bracket) { return bracket.startPattern; }),
     BRACKETS.map(function (bracket) { return bracket.endPattern; }),
     ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
-var CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.charOtherThan(PATTERNS_FOR_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)));
+var CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.anyCharacterOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)));
 
 },{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
 "use strict";
@@ -2084,7 +2084,8 @@ function tryToParseUnorderedList(args) {
     return true;
 }
 exports.tryToParseUnorderedList = tryToParseUnorderedList;
-var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.either('\\*', '-', '\\+', '•') + PatternPieces_1.INLINE_WHITESPACE_CHAR);
+var BULLET_CHARS = ['*', '-', '+', '•'].map(function (char) { return PatternHelpers_1.escapeForRegex(char); });
+var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.anyCharacterOf(BULLET_CHARS) + PatternPieces_1.INLINE_WHITESPACE_CHAR);
 
 },{"../../SyntaxNodes/UnorderedListItem":74,"../../SyntaxNodes/UnorderedListNode":75,"../PatternHelpers":33,"../PatternPieces":34,"../Patterns":35,"./LineConsumer":19,"./getOutlineNodes":20,"./getRemainingLinesOfListItem":21}],33:[function(require,module,exports){
 "use strict";
@@ -2124,14 +2125,14 @@ function streakOf(charPattern) {
     return solely(atLeast(3, charPattern));
 }
 exports.streakOf = streakOf;
-function char(charPatterns) {
+function anyCharacterOf(charPatterns) {
     return "[" + charPatterns.join('') + "]";
 }
-exports.char = char;
-function charOtherThan(charPatterns) {
+exports.anyCharacterOf = anyCharacterOf;
+function anyCharacterOtherThan(charPatterns) {
     return "[^" + charPatterns.join('') + "]";
 }
-exports.charOtherThan = charOtherThan;
+exports.anyCharacterOtherThan = anyCharacterOtherThan;
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }
@@ -2168,7 +2169,7 @@ var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
 var INDENT = PatternHelpers_1.either('  ', '\t');
 exports.INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
-var DIVIDER_STREAK_CHAR = PatternHelpers_1.char(['#', '=', '-', '+', '~', '*', '^', '@', ':', '_'].map(PatternHelpers_1.escapeForRegex));
+var DIVIDER_STREAK_CHAR = PatternHelpers_1.anyCharacterOf(['#', '=', '-', '+', '~', '*', '^', '@', ':', '_'].map(PatternHelpers_1.escapeForRegex));
 exports.DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
 exports.BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.NON_BLANK_PATTERN = /\S/;
