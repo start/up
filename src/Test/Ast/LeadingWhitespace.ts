@@ -16,6 +16,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is often ignored. This is true for:", () => {
@@ -128,6 +129,18 @@ Charmander
             new ParagraphNode([
               new PlainTextNode('Buy milk')
             ])
+          ])
+        ])
+      ])
+    )
+  })
+
+  specify('Lines in a blockquote', () => {
+    expect(Up.toAst(">   \t I like shorts! They're comfy and easy to wear!")).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode("I like shorts! They're comfy and easy to wear!")
           ])
         ])
       ])
