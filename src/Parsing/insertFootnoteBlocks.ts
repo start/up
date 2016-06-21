@@ -16,28 +16,36 @@ import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { concat } from '../CollectionHelpers'
 
 
-// Here are the rules!
+// Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
+// defeat the whole purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
 //
-// 1. Any footnotes within a top-level outline convention (which includes any footnotes within any nested
-//    outline conventions) are placed into a footnote block directly following that top-level outline
-//    convention. Blockquotes are the exception to this rule, because...
+// 1. Any footnotes within a top-level outline convention are placed into a footnote block directly following
+//    that top-level outline convention. Even if the footnote is inside a paragraph inside an unordered list
+//    inside an ordered list, it's still placed into a block after the ordered list, because the ordered list
+//    is the outermost, top-level convention.
 //
-// 2. Blocknotes are considered mini-documents! Therefore, that first rule is applied to all top-level outline
-//    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote are
-//    placed into a footnote block after the paragraph but still inside the blockquote.
+//    Blockquotes are the exception to this rule, because...
+//
+// 2. Blockquotes are considered mini-documents! Therefore, that first rule is applied to all top-level outline
+//    conventions inside any blockquote. In other words, a footnote inside a paragraph inside a blockquote is
+//    placed into a footnote block after the paragraph, but still inside the blockquote.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
-//    I'm normal. ((That said, I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.)) Really.
+//    I'm normal. ((That said, I don't eat cereal. [[Well, I do, but I pretend not to.]] Never have.)) Really.
 //
 //    The nesting can be arbitrarily deep.
 //
-//    Any nested footnotes are added to end of the footnote block containing the outer footnote, after all of
-//    the non-nested footnotes. Then, any (doubly) nested footnotes inside of *those* footnotes are added to
+//    Any nested footnotes are added to end of the footnote block containing the outer footnote, after any
+//    other non-nested footnotes. Then, any (doubly) nested footnotes inside of *those* footnotes are added to
 //    the end of that same footnote block, and the process repeats until no more nested footnotes are found.
 //
 // 4. Footnote reference numbers are assigned sequentially, based on the order the reference numbers would be
-//    *read* in the final document.
+//    encountered in the final document. Yes, this needs clarification:
+//
+//    Right now, Up only supports one output format: HTML. In the HTML output format, the original footnote is
+//    replaced by its reference number, which links to the content of the footnote in the appropriate footnote
+//    block. If you're ever seen a Wikipedia article, you're familiar with this setup.    
 //
 // We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote
 // block.
@@ -129,12 +137,12 @@ class FootnoteBlockInserter {
   }
 
   getBlocklessFootnotesFromDescriptionListItem(item: DescriptionListItem): FootnoteNode[] {
-    const footnotesFromTerms = 
+    const footnotesFromTerms =
       this.getFootnotesFromInlineContainers(item.terms)
-    
+
     const footnotesFromDescription =
       this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
-    
+
     return footnotesFromTerms.concat(footnotesFromDescription)
   }
 
