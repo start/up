@@ -50,16 +50,16 @@ class Parser {
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
 
-  constructor(args: { tokens: Token[], untilTokenKind?: TokenKind }) {
+  constructor(args: { tokens: Token[], untilTokenOfKind?: TokenKind }) {
     this.tokens = args.tokens
-    const { untilTokenKind } = args
+    const { untilTokenOfKind } = args
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
       switch (token.kind) {
-        case untilTokenKind: {
+        case untilTokenOfKind: {
           this.setResult()
           return
         }
@@ -103,31 +103,31 @@ class Parser {
         }
 
         case LINK_CONVENTION.startTokenKind: {
-          const result = this.parse({ untilTokenKind: TokenKind.LinkUrlAndEnd })
+          let linkContentNodes =
+            this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
 
-          let contents = result.nodes
-          const hasContent = isNotPureWhitespace(contents)
+          const isContentBlank = linkContentNodes.every(isWhitespace)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
 
-          if (!url) {
-            if (hasContent) {
-              // If the link has content but no URL, we include the content directly in the document without
-              // producing a link node
-              this.nodes.push(...contents)
+          if (url) {
+            if (isContentBlank) {
+              // If the link has a URL but no content, we use the URL for the content
+              linkContentNodes = [new PlainTextNode(url)]
             }
 
-            // If the link has neither content nor a URL, there's nothing meaninful to include in the document
+            this.nodes.push(new LinkNode(linkContentNodes, url))
             continue
           }
 
-          if (!hasContent) {
-            // If the link has a URL but no content, we use the URL for the content
-            contents = [new PlainTextNode(url)]
+          if (!isContentBlank) {
+            // If the link has no URL but does have content, we include the content directly in the document
+            // without putting it in a link node
+            this.nodes.push(...linkContentNodes)
           }
 
-          this.nodes.push(new LinkNode(contents, url))
+          // If the link has no URL and no content, there's nothing meaninful to include in the document
           continue
         }
       }
@@ -156,11 +156,12 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token.kind === richConvention.startTokenKind) {
-          const result = this.parse({ untilTokenKind: richConvention.endTokenKind })
+          const sandwichContentNodes =
+            this.getNodes({ fromHereUntil: richConvention.endTokenKind })
 
-          if (result.nodes.length) {
-            // Like empty inline code, we discard any empty sandwich convention
-            this.nodes.push(new richConvention.NodeType(result.nodes))
+          if (sandwichContentNodes.length) {
+            // Like empty inline code, we ignore any empty sandwich conventions
+            this.nodes.push(new richConvention.NodeType(sandwichContentNodes))
           }
 
           continue TokenLoop
@@ -168,10 +169,10 @@ class Parser {
       }
     }
 
-    const wasTerminatorSpecified = !!untilTokenKind
+    const wasTerminatorSpecified = !!untilTokenOfKind
 
     if (wasTerminatorSpecified) {
-      throw new Error(`Missing terminator token: ${untilTokenKind}`)
+      throw new Error(`Missing terminator token: ${untilTokenOfKind}`)
     }
 
     this.setResult()
@@ -181,14 +182,14 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private parse(args: { untilTokenKind: TokenKind }): ParseResult {
+  private getNodes(args: { fromHereUntil: TokenKind }): InlineSyntaxNode[] {
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
-      untilTokenKind: args.untilTokenKind
+      untilTokenOfKind: args.fromHereUntil
     })
 
     this.tokenIndex += result.countTokensParsed
-    return result
+    return result.nodes
   }
 
   private setResult(): void {
@@ -203,11 +204,6 @@ class Parser {
 interface ParseResult {
   nodes: InlineSyntaxNode[]
   countTokensParsed: number
-}
-
-
-function isNotPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
-  return !nodes.every(isWhitespace)
 }
 
 function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {

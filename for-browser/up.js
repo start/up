@@ -1317,12 +1317,12 @@ var Parser = (function () {
         this.countTokensParsed = 0;
         this.nodes = [];
         this.tokens = args.tokens;
-        var untilTokenKind = args.untilTokenKind;
+        var untilTokenOfKind = args.untilTokenOfKind;
         TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
             var token = this.tokens[this.tokenIndex];
             this.countTokensParsed = this.tokenIndex + 1;
             switch (token.kind) {
-                case untilTokenKind: {
+                case untilTokenOfKind: {
                     this.setResult();
                     return;
                 }
@@ -1352,20 +1352,19 @@ var Parser = (function () {
                     continue;
                 }
                 case RichConventions_1.LINK_CONVENTION.startTokenKind: {
-                    var result = this.parse({ untilTokenKind: TokenKind_1.TokenKind.LinkUrlAndEnd });
-                    var contents = result.nodes;
-                    var hasContent = isNotPureWhitespace(contents);
+                    var linkContentNodes = this.getNodes({ fromHereUntil: TokenKind_1.TokenKind.LinkUrlAndEnd });
+                    var isContentBlank = linkContentNodes.every(isWhitespace_1.isWhitespace);
                     var url = this.tokens[this.tokenIndex].value.trim();
-                    if (!url) {
-                        if (hasContent) {
-                            (_a = this.nodes).push.apply(_a, contents);
+                    if (url) {
+                        if (isContentBlank) {
+                            linkContentNodes = [new PlainTextNode_1.PlainTextNode(url)];
                         }
+                        this.nodes.push(new LinkNode_1.LinkNode(linkContentNodes, url));
                         continue;
                     }
-                    if (!hasContent) {
-                        contents = [new PlainTextNode_1.PlainTextNode(url)];
+                    if (!isContentBlank) {
+                        (_a = this.nodes).push.apply(_a, linkContentNodes);
                     }
-                    this.nodes.push(new LinkNode_1.LinkNode(contents, url));
                     continue;
                 }
             }
@@ -1387,17 +1386,17 @@ var Parser = (function () {
             for (var _b = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _b < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _b++) {
                 var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_b];
                 if (token.kind === richConvention.startTokenKind) {
-                    var result = this.parse({ untilTokenKind: richConvention.endTokenKind });
-                    if (result.nodes.length) {
-                        this.nodes.push(new richConvention.NodeType(result.nodes));
+                    var sandwichContentNodes = this.getNodes({ fromHereUntil: richConvention.endTokenKind });
+                    if (sandwichContentNodes.length) {
+                        this.nodes.push(new richConvention.NodeType(sandwichContentNodes));
                     }
                     continue TokenLoop;
                 }
             }
         }
-        var wasTerminatorSpecified = !!untilTokenKind;
+        var wasTerminatorSpecified = !!untilTokenOfKind;
         if (wasTerminatorSpecified) {
-            throw new Error("Missing terminator token: " + untilTokenKind);
+            throw new Error("Missing terminator token: " + untilTokenOfKind);
         }
         this.setResult();
         var _a;
@@ -1405,13 +1404,13 @@ var Parser = (function () {
     Parser.prototype.getNextTokenAndAdvanceIndex = function () {
         return this.tokens[++this.tokenIndex];
     };
-    Parser.prototype.parse = function (args) {
+    Parser.prototype.getNodes = function (args) {
         var result = (new Parser({
             tokens: this.tokens.slice(this.countTokensParsed),
-            untilTokenKind: args.untilTokenKind
+            untilTokenOfKind: args.fromHereUntil
         })).result;
         this.tokenIndex += result.countTokensParsed;
-        return result;
+        return result.nodes;
     };
     Parser.prototype.setResult = function () {
         this.result = {
@@ -1421,9 +1420,6 @@ var Parser = (function () {
     };
     return Parser;
 }());
-function isNotPureWhitespace(nodes) {
-    return !nodes.every(isWhitespace_1.isWhitespace);
-}
 function combineConsecutivePlainTextNodes(nodes) {
     var resultNodes = [];
     for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
