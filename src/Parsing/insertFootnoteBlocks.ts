@@ -19,6 +19,15 @@ import { concat } from '../CollectionHelpers'
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
 // defeat the whole purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
 //
+// Right now, Up only supports one output format: HTML. In the HTML output format, the original inline
+// footnote is replaced by its reference number, which links to the content of the footnote in the
+// appropriate footnote block. If you're ever seen a Wikipedia article, you're familiar with this setup.
+// Future output formats might handle footnotes slightly differently, but they should all use a similar
+// strategy.
+//
+// Here are the specific rules for footnote blocks and reference numbers: 
+//
+//
 // 1. Any footnotes within a top-level outline convention are placed into a footnote block directly following
 //    that top-level outline convention. Even if the footnote is inside a paragraph inside an unordered list
 //    inside an ordered list, it's still placed into a block after the ordered list, because the ordered list
@@ -28,7 +37,7 @@ import { concat } from '../CollectionHelpers'
 //
 // 2. Blockquotes are considered mini-documents! Therefore, that first rule is applied to all top-level outline
 //    conventions inside any blockquote. In other words, a footnote inside a paragraph inside a blockquote is
-//    placed into a footnote block after the paragraph, but still inside the blockquote.
+//    placed into a footnote block after the paragraph, but still inside the blockquote. Phew.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
@@ -40,15 +49,17 @@ import { concat } from '../CollectionHelpers'
 //    other non-nested footnotes. Then, any (doubly) nested footnotes inside of *those* footnotes are added to
 //    the end of that same footnote block, and the process repeats until no more nested footnotes are found.
 //
-// 4. Footnote reference numbers are assigned sequentially, based on the order the reference numbers would be
-//    encountered in the final document. Yes, this needs clarification:
+// 4. Footnotes are assigned reference numbers based on the order those footnotes are referenced in the final
+//    document.
 //
-//    Right now, Up only supports one output format: HTML. In the HTML output format, the original footnote is
-//    replaced by its reference number, which links to the content of the footnote in the appropriate footnote
-//    block. If you're ever seen a Wikipedia article, you're familiar with this setup.    
+//    Due to rule 3 (above), a nested footnote (one that is referenced by another footnote) isn't actually
+//    referenced in the final document until its footnote block. As a result, that nested footnote is assigned
+//    a reference number after any non-nested footnote appearing in the same top-level outline convention,
+//    because those footnotes are referenced inside the outline convention itself.
 //
-// We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote
-// block.
+//
+// Oh, one last thing! We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been
+// placed in a footnote block.
 
 
 export function insertFootnoteBlocks(documentNode: DocumentNode): void {
