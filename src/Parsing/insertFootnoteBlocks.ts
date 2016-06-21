@@ -22,9 +22,9 @@ import { concat } from '../CollectionHelpers'
 //    outline conventions) are placed into a footnote block directly following that top-level outline
 //    convention. Blockquotes are the exception to this rule, because...
 //
-// 2. Blocknotes are considered mini-documents! Therefore, that first rule is applied all top-level outline
+// 2. Blocknotes are considered mini-documents! Therefore, that first rule is applied to all top-level outline
 //    conventions inside any blockquote. In other words, footnotes inside a paragraph inside a blockquote are
-//    placed into a footnote block inside that blockquote, after that paragraph. Phew.
+//    placed into a footnote block after the paragraph but still inside the blockquote.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
@@ -34,7 +34,10 @@ import { concat } from '../CollectionHelpers'
 //
 //    Any nested footnotes are added to end of the footnote block containing the outer footnote, after all of
 //    the non-nested footnotes. Then, any (doubly) nested footnotes inside of *those* footnotes are added to
-//    the end of that same footnote block, and the process repeats until no more nested footnotes are found.  
+//    the end of that same footnote block, and the process repeats until no more nested footnotes are found.
+//
+// 4. Footnote reference numbers are assigned sequentially, based on the order the reference numbers would be
+//    *read* in the final document.
 //
 // We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been placed in a footnote
 // block.
