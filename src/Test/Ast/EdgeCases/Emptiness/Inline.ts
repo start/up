@@ -1,30 +1,10 @@
 import { expect } from 'chai'
-import Up from '../../../index'
-import { insideDocumentAndParagraph } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-
-
-describe('An empty document', () => {
-  it('produces an empty document node', () => {
-    expect(Up.toAst('')).to.eql(new DocumentNode())
-  })
-})
-
-
-describe('A document with only blank lines', () => {
-  it('produces an empty document node', () => {
-    const text = `     
-
-\t       
-      
-      
-`
-    expect(Up.toAst(text)).to.eql(new DocumentNode())
-  })
-})
+import Up from '../../../../index'
+import { insideDocumentAndParagraph } from '../../Helpers'
+import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
+import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
+import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
+import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
 
 
 describe('A link with no URL', () => {
@@ -83,13 +63,6 @@ describe('A link with no content and no URL', () => {
         new PlainTextNode('Hello, !')
       ])
     )
-  })
-})
-
-
-describe('A paragraph containing a link with no content and no URL', () => {
-  it('produces no syntax nodes', () => {
-    expect(Up.toAst('[][]')).to.be.eql(new DocumentNode([]))
   })
 })
 
