@@ -223,7 +223,7 @@ describe('Footnotes in a blockquote', () => {
 })
 
 describe('Footnotes nested inside 2 or more outline conventions nested inside a blockquote', () => {
-  it("produce footnote blocks inside the blockquote after all the appropriate outline conventions. The only difference is that everything is inside a blockquote", () => {
+  it("produce footnote blocks inside the blockquote after all the appropriate outline conventions", () => {
     const text = `
 > * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 >
@@ -391,7 +391,7 @@ Gary
 
 
 describe("In a document, footnotes' reference numbers", () => {
-  it('are always sequential, even across multiple outline conventions.', () => {
+  it('do not reset between outline conventions.', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
@@ -452,10 +452,9 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
 })
 
 
-describe('Nested footnotes', () => {
-  it('that appear in the footnote block after any non-nested footnotes', () => {
-    const text =
-      "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))"
+describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
+  it('appear in their footnote block after any non-nested footnotes (and are assigned reference numbers after any non-nested footnotes)', () => {
+    const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))"
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
@@ -491,7 +490,7 @@ describe('Nested footnotes', () => {
       ]))
   })
 
-  it('appear in the footnote block after lesser nested footnotes', () => {
+  it('appear in the footnote block after any lesser nested footnotes (and are assigned reference numbers after any lesser-nested footnotes)', () => {
     const text =
       "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do* ((Only on Mondays...)) but I pretend not to.)) Never have. ((At least you've never seen me.)))) Really. ((Probably.))"
 
@@ -538,6 +537,58 @@ describe('Nested footnotes', () => {
           firstInnerFootnote,
           secondInnerFootnote,
           footnoteInsideFirstInnerFootnote
+        ])
+      ]))
+  })
+
+  it('have reference numbers coming before any footnotes in subsequent outline conventions (because they are referenced earlier)', () => {
+    const text = `
+Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))
+
+I don't eat ((Or touch.)) pumpkins.`
+
+    const footnoteInsideFirstFootnote = new FootnoteNode([
+      new PlainTextNode('Well, I '),
+      new EmphasisNode([
+        new PlainTextNode('do')
+      ]),
+      new PlainTextNode(', but I pretend not to.'),
+    ], 3)
+
+    const firstFootnoteInFirstParagraph = new FootnoteNode([
+      new PlainTextNode("That said, I don't eat cereal."),
+      footnoteInsideFirstFootnote,
+      new PlainTextNode(" Never have."),
+    ], 1)
+
+    const secondFootnoteInFirstParagraph = new FootnoteNode([
+      new PlainTextNode("Probably."),
+    ], 2)
+
+    const footnoteInSecondParagraph = new FootnoteNode([
+      new PlainTextNode("Or touch."),
+    ], 4)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("Me? I'm totally normal."),
+          firstFootnoteInFirstParagraph,
+          new PlainTextNode(" Really."),
+          secondFootnoteInFirstParagraph,
+        ]),
+        new FootnoteBlockNode([
+          firstFootnoteInFirstParagraph,
+          secondFootnoteInFirstParagraph,
+          footnoteInsideFirstFootnote,
+        ]),
+        new ParagraphNode([
+          new PlainTextNode("I don't eat"),
+          footnoteInSecondParagraph,
+          new PlainTextNode(' pumpkins.')
+        ]),
+        new FootnoteBlockNode([
+          footnoteInSecondParagraph
         ])
       ]))
   })
