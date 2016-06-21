@@ -107,7 +107,7 @@ Charmander
     )
   })
 
-  specify('produce an ordered list node containing ordered list item nodes', () => {
+  specify('Lines in an ordered list item', () => {
     expect(Up.toAst('1)  \t Hello, Lavender Town!')).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
