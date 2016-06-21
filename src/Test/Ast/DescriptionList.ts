@@ -12,8 +12,7 @@ import { Description } from '../../SyntaxNodes/Description'
 
 describe('A non-indented line followed by an indented line', () => {
   it('produce a description list node containing a single term and its description', () => {
-    const text =
-      `
+    const text = `
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
@@ -36,8 +35,7 @@ Charmander
 
 describe('Multiple non-indented lines followed by one indented line', () => {
   it('produce a description list node containing multiple terms and their single description', () => {
-    const text =
-      `
+    const text = `
 Charmander
 Cyndaquil
 Torchic
@@ -64,8 +62,7 @@ Torchic
 
 describe("A term in a description list", () => {
   it('can contain inline conventions', () => {
-    const text =
-      `
+    const text = `
 Ash *"Little Marco"* Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
@@ -92,8 +89,7 @@ Ash *"Little Marco"* Ketchum
 
 describe("A description in a description list", () => {
   it('can contain inline conventions', () => {
-    const text =
-      `
+    const text = `
 Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
@@ -120,8 +116,7 @@ Ash Ketchum
 
 describe('Consecutive terms and descriptions', () => {
   it('produce a single description list node', () => {
-    const text =
-      `
+    const text = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
 
@@ -171,8 +166,7 @@ Gary
 
 describe("A description list", () => {
   it('can be directly followed by a paragraph', () => {
-    const text =
-      `
+    const text = `
 Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
