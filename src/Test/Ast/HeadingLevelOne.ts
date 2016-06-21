@@ -8,7 +8,22 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
-describe('A document\'s first text underlined by any combination or arrangement of # = - + ~ * ^ @ : _', () => {
+describe("A line of text underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
+
+  it('produces a heading node', () => {
+    const text = `
+Messy heading tests
+#~#~#~#~#~#~#~#~#~#`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('Messy heading tests')], 1),
+      ]))
+  })
+})
+
+
+describe("The first text in a document underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
 
   it('produces a level-1 heading node', () => {
     const text = `
@@ -20,11 +35,15 @@ Hello, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
+})
 
+
+describe("An underline", () => {
   it('can have whitespace interspersed throughout the underline in any manner', () => {
     const text = `
 Hello, world!
 +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -35,17 +54,21 @@ Hello, world!
     const text = `
 Hello, world!
 ~~~~~~~~~~~~`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
+})
 
+describe("A heading", () => {
   it('can have an optional overline consisting of the same characters as its underline', () => {
     const text = `
 #=-+~*^@:_
 Hello, world!
 #=-+~*^@:_`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -58,6 +81,7 @@ Hello, world!
       
 Goodbye, world!
 ~~~~~~~~~~~~`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
@@ -69,6 +93,7 @@ Goodbye, world!
     const text = `
 **Hello**, world!
 ~~~~~~~~~~~~`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([
@@ -80,13 +105,14 @@ Goodbye, world!
   })
 })
 
-describe("A heading's optional overline", () => {
 
+describe("A heading's optional overline", () => {
   it('must not contain spaces if the underline does not contains spaces', () => {
     const text = `
 - - - - - - -
 Hello, world!
 -------------`
+
     expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
@@ -99,6 +125,7 @@ Hello, world!
 -------------
 Hello, world!
 - - - - - - -`
+
     expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
@@ -111,6 +138,7 @@ Hello, world!
 --------
 Hello, world!
 ----------`
+
     expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -122,6 +150,7 @@ Hello, world!
 = - = - = - = - = - = - =
 Hello, world!
 ==  --  ==  --  ==  --  ==`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),

@@ -51,6 +51,7 @@ You're in for a fright`
     const text = `
  \t Hello, world!
 ~~~~~~~~~~~~`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
