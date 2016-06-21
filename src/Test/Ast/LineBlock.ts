@@ -68,32 +68,6 @@ And addresses do, too`
           ]),
         ]),
       ]))
-
-    it('have any leading whitespace removed', () => {
-      const text = `
- Roses are red
-\t  Skeltals are white
-If you stay here
- You're in for a fright`
-
-      expect(Up.toAst(text)).to.be.eql(
-        new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new Line([
-            new PlainTextNode('Skeltals are white')
-          ]),
-          new Line([
-            new PlainTextNode('If you stay here')
-          ]),
-          new Line([
-            new PlainTextNode("You're in for a fright")
-          ]),
-        ])
-        ]))
-    })
   })
 
   it('can be blank if at least one of the whitespace characters is escaped', () => {
