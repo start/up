@@ -17,7 +17,7 @@ import { concat } from '../CollectionHelpers'
 
 
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
-// defeat the whole purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
+// defeat the purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
 //
 // Right now, Up only supports one output format: HTML. In the HTML output format, the original inline
 // footnote is replaced by its reference number, which links to the content of the footnote in the
@@ -81,7 +81,7 @@ class FootnoteBlockInserter {
       outlineNodesWithFootnoteBlocks.push(outlineNode)
 
       const footnotesForNextFootnoteBlock =
-        this.getBlocklessFootnotes(outlineNode)
+        this.getBlocklessFootnotesFromOutlineNode(outlineNode)
 
       if (footnotesForNextFootnoteBlock.length) {
         outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock))
@@ -91,35 +91,34 @@ class FootnoteBlockInserter {
     outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
   }
 
-  getBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineNode(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-      return this.getFootnotesAndAssignReferenceNumbers(node.children)
+      return this.getTopLevelFootnotesAndAssignThemReferenceNumbers(node.children)
     }
 
     if (node instanceof LineBlockNode) {
-      return this.getFootnotesFromInlineContainers(node.lines)
+      return this.getFootnotesFromInlineNodeContainers(node.lines)
+    }
+    
+    if (node instanceof BlockquoteNode) {
+      this.produceFootnoteBlocks(node)
+
+      // We've just handled all the footnotes within the blockquote. None of them are blockless!
+      return []
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.getBlocklessFootnotesFromOutlineContainers(node.listItems)
+      return this.getBlocklessFootnotesFromOutlineNodeContainers(node.listItems)
     }
 
     if (node instanceof DescriptionListNode) {
       return this.getBlocklessFootnotesFromDescriptionList(node)
     }
-
-    if (node instanceof BlockquoteNode) {
-      this.produceFootnoteBlocks(node)
-
-      // Footnotes within a blockquote produce footnote blocks inside of that blockquote. We won't need to worry
-      // about placing any in the next footnote block.
-      return []
-    }
-
+    
     return []
   }
 
-  getFootnotesAndAssignReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
+  getTopLevelFootnotesAndAssignThemReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (const node of nodes) {
@@ -132,12 +131,12 @@ class FootnoteBlockInserter {
     return footnotes
   }
 
-  getFootnotesFromInlineContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
+  getFootnotesFromInlineNodeContainers(containers: InlineNodeContainer[]): FootnoteNode[] {
     return concat(
-      containers.map(container => this.getFootnotesAndAssignReferenceNumbers(container.children)))
+      containers.map(container => this.getTopLevelFootnotesAndAssignThemReferenceNumbers(container.children)))
   }
 
-  getBlocklessFootnotesFromOutlineContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineNodeContainers(containers: OutlineNodeContainer[]): FootnoteNode[] {
     return concat(
       containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
   }
@@ -149,7 +148,7 @@ class FootnoteBlockInserter {
 
   getBlocklessFootnotesFromDescriptionListItem(item: DescriptionListItem): FootnoteNode[] {
     const footnotesFromTerms =
-      this.getFootnotesFromInlineContainers(item.terms)
+      this.getFootnotesFromInlineNodeContainers(item.terms)
 
     const footnotesFromDescription =
       this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
@@ -159,7 +158,7 @@ class FootnoteBlockInserter {
 
   getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
     return concat(
-      nodes.map(node => this.getBlocklessFootnotes(node)))
+      nodes.map(node => this.getBlocklessFootnotesFromOutlineNode(node)))
   }
 
   getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
@@ -167,10 +166,12 @@ class FootnoteBlockInserter {
 
     for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
       const footnote = footnoteBlock.footnotes[i]
-      const innerFootnotes = this.getFootnotesAndAssignReferenceNumbers(footnote.children)
+
+      const nestedFootnotes =
+        this.getTopLevelFootnotesAndAssignThemReferenceNumbers(footnote.children)
 
       // Note: This appends items to the collection we're currently looping through.
-      footnoteBlock.footnotes.push(...innerFootnotes)
+      footnoteBlock.footnotes.push(...nestedFootnotes)
     }
 
     return footnoteBlock
