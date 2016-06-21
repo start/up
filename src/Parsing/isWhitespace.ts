@@ -1,5 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { PlainTextNode } from './PlainTextNode'
+import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
+import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 
 
 export function isWhitespace(node: InlineSyntaxNode): boolean {

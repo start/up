@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { streakOf } from '../../PatternHelpers'
+import { streakOf } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

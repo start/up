@@ -3,9 +3,9 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
-import { optional, regExpStartingWith, either } from '../../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
-import { INDENTED_PATTERN, DIVIDER_STREAK_PATTERN } from '../../Patterns'
+import { optional, regExpStartingWith, either } from '../PatternHelpers'
+import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
+import { INDENTED_PATTERN, DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

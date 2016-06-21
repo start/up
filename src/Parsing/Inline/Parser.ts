@@ -2,7 +2,7 @@ import { LINK_CONVENTION, STRESS_CONVENTION, EMPHASIS_CONVENTION, REVISION_DELET
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { isWhitespace } from '../../SyntaxNodes/isWhitespace'
+import { isWhitespace } from '../isWhitespace'
 import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { last } from '../../CollectionHelpers'
 import { Token } from './Tokenization/Token'

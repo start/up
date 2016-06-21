@@ -3,7 +3,7 @@ import { RichConvention } from '../RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 import { EncloseWithinArgs } from './EncloseWithinArgs'
-import { escapeForRegex, regExpStartingWith, atLeast } from '../../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 
