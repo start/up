@@ -84,10 +84,10 @@ Violets are blue`
             new PlainTextNode('Roses are red')
           ]),
           new Line([
-            new PlainTextNode(' \t\t')
+            new PlainTextNode('\t\t')
           ]),
           new Line([
-            new PlainTextNode(' \t\t')
+            new PlainTextNode('\t\t')
           ]),
           new Line([
             new PlainTextNode('Violets are blue')
