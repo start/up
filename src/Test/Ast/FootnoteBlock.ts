@@ -454,7 +454,7 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
 
 
 describe("The reference numbers of non-nested footnotes inside a blockquote inside another outline convention", () => {
-  it('are higher than the reference numbers of preceding footnotes in the same outer outline convention. The fact that their footnote block appears first is irrelevant', () => {
+  it('are higher than those of preceding footnotes outside the blockquote but inside the same outer outline convention. The fact that their footnote block appears first is irrelevant', () => {
     const text = `
 * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 
@@ -504,6 +504,86 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
           ])
         ]),
         new FootnoteBlockNode([footnoteInUnorderedList]),
+        new SectionSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode("I wear glasses"),
+          footnoteInParagraph,
+          new PlainTextNode(" even while working out."),
+        ]),
+        new FootnoteBlockNode([footnoteInParagraph])
+      ]))
+  })
+})
+
+
+describe("The reference numbers of nested footnotes inside a blockquote inside another outline convention", () => {
+  it('are lower those of preceding nested footnotes outside the blockquote but inside the same outer outline convention (because they get referenced in an earlier footnote block)', () => {
+    const text = `
+* I don't eat cereal. ((Well, I do, but I pretend [[On Mondays.]] not to.)) Never have.
+
+  It's too expensive.
+
+* > I don't eat ((Or touch. [[Or smell.]])) pumpkins.
+
+------------------------
+
+I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+
+    const nestedFootnoteInUnorderedList = new FootnoteNode([
+      new PlainTextNode("On Mondays."),
+    ], 4)
+
+    const footnoteInUnorderedList = new FootnoteNode([
+      new PlainTextNode("Well, I do, but I pretend"),
+      nestedFootnoteInUnorderedList,
+      new PlainTextNode(' not to.')
+    ], 1)
+
+    const nestedFootnoteInBlockquote = new FootnoteNode([
+      new PlainTextNode("Or smell."),
+    ], 3)
+
+    const footnoteInBlockquote = new FootnoteNode([
+      new PlainTextNode("Or touch."),
+      nestedFootnoteInBlockquote
+    ], 2)
+
+    const footnoteInParagraph = new FootnoteNode([
+      new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+    ], 5)
+
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListItem([
+            new ParagraphNode([
+              new PlainTextNode("I don't eat cereal."),
+              footnoteInUnorderedList,
+              new PlainTextNode(" Never have."),
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("It's too expensive.")
+            ])
+          ]),
+          new UnorderedListItem([
+            new BlockquoteNode([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat"),
+                footnoteInBlockquote,
+                new PlainTextNode(" pumpkins."),
+              ]),
+              new FootnoteBlockNode([
+                footnoteInBlockquote,
+                nestedFootnoteInBlockquote
+              ])
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([
+          footnoteInUnorderedList,
+          nestedFootnoteInUnorderedList
+        ]),
         new SectionSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode("I wear glasses"),
