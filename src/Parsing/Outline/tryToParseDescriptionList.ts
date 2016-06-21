@@ -25,7 +25,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   while (!consumer.reachedEndOfText()) {
     let rawTerms: string[] = []
 
-    // First, we collect every term for the next description
+    // First, we collect every term for the next description.
     while (!consumer.reachedEndOfText()) {
       const isTerm = consumer.consume({
         linePattern: NON_BLANK_PATTERN,
@@ -44,7 +44,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     const rawDescriptionLines: string[] = []
 
-    // Let's parse the desription's first line
+    // Let's parse the desription's first line.
     const hasDescription = consumer.consume({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
@@ -52,7 +52,8 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     })
 
     if (!hasDescription) {
-      // There wasn't a description, so our latest "term" was just a regular paragraph following the list.
+      // There wasn't a description, so the latest "terms" we found were actually just regular lines
+      // not part of any description list.
       break
     }
     
