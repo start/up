@@ -94,10 +94,11 @@ describe("Within the href attribute of a backlink in a footnote block, all insta
   it('are escaped', () => {
     const up = new Up({
       i18n: {
+        idWordDelimiter: '"&&"',
         terms: { footnoteReference: 'look "up" & read & remember' }
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([], 2)
@@ -105,7 +106,9 @@ describe("Within the href attribute of a backlink in a footnote block, all insta
 
     const html =
       '<dl class="up-footnotes">'
-      + '<dt id="up-footnote-2"><a href="#up-look-&quot;up&quot;-&amp;-read-&amp;-remember-2">2</a></dt><dd></dd>'
+      + '<dt id="up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;2">'
+      + '<a href="#up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;up&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;remember&quot;&amp;&amp;&quot;2">2</a>'
+      + '</dt><dd></dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -117,10 +120,11 @@ describe("Within the id attribute of a footnote in a footnote block, all instanc
   it('are escaped', () => {
     const up = new Up({
       i18n: {
+        idWordDelimiter: '"&&"',
         terms: { footnote: 'look "down" & read & learn' }
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([], 2)
@@ -128,7 +132,9 @@ describe("Within the id attribute of a footnote in a footnote block, all instanc
 
     const html =
       '<dl class="up-footnotes">'
-      + '<dt id="up-look-&quot;down&quot;-&amp;-read-&amp;-learn-2"><a href="#up-footnote-reference-2">2</a></dt><dd></dd>'
+      + '<dt id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;down&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;learn&quot;&amp;&amp;&quot;2">'
+      + '<a href="#up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;reference&quot;&amp;&amp;&quot;2">2</a>'
+      + '</dt><dd></dd>'
       + '</dl>'
 
     expect(up.toHtml(node)).to.be.eql(html)
@@ -140,14 +146,17 @@ describe("Within the href attribute of a footnote reference's link, all instance
   it('are escaped', () => {
     const up = new Up({
       i18n: {
+        idWordDelimiter: '"&&"',
         terms: { footnote: 'look "down" & read & learn' }
       }
     })
-    
+
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
-      '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-look-&quot;down&quot;-&amp;-read-&amp;-learn-3">3</a></sup>')
+      '<sup id="up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;reference&quot;&amp;&amp;&quot;3" class="up-footnote-reference">'
+      + '<a href="#up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;down&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;learn&quot;&amp;&amp;&quot;3">3</a>'
+      + '</sup>')
   })
 })
 
@@ -156,13 +165,18 @@ describe("Within the id attribute of a footnote reference, all instances of \" a
   it('are escaped', () => {
     const up = new Up({
       i18n: {
+        idWordDelimiter: '"&&"',
         terms: { footnoteReference: 'look "up" & read & remember' }
       }
     })
-    
+
     const node = new FootnoteNode([], 3)
 
-    expect(up.toHtml(node)).to.be.eql(
-      '<sup id="up-look-&quot;up&quot;-&amp;-read-&amp;-remember-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>')
+    const html =
+      '<sup id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;up&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;remember&quot;&amp;&amp;&quot;3" class="up-footnote-reference">'
+      + '<a href="#up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;3">3</a>'
+      + '</sup>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
   })
 })
