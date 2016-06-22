@@ -12,6 +12,7 @@ import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
 
 
 context('Most inline conventions produce no syntax nodes if they have no content.', () => {
+
   context('Specifically:', () => {
 
     specify('Spoilers', () => {
@@ -28,6 +29,10 @@ context('Most inline conventions produce no syntax nodes if they have no content
 
     specify('Inline code', () => {
       expect(Up.toAst('``')).to.eql(new DocumentNode())
+    })
+
+    specify('Actions', () => {
+      expect(Up.toAst('{}')).to.eql(new DocumentNode())
     })
 
     specify('Revision insertion', () => {
@@ -51,66 +56,72 @@ context('Most inline conventions produce no syntax nodes if they have no content
         ])
       )
     })
-  })
 
-  context('Of those conventions, only a few produce syntax nodes when they contain only unescaped whitespace.', () => {
-    context('Specifically:', () => {
 
-      specify('Inline code', () => {
-        expect(Up.toAst('` `')).to.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              new InlineCodeNode(' ')
+    context('Of those conventions, only a few produce syntax nodes when they contain only unescaped whitespace.', () => {
+      context('Specifically:', () => {
+
+        specify('Inline code', () => {
+          expect(Up.toAst('` `')).to.eql(
+            new DocumentNode([
+              new ParagraphNode([
+                new InlineCodeNode(' ')
+              ])
             ])
-          ])
-        )
-      })
+          )
+        })
 
-      specify('Revision insertion', () => {
-        expect(Up.toAst('no++ ++one')).to.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              new PlainTextNode('no'),
-              new RevisionInsertionNode([
-                new PlainTextNode(' ')
-              ]),
-              new PlainTextNode('one')
+        specify('Revision insertion', () => {
+          expect(Up.toAst('no++ ++one')).to.eql(
+            new DocumentNode([
+              new ParagraphNode([
+                new PlainTextNode('no'),
+                new RevisionInsertionNode([
+                  new PlainTextNode(' ')
+                ]),
+                new PlainTextNode('one')
+              ])
             ])
-          ])
-        )
-      })
+          )
+        })
 
-      specify('Revision insertion', () => {
-        expect(Up.toAst('e~~ ~~mail')).to.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              new PlainTextNode('e'),
-              new RevisionDeletionNode([
-                new PlainTextNode(' ')
-              ]),
-              new PlainTextNode('mail')
+        specify('Revision insertion', () => {
+          expect(Up.toAst('e~~ ~~mail')).to.eql(
+            new DocumentNode([
+              new ParagraphNode([
+                new PlainTextNode('e'),
+                new RevisionDeletionNode([
+                  new PlainTextNode(' ')
+                ]),
+                new PlainTextNode('mail')
+              ])
             ])
-          ])
-        )
-      })
-    })
-
-    context("The rest don't:", () => {
-
-      specify('Spoilers', () => {
-        expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(new DocumentNode())
+          )
+        })
       })
 
-      specify('NSFW', () => {
-        expect(Up.toAst('[NSFW:  \t  \t ]')).to.eql(new DocumentNode())
-      })
 
-      specify('NSFL', () => {
-        expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(new DocumentNode())
-      })
+      context("The rest don't:", () => {
 
-      specify('Furthermore, these conventions produce no syntax nodes if they contain only whitespace and other "dud" inline conventions', () => {
-        expect(Up.toAst('[NSFL:  \t [SPOILER:  [NSFW: ++++   ]  ] \t ]')).to.eql(new DocumentNode())
+        specify('Spoilers', () => {
+          expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(new DocumentNode())
+        })
+
+        specify('NSFW', () => {
+          expect(Up.toAst('[NSFW:  \t  \t ]')).to.eql(new DocumentNode())
+        })
+
+        specify('NSFL', () => {
+          expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(new DocumentNode())
+        })
+
+        specify('Actions', () => {
+          expect(Up.toAst('{  \t  \t }')).to.eql(new DocumentNode())
+        })
+
+        specify('Furthermore, these conventions produce no syntax nodes if they contain only whitespace and other "dud" inline conventions', () => {
+          expect(Up.toAst('[NSFL:  \t [SPOILER: {} [NSFW: ++++   ]  ] \t ]')).to.eql(new DocumentNode())
+        })
       })
     })
   })
