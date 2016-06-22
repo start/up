@@ -7,5 +7,5 @@ export interface RichConvention {
    NodeType?: RichInlineSyntaxNodeType,
    startTokenKind: TokenKind,
    endTokenKind: TokenKind,
-   canMeaningfullyContainOnlyWhitespace?: boolean
+   isMeaningfulEvenWhenContainingOnlyWhitespace?: boolean
 }

@@ -103,14 +103,14 @@ class Parser {
         }
 
         case LINK_CONVENTION.startTokenKind: {
-          let contentNodes = this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
-          const isContentEmpty = isEmptyOrPureWhitespace(contentNodes)
+          let contentNodes = this.produceSyntaxNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
+          const isContentBlank = isBlank(contentNodes)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
 
           if (url) {
-            if (isContentEmpty) {
+            if (isContentBlank) {
               // If the link has a URL but no content, we use the URL for the content
               contentNodes = [new PlainTextNode(url)]
             }
@@ -119,7 +119,7 @@ class Parser {
             continue
           }
 
-          if (!isContentEmpty) {
+          if (!isContentBlank) {
             // If the link has no URL but does have content, we include the content directly in the document
             // without putting it in a link node
             this.nodes.push(...contentNodes)
@@ -134,7 +134,7 @@ class Parser {
         if (token.kind === media.descriptionAndStartTokenKind) {
           let description = token.value.trim()
 
-          // The next token will be a MediaUrlAndEnd token.
+          // The next token will be a MediaUrlAndEnd token
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
           if (!url) {
@@ -154,13 +154,13 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token.kind === richConvention.startTokenKind) {
-          const contentNodes = this.getNodes({ fromHereUntil: richConvention.endTokenKind })
-          const isContentNotEmpty = (
-            richConvention.canMeaningfullyContainOnlyWhitespace
-              ? (contentNodes.length > 0)
-              : !isEmptyOrPureWhitespace(contentNodes))
+          const contentNodes = this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
 
-          if (isContentNotEmpty) {
+          const includeConventionInDocument =
+            contentNodes.length > 0
+            && (richConvention.isMeaningfulEvenWhenContainingOnlyWhitespace || !isBlank(contentNodes))
+
+          if (includeConventionInDocument) {
             this.nodes.push(new richConvention.NodeType(contentNodes))
           }
 
@@ -182,7 +182,7 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private getNodes(args: { fromHereUntil: TokenKind }): InlineSyntaxNode[] {
+  private produceSyntaxNodes(args: { fromHereUntil: TokenKind }): InlineSyntaxNode[] {
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
       untilTokenOfKind: args.fromHereUntil
@@ -207,7 +207,7 @@ interface ParseResult {
 }
 
 
-function isEmptyOrPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
+function isBlank(nodes: InlineSyntaxNode[]): boolean {
   return nodes.every(isWhitespace)
 }
 

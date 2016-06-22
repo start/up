@@ -29,14 +29,14 @@ export const REVISION_DELETION_CONVENTION = {
   NodeType: RevisionDeletionNode,
   startTokenKind: TokenKind.RevisionDeletionStart,
   endTokenKind: TokenKind.RevisionDeletionEnd,
-  canMeaningfullyContainOnlyWhitespace: true
+  isMeaningfulEvenWhenContainingOnlyWhitespace: true
 }
 
 export const REVISION_INSERTION_CONVENTION = {
   NodeType: RevisionInsertionNode,
   startTokenKind: TokenKind.RevisionInsertionStart,
   endTokenKind: TokenKind.RevisionInsertionEnd,
-  canMeaningfullyContainOnlyWhitespace: true
+  isMeaningfulEvenWhenContainingOnlyWhitespace: true
 }
 
 export const SPOILER_CONVENTION = {

@@ -74,13 +74,13 @@ exports.REVISION_DELETION_CONVENTION = {
     NodeType: RevisionDeletionNode_1.RevisionDeletionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionDeletionStart,
     endTokenKind: TokenKind_1.TokenKind.RevisionDeletionEnd,
-    canMeaningfullyContainOnlyWhitespace: true
+    isMeaningfulEvenWhenContainingOnlyWhitespace: true
 };
 exports.REVISION_INSERTION_CONVENTION = {
     NodeType: RevisionInsertionNode_1.RevisionInsertionNode,
     startTokenKind: TokenKind_1.TokenKind.RevisionInsertionStart,
     endTokenKind: TokenKind_1.TokenKind.RevisionInsertionEnd,
-    canMeaningfullyContainOnlyWhitespace: true
+    isMeaningfulEvenWhenContainingOnlyWhitespace: true
 };
 exports.SPOILER_CONVENTION = {
     NodeType: SpoilerNode_1.SpoilerNode,
@@ -1354,17 +1354,17 @@ var Parser = (function () {
                     continue;
                 }
                 case RichConventions_1.LINK_CONVENTION.startTokenKind: {
-                    var contentNodes = this.getNodes({ fromHereUntil: TokenKind_1.TokenKind.LinkUrlAndEnd });
-                    var isContentEmpty = isEmptyOrPureWhitespace(contentNodes);
+                    var contentNodes = this.produceSyntaxNodes({ fromHereUntil: TokenKind_1.TokenKind.LinkUrlAndEnd });
+                    var isContentBlank = isBlank(contentNodes);
                     var url = this.tokens[this.tokenIndex].value.trim();
                     if (url) {
-                        if (isContentEmpty) {
+                        if (isContentBlank) {
                             contentNodes = [new PlainTextNode_1.PlainTextNode(url)];
                         }
                         this.nodes.push(new LinkNode_1.LinkNode(contentNodes, url));
                         continue;
                     }
-                    if (!isContentEmpty) {
+                    if (!isContentBlank) {
                         (_a = this.nodes).push.apply(_a, contentNodes);
                     }
                     continue;
@@ -1388,11 +1388,10 @@ var Parser = (function () {
             for (var _b = 0, RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1 = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES; _b < RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1.length; _b++) {
                 var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_b];
                 if (token.kind === richConvention.startTokenKind) {
-                    var contentNodes = this.getNodes({ fromHereUntil: richConvention.endTokenKind });
-                    var isContentNotEmpty = (richConvention.canMeaningfullyContainOnlyWhitespace
-                        ? (contentNodes.length > 0)
-                        : !isEmptyOrPureWhitespace(contentNodes));
-                    if (isContentNotEmpty) {
+                    var contentNodes = this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind });
+                    var includeConventionInDocument = contentNodes.length > 0
+                        && (richConvention.isMeaningfulEvenWhenContainingOnlyWhitespace || !isBlank(contentNodes));
+                    if (includeConventionInDocument) {
                         this.nodes.push(new richConvention.NodeType(contentNodes));
                     }
                     continue TokenLoop;
@@ -1409,7 +1408,7 @@ var Parser = (function () {
     Parser.prototype.getNextTokenAndAdvanceIndex = function () {
         return this.tokens[++this.tokenIndex];
     };
-    Parser.prototype.getNodes = function (args) {
+    Parser.prototype.produceSyntaxNodes = function (args) {
         var result = (new Parser({
             tokens: this.tokens.slice(this.countTokensParsed),
             untilTokenOfKind: args.fromHereUntil
@@ -1425,7 +1424,7 @@ var Parser = (function () {
     };
     return Parser;
 }());
-function isEmptyOrPureWhitespace(nodes) {
+function isBlank(nodes) {
     return nodes.every(isWhitespace_1.isWhitespace);
 }
 function combineConsecutivePlainTextNodes(nodes) {
