@@ -205,6 +205,25 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ])
       )
     })
+
+    it('must not only consist of the hash mark', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('hash mark')
+      ], 1)
+
+      expect(Up.toAst('((hash mark)) (#)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(#)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
   })
 
 
