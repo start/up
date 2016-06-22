@@ -9,6 +9,7 @@ import { InlineCodeNode } from '../../../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../../../../SyntaxNodes/StressNode'
 import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'
 
@@ -123,7 +124,7 @@ context('Most inline conventions produce no syntax nodes if they have no content
       })
     })
   })
-  
+
 
   context('Oh the other hand, these conventions do produce syntax nodes, even when empty:', () => {
     specify('Parentheses', () => {
@@ -150,7 +151,7 @@ context('Most inline conventions produce no syntax nodes if they have no content
       )
     })
 
-    context('Links are handled a bit differently.', () => {
+    context('Links are handled a bit differently, because they also have a URL.', () => {
       describe('A link with no URL', () => {
         it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
           expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
@@ -207,6 +208,29 @@ context('Most inline conventions produce no syntax nodes if they have no content
               new PlainTextNode('Hello, !')
             ])
           )
+        })
+      })
+    })
+
+
+    context("Raised voice conventions (emphasis and stress) are handled very differently.", () => {
+      context("A contiguous delimiter will only either open conventions, close conventions, or be treated as plain text. Never a combination.", () => {
+        context('Therefore, a raised voice convention can only be empty if it contains nothing but "void" empty inline conventions. When empty, raised voice conventions produce no syntax nodes:', () => {
+          specify('Emphasis', () => {
+            expect(Up.toAst('*{SPOILER:}*')).to.eql(new DocumentNode())
+          })
+
+          specify('Stress', () => {
+            expect(Up.toAst('**{SPOILER:}**')).to.eql(new DocumentNode())
+          })
+
+          specify('Shouting (emphasis and stress together)', () => {
+            expect(Up.toAst('***{SPOILER:}***')).to.eql(new DocumentNode())
+          })
+
+          specify('Shouting with imbalanced delimiters', () => {
+            expect(Up.toAst('*****{SPOILER:}***')).to.eql(new DocumentNode())
+          })
         })
       })
     })
