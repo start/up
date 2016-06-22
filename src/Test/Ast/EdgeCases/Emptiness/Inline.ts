@@ -232,6 +232,25 @@ context('Most inline conventions produce no syntax nodes if they have no content
             expect(Up.toAst('*****{SPOILER:}***')).to.eql(new DocumentNode())
           })
         })
+
+
+        context('Additionally, raised voice conventions produce no syntax nodes when containing only whitespace and "void" empty conventions', () => {
+          specify('Emphasis', () => {
+            expect(Up.toAst('*{SPOILER:} \t [NSFW:]*')).to.eql(new DocumentNode())
+          })
+
+          specify('Stress', () => {
+            expect(Up.toAst('**{SPOILER:} \t [NSFW:]**')).to.eql(new DocumentNode())
+          })
+
+          specify('Shouting (emphasis and stress together)', () => {
+            expect(Up.toAst('***{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
+          })
+
+          specify('Shouting with imbalanced delimiters', () => {
+            expect(Up.toAst('*****{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
+          })
+        })
       })
     })
   })
