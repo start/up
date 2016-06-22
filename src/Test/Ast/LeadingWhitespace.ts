@@ -20,9 +20,7 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is often ignored.", () => {
-
   context('This is true for:', () => {
-
     specify('Paragraphs', () => {
       expect(Up.toAst(" \t I'm just a normal guy who eats only when it's raining outside.")).to.be.eql(
         new DocumentNode([
@@ -92,7 +90,6 @@ Skeltals are white
 
 
   context("This rule also applies inside outline conventions that can contain other outline conventions:", () => {
-
     specify('Ordered list items', () => {
       expect(Up.toAst('1)  \t Hello, Lavender Town!')).to.be.eql(
         new DocumentNode([

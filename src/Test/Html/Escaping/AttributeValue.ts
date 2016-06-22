@@ -14,7 +14,6 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the:', () => {
-
   specify("src attribute of links", () => {
     const node = new LinkNode([], 'https://example.com/?x&y&z="hi"')
 

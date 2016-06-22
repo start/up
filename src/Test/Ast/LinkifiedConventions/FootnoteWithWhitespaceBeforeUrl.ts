@@ -21,7 +21,6 @@ const FOOTNOTE_BRACKETS = [
 
 
 context('A linkified footnote can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
-
   specify('It has a scheme', () => {
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -43,7 +42,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
 
   describe('When the URL has a scheme, the URL', () => {
-    specify('It must not contain any spaces', () => {
+    it('must not contain any spaces', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('the phone was dead')
       ], 1)

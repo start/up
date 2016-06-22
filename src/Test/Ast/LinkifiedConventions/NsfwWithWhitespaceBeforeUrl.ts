@@ -11,7 +11,6 @@ import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
 context('A linkified NSFW convention can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
-
   specify('It has a scheme', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'NSFW: something terrible',
@@ -95,7 +94,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
       )
     })
 
-    specify('can consist solely of digits after the slash', () => {
+    it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'NSFW: Model 3 theft',
         partsToPutInBetween: ['  ', '\t', ' \t '],

@@ -99,7 +99,6 @@ Violets are blue`
 
 
 context('A line block can be split in two by', () => {
-
   specify('a single blank line', () => {
     const text = `
 1234 Spooky Street

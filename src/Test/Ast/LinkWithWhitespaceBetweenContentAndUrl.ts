@@ -10,7 +10,6 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 context('A link can have whitespace between its bracketed content and bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
-
   specify('It has a scheme', () => {
     expectEveryCombinationOfBrackets({
       firstPartToWrapInBrackets: 'email me',
@@ -88,7 +87,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
-    specify('can consist solely of digits after the slash', () => {
+    it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'Model 3',
         partsToPutInBetween: ['  ', '\t', ' \t '],
