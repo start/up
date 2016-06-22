@@ -56,7 +56,7 @@ describe('A link produced by square brackets', () => {
         new SquareBracketedNode([
           new PlainTextNode('[usually]')
         ]),
-        new PlainTextNode(' use '),        
+        new PlainTextNode(' use '),
         new LinkNode([
           new PlainTextNode('Google')
         ], 'https://google.com'),
@@ -145,7 +145,7 @@ describe('A link missing its final closing bracket', () => {
     expect(Up.toAst('[: Do this :][: smile! Anyway, why is *everyone* greeting mother earth?')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
-        new PlainTextNode('[: Do this :]'),
+          new PlainTextNode('[: Do this :]'),
         ]),
         new PlainTextNode('[: smile! Anyway, why is '),
         new EmphasisNode([
@@ -167,5 +167,81 @@ describe("Bracketed text followed by a parenthesized URL starting with an open p
         ], 'https://(parenthetical)operators'),
         new PlainTextNode('.')
       ]))
+  })
+})
+
+
+
+context('Parenthesized text followed by whitespace followed by an empty bracketed convention does not produce a link. Specificaly, parenthesized text can be followed by:', () => {
+  specify('Spoilers', () => {
+    expect(Up.toAst('(I know.) [SPOILER:]')).to.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know.)')
+        ]),
+        new PlainTextNode(' ')
+      ])
+    )
+  })
+
+  specify('NSFW', () => {
+    expect(Up.toAst('(I know.) [NSFW:]')).to.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know.)')
+        ]),
+        new PlainTextNode(' ')
+      ])
+    )
+  })
+
+  specify('NSFL', () => {
+    expect(Up.toAst('(I know.) [NSFL:]')).to.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know.)')
+        ]),
+        new PlainTextNode(' ')
+      ])
+    )
+  })
+
+  specify('Parentheses', () => {
+    expect(Up.toAst('(I know.) ()')).to.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know.)')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('()')
+        ])
+      ])
+    )
+  })
+
+  specify('Square brackets', () => {
+    expect(Up.toAst('(I know.) []')).to.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know.)')
+        ]),
+        new PlainTextNode(' '),
+        new SquareBracketedNode([
+          new PlainTextNode('[]')
+        ])
+      ])
+    )
+  })
+
+  specify('Actions', () => {
+    expect(Up.toAst('(I know.) {}')).to.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new PlainTextNode('(I know.)')
+        ]),
+        new PlainTextNode(' ')
+      ])
+    )
   })
 })
