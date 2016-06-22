@@ -14,9 +14,7 @@ import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode
 
 
 context('Most inline conventions produce no syntax nodes if they have no content.', () => {
-
   context('Specifically:', () => {
-
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER:]')).to.eql(new DocumentNode())
     })
@@ -62,7 +60,6 @@ context('Most inline conventions produce no syntax nodes if they have no content
 
     context('Of those conventions, only a few produce syntax nodes when they contain only unescaped whitespace.', () => {
       context('Specifically:', () => {
-
         specify('Inline code', () => {
           expect(Up.toAst('` `')).to.eql(
             new DocumentNode([
@@ -104,7 +101,6 @@ context('Most inline conventions produce no syntax nodes if they have no content
 
 
       context("The rest don't:", () => {
-
         specify('Spoilers', () => {
           expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(new DocumentNode())
         })
@@ -121,15 +117,15 @@ context('Most inline conventions produce no syntax nodes if they have no content
           expect(Up.toAst('{  \t  \t }')).to.eql(new DocumentNode())
         })
 
-        specify('Furthermore, these conventions produce no syntax nodes if they contain only whitespace and other "dud" inline conventions', () => {
+        specify('Furthermore, these conventions produce no syntax nodes if they contain only whitespace and other empty "void" inline conventions', () => {
           expect(Up.toAst('[NSFL:  \t [SPOILER: {} [NSFW: ++++   ]  ] \t ]')).to.eql(new DocumentNode())
         })
       })
     })
   })
+  
 
   context('Oh the other hand, these conventions do produce syntax nodes, even when empty:', () => {
-    
     specify('Parentheses', () => {
       expect(Up.toAst('()')).to.eql(
         new DocumentNode([
@@ -153,66 +149,67 @@ context('Most inline conventions produce no syntax nodes if they have no content
         ])
       )
     })
-  })
-})
+
+    context('Links are handled a bit differently.', () => {
+      describe('A link with no URL', () => {
+        it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
+          expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
+            insideDocumentAndParagraph([
+              new EmphasisNode([
+                new PlainTextNode('Yggdra Union')
+              ])
+            ]))
+        })
+      })
 
 
-describe('A link with no URL', () => {
-  it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
-    expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new EmphasisNode([
-          new PlainTextNode('Yggdra Union')
-        ])
-      ]))
-  })
-})
+      describe('A link with a blank URL', () => {
+        it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
+          expect(Up.toAst('[*Yggdra Union*][  \t  ]')).to.be.eql(
+            insideDocumentAndParagraph([
+              new EmphasisNode([
+                new PlainTextNode('Yggdra Union')
+              ])
+            ]))
+        })
+      })
 
 
-describe('A link with a blank URL', () => {
-  it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
-    expect(Up.toAst('[*Yggdra Union*][  \t  ]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new EmphasisNode([
-          new PlainTextNode('Yggdra Union')
-        ])
-      ]))
-  })
-})
+      describe('A link with no content', () => {
+        it('produces a link node with its URL for its content', () => {
+          expect(Up.toAst('[][https://google.com]')).to.be.eql(
+            insideDocumentAndParagraph([
+              new LinkNode([
+                new PlainTextNode('https://google.com')
+              ], 'https://google.com'
+              )]
+            ))
+        })
+      })
 
 
-describe('A link with no content', () => {
-  it('produces a link node with its URL for its content', () => {
-    expect(Up.toAst('[][https://google.com]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('https://google.com')
-        ], 'https://google.com'
-        )]
-      ))
-  })
-})
+      describe('A link with blank content', () => {
+        it('produces a link node with its URL for its content', () => {
+          expect(Up.toAst('[   \t  ][https://google.com]')).to.be.eql(
+            insideDocumentAndParagraph([
+              new LinkNode([
+                new PlainTextNode('https://google.com')
+              ], 'https://google.com'
+              )]))
+        })
+      })
 
 
-describe('A link with blank content', () => {
-  it('produces a link node with its URL for its content', () => {
-    expect(Up.toAst('[   \t  ][https://google.com]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('https://google.com')
-        ], 'https://google.com'
-        )]))
-  })
-})
-
-
-describe('A link with no content and no URL', () => {
-  it('produces no syntax nodes', () => {
-    expect(Up.toAst('Hello, [][]!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, !')
-      ])
-    )
+      describe('A link with no content and no URL', () => {
+        it('produces no syntax nodes', () => {
+          expect(Up.toAst('Hello, [][]!')).to.be.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Hello, !')
+            ])
+          )
+        })
+      })
+    })
   })
 })
 
