@@ -9,6 +9,8 @@ import { InlineCodeNode } from '../../../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
+import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
+import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'
 
 
 context('Most inline conventions produce no syntax nodes if they have no content.', () => {
@@ -123,6 +125,33 @@ context('Most inline conventions produce no syntax nodes if they have no content
           expect(Up.toAst('[NSFL:  \t [SPOILER: {} [NSFW: ++++   ]  ] \t ]')).to.eql(new DocumentNode())
         })
       })
+    })
+  })
+
+  context('Oh the other hand, these conventions do produce syntax nodes, even when empty:', () => {
+    
+    specify('Parentheses', () => {
+      expect(Up.toAst('()')).to.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new ParenthesizedNode([
+              new PlainTextNode('()')
+            ]),
+          ])
+        ])
+      )
+    })
+
+    specify('Square brackets', () => {
+      expect(Up.toAst('[]')).to.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[]')
+            ]),
+          ])
+        ])
+      )
     })
   })
 })
