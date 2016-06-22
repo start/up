@@ -46,6 +46,34 @@ context('A linkified NSFW convention can have whitespace between itself and its 
       )
     })
 
+    it('must have something after the scheme', () => {
+      expect(Up.toAst('[NSFW: email] (mailto:)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('email')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:)')
+          ]),
+        ])
+      )
+    })
+
+    it('must have something after the scheme beyond only slashes', () => {
+      expect(Up.toAst('[NSFW: local files] (file:///)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('local files')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(file:///)')
+          ]),
+        ])
+      )
+    })
+
     it('can consisting solely of digits after the scheme', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'NSFW: spooky phone call',

@@ -46,6 +46,34 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       )
     })
 
+    it('must have something after the scheme', () => {
+      expect(Up.toAst('[SPOILER: email] (mailto:)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('email')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:)')
+          ]),
+        ])
+      )
+    })
+
+    it('must have something after the scheme beyond only slashes', () => {
+      expect(Up.toAst('[SPOILER: local files] (file:///)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('local files')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(file:///)')
+          ]),
+        ])
+      )
+    })
+
     it('can consisting solely of digits after the scheme', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'SPOILER: spooky phone call',

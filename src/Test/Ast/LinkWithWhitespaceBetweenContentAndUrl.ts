@@ -43,6 +43,34 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
+    it('must have something after the scheme', () => {
+      expect(Up.toAst('[email] (mailto:)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[email]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:)')
+          ]),
+        ])
+      )
+    })
+
+    it('must have something after the scheme beyond only slashes', () => {
+      expect(Up.toAst('[local files] (file:///)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[local files]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(file:///)')
+          ]),
+        ])
+      )
+    })
+
     it('can consisting solely of digits after the scheme', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'call me',
