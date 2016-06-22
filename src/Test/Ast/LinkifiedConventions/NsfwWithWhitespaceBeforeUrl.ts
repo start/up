@@ -142,6 +142,20 @@ context('A linkified NSFW convention can have whitespace between itself and its 
       )
     })
 
+    it('must have something after the hash mark', () => {
+      expect(Up.toAst('[NSFW: hash mark] (#)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('hash mark')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#)')
+          ]),
+        ])
+      )
+    })
+
     it('must not contain any spaces', () => {
       expect(Up.toAst('[NSFW: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([

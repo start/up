@@ -142,6 +142,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       )
     })
 
+    it('must have something after the hash mark', () => {
+      expect(Up.toAst('[SPOILER: hash mark] (#)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('hash mark')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#)')
+          ]),
+        ])
+      )
+    })
+
     it('must not contain any spaces', () => {
       expect(Up.toAst('[SPOILER: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([

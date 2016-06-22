@@ -131,6 +131,20 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
+    it('must have something after the hash mark', () => {
+      expect(Up.toAst('[hash mark] (#)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[hash mark]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#)')
+          ]),
+        ])
+      )
+    })
+
     it('must not contain any spaces', () => {
       expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([

@@ -142,6 +142,20 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       )
     })
 
+    it('must have something after the hash mark', () => {
+      expect(Up.toAst('[NSFL: hash mark] (#)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('something terrible')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#)')
+          ]),
+        ])
+      )
+    })
+
     it('must not contain any spaces', () => {
       expect(Up.toAst('[NSFL: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
