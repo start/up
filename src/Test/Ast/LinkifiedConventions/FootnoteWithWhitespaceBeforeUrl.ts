@@ -65,6 +65,44 @@ context('A linkified footnote can have whitespace between itself and its bracket
       )
     })
 
+    it('must have something after the scheme', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('email')
+      ], 1)
+
+      expect(Up.toAst('((email)) (mailto:)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(mailto:)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
+    it('must have something after the scheme beyond only slashes', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('local files')
+      ], 1)
+
+      expect(Up.toAst('((local files)) (file:///)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(file:///)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
     it('can consisting solely of digits after the scheme', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
@@ -119,6 +157,25 @@ context('A linkified footnote can have whitespace between itself and its bracket
             new PlainTextNode(' '),
             new ParenthesizedNode([
               new PlainTextNode('(/r9k/ was talking about it)'),
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
+    it('must have something after the slash', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('slash')
+      ], 1)
+
+      expect(Up.toAst('((slash)) (/)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(/)')
             ]),
           ]),
           new FootnoteBlockNode([footnote])
@@ -206,7 +263,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       )
     })
 
-    it('must not only consist of the hash mark', () => {
+    it('must have something after the hash mark', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('hash mark')
       ], 1)
