@@ -6,12 +6,14 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
-context('Within any attribute value, all instances of " and & are escaped. Specifically:', () => {
+context('Within any attribute value, all instances of " and & are escaped. Specifically, within the:', () => {
 
   specify("src attribute of links", () => {
     const node = new LinkNode([], 'https://example.com/?x&y&z="hi"')
@@ -142,7 +144,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-    specify('produces a span element (with "up-spoiler" and "up-revealable" classes), containing a label (with the text "toggle spoiler"), an associated checkbox, and a span element containing the spoiler contents', () => {
+  specify("id attribute of spoilers' checkboxes (and the for attribute of their labels)", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -155,6 +157,46 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const html =
       '<span class="up-spoiler up-revealable">'
       + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle spoiler</label>'
+      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<span>45.9%</span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+  specify("id attribute of NSFW conventions' checkboxes (and the for attribute of their labels)", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '"&&"',
+        terms: { nsfw: 'look "away" & smile & forget' }
+      }
+    })
+
+    const node = new NsfwNode([new PlainTextNode('45.9%')])
+
+    const html =
+      '<span class="up-nsfw up-revealable">'
+      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle nsfw</label>'
+      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<span>45.9%</span>'
+      + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+  specify("id attribute of NSFL conventions' checkboxes (and the for attribute of their labels)", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '"&&"',
+        terms: { nsfl: 'look "away" & smile & forget' }
+      }
+    })
+
+    const node = new NsflNode([new PlainTextNode('45.9%')])
+
+    const html =
+      '<span class="up-nsfl up-revealable">'
+      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle nsfl</label>'
       + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
       + '<span>45.9%</span>'
       + '</span>'
