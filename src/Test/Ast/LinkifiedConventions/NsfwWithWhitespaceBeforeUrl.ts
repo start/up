@@ -94,6 +94,20 @@ context('A linkified NSFW convention can have whitespace between itself and its 
       )
     })
 
+    it('must have something after the slash', () => {
+      expect(Up.toAst('[NSFW: slash] (/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('slash')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/)')
+          ]),
+        ])
+      )
+    })
+
     it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'NSFW: Model 3 theft',

@@ -87,6 +87,20 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
+    it('must have something after the slash', () => {
+      expect(Up.toAst('[slash] (/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[slash]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/)')
+          ]),
+        ])
+      )
+    })
+
     it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'Model 3',

@@ -94,6 +94,20 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       )
     })
 
+    it('must have something after the slash', () => {
+      expect(Up.toAst('[NSFL: slash] (/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('slash')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/)')
+          ]),
+        ])
+      )
+    })
+
     it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'NSFL: Model 3 theft',
@@ -146,7 +160,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.toAst('[NSFL: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new NsflNode([
-            new PlainTextNode('something terrible')
+            new PlainTextNode('hash mark')
           ]),
           new PlainTextNode(' '),
           new ParenthesizedNode([

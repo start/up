@@ -94,6 +94,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       )
     })
 
+    it('must have something after the slash', () => {
+      expect(Up.toAst('[SPOILER: slash] (/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('slash')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/)')
+          ]),
+        ])
+      )
+    })
+
     it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
         firstPartToWrapInBrackets: 'SPOILER: Model 3 theft',
