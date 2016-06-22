@@ -1,4 +1,3 @@
-import { RichConvention } from './RichConvention'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'

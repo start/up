@@ -21,7 +21,7 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
 
 
 // This includes every rich convention except for links, because links have that pesky URL to deal with.
-const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES = [
+const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES: RichConvention[] = [
   STRESS_CONVENTION,
   EMPHASIS_CONVENTION,
   REVISION_DELETION_CONVENTION,
@@ -104,14 +104,13 @@ class Parser {
 
         case LINK_CONVENTION.startTokenKind: {
           let contentNodes = this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
-
-          const isContentBlank = contentNodes.every(isWhitespace)
+          const isContentEmpty = isEmptyOrPureWhitespace(contentNodes)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
 
           if (url) {
-            if (isContentBlank) {
+            if (isContentEmpty) {
               // If the link has a URL but no content, we use the URL for the content
               contentNodes = [new PlainTextNode(url)]
             }
@@ -120,7 +119,7 @@ class Parser {
             continue
           }
 
-          if (!isContentBlank) {
+          if (!isContentEmpty) {
             // If the link has no URL but does have content, we include the content directly in the document
             // without putting it in a link node
             this.nodes.push(...contentNodes)
@@ -156,8 +155,12 @@ class Parser {
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token.kind === richConvention.startTokenKind) {
           const contentNodes = this.getNodes({ fromHereUntil: richConvention.endTokenKind })
+          const isContentNotEmpty = (
+            richConvention.canMeaningfullyContainOnlyWhitespace
+              ? (contentNodes.length > 0)
+              : !isEmptyOrPureWhitespace(contentNodes))
 
-          if (contentNodes.length) {
+          if (isContentNotEmpty) {
             this.nodes.push(new richConvention.NodeType(contentNodes))
           }
 
@@ -201,6 +204,11 @@ class Parser {
 interface ParseResult {
   nodes: InlineSyntaxNode[]
   countTokensParsed: number
+}
+
+
+function isEmptyOrPureWhitespace(nodes: InlineSyntaxNode[]): boolean {
+  return nodes.every(isWhitespace)
 }
 
 function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {

@@ -1355,16 +1355,16 @@ var Parser = (function () {
                 }
                 case RichConventions_1.LINK_CONVENTION.startTokenKind: {
                     var contentNodes = this.getNodes({ fromHereUntil: TokenKind_1.TokenKind.LinkUrlAndEnd });
-                    var isContentBlank = contentNodes.every(isWhitespace_1.isWhitespace);
+                    var isContentEmpty = isEmptyOrPureWhitespace(contentNodes);
                     var url = this.tokens[this.tokenIndex].value.trim();
                     if (url) {
-                        if (isContentBlank) {
+                        if (isContentEmpty) {
                             contentNodes = [new PlainTextNode_1.PlainTextNode(url)];
                         }
                         this.nodes.push(new LinkNode_1.LinkNode(contentNodes, url));
                         continue;
                     }
-                    if (!isContentBlank) {
+                    if (!isContentEmpty) {
                         (_a = this.nodes).push.apply(_a, contentNodes);
                     }
                     continue;
@@ -1389,7 +1389,10 @@ var Parser = (function () {
                 var richConvention = RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES_1[_b];
                 if (token.kind === richConvention.startTokenKind) {
                     var contentNodes = this.getNodes({ fromHereUntil: richConvention.endTokenKind });
-                    if (contentNodes.length) {
+                    var isContentNotEmpty = (richConvention.canMeaningfullyContainOnlyWhitespace
+                        ? (contentNodes.length > 0)
+                        : !isEmptyOrPureWhitespace(contentNodes));
+                    if (isContentNotEmpty) {
                         this.nodes.push(new richConvention.NodeType(contentNodes));
                     }
                     continue TokenLoop;
@@ -1422,6 +1425,9 @@ var Parser = (function () {
     };
     return Parser;
 }());
+function isEmptyOrPureWhitespace(nodes) {
+    return nodes.every(isWhitespace_1.isWhitespace);
+}
 function combineConsecutivePlainTextNodes(nodes) {
     var resultNodes = [];
     for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
