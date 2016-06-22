@@ -77,3 +77,45 @@ describe('An empty revision insertion containing an empty revision deletion', ()
     )
   })
 })
+
+
+context('Most inline conventions produce no syntax nodes if they have no content. These conventions are:', () => {
+
+  specify('Spoilers', () => {
+    expect(Up.toAst('[SPOILER:]')).to.eql(new DocumentNode())
+  })
+
+  specify('NSFW', () => {
+    expect(Up.toAst('[NSFW:]')).to.eql(new DocumentNode())
+  })
+
+  specify('NSFL', () => {
+    expect(Up.toAst('[NSFL:]')).to.eql(new DocumentNode())
+  })
+
+  specify('Inline code', () => {
+    expect(Up.toAst('``')).to.eql(new DocumentNode())
+  })
+
+  specify('Revision insertion', () => {
+    // If the revision insertion delimiters were alone on a line, they would be interpreted as a section separator streak. 
+    expect(Up.toAst('Spiders.++++')).to.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Spiders.')
+        ])
+      ])
+    )
+  })
+
+  specify('Revision insertion', () => {
+    // If the revision deletion delimiters were alone on a line, they would be interpreted as a section separator streak.
+    expect(Up.toAst('Spiders.~~~~')).to.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Spiders.')
+        ])
+      ])
+    )
+  })
+})
