@@ -103,10 +103,9 @@ class Parser {
         }
 
         case LINK_CONVENTION.startTokenKind: {
-          let linkContentNodes =
-            this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
+          let contentNodes = this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
 
-          const isContentBlank = linkContentNodes.every(isWhitespace)
+          const isContentBlank = contentNodes.every(isWhitespace)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
@@ -114,17 +113,17 @@ class Parser {
           if (url) {
             if (isContentBlank) {
               // If the link has a URL but no content, we use the URL for the content
-              linkContentNodes = [new PlainTextNode(url)]
+              contentNodes = [new PlainTextNode(url)]
             }
 
-            this.nodes.push(new LinkNode(linkContentNodes, url))
+            this.nodes.push(new LinkNode(contentNodes, url))
             continue
           }
 
           if (!isContentBlank) {
             // If the link has no URL but does have content, we include the content directly in the document
             // without putting it in a link node
-            this.nodes.push(...linkContentNodes)
+            this.nodes.push(...contentNodes)
           }
 
           // If the link has no URL and no content, there's nothing meaninful to include in the document
@@ -156,12 +155,10 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token.kind === richConvention.startTokenKind) {
-          const sandwichContentNodes =
-            this.getNodes({ fromHereUntil: richConvention.endTokenKind })
+          const contentNodes = this.getNodes({ fromHereUntil: richConvention.endTokenKind })
 
-          if (sandwichContentNodes.length) {
-            // Like empty inline code, we ignore any empty sandwich conventions
-            this.nodes.push(new richConvention.NodeType(sandwichContentNodes))
+          if (contentNodes.length) {
+            this.nodes.push(new richConvention.NodeType(contentNodes))
           }
 
           continue TokenLoop

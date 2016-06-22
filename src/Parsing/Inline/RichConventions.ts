@@ -29,13 +29,15 @@ export const STRESS_CONVENTION = {
 export const REVISION_DELETION_CONVENTION = {
   NodeType: RevisionDeletionNode,
   startTokenKind: TokenKind.RevisionDeletionStart,
-  endTokenKind: TokenKind.RevisionDeletionEnd
+  endTokenKind: TokenKind.RevisionDeletionEnd,
+  canMeaningfullyContainOnlyWhitespace: true
 }
 
 export const REVISION_INSERTION_CONVENTION = {
   NodeType: RevisionInsertionNode,
   startTokenKind: TokenKind.RevisionInsertionStart,
-  endTokenKind: TokenKind.RevisionInsertionEnd
+  endTokenKind: TokenKind.RevisionInsertionEnd,
+  canMeaningfullyContainOnlyWhitespace: true
 }
 
 export const SPOILER_CONVENTION = {

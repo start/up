@@ -6,5 +6,6 @@ import { TokenKind } from './Tokenization/TokenKind'
 export interface RichConvention {
    NodeType?: RichInlineSyntaxNodeType,
    startTokenKind: TokenKind,
-   endTokenKind: TokenKind
+   endTokenKind: TokenKind,
+   canMeaningfullyContainOnlyWhitespace?: boolean
 }
