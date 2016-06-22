@@ -139,3 +139,28 @@ describe('A NSFL convention produced by curly brackets', () => {
       ]))
   })
 })
+
+
+describe('Any whitespace between "NSFL:" and the start of the NSFL content', () => {
+  it('is optional', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFL:you wrestle a rotten Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsflNode([
+          new PlainTextNode('you wrestle a rotten Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  it('is ignored', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFL: \t  \t you wrestle a rotten Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsflNode([
+          new PlainTextNode('you wrestle a rotten Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})

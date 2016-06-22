@@ -139,3 +139,28 @@ describe('A NSFW convention produced by curly brackets', () => {
       ]))
   })
 })
+
+
+describe('Any whitespace between "NSFW:" and the start of the NSFW content', () => {
+  it('is optional', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFW:you wrestle a naked Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsfwNode([
+          new PlainTextNode('you wrestle a naked Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  it('is ignored', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFW: \t  \t you wrestle a naked Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsfwNode([
+          new PlainTextNode('you wrestle a naked Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})

@@ -141,3 +141,28 @@ describe('A spoiler produced by curly brackets', () => {
       ]))
   })
 })
+
+
+describe('Any whitespace between "SPOILER:" and the start of the spoiler content', () => {
+  it('is optional', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER:you fight Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  it('is ignored', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: \t  \t you fight Gary].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new PlainTextNode('you fight Gary')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
