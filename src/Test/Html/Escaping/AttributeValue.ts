@@ -5,6 +5,7 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -61,7 +62,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       '<img src="" alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
   })
 
-  it('href attribute of backlinks in footnote blocks', () => {
+  specify('href attribute of backlinks in footnote blocks', () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -84,7 +85,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-  it('id attribute of footntoes in a footnote block', () => {
+  specify('id attribute of footntoes in a footnote block', () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -107,7 +108,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-  it("href attribute of a footnote reference's link", () => {
+  specify("href attribute of a footnote reference's link", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -123,7 +124,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</sup>')
   })
 
-  it('id attribute of footnote references', () => {
+  specify('id attribute of footnote references', () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -137,6 +138,26 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       '<sup id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;up&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;remember&quot;&amp;&amp;&quot;3" class="up-footnote-reference">'
       + '<a href="#up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;3">3</a>'
       + '</sup>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+    specify('produces a span element (with "up-spoiler" and "up-revealable" classes), containing a label (with the text "toggle spoiler"), an associated checkbox, and a span element containing the spoiler contents', () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '"&&"',
+        terms: { spoiler: 'look "away" & smile & forget' }
+      }
+    })
+
+    const node = new SpoilerNode([new PlainTextNode('45.9%')])
+
+    const html =
+      '<span class="up-spoiler up-revealable">'
+      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle spoiler</label>'
+      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<span>45.9%</span>'
+      + '</span>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
