@@ -33,7 +33,7 @@ describe('A paragraph consisting only of blank lines and lines consisting of emp
     const text = `     
 I had too much cereal.
 
-[NSFW: \t][NSFL:]
+[NSFW: \t][NSFL:(SPOILER: \t )]
 
 I'm never eating again.`
     expect(Up.toAst(text)).to.be.eql(
@@ -55,7 +55,7 @@ describe('A document consisting only of blank lines and lines consisting of empt
     const text = `     
 
 [SPOILER: ]
-[NSFW: \t][NSFL:]
+[NSFW: \t][NSFL:(SPOILER: \t )]
 \t     
 
 []{}`
