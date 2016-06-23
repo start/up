@@ -19,7 +19,7 @@ import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
-context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is often ignored.", () => {
+context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is usually ignored.", () => {
   context('This is true for:', () => {
     specify('Paragraphs', () => {
       expect(Up.toAst(" \t I'm just a normal guy who eats only when it's raining outside.")).to.be.eql(
@@ -162,11 +162,19 @@ Charmander
     })
 
     specify('Blockquotes', () => {
-      expect(Up.toAst(">   \t I like shorts! They're comfy and easy to wear!")).to.be.eql(
+      const text = `
+>   \t I like shorts! They're comfy and easy to wear!
+>
+>\t I like blankets, too.`
+
+      expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
             new ParagraphNode([
               new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I like blankets, too.")
             ])
           ])
         ])
