@@ -268,6 +268,7 @@ class Tokenizer {
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
   }
 
+  // This method exists purely for optimization.
   private tryToBufferContentThatCannotTriggerAnyChanges(): boolean {
     return this.consumer.consume({
       pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
