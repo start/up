@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, anyCharacterOtherThan, capture } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharacterOtherThan, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'

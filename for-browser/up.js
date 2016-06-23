@@ -2130,6 +2130,10 @@ function streakOf(charPattern) {
     return solely(atLeast(3, charPattern));
 }
 exports.streakOf = streakOf;
+function notFollowedBy(pattern) {
+    return "(?!" + pattern + ")";
+}
+exports.notFollowedBy = notFollowedBy;
 function anyCharacterOf(charPatterns) {
     return "[" + charPatterns.join('') + "]";
 }
