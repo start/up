@@ -229,6 +229,26 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 })
 
 
+describe('If there is nothing but whitspace between the NSFW convention and the bracketed URL, but one of the whitespace characters is escaped', () => {
+  it('the NSFW convention is not linkified', () => {
+    expect(Up.toAst('[NSFL: something terrible]  \\  (https://example.com)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsflNode([
+          new PlainTextNode('something terrible')
+        ]),
+        new PlainTextNode('    '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')')
+        ])
+      ]))
+  })
+})
+
+
 describe("A NSFL convention's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     expectEveryCombinationOfBrackets({
