@@ -17,6 +17,8 @@ export interface TokenizableConvention {
   
   insteadOfTryingToCloseOuterContexts?: OnConventionEvent
   insteadOfTryingToOpenUsualConventions?: OnConventionEvent
+
+  failIfWhitespaceIsEnounteredBeforeClosing?: boolean
   
   leaveEndPatternForAnotherConventionToConsume?: boolean
   closeInnerContextsWhenClosing?: boolean

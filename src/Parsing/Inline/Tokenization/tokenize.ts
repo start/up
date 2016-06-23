@@ -175,7 +175,7 @@ class Tokenizer {
       ...this.getLinkUrlConventions())
 
     this.conventions.push(
-      ...this.getLinkUrlSeparatedFromContentByWhitespaceConventions())
+      ...this.getLinkUrlSeparatedByWhitespaceConventions())
 
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
@@ -291,6 +291,10 @@ class Tokenizer {
         return this.closeOrUndoContext({ atIndex: i })
       }
 
+      if (this.shouldBacktrackToBeforeContext({ belongingToContextAtIndex: i })) {
+
+      }
+
       if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
         return true
       }
@@ -299,6 +303,15 @@ class Tokenizer {
     return this.tryToCloseAnyRaisedVoices()
   }
 
+  private shouldBacktrackToBeforeContext(args: { belongingToContextAtIndex: number }): boolean {
+    const contextIndex = args.belongingToContextAtIndex
+    const { convention } = this.openContexts[contextIndex]
+
+    return (
+      convention.failIfWhitespaceIsEnounteredBeforeClosing
+      && WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
+    )
+  }
 
   private shouldCloseContext(context: ConventionContext): boolean {
     const { convention } = context
@@ -477,12 +490,6 @@ class Tokenizer {
     const lastToken = last(this.tokens)
 
     return conventions.some(convention => lastToken.kind === convention.endTokenKind)
-  }
-
-  private bufferRawText(): boolean {
-    return (
-      this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
-      || this.bufferCurrentChar())
   }
 
   // This method always returns true to allow us to cleanly chain it with other boolean tokenizer methods. 
@@ -676,13 +683,15 @@ class Tokenizer {
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
   // 3. Third, if the URL starts with a URL hash mark, it must not otherwise consist solely of digits.
-  private getLinkUrlSeparatedFromContentByWhitespaceConventions(): TokenizableConvention[] {
+  private getLinkUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+
+      failIfWhitespaceIsEnounteredBeforeClosing: true,
 
       insteadOfTryingToCloseOuterContexts: this.bufferRawTextAndBacktrackIfThereIsWhitespace,
       closeInnerContextsWhenClosing: true,
@@ -748,6 +757,8 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
+      failIfWhitespaceIsEnounteredBeforeClosing: true,
+
       insteadOfTryingToCloseOuterContexts: this.bufferRawTextAndBacktrackIfThereIsWhitespace,
       closeInnerContextsWhenClosing: true,
 
@@ -764,6 +775,12 @@ class Tokenizer {
     }))
   }
 
+  private bufferRawText(): boolean {
+    return (
+      this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
+      || this.bufferCurrentChar())
+  }
+  
   private bufferRawTextAndBacktrackIfThereIsWhitespace = (context: ConventionContext) => {
     if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
       // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
