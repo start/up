@@ -220,8 +220,8 @@ class Tokenizer {
 
   private tokenize(): void {
     while (!this.isDone()) {
-      this.tryToCollectEscapedChar()
-        || this.tryToBufferContentThatCannotTriggerAnyChanges()
+      this.tryToBufferContentThatCannotTriggerAnyChanges()
+        || this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
         || this.tryToOpenAnyConvention()

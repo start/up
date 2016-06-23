@@ -782,8 +782,8 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tokenize = function () {
         while (!this.isDone()) {
-            this.tryToCollectEscapedChar()
-                || this.tryToBufferContentThatCannotTriggerAnyChanges()
+            this.tryToBufferContentThatCannotTriggerAnyChanges()
+                || this.tryToCollectEscapedChar()
                 || this.tryToCloseAnyConvention()
                 || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
                 || this.tryToOpenAnyConvention()
