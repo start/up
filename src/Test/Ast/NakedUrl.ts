@@ -11,16 +11,63 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 
-describe('A naked URL', () => {
-  it('produces a link node. The content of the link is the URL minus its scheme', () => {
-    expect(Up.toAst('https://archive.org')).to.be.eql(
+context("Some naked URLs produce links. The content of those links is the URL without its scheme.", () => {
+  context('For a naked URL to produce a link, it must either:', () => {
+    specify('Start with "https://', () => {
+      expect(Up.toAst('Check out https://archive.org')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('Check out '),
+          new LinkNode([
+            new PlainTextNode('archive.org')
+          ], 'https://archive.org')
+        ]))
+    })
+
+    specify('Start with "http://', () => {
+      expect(Up.toAst('Check out https://archive.org')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('Check out '),
+          new LinkNode([
+            new PlainTextNode('archive.org')
+          ], 'https://archive.org')
+        ]))
+    })
+  })
+
+
+  context('A naked URL will not produce a link if:', () => {
+    specify("It consists solely of 'http://'", () => {
+      expect(Up.toAst('http://')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('http://')
+        ]))
+    })
+
+    specify("It consists solely of 'https://'", () => {
+      expect(Up.toAst('https://')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('https://')
+        ]))
+    })
+  })
+
+  specify("It has a scheme other than 'https://' or 'http://", () => {
+    expect(Up.toAst('ftp://google.com')).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('archive.org')
-        ], 'https://archive.org')
+        new PlainTextNode('ftp://google.com')
       ]))
   })
 
+  specify("It doesn't have both forward slashes", () => {
+    expect(Up.toAst('In the homepage field, you can use either http:/mailto:')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In the homepage field, you can use either http:/mailto:')
+      ]))
+  })
+})
+
+
+describe('A naked URL', () => {
   it('is terminated by a space', () => {
     expect(Up.toAst('https://archive.org is exciting')).to.be.eql(
       insideDocumentAndParagraph([
@@ -104,7 +151,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("is inside a link", () => {
+  it("can be inside a link", () => {
     expect(Up.toAst('[https://inner.example.com/fake][https://outer.example.com/real]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
@@ -245,7 +292,7 @@ describe('A naked URL', () => {
 })
 
 
-describe('Inside paranthesis, a naked URL', () => {
+describe('Inside parantheses, a naked URL', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toAst('(https://archive.org/fake(url))')).to.be.eql(
       insideDocumentAndParagraph([
