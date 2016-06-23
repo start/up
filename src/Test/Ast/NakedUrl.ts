@@ -324,7 +324,7 @@ describe('Inside square brackets, a naked URL', () => {
 })
 
 
-describe('Inside an actio node, a naked URL', () => {
+describe('Inside an action node, a naked URL', () => {
   it('can contain matching curly brackets', () => {
     expect(Up.toAst('{https://archive.org/fake{url}}')).to.be.eql(
       insideDocumentAndParagraph([
