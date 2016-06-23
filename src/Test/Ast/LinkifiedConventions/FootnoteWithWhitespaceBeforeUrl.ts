@@ -304,6 +304,31 @@ context('A linkified footnote can have whitespace between itself and its bracket
 })
 
 
+describe('If there is nothing but whitspace between a footnote and a bracketed URL, but one of the whitespace characters is escaped', () => {
+  it('the spoiler convention is not linkified', () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('something terrible')
+    ], 1)
+
+    expect(Up.toAst('[[something terrible]]  \\  (https://example.com)')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote,
+          new PlainTextNode('    '),
+          new ParenthesizedNode([
+            new PlainTextNode('('),
+            new LinkNode([
+              new PlainTextNode('example.com')
+            ], 'https://example.com'),
+            new PlainTextNode(')')
+          ])
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
 describe("A linkified footnote's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     const footnote = new FootnoteNode([
