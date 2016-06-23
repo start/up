@@ -249,19 +249,19 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
 
 
 describe("An almost-link (with whitespace between its content and URL) terminated early due to a space in its URL", () => {
-  it('can contain an unclosed paranthesis without affecting a link with a parenthesized URL that follows it', () => {
-    expect(Up.toAst('{sigh} [https://example.com/sad:( is a strange page] ... [anyway, go here instead] (https://example.com/happy)')).to.be.eql(
+  it('can contain an unclosed square bracket without affecting a link with a square bracketed URL that follows it', () => {
+    expect(Up.toAst('{sigh} (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.be.eql(
       insideDocumentAndParagraph([
         new ActionNode([
           new PlainTextNode('sigh')
         ]),
         new PlainTextNode(' '),
-        new SquareBracketedNode([
-          new PlainTextNode('['),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
           new LinkNode([
-            new PlainTextNode('example.com/sad:(')
-          ], 'https://example.com/sad:('),
-          new PlainTextNode(' is a strange page]')
+            new PlainTextNode('example.com/sad:[')
+          ], 'https://example.com/sad:['),
+          new PlainTextNode(' is a strange page)')
         ]),
         new PlainTextNode(' ... '),
         new LinkNode([
