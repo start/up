@@ -4,7 +4,7 @@ import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { optional, regExpStartingWith, either, capture } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, INTEGER } from '../PatternPieces'
-import { INDENTED_PATTERN, DIVIDER_STREAK_PATTERN } from '../Patterns'
+import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 
@@ -106,12 +106,16 @@ function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
 
 
 function getExplicitOrdinal(rawListItem: RawListItem): number {
-  const result = INTEGER_PATTERN.exec(rawListItem.bullet)
-  return (result ? parseInt(result[1]) : null)
+  const result = CAPTURE_INTEGER_PATTERN.exec(rawListItem.bullet)
+
+  return (
+    result
+      ? parseInt(result[1])
+      : null)
 }
 
 
-const INTEGER_PATTERN =
+const CAPTURE_INTEGER_PATTERN =
   new RegExp(capture(INTEGER))
 
 const BULLET =

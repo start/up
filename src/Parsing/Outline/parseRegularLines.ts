@@ -7,7 +7,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/getInlineNodes'
-import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
+import { NON_BLANK_PATTERN } from '../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { OutlineParserArgs } from './OutlineParserArgs'
 

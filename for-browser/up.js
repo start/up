@@ -2013,10 +2013,12 @@ function isProbablyNotAnOrderedList(rawListItems) {
         && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet));
 }
 function getExplicitOrdinal(rawListItem) {
-    var result = INTEGER_PATTERN.exec(rawListItem.bullet);
-    return (result ? parseInt(result[1]) : null);
+    var result = CAPTURE_INTEGER_PATTERN.exec(rawListItem.bullet);
+    return (result
+        ? parseInt(result[1])
+        : null);
 }
-var INTEGER_PATTERN = new RegExp(PatternHelpers_1.capture(PatternPieces_1.INTEGER));
+var CAPTURE_INTEGER_PATTERN = new RegExp(PatternHelpers_1.capture(PatternPieces_1.INTEGER));
 var BULLET = PatternHelpers_1.either('#', PatternHelpers_1.capture(PatternHelpers_1.either(PatternPieces_1.INTEGER, '#') + PatternHelpers_1.either('\\.', '\\)')));
 var BULLETED_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + BULLET + PatternPieces_1.INLINE_WHITESPACE_CHAR);
 var INTEGER_FOLLOWED_BY_PERIOD_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.INTEGER + '\\.');
