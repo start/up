@@ -55,6 +55,13 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
   FOOTNOTE_CONVENTION
 ]
 
+// Many of our conventions incorporate brackets. Here are the ones we recognize:
+const BRACKETS = [
+  new Bracket('(', ')'),
+  new Bracket('[', ']'),
+  new Bracket('{', '}')
+]
+
 
 class Tokenizer {
   tokens: Token[] = []
@@ -970,13 +977,6 @@ const PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN =
         // information, see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions`
         //  method.
         URL_HASH_MARK + atLeast(1, DIGIT))))
-
-// Many of our conventions incorporate brackets. Here are the ones we recognize:
-const BRACKETS = [
-  new Bracket('(', ')'),
-  new Bracket('[', ']'),
-  new Bracket('{', '}')
-]
 
 // This constants below exist only for optimization, allowing us to examine as little content as possible.
 

@@ -676,6 +676,11 @@ var COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.NSFL_CONVENTION,
     RichConventions_1.FOOTNOTE_CONVENTION
 ];
+var BRACKETS = [
+    new Bracket_1.Bracket('(', ')'),
+    new Bracket_1.Bracket('[', ']'),
+    new Bracket_1.Bracket('{', '}')
+];
 var Tokenizer = (function () {
     function Tokenizer(entireText, config) {
         var _this = this;
@@ -1266,11 +1271,6 @@ var URL_SLASH = '/';
 var URL_HASH_MARK = '#';
 var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK);
 var PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN = new RegExp(PatternHelpers_1.solely(PatternHelpers_1.either(EXPLICIT_URL_PREFIX, URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT))));
-var BRACKETS = [
-    new Bracket_1.Bracket('(', ')'),
-    new Bracket_1.Bracket('[', ']'),
-    new Bracket_1.Bracket('{', '}')
-];
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
 var BRACKET_END_PATTERNS = BRACKETS.map(function (bracket) { return bracket.endPattern; });
 var CHARS_THAT_CAN_START_OR_END_CONVENTIONS = CollectionHelpers_1.concat([
