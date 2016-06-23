@@ -466,3 +466,128 @@ describe('An ordered list item containing multiple indented lines', () => {
     )
   })
 })
+
+
+context('Subsequent lines in an ordered list item must be indented.', () => {
+  context('The indentation must be at least:', () => {
+    specify('Two spaces', () => {
+      const text = `
+# Roses are red
+  Violets are blue`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new OrderedListNode([
+            new OrderedListItem([
+              new LineBlockNode([
+                new Line([
+                  new PlainTextNode('Roses are red'),
+                ]),
+                new Line([                
+                  new PlainTextNode('Violets are blue')
+                ])
+              ])
+            ])
+          ])
+        ])
+      )
+    })
+
+    specify('One tab', () => {
+      const text = `
+# Roses are red
+\tViolets are blue`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new OrderedListNode([
+            new OrderedListItem([
+              new LineBlockNode([
+                new Line([
+                  new PlainTextNode('Roses are red'),
+                ]),
+                new Line([                
+                  new PlainTextNode('Violets are blue')
+                ])
+              ])
+            ])
+          ])
+        ])
+      )
+    })
+
+    specify('One space folled by one tab', () => {
+      const text = `
+# Roses are red
+ \tViolets are blue`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new OrderedListNode([
+            new OrderedListItem([
+              new LineBlockNode([
+                new Line([
+                  new PlainTextNode('Roses are red'),
+                ]),
+                new Line([                
+                  new PlainTextNode('Violets are blue')
+                ])
+              ])
+            ])
+          ])
+        ])
+      )
+    })
+  })
+
+  specify('Different lines in an ordered list can use different indentation', () => {
+    const withMixedIndentation = `
+# Roses are red
+  Violets are blue
+ 
+\tI really like that poem.
+
+ \tI think it's my favorite.
+
+# 1234 Spooky Street
+\tPepe, PA 17101
+
+  I used to live there.`
+
+    expect(Up.toAst(withMixedIndentation)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new LineBlockNode([
+              new Line([
+                new PlainTextNode('Roses are red')
+              ]),
+              new Line([
+                new PlainTextNode('Violets are blue')
+              ])
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('I really like that poem.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I think it's my favorite.")
+            ])
+          ]),
+          new OrderedListItem([
+            new LineBlockNode([
+              new Line([
+                new PlainTextNode('1234 Spooky Street')
+              ]),
+              new Line([
+                new PlainTextNode('Pepe, PA 17101')
+              ])
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('I used to live there.')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})
