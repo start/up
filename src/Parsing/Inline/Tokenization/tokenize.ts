@@ -914,12 +914,6 @@ class Tokenizer {
 }
 
 
-function isProbablyNotIntendedToBeAUrl(url: string): boolean {
-  return (
-    !url.replace(EXPLICIT_URL_PREFIX_PATTERN, '').length
-    || URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url))
-}
-
 
 const LEADING_WHITESPACE_PATTERN =
   regExpStartingWith(ANY_WHITESPACE)
@@ -928,7 +922,11 @@ const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
 const URL_SCHEME_NAME =
-  LETTER + everyOptional(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
+  LETTER + everyOptional(
+    either(
+      LETTER,
+      DIGIT,
+      ...['-', '+', '.'].map(escapeForRegex)))
 
 const URL_SCHEME =
   URL_SCHEME_NAME + ':' + everyOptional('/')
@@ -953,14 +951,26 @@ const EXPLICIT_URL_PREFIX =
     URL_SLASH,
     URL_HASH_MARK)
 
-const EXPLICIT_URL_PREFIX_PATTERN =
-  regExpStartingWith(EXPLICIT_URL_PREFIX)
 
-// We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more information,
-// see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method.
+function isProbablyNotIntendedToBeAUrl(url: string): boolean {
+  return (
+    // If there's nothing after the URL prefix, there's no meaningful URL, so it's unlikely the author was
+    // trying to link to one.
+    CONSISTING_ONLY_OF_A_URL_PREFIX_PATTERN.test(url)
+
+    // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more information,
+    // see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method.
+    || URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url))
+}
+
+const CONSISTING_ONLY_OF_A_URL_PREFIX_PATTERN =
+  new RegExp(
+    solely(EXPLICIT_URL_PREFIX))
+
 const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
   new RegExp(
     solely(URL_HASH_MARK + atLeast(1, DIGIT)))
+
 
 
 // Many of our conventions rely on brackets. Here they are!
@@ -969,7 +979,6 @@ const BRACKETS = [
   new Bracket('[', ']'),
   new Bracket('{', '}')
 ]
-
 
 // The following patterns represent every character that can start or end any convention.  
 //
