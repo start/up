@@ -11,6 +11,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
 describe('An otherwise valid link with mismatched brackets surrounding its description', () => {
@@ -241,6 +242,32 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' ')
+      ])
+    )
+  })
+})
+
+
+describe("An almost-link (with whitespace between its content and URL) terminated early due to a space in its URL", () => {
+  it('can contain an unclosed paranthesis without affecting a link with a parenthesized URL that follows it', () => {
+    expect(Up.toAst('{sigh} [https://example.com/sad:( is a strange page] ... [anyway, go here instead] (https://example.com/happy)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new ActionNode([
+          new PlainTextNode('sigh')
+        ]),
+        new PlainTextNode(' '),
+        new SquareBracketedNode([
+          new PlainTextNode('['),
+          new LinkNode([
+            new PlainTextNode('example.com/sad:(')
+          ], 'https://example.com/sad:('),
+          new PlainTextNode(' is a strange page]')
+        ]),
+        new PlainTextNode(' ... '),
+        new LinkNode([
+          new PlainTextNode('anyway, go here instead'),
+        ], 'https://example.com/happy'
+        )
       ])
     )
   })
