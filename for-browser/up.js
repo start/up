@@ -1266,14 +1266,15 @@ var BRACKETS = [
 ];
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
 var BRACKET_END_PATTERNS = BRACKETS.map(function (bracket) { return bracket.endPattern; });
-var CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
+var CHARS_THAT_CAN_START_OR_END_CONVENTIONS = CollectionHelpers_1.concat([
     BRACKET_START_PATTERNS,
     BRACKET_END_PATTERNS,
     ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
-var CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'))));
-var CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_WHEN_OUTSIDE_A_NAKED_URL_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS)));
+var ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS = PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'));
+var CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS));
+var WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES = PatternPieces_1.SOME_WHITESPACE + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS.concat(PatternPieces_1.WHITESPACE_CHAR)));
 
 },{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
 "use strict";

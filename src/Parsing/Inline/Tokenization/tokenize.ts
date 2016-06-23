@@ -268,7 +268,8 @@ class Tokenizer {
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
   }
 
-  // This method exists purely for optimization.
+  // This method exists purely for optimization. It allows us to test our conventions against as few
+  // characters as possible. 
   private tryToBufferContentThatCannotTriggerAnyChanges(): boolean {
     return this.consumer.consume({
       pattern: CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN,
@@ -975,7 +976,7 @@ const BRACKET_START_PATTERNS =
 const BRACKET_END_PATTERNS =
   BRACKETS.map(bracket => bracket.endPattern)
 
-const CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION =
+const CHARS_THAT_CAN_START_OR_END_CONVENTIONS =
   concat([
     BRACKET_START_PATTERNS,
     BRACKET_END_PATTERNS,
@@ -984,17 +985,17 @@ const CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION =
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])
 
-const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN =
-  regExpStartingWith(atLeast(1,
-    either(
-      anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION),
-      // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
-      'h' + notFollowedBy('ttp' + optional('s') + '://'))))
+const ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS =
+  either(
+    anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_CONVENTIONS),
+    // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
+    'h' + notFollowedBy('ttp' + optional('s') + '://'))
 
-// Whitespace terminates naked URLs, but when outside a naked URL, whitespace can only trigger a tokenizer
-// change when followed by a start bracket (e.g. the start of a link URL, "linkified" convention URL, or
-// footnote).  
-const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_WHEN_OUTSIDE_A_NAKED_URL_PATTERN =
-  regExpStartingWith(
-    SOME_WHITESPACE + notFollowedBy(
-      anyCharFrom(BRACKET_START_PATTERNS)))
+const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN =
+  regExpStartingWith(atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS))
+
+// Normally, whitespace can only trigger a tokenizer change when followed by a start bracket (e.g. the start
+// of a link URL, "linkified" convention URL, or footnote).  
+const WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES =
+  SOME_WHITESPACE + notFollowedBy(
+    anyCharFrom(BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR)))
