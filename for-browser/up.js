@@ -881,7 +881,6 @@ var Tokenizer = (function () {
         var context = this.openContexts[contextIndex];
         var couldTransform = context.convention.onCloseFailIfCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
         if (!couldTransform) {
-            this.openContexts.splice(contextIndex);
             this.backtrackToBeforeContext(context);
             return false;
         }

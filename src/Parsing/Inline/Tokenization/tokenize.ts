@@ -377,7 +377,6 @@ class Tokenizer {
 
     if (!couldTransform) {
       // We couldn't transform, so it's time to fail.
-      this.openContexts.splice(contextIndex)
       this.backtrackToBeforeContext(context)
 
       return false
