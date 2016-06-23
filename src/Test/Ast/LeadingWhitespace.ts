@@ -70,13 +70,15 @@ Skeltals are white
     specify('Description list terms', () => {
       const text = `
  Charmander
+Charmeleon
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListItem([
-              new DescriptionTerm([new PlainTextNode('Charmander')])
+              new DescriptionTerm([new PlainTextNode('Charmander')]),
+              new DescriptionTerm([new PlainTextNode('Charmeleon')])
             ], new Description([
               new ParagraphNode([
                 new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
@@ -91,12 +93,20 @@ Skeltals are white
 
   context("This rule also applies inside outline conventions that can contain other outline conventions:", () => {
     specify('Ordered list items', () => {
-      expect(Up.toAst('1)  \t Hello, Lavender Town!')).to.be.eql(
+      const text = `
+1)  \t Hello, Lavender Town!
+
+ \t\t How are we today?`
+
+      expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
             new OrderedListItem([
               new ParagraphNode([
                 new PlainTextNode('Hello, Lavender Town!')
+              ]),
+              new ParagraphNode([
+                new PlainTextNode('How are we today?')
               ])
             ], 1)
           ])
@@ -105,12 +115,20 @@ Skeltals are white
     })
 
     specify('Unordered list items', () => {
-      expect(Up.toAst('*  \t Buy milk')).to.be.eql(
+      const text = `
+*  \t Buy milk.
+
+ \t\t Now.`
+
+      expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListItem([
               new ParagraphNode([
-                new PlainTextNode('Buy milk')
+                new PlainTextNode('Buy milk.')
+              ]),
+              new ParagraphNode([
+                new PlainTextNode('Now.')
               ])
             ])
           ])
@@ -121,7 +139,9 @@ Skeltals are white
     specify('Descriptions in a description list', () => {
       const text = `
 Charmander
-   \t Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+   \t Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
+   
+\t Does not evolve into Kadabra.`
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
@@ -131,6 +151,9 @@ Charmander
             ], new Description([
               new ParagraphNode([
                 new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              ]),
+              new ParagraphNode([
+                new PlainTextNode('Does not evolve into Kadabra.')
               ])
             ]))
           ])
