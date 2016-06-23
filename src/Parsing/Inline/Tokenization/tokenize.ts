@@ -689,7 +689,6 @@ class Tokenizer {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
         if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
-          // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
         }
@@ -754,7 +753,6 @@ class Tokenizer {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
         if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
-          // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
         }
