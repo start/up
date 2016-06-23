@@ -271,7 +271,7 @@ class Tokenizer {
   // This method exists purely for optimization.
   private tryToBufferContentThatCannotTriggerAnyChanges(): boolean {
     return this.consumer.consume({
-      pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
+      pattern: CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN,
       thenBeforeAdvancingTextIndex: match => { this.buffer += match }
     })
   }
@@ -967,9 +967,9 @@ const BRACKETS = [
   new Bracket('{', '}')
 ]
 
-// The following patterns represent every character that can start or end any convention.  
+// This constant (and the one below) exist purely for optimization.
 //
-// The "h" is for the start of naked URLs.
+// The "h" is for the start of naked URLs. 
 const CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION =
   concat([
     BRACKETS.map(bracket => bracket.startPattern),
@@ -978,6 +978,10 @@ const CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION =
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])
 
-const CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN =
+const CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN =
   regExpStartingWith(atLeast(1,
-    anyCharacterOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)))
+    either(
+      anyCharacterOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION),
+      // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
+      'h' + notFollowedBy('ttp' + optional('s') + '://')
+    )))

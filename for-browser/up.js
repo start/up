@@ -821,7 +821,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToBufferContentThatCannotTriggerAnyChanges = function () {
         var _this = this;
         return this.consumer.consume({
-            pattern: CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN,
+            pattern: CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN,
             thenBeforeAdvancingTextIndex: function (match) { _this.buffer += match; }
         });
     };
@@ -1264,13 +1264,13 @@ var BRACKETS = [
     new Bracket_1.Bracket('[', ']'),
     new Bracket_1.Bracket('{', '}')
 ];
-var CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
+var ANY_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
     BRACKETS.map(function (bracket) { return bracket.startPattern; }),
     BRACKETS.map(function (bracket) { return bracket.endPattern; }),
     ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
-var CONTENT_THAT_CANNOT_TRIGGER_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.anyCharacterOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION)));
+var CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.either(PatternHelpers_1.anyCharacterOtherThan(ANY_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'))));
 
 },{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
 "use strict";
