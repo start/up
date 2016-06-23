@@ -713,13 +713,6 @@ var Tokenizer = (function () {
                 });
             }
         }); });
-        this.bufferRawTextAndBacktrackIfThereIsWhitespace = function (context) {
-            if (WHITESPACE_CHAR_PATTERN.test(_this.consumer.currentChar)) {
-                _this.backtrackToBeforeContext(context);
-                return;
-            }
-            _this.bufferRawText();
-        };
         this.consumer = new InlineTextConsumer_1.InlineTextConsumer(entireText);
         this.configureConventions();
         this.tokenize();
@@ -1100,7 +1093,7 @@ var Tokenizer = (function () {
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: _this.bufferRawTextAndBacktrackIfThereIsWhitespace,
+            insteadOfTryingToCloseOuterContexts: function (context) { _this.bufferRawTextAndBacktrackIfThereIsWhitespace(context); },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
@@ -1143,7 +1136,7 @@ var Tokenizer = (function () {
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: _this.bufferRawTextAndBacktrackIfThereIsWhitespace,
+            insteadOfTryingToCloseOuterContexts: function (context) { _this.bufferRawTextAndBacktrackIfThereIsWhitespace(context); },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
@@ -1157,8 +1150,13 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.bufferRawText = function () {
         var _this = this;
-        return (this.rawBracketConventions.some(function (bracket) { return _this.tryToOpen(bracket); })
-            || this.bufferCurrentChar());
+        this.rawBracketConventions.some(function (bracket) { return _this.tryToOpen(bracket); })
+            || this.bufferCurrentChar();
+    };
+    Tokenizer.prototype.bufferRawTextAndBacktrackIfThereIsWhitespace = function (context) {
+        WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
+            ? this.backtrackToBeforeContext(context)
+            : this.bufferRawText();
     };
     Tokenizer.prototype.closeLinkifyingUrl = function (url) {
         var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });

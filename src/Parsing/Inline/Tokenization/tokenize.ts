@@ -693,7 +693,7 @@ class Tokenizer {
 
       failIfWhitespaceIsEnounteredBeforeClosing: true,
 
-      insteadOfTryingToCloseOuterContexts: this.bufferRawTextAndBacktrackIfThereIsWhitespace,
+      insteadOfTryingToCloseOuterContexts: (context) => { this.bufferRawTextAndBacktrackIfThereIsWhitespace(context) },
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -759,7 +759,7 @@ class Tokenizer {
 
       failIfWhitespaceIsEnounteredBeforeClosing: true,
 
-      insteadOfTryingToCloseOuterContexts: this.bufferRawTextAndBacktrackIfThereIsWhitespace,
+      insteadOfTryingToCloseOuterContexts: (context) => { this.bufferRawTextAndBacktrackIfThereIsWhitespace(context) },
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -775,21 +775,15 @@ class Tokenizer {
     }))
   }
 
-  private bufferRawText(): boolean {
-    return (
-      this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
-      || this.bufferCurrentChar())
+  private bufferRawText(): void {
+    this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
+      || this.bufferCurrentChar()
   }
-  
-  private bufferRawTextAndBacktrackIfThereIsWhitespace = (context: ConventionContext) => {
-    if (WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)) {
-      // If the URL has any whitespace, it's like the author didn't intend to produce a link. Let's
-      // backtrack.
-      this.backtrackToBeforeContext(context)
-      return
-    }
 
-    this.bufferRawText()
+  private bufferRawTextAndBacktrackIfThereIsWhitespace(context: ConventionContext): void {
+    WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
+      ? this.backtrackToBeforeContext(context)
+      : this.bufferRawText()
   }
 
   private closeLinkifyingUrl(url: string): void {
