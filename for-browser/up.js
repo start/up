@@ -821,7 +821,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToBufferContentThatCannotTriggerAnyChanges = function () {
         var _this = this;
         return this.consumer.consume({
-            pattern: CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN,
+            pattern: CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN,
             thenBeforeAdvancingTextIndex: function (match) { _this.buffer += match; }
         });
     };
@@ -1264,13 +1264,16 @@ var BRACKETS = [
     new Bracket_1.Bracket('[', ']'),
     new Bracket_1.Bracket('{', '}')
 ];
-var ANY_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
-    BRACKETS.map(function (bracket) { return bracket.startPattern; }),
-    BRACKETS.map(function (bracket) { return bracket.endPattern; }),
+var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
+var BRACKET_END_PATTERNS = BRACKETS.map(function (bracket) { return bracket.endPattern; });
+var CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION = CollectionHelpers_1.concat([
+    BRACKET_START_PATTERNS,
+    BRACKET_END_PATTERNS,
     ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
-var CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.either(PatternHelpers_1.anyCharacterOtherThan(ANY_CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'))));
+var CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'))));
+var CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_WHEN_OUTSIDE_A_NAKED_URL_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS)));
 
 },{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
 "use strict";
@@ -2090,7 +2093,7 @@ function tryToParseUnorderedList(args) {
 }
 exports.tryToParseUnorderedList = tryToParseUnorderedList;
 var BULLET_CHARS = ['*', '-', '+', '•'].map(function (char) { return PatternHelpers_1.escapeForRegex(char); });
-var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.anyCharacterOf(BULLET_CHARS) + PatternPieces_1.INLINE_WHITESPACE_CHAR);
+var BULLET_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.optional(' ') + PatternHelpers_1.anyCharFrom(BULLET_CHARS) + PatternPieces_1.INLINE_WHITESPACE_CHAR);
 
 },{"../../SyntaxNodes/UnorderedListItem":74,"../../SyntaxNodes/UnorderedListNode":75,"../PatternHelpers":33,"../PatternPieces":34,"../Patterns":35,"./LineConsumer":19,"./getOutlineNodes":20,"./getRemainingLinesOfListItem":21}],33:[function(require,module,exports){
 "use strict";
@@ -2134,14 +2137,14 @@ function notFollowedBy(pattern) {
     return "(?!" + pattern + ")";
 }
 exports.notFollowedBy = notFollowedBy;
-function anyCharacterOf(charPatterns) {
+function anyCharFrom(charPatterns) {
     return "[" + charPatterns.join('') + "]";
 }
-exports.anyCharacterOf = anyCharacterOf;
-function anyCharacterOtherThan(charPatterns) {
+exports.anyCharFrom = anyCharFrom;
+function anyCharOtherThan(charPatterns) {
     return "[^" + charPatterns.join('') + "]";
 }
-exports.anyCharacterOtherThan = anyCharacterOtherThan;
+exports.anyCharOtherThan = anyCharOtherThan;
 function escapeForRegex(text) {
     return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&');
 }
@@ -2178,7 +2181,7 @@ var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
 var INDENT = PatternHelpers_1.either('\t', PatternHelpers_1.exactly(2, PatternPieces_1.INLINE_WHITESPACE_CHAR));
 exports.INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
-var DIVIDER_STREAK_CHAR = PatternHelpers_1.anyCharacterOf(['#', '=', '-', '+', '~', '*', '^', '@', ':', '_'].map(PatternHelpers_1.escapeForRegex));
+var DIVIDER_STREAK_CHAR = PatternHelpers_1.anyCharFrom(['#', '=', '-', '+', '~', '*', '^', '@', ':', '_'].map(PatternHelpers_1.escapeForRegex));
 exports.DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));
 exports.BLANK_PATTERN = new RegExp(PatternHelpers_1.solely(''));
 exports.NON_BLANK_PATTERN = /\S/;

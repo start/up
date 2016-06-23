@@ -1,4 +1,4 @@
-import { anyCharacterOf, solely, either, exactly, streakOf, escapeForRegex, regExpStartingWith } from './PatternHelpers'
+import { anyCharFrom, solely, either, exactly, streakOf, escapeForRegex, regExpStartingWith } from './PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, ANY_WHITESPACE } from './PatternPieces'
 
 
@@ -9,7 +9,7 @@ export const INDENTED_PATTERN =
   regExpStartingWith(INDENT)
 
 const DIVIDER_STREAK_CHAR =
-  anyCharacterOf(
+  anyCharFrom(
     ['#', '=', '-', '+', '~', '*', '^', '@', ':', '_'].map(escapeForRegex))
 
 export const DIVIDER_STREAK_PATTERN = new RegExp(

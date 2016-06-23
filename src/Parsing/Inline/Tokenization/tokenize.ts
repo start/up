@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharacterOtherThan, capture } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharFrom, anyCharOtherThan, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -271,7 +271,7 @@ class Tokenizer {
   // This method exists purely for optimization.
   private tryToBufferContentThatCannotTriggerAnyChanges(): boolean {
     return this.consumer.consume({
-      pattern: CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN,
+      pattern: CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN,
       thenBeforeAdvancingTextIndex: match => { this.buffer += match }
     })
   }
@@ -967,21 +967,34 @@ const BRACKETS = [
   new Bracket('{', '}')
 ]
 
-// This constant (and the one below) exist purely for optimization.
-//
-// The "h" is for the start of naked URLs. 
+// This constants below exist only for optimization, allowing us to examine as little content as possible.
+
+const BRACKET_START_PATTERNS =
+  BRACKETS.map(bracket => bracket.startPattern)
+
+const BRACKET_END_PATTERNS =
+  BRACKETS.map(bracket => bracket.endPattern)
+
 const CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION =
   concat([
-    BRACKETS.map(bracket => bracket.startPattern),
-    BRACKETS.map(bracket => bracket.endPattern),
+    BRACKET_START_PATTERNS,
+    BRACKET_END_PATTERNS,
     ['*', '+', '\\'].map(escapeForRegex),
+    // The "h" is for the start of naked URLs. 
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])
 
-const CONTENT_THAT_NEVER_TRIGGERS_ANY_TOKENIZER_CHANGES_PATTERN =
+const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN =
   regExpStartingWith(atLeast(1,
     either(
-      anyCharacterOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION),
+      anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_ANY_CONVENTION),
       // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
-      'h' + notFollowedBy('ttp' + optional('s') + '://')
-    )))
+      'h' + notFollowedBy('ttp' + optional('s') + '://'))))
+
+// Whitespace terminates naked URLs, but when outside a naked URL, whitespace can only trigger a tokenizer
+// change when followed by a start bracket (e.g. the start of a link URL, "linkified" convention URL, or
+// footnote).  
+const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_WHEN_OUTSIDE_A_NAKED_URL_PATTERN =
+  regExpStartingWith(
+    SOME_WHITESPACE + notFollowedBy(
+      anyCharFrom(BRACKET_START_PATTERNS)))

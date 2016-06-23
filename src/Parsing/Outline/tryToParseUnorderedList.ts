@@ -3,7 +3,7 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
-import { optional, regExpStartingWith, anyCharacterOf, escapeForRegex } from '../PatternHelpers'
+import { optional, regExpStartingWith, anyCharFrom, escapeForRegex } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -68,4 +68,4 @@ const BULLET_CHARS =
 
 const BULLET_PATTERN =
   regExpStartingWith(
-    optional(' ') + anyCharacterOf(BULLET_CHARS) + INLINE_WHITESPACE_CHAR)
+    optional(' ') + anyCharFrom(BULLET_CHARS) + INLINE_WHITESPACE_CHAR)

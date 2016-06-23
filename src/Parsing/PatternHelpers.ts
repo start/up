@@ -34,11 +34,11 @@ export function notFollowedBy(pattern: string): string {
   return `(?!${pattern})`
 }
 
-export function anyCharacterOf(charPatterns: string[]): string {
+export function anyCharFrom(charPatterns: string[]): string {
   return `[${charPatterns.join('')}]`
 }
 
-export function anyCharacterOtherThan(charPatterns: string[]): string {
+export function anyCharOtherThan(charPatterns: string[]): string {
   return `[^${charPatterns.join('')}]`
 }
 
