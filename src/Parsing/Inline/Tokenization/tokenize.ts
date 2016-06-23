@@ -695,7 +695,7 @@ class Tokenizer {
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText },
+      insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText() },
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {

@@ -1097,7 +1097,7 @@ var Tokenizer = (function () {
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: function () { _this.bufferRawText; },
+            insteadOfTryingToCloseOuterContexts: function () { _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
