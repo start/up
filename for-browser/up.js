@@ -664,6 +664,7 @@ function tokenize(text, config) {
     return new Tokenizer(textWithoutLeadingWhitespace, config).tokens;
 }
 exports.tokenize = tokenize;
+var LEADING_WHITESPACE_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE);
 var CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
     RichConventions_1.PARENTHESIZED_CONVENTION,
     RichConventions_1.SQUARE_BRACKETED_CONVENTION,
@@ -1064,10 +1065,9 @@ var Tokenizer = (function () {
             case URL_HASH_MARK:
                 return this.config.settings.baseForUrlsStartingWithHashMark + url;
         }
-        if (!URL_SCHEME_PATTERN.test(url)) {
-            return this.config.settings.defaultUrlScheme + url;
-        }
-        return url;
+        return (URL_SCHEME_PATTERN.test(url)
+            ? url
+            : this.config.settings.defaultUrlScheme + url);
     };
     Tokenizer.prototype.insertPlainTextTokenAtContextStart = function (text, context) {
         this.insertToken({
@@ -1100,7 +1100,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                if (isProbablyNotIntendedToBeAUrl(url)) {
+                if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
                     _this.backtrackToBeforeContext(context);
                     return;
                 }
@@ -1142,7 +1142,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                if (isProbablyNotIntendedToBeAUrl(url)) {
+                if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
                     _this.backtrackToBeforeContext(context);
                     return;
                 }
@@ -1251,7 +1251,6 @@ var Tokenizer = (function () {
     };
     return Tokenizer;
 }());
-var LEADING_WHITESPACE_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE);
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
 var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.everyOptional(PatternHelpers_1.either.apply(void 0, [PatternPieces_1.LETTER, PatternPieces_1.DIGIT].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
@@ -1259,12 +1258,7 @@ var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var URL_SLASH = '/';
 var URL_HASH_MARK = '#';
 var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK);
-function isProbablyNotIntendedToBeAUrl(url) {
-    return (CONSISTING_ONLY_OF_A_URL_PREFIX_PATTERN.test(url)
-        || URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url));
-}
-var CONSISTING_ONLY_OF_A_URL_PREFIX_PATTERN = new RegExp(PatternHelpers_1.solely(EXPLICIT_URL_PREFIX));
-var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
+var PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN = new RegExp(PatternHelpers_1.solely(PatternHelpers_1.either(EXPLICIT_URL_PREFIX, URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT))));
 var BRACKETS = [
     new Bracket_1.Bracket('(', ')'),
     new Bracket_1.Bracket('[', ']'),

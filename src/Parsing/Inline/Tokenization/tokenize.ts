@@ -34,6 +34,9 @@ export function tokenize(text: string, config: UpConfig): Token[] {
   return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
 }
 
+const LEADING_WHITESPACE_PATTERN =
+  regExpStartingWith(ANY_WHITESPACE)
+
 
 // When tokenizing a link, we always start with one of the following conventions. If followed by a
 // (valid!) bracketed URL, the original convention is replaced by a link.
@@ -617,11 +620,10 @@ class Tokenizer {
         return this.config.settings.baseForUrlsStartingWithHashMark + url
     }
 
-    if (!URL_SCHEME_PATTERN.test(url)) {
-      return this.config.settings.defaultUrlScheme + url
-    }
-
-    return url
+    return (
+      URL_SCHEME_PATTERN.test(url)
+        ? url
+        : this.config.settings.defaultUrlScheme + url)
   }
 
   private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {
@@ -686,7 +688,7 @@ class Tokenizer {
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (isProbablyNotIntendedToBeAUrl(url)) {
+        if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
           // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
@@ -751,7 +753,7 @@ class Tokenizer {
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (isProbablyNotIntendedToBeAUrl(url)) {
+        if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
           // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
@@ -914,10 +916,6 @@ class Tokenizer {
 }
 
 
-
-const LEADING_WHITESPACE_PATTERN =
-  regExpStartingWith(ANY_WHITESPACE)
-
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
@@ -936,12 +934,12 @@ const URL_SCHEME =
 // 1. Applying URL config settings
 // 2. Determining whether a bracketed URL is actually a URL
 //
-// Naked URLs don't use this pattern. They must only start with "http://"" or "https://".
+// Note: Naked URLs don't use this pattern. They must only start with "http://"" or "https://".
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
 
 // For the same two reasons, it's important for us to determine whether a URL starts with a slash or a
-// hash mark...
+// hash mark.
 const URL_SLASH = '/'
 const URL_HASH_MARK = '#'
 
@@ -951,29 +949,19 @@ const EXPLICIT_URL_PREFIX =
     URL_SLASH,
     URL_HASH_MARK)
 
-
-function isProbablyNotIntendedToBeAUrl(url: string): boolean {
-  return (
-    // If there's nothing after the URL prefix, there's no meaningful URL, so it's unlikely the author was
-    // trying to link to one.
-    CONSISTING_ONLY_OF_A_URL_PREFIX_PATTERN.test(url)
-
-    // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more information,
-    // see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method.
-    || URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url))
-}
-
-const CONSISTING_ONLY_OF_A_URL_PREFIX_PATTERN =
+const PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN =
   new RegExp(
-    solely(EXPLICIT_URL_PREFIX))
+    solely(
+      either(
+        // If the "url" is consists solely of a URL prefix, the author almost certainly did not intend
+        // this to be a URL.
+        EXPLICIT_URL_PREFIX,
+        // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more
+        // information, see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions`
+        //  method.
+        URL_HASH_MARK + atLeast(1, DIGIT))))
 
-const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
-  new RegExp(
-    solely(URL_HASH_MARK + atLeast(1, DIGIT)))
-
-
-
-// Many of our conventions rely on brackets. Here they are!
+// Many of our conventions incorporate brackets. Here are the ones we recognize:
 const BRACKETS = [
   new Bracket('(', ')'),
   new Bracket('[', ']'),
