@@ -10,7 +10,7 @@ export function optional(pattern: string): string {
   return group(pattern) + '?'
 }
 
-export function all(pattern: string): string {
+export function everyOptional(pattern: string): string {
   return group(pattern) + '*'
 }
 
@@ -53,5 +53,5 @@ export function regExpEndingWith(pattern: string, flags?: string): RegExp {
 import { INLINE_WHITESPACE_CHAR } from './PatternPieces'
 
 export function solely(pattern: string) {
-  return '^' + pattern + all(INLINE_WHITESPACE_CHAR) + '$'
+  return '^' + pattern + everyOptional(INLINE_WHITESPACE_CHAR) + '$'
 }

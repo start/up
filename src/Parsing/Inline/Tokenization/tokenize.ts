@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, all, either, optional, atLeast, exactly, anyCharacterOtherThan, capture } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, anyCharacterOtherThan, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -686,7 +686,7 @@ class Tokenizer {
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+        if (isProbablyNotIntendedToBeAUrl(url)) {
           // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
@@ -756,7 +756,7 @@ class Tokenizer {
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+        if (isProbablyNotIntendedToBeAUrl(url)) {
           // If the URL was something like "#10", it's quite likely the author didn't intend to produce a link. 
           this.backtrackToBeforeContext(context)
           return
@@ -919,14 +919,24 @@ class Tokenizer {
 }
 
 
+function isProbablyNotIntendedToBeAUrl(url: string): boolean {
+  return (
+    !url.replace(EXPLICIT_URL_PREFIX_PATTERN, '').length
+    || URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url))
+}
+
+
 const LEADING_WHITESPACE_PATTERN =
   regExpStartingWith(ANY_WHITESPACE)
 
+const WHITESPACE_CHAR_PATTERN =
+  new RegExp(WHITESPACE_CHAR)
+
 const URL_SCHEME_NAME =
-  LETTER + all(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
+  LETTER + everyOptional(either(LETTER, DIGIT, '-', escapeForRegex('+'), escapeForRegex('.')))
 
 const URL_SCHEME =
-  URL_SCHEME_NAME + ':' + optional('//')
+  URL_SCHEME_NAME + ':' + everyOptional('/')
 
 // Checking for a URL scheme is important when:
 //
@@ -938,18 +948,22 @@ const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
 
 // For the same two reasons, it's important for us to determine whether a URL starts with a slash or a
-// hash mark.
+// hash mark...
 const URL_SLASH = '/'
 const URL_HASH_MARK = '#'
+
+const EXPLICIT_URL_PREFIX_PATTERN =
+  regExpStartingWith(
+    either(
+      URL_SCHEME,
+      URL_SLASH,
+      URL_HASH_MARK))
 
 // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more information,
 // see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method.
 const URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN =
   new RegExp(
     solely(URL_HASH_MARK + atLeast(1, DIGIT)))
-
-const WHITESPACE_CHAR_PATTERN =
-  new RegExp(WHITESPACE_CHAR)
 
 
 // Many of our conventions rely on brackets. Here they are!

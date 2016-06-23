@@ -1100,7 +1100,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+                if (isProbablyNotIntendedToBeAUrl(url)) {
                     _this.backtrackToBeforeContext(context);
                     return;
                 }
@@ -1142,7 +1142,7 @@ var Tokenizer = (function () {
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                if (URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url)) {
+                if (isProbablyNotIntendedToBeAUrl(url)) {
                     _this.backtrackToBeforeContext(context);
                     return;
                 }
@@ -1251,14 +1251,19 @@ var Tokenizer = (function () {
     };
     return Tokenizer;
 }());
+function isProbablyNotIntendedToBeAUrl(url) {
+    return (!url.replace(EXPLICIT_URL_PREFIX_PATTERN, '').length
+        || URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN.test(url));
+}
 var LEADING_WHITESPACE_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE);
-var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.all(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')));
-var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.optional('//');
+var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
+var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.everyOptional(PatternHelpers_1.either(PatternPieces_1.LETTER, PatternPieces_1.DIGIT, '-', PatternHelpers_1.escapeForRegex('+'), PatternHelpers_1.escapeForRegex('.')));
+var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var URL_SLASH = '/';
 var URL_HASH_MARK = '#';
+var EXPLICIT_URL_PREFIX_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK));
 var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
-var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
 var BRACKETS = [
     new Bracket_1.Bracket('(', ')'),
     new Bracket_1.Bracket('[', ']'),
@@ -2104,10 +2109,10 @@ function optional(pattern) {
     return group(pattern) + '?';
 }
 exports.optional = optional;
-function all(pattern) {
+function everyOptional(pattern) {
     return group(pattern) + '*';
 }
-exports.all = all;
+exports.everyOptional = everyOptional;
 function atLeast(count, pattern) {
     return group(pattern) + ("{" + count + ",}");
 }
@@ -2150,7 +2155,7 @@ function regExpEndingWith(pattern, flags) {
 exports.regExpEndingWith = regExpEndingWith;
 var PatternPieces_1 = require('./PatternPieces');
 function solely(pattern) {
-    return '^' + pattern + all(PatternPieces_1.INLINE_WHITESPACE_CHAR) + '$';
+    return '^' + pattern + everyOptional(PatternPieces_1.INLINE_WHITESPACE_CHAR) + '$';
 }
 exports.solely = solely;
 
@@ -2159,7 +2164,7 @@ exports.solely = solely;
 var PatternHelpers_1 = require('./PatternHelpers');
 exports.INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
 exports.WHITESPACE_CHAR = '\\s';
-exports.ANY_WHITESPACE = PatternHelpers_1.all(exports.WHITESPACE_CHAR);
+exports.ANY_WHITESPACE = PatternHelpers_1.everyOptional(exports.WHITESPACE_CHAR);
 exports.SOME_WHITESPACE = PatternHelpers_1.atLeast(1, exports.WHITESPACE_CHAR);
 exports.LINE_BREAK = '\n';
 exports.INTEGER = '\\d+';
