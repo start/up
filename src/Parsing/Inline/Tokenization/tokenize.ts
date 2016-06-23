@@ -30,7 +30,7 @@ import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 export function tokenize(text: string, config: UpConfig): Token[] {
   const textWithoutLeadingWhitespace =
     text.replace(LEADING_WHITESPACE_PATTERN, '')
-  
+
   return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
 }
 
@@ -697,14 +697,9 @@ class Tokenizer {
     }))
   }
 
-  // This pattern captures the URL prefix.
   private getBracketedUrlFollowingWhitespacePattern(bracket: Bracket): RegExp {
     return regExpStartingWith(
-      SOME_WHITESPACE + bracket.startPattern + capture(
-        either(
-          URL_SCHEME,
-          URL_SLASH,
-          URL_HASH_MARK)))
+      SOME_WHITESPACE + bracket.startPattern + capture(EXPLICIT_URL_PREFIX))
   }
 
   private closeLink(url: string) {
@@ -952,12 +947,14 @@ const URL_SCHEME_PATTERN =
 const URL_SLASH = '/'
 const URL_HASH_MARK = '#'
 
+const EXPLICIT_URL_PREFIX =
+  either(
+    URL_SCHEME,
+    URL_SLASH,
+    URL_HASH_MARK)
+
 const EXPLICIT_URL_PREFIX_PATTERN =
-  regExpStartingWith(
-    either(
-      URL_SCHEME,
-      URL_SLASH,
-      URL_HASH_MARK))
+  regExpStartingWith(EXPLICIT_URL_PREFIX)
 
 // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more information,
 // see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions` method.

@@ -1109,7 +1109,7 @@ var Tokenizer = (function () {
         }); });
     };
     Tokenizer.prototype.getBracketedUrlFollowingWhitespacePattern = function (bracket) {
-        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK)));
+        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(EXPLICIT_URL_PREFIX));
     };
     Tokenizer.prototype.closeLink = function (url) {
         var originalEndToken = CollectionHelpers_1.last(this.tokens);
@@ -1262,7 +1262,8 @@ var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var URL_SLASH = '/';
 var URL_HASH_MARK = '#';
-var EXPLICIT_URL_PREFIX_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK));
+var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK);
+var EXPLICIT_URL_PREFIX_PATTERN = PatternHelpers_1.regExpStartingWith(EXPLICIT_URL_PREFIX);
 var URL_FRAGMENT_INDENTIFIER_THAT_IS_LIKELY_JUST_A_NUMBER_PATTERN = new RegExp(PatternHelpers_1.solely(URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT)));
 var BRACKETS = [
     new Bracket_1.Bracket('(', ')'),
