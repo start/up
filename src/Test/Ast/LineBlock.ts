@@ -378,7 +378,7 @@ You're in for a fright`
     const text = `
 1234 Spooky Street
 Pepe, PA 17101
- \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t 
+ [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t 
 Roses are red
 Skeltals are white
 If you stay here

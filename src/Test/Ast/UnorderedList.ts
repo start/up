@@ -332,7 +332,9 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           new UnorderedListItem([
             new LineBlockNode([
               new Line([
-                new PlainTextNode('Roses are red'),
+                new PlainTextNode('Roses are red')
+              ]),
+              new Line([
                 new PlainTextNode('Violets are blue')
               ])
             ]),
@@ -346,7 +348,9 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           new UnorderedListItem([
             new LineBlockNode([
               new Line([
-                new PlainTextNode('1234 Spooky Street'),
+                new PlainTextNode('1234 Spooky Street')
+              ]),
+              new Line([
                 new PlainTextNode('Pepe, PA 17101')
               ])
             ]),

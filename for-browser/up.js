@@ -2172,7 +2172,7 @@ exports.DIGIT = '\\d';
 "use strict";
 var PatternHelpers_1 = require('./PatternHelpers');
 var PatternPieces_1 = require('./PatternPieces');
-var INDENT = PatternHelpers_1.either('  ', '\t');
+var INDENT = PatternHelpers_1.either('\t', PatternHelpers_1.exactly(2, PatternPieces_1.INLINE_WHITESPACE_CHAR));
 exports.INDENTED_PATTERN = PatternHelpers_1.regExpStartingWith(INDENT);
 var DIVIDER_STREAK_CHAR = PatternHelpers_1.anyCharacterOf(['#', '=', '-', '+', '~', '*', '^', '@', ':', '_'].map(PatternHelpers_1.escapeForRegex));
 exports.DIVIDER_STREAK_PATTERN = new RegExp(PatternHelpers_1.streakOf(DIVIDER_STREAK_CHAR + PatternPieces_1.ANY_WHITESPACE));

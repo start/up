@@ -1,9 +1,9 @@
-import { anyCharacterOf, solely, either, streakOf, escapeForRegex, regExpStartingWith } from './PatternHelpers'
-import { ANY_WHITESPACE } from './PatternPieces'
+import { anyCharacterOf, solely, either, exactly, streakOf, escapeForRegex, regExpStartingWith } from './PatternHelpers'
+import { INLINE_WHITESPACE_CHAR, ANY_WHITESPACE } from './PatternPieces'
 
 
 const INDENT =
-  either('  ', '\t')
+  either('\t', exactly(2, INLINE_WHITESPACE_CHAR))
 
 export const INDENTED_PATTERN =
   regExpStartingWith(INDENT)
