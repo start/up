@@ -298,8 +298,9 @@ class Tokenizer {
         return this.closeOrUndoContext({ atIndex: i })
       }
 
-      if (this.shouldBacktrackToBeforeContext({ belongingToContextAtIndex: i })) {
-
+      if (this.shouldBacktrackToBeforeContext(openContext)) {
+        this.backtrackToBeforeContext(openContext)
+        return true
       }
 
       if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
@@ -310,12 +311,9 @@ class Tokenizer {
     return this.tryToCloseAnyRaisedVoices()
   }
 
-  private shouldBacktrackToBeforeContext(args: { belongingToContextAtIndex: number }): boolean {
-    const contextIndex = args.belongingToContextAtIndex
-    const { convention } = this.openContexts[contextIndex]
-
+  private shouldBacktrackToBeforeContext(context: ConventionContext): boolean {
     return (
-      convention.failIfWhitespaceIsEnounteredBeforeClosing
+      context.convention.failIfWhitespaceIsEnounteredBeforeClosing
       && WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
     )
   }
@@ -551,12 +549,11 @@ class Tokenizer {
     // into a different convention. If it fails once, we move on. This logic is subject to change,
     // but for now, because all of our "post-transformation" conventions have incompatible start
     // patterns, there's no point in trying again.
-    const hasFailedAfterTransitioning = (
+    const hasAlreadyFailedAfterTransitioning =
       conventionsThisOneTransformTo
       && conventionsThisOneTransformTo.some(convention => this.failedConventionTracker.hasFailed(convention, textIndex))
-    )
 
-    if (hasFailedAfterTransitioning) {
+    if (hasAlreadyFailedAfterTransitioning) {
       return false
     }
 
@@ -698,8 +695,7 @@ class Tokenizer {
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failIfWhitespaceIsEnounteredBeforeClosing: true,
-
-      insteadOfTryingToCloseOuterContexts: (context) => { this.bufferRawTextAndBacktrackIfThereIsWhitespace(context) },
+      insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText },
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -764,8 +760,7 @@ class Tokenizer {
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failIfWhitespaceIsEnounteredBeforeClosing: true,
-
-      insteadOfTryingToCloseOuterContexts: (context) => { this.bufferRawTextAndBacktrackIfThereIsWhitespace(context) },
+      insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText() },
       closeInnerContextsWhenClosing: true,
 
       onClose: (context) => {
@@ -784,12 +779,6 @@ class Tokenizer {
   private bufferRawText(): void {
     this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
       || this.bufferCurrentChar()
-  }
-
-  private bufferRawTextAndBacktrackIfThereIsWhitespace(context: ConventionContext): void {
-    WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
-      ? this.backtrackToBeforeContext(context)
-      : this.bufferRawText()
   }
 
   private closeLinkifyingUrl(url: string): void {

@@ -830,7 +830,9 @@ var Tokenizer = (function () {
             if (this.shouldCloseContext(openContext)) {
                 return this.closeOrUndoContext({ atIndex: i });
             }
-            if (this.shouldBacktrackToBeforeContext({ belongingToContextAtIndex: i })) {
+            if (this.shouldBacktrackToBeforeContext(openContext)) {
+                this.backtrackToBeforeContext(openContext);
+                return true;
             }
             if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
                 return true;
@@ -838,10 +840,8 @@ var Tokenizer = (function () {
         }
         return this.tryToCloseAnyRaisedVoices();
     };
-    Tokenizer.prototype.shouldBacktrackToBeforeContext = function (args) {
-        var contextIndex = args.belongingToContextAtIndex;
-        var convention = this.openContexts[contextIndex].convention;
-        return (convention.failIfWhitespaceIsEnounteredBeforeClosing
+    Tokenizer.prototype.shouldBacktrackToBeforeContext = function (context) {
+        return (context.convention.failIfWhitespaceIsEnounteredBeforeClosing
             && WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar));
     };
     Tokenizer.prototype.shouldCloseContext = function (context) {
@@ -1004,9 +1004,9 @@ var Tokenizer = (function () {
         var _this = this;
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
         var conventionsThisOneTransformTo = convention.onCloseFailIfCannotTranformInto;
-        var hasFailedAfterTransitioning = (conventionsThisOneTransformTo
-            && conventionsThisOneTransformTo.some(function (convention) { return _this.failedConventionTracker.hasFailed(convention, textIndex); }));
-        if (hasFailedAfterTransitioning) {
+        var hasAlreadyFailedAfterTransitioning = conventionsThisOneTransformTo
+            && conventionsThisOneTransformTo.some(function (convention) { return _this.failedConventionTracker.hasFailed(convention, textIndex); });
+        if (hasAlreadyFailedAfterTransitioning) {
             return false;
         }
         var onlyOpenIfDirectlyFollowing = convention.onlyOpenIfDirectlyFollowing;
@@ -1097,7 +1097,7 @@ var Tokenizer = (function () {
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: function (context) { _this.bufferRawTextAndBacktrackIfThereIsWhitespace(context); },
+            insteadOfTryingToCloseOuterContexts: function () { _this.bufferRawText; },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
@@ -1140,7 +1140,7 @@ var Tokenizer = (function () {
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: function (context) { _this.bufferRawTextAndBacktrackIfThereIsWhitespace(context); },
+            insteadOfTryingToCloseOuterContexts: function () { _this.bufferRawText(); },
             closeInnerContextsWhenClosing: true,
             onClose: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
@@ -1156,11 +1156,6 @@ var Tokenizer = (function () {
         var _this = this;
         this.rawBracketConventions.some(function (bracket) { return _this.tryToOpen(bracket); })
             || this.bufferCurrentChar();
-    };
-    Tokenizer.prototype.bufferRawTextAndBacktrackIfThereIsWhitespace = function (context) {
-        WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
-            ? this.backtrackToBeforeContext(context)
-            : this.bufferRawText();
     };
     Tokenizer.prototype.closeLinkifyingUrl = function (url) {
         var linkEndToken = new Token_1.Token({ kind: RichConventions_1.LINK_CONVENTION.endTokenKind, value: url });
