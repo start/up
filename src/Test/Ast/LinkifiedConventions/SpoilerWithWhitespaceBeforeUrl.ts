@@ -229,6 +229,26 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 })
 
 
+describe('If there is nothing but whitspace between a spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
+  it('the SPOILER convention is not linkified', () => {
+    expect(Up.toAst('[SPOILER: something terrible]  \\  (https://example.com)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('something terrible')
+        ]),
+        new PlainTextNode('    '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')')
+        ])
+      ]))
+  })
+})
+
+
 describe("A spoiler's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     expectEveryCombinationOfBrackets({
