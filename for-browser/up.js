@@ -694,13 +694,12 @@ var Tokenizer = (function () {
         this.mediaUrlConventions = this.getMediaUrlConventions();
         this.nakedUrlConvention = {
             startPattern: PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://'),
-            endPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.WHITESPACE_CHAR),
+            isCutShortByWhitespace: true,
             flushBufferToPlainTextTokenBeforeOpening: true,
             onOpen: function (urlScheme) {
                 _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlSchemeAndStart, value: urlScheme });
             },
             insteadOfTryingToOpenUsualConventions: function () { return _this.bufferRawText(); },
-            leaveEndPatternForAnotherConventionToConsume: true,
             onCloseFlushBufferTo: TokenKind_1.TokenKind.NakedUrlAfterSchemeAndEnd,
             closeInnerContextsWhenClosing: true,
             resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
@@ -842,19 +841,18 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.shouldBacktrackToBeforeContext = function (context) {
         return (context.convention.failIfWhitespaceIsEnounteredBeforeClosing
-            && WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar));
+            && this.isCurrentCharWhitespace());
+    };
+    Tokenizer.prototype.isCurrentCharWhitespace = function () {
+        return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar);
     };
     Tokenizer.prototype.shouldCloseContext = function (context) {
-        var _this = this;
         var convention = context.convention;
-        return this.consumer.consume({
-            pattern: convention.endPattern,
-            thenBeforeAdvancingTextIndex: function (match) {
-                if (convention.leaveEndPatternForAnotherConventionToConsume) {
-                    _this.consumer.textIndex -= match.length;
-                }
-            }
-        });
+        if (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace()) {
+            return true;
+        }
+        return (convention.endPattern
+            && this.consumer.consume({ pattern: convention.endPattern }));
     };
     Tokenizer.prototype.closeOrUndoContext = function (args) {
         var contextIndex = args.atIndex;

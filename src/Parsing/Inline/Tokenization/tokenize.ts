@@ -106,7 +106,7 @@ class Tokenizer {
   // convention contains a naked URL.
   private nakedUrlConvention: TokenizableConvention = {
     startPattern: regExpStartingWith('http' + optional('s') + '://'),
-    endPattern: regExpStartingWith(WHITESPACE_CHAR),
+    isCutShortByWhitespace: true,
 
     flushBufferToPlainTextTokenBeforeOpening: true,
 
@@ -116,7 +116,6 @@ class Tokenizer {
 
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
 
-    leaveEndPatternForAnotherConventionToConsume: true,
     onCloseFlushBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
     closeInnerContextsWhenClosing: true,
 
@@ -314,21 +313,24 @@ class Tokenizer {
   private shouldBacktrackToBeforeContext(context: ConventionContext): boolean {
     return (
       context.convention.failIfWhitespaceIsEnounteredBeforeClosing
-      && WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
+      && this.isCurrentCharWhitespace()
     )
+  }
+
+  private isCurrentCharWhitespace(): boolean {
+    return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
   }
 
   private shouldCloseContext(context: ConventionContext): boolean {
     const { convention } = context
 
-    return this.consumer.consume({
-      pattern: convention.endPattern,
-      thenBeforeAdvancingTextIndex: match => {
-        if (convention.leaveEndPatternForAnotherConventionToConsume) {
-          this.consumer.textIndex -= match.length
-        }
-      }
-    })
+    if (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace()) {
+      return true
+    }
+
+    return (
+      convention.endPattern
+      && this.consumer.consume({ pattern: convention.endPattern }))
   }
 
   // This method returns true if the context was able to be closed.
