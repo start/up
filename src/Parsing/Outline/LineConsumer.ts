@@ -8,28 +8,28 @@ export class LineConsumer {
   constructor(private entireText: string) {
     this.setTextIndex(0)
   }
-  
+
   get textIndex(): number {
     return this._textIndex
   }
-  
+
   private setTextIndex(value: number): void {
     this._textIndex = value
-    this._remainingText = this.entireText.slice(this.textIndex) 
+    this._remainingText = this.entireText.slice(this.textIndex)
   }
-  
+
   get remainingText(): string {
     return this._remainingText
   }
 
   advanceTextIndex(length: number): void {
-    this.setTextIndex(this.textIndex + length) 
+    this.setTextIndex(this.textIndex + length)
   }
 
   reachedEndOfText(): boolean {
     return this.textIndex >= this.entireText.length
   }
-  
+
   consume(
     args: {
       linePattern?: RegExp,
@@ -42,23 +42,22 @@ export class LineConsumer {
     }
 
     const { linePattern, then } = args
+    const { entireText, textIndex } = this
 
     let fullLine: string
     let lineWithoutTerminatingLineBreak: string
 
     // First, let's find the end of the current line
-    for (let i = this.textIndex; i < this.entireText.length; i++) {
-      const char = this.entireText[i]
-
+    for (let i = textIndex; i < entireText.length; i++) {
       // Escaped line breaks don't end lines
-      if (char === ESCAPER_CHAR) {
+      if (ESCAPER_CHAR === entireText[i]) {
         i++
         continue
       }
 
-      if (char === INPUT_LINE_BREAK) {
-        fullLine = this.entireText.substring(this.textIndex, i + 1)
-        lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
+      if (INPUT_LINE_BREAK === entireText.substr(i, INPUT_LINE_BREAK_LENGTH)) {
+        fullLine = entireText.substring(textIndex, i + INPUT_LINE_BREAK_LENGTH)
+        lineWithoutTerminatingLineBreak = fullLine.slice(0, -INPUT_LINE_BREAK_LENGTH)
         break
       }
     }
@@ -77,7 +76,7 @@ export class LineConsumer {
         return false
       }
 
-      [ , ...captures] = results
+      [, ...captures] = results
     }
 
     if (args.if && !args.if(lineWithoutTerminatingLineBreak, ...captures)) {
@@ -93,6 +92,10 @@ export class LineConsumer {
     return true
   }
 }
+
+
+const INPUT_LINE_BREAK_LENGTH =
+  INPUT_LINE_BREAK.length
 
 
 export interface ShouldConsumeLine {

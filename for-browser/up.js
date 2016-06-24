@@ -1515,17 +1515,17 @@ var LineConsumer = (function () {
             return false;
         }
         var linePattern = args.linePattern, then = args.then;
+        var _a = this, entireText = _a.entireText, textIndex = _a.textIndex;
         var fullLine;
         var lineWithoutTerminatingLineBreak;
-        for (var i = this.textIndex; i < this.entireText.length; i++) {
-            var char = this.entireText[i];
-            if (char === Strings_1.ESCAPER_CHAR) {
+        for (var i = textIndex; i < entireText.length; i++) {
+            if (Strings_1.ESCAPER_CHAR === entireText[i]) {
                 i++;
                 continue;
             }
-            if (char === Strings_1.INPUT_LINE_BREAK) {
-                fullLine = this.entireText.substring(this.textIndex, i + 1);
-                lineWithoutTerminatingLineBreak = fullLine.slice(0, -1);
+            if (Strings_1.INPUT_LINE_BREAK === entireText.substr(i, INPUT_LINE_BREAK_LENGTH)) {
+                fullLine = entireText.substring(textIndex, i + INPUT_LINE_BREAK_LENGTH);
+                lineWithoutTerminatingLineBreak = fullLine.slice(0, -INPUT_LINE_BREAK_LENGTH);
                 break;
             }
         }
@@ -1552,6 +1552,7 @@ var LineConsumer = (function () {
     return LineConsumer;
 }());
 exports.LineConsumer = LineConsumer;
+var INPUT_LINE_BREAK_LENGTH = Strings_1.INPUT_LINE_BREAK.length;
 
 },{"../Strings":36}],20:[function(require,module,exports){
 "use strict";
