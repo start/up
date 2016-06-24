@@ -100,5 +100,5 @@ export interface ShouldConsumeLine {
 }
 
 export interface OnConsume {
-  (text: string, ...captures: string[]): void
+  (line: string, ...captures: string[]): void
 }
