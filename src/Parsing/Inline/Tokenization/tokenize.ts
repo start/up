@@ -225,9 +225,14 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    while (!this.isDone()) {
-      this.tryToBufferContentThatCannotTriggerAnyChanges()
-        || this.tryToCollectEscapedChar()
+    while (true) {
+      this.bufferContentThatCannotTriggerAnyChanges()
+
+      if (this.isDone()) {
+        break
+      }
+
+      this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
         || this.tryToOpenAnyConvention()
@@ -276,8 +281,8 @@ class Tokenizer {
 
   // This method exists purely for optimization. It allows us to test our conventions against as few
   // characters as possible. 
-  private tryToBufferContentThatCannotTriggerAnyChanges(): boolean {
-    return this.consumer.consume({
+  private bufferContentThatCannotTriggerAnyChanges(): void {
+    this.consumer.consume({
       pattern: CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN,
       thenBeforeAdvancingTextIndex: match => { this.buffer += match }
     })

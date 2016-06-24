@@ -778,9 +778,12 @@ var Tokenizer = (function () {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     };
     Tokenizer.prototype.tokenize = function () {
-        while (!this.isDone()) {
-            this.tryToBufferContentThatCannotTriggerAnyChanges()
-                || this.tryToCollectEscapedChar()
+        while (true) {
+            this.bufferContentThatCannotTriggerAnyChanges();
+            if (this.isDone()) {
+                break;
+            }
+            this.tryToCollectEscapedChar()
                 || this.tryToCloseAnyConvention()
                 || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
                 || this.tryToOpenAnyConvention()
@@ -815,9 +818,9 @@ var Tokenizer = (function () {
         this.consumer.advanceTextIndex(1);
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
-    Tokenizer.prototype.tryToBufferContentThatCannotTriggerAnyChanges = function () {
+    Tokenizer.prototype.bufferContentThatCannotTriggerAnyChanges = function () {
         var _this = this;
-        return this.consumer.consume({
+        this.consumer.consume({
             pattern: CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN,
             thenBeforeAdvancingTextIndex: function (match) { _this.buffer += match; }
         });
