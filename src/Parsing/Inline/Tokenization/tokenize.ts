@@ -101,9 +101,9 @@ class Tokenizer {
 
   // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
   //
-  // Most of our conventions are just thrown in the `conventions` collection (and this one is, too),
-  // but we keep a direct reference to the naked URL convention to help us determine whether another
-  // convention contains a naked URL.
+  // Most of our conventions are just thrown in the `conventions` collection (and this one is, too), but we
+  // keep a direct reference to the naked URL convention to help us determine whether another convention
+  // contains a naked URL.
   private nakedUrlConvention: TokenizableConvention = {
     startPattern: regExpStartingWith('http' + optional('s') + '://'),
     isCutShortByWhitespace: true,
@@ -205,11 +205,7 @@ class Tokenizer {
         richConvention: ACTION_CONVENTION,
         startDelimiter: '{',
         endDelimiter: '}'
-      }
-    ].map(args => this.getRichSandwichConventionNotRequiringBacktracking(args)))
-
-    this.conventions.push(...[
-      {
+      }, {
         richConvention: REVISION_DELETION_CONVENTION,
         startDelimiter: '~~',
         endDelimiter: '~~',
@@ -249,8 +245,8 @@ class Tokenizer {
   }
 
   private resolveUnclosedContexts(): boolean {
-    while (this.openContexts.length) {
-      const context = this.openContexts.pop()
+    for (let i = this.openContexts.length - 1; i >= 0; i--) {
+      const context = this.openContexts[i]
 
       if (!context.doInsteadOfFailingWhenLeftUnclosed()) {
         this.backtrackToBeforeContext(context)
@@ -268,15 +264,12 @@ class Tokenizer {
   }
 
   private tryToCollectEscapedChar(): boolean {
-    const ESCAPE_CHAR = '\\'
-
-    if (this.consumer.currentChar !== ESCAPE_CHAR) {
-      return false
+    if (this.consumer.currentChar === '\\') {
+      this.consumer.advanceTextIndex(1)
+      return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
     }
 
-    this.consumer.advanceTextIndex(1)
-
-    return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
+    return false
   }
 
   // This method exists purely for optimization. Its purpose it to allow us to test as few characters as

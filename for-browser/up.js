@@ -761,10 +761,7 @@ var Tokenizer = (function () {
                 richConvention: RichConventions_1.ACTION_CONVENTION,
                 startDelimiter: '{',
                 endDelimiter: '}'
-            }
-        ].map(function (args) { return _this.getRichSandwichConventionNotRequiringBacktracking(args); }));
-        (_j = this.conventions).push.apply(_j, [
-            {
+            }, {
                 richConvention: RichConventions_1.REVISION_DELETION_CONVENTION,
                 startDelimiter: '~~',
                 endDelimiter: '~~',
@@ -775,7 +772,7 @@ var Tokenizer = (function () {
             }
         ].map(function (args) { return _this.getRichSandwichConventionNotRequiringBacktracking(args); }));
         this.conventions.push(this.nakedUrlConvention);
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
     };
     Tokenizer.prototype.tokenize = function () {
         while (true) {
@@ -796,8 +793,8 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts();
     };
     Tokenizer.prototype.resolveUnclosedContexts = function () {
-        while (this.openContexts.length) {
-            var context_1 = this.openContexts.pop();
+        for (var i = this.openContexts.length - 1; i >= 0; i--) {
+            var context_1 = this.openContexts[i];
             if (!context_1.doInsteadOfFailingWhenLeftUnclosed()) {
                 this.backtrackToBeforeContext(context_1);
                 return false;
@@ -811,12 +808,11 @@ var Tokenizer = (function () {
         return true;
     };
     Tokenizer.prototype.tryToCollectEscapedChar = function () {
-        var ESCAPE_CHAR = '\\';
-        if (this.consumer.currentChar !== ESCAPE_CHAR) {
-            return false;
+        if (this.consumer.currentChar === '\\') {
+            this.consumer.advanceTextIndex(1);
+            return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
         }
-        this.consumer.advanceTextIndex(1);
-        return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
+        return false;
     };
     Tokenizer.prototype.bufferContentThatCannotOpenOrCloseAnyConventions = function () {
         var _this = this;
