@@ -951,20 +951,21 @@ var Tokenizer = (function () {
     Tokenizer.prototype.tryToOpenAnyConvention = function () {
         var _this = this;
         return (this.conventions.some(function (convention) { return _this.tryToOpen(convention); })
-            || this.tryToHandleRaisedVoiceDelimiter());
+            || this.tryToHandleRaisedVoiceStartDelimiter());
     };
-    Tokenizer.prototype.tryToHandleRaisedVoiceDelimiter = function () {
+    Tokenizer.prototype.tryToHandleRaisedVoiceStartDelimiter = function () {
         var _this = this;
         return this.raisedVoiceHandlers.some(function (handler) {
             return _this.consumer.consume({
                 pattern: handler.delimiterPattern,
                 thenBeforeAdvancingTextIndex: function (delimiter, matchPrecedesNonWhitespace) {
-                    if (!matchPrecedesNonWhitespace) {
-                        _this.buffer += delimiter;
-                        return;
+                    if (matchPrecedesNonWhitespace) {
+                        _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
+                        handler.addStartDelimiter(delimiter, _this.tokens.length);
                     }
-                    _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
-                    handler.addStartDelimiter(delimiter, _this.tokens.length);
+                    else {
+                        _this.buffer += delimiter;
+                    }
                 }
             });
         });
@@ -1048,8 +1049,7 @@ var Tokenizer = (function () {
         this.appendNewToken({ kind: kind, value: this.flushBuffer() });
     };
     Tokenizer.prototype.insertToken = function (args) {
-        var token = args.token;
-        var atIndex = args.atIndex;
+        var token = args.token, atIndex = args.atIndex;
         this.tokens.splice(atIndex, 0, token);
         for (var _i = 0, _a = this.openContexts; _i < _a.length; _i++) {
             var openContext = _a[_i];
@@ -1114,9 +1114,10 @@ var Tokenizer = (function () {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
                     _this.backtrackToBeforeContext(context);
-                    return;
                 }
-                _this.closeLink(url);
+                else {
+                    _this.closeLink(url);
+                }
             }
         }); });
     };
@@ -1157,9 +1158,10 @@ var Tokenizer = (function () {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
                     _this.backtrackToBeforeContext(context);
-                    return;
                 }
-                _this.closeLinkifyingUrl(url);
+                else {
+                    _this.closeLinkifyingUrl(url);
+                }
             }
         }); });
     };
@@ -1279,14 +1281,14 @@ var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HAS
 var PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN = new RegExp(PatternHelpers_1.solely(PatternHelpers_1.either(EXPLICIT_URL_PREFIX, URL_HASH_MARK + PatternHelpers_1.atLeast(1, PatternPieces_1.DIGIT))));
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
 var BRACKET_END_PATTERNS = BRACKETS.map(function (bracket) { return bracket.endPattern; });
-var CHARS_THAT_CAN_START_OR_END_CONVENTIONS = CollectionHelpers_1.concat([
+var CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = CollectionHelpers_1.concat([
     BRACKET_START_PATTERNS,
     BRACKET_END_PATTERNS,
     ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
-var ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS = PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'));
-var CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS));
+var ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'));
+var CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS));
 var WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE
     + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS.concat(PatternPieces_1.WHITESPACE_CHAR))));
 

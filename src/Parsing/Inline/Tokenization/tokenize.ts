@@ -428,7 +428,6 @@ class Tokenizer {
     if (!couldTransform) {
       // We couldn't transform, so it's time to fail.
       this.backtrackToBeforeContext(context)
-
       return false
     }
 
@@ -506,26 +505,25 @@ class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
-      || this.tryToHandleRaisedVoiceDelimiter())
+      || this.tryToHandleRaisedVoiceStartDelimiter())
   }
 
-  private tryToHandleRaisedVoiceDelimiter(): boolean {
+  private tryToHandleRaisedVoiceStartDelimiter(): boolean {
     return this.raisedVoiceHandlers.some(handler =>
       this.consumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeAdvancingTextIndex: (delimiter, matchPrecedesNonWhitespace) => {
-          if (!matchPrecedesNonWhitespace) {
+          if (matchPrecedesNonWhitespace) {
+            this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+            handler.addStartDelimiter(delimiter, this.tokens.length)
+          } else {
             // If the match doesn't precede non-whitespace, then we treat the delimiter as plain text.
             // We already know the delimiter wasn't able to close any raised voice conventions, and we
             // we now know it can't open any, either (because the delimiter needs to look like it's
             // touching the beginning of some content).
             this.buffer += delimiter
-            return
           }
-
-          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-          handler.addStartDelimiter(delimiter, this.tokens.length)
         }
       })
     )
@@ -642,8 +640,7 @@ class Tokenizer {
   }
 
   private insertToken(args: { token: Token, atIndex: number }): void {
-    const { token } = args
-    let { atIndex } = args
+    const { token, atIndex } = args
 
     this.tokens.splice(atIndex, 0, token)
 
@@ -748,10 +745,9 @@ class Tokenizer {
 
         if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
           this.backtrackToBeforeContext(context)
-          return
+        } else {
+          this.closeLink(url)
         }
-
-        this.closeLink(url)
       }
     }))
   }
@@ -768,7 +764,6 @@ class Tokenizer {
     const originalEndToken = last(this.tokens)
     originalEndToken.value = url
     originalEndToken.kind = LINK_CONVENTION.endTokenKind
-
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
@@ -786,7 +781,6 @@ class Tokenizer {
 
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
         this.closeLinkifyingUrl(url)
       }
     }))
@@ -813,10 +807,9 @@ class Tokenizer {
 
         if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
           this.backtrackToBeforeContext(context)
-          return
+        } else {
+          this.closeLinkifyingUrl(url)
         }
-
-        this.closeLinkifyingUrl(url)
       }
     }))
   }
@@ -1022,7 +1015,7 @@ const BRACKET_START_PATTERNS =
 const BRACKET_END_PATTERNS =
   BRACKETS.map(bracket => bracket.endPattern)
 
-const CHARS_THAT_CAN_START_OR_END_CONVENTIONS =
+const CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS =
   concat([
     BRACKET_START_PATTERNS,
     BRACKET_END_PATTERNS,
@@ -1031,14 +1024,14 @@ const CHARS_THAT_CAN_START_OR_END_CONVENTIONS =
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])
 
-const ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS =
+const ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS =
   either(
-    anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_CONVENTIONS),
+    anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
     // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
     'h' + notFollowedBy('ttp' + optional('s') + '://'))
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
-  regExpStartingWith(atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS))
+  regExpStartingWith(atLeast(1, ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS))
 
 // This pattern matches all whitespace that isn't followed by an open bracket.
 //
