@@ -147,15 +147,15 @@ var ConventionContext = (function () {
         this.startTokenIndex = startTokenIndex;
     }
     ConventionContext.prototype.doIsteadOfTryingToCloseOuterContexts = function () {
-        if (this.convention.insteadOfTryingToCloseOuterContexts) {
-            this.convention.insteadOfTryingToCloseOuterContexts(this);
+        if (this.convention.insteadOfClosingOuterConventionsWhileOpen) {
+            this.convention.insteadOfClosingOuterConventionsWhileOpen(this);
             return true;
         }
         return false;
     };
     ConventionContext.prototype.doInsteadOfTryingToOpenUsualContexts = function () {
-        if (this.convention.insteadOfTryingToOpenUsualConventions) {
-            this.convention.insteadOfTryingToOpenUsualConventions(this);
+        if (this.convention.insteadOfOpeningUsualConventionsWhileOpen) {
+            this.convention.insteadOfOpeningUsualConventionsWhileOpen(this);
             return true;
         }
         return false;
@@ -168,8 +168,8 @@ var ConventionContext = (function () {
         return false;
     };
     ConventionContext.prototype.close = function () {
-        if (this.convention.onClose) {
-            this.convention.onClose(this);
+        if (this.convention.whenClosing) {
+            this.convention.whenClosing(this);
         }
     };
     ConventionContext.prototype.registerTokenInsertion = function (args) {
@@ -696,12 +696,12 @@ var Tokenizer = (function () {
             startPattern: PatternHelpers_1.regExpStartingWith('http' + PatternHelpers_1.optional('s') + '://'),
             isCutShortByWhitespace: true,
             flushesBufferToPlainTextTokenBeforeOpening: true,
-            onOpen: function (urlScheme) {
+            whenOpening: function (urlScheme) {
                 _this.appendNewToken({ kind: TokenKind_1.TokenKind.NakedUrlSchemeAndStart, value: urlScheme });
             },
-            insteadOfTryingToOpenUsualConventions: function () { return _this.bufferRawText(); },
-            whenItClosesItFlushesBufferTo: TokenKind_1.TokenKind.NakedUrlAfterSchemeAndEnd,
-            whenItClosesItAlsoClosesInnerConventions: true,
+            insteadOfOpeningUsualConventionsWhileOpen: function () { return _this.bufferRawText(); },
+            whenClosingItFlushesBufferTo: TokenKind_1.TokenKind.NakedUrlAfterSchemeAndEnd,
+            whenClosingItAlsoClosesInnerConventions: true,
             insteadOfFailingWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
         this.raisedVoiceHandlers = ['*', '_'].map(function (delimiterChar) { return new RaisedVoiceHandler_1.RaisedVoiceHandler({
@@ -740,8 +740,8 @@ var Tokenizer = (function () {
             startPattern: PatternHelpers_1.regExpStartingWith('`'),
             endPattern: PatternHelpers_1.regExpStartingWith('`'),
             flushesBufferToPlainTextTokenBeforeOpening: true,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferCurrentChar(); },
-            whenItClosesItFlushesBufferTo: TokenKind_1.TokenKind.InlineCode
+            insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferCurrentChar(); },
+            whenClosingItFlushesBufferTo: TokenKind_1.TokenKind.InlineCode
         });
         (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
         (_d = this.conventions).push.apply(_d, this.getLinkUrlSeparatedByWhitespaceConventions());
@@ -861,11 +861,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.shouldCloseContext = function (context) {
         var convention = context.convention;
-        if (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace()) {
-            return true;
-        }
-        return (convention.endPattern
-            && this.consumer.consume({ pattern: convention.endPattern }));
+        return ((convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+            || (convention.endPattern
+                && this.consumer.consume({ pattern: convention.endPattern })));
     };
     Tokenizer.prototype.closeOrUndoContext = function (args) {
         var contextIndex = args.atIndex;
@@ -878,15 +876,15 @@ var Tokenizer = (function () {
                 break;
             }
         }
-        if (convention.whenItClosesItFlushesBufferTo != null) {
-            this.flushBufferToTokenOfKind(convention.whenItClosesItFlushesBufferTo);
+        if (convention.whenClosingItFlushesBufferTo != null) {
+            this.flushBufferToTokenOfKind(convention.whenClosingItFlushesBufferTo);
         }
         openContext.close();
-        if (convention.onCloseFailIfCannotTranformInto) {
+        if (convention.whenClosingItFailsIfItCannotTranformInto) {
             return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex });
         }
         this.openContexts.splice(contextIndex, 1);
-        if (convention.whenItClosesItAlsoClosesInnerConventions) {
+        if (convention.whenClosingItAlsoClosesInnerConventions) {
             this.openContexts.splice(contextIndex);
         }
         return true;
@@ -895,13 +893,13 @@ var Tokenizer = (function () {
         var _this = this;
         var contextIndex = args.belongingToContextAtIndex;
         var context = this.openContexts[contextIndex];
-        var couldTransform = context.convention.onCloseFailIfCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
+        var couldTransform = context.convention.whenClosingItFailsIfItCannotTranformInto.some(function (convention) { return _this.tryToOpen(convention); });
         if (!couldTransform) {
             this.backtrackToBeforeContext(context);
             return false;
         }
         context.convention = this.openContexts.pop().convention;
-        if (context.convention.whenItClosesItAlsoClosesInnerConventions) {
+        if (context.convention.whenClosingItAlsoClosesInnerConventions) {
             this.openContexts.splice(contextIndex + 1);
         }
         return true;
@@ -984,7 +982,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tryToOpen = function (convention) {
         var _this = this;
-        var startPattern = convention.startPattern, flushesBufferToPlainTextTokenBeforeOpening = convention.flushesBufferToPlainTextTokenBeforeOpening, onOpen = convention.onOpen;
+        var startPattern = convention.startPattern, flushesBufferToPlainTextTokenBeforeOpening = convention.flushesBufferToPlainTextTokenBeforeOpening, whenOpening = convention.whenOpening;
         return (this.canTry(convention)
             && this.consumer.consume({
                 pattern: startPattern,
@@ -997,8 +995,8 @@ var Tokenizer = (function () {
                         _this.flushBufferToPlainTextTokenIfBufferIsNotEmpty();
                     }
                     _this.openContexts.push(new ConventionContext_1.ConventionContext(convention, _this.getCurrentSnapshot()));
-                    if (onOpen) {
-                        onOpen.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
+                    if (whenOpening) {
+                        whenOpening.apply(void 0, [match, matchPrecedesNonWhitespace].concat(captures));
                     }
                 }
             }));
@@ -1015,7 +1013,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.canTry = function (convention, textIndex) {
         var _this = this;
         if (textIndex === void 0) { textIndex = this.consumer.textIndex; }
-        var conventionsThisOneTransformTo = convention.onCloseFailIfCannotTranformInto;
+        var conventionsThisOneTransformTo = convention.whenClosingItFailsIfItCannotTranformInto;
         var hasAlreadyFailedAfterTransitioning = conventionsThisOneTransformTo
             && conventionsThisOneTransformTo.some(function (convention) { return _this.failedConventionTracker.hasFailed(convention, textIndex); });
         if (hasAlreadyFailedAfterTransitioning) {
@@ -1092,9 +1090,9 @@ var Tokenizer = (function () {
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
-            whenItClosesItAlsoClosesInnerConventions: true,
-            onClose: function () {
+            insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
+            whenClosingItAlsoClosesInnerConventions: true,
+            whenClosing: function () {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 _this.closeLink(url);
             }
@@ -1106,11 +1104,11 @@ var Tokenizer = (function () {
             startPattern: _this.getBracketedUrlFollowingWhitespacePattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-            onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
+            whenOpening: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failsIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: function () { _this.bufferRawText(); },
-            whenItClosesItAlsoClosesInnerConventions: true,
-            onClose: function (context) {
+            insteadOfClosingOuterConventionsWhileOpen: function () { _this.bufferRawText(); },
+            whenClosingItAlsoClosesInnerConventions: true,
+            whenClosing: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
                     _this.backtrackToBeforeContext(context);
@@ -1136,9 +1134,9 @@ var Tokenizer = (function () {
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
-            whenItClosesItAlsoClosesInnerConventions: true,
-            onClose: function (context) {
+            insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
+            whenClosingItAlsoClosesInnerConventions: true,
+            whenClosing: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 _this.closeLinkifyingUrl(url);
             }
@@ -1150,11 +1148,11 @@ var Tokenizer = (function () {
             startPattern: _this.getBracketedUrlFollowingWhitespacePattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-            onOpen: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
+            whenOpening: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
             failsIfWhitespaceIsEnounteredBeforeClosing: true,
-            insteadOfTryingToCloseOuterContexts: function () { _this.bufferRawText(); },
-            whenItClosesItAlsoClosesInnerConventions: true,
-            onClose: function (context) {
+            insteadOfClosingOuterConventionsWhileOpen: function () { _this.bufferRawText(); },
+            whenClosingItAlsoClosesInnerConventions: true,
+            whenClosing: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
                     _this.backtrackToBeforeContext(context);
@@ -1224,8 +1222,8 @@ var Tokenizer = (function () {
             startPattern: PatternHelpers_1.regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
             endPattern: PatternHelpers_1.regExpStartingWith(endPattern),
             flushesBufferToPlainTextTokenBeforeOpening: true,
-            whenItClosesItFlushesBufferTo: TokenKind_1.TokenKind.PlainText,
-            onClose: function (context) {
+            whenClosingItFlushesBufferTo: TokenKind_1.TokenKind.PlainText,
+            whenClosing: function (context) {
                 _this.encloseContextWithin(richConvention, context);
             },
             insteadOfFailingWhenLeftUnclosed: insteadOfFailingWhenLeftUnclosed
@@ -1238,10 +1236,10 @@ var Tokenizer = (function () {
                 startPattern: PatternHelpers_1.regExpStartingWith(_this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
                 endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
                 flushesBufferToPlainTextTokenBeforeOpening: true,
-                insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
-                whenItClosesItAlsoClosesInnerConventions: true,
-                onCloseFailIfCannotTranformInto: _this.mediaUrlConventions,
-                whenItClosesItFlushesBufferTo: media.descriptionAndStartTokenKind,
+                insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
+                whenClosingItAlsoClosesInnerConventions: true,
+                whenClosingItFailsIfItCannotTranformInto: _this.mediaUrlConventions,
+                whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind,
             }); });
         }));
     };
@@ -1251,9 +1249,9 @@ var Tokenizer = (function () {
             startPattern: PatternHelpers_1.regExpStartingWith(PatternPieces_1.ANY_WHITESPACE + bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             flushesBufferToPlainTextTokenBeforeOpening: true,
-            insteadOfTryingToCloseOuterContexts: function () { return _this.bufferRawText(); },
-            whenItClosesItAlsoClosesInnerConventions: true,
-            onClose: function () {
+            insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
+            whenClosingItAlsoClosesInnerConventions: true,
+            whenClosing: function () {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
                 _this.appendNewToken({ kind: TokenKind_1.TokenKind.MediaUrlAndEnd, value: url });
             }
@@ -1264,8 +1262,8 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) { return ({
             startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
-            onOpen: function () { _this.buffer += bracket.start; },
-            onClose: function () { _this.buffer += bracket.end; },
+            whenOpening: function () { _this.buffer += bracket.start; },
+            whenClosing: function () { _this.buffer += bracket.end; },
             insteadOfFailingWhenLeftUnclosed: function () { }
         }); });
     };

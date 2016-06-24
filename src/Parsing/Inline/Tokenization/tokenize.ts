@@ -110,14 +110,14 @@ class Tokenizer {
 
     flushesBufferToPlainTextTokenBeforeOpening: true,
 
-    onOpen: urlScheme => {
+    whenOpening: urlScheme => {
       this.appendNewToken({ kind: TokenKind.NakedUrlSchemeAndStart, value: urlScheme })
     },
 
-    insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
+    insteadOfOpeningUsualConventionsWhileOpen: () => this.bufferRawText(),
 
-    whenItClosesItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
-    whenItClosesItAlsoClosesInnerConventions: true,
+    whenClosingItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
+    whenClosingItAlsoClosesInnerConventions: true,
 
     insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
@@ -173,8 +173,8 @@ class Tokenizer {
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
 
-      insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
-      whenItClosesItFlushesBufferTo: TokenKind.InlineCode
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferCurrentChar(),
+      whenClosingItFlushesBufferTo: TokenKind.InlineCode
     })
 
     this.conventions.push(
@@ -279,8 +279,8 @@ class Tokenizer {
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
   }
 
-  // This method exists purely for optimization, allowing us to test our conventions against as few
-  // characters as possible. 
+  // This method exists purely for optimization. Its purpose it to allow us to test as few characters as
+  // possible for our conventions.
   private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
     const tryToBuffer = (pattern: RegExp) =>
       this.consumer.consume({
@@ -367,13 +367,11 @@ class Tokenizer {
   private shouldCloseContext(context: ConventionContext): boolean {
     const { convention } = context
 
-    if (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace()) {
-      return true
-    }
-
     return (
-      convention.endPattern
-      && this.consumer.consume({ pattern: convention.endPattern }))
+      (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+      || (
+        convention.endPattern
+        && this.consumer.consume({ pattern: convention.endPattern })))
   }
 
   // This method returns true if the context was able to be closed.
@@ -397,19 +395,19 @@ class Tokenizer {
       }
     }
 
-    if (convention.whenItClosesItFlushesBufferTo != null) {
-      this.flushBufferToTokenOfKind(convention.whenItClosesItFlushesBufferTo)
+    if (convention.whenClosingItFlushesBufferTo != null) {
+      this.flushBufferToTokenOfKind(convention.whenClosingItFlushesBufferTo)
     }
 
     openContext.close()
 
-    if (convention.onCloseFailIfCannotTranformInto) {
+    if (convention.whenClosingItFailsIfItCannotTranformInto) {
       return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex })
     }
 
     this.openContexts.splice(contextIndex, 1)
 
-    if (convention.whenItClosesItAlsoClosesInnerConventions) {
+    if (convention.whenClosingItAlsoClosesInnerConventions) {
       // Since we just removed the context at `contextIndex`, its inner contexts will now start at
       // `contextIndex`.           
       this.openContexts.splice(contextIndex)
@@ -423,7 +421,7 @@ class Tokenizer {
     const context = this.openContexts[contextIndex]
 
     const couldTransform =
-      context.convention.onCloseFailIfCannotTranformInto.some(convention => this.tryToOpen(convention))
+      context.convention.whenClosingItFailsIfItCannotTranformInto.some(convention => this.tryToOpen(convention))
 
     if (!couldTransform) {
       // We couldn't transform, so it's time to fail.
@@ -435,7 +433,7 @@ class Tokenizer {
     // actually want to replace this context's convention with the new one instead.
     context.convention = this.openContexts.pop().convention
 
-    if (context.convention.whenItClosesItAlsoClosesInnerConventions) {
+    if (context.convention.whenClosingItAlsoClosesInnerConventions) {
       this.openContexts.splice(contextIndex + 1)
     }
 
@@ -548,7 +546,7 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, flushesBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
 
     return (
       this.canTry(convention)
@@ -563,8 +561,8 @@ class Tokenizer {
 
           this.openContexts.push(new ConventionContext(convention, this.getCurrentSnapshot()))
 
-          if (onOpen) {
-            onOpen(match, matchPrecedesNonWhitespace, ...captures)
+          if (whenOpening) {
+            whenOpening(match, matchPrecedesNonWhitespace, ...captures)
           }
         }
       })
@@ -583,7 +581,7 @@ class Tokenizer {
 
   private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
     const conventionsThisOneTransformTo =
-      convention.onCloseFailIfCannotTranformInto
+      convention.whenClosingItFailsIfItCannotTranformInto
 
     // If this convention transforms into other conventions, then it can fail as itself *or* fail
     // post-transformation as of those conventions.
@@ -700,10 +698,10 @@ class Tokenizer {
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
 
-      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      whenItClosesItAlsoClosesInnerConventions: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
 
-      onClose: () => {
+      whenClosing: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
         this.closeLink(url)
       }
@@ -734,13 +732,13 @@ class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-      onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText() },
-      whenItClosesItAlsoClosesInnerConventions: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
+      whenClosingItAlsoClosesInnerConventions: true,
 
-      onClose: (context) => {
+      whenClosing: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
         if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
@@ -776,10 +774,10 @@ class Tokenizer {
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
 
-      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      whenItClosesItAlsoClosesInnerConventions: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
 
-      onClose: (context) => {
+      whenClosing: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
         this.closeLinkifyingUrl(url)
       }
@@ -796,13 +794,13 @@ class Tokenizer {
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-      onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText() },
-      whenItClosesItAlsoClosesInnerConventions: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
+      whenClosingItAlsoClosesInnerConventions: true,
 
-      onClose: (context) => {
+      whenClosing: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
         if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
@@ -903,9 +901,9 @@ class Tokenizer {
       endPattern: regExpStartingWith(endPattern),
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
-      whenItClosesItFlushesBufferTo: TokenKind.PlainText,
+      whenClosingItFlushesBufferTo: TokenKind.PlainText,
 
-      onClose: (context) => {
+      whenClosing: (context) => {
         this.encloseContextWithin(richConvention, context)
       },
 
@@ -921,11 +919,11 @@ class Tokenizer {
           endPattern: regExpStartingWith(bracket.endPattern),
 
           flushesBufferToPlainTextTokenBeforeOpening: true,
-          insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
+          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
-          whenItClosesItAlsoClosesInnerConventions: true,
-          onCloseFailIfCannotTranformInto: this.mediaUrlConventions,
-          whenItClosesItFlushesBufferTo: media.descriptionAndStartTokenKind,
+          whenClosingItAlsoClosesInnerConventions: true,
+          whenClosingItFailsIfItCannotTranformInto: this.mediaUrlConventions,
+          whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind,
         }))))
   }
 
@@ -936,10 +934,10 @@ class Tokenizer {
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
 
-      insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      whenItClosesItAlsoClosesInnerConventions: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
 
-      onClose: () => {
+      whenClosing: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
         this.appendNewToken({ kind: TokenKind.MediaUrlAndEnd, value: url })
       }
@@ -951,8 +949,8 @@ class Tokenizer {
       startPattern: regExpStartingWith(bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      onOpen: () => { this.buffer += bracket.start },
-      onClose: () => { this.buffer += bracket.end },
+      whenOpening: () => { this.buffer += bracket.start },
+      whenClosing: () => { this.buffer += bracket.end },
 
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     }))

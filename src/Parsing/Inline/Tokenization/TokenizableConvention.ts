@@ -15,18 +15,18 @@ export interface TokenizableConvention {
   
   flushesBufferToPlainTextTokenBeforeOpening?: boolean
   
-  onOpen?: OnTextMatch
+  whenOpening?: OnTextMatch
   
-  insteadOfTryingToCloseOuterContexts?: OnConventionEvent
-  insteadOfTryingToOpenUsualConventions?: OnConventionEvent
+  insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
+  insteadOfOpeningUsualConventionsWhileOpen?: OnConventionEvent
 
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
   
-  whenItClosesItAlsoClosesInnerConventions?: boolean
-  onCloseFailIfCannotTranformInto?: TokenizableConvention[]
-  whenItClosesItFlushesBufferTo?: TokenKind
+  whenClosingItAlsoClosesInnerConventions?: boolean
+  whenClosingItFailsIfItCannotTranformInto?: TokenizableConvention[]
+  whenClosingItFlushesBufferTo?: TokenKind
   
-  onClose?: OnConventionEvent
+  whenClosing?: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
 }
 

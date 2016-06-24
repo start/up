@@ -9,8 +9,8 @@ export class ConventionContext {
     public startTokenIndex = snapshot.tokens.length) { }
 
   doIsteadOfTryingToCloseOuterContexts(): boolean {
-    if (this.convention.insteadOfTryingToCloseOuterContexts) {
-      this.convention.insteadOfTryingToCloseOuterContexts(this)
+    if (this.convention.insteadOfClosingOuterConventionsWhileOpen) {
+      this.convention.insteadOfClosingOuterConventionsWhileOpen(this)
       return true
     }
 
@@ -18,8 +18,8 @@ export class ConventionContext {
   }
 
   doInsteadOfTryingToOpenUsualContexts(): boolean {
-    if (this.convention.insteadOfTryingToOpenUsualConventions) {
-      this.convention.insteadOfTryingToOpenUsualConventions(this)
+    if (this.convention.insteadOfOpeningUsualConventionsWhileOpen) {
+      this.convention.insteadOfOpeningUsualConventionsWhileOpen(this)
       return true
     }
 
@@ -36,8 +36,8 @@ export class ConventionContext {
   }
 
   close(): void {
-    if (this.convention.onClose) {
-      this.convention.onClose(this)
+    if (this.convention.whenClosing) {
+      this.convention.whenClosing(this)
     }
   }
 
