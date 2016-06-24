@@ -1514,8 +1514,7 @@ var LineConsumer = (function () {
         if (this.reachedEndOfText()) {
             return false;
         }
-        var linePattern = args.linePattern, then = args.then;
-        var _a = this, entireText = _a.entireText, textIndex = _a.textIndex;
+        var _a = this, textIndex = _a.textIndex, entireText = _a.entireText;
         var fullLine;
         var lineWithoutTerminatingLineBreak;
         for (var i = textIndex; i < entireText.length; i++) {
@@ -1524,7 +1523,7 @@ var LineConsumer = (function () {
                 continue;
             }
             if (Strings_1.INPUT_LINE_BREAK === entireText.substr(i, INPUT_LINE_BREAK_LENGTH)) {
-                fullLine = entireText.substring(textIndex, i + INPUT_LINE_BREAK_LENGTH);
+                fullLine = entireText.slice(textIndex, i + INPUT_LINE_BREAK_LENGTH);
                 lineWithoutTerminatingLineBreak = fullLine.slice(0, -INPUT_LINE_BREAK_LENGTH);
                 break;
             }
@@ -1532,6 +1531,7 @@ var LineConsumer = (function () {
         if (!fullLine) {
             fullLine = lineWithoutTerminatingLineBreak = this.remainingText;
         }
+        var linePattern = args.linePattern, then = args.then;
         var captures = [];
         if (linePattern) {
             var results = linePattern.exec(lineWithoutTerminatingLineBreak);

@@ -41,22 +41,20 @@ export class LineConsumer {
       return false
     }
 
-    const { linePattern, then } = args
-    const { entireText, textIndex } = this
-
+    const { textIndex, entireText } = this
     let fullLine: string
     let lineWithoutTerminatingLineBreak: string
 
     // First, let's find the end of the current line
     for (let i = textIndex; i < entireText.length; i++) {
-      // Escaped line breaks don't end lines
       if (ESCAPER_CHAR === entireText[i]) {
+        // Escaped line breaks don't end lines, so we'll just skip the next character, no matter what it is.
         i++
         continue
       }
 
       if (INPUT_LINE_BREAK === entireText.substr(i, INPUT_LINE_BREAK_LENGTH)) {
-        fullLine = entireText.substring(textIndex, i + INPUT_LINE_BREAK_LENGTH)
+        fullLine = entireText.slice(textIndex, i + INPUT_LINE_BREAK_LENGTH)
         lineWithoutTerminatingLineBreak = fullLine.slice(0, -INPUT_LINE_BREAK_LENGTH)
         break
       }
@@ -67,6 +65,7 @@ export class LineConsumer {
       fullLine = lineWithoutTerminatingLineBreak = this.remainingText
     }
 
+    const { linePattern, then } = args
     let captures: string[] = []
 
     if (linePattern) {
