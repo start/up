@@ -826,14 +826,14 @@ var Tokenizer = (function () {
                 thenBeforeAdvancingTextIndex: function (match) { _this.buffer += match; }
             });
         };
-        var canWeTryToBufferWhitespace = this.openContexts.every(function (context) {
+        var canTryToBufferWhitespace = this.openContexts.every(function (context) {
             return !context.convention.isCutShortByWhitespace
                 && !context.convention.failsIfWhitespaceIsEnounteredBeforeClosing;
         });
         do {
             tryToBuffer(CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN);
-        } while (canWeTryToBufferWhitespace
-            && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS));
+        } while (canTryToBufferWhitespace
+            && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN));
     };
     Tokenizer.prototype.tryToCloseAnyConvention = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -1212,7 +1212,9 @@ var Tokenizer = (function () {
             richConvention: richConvention,
             startPattern: PatternHelpers_1.escapeForRegex(startDelimiter),
             endPattern: PatternHelpers_1.escapeForRegex(endDelimiter),
-            insteadOfFailingWhenLeftUnclosed: function (context) { return _this.insertPlainTextTokenAtContextStart(startDelimiter, context); }
+            insteadOfFailingWhenLeftUnclosed: function (context) {
+                _this.insertPlainTextTokenAtContextStart(startDelimiter, context);
+            }
         });
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
@@ -1286,8 +1288,7 @@ var CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = CollectionHelpers_1.concat([
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
 var CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'))));
-var WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE
-    + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS.concat(PatternPieces_1.WHITESPACE_CHAR))));
+var WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS.concat(PatternPieces_1.WHITESPACE_CHAR))));
 
 },{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
 "use strict";

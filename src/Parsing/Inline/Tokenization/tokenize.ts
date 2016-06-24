@@ -310,7 +310,7 @@ class Tokenizer {
     //
     // This is completely sufficient for now, but it wouldn't work if any of our conventions had any leading
     // whitespace in their end patterns.
-    const canWeTryToBufferWhitespace =
+    const canTryToBufferWhitespace =
       this.openContexts.every(context =>
         !context.convention.isCutShortByWhitespace
         && !context.convention.failsIfWhitespaceIsEnounteredBeforeClosing)
@@ -320,7 +320,7 @@ class Tokenizer {
       tryToBuffer(CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN)
     } while (
       // Next, if we can try to buffer whitespace...
-      canWeTryToBufferWhitespace
+      canTryToBufferWhitespace
       // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
       // we've got to bail, because the current character can't be skipped.     
       && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN))
@@ -879,7 +879,10 @@ class Tokenizer {
       richConvention,
       startPattern: escapeForRegex(startDelimiter),
       endPattern: escapeForRegex(endDelimiter),
-      insteadOfFailingWhenLeftUnclosed: (context) => this.insertPlainTextTokenAtContextStart(startDelimiter, context)
+
+      insteadOfFailingWhenLeftUnclosed: (context) => {
+        this.insertPlainTextTokenAtContextStart(startDelimiter, context)
+      }
     })
   }
 
@@ -1041,6 +1044,5 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 // our match is neither followed by an open bracket nor followed by a whitespace character. 
 const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   regExpStartingWith(
-    SOME_WHITESPACE
-    + notFollowedBy(anyCharFrom(
-      BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR))))
+    SOME_WHITESPACE + notFollowedBy(
+      anyCharFrom(BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR))))
