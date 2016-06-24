@@ -1285,8 +1285,7 @@ var CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = CollectionHelpers_1.concat([
     ['*', '+', '\\'].map(PatternHelpers_1.escapeForRegex),
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
-var ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'));
-var CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS));
+var CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'))));
 var WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE
     + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS.concat(PatternPieces_1.WHITESPACE_CHAR))));
 

@@ -1022,14 +1022,13 @@ const CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS =
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])
 
-const ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS =
-  either(
-    anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
-    // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
-    'h' + notFollowedBy('ttp' + optional('s') + '://'))
-
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
-  regExpStartingWith(atLeast(1, ANY_CHAR_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS))
+  regExpStartingWith(
+    atLeast(1,
+      either(
+        anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
+        // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
+        'h' + notFollowedBy('ttp' + optional('s') + '://'))))
 
 // This pattern matches all whitespace that isn't followed by an open bracket.
 //
