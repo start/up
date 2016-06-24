@@ -6,6 +6,7 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 import { optional, regExpStartingWith, anyCharFrom, escapeForRegex } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
+import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -43,7 +44,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
       }
     })
 
-    rawListItemsContents.push(rawListItemLines.join('\n'))
+    rawListItemsContents.push(rawListItemLines.join(INPUT_LINE_BREAK))
 
     if (isListTerminated) {
       break

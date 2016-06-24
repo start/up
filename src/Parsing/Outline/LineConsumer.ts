@@ -1,3 +1,6 @@
+import { INPUT_LINE_BREAK, ESCAPER_CHAR } from '../Strings'
+
+
 export class LineConsumer {
   private _textIndex: number
   private _remainingText: string
@@ -48,12 +51,12 @@ export class LineConsumer {
       const char = this.entireText[i]
 
       // Escaped line breaks don't end lines
-      if (char === '\\') {
+      if (char === ESCAPER_CHAR) {
         i++
         continue
       }
 
-      if (char === '\n') {
+      if (char === INPUT_LINE_BREAK) {
         fullLine = this.entireText.substring(this.textIndex, i + 1)
         lineWithoutTerminatingLineBreak = fullLine.slice(0, -1)
         break

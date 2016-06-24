@@ -1,6 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { streakOf } from '../PatternHelpers'
+import { OUTPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -17,7 +18,8 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   // Keep consuming lines until we get to the closing code fence
   while (!consumer.reachedEndOfText()) {
     if (consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
-      args.then([new CodeBlockNode(codeLines.join('\n'))], consumer.textIndex)
+      const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
+      args.then([codeBlock], consumer.textIndex)
       return true
     }
 

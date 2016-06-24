@@ -5,6 +5,7 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { optional, regExpStartingWith, either, capture } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, INTEGER } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
+import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 
@@ -75,9 +76,9 @@ class RawListItem {
   constructor(public bullet: string) { }
 
   content(): string {
-    // This loses the final line break, but trailing blank lines are always ignored when parsing
+    // This loses any final line break, but trailing blank lines are always ignored when parsing
     // outline conventions.
-    return this.lines.join('\n')
+    return this.lines.join(INPUT_LINE_BREAK)
   }
 }
 

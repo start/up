@@ -2,6 +2,7 @@ import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, R
 import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharFrom, anyCharOtherThan, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
+import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
 import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
@@ -264,7 +265,7 @@ class Tokenizer {
   }
 
   private tryToCollectEscapedChar(): boolean {
-    if (this.consumer.currentChar === '\\') {
+    if (this.consumer.currentChar === ESCAPER_CHAR) {
       this.consumer.advanceTextIndex(1)
       return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
     }
@@ -1013,7 +1014,7 @@ const CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS =
   concat([
     BRACKET_START_PATTERNS,
     BRACKET_END_PATTERNS,
-    ['*', '+', '\\'].map(escapeForRegex),
+    ['*', '+', ESCAPER_CHAR].map(escapeForRegex),
     // The "h" is for the start of naked URLs. 
     [WHITESPACE_CHAR, '_', '`', '~', 'h']
   ])

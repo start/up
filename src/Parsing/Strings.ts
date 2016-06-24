@@ -1,4 +1,4 @@
-// Eventually, these values might be made configurable.
+// Eventually, these values might be configurable.
 
 
 // Line breaks to expect in the input text

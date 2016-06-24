@@ -4,6 +4,7 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { regExpStartingWith, regExpEndingWith, optional, atLeast, capture } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
+import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -24,14 +25,17 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const rawBlockquoteContent = rawBlockquoteLines.join('\n')
+  const rawBlockquotedContent =
+    rawBlockquoteLines.join(INPUT_LINE_BREAK)
 
   // Within blockquotes, heading levels are reset
   const headingLeveler = new HeadingLeveler()
 
-  args.then([
-    new BlockquoteNode(getOutlineNodes(rawBlockquoteContent, headingLeveler, args.config))],
-    consumer.textIndex)
+  const blockquote =
+    new BlockquoteNode(
+      getOutlineNodes(rawBlockquotedContent, headingLeveler, args.config))
+
+  args.then([blockquote], consumer.textIndex)
 
   return true
 }

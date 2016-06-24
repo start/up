@@ -8,6 +8,7 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { optional, regExpStartingWith, either } from '../PatternHelpers'
 import { INDENTED_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
+import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 
@@ -56,9 +57,9 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       // not part of any description list.
       break
     }
-    
+
     let isListTerminated = false
-    
+
     getRemainingLinesOfListItem({
       text: consumer.remainingText,
       then: (lines, lengthParsed, shouldTerminateList) => {
@@ -67,20 +68,19 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
         isListTerminated = shouldTerminateList
       }
     })
-    
+
     // Alright, we have our description! Let's update our length parsed accordingly.
     lengthParsed = consumer.textIndex
 
     const terms =
       rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))
-    
-    const rawDescription = rawDescriptionLines.join('\n')
-    
+
     const description =
-      new Description(getOutlineNodes(rawDescription, args.headingLeveler, args.config))
+      new Description(
+        getOutlineNodes(rawDescriptionLines.join(INPUT_LINE_BREAK), args.headingLeveler, args.config))
 
     listItems.push(new DescriptionListItem(terms, description))
-    
+
     if (isListTerminated) {
       break
     }
