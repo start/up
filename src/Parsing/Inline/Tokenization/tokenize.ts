@@ -226,7 +226,7 @@ class Tokenizer {
 
   private tokenize(): void {
     while (true) {
-      this.bufferContentThatCannotTriggerAnyChanges()
+      this.bufferContentThatCannotOpenOrCloseAnyConventions()
 
       if (this.isDone()) {
         break
@@ -279,25 +279,51 @@ class Tokenizer {
     return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
   }
 
-  // This method exists purely for optimization. It allows us to test our conventions against as few
+  // This method exists purely for optimization, allowing us to test our conventions against as few
   // characters as possible. 
-  private bufferContentThatCannotTriggerAnyChanges(): void {
-    const isSafeToBufferCertainWhitespace =
-      this.openContexts.every(context =>
-        !context.convention.isCutShortByWhitespace
-        && !context.convention.failIfWhitespaceIsEnounteredBeforeClosing)
-
-    const buffer = (pattern: RegExp) =>
+  private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
+    const tryToBuffer = (pattern: RegExp) =>
       this.consumer.consume({
         pattern,
         thenBeforeAdvancingTextIndex: match => { this.buffer += match }
       })
 
+    // **Normally**, whitespace doesn't have much of an impact on tokenization:
+    //
+    // - It can't close most conventions
+    // - It can only open conventions when followed by a start bracket (footnotes, some bracketed URLs)
+    //
+    // However, some conventions:
+    //
+    // - Are cut short by whitespace (naked URLs)
+    // - Fail if whitespace is encountered before they close (some bracketed URLs)
+    //
+    // Under normal circumstances, we can skip over (i.e. simply buffer) any whitespace that isn't followed
+    // bt a start bracket. That's great news, because documents have whitespace all over the place! However,
+    // if any of our open conventions rely on whitespace, then we don't have that luxury.
+    //
+    // NOTE: This is pretty fragile! To determine whether any of our open conventions rely on whitespace,
+    // we check only two properties:
+    //
+    // 1. isCutShortByWhitespace
+    // 2. failIfWhitespaceIsEnounteredBeforeClosing
+    //
+    // This is completely sufficient for now, but it wouldn't work if any of our conventions had any leading
+    // whitespace in their end patterns.
+    const canWeTryToBufferWhitespace =
+      this.openContexts.every(context =>
+        !context.convention.isCutShortByWhitespace
+        && !context.convention.failIfWhitespaceIsEnounteredBeforeClosing)
+
     do {
-      buffer(CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN)
+      // First, let's try to skip any content that will *never* open or close any conventions.
+      tryToBuffer(CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN)
     } while (
-      isSafeToBufferCertainWhitespace
-      && buffer(WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES_PATTERN))
+      // Next, if we can try to buffer whitespace...
+      canWeTryToBufferWhitespace
+      // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
+      // we've got to bail, because the current character can't be skipped.     
+      && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS))
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -669,7 +695,7 @@ class Tokenizer {
   // You should try [Typescript](http://www.typescriptlang.org).
   //
   // We allow whitespace between a link's content and its URL, but that isn't handled by these
-  // conventions. For that, see `getLinkUrlSeparatedFromContentByWhitespaceConventions`.
+  // conventions. For that, see `getLinkUrlSeparatedByWhitespaceConventions`.
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: regExpStartingWith(bracket.startPattern),
@@ -982,11 +1008,13 @@ const PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN =
         // this to be a URL.
         EXPLICIT_URL_PREFIX,
         // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more
-        // information, see the comments for the `getLinkUrlSeparatedFromContentByWhitespaceConventions`
-        //  method.
+        // information, see the comments for the `getLinkUrlSeparatedByWhitespaceConventions` method.
         URL_HASH_MARK + atLeast(1, DIGIT))))
 
-// This constants below exist only for optimization, allowing us to examine as little content as possible.
+
+// The patterns below exist only for optimization.
+//
+// For more information, see the `bufferContentThatCannotOpenOrCloseAnyConventions` method. 
 
 const BRACKET_START_PATTERNS =
   BRACKETS.map(bracket => bracket.startPattern)
@@ -1009,12 +1037,19 @@ const ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS =
     // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
     'h' + notFollowedBy('ttp' + optional('s') + '://'))
 
-const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN =
+const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   regExpStartingWith(atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS))
 
-// Normally, whitespace can only trigger a tokenizer change when followed by a start bracket (e.g. the start
-// of a link URL, "linkified" convention URL, or footnote).  
-const WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES_PATTERN =
+// This pattern matches all whitespace that isn't followed by an open bracket.
+//
+// If there's a chunk of whitespace followed by an open bracket, we don't want to match any of the
+// chunk:
+//
+// [SPOILER: Gary battles Ash]   (http://bulbapedia.bulbagarden.net/wiki/Rival)
+//
+// To prevent our pattern from matching all but the last character of that whitespace, we make sure
+// our match is neither followed by an open bracket nor followed by a whitespace character. 
+const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS =
   regExpStartingWith(
     SOME_WHITESPACE
     + notFollowedBy(anyCharFrom(

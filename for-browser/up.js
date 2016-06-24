@@ -779,7 +779,7 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.tokenize = function () {
         while (true) {
-            this.bufferContentThatCannotTriggerAnyChanges();
+            this.bufferContentThatCannotOpenOrCloseAnyConventions();
             if (this.isDone()) {
                 break;
             }
@@ -818,22 +818,22 @@ var Tokenizer = (function () {
         this.consumer.advanceTextIndex(1);
         return this.consumer.reachedEndOfText() || this.bufferCurrentChar();
     };
-    Tokenizer.prototype.bufferContentThatCannotTriggerAnyChanges = function () {
+    Tokenizer.prototype.bufferContentThatCannotOpenOrCloseAnyConventions = function () {
         var _this = this;
-        var isSafeToBufferCertainWhitespace = this.openContexts.every(function (context) {
-            return !context.convention.isCutShortByWhitespace
-                && !context.convention.failIfWhitespaceIsEnounteredBeforeClosing;
-        });
-        var buffer = function (pattern) {
+        var tryToBuffer = function (pattern) {
             return _this.consumer.consume({
                 pattern: pattern,
                 thenBeforeAdvancingTextIndex: function (match) { _this.buffer += match; }
             });
         };
+        var canWeTryToBufferWhitespace = this.openContexts.every(function (context) {
+            return !context.convention.isCutShortByWhitespace
+                && !context.convention.failIfWhitespaceIsEnounteredBeforeClosing;
+        });
         do {
-            buffer(CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN);
-        } while (isSafeToBufferCertainWhitespace
-            && buffer(WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES_PATTERN));
+            tryToBuffer(CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN);
+        } while (canWeTryToBufferWhitespace
+            && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS));
     };
     Tokenizer.prototype.tryToCloseAnyConvention = function () {
         for (var i = this.openContexts.length - 1; i >= 0; i--) {
@@ -1286,8 +1286,8 @@ var CHARS_THAT_CAN_START_OR_END_CONVENTIONS = CollectionHelpers_1.concat([
     [PatternPieces_1.WHITESPACE_CHAR, '_', '`', '~', 'h']
 ]);
 var ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS = PatternHelpers_1.either(PatternHelpers_1.anyCharOtherThan(CHARS_THAT_CAN_START_OR_END_CONVENTIONS), 'h' + PatternHelpers_1.notFollowedBy('ttp' + PatternHelpers_1.optional('s') + '://'));
-var CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS));
-var WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES_PATTERN = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE
+var CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN = PatternHelpers_1.regExpStartingWith(PatternHelpers_1.atLeast(1, ANY_CHAR_THAT_CAN_START_OR_END_CONVENTIONS));
+var WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS = PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE
     + PatternHelpers_1.notFollowedBy(PatternHelpers_1.anyCharFrom(BRACKET_START_PATTERNS.concat(PatternPieces_1.WHITESPACE_CHAR))));
 
 },{"../../../CollectionHelpers":1,"../../PatternHelpers":33,"../../PatternPieces":34,"../MediaConventions":2,"../RichConventions":3,"./Bracket":4,"./ConventionContext":5,"./FailedConventionTracker":6,"./InlineTextConsumer":7,"./RaisedVoiceHandler":8,"./Token":10,"./TokenKind":11,"./TokenizerSnapshot":12,"./insertBracketsInsideBracketedConventions":13,"./nestOverlappingConventions":14}],16:[function(require,module,exports){
