@@ -160,17 +160,17 @@ var ConventionContext = (function () {
         }
         return false;
     };
+    ConventionContext.prototype.doInsteadOfFailingWhenLeftUnclosed = function () {
+        if (this.convention.insteadOfFailingWhenLeftUnclosed) {
+            this.convention.insteadOfFailingWhenLeftUnclosed(this);
+            return true;
+        }
+        return false;
+    };
     ConventionContext.prototype.close = function () {
         if (this.convention.onClose) {
             this.convention.onClose(this);
         }
-    };
-    ConventionContext.prototype.resolveWhenLeftUnclosed = function () {
-        if (this.convention.resolveWhenLeftUnclosed) {
-            this.convention.resolveWhenLeftUnclosed(this);
-            return true;
-        }
-        return false;
     };
     ConventionContext.prototype.registerTokenInsertion = function (args) {
         if (args.atIndex < this.startTokenIndex) {
@@ -702,7 +702,7 @@ var Tokenizer = (function () {
             insteadOfTryingToOpenUsualConventions: function () { return _this.bufferRawText(); },
             whenItClosesItFlushesBufferTo: TokenKind_1.TokenKind.NakedUrlAfterSchemeAndEnd,
             whenItClosesItAlsoClosesInnerConventions: true,
-            resolveWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
+            insteadOfFailingWhenLeftUnclosed: function () { return _this.flushBufferToNakedUrlEndToken(); },
         };
         this.raisedVoiceHandlers = ['*', '_'].map(function (delimiterChar) { return new RaisedVoiceHandler_1.RaisedVoiceHandler({
             delimiterChar: delimiterChar,
@@ -798,7 +798,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.resolveUnclosedContexts = function () {
         while (this.openContexts.length) {
             var context_1 = this.openContexts.pop();
-            if (!context_1.resolveWhenLeftUnclosed()) {
+            if (!context_1.doInsteadOfFailingWhenLeftUnclosed()) {
                 this.backtrackToBeforeContext(context_1);
                 return false;
             }
@@ -1212,12 +1212,12 @@ var Tokenizer = (function () {
             richConvention: richConvention,
             startPattern: PatternHelpers_1.escapeForRegex(startDelimiter),
             endPattern: PatternHelpers_1.escapeForRegex(endDelimiter),
-            resolveWhenLeftUnclosed: function (context) { return _this.insertPlainTextTokenAtContextStart(startDelimiter, context); }
+            insteadOfFailingWhenLeftUnclosed: function (context) { return _this.insertPlainTextTokenAtContextStart(startDelimiter, context); }
         });
     };
     Tokenizer.prototype.getRichSandwichConvention = function (args) {
         var _this = this;
-        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern, startPatternContainsATerm = args.startPatternContainsATerm, resolveWhenLeftUnclosed = args.resolveWhenLeftUnclosed;
+        var richConvention = args.richConvention, startPattern = args.startPattern, endPattern = args.endPattern, startPatternContainsATerm = args.startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed;
         return {
             startPattern: PatternHelpers_1.regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
             endPattern: PatternHelpers_1.regExpStartingWith(endPattern),
@@ -1226,7 +1226,7 @@ var Tokenizer = (function () {
             onClose: function (context) {
                 _this.encloseContextWithin(richConvention, context);
             },
-            resolveWhenLeftUnclosed: resolveWhenLeftUnclosed
+            insteadOfFailingWhenLeftUnclosed: insteadOfFailingWhenLeftUnclosed
         };
     };
     Tokenizer.prototype.getMediaDescriptionConventions = function () {
@@ -1264,7 +1264,7 @@ var Tokenizer = (function () {
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onOpen: function () { _this.buffer += bracket.start; },
             onClose: function () { _this.buffer += bracket.end; },
-            resolveWhenLeftUnclosed: function () { return true; }
+            insteadOfFailingWhenLeftUnclosed: function () { }
         }); });
     };
     return Tokenizer;

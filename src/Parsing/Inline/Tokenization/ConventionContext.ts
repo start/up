@@ -26,19 +26,19 @@ export class ConventionContext {
     return false
   }
 
-  close(): void {
-    if (this.convention.onClose) {
-      this.convention.onClose(this)
-    }
-  }
-
-  resolveWhenLeftUnclosed(): boolean {
-    if (this.convention.resolveWhenLeftUnclosed) {
-      this.convention.resolveWhenLeftUnclosed(this)
+  doInsteadOfFailingWhenLeftUnclosed(): boolean {
+    if (this.convention.insteadOfFailingWhenLeftUnclosed) {
+      this.convention.insteadOfFailingWhenLeftUnclosed(this)
       return true
     }
 
     return false
+  }
+
+  close(): void {
+    if (this.convention.onClose) {
+      this.convention.onClose(this)
+    }
   }
 
   registerTokenInsertion(args: { atIndex: number }) {

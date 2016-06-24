@@ -27,7 +27,7 @@ export interface TokenizableConvention {
   whenItClosesItFlushesBufferTo?: TokenKind
   
   onClose?: OnConventionEvent
-  resolveWhenLeftUnclosed?: OnConventionEvent
+  insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
 }
 
 

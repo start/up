@@ -119,7 +119,7 @@ class Tokenizer {
     whenItClosesItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
     whenItClosesItAlsoClosesInnerConventions: true,
 
-    resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
+    insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
 
   // "Raised voices" means emphasis and stress.
@@ -252,7 +252,7 @@ class Tokenizer {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
-      if (!context.resolveWhenLeftUnclosed()) {
+      if (!context.doInsteadOfFailingWhenLeftUnclosed()) {
         this.backtrackToBeforeContext(context)
         return false
       }
@@ -888,7 +888,7 @@ class Tokenizer {
       richConvention,
       startPattern: escapeForRegex(startDelimiter),
       endPattern: escapeForRegex(endDelimiter),
-      resolveWhenLeftUnclosed: (context) => this.insertPlainTextTokenAtContextStart(startDelimiter, context)
+      insteadOfFailingWhenLeftUnclosed: (context) => this.insertPlainTextTokenAtContextStart(startDelimiter, context)
     })
   }
 
@@ -898,10 +898,10 @@ class Tokenizer {
       startPattern: string
       endPattern: string
       startPatternContainsATerm?: boolean
-      resolveWhenLeftUnclosed?: OnConventionEvent
+      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern, startPatternContainsATerm, resolveWhenLeftUnclosed } = args
+    const { richConvention, startPattern, endPattern, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
 
     return {
       // Some of our rich sandwich conventions use a localized term in their start pattern, and we want those
@@ -916,7 +916,7 @@ class Tokenizer {
         this.encloseContextWithin(richConvention, context)
       },
 
-      resolveWhenLeftUnclosed
+      insteadOfFailingWhenLeftUnclosed
     }
   }
 
@@ -961,7 +961,7 @@ class Tokenizer {
       onOpen: () => { this.buffer += bracket.start },
       onClose: () => { this.buffer += bracket.end },
 
-      resolveWhenLeftUnclosed: () => true
+      insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     }))
   }
 }
