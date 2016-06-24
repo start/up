@@ -282,10 +282,22 @@ class Tokenizer {
   // This method exists purely for optimization. It allows us to test our conventions against as few
   // characters as possible. 
   private bufferContentThatCannotTriggerAnyChanges(): void {
-    this.consumer.consume({
-      pattern: CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN,
-      thenBeforeAdvancingTextIndex: match => { this.buffer += match }
-    })
+    const isSafeToBufferCertainWhitespace =
+      this.openContexts.every(context =>
+        !context.convention.isCutShortByWhitespace
+        && !context.convention.failIfWhitespaceIsEnounteredBeforeClosing)
+
+    const buffer = (pattern: RegExp) =>
+      this.consumer.consume({
+        pattern,
+        thenBeforeAdvancingTextIndex: match => { this.buffer += match }
+      })
+
+    do {
+      buffer(CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN)
+    } while (
+      isSafeToBufferCertainWhitespace
+      && buffer(WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES_PATTERN))
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -1002,6 +1014,8 @@ const CONTENT_THAT_NEVER_TRIGGERS_TOKENIZER_CHANGES_PATTERN =
 
 // Normally, whitespace can only trigger a tokenizer change when followed by a start bracket (e.g. the start
 // of a link URL, "linkified" convention URL, or footnote).  
-const WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES =
-  SOME_WHITESPACE + notFollowedBy(
-    anyCharFrom(BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR)))
+const WHITESPACE_THAT_NORMALLY_DOES_NOT_TRIGGER_TOKENIZER_CHANGES_PATTERN =
+  regExpStartingWith(
+    SOME_WHITESPACE
+    + notFollowedBy(anyCharFrom(
+      BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR))))
