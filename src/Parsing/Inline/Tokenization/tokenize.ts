@@ -108,7 +108,7 @@ class Tokenizer {
     startPattern: regExpStartingWith('http' + optional('s') + '://'),
     isCutShortByWhitespace: true,
 
-    flushBufferToPlainTextTokenBeforeOpening: true,
+    flushesBufferToPlainTextTokenBeforeOpening: true,
 
     onOpen: urlScheme => {
       this.appendNewToken({ kind: TokenKind.NakedUrlSchemeAndStart, value: urlScheme })
@@ -116,8 +116,8 @@ class Tokenizer {
 
     insteadOfTryingToOpenUsualConventions: () => this.bufferRawText(),
 
-    onCloseFlushBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
-    closeInnerContextsWhenClosing: true,
+    whenItClosesItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
+    whenItClosesItAlsoClosesInnerConventions: true,
 
     resolveWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
   }
@@ -171,10 +171,10 @@ class Tokenizer {
       startPattern: regExpStartingWith('`'),
       endPattern: regExpStartingWith('`'),
 
-      flushBufferToPlainTextTokenBeforeOpening: true,
+      flushesBufferToPlainTextTokenBeforeOpening: true,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferCurrentChar(),
-      onCloseFlushBufferTo: TokenKind.InlineCode
+      whenItClosesItFlushesBufferTo: TokenKind.InlineCode
     })
 
     this.conventions.push(
@@ -306,14 +306,14 @@ class Tokenizer {
     // we check only two properties:
     //
     // 1. isCutShortByWhitespace
-    // 2. failIfWhitespaceIsEnounteredBeforeClosing
+    // 2. failsIfWhitespaceIsEnounteredBeforeClosing
     //
     // This is completely sufficient for now, but it wouldn't work if any of our conventions had any leading
     // whitespace in their end patterns.
     const canWeTryToBufferWhitespace =
       this.openContexts.every(context =>
         !context.convention.isCutShortByWhitespace
-        && !context.convention.failIfWhitespaceIsEnounteredBeforeClosing)
+        && !context.convention.failsIfWhitespaceIsEnounteredBeforeClosing)
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
@@ -355,7 +355,7 @@ class Tokenizer {
 
   private shouldBacktrackToBeforeContext(context: ConventionContext): boolean {
     return (
-      context.convention.failIfWhitespaceIsEnounteredBeforeClosing
+      context.convention.failsIfWhitespaceIsEnounteredBeforeClosing
       && this.isCurrentCharWhitespace()
     )
   }
@@ -397,8 +397,8 @@ class Tokenizer {
       }
     }
 
-    if (convention.onCloseFlushBufferTo != null) {
-      this.flushBufferToTokenOfKind(convention.onCloseFlushBufferTo)
+    if (convention.whenItClosesItFlushesBufferTo != null) {
+      this.flushBufferToTokenOfKind(convention.whenItClosesItFlushesBufferTo)
     }
 
     openContext.close()
@@ -409,7 +409,7 @@ class Tokenizer {
 
     this.openContexts.splice(contextIndex, 1)
 
-    if (convention.closeInnerContextsWhenClosing) {
+    if (convention.whenItClosesItAlsoClosesInnerConventions) {
       // Since we just removed the context at `contextIndex`, its inner contexts will now start at
       // `contextIndex`.           
       this.openContexts.splice(contextIndex)
@@ -436,7 +436,7 @@ class Tokenizer {
     // actually want to replace this context's convention with the new one instead.
     context.convention = this.openContexts.pop().convention
 
-    if (context.convention.closeInnerContextsWhenClosing) {
+    if (context.convention.whenItClosesItAlsoClosesInnerConventions) {
       this.openContexts.splice(contextIndex + 1)
     }
 
@@ -550,7 +550,7 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, flushBufferToPlainTextTokenBeforeOpening, onOpen } = convention
+    const { startPattern, flushesBufferToPlainTextTokenBeforeOpening, onOpen } = convention
 
     return (
       this.canTry(convention)
@@ -559,7 +559,7 @@ class Tokenizer {
         pattern: startPattern,
 
         thenBeforeAdvancingTextIndex: (match, matchPrecedesNonWhitespace, ...captures) => {
-          if (flushBufferToPlainTextTokenBeforeOpening) {
+          if (flushesBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
 
@@ -704,7 +704,7 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      closeInnerContextsWhenClosing: true,
+      whenItClosesItAlsoClosesInnerConventions: true,
 
       onClose: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
@@ -739,9 +739,9 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
-      failIfWhitespaceIsEnounteredBeforeClosing: true,
+      failsIfWhitespaceIsEnounteredBeforeClosing: true,
       insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText() },
-      closeInnerContextsWhenClosing: true,
+      whenItClosesItAlsoClosesInnerConventions: true,
 
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
@@ -782,7 +782,7 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      closeInnerContextsWhenClosing: true,
+      whenItClosesItAlsoClosesInnerConventions: true,
 
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
@@ -804,9 +804,9 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
       onOpen: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
-      failIfWhitespaceIsEnounteredBeforeClosing: true,
+      failsIfWhitespaceIsEnounteredBeforeClosing: true,
       insteadOfTryingToCloseOuterContexts: () => { this.bufferRawText() },
-      closeInnerContextsWhenClosing: true,
+      whenItClosesItAlsoClosesInnerConventions: true,
 
       onClose: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
@@ -909,8 +909,8 @@ class Tokenizer {
       startPattern: regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
       endPattern: regExpStartingWith(endPattern),
 
-      flushBufferToPlainTextTokenBeforeOpening: true,
-      onCloseFlushBufferTo: TokenKind.PlainText,
+      flushesBufferToPlainTextTokenBeforeOpening: true,
+      whenItClosesItFlushesBufferTo: TokenKind.PlainText,
 
       onClose: (context) => {
         this.encloseContextWithin(richConvention, context)
@@ -927,12 +927,12 @@ class Tokenizer {
           startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
           endPattern: regExpStartingWith(bracket.endPattern),
 
-          flushBufferToPlainTextTokenBeforeOpening: true,
+          flushesBufferToPlainTextTokenBeforeOpening: true,
           insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
 
-          closeInnerContextsWhenClosing: true,
+          whenItClosesItAlsoClosesInnerConventions: true,
           onCloseFailIfCannotTranformInto: this.mediaUrlConventions,
-          onCloseFlushBufferTo: media.descriptionAndStartTokenKind,
+          whenItClosesItFlushesBufferTo: media.descriptionAndStartTokenKind,
         }))))
   }
 
@@ -941,10 +941,10 @@ class Tokenizer {
       startPattern: regExpStartingWith(ANY_WHITESPACE + bracket.startPattern),
       endPattern: regExpStartingWith(bracket.endPattern),
 
-      flushBufferToPlainTextTokenBeforeOpening: true,
+      flushesBufferToPlainTextTokenBeforeOpening: true,
 
       insteadOfTryingToCloseOuterContexts: () => this.bufferRawText(),
-      closeInnerContextsWhenClosing: true,
+      whenItClosesItAlsoClosesInnerConventions: true,
 
       onClose: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())

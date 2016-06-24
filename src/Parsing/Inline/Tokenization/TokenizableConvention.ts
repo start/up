@@ -13,18 +13,18 @@ export interface TokenizableConvention {
 
   isCutShortByWhitespace?: boolean
   
-  flushBufferToPlainTextTokenBeforeOpening?: boolean
+  flushesBufferToPlainTextTokenBeforeOpening?: boolean
   
   onOpen?: OnTextMatch
   
   insteadOfTryingToCloseOuterContexts?: OnConventionEvent
   insteadOfTryingToOpenUsualConventions?: OnConventionEvent
 
-  failIfWhitespaceIsEnounteredBeforeClosing?: boolean
+  failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
   
-  closeInnerContextsWhenClosing?: boolean
+  whenItClosesItAlsoClosesInnerConventions?: boolean
   onCloseFailIfCannotTranformInto?: TokenizableConvention[]
-  onCloseFlushBufferTo?: TokenKind
+  whenItClosesItFlushesBufferTo?: TokenKind
   
   onClose?: OnConventionEvent
   resolveWhenLeftUnclosed?: OnConventionEvent
