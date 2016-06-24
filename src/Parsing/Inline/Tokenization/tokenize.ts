@@ -323,7 +323,7 @@ class Tokenizer {
       canWeTryToBufferWhitespace
       // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
       // we've got to bail, because the current character can't be skipped.     
-      && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS))
+      && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN))
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -1039,7 +1039,7 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 //
 // To prevent our pattern from matching all but the last character of that whitespace, we make sure
 // our match is neither followed by an open bracket nor followed by a whitespace character. 
-const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS =
+const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   regExpStartingWith(
     SOME_WHITESPACE
     + notFollowedBy(anyCharFrom(
