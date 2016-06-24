@@ -11,7 +11,8 @@ import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { parseRegularLines } from './parseRegularLines'
 import { regExpStartingWith, regExpEndingWith } from '../PatternHelpers'
-import { ANY_WHITESPACE, LINE_BREAK, } from '../PatternPieces'
+import { ANY_WHITESPACE } from '../PatternPieces'
+import { INPUT_LINE_BREAK } from '../Strings'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
@@ -85,7 +86,7 @@ function trimOuterBlankLines(text: string): string {
 
 
 const LEADING_BLANK_LINES_PATTERN =
-  regExpStartingWith(ANY_WHITESPACE + LINE_BREAK)
+  regExpStartingWith(ANY_WHITESPACE + INPUT_LINE_BREAK)
 
 const TRAILIN_BLANK_LINES_PATTERN =
-  regExpEndingWith(LINE_BREAK + ANY_WHITESPACE)
+  regExpEndingWith(INPUT_LINE_BREAK + ANY_WHITESPACE)

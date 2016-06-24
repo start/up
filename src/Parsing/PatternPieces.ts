@@ -13,9 +13,6 @@ export const ANY_WHITESPACE =
 export const SOME_WHITESPACE =
   atLeast(1, WHITESPACE_CHAR)
 
-export const LINE_BREAK =
-  '\n'
-
 export const INTEGER =
   '\\d+'
 
