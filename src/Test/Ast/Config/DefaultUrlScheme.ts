@@ -127,6 +127,18 @@ describe('The "defaultUrlScheme" config setting', () => {
       ]))
   })
 
+  it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
+    const text = '[Chrono Cross] (example.wiki/Chrono_Chross)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], 'my-app:example.wiki/Chrono_Chross')
+      ])
+    )
+  })
+
   it('is prefixed to linkified spoiler URLs that start with a slash when the spoiler part and the URL are separated by whitespace', () => {
     const text = 'Walter White produces [SPOILER: Blue Sky meth] (example.wiki/Blue_Sky)'
 
