@@ -230,6 +230,99 @@ context('A linkified NSFW convention can have whitespace between itself and its 
   })
 
 
+  specify('It has a top-level domain', () => {
+    expectEveryCombinationOfBrackets({
+      contentToWrapInBrackets: 'NSFW: Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      urlToWrapInBrackets: 'chrono-trigger.wiki',
+      toProduce: insideDocumentAndParagraph([
+        new NsfwNode([
+          new LinkNode([
+            new PlainTextNode('Chrono Trigger')
+          ], '#wiki/chrono-trigger')
+        ])
+      ])
+    })
+  })
+
+
+  describe('When the URL merely has a top-level domain', () => {
+    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'NSFW: Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+        toProduce: insideDocumentAndParagraph([
+          new NsfwNode([
+            new LinkNode([
+              new PlainTextNode('Advance Wars')
+            ], 'advancewars.wikia.com/wiki/Advance_Wars_(game)')
+          ])
+        ])
+      })
+    })
+
+    specify('the URL may consist solely of digits before the top-level domain', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'NSFW: Good luck!',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '88.8888.cn',
+        toProduce: insideDocumentAndParagraph([
+          new NsfwNode([
+            new LinkNode([
+              new PlainTextNode('Model 3 theft')
+            ], '#3')
+          ])
+        ])
+      })
+    })
+
+    context('The top-level domain must contain only letters ', () => {
+      specify('No numbers', () => {
+        expect(Up.toAst('[NSFW: username] (john.e.smith5)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsfwNode([
+              new PlainTextNode('username')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(john.e.smith5)')
+            ]),
+          ])
+        )
+      })
+
+      specify('No hyphens', () => {
+        expect(Up.toAst('[NSFW: username] (john.e.smith-kline)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsfwNode([
+              new PlainTextNode('username')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(john.e.smith-kline)')
+            ]),
+          ])
+        )
+      })
+    })
+
+    specify('the URL must not contain any spaces', () => {
+      expect(Up.toAst('[NSFW: yeah] (ign.com had some hilarious forums)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(ign.com had some hilarious forums)')
+          ]),
+        ])
+      )
+    })
+  })
+
+
   specify('If none of the conditions are satisfied, the NSFW convention is not linkified', () => {
     expect(Up.toAst('[NSFW: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
