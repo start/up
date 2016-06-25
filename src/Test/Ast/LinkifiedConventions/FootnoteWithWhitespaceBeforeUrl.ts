@@ -307,7 +307,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('Chrono Trigger')
-      ], 'chrono-trigger.wiki')
+      ], 'https://chrono-trigger.wiki')
     ], 1)
 
     expectEveryCombinationOfBrackets({
@@ -346,7 +346,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL may consist solely of digits before the top-level domain', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
-          new PlainTextNode('Chrono Trigger')
+          new PlainTextNode('Good luck!')
         ], 'https://88.8888.cn')
       ], 1)
 

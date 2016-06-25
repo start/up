@@ -239,7 +239,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
         new NsfwNode([
           new LinkNode([
             new PlainTextNode('Chrono Trigger')
-          ], '#wiki/chrono-trigger')
+          ], 'https://chrono-trigger.wiki')
         ])
       ])
     })
@@ -256,7 +256,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
           new NsfwNode([
             new LinkNode([
               new PlainTextNode('Advance Wars')
-            ], 'advancewars.wikia.com/wiki/Advance_Wars_(game)')
+            ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
       })
@@ -271,7 +271,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
           new NsfwNode([
             new LinkNode([
               new PlainTextNode('Model 3 theft')
-            ], '#3')
+            ], 'https://88.8888.cn')
           ])
         ])
       })
