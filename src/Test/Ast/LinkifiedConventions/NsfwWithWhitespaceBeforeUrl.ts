@@ -170,18 +170,19 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('must not otherwise consist solely of digits', () => {
-      expect(Up.toAst('[NSFW: something terrible] (#14)')).to.be.eql(
-        insideDocumentAndParagraph([
+    it('may consist solely of digits after the hask mark', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'NSFW: Model 3 theft',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '#3',
+        toProduce: insideDocumentAndParagraph([
           new NsfwNode([
-            new PlainTextNode('something terrible')
-          ]),
-          new PlainTextNode(' '),
-          new ParenthesizedNode([
-            new PlainTextNode('(#14)')
-          ]),
+            new LinkNode([
+              new PlainTextNode('Model 3 theft')
+            ], '#3')
+          ])
         ])
-      )
+      })
     })
 
     it('must have something after the hash mark', () => {

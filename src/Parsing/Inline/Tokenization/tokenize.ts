@@ -718,8 +718,6 @@ class Tokenizer {
   //    * Start with a hash mark ("#")
   //
   // 2. Second, the URL must not contain any unescaped whitespace.
-  //
-  // 3. Third, if the URL starts with a URL hash mark, it must not otherwise consist solely of digits.
   private getLinkUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
@@ -988,17 +986,11 @@ const EXPLICIT_URL_PREFIX =
     URL_SLASH,
     URL_HASH_MARK)
 
+// If the "url" is consists solely of a URL prefix, the author almost certainly did not intend
+// this to be a URL.
 const PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN =
   new RegExp(
-    solely(
-      either(
-        // If the "url" is consists solely of a URL prefix, the author almost certainly did not intend
-        // this to be a URL.
-        EXPLICIT_URL_PREFIX,
-        // We don't assume URL fragment identifiers like "#10" were intended to be URLs. For more
-        // information, see the comments for the `getLinkUrlSeparatedByWhitespaceConventions` method.
-        URL_HASH_MARK + atLeast(1, DIGIT))))
-
+    solely(EXPLICIT_URL_PREFIX))
 
 // The patterns below exist only for optimization.
 //
@@ -1035,7 +1027,7 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 // [SPOILER: Gary battles Ash]   (http://bulbapedia.bulbagarden.net/wiki/Rival)
 //
 // To prevent our pattern from matching all but the last character of that whitespace, we make sure
-// our match is neither followed by an open bracket nor followed by a whitespace character. 
+// our match is followed by neither an open bracket nor by another whitespace character. 
 const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   regExpStartingWith(
     SOME_WHITESPACE + notFollowedBy(

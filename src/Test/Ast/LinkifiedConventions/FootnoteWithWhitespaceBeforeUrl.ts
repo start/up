@@ -225,23 +225,23 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('must not otherwise consist solely of digits', () => {
+    it('may consist solely of digits', () => {
       const footnote = new FootnoteNode([
-        new PlainTextNode('the phone was dead')
+        new LinkNode([
+          new PlainTextNode('the phone was dead')
+        ], '#15')
       ], 1)
 
-      expect(Up.toAst('((the phone was dead)) (#14)')).to.be.eql(
-        new DocumentNode([
-          new ParagraphNode([
-            footnote,
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('(#14)')
-            ]),
-          ]),
+      expectEveryCombinationOfBrackets({
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'the phone was dead',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '#15',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote,]),
           new FootnoteBlockNode([footnote])
         ])
-      )
+      })
     })
 
     it('must not contain any spaces', () => {

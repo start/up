@@ -159,18 +159,17 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
-    it('must not otherwise consist solely of digits', () => {
-      expect(Up.toAst('[sic] (#14)')).to.be.eql(
-        insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new PlainTextNode('[sic]')
-          ]),
-          new PlainTextNode(' '),
-          new ParenthesizedNode([
-            new PlainTextNode('(#14)')
-          ]),
-        ])
-      )
+    it('may consist solely of digits after the hask mark', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'Model 3 theft',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '#3',
+        toProduce: insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('Model 3 theft')
+            ], '#3')
+          ])
+      })
     })
 
     it('must have something after the hash mark', () => {
