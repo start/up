@@ -42,7 +42,26 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
 
   describe('When the URL has a scheme, the URL', () => {
-    it('must not contain any spaces', () => {
+    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+      const footnote = new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Advance Wars')
+        ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
+      ], 1)
+
+      expectEveryCombinationOfBrackets({
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote]),
+          new FootnoteBlockNode([footnote])
+        ])
+      })
+    })
+
+    specify('the URL must not contain any spaces', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('the phone was dead')
       ], 1)
@@ -65,7 +84,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       )
     })
 
-    it('must have something after the scheme', () => {
+    specify('there must be somethng after the scheme', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('email')
       ], 1)
@@ -84,7 +103,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       )
     })
 
-    it('must have something after the scheme beyond only slashes', () => {
+    specify('there must be somethng after the scheme beyond only slashes', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('local files')
       ], 1)
@@ -103,7 +122,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       )
     })
 
-    it('can consisting solely of digits after the scheme', () => {
+    specify('the rest of the URL can consist solely of digits', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
           new PlainTextNode('the phone was dead')

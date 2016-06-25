@@ -28,7 +28,22 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
 
   describe('When the URL has a scheme, the URL', () => {
-    it('must not contain any spaces', () => {
+    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'NSFL: Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+        toProduce: insideDocumentAndParagraph([
+          new NsflNode([
+            new LinkNode([
+              new PlainTextNode('Advance Wars')
+            ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
+          ])
+        ])
+      })
+    })
+
+    specify('the URL must not contain any spaces', () => {
       expect(Up.toAst('[NSFL: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new NsflNode([
@@ -46,7 +61,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       )
     })
 
-    it('must have something after the scheme', () => {
+    specify('there must be somethng after the scheme', () => {
       expect(Up.toAst('[NSFL: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new NsflNode([
@@ -60,7 +75,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       )
     })
 
-    it('must have something after the scheme beyond only slashes', () => {
+    specify('there must be somethng after the scheme beyond only slashes', () => {
       expect(Up.toAst('[NSFL: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new NsflNode([
@@ -74,7 +89,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       )
     })
 
-    it('can consisting solely of digits after the scheme', () => {
+    specify('the rest of the URL can consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'NSFL: spooky phone call',
         partsToPutInBetween: ['  ', '\t', ' \t '],

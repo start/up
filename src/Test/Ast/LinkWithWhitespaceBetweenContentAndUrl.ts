@@ -84,7 +84,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
-    specify('the rest of the URL can consisting solely of digits', () => {
+    specify('the rest of the URL can consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'call me',
         partsToPutInBetween: ['  ', '\t', ' \t '],
