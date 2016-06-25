@@ -184,6 +184,21 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       )
     })
 
+    it('may consist solely of digits if one of the digits is escaped', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'SPOILER: something terrible',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '#1\\50',
+        toProduce: insideDocumentAndParagraph([
+          new SpoilerNode([
+            new LinkNode([
+              new PlainTextNode('something terrible')
+            ], '#150')
+          ])
+        ])
+      })
+    })
+
     it('must have something after the hash mark', () => {
       expect(Up.toAst('[SPOILER: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
