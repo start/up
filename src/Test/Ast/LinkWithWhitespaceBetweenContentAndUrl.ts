@@ -24,8 +24,21 @@ context('A link can have whitespace between its bracketed content and bracketed 
   })
 
 
-  describe('When the URL has a scheme, the URL', () => {
-    it('must not contain any spaces', () => {
+  describe('When the URL has a scheme', () => {
+    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('Advance Wars')
+          ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
+        ])
+      })
+    })
+
+    specify('the URL must not contain any spaces', () => {
       expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -43,7 +56,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
-    it('must have something after the scheme', () => {
+    specify('there must be somethng after the scheme', () => {
       expect(Up.toAst('[email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -57,7 +70,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
-    it('must have something after the scheme beyond only slashes', () => {
+    specify('there must be somethng after the scheme beyond only slashes', () => {
       expect(Up.toAst('[local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -71,7 +84,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
-    it('can consisting solely of digits after the scheme', () => {
+    specify('the rest of the URL can consisting solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'call me',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -165,10 +178,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
         partsToPutInBetween: ['  ', '\t', ' \t '],
         urlToWrapInBrackets: '#3',
         toProduce: insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
-            ], '#3')
-          ])
+          new LinkNode([
+            new PlainTextNode('Model 3 theft')
+          ], '#3')
+        ])
       })
     })
 
@@ -195,6 +208,93 @@ context('A link can have whitespace between its bracketed content and bracketed 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2 was never trending)')
+          ]),
+        ])
+      )
+    })
+  })
+
+
+  specify('It has a top-level domain', () => {
+    expectEveryCombinationOfBrackets({
+      contentToWrapInBrackets: 'Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      urlToWrapInBrackets: 'chrono-trigger.wiki',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Trigger')
+        ], '#wiki/chrono-trigger')
+      ])
+    })
+  })
+
+
+  describe('When the URL merely has a top-level domain', () => {
+    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('Advance Wars')
+          ], 'advancewars.wikia.com/wiki/Advance_Wars_(game)')
+        ])
+      })
+    })
+
+    specify('the URL may consist solely of digits before the top-level domain', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'Good luck!',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '88.8888.cn',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('Model 3 theft')
+          ], '#3')
+        ])
+      })
+    })
+
+    context('The top-level domain must contain only letters ', () => {
+      specify('No numbers', () => {
+        expect(Up.toAst('[username] (john.e.smith5)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new PlainTextNode('[hash mark]')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(john.e.smith5)')
+            ]),
+          ])
+        )
+      })
+
+      specify('No hyphens', () => {
+        expect(Up.toAst('[username] (john.e.smith-kline)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new PlainTextNode('[hash mark]')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(john.e.smith-kline)')
+            ]),
+          ])
+        )
+      })
+    })
+
+    specify('the URL must not contain any spaces', () => {
+      expect(Up.toAst('[yeah] (ign.com had some hilarious forums)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[yeah]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(ign.com had some hilarious forums)')
           ]),
         ])
       )
