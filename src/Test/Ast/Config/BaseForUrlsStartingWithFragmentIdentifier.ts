@@ -32,18 +32,6 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     )
   })
 
-  it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
-    const text = '[Chrono Cross] (#wiki/Chrono_Chross)'
-
-    expect(up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
-        ], 'https://example.com/page#wiki/Chrono_Chross')
-      ])
-    )
-  })
-
   it('is prefixed to image URLs that start with a hash mark', () => {
     const text = '[image: Chrono Cross logo](#cc-logo.png)'
 
@@ -137,6 +125,18 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         ]),
         new FootnoteBlockNode([footnote])
       ]))
+  })
+
+  it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
+    const text = '[Chrono Cross] (#wiki/Chrono_Chross)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Chrono Cross')
+        ], 'https://example.com/page#wiki/Chrono_Chross')
+      ])
+    )
   })
 
   it('is prefixed to linkified spoiler URLs that start with a hash mark when the spoiler part and the URL are separated by whitespace', () => {
