@@ -303,6 +303,126 @@ context('A linkified footnote can have whitespace between itself and its bracket
   })
 
 
+  specify('It has a top-level domain', () => {
+    const footnote = new FootnoteNode([
+      new LinkNode([
+        new PlainTextNode('Chrono Trigger')
+      ], 'chrono-trigger.wiki')
+    ], 1)
+
+    expectEveryCombinationOfBrackets({
+      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+      contentToWrapInBrackets: 'Chrono Trigger',
+      partsToPutInBetween: ['  ', '\t', ' \t '],
+      urlToWrapInBrackets: 'chrono-trigger.wiki',
+      toProduce: new DocumentNode([
+        new ParagraphNode([footnote,]),
+        new FootnoteBlockNode([footnote])
+      ])
+    })
+  })
+
+
+  describe('When the URL merely has a top-level domain', () => {
+    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+      const footnote = new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Advance Wars')
+        ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
+      ], 1)
+
+      expectEveryCombinationOfBrackets({
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote,]),
+          new FootnoteBlockNode([footnote])
+        ])
+      })
+    })
+
+    specify('the URL may consist solely of digits before the top-level domain', () => {
+      const footnote = new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Chrono Trigger')
+        ], 'https://88.8888.cn')
+      ], 1)
+
+      expectEveryCombinationOfBrackets({
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'Good luck!',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '88.8888.cn',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote,]),
+          new FootnoteBlockNode([footnote])
+        ])
+      })
+    })
+
+    context('The top-level domain must contain only letters ', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('username')
+      ], 1)
+
+      specify('No numbers', () => {
+        expect(Up.toAst('[[username]] (john.e.smith5)')).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([
+              footnote,
+              new PlainTextNode(' '),
+              new ParenthesizedNode([
+                new PlainTextNode('(john.e.smith5)')
+              ]),
+            ]),
+            new FootnoteBlockNode([footnote])
+          ])
+        )
+      })
+
+      specify('No hyphens', () => {
+        const footnote = new FootnoteNode([
+          new PlainTextNode('username')
+        ], 1)
+
+        expect(Up.toAst('[[username]] (john.e.smith-kline)')).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([
+              footnote,
+              new PlainTextNode(' '),
+              new ParenthesizedNode([
+                new PlainTextNode('(john.e.smith-kline)')
+              ]),
+            ]),
+            new FootnoteBlockNode([footnote])
+          ])
+        )
+      })
+    })
+
+    specify('the URL must not contain any spaces', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('yeah')
+      ], 1)
+
+      expect(Up.toAst('[[yeah]] (ign.com had some hilarious forums)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(ign.com had some hilarious forums)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+  })
+
+
   specify('If none of the conditions are satisfied, the footnote is not linkified', () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('the phone was dead')
