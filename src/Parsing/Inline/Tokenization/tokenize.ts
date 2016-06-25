@@ -56,7 +56,7 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
   FOOTNOTE_CONVENTION
 ]
 
-// Many of our conventions incorporate brackets. Here are the ones we recognize:
+// Many of our conventions incorporate brackets. These are the ones we recognize.
 const BRACKETS = [
   new Bracket('(', ')'),
   new Bracket('[', ']'),
@@ -246,8 +246,8 @@ class Tokenizer {
   }
 
   private resolveUnclosedContexts(): boolean {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const context = this.openContexts[i]
+    while (this.openContexts.length) {
+      const context = this.openContexts.pop()
 
       if (!context.doInsteadOfFailingWhenLeftUnclosed()) {
         this.backtrackToBeforeContext(context)
@@ -273,7 +273,7 @@ class Tokenizer {
     return false
   }
 
-  // This method exists purely for optimization. Its purpose it to allow us to test as few characters as
+  // This method exists purely for optimization. Its purpose is to allow us to test as few characters as
   // possible for our conventions.
   private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
     const tryToBuffer = (pattern: RegExp) =>
@@ -282,7 +282,7 @@ class Tokenizer {
         thenBeforeAdvancingTextIndex: match => { this.buffer += match }
       })
 
-    // **Normally**, whitespace doesn't have much of an impact on tokenization:
+    // Normally, whitespace doesn't have much of an impact on tokenization:
     //
     // - It can't close most conventions
     // - It can only open conventions when followed by a start bracket (footnotes, some bracketed URLs)

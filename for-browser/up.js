@@ -794,8 +794,8 @@ var Tokenizer = (function () {
         return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts();
     };
     Tokenizer.prototype.resolveUnclosedContexts = function () {
-        for (var i = this.openContexts.length - 1; i >= 0; i--) {
-            var context_1 = this.openContexts[i];
+        while (this.openContexts.length) {
+            var context_1 = this.openContexts.pop();
             if (!context_1.doInsteadOfFailingWhenLeftUnclosed()) {
                 this.backtrackToBeforeContext(context_1);
                 return false;
