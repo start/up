@@ -52,10 +52,10 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
     ], 1)
 
     expectEveryCombinationOfBrackets({
-      bracketsForFirstPart: FOOTNOTE_BRACKETS,
-      firstPartToWrapInBrackets: 'Well, I do, but I pretend not to.',
+      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+      contentToWrapInBrackets: 'Well, I do, but I pretend not to.',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'http://example.com/luckycharms',
+      urlToWrapInBrackets: 'http://example.com/luckycharms',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])

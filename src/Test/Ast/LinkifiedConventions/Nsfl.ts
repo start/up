@@ -32,9 +32,9 @@ describe('A NSFL convention followed immediately by a parenthesized/bracketd URL
 describe('Any NSFL convention followed immediately by a parenthesized/bracketed URL', () => {
   it('produces a NSFL node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the NSFL convention can be different from the type of bracket surrounding the URL', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'NSFL: you eat rotting Gary',
+      contentToWrapInBrackets: 'NSFL: you eat rotting Gary',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'http://example.com/finalbattle',
+      urlToWrapInBrackets: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
         new NsflNode([
           new LinkNode([

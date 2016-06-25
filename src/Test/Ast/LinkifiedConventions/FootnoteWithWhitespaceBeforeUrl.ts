@@ -29,10 +29,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
     ], 1)
 
     expectEveryCombinationOfBrackets({
-      bracketsForFirstPart: FOOTNOTE_BRACKETS,
-      firstPartToWrapInBrackets: 'the phone was dead',
+      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+      contentToWrapInBrackets: 'the phone was dead',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'tel:555-555-5555',
+      urlToWrapInBrackets: 'tel:555-555-5555',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
@@ -111,10 +111,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], 1)
 
       expectEveryCombinationOfBrackets({
-        bracketsForFirstPart: FOOTNOTE_BRACKETS,
-        firstPartToWrapInBrackets: 'the phone was dead',
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'the phone was dead',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: 'tel:5555555555',
+        urlToWrapInBrackets: 'tel:5555555555',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
@@ -132,10 +132,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
     ], 1)
 
     expectEveryCombinationOfBrackets({
-      bracketsForFirstPart: FOOTNOTE_BRACKETS,
-      firstPartToWrapInBrackets: 'the phone was dead',
+      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+      contentToWrapInBrackets: 'the phone was dead',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '/wiki/dead-phone',
+      urlToWrapInBrackets: '/wiki/dead-phone',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
@@ -191,10 +191,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], 1)
 
       expectEveryCombinationOfBrackets({
-        bracketsForFirstPart: FOOTNOTE_BRACKETS,
-        firstPartToWrapInBrackets: 'the phone was dead',
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'the phone was dead',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '/5555555555',
+        urlToWrapInBrackets: '/5555555555',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
@@ -212,10 +212,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
     ], 1)
 
     expectEveryCombinationOfBrackets({
-      bracketsForFirstPart: FOOTNOTE_BRACKETS,
-      firstPartToWrapInBrackets: 'the phone was dead',
+      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+      contentToWrapInBrackets: 'the phone was dead',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '#wiki/dead-phone',
+      urlToWrapInBrackets: '#wiki/dead-phone',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote,]),
         new FootnoteBlockNode([footnote])
@@ -338,10 +338,10 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
     ], 1)
 
     expectEveryCombinationOfBrackets({
-      bracketsForFirstPart: FOOTNOTE_BRACKETS,
-      firstPartToWrapInBrackets: 'the phone was dead',
+      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+      contentToWrapInBrackets: 'the phone was dead',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'https://example.com/search=phone\\ was\\ dead',
+      urlToWrapInBrackets: 'https://example.com/search=phone\\ was\\ dead',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote,]),
         new FootnoteBlockNode([footnote])

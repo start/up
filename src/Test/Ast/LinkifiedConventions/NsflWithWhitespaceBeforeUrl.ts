@@ -13,9 +13,9 @@ import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 context('A linkified NSFL convention can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'NSFL: something terrible',
+      contentToWrapInBrackets: 'NSFL: something terrible',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'app:wiki/terrible-thing',
+      urlToWrapInBrackets: 'app:wiki/terrible-thing',
       toProduce: insideDocumentAndParagraph([
         new NsflNode([
           new LinkNode([
@@ -76,9 +76,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
     it('can consisting solely of digits after the scheme', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'NSFL: spooky phone call',
+        contentToWrapInBrackets: 'NSFL: spooky phone call',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: 'tel:5555555555',
+        urlToWrapInBrackets: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
           new NsflNode([
             new LinkNode([
@@ -93,9 +93,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
   specify('It starts with a slash', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'NSFL: something terrible',
+      contentToWrapInBrackets: 'NSFL: something terrible',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '/wiki/something-terrible',
+      urlToWrapInBrackets: '/wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
         new NsflNode([
           new LinkNode([
@@ -138,9 +138,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
     it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'NSFL: Model 3 theft',
+        contentToWrapInBrackets: 'NSFL: Model 3 theft',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '/3',
+        urlToWrapInBrackets: '/3',
         toProduce: insideDocumentAndParagraph([
           new NsflNode([
             new LinkNode([
@@ -155,9 +155,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'NSFL: something terrible',
+      contentToWrapInBrackets: 'NSFL: something terrible',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '#wiki/something-terrible',
+      urlToWrapInBrackets: '#wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
         new NsflNode([
           new LinkNode([
@@ -252,9 +252,9 @@ describe('If there is nothing but whitspace between a NSFL convention and a brac
 describe("A NSFL convention's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'NSFL: something terrible',
+      contentToWrapInBrackets: 'NSFL: something terrible',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'https://stackoverflow.com/search=something\\ very\\ terrible',
+      urlToWrapInBrackets: 'https://stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
         new NsflNode([
           new LinkNode([

@@ -14,25 +14,32 @@ export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): DocumentN
 
 export function expectEveryCombinationOfBrackets(
   args: {
-    bracketsForFirstPart?: Bracket[],
-    bracketsForSecondPart?: Bracket[]
-    firstPartToWrapInBrackets: string
+    bracketsToWrapAroundContent?: Bracket[],
+    bracketsToWrapAroundUrl?: Bracket[]
+    contentToWrapInBrackets: string
     partsToPutInBetween?: string[]
-    secondPartToWrapInBrackets: string
+    urlToWrapInBrackets: string
     toProduce: DocumentNode
-  }) {
-  const { firstPartToWrapInBrackets, secondPartToWrapInBrackets, toProduce } = args
+  }
+) {
+  const NORMAL_BRACKETS = [
+    { open: '(', close: ')' },
+    { open: '[', close: ']' },
+    { open: '{', close: '}' }
+  ]
+
+  const { contentToWrapInBrackets, urlToWrapInBrackets, toProduce } = args
   const partsToPutInBetween = args.partsToPutInBetween || ['']
-  const bracketsForFirstPart = args.bracketsForFirstPart || NORMAL_BRACKETS
-  const bracketsForSecondPart = args.bracketsForSecondPart || NORMAL_BRACKETS
+  const bracketsForFirstPart = args.bracketsToWrapAroundContent || NORMAL_BRACKETS
+  const bracketsForSecondPart = args.bracketsToWrapAroundUrl || NORMAL_BRACKETS
 
   for (const bracketForFirstPart of bracketsForFirstPart) {
     for (const bracketForSecondPart of bracketsForSecondPart) {
       for (const partToPutInBetween of partsToPutInBetween) {
         const text =
-          wrapInBracket(firstPartToWrapInBrackets, bracketForFirstPart)
+          wrapInBracket(contentToWrapInBrackets, bracketForFirstPart)
           + partToPutInBetween
-          + wrapInBracket(secondPartToWrapInBrackets, bracketForSecondPart)
+          + wrapInBracket(urlToWrapInBrackets, bracketForSecondPart)
 
         expect(Up.toAst(text)).to.be.eql(toProduce)
       }
@@ -44,12 +51,6 @@ export interface Bracket {
   open: string
   close: string
 }
-
-const NORMAL_BRACKETS = [
-  { open: '(', close: ')' },
-  { open: '[', close: ']' },
-  { open: '{', close: '}' }
-]
 
 function wrapInBracket(text: string, bracket: Bracket): string {
   return bracket.open + text + bracket.close

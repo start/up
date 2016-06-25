@@ -31,8 +31,8 @@ describe('A video that is the only convention on its line', () => {
 describe("The brackets enclosing a video convention's description and URL", () => {
   it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
-      secondPartToWrapInBrackets: 'http://example.com/ghosts.webm',
+      contentToWrapInBrackets: 'video: ghostly howling',
+      urlToWrapInBrackets: 'http://example.com/ghosts.webm',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', 'http://example.com/ghosts.webm')
       ])
@@ -44,9 +44,9 @@ describe("The brackets enclosing a video convention's description and URL", () =
 describe("A video convention", () => {
   it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
+      contentToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/ghosts.webm',
+      urlToWrapInBrackets: 'http://example.com/ghosts.webm',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', 'http://example.com/ghosts.webm')
       ])
@@ -58,9 +58,9 @@ describe("A video convention", () => {
 describe('A video URL with no URL scheme', () => {
   it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
+      contentToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'example.com/ghosts.webm',
+      urlToWrapInBrackets: 'example.com/ghosts.webm',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', 'https://example.com/ghosts.webm')
       ])
@@ -72,9 +72,9 @@ describe('A video URL with no URL scheme', () => {
 describe('A video URL starting with a slash', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
+      contentToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '/howling.webm',
+      urlToWrapInBrackets: '/howling.webm',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', '/howling.webm')
       ])
@@ -86,9 +86,9 @@ describe('A video URL starting with a slash', () => {
 describe('A video URL starting with a hash mark ("#")', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
+      contentToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '#howling.webm',
+      urlToWrapInBrackets: '#howling.webm',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', '#howling.webm')
       ])
@@ -100,9 +100,9 @@ describe('A video URL starting with a hash mark ("#")', () => {
 describe("A video convention's URL", () => {
   it("can contain spaces", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
+      contentToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.webm',
+      urlToWrapInBrackets: 'http://example.com/scary ghosts.webm',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', 'http://example.com/scary ghosts.webm')
       ])
@@ -111,9 +111,9 @@ describe("A video convention's URL", () => {
   
   it("does not need to have an extension", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'video: ghostly howling',
+      contentToWrapInBrackets: 'video: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/ghosts',
+      urlToWrapInBrackets: 'http://example.com/ghosts',
       toProduce: new DocumentNode([
         new VideoNode('ghostly howling', 'http://example.com/ghosts')
       ])

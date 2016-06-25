@@ -26,8 +26,8 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text, 
 describe("The brackets enclosing a link's description and URL", () => {
   it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'this site',
-      secondPartToWrapInBrackets: 'http://stackoverflow.com',
+      contentToWrapInBrackets: 'this site',
+      urlToWrapInBrackets: 'http://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
@@ -41,8 +41,8 @@ describe("The brackets enclosing a link's description and URL", () => {
 describe('A link URL with no scheme', () => {
   it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'this site',
-      secondPartToWrapInBrackets: 'stackoverflow.com',
+      contentToWrapInBrackets: 'this site',
+      urlToWrapInBrackets: 'stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
@@ -56,8 +56,8 @@ describe('A link URL with no scheme', () => {
 describe('A link URL starting with a slash', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'this site',
-      secondPartToWrapInBrackets: '/some-page',
+      contentToWrapInBrackets: 'this site',
+      urlToWrapInBrackets: '/some-page',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
@@ -71,8 +71,8 @@ describe('A link URL starting with a slash', () => {
 describe('A link URL starting with a hash mark ("#")', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'this site',
-      secondPartToWrapInBrackets: '#some-page',
+      contentToWrapInBrackets: 'this site',
+      urlToWrapInBrackets: '#some-page',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
@@ -86,8 +86,8 @@ describe('A link URL starting with a hash mark ("#")', () => {
 describe('A link URL with a URL scheme other than "http://" or "https://"', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'email me',
-      secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
+      contentToWrapInBrackets: 'email me',
+      urlToWrapInBrackets: 'mailto:daniel@wants.email',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('email me')

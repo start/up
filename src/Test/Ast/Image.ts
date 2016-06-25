@@ -31,8 +31,8 @@ describe('An image that is the only convention on its line', () => {
 describe("The brackets enclosing an image convention's description and URL", () => {
   it("can be different from each other (as long as each pair of brackets is matching)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
-      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
+      contentToWrapInBrackets: 'image: ghostly howling',
+      urlToWrapInBrackets: 'http://example.com/ghosts.svg',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', 'http://example.com/ghosts.svg')
       ])
@@ -44,9 +44,9 @@ describe("The brackets enclosing an image convention's description and URL", () 
 describe("An image convention", () => {
   it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
+      contentToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/ghosts.svg',
+      urlToWrapInBrackets: 'http://example.com/ghosts.svg',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', 'http://example.com/ghosts.svg')
       ])
@@ -58,9 +58,9 @@ describe("An image convention", () => {
 describe('An image URL with no URL scheme', () => {
   it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
+      contentToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'example.com/ghosts.svg',
+      urlToWrapInBrackets: 'example.com/ghosts.svg',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', 'https://example.com/ghosts.svg')
       ])
@@ -72,9 +72,9 @@ describe('An image URL with no URL scheme', () => {
 describe('An image URL starting with a slash', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
+      contentToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '/howling.svg',
+      urlToWrapInBrackets: '/howling.svg',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', '/howling.svg')
       ])
@@ -86,9 +86,9 @@ describe('An image URL starting with a slash', () => {
 describe('An image URL starting with a hash mark ("#")', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
+      contentToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: '#howling.svg',
+      urlToWrapInBrackets: '#howling.svg',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', '#howling.svg')
       ])
@@ -100,9 +100,9 @@ describe('An image URL starting with a hash mark ("#")', () => {
 describe("An image convention's URL", () => {
   it("can contain spaces", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
+      contentToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/scary ghosts.svg',
+      urlToWrapInBrackets: 'http://example.com/scary ghosts.svg',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', 'http://example.com/scary ghosts.svg')
       ])
@@ -111,9 +111,9 @@ describe("An image convention's URL", () => {
 
   it("does not need to have an extension", () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'image: ghostly howling',
+      contentToWrapInBrackets: 'image: ghostly howling',
       partsToPutInBetween: [' ', '\t', '  \t '],
-      secondPartToWrapInBrackets: 'http://example.com/ghosts',
+      urlToWrapInBrackets: 'http://example.com/ghosts',
       toProduce: new DocumentNode([
         new ImageNode('ghostly howling', 'http://example.com/ghosts')
       ])

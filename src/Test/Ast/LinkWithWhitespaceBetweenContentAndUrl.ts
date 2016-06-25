@@ -12,9 +12,9 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 context('A link can have whitespace between its bracketed content and bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'email me',
+      contentToWrapInBrackets: 'email me',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'mailto:daniel@wants.email',
+      urlToWrapInBrackets: 'mailto:daniel@wants.email',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('email me')
@@ -73,9 +73,9 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
     it('can consisting solely of digits after the scheme', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'call me',
+        contentToWrapInBrackets: 'call me',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: 'tel:5555555555',
+        urlToWrapInBrackets: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('call me')
@@ -88,9 +88,9 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
   specify('It starts with a slash', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'Chrono Trigger',
+      contentToWrapInBrackets: 'Chrono Trigger',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '/wiki/chrono-trigger',
+      urlToWrapInBrackets: '/wiki/chrono-trigger',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Trigger')
@@ -131,9 +131,9 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
     it('can consist solely of digits after the slash', () => {
       expectEveryCombinationOfBrackets({
-        firstPartToWrapInBrackets: 'Model 3',
+        contentToWrapInBrackets: 'Model 3',
         partsToPutInBetween: ['  ', '\t', ' \t '],
-        secondPartToWrapInBrackets: '/3',
+        urlToWrapInBrackets: '/3',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Model 3')
@@ -146,9 +146,9 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'Chrono Trigger',
+      contentToWrapInBrackets: 'Chrono Trigger',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: '#wiki/chrono-trigger',
+      urlToWrapInBrackets: '#wiki/chrono-trigger',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Trigger')
@@ -241,9 +241,9 @@ describe('If there is nothing but whitspace between a spoiler and a bracketed UR
 describe("A link's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
     expectEveryCombinationOfBrackets({
-      firstPartToWrapInBrackets: 'this search',
+      contentToWrapInBrackets: 'this search',
       partsToPutInBetween: ['  ', '\t', ' \t '],
-      secondPartToWrapInBrackets: 'https://stackoverflow.com/search=see\\ plus\\ plus',
+      urlToWrapInBrackets: 'https://stackoverflow.com/search=see\\ plus\\ plus',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this search')
