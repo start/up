@@ -261,7 +261,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         expect(Up.toAst('[username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
-              new PlainTextNode('[hash mark]')
+              new PlainTextNode('[username]')
             ]),
             new PlainTextNode(' '),
             new ParenthesizedNode([
@@ -275,7 +275,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         expect(Up.toAst('[username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
-              new PlainTextNode('[hash mark]')
+              new PlainTextNode('[username]')
             ]),
             new PlainTextNode(' '),
             new ParenthesizedNode([
