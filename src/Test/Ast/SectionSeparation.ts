@@ -13,6 +13,7 @@ describe('Between paragraphs', () => {
 
 
 Goodbye, world!`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
@@ -43,11 +44,11 @@ Goodbye, world!`
 
 describe('A document that starts with 3 blank lines', () => {
   it('does not produce a leading section separator node', () => {
-    const text =
-      `
+    const text = `
 
 
 Hello, world!`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
@@ -61,8 +62,7 @@ Hello, world!`
 
 describe('A document that ends with 3 blank lines', () => {
   it('does not produce a trailing section separator node', () => {
-    const text =
-      `Hello, world!
+    const text = `Hello, world!
 
 
 
@@ -95,6 +95,7 @@ describe('A section separator streak', () => {
     const text = `
 ~-~-~-~-~
 60.4%`
+
     expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
