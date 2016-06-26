@@ -286,6 +286,61 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
     })
 
+    specify('the URL must start with a letter or a number, not a period', () => {
+      expect(Up.toAst('[top-level domain] (.co.uk)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[top-level domain]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(.co.uk)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the URL must not have consecutive periods before the top-level domain', () => {
+      expect(Up.toAst('[Ash is not his own father] (um..uh)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[Ash is not his own father]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(um..uh)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
+      expect(Up.toAst('[debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[debilitating sadness]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(4chan.org../r9k/)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'rocket ship',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'example.com/321...blastoff/1',
+        toProduce: insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('Model 3 theft')
+            ], 'https://example.com/321...blastoff/1')
+        ])
+      })
+    })
+
     specify('the URL must not contain any spaces', () => {
       expect(Up.toAst('[yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([

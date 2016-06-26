@@ -402,6 +402,81 @@ context('A linkified footnote can have whitespace between itself and its bracket
       })
     })
 
+    specify('the URL must start with a letter or a number, not a period', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('top-level domain')
+      ], 1)
+
+      expect(Up.toAst('[[top-level domain]] (.co.uk)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(.co.uk)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
+    specify('the URL must not have consecutive periods before the top-level domain', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Ash is not his own father')
+      ], 1)
+
+      expect(Up.toAst('[[Ash is not his own father]] (um..uh)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(um..uh)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
+    specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('debilitating sadness')
+      ], 1)
+
+      expect(Up.toAst('[[debilitating sadness]] (4chan.org../r9k/)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(4chan.org../r9k/)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
+    specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
+      const footnote = new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Good luck!')
+        ], 'https://88.8888.cn')
+      ], 1)
+
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'NSFW: rocket ship',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '88.8888.cn',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote,]),
+          new FootnoteBlockNode([footnote])
+        ])
+      })
+    })
+
     specify('the URL must not contain any spaces', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('yeah')
