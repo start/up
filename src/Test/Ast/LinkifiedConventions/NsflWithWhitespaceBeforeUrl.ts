@@ -262,7 +262,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       })
     })
 
-    specify('the URL may consist solely of digits before the top-level domain', () => {
+    specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'NSFL: Good luck!',
         partsToPutInBetween: ['  ', '\t', ' \t '],

@@ -262,7 +262,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       })
     })
 
-    specify('the URL may consist solely of digits before the top-level domain', () => {
+    specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'SPOILER: Good luck!',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -304,6 +304,78 @@ context('A linkified spoiler can have whitespace between itself and its brackete
             ]),
           ])
         )
+      })
+    })
+
+    specify('the URL must start with a letter or a number, not a period', () => {
+      expect(Up.toAst('[SPOILER: top-level domain] (.co.uk)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('top-level domain')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(.co.uk)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the URL must not have consecutive periods before the top-level domain', () => {
+      expect(Up.toAst('[SPOILER: Ash is not his own father] (um..uh)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('Ash is not his own father')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(um..uh)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
+      expect(Up.toAst('[SPOILER: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('debilitating sadness')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(4chan.org../r9k/)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'SPOILER: rocket ship',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'example.com/321...blastoff/1',
+        toProduce: insideDocumentAndParagraph([
+          new SpoilerNode([
+            new LinkNode([
+              new PlainTextNode('Model 3 theft')
+            ], 'https://example.com/321...blastoff/1')
+          ])
+        ])
+      })
+    })
+
+    specify('all domains before the top-level domain may consist solely of digits', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'SPOILER: Good luck!',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: '88.8888.cn',
+        toProduce: insideDocumentAndParagraph([
+          new SpoilerNode([
+            new LinkNode([
+              new PlainTextNode('Model 3 theft')
+            ], 'https://88.8888.cn')
+          ])
+        ])
       })
     })
 

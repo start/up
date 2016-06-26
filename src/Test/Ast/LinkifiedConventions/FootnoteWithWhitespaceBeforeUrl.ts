@@ -343,7 +343,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       })
     })
 
-    specify('the URL may consist solely of digits before the top-level domain', () => {
+    specify('all domains before the top-level domain may consist solely of digits', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
           new PlainTextNode('Good luck!')

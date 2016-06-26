@@ -243,7 +243,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
     })
 
-    specify('the URL may consist solely of digits before the top-level domain', () => {
+    specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'Good luck!',
         partsToPutInBetween: ['  ', '\t', ' \t '],
