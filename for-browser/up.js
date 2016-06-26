@@ -1269,11 +1269,11 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
-var URL_SCHEME_NAME = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharFrom([
+var URL_SCHEME_NAME = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.anyOptional(PatternHelpers_1.anyCharFrom([
     PatternPieces_1.LETTER_CLASS,
     PatternPieces_1.DIGIT_CLASS
 ].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
-var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
+var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.anyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var URL_SLASH = '/';
 var URL_HASH_MARK = '#';
@@ -2132,10 +2132,10 @@ function optional(pattern) {
     return group(pattern) + '?';
 }
 exports.optional = optional;
-function everyOptional(pattern) {
+function anyOptional(pattern) {
     return group(pattern) + '*';
 }
-exports.everyOptional = everyOptional;
+exports.anyOptional = anyOptional;
 function atLeast(count, pattern) {
     return group(pattern) + ("{" + count + ",}");
 }
@@ -2182,7 +2182,7 @@ function regExpEndingWith(pattern, flags) {
 exports.regExpEndingWith = regExpEndingWith;
 var PatternPieces_1 = require('./PatternPieces');
 function solely(pattern) {
-    return '^' + pattern + everyOptional(PatternPieces_1.INLINE_WHITESPACE_CHAR) + '$';
+    return '^' + pattern + anyOptional(PatternPieces_1.INLINE_WHITESPACE_CHAR) + '$';
 }
 exports.solely = solely;
 
@@ -2191,7 +2191,7 @@ exports.solely = solely;
 var PatternHelpers_1 = require('./PatternHelpers');
 exports.INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
 exports.WHITESPACE_CHAR = '\\s';
-exports.ANY_WHITESPACE = PatternHelpers_1.everyOptional(exports.WHITESPACE_CHAR);
+exports.ANY_WHITESPACE = PatternHelpers_1.anyOptional(exports.WHITESPACE_CHAR);
 exports.SOME_WHITESPACE = PatternHelpers_1.atLeast(1, exports.WHITESPACE_CHAR);
 exports.LETTER_CLASS = 'a-zA-Z';
 exports.LETTER_CHAR = PatternHelpers_1.anyCharFrom([exports.LETTER_CLASS]);

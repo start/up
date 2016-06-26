@@ -1,4 +1,4 @@
-import { everyOptional, atLeast, anyCharFrom } from './PatternHelpers'
+import { anyOptional, atLeast, anyCharFrom } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =
@@ -9,7 +9,7 @@ export const WHITESPACE_CHAR =
 
 
 export const ANY_WHITESPACE =
-  everyOptional(WHITESPACE_CHAR)
+  anyOptional(WHITESPACE_CHAR)
 
 export const SOME_WHITESPACE =
   atLeast(1, WHITESPACE_CHAR)
