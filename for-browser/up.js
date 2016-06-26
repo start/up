@@ -1269,7 +1269,10 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
-var URL_SCHEME_NAME = PatternPieces_1.LETTER + PatternHelpers_1.everyOptional(PatternHelpers_1.either.apply(void 0, [PatternPieces_1.LETTER, PatternPieces_1.DIGIT].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
+var URL_SCHEME_NAME = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharFrom([
+    PatternPieces_1.LETTER_CLASS,
+    PatternPieces_1.DIGIT_CLASS
+].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var URL_SLASH = '/';
@@ -2190,9 +2193,11 @@ exports.INLINE_WHITESPACE_CHAR = '[^\\S\\n]';
 exports.WHITESPACE_CHAR = '\\s';
 exports.ANY_WHITESPACE = PatternHelpers_1.everyOptional(exports.WHITESPACE_CHAR);
 exports.SOME_WHITESPACE = PatternHelpers_1.atLeast(1, exports.WHITESPACE_CHAR);
-exports.INTEGER = '\\d+';
-exports.LETTER = '[a-zA-Z]';
-exports.DIGIT = '\\d';
+exports.LETTER_CLASS = 'a-zA-Z';
+exports.LETTER_CHAR = PatternHelpers_1.anyCharFrom([exports.LETTER_CLASS]);
+exports.DIGIT_CLASS = '\\d';
+exports.DIGIT_CHAR = exports.DIGIT_CLASS;
+exports.INTEGER = PatternHelpers_1.atLeast(1, exports.DIGIT_CHAR);
 
 },{"./PatternHelpers":33}],35:[function(require,module,exports){
 "use strict";

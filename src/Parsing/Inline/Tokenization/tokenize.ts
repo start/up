@@ -1,6 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
 import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharFrom, anyCharOtherThan, capture } from '../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER, DIGIT} from '../../PatternPieces'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CHAR, DIGIT_CHAR, LETTER_CLASS, DIGIT_CLASS } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -957,11 +957,11 @@ const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
 const URL_SCHEME_NAME =
-  LETTER + everyOptional(
-    either(
-      LETTER,
-      DIGIT,
-      ...['-', '+', '.'].map(escapeForRegex)))
+  LETTER_CHAR + everyOptional(
+    anyCharFrom([
+      LETTER_CLASS,
+      DIGIT_CLASS,
+      ...['-', '+', '.'].map(escapeForRegex)]))
 
 const URL_SCHEME =
   URL_SCHEME_NAME + ':' + everyOptional('/')
