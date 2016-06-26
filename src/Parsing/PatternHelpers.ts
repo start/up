@@ -10,7 +10,7 @@ export function optional(pattern: string): string {
   return group(pattern) + '?'
 }
 
-export function anyOptional(pattern: string): string {
+export function everyOptional(pattern: string): string {
   return group(pattern) + '*'
 }
 
@@ -26,20 +26,27 @@ export function either(...patterns: string[]): string {
   return group(patterns.join('|'))
 }
 
+// Matches any character that matches any of the `charClasses`.
+export function anyCharMatching(...charClasses: string[]): string {
+  return `[${charClasses.join('')}]`
+}
+
+// Matches any character that does not match any of the `charClasses`.
+export function anyCharNotMatching(...charClasses: string[]): string {
+  return `[^${charClasses.join('')}]`
+}
+
+// Matches any character from the set of `chars`. Does not support patterns.
+export function anyCharFrom(...chars: string[]): string {
+  return anyCharMatching(...chars.map(escapeForRegex))
+}
+
 export function streakOf(charPattern: string): string {
   return solely(atLeast(3, charPattern))
 }
 
 export function notFollowedBy(pattern: string): string {
   return `(?!${pattern})`
-}
-
-export function anyCharFrom(charPatterns: string[]): string {
-  return `[${charPatterns.join('')}]`
-}
-
-export function anyCharOtherThan(charPatterns: string[]): string {
-  return `[^${charPatterns.join('')}]`
 }
 
 export function escapeForRegex(text: string): string {
@@ -57,5 +64,5 @@ export function regExpEndingWith(pattern: string, flags?: string): RegExp {
 import { INLINE_WHITESPACE_CHAR } from './PatternPieces'
 
 export function solely(pattern: string) {
-  return '^' + pattern + anyOptional(INLINE_WHITESPACE_CHAR) + '$'
+  return '^' + pattern + everyOptional(INLINE_WHITESPACE_CHAR) + '$'
 }

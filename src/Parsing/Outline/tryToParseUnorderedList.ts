@@ -63,10 +63,6 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   return true
 }
 
-
-const BULLET_CHARS =
-  ['*', '-', '+', '•'].map(char => escapeForRegex(char))
-
 const BULLET_PATTERN =
   regExpStartingWith(
-    optional(' ') + anyCharFrom(BULLET_CHARS) + INLINE_WHITESPACE_CHAR)
+    optional(' ') + anyCharFrom('*', '-', '+', '•') + INLINE_WHITESPACE_CHAR)

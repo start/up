@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, anyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharFrom, anyCharOtherThan, capture } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CHAR, DIGIT_CHAR, LETTER_CLASS, DIGIT_CLASS } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -957,14 +957,14 @@ const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
 const URL_SCHEME_NAME =
-  LETTER_CHAR + anyOptional(
-    anyCharFrom([
+  LETTER_CHAR + everyOptional(
+    anyCharMatching(
       LETTER_CLASS,
       DIGIT_CLASS,
-      ...['-', '+', '.'].map(escapeForRegex)]))
+      ...['-', '+', '.'].map(escapeForRegex)))
 
 const URL_SCHEME =
-  URL_SCHEME_NAME + ':' + anyOptional('/')
+  URL_SCHEME_NAME + ':' + everyOptional('/')
 
 // Checking for a URL scheme is important when:
 //
@@ -992,6 +992,7 @@ const PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN =
   new RegExp(
     solely(EXPLICIT_URL_PREFIX))
 
+
 // The patterns below exist only for optimization.
 //
 // For more information, see the `bufferContentThatCannotOpenOrCloseAnyConventions` method. 
@@ -1002,20 +1003,20 @@ const BRACKET_START_PATTERNS =
 const BRACKET_END_PATTERNS =
   BRACKETS.map(bracket => bracket.endPattern)
 
-const CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS =
-  concat([
-    BRACKET_START_PATTERNS,
-    BRACKET_END_PATTERNS,
-    ['*', '+', ESCAPER_CHAR].map(escapeForRegex),
-    // The "h" is for the start of naked URLs. 
-    [WHITESPACE_CHAR, '_', '`', '~', 'h']
-  ])
+
+// The "h" is for the start of naked URLs. 
+const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
+  WHITESPACE_CHAR, 'h', '_', '`', '~',
+  ...BRACKET_START_PATTERNS,
+  ...BRACKET_END_PATTERNS,
+  ...[ESCAPER_CHAR, '*', '+'].map(escapeForRegex)
+]
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   regExpStartingWith(
     atLeast(1,
       either(
-        anyCharOtherThan(CHARS_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
+        anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
         // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
         'h' + notFollowedBy('ttp' + optional('s') + '://'))))
 
@@ -1031,4 +1032,4 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   regExpStartingWith(
     SOME_WHITESPACE + notFollowedBy(
-      anyCharFrom(BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR))))
+      anyCharMatching(...BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR))))

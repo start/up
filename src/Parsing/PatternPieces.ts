@@ -1,4 +1,4 @@
-import { anyOptional, atLeast, anyCharFrom } from './PatternHelpers'
+import { everyOptional, atLeast, anyCharMatching } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =
@@ -9,7 +9,7 @@ export const WHITESPACE_CHAR =
 
 
 export const ANY_WHITESPACE =
-  anyOptional(WHITESPACE_CHAR)
+  everyOptional(WHITESPACE_CHAR)
 
 export const SOME_WHITESPACE =
   atLeast(1, WHITESPACE_CHAR)
@@ -19,7 +19,7 @@ export const LETTER_CLASS =
   'a-zA-Z'
 
 export const LETTER_CHAR =
-  anyCharFrom([LETTER_CLASS])
+  anyCharMatching(LETTER_CLASS)
 
 
 export const DIGIT_CLASS = 
