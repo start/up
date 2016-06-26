@@ -1,4 +1,4 @@
-import { everyOptional, either, atLeast } from './PatternHelpers'
+import { everyOptional, atLeast } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =

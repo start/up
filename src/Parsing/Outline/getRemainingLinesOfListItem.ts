@@ -1,6 +1,4 @@
 import { LineConsumer } from './LineConsumer'
-import { optional, regExpStartingWith, either, capture } from '../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
 
 
