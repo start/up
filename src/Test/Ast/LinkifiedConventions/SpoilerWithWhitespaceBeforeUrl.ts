@@ -364,21 +364,6 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       })
     })
 
-    specify('all domains before the top-level domain may consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Good luck!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '88.8888.cn',
-        toProduce: insideDocumentAndParagraph([
-          new SpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Good luck')
-            ], 'https://88.8888.cn')
-          ])
-        ])
-      })
-    })
-
     specify('the URL must not contain any spaces', () => {
       expect(Up.toAst('[SPOILER: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
