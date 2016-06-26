@@ -250,7 +250,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
         urlToWrapInBrackets: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
-            new PlainTextNode('Model 3 theft')
+            new PlainTextNode('Good luck')
           ], 'https://88.8888.cn')
         ])
       })

@@ -270,7 +270,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new NsflNode([
             new LinkNode([
-              new PlainTextNode('Model 3 theft')
+              new PlainTextNode('Good luck')
             ], 'https://88.8888.cn')
           ])
         ])

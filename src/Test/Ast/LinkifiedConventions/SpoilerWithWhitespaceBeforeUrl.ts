@@ -270,7 +270,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
-              new PlainTextNode('Model 3 theft')
+              new PlainTextNode('Good luck')
             ], 'https://88.8888.cn')
           ])
         ])
@@ -372,7 +372,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
-              new PlainTextNode('Model 3 theft')
+              new PlainTextNode('Good luck')
             ], 'https://88.8888.cn')
           ])
         ])
