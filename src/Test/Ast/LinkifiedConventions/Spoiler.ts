@@ -114,7 +114,7 @@ describe('A spoiler directly followed by a media convention', () => {
 
 describe('A spoiler directly followed by a footnote', () => {
   it("is not linkified", () => {
-    const text = "After you beat the Elite Four, [SPOILER: you fight Gary]((Or whatever you name him.))"
+    const text = "After you beat the Elite Four, [SPOILER: you fight Gary](^Or whatever you name him.)"
 
     const footnotes = [
       new FootnoteNode([
