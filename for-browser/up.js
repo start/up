@@ -1066,9 +1066,9 @@ var Tokenizer = (function () {
             return url;
         }
         switch (url[0]) {
-            case URL_SLASH:
+            case FORWARD_SLASH:
                 return this.config.settings.baseForUrlsStartingWithSlash + url;
-            case URL_HASH_MARK:
+            case HASH_MARK:
                 return this.config.settings.baseForUrlsStartingWithHashMark + url;
         }
         return (URL_SCHEME_PATTERN.test(url)
@@ -1272,9 +1272,13 @@ var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
 var URL_SCHEME_NAME = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching.apply(void 0, [PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
-var URL_SLASH = '/';
-var URL_HASH_MARK = '#';
-var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, URL_SLASH, URL_HASH_MARK);
+var FORWARD_SLASH = '/';
+var HASH_MARK = '#';
+var URL_SUBDOMAIN = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching(PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS, PatternHelpers_1.escapeForRegex('-')))
+    + PatternHelpers_1.escapeForRegex('.');
+var TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, PatternPieces_1.LETTER_CHAR);
+var URL_DOMAIN_PART = PatternHelpers_1.atLeast(1, URL_SUBDOMAIN) + TOP_LEVEL_DOMAIN + PatternHelpers_1.optional(FORWARD_SLASH);
+var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, FORWARD_SLASH, HASH_MARK);
 var PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN = new RegExp(PatternHelpers_1.solely(EXPLICIT_URL_PREFIX));
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
 var BRACKET_END_PATTERNS = BRACKETS.map(function (bracket) { return bracket.endPattern; });

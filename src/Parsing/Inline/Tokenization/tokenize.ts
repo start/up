@@ -659,10 +659,10 @@ class Tokenizer {
     }
 
     switch (url[0]) {
-      case URL_SLASH:
+      case FORWARD_SLASH:
         return this.config.settings.baseForUrlsStartingWithSlash + url
 
-      case URL_HASH_MARK:
+      case HASH_MARK:
         return this.config.settings.baseForUrlsStartingWithHashMark + url
     }
 
@@ -725,7 +725,7 @@ class Tokenizer {
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      cconsecutive periods are allowed in the resource path.
-  
+
   private getLinkUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
@@ -987,17 +987,29 @@ const URL_SCHEME =
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
 
-const URL_SLASH =
+const FORWARD_SLASH =
   '/'
 
-const URL_HASH_MARK =
+const HASH_MARK =
   '#'
+
+const URL_SUBDOMAIN =
+  LETTER_CHAR + everyOptional(
+    anyCharMatching(
+      LETTER_CLASS, DIGIT_CLASS, escapeForRegex('-')))
+  + escapeForRegex('.')
+
+const TOP_LEVEL_DOMAIN =
+  atLeast(1, LETTER_CHAR)
+
+const URL_DOMAIN_PART =
+  atLeast(1, URL_SUBDOMAIN) + TOP_LEVEL_DOMAIN +  optional(FORWARD_SLASH)
 
 const EXPLICIT_URL_PREFIX =
   either(
     URL_SCHEME,
-    URL_SLASH,
-    URL_HASH_MARK)
+    FORWARD_SLASH,
+    HASH_MARK)
 
 // If the "url" is consists solely of a URL prefix, the author almost certainly did not intend
 // this to be a URL.
