@@ -73,7 +73,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.))(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
+    const text = "I don't eat cereal. (^Well, I eat one.)(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
