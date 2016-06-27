@@ -241,6 +241,20 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         ])
       )
     })
+
+    it('must not have its hashmark escaped', () => {
+      expect(Up.toAst('[NSFL: yeah] (\\#starcraft2)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#starcraft2)')
+          ]),
+        ])
+      )
+    })
   })
 
 

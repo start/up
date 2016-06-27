@@ -241,6 +241,20 @@ context('A linkified NSFW convention can have whitespace between itself and its 
         ])
       )
     })
+
+    it('must not have its hashmark escaped', () => {
+      expect(Up.toAst('[NSFW: yeah] (\\#starcraft2)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#starcraft2)')
+          ]),
+        ])
+      )
+    })
   })
 
 

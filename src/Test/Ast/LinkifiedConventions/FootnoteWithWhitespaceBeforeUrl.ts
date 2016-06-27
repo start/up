@@ -338,6 +338,25 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ])
       )
     })
+
+    it('must not have its hashmark escaped', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('hash mark')
+      ], 1)
+
+      expect(Up.toAst('(^hash mark) (\\#starcraft2)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(#starcraft2)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
   })
 
 

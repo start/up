@@ -255,6 +255,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         ])
       )
     })
+
+    it('must not have its hashmark escaped', () => {
+      expect(Up.toAst('[SPOILER: yeah] (\\#starcraft2)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#starcraft2)')
+          ]),
+        ])
+      )
+    })
   })
 
 
