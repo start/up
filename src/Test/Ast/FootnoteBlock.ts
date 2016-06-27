@@ -24,7 +24,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 describe('A footnote in a paragph', () => {
   it("produces a footnote block node after the paragraph", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
@@ -45,7 +45,7 @@ describe('A footnote in a paragph', () => {
 
 describe('A paragraph with two footnotes', () => {
   it("produces a single footnote block node after the paragraph for both footnotes", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have. ((Except for Mondays.))"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -73,7 +73,7 @@ describe('A paragraph with two footnotes', () => {
 describe('Footnotes in a heading', () => {
   it('produce a footnote block after the heading', () => {
     const text = `
-I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 ------`
 
     const footnote = new FootnoteNode([
@@ -98,8 +98,8 @@ I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
 describe('Footnotes in a line block', () => {
   it('produce a footnote block after the line block', () => {
     const text = `
-Roses are red ((This is not my line.))
-Violets are blue ((Neither is this line. I think my mom made it up.))`
+Roses are red (^This is not my line.)
+Violets are blue (^Neither is this line. I think my mom made it up.)`
 
     const footnotes = [
       new FootnoteNode([
@@ -131,14 +131,14 @@ Violets are blue ((Neither is this line. I think my mom made it up.))`
 describe('Footnotes in unordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
     const text = `
-* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+* I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
 
-* I don't eat ((Or touch.)) pumpkins.
+* I don't eat (^Or touch.) pumpkins.
 
-* Roses are red ((This is not my line.))
-  Violets are blue ((Neither is this line. I think my mom made it up.))`
+* Roses are red (^This is not my line.)
+  Violets are blue (^Neither is this line. I think my mom made it up.)`
 
     const footnotes = [
       new FootnoteNode([
@@ -200,7 +200,7 @@ describe('Footnotes in unordered list items', () => {
 
 describe('Footnotes in a blockquote', () => {
   it('produce footnote blocks within the blockquote', () => {
-    const text = "> I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
+    const text = "> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
     const footnote =
       new FootnoteNode([
@@ -226,11 +226,11 @@ describe('Footnotes in a blockquote', () => {
 describe('Footnotes nested inside 2 or more outline conventions nested inside a blockquote', () => {
   it("produce footnote blocks inside the blockquote after all the appropriate outline conventions", () => {
     const text = `
-> * I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+> * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 >
 >   It's too expensive.
 >
-> * I don't eat ((Or touch.)) pumpkins.`
+> * I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
       new FootnoteNode([
@@ -280,11 +280,11 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 describe('Footnotes in ordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
     const text = `
-1) I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+1) I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
 
-2) I don't eat ((Or touch.)) pumpkins.`
+2) I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
       new FootnoteNode([
@@ -326,15 +326,15 @@ describe('Footnotes in description list terms and definitions', () => {
   it('produce a footnote block that appears after the entire description list', () => {
     const text = `
 Bulbasaur
-  A strange seed was planted on its back at birth. ((What happens to the creature if the seed is never planted?)) The plant sprouts and grows with this Pokémon.
+  A strange seed was planted on its back at birth. (^What happens to the creature if the seed is never planted?) The plant sprouts and grows with this Pokémon.
 
 Confuse Ray
 Lick
-Night Shade ((This probably wasn't a reference to the family of plants.))
+Night Shade (^This probably wasn't a reference to the family of plants.)
   Ghost type moves.
   
 Gary
-  A young man with a great sense of smell. ((Or maybe Ash simply smelled really good.))`
+  A young man with a great sense of smell. (^Or maybe Ash simply smelled really good.)`
 
     const footnotes = [
       new FootnoteNode([
@@ -394,15 +394,15 @@ Gary
 describe("In a document, footnotes' reference numbers", () => {
   it('do not reset between outline conventions.', () => {
     const text = `
-* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+* I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
 
-* I don't eat ((Or touch.)) pumpkins.
+* I don't eat (^Or touch.) pumpkins.
 
 ------------------------
 
-I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnotesInUnorderedList = [
       new FootnoteNode([
@@ -455,15 +455,15 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
 describe("The reference numbers of non-nested footnotes inside a blockquote inside another outline convention", () => {
   it('are higher than those of preceding footnotes outside the blockquote but inside the same outer outline convention. The fact that their footnote block appears first is irrelevant', () => {
     const text = `
-* I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.
+* I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
 
-* > I don't eat ((Or touch.)) pumpkins.
+* > I don't eat (^Or touch.) pumpkins.
 
 ------------------------
 
-I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnoteInUnorderedList = new FootnoteNode([
       new PlainTextNode("Well, I do, but I pretend not to."),
@@ -517,15 +517,15 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
 describe("The reference numbers of nested footnotes inside a blockquote inside another outline convention", () => {
   it('are lower those of preceding nested footnotes outside the blockquote but inside the same outer outline convention (because they get referenced in an earlier footnote block)', () => {
     const text = `
-* I don't eat cereal. ((Well, I do, but I pretend [[On Mondays.]] not to.)) Never have.
+* I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
 
   It's too expensive.
 
-* > I don't eat ((Or touch. [[Or smell.]])) pumpkins.
+* > I don't eat (^Or touch. [^Or smell.]) pumpkins.
 
 ------------------------
 
-I wear glasses ((It's actually been a dream of mine ever since I was young.)) even while working out.`
+I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const nestedFootnoteInUnorderedList = new FootnoteNode([
       new PlainTextNode("On Mondays."),
@@ -595,7 +595,7 @@ I wear glasses ((It's actually been a dream of mine ever since I was young.)) ev
 
 describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
   it('appear in their footnote block after any non-nested footnotes (and are assigned reference numbers after any non-nested footnotes)', () => {
-    const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))"
+    const text = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)"
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
@@ -633,7 +633,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
   it('appear in the footnote block after any lesser nested footnotes (and are assigned reference numbers after any lesser-nested footnotes)', () => {
     const text =
-      "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do* ((Only on Mondays...)) but I pretend not to.)) Never have. ((At least you've never seen me.)))) Really. ((Probably.))"
+      "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do* (^Only on Mondays...) but I pretend not to.) Never have. (^At least you've never seen me.)) Really. (^Probably.)"
 
     const footnoteInsideFirstInnerFootnote =
       new FootnoteNode([
@@ -684,9 +684,9 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
   it('have reference numbers coming before any footnotes in subsequent outline conventions (because they are referenced earlier)', () => {
     const text = `
-Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably.))
+Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)
 
-I don't eat ((Or touch.)) pumpkins.`
+I don't eat (^Or touch.) pumpkins.`
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
