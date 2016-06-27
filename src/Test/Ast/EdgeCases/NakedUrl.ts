@@ -65,7 +65,7 @@ describe('A naked URL following an open square bracket', () => {
 
 describe("Unmatched opening parentheses in a naked URL", () => {
   it('do not affect any text that follows the URL', () => {
-    const text = '((Well, https://www.example.com/a(normal(url is my favorite site))'
+    const text = '(^Well, https://www.example.com/a(normal(url is my favorite site)'
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, '),
@@ -90,7 +90,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
 
 describe("Unmatched opening parentheses in a naked URL", () => {
   it('do not prevent parenthesis from closing a subsequent naked URL', () => {
-    const text = '((Well, https://www.example.com/a(normal(url is better than https://w3.org))'
+    const text = '(^Well, https://www.example.com/a(normal(url is better than https://w3.org)'
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, '),
@@ -118,7 +118,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
 
 describe("Unmatched opening parentheses in a naked URL closed by another convention closing", () => {
   it('do not prevent parenthesis from closing a subsequent naked URL', () => {
-    const text = "((Well, ++https://www.example.com/a(normal(url++'s better than https://w3.org))"
+    const text = "(^Well, ++https://www.example.com/a(normal(url++'s better than https://w3.org)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, '),
@@ -180,7 +180,7 @@ describe('A naked URL scheme (only) immediately followed by another convention c
 
 describe('A naked URL followed by a space then a footnote', () => {
   it('produces a link node immediately followed by a footnote node. The space is not put into a plain text node', () => {
-    const text = "https://google.com ((An old search engine.))"
+    const text = "https://google.com (^An old search engine.)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode('An old search engine.')
