@@ -9,6 +9,7 @@ import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -132,6 +133,21 @@ describe('A NSFL convention directly followed by a footnote', () => {
           footnotes[0],
         ]),
         new FootnoteBlockNode(footnotes)
+      ]))
+  })
+})
+
+
+describe('An otherwise valid linkified NSFL convention with its URL escaped"', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('[NSFL: he called her](\\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsflNode([
+          new PlainTextNode('he called her')
+        ]),
+	      new ParenthesizedNode([
+          new PlainTextNode('(tel:5555555555)')
+        ]),
       ]))
   })
 })
