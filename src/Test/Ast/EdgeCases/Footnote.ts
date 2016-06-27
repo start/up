@@ -16,7 +16,7 @@ import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 
 describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
@@ -36,7 +36,7 @@ describe('A footnote reference at the end of a paragraph', () => {
 
 describe('A footnote reference directly following parenthesized text', () => {
   it('does not produce a link node', () => {
-    const text = "I don't eat cereal (or oatmeal)((Well, I do, but I pretend not to.)) on Mondays."
+    const text = "I don't eat cereal (or oatmeal)(^Well, I do, but I pretend not to.) on Mondays."
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
