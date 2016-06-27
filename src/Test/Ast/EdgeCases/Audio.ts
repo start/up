@@ -93,7 +93,7 @@ describe('An otherwise valid audio convention with mismatched brackets surroundi
 
 describe("Unmatched opening parentheses in an audio URL", () => {
   it('do not affect any text that follows the link', () => {
-    const text = '(([audio: West Virginia exit polling][https://example.com/a(normal(url]))'
+    const text = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new FootnoteNode([
       new AudioNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
