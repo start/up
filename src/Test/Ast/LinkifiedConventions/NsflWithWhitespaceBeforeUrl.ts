@@ -448,6 +448,20 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         ])
       )
     })
+
+    specify('the domain part must not be escaped', () => {
+      expect(Up.toAst('[NSFL: yeah] (\\ign.com)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(ign.com)')
+          ]),
+        ])
+      )
+    })
   })
 
 

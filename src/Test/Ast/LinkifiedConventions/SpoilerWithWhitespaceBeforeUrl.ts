@@ -448,6 +448,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         ])
       )
     })
+
+    specify('the domain part must not be escaped', () => {
+      expect(Up.toAst('[SPOILER: yeah] (\\ign.com)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(ign.com)')
+          ]),
+        ])
+      )
+    })
   })
 
 

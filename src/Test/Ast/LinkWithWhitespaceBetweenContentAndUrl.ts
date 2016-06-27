@@ -424,7 +424,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       )
     })
 
-    specify('the domain must not be escaped', () => {
+    specify('the domain part must not be escaped', () => {
       expect(Up.toAst('[yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([

@@ -591,6 +591,25 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ])
       )
     })
+
+    specify('the domain part must not be escaped', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('yeah')
+      ], 1)
+
+      expect(Up.toAst('[^yeah] (\\ign.com)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(ign.com)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
   })
 
 

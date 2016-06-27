@@ -448,6 +448,20 @@ context('A linkified NSFW convention can have whitespace between itself and its 
         ])
       )
     })
+
+    specify('the domain part must not be escaped', () => {
+      expect(Up.toAst('[NSFW: yeah] (\\ign.com)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(ign.com)')
+          ]),
+        ])
+      )
+    })
   })
 
 
