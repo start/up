@@ -187,3 +187,21 @@ describe('A footnote directly followed by a NSFL convention', () => {
       ]))
   })
 })
+
+
+describe('An otherwise valid linkified NSFL convention with its URL escaped"', () => {
+  it('is not linkified', () => {
+    const text = "[^He called her.](\\tel:5555555555)"
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode('He called her.')
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
