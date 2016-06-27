@@ -24,7 +24,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 const footnoteProducedByParentheses =
-  "I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have."
+  "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
 describe('In a paragraph, text surrounded by 2 parentheses', () => {
   it("produces a footnote node inside the paragraph, and a footnote block node for the footnote after the paragraph", () => {
@@ -48,7 +48,7 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 describe('Text surrounded by 2 square brackets', () => {
   it("also produces a footnote node", () => {
     const footnoteProducedBySquareBrackets =
-      "I don't eat cereal. [[Well, I do, but I pretend not to.]] Never have."
+      "I don't eat cereal. [^Well, I do, but I pretend not to.] Never have."
 
     expect(Up.toAst(footnoteProducedByParentheses)).to.be.eql(
       Up.toAst(footnoteProducedBySquareBrackets))
@@ -59,7 +59,7 @@ describe('Text surrounded by 2 square brackets', () => {
 describe('Text surrounded by 2 curly brackets', () => {
   it("also produces a footnote node", () => {
     const footnoteProducedByCurlyBrackets =
-      "I don't eat cereal. {{Well, I do, but I pretend not to.}} Never have."
+      "I don't eat cereal. {^Well, I do, but I pretend not to.} Never have."
 
     expect(Up.toAst(footnoteProducedByParentheses)).to.be.eql(
       Up.toAst(footnoteProducedByCurlyBrackets))
@@ -69,7 +69,7 @@ describe('Text surrounded by 2 curly brackets', () => {
 
 describe('A word followed by several spaces followed by a footnote', () => {
   it("produces a footnote node directly after the word", () => {
-    const text = "I don't eat cereal.   ((Well, I do, but I pretend not to.))"
+    const text = "I don't eat cereal.   (^Well, I do, but I pretend not to.)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
@@ -97,7 +97,7 @@ describe('A footnote', () => {
       new PlainTextNode(', but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst("I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.")).to.be.eql(
+    expect(Up.toAst("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -109,7 +109,7 @@ describe('A footnote', () => {
   })
 
   it('can contain other footnotes, which produce additional footnotes in the same footnote block', () => {
-    const text = "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really."
+    const text = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really."
 
     const innerFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
