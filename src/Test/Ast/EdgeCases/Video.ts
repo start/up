@@ -93,7 +93,7 @@ describe('An otherwise valid video convention with mismatched brackets surroundi
 
 describe("Unmatched opening parentheses in a video URL", () => {
   it('do not affect any text that follows the link', () => {
-    const text = '(([video: West Virginia exit polling][https://example.com/a(normal(url]))'
+    const text = '(^[video: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new FootnoteNode([
       new VideoNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
