@@ -85,9 +85,9 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
 })
 
 
-describe('A footnote produced by square brackets that contains nested square bracketed text ending together with "]]"', () => {
+describe('A footnote produced by square brackets that contains nested square bracketed text ending together', () => {
   it('produces a footnote containing the nested square bracketed text', () => {
-    const text = "[[I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]]"
+    const text = "[^I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]"
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
@@ -112,9 +112,9 @@ describe('A footnote produced by square brackets that contains nested square bra
 })
 
 
-describe('A footnote produced by curly brackets that contains nested action text ending together with "}}"', () => {
+describe('A footnote produced by curly brackets that contains nested action text ending together', () => {
   it('produces a footnote containing the nested action text', () => {
-    const text = "{{I'm normal. {eats {dies}} See?}}"
+    const text = "{^I'm normal. {eats {dies}} See?}"
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
