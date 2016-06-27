@@ -138,26 +138,6 @@ describe('A footnote produced by curly brackets that contains nested action text
 })
 
 
-describe('Nested parenthesized text starting with "((" but ending in different spots', () => {
-  it('does not produce any footnote nodes', () => {
-    const text = "((I don't eat cereal.) Well, I do, but I pretend not to.)"
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new ParenthesizedNode([
-            new PlainTextNode('('),
-            new ParenthesizedNode([
-              new PlainTextNode("(I don't eat cereal.)")
-            ]),
-            new PlainTextNode(" Well, I do, but I pretend not to.)")
-          ])
-        ]),
-      ]))
-  })
-})
-
-
 describe('Nested parenthesized text ending together with "))"', () => {
   it('does not produce any footnote nodes', () => {
     const text = "(I don't eat cereal. (Well, I do, but I pretend not to.))"
