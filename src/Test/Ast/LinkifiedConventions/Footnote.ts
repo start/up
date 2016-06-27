@@ -14,15 +14,15 @@ import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
 const FOOTNOTE_BRACKETS = [
-  { open: '((', close: '))' },
-  { open: '[[', close: ']]' },
-  { open: '{{', close: '}}' }
+  { open: '(^', close: ')' },
+  { open: '[^', close: ']' },
+  { open: '{^', close: '}' }
 ]
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
   it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[http://example.com/luckycharms] Never have."
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -67,7 +67,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
 
 describe('A footnote directly followed by another footnote (with no spaces in between)', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))((Everyone does. It isn't a big deal.))"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)(^Everyone does. It isn't a big deal.))"
 
     const footnotes = [
       new FootnoteNode([
@@ -93,7 +93,7 @@ describe('A footnote directly followed by another footnote (with no spaces in be
 
 describe('A footnote directly followed by a media convention', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[video: me not eating cereal](https://example.com/v/123)"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[video: me not eating cereal](https://example.com/v/123)"
 
     const footnotes = [
       new FootnoteNode([
@@ -116,7 +116,7 @@ describe('A footnote directly followed by a media convention', () => {
 
 describe('A footnote directly followed by a spoiler', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnotes = [
       new FootnoteNode([
@@ -141,7 +141,7 @@ describe('A footnote directly followed by a spoiler', () => {
 
 describe('A footnote directly followed by a NSFW convention', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[NSFW: None of the Final Four's Pokemon are named 'Cereal']"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFW: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnotes = [
       new FootnoteNode([
@@ -166,7 +166,7 @@ describe('A footnote directly followed by a NSFW convention', () => {
 
 describe('A footnote directly followed by a NSFL convention', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. ((Well, I do, but I pretend not to.))[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnotes = [
       new FootnoteNode([
