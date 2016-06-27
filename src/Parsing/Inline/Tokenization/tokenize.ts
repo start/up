@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CHAR, DIGIT_CHAR, LETTER_CLASS, DIGIT_CLASS } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -752,7 +752,16 @@ class Tokenizer {
 
   private getBracketedUrlFollowingWhitespacePattern(bracket: Bracket): RegExp {
     return regExpStartingWith(
-      SOME_WHITESPACE + bracket.startPattern + capture(EXPLICIT_URL_PREFIX))
+      SOME_WHITESPACE + bracket.startPattern + capture(
+        either(
+          EXPLICIT_URL_PREFIX,
+          // If there's no URL prefix, there must be a top-level domain, and...
+          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+            FORWARD_SLASH,
+            // If the top-level domain doesn't end with a forward slash, it must be immediately followed
+            // by the closing bracket.
+            followedBy(bracket.endPattern)
+          ))))
   }
 
   private probablyWasNotIntendedToBeAUrl(url: string): boolean {
@@ -1006,8 +1015,7 @@ const TOP_LEVEL_DOMAIN =
   atLeast(1, LETTER_CHAR)
 
 const DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
-  atLeast(1, URL_SUBDOMAIN + escapeForRegex('.'))
-  + TOP_LEVEL_DOMAIN + optional(FORWARD_SLASH)
+  atLeast(1, URL_SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
   either(

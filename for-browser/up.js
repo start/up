@@ -1117,7 +1117,7 @@ var Tokenizer = (function () {
         }); });
     };
     Tokenizer.prototype.getBracketedUrlFollowingWhitespacePattern = function (bracket) {
-        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(EXPLICIT_URL_PREFIX));
+        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(EXPLICIT_URL_PREFIX, DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + PatternHelpers_1.either(FORWARD_SLASH, PatternHelpers_1.followedBy(bracket.endPattern)))));
     };
     Tokenizer.prototype.probablyWasNotIntendedToBeAUrl = function (url) {
         return SOLELY_URL_PREFIX_PATTERN.test(url);
@@ -1279,8 +1279,7 @@ var FORWARD_SLASH = '/';
 var HASH_MARK = '#';
 var URL_SUBDOMAIN = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching(PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS, PatternHelpers_1.escapeForRegex('-')));
 var TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, PatternPieces_1.LETTER_CHAR);
-var DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, URL_SUBDOMAIN + PatternHelpers_1.escapeForRegex('.'))
-    + TOP_LEVEL_DOMAIN + PatternHelpers_1.optional(FORWARD_SLASH);
+var DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, URL_SUBDOMAIN + PatternHelpers_1.escapeForRegex('.')) + TOP_LEVEL_DOMAIN;
 var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, FORWARD_SLASH, HASH_MARK);
 var SOLELY_URL_PREFIX_PATTERN = new RegExp(PatternHelpers_1.solely(EXPLICIT_URL_PREFIX));
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
@@ -2184,6 +2183,10 @@ function streakOf(charPattern) {
     return solely(atLeast(3, charPattern));
 }
 exports.streakOf = streakOf;
+function followedBy(pattern) {
+    return "(?=" + pattern + ")";
+}
+exports.followedBy = followedBy;
 function notFollowedBy(pattern) {
     return "(?!" + pattern + ")";
 }

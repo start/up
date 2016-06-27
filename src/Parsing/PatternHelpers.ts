@@ -45,6 +45,10 @@ export function streakOf(charPattern: string): string {
   return solely(atLeast(3, charPattern))
 }
 
+export function followedBy(pattern: string): string {
+  return `(?=${pattern})`
+}
+
 export function notFollowedBy(pattern: string): string {
   return `(?!${pattern})`
 }
