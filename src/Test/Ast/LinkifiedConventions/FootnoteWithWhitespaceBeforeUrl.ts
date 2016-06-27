@@ -425,7 +425,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new PlainTextNode('username')
         ], 1)
 
-        expect(Up.toAst('[[username]] (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toAst('[^username] (john.e.smith-kline)')).to.be.eql(
           new DocumentNode([
             new ParagraphNode([
               footnote,

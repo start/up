@@ -67,7 +67,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
 
 describe('A footnote directly followed by another footnote (with no spaces in between)', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)(^Everyone does. It isn't a big deal.))"
+    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)(^Everyone does. It isn't a big deal.)"
 
     const footnotes = [
       new FootnoteNode([
