@@ -58,9 +58,9 @@ describe('A footnote reference directly following parenthesized text', () => {
 })
 
 
-describe('A footnote produced by parentheses that contains nested parenthesized text ending together with "))"', () => {
+describe('A footnote produced by parentheses that contains nested parenthesized text ending together', () => {
   it('produces a footnote containing the nested parenthesized text', () => {
-    const text = "((I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?))"
+    const text = "(^I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
@@ -165,12 +165,13 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
   })
 })
 
+
 describe('Within an outline convention, a blockquoted footnote reference that follows a non-blockquoted footnote reference', () => {
   it("has a reference number greater than that of the preceding reference, but it produces footnote block that appears before the footnote block of the preceding reference", () => {
     const text = `
-* I regularly drink water. ((When it's in other beverages.))
+* I regularly drink water. (^When it's in other beverages.)
 
-* > I don't eat cereal. ((Well, I do, but I pretend not to.)) Never have.`
+* > I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
 
     const footnoteInFirstListItem = new FootnoteNode([
       new PlainTextNode("When it's in other beverages."),
