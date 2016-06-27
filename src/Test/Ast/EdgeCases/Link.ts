@@ -118,7 +118,7 @@ describe("A link's contents", () => {
 
 describe("Unmatched opening parentheses in a link's URL", () => {
   it('do not affect any text that follows the link', () => {
-    const text = '((He won [West Virginia][https://example.com/a(normal(url] easily.))'
+    const text = '(^He won [West Virginia][https://example.com/a(normal(url] easily.)'
 
     const footnote = new FootnoteNode([
       new PlainTextNode('He won '),
