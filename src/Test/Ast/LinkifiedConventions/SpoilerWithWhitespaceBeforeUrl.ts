@@ -262,6 +262,21 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       })
     })
 
+    specify('the top-level domain may be followed by a slash and no resource path ', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'SPOILER: Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/',
+        toProduce: insideDocumentAndParagraph([
+          new SpoilerNode([
+            new LinkNode([
+              new PlainTextNode('Advance Wars')
+            ], 'https://advancewars.wikia.com/')
+          ])
+        ])
+      })
+    })
+
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'SPOILER: Good luck!',

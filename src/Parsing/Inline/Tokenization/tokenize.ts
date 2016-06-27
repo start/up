@@ -997,13 +997,13 @@ const URL_SUBDOMAIN =
   LETTER_CHAR + everyOptional(
     anyCharMatching(
       LETTER_CLASS, DIGIT_CLASS, escapeForRegex('-')))
-  + escapeForRegex('.')
 
 const TOP_LEVEL_DOMAIN =
   atLeast(1, LETTER_CHAR)
 
-const URL_DOMAIN_PART =
-  atLeast(1, URL_SUBDOMAIN) + TOP_LEVEL_DOMAIN +  optional(FORWARD_SLASH)
+const DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
+  atLeast(1, URL_SUBDOMAIN + escapeForRegex('.'))
+  + TOP_LEVEL_DOMAIN + optional(FORWARD_SLASH)
 
 const EXPLICIT_URL_PREFIX =
   either(
