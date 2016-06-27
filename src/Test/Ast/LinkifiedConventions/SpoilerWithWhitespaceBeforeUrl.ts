@@ -103,6 +103,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         ])
       })
     })
+
+    specify('the scheme must not be escaped', () => {
+      expect(Up.toAst('[SPOILER: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('email')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:daniel@wants.email)')
+          ]),
+        ])
+      )
+    })
   })
 
 

@@ -275,6 +275,20 @@ context('A linkified NSFW convention can have whitespace between itself and its 
           ])
         ])
       })
+
+    specify('the scheme must not be escaped', () => {
+      expect(Up.toAst('[NSFW: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('email')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:daniel@wants.email)')
+          ]),
+        ])
+      )
+    })
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {

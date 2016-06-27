@@ -304,6 +304,20 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           ])
         ])
       })
+
+    specify('the scheme must not be escaped', () => {
+      expect(Up.toAst('[NSFL: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('email')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:daniel@wants.email)')
+          ]),
+        ])
+      )
+    })
     })
 
     context('The top-level domain must contain only letters ', () => {
