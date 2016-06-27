@@ -343,6 +343,44 @@ context('A linkified footnote can have whitespace between itself and its bracket
       })
     })
 
+    specify('the top-level domain may be followed by a slash and no resource path', () => {
+      const footnote = new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Advance Wars!')
+        ], 'https://advancewars.wikia.com/')
+      ], 1)
+
+      expectEveryCombinationOfBrackets({
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'Advance Wars!',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/',
+        toProduce: new DocumentNode([
+          new ParagraphNode([footnote,]),
+          new FootnoteBlockNode([footnote])
+        ])
+      })
+    })
+
+    specify('the top-level domain may not be followed by any character other than a forward slash', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('that place')
+      ], 1)
+
+      expect(Up.toAst('[[that place]] (4chan.org--terrifying)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(4chan.org--terrifying)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
+
     specify('all domains before the top-level domain may consist solely of digits', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
@@ -363,11 +401,11 @@ context('A linkified footnote can have whitespace between itself and its bracket
     })
 
     context('The top-level domain must contain only letters ', () => {
-      const footnote = new FootnoteNode([
-        new PlainTextNode('username')
-      ], 1)
-
       specify('No numbers', () => {
+        const footnote = new FootnoteNode([
+          new PlainTextNode('username')
+        ], 1)
+
         expect(Up.toAst('[[username]] (john.e.smith5)')).to.be.eql(
           new DocumentNode([
             new ParagraphNode([
