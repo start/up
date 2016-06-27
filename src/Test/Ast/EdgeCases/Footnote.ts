@@ -209,7 +209,7 @@ describe('Within an outline convention, a blockquoted footnote reference that fo
 describe('A footnote with inner footnotes followed by another footnote with inner footnotes', () => {
   it('produces no duplicate reference numbers', () => {
     const text =
-      "Me? I'm totally normal. ((That said, I don't eat cereal. ((Well, I *do*, but I pretend not to.)) Never have.)) Really. ((Probably. ((No.))))"
+      "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably. (^No.))"
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
@@ -255,7 +255,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
 
 describe('A footnote reference at the beginning of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
-    const text = "((I would never eat cereal.)) I'm a normal breakfast eater, just like you."
+    const text = "(^I would never eat cereal.) I'm a normal breakfast eater, just like you."
 
     const footnote = new FootnoteNode([
       new PlainTextNode('I would never eat cereal.')
