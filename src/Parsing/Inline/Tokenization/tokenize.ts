@@ -716,8 +716,16 @@ class Tokenizer {
   //    * Have a scheme (like "mailto:" or "https://")
   //    * Start with a slash
   //    * Start with a hash mark ("#")
-  //
+  //    * Have a top-level domain.
+  //      
   // 2. Second, the URL must not contain any unescaped whitespace.
+  //
+  // 3. If the URL merely has a top-level domain:
+  //    * The top-level domain must consist solely of letters
+  //    * The URL must start with a number or a letter
+  //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
+  //      cconsecutive periods are allowed in the resource path.
+  
   private getLinkUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
@@ -956,29 +964,34 @@ class Tokenizer {
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
+
+// We use our URL patterns (and string constants) in two ways:
+//
+// 1. To apply URL config settings
+// 2. To help determine whether to treat bracketed text as a URL. For more context, see the comments for
+//    the `getLinkUrlSeparatedByWhitespaceConventions` method.
+//
+// One important thing to note about that second point:
+//
+// We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
+// surprising the author by producing a link when they probably didn't intend to produce one.
+
 const URL_SCHEME_NAME =
   LETTER_CHAR + everyOptional(
     anyCharMatching(
-      LETTER_CLASS,
-      DIGIT_CLASS,
-      ...['-', '+', '.'].map(escapeForRegex)))
+      LETTER_CLASS, DIGIT_CLASS, ...['-', '+', '.'].map(escapeForRegex)))
 
 const URL_SCHEME =
   URL_SCHEME_NAME + ':' + everyOptional('/')
 
-// Checking for a URL scheme is important when:
-//
-// 1. Applying URL config settings
-// 2. Determining whether a bracketed URL is actually a URL
-//
-// Note: Naked URLs don't use this pattern. They must only start with "http://"" or "https://".
 const URL_SCHEME_PATTERN =
   regExpStartingWith(URL_SCHEME)
 
-// For the same two reasons, it's important for us to determine whether a URL starts with a slash or a
-// hash mark.
-const URL_SLASH = '/'
-const URL_HASH_MARK = '#'
+const URL_SLASH =
+  '/'
+
+const URL_HASH_MARK =
+  '#'
 
 const EXPLICIT_URL_PREFIX =
   either(
