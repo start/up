@@ -452,8 +452,8 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 })
 
 
-describe("The reference numbers of non-nested footnotes inside a blockquote inside another outline convention", () => {
-  it('are higher than those of preceding footnotes outside the blockquote but inside the same outer outline convention. The fact that their footnote block appears first is irrelevant', () => {
+describe("Within an outline convention, a blockquoted footnote that follows a non-blockquoted footnote", () => {
+  it('has a reference number greater than that of the preceding footnote (inside the same outline convention), but it produces footnote block that appears before the footnote block of the preceding footnote', () => {
     const text = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
@@ -514,8 +514,8 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 })
 
 
-describe("The reference numbers of nested footnotes inside a blockquote inside another outline convention", () => {
-  it('are lower those of preceding nested footnotes outside the blockquote but inside the same outer outline convention (because they get referenced in an earlier footnote block)', () => {
+describe("Within an outline convention, a blockquoted nested footnote that follows a non-blockquoted nested footnote", () => {
+  it('has a reference number lower than that of the preceding nested footnote (inside the same outline convention) because it gets referenced in an earlier footnote block', () => {
     const text = `
 * I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
 
