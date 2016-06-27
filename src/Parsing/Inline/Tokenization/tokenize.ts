@@ -782,7 +782,7 @@ class Tokenizer {
   // replaced, but their entire contents are placed inside a link.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern),
+      startPattern: regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,

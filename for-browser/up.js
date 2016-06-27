@@ -1131,7 +1131,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkifyingUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
+            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },

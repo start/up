@@ -9,6 +9,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
@@ -187,7 +188,7 @@ describe('A footnote directly followed by a NSFL convention', () => {
 })
 
 
-describe('An otherwise valid linkified NSFL convention with its URL escaped"', () => {
+describe('An otherwise valid linkified footnote with its URL escaped"', () => {
   it('is not linkified', () => {
     const text = "[^He called her.](\\tel:5555555555)"
 
@@ -198,7 +199,12 @@ describe('An otherwise valid linkified NSFL convention with its URL escaped"', (
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([footnote]),
+        new ParagraphNode([
+          footnote,
+          new ParenthesizedNode([
+            new PlainTextNode('(tel:5555555555)')
+          ]),
+        ]),
         new FootnoteBlockNode([footnote])
       ]))
   })
