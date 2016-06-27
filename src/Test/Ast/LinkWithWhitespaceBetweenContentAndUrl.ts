@@ -97,7 +97,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
     })
 
-    specify('the URL cannot be escaped', () => {
+    specify('the scheme must not be escaped', () => {
       expect(Up.toAst('[email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -168,6 +168,20 @@ context('A link can have whitespace between its bracketed content and bracketed 
         ])
       })
     })
+
+    specify('must not have its slash escaped', () => {
+      expect(Up.toAst('[yeah] (\\/r9k/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[yeah]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/r9k/)')
+          ]),
+        ])
+      )
+    })
   })
 
 
@@ -222,6 +236,20 @@ context('A link can have whitespace between its bracketed content and bracketed 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2 was never trending)')
+          ]),
+        ])
+      )
+    })
+
+    it('must not have its hashmark escaped', () => {
+      expect(Up.toAst('[yeah] (\\#starcraft2)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[yeah]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(#starcraft2)')
           ]),
         ])
       )
@@ -391,6 +419,20 @@ context('A link can have whitespace between its bracketed content and bracketed 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
+          ]),
+        ])
+      )
+    })
+
+    specify('the domain must not be escaped', () => {
+      expect(Up.toAst('[yeah] (\\ign.com)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[yeah]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(ign.com)')
           ]),
         ])
       )
