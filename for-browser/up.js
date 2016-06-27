@@ -1084,7 +1084,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern),
+            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
@@ -1272,6 +1272,7 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
+var NOT_FOLLOWED_BY_ESCAPER_CHAR = PatternHelpers_1.notFollowedBy(PatternHelpers_1.escapeForRegex(Strings_1.ESCAPER_CHAR));
 var URL_SCHEME_NAME = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching.apply(void 0, [PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);

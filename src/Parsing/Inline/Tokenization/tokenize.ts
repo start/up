@@ -687,7 +687,7 @@ class Tokenizer {
   // conventions. For that, see `getLinkUrlSeparatedByWhitespaceConventions`.
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern),
+      startPattern: regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -976,6 +976,9 @@ class Tokenizer {
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
+
+const NOT_FOLLOWED_BY_ESCAPER_CHAR =
+  notFollowedBy(escapeForRegex(ESCAPER_CHAR))
 
 
 // We use our URL patterns (and string constants) in two ways:

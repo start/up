@@ -103,10 +103,10 @@ describe('An otherwise valid link with its URL escaped"', () => {
     expect(Up.toAst('[call me](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
-          new PlainTextNode('call me')
+          new PlainTextNode('[call me]')
         ]),
 	      new ParenthesizedNode([
-          new PlainTextNode('tel:5555555555')
+          new PlainTextNode('(tel:5555555555)')
         ]),
       ]))
   })
