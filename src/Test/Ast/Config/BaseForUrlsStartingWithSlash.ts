@@ -120,7 +120,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
   })
 
   it("is prefixed to linkified footnote URLs that start with a slash", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.))[/cereals/lucky-charms?show=nutrition] Never have."
+    const text = "I don't eat cereal. (^Well, I eat one.)[/cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -185,7 +185,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
   })
 
   it("is prefixed to linkified footnote URLs that start with a slash when the footnote part and the URL are separated by whitespace", () => {
-    const text = "I don't eat cereal. ((Well, I eat one.)) [/cereals/lucky-charms?show=nutrition] Never have."
+    const text = "I don't eat cereal. (^Well, I eat one.) [/cereals/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
