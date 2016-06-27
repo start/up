@@ -24,11 +24,12 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
   it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."
 
-    const footnote = new FootnoteNode([
-      new LinkNode([
-        new PlainTextNode('Well, I do, but I pretend not to.')
-      ], 'http://example.com/luckycharms')
-    ], 1)
+    const footnote =
+      new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ], 'http://example.com/luckycharms')
+      ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -45,11 +46,12 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
 
 describe('Any footnote followed by a bracketed/parenthesized URL', () => {
   it('produces a footnote node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the footnote can be different from the type of bracket surrounding the URL', () => {
-    const footnote = new FootnoteNode([
-      new LinkNode([
-        new PlainTextNode('Well, I do, but I pretend not to.')
-      ], 'http://example.com/luckycharms')
-    ], 1)
+    const footnote =
+      new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ], 'http://example.com/luckycharms')
+      ], 1)
 
     expectEveryCombinationOfBrackets({
       bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
@@ -95,20 +97,19 @@ describe('A footnote directly followed by a media convention', () => {
   it("is not linkified", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[video: me not eating cereal](https://example.com/v/123)"
 
-    const footnotes = [
+    const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
-    ]
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          footnotes[0],
+          footnote,
           new VideoNode('me not eating cereal', 'https://example.com/v/123')
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
@@ -118,22 +119,21 @@ describe('A footnote directly followed by a spoiler', () => {
   it("is not linkified", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
 
-    const footnotes = [
+    const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
-    ]
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          footnotes[0],
+          footnote,
           new SpoilerNode([
             new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
@@ -143,22 +143,21 @@ describe('A footnote directly followed by a NSFW convention', () => {
   it("is not linkified", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFW: None of the Final Four's Pokemon are named 'Cereal']"
 
-    const footnotes = [
+    const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
-    ]
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          footnotes[0],
+          footnote,
           new NsfwNode([
             new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
@@ -168,22 +167,21 @@ describe('A footnote directly followed by a NSFL convention', () => {
   it("is not linkified", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
 
-    const footnotes = [
+    const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
-    ]
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
-          footnotes[0],
+          footnote,
           new NsflNode([
             new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
