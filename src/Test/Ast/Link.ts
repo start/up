@@ -84,7 +84,7 @@ describe('A link URL starting with a hash mark ("#")', () => {
 
 
 describe('A link URL with a URL scheme other than "http://" or "https://"', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+  it('has no added prefix)', () => {
     expectEveryCombinationOfBrackets({
       contentToWrapInBrackets: 'email me',
       urlToWrapInBrackets: 'mailto:daniel@wants.email',
