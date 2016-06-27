@@ -247,7 +247,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 
   describe('When the URL merely has a top-level domain', () => {
-    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+    specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'SPOILER: Advance Wars',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -262,7 +262,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       })
     })
 
-    specify('the top-level domain may be followed by a slash and no resource path ', () => {
+    specify('the top-level domain may be followed by a slash and no resource path', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'SPOILER: Advance Wars',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -275,6 +275,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
           ])
         ])
       })
+    })
+
+    specify('the top-level domain may not be followed by any character other than a forward slash', () => {
+        expect(Up.toAst('[SPOILER: username] (4chan.org--terrifying)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SpoilerNode([
+              new PlainTextNode('username')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(4chan.org--terrifying)')
+            ]),
+          ])
+        )
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
