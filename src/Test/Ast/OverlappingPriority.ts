@@ -301,7 +301,7 @@ describe('Action text that overlaps a spoiler', () => {
 
 describe('A spoiler that overlaps a footnote', () => {
   it("splits the spoiler node, not the footnote node", () => {
-    const text = '[SPOILER: Gary loses to Ash ((Ketchum] is his last name))'
+    const text = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -328,7 +328,7 @@ describe('A spoiler that overlaps a footnote', () => {
 
 describe('A footnote that overlaps a spoiler', () => {
   it("splits the spoiler node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one ((reasonable [SPOILER: and realistic)) example of a] footnote that overlaps a spoiler.'
+    const text = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps a spoiler.'
 
     const footnote =
       new FootnoteNode([
@@ -444,7 +444,7 @@ describe('Action text that overlaps a NSFW convention', () => {
 
 describe('A NSFW convention that overlaps a footnote', () => {
   it("splits the NSFW convention node, not the footnote node", () => {
-    const text = '[NSFW: Gary loses to Ash ((Ketchum] is his last name))'
+    const text = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -471,7 +471,7 @@ describe('A NSFW convention that overlaps a footnote', () => {
 
 describe('A footnote that overlaps a NSFW convention', () => {
   it("splits the NSFW convention node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one ((reasonable [NSFW: and realistic)) example of a] footnote that overlaps a NSFW convention.'
+    const text = 'Eventually, I will think of one (^reasonable [NSFW: and realistic) example of a] footnote that overlaps a NSFW convention.'
 
     const footnote =
       new FootnoteNode([
@@ -586,7 +586,7 @@ describe('Action text that overlaps a NSFL convention', () => {
 
 describe('A NSFL convention that overlaps a footnote', () => {
   it("splits the NSFL convention node, not the footnote node", () => {
-    const text = '[NSFL: Gary loses to Ash ((Ketchum] is his last name))'
+    const text = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -613,7 +613,7 @@ describe('A NSFL convention that overlaps a footnote', () => {
 
 describe('A footnote that overlaps a NSFL convention', () => {
   it("splits the NSFL convention node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one ((reasonable [NSFL: and realistic)) example of a] footnote that overlaps a NSFL convention.'
+    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps a NSFL convention.'
 
     const footnote =
       new FootnoteNode([
