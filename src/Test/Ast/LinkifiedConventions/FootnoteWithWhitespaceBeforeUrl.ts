@@ -140,6 +140,25 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ])
       })
     })
+
+    specify('the scheme must not be escaped', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('email')
+      ], 1)
+
+      expect(Up.toAst('(^email) (\\mailto:daniel@wants.email)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(mailto:daniel@wants.email)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
   })
 
 
