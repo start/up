@@ -138,25 +138,6 @@ describe('A footnote produced by curly brackets that contains nested action text
 })
 
 
-describe('Nested action text ending together with "}}"', () => {
-  it('does not produce any footnote nodes', () => {
-    const text = "{eats {dies}}"
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new ActionNode([
-            new PlainTextNode("eats "),
-            new ActionNode([
-              new PlainTextNode("dies"),
-            ])
-          ])
-        ]),
-      ]))
-  })
-})
-
-
 describe('Inside an outline convention, blockquoted footnote references', () => {
   it('produce footnote blocks directly after each appropriate convention within the blockquote', () => {
     const text = `
