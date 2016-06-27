@@ -1277,9 +1277,10 @@ var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
 var FORWARD_SLASH = '/';
 var HASH_MARK = '#';
-var URL_SUBDOMAIN = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching(PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS, PatternHelpers_1.escapeForRegex('-')));
+var SUBDOMAIN = PatternHelpers_1.anyCharMatching(PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS)
+    + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching(PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS, PatternHelpers_1.escapeForRegex('-')));
 var TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, PatternPieces_1.LETTER_CHAR);
-var DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, URL_SUBDOMAIN + PatternHelpers_1.escapeForRegex('.')) + TOP_LEVEL_DOMAIN;
+var DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, SUBDOMAIN + PatternHelpers_1.escapeForRegex('.')) + TOP_LEVEL_DOMAIN;
 var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, FORWARD_SLASH, HASH_MARK);
 var SOLELY_URL_PREFIX_PATTERN = new RegExp(PatternHelpers_1.solely(EXPLICIT_URL_PREFIX));
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });

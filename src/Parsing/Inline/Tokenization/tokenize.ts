@@ -1006,16 +1006,16 @@ const FORWARD_SLASH =
 const HASH_MARK =
   '#'
 
-const URL_SUBDOMAIN =
-  LETTER_CHAR + everyOptional(
-    anyCharMatching(
-      LETTER_CLASS, DIGIT_CLASS, escapeForRegex('-')))
+const SUBDOMAIN =
+  anyCharMatching(LETTER_CLASS, DIGIT_CLASS)
+  + everyOptional(
+    anyCharMatching(LETTER_CLASS, DIGIT_CLASS, escapeForRegex('-')))
 
 const TOP_LEVEL_DOMAIN =
   atLeast(1, LETTER_CHAR)
 
 const DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
-  atLeast(1, URL_SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
+  atLeast(1, SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
   either(

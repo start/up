@@ -299,7 +299,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
-              new PlainTextNode('Good luck')
+              new PlainTextNode('Good luck!')
             ], 'https://88.8888.cn')
           ])
         ])

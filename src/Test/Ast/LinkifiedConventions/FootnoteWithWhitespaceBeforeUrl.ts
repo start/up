@@ -505,7 +505,8 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], 1)
 
       expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Good luck!',
+        bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
+        contentToWrapInBrackets: 'Good luck!',
         partsToPutInBetween: ['  ', '\t', ' \t '],
         urlToWrapInBrackets: '88.8888.cn',
         toProduce: new DocumentNode([
