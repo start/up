@@ -1107,7 +1107,7 @@ var Tokenizer = (function () {
             whenClosingItAlsoClosesInnerConventions: true,
             whenClosing: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
+                if (_this.probablyWasNotIntendedToBeAUrl(url)) {
                     _this.backtrackToBeforeContext(context);
                 }
                 else {
@@ -1118,6 +1118,9 @@ var Tokenizer = (function () {
     };
     Tokenizer.prototype.getBracketedUrlFollowingWhitespacePattern = function (bracket) {
         return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(EXPLICIT_URL_PREFIX));
+    };
+    Tokenizer.prototype.probablyWasNotIntendedToBeAUrl = function (url) {
+        return SOLELY_URL_PREFIX_PATTERN.test(url);
     };
     Tokenizer.prototype.closeLink = function (url) {
         var originalEndToken = CollectionHelpers_1.last(this.tokens);
@@ -1151,7 +1154,7 @@ var Tokenizer = (function () {
             whenClosingItAlsoClosesInnerConventions: true,
             whenClosing: function (context) {
                 var url = _this.applyConfigSettingsToUrl(_this.flushBuffer());
-                if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
+                if (_this.probablyWasNotIntendedToBeAUrl(url)) {
                     _this.backtrackToBeforeContext(context);
                 }
                 else {
@@ -1279,7 +1282,7 @@ var TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, PatternPieces_1.LETTER_CHAR);
 var DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN = PatternHelpers_1.atLeast(1, URL_SUBDOMAIN + PatternHelpers_1.escapeForRegex('.'))
     + TOP_LEVEL_DOMAIN + PatternHelpers_1.optional(FORWARD_SLASH);
 var EXPLICIT_URL_PREFIX = PatternHelpers_1.either(URL_SCHEME, FORWARD_SLASH, HASH_MARK);
-var PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN = new RegExp(PatternHelpers_1.solely(EXPLICIT_URL_PREFIX));
+var SOLELY_URL_PREFIX_PATTERN = new RegExp(PatternHelpers_1.solely(EXPLICIT_URL_PREFIX));
 var BRACKET_START_PATTERNS = BRACKETS.map(function (bracket) { return bracket.startPattern; });
 var BRACKET_END_PATTERNS = BRACKETS.map(function (bracket) { return bracket.endPattern; });
 var CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [

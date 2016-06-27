@@ -741,7 +741,7 @@ class Tokenizer {
       whenClosing: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
+        if (this.probablyWasNotIntendedToBeAUrl(url)) {
           this.backtrackToBeforeContext(context)
         } else {
           this.closeLink(url)
@@ -753,6 +753,10 @@ class Tokenizer {
   private getBracketedUrlFollowingWhitespacePattern(bracket: Bracket): RegExp {
     return regExpStartingWith(
       SOME_WHITESPACE + bracket.startPattern + capture(EXPLICIT_URL_PREFIX))
+  }
+
+  private probablyWasNotIntendedToBeAUrl(url: string): boolean {
+    return SOLELY_URL_PREFIX_PATTERN.test(url)
   }
 
   private closeLink(url: string) {
@@ -803,7 +807,7 @@ class Tokenizer {
       whenClosing: (context) => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
 
-        if (PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN.test(url)) {
+        if (this.probablyWasNotIntendedToBeAUrl(url)) {
           this.backtrackToBeforeContext(context)
         } else {
           this.closeLinkifyingUrl(url)
@@ -1013,7 +1017,7 @@ const EXPLICIT_URL_PREFIX =
 
 // If the "url" is consists solely of a URL prefix, the author almost certainly did not intend
 // this to be a URL.
-const PROBABLY_NOT_INTENDED_TO_BE_A_URL_PATTERN =
+const SOLELY_URL_PREFIX_PATTERN =
   new RegExp(
     solely(EXPLICIT_URL_PREFIX))
 
