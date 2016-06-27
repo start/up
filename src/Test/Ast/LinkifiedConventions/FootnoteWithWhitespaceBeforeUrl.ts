@@ -14,9 +14,9 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 const FOOTNOTE_BRACKETS = [
-  { open: '((', close: '))' },
-  { open: '[[', close: ']]' },
-  { open: '{{', close: '}}' }
+  { open: '(^', close: ')' },
+  { open: '[^', close: ']' },
+  { open: '{^', close: '}' }
 ]
 
 
@@ -66,7 +66,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('the phone was dead')
       ], 1)
 
-      expect(Up.toAst('((the phone was dead)) (https://stackoverflow.com is where I learned)')).to.be.eql(
+      expect(Up.toAst('(^the phone was dead) (https://stackoverflow.com is where I learned)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -89,7 +89,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('email')
       ], 1)
 
-      expect(Up.toAst('((email)) (mailto:)')).to.be.eql(
+      expect(Up.toAst('(^email) (mailto:)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -108,7 +108,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('local files')
       ], 1)
 
-      expect(Up.toAst('((local files)) (file:///)')).to.be.eql(
+      expect(Up.toAst('(^local files) (file:///)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -169,7 +169,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('the phone was dead')
       ], 1)
 
-      expect(Up.toAst('((the phone was dead)) (/r9k/ was talking about it)')).to.be.eql(
+      expect(Up.toAst('(^the phone was dead) (/r9k/ was talking about it)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -188,7 +188,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('slash')
       ], 1)
 
-      expect(Up.toAst('((slash)) (/)')).to.be.eql(
+      expect(Up.toAst('(^slash) (/)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -268,7 +268,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('the game was dead')
       ], 1)
 
-      expect(Up.toAst('((the game was dead)) (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toAst('(^the game was dead) (#starcraft2 was never trending)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -287,7 +287,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('hash mark')
       ], 1)
 
-      expect(Up.toAst('((hash mark)) (#)')).to.be.eql(
+      expect(Up.toAst('(^hash mark) (#)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -367,7 +367,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('that place')
       ], 1)
 
-      expect(Up.toAst('[[that place]] (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[^that place] (4chan.org--terrifying)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -406,7 +406,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new PlainTextNode('username')
         ], 1)
 
-        expect(Up.toAst('[[username]] (john.e.smith5)')).to.be.eql(
+        expect(Up.toAst('[^username] (john.e.smith5)')).to.be.eql(
           new DocumentNode([
             new ParagraphNode([
               footnote,
@@ -445,7 +445,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('top-level domain')
       ], 1)
 
-      expect(Up.toAst('[[top-level domain]] (.co.uk)')).to.be.eql(
+      expect(Up.toAst('[^top-level domain] (.co.uk)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -464,7 +464,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('Ash is not his own father')
       ], 1)
 
-      expect(Up.toAst('[[Ash is not his own father]] (um..uh)')).to.be.eql(
+      expect(Up.toAst('[^Ash is not his own father] (um..uh)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -483,7 +483,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('debilitating sadness')
       ], 1)
 
-      expect(Up.toAst('[[debilitating sadness]] (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toAst('[^debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -521,7 +521,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('yeah')
       ], 1)
 
-      expect(Up.toAst('[[yeah]] (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toAst('[^yeah] (ign.com had some hilarious forums)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
@@ -542,7 +542,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       new PlainTextNode('the phone was dead')
     ], 1)
 
-    expect(Up.toAst('((the phone was dead)) (really)')).to.be.eql(
+    expect(Up.toAst('(^the phone was dead) (really)')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote,
@@ -563,7 +563,7 @@ describe('If there is nothing but whitspace between a footnote and a bracketed U
       new PlainTextNode('something terrible')
     ], 1)
 
-    expect(Up.toAst('[[something terrible]]  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toAst('[^something terrible]  \\  (https://example.com)')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote,
