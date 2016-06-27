@@ -114,7 +114,7 @@ describe('A NSFL convention directly followed by a media convention', () => {
 
 describe('A NSFL convention directly followed by a footnote', () => {
   it("is not linkified", () => {
-    const text = "After you beat the Elite Four, [NSFL: you eat rotting Gary]((Or whatever you name him.))"
+    const text = "After you beat the Elite Four, [NSFL: you eat rotting Gary](^Or whatever you name him.)"
 
     const footnotes = [
       new FootnoteNode([
