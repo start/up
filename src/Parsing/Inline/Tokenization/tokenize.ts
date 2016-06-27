@@ -182,7 +182,7 @@ class Tokenizer {
       ...this.getLinkUrlConventions())
 
     this.conventions.push(
-      ...this.getLinkUrlSeparatedByWhitespaceConventions())
+      ...this.getWhitespaceFollowedByLinkUrlConventions())
 
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
@@ -191,7 +191,7 @@ class Tokenizer {
       ...this.getLinkifyingUrlConventions())
 
     this.conventions.push(
-      ...this.getLinkifyingUrlSeparatedByWhitespaceConventions())
+      ...this.getWhitespaceFollowedByLinkifyingUrlConventions())
 
     this.conventions.push(...[
       {
@@ -684,10 +684,10 @@ class Tokenizer {
   // You should try [Typescript](http://www.typescriptlang.org).
   //
   // We allow whitespace between a link's content and its URL, but that isn't handled by these
-  // conventions. For that, see `getLinkUrlSeparatedByWhitespaceConventions`.
+  // conventions. For that, see `getWhitespaceFollowedByLinkifyingUrlConventions`.
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
+      startPattern: this.getBracketedUrlStartPattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -726,9 +726,9 @@ class Tokenizer {
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      cconsecutive periods are allowed in the resource path.
 
-  private getLinkUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
+  private getWhitespaceFollowedByLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
+      startPattern: this.getWhitespaceFollowedByBracketedUrlPattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -750,20 +750,6 @@ class Tokenizer {
     }))
   }
 
-  private getBracketedUrlFollowingWhitespacePattern(bracket: Bracket): RegExp {
-    return regExpStartingWith(
-      SOME_WHITESPACE + bracket.startPattern + capture(
-        either(
-          EXPLICIT_URL_PREFIX,
-          // If there's no URL prefix, there must be a top-level domain, and...
-          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
-            FORWARD_SLASH,
-            // If the top-level domain doesn't end with a forward slash, it must be immediately followed
-            // by the closing bracket.
-            followedBy(bracket.endPattern)
-          ))))
-  }
-
   private probablyWasNotIntendedToBeAUrl(url: string): boolean {
     return SOLELY_URL_PREFIX_PATTERN.test(url)
   }
@@ -778,11 +764,11 @@ class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // Certain conventions can be  "linkified" if followed by a bracketed URL. The original conventions aren't
+  // Certain conventions can be "linkified" if followed by a bracketed URL. The original conventions aren't
   // replaced, but their entire contents are placed inside a link.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
+      startPattern: this.getBracketedUrlStartPattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -797,13 +783,13 @@ class Tokenizer {
     }))
   }
 
-  // Similar to link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
+  // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
   // between the linkifying URL and the original convention.
   //
   // For more information, see `getLinkifyingUrlConventions` and `getLinkUrlConventions`.
-  private getLinkifyingUrlSeparatedByWhitespaceConventions(): TokenizableConvention[] {
+  private getWhitespaceFollowedByLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: this.getBracketedUrlFollowingWhitespacePattern(bracket),
+      startPattern: this.getWhitespaceFollowedByBracketedUrlPattern(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -823,6 +809,27 @@ class Tokenizer {
         }
       }
     }))
+  }
+
+  private getBracketedUrlStartPattern(bracket: Bracket): RegExp {
+    return regExpStartingWith(
+      bracket.startPattern +
+      // If the first character of the URL is escaped, we don't produce a link.
+      notFollowedBy(escapeForRegex(ESCAPER_CHAR)))
+  }
+
+  private getWhitespaceFollowedByBracketedUrlPattern(bracket: Bracket): RegExp {
+    return regExpStartingWith(
+      SOME_WHITESPACE + bracket.startPattern + capture(
+        either(
+          EXPLICIT_URL_PREFIX,
+          // If there's no URL prefix, there must be a top-level domain, and...
+          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+            FORWARD_SLASH,
+            // If the top-level domain doesn't end with a forward slash, it must be immediately followed
+            // by the closing bracket.
+            followedBy(bracket.endPattern)
+          ))))
   }
 
   private bufferRawText(): void {
@@ -977,15 +984,12 @@ class Tokenizer {
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
-const NOT_FOLLOWED_BY_ESCAPER_CHAR =
-  notFollowedBy(escapeForRegex(ESCAPER_CHAR))
-
 
 // We use our URL patterns (and string constants) in two ways:
 //
 // 1. To apply URL config settings
 // 2. To help determine whether to treat bracketed text as a URL. For more context, see the comments for
-//    the `getLinkUrlSeparatedByWhitespaceConventions` method.
+//    the `getWhitespaceFollowedByLinkifyingUrlConventions` method.
 //
 // One important thing to note about that second point:
 //

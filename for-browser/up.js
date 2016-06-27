@@ -745,10 +745,10 @@ var Tokenizer = (function () {
             whenClosingItFlushesBufferTo: TokenKind_1.TokenKind.InlineCode
         });
         (_c = this.conventions).push.apply(_c, this.getLinkUrlConventions());
-        (_d = this.conventions).push.apply(_d, this.getLinkUrlSeparatedByWhitespaceConventions());
+        (_d = this.conventions).push.apply(_d, this.getWhitespaceFollowedByLinkUrlConventions());
         (_e = this.conventions).push.apply(_e, this.getMediaDescriptionConventions());
         (_f = this.conventions).push.apply(_f, this.getLinkifyingUrlConventions());
-        (_g = this.conventions).push.apply(_g, this.getLinkifyingUrlSeparatedByWhitespaceConventions());
+        (_g = this.conventions).push.apply(_g, this.getWhitespaceFollowedByLinkifyingUrlConventions());
         (_h = this.conventions).push.apply(_h, [
             {
                 richConvention: RichConventions_1.PARENTHESIZED_CONVENTION,
@@ -1084,7 +1084,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
+            startPattern: _this.getBracketedUrlStartPattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
@@ -1095,10 +1095,10 @@ var Tokenizer = (function () {
             }
         }); });
     };
-    Tokenizer.prototype.getLinkUrlSeparatedByWhitespaceConventions = function () {
+    Tokenizer.prototype.getWhitespaceFollowedByLinkUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: _this.getBracketedUrlFollowingWhitespacePattern(bracket),
+            startPattern: _this.getWhitespaceFollowedByBracketedUrlPattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
             whenOpening: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
@@ -1116,9 +1116,6 @@ var Tokenizer = (function () {
             }
         }); });
     };
-    Tokenizer.prototype.getBracketedUrlFollowingWhitespacePattern = function (bracket) {
-        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(EXPLICIT_URL_PREFIX, DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + PatternHelpers_1.either(FORWARD_SLASH, PatternHelpers_1.followedBy(bracket.endPattern)))));
-    };
     Tokenizer.prototype.probablyWasNotIntendedToBeAUrl = function (url) {
         return SOLELY_URL_PREFIX_PATTERN.test(url);
     };
@@ -1131,7 +1128,7 @@ var Tokenizer = (function () {
     Tokenizer.prototype.getLinkifyingUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: PatternHelpers_1.regExpStartingWith(bracket.startPattern + NOT_FOLLOWED_BY_ESCAPER_CHAR),
+            startPattern: _this.getBracketedUrlStartPattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             insteadOfClosingOuterConventionsWhileOpen: function () { return _this.bufferRawText(); },
@@ -1142,10 +1139,10 @@ var Tokenizer = (function () {
             }
         }); });
     };
-    Tokenizer.prototype.getLinkifyingUrlSeparatedByWhitespaceConventions = function () {
+    Tokenizer.prototype.getWhitespaceFollowedByLinkifyingUrlConventions = function () {
         var _this = this;
         return BRACKETS.map(function (bracket) { return ({
-            startPattern: _this.getBracketedUrlFollowingWhitespacePattern(bracket),
+            startPattern: _this.getWhitespaceFollowedByBracketedUrlPattern(bracket),
             endPattern: PatternHelpers_1.regExpStartingWith(bracket.endPattern),
             onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
             whenOpening: function (_1, _2, urlPrefix) { _this.buffer += urlPrefix; },
@@ -1162,6 +1159,13 @@ var Tokenizer = (function () {
                 }
             }
         }); });
+    };
+    Tokenizer.prototype.getBracketedUrlStartPattern = function (bracket) {
+        return PatternHelpers_1.regExpStartingWith(bracket.startPattern +
+            PatternHelpers_1.notFollowedBy(PatternHelpers_1.escapeForRegex(Strings_1.ESCAPER_CHAR)));
+    };
+    Tokenizer.prototype.getWhitespaceFollowedByBracketedUrlPattern = function (bracket) {
+        return PatternHelpers_1.regExpStartingWith(PatternPieces_1.SOME_WHITESPACE + bracket.startPattern + PatternHelpers_1.capture(PatternHelpers_1.either(EXPLICIT_URL_PREFIX, DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + PatternHelpers_1.either(FORWARD_SLASH, PatternHelpers_1.followedBy(bracket.endPattern)))));
     };
     Tokenizer.prototype.bufferRawText = function () {
         var _this = this;
@@ -1272,7 +1276,6 @@ var Tokenizer = (function () {
     return Tokenizer;
 }());
 var WHITESPACE_CHAR_PATTERN = new RegExp(PatternPieces_1.WHITESPACE_CHAR);
-var NOT_FOLLOWED_BY_ESCAPER_CHAR = PatternHelpers_1.notFollowedBy(PatternHelpers_1.escapeForRegex(Strings_1.ESCAPER_CHAR));
 var URL_SCHEME_NAME = PatternPieces_1.LETTER_CHAR + PatternHelpers_1.everyOptional(PatternHelpers_1.anyCharMatching.apply(void 0, [PatternPieces_1.LETTER_CLASS, PatternPieces_1.DIGIT_CLASS].concat(['-', '+', '.'].map(PatternHelpers_1.escapeForRegex))));
 var URL_SCHEME = URL_SCHEME_NAME + ':' + PatternHelpers_1.everyOptional('/');
 var URL_SCHEME_PATTERN = PatternHelpers_1.regExpStartingWith(URL_SCHEME);
