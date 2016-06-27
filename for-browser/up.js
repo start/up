@@ -1183,8 +1183,8 @@ var Tokenizer = (function () {
         return BRACKETS.map(function (bracket) {
             return _this.getRichSandwichConvention({
                 richConvention: RichConventions_1.FOOTNOTE_CONVENTION,
-                startPattern: PatternPieces_1.ANY_WHITESPACE + PatternHelpers_1.exactly(2, bracket.startPattern),
-                endPattern: PatternHelpers_1.exactly(2, bracket.endPattern)
+                startPattern: PatternPieces_1.ANY_WHITESPACE + bracket.startPattern + PatternHelpers_1.escapeForRegex('^'),
+                endPattern: bracket.endPattern
             });
         });
     };
