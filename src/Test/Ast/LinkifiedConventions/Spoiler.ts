@@ -9,6 +9,7 @@ import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -132,6 +133,21 @@ describe('A spoiler directly followed by a footnote', () => {
           footnotes[0],
         ]),
         new FootnoteBlockNode(footnotes)
+      ]))
+  })
+})
+
+
+describe('An otherwise valid linkified spoiler with its URL escaped"', () => {
+  it('is not linkified', () => {
+    expect(Up.toAst('[SPOILER: he called her](\\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('he called her')
+        ]),
+	      new ParenthesizedNode([
+          new PlainTextNode('(tel:5555555555)')
+        ]),
       ]))
   })
 })
