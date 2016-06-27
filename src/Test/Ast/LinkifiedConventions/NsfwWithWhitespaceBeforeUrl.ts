@@ -262,6 +262,35 @@ context('A linkified NSFW convention can have whitespace between itself and its 
       })
     })
 
+    specify('the top-level domain may be followed by a slash and no resource path', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'NSFW: Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/',
+        toProduce: insideDocumentAndParagraph([
+          new NsfwNode([
+            new LinkNode([
+              new PlainTextNode('Advance Wars')
+            ], 'https://advancewars.wikia.com/')
+          ])
+        ])
+      })
+    })
+
+    specify('the top-level domain may not be followed by any character other than a forward slash', () => {
+        expect(Up.toAst('[NSFW: that place] (4chan.org--terrifying)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsfwNode([
+              new PlainTextNode('that place')
+            ]),
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(4chan.org--terrifying)')
+            ]),
+          ])
+        )
+    })
+
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'NSFW: Good luck!',

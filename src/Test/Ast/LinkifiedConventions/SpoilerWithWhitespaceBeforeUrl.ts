@@ -278,10 +278,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-        expect(Up.toAst('[SPOILER: username] (4chan.org--terrifying)')).to.be.eql(
+        expect(Up.toAst('[SPOILER: that place] (4chan.org--terrifying)')).to.be.eql(
           insideDocumentAndParagraph([
             new SpoilerNode([
-              new PlainTextNode('username')
+              new PlainTextNode('that place')
             ]),
             new PlainTextNode(' '),
             new ParenthesizedNode([

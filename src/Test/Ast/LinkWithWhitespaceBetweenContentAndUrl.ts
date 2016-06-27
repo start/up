@@ -243,6 +243,33 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
     })
 
+    specify('the top-level domain may be followed by a slash and no resource path', () => {
+      expectEveryCombinationOfBrackets({
+        contentToWrapInBrackets: 'Advance Wars',
+        partsToPutInBetween: ['  ', '\t', ' \t '],
+        urlToWrapInBrackets: 'advancewars.wikia.com/',
+        toProduce: insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('Advance Wars')
+          ], 'https://advancewars.wikia.com/')
+        ])
+      })
+    })
+
+    specify('the top-level domain may not be followed by any character other than a forward slash', () => {
+      expect(Up.toAst('[that place] (4chan.org--terrifying)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[that place]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(4chan.org--terrifying)')
+          ]),
+        ])
+      )
+    })
+
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'Good luck!',
@@ -334,9 +361,9 @@ context('A link can have whitespace between its bracketed content and bracketed 
         partsToPutInBetween: ['  ', '\t', ' \t '],
         urlToWrapInBrackets: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
-            ], 'https://example.com/321...blastoff/1')
+          new LinkNode([
+            new PlainTextNode('Model 3 theft')
+          ], 'https://example.com/321...blastoff/1')
         ])
       })
     })
