@@ -39,7 +39,7 @@ import { concat } from '../CollectionHelpers'
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
-//    I'm normal. ((That said, I don't eat cereal. [[Well, I do, but I pretend not to.]] Never have.)) Really.
+//    I'm normal. (^That said, I don't eat cereal. [^Well, I do, but I pretend not to.] Never have.) Really.
 //
 //    The nesting can be arbitrarily deep.
 //
