@@ -165,6 +165,20 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         ])
       })
     })
+
+    specify('must not have its slash escaped', () => {
+      expect(Up.toAst('[NSFL: yeah] (\\/r9k/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/r9k/)')
+          ]),
+        ])
+      )
+    })
   })
 
 

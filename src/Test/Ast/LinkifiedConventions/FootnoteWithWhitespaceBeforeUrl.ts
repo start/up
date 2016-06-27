@@ -239,6 +239,25 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ])
       })
     })
+
+    specify('must not have its slash escaped', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('slash')
+      ], 1)
+
+      expect(Up.toAst('(^slash) (\\/r9k/)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
+            new PlainTextNode(' '),
+            new ParenthesizedNode([
+              new PlainTextNode('(/r9k/)')
+            ]),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ])
+      )
+    })
   })
 
 

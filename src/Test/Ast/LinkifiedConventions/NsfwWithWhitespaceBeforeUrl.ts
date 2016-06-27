@@ -165,6 +165,20 @@ context('A linkified NSFW convention can have whitespace between itself and its 
         ])
       })
     })
+
+    specify('must not have its slash escaped', () => {
+      expect(Up.toAst('[NSFW: yeah] (\\/r9k/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/r9k/)')
+          ]),
+        ])
+      )
+    })
   })
 
 

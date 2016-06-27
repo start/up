@@ -179,6 +179,20 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         ])
       })
     })
+
+    specify('must not have its slash escaped', () => {
+      expect(Up.toAst('[SPOILER: yeah] (\\/r9k/)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('yeah')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(/r9k/)')
+          ]),
+        ])
+      )
+    })
   })
 
 
