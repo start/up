@@ -96,6 +96,20 @@ context('A link can have whitespace between its bracketed content and bracketed 
         ])
       })
     })
+
+    specify('the URL cannot be escaped', () => {
+      expect(Up.toAst('[email] (\\mailto:daniel@wants.email)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[email]')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(mailto:daniel@wants.email)')
+          ]),
+        ])
+      )
+    })
   })
 
 
