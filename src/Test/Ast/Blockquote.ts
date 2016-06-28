@@ -128,6 +128,43 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 })
 
 
+describe('Sseveral blockquoted lines, followed by blank line, followed by more blockquoted lines, all within an outer blockquote', () => {
+  it('produce a blockquote node containing two separate blockquote nodes', () => {
+    const text = `
+> > Hello, world!
+> >
+> > Goodbye, world!
+>
+> > Welp, I tried to leave earlier.
+> >
+> > This is awkward...`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new BlockquoteNode([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ]),
+
+          new BlockquoteNode([
+            new ParagraphNode([
+              new PlainTextNode('Welp, I tried to leave earlier.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('This is awkward...')
+            ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
 describe('A single blockquote delimiter missing its trailing space', () => {
   it('does not produce a blockquote note', () => {
     expect(Up.toAst('>Hello, taxes!')).to.be.eql(
