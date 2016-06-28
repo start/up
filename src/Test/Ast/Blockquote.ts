@@ -13,6 +13,28 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 describe('Consecutive lines starting with greater than symbols', () => {
   it('are parsed like a document and then placed in a blockquote node', () => {
     const text = `
+>Hello, world!
+>
+>Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode('Hello, world!')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Goodbye, world!')
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe('Blockquote delimeters', () => {
+  it('can be followed by an optional space', () => {
+    const text = `
 > Hello, world!
 >
 > Goodbye, world!`
@@ -242,6 +264,46 @@ describe('Multiple blockquote delimiters, each without their trailing space, fol
                 new PlainTextNode('Hello, world!')
               ])
             ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe('Multiple blockquote delimiters, each with their trailing space, followed by a final blockquote delimiter without its trailing space,', () => {
+  it('produce nested blockquote nodes, one for each delimiter', () => {
+    expect(Up.toAst(`> > >Hello, world!`)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new BlockquoteNode([
+            new BlockquoteNode([
+              new ParagraphNode([
+                new PlainTextNode('Hello, world!')
+              ])
+            ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
+context('Within a given blockquote', () => {
+  specify('some delimiters can have trailing spaces delimeters while others do not', () => {
+    const text = `
+>Hello, world!
+>
+> Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode('Hello, world!')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Goodbye, world!')
           ])
         ])
       ]))
