@@ -17,7 +17,6 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   // Collect all consecutive blockquoted lines
   while (consumer.consume({
     linePattern: ALL_BLOCKQUOTE_DELIMITERS_PATTERN,
-    if: isLineProperlyBlockquoted,
     then: line => rawBlockquoteLines.push(line.replace(FIRST_BLOCKQUOTE_DELIMITER_PATTERN, ''))
   })) { }
 
@@ -40,24 +39,6 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   return true
 }
 
-function isLineProperlyBlockquoted(line: string, delimiters: string): boolean {
-  // On a given line, only the final blockquote delimiter must be followed by a space. Therefore:
-  // 
-  // >>> This is a nested blockquote.
-  //
-  // And...
-  //
-  // > > > This is a nested blockquote.
-  //
-  // If the line being quoted is otherwise blank (i.e. the line is nothing but blockquote delimiters),
-  // the final delimiter isn't required to have a trailing space. For example:
-  //
-  // > The delimiter on the next line does not need a trailing space.
-  // >
-  // > Oh, on a side note, tabs can substitute for trailing spaces.
-  return TRAILING_SPACE_PATTERN.test(delimiters) || (line === delimiters)
-}
-
 
 const BLOCKQUOTE_DELIMITER =
   '>' + optional(INLINE_WHITESPACE_CHAR)
@@ -68,6 +49,3 @@ const ALL_BLOCKQUOTE_DELIMITERS_PATTERN =
 
 const FIRST_BLOCKQUOTE_DELIMITER_PATTERN =
   regExpStartingWith(BLOCKQUOTE_DELIMITER)
-
-const TRAILING_SPACE_PATTERN =
-  regExpEndingWith(INLINE_WHITESPACE_CHAR)

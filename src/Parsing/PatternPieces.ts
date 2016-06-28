@@ -2,7 +2,7 @@ import { everyOptional, atLeast, anyCharMatching } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =
-  '[^\\S\\n]'
+  '[^\\S\\r\\n]'
 
 export const WHITESPACE_CHAR =
   '\\s'
