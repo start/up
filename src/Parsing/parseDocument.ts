@@ -6,9 +6,9 @@ import { UpConfig } from '../UpConfig'
 
 
 export function parseDocument(text: string, config: UpConfig): DocumentNode {
-  const documentNode =
-    new DocumentNode(getOutlineNodes(text, new HeadingLeveler(), config))
-
+  const documentChildren = getOutlineNodes(text, new HeadingLeveler(), config) 
+  const documentNode = new DocumentNode(documentChildren)
+  
   handleFootnotes(documentNode)
 
   return documentNode

@@ -26,7 +26,7 @@ const OUTLINE_CONVENTIONS = [
   tryToParseSectionSeparatorStreak,
   tryToParseCodeBlock,
   tryToParseBlockquote,
-  tryToParseDescriptionList,
+  tryToParseDescriptionList
 ]
 
 
@@ -37,7 +37,7 @@ export function getOutlineNodes(
 ): OutlineSyntaxNode[] {
 
   const consumer = new LineConsumer(trimOuterBlankLines(text))
-  const nodes: OutlineSyntaxNode[] = []
+  const outlineNodes: OutlineSyntaxNode[] = []
 
   while (!consumer.reachedEndOfText()) {
     const outlineParserArgs = {
@@ -45,7 +45,7 @@ export function getOutlineNodes(
       headingLeveler,
       config,
       then: (newNodes: OutlineSyntaxNode[], lengthParsed: number) => {
-        nodes.push(...newNodes)
+        outlineNodes.push(...newNodes)
         consumer.advanceTextIndex(lengthParsed)
       }
     }
@@ -55,7 +55,7 @@ export function getOutlineNodes(
     }
   }
 
-  return condenseConsecutiveSectionSeparatorNodes(nodes)
+  return condenseConsecutiveSectionSeparatorNodes(outlineNodes)
 }
 
 

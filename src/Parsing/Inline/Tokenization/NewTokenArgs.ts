@@ -4,6 +4,6 @@ import { TokenKind } from './TokenKind'
 
 export interface NewTokenArgs {
   kind: TokenKind
-  value?: string,
+  value?: string
   correspondsToToken?: Token
 }
