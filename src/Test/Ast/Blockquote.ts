@@ -10,7 +10,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
-describe('Consecutive lines starting with "> "', () => {
+describe('Consecutive lines starting with greater than symbols', () => {
   it('are parsed like a document and then placed in a blockquote node', () => {
     const text = `
 > Hello, world!
@@ -195,27 +195,13 @@ describe('Within a blockquote, 3 or more blank lines', () => {
 })
 
 
-describe('A single blockquote delimiter missing its trailing space', () => {
-  it('does not produce a blockquote note', () => {
+describe('A single blockquote delimiter without its trailing space', () => {
+  it('produces a blockquote note', () => {
     expect(Up.toAst('>Hello, taxes!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('>Hello, taxes!')
-      ]))
-  })
-})
-
-
-describe('Multiple blockquote delimiters each missing their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
-  it('produce nested blockquote nodes, one for each delimiter', () => {
-    expect(Up.toAst(`>>> Hello, world!`)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
-          new BlockquoteNode([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode('Hello, world!')
-              ])
-            ])
+          new ParagraphNode([
+            new PlainTextNode('Hello, taxes!')
           ])
         ])
       ]))
@@ -236,6 +222,24 @@ describe('A single line blockquote', () => {
                   new PlainTextNode('world')
                 ]),
                 new PlainTextNode('!!')
+              ])
+            ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe('Multiple blockquote delimiters, each without their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
+  it('produce nested blockquote nodes, one for each delimiter', () => {
+    expect(Up.toAst(`>>> Hello, world!`)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new BlockquoteNode([
+            new BlockquoteNode([
+              new ParagraphNode([
+                new PlainTextNode('Hello, world!')
               ])
             ])
           ])
