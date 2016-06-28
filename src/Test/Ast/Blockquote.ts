@@ -51,6 +51,25 @@ describe('Blockquote delimeters', () => {
         ])
       ]))
   })
+
+  it('can be followed by an optional tab', () => {
+    const text = `
+>\tHello, world!
+>
+>\tGoodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode('Hello, world!')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Goodbye, world!')
+          ])
+        ])
+      ]))
+  })
 })
 
 
@@ -294,7 +313,9 @@ context('Within a given blockquote', () => {
     const text = `
 >Hello, world!
 >
-> Goodbye, world!`
+> Goodbye, world!
+>
+>\tUmmm... I said goodbye.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -304,6 +325,9 @@ context('Within a given blockquote', () => {
           ]),
           new ParagraphNode([
             new PlainTextNode('Goodbye, world!')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Ummm... I said goodbye.')
           ])
         ])
       ]))
