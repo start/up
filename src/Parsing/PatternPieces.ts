@@ -1,12 +1,11 @@
-import { everyOptional, atLeast, anyCharMatching } from './PatternHelpers'
+import { everyOptional, atLeast, anyCharNotMatching } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =
-  '[^\\S\\r\\n]'
+  anyCharNotMatching('\\S', '\\r', '\\n')
 
 export const WHITESPACE_CHAR =
   '\\s'
-
 
 export const ANY_WHITESPACE =
   everyOptional(WHITESPACE_CHAR)
@@ -14,20 +13,8 @@ export const ANY_WHITESPACE =
 export const SOME_WHITESPACE =
   atLeast(1, WHITESPACE_CHAR)
 
-
-export const LETTER_CLASS =
-  'a-zA-Z'
-
-export const LETTER_CHAR =
-  anyCharMatching(LETTER_CLASS)
-
-
-export const DIGIT_CLASS = 
+export const DIGIT = 
   '\\d'
 
-// We have both `DIGIT_CLASS` and `DIGIT_CHAR` only for consistency
-export const DIGIT_CHAR =
-  DIGIT_CLASS
-
 export const INTEGER =
-  atLeast(1, DIGIT_CHAR)
+  atLeast(1, DIGIT)

@@ -1,6 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
 import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CHAR, DIGIT_CHAR, LETTER_CLASS, DIGIT_CLASS } from '../../PatternPieces'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -996,10 +996,17 @@ const WHITESPACE_CHAR_PATTERN =
 // We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
 // surprising the author by producing a link when they probably didn't intend to produce one.
 
+
+export const LETTER_CLASS =
+  'a-zA-Z'
+
+export const LETTER_CHAR =
+  anyCharMatching(LETTER_CLASS)
+
 const URL_SCHEME_NAME =
   LETTER_CHAR + everyOptional(
     anyCharMatching(
-      LETTER_CLASS, DIGIT_CLASS, ...['-', '+', '.'].map(escapeForRegex)))
+      LETTER_CLASS, DIGIT, ...['-', '+', '.'].map(escapeForRegex)))
 
 const URL_SCHEME =
   URL_SCHEME_NAME + ':' + everyOptional('/')
@@ -1014,9 +1021,9 @@ const HASH_MARK =
   '#'
 
 const SUBDOMAIN =
-  anyCharMatching(LETTER_CLASS, DIGIT_CLASS)
+  anyCharMatching(LETTER_CLASS, DIGIT)
   + everyOptional(
-    anyCharMatching(LETTER_CLASS, DIGIT_CLASS, escapeForRegex('-')))
+    anyCharMatching(LETTER_CLASS, DIGIT, escapeForRegex('-')))
 
 const TOP_LEVEL_DOMAIN =
   atLeast(1, LETTER_CHAR)
@@ -1030,8 +1037,6 @@ const EXPLICIT_URL_PREFIX =
     FORWARD_SLASH,
     HASH_MARK)
 
-// If the "url" is consists solely of a URL prefix, the author almost certainly did not intend
-// this to be a URL.
 const SOLELY_URL_PREFIX_PATTERN =
   new RegExp(
     solely(EXPLICIT_URL_PREFIX))
