@@ -3,6 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -158,6 +159,35 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
             new ParagraphNode([
               new PlainTextNode('This is awkward...')
             ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe('Within a blockquote, 3 or more blank lines', () => {
+  it('produce a section separator node', () => {
+    const text = `
+> Hello, world!
+>
+>
+>
+> Goodbye, *world*!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode('Hello, world!')
+          ]),
+          new SectionSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode('Goodbye, '),
+            new EmphasisNode([
+              new PlainTextNode('world')
+            ]),
+            new PlainTextNode('!')
           ])
         ])
       ]))
