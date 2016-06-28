@@ -44,7 +44,7 @@ import { concat } from '../CollectionHelpers'
 //    The nesting can be arbitrarily deep.
 //
 //    Any nested footnotes are added to end of the footnote block containing the outer footnote, after any
-//    other non-nested footnotes. Then, any (doubly) nested footnotes inside of *those* footnotes are added to
+//    other non-nested footnotes. Then, any (doubly) nested footnotes inside the nested footnotes are added to
 //    the end of that same footnote block, and the process repeats until no more nested footnotes are found.
 //
 // 4. Footnotes are assigned reference numbers based on the order those footnotes are referenced in the final
@@ -52,8 +52,9 @@ import { concat } from '../CollectionHelpers'
 //
 //    Due to rule 3 (above), a nested footnote (one that is referenced by another footnote) isn't actually
 //    referenced in the final document until its footnote block. As a result, that nested footnote is assigned
-//    a reference number after any non-nested footnote appearing in the same top-level outline convention,
-//    because those footnotes are referenced inside the outline convention itself.
+//    a reference number after any non-nested footnotes appearing in the same top-level outline convention,
+//    because those footnotes are referenced inside the outline convention itself (and the footnote block comes
+//    after the outline convention).
 //
 //
 // Oh, one last thing! We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been
