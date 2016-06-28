@@ -7,9 +7,25 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('A single line consisting solely of "> "', () => {
-  it('produces an empty blockquote node', () => {
+
+describe('A single blank blockquoted line', () => {
+  it('does not require any trailing whitespace after the blockquote delimiter', () => {
+    expect(Up.toAst('>')).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([])
+      ]))
+  })
+
+  it('may have a trailing space after the blockquote delimiter', () => {
     expect(Up.toAst('> ')).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([])
+      ])
+    )
+  })
+
+  it('may have a trailing tab after the blockquote delimiter', () => {
+    expect(Up.toAst('>\t')).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([])
       ])

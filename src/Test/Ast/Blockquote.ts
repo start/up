@@ -333,13 +333,3 @@ context('Within a given blockquote', () => {
       ]))
   })
 })
-
-
-describe('A blank blockquoted line', () => {
-  it('does not require a trailing space after the blockquote delimiter', () => {
-    expect(Up.toAst('>')).to.be.eql(
-      new DocumentNode([
-        new BlockquoteNode([])
-      ]))
-  })
-})
