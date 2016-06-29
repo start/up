@@ -65,8 +65,8 @@ export function regExpEndingWith(pattern: string, flags?: string): RegExp {
   return new RegExp(pattern + '$', flags)
 }
 
-import { INLINE_WHITESPACE_CHAR } from './PatternPieces'
+import { ANY_WHITESPACE } from './PatternPieces'
 
 export function solely(pattern: string) {
-  return '^' + pattern + everyOptional(INLINE_WHITESPACE_CHAR) + '$'
+  return '^' + pattern + ANY_WHITESPACE + '$'
 }
