@@ -8,10 +8,36 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
+import { Description } from '../../SyntaxNodes/Description'
 
 
-describe('Consecutive lines starting with greater than symbols', () => {
-  it('are parsed like a document and then placed in a blockquote node', () => {
+describe('Consecutive lines starting with "> "', () => {
+  it('produce a blockquote node. The content following the delimiter is parsed for outline conventions, which are placed', () => {
+    const text = `
+> Hello, world!
+>
+> Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([
+            new PlainTextNode('Hello, world!')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Goodbye, world!')
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe("Blockquote delimeters", () => {
+  specify("can have their trailing space omitted", () => {
     const text = `
 >Hello, world!
 >
@@ -32,10 +58,10 @@ describe('Consecutive lines starting with greater than symbols', () => {
 })
 
 
-describe('Blockquote delimeters', () => {
-  it('can be followed by an optional space', () => {
+context("Within a blockquote", () => {
+  specify('some delimiters can have a trailing space while other delimiters do not', () => {
     const text = `
-> Hello, world!
+>Hello, world!
 >
 > Goodbye, world!`
 
@@ -50,6 +76,63 @@ describe('Blockquote delimeters', () => {
           ])
         ])
       ]))
+  })
+
+  context("A space directly following greater than sign is considered part of the delimiter", () => {
+    specify('So it takes 3 spaces from the ">" to provide indention', () => {
+      const text = `
+> Charmander
+>   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new ParagraphNode([
+              new PlainTextNode("Let's talk about my favorite Pokémon!")
+            ]),
+            new DescriptionListNode([
+              new DescriptionListItem([
+                new DescriptionTerm([new PlainTextNode('Charmander')])
+              ],
+                new Description([
+                  new ParagraphNode([
+                    new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                  ])
+                ]))
+            ])
+          ])
+        ])
+      )
+    })
+  })
+
+
+  context('A tab character directly following the ">" is not considered part of the delimiter', () => {
+    specify('So a single tab (following a delimiter without space) provides indentation', () => {
+      const text = `
+> Charmander
+>\tObviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new ParagraphNode([
+              new PlainTextNode("Let's talk about my favorite Pokémon!")
+            ]),
+            new DescriptionListNode([
+              new DescriptionListItem([
+                new DescriptionTerm([new PlainTextNode('Charmander')])
+              ],
+                new Description([
+                  new ParagraphNode([
+                    new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                  ])
+                ]))
+            ])
+          ])
+        ])
+      )
+    })
   })
 })
 
