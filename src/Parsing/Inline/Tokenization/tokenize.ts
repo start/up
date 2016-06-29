@@ -136,10 +136,10 @@ class Tokenizer {
         this.encloseWithin(args)
       },
 
-      insertPlainTextTokenAt: (args) => {
+      insertPlainTextToken: (text: string, atIndex: number) => {
         this.insertToken({
-          token: new Token({ kind: TokenKind.PlainText, value: args.text }),
-          atIndex: args.atIndex
+          token: new Token({ kind: TokenKind.PlainText, value: text }),
+          atIndex: atIndex
         })
       }
     }))

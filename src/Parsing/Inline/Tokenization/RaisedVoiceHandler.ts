@@ -15,9 +15,9 @@ export class RaisedVoiceHandler {
     private args: {
       delimiterChar: string
       encloseWithin: EncloseWithin
-      insertPlainTextTokenAt: InsertPlainTextToken
+      insertPlainTextToken: InsertPlainTextToken
     },
-    
+
     private startDelimiters: RaisedVoiceStartDelimiter[] = []
   ) {
     this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(args.delimiterChar)))
@@ -141,10 +141,7 @@ export class RaisedVoiceHandler {
   treatUnusedStartDelimitersAsPlainText(): void {
     for (const startDelimiter of this.startDelimiters) {
       if (startDelimiter.isUnused()) {
-        this.args.insertPlainTextTokenAt({
-          text: startDelimiter.text,
-          atIndex: startDelimiter.tokenIndex
-        })
+        this.args.insertPlainTextToken(startDelimiter.text, startDelimiter.tokenIndex)
       }
     }
   }
@@ -196,5 +193,5 @@ export interface EncloseWithin {
 }
 
 export interface InsertPlainTextToken {
-  (args: { text: string, atIndex: number }): void
+  (text: string, atIndex: number): void
 }
