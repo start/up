@@ -87,9 +87,6 @@ context("Within a blockquote", () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
-            new ParagraphNode([
-              new PlainTextNode("Let's talk about my favorite Pokémon!")
-            ]),
             new DescriptionListNode([
               new DescriptionListItem([
                 new DescriptionTerm([new PlainTextNode('Charmander')])
@@ -116,9 +113,6 @@ context("Within a blockquote", () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
-            new ParagraphNode([
-              new PlainTextNode("Let's talk about my favorite Pokémon!")
-            ]),
             new DescriptionListNode([
               new DescriptionListItem([
                 new DescriptionTerm([new PlainTextNode('Charmander')])
