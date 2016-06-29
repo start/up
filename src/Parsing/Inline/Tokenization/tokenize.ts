@@ -985,17 +985,16 @@ const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
 
-// We use our URL patterns (and string constants) in two ways:
+// Our URL patterns and associated string constants serve two purposes:
 //
 // 1. To apply URL config settings
-// 2. To help determine whether to treat bracketed text as a URL. For more context, see the comments for
-//    the `getWhitespaceFollowedByLinkifyingUrlConventions` method.
+// 2. To determine when bracketed text is intended to be a link URL. For more information, see the comments
+//    for the `getWhitespaceFollowedByLinkUrlConventions` method.
 //
 // One important thing to note about that second point:
 //
 // We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
 // surprising the author by producing a link when they probably didn't intend to produce one.
-
 
 export const LETTER_CLASS =
   'a-zA-Z'
@@ -1051,7 +1050,6 @@ const BRACKET_START_PATTERNS =
 
 const BRACKET_END_PATTERNS =
   BRACKETS.map(bracket => bracket.endPattern)
-
 
 // The "h" is for the start of naked URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
