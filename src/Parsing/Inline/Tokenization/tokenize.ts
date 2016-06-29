@@ -182,7 +182,7 @@ class Tokenizer {
       ...this.getLinkUrlConventions())
 
     this.conventions.push(
-      ...this.getWhitespaceFollowedByLinkUrlConventions())
+      ...this.getConventionsForWhitespaceFollowedByLinkUrl())
 
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
@@ -191,7 +191,7 @@ class Tokenizer {
       ...this.getLinkifyingUrlConventions())
 
     this.conventions.push(
-      ...this.getWhitespaceFollowedByLinkifyingUrlConventions())
+      ...this.getConventionsForWhitespaceFollowedByLinkifyingUrl())
 
     this.conventions.push(...[
       {
@@ -726,9 +726,9 @@ class Tokenizer {
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      cconsecutive periods are allowed in the resource path.
 
-  private getWhitespaceFollowedByLinkUrlConventions(): TokenizableConvention[] {
+  private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: this.getWhitespaceFollowedByBracketedUrlPattern(bracket),
+      startPattern: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -787,9 +787,9 @@ class Tokenizer {
   // between the linkifying URL and the original convention.
   //
   // For more information, see `getLinkifyingUrlConventions` and `getLinkUrlConventions`.
-  private getWhitespaceFollowedByLinkifyingUrlConventions(): TokenizableConvention[] {
+  private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
-      startPattern: this.getWhitespaceFollowedByBracketedUrlPattern(bracket),
+      startPattern: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
       endPattern: regExpStartingWith(bracket.endPattern),
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
@@ -818,16 +818,16 @@ class Tokenizer {
       notFollowedBy(escapeForRegex(ESCAPER_CHAR)))
   }
 
-  private getWhitespaceFollowedByBracketedUrlPattern(bracket: Bracket): RegExp {
+  private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): RegExp {
     return regExpStartingWith(
       SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
-          // If there's no URL prefix, there must be a top-level domain, and...
+          // If there's no URL prefix, there must be a top-level domain.
           DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
             FORWARD_SLASH,
-            // If the top-level domain doesn't end with a forward slash, it must be immediately followed
-            // by the closing bracket.
+            // If the top-level domain isn't followed by a forward slash, it must be followed by the closing
+            // bracket.
             followedBy(bracket.endPattern)
           ))))
   }
