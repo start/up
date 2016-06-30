@@ -12,6 +12,7 @@ import { insertBracketsInsideBracketedConventions } from './insertBracketsInside
 import { OnTextMatch } from './OnTextMatch'
 import { last, concat, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
+import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
@@ -53,13 +54,6 @@ const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
   NSFW_CONVENTION,
   NSFL_CONVENTION,
   FOOTNOTE_CONVENTION
-]
-
-// Many of our conventions incorporate brackets. These are the ones we recognize.
-const BRACKETS = [
-  new Bracket('(', ')'),
-  new Bracket('[', ']'),
-  new Bracket('{', '}')
 ]
 
 
