@@ -266,8 +266,7 @@ class Tokenizer {
     return false
   }
 
-  // This method exists purely for optimization. Its purpose is to allow us to test as few characters as
-  // possible for our conventions.
+  // This method exists purely for optimization.
   private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
     const tryToBuffer = (pattern: RegExp) =>
       this.consumer.consume({
@@ -319,12 +318,13 @@ class Tokenizer {
       const { convention } = openContext
 
       if (this.shouldCloseContext(openContext)) {
-        // If `closeOrUndoContext` fails, it resets the tokenizer to where it was before we opened the
-        // context, then returns false.
+        // If `closeContextOrBacktrackToBeforeIt` fails, it resets the tokenizer to where it was before we
+        // opened the context, then returns false.
         //
-        // We know we won't be able to close any outer conventions at our current position, because we
-        // already failed to do so when we opened the now-failed context.
-        return this.closeOrUndoContext({ atIndex: i })
+        // If that happens, we're happy immediately return false from this method, too, because we know for
+        // a fact that won't be able to close any outer conventions at our current position (we already failed
+        // to do so when we opened the now-failed context).
+        return this.closeContextOrBacktrackToBeforeIt({ atIndex: i })
       }
 
       if (this.shouldBacktrackToBeforeContext(openContext)) {
@@ -360,11 +360,11 @@ class Tokenizer {
         && this.consumer.consume({ pattern: convention.endPattern })))
   }
 
-  // This method returns true if the context was able to be closed.
+  // Returns true if the context was successfully closed.
   //
-  // Otherwise, the tokenizer is reset to where it was before the context was opened, and this method
-  // returns false. 
-  private closeOrUndoContext(args: { atIndex: number }): boolean {
+  // Otherwise, if the context couldn't be closed, the tokenizer is reset to where it was before the context
+  // was opened, and this method returns false. 
+  private closeContextOrBacktrackToBeforeIt(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
     const openContext = this.openContexts[contextIndex]
     const { convention } = openContext
@@ -715,7 +715,6 @@ class Tokenizer {
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      cconsecutive periods are allowed in the resource path.
-
   private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
