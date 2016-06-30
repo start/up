@@ -36,7 +36,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     let isListTerminated = false
 
     getRemainingLinesOfListItem({
-      text: consumer.remainingText,
+      lines: consumer.remainingLines,
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItemLines.push(...lines)
         consumer.skipLines(lengthParsed)
@@ -59,7 +59,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     rawListItemsContents.map((rawContents) =>
       new UnorderedListItem(getOutlineNodes(rawContents, args.headingLeveler, args.config)))
 
-  args.then([new UnorderedListNode(listItems)], consumer.textIndex)
+  args.then([new UnorderedListNode(listItems)], consumer.countLinesConsumed)
   return true
 }
 

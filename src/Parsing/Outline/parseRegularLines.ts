@@ -104,7 +104,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     inlineNodesPerRegularLine.push(inlineNodes)
   }
 
-  const lengthConsumed = consumer.textIndex
+  const lengthConsumed = consumer.countLinesConsumed
 
   let regularLinesResultNode: OutlineSyntaxNode
 

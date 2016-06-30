@@ -37,7 +37,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
     new BlockquoteNode(
       getOutlineNodes(rawBlockquotedContent, headingLeveler, args.config))
 
-  args.then([blockquote], consumer.textIndex)
+  args.then([blockquote], consumer.countLinesConsumed)
   return true
 }
 

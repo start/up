@@ -69,7 +69,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   args.then(
     [new HeadingNode(getInlineNodes(rawContent, args.config), headingLevel)],
-    consumer.textIndex)
+    consumer.countLinesConsumed)
 
   return true
 }

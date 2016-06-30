@@ -27,7 +27,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   }
 
   const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
-  args.then([codeBlock], consumer.textIndex)
+  args.then([codeBlock], consumer.countLinesConsumed)
 
   return true
 }

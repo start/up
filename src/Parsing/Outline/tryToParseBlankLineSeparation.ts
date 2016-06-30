@@ -31,6 +31,6 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
       : []
   )
 
-  args.then(nodes, consumer.textIndex)
+  args.then(nodes, consumer.countLinesConsumed)
   return true
 }
