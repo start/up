@@ -4,9 +4,11 @@ import { INPUT_LINE_BREAK, ESCAPER_CHAR } from '../Strings'
 export class LineConsumer {
   private _textIndex: number
   private _remainingText: string
+  private lines: string[]
 
   constructor(private entireText: string) {
     this.setTextIndex(0)
+    this.lines = getLines(entireText)
   }
 
   get textIndex(): number {
@@ -94,6 +96,38 @@ export class LineConsumer {
   getCopyStartingAtCurrentLine(): LineConsumer {
     return new LineConsumer(this._remainingText)
   }
+}
+
+
+function getLines(text: string): string[] {
+  let lines: string[] = []
+  let textIndexOfCurrentLine = 0
+
+  LineLoop: while (textIndexOfCurrentLine < text.length) {
+    let lineWithoutTerminatingLineBreak: string
+
+    for (let i = textIndexOfCurrentLine; i < text.length; i++) {
+      if (ESCAPER_CHAR === text[i]) {
+        // Escaped line breaks don't end lines, so we'll just skip the next character, no matter what it is.
+        i++
+        continue
+      }
+
+      if (INPUT_LINE_BREAK === text.substr(i, INPUT_LINE_BREAK_LENGTH)) {
+        lineWithoutTerminatingLineBreak = text.slice(textIndexOfCurrentLine, i)
+        lines.push(lineWithoutTerminatingLineBreak)
+        textIndexOfCurrentLine = i + INPUT_LINE_BREAK_LENGTH
+        
+        continue LineLoop
+      }
+    }
+
+    // Well, we couldn't find a terminating line break! That must mean we're on the text's final line.
+    lines.push(text.slice(textIndexOfCurrentLine))
+    break
+  }
+
+  return lines
 }
 
 
