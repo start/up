@@ -1,13 +1,18 @@
-.PHONY: all clean build test
+.PHONY: all clean build test report
 
 
 local_modules_dir = ./node_modules/.bin
-local_mocha = $(local_modules_dir)/mocha
 
 compiled_dir = compiled
 npm_publish_dir = lib
 
 all_our_build_dirs = $(compiled_dir) $(npm_publish_dir)
+
+# Our behavioral unit tests describe the behavior of the Up library.
+#
+# We also have package unit tests, which describe how the Up library is exported. For more information, see the
+# `report` target.
+mocha_args_for_behavioral_tests = --recursive ./compiled/Test
 
 
 all: test
@@ -31,8 +36,13 @@ build: clean
 	rm -rf $(npm_publish_dir)/Test
 
 test: build
-	$(local_mocha) --recursive ./compiled/Test
-	$(local_mocha) ./package-tests.js
+# Run all behavioral and package unit tests.
+	$(local_modules_dir)/mocha $(mocha_args_for_behavioral_tests) ./package-tests.js
 
 report: build
-	$(local_modules_dir)/istanbul cover _mocha -- --recursive ./compiled/Test
+# For now, all our 1000+ behavioral unit tests are run against `compiled_dir`.
+#
+# However, our handful of package tests (in `package-tests.js`) are run against `npm_publish_dir`. If we ask
+# istanbul to run those package tests, we get an unhelpful coverage summary, because istanbul doesn't realize 
+# `npm_publish_dir` is copied from `compiled_dir`.  
+	$(local_modules_dir)/istanbul cover _mocha -- $(mocha_args_for_behavioral_tests)
