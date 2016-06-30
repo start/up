@@ -682,7 +682,7 @@ class Tokenizer {
   // You should try [Typescript](http://www.typescriptlang.org).
   //
   // We allow whitespace between a link's content and its URL, but that isn't handled by these
-  // conventions. For that, see `getWhitespaceFollowedByLinkifyingUrlConventions`.
+  // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => (<TokenizableConvention>{
       startPattern: this.getBracketedUrlStartPattern(bracket),
