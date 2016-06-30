@@ -39,7 +39,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
       text: consumer.remainingText,
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItemLines.push(...lines)
-        consumer.advanceTextIndex(lengthParsed)
+        consumer.skipLines(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })

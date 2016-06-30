@@ -46,7 +46,7 @@ export function getOutlineNodes(
       config,
       then: (newNodes: OutlineSyntaxNode[], lengthParsed: number) => {
         outlineNodes.push(...newNodes)
-        consumer.advanceTextIndex(lengthParsed)
+        consumer.skipLines(lengthParsed)
       }
     }
 

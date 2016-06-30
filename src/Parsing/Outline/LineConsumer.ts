@@ -2,34 +2,32 @@ import { INPUT_LINE_BREAK, ESCAPER_CHAR } from '../Strings'
 
 
 export class LineConsumer {
-  private _textIndex: number
-  private _remainingText: string
-  private lines: string[]
+  private _countLinesConsumed = 0
+  private _remainingLines: string[]
 
-  constructor(private entireText: string) {
-    this.setTextIndex(0)
-    this.lines = getLines(entireText)
+  constructor(textOrLines: string | string[]) {
+    if (typeof textOrLines === "string") {
+      this._remainingLines = getLines(textOrLines)
+    } else {
+      this._remainingLines = textOrLines
+    }
   }
 
-  get textIndex(): number {
-    return this._textIndex
+  get countLinesConsumed(): number {
+    return this._countLinesConsumed
   }
 
-  private setTextIndex(value: number): void {
-    this._textIndex = value
-    this._remainingText = this.entireText.slice(this.textIndex)
+  get remainingLines(): string[] {
+    return this._remainingLines
   }
 
-  get remainingText(): string {
-    return this._remainingText
-  }
-
-  advanceTextIndex(length: number): void {
-    this.setTextIndex(this.textIndex + length)
+  skipLines(count: number): void {
+    this._remainingLines.splice(0, count)
+    this._countLinesConsumed += count
   }
 
   reachedEndOfText(): boolean {
-    return this.textIndex >= this.entireText.length
+    return !this._remainingLines.length
   }
 
   consume(
@@ -43,35 +41,12 @@ export class LineConsumer {
       return false
     }
 
-    const { textIndex, entireText } = this
-    let fullLine: string
-    let lineWithoutTerminatingLineBreak: string
-
-    // First, let's find the end of the current line
-    for (let i = textIndex; i < entireText.length; i++) {
-      if (ESCAPER_CHAR === entireText[i]) {
-        // Escaped line breaks don't end lines, so we'll just skip the next character, no matter what it is.
-        i++
-        continue
-      }
-
-      if (INPUT_LINE_BREAK === entireText.substr(i, INPUT_LINE_BREAK_LENGTH)) {
-        fullLine = entireText.slice(textIndex, i + INPUT_LINE_BREAK_LENGTH)
-        lineWithoutTerminatingLineBreak = fullLine.slice(0, -INPUT_LINE_BREAK_LENGTH)
-        break
-      }
-    }
-
-    if (!fullLine) {
-      // Well, we couldn't find a terminating line break! That must mean we're on the text's final line.
-      fullLine = lineWithoutTerminatingLineBreak = this.remainingText
-    }
-
+    const line = this._remainingLines[0]
     const { linePattern, then } = args
     let captures: string[] = []
 
     if (linePattern) {
-      const results = linePattern.exec(lineWithoutTerminatingLineBreak)
+      const results = linePattern.exec(line)
 
       if (!results) {
         return false
@@ -80,21 +55,21 @@ export class LineConsumer {
       [, ...captures] = results
     }
 
-    if (args.if && !args.if(lineWithoutTerminatingLineBreak, ...captures)) {
+    if (args.if && !args.if(line, ...captures)) {
       return false
     }
 
-    this.advanceTextIndex(fullLine.length)
+    this.skipLines(1)
 
     if (then) {
-      then(lineWithoutTerminatingLineBreak, ...captures)
+      then(line, ...captures)
     }
 
     return true
   }
 
   getCopyStartingAtCurrentLine(): LineConsumer {
-    return new LineConsumer(this._remainingText)
+    return new LineConsumer(this._remainingLines)
   }
 }
 
@@ -117,7 +92,7 @@ function getLines(text: string): string[] {
         lineWithoutTerminatingLineBreak = text.slice(textIndexOfCurrentLine, i)
         lines.push(lineWithoutTerminatingLineBreak)
         textIndexOfCurrentLine = i + INPUT_LINE_BREAK_LENGTH
-        
+
         continue LineLoop
       }
     }

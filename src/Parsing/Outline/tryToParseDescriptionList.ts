@@ -60,16 +60,16 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     let isListTerminated = false
 
     getRemainingLinesOfListItem({
-      text: consumer.remainingText,
-      then: (lines, lengthParsed, shouldTerminateList) => {
+      lines: consumer.remainingLines,
+      then: (lines, countLinesConsumed, shouldTerminateList) => {
         rawDescriptionLines.push(...lines)
-        consumer.advanceTextIndex(lengthParsed)
+        consumer.skipLines(countLinesConsumed)
         isListTerminated = shouldTerminateList
       }
     })
 
     // Alright, we have our description! Let's update our length parsed accordingly.
-    lengthParsed = consumer.textIndex
+    lengthParsed = consumer.countLinesConsumed
 
     const terms =
       rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))

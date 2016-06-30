@@ -42,7 +42,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
       text: consumer.remainingText,
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItem.lines.push(...lines)
-        consumer.advanceTextIndex(lengthParsed)
+        consumer.skipLines(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })

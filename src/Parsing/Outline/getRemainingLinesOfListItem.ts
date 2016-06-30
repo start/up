@@ -10,15 +10,15 @@ import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
 // Returns false if no lines could be included.
 export function getRemainingLinesOfListItem(
   args: {
-    text: string,
-    then: (lines: string[], lengthParsed: number, shouldTerminateList: boolean) => void
+    lines: string[],
+    then: (lines: string[], lcountLinesConsumed: number, shouldTerminateList: boolean) => void
   }
 ): void {
-  const consumer = new LineConsumer(args.text)
+  const consumer = new LineConsumer(args.lines)
   const lines: string[] = []
 
   let countLinesIncluded = 0
-  let lengthParsed = 0
+  let lcountLinesConsumed = 0
 
   while (!consumer.reachedEndOfText()) {
     const wasLineBlank = consumer.consume({
@@ -43,7 +43,7 @@ export function getRemainingLinesOfListItem(
 
     // The line was indented and non-blank, so we know we need to include it
     countLinesIncluded = lines.length
-    lengthParsed = consumer.textIndex
+    lcountLinesConsumed = consumer.countLinesConsumed
   }
 
   if (!lines.length) {
@@ -56,12 +56,12 @@ export function getRemainingLinesOfListItem(
   if (!shouldTerminateList) {
     // If we aren't terminating the list, we should return everything we consumed
     countLinesIncluded = lines.length
-    lengthParsed = consumer.textIndex
+    lcountLinesConsumed = consumer.countLinesConsumed
   }
 
   const resultLines = lines
     .slice(0, countLinesIncluded)
     .map(line => line.replace(INDENTED_PATTERN, ''))
 
-  args.then(resultLines, lengthParsed, shouldTerminateList)
+  args.then(resultLines, lcountLinesConsumed, shouldTerminateList)
 }
