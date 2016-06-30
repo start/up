@@ -19,7 +19,7 @@ const pie = 3.5
 })
 
 
-describe('A code block node', () => {
+describe('A code block', () => {
   it('can contain multiple lines', () => {
     const text = `
 \`\`\`
@@ -34,27 +34,25 @@ describe('A code block node', () => {
 // Such a pain!`),
       ]))
   })
-})
 
-describe("A code block node's contents", () => {
-  it('has its indentation preserved', () => {
+  it('preserves all indentation', () => {
     const text = `
 \`\`\`
-if (x < 0) {
-  return false
-}
+  if (x < 0) {
+\t\treturn false
+  }
 \`\`\``
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
-`if (x < 0) {
-  return false
-}`),
+`  if (x < 0) {
+\t\treturn false
+  }`),
       ]))
   })
 
-  it('has its backslashes preserved', () => {
+  it('preserves all backslashes', () => {
     const text = `
 \`\`\`
 const lineBreak = "\\n"
