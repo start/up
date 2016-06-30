@@ -31,3 +31,6 @@ build: clean
 
 test: build
 	npm test
+
+report: build
+	$(local_modules_dir)/istanbul cover _mocha -- --recursive ./compiled/Test
