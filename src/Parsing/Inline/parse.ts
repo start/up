@@ -169,12 +169,6 @@ class Parser {
       }
     }
 
-    const wasTerminatorSpecified = !!untilTokenOfKind
-
-    if (wasTerminatorSpecified) {
-      throw new Error(`Missing terminator token: ${untilTokenOfKind}`)
-    }
-
     this.setResult()
   }
 
