@@ -2,6 +2,7 @@
 
 
 local_modules_dir = ./node_modules/.bin
+local_mocha = $(local_modules_dir)/mocha
 
 compiled_dir = compiled
 npm_publish_dir = lib
@@ -30,7 +31,8 @@ build: clean
 	rm -rf $(npm_publish_dir)/Test
 
 test: build
-	npm test
+	$(local_mocha) --recursive ./compiled/Test
+	$(local_mocha) ./package-tests.js
 
 report: build
 	$(local_modules_dir)/istanbul cover _mocha -- --recursive ./compiled/Test
