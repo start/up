@@ -5,7 +5,9 @@ import { OUTPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// Code blocks are surrounded (underlined and overlined) by streaks of backticks
+// Code blocks are surrounded (underlined and overlined) by streaks of backticks.
+//
+// If the "closing" streak of backticks is missing, the code block extends to the end of the document.
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.text)
 
@@ -15,20 +17,19 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
   const codeLines: string[] = []
 
-  // Keep consuming lines until we get to the closing code fence
+  // Keep consuming lines until we get to the closing code fence.
   while (!consumer.reachedEndOfText()) {
     if (consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
-      const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
-      args.then([codeBlock], consumer.textIndex)
-      return true
+      break
     }
 
-    consumer.consume({
-      then: line => codeLines.push(line)
-    })
+    consumer.consume({ then: line => codeLines.push(line) })
   }
 
-  return false
+  const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
+  args.then([codeBlock], consumer.textIndex)
+
+  return true
 }
 
 

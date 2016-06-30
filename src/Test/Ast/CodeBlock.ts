@@ -86,7 +86,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('Hello, fence!')
+          new PlainTextNode('Check out the code below!')
         ]),
         new CodeBlockNode(
 `function factorial(n: number): number {
