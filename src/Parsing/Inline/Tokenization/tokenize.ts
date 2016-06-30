@@ -18,7 +18,6 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
-import { NewTokenArgs } from './NewTokenArgs'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
 import { TokenizableConvention, OnConventionEvent } from './TokenizableConvention'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
@@ -112,7 +111,7 @@ class Tokenizer {
     flushesBufferToPlainTextTokenBeforeOpening: true,
 
     whenOpening: urlScheme => {
-      this.appendNewToken({ kind: TokenKind.NakedUrlSchemeAndStart, value: urlScheme })
+      this.appendNewToken(TokenKind.NakedUrlSchemeAndStart, urlScheme)
     },
 
     insteadOfOpeningUsualConventionsWhileOpen: () => this.bufferRawText(),
@@ -138,7 +137,7 @@ class Tokenizer {
 
       insertPlainTextToken: (text, atIndex) => {
         this.insertToken({
-          token: new Token({ kind: TokenKind.PlainText, value: text }),
+          token: new Token(TokenKind.PlainText, text),
           atIndex: atIndex
         })
       }
@@ -481,8 +480,8 @@ class Tokenizer {
     const { richConvention, startingBackAtIndex} = args
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
-    const startToken = new Token({ kind: richConvention.startTokenKind })
-    const endToken = new Token({ kind: richConvention.endTokenKind })
+    const startToken = new Token(richConvention.startTokenKind)
+    const endToken = new Token(richConvention.endTokenKind)
     startToken.associateWith(endToken)
 
     this.insertToken({ token: startToken, atIndex: startingBackAtIndex })
@@ -611,8 +610,8 @@ class Tokenizer {
     this.raisedVoiceHandlers = snapshot.raisedVoiceHandlers
   }
 
-  private appendNewToken(args: NewTokenArgs): void {
-    this.tokens.push(new Token(args))
+  private appendNewToken(kind: TokenKind, value?: string): void {
+    this.tokens.push(new Token(kind, value))
   }
 
   private flushBufferToNakedUrlEndToken(): void {
@@ -627,7 +626,7 @@ class Tokenizer {
   }
 
   private flushBufferToTokenOfKind(kind: TokenKind): void {
-    this.appendNewToken({ kind, value: this.flushBuffer() })
+    this.appendNewToken(kind, this.flushBuffer())
   }
 
   private insertToken(args: { token: Token, atIndex: number }): void {
@@ -673,7 +672,7 @@ class Tokenizer {
 
   private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {
     this.insertToken({
-      token: new Token({ kind: TokenKind.PlainText, value: text }),
+      token: new Token(TokenKind.PlainText, text),
       atIndex: context.startTokenIndex
     })
   }
@@ -837,8 +836,8 @@ class Tokenizer {
   }
 
   private closeLinkifyingUrl(url: string): void {
-    const linkEndToken = new Token({ kind: LINK_CONVENTION.endTokenKind, value: url })
-    const linkStartToken = new Token({ kind: LINK_CONVENTION.startTokenKind })
+    const linkEndToken = new Token(LINK_CONVENTION.endTokenKind, url)
+    const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
     linkStartToken.associateWith(linkEndToken)
 
     // We'll insert our new link end token right before the original end token, and we'll insert a our new link
@@ -961,7 +960,7 @@ class Tokenizer {
 
       whenClosing: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.appendNewToken({ kind: TokenKind.MediaUrlAndEnd, value: url })
+        this.appendNewToken(TokenKind.MediaUrlAndEnd, url)
       }
     }))
   }

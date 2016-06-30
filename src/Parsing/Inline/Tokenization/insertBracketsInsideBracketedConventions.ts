@@ -13,7 +13,7 @@ export function insertBracketsInsideBracketedConventions(tokens: Token[]): Token
   for (const token of tokens) {
     function addBracketIfTokenIs(kind: TokenKind, bracket: string): void {
       if (token.kind === kind) {
-        resultTokens.push(new Token({ kind: TokenKind.PlainText, value: bracket }))
+        resultTokens.push(new Token(TokenKind.PlainText, bracket))
       }
     }
 
