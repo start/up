@@ -1,4 +1,3 @@
-import { NON_BLANK_PATTERN } from '../../Patterns'
 import { OnTextMatch } from './OnTextMatch'
 
 
