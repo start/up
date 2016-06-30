@@ -12,7 +12,7 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
-describe('An image without a description', () => {
+describe('An image with an empty description', () => {
   it('has its URL treated as its description', () => {
     expect(Up.toAst('[image:][http://example.com/hauntedhouse.svg]')).to.be.eql(
       new DocumentNode([
@@ -36,6 +36,47 @@ describe('An image with a blank URL', () => {
   it('is not included in the document', () => {
     expect(Up.toAst('[image: haunted house][   \t]')).to.be.eql(
       new DocumentNode([]))
+  })
+})
+
+
+describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not an image. This applies when the bracketed description is followed by", () => {
+  specify('nothing', () => {
+    expect(Up.toAst('[image: haunted house]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[image: haunted house]')
+          ])
+        ])
+      ]))
+  })
+
+  specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+    expect(Up.toAst('[image: haunted house] was written on the desk')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[image: haunted house]')
+          ]),
+          new PlainTextNode(' was written on the desk')
+        ])
+      ]))
+  })
+
+  specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+    expect(Up.toAst('[image: haunted house] was written on the desk [really]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[image: haunted house]')
+          ]),
+          new PlainTextNode(' was written on the desk '),
+          new SquareBracketedNode([
+            new PlainTextNode('[really]')
+          ]),
+        ])
+      ]))
   })
 })
 
@@ -122,7 +163,7 @@ describe('A full image convention (description and URL) directly followed by ano
           new LinkNode([
             new PlainTextNode('bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)'),
-          new PlainTextNode(')')          
+          new PlainTextNode(')')
         ])
       ]))
   })
