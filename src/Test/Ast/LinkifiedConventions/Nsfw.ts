@@ -145,7 +145,7 @@ describe('An otherwise valid linkified NSFW convention with its URL escaped"', (
         new NsfwNode([
           new PlainTextNode('he called her')
         ]),
-	      new ParenthesizedNode([
+        new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))

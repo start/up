@@ -145,7 +145,7 @@ describe('An otherwise valid linkified spoiler with its URL escaped"', () => {
         new SpoilerNode([
           new PlainTextNode('he called her')
         ]),
-	      new ParenthesizedNode([
+        new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))
