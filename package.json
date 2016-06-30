@@ -19,10 +19,9 @@
   "author": "Daniel Miller <daniel@wants.email>",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^13.0.1",
-    "chai": "^3.5.0",
-    "istanbul": "^0.4.4",
-    "mocha": "^2.4.5",
-    "typescript": "^1.8.10"
+    "chai": "latest",
+    "istanbul": "latest",
+    "mocha": "latest",
+    "typescript": "latest"
   }
 }
