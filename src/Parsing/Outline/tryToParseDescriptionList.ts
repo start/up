@@ -60,7 +60,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     let isListTerminated = false
 
     getRemainingLinesOfListItem({
-      lines: consumer.remainingLines,
+      lines: consumer.getRemainingLines(),
       then: (lines, countLinesConsumed, shouldTerminateList) => {
         rawDescriptionLines.push(...lines)
         consumer.skipLines(countLinesConsumed)

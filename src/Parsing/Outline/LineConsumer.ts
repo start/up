@@ -3,13 +3,13 @@ import { INPUT_LINE_BREAK, ESCAPER_CHAR } from '../Strings'
 
 export class LineConsumer {
   private _countLinesConsumed = 0
-  private _remainingLines: string[]
+  private lines: string[]
 
   constructor(textOrLines: string | string[]) {
     if (typeof textOrLines === "string") {
-      this._remainingLines = getLines(textOrLines)
+      this.lines = getLines(textOrLines)
     } else {
-      this._remainingLines = textOrLines
+      this.lines = textOrLines
     }
   }
 
@@ -17,17 +17,16 @@ export class LineConsumer {
     return this._countLinesConsumed
   }
 
-  get remainingLines(): string[] {
-    return this._remainingLines
+  getRemainingLines(): string[] {
+    return this.lines.slice(this._countLinesConsumed)
   }
 
   skipLines(count: number): void {
-    this._remainingLines = this._remainingLines.slice(count)
     this._countLinesConsumed += count
   }
 
   done(): boolean {
-    return !this._remainingLines.length
+    return this._countLinesConsumed >= this.lines.length
   }
 
   consume(
@@ -41,9 +40,10 @@ export class LineConsumer {
       return false
     }
 
-    const line = this._remainingLines[0]
     const { linePattern, then } = args
     let captures: string[] = []
+
+    const line = this.lines[this._countLinesConsumed]
 
     if (linePattern) {
       const results = linePattern.exec(line)

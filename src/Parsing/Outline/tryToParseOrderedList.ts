@@ -39,7 +39,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     let isListTerminated = false
 
     getRemainingLinesOfListItem({
-      lines: consumer.remainingLines,
+      lines: consumer.getRemainingLines(),
       then: (lines, lengthParsed, shouldTerminateList) => {
         rawListItem.lines.push(...lines)
         consumer.skipLines(lengthParsed)

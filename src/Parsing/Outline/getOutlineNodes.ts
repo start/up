@@ -41,7 +41,7 @@ export function getOutlineNodes(
 
   while (!consumer.done()) {
     const outlineParserArgs = {
-      lines: consumer.remainingLines,
+      lines: consumer.getRemainingLines(),
       headingLeveler,
       config,
       then: (newNodes: OutlineSyntaxNode[], countLinesConsumed: number) => {
