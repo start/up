@@ -22,7 +22,7 @@ export class LineConsumer {
   }
 
   skipLines(count: number): void {
-    this._remainingLines.splice(0, count)
+    this._remainingLines = this._remainingLines.slice(count)
     this._countLinesConsumed += count
   }
 
