@@ -306,17 +306,17 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-        expect(Up.toAst('[NSFL: that place] (4chan.org--terrifying)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new NsflNode([
-              new PlainTextNode('that place')
-            ]),
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('(4chan.org--terrifying)')
-            ]),
-          ])
-        )
+      expect(Up.toAst('[NSFL: that place] (4chan.org--terrifying)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('that place')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(4chan.org--terrifying)')
+          ]),
+        ])
+      )
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
@@ -332,6 +332,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           ])
         ])
       })
+    })
 
     specify('the scheme must not be escaped', () => {
       expect(Up.toAst('[NSFL: email] (\\mailto:daniel@wants.email)')).to.be.eql(
@@ -346,7 +347,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         ])
       )
     })
-    })
+
 
     context('The top-level domain must contain only letters ', () => {
       specify('No numbers', () => {
