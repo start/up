@@ -6,6 +6,7 @@ export class InlineTextConsumer {
   private remainingText: string
   private _textIndex: number
   private _currentChar: string
+  private _previousChar: string
   private _isFollowingNonWhitespace = false
 
   constructor(private entireText: string) {
@@ -23,6 +24,10 @@ export class InlineTextConsumer {
 
   get currentChar(): string {
     return this._currentChar
+  }
+
+  get previousChar(): string {
+    return this._previousChar
   }
 
   get isFollowingNonWhitespace(): boolean {
@@ -52,12 +57,10 @@ export class InlineTextConsumer {
     }
 
     const [match, ...captures] = result
-
     const charAfterMatch = this.entireText[this._textIndex + match.length]
-    const matchPrecedesNonWhitespace = NON_BLANK_PATTERN.test(charAfterMatch)
 
     if (thenBeforeAdvancingTextIndex) {
-      thenBeforeAdvancingTextIndex(match, matchPrecedesNonWhitespace, ...captures)
+      thenBeforeAdvancingTextIndex(match, charAfterMatch, ...captures)
     }
 
     this.advanceTextIndex(match.length)
@@ -68,8 +71,6 @@ export class InlineTextConsumer {
   private updateComputedTextFields(): void {
     this.remainingText = this.entireText.substr(this._textIndex)
     this._currentChar = this.remainingText[0]
-
-    const previousChar = this.entireText[this._textIndex - 1] 
-    this._isFollowingNonWhitespace = (previousChar && NON_BLANK_PATTERN.test(previousChar))
+    this._previousChar = this.entireText[this._textIndex - 1] 
   }
 }

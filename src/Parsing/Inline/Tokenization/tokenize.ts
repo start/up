@@ -426,10 +426,9 @@ class Tokenizer {
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
-    if (!this.consumer.isFollowingNonWhitespace) {
-      // For a delimiter to close any raised voice conventions, it must look like it's touching the end
-      // of some content. If instead, the delimiter is directly following whitespace (or is the first
-      // character the text), we don't try to close anything with it.
+    // For a delimiter to close any raised voice conventions, it must look like it's touching the end
+    // of some content (i.e. it must be following a non-whitespace character).
+    if (!NON_BLANK_PATTERN.test(this.consumer.previousChar)) {
       return false
     }
 
@@ -495,15 +494,16 @@ class Tokenizer {
       this.consumer.consume({
         pattern: handler.delimiterPattern,
 
-        thenBeforeAdvancingTextIndex: (delimiter, matchPrecedesNonWhitespace) => {
-          if (matchPrecedesNonWhitespace) {
+        thenBeforeAdvancingTextIndex: (delimiter, charAfterMatch) => {
+          // For a delimiter to open any raiased voices, it must appear to be touching the beginning of some
+          // content (i.e. it must be followed by a non-whitespace character).
+          if (NON_BLANK_PATTERN.test(charAfterMatch)) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
             handler.addStartDelimiter(delimiter, this.tokens.length)
           } else {
-            // If the match doesn't precede non-whitespace, then we treat the delimiter as plain text.
-            // We already know the delimiter wasn't able to close any raised voice conventions, and we
-            // we now know it can't open any, either (because the delimiter needs to look like it's
-            // touching the beginning of some content).
+            // If the delimiter isn't followed by a non-whitespace character, we treat the delimiter as plain
+            // text. We already know the delimiter wasn't able to close any raised voice conventions, and we
+            // we now know it can't open any, either.
             this.buffer += delimiter
           }
         }
@@ -538,7 +538,7 @@ class Tokenizer {
       && this.consumer.consume({
         pattern: startPattern,
 
-        thenBeforeAdvancingTextIndex: (match, matchPrecedesNonWhitespace, ...captures) => {
+        thenBeforeAdvancingTextIndex: (match, charAfterMatch, ...captures) => {
           if (flushesBufferToPlainTextTokenBeforeOpening) {
             this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
           }
@@ -546,7 +546,7 @@ class Tokenizer {
           this.openContexts.push(new ConventionContext(convention, this.getCurrentSnapshot()))
 
           if (whenOpening) {
-            whenOpening(match, matchPrecedesNonWhitespace, ...captures)
+            whenOpening(match, charAfterMatch, ...captures)
           }
         }
       })
