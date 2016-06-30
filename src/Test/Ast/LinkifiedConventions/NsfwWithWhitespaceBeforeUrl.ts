@@ -303,6 +303,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
           ])
         ])
       })
+    })
 
     specify('the scheme must not be escaped', () => {
       expect(Up.toAst('[NSFW: email] (\\mailto:daniel@wants.email)')).to.be.eql(
@@ -317,20 +318,19 @@ context('A linkified NSFW convention can have whitespace between itself and its 
         ])
       )
     })
-    })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-        expect(Up.toAst('[NSFW: that place] (4chan.org--terrifying)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new NsfwNode([
-              new PlainTextNode('that place')
-            ]),
-            new PlainTextNode(' '),
-            new ParenthesizedNode([
-              new PlainTextNode('(4chan.org--terrifying)')
-            ]),
-          ])
-        )
+      expect(Up.toAst('[NSFW: that place] (4chan.org--terrifying)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('that place')
+          ]),
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('(4chan.org--terrifying)')
+          ]),
+        ])
+      )
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
