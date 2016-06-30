@@ -41,12 +41,12 @@ export function getOutlineNodes(
 
   while (!consumer.reachedEndOfText()) {
     const outlineParserArgs = {
-      consumer,
+      lines: consumer.remainingLines,
       headingLeveler,
       config,
-      then: (newNodes: OutlineSyntaxNode[], lengthParsed: number) => {
+      then: (newNodes: OutlineSyntaxNode[], countLinesConsumed: number) => {
         outlineNodes.push(...newNodes)
-        consumer.skipLines(lengthParsed)
+        consumer.skipLines(countLinesConsumed)
       }
     }
 

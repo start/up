@@ -18,7 +18,7 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 //
 // Multiple terms can be associated with a single description.
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
-  const consumer = args.consumer.getCopyStartingAtCurrentLine()
+  const consumer = new LineConsumer(args.lines)
   const listItems: DescriptionListItem[] = []
   let lengthParsed = 0
 

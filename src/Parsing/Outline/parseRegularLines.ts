@@ -22,7 +22,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // And addresses do, too
 
 export function parseRegularLines(args: OutlineParserArgs): void {
-  const consumer = args.consumer.getCopyStartingAtCurrentLine()
+  const consumer = new LineConsumer(args.lines)
 
   // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
   //

@@ -6,7 +6,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 // A horizontal streak of characters indicates separation between sections.
 export function tryToParseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
-  const consumer = args.consumer.getCopyStartingAtCurrentLine()
+  const consumer = new LineConsumer(args.lines)
 
   if (!consumer.consume({ linePattern: DIVIDER_STREAK_PATTERN })) {
     return false

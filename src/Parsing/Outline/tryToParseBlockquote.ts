@@ -14,7 +14,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // The space directly following the '>' can be omitted, but if it exists, it is considered part of
 // the delimiter (and is removed before parsing the blockquoted contents).
 export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
-  const consumer = args.consumer.getCopyStartingAtCurrentLine()
+  const consumer = new LineConsumer(args.lines)
   const rawBlockquoteLines: string[] = []
 
   // Collect all consecutive blockquoted lines
