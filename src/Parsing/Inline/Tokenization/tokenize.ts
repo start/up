@@ -349,8 +349,7 @@ class Tokenizer {
   private shouldBacktrackToBeforeContext(context: ConventionContext): boolean {
     return (
       context.convention.failsIfWhitespaceIsEnounteredBeforeClosing
-      && this.isCurrentCharWhitespace()
-    )
+      && this.isCurrentCharWhitespace())
   }
 
   private isCurrentCharWhitespace(): boolean {
@@ -594,8 +593,7 @@ class Tokenizer {
 
     return (
       !this.failedConventionTracker.hasFailed(convention, textIndex)
-      && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing))
-    )
+      && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing)))
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
@@ -826,8 +824,7 @@ class Tokenizer {
             FORWARD_SLASH,
             // If the top-level domain isn't followed by a forward slash, it must be followed by the closing
             // bracket.
-            followedBy(bracket.endPattern)
-          ))))
+            followedBy(bracket.endPattern)))))
   }
 
   private bufferRawText(): void {
