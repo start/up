@@ -324,7 +324,7 @@ class Tokenizer {
         // If that happens, we're happy immediately return false from this method, too, because we know for
         // a fact that won't be able to close any outer conventions at our current position (we already failed
         // to do so when we opened the now-failed context).
-        return this.closeContextOrBacktrackToBeforeIt({ atIndex: i })
+        return this.tryToCloseContextOrBacktrack({ atIndex: i })
       }
 
       if (this.shouldBacktrackToBeforeContext(openContext)) {
@@ -364,7 +364,7 @@ class Tokenizer {
   //
   // Otherwise, if the context couldn't be closed, the tokenizer is reset to where it was before the context
   // was opened, and this method returns false. 
-  private closeContextOrBacktrackToBeforeIt(args: { atIndex: number }): boolean {
+  private tryToCloseContextOrBacktrack(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
     const openContext = this.openContexts[contextIndex]
     const { convention } = openContext
@@ -388,7 +388,7 @@ class Tokenizer {
     openContext.close()
 
     if (convention.whenClosingItFailsIfItCannotTranformInto) {
-      return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex })
+      return this.tryToTransformConventionOrBacktrack({ belongingToContextAtIndex: contextIndex })
     }
 
     this.openContexts.splice(contextIndex, 1)
@@ -402,7 +402,7 @@ class Tokenizer {
     return true
   }
 
-  private tryToTransformConvention(args: { belongingToContextAtIndex: number }): boolean {
+  private tryToTransformConventionOrBacktrack(args: { belongingToContextAtIndex: number }): boolean {
     const contextIndex = args.belongingToContextAtIndex
     const context = this.openContexts[contextIndex]
 
