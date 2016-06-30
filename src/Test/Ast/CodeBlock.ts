@@ -69,7 +69,7 @@ const lineBreak = "\\n"
 
 
 describe('An unmatched streak of backticks', () => {
-  it("produces a code block node whose contents are the rest of the document", () => {
+  it("produces a code block node containing the rest of the document", () => {
     const text = `
 Check out the code below!
 
