@@ -574,11 +574,11 @@ class Tokenizer {
     // into a different convention. If it fails once, we move on. This logic is subject to change,
     // but for now, because all of our "post-transformation" conventions have incompatible start
     // patterns, there's no point in trying again.
-    const hasAlreadyFailedAfterTransitioning =
+    const hasPreviouslyFailedAfterTransformingIntoAnotherConvention =
       conventionsThisOneTransformTo
       && conventionsThisOneTransformTo.some(convention => this.failedConventionTracker.hasFailed(convention, textIndex))
 
-    if (hasAlreadyFailedAfterTransitioning) {
+    if (hasPreviouslyFailedAfterTransformingIntoAnotherConvention) {
       return false
     }
 
@@ -647,18 +647,20 @@ class Tokenizer {
       return url
     }
 
+    const { settings } = this.config
+
     switch (url[0]) {
       case FORWARD_SLASH:
-        return this.config.settings.baseForUrlsStartingWithSlash + url
+        return settings.baseForUrlsStartingWithSlash + url
 
       case HASH_MARK:
-        return this.config.settings.baseForUrlsStartingWithHashMark + url
+        return settings.baseForUrlsStartingWithHashMark + url
     }
 
     return (
       URL_SCHEME_PATTERN.test(url)
         ? url
-        : this.config.settings.defaultUrlScheme + url)
+        : settings.defaultUrlScheme + url)
   }
 
   private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {
