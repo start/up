@@ -3,8 +3,8 @@ import { OnTextMatch } from './OnTextMatch'
 
 
 export class InlineTextConsumer {
+  private remainingText: string
   private _textIndex: number
-  private _remainingText: string
   private _currentChar: string
   private _isFollowingNonWhitespace = false
 
@@ -19,10 +19,6 @@ export class InlineTextConsumer {
   set textIndex(value: number) {
     this._textIndex = value
     this.updateComputedTextFields()
-  }
-
-  get remainingText(): string {
-    return this._remainingText
   }
 
   get currentChar(): string {
@@ -49,7 +45,7 @@ export class InlineTextConsumer {
   ): boolean {
     const { pattern, thenBeforeAdvancingTextIndex } = args
 
-    const result = pattern.exec(this._remainingText)
+    const result = pattern.exec(this.remainingText)
 
     if (!result) {
       return false
@@ -70,8 +66,8 @@ export class InlineTextConsumer {
   }
 
   private updateComputedTextFields(): void {
-    this._remainingText = this.entireText.substr(this._textIndex)
-    this._currentChar = this._remainingText[0]
+    this.remainingText = this.entireText.substr(this._textIndex)
+    this._currentChar = this.remainingText[0]
 
     const previousChar = this.entireText[this._textIndex - 1] 
     this._isFollowingNonWhitespace = (previousChar && NON_BLANK_PATTERN.test(previousChar))
