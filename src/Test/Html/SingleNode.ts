@@ -305,6 +305,14 @@ describe('A stress node', () => {
 })
 
 
+describe('An inline code node', () => {
+  it('produces a code element', () => {
+    const node = new InlineCodeNode('then')
+    expect(Up.toHtml(node)).to.be.eql('<code>then</code>')
+  })
+})
+
+
 describe('A revision insertion node', () => {
   it('produces an ins element', () => {
     const node = new RevisionInsertionNode([new PlainTextNode('Wario')])
