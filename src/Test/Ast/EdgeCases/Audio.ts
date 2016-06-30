@@ -12,7 +12,7 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
-describe('Audio without a description', () => {
+describe('Audio with an empty description', () => {
   it('has its URL treated as its description', () => {
     expect(Up.toAst('[audio:][http://example.com/ghosts.ogg]')).to.be.eql(
       new DocumentNode([
@@ -36,6 +36,47 @@ describe('Audio with a blank URL', () => {
   it('is not included in the document', () => {
     expect(Up.toAst('[audio: ghostly howling][\t   ]')).to.be.eql(
       new DocumentNode([]))
+  })
+})
+
+
+describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not audio. This applies when the bracketed description is followed by", () => {
+  specify('nothing', () => {
+    expect(Up.toAst('[audio: haunted house]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[audio: haunted house]')
+          ])
+        ])
+      ]))
+  })
+
+  specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+    expect(Up.toAst('[audio: haunted house] was written on the desk')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[audio: haunted house]')
+          ]),
+          new PlainTextNode(' was written on the desk')
+        ])
+      ]))
+  })
+
+  specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+    expect(Up.toAst('[audio: haunted house] was written on the desk [really]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[audio: haunted house]')
+          ]),
+          new PlainTextNode(' was written on the desk '),
+          new SquareBracketedNode([
+            new PlainTextNode('[really]')
+          ]),
+        ])
+      ]))
   })
 })
 

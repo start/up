@@ -12,7 +12,7 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
-describe('A video without a description', () => {
+describe('A video with an empty description', () => {
   it('has its URL treated as its description', () => {
     expect(Up.toAst('[video:][http://example.com/poltergeists.webm]')).to.be.eql(
       new DocumentNode([
@@ -36,6 +36,47 @@ describe('A video with a blank URL', () => {
   it('is not included in the document', () => {
     expect(Up.toAst('[video: ghosts eating luggage][   \t  ]')).to.be.eql(
       new DocumentNode([]))
+  })
+})
+
+
+describe("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not a video. This applies when the bracketed description is followed by", () => {
+  specify('nothing', () => {
+    expect(Up.toAst('[video: haunted house]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[video: haunted house]')
+          ])
+        ])
+      ]))
+  })
+
+  specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+    expect(Up.toAst('[video: haunted house] was written on the desk')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[video: haunted house]')
+          ]),
+          new PlainTextNode(' was written on the desk')
+        ])
+      ]))
+  })
+
+  specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+    expect(Up.toAst('[video: haunted house] was written on the desk [really]')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new SquareBracketedNode([
+            new PlainTextNode('[video: haunted house]')
+          ]),
+          new PlainTextNode(' was written on the desk '),
+          new SquareBracketedNode([
+            new PlainTextNode('[really]')
+          ]),
+        ])
+      ]))
   })
 })
 
