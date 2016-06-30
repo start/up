@@ -67,10 +67,6 @@ export class LineConsumer {
 
     return true
   }
-
-  getCopyStartingAtCurrentLine(): LineConsumer {
-    return new LineConsumer(this._remainingLines)
-  }
 }
 
 
