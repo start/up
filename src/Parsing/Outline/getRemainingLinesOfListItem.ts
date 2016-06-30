@@ -20,7 +20,7 @@ export function getRemainingLinesOfListItem(
   let countLinesIncluded = 0
   let lcountLinesConsumed = 0
 
-  while (!consumer.reachedEndOfText()) {
+  while (!consumer.done()) {
     const wasLineBlank = consumer.consume({
       linePattern: BLANK_PATTERN,
       then: line => lines.push(line)

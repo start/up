@@ -22,11 +22,11 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const listItems: DescriptionListItem[] = []
   let lengthParsed = 0
 
-  while (!consumer.reachedEndOfText()) {
+  while (!consumer.done()) {
     let rawTerms: string[] = []
 
     // First, we collect every term for the next description.
-    while (!consumer.reachedEndOfText()) {
+    while (!consumer.done()) {
       const isTerm = consumer.consume({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),

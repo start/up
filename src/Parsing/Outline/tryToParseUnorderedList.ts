@@ -20,7 +20,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
   const rawListItemsContents: string[] = []
 
-  while (!consumer.reachedEndOfText()) {
+  while (!consumer.done()) {
     let rawListItemLines: string[] = []
 
     const isLineBulleted = consumer.consume({

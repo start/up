@@ -39,7 +39,7 @@ export function getOutlineNodes(
   const consumer = new LineConsumer(trimOuterBlankLines(text))
   const outlineNodes: OutlineSyntaxNode[] = []
 
-  while (!consumer.reachedEndOfText()) {
+  while (!consumer.done()) {
     const outlineParserArgs = {
       lines: consumer.remainingLines,
       headingLeveler,

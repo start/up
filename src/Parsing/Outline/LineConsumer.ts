@@ -26,7 +26,7 @@ export class LineConsumer {
     this._countLinesConsumed += count
   }
 
-  reachedEndOfText(): boolean {
+  done(): boolean {
     return !this._remainingLines.length
   }
 
@@ -37,7 +37,7 @@ export class LineConsumer {
       then?: OnConsume
     }
   ): boolean {
-    if (this.reachedEndOfText()) {
+    if (this.done()) {
       return false
     }
 
