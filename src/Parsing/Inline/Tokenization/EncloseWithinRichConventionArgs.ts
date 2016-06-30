@@ -1,7 +1,7 @@
 import { RichConvention } from '../RichConvention'
 
 
-export interface EncloseWithinArgs {
+export interface EncloseWithinRichConventionArgs {
   richConvention: RichConvention
-  startingBackAt: number
+  startingBackAtIndex: number
 } 

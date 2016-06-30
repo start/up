@@ -19,8 +19,8 @@ import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { NewTokenArgs } from './NewTokenArgs'
+import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
 import { TokenizableConvention, OnConventionEvent } from './TokenizableConvention'
-import { EncloseWithinArgs } from './EncloseWithinArgs'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
@@ -131,12 +131,12 @@ class Tokenizer {
     delimiterChar => new RaisedVoiceHandler({
       delimiterChar,
 
-      encloseWithin: (args) => {
+      encloseWithinRichConvention: (richConvention, startingBackAtIndex) => {
         this.closeNakedUrlContextIfOneIsOpen()
-        this.encloseWithin(args)
+        this.encloseWithin({ richConvention, startingBackAtIndex })
       },
 
-      insertPlainTextToken: (text: string, atIndex: number) => {
+      insertPlainTextToken: (text, atIndex) => {
         this.insertToken({
           token: new Token({ kind: TokenKind.PlainText, value: text }),
           atIndex: atIndex
@@ -473,20 +473,19 @@ class Tokenizer {
     }
   }
 
-  private encloseContextWithin(richConvention: RichConvention, context: ConventionContext): void {
-    this.encloseWithin({ richConvention, startingBackAt: context.startTokenIndex })
+  private encloseContextWithinRichConvention(richConvention: RichConvention, context: ConventionContext): void {
+    this.encloseWithin({ richConvention, startingBackAtIndex: context.startTokenIndex })
   }
 
-  private encloseWithin(args: EncloseWithinArgs): void {
-    const { richConvention, startingBackAt } = args
-
+  private encloseWithin(args: EncloseWithinRichConventionArgs): void {
+    const { richConvention, startingBackAtIndex} = args
     this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
 
     const startToken = new Token({ kind: richConvention.startTokenKind })
     const endToken = new Token({ kind: richConvention.endTokenKind })
     startToken.associateWith(endToken)
 
-    this.insertToken({ token: startToken, atIndex: startingBackAt })
+    this.insertToken({ token: startToken, atIndex: startingBackAtIndex })
     this.tokens.push(endToken)
   }
 
@@ -927,7 +926,7 @@ class Tokenizer {
       whenClosingItFlushesBufferTo: TokenKind.PlainText,
 
       whenClosing: (context) => {
-        this.encloseContextWithin(richConvention, context)
+        this.encloseContextWithinRichConvention(richConvention, context)
       },
 
       insteadOfFailingWhenLeftUnclosed

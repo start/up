@@ -2,25 +2,26 @@ import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
 import { RichConvention } from '../RichConvention'
 import { TokenizableConvention } from './TokenizableConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
-import { EncloseWithinArgs } from './EncloseWithinArgs'
+import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
 import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 
 export class RaisedVoiceHandler {
-  delimiterPattern: RegExp
-
   constructor(
     // We save `args` to make it easier to clone this object. 
     private args: {
       delimiterChar: string
-      encloseWithin: EncloseWithin
-      insertPlainTextToken: InsertPlainTextToken
+      encloseWithinRichConvention: (richConvention: RichConvention, startingBackAtIndex: number) => void
+      insertPlainTextToken: (text: string, atIndex: number) => void
     },
 
-    private startDelimiters: RaisedVoiceStartDelimiter[] = []
+    private startDelimiters: RaisedVoiceStartDelimiter[] = [],
+    public delimiterPattern?: RegExp
   ) {
-    this.delimiterPattern = regExpStartingWith(atLeast(1, escapeForRegex(args.delimiterChar)))
+    this.delimiterPattern = this.delimiterPattern ||
+      regExpStartingWith(
+        atLeast(1, escapeForRegex(args.delimiterChar)))
   }
 
   addStartDelimiter(delimiter: string, tokenIndex: number) {
@@ -104,12 +105,12 @@ export class RaisedVoiceHandler {
 
         this.encloseWithin({
           richConvention: EMPHASIS_CONVENTION,
-          startingBackAt: startDelimiter.tokenIndex
+          startingBackAtIndex: startDelimiter.tokenIndex
         })
 
         this.encloseWithin({
           richConvention: STRESS_CONVENTION,
-          startingBackAt: startDelimiter.tokenIndex
+          startingBackAtIndex: startDelimiter.tokenIndex
         })
 
         const lengthInCommon =
@@ -149,11 +150,12 @@ export class RaisedVoiceHandler {
   clone(): RaisedVoiceHandler {
     return new RaisedVoiceHandler(
       this.args,
-      this.startDelimiters.map(delimiter => delimiter.clone()))
+      this.startDelimiters.map(delimiter => delimiter.clone()),
+      this.delimiterPattern)
   }
 
-  private encloseWithin(args: EncloseWithinArgs) {
-    this.args.encloseWithin(args)
+  private encloseWithin(args: EncloseWithinRichConventionArgs) {
+    this.args.encloseWithinRichConvention(args.richConvention, args.startingBackAtIndex)
   }
 
   private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {
@@ -167,7 +169,7 @@ export class RaisedVoiceHandler {
   private applyConvention(startDelimiter: RaisedVoiceStartDelimiter, richConvention: RichConvention, cost: number): void {
     this.encloseWithin({
       richConvention,
-      startingBackAt: startDelimiter.tokenIndex
+      startingBackAtIndex: startDelimiter.tokenIndex
     })
 
     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
@@ -186,12 +188,3 @@ export class RaisedVoiceHandler {
 const EMPHASIS_COST = 1
 const STRESS_COST = 2
 const MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST
-
-
-export interface EncloseWithin {
-  (args: EncloseWithinArgs): void
-}
-
-export interface InsertPlainTextToken {
-  (text: string, atIndex: number): void
-}
