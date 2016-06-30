@@ -79,8 +79,6 @@ function getLines(text: string): string[] {
   let textIndexOfCurrentLine = 0
 
   LineLoop: while (textIndexOfCurrentLine < text.length) {
-    let lineWithoutTerminatingLineBreak: string
-
     for (let i = textIndexOfCurrentLine; i < text.length; i++) {
       if (ESCAPER_CHAR === text[i]) {
         // Escaped line breaks don't end lines, so we'll just skip the next character, no matter what it is.
@@ -89,8 +87,8 @@ function getLines(text: string): string[] {
       }
 
       if (INPUT_LINE_BREAK === text.substr(i, INPUT_LINE_BREAK_LENGTH)) {
-        lineWithoutTerminatingLineBreak = text.slice(textIndexOfCurrentLine, i)
-        lines.push(lineWithoutTerminatingLineBreak)
+        const line = text.slice(textIndexOfCurrentLine, i)
+        lines.push(line)
         textIndexOfCurrentLine = i + INPUT_LINE_BREAK_LENGTH
 
         continue LineLoop
