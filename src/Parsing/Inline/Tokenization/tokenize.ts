@@ -521,7 +521,7 @@ class Tokenizer {
     return conventions.some(convention => lastToken.kind === convention.endTokenKind)
   }
 
-  // This method always returns true to allow us to cleanly chain it with other boolean tokenizer methods. 
+  // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
     this.buffer += this.consumer.currentChar
     this.consumer.advanceTextIndex(1)
@@ -1030,7 +1030,7 @@ const SOLELY_URL_PREFIX_PATTERN =
     solely(EXPLICIT_URL_PREFIX))
 
 
-// The patterns below exist only for optimization.
+// The patterns below exist purely for optimization.
 //
 // For more information, see the `bufferContentThatCannotOpenOrCloseAnyConventions` method. 
 
