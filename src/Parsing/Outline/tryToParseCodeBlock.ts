@@ -7,9 +7,9 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 // Code blocks are surrounded (underlined and overlined) by streaks of backticks.
 //
-// If the "closing" streak of backticks is missing, the code block extends to the end of the document.
+// If the closing streak of backticks is missing, the code block extends to the end of the document.
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.text)
+  const consumer = args.consumer.getCopyStartingAtCurrentLine()
 
   if (!consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
     return false

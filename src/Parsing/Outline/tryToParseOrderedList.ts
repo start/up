@@ -17,7 +17,7 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 //
 // List items don't need to be separated by blank lines.
 export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.text)
+  const consumer = args.consumer.getCopyStartingAtCurrentLine()
   const rawListItems: RawListItem[] = []
 
   while (!consumer.reachedEndOfText()) {

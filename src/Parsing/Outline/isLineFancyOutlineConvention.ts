@@ -5,7 +5,7 @@ import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
-
+import { LineConsumer } from './LineConsumer'
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
   tryToParseUnorderedList,
@@ -17,10 +17,11 @@ const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
 
 // If `line` would be considered anything but a regular paragraph, it's considered fancy. 
 export function isLineFancyOutlineConvention(line: string, config: UpConfig): boolean {
+  const consumer = new LineConsumer(line)
   
   return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(
     (parse) => parse({
-      text: line,
+      consumer,
       headingLeveler:  DUMMY_HEADING_LEVELER,
       config: config,
       then: () => { /* Do nothing */ }

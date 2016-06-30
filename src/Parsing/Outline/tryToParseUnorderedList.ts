@@ -17,7 +17,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // List items don't need to be separated by blank lines.
 export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.text)
+  const consumer = args.consumer.getCopyStartingAtCurrentLine()
   const rawListItemsContents: string[] = []
 
   while (!consumer.reachedEndOfText()) {

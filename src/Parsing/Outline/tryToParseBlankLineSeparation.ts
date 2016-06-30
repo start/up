@@ -10,7 +10,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // However, 3 or more consecutive blank lines indicates meaningful, deliberate separation between sections.
 // We represent that separation with a SectionSeparatorNode.
 export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.text)
+  const consumer = args.consumer.getCopyStartingAtCurrentLine()
 
   let countBlankLines = 0
 
