@@ -27,6 +27,33 @@ describe('Inline code', () => {
 })
 
 
+context("Inline code can be surrounded by more than 1 backrick on each side, but the delimiters must be balanced. Each side must have exactly the same number of backticks.", () => {
+  context("This means that inline code can contain streaks of backticks that aren't exactly as long as the surrounding delimiters", () => {
+    specify('Inline code surrounded by 1 backtick on each side can contain streaks of 3 backticks', () => {
+      expect(Up.toAst('`let display = ```score:``` + 5`')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineCodeNode('let display = ```score:``` + 5'),
+        ]))
+    })
+
+    specify('Inline code surrounded by 2 backticks on each side can contain individual backticks (streaks of 1)', () => {
+      expect(Up.toAst('``let display = `score:` + 5``')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineCodeNode('let display = `score:` + 5'),
+        ]))
+    })
+
+    specify('Inline code surrounded by 3 backticks on each side can contain streaks of 2 backticks)', () => {
+      expect(Up.toAst('```let display = ``score:`` + 5```')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineCodeNode('let display = ``score:`` + 5'),
+        ]))
+    })
+  })
+})
+
+
+
 describe('Backslashes inside inline code', () => {
   it('are preserved', () => {
     expect(Up.toAst('Whiteboard `\\"prop\\"`')).to.be.eql(
@@ -35,7 +62,7 @@ describe('Backslashes inside inline code', () => {
         new InlineCodeNode('\\"prop\\"')
       ]))
   })
-  
+
   it('do not escape the enclosing backticks', () => {
     expect(Up.toAst('Funny lines: `/|\\`')).to.be.eql(
       insideDocumentAndParagraph([
