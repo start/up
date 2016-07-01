@@ -28,19 +28,19 @@ describe('Inline code', () => {
 
 
 describe('Backslashes inside inline code', () => {
-  it('escape the following character', () => {
-    expect(Up.toAst('Whiteboard `pro\\p`')).to.be.eql(
+  it('are preserved', () => {
+    expect(Up.toAst('Whiteboard `\\"prop\\"`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Whiteboard '),
-        new InlineCodeNode('prop')
+        new InlineCodeNode('\\"prop\\"')
       ]))
   })
   
-  it('escape backticks', () => {
-    expect(Up.toAst('Funny quotes: `"\\``')).to.be.eql(
+  it('do not escape the enclosing backticks', () => {
+    expect(Up.toAst('Funny lines: `/|\\`')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Funny quotes: '),
-        new InlineCodeNode('"`')
+        new PlainTextNode('Funny lines: '),
+        new InlineCodeNode('/|\\')
       ]))
   })
 })
