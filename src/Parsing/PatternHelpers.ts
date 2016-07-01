@@ -22,7 +22,7 @@ export function atLeast(count: number, pattern: string): string {
   return group(pattern) + `{${count},}`
 }
 
-export function atLeastOneButAsFewAsPpossible(pattern: string): string {
+export function atLeastOneButAsFewAsPossible(pattern: string): string {
   return group(pattern) + '+?'
 }
 

@@ -1,6 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, atLeastOneButAsFewAsPossible, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture, capturedGroup } from '../../PatternHelpers'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT, ANY_CHAR } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -977,6 +977,18 @@ class Tokenizer {
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
+
+const INLINE_CODE_DELIMITER_CHAR =
+  '`'
+
+const NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR =
+  notFollowedBy(INLINE_CODE_DELIMITER_CHAR)
+
+const INLINE_CODE_PATTERN =
+  capture(atLeast(1, INLINE_CODE_DELIMITER_CHAR)) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR
+  + capture(
+    atLeastOneButAsFewAsPossible(ANY_CHAR))
+  + capturedGroup(1) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR
 
 
 // Our URL patterns and associated string constants serve two purposes:

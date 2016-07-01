@@ -18,3 +18,6 @@ export const DIGIT =
 
 export const INTEGER =
   atLeast(1, DIGIT)
+
+export const ANY_CHAR =
+  '.'
