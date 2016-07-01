@@ -486,7 +486,8 @@ class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
-      || this.tryToHandleRaisedVoiceStartDelimiter())
+      || this.tryToHandleRaisedVoiceStartDelimiter()
+      || this.tryToTokenizeInlineCodeOrUnmatchedBackticks())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -509,6 +510,10 @@ class Tokenizer {
         }
       })
     )
+  }
+
+  private tryToTokenizeInlineCodeOrUnmatchedBackticks(): boolean {
+    return false
   }
 
   private isDirectlyFollowing(conventions: RichConvention[]): boolean {
