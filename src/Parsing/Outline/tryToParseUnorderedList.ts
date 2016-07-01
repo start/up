@@ -6,7 +6,6 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 import { optional, regExpStartingWith, anyCharFrom, escapeForRegex } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
-import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -18,15 +17,15 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // List items don't need to be separated by blank lines.
 export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
-  const rawListItemsContents: string[] = []
+  const linesByListItem: string[][] = []
 
   while (!consumer.done()) {
-    let rawListItemLines: string[] = []
+    let linesForCurrentListItem: string[] = []
 
     const isLineBulleted = consumer.consume({
       linePattern: BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
-      then: line => rawListItemLines.push(line.replace(BULLET_PATTERN, ''))
+      then: line => linesForCurrentListItem.push(line.replace(BULLET_PATTERN, ''))
     })
 
     if (!isLineBulleted) {
@@ -38,26 +37,26 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     getRemainingLinesOfListItem({
       lines: consumer.getRemainingLines(),
       then: (lines, lengthParsed, shouldTerminateList) => {
-        rawListItemLines.push(...lines)
+        linesForCurrentListItem.push(...lines)
         consumer.skipLines(lengthParsed)
         isListTerminated = shouldTerminateList
       }
     })
 
-    rawListItemsContents.push(rawListItemLines.join(INPUT_LINE_BREAK))
+    linesByListItem.push(linesForCurrentListItem)
 
     if (isListTerminated) {
       break
     }
   }
 
-  if (!rawListItemsContents.length) {
+  if (!linesByListItem.length) {
     return false
   }
 
   const listItems =
-    rawListItemsContents.map((rawContents) =>
-      new UnorderedListItem(getOutlineNodes(rawContents, args.headingLeveler, args.config)))
+    linesByListItem.map((lines) =>
+      new UnorderedListItem(getOutlineNodes(lines, args.headingLeveler, args.config)))
 
   args.then([new UnorderedListNode(listItems)], consumer.countLinesConsumed)
   return true

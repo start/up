@@ -4,7 +4,6 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { regExpStartingWith, optional } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
-import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -15,27 +14,24 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // the delimiter (and is removed before parsing the blockquoted contents).
 export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
-  const rawBlockquoteLines: string[] = []
+  const blockquotedLines: string[] = []
 
   // Collect all consecutive blockquoted lines
   while (consumer.consume({
     linePattern: BLOCKQUOTE_DELIMITER_PATTERN,
-    then: line => rawBlockquoteLines.push(line.replace(BLOCKQUOTE_DELIMITER_PATTERN, ''))
+    then: line => blockquotedLines.push(line.replace(BLOCKQUOTE_DELIMITER_PATTERN, ''))
   })) { }
 
-  if (!rawBlockquoteLines.length) {
+  if (!blockquotedLines.length) {
     return false
   }
-
-  const rawBlockquotedContent =
-    rawBlockquoteLines.join(INPUT_LINE_BREAK)
 
   // Within blockquotes, heading levels are reset
   const headingLeveler = new HeadingLeveler()
 
   const blockquote =
     new BlockquoteNode(
-      getOutlineNodes(rawBlockquotedContent, headingLeveler, args.config))
+      getOutlineNodes(blockquotedLines, headingLeveler, args.config))
 
   args.then([blockquote], consumer.countLinesConsumed)
   return true

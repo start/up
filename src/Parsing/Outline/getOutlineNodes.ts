@@ -31,12 +31,10 @@ const OUTLINE_CONVENTIONS = [
 
 
 export function getOutlineNodes(
-  text: string,
+  lines: string[],
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
-
-  const lines = text.split(INPUT_LINE_BREAK)
   const consumer = new LineConsumer(withoutOuterBlankLines(lines))
   const outlineNodes: OutlineSyntaxNode[] = []
 

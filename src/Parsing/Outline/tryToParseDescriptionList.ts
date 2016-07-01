@@ -42,13 +42,13 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       break
     }
 
-    const rawDescriptionLines: string[] = []
+    const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
     const hasDescription = consumer.consume({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
-      then: line => rawDescriptionLines.push(line.replace(INDENTED_PATTERN, ''))
+      then: line => descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
     })
 
     if (!hasDescription) {
@@ -62,7 +62,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     getRemainingLinesOfListItem({
       lines: consumer.getRemainingLines(),
       then: (lines, countLinesConsumed, shouldTerminateList) => {
-        rawDescriptionLines.push(...lines)
+        descriptionLines.push(...lines)
         consumer.skipLines(countLinesConsumed)
         isListTerminated = shouldTerminateList
       }
@@ -76,7 +76,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     const description =
       new Description(
-        getOutlineNodes(rawDescriptionLines.join(INPUT_LINE_BREAK), args.headingLeveler, args.config))
+        getOutlineNodes(descriptionLines, args.headingLeveler, args.config))
 
     listItems.push(new DescriptionListItem(terms, description))
 

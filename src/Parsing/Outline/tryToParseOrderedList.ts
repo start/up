@@ -60,7 +60,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 
   let listItems = rawListItems.map((rawListItem) => {
     return new OrderedListItem(
-      getOutlineNodes(rawListItem.content(), args.headingLeveler, args.config),
+      getOutlineNodes(rawListItem.lines, args.headingLeveler, args.config),
       getExplicitOrdinal(rawListItem)
     )
   })
@@ -74,12 +74,6 @@ class RawListItem {
   lines: string[] = []
 
   constructor(public bullet: string) { }
-
-  content(): string {
-    // This loses any final line break, but trailing blank lines are always ignored when parsing
-    // outline conventions.
-    return this.lines.join(INPUT_LINE_BREAK)
-  }
 }
 
 
