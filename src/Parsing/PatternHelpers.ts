@@ -6,6 +6,10 @@ export function capture(pattern: string): string {
   return `(${pattern})`
 }
 
+export function capturedGroup(ordinal: number): string {
+  return '\\' + ordinal
+}
+
 export function optional(pattern: string): string {
   return group(pattern) + '?'
 }
@@ -16,6 +20,10 @@ export function everyOptional(pattern: string): string {
 
 export function atLeast(count: number, pattern: string): string {
   return group(pattern) + `{${count},}`
+}
+
+export function atLeastOneButAsFewAsPpossible(pattern: string): string {
+  return group(pattern) + '+?'
 }
 
 export function exactly(count: number, pattern: string): string {
