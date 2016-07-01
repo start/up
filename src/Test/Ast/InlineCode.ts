@@ -52,6 +52,16 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
   })
 
 
+  context("Inline code content is trimmed. ", () => {
+    specify('If your inline code must start or end with backticks, you can separate them from the outer delimiters with a space.', () => {
+      expect(Up.toAst('`` `inline_code` `')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineCodeNode('`inline_code'),
+        ]))
+    })
+  })
+
+
   context('Text surrounded by an uneven number of backticks does not produce an inline code node. This includes when:', () => {
     specify('There are fewer backticks on the opening side than the closing side', () => {
       expect(Up.toAst('I enjoy the occasional backtick ` or two ``')).to.be.eql(
