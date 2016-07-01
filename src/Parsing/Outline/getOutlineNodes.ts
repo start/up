@@ -11,7 +11,7 @@ import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { parseRegularLines } from './parseRegularLines'
 import { regExpStartingWith, regExpEndingWith } from '../PatternHelpers'
-import { ANY_WHITESPACE } from '../PatternPieces'
+import { NON_BLANK_PATTERN } from '../Patterns'
 import { INPUT_LINE_BREAK } from '../Strings'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
@@ -36,8 +36,8 @@ export function getOutlineNodes(
   config: UpConfig
 ): OutlineSyntaxNode[] {
 
-  const lines = trimOuterBlankLines(text).split(INPUT_LINE_BREAK)
-  const consumer = new LineConsumer(lines)
+  const lines = text.split(INPUT_LINE_BREAK)
+  const consumer = new LineConsumer(withoutOuterBlankLines(lines))
   const outlineNodes: OutlineSyntaxNode[] = []
 
   while (!consumer.done()) {
@@ -79,15 +79,26 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
 }
 
 
-function trimOuterBlankLines(text: string): string {
-  return text
-    .replace(LEADING_BLANK_LINES_PATTERN, '')
-    .replace(TRAILIN_BLANK_LINES_PATTERN, '')
+function withoutOuterBlankLines(lines: string[]): string[] {
+  let firstIndexOfNonBlankLine = 0
+
+  for (; firstIndexOfNonBlankLine < lines.length; firstIndexOfNonBlankLine++) {
+    const line = lines[firstIndexOfNonBlankLine]
+
+    if (NON_BLANK_PATTERN.test(line)) {
+      break
+    }
+  }
+
+  let lastIndexOfNonBlankLine = lines.length - 1
+
+  for (; lastIndexOfNonBlankLine >= firstIndexOfNonBlankLine; lastIndexOfNonBlankLine--) {
+    const line = lines[lastIndexOfNonBlankLine]
+
+    if (NON_BLANK_PATTERN.test(line)) {
+      break
+    }
+  }
+
+  return lines.slice(firstIndexOfNonBlankLine, lastIndexOfNonBlankLine + 1)
 }
-
-
-const LEADING_BLANK_LINES_PATTERN =
-  regExpStartingWith(ANY_WHITESPACE + INPUT_LINE_BREAK)
-
-const TRAILIN_BLANK_LINES_PATTERN =
-  regExpEndingWith(INPUT_LINE_BREAK + ANY_WHITESPACE)
