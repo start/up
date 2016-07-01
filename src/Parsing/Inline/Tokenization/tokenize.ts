@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, atLeastOneButAsFewAsPossible, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture, capturedGroup } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, anyCharBut, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture, capturedGroup } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT, ANY_CHAR } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -224,7 +224,7 @@ class Tokenizer {
   }
 
   private isDone(): boolean {
-    return this.consumer.reachedEndOfText() && this.resolveUnclosedContexts()
+    return this.consumer.done() && this.resolveUnclosedContexts()
   }
 
   private resolveUnclosedContexts(): boolean {
@@ -249,7 +249,7 @@ class Tokenizer {
   private tryToCollectEscapedChar(): boolean {
     if (this.consumer.currentChar === ESCAPER_CHAR) {
       this.consumer.advanceTextIndex(1)
-      return this.consumer.reachedEndOfText() || this.bufferCurrentChar()
+      return this.consumer.done() || this.bufferCurrentChar()
     }
 
     return false
@@ -503,19 +503,54 @@ class Tokenizer {
   }
 
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
-    return (
-      this.consumer.consume({
-        pattern: INLINE_CODE_PATTERN,
-        thenBeforeAdvancingTextIndex: (_1, _2, _3, code) => {
-          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-          this.appendNewToken(TokenKind.InlineCode, code.trim())
-        }
-      }) || this.consumer.consume({
-        pattern: INLINE_CODE_DELIMITER_STREAK_PATTERN,
-        thenBeforeAdvancingTextIndex: (streak) => {
-          this.buffer += streak
-        }
-      }))
+    let startDelimiter: string
+
+    const foundStartDelimiter = this.consumer.consume({
+      pattern: INLINE_CODE_DELIMITER,
+      thenBeforeAdvancingTextIndex: match => {
+        startDelimiter = match
+      }
+    })
+
+    if (!foundStartDelimiter) {
+      return false
+    }
+    
+    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+
+    const consumer = new InlineTextConsumer(this.consumer.remainingText)
+
+    let inlineCode = ''
+
+    while (!consumer.done()) {
+      consumer.consume({
+        pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE,
+        thenBeforeAdvancingTextIndex: match => { inlineCode += match }
+      })
+
+      let possibleEndDelimiter: string
+
+      const foundPossibleEndDelimiter = consumer.consume({
+        pattern: INLINE_CODE_DELIMITER,
+        thenBeforeAdvancingTextIndex: match => { possibleEndDelimiter = match }
+      })
+
+      if (!foundPossibleEndDelimiter) {
+        break
+      }
+
+      if (possibleEndDelimiter.length === startDelimiter.length) {
+        this.appendNewToken(TokenKind.InlineCode, inlineCode.trim())
+        this.consumer.textIndex += consumer.textIndex
+
+        return true
+      }
+
+      inlineCode += possibleEndDelimiter
+    }
+
+    this.buffer += startDelimiter
+    return true
   }
 
   private isDirectlyFollowing(conventions: RichConvention[]): boolean {
@@ -980,20 +1015,15 @@ class Tokenizer {
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
+
 const INLINE_CODE_DELIMITER_CHAR =
   '`'
 
-const NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR =
-  notFollowedBy(INLINE_CODE_DELIMITER_CHAR)
-
-const INLINE_CODE_PATTERN =
+const CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE =
   regExpStartingWith(
-    capture(atLeast(1, INLINE_CODE_DELIMITER_CHAR)) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR
-    + capture(
-      atLeastOneButAsFewAsPossible(ANY_CHAR))
-    + capturedGroup(1) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR)
+    atLeast(1, anyCharBut(INLINE_CODE_DELIMITER_CHAR)))
 
-const INLINE_CODE_DELIMITER_STREAK_PATTERN =
+const INLINE_CODE_DELIMITER =
   regExpStartingWith(atLeast(1, INLINE_CODE_DELIMITER_CHAR))
 
 

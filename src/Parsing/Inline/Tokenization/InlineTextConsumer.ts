@@ -2,7 +2,7 @@ import { OnTextMatch } from './OnTextMatch'
 
 
 export class InlineTextConsumer {
-  private remainingText: string
+  private _remainingText: string
   private _textIndex: number
   private _currentChar: string
   private _previousChar: string
@@ -10,6 +10,10 @@ export class InlineTextConsumer {
 
   constructor(private entireText: string) {
     this.textIndex = 0
+  }
+
+  get remainingText(): string {
+    return this._remainingText
   }
 
   get textIndex(): number {
@@ -37,7 +41,7 @@ export class InlineTextConsumer {
     this.textIndex += length
   }
 
-  reachedEndOfText(): boolean {
+  done(): boolean {
     return this._textIndex >= this.entireText.length
   }
 
@@ -49,7 +53,7 @@ export class InlineTextConsumer {
   ): boolean {
     const { pattern, thenBeforeAdvancingTextIndex } = args
 
-    const result = pattern.exec(this.remainingText)
+    const result = pattern.exec(this._remainingText)
 
     if (!result) {
       return false
@@ -68,8 +72,8 @@ export class InlineTextConsumer {
   }
 
   private updateComputedTextFields(): void {
-    this.remainingText = this.entireText.substr(this._textIndex)
-    this._currentChar = this.remainingText[0]
+    this._remainingText = this.entireText.substr(this._textIndex)
+    this._currentChar = this._remainingText[0]
     this._previousChar = this.entireText[this._textIndex - 1] 
   }
 }

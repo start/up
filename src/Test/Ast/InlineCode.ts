@@ -54,9 +54,9 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
 
   context("Inline code content is trimmed. ", () => {
     specify('If your inline code must start or end with backticks, you can separate them from the outer delimiters with a space.', () => {
-      expect(Up.toAst('`` `inline_code` `')).to.be.eql(
+      expect(Up.toAst('`` `inline_code` ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('`inline_code'),
+          new InlineCodeNode('`inline_code`'),
         ]))
     })
   })
