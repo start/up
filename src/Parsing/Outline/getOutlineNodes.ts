@@ -36,7 +36,8 @@ export function getOutlineNodes(
   config: UpConfig
 ): OutlineSyntaxNode[] {
 
-  const consumer = new LineConsumer(trimOuterBlankLines(text))
+  const lines = trimOuterBlankLines(text).split(INPUT_LINE_BREAK)
+  const consumer = new LineConsumer(lines)
   const outlineNodes: OutlineSyntaxNode[] = []
 
   while (!consumer.done()) {
