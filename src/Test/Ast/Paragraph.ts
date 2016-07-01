@@ -2,13 +2,28 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 
 
-describe('A normal line of text', () => {
-  it('produces a paragraph node containing a plain text node itself containing line of text', () => {
-    expect(Up.toAst("I'm just a normal guy who eats only when it's raining outside. Also, it has to be around 70 degrees.")).to.be.eql(
+describe('A typical line of text', () => {
+  it('produces a paragraph node', () => {
+    expect(Up.toAst("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who eats only when it's raining outside. Also, it has to be around 70 degrees.")
+        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")
+      ]))
+  })
+})
+
+
+describe('Paragraphs', () => {
+  it('can contain inline conventions', () => {
+    expect(Up.toAst("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new EmphasisNode([
+          new PlainTextNode('everyone')
+        ]),
+        new PlainTextNode(" like that?")        
       ]))
   })
 })
