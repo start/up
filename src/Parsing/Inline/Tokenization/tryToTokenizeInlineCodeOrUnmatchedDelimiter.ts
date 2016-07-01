@@ -3,7 +3,7 @@ import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 
-export function tryToTokenizeInlineCodeOrDelimiter(
+export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
   args: {
     text: string
     then: (resultToken: Token, lengthConsumed: number) => void

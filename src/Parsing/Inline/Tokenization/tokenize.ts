@@ -7,7 +7,7 @@ import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaCo
 import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
 import { MediaConvention } from '../MediaConvention'
-import { tryToTokenizeInlineCodeOrDelimiter } from './tryToTokenizeInlineCodeOrDelimiter'
+import { tryToTokenizeInlineCodeOrUnmatchedDelimiter } from './tryToTokenizeInlineCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
@@ -478,7 +478,7 @@ class Tokenizer {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
-      || this.tryToTokenizeInlineCodeOrDelimiter())
+      || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -503,8 +503,14 @@ class Tokenizer {
     )
   }
 
-  private tryToTokenizeInlineCodeOrDelimiter(): boolean {
-    return tryToTokenizeInlineCodeOrDelimiter({
+  // Inline code is the only convention that:
+  //
+  // 1. Does not support escaped characters
+  // 2. Cannot contain any other conventions
+  //
+  // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
+  private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
+    return tryToTokenizeInlineCodeOrUnmatchedDelimiter({
       text: this.consumer.remainingText,
       then: (resultToken, lengthConsumed) => {
         this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
