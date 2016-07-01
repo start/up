@@ -50,6 +50,23 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
         ]))
     })
   })
+
+
+  context('Text surrounded by an uneven number of backticks does not produce an inline code node. This includes when:', () => {
+    specify('There are fewer backticks on the opening side than the closing side', () => {
+      expect(Up.toAst('I enjoy the occasional backtick ` or two ``')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('I enjoy the occasional backtick ` or two ``'),
+        ]))
+    })
+
+    specify('There are more backticks on the opening side than the closing side', () => {
+      expect(Up.toAst('I enjoy the occasional three backticks ``` or two ``')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('I enjoy the occasional three backticks ``` or two ``'),
+        ]))
+    })
+  })
 })
 
 
