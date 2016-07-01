@@ -53,4 +53,4 @@ report: build
 # of export unit tests are run against `npm_publish_dir`. If we were to have istanbul run our export tests, we'd
 # get an unhelpful test coverage summary, because istanbul doesn't realize that `npm_publish_dir` is copied from
 # `compiled_dir`.
-	$(local_modules_dir)/istanbul cover _mocha -- $(mocha_args_for_behavioral_tests)
+	$(local_modules_dir)/istanbul cover $(local_modules_dir)/_mocha -- $(mocha_args_for_behavioral_tests)
