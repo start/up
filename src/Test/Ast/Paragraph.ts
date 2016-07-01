@@ -27,16 +27,3 @@ describe('Paragraphs', () => {
       ]))
   })
 })
-
-
-describe('A line of text ending with an escaped line break directly followed by another line of text', () => {
-  it('produce a paragraph node, not a line block node', () => {
-    const text = `
-Roses are red\\
-Violets are blue`
-    expect(Up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Roses are red\nViolets are blue')
-      ]))
-  })
-})

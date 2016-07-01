@@ -42,7 +42,7 @@ describe('A backslash', () => {
       ]))
   })
 
-  it('does not disable special meaning of the following line break', () => {
+  it('does not disable line breaks', () => {
     const text = `
 Hello, world!\\
 \\

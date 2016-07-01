@@ -72,56 +72,6 @@ Roses are red
 })
 
 
-describe('Within a line block, a line with an escaped line break followed by another line', () => {
-  it('are considered part of the same line', () => {
-    const text = `
-Roses are red\\
-Violets are blue
-Lyrics have lines
-And addresses do, too`
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red\nViolets are blue')
-          ]),
-          new Line([
-            new PlainTextNode('Lyrics have lines')
-          ]),
-          new Line([
-            new PlainTextNode('And addresses do, too')
-          ]),
-        ])
-      ]))
-  })
-})
-
-
-describe('An empty line with an escaped line break followed by another empty line', () => {
-  it('are considered part of the same line and can be included in a line block', () => {
-    const text = `
-Roses are red
-\\
-
-Violets are blue`
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new LineBlockNode([
-          new Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new Line([
-            new PlainTextNode('\n')
-          ]),
-          new Line([
-            new PlainTextNode('Violets are blue')
-          ]),
-        ]),
-      ]))
-  })
-})
-
-
 describe('A line block', () => [
   it('can contain an escaped section separator streak', () => {
     const text = `
@@ -152,6 +102,34 @@ And addresses do, too`
       ]))
   })
 ])
+
+
+describe('Within a line block, a line ending with a backslash', () => {
+  it('has no impact on the following line', () => {
+    const text = `
+Roses are red
+Violets are blue\\
+Lyrics have lines
+And addresses do, too`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red'),
+          ]),
+          new Line([
+            new PlainTextNode('Violets are blue'),
+          ]),
+          new Line([
+            new PlainTextNode('Lyrics have lines')
+          ]),
+          new Line([
+            new PlainTextNode('And addresses do, too')
+          ]),
+        ])
+      ]))
+  })
+})
 
 
 describe('A paragraph directly followed by a line consisting solely of media conventions', () => {
