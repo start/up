@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -41,14 +42,19 @@ describe('A backslash', () => {
       ]))
   })
 
-  it('disables any special meaning of the following line break', () => {
+  it('does not disable special meaning of the following line break', () => {
     const text = `
 Hello, world!\\
 \\
 Goodbye, world!`
     expect(Up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, world!\n\nGoodbye, world!')
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Hello, world!')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('Goodbye, world!')
+        ])
       ]))
   })
 })
