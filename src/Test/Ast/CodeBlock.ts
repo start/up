@@ -6,8 +6,8 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-describe('Text surrounded by (underlined and overlined) streaks of backticks', () => {
-  it('produces a code block node containing the surrounded text', () => {
+describe('Text surrounded (underlined and overlined) by matching streaks of backticks (of at least 3 characters long)', () => {
+  it('produces a code block node', () => {
     const text = `
 \`\`\`
 const pie = 3.5
@@ -65,6 +65,84 @@ const lineBreak = "\\n"
         new CodeBlockNode('const lineBreak = "\\n"'),
       ]))
   })
+
+  context('can contain streaks of backticks', () => {
+    specify("shorter than the code block's streaks", () => {
+      const text = `
+\`\`\`\`\`
+\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\`
+\`\`\`\`\``
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new CodeBlockNode(
+            `\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\``)
+        ]))
+    })
+
+    specify("longer than the code block's streaks", () => {
+      const text = `
+\`\`\`\`\`
+\`\`\`\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\`\`\`\`
+\`\`\`\`\``
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new CodeBlockNode(
+            `\`\`\`\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\`\`\`\``)
+        ]))
+    })
+
+    specify("that are unmatched", () => {
+      const text = `
+\`\`\`
+\`\`\`\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\``
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new CodeBlockNode(
+            `\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}`)
+        ]))
+    })
+  })
 })
 
 
@@ -89,7 +167,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`
           new PlainTextNode('Check out the code below!')
         ]),
         new CodeBlockNode(
-`function factorial(n: number): number {
+          `function factorial(n: number): number {
   return (
     n <= 1
       ? 1
