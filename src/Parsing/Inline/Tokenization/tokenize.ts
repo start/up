@@ -160,16 +160,6 @@ class Tokenizer {
       }
     ].map(args => this.getConventionsForRichBracketedTerm(args))))
 
-    this.conventions.push({
-      startPattern: regExpStartingWith('`'),
-      endPattern: regExpStartingWith('`'),
-
-      flushesBufferToPlainTextTokenBeforeOpening: true,
-
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferCurrentChar(),
-      whenClosingItFlushesBufferTo: TokenKind.InlineCode
-    })
-
     this.conventions.push(
       ...this.getLinkUrlConventions())
 
@@ -487,7 +477,7 @@ class Tokenizer {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
-      || this.tryToTokenizeInlineCodeOrUnmatchedBackticks())
+      || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -512,8 +502,20 @@ class Tokenizer {
     )
   }
 
-  private tryToTokenizeInlineCodeOrUnmatchedBackticks(): boolean {
-    return false
+  private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
+    return (
+      this.consumer.consume({
+        pattern: INLINE_CODE_PATTERN,
+        thenBeforeAdvancingTextIndex: (_1, _2, _3, code) => {
+          this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+          this.appendNewToken(TokenKind.InlineCode, code.trim())
+        }
+      }) || this.consumer.consume({
+        pattern: INLINE_CODE_DELIMITER_STREAK_PATTERN,
+        thenBeforeAdvancingTextIndex: (streak) => {
+          this.buffer += streak
+        }
+      }))
   }
 
   private isDirectlyFollowing(conventions: RichConvention[]): boolean {
@@ -985,10 +987,14 @@ const NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR =
   notFollowedBy(INLINE_CODE_DELIMITER_CHAR)
 
 const INLINE_CODE_PATTERN =
-  capture(atLeast(1, INLINE_CODE_DELIMITER_CHAR)) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR
-  + capture(
-    atLeastOneButAsFewAsPossible(ANY_CHAR))
-  + capturedGroup(1) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR
+  regExpStartingWith(
+    capture(atLeast(1, INLINE_CODE_DELIMITER_CHAR)) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR
+    + capture(
+      atLeastOneButAsFewAsPossible(ANY_CHAR))
+    + capturedGroup(1) + NOT_FOLLOWED_BY_INLINE_CODE_DELIMITER_CHAR)
+
+const INLINE_CODE_DELIMITER_STREAK_PATTERN =
+  regExpStartingWith(atLeast(1, INLINE_CODE_DELIMITER_CHAR))
 
 
 // Our URL patterns and associated string constants serve two purposes:
