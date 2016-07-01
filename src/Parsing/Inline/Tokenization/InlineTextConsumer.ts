@@ -6,7 +6,6 @@ export class InlineTextConsumer {
   private _textIndex: number
   private _currentChar: string
   private _previousChar: string
-  private _isFollowingNonWhitespace = false
 
   constructor(private entireText: string) {
     this.textIndex = 0
@@ -31,10 +30,6 @@ export class InlineTextConsumer {
 
   get previousChar(): string {
     return this._previousChar
-  }
-
-  get isFollowingNonWhitespace(): boolean {
-    return this._isFollowingNonWhitespace
   }
 
   advanceTextIndex(length: number): void {
