@@ -45,7 +45,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter.length === startDelimiter.length) {
-      then(new Token(TokenKind.InlineCode, inlineCode.trim()), consumer.textIndex)
+      then(new Token(TokenKind.InlineCode, inlineCode), consumer.textIndex)
       return true
     }
 
