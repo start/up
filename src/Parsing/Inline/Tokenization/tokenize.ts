@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, anyCharBut, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture, capturedGroup } from '../../PatternHelpers'
+import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT, ANY_CHAR } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -7,6 +7,7 @@ import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaCo
 import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
 import { MediaConvention } from '../MediaConvention'
+import { tryToTokenizeInlineCodeOrDelimiter } from './tryToTokenizeInlineCodeOrDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
@@ -477,7 +478,7 @@ class Tokenizer {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
-      || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter())
+      || this.tryToTokenizeInlineCodeOrDelimiter())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -502,55 +503,15 @@ class Tokenizer {
     )
   }
 
-  private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
-    let startDelimiter: string
-
-    const foundStartDelimiter = this.consumer.consume({
-      pattern: INLINE_CODE_DELIMITER,
-      thenBeforeAdvancingTextIndex: match => {
-        startDelimiter = match
+  private tryToTokenizeInlineCodeOrDelimiter(): boolean {
+    return tryToTokenizeInlineCodeOrDelimiter({
+      text: this.consumer.remainingText,
+      then: (resultToken, lengthConsumed) => {
+        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        this.tokens.push(resultToken)
+        this.consumer.advanceTextIndex(lengthConsumed)
       }
     })
-
-    if (!foundStartDelimiter) {
-      return false
-    }
-    
-    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
-
-    const consumer = new InlineTextConsumer(this.consumer.remainingText)
-
-    let inlineCode = ''
-
-    while (!consumer.done()) {
-      consumer.consume({
-        pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE,
-        thenBeforeAdvancingTextIndex: match => { inlineCode += match }
-      })
-
-      let possibleEndDelimiter: string
-
-      const foundPossibleEndDelimiter = consumer.consume({
-        pattern: INLINE_CODE_DELIMITER,
-        thenBeforeAdvancingTextIndex: match => { possibleEndDelimiter = match }
-      })
-
-      if (!foundPossibleEndDelimiter) {
-        break
-      }
-
-      if (possibleEndDelimiter.length === startDelimiter.length) {
-        this.appendNewToken(TokenKind.InlineCode, inlineCode.trim())
-        this.consumer.textIndex += consumer.textIndex
-
-        return true
-      }
-
-      inlineCode += possibleEndDelimiter
-    }
-
-    this.buffer += startDelimiter
-    return true
   }
 
   private isDirectlyFollowing(conventions: RichConvention[]): boolean {
@@ -1014,17 +975,6 @@ class Tokenizer {
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
-
-
-const INLINE_CODE_DELIMITER_CHAR =
-  '`'
-
-const CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE =
-  regExpStartingWith(
-    atLeast(1, anyCharBut(INLINE_CODE_DELIMITER_CHAR)))
-
-const INLINE_CODE_DELIMITER =
-  regExpStartingWith(atLeast(1, INLINE_CODE_DELIMITER_CHAR))
 
 
 // Our URL patterns and associated string constants serve two purposes:
