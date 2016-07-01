@@ -133,7 +133,7 @@ function factorial(n: number): number {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
-            `\`\`\`
+            `\`\`\`\`\`\`
 function factorial(n: number): number {
   return (
     n <= 1

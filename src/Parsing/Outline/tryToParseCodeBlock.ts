@@ -5,22 +5,43 @@ import { OUTPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// Code blocks are surrounded (underlined and overlined) by streaks of backticks.
+// Code blocks are surrounded (underlined and overlined) by matching streaks of backticks.
 //
-// If the closing streak of backticks is missing, the code block extends to the end of the document.
+// If no matching end streak is found, the code block extends to the end of the document.
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
 
-  if (!consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
+  let startStreak: string
+
+  consumer.consume({
+    linePattern: CODE_FENCE_PATTERN,
+    then: match => { startStreak = match }
+  })
+
+  if (!startStreak) {
     return false
   }
 
   const codeLines: string[] = []
 
-  // Keep consuming lines until we get to the closing code fence.
+  // Let's keep consuming lines until we find a streak that matches the first one.
   while (!consumer.done()) {
-    if (consumer.consume({ linePattern: CODE_FENCE_PATTERN })) {
-      break
+    let possibleEndStreak: string
+
+    consumer.consume({
+      linePattern: CODE_FENCE_PATTERN,
+      then: match => { possibleEndStreak = match }
+    })
+
+    // Did we just find a possible end streak?
+    if (possibleEndStreak) {
+      if (possibleEndStreak.length === startStreak.length) {
+        // It matches the start streak! Let's bail
+        break
+      }
+
+      // Well, it doesn't match. Let's include this fence as part of the code block.
+      codeLines.push(possibleEndStreak)
     }
 
     consumer.consume({ then: line => codeLines.push(line) })
