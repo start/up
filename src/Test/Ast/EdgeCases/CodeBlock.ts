@@ -3,6 +3,8 @@ import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
+import { Line } from '../../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
@@ -45,6 +47,36 @@ const pie = 3.5
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('My pies never turn out quite right.')
+        ]),
+        new CodeBlockNode('const pie = 3.5')
+      ]))
+  })
+
+  it('can directly follow a line block', () => {
+    const text = `
+Roses are red
+Violets are white
+My pies just never
+Turn out quite right
+\`\`\`
+const pie = 3.5
+\`\`\``
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new Line([
+            new PlainTextNode('Violets are white')
+          ]),
+          new Line([
+            new PlainTextNode('My pies just never')
+          ]),
+          new Line([
+            new PlainTextNode('Turn out quite right')
+          ])
         ]),
         new CodeBlockNode('const pie = 3.5')
       ]))
