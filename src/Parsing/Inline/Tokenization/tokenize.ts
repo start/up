@@ -112,7 +112,7 @@ class Tokenizer {
     whenClosingItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
     whenClosingItAlsoClosesInnerConventions: true,
 
-    insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken(),
+    insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
   }
 
   // "Raised voices" means emphasis and stress.
@@ -191,11 +191,11 @@ class Tokenizer {
       }, {
         richConvention: REVISION_DELETION_CONVENTION,
         startDelimiter: '~~',
-        endDelimiter: '~~',
+        endDelimiter: '~~'
       }, {
         richConvention: REVISION_INSERTION_CONVENTION,
         startDelimiter: '++',
-        endDelimiter: '++',
+        endDelimiter: '++'
       }
     ].map(args => this.getRichSandwichConventionNotRequiringBacktracking(args)))
 
@@ -304,7 +304,6 @@ class Tokenizer {
   private tryToCloseAnyConvention(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const openContext = this.openContexts[i]
-      const { convention } = openContext
 
       if (this.shouldCloseContext(openContext)) {
         // If `closeContextOrBacktrackToBeforeIt` fails, it resets the tokenizer to where it was before we
@@ -583,8 +582,8 @@ class Tokenizer {
     // but for now, because all of our "post-transformation" conventions have incompatible start
     // patterns, there's no point in trying again.
     const hasPreviouslyFailedAfterTransformingIntoAnotherConvention =
-      conventionsThisOneTransformTo
-      && conventionsThisOneTransformTo.some(convention => this.failedConventionTracker.hasFailed(convention, textIndex))
+      conventionsThisOneTransformTo && conventionsThisOneTransformTo
+        .some(transformsInto => this.failedConventionTracker.hasFailed(transformsInto, textIndex))
 
     if (hasPreviouslyFailedAfterTransformingIntoAnotherConvention) {
       return false
@@ -943,7 +942,7 @@ class Tokenizer {
 
           whenClosingItAlsoClosesInnerConventions: true,
           whenClosingItFailsIfItCannotTranformInto: this.mediaUrlConventions,
-          whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind,
+          whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
         }))))
   }
 
