@@ -75,12 +75,19 @@ My pies never turn out quite right.`
 })
 
 
-describe('A code block with containing zero lines of code', () => {
-  it('produces an empty code block', () => {
+context('A code block with containing zero lines of code produces an empty code block', () => {
+  specify('when it has a closing streak', () => {
     const text = `
 \`\`\`
 \`\`\``
     expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new CodeBlockNode(''),
+      ]))
+  })
+
+  specify('when it lacks a closing streak', () => {
+    expect(Up.toAst('```')).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(''),
       ]))
