@@ -99,7 +99,7 @@ class FootnoteHandler {
     if (node instanceof LineBlockNode) {
       return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines)
     }
-    
+
     if (node instanceof BlockquoteNode) {
       this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
 
@@ -114,7 +114,7 @@ class FootnoteHandler {
     if (node instanceof DescriptionListNode) {
       return this.handleDescriptionListAndGetBlocklessFootnotes(node)
     }
-    
+
     return []
   }
 
