@@ -193,6 +193,6 @@ export abstract class Writer {
       return this.plainText(node)
     }
 
-    throw new Error("Unrecognized syntax node")
+    throw new Error('Unrecognized syntax node')
   }
 }

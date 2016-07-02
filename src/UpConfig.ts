@@ -5,9 +5,9 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
   documentName: 'up',
 
   defaultUrlScheme: 'https://',
-  baseForUrlsStartingWithSlash: '',  
-  baseForUrlsStartingWithHashMark: '',  
-  
+  baseForUrlsStartingWithSlash: '',
+  baseForUrlsStartingWithHashMark: '',
+
   i18n: {
     idWordDelimiter: '-',
 
@@ -34,7 +34,7 @@ export class UpConfig {
   constructor(settings?: UpConfigSettings, defaultSettings = DEFAULT_SETTINGS) {
     this.settings = merge(defaultSettings, settings)
   }
-  
+
   withChanges(changes: UpConfigSettings): UpConfig {
     return new UpConfig(changes, this.settings)
   }

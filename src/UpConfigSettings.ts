@@ -1,6 +1,6 @@
 export interface UpConfigSettings {
   documentName?: string
-  
+
   defaultUrlScheme?: string
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
@@ -20,7 +20,7 @@ export interface UpConfigSettings {
       toggleNsfl?: string
       footnote?: string
       footnoteReference?: string
-      
+
       [term: string]: string
     }
   }
