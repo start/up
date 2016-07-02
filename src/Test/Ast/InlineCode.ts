@@ -80,6 +80,19 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
 })
 
 
+context('Inline code ends at the first matching delimiter.', () => {
+  specify('Therefore, inline code can follow another instance of inline code, even when the first inline code is surrounded by the same number of backticks as the second', () => {
+    expect(Up.toAst('Ideally, your document will consist solely of ``<font>`` and ``<div>`` elements.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Ideally, your document will consist solely of '),
+        new InlineCodeNode('<font>'),
+        new PlainTextNode(' and '),
+        new InlineCodeNode('<div>'),
+        new PlainTextNode(' elements.')                
+      ]))
+  })
+})
+
 
 describe('Backslashes inside inline code', () => {
   it('are preserved', () => {
