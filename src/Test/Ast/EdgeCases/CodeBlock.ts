@@ -33,7 +33,26 @@ describe('A code block with containing zero lines of code', () => {
 })
 
 
-describe('An unmatched streak of backticks following a normal "enclosed" code block whose streaks are the same length', () => {
+describe('A code block', () => {
+  it('can be directly followed by a paragraph', () => {
+    const text = `
+\`\`\`
+const pie = 3.5
+\`\`\`
+My pies never turn out quite right.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new CodeBlockNode('const pie = 3.5'),
+        new ParagraphNode([
+          new PlainTextNode('My pies never turn out quite right.')
+        ])
+      ]))
+  })
+})
+
+
+describe('An unmatched streak of backticks, following a normal "enclosed" code block whose streaks are the same length as the unmatched streak,', () => {
   it("produces a code block node containing the rest of the document", () => {
     const text = `
 Check out the code below!
@@ -56,7 +75,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`
           new PlainTextNode('Check out the code below!')
         ]),
         new CodeBlockNode(
-`function factorial(n: number): number {
+          `function factorial(n: number): number {
   return (
     n <= 1
       ? 1
