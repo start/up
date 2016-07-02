@@ -69,6 +69,6 @@ export class InlineTextConsumer {
   private updateComputedTextFields(): void {
     this._remainingText = this.entireText.substr(this._textIndex)
     this._currentChar = this._remainingText[0]
-    this._previousChar = this.entireText[this._textIndex - 1] 
+    this._previousChar = this.entireText[this._textIndex - 1]
   }
 }
