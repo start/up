@@ -8,31 +8,6 @@ import { Line } from '../../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
-describe('Within a code block, a streak of backticks matching the start streak but preceded by a space', () => {
-  it('is preserved as code (and does not end the code block)', () => {
-    const text = `
-\`\`\`
- \`\`\`
-\`\`\``
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new CodeBlockNode(' ```'),
-      ]))
-  })
-})
-
-
-describe('A code block with containing zero lines of code', () => {
-  it('produces an empty code block', () => {
-    const text = `
-\`\`\`
-\`\`\``
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new CodeBlockNode(''),
-      ]))
-  })
-})
 
 
 describe('A code block', () => {
@@ -100,6 +75,19 @@ My pies never turn out quite right.`
 })
 
 
+describe('A code block with containing zero lines of code', () => {
+  it('produces an empty code block', () => {
+    const text = `
+\`\`\`
+\`\`\``
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new CodeBlockNode(''),
+      ]))
+  })
+})
+
+
 describe('An unmatched streak of backticks, following a normal "enclosed" code block whose streaks are the same length as the unmatched streak,', () => {
   it("produces a code block node containing the rest of the document", () => {
     const text = `
@@ -130,6 +118,20 @@ document.write('The factorial of 5 is: ' + factorial(5))`
       : n * factorial(n - 1))
 }`),
         new CodeBlockNode("document.write('The factorial of 5 is: ' + factorial(5))")
+      ]))
+  })
+})
+
+
+describe('Within a code block, a streak of backticks matching the start streak but preceded by a space', () => {
+  it('is preserved as code (and does not end the code block)', () => {
+    const text = `
+\`\`\`
+ \`\`\`
+\`\`\``
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new CodeBlockNode(' ```'),
       ]))
   })
 })
