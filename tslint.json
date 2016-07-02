@@ -1,17 +1,29 @@
 {
-  "extends": "tslint:latest",
+  "extends": "tslint:recommended",
   "rules": {
-     "interface-name": [true, "never-prefix"],
-     "member-access": false,
-     "no-consecutive-blank-lines": false,
-     "object-literal-sort-keys": false,
-     "semicolon": [true, "never"],
-     "trailing-comma": [true,
-        {
-            "singleline": "never",
-            "multiline": "never"
-        }
+    "interface-name": [
+      true,
+      "never-prefix"
     ],
-    "quotemark": [true, "single", "avoid-escape"]
+    "member-access": false,
+    "no-consecutive-blank-lines": false,
+    "object-literal-sort-keys": false,
+
+    "semicolon": [
+      true,
+      "never"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "singleline": "never",
+        "multiline": "never"
+      }
+    ],
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ]
   }
 }
