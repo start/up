@@ -9,7 +9,7 @@ all_our_build_dirs = $(compiled_dir) $(npm_publish_dir)
 #
 # We also have export unit tests, which describe how the Up library is exported.
 #
-# For more information on why this distinction is important, see the `report` target.
+# For more information on why this distinction is important, see the `coverage` target.
 mocha_args_for_behavioral_tests = --recursive ./compiled/Test
 
 
@@ -22,8 +22,8 @@ clean:
 	rm -rf $(all_our_build_dirs)
 
 
-.PHONY: build 
-build: clean
+.PHONY: compile 
+compile: clean
 	npm install
 	mkdir $(all_our_build_dirs)
 
@@ -40,13 +40,13 @@ build: clean
 
 
 .PHONY: test
-test: build
+test: compile
 # Run all behavioral and module unit tests.
 	$(local_modules_dir)/mocha $(mocha_args_for_behavioral_tests) ./module-export-tests.js
 
 
-.PHONY: report
-report: build
+.PHONY: coverage
+coverage: compile
 # We want istanbul to run only our behavioral unit tests. Why?
 #
 # Well, for now, all 1000+ behavioral unit tests are run against `compiled_dir`. On the other hand, our handful
