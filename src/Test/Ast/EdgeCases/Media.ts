@@ -1,13 +1,9 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 
 
 describe('A line consisting solely of media conventions', () => {
