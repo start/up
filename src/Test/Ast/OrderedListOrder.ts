@@ -99,7 +99,7 @@ context('An ordered list with 2 non-numeral bullets', () => {
 -2. Hello, world!
 -3) Goodbye, world!`
 
-      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
     })
 
     specify('the first numeral bullet is positive and the second is negative, even if the absolute value of the first numeral is less', () => {
@@ -107,7 +107,7 @@ context('An ordered list with 2 non-numeral bullets', () => {
 1. Hello, world!
 -2) Goodbye, world!`
 
-      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
     })
   })
 })
