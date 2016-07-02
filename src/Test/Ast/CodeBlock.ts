@@ -66,12 +66,13 @@ const lineBreak = "\\n"
       ]))
   })
 
+
   context('can contain streaks of backticks', () => {
     specify("shorter than the code block's streaks", () => {
       const text = `
 \`\`\`\`\`
 \`\`\`
-function factorial(n: number): number {
+function factorial2(n: number): number {
   return (
     n <= 1
       ? 1
@@ -83,7 +84,7 @@ function factorial(n: number): number {
         new DocumentNode([
           new CodeBlockNode(
             `\`\`\`
-function factorial(n: number): number {
+function factorial2(n: number): number {
   return (
     n <= 1
       ? 1
@@ -140,6 +141,40 @@ function factorial(n: number): number {
       ? 1
       : n * factorial(n - 1))
 }`)
+        ]))
+    })
+
+    specify("not touching the code block's streaks", () => {
+      const text = `
+\`\`\`\`\`
+Wrap code in streaks of backticks! 
+
+\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\`
+
+It's easy!
+\`\`\`\`\``
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new CodeBlockNode(
+            `Wrap code in streaks of backticks! 
+
+\`\`\`
+function factorial(n: number): number {
+  return (
+    n <= 1
+      ? 1
+      : n * factorial(n - 1))
+}
+\`\`\`
+
+It's easy!`)
         ]))
     })
   })

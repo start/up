@@ -14,7 +14,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   let startStreak: string
 
   consumer.consume({
-    linePattern: CODE_FENCE_PATTERN,
+    linePattern: CODE_BLOCK_STREAK_PATTERN,
     then: match => { startStreak = match }
   })
 
@@ -29,7 +29,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
     let possibleEndStreak: string
 
     consumer.consume({
-      linePattern: CODE_FENCE_PATTERN,
+      linePattern: CODE_BLOCK_STREAK_PATTERN,
       then: match => { possibleEndStreak = match }
     })
 
@@ -40,7 +40,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
         break
       }
 
-      // Well, it doesn't match. Let's include this fence as part of the code block.
+      // The streak didn't match, so let's include it in the code block.
       codeLines.push(possibleEndStreak)
     }
 
@@ -54,5 +54,5 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 }
 
 
-const CODE_FENCE_PATTERN =
+const CODE_BLOCK_STREAK_PATTERN =
   new RegExp(streakOf('`'))
