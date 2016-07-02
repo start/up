@@ -94,3 +94,15 @@ describe('An ordered list with more than 2 numeral bullets', () => {
     expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
   })
 })
+
+
+context('When the starting ordinal is negative', () => {
+  specify('the list is still ascending by default', () => {
+        const text = `
+-5) Hello, world!
+#. Goodbye, world!
+#) Goodbye, world!`
+
+    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+  })
+})
