@@ -54,3 +54,8 @@ coverage: compile
 # get an unhelpful test coverage summary, because istanbul doesn't realize that `npm_publish_dir` is copied from
 # `compiled_dir`.
 	$(local_modules_dir)/istanbul cover $(local_modules_dir)/_mocha -- $(mocha_args_for_behavioral_tests)
+
+
+.PHONY: lint
+lint: compile
+	$(local_modules_dir)/tslint src/**/*.ts
