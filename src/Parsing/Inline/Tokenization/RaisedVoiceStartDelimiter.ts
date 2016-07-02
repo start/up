@@ -29,5 +29,5 @@ export class RaisedVoiceStartDelimiter {
 
   clone(): RaisedVoiceStartDelimiter {
     return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex, this.unspentLength)
-  } 
+  }
 }

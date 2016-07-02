@@ -1,4 +1,3 @@
-import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './OnTextMatch'
 import { TokenKind } from './TokenKind'
@@ -12,20 +11,20 @@ export interface TokenizableConvention {
   endPattern?: RegExp
 
   isCutShortByWhitespace?: boolean
-  
+
   flushesBufferToPlainTextTokenBeforeOpening?: boolean
-  
+
   whenOpening?: OnTextMatch
-  
+
   insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
   insteadOfOpeningUsualConventionsWhileOpen?: OnConventionEvent
 
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
-  
+
   whenClosingItAlsoClosesInnerConventions?: boolean
   whenClosingItFailsIfItCannotTranformInto?: TokenizableConvention[]
   whenClosingItFlushesBufferTo?: TokenKind
-  
+
   whenClosing?: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
 }
