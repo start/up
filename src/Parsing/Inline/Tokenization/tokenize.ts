@@ -98,7 +98,7 @@ class Tokenizer {
   // keep a direct reference to the naked URL convention to help us determine whether another convention
   // contains a naked URL.
   private nakedUrlConvention = new TokenizableConvention({
-    startPattern: regExpStartingWith('http' + optional('s') + '://'),
+    startsWith: 'http' + optional('s') + '://',
     isCutShortByWhitespace: true,
 
     flushesBufferToPlainTextTokenBeforeOpening: true,
@@ -344,8 +344,8 @@ class Tokenizer {
     return (
       (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
       || (
-        convention.endPattern
-        && this.consumer.consume({ pattern: convention.endPattern })))
+        convention.endsWith
+        && this.consumer.consume({ pattern: convention.endsWith })))
   }
 
   // Returns true if the context was successfully closed.
@@ -537,13 +537,13 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startPattern, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
+    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
 
     return (
       this.canTry(convention)
 
       && this.consumer.consume({
-        pattern: startPattern,
+        pattern: startsWith,
 
         thenBeforeAdvancingTextIndex: (match, charAfterMatch, ...captures) => {
           if (flushesBufferToPlainTextTokenBeforeOpening) {
@@ -685,8 +685,8 @@ class Tokenizer {
   // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startPattern: this.getBracketedUrlStartPattern(bracket),
-      endPattern: regExpStartingWith(bracket.endPattern),
+      startsWith: this.getBracketedUrlStartPattern(bracket),
+      endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
 
@@ -725,8 +725,8 @@ class Tokenizer {
   //      cconsecutive periods are allowed in the resource path.
   private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startPattern: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-      endPattern: regExpStartingWith(bracket.endPattern),
+      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+      endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
       whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
@@ -765,8 +765,8 @@ class Tokenizer {
   // replaced, but their entire contents are placed inside a link.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startPattern: this.getBracketedUrlStartPattern(bracket),
-      endPattern: regExpStartingWith(bracket.endPattern),
+      startsWith: this.getBracketedUrlStartPattern(bracket),
+      endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
 
@@ -786,8 +786,8 @@ class Tokenizer {
   // For more information, see `getLinkifyingUrlConventions` and `getLinkUrlConventions`.
   private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startPattern: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-      endPattern: regExpStartingWith(bracket.endPattern),
+      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+      endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
       whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
@@ -808,15 +808,15 @@ class Tokenizer {
     }))
   }
 
-  private getBracketedUrlStartPattern(bracket: Bracket): RegExp {
-    return regExpStartingWith(
+  private getBracketedUrlStartPattern(bracket: Bracket): string {
+    return (
       bracket.startPattern +
       // If the first character of the URL is escaped, we don't produce a link.
       notFollowedBy(escapeForRegex(ESCAPER_CHAR)))
   }
 
-  private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): RegExp {
-    return regExpStartingWith(
+  private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): string {
+    return (
       SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
@@ -914,10 +914,10 @@ class Tokenizer {
     const { richConvention, startPattern, endPattern, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
-      // Some of our rich sandwich conventions use a localized term in their start pattern, and we want those
-      // terms to be case-insensitive. No other start or end patterns need to be case-insensitive.
-      startPattern: regExpStartingWith(startPattern, (startPatternContainsATerm ? 'i' : undefined)),
-      endPattern: regExpStartingWith(endPattern),
+      startsWith: startPattern,
+      startPatternContainsATerm,
+      endsWith: endPattern,
+      
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
       whenClosingItFlushesBufferTo: TokenKind.PlainText,
@@ -934,8 +934,9 @@ class Tokenizer {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new TokenizableConvention({
-          startPattern: regExpStartingWith(this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket), 'i'),
-          endPattern: regExpStartingWith(bracket.endPattern),
+          startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket),
+          startPatternContainsATerm: true,
+          endsWith: bracket.endPattern,
 
           flushesBufferToPlainTextTokenBeforeOpening: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
@@ -948,8 +949,8 @@ class Tokenizer {
 
   private getMediaUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startPattern: regExpStartingWith(ANY_WHITESPACE + bracket.startPattern),
-      endPattern: regExpStartingWith(bracket.endPattern),
+      startsWith: ANY_WHITESPACE + bracket.startPattern,
+      endsWith: bracket.endPattern,
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
 
@@ -965,8 +966,8 @@ class Tokenizer {
 
   private getRawBracketConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startPattern: regExpStartingWith(bracket.startPattern),
-      endPattern: regExpStartingWith(bracket.endPattern),
+      startsWith: bracket.startPattern,
+      endsWith: bracket.endPattern,
 
       whenOpening: () => { this.buffer += bracket.start },
       whenClosing: () => { this.buffer += bracket.end },

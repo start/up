@@ -2,13 +2,15 @@ import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './OnTextMatch'
 import { TokenKind } from './TokenKind'
 import { RichConvention } from '../RichConvention'
+import { regExpStartingWith } from '../../PatternHelpers'
+
 
 
 export class TokenizableConvention {
   onlyOpenIfDirectlyFollowing: RichConvention[]
 
-  startPattern: RegExp
-  endPattern: RegExp
+  startsWith: RegExp
+  endsWith: RegExp
   isCutShortByWhitespace: boolean
 
   flushesBufferToPlainTextTokenBeforeOpening: boolean
@@ -30,8 +32,11 @@ export class TokenizableConvention {
   constructor(args: TokenizableConventionArgs) {
     this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
 
-    this.startPattern = args.startPattern
-    this.endPattern = args.endPattern
+    // Some of our conventions use a localized term in their start pattern, and we want those
+    // terms to be case-insensitive. No other start or end patterns need to be case-insensitive.
+    this.startsWith = regExpStartingWith(args.startsWith, (args.startPatternContainsATerm ? 'i' : undefined))
+
+    this.endsWith = regExpStartingWith(args.endsWith)
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
 
     this.flushesBufferToPlainTextTokenBeforeOpening = args.flushesBufferToPlainTextTokenBeforeOpening
@@ -56,8 +61,9 @@ export class TokenizableConvention {
 export interface TokenizableConventionArgs {
   onlyOpenIfDirectlyFollowing?: RichConvention[]
 
-  startPattern: RegExp
-  endPattern?: RegExp
+  startsWith: string
+  startPatternContainsATerm?: boolean
+  endsWith?: string
 
   isCutShortByWhitespace?: boolean
 
