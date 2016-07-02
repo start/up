@@ -5,7 +5,6 @@ import { RichConvention } from '../RichConvention'
 import { regExpStartingWith } from '../../PatternHelpers'
 
 
-
 export class TokenizableConvention {
   onlyOpenIfDirectlyFollowing: RichConvention[]
 
@@ -23,7 +22,8 @@ export class TokenizableConvention {
   failsIfWhitespaceIsEnounteredBeforeClosing: boolean
 
   whenClosingItAlsoClosesInnerConventions: boolean
-  whenClosingItFailsIfItCannotTranformInto: TokenizableConvention[]
+  whenClosingItCanTransformInto: TokenizableConvention[]
+  failsIfItCannotTransform: boolean  
   whenClosingItFlushesBufferTo: TokenKind
 
   whenClosing: OnConventionEvent
@@ -46,7 +46,7 @@ export class TokenizableConvention {
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
 
     this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
-    this.whenClosingItFailsIfItCannotTranformInto = args.whenClosingItFailsIfItCannotTranformInto || []
+    this.whenClosingItCanTransformInto = args.whenClosingItCanTransformInto || []
     this.whenClosingItFlushesBufferTo = args.whenClosingItFlushesBufferTo
 
     this.whenClosing = args.whenClosing
@@ -74,7 +74,8 @@ export interface TokenizableConventionArgs {
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
 
   whenClosingItAlsoClosesInnerConventions?: boolean
-  whenClosingItFailsIfItCannotTranformInto?: TokenizableConvention[]
+  whenClosingItCanTransformInto?: TokenizableConvention[]
+  failsIfItCannotTransform?: boolean
   whenClosingItFlushesBufferTo?: TokenKind
 
   whenClosing?: OnConventionEvent

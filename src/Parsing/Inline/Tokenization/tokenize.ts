@@ -375,7 +375,7 @@ class Tokenizer {
 
     openContext.close()
 
-    if (convention.whenClosingItFailsIfItCannotTranformInto.length) {
+    if (convention.whenClosingItCanTransformInto.length) {
       return this.tryToTransformConventionOrBacktrack({ belongingToContextAtIndex: contextIndex })
     }
 
@@ -395,7 +395,7 @@ class Tokenizer {
     const context = this.openContexts[contextIndex]
 
     const couldTransform =
-      context.convention.whenClosingItFailsIfItCannotTranformInto.some(convention => this.tryToOpen(convention))
+      context.convention.whenClosingItCanTransformInto.some(convention => this.tryToOpen(convention))
 
     if (!couldTransform) {
       // We couldn't transform, so it's time to fail.
@@ -572,7 +572,7 @@ class Tokenizer {
 
   private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
     const conventionsThisOneTransformTo =
-      convention.whenClosingItFailsIfItCannotTranformInto
+      convention.whenClosingItCanTransformInto
 
     // If this convention transforms into other conventions, then it can fail as itself *or* fail
     // post-transformation as of those conventions.
@@ -942,7 +942,7 @@ class Tokenizer {
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
           whenClosingItAlsoClosesInnerConventions: true,
-          whenClosingItFailsIfItCannotTranformInto: this.mediaUrlConventions,
+          whenClosingItCanTransformInto: this.mediaUrlConventions,
           whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
         }))))
   }
