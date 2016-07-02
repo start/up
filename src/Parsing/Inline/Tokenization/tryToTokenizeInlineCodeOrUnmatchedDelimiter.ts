@@ -16,12 +16,12 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
   let startDelimiter: string
 
-  const foundStartDelimiter = consumer.consume({
+  consumer.consume({
     pattern: INLINE_CODE_DELIMITER,
     thenBeforeAdvancingTextIndex: match => { startDelimiter = match }
   })
 
-  if (!foundStartDelimiter) {
+  if (!startDelimiter) {
     return false
   }
 
@@ -38,13 +38,13 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
     let possibleEndDelimiter: string
 
-    const foundPossibleEndDelimiter = consumer.consume({
+    consumer.consume({
       pattern: INLINE_CODE_DELIMITER,
       thenBeforeAdvancingTextIndex: match => { possibleEndDelimiter = match }
     })
 
-    if (!foundPossibleEndDelimiter) {
-      // Looks like we reached the end of the text! Let's bail.
+    if (!possibleEndDelimiter) {
+      // Looks like we reached the end of the text. Let's bail.
       break
     }
 
