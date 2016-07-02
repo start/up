@@ -32,7 +32,7 @@ export class UpConfig {
   public settings: UpConfigSettings
 
   constructor(changes: UpConfigSettings, baseSettings = DEFAULT_SETTINGS) {
-    this.settings = merge(baseSettings, changes)
+    this.settings = applyChanges(baseSettings, changes)
   }
 
   withChanges(changes: UpConfigSettings): UpConfig {
@@ -51,7 +51,10 @@ export class UpConfig {
 }
 
 
-function merge(base: StringInxexable, changes: StringInxexable): StringInxexable {
+// Recursively merges `base` and `changes` and returns the result. Neither argument is mutated.
+//
+// Any fields on `changes` that do not also exist on `base` are ignored.
+function applyChanges(base: StringInxexable, changes: StringInxexable): StringInxexable {
   if (changes == null) {
     return base
   }
@@ -61,17 +64,12 @@ function merge(base: StringInxexable, changes: StringInxexable): StringInxexable
   for (const key in base) {
     const baseValue = merged[key] = base[key]
     const changedValue = changes[key]
-
-    if (baseValue == null) {
-      merged[key] = changedValue
-      continue
-    }
-
+    
     if (changedValue != null) {
       // If a changed value is present, we assume it has the same type as the base value.
       merged[key] =
         typeof baseValue === 'object'
-          ? merge(baseValue, changedValue)
+          ? applyChanges(baseValue, changedValue)
           : changedValue
     }
   }
