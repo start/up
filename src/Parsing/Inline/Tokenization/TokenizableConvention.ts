@@ -46,7 +46,7 @@ export class TokenizableConvention {
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
 
     this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
-    this.whenClosingItFailsIfItCannotTranformInto = args.whenClosingItFailsIfItCannotTranformInto
+    this.whenClosingItFailsIfItCannotTranformInto = args.whenClosingItFailsIfItCannotTranformInto || []
     this.whenClosingItFlushesBufferTo = args.whenClosingItFlushesBufferTo
 
     this.whenClosing = args.whenClosing

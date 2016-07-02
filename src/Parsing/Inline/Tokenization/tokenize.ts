@@ -375,7 +375,7 @@ class Tokenizer {
 
     openContext.close()
 
-    if (convention.whenClosingItFailsIfItCannotTranformInto) {
+    if (convention.whenClosingItFailsIfItCannotTranformInto.length) {
       return this.tryToTransformConventionOrBacktrack({ belongingToContextAtIndex: contextIndex })
     }
 
@@ -582,7 +582,7 @@ class Tokenizer {
     // but for now, because all of our "post-transformation" conventions have incompatible start
     // patterns, there's no point in trying again.
     const hasPreviouslyFailedAfterTransformingIntoAnotherConvention =
-      conventionsThisOneTransformTo && conventionsThisOneTransformTo
+      conventionsThisOneTransformTo
         .some(transformsInto => this.failedConventionTracker.hasFailed(transformsInto, textIndex))
 
     if (hasPreviouslyFailedAfterTransformingIntoAnotherConvention) {
@@ -917,7 +917,7 @@ class Tokenizer {
       startsWith: startPattern,
       startPatternContainsATerm,
       endsWith: endPattern,
-      
+
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
       whenClosingItFlushesBufferTo: TokenKind.PlainText,
