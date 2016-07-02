@@ -32,10 +32,7 @@ export class TokenizableConvention {
   constructor(args: TokenizableConventionArgs) {
     this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
 
-    // Some of our conventions use a localized term in their start pattern, and we want those
-    // terms to be case-insensitive. No other start or end patterns need to be case-insensitive.
-    this.startsWith = regExpStartingWith(args.startsWith, (args.startPatternContainsATerm ? 'i' : undefined))
-
+    this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
     this.endsWith = regExpStartingWith(args.endsWith)
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
 

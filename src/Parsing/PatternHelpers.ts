@@ -62,8 +62,8 @@ export function escapeForRegex(text: string): string {
   return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
 }
 
-export function regExpStartingWith(pattern: string, flags?: string): RegExp {
-  return new RegExp('^' + pattern, flags)
+export function regExpStartingWith(pattern: string, containsATerm?: boolean): RegExp {
+  return new RegExp('^' + pattern, containsATerm ? 'i' : undefined)
 }
 
 import { ANY_WHITESPACE } from './PatternPieces'
