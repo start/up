@@ -376,7 +376,7 @@ class Tokenizer {
     openContext.close()
 
     if (convention.whenClosingItCanTransformInto.length) {
-      return this.tryToTransformConventionOrBacktrack({ belongingToContextAtIndex: contextIndex })
+      return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex })
     }
 
     this.openContexts.splice(contextIndex, 1)
@@ -390,16 +390,19 @@ class Tokenizer {
     return true
   }
 
-  private tryToTransformConventionOrBacktrack(args: { belongingToContextAtIndex: number }): boolean {
+  private tryToTransformConvention(args: { belongingToContextAtIndex: number }): boolean {
     const contextIndex = args.belongingToContextAtIndex
     const context = this.openContexts[contextIndex]
+    const { convention } = context
 
     const couldTransform =
-      context.convention.whenClosingItCanTransformInto.some(convention => this.tryToOpen(convention))
+      convention.whenClosingItCanTransformInto.some(convention => this.tryToOpen(convention))
 
     if (!couldTransform) {
-      // We couldn't transform, so it's time to fail.
-      this.backtrackToBeforeContext(context)
+      if (convention.failsIfItCannotTransform) {
+        this.backtrackToBeforeContext(context)
+      }
+
       return false
     }
 
@@ -407,7 +410,7 @@ class Tokenizer {
     // actually want to replace this context's convention with the new one instead.
     context.convention = this.openContexts.pop().convention
 
-    if (context.convention.whenClosingItAlsoClosesInnerConventions) {
+    if (convention.whenClosingItAlsoClosesInnerConventions) {
       this.openContexts.splice(contextIndex + 1)
     }
 
@@ -943,6 +946,7 @@ class Tokenizer {
 
           whenClosingItAlsoClosesInnerConventions: true,
           whenClosingItCanTransformInto: this.mediaUrlConventions,
+          failsIfItCannotTransform: true,
           whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
         }))))
   }
