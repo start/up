@@ -12,6 +12,8 @@ all_our_build_dirs = $(compiled_dir) $(npm_publish_dir)
 # For more information on why this distinction is important, see the `coverage` target.
 mocha_args_for_behavioral_tests = --recursive ./compiled/Test
 
+local_mocha = $(local_modules_dir)/mocha
+
 
 .PHONY: all
 all: test
@@ -41,8 +43,11 @@ compile: clean
 
 .PHONY: test
 test: compile
-# Run all behavioral and module unit tests.
-	$(local_modules_dir)/mocha $(mocha_args_for_behavioral_tests) ./module-export-tests.js
+# Run all behavioral unit tests.
+	$(local_mocha) $(mocha_args_for_behavioral_tests)
+
+# Run all export unit tests. These tests have timed out on Travis CI before, so we specify a larger timeout.
+	$(local_mocha) ./module-export-tests.js --timeout 3000
 
 
 .PHONY: coverage
