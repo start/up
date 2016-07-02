@@ -6,12 +6,12 @@ import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 
 
 describe('The term that represents spoiler conventions', () => {
-    const up = new Up({
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
-    })
-    
+  const up = new Up({
+    i18n: {
+      terms: { spoiler: 'ruins ending' }
+    }
+  })
+
   it('comes from the "spoiler" config term ', () => {
     expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
@@ -20,11 +20,11 @@ describe('The term that represents spoiler conventions', () => {
         ])
       ]))
   })
-  
+
   it('is case-insensitive even when custom', () => {
     const uppercase = '[RUINS ENDING: Ash fights Gary]'
     const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
-    
+
     expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
   })
 })

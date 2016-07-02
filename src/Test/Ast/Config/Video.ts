@@ -6,12 +6,12 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
 describe('The term that represents video conventions', () => {
-    const up = new Up({
-      i18n: {
-        terms: { video: 'watch' }
-      }
-    })
-    
+  const up = new Up({
+    i18n: {
+      terms: { video: 'watch' }
+    }
+  })
+
   it('comes from the "video" config term', () => {
     const text = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
@@ -21,7 +21,7 @@ describe('The term that represents video conventions', () => {
       ])
     )
   })
-    
+
   it('is case-insensitive even when custom', () => {
     const lowercase = '[watch: Nevada caucus footage][https://example.com/video.webm]'
     const mixedCase = '[WaTCH: Nevada caucus footage][https://example.com/video.webm]'

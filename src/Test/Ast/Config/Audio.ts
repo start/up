@@ -5,12 +5,12 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
 describe('The term that represents video conventions', () => {
-    const up = new Up({
-      i18n: {
-        terms: { audio: 'listen' }
-      }
-    })
-    
+  const up = new Up({
+    i18n: {
+      terms: { audio: 'listen' }
+    }
+  })
+
   it('comes from the "audio" config term', () => {
     const text = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
@@ -20,7 +20,7 @@ describe('The term that represents video conventions', () => {
       ])
     )
   })
-    
+
   it('is case-insensitive even when custom', () => {
     const lowercase = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
     const misedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
