@@ -1,6 +1,3 @@
-import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
-
-
 export interface MediaSyntaxNodeType {
   new (description: string, url: string): MediaSyntaxNode
 }
