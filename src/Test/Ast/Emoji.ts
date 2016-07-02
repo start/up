@@ -3,7 +3,6 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 
 
 describe('Emojis in a paragraph', () => {
