@@ -2,16 +2,19 @@ import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorSt
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
+import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 import { LineConsumer } from './LineConsumer'
 
+
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
   tryToParseUnorderedList,
   trytoParseOrderedList,
   tryToParseSectionSeparatorStreak,
-  tryToParseBlockquote
+  tryToParseBlockquote,
+  tryToParseCodeBlock
 ]
 
 
