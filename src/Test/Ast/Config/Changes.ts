@@ -1,6 +1,9 @@
 import { expect } from 'chai'
-import { UpConfigSettings } from '../../../UpConfigSettings'
 import Up from '../../../index'
+import { UpConfigSettings } from '../../../UpConfigSettings'
+import { insideDocumentAndParagraph } from '../Helpers'
+import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -26,7 +29,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   const whenProvidingChangesWhenCallingDefaultMethod =
     Up.toAst(text, configChanges)
-    
+
   const whenProvidingChangesWhenCallingtMethodOnObject =
     new Up().toAst(text, configChanges)
 
@@ -133,5 +136,39 @@ describe('The "spoiler" config term', () => {
         terms: { spoiler: 'look away' }
       }
     }
+  })
+})
+
+
+context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
+  specify('an Up object you create', () => {
+    const up = new Up({
+      i18n: {
+        terms: { footnote: 'reference' }
+      }
+    })
+
+    expect(up.toAst('[SPOILER: Ash fights Gary]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
+      ]))
+  })
+
+  specify('the default (static) Up object ', () => {
+    const ast =
+      Up.toAst('[SPOILER: Ash fights Gary]', {
+        i18n: {
+          terms: { footnote: 'reference' }
+        }
+      })
+
+    expect(ast).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
+      ]))
   })
 })
