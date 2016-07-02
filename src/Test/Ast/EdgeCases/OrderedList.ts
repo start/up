@@ -160,7 +160,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
       ]))
   })
 
-  it('when zero', () => {
+  specify('when zero', () => {
     const text = `
 000) Hello, world!
 #) Goodbye, world!`
