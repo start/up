@@ -1,12 +1,10 @@
-import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
-import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
-import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
-import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
+import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
+import { tryToParseBlockquote } from './tryToParseBlockquote'
+import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
-import { LineConsumer } from './LineConsumer'
 
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
