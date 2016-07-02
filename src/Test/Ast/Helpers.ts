@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'

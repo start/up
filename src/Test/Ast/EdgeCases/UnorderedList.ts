@@ -6,7 +6,6 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
@@ -74,7 +73,7 @@ And addresses do, too`
           new Line([
             new PlainTextNode('And addresses do, too')
           ])
-        ]),
+        ])
       ])
     )
   })
@@ -115,7 +114,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
               new PlainTextNode('Sanders')
             ])
           ])
-        ]),
+        ])
       ]))
   })
 })
@@ -158,7 +157,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
               new PlainTextNode('Sanders')
             ])
           ])
-        ]),
+        ])
       ]))
   })
 })

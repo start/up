@@ -4,10 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 
 describe('A paragraph with 2 separate instances of overlapped conventions', () => {
