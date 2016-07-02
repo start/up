@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'

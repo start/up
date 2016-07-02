@@ -3,7 +3,6 @@ import Up from '../../index'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('Inside a link, a footnote', () => {

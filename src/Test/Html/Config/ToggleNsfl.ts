@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 

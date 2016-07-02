@@ -64,7 +64,7 @@ function applyChanges(base: StringInxexable, changes: StringInxexable): StringIn
   for (const key in base) {
     const baseValue = merged[key] = base[key]
     const changedValue = changes[key]
-    
+
     if (changedValue != null) {
       // If a changed value is present, we assume it has the same type as the base value.
       merged[key] =
