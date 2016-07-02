@@ -34,6 +34,22 @@ describe('A code block with containing zero lines of code', () => {
 
 
 describe('A code block', () => {
+  it('can directly follow a paragraph', () => {
+    const text = `
+My pies never turn out quite right.
+\`\`\`
+const pie = 3.5
+\`\`\``
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('My pies never turn out quite right.')
+        ]),
+        new CodeBlockNode('const pie = 3.5')
+      ]))
+  })
+
   it('can be directly followed by a paragraph', () => {
     const text = `
 \`\`\`
