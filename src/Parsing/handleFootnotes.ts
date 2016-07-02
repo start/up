@@ -1,5 +1,5 @@
-import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { concat } from '../CollectionHelpers'
+import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
