@@ -66,6 +66,28 @@ const lineBreak = "\\n"
       ]))
   })
 
+  it('can follow another code block that uses streaks of the same length', () => {
+    const text = `
+\`\`\`
+// Escaping backticks in typescript...
+// Such a pain!
+\`\`\`
+\`\`\`
+// Escaping backticks in typescript...
+// Wait. Have I already said this?
+\`\`\``
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new CodeBlockNode(
+          `// Escaping backticks in typescript...
+// Such a pain!`),
+new CodeBlockNode(
+          `// Escaping backticks in typescript...
+// Wait. Have I already said this?`),
+      ]))
+  })
+
 
   context('can contain streaks of backticks', () => {
     specify("shorter than the code block's streaks", () => {
