@@ -13,5 +13,5 @@ function htmlEscape(html: string, charsToEscape: RegExp): string {
 const ESCAPED_HTML_ENTITIES_BY_CHAR: { [entity: string]: string } = {
   '&': '&amp;',
   '<': '&lt;',
-  '"': '&quot;',
+  '"': '&quot;'
 }
