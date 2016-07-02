@@ -44,7 +44,7 @@ describe('An ordered list with non-bullets bullets between the 2 numeral bullets
 
     expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
-  
+
   it('is descending if the 2 numeral bullets are descending', () => {
     const text = `
 # Hello, world!
@@ -58,21 +58,57 @@ describe('An ordered list with non-bullets bullets between the 2 numeral bullets
 })
 
 
-describe('An ordered list with 2 non-numeral bullets', () => {
-  it('is ascending if the 2 numeral bullets are ascending', () => {
-    const text = `
+context('An ordered list with 2 non-numeral bullets', () => {
+  context('is ascending when', () => {
+    specify('the 2 numeral bullets are positive and ascending', () => {
+      const text = `
 2. Hello, world!
 4) Goodbye, world!`
 
-    expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+    })
+
+    specify('the 2 numeral bullets are negative and ascending', () => {
+      const text = `
+-2. Hello, world!
+-1) Goodbye, world!`
+
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+    })
+
+    specify('the first numeral bullet is negative and the second is positive, even if the absolute value of the second numeral is less', () => {
+      const text = `
+-2. Hello, world!
+1) Goodbye, world!`
+
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+    })
   })
-  
-  it('is descending if the 2 numeral bullets are descending', () => {
-    const text = `
+
+  context('is descending when', () => {
+    specify('the 2 numeral bullets are positive descending', () => {
+      const text = `
 5. Hello, world!
 1) Goodbye, world!`
 
-    expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Descrending)
+    })
+
+    specify('the 2 numeral bullets are negative and descending', () => {
+      const text = `
+-2. Hello, world!
+-3) Goodbye, world!`
+
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+    })
+
+    specify('the first numeral bullet is positive and the second is negative, even if the absolute value of the first numeral is less', () => {
+      const text = `
+1. Hello, world!
+-2) Goodbye, world!`
+
+      expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
+    })
   })
 })
 
@@ -86,7 +122,7 @@ describe('An ordered list with more than 2 numeral bullets', () => {
 
     expect(listOrder(text)).to.be.eql(OrderedListOrder.Ascending)
   })
-  
+
   it('is descending if the first 2 numeral bullets are descending', () => {
     const text = `
 5. Hello, world!
@@ -100,7 +136,7 @@ describe('An ordered list with more than 2 numeral bullets', () => {
 
 context('When the starting ordinal is negative', () => {
   specify('the list is still ascending by default', () => {
-        const text = `
+    const text = `
 -5) Hello, world!
 #. Goodbye, world!
 #) Goodbye, world!`
