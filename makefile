@@ -58,4 +58,4 @@ coverage: compile
 
 .PHONY: lint
 lint: compile
-	$(local_modules_dir)/tslint src/**/*.ts
+	find src -name "*.ts" -print0 | xargs -0 $(local_modules_dir)/tslint
