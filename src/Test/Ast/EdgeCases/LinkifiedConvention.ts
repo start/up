@@ -2,12 +2,9 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
 describe("An almost-linkified spoiler (with whitespace between its content and URL) terminated early due to a space in its URL", () => {

@@ -5,9 +5,7 @@ import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
 describe('A backslash that is the first character in a paragraph', () => {

@@ -1,11 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
-import { insideDocumentAndParagraph } from '../../Helpers'
 import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
 
 
 describe('An empty document', () => {
