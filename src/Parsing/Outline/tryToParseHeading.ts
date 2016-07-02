@@ -4,7 +4,6 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { HeadingLeveler } from './HeadingLeveler'
 import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 
 
