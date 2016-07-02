@@ -8,11 +8,11 @@
     "member-access": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
-
     "semicolon": [
       true,
       "never"
     ],
+    "switch-default": false,
     "trailing-comma": [
       true,
       {

@@ -1,4 +1,3 @@
-import { TokenKind } from './TokenKind'
 import { escapeForRegex } from '../../PatternHelpers'
 
 

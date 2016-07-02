@@ -188,7 +188,7 @@ class Parser {
   private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutivePlainTextNodes(this.nodes),
+      nodes: combineConsecutivePlainTextNodes(this.nodes)
     }
   }
 }
