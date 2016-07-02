@@ -1,12 +1,9 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 
 describe('Overlapped doubly emphasized text (closing at the same time) and revision deletion', () => {
