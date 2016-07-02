@@ -3,6 +3,15 @@
   "rules": {
      "interface-name": [true, "never-prefix"],
      "member-access": false,
-     "semicolon": [true, "never"]
+     "no-consecutive-blank-lines": false,
+     "object-literal-sort-keys": false,
+     "semicolon": [true, "never"],
+     "trailing-comma": [true,
+        {
+            "singleline": "never",
+            "multiline": "never"
+        }
+    ],
+    "quotemark": [true, "single", "avoid-escape"]
   }
 }
