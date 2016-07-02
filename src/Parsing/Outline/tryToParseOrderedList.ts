@@ -1,11 +1,10 @@
 import { LineConsumer } from './LineConsumer'
-import { OrderedListNode, OrderedListOrder } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { optional, regExpStartingWith, escapeForRegex, atLeast, either, anyCharFrom, capture } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, DIGIT } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
-import { INPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 

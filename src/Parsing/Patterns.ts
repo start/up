@@ -1,4 +1,4 @@
-import { anyCharMatching, anyCharFrom, solely, either, exactly, streakOf, escapeForRegex, regExpStartingWith } from './PatternHelpers'
+import { anyCharFrom, solely, either, exactly, streakOf, regExpStartingWith } from './PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, ANY_WHITESPACE } from './PatternPieces'
 
 
