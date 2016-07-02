@@ -1,4 +1,3 @@
-import { MediaConvention } from './MediaConvention'
 import { TokenKind } from './Tokenization/TokenKind'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'

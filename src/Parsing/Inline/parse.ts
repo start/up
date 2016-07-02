@@ -3,14 +3,11 @@ import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from './MediaCon
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { isWhitespace } from '../isWhitespace'
-import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { last } from '../../CollectionHelpers'
 import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { RichConvention } from './RichConvention'
 
 
