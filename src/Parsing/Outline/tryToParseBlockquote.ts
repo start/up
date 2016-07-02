@@ -3,7 +3,6 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { regExpStartingWith, optional } from '../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

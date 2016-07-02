@@ -1,4 +1,4 @@
-import { getSortedUnderlineChars } from './getSortedUnderlineChars' 
+import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 
 
 // Keeps track of which underline characters are associated with which heading level.

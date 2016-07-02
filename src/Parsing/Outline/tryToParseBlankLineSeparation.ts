@@ -13,10 +13,10 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
   const consumer = new LineConsumer(args.lines)
   let countBlankLines = 0
 
-  while (consumer.consume({linePattern: BLANK_PATTERN})) {
+  while (consumer.consume({ linePattern: BLANK_PATTERN })) {
     countBlankLines += 1
   }
-  
+
   // If there are no blank lines, we can't say we parsed anything. Bail!  
   if (!countBlankLines) {
     return false
