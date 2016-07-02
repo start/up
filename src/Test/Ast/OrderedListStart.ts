@@ -40,3 +40,15 @@ describe('An ordered list that starts with a numeral bullet', () => {
     expect(listStart(text)).to.be.eql(10)
   })
 })
+
+
+describe('An ordered list starting ordinal', () => {
+  it('can be very high', () => {
+    const text = `
+9999) Hello, world!
+#. Goodbye, world!
+#) Goodbye, world!`
+
+    expect(listStart(text)).to.be.eql(9999)
+  })
+})
