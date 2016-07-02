@@ -6,7 +6,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
-describe('Within a code block, a streak of backticks preceded by a space', () => {
+describe('Within a code block, a streak of backticks matching the start streak but preceded by a space', () => {
   it('is preserved as code (and does not end the code block)', () => {
     const text = `
 \`\`\`
@@ -33,7 +33,7 @@ describe('A code block with containing zero lines of code', () => {
 })
 
 
-describe('An unmatched streak of backticks following a normal "enclosed" code block', () => {
+describe('An unmatched streak of backticks following a normal "enclosed" code block whose streaks are the same length', () => {
   it("produces a code block node containing the rest of the document", () => {
     const text = `
 Check out the code below!
