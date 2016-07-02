@@ -6,6 +6,6 @@ export class DescriptionListNode extends OutlineSyntaxNode {
   constructor(public listItems: DescriptionListItem[]) {
     super()
   }
-  
+
   private DESCRIPTION_LIST: any = null
 }

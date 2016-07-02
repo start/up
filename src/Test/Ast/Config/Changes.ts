@@ -1,10 +1,6 @@
 import { expect } from 'chai'
 import { UpConfigSettings } from '../../../UpConfigSettings'
 import Up from '../../../index'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
