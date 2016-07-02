@@ -6,6 +6,6 @@ export class HeadingNode extends OutlineSyntaxNode {
   constructor(public children?: InlineSyntaxNode[], public level?: number) {
     super()
   }
-  
+
   private HEADING: any = null
 }

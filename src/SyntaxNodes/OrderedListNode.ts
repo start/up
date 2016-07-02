@@ -6,7 +6,7 @@ export class OrderedListNode extends OutlineSyntaxNode {
   constructor(public listItems: OrderedListItem[] = []) {
     super()
   }
-  
+
   start(): number {
     return this.listItems[0].ordinal
   }

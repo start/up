@@ -1,4 +1,4 @@
-import { everyOptional, atLeast, anyCharNotMatching, escapeForRegex } from './PatternHelpers'
+import { everyOptional, atLeast, anyCharNotMatching } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =

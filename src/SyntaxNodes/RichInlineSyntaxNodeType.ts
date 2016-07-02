@@ -3,5 +3,5 @@ import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
 
 
 export interface RichInlineSyntaxNodeType {
-  new(children: InlineSyntaxNode[]): RichInlineSyntaxNode
+  new (children: InlineSyntaxNode[]): RichInlineSyntaxNode
 }
