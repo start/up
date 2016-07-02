@@ -51,4 +51,22 @@ describe('An ordered list starting ordinal', () => {
 
     expect(listStart(text)).to.be.eql(9999)
   })
+
+  it('can be zero', () => {
+    const text = `
+0) Hello, world!
+#. Goodbye, world!
+#) Goodbye, world!`
+
+    expect(listStart(text)).to.be.eql(0)
+  })
+
+  it('can be negative', () => {
+    const text = `
+-5) Hello, world!
+#. Goodbye, world!
+#) Goodbye, world!`
+
+    expect(listStart(text)).to.be.eql(-5)
+  })
 })
