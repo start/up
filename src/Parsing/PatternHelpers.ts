@@ -66,10 +66,6 @@ export function regExpStartingWith(pattern: string, flags?: string): RegExp {
   return new RegExp('^' + pattern, flags)
 }
 
-export function regExpEndingWith(pattern: string, flags?: string): RegExp {
-  return new RegExp(pattern + '$', flags)
-}
-
 import { ANY_WHITESPACE } from './PatternPieces'
 
 export function solely(pattern: string) {
