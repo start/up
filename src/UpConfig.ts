@@ -31,8 +31,8 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
 export class UpConfig {
   public settings: UpConfigSettings
 
-  constructor(settings?: UpConfigSettings, defaultSettings = DEFAULT_SETTINGS) {
-    this.settings = merge(defaultSettings, settings)
+  constructor(changes: UpConfigSettings, baseSettings = DEFAULT_SETTINGS) {
+    this.settings = merge(baseSettings, changes)
   }
 
   withChanges(changes: UpConfigSettings): UpConfig {
@@ -46,7 +46,7 @@ export class UpConfig {
       return localizedTerm
     }
 
-    throw new Error(`Unrecognized term: ${nonLocalizedTerm}`)
+    throw new Error('Unrecognized term: ' + nonLocalizedTerm)
   }
 }
 
