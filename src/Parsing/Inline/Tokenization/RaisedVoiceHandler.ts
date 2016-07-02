@@ -100,8 +100,8 @@ export class RaisedVoiceHandler {
         // 1. This is ***emphasized and stressed***.
         // 2. This is also **********emphasized and stressed**********.
         //
-        // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be subsequently
-        // matched by other delimiters.
+        // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
+        // subsequently matched by other delimiters.
 
         this.encloseWithin({
           richConvention: EMPHASIS_CONVENTION,

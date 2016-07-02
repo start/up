@@ -1,7 +1,6 @@
 import { LINK_CONVENTION, STRESS_CONVENTION, EMPHASIS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
 import { RichConvention } from '../RichConvention'
 import { Token } from './Token'
-import { TokenKind } from './TokenKind'
 
 
 // Conventions can overlap, which makes it painful to produce an abstract syntax tree. This function rearranges
@@ -52,7 +51,7 @@ class ConventionNester {
       splittableConventions.push(conventionNotToSplit)
     }
   }
-  
+
   // This method assumes no tokens are missing.
   splitConventionsThatStartInsideAnotherConventionAndEndAfter(conventions: RichConvention[]): void {
     const unclosedStartTokens: Token[] = []
