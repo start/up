@@ -33,18 +33,20 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
       then: match => { possibleEndStreak = match }
     })
 
-    // Did we just find a possible end streak?
-    if (possibleEndStreak) {
-      if (possibleEndStreak.length === startStreak.length) {
-        // It matches the start streak! Let's bail
-        break
-      }
-
-      // The streak didn't match, so let's include it in the code block.
-      codeLines.push(possibleEndStreak)
+    if (!possibleEndStreak) {
+      consumer.consume({ then: line => codeLines.push(line) })
+      continue
     }
 
-    consumer.consume({ then: line => codeLines.push(line) })
+    // Alright, we have a possible end streak.
+
+    if (possibleEndStreak.length === startStreak.length) {
+      // It matches the start streak! Let's bail.
+      break
+    }
+
+    // The streak didn't match the start streak, so let's include it in the code block.
+    codeLines.push(possibleEndStreak)
   }
 
   const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
