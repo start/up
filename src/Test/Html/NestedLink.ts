@@ -7,7 +7,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('Inside a link, a footnote', () => {
-  it("'does not produce an anchor element. The footnote's sup element directly includes the would-be anchor's contents", () => {
+  it("'does not produce an anchor element. The footnote's sup element directly contains the footnote's reference number", () => {
     const node = new LinkNode([
       new PlainTextNode('Google'),
       new FootnoteNode([new PlainTextNode('A really old search engine.')], 2)
