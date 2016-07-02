@@ -113,3 +113,72 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
       ]))
   })
 })
+
+
+context('An ordered list item ordinal can have leading 0 digits without affecting the ordinal itself', () => {
+  specify('when positive', () => {
+    const text = `
+0010) Hello, world!
+#. Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ], 10),
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('when negative', () => {
+    const text = `
+-0020) Hello, world!
+#) Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ], -20),
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  it('when zero', () => {
+    const text = `
+000) Hello, world!
+#) Goodbye, world!`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Hello, world!')
+            ])
+          ], 0),
+          new OrderedListItem([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, world!')
+            ])
+          ])
+        ])
+      ]))
+  })
+})
