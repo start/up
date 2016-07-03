@@ -132,6 +132,29 @@ describe('An otherwise valid audio convention with mismatched brackets surroundi
 })
 
 
+context('Unmatched opening parentheses in an audio description have no affect on', () => {
+  specify('parentheses surounding the audio URL', () => {
+    expect(Up.toAst('[audio: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+      ]))
+  })
+
+  specify('parentheses that follow the convention', () => {
+    expect(Up.toAst('([audio: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new ParenthesizedNode([
+            new PlainTextNode('('),
+            new AudioNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new PlainTextNode(')'),
+          ])
+        ])
+      ]))
+  })
+})
+
+
 describe("Unmatched opening parentheses in an audio URL", () => {
   it('do not affect any text that follows the link', () => {
     const text = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
@@ -163,7 +186,7 @@ describe('A full audio convention (description and URL) directly followed by ano
           new LinkNode([
             new PlainTextNode('bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)'),
-          new PlainTextNode(')')          
+          new PlainTextNode(')')
         ])
       ]))
   })
