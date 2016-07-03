@@ -344,8 +344,8 @@ class Tokenizer {
   // was opened, and this method returns false. 
   private tryToCloseConventionOrBacktrack(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
-    const openContext = this.openContexts[contextIndex]
-    const { convention } = openContext
+    const context = this.openContexts[contextIndex]
+    const { convention } = context
 
     // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
     this.closeNakedUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
@@ -354,18 +354,17 @@ class Tokenizer {
       this.flushBufferToTokenOfKind(convention.whenClosingItFlushesBufferTo)
     }
 
-    openContext.close()
-
-    if (convention.mustBeDirectlyFollowedBy) {
-      return this.tryToOpenRequiredConvention({ requiredForContextAtIndex: contextIndex })
-    }
-
+    context.close()
     this.openContexts.splice(contextIndex, 1)
 
     if (convention.whenClosingItAlsoClosesInnerConventions) {
       // Since we just removed the context at `contextIndex`, its inner contexts will now start at
       // `contextIndex`.           
       this.openContexts.splice(contextIndex)
+    }
+
+    if (convention.mustBeDirectlyFollowedBy) {
+      return this.tryToOpenRequiredConvention(context)
     }
 
     return true
@@ -375,29 +374,21 @@ class Tokenizer {
     return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
   }
 
-  private tryToOpenRequiredConvention(args: { requiredForContextAtIndex: number }): boolean {
-    const contextIndex = args.requiredForContextAtIndex
-    const context = this.openContexts[contextIndex]
-
+  private tryToOpenRequiredConvention(closedContext: ConventionContext): boolean {
     const didOpenNextConvention =
-      context.convention.mustBeDirectlyFollowedBy.some(convention => this.tryToOpen(convention))
+      closedContext.convention.mustBeDirectlyFollowedBy.some(convention => this.tryToOpen(convention))
 
     if (!didOpenNextConvention) {
       // We couldn't open the next convention, so it's time to fail.
-      this.backtrackToBeforeContext(context)
+      this.backtrackToBeforeContext(closedContext)
       return false
     }
 
     // So... we've just opened a new context for the required convention.
     //
-    // However, if that next convention eventually fails, we need to backtrack to before the one we're in
-    // the process of closing. To make that process easier, we use the context of the convention we're
-    // closing, replacing its convention with the one we just opened.
-    context.convention = this.openContexts.pop().convention
-
-    if (context.convention.whenClosingItAlsoClosesInnerConventions) {
-      this.openContexts.splice(contextIndex + 1)
-    }
+    // However, if that next convention eventually fails, we need to backtrack to before the one we just
+    // closed. To make that process easier, we give the new convention the snapshot of the old context.
+    last(this.openContexts).snapshot = closedContext.snapshot
 
     return true
   }
@@ -583,7 +574,7 @@ class Tokenizer {
     // incompatible start patterns, there's no point in trying again.
     const hasFailedAfterOpeningRequiredConvention =
       conventionsThatMustFollow && conventionsThatMustFollow
-        .some(transformsInto => this.failedConventionTracker.hasFailed(transformsInto, textIndex))
+        .some(conventionThatFollows => this.failedConventionTracker.hasFailed(conventionThatFollows, textIndex))
 
     if (hasFailedAfterOpeningRequiredConvention) {
       return false
