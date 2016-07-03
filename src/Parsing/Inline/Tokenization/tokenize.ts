@@ -312,7 +312,7 @@ class Tokenizer {
         // If that happens, we're happy immediately return false from this method, too, because we know for
         // a fact that won't be able to close any outer conventions at our current position (we already failed
         // to do so when we opened the now-failed context).
-        return this.tryToCloseContextOrBacktrack({ atIndex: i })
+        return this.tryToCloseConventionOrBacktrack({ atIndex: i })
       }
 
       if (openContext.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
@@ -342,7 +342,7 @@ class Tokenizer {
   //
   // Otherwise, if the context couldn't be closed, the tokenizer is reset to where it was before the context
   // was opened, and this method returns false. 
-  private tryToCloseContextOrBacktrack(args: { atIndex: number }): boolean {
+  private tryToCloseConventionOrBacktrack(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
     const openContext = this.openContexts[contextIndex]
     const { convention } = openContext
@@ -356,8 +356,8 @@ class Tokenizer {
 
     openContext.close()
 
-    if (convention.whenClosingItFailsIfItCannotTranformInto) {
-      return this.tryToTransformConventionOrBacktrack({ belongingToContextAtIndex: contextIndex })
+    if (convention.mustBeDirectlyFollowedBy) {
+      return this.tryToOpenRequiredConvention({ requiredForContextAtIndex: contextIndex })
     }
 
     this.openContexts.splice(contextIndex, 1)
@@ -375,21 +375,24 @@ class Tokenizer {
     return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
   }
 
-  private tryToTransformConventionOrBacktrack(args: { belongingToContextAtIndex: number }): boolean {
-    const contextIndex = args.belongingToContextAtIndex
+  private tryToOpenRequiredConvention(args: { requiredForContextAtIndex: number }): boolean {
+    const contextIndex = args.requiredForContextAtIndex
     const context = this.openContexts[contextIndex]
 
-    const couldTransform =
-      context.convention.whenClosingItFailsIfItCannotTranformInto.some(convention => this.tryToOpen(convention))
+    const didOpenNextConvention =
+      context.convention.mustBeDirectlyFollowedBy.some(convention => this.tryToOpen(convention))
 
-    if (!couldTransform) {
-      // We couldn't transform, so it's time to fail.
+    if (!didOpenNextConvention) {
+      // We couldn't open the next convention, so it's time to fail.
       this.backtrackToBeforeContext(context)
       return false
     }
 
-    // So... we've just opened a new context for the convention we're transforming into. However, we
-    // actually want to replace this context's convention with the new one instead.
+    // So... we've just opened a new context for the required convention.
+    //
+    // However, if that next convention eventually fails, we need to backtrack to before the one we're in
+    // the process of closing. To make that process easier, we use the context of the convention we're
+    // closing, replacing its convention with the one we just opened.
     context.convention = this.openContexts.pop().convention
 
     if (context.convention.whenClosingItAlsoClosesInnerConventions) {
@@ -562,21 +565,27 @@ class Tokenizer {
   }
 
   private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
-    const conventionsThisOneTransformTo =
-      convention.whenClosingItFailsIfItCannotTranformInto
+    const conventionsThatMustFollow =
+      convention.mustBeDirectlyFollowedBy
 
-    // If this convention transforms into other conventions, then it can fail as itself *or* fail
-    // post-transformation as of those conventions.
+    // If a convention must be followed by one of a set of specific conventions, then there are really
+    // three ways that convention can fail:
     //
-    // If a convention fails post-transformation, we don't try it again to see if it could transform
-    // into a different convention. If it fails once, we move on. This logic is subject to change,
-    // but for now, because all of our "post-transformation" conventions have incompatible start
-    // patterns, there's no point in trying again.
-    const hasPreviouslyFailedAfterTransformingIntoAnotherConvention =
-      conventionsThisOneTransformTo && conventionsThisOneTransformTo
+    // 1. It's missing its end delimiter (or was otherwise deemed invalid). This is the normal way for a
+    //    a convention to fail, and our `failedConventionTracker` easily takes care of this below.
+    // 2. None of the required conventions could be opened. This is handled elsewhere.
+    // 3. One of the required conventions was opened, but it was missing its end delimiter (or was
+    //    otherwise deemed invalid).
+    //
+    // To handle that third case, we also check whether any of the required conventions have failed. If
+    // so, we consider the first convention to have failed, too, and we don't try it again. This logic is
+    // subject to change, but for now, because all of our required subsequent conventions have
+    // incompatible start patterns, there's no point in trying again.
+    const hasFailedAfterOpeningRequiredConvention =
+      conventionsThatMustFollow && conventionsThatMustFollow
         .some(transformsInto => this.failedConventionTracker.hasFailed(transformsInto, textIndex))
 
-    if (hasPreviouslyFailedAfterTransformingIntoAnotherConvention) {
+    if (hasFailedAfterOpeningRequiredConvention) {
       return false
     }
 
@@ -933,7 +942,7 @@ class Tokenizer {
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
           whenClosingItAlsoClosesInnerConventions: true,
-          whenClosingItFailsIfItCannotTranformInto: this.mediaUrlConventions,
+          mustBeDirectlyFollowedBy: this.mediaUrlConventions,
           whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
         }))))
   }
