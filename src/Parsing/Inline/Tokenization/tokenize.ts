@@ -363,34 +363,30 @@ class Tokenizer {
       this.openContexts.splice(contextIndex)
     }
 
-    if (convention.mustBeDirectlyFollowedBy) {
-      return this.tryToOpenRequiredConvention(context)
-    }
-
-    return true
+    return (
+      !convention.mustBeDirectlyFollowedBy
+      || this.tryToOpenSubsequentConventionRequiredBy(context))
   }
 
   private isCurrentCharWhitespace(): boolean {
     return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
   }
 
-  private tryToOpenRequiredConvention(closedContext: ConventionContext): boolean {
-    const didOpenNextConvention =
+  private tryToOpenSubsequentConventionRequiredBy(closedContext: ConventionContext): boolean {
+    const didOpenSubsequentRequiredConvention =
       closedContext.convention.mustBeDirectlyFollowedBy.some(convention => this.tryToOpen(convention))
 
-    if (!didOpenNextConvention) {
-      // We couldn't open the next convention, so it's time to fail.
-      this.backtrackToBeforeContext(closedContext)
-      return false
+    if (didOpenSubsequentRequiredConvention) {
+      // So... we've just opened a new context for the required convention.
+      //
+      // However, if that next convention eventually fails, we need to backtrack to before the one we just
+      // closed. To make that process easier, we give the snapshot of the old context to the new context.
+      last(this.openContexts).snapshot = closedContext.snapshot
+      return true
     }
 
-    // So... we've just opened a new context for the required convention.
-    //
-    // However, if that next convention eventually fails, we need to backtrack to before the one we just
-    // closed. To make that process easier, we give the new convention the snapshot of the old context.
-    last(this.openContexts).snapshot = closedContext.snapshot
-
-    return true
+    this.backtrackToBeforeContext(closedContext)
+    return false
   }
 
   private tryToCloseAnyRaisedVoices(): boolean {
