@@ -357,17 +357,8 @@ class Tokenizer {
     const openContext = this.openContexts[contextIndex]
     const { convention } = openContext
 
-    for (let i = this.openContexts.length - 1; i > contextIndex; i--) {
-      if (this.openContexts[i].convention === this.nakedUrlConvention) {
-        // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-        this.flushBufferToNakedUrlEndToken()
-
-        // We need to close the naked URL's context, as well as the contexts of any raw text brackets
-        // inside it.
-        this.openContexts.splice(i)
-        break
-      }
-    }
+    // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
+    this.closeNakedUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
 
     if (convention.whenClosingItFlushesBufferTo != null) {
       this.flushBufferToTokenOfKind(convention.whenClosingItFlushesBufferTo)
@@ -440,14 +431,20 @@ class Tokenizer {
     })
   }
 
-  private closeNakedUrlContextIfOneIsOpen(): void {
-    for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      if (this.openContexts[i].convention === this.nakedUrlConvention) {
+  private closeNakedUrlContextIfOneIsOpen(args?: { withinContextAtIndex: number }): void {
+    const { openContexts } = this
+
+    const outermostIndexThatMayBeNakedUrl =
+      args ? (args.withinContextAtIndex + 1) : 0
+
+    for (let i = outermostIndexThatMayBeNakedUrl; i < openContexts.length; i++) {
+      if (openContexts[i].convention === this.nakedUrlConvention) {
         this.flushBufferToNakedUrlEndToken()
 
-        // We need to close the naked URL's context, as well as the contexts of any raw text brackets
+        // We need to remove the naked URL's context, as well as the contexts of any raw text brackets
         // inside it.
         this.openContexts.splice(i)
+        return
       }
     }
   }
@@ -917,7 +914,7 @@ class Tokenizer {
       startsWith: startPattern,
       startPatternContainsATerm,
       endsWith: endPattern,
-      
+
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
       whenClosingItFlushesBufferTo: TokenKind.PlainText,
