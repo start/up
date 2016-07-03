@@ -303,24 +303,32 @@ class Tokenizer {
 
   private tryToCloseAnyConvention(): boolean {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
-      const openContext = this.openContexts[i]
+      const context = this.openContexts[i]
 
-      if (this.shouldClose(openContext)) {
-        // If `closeContextOrBacktrackToBeforeIt` fails, it resets the tokenizer to where it was before we
-        // opened the context, then returns false.
+      if (this.shouldClose(context)) {
+        if (this.tryToCloseConvention({ atIndex: i })) {
+          return true
+        }
+
+        // Well, we couldn't successfully close the convention, so we've got to backtrack. For now, a
+        // convention will only fail to close if:
         //
-        // If that happens, we're happy immediately return false from this method, too, because we know for
-        // a fact that won't be able to close any outer conventions at our current position (we already failed
-        // to do so when we opened the now-failed context).
-        return this.tryToCloseConventionOrBacktrack({ atIndex: i })
+        // 1. It must be followed by one of a set of specific conventions, and
+        // 2. None of those conventions could be opened        
+        this.backtrackToBeforeContext(context)
+
+        // We know for a fact that we won't be able to close any other conventions at our new (backtracked)
+        // text index; we already tried to close all of them when we opened the now-failed convention. So
+        // let's just return false and let the tokenizer continue at the next step.
+        return false
       }
 
-      if (openContext.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
-        this.backtrackToBeforeContext(openContext)
+      if (context.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
+        this.backtrackToBeforeContext(context)
         return true
       }
 
-      if (openContext.doIsteadOfTryingToCloseOuterContexts()) {
+      if (context.doIsteadOfTryingToCloseOuterContexts()) {
         return true
       }
     }
@@ -338,11 +346,7 @@ class Tokenizer {
         && this.consumer.consume({ pattern: convention.endsWith })))
   }
 
-  // Returns true if the context was successfully closed.
-  //
-  // Otherwise, if the context couldn't be closed, the tokenizer is reset to where it was before the context
-  // was opened, and this method returns false. 
-  private tryToCloseConventionOrBacktrack(args: { atIndex: number }): boolean {
+  private tryToCloseConvention(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
     const context = this.openContexts[contextIndex]
     const { convention } = context
@@ -383,7 +387,6 @@ class Tokenizer {
       return true
     }
 
-    this.backtrackToBeforeContext(closedContext)
     return false
   }
 
