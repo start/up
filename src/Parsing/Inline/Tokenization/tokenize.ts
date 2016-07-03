@@ -92,6 +92,12 @@ class Tokenizer {
   // closing bracket), we backtrack to the beginning of the media convention and try something else. 
   private mediaUrlConventions = this.getMediaUrlConventions()
 
+
+  // When tokenizing a link, we always start with parenthesized text, square bracketed text, or an action
+  // convention (curly bracketed text). If that first convention is followed by a bracketed URL, the original
+  // the original convention transformed into a link convention.
+  private linkTransformationConventions = this.getLinkTransformationConventions()
+
   // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
   //
   // Most of our conventions are just thrown in the `conventions` collection (and this one is, too), but we
@@ -159,12 +165,6 @@ class Tokenizer {
         nonLocalizedTerm: 'nsfl'
       }
     ].map(args => this.getConventionsForRichBracketedTerm(args))))
-
-    this.conventions.push(
-      ...this.getLinkUrlConventions())
-
-    this.conventions.push(
-      ...this.getConventionsForWhitespaceFollowedByLinkUrl())
 
     this.conventions.push(
       ...this.getMediaDescriptionConventions())
@@ -680,76 +680,6 @@ class Tokenizer {
     })
   }
 
-  // These conventions are for link URLs that directly follow linked content:
-  //
-  // You should try [Typescript](http://www.typescriptlang.org).
-  //
-  // We allow whitespace between a link's content and its URL, but that isn't handled by these
-  // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
-  private getLinkUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getBracketedUrlStartPattern(bracket),
-      endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: () => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.closeLink(url)
-      }
-    }))
-  }
-
-  // Normally, a link's URL directly follows its content.
-  //
-  // However, if we're very sure that the author is intending to produce a link, we allow whitespace
-  // between the content and the URL. For example:
-  //
-  // You should try [Typescript] (http://www.typescriptlang.org).
-  //
-  // To ensure the author actually intends to produce a link, we apply some extra rules if there is
-  // any whitespace between a link's content and its URL.
-  //
-  // 1. First, the URL must either:
-  //    * Have a scheme (like "mailto:" or "https://")
-  //    * Start with a slash
-  //    * Start with a hash mark ("#")
-  //    * Have a top-level domain.
-  //      
-  // 2. Second, the URL must not contain any unescaped whitespace.
-  //
-  // 3. If the URL merely has a top-level domain:
-  //    * The top-level domain must consist solely of letters
-  //    * The URL must start with a number or a letter
-  //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
-  //      cconsecutive periods are allowed in the resource path.
-  private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-      endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
-
-      failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-        if (this.probablyWasNotIntendedToBeAUrl(url)) {
-          this.backtrackToBeforeContext(context)
-        } else {
-          this.closeLink(url)
-        }
-      }
-    }))
-  }
-
   private probablyWasNotIntendedToBeAUrl(url: string): boolean {
     return SOLELY_URL_PREFIX_PATTERN.test(url)
   }
@@ -911,10 +841,11 @@ class Tokenizer {
       startPattern: string
       endPattern: string
       startPatternContainsATerm?: boolean
+      whenClosingItCanTransformInto?: TokenizableConvention[]
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startPattern, endPattern, startPatternContainsATerm, whenClosingItCanTransformInto, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
       startsWith: startPattern,
@@ -928,7 +859,8 @@ class Tokenizer {
       whenClosing: (context) => {
         this.encloseContextWithinRichConvention(richConvention, context)
       },
-
+      
+      whenClosingItCanTransformInto,
       insteadOfFailingWhenLeftUnclosed
     })
   }
@@ -966,6 +898,74 @@ class Tokenizer {
         this.appendNewToken(TokenKind.MediaUrlAndEnd, url)
       }
     }))
+  }
+
+  private getLinkTransformationConventions(): TokenizableConvention[] {
+    return concat(BRACKETS.map(bracket => [
+      // This convention is for link URLs that directly follow linked content:
+      //
+      // You should try [Typescript](http://www.typescriptlang.org).
+      //
+      // As long as the bracketed URL directly follows the bracketed content, there are no restrictions
+      // placed on the URL.
+      new TokenizableConvention({
+        startsWith: this.getBracketedUrlStartPattern(bracket),
+        endsWith: bracket.endPattern,
+
+        insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+        whenClosingItAlsoClosesInnerConventions: true,
+
+        whenClosing: () => {
+          const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+          this.closeLink(url)
+        }
+      }),
+
+      // Normally, a link's URL directly follows its content.
+      //
+      // However, if we're very sure that the author is intending to produce a link, we allow whitespace
+      // between the content and the URL. For example:
+      //
+      // You should try [Typescript] (http://www.typescriptlang.org).
+      //
+      // To ensure the author actually intends to produce a link, we apply some extra rules if there is
+      // any whitespace between a link's content and its URL.
+      //
+      // 1. First, the URL must either:
+      //    * Have a scheme (like "mailto:" or "https://")
+      //    * Start with a slash
+      //    * Start with a hash mark ("#")
+      //    * Have a top-level domain.
+      //      
+      // 2. Second, the URL must not contain any unescaped whitespace.
+      //
+      // 3. If the URL merely has a top-level domain:
+      //    * The top-level domain must consist solely of letters
+      //    * The URL must start with a number or a letter
+      //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
+      //      cconsecutive periods are allowed in the resource path.
+      new TokenizableConvention({
+        startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+        endsWith: bracket.endPattern,
+
+        whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+
+        failsIfWhitespaceIsEnounteredBeforeClosing: true,
+        insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
+        whenClosingItAlsoClosesInnerConventions: true,
+
+        whenClosing: (context) => {
+          const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+
+          if (this.probablyWasNotIntendedToBeAUrl(url)) {
+            this.backtrackToBeforeContext(context)
+          } else {
+            this.closeLink(url)
+          }
+        }
+      })
+    ]
+    ))
   }
 
   private getRawBracketConventions(): TokenizableConvention[] {
