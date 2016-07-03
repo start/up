@@ -377,10 +377,8 @@ class Tokenizer {
       closedContext.convention.mustBeDirectlyFollowedBy.some(convention => this.tryToOpen(convention))
 
     if (didOpenSubsequentRequiredConvention) {
-      // So... we've just opened a new context for the required convention.
-      //
-      // However, if that next convention eventually fails, we need to backtrack to before the one we just
-      // closed. To make that process easier, we give the snapshot of the old context to the new context.
+      // If this new convention eventually fails, we need to backtrack to before the one we just closed.
+      // To make that process easier, we give the snapshot of the old context to the new context.
       last(this.openContexts).snapshot = closedContext.snapshot
       return true
     }
@@ -558,16 +556,22 @@ class Tokenizer {
     // If a convention must be followed by one of a set of specific conventions, then there are really
     // three ways that convention can fail:
     //
-    // 1. It's missing its end delimiter (or was otherwise deemed invalid). This is the normal way for a
+    // 1. It's missing its end delimiter (or was otherwise deemed invalid). This is the normal way for
     //    a convention to fail, and our `failedConventionTracker` easily takes care of this below.
-    // 2. None of the required conventions could be opened. This is handled elsewhere.
+    //
+    // 2. None of the subsequent required conventions could be opened. This is handled elsewhere.
+    //
     // 3. One of the required conventions was opened, but it was missing its end delimiter (or was
     //    otherwise deemed invalid).
     //
-    // To handle that third case, we also check whether any of the required conventions have failed. If
-    // so, we consider the first convention to have failed, too, and we don't try it again. This logic is
-    // subject to change, but for now, because all of our required subsequent conventions have
-    // incompatible start patterns, there's no point in trying again.
+    // To handle that third case, we also check whether any of the subsequent required conventions have
+    // failed. This is made easier by the fact that any subsequent required conventions inherit the
+    // snapshot of their "parent", and therefore have their failure registered at parent's text index.
+    //
+    // If a subsequent required convention has failed, we consider the parent convention to have failed,
+    // too, and we don't try opening it again. This logic is subject to change, but for now, because all
+    // of the subsequent required conventions for a given parent have incompatible start patterns,
+    // there's no point in trying again.
     const hasFailedAfterOpeningRequiredConvention =
       conventionsThatMustFollow && conventionsThatMustFollow
         .some(conventionThatFollows => this.failedConventionTracker.hasFailed(conventionThatFollows, textIndex))
