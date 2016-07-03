@@ -305,7 +305,7 @@ class Tokenizer {
     for (let i = this.openContexts.length - 1; i >= 0; i--) {
       const openContext = this.openContexts[i]
 
-      if (this.shouldCloseContext(openContext)) {
+      if (this.shouldClose(openContext)) {
         // If `closeContextOrBacktrackToBeforeIt` fails, it resets the tokenizer to where it was before we
         // opened the context, then returns false.
         //
@@ -315,7 +315,7 @@ class Tokenizer {
         return this.tryToCloseContextOrBacktrack({ atIndex: i })
       }
 
-      if (this.shouldBacktrackToBeforeContext(openContext)) {
+      if (openContext.convention.failsIfWhitespaceIsEnounteredBeforeClosing && this.isCurrentCharWhitespace()) {
         this.backtrackToBeforeContext(openContext)
         return true
       }
@@ -328,17 +328,7 @@ class Tokenizer {
     return this.tryToCloseAnyRaisedVoices()
   }
 
-  private shouldBacktrackToBeforeContext(context: ConventionContext): boolean {
-    return (
-      context.convention.failsIfWhitespaceIsEnounteredBeforeClosing
-      && this.isCurrentCharWhitespace())
-  }
-
-  private isCurrentCharWhitespace(): boolean {
-    return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
-  }
-
-  private shouldCloseContext(context: ConventionContext): boolean {
+  private shouldClose(context: ConventionContext): boolean {
     const { convention } = context
 
     return (
@@ -379,6 +369,10 @@ class Tokenizer {
     }
 
     return true
+  }
+
+  private isCurrentCharWhitespace(): boolean {
+    return WHITESPACE_CHAR_PATTERN.test(this.consumer.currentChar)
   }
 
   private tryToTransformConventionOrBacktrack(args: { belongingToContextAtIndex: number }): boolean {
