@@ -549,10 +549,7 @@ class Tokenizer {
     })
   }
 
-  private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
-    const conventionsThatMustFollow =
-      convention.mustBeDirectlyFollowedBy
-
+  private canTry(conventionToOpen: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
     // If a convention must be followed by one of a set of specific conventions, then there are really
     // three ways that convention can fail:
     //
@@ -572,18 +569,21 @@ class Tokenizer {
     // too, and we don't try opening it again. This logic is subject to change, but for now, because all
     // of the subsequent required conventions for a given parent have incompatible start patterns,
     // there's no point in trying again.
-    const hasFailedAfterOpeningRequiredConvention =
-      conventionsThatMustFollow && conventionsThatMustFollow
-        .some(conventionThatFollows => this.failedConventionTracker.hasFailed(conventionThatFollows, textIndex))
+    const subsequentRequiredConventions =
+      conventionToOpen.mustBeDirectlyFollowedBy
 
-    if (hasFailedAfterOpeningRequiredConvention) {
+    const hasSubsequentRequiredConventionFailed =
+      subsequentRequiredConventions
+      && subsequentRequiredConventions.some(convention => this.failedConventionTracker.hasFailed(convention, textIndex))
+
+    if (hasSubsequentRequiredConventionFailed) {
       return false
     }
 
-    const { onlyOpenIfDirectlyFollowing } = convention
+    const { onlyOpenIfDirectlyFollowing } = conventionToOpen
 
     return (
-      !this.failedConventionTracker.hasFailed(convention, textIndex)
+      !this.failedConventionTracker.hasFailed(conventionToOpen, textIndex)
       && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing)))
   }
 
