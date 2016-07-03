@@ -132,6 +132,29 @@ describe('An otherwise valid video convention with mismatched brackets surroundi
 })
 
 
+context('Unmatched opening parentheses in a video description have no affect on', () => {
+  specify('parentheses surounding the URL', () => {
+    expect(Up.toAst('[video: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+      ]))
+  })
+
+  specify('parentheses that follow the convention', () => {
+    expect(Up.toAst('([video: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new ParenthesizedNode([
+            new PlainTextNode('('),
+            new VideoNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new PlainTextNode(')'),
+          ])
+        ])
+      ]))
+  })
+})
+
+
 describe("Unmatched opening parentheses in a video URL", () => {
   it('do not affect any text that follows the link', () => {
     const text = '(^[video: West Virginia exit polling][https://example.com/a(normal(url])'

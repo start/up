@@ -133,7 +133,7 @@ describe('An otherwise valid audio convention with mismatched brackets surroundi
 
 
 context('Unmatched opening parentheses in an audio description have no affect on', () => {
-  specify('parentheses surounding the audio URL', () => {
+  specify('parentheses surounding the URL', () => {
     expect(Up.toAst('[audio: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
       new DocumentNode([
         new AudioNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),

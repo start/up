@@ -132,6 +132,29 @@ describe('An otherwise valid image convention with mismatched brackets surroundi
 })
 
 
+context('Unmatched opening parentheses in an image description have no affect on', () => {
+  specify('parentheses surounding the URL', () => {
+    expect(Up.toAst('[image: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+      ]))
+  })
+
+  specify('parentheses that follow the convention', () => {
+    expect(Up.toAst('([image: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new ParenthesizedNode([
+            new PlainTextNode('('),
+            new ImageNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new PlainTextNode(')'),
+          ])
+        ])
+      ]))
+  })
+})
+
+
 describe("Unmatched opening parentheses in an image URL", () => {
   it('do not affect any text that follows the link', () => {
     const text = '(^[image: West Virginia exit polling][https://example.com/a(normal(url])'
