@@ -22,9 +22,9 @@ export class TokenizableConvention {
   failsIfWhitespaceIsEnounteredBeforeClosing: boolean
 
   whenClosingItAlsoClosesInnerConventions: boolean
-  whenClosingItCanTransformInto: TokenizableConvention[]
   failsIfItCannotTransform: boolean  
   whenClosingItFlushesBufferTo: TokenKind
+  afterClosingItCanTransformInto: TokenizableConvention[]
 
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
@@ -46,7 +46,7 @@ export class TokenizableConvention {
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
 
     this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
-    this.whenClosingItCanTransformInto = args.whenClosingItCanTransformInto || []
+    this.afterClosingItCanTransformInto = args.afterClosingItCanTransformInto || []
     this.whenClosingItFlushesBufferTo = args.whenClosingItFlushesBufferTo
 
     this.whenClosing = args.whenClosing
@@ -74,9 +74,9 @@ export interface TokenizableConventionArgs {
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
 
   whenClosingItAlsoClosesInnerConventions?: boolean
-  whenClosingItCanTransformInto?: TokenizableConvention[]
   failsIfItCannotTransform?: boolean
   whenClosingItFlushesBufferTo?: TokenKind
+  afterClosingItCanTransformInto?: TokenizableConvention[]
 
   whenClosing?: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed?: OnConventionEvent

@@ -96,7 +96,7 @@ class Tokenizer {
   // When tokenizing a link, we always start with parenthesized text, square bracketed text, or an action
   // convention (curly bracketed text). If that first convention is followed by a bracketed URL, the original
   // the original convention transformed into a link convention.
-  private linkTransformationConventions = this.getLinkTransformationConventions()
+  private linkConventions = this.getLinkConventions()
 
   // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
   //
@@ -179,15 +179,18 @@ class Tokenizer {
       {
         richConvention: PARENTHESIZED_CONVENTION,
         startDelimiter: '(',
-        endDelimiter: ')'
+        endDelimiter: ')',
+        afterClosingItCanTransformInto: this.linkConventions
       }, {
         richConvention: SQUARE_BRACKETED_CONVENTION,
         startDelimiter: '[',
-        endDelimiter: ']'
+        endDelimiter: ']',
+        afterClosingItCanTransformInto: this.linkConventions
       }, {
         richConvention: ACTION_CONVENTION,
         startDelimiter: '{',
-        endDelimiter: '}'
+        endDelimiter: '}',
+        afterClosingItCanTransformInto: this.linkConventions
       }, {
         richConvention: REVISION_DELETION_CONVENTION,
         startDelimiter: '~~',
@@ -354,8 +357,8 @@ class Tokenizer {
   // was opened, and this method returns false. 
   private tryToCloseContextOrBacktrack(args: { atIndex: number }): boolean {
     const contextIndex = args.atIndex
-    const openContext = this.openContexts[contextIndex]
-    const { convention } = openContext
+    const context = this.openContexts[contextIndex]
+    const { convention } = context
 
     for (let i = this.openContexts.length - 1; i > contextIndex; i--) {
       if (this.openContexts[i].convention === this.nakedUrlConvention) {
@@ -373,10 +376,17 @@ class Tokenizer {
       this.flushBufferToTokenOfKind(convention.whenClosingItFlushesBufferTo)
     }
 
-    openContext.close()
+    context.close()
 
-    if (convention.whenClosingItCanTransformInto.length) {
-      return this.tryToTransformConvention({ belongingToContextAtIndex: contextIndex })
+    if (convention.afterClosingItCanTransformInto.length) {
+      const didTransform =
+        this.tryToTransformClosedConvention({ belongingToContextAtIndex: contextIndex })
+      
+      if (!didTransform && convention.failsIfItCannotTransform) {
+        this.backtrackToBeforeContext(context)
+      }
+
+      return true
     }
 
     this.openContexts.splice(contextIndex, 1)
@@ -389,20 +399,16 @@ class Tokenizer {
 
     return true
   }
-
-  private tryToTransformConvention(args: { belongingToContextAtIndex: number }): boolean {
+ 
+  private tryToTransformClosedConvention(args: { belongingToContextAtIndex: number }): boolean {
     const contextIndex = args.belongingToContextAtIndex
     const context = this.openContexts[contextIndex]
     const { convention } = context
 
     const couldTransform =
-      convention.whenClosingItCanTransformInto.some(convention => this.tryToOpen(convention))
+      convention.afterClosingItCanTransformInto.some(convention => this.tryToOpen(convention))
 
     if (!couldTransform) {
-      if (convention.failsIfItCannotTransform) {
-        this.backtrackToBeforeContext(context)
-      }
-
       return false
     }
 
@@ -574,9 +580,6 @@ class Tokenizer {
   }
 
   private canTry(convention: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
-    const conventionsThisOneTransformTo =
-      convention.whenClosingItCanTransformInto
-
     // If this convention transforms into other conventions, then it can fail as itself *or* fail
     // post-transformation as of those conventions.
     //
@@ -585,7 +588,7 @@ class Tokenizer {
     // but for now, because all of our "post-transformation" conventions have incompatible start
     // patterns, there's no point in trying again.
     const hasPreviouslyFailedAfterTransformingIntoAnotherConvention =
-      conventionsThisOneTransformTo
+      convention.afterClosingItCanTransformInto
         .some(transformsInto => this.failedConventionTracker.hasFailed(transformsInto, textIndex))
 
     if (hasPreviouslyFailedAfterTransformingIntoAnotherConvention) {
@@ -820,14 +823,17 @@ class Tokenizer {
       richConvention: RichConvention
       startDelimiter: string
       endDelimiter: string
+      afterClosingItCanTransformInto?: TokenizableConvention[]
     }
   ): TokenizableConvention {
-    const { richConvention, startDelimiter, endDelimiter } = args
+    const { richConvention, startDelimiter, endDelimiter, afterClosingItCanTransformInto } = args
 
     return this.getRichSandwichConvention({
       richConvention,
       startPattern: escapeForRegex(startDelimiter),
       endPattern: escapeForRegex(endDelimiter),
+
+      afterClosingItCanTransformInto,
 
       insteadOfFailingWhenLeftUnclosed: (context) => {
         this.insertPlainTextTokenAtContextStart(startDelimiter, context)
@@ -841,11 +847,11 @@ class Tokenizer {
       startPattern: string
       endPattern: string
       startPatternContainsATerm?: boolean
-      whenClosingItCanTransformInto?: TokenizableConvention[]
+      afterClosingItCanTransformInto?: TokenizableConvention[]
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern, startPatternContainsATerm, whenClosingItCanTransformInto, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startPattern, endPattern, startPatternContainsATerm, afterClosingItCanTransformInto, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
       startsWith: startPattern,
@@ -860,7 +866,7 @@ class Tokenizer {
         this.encloseContextWithinRichConvention(richConvention, context)
       },
       
-      whenClosingItCanTransformInto,
+      afterClosingItCanTransformInto,
       insteadOfFailingWhenLeftUnclosed
     })
   }
@@ -877,7 +883,7 @@ class Tokenizer {
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
           whenClosingItAlsoClosesInnerConventions: true,
-          whenClosingItCanTransformInto: this.mediaUrlConventions,
+          afterClosingItCanTransformInto: this.mediaUrlConventions,
           failsIfItCannotTransform: true,
           whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
         }))))
@@ -900,7 +906,7 @@ class Tokenizer {
     }))
   }
 
-  private getLinkTransformationConventions(): TokenizableConvention[] {
+  private getLinkConventions(): TokenizableConvention[] {
     return concat(BRACKETS.map(bracket => [
       // This convention is for link URLs that directly follow linked content:
       //
