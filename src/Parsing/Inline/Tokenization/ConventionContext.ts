@@ -8,7 +8,7 @@ export class ConventionContext {
     public snapshot: TokenizerSnapshot,
     public startTokenIndex = snapshot.tokens.length) { }
 
-  doIsteadOfTryingToCloseOuterContexts(): boolean {
+  doIsteadOfTryingToCloseOuterConventions(): boolean {
     if (this.convention.insteadOfClosingOuterConventionsWhileOpen) {
       this.convention.insteadOfClosingOuterConventionsWhileOpen(this)
       return true
@@ -17,9 +17,9 @@ export class ConventionContext {
     return false
   }
 
-  doInsteadOfTryingToOpenUsualContexts(): boolean {
-    if (this.convention.insteadOfOpeningUsualConventionsWhileOpen) {
-      this.convention.insteadOfOpeningUsualConventionsWhileOpen(this)
+  doInsteadOfTryingToOpenRegularConventions(): boolean {
+    if (this.convention.insteadOfOpeningRegularConventionsWhileOpen) {
+      this.convention.insteadOfOpeningRegularConventionsWhileOpen(this)
       return true
     }
 

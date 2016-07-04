@@ -107,7 +107,7 @@ class Tokenizer {
       this.appendNewToken(TokenKind.NakedUrlSchemeAndStart, urlScheme)
     },
 
-    insteadOfOpeningUsualConventionsWhileOpen: () => this.bufferRawText(),
+    insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferRawText(),
 
     whenClosingItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
     whenClosingItAlsoClosesInnerConventions: true,
@@ -211,7 +211,7 @@ class Tokenizer {
       && (
         this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
-        || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
+        || this.performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()))
 
@@ -325,7 +325,7 @@ class Tokenizer {
         return true
       }
 
-      if (context.doIsteadOfTryingToCloseOuterContexts()) {
+      if (context.doIsteadOfTryingToCloseOuterConventions()) {
         return true
       }
     }
@@ -447,8 +447,9 @@ class Tokenizer {
     this.tokens.push(endToken)
   }
 
-  private performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts(): boolean {
-    return reversed(this.openContexts).some(context => context.doInsteadOfTryingToOpenUsualContexts())
+  private performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
+    return reversed(this.openContexts)
+      .some(context => context.doInsteadOfTryingToOpenRegularConventions())
   }
 
   private tryToOpenAnyConvention(): boolean {

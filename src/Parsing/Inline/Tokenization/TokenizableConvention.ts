@@ -18,7 +18,7 @@ export class TokenizableConvention {
   whenOpening: OnTextMatch
 
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
-  insteadOfOpeningUsualConventionsWhileOpen: OnConventionEvent
+  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
 
   failsIfWhitespaceIsEnounteredBeforeClosing: boolean
 
@@ -41,7 +41,7 @@ export class TokenizableConvention {
     this.whenOpening = args.whenOpening
 
     this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
-    this.insteadOfOpeningUsualConventionsWhileOpen = args.insteadOfOpeningUsualConventionsWhileOpen
+    this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen
 
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
 
@@ -69,7 +69,7 @@ export interface TokenizableConventionArgs {
   whenOpening?: OnTextMatch
 
   insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
-  insteadOfOpeningUsualConventionsWhileOpen?: OnConventionEvent
+  insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
 
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
 
