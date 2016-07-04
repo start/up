@@ -25,7 +25,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 
   describe('When the URL has a scheme', () => {
-    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+    specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'SPOILER: Advance Wars',
         partsToPutInBetween: ['  ', '\t', ' \t '],

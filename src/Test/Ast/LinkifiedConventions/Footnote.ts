@@ -14,13 +14,6 @@ import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
-const FOOTNOTE_BRACKETS = [
-  { open: '(^', close: ')' },
-  { open: '[^', close: ']' },
-  { open: '{^', close: '}' }
-]
-
-
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
   it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."
@@ -55,8 +48,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
       ], 1)
 
     expectEveryCombinationOfBrackets({
-      bracketsToWrapAroundContent: FOOTNOTE_BRACKETS,
-      contentToWrapInBrackets: 'Well, I do, but I pretend not to.',
+      contentToWrapInBrackets: '^Well, I do, but I pretend not to.',
       partsToPutInBetween: ['  ', '\t', ' \t '],
       urlToWrapInBrackets: 'http://example.com/luckycharms',
       toProduce: new DocumentNode([

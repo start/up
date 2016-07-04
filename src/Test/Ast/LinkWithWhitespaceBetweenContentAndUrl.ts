@@ -23,7 +23,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   describe('When the URL has a scheme', () => {
-    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+    specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'Advance Wars',
         partsToPutInBetween: ['  ', '\t', ' \t '],
@@ -270,7 +270,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   describe('When the URL merely has a top-level domain', () => {
-    specify('the top-level domain may be followed by a slash and a resource path ', () => {
+    specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryCombinationOfBrackets({
         contentToWrapInBrackets: 'Advance Wars',
         partsToPutInBetween: ['  ', '\t', ' \t '],

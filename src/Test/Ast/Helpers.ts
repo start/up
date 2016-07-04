@@ -13,15 +13,13 @@ export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): DocumentN
 
 export function expectEveryCombinationOfBrackets(
   args: {
-    bracketsToWrapAroundContent?: Bracket[],
-    bracketsToWrapAroundUrl?: Bracket[]
     contentToWrapInBrackets: string
     partsToPutInBetween?: string[]
     urlToWrapInBrackets: string
     toProduce: DocumentNode
   }
 ) {
-  const NORMAL_BRACKETS = [
+  const BRACKETS = [
     { open: '(', close: ')' },
     { open: '[', close: ']' },
     { open: '{', close: '}' }
@@ -29,11 +27,9 @@ export function expectEveryCombinationOfBrackets(
 
   const { contentToWrapInBrackets, urlToWrapInBrackets, toProduce } = args
   const partsToPutInBetween = args.partsToPutInBetween || ['']
-  const bracketsForFirstPart = args.bracketsToWrapAroundContent || NORMAL_BRACKETS
-  const bracketsForSecondPart = args.bracketsToWrapAroundUrl || NORMAL_BRACKETS
 
-  for (const bracketForFirstPart of bracketsForFirstPart) {
-    for (const bracketForSecondPart of bracketsForSecondPart) {
+  for (const bracketForFirstPart of BRACKETS) {
+    for (const bracketForSecondPart of BRACKETS) {
       for (const partToPutInBetween of partsToPutInBetween) {
         const text =
           wrapInBracket(contentToWrapInBrackets, bracketForFirstPart)
