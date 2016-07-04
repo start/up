@@ -9,7 +9,7 @@ export class LinkNode extends RichInlineSyntaxNode {
   // If an image is "linkified", or if it is otherwise the sole convention within a link, the
   // container link counts as an image for the purpose that rule. Under that specific circumstance,
   // link nodes act as outline syntax nodes. 
-  outlineSyntaxNode(): void { } 
+  OUTLINE_SYNTAX_NODE(): void { } 
 
   constructor(public children: InlineSyntaxNode[] = [], public url: string = '') {
     super(children)

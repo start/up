@@ -1,3 +1,3 @@
 export abstract class OutlineSyntaxNode {
-  outlineSyntaxNode(): void { }
+  OUTLINE_SYNTAX_NODE(): void { }
 }

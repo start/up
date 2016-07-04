@@ -6,3 +6,7 @@ import { BLANK_PATTERN } from './Patterns'
 export function isWhitespace(node: InlineSyntaxNode): boolean {
   return (node instanceof PlainTextNode) && BLANK_PATTERN.test(node.text)
 }
+
+class A extends InlineSyntaxNode {
+  
+}

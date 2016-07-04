@@ -1,3 +1,3 @@
 export abstract class InlineSyntaxNode {
-  inlineSyntaxNode(): void { }
+  INLINE_SYNTAX_NODE(): void { }
 }

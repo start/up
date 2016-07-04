@@ -3,12 +3,11 @@ export interface MediaSyntaxNodeType {
 }
 
 export abstract class MediaSyntaxNode {
-  mediaSyntaxNode(): void { }
-  inlineSyntaxNode(): void { }
+  INLINE_SYNTAX_NODE(): void { }
 
   // If a line consists solely of media conventions, those media conventions are placed directly
   // into the outline (rather than inside a paragraph)
-  outlineSyntaxNode(): void { }
+  OUTLINE_SYNTAX_NODE(): void { }
 
   constructor(public description: string, public url: string) { }
 }
