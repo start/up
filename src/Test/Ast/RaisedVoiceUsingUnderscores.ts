@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
@@ -15,7 +14,7 @@ describe('Text surrounded by 3 asterisks', () => {
         new StressNode([
           new EmphasisNode([
             new PlainTextNode('free'),
-          ]),
+          ])
         ]),
         new PlainTextNode('!')
       ]))
@@ -31,7 +30,7 @@ describe('Shouted text', () => {
         new StressNode([
           new EmphasisNode([
             new PlainTextNode('Mario is on his way!'),
-          ]),
+          ])
         ]),
         new PlainTextNode(' Grab your shells!')
       ]))
@@ -44,7 +43,7 @@ describe('Shouted text', () => {
         new StressNode([
           new EmphasisNode([
             new PlainTextNode('Mario is on his way!'),
-          ]),
+          ])
         ]),
         new PlainTextNode(' Grab your shells!')
       ]))
@@ -89,7 +88,7 @@ describe('Shouted text inside of emphasized text', () => {
           new StressNode([
             new EmphasisNode([
               new PlainTextNode('stop eating the cardboard'),
-            ]),
+            ])
           ]),
           new PlainTextNode(' immediately')
         ])
@@ -107,7 +106,7 @@ describe('Shouted text inside of stressed text', () => {
           new StressNode([
             new EmphasisNode([
               new PlainTextNode('stop eating the cardboard'),
-            ]),
+            ])
           ]),
           new PlainTextNode(' immediately')
         ])
@@ -125,7 +124,7 @@ describe('Text that is both emphasized and stressed', () => {
           new PlainTextNode('now '),
           new EmphasisNode([
             new PlainTextNode('free')
-          ]),
+          ])
         ]),
         new PlainTextNode('!')
       ]))
@@ -139,7 +138,7 @@ describe('Text that is both emphasized and stressed', () => {
           new PlainTextNode('now '),
           new EmphasisNode([
             new PlainTextNode('free')
-          ]),
+          ])
         ]),
         new PlainTextNode('!')
       ]))
@@ -189,7 +188,7 @@ describe('Text that is emphasized then stressed', () => {
           new PlainTextNode('He has won '),
           new StressNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -201,7 +200,7 @@ describe('Text that is emphasized then stressed', () => {
           new PlainTextNode('He has won '),
           new StressNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -216,7 +215,7 @@ describe('Text that is stressed then emphasized', () => {
           new PlainTextNode('He has won '),
           new EmphasisNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -228,7 +227,7 @@ describe('Text that is stressed then emphasized', () => {
           new PlainTextNode('He has won '),
           new EmphasisNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -243,7 +242,7 @@ describe('Doubly emphasized text', () => {
           new PlainTextNode('He has won '),
           new EmphasisNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -255,7 +254,7 @@ describe('Doubly emphasized text', () => {
           new PlainTextNode('He has won '),
           new EmphasisNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -267,7 +266,7 @@ describe('Doubly emphasized text', () => {
           new PlainTextNode('He has won '),
           new EmphasisNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -282,7 +281,7 @@ describe('Doubly stressed text', () => {
           new PlainTextNode('He has won '),
           new StressNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -294,7 +293,7 @@ describe('Doubly stressed text', () => {
           new PlainTextNode('He has won '),
           new StressNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })
@@ -309,7 +308,7 @@ describe('Two nested raised-voice conventions, both starting with 2 asterisks', 
           new PlainTextNode('He has won '),
           new StressNode([
             new PlainTextNode('six in a row!')
-          ]),
+          ])
         ])
       ]))
   })

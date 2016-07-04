@@ -23,11 +23,11 @@ describe('Overlapped emphasized (using asterisks) and linked text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
-          new PlainTextNode('not '),
+          new PlainTextNode('not ')
         ]),
         new LinkNode([
           new EmphasisNode([
-            new PlainTextNode('care'),
+            new PlainTextNode('care')
           ]),
           new PlainTextNode(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
@@ -45,11 +45,11 @@ describe('Overlapped linked and emphasized text (using asterisks)', () => {
         new LinkNode([
           new PlainTextNode('trash '),
           new EmphasisNode([
-            new PlainTextNode('can'),
+            new PlainTextNode('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new EmphasisNode([
-          new PlainTextNode(' not'),
+          new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')
       ]))
@@ -62,11 +62,11 @@ describe('Overlapped emphasized (using underscores) and linked text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
-          new PlainTextNode('not '),
+          new PlainTextNode('not ')
         ]),
         new LinkNode([
           new EmphasisNode([
-            new PlainTextNode('care'),
+            new PlainTextNode('care')
           ]),
           new PlainTextNode(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
@@ -83,11 +83,11 @@ describe('Overlapped linked and emphasized text (using underscores)', () => {
         new LinkNode([
           new PlainTextNode('trash '),
           new EmphasisNode([
-            new PlainTextNode('can'),
+            new PlainTextNode('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new EmphasisNode([
-          new PlainTextNode(' not'),
+          new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')
       ]))
@@ -127,7 +127,7 @@ describe('Overlapped stressed (using asterisks) and action text', () => {
           ]),
         ]),
         new StressNode([
-          new PlainTextNode(' sing'),
+          new PlainTextNode(' sing')
         ]),
         new PlainTextNode('.')
       ]))
@@ -141,7 +141,7 @@ describe('Overlapped stressed (using underscores) and action text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
-          new PlainTextNode('hate '),
+          new PlainTextNode('hate ')
         ]),
         new ActionNode([
           new StressNode([
@@ -167,7 +167,7 @@ describe('Overlapped stressed (using underscores) and action text', () => {
           ]),
         ]),
         new StressNode([
-          new PlainTextNode(' sing'),
+          new PlainTextNode(' sing')
         ]),
         new PlainTextNode('.')
       ]))
@@ -206,7 +206,7 @@ describe('A link that overlaps action text', () => {
             new PlainTextNode('Records')
           ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records'),
           new PlainTextNode(' furiously')
-        ]),
+        ])
       ])
     )
   })
@@ -344,7 +344,7 @@ describe('A footnote that overlaps a spoiler', () => {
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
           new SpoilerNode([
-            new PlainTextNode(' example of a'),
+            new PlainTextNode(' example of a')
           ]),
           new PlainTextNode(' footnote that overlaps a spoiler.'),
         ]),
@@ -458,7 +458,7 @@ describe('A NSFW convention that overlaps a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new NsfwNode([
-            new PlainTextNode('Gary loses to Ash'),
+            new PlainTextNode('Gary loses to Ash')
           ]),
           footnote
         ]),
@@ -489,7 +489,7 @@ describe('A footnote that overlaps a NSFW convention', () => {
           new NsfwNode([
             new PlainTextNode(' example of a'),
           ]),
-          new PlainTextNode(' footnote that overlaps a NSFW convention.'),
+          new PlainTextNode(' footnote that overlaps a NSFW convention.')
         ]),
         new FootnoteBlockNode([footnote])
       ])
@@ -620,7 +620,7 @@ describe('A footnote that overlaps a NSFL convention', () => {
         new PlainTextNode('reasonable '),
         new NsflNode([
           new PlainTextNode('and realistic')
-        ]),
+        ])
       ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -629,9 +629,9 @@ describe('A footnote that overlaps a NSFL convention', () => {
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
           new NsflNode([
-            new PlainTextNode(' example of a'),
+            new PlainTextNode(' example of a')
           ]),
-          new PlainTextNode(' footnote that overlaps a NSFL convention.'),
+          new PlainTextNode(' footnote that overlaps a NSFL convention.')
         ]),
         new FootnoteBlockNode([footnote])
       ])

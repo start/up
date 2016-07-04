@@ -108,7 +108,7 @@ describe('A naked URL', () => {
           new LinkNode([
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
-          new PlainTextNode(']'),
+          new PlainTextNode(']')
         ])
       ]))
   })
@@ -169,7 +169,7 @@ describe('A naked URL', () => {
           new PlainTextNode('I love... '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
-          ], 'https://archive.org/fake'),
+          ], 'https://archive.org/fake')
         ]),
         new PlainTextNode('!')
       ]))
@@ -182,7 +182,7 @@ describe('A naked URL', () => {
           new PlainTextNode('I love... '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
-          ], 'https://archive.org/fake'),
+          ], 'https://archive.org/fake')
         ]),
         new PlainTextNode('!')
       ]))
@@ -195,7 +195,7 @@ describe('A naked URL', () => {
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
-          ], 'https://archive.org/fake'),
+          ], 'https://archive.org/fake')
         ]),
         new PlainTextNode('!')
       ]))
@@ -301,7 +301,7 @@ describe('Inside parantheses, a naked URL', () => {
           new LinkNode([
             new PlainTextNode('archive.org/fake(url)')
           ], 'https://archive.org/fake(url)'),
-          new PlainTextNode(')'),
+          new PlainTextNode(')')
         ])
       ]))
   })
@@ -317,7 +317,7 @@ describe('Inside square brackets, a naked URL', () => {
           new LinkNode([
             new PlainTextNode('archive.org/fake[url]')
           ], 'https://archive.org/fake[url]'),
-          new PlainTextNode(']'),
+          new PlainTextNode(']')
         ])
       ]))
   })
