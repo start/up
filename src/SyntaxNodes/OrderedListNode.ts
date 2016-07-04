@@ -24,8 +24,6 @@ export class OrderedListNode {
         : OrderedListOrder.Ascending
     )
   }
-
-  private ORDERED_LIST: any = null
 }
 
 export enum OrderedListOrder {

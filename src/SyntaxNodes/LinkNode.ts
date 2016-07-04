@@ -10,10 +10,10 @@ export class LinkNode extends RichInlineSyntaxNode {
   // container link counts as an image for the purpose that rule. Under that specific circumstance,
   // link nodes act as outline syntax nodes. 
   OUTLINE_SYNTAX_NODE(): void { } 
+  private LINK: any = null
 
   constructor(public children: InlineSyntaxNode[] = [], public url: string = '') {
     super(children)
   }
 
-  private LINK: any = null
 }
