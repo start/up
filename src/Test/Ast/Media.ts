@@ -9,7 +9,7 @@ import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
-context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph)', () => {
+context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph).', () => {
   specify('This line can be a mix of all media conventions', () => {
     const text =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '

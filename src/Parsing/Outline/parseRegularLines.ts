@@ -4,6 +4,7 @@ import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
@@ -91,15 +92,16 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     // produce a line block. Likewise, if an outline media convention directly follows or precedes a
     // line block, the media convention is not included in the line block 
     //
-    // Similarly, if a line consists solely of multiple media conventions, we outline all of them.
+    // Similarly, if a line consists solely of multiple media conventions (and optional whitespace),
+    // we outline all of them.
 
     const doesLineConsistSolelyOfMediaConventions = (
-      inlineNodes.every(node => isWhitespace(node) || isMediaSyntaxNode(node))
+      inlineNodes.every(node => isMediaSyntaxNode(node) || isWhitespace(node))
       && inlineNodes.some(isMediaSyntaxNode)
     )
 
     if (doesLineConsistSolelyOfMediaConventions) {
-      terminatingNodes = <MediaSyntaxNode[]>inlineNodes.filter(isMediaSyntaxNode)
+      terminatingNodes = <OutlineSyntaxNode[]><any>withoutAnyWhitespace(inlineNodes)
       break
     }
 
@@ -143,8 +145,16 @@ function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
   return (
     node instanceof MediaSyntaxNode
     || (
-      node instanceof LinkNode
-      && node.children.length === 1
-      && node.children[0] instanceof ImageNode)
-  )
+      (node instanceof LinkNode) && node.children.every(linkChild =>
+        (linkChild instanceof ImageNode) || isWhitespace(linkChild))))
+}
+
+function withoutAnyWhitespace(inlineNodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+  return (
+    inlineNodes
+      .filter(node => !(node instanceof PlainTextNode))
+      .map(node =>
+        node instanceof LinkNode
+          ? new LinkNode(withoutAnyWhitespace(node.children), node.url)
+          : node))
 }
