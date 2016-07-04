@@ -221,10 +221,10 @@ class Tokenizer {
   }
 
   private isDone(): boolean {
-    return this.consumer.done() && this.resolveUnclosedContexts()
+    return this.consumer.done() && this.tryToResolveUnclosedContexts()
   }
 
-  private resolveUnclosedContexts(): boolean {
+  private tryToResolveUnclosedContexts(): boolean {
     while (this.openContexts.length) {
       const context = this.openContexts.pop()
 
@@ -271,7 +271,7 @@ class Tokenizer {
     // - Fail if whitespace is encountered before they close (some bracketed URLs)
     //
     // Under normal circumstances, we can skip over (i.e. simply buffer) any whitespace that isn't followed
-    // bt a start bracket. That's great news, because documents have whitespace all over the place! However,
+    // by a start bracket. That's great news, because documents have whitespace all over the place! However,
     // if any of our open conventions rely on whitespace, then we don't have that luxury.
     //
     // NOTE: This is pretty fragile! To determine whether any of our open conventions rely on whitespace,
@@ -713,7 +713,7 @@ class Tokenizer {
   //    * The top-level domain must consist solely of letters
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
-  //      cconsecutive periods are allowed in the resource path.
+  //      consecutive  periods are allowed in the resource path.
   private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
       startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
@@ -815,7 +815,7 @@ class Tokenizer {
             // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
             // URL, then that top-level domain must either be followed by a forward slash...
             FORWARD_SLASH,
-            // ... Or be the end of the URL.
+            // ... or be the end of the URL.
             followedBy(bracket.endPattern)))))
   }
 
@@ -912,7 +912,6 @@ class Tokenizer {
       startsWith: startPattern,
       startPatternContainsATerm,
       endsWith: endPattern,
-
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
       whenClosingItFlushesBufferTo: TokenKind.PlainText,
