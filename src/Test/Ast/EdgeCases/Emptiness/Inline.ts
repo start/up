@@ -55,7 +55,7 @@ context('Most inline conventions produce no syntax nodes if they have no content
     })
 
 
-    context('Of those conventions, only a few produce syntax nodes when they contain only unescaped whitespace.', () => {
+    context('Of those conventions, only a few produce syntax nodes when they contain only whitespace.', () => {
       context('Specifically:', () => {
         specify('Revision insertion', () => {
           expect(Up.toAst('no++ ++one')).to.eql(
@@ -178,6 +178,18 @@ context('Most inline conventions produce no syntax nodes if they have no content
       describe('A link with blank content', () => {
         it('produces a link node with its URL for its content', () => {
           expect(Up.toAst('[   \t  ][https://google.com]')).to.be.eql(
+            insideDocumentAndParagraph([
+              new LinkNode([
+                new PlainTextNode('https://google.com')
+              ], 'https://google.com'
+              )]))
+        })
+      })
+
+
+      describe('A link with escaped blank content', () => {
+        it('also produces a link node with its URL for its content', () => {
+          expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
             insideDocumentAndParagraph([
               new LinkNode([
                 new PlainTextNode('https://google.com')
