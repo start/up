@@ -777,7 +777,7 @@ class Tokenizer {
   // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
   // between the linkifying URL and the original convention.
   //
-  // For more information, see `getLinkifyingUrlConventions` and `getLinkUrlConventions`.
+  // For more information, see `getLinkifyingUrlConventions` and `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
       startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
@@ -814,11 +814,11 @@ class Tokenizer {
       SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
-          // If there's no URL prefix, there must be a top-level domain.
           DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+            // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
+            // URL, then that top-level domain must either be followed by a forward slash...
             FORWARD_SLASH,
-            // If the top-level domain isn't followed by a forward slash, it must be followed by the closing
-            // bracket.
+            // ... Or be the end of the URL.
             followedBy(bracket.endPattern)))))
   }
 
@@ -836,7 +836,7 @@ class Tokenizer {
     const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
     linkStartToken.associateWith(linkEndToken)
 
-    // We'll insert our new link end token right before the original end token, and we'll insert a our new link
+    // We'll insert our new link end token right before the original end token, and we'll insert our new link
     // start token right after the original end token's corresponding start token.
 
     const indexOfOriginalEndToken = this.tokens.length - 1
