@@ -95,13 +95,12 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     // Similarly, if a line consists solely of multiple media conventions (and optional whitespace),
     // we outline all of them.
 
-    const doesLineConsistSolelyOfMediaConventions = (
+    const doesLineConsistSolelyOfMediaConventions =
       inlineNodes.every(node => isMediaSyntaxNode(node) || isWhitespace(node))
       && inlineNodes.some(isMediaSyntaxNode)
-    )
 
     if (doesLineConsistSolelyOfMediaConventions) {
-      terminatingNodes = <OutlineSyntaxNode[]><any>withoutAnyWhitespace(inlineNodes)
+      terminatingNodes = <OutlineSyntaxNode[]><any>withoutWhitespace(inlineNodes)
       break
     }
 
@@ -145,16 +144,18 @@ function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
   return (
     node instanceof MediaSyntaxNode
     || (
-      (node instanceof LinkNode) && node.children.every(linkChild =>
-        (linkChild instanceof ImageNode) || isWhitespace(linkChild))))
+      node instanceof LinkNode
+      // A link node cannot consist solely of whitespace, so if `every` returns true, we know there's
+      // at least one image node within the link.
+      && node.children.every(child => (child instanceof ImageNode) || isWhitespace(child))))
 }
 
-function withoutAnyWhitespace(inlineNodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+// This function assumes any plain text nodes are whitespace.
+function withoutWhitespace(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
   return (
-    inlineNodes
-      .filter(node => !(node instanceof PlainTextNode))
+    nodes
+      .filter(node =>
+        !(node instanceof PlainTextNode))
       .map(node =>
-        node instanceof LinkNode
-          ? new LinkNode(withoutAnyWhitespace(node.children), node.url)
-          : node))
+        (node instanceof LinkNode) ? new LinkNode(withoutWhitespace(node.children), node.url) : node))
 }
