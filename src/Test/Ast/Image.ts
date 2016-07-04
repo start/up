@@ -19,8 +19,8 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 })
 
 
-describe('An image that is the only convention on its line', () => {
-  it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
+describe('An image that is the only convention on its line is not placed inside a paragraph node.', () => {
+  it('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[image: haunted house](http://example.com/hauntedhouse.svg)')).to.be.eql(
       new DocumentNode([
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
@@ -28,15 +28,15 @@ describe('An image that is the only convention on its line', () => {
   })
 
 
-  context('This also applies when: ', () => {
-    specify('The image is surrounded by whitespace', () => {
+  context('This also applies when that image', () => {
+    specify('is surrounded by whitespace', () => {
       expect(Up.toAst(' \t [image: haunted house](http://example.com/hauntedhouse.svg) \t ')).to.be.eql(
         new DocumentNode([
           new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
         ]))
     })
 
-    specify('The image is linkified', () => {
+    specify('is linkified', () => {
       const text =
         ' \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t '
 
@@ -48,7 +48,7 @@ describe('An image that is the only convention on its line', () => {
         ]))
     })
 
-    specify('The image is the only convention within a link', () => {
+    specify('is the only convention within a link', () => {
       const text =
         ' \t {[image: haunted house] (http://example.com/hauntedhouse.svg)} (hauntedhouse.com) \t '
 

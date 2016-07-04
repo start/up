@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from './
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
 describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
@@ -18,12 +19,46 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 })
 
 
-describe('An audio convention that is the only convention on its line', () => {
-  it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
+describe('An audio convention that is the only convention on its line is not placed inside a paragraph node.', () => {
+  it('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[audio: ghostly howling](http://example.com/ghosts.ogg)')).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
       ]))
+  })
+
+
+  context('This also applies when that audio convention', () => {
+    specify('is surrounded by whitespace', () => {
+      expect(Up.toAst(' \t [audio: ghostly howling](http://example.com/ghosts.ogg) \t ')).to.be.eql(
+        new DocumentNode([
+          new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+        ]))
+    })
+
+    specify('is linkified', () => {
+      const text =
+        ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (hauntedhouse.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
+
+    specify('is the only convention within a link', () => {
+      const text =
+        ' \t {[audio: ghostly howling] (http://example.com/ghosts.ogg)} (hauntedhouse.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
   })
 })
 
