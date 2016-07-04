@@ -823,8 +823,12 @@ class Tokenizer {
   }
 
   private bufferRawText(): void {
-    this.rawBracketConventions.some(bracket => this.tryToOpen(bracket))
-      || this.bufferCurrentChar()
+    const didOpenConvention =
+      this.rawBracketConventions.some(convention => this.tryToOpen(convention))
+
+    if (!didOpenConvention) {
+      this.bufferCurrentChar()
+    }
   }
 
   private closeLinkifyingUrl(url: string): void {
