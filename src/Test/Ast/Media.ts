@@ -58,7 +58,7 @@ context('If a line consists solely of media conventions, those media conventions
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-          ], 'https://hauntedhouse.com'),
+          ], 'https://hauntedhouse.com')
         ]))
     })
 
@@ -72,7 +72,7 @@ context('If a line consists solely of media conventions, those media conventions
           new LinkNode([
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-          ], 'https://hauntedhouse.com'),
+          ], 'https://hauntedhouse.com')
         ]))
     })
 
@@ -90,7 +90,7 @@ context('If a line consists solely of media conventions, those media conventions
           ], 'https://hauntedhouse.com'),
           new LinkNode([
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-          ], 'https://poltergeists.com'),
+          ], 'https://poltergeists.com')
         ]))
     })
   })
