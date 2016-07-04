@@ -1,13 +1,15 @@
 import { expect } from 'chai'
 import Up from '../../index'
+import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
-context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than inside a paragraph)', () => {
+context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph)', () => {
   specify('This line can be a mix of all media conventions', () => {
     const text =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
@@ -69,9 +71,19 @@ context('If a line consists solely of media conventions, those media conventions
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new LinkNode([
           new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-          new ImageNode('spooky house', 'http://example.com/spookyhouse.svg'),
+          new ImageNode('spooky house', 'http://example.com/spookyhouse.svg')
         ], 'https://hauntedhouse.com'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      ]))
+  })
+
+  specify("The line cannot have a link that contains more than just images and whitespace", () => {
+    expect(Up.toAst('[Look: (image: haunted house) {http://example.com/hauntedhouse.svg}] (https://example.com)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Look: '),
+          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+        ], 'https://example.com')
       ]))
   })
 })
