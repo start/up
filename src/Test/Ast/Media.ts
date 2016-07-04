@@ -76,14 +76,4 @@ context('If a line consists solely of media conventions, those media conventions
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
-
-  specify("The line cannot have a link that contains more than just images and whitespace", () => {
-    expect(Up.toAst('[Look: (image: haunted house) {http://example.com/hauntedhouse.svg}] (https://example.com)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Look: '),
-          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
-        ], 'https://example.com')
-      ]))
-  })
 })

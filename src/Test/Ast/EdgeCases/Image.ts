@@ -191,3 +191,16 @@ describe('A full image convention (description and URL) directly followed by ano
       ]))
   })
 })
+
+
+describe("A line consistingly solely of a link that contains both an image and regular text", () => {
+  it("produces a paragraph node", () => {
+    expect(Up.toAst('[Look: (image: haunted house) {http://example.com/hauntedhouse.svg}] (https://example.com)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Look: '),
+          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+        ], 'https://example.com')
+      ]))
+  })
+})
