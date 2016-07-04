@@ -8,7 +8,7 @@ import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
 import { tryToTokenizeInlineCodeOrUnmatchedDelimiter } from './tryToTokenizeInlineCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
-import { insertBracketsInsideBracketedConventions } from './insertBracketsInsideBracketedConventions'
+import { insertPlainTextBracketsInsideBracketedConventions } from './insertPlainTextBracketsInsideBracketedConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { BRACKETS } from './Brackets'
@@ -178,24 +178,24 @@ class Tokenizer {
     this.conventions.push(...[
       {
         richConvention: PARENTHESIZED_CONVENTION,
-        startDelimiter: '(',
-        endDelimiter: ')'
+        startsWith: '(',
+        endsWith: ')'
       }, {
         richConvention: SQUARE_BRACKETED_CONVENTION,
-        startDelimiter: '[',
-        endDelimiter: ']'
+        startsWith: '[',
+        endsWith: ']'
       }, {
         richConvention: ACTION_CONVENTION,
-        startDelimiter: '{',
-        endDelimiter: '}'
+        startsWith: '{',
+        endsWith: '}'
       }, {
         richConvention: REVISION_DELETION_CONVENTION,
-        startDelimiter: '~~',
-        endDelimiter: '~~'
+        startsWith: '~~',
+        endsWith: '~~'
       }, {
         richConvention: REVISION_INSERTION_CONVENTION,
-        startDelimiter: '++',
-        endDelimiter: '++'
+        startsWith: '++',
+        endsWith: '++'
       }
     ].map(args => this.getRichSandwichConventionNotRequiringBacktracking(args)))
 
@@ -217,7 +217,7 @@ class Tokenizer {
 
     this.tokens =
       nestOverlappingConventions(
-        insertBracketsInsideBracketedConventions(this.tokens))
+        insertPlainTextBracketsInsideBracketedConventions(this.tokens))
   }
 
   private isDone(): boolean {
@@ -881,19 +881,19 @@ class Tokenizer {
   private getRichSandwichConventionNotRequiringBacktracking(
     args: {
       richConvention: RichConvention
-      startDelimiter: string
-      endDelimiter: string
+      startsWith: string
+      endsWith: string
     }
   ): TokenizableConvention {
-    const { richConvention, startDelimiter, endDelimiter } = args
+    const { richConvention, startsWith, endsWith } = args
 
     return this.getRichSandwichConvention({
       richConvention,
-      startPattern: escapeForRegex(startDelimiter),
-      endPattern: escapeForRegex(endDelimiter),
+      startPattern: escapeForRegex(startsWith),
+      endPattern: escapeForRegex(endsWith),
 
       insteadOfFailingWhenLeftUnclosed: (context) => {
-        this.insertPlainTextTokenAtContextStart(startDelimiter, context)
+        this.insertPlainTextTokenAtContextStart(startsWith, context)
       }
     })
   }
