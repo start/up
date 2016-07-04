@@ -204,19 +204,16 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    while (true) {
+    do {
       this.bufferContentThatCannotOpenOrCloseAnyConventions()
-
-      if (this.isDone()) {
-        break
-      }
-
-      this.tryToCollectEscapedChar()
+    } while (
+      !this.isDone()
+      && (
+        this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenUsualContexts()
         || this.tryToOpenAnyConvention()
-        || this.bufferCurrentChar()
-    }
+        || this.bufferCurrentChar()))
 
     this.tokens =
       nestOverlappingConventions(
