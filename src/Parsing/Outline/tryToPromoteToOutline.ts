@@ -1,18 +1,7 @@
-import { LineConsumer } from './LineConsumer'
 import { isWhitespace } from '../isWhitespace'
-import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { Line } from '../../SyntaxNodes/Line'
-import { getInlineNodes } from '../Inline/getInlineNodes'
-import { NON_BLANK_PATTERN } from '../Patterns'
-import { OutlineParserArgs } from './OutlineParserArgs'
-
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are
@@ -41,14 +30,14 @@ export function tryToPromoteToOutline(
     }
 
     if (inlineNode instanceof LinkNode) {
-      const canPromoteLinkChildrenToOutline = tryToPromoteToOutline({
+      const wasAbleToPromoteChildrenToOutline = tryToPromoteToOutline({
         inlineNodes: inlineNode.children,
         then: promotableChildren => {
           promotedNodes.push(new LinkNode(promotableChildren, inlineNode.url))
         }
       })
 
-      if (!canPromoteLinkChildrenToOutline) {
+      if (!wasAbleToPromoteChildrenToOutline) {
         return false
       }
       
