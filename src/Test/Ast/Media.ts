@@ -48,7 +48,7 @@ context('If a line consists solely of media conventions, those media conventions
 
 
   context("A link containing only one or more media conventions (and optional whitspace) counts as media for the purpose of this rule.", () => {
-    specify("All of the media conventions on a line can be stuffed into one linke", () => {
+    specify("All of the media conventions on a line can be stuffed into one link", () => {
       const text =
         ' \t { \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) } (hauntedhouse.com)  \t '
 
@@ -59,6 +59,38 @@ context('If a line consists solely of media conventions, those media conventions
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://hauntedhouse.com'),
+        ]))
+    })
+
+    specify("One or more media conventions on the line can be left out of the link", () => {
+      const text =
+        ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t { \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) } (hauntedhouse.com)  \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+          new LinkNode([
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
+
+    specify("There can be multiple links on the same line", () => {
+      const text =
+        ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (ghosts.com) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (poltergeists.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+          ], 'https://ghosts.com'),
+          new LinkNode([
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+          ], 'https://hauntedhouse.com'),
+          new LinkNode([
+            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+          ], 'https://poltergeists.com'),
         ]))
     })
   })
