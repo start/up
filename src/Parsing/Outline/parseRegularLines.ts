@@ -86,14 +86,15 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       break
     }
 
-    const nodesFromThisLineWerePromotedToOutline = tryToPromoteToOutline({
-      inlineNodes,
-      then: outlineNodes => {
-        terminatingNodes = outlineNodes
-      }
-    })
+    const nodesFromThisShouldBePlacedDirectlyIntoOutline =
+      tryToPromoteToOutline({
+        inlineNodes,
+        then: outlineNodes => {
+          terminatingNodes = outlineNodes
+        }
+      })
 
-    if (nodesFromThisLineWerePromotedToOutline) {
+    if (nodesFromThisShouldBePlacedDirectlyIntoOutline) {
       break
     }
 
