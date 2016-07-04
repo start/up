@@ -34,34 +34,6 @@ context('If a line consists solely of media conventions, those media conventions
       ]))
   })
 
-  specify('The line can have a linkified image', () => {
-    const text =
-      ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new LinkNode([
-          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        ], 'https://hauntedhouse.com'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-      ]))
-  })
-
-  specify('The line can have a link that contains only an image', () => {
-    const text =
-      ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t {[image: haunted house] (http://example.com/hauntedhouse.svg)} (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new LinkNode([
-          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        ], 'https://hauntedhouse.com'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-      ]))
-  })
-
   specify('The line can have link that contains only multiple images and whitespace', () => {
     const text =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t {[image: haunted house] (http://example.com/hauntedhouse.svg) [image: spooky house] (http://example.com/spookyhouse.svg)} (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '

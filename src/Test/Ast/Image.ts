@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from './Helpers'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
@@ -24,6 +25,40 @@ describe('An image that is the only convention on its line', () => {
       new DocumentNode([
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
       ]))
+  })
+
+
+  context('This also applies when: ', () => {
+    specify('The image is surrounded by whitespace', () => {
+      expect(Up.toAst(' \t [image: haunted house](http://example.com/hauntedhouse.svg) \t ')).to.be.eql(
+        new DocumentNode([
+          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+        ]))
+    })
+
+    specify('The image is linkified', () => {
+      const text =
+        ' \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
+
+    specify('The image is the only convention within a link', () => {
+      const text =
+        ' \t {[image: haunted house] (http://example.com/hauntedhouse.svg)} (hauntedhouse.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
   })
 })
 
@@ -129,7 +164,7 @@ describe('An image description (enclosed in square brackets)', () => {
         new ImageNode('haunted [house]', 'http://example.com/?state=NE'),
       ]))
   })
-  
+
   it('can contain nested matching square brackets', () => {
     expect(Up.toAst('[image: [haunted [house]]](http://example.com/?state=NE)')).to.be.eql(
       new DocumentNode([
@@ -180,7 +215,7 @@ describe('An image URL (enclosed in square brackets)', () => {
         new ImageNode('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
-  
+
   it('can contain nested matching square brackets', () => {
     expect(Up.toAst('(image: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.be.eql(
       new DocumentNode([
@@ -197,7 +232,7 @@ describe('An image URL (enclosed in parentheses)', () => {
         new ImageNode('ghosts eating luggage', 'http://example.com/?state=(NE)'),
       ]))
   })
-  
+
   it('can contain nested matching parentheses', () => {
     expect(Up.toAst('[image: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.be.eql(
       new DocumentNode([
@@ -214,7 +249,7 @@ describe('An image URL (enclosed in curly brackets)', () => {
         new ImageNode('ghosts eating luggage', 'http://example.com/?state={NE}'),
       ]))
   })
-  
+
   it('can contain nested matching curly brackets', () => {
     expect(Up.toAst('[image: ghosts eating luggage]{http://example.com/?{state={NE}}}')).to.be.eql(
       new DocumentNode([
