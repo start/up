@@ -1,10 +1,7 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-
-
-export class CodeBlockNode extends OutlineSyntaxNode {
-  constructor(public text: string) {
-    super()
-  }
+export class CodeBlockNode {
+  OUTLINE_SYNTAX_NODE(): void { }
+  
+  constructor(public text: string) { }
 
   private CODE_BLOCK: any = null
 }

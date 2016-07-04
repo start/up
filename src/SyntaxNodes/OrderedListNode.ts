@@ -1,11 +1,10 @@
 import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class OrderedListNode extends OutlineSyntaxNode {
-  constructor(public listItems: OrderedListItem[] = []) {
-    super()
-  }
+export class OrderedListNode {
+  OUTLINE_SYNTAX_NODE(): void { }
+  
+  constructor(public listItems: OrderedListItem[] = []) { }
 
   start(): number {
     return this.listItems[0].ordinal

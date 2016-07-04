@@ -1,11 +1,10 @@
 import { Line } from './Line'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class LineBlockNode extends OutlineSyntaxNode {
-  constructor(public lines: Line[] = []) {
-    super()
-  }
+export class LineBlockNode  {
+  OUTLINE_SYNTAX_NODE(): void { }
+  
+  constructor(public lines: Line[] = []) { }
 
   private LINE_BLOCK: any = null
 }

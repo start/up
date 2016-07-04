@@ -1,11 +1,10 @@
 import { UnorderedListItem } from './UnorderedListItem'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class UnorderedListNode extends OutlineSyntaxNode {
-  constructor(public listItems: UnorderedListItem[] = []) {
-    super()
-  }
+export class UnorderedListNode {
+  OUTLINE_SYNTAX_NODE(): void { }
+  
+  constructor(public listItems: UnorderedListItem[] = []) { }
 
   private UNORDERED_LIST: any = null
 }

@@ -1,10 +1,10 @@
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 
 
-export abstract class RichInlineSyntaxNode extends InlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[]) {
-    super()
-  }
+export abstract class RichInlineSyntaxNode {  
+  INLINE_SYNTAX_NODE(): void { }
 
-  richInlineSyntaxNode(): void { }
+  constructor(public children: InlineSyntaxNode[]) { }
+
+  protected RICH_INLINE_SYNTAX_NODE(): void { }
 }

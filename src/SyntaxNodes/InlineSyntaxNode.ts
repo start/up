@@ -1,3 +1,3 @@
-export abstract class InlineSyntaxNode {
-  INLINE_SYNTAX_NODE(): void { }
+export interface InlineSyntaxNode {
+  INLINE_SYNTAX_NODE(): void
 }

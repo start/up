@@ -1,11 +1,10 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { FootnoteNode } from './FootnoteNode'
 
 
-export class FootnoteBlockNode extends OutlineSyntaxNode {
-  constructor(public footnotes: FootnoteNode[] = []) {
-    super()
-  }
+export class FootnoteBlockNode {
+  OUTLINE_SYNTAX_NODE(): void { }
+  
+  constructor(public footnotes: FootnoteNode[] = []) { }
 
   private FOOTNOTE_BLOCK: any = null
 }

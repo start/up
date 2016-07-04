@@ -1,11 +1,10 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
-export class HeadingNode extends OutlineSyntaxNode {
-  constructor(public children?: InlineSyntaxNode[], public level?: number) {
-    super()
-  }
+export class HeadingNode{
+  OUTLINE_SYNTAX_NODE(): void { }
+  
+  constructor(public children?: InlineSyntaxNode[], public level?: number) { }
 
   private HEADING: any = null
 }
