@@ -34,18 +34,32 @@ context('If a line consists solely of media conventions, those media conventions
       ]))
   })
 
-  specify('The line can have link that contains only multiple images and whitespace', () => {
+  specify('The line can have whitespace between and around the media conventions', () => {
     const text =
-      ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t {[image: haunted house] (http://example.com/hauntedhouse.svg) [image: spooky house] (http://example.com/spookyhouse.svg)} (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
+      ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new LinkNode([
-          new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-          new ImageNode('spooky house', 'http://example.com/spookyhouse.svg')
-        ], 'https://hauntedhouse.com'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
+  })
+
+
+  context("A link containing only one or more media conventions (and optional whitspace) counts as media for the purpose of this rule.", () => {
+    specify("All of the media conventions on a line can be stuffed into one linke", () => {
+      const text =
+        ' \t { \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) } (hauntedhouse.com)  \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
   })
 })
