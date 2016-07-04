@@ -1,7 +1,9 @@
 import { LineConsumer } from './LineConsumer'
 import { isWhitespace } from '../isWhitespace'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
+import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
@@ -132,5 +134,17 @@ export function parseRegularLines(args: OutlineParserArgs): void {
 
 
 function isMediaSyntaxNode(node: InlineSyntaxNode): boolean {
-  return node instanceof MediaSyntaxNode
+  // If a line consists solely of media conventions, those media conventions are placed directly
+  // into the outline (rather than inside a paragraph).
+  //
+  // If an image is "linkified", or if it is otherwise the sole convention within a link, the
+  // container link counts as an image for the purpose that rule. Under that specific circumstance,
+  // link nodes act as outline syntax nodes. 
+  return (
+    node instanceof MediaSyntaxNode
+    || (
+      node instanceof LinkNode
+      && node.children.length === 1
+      && node.children[0] instanceof ImageNode)
+  )
 }
