@@ -4,10 +4,7 @@ import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '..
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
 context('A linkified NSFL convention can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
@@ -56,7 +53,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
               new PlainTextNode('stackoverflow.com')
             ], 'https://stackoverflow.com'),
             new PlainTextNode(' is nice)')
-          ]),
+          ])
         ])
       )
     })
@@ -84,7 +81,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(file:///)')
-          ]),
+          ])
         ])
       )
     })
@@ -132,7 +129,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(/r9k/ created it)')
-          ]),
+          ])
         ])
       )
     })
@@ -146,7 +143,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(/)')
-          ]),
+          ])
         ])
       )
     })
@@ -223,7 +220,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#)')
-          ]),
+          ])
         ])
       )
     })
@@ -237,7 +234,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2 was never trending)')
-          ]),
+          ])
         ])
       )
     })
@@ -251,7 +248,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2)')
-          ]),
+          ])
         ])
       )
     })
@@ -314,7 +311,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(4chan.org--terrifying)')
-          ]),
+          ])
         ])
       )
     })
@@ -343,7 +340,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
-          ]),
+          ])
         ])
       )
     })
@@ -373,7 +370,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode(' '),
             new ParenthesizedNode([
               new PlainTextNode('(john.e.smith-kline)')
-            ]),
+            ])
           ])
         )
       })
@@ -388,7 +385,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(.co.uk)')
-          ]),
+          ])
         ])
       )
     })
@@ -402,7 +399,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(um..uh)')
-          ]),
+          ])
         ])
       )
     })
@@ -416,7 +413,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(4chan.org../r9k/)')
-          ]),
+          ])
         ])
       )
     })
@@ -445,7 +442,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
-          ]),
+          ])
         ])
       )
     })
@@ -475,7 +472,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         new PlainTextNode(' '),
         new ParenthesizedNode([
           new PlainTextNode('(really)')
-        ]),
+        ])
       ]))
   })
 })

@@ -4,10 +4,7 @@ import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '..
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
-import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
 context('A linkified spoiler can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
