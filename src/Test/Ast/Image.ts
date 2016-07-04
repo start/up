@@ -20,7 +20,7 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 
 
 describe('An image that is the only convention on its line is not placed inside a paragraph node.', () => {
-  it('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
+  specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[image: haunted house](http://example.com/hauntedhouse.svg)')).to.be.eql(
       new DocumentNode([
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')

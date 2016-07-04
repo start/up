@@ -20,7 +20,7 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 
 
 describe('An audio convention that is the only convention on its line is not placed inside a paragraph node.', () => {
-  it('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
+  specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[audio: ghostly howling](http://example.com/ghosts.ogg)')).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')

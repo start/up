@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from './
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
 describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "video:" immediately followed by another instance of bracketed text', () => {
@@ -18,12 +19,46 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 })
 
 
-describe('A video that is the only convention on its line', () => {
-  it('is not placed inside a paragraph node, instead being placed directly inside the node that would have contained paragraph', () => {
+describe('A video that is the only convention on its line is not placed inside a paragraph node.', () => {
+  specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[video: ghosts eating luggage](http://example.com/poltergeists.webm)')).to.be.eql(
       new DocumentNode([
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
+  })
+
+
+  context('This also applies when that video', () => {
+    specify('is surrounded by whitespace', () => {
+      expect(Up.toAst(' \t [video: ghosts eating luggage](http://example.com/poltergeists.webm) \t ')).to.be.eql(
+        new DocumentNode([
+          new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        ]))
+    })
+
+    specify('is linkified', () => {
+      const text =
+        ' \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (hauntedhouse.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
+
+    specify('is the only convention within a link', () => {
+      const text =
+        ' \t {[video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com) \t '
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new LinkNode([
+            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+          ], 'https://hauntedhouse.com'),
+        ]))
+    })
   })
 })
 
