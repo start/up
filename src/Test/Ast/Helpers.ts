@@ -28,13 +28,13 @@ export function expectEveryCombinationOfBrackets(
   const { contentToWrapInBrackets, urlToWrapInBrackets, toProduce } = args
   const partsToPutInBetween = args.partsToPutInBetween || ['']
 
-  for (const bracketForFirstPart of BRACKETS) {
-    for (const bracketForSecondPart of BRACKETS) {
-      for (const partToPutInBetween of partsToPutInBetween) {
+  for (const bracketForContent of BRACKETS) {
+    for (const partToPutInBetween of partsToPutInBetween) {
+      for (const bracketForUrl of BRACKETS) {
         const text =
-          wrapInBracket(contentToWrapInBrackets, bracketForFirstPart)
+          wrapInBracket(contentToWrapInBrackets, bracketForContent)
           + partToPutInBetween
-          + wrapInBracket(urlToWrapInBrackets, bracketForSecondPart)
+          + wrapInBracket(urlToWrapInBrackets, bracketForUrl)
 
         expect(Up.toAst(text)).to.be.eql(toProduce)
       }
