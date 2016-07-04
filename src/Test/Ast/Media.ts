@@ -1,13 +1,13 @@
 import { expect } from 'chai'
-import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import Up from '../../index'
+import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
-describe('A line consisting solely of media conventions', () => {
-  it('produces a node for each convention and includes each directly into the outline, rather than squeezing them all into a paragraph', () => {
+context('If a line consists solely of media conventions, those media conventions are placed directly into the outline, rather than squeezing them all into a paragraph.', () => {
+  specify('This line can be a mix of all media conventions', () => {
     const text =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
 
@@ -18,11 +18,8 @@ describe('A line consisting solely of media conventions', () => {
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
-})
 
-
-describe('A line consisting solely of media conventions and optional whitespace', () => {
-  it('produces a node for each convention and includes each directly into the outline, rather than squeezing them all into a paragraph', () => {
+  it('The line can have whitespace between and around the media conventions', () => {
     const text =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
