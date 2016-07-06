@@ -463,51 +463,50 @@ class Tokenizer {
   // For more information, see `getLinkifyingUrlConventions` and `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
     return concat(BRACKETS.map(bracket => [
-      new TokenizableConvention({
-        startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-        endsWith: bracket.endPattern,
-
+      this.getConventionForWhitespaceFollowedByLinkifyingUrl({
+        bracket,
         onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-        whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
-
-        failsIfWhitespaceIsEnounteredBeforeClosing: true,
-        insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
-        whenClosingItAlsoClosesInnerConventions: true,
-
-        whenClosing: (context) => {
-          const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-          if (this.probablyWasNotIntendedToBeAUrl(url)) {
-            this.backtrackToBeforeContext(context)
-          } else {
-            this.closeLinkifyingUrlForRichConventions(url)
-          }
-        }
+        ifUrlIsValidThen: url => this.closeLinkifyingUrlForRichConventions(url)
       }),
-
-      new TokenizableConvention({
-        startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-        endsWith: bracket.endPattern,
-
+      this.getConventionForWhitespaceFollowedByLinkifyingUrl({
+        bracket,
         onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
-        whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
-
-        failsIfWhitespaceIsEnounteredBeforeClosing: true,
-        insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
-        whenClosingItAlsoClosesInnerConventions: true,
-
-        whenClosing: (context) => {
-          const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-          if (this.probablyWasNotIntendedToBeAUrl(url)) {
-            this.backtrackToBeforeContext(context)
-          } else {
-            this.closeLinkifyingUrlForMediaConventions(url)
-          }
-        }
+        ifUrlIsValidThen: url => this.closeLinkifyingUrlForMediaConventions(url)
       })
     ]
     ))
+  }
+
+  private getConventionForWhitespaceFollowedByLinkifyingUrl(
+    args: {
+      bracket: Bracket
+      onlyOpenIfDirectlyFollowing: RichConvention[] | TokenKind[]
+      ifUrlIsValidThen: (url: string) => void
+    }
+  ): TokenizableConvention {
+    const { bracket, onlyOpenIfDirectlyFollowing, ifUrlIsValidThen } = args
+
+    return new TokenizableConvention({
+      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+      endsWith: bracket.endPattern,
+
+      onlyOpenIfDirectlyFollowing,
+      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+
+      failsIfWhitespaceIsEnounteredBeforeClosing: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      whenClosing: (context) => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+
+        if (this.probablyWasNotIntendedToBeAUrl(url)) {
+          this.backtrackToBeforeContext(context)
+        } else {
+          ifUrlIsValidThen(url)
+        }
+      }
+    })
   }
 
   private closeLinkifyingUrlForRichConventions(url: string): void {
