@@ -31,6 +31,12 @@ export function expectEveryCombinationOfBrackets(
 }
 
 
+const BRACKETS = [
+  { open: '(', close: ')' },
+  { open: '[', close: ']' },
+  { open: '{', close: '}' }
+]
+
 export function expectEveryPermutation(
   args: {
     contentToWrapInBrackets: string
@@ -38,12 +44,6 @@ export function expectEveryPermutation(
     toProduce: DocumentNode
   }
 ): void {
-  const BRACKETS = [
-    { open: '(', close: ')' },
-    { open: '[', close: ']' },
-    { open: '{', close: '}' }
-  ]
-
   const { contentToWrapInBrackets, toProduce } = args
 
   const urlSegments = args.urlSegments.map(urlSegment => <UrlSegment>{
@@ -61,21 +61,21 @@ export function expectEveryPermutation(
             BRACKETS.map(bracket =>
               prefix + wrapInBracket(urlSegment.urlToWrapInBrackets, bracket)))))
 
-    for (const permutation of everyPermutation('', permutationsByUrlSegment)) {
-      expect(Up.toAst(bracktedContent + permutation)).to.be.eql(toProduce)
+    for (const permutation of everyPermutation(bracktedContent, permutationsByUrlSegment)) {
+      expect(Up.toAst(permutation)).to.be.eql(toProduce)
     }
   }
 }
 
 
 function everyPermutation(prefix: string, permutationsBySegment: string[][]): string[] {
-  if (permutationsBySegment.length === 1) {
-    return permutationsBySegment[0].map(permutation => prefix + permutation)
-  }
-
-  return concat(
-    permutationsBySegment[0].map(permutation =>
-      everyPermutation(prefix + permutation, permutationsBySegment.slice(1))))
+  return (
+    permutationsBySegment.length === 1
+      ? permutationsBySegment[0].map(permutation => prefix + permutation)
+      : concat(
+        permutationsBySegment[0].map(permutation =>
+          everyPermutation(prefix + permutation, permutationsBySegment.slice(1))))
+  )
 }
 
 
