@@ -70,13 +70,7 @@ class Parser {
         }
 
         case TokenKind.InlineCode: {
-          const code = token.value.trim()
-
-          // Empty inline code isn't meaningful, so we discard it
-          if (code) {
-            this.nodes.push(new InlineCodeNode(code))
-          }
-
+          this.nodes.push(new InlineCodeNode(token.value))
           continue
         }
 
