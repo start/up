@@ -14,6 +14,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
+
 const up = new Up({
   baseForUrlsStartingWithHashMark: 'https://example.com/page'
 })

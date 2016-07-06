@@ -14,6 +14,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
+
 const up = new Up({
   defaultUrlScheme: 'my-app:'
 })
@@ -244,40 +245,40 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified audio URLs when the audio part and the linkifying URL are separated by whitespace', () => {
-    const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (wiki/Blue_Sky)'
+    const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (wiki.com/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
-        ], 'my-app:wiki/Blue_Sky')
+        ], 'my-app:wiki.com/Blue_Sky')
       ])
     )
   })
 
   it('is prefixed to schemeless linkified image URLs when the image part and the linkifying URL are separated by whitespace', () => {
-    const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (wiki/Blue_Sky)'
+    const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (wiki.com/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
-        ], 'my-app:wiki/Blue_Sky')
+        ], 'my-app:wiki.com/Blue_Sky')
       ])
     )
   })
 
   it('is prefixed to schemeless linkified video URLs when the video part and the linkifying URL are separated by whitespace', () => {
-    const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (wiki/Blue_Sky)'
+    const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (wiki.com/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
-        ], 'my-app:wiki/Blue_Sky')
+        ], 'my-app:wiki.com/Blue_Sky')
       ])
     )
   })
