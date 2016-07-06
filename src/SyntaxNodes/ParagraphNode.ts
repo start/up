@@ -5,5 +5,5 @@ export class ParagraphNode {
   OUTLINE_SYNTAX_NODE(): void { }
   private PARAGRAPH: any = null
 
-  constructor(public children: InlineSyntaxNode[] = []) { }
+  constructor(public children: InlineSyntaxNode[]) { }
 }
