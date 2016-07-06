@@ -22,6 +22,13 @@ context("When the custom term for 'spoiler' starts with the a caret, its start d
         ])
       ]))
   })
+
+  specify('When there is not a matching closing bracket, the start delimiter is preserved as plain text', () => {
+    expect(up.toAst('[^lookaway^: Not finished typi')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('[^lookaway^: Not finished typi')
+      ]))
+  })
 })
 
 
@@ -40,6 +47,13 @@ context("When the custom term for 'nsfw' starts with the a caret, its start deli
         ])
       ]))
   })
+
+  specify('When there is not a matching closing bracket, the start delimiter is preserved as plain text', () => {
+    expect(up.toAst('[^lookaway^: Not finished typi')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('[^lookaway^: Not finished typi')
+      ]))
+  })
 })
 
 
@@ -56,6 +70,13 @@ context("When the custom term for 'nsfl' starts with the a caret, its start deli
         new NsflNode([
           new PlainTextNode('Ash fights Gary')
         ])
+      ]))
+  })
+
+  specify('When there is not a matching closing bracket, the start delimiter is preserved as plain text', () => {
+    expect(up.toAst('[^lookaway^: Not finished typi')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('[^lookaway^: Not finished typi')
       ]))
   })
 })
