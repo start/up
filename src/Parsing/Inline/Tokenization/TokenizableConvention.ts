@@ -5,62 +5,6 @@ import { RichConvention } from '../RichConvention'
 import { regExpStartingWith } from '../../PatternHelpers'
 
 
-
-export class TokenizableConvention {
-  onlyOpenIfDirectlyFollowing: TokenKind[]
-
-  startsWith: RegExp
-  endsWith: RegExp
-  isCutShortByWhitespace: boolean
-
-  flushesBufferToPlainTextTokenBeforeOpening: boolean
-
-  whenOpening: OnTextMatch
-
-  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
-  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
-
-  failsIfWhitespaceIsEnounteredBeforeClosing: boolean
-
-  whenClosingItAlsoClosesInnerConventions: boolean
-  mustBeDirectlyFollowedBy: TokenizableConvention[]
-  whenClosingItFlushesBufferTo: TokenKind
-
-  whenClosing: OnConventionEvent
-  insteadOfFailingWhenLeftUnclosed: OnConventionEvent
-
-  constructor(args: TokenizableConventionArgs) {
-    const { onlyOpenIfDirectlyFollowing } = args
-
-    this.onlyOpenIfDirectlyFollowing = (  
-      areRichConventions(onlyOpenIfDirectlyFollowing)
-        ? onlyOpenIfDirectlyFollowing.map(richConvention => richConvention.endTokenKind)
-        : onlyOpenIfDirectlyFollowing
-    )
-
-    this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
-    this.endsWith = regExpStartingWith(args.endsWith)
-    this.isCutShortByWhitespace = args.isCutShortByWhitespace
-
-    this.flushesBufferToPlainTextTokenBeforeOpening = args.flushesBufferToPlainTextTokenBeforeOpening
-
-    this.whenOpening = args.whenOpening
-
-    this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
-    this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen
-
-    this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
-
-    this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
-    this.mustBeDirectlyFollowedBy = args.mustBeDirectlyFollowedBy
-    this.whenClosingItFlushesBufferTo = args.whenClosingItFlushesBufferTo
-
-    this.whenClosing = args.whenClosing
-    this.insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed
-  }
-}
-
-
 export interface TokenizableConventionArgs {
   onlyOpenIfDirectlyFollowing?: RichConvention[] | TokenKind[]
 
@@ -70,8 +14,7 @@ export interface TokenizableConventionArgs {
 
   isCutShortByWhitespace?: boolean
 
-  flushesBufferToPlainTextTokenBeforeOpening?: boolean
-
+  beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
   whenOpening?: OnTextMatch
 
   insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
@@ -81,10 +24,61 @@ export interface TokenizableConventionArgs {
 
   whenClosingItAlsoClosesInnerConventions?: boolean
   mustBeDirectlyFollowedBy?: TokenizableConvention[]
-  whenClosingItFlushesBufferTo?: TokenKind
+  beforeClosingItFlushesNonEmptyBufferTo?: TokenKind
+  beforeClosingItAlwaysFlushesBufferTo?: TokenKind
 
   whenClosing?: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
+}
+
+
+export class TokenizableConvention {
+  onlyOpenIfDirectlyFollowing: TokenKind[]
+
+  startsWith: RegExp
+  endsWith: RegExp
+  isCutShortByWhitespace: boolean
+
+  flushesBufferToPlainTextTokenBeforeOpening: boolean
+  whenOpening: OnTextMatch
+
+  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
+  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
+
+  failsIfWhitespaceIsEnounteredBeforeClosing: boolean
+
+  whenClosingItAlsoClosesInnerConventions: boolean
+  mustBeDirectlyFollowedBy: TokenizableConvention[]
+  beforeClosingItFlushesNonEmptyBufferTo: TokenKind
+  beforeClosingItAlwaysFlushesBufferTo: TokenKind
+
+  whenClosing: OnConventionEvent
+  insteadOfFailingWhenLeftUnclosed: OnConventionEvent
+
+  constructor(args: TokenizableConventionArgs) {
+    const { onlyOpenIfDirectlyFollowing } = args
+
+    this.onlyOpenIfDirectlyFollowing = (  
+      isAnArrayOfRichConventions(onlyOpenIfDirectlyFollowing)
+        ? onlyOpenIfDirectlyFollowing.map(richConvention => richConvention.endTokenKind)
+        : onlyOpenIfDirectlyFollowing
+    )
+
+    this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
+    this.endsWith = regExpStartingWith(args.endsWith)
+    this.isCutShortByWhitespace = args.isCutShortByWhitespace
+    this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
+    this.whenOpening = args.whenOpening
+    this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
+    this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen
+    this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
+    this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
+    this.mustBeDirectlyFollowedBy = args.mustBeDirectlyFollowedBy
+    this.beforeClosingItFlushesNonEmptyBufferTo = args.beforeClosingItFlushesNonEmptyBufferTo
+    this.beforeClosingItAlwaysFlushesBufferTo = args.beforeClosingItAlwaysFlushesBufferTo
+    this.whenClosing = args.whenClosing
+    this.insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed
+  }
 }
 
 
@@ -93,6 +87,6 @@ export interface OnConventionEvent {
 }
 
 
-function areRichConventions(items: any): items is RichConvention[] {
+function isAnArrayOfRichConventions(items: any): items is RichConvention[] {
   return items && items.length && (items[0].endTokenKind != null)
 }

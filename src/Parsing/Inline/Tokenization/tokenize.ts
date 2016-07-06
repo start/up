@@ -102,7 +102,7 @@ class Tokenizer {
     startsWith: 'http' + optional('s') + '://',
     isCutShortByWhitespace: true,
 
-    flushesBufferToPlainTextTokenBeforeOpening: true,
+    beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
     whenOpening: urlScheme => {
       this.appendNewToken(TokenKind.NakedUrlSchemeAndStart, urlScheme)
@@ -110,7 +110,7 @@ class Tokenizer {
 
     insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferRawText(),
 
-    whenClosingItFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
+    beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
     whenClosingItAlsoClosesInnerConventions: true,
 
     insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
@@ -273,8 +273,8 @@ class Tokenizer {
       startPatternContainsATerm,
       endsWith,
 
-      flushesBufferToPlainTextTokenBeforeOpening: true,
-      whenClosingItFlushesBufferTo: TokenKind.PlainText,
+      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+      beforeClosingItFlushesNonEmptyBufferTo: TokenKind.PlainText,
 
       whenClosing: (context) => {
         this.encloseContextWithinRichConvention(richConvention, context)
@@ -292,12 +292,12 @@ class Tokenizer {
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 
-          flushesBufferToPlainTextTokenBeforeOpening: true,
+          beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
           whenClosingItAlsoClosesInnerConventions: true,
           mustBeDirectlyFollowedBy: this.mediaUrlConventions,
-          whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
+          beforeClosingItAlwaysFlushesBufferTo: media.descriptionAndStartTokenKind
         }))))
   }
 
@@ -306,7 +306,7 @@ class Tokenizer {
       startsWith: ANY_WHITESPACE + bracket.startPattern,
       endsWith: bracket.endPattern,
 
-      flushesBufferToPlainTextTokenBeforeOpening: true,
+      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
       insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
       whenClosingItAlsoClosesInnerConventions: true,
@@ -588,7 +588,7 @@ class Tokenizer {
       }
     }
 
-    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+    this.flushNonEmptyBufferToPlainTextToken()
 
     for (const raisedVoiceHandler of this.raisedVoiceHandlers) {
       raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText()
@@ -705,8 +705,12 @@ class Tokenizer {
     // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
     this.closeNakedUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
 
-    if (convention.whenClosingItFlushesBufferTo != null) {
-      this.flushBufferToTokenOfKind(convention.whenClosingItFlushesBufferTo)
+    if (convention.beforeClosingItFlushesNonEmptyBufferTo != null) {
+      this.flushNonEmptyBufferToTokenOfKind(convention.beforeClosingItFlushesNonEmptyBufferTo)
+    }
+
+    if (convention.beforeClosingItAlwaysFlushesBufferTo != null) {
+      this.flushBufferToTokenOfKind(convention.beforeClosingItAlwaysFlushesBufferTo)
     }
 
     context.close()
@@ -791,7 +795,7 @@ class Tokenizer {
 
   private encloseWithin(args: EncloseWithinRichConventionArgs): void {
     const { richConvention, startingBackAtIndex} = args
-    this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+    this.flushNonEmptyBufferToPlainTextToken()
 
     const startToken = new Token(richConvention.startTokenKind)
     const endToken = new Token(richConvention.endTokenKind)
@@ -822,7 +826,7 @@ class Tokenizer {
           // For a delimiter to open any raiased voices, it must appear to be touching the beginning of some
           // content (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
-            this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+            this.flushNonEmptyBufferToPlainTextToken()
             handler.addStartDelimiter(delimiter, this.tokens.length)
           } else {
             // If the delimiter isn't followed by a non-whitespace character, we treat the delimiter as plain
@@ -845,7 +849,7 @@ class Tokenizer {
     return tryToTokenizeInlineCodeOrUnmatchedDelimiter({
       text: this.consumer.remainingText,
       then: (resultToken, lengthConsumed) => {
-        this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+        this.flushNonEmptyBufferToPlainTextToken()
         this.tokens.push(resultToken)
         this.consumer.advanceTextIndex(lengthConsumed)
       }
@@ -871,7 +875,7 @@ class Tokenizer {
 
         thenBeforeAdvancingTextIndex: (match, charAfterMatch, ...captures) => {
           if (flushesBufferToPlainTextTokenBeforeOpening) {
-            this.flushBufferToPlainTextTokenIfBufferIsNotEmpty()
+            this.flushNonEmptyBufferToPlainTextToken()
           }
 
           this.openContexts.push(new ConventionContext(convention, this.getCurrentSnapshot()))
@@ -969,6 +973,12 @@ class Tokenizer {
     return buffer
   }
 
+  private flushNonEmptyBufferToTokenOfKind(kind: TokenKind): void {
+    if (this.buffer) {
+      this.appendNewToken(kind, this.flushBuffer())
+    }
+  }
+
   private flushBufferToTokenOfKind(kind: TokenKind): void {
     this.appendNewToken(kind, this.flushBuffer())
   }
@@ -987,10 +997,8 @@ class Tokenizer {
     }
   }
 
-  private flushBufferToPlainTextTokenIfBufferIsNotEmpty(): void {
-    if (this.buffer) {
-      this.flushBufferToTokenOfKind(TokenKind.PlainText)
-    }
+  private flushNonEmptyBufferToPlainTextToken(): void {
+    this.flushNonEmptyBufferToTokenOfKind(TokenKind.PlainText)
   }
 
   private applyConfigSettingsToUrl(url: string): string {

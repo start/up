@@ -62,10 +62,7 @@ class Parser {
         }
 
         case TokenKind.PlainText: {
-          if (token.value) {
-            this.nodes.push(new PlainTextNode(token.value))
-          }
-
+          this.nodes.push(new PlainTextNode(token.value))
           continue
         }
 
