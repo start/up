@@ -137,7 +137,7 @@ describe('A spoiler directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise valid linkified audi convention with its linkifying URL escaped"', () => {
+describe('An otherwise valid linkified audio convention with its linkifying URL escaped"', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[audio: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
