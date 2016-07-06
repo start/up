@@ -34,7 +34,6 @@ describe('Any NSFW convention followed immediately by a parenthesized/bracketed 
   it('produces a NSFW node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the NSFW convention can be different from the type of bracket surrounding the URL', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'NSFW: you wrestle naked Gary',
-      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([

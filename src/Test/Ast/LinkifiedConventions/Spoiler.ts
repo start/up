@@ -34,7 +34,6 @@ describe('Any spoiler followed immediately by a parenthesized/bracketed URL', ()
   it('produces a spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',
-      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([

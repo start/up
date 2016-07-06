@@ -49,7 +49,6 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^Well, I do, but I pretend not to.',
-      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'http://example.com/luckycharms',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
