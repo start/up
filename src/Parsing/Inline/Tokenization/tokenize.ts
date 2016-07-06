@@ -409,36 +409,45 @@ class Tokenizer {
   // Media conventions can be linkified, too. Linkified media conventions are simply placed within a link. 
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return concat(BRACKETS.map(bracket => [
-      new TokenizableConvention({
-        startsWith: this.getBracketedUrlStartPattern(bracket),
-        endsWith: bracket.endPattern,
-
+      this.getLinkifyingUrlConvention({
+        bracket,
         onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-
-        insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-        whenClosingItAlsoClosesInnerConventions: true,
-
         whenClosing: (context) => {
           const url = this.applyConfigSettingsToUrl(this.flushBuffer())
           this.closeLinkifyingUrlForRichConventions(url)
         }
       }),
-      
-      new TokenizableConvention({
-        startsWith: this.getBracketedUrlStartPattern(bracket),
-        endsWith: bracket.endPattern,
-
+      this.getLinkifyingUrlConvention({
+        bracket,
         onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
-
-        insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-        whenClosingItAlsoClosesInnerConventions: true,
-
         whenClosing: (context) => {
           const url = this.applyConfigSettingsToUrl(this.flushBuffer())
           this.closeLinkifyingUrlForMediaConventions(url)
         }
       })]
     ))
+  }
+
+  private getLinkifyingUrlConvention(
+    args: {
+      bracket: Bracket
+      onlyOpenIfDirectlyFollowing: RichConvention[] | TokenKind[]
+      whenClosing: OnConventionEvent
+    }
+  ): TokenizableConvention {
+    const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
+
+    return new TokenizableConvention({
+        startsWith: this.getBracketedUrlStartPattern(bracket),
+        endsWith: bracket.endPattern,
+
+        onlyOpenIfDirectlyFollowing,
+
+        insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+        whenClosingItAlsoClosesInnerConventions: true,
+
+        whenClosing
+      })
   }
 
   private getBracketedUrlStartPattern(bracket: Bracket): string {
@@ -502,7 +511,7 @@ class Tokenizer {
     })
 
     // Now, the last token is a LinkUrlAndEnd token. Let's assign its the URL!
-    last(this.tokens).value = url 
+    last(this.tokens).value = url
   }
 
   private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): string {
