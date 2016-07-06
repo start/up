@@ -12,7 +12,7 @@ export class LinkNode extends RichInlineSyntaxNode {
   OUTLINE_SYNTAX_NODE(): void { }
   private LINK: any = null
 
-  constructor(public children: InlineSyntaxNode[], public url: string = '') {
+  constructor(public children: InlineSyntaxNode[], public url: string) {
     super(children)
   }
 }

@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 
 
 export interface RichInlineSyntaxNodeType {
-  new (children: InlineSyntaxNode[]): RichInlineSyntaxNode
+  new (..._1: any[]): RichInlineSyntaxNode
 }
 
 export abstract class RichInlineSyntaxNode {  
