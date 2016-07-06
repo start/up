@@ -14,6 +14,8 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
+// TODO: Check all permutations of brackets for negative tests, too.
+
 describe('An audio convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
   it('produces an audio node within a link pointing to that second URL', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(http://example.com/finalbattle).')).to.be.eql(
