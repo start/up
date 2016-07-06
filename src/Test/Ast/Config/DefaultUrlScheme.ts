@@ -127,6 +127,45 @@ describe('The "defaultUrlScheme" config setting', () => {
       ]))
   })
 
+  it('is prefixed to linkified audio URLs that start with a hash mark', () => {
+    const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg)(wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new LinkNode([
+          new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+        ], 'my-app:wiki/Blue_Sky')
+      ])
+    )
+  })
+
+  it('is prefixed to linkified image URLs that start with a hash mark', () => {
+    const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png)(wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new LinkNode([
+          new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        ], 'my-app:wiki/Blue_Sky')
+      ])
+    )
+  })
+
+  it('is prefixed to linkified video URLs that start with a hash mark', () => {
+    const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm)(wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new LinkNode([
+          new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        ], 'my-app:wiki/Blue_Sky')
+      ])
+    )
+  })
+
   it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
     const text = '[Chrono Cross] (example.wiki/Chrono_Chross)'
 
@@ -202,6 +241,45 @@ describe('The "defaultUrlScheme" config setting', () => {
         ]),
         new FootnoteBlockNode([footnote])
       ]))
+  })
+
+  it('is prefixed to linkified audio URLs that start with a hash mark when the audio part and the linkifying URL are separated by whitespace', () => {
+    const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new LinkNode([
+          new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+        ], 'my-app:wiki/Blue_Sky')
+      ])
+    )
+  })
+
+  it('is prefixed to linkified image URLs that start with a hash mark when the image part and the linkifying URL are separated by whitespace', () => {
+    const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new LinkNode([
+          new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        ], 'my-app:wiki/Blue_Sky')
+      ])
+    )
+  })
+
+  it('is prefixed to linkified video URLs that start with a hash mark when the video part and the linkifying URL are separated by whitespace', () => {
+    const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (wiki/Blue_Sky)'
+
+    expect(up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Walter White produces '),
+        new LinkNode([
+          new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        ], 'my-app:wiki/Blue_Sky')
+      ])
+    )
   })
 
   it('is not prefixed to URLs with an explicit scheme', () => {
