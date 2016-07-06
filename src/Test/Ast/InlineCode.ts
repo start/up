@@ -9,7 +9,7 @@ describe('Text surrounded by backticks', () => {
   it('is put into an inline code node', () => {
     expect(Up.toAst('`gabe.attack(james)`')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineCodeNode('gabe.attack(james)'),
+        new InlineCodeNode('gabe.attack(james)')
       ]))
   })
 })
@@ -32,32 +32,103 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
     specify('Inline code surrounded by 1 backtick on each side can contain streaks of 3 backticks', () => {
       expect(Up.toAst('`let display = ```score:``` + 5`')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('let display = ```score:``` + 5'),
+          new InlineCodeNode('let display = ```score:``` + 5')
         ]))
     })
 
     specify('Inline code surrounded by 2 backticks on each side can contain individual backticks (streaks of 1)', () => {
       expect(Up.toAst('``let display = `score:` + 5``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('let display = `score:` + 5'),
+          new InlineCodeNode('let display = `score:` + 5')
         ]))
     })
 
     specify('Inline code surrounded by 3 backticks on each side can contain streaks of 2 backticks)', () => {
       expect(Up.toAst('```let display = ``score:`` + 5```')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('let display = ``score:`` + 5'),
+          new InlineCodeNode('let display = ``score:`` + 5')
         ]))
     })
   })
 
 
-  context("Inline code content is trimmed. ", () => {
-    specify('If your inline code must start or end with backticks, you can separate them from the outer delimiters with a space.', () => {
-      expect(Up.toAst('`` `inline_code` ``')).to.be.eql(
+  context("When your inline code needs to start or end with backtacks, separate those backticks from the delimiters by a single space. Those single spaces on either side will be trimmed away.", () => {
+    context('This works when there is a separating space', () => {
+      specify('on both sides', () => {
+        expect(Up.toAst('` ``inline_code` `')).to.be.eql(
+          insideDocumentAndParagraph([
+            new InlineCodeNode('``inline_code``')
+          ]))
+      })
+
+      specify('only on the starting side', () => {
+        expect(Up.toAst('`` `unmatched start``')).to.be.eql(
+          insideDocumentAndParagraph([
+            new InlineCodeNode('`unmatched start')
+          ]))
+      })
+
+      specify('only on the ending side', () => {
+        expect(Up.toAst('``unmatched end` ``')).to.be.eql(
+          insideDocumentAndParagraph([
+            new InlineCodeNode('unmatched end`')
+          ]))
+      })
+    })
+
+
+    specify('Only a single space gets trimmed. Anything beyond that single space is preserved.', () => {
+      expect(Up.toAst('``  __private  ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('`inline_code`'),
+          new InlineCodeNode(' __private ')
         ]))
+    })
+
+    specify('Tabs are always preserved', () => {
+      expect(Up.toAst('``\t__private\t``')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineCodeNode('\t__private\t')
+        ]))
+    })
+
+
+    context('The single spaces are only trimmed away when they separate the delimiters from backticks.', () => {
+      context('Otherwise, a single space is preserved:', () => {
+        specify("When it is trailing", () => {
+          expect(Up.toAst('`1. `')).to.be.eql(
+            insideDocumentAndParagraph([
+              new InlineCodeNode('1. ')
+            ]))
+        })
+
+        specify("When it is leading", () => {
+          expect(Up.toAst('` ]`')).to.be.eql(
+            insideDocumentAndParagraph([
+              new InlineCodeNode(' ]')
+            ]))
+        })
+
+        specify("When the other side has to be trimmed due to a neighboring backtick", () => {
+          expect(Up.toAst('`  ``... `')).to.be.eql(
+            insideDocumentAndParagraph([
+              new InlineCodeNode(' ``... ')
+            ]))
+        })
+
+        specify('When inline code consists of just a single space', () => {
+          expect(Up.toAst('` `')).to.be.eql(
+            insideDocumentAndParagraph([
+              new InlineCodeNode(' ')
+            ]))
+        })
+
+        specify('When inline code consists of multiple spaces', () => {
+          expect(Up.toAst('`   `')).to.be.eql(
+            insideDocumentAndParagraph([
+              new InlineCodeNode('   ')
+            ]))
+        })
+      })
     })
   })
 
@@ -66,14 +137,14 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
     specify('There are fewer backticks on the opening side than the closing side', () => {
       expect(Up.toAst('I enjoy the occasional backtick ` or two ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('I enjoy the occasional backtick ` or two ``'),
+          new PlainTextNode('I enjoy the occasional backtick ` or two ``')
         ]))
     })
 
     specify('There are more backticks on the opening side than the closing side', () => {
       expect(Up.toAst('I enjoy the occasional three backticks ``` or two ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('I enjoy the occasional three backticks ``` or two ``'),
+          new PlainTextNode('I enjoy the occasional three backticks ``` or two ``')
         ]))
     })
   })
@@ -88,7 +159,7 @@ context('Inline code ends at the first matching delimiter.', () => {
         new InlineCodeNode('<font>'),
         new PlainTextNode(' and '),
         new InlineCodeNode('<div>'),
-        new PlainTextNode(' elements.')                
+        new PlainTextNode(' elements.')
       ]))
   })
 })
