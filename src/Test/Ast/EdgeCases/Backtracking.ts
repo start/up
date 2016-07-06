@@ -7,6 +7,7 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
+import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 
 
 describe('Emphasized text containing an unmatched openining delimiter requiring backtracking', () => {
@@ -216,6 +217,24 @@ describe('Several unmatched footnote start delimiters in the same paragraph', ()
     expect(Up.toAst("(^(^(^(^ Palm trees? (^(^")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("(^(^(^(^ Palm trees? (^(^")
+      ]))
+  })
+})
+
+
+context("When the custom term for 'spoiler' starts with the a caret, its start delimiter starts with the footnote's start delimiter,", () => {
+  const up = new Up({
+    i18n: {
+      terms: { spoiler: '^lookaway^' }
+    }
+  })
+
+  specify('When there is a matching closing bracket, a spoiler is produced.', () => {
+    expect(up.toAst('[^lookaway^: Ash fights Gary]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
       ]))
   })
 })
