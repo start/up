@@ -208,8 +208,8 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention: FOOTNOTE_CONVENTION,
-        startPattern: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
-        endPattern: bracket.endPattern
+        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
+        endsWith: bracket.endPattern
       }))
   }
 
@@ -224,8 +224,8 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention,
-        startPattern: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
-        endPattern: bracket.endPattern,
+        startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
+        endsWith: bracket.endPattern,
         startPatternContainsATerm: true
       }))
   }
@@ -248,8 +248,8 @@ class Tokenizer {
 
     return this.getRichSandwichConvention({
       richConvention,
-      startPattern: escapeForRegex(startsWith),
-      endPattern: escapeForRegex(endsWith),
+      startsWith: escapeForRegex(startsWith),
+      endsWith: escapeForRegex(endsWith),
 
       insteadOfFailingWhenLeftUnclosed: (context) => {
         this.insertPlainTextTokenAtContextStart(startsWith, context)
@@ -260,18 +260,18 @@ class Tokenizer {
   private getRichSandwichConvention(
     args: {
       richConvention: RichConvention
-      startPattern: string
-      endPattern: string
+      startsWith: string
+      endsWith: string
       startPatternContainsATerm?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
-      startsWith: startPattern,
+      startsWith,
       startPatternContainsATerm,
-      endsWith: endPattern,
+      endsWith,
 
       flushesBufferToPlainTextTokenBeforeOpening: true,
       whenClosingItFlushesBufferTo: TokenKind.PlainText,
