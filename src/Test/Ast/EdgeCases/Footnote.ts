@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { insideDocumentAndParagraph } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
@@ -228,6 +229,16 @@ describe('A footnote reference at the beginning of a paragraph', () => {
           new PlainTextNode(" I'm a normal breakfast eater, just like you.")
         ]),
         new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
+describe('Several unmatched footnote start delimiters in the same paragraph', () => {
+  it('are all preserved as plain text', () => {
+    expect(Up.toAst("(^(^(^(^ Palm trees? (^(^")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("(^(^(^(^ Palm trees? (^(^")
       ]))
   })
 })
