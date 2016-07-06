@@ -8,7 +8,7 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
 describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
-  it('produces an audio node with the first bracketed text treated as the description and the second treated as the URL', () => {
+  it('produces an audio node with the first bracketed text treated as the description and the second treated as the audio URL', () => {
     expect(Up.toAst('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I would never stay in a house with these sounds. '),
@@ -76,14 +76,14 @@ describe("The brackets enclosing an audio convention's description and URL", () 
 })
 
 
-describe("An audio convention", () => {
-  it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
+context("When an audio convention has whitespace before its bracketed URL there are no additional restrictions on the audio URL.", () => {
+  specify("For example, the URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
-      url: 'http://example.com/ghosts.ogg',
+      url: 'http://example.com/ghost sounds.ogg',
       toProduce: new DocumentNode([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+        new AudioNode('ghostly howling', 'http://example.com/ghost sounds.ogg')
       ])
     })
   })
