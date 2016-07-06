@@ -176,23 +176,6 @@ describe("Unmatched opening parentheses in an image URL", () => {
 })
 
 
-describe('A full image convention (description and URL) directly followed by another parenthesized link', () => {
-  it('is not "linkified" like a spoiler would be. Instead, it produces an image node followed by a parenthesized naked URL', () => {
-    expect(Up.toAst('[image: ghostly howling](http://example.com/ghosts.ogg)(http://bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon))')).to.be.eql(
-      insideDocumentAndParagraph([
-        new ImageNode('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ParenthesizedNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Gengar_(Pok%C3%A9mon)'),
-          new PlainTextNode(')')
-        ])
-      ]))
-  })
-})
-
-
 describe("A line consistingly solely of a link that contains both an image and regular text", () => {
   it("produces a paragraph node", () => {
     expect(Up.toAst('[Look: (image: haunted house) {http://example.com/hauntedhouse.svg}] (https://example.com)')).to.be.eql(
