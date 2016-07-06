@@ -30,13 +30,6 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
   })
 }
 
-
-const BRACKETS = [
-  { open: '(', close: ')' },
-  { open: '[', close: ']' },
-  { open: '{', close: '}' }
-]
-
 export function expectEveryPermutationOfBrackets(
   args: {
     contentToWrapInBrackets: string
@@ -45,6 +38,12 @@ export function expectEveryPermutationOfBrackets(
   }
 ): void {
   const { contentToWrapInBrackets, toProduce } = args
+
+  const BRACKETS = [
+    { open: '(', close: ')' },
+    { open: '[', close: ']' },
+    { open: '{', close: '}' }
+  ]
 
   const urlSegments = args.urlSegments.map(urlSegment => <UrlSegment>{
     prefixes: urlSegment.prefixes || [''],
@@ -70,7 +69,7 @@ export function expectEveryPermutationOfBrackets(
 
 // Returns every permutation of the different values for each segment, each prefixed by `prefix`. 
 //
-// If `prefix` is '(image: puppy)', and if `permutationsBySegment` is:
+// If `prefix` is '(image: puppy)', and if `valuesBySegment` is:
 //
 // [
 //   ['(dog.gif)', '{dog.gif}'],
@@ -79,24 +78,33 @@ export function expectEveryPermutationOfBrackets(
 //
 // Then the results are:
 //
-// (image: puppy)(dog.gif)(pets.com/gallery)
-// (image: puppy)(dog.gif){pets.com/gallery}
-//
-// (image: puppy)(dog.gif) \t (pets.com/gallery)
-// (image: puppy)(dog.gif) \t {pets.com/gallery}
-//
-// (image: puppy){dog.gif}(pets.com/gallery)
-// (image: puppy){dog.gif}{pets.com/gallery}
-//
-// (image: puppy){dog.gif} \t (pets.com/gallery)
-// (image: puppy){dog.gif} \t {pets.com/gallery}
-function everyPermutation(prefix: string, permutationsBySegment: string[][]): string[] {
+// [
+//   '(image: puppy)(dog.gif)(pets.com/gallery)',
+//   '(image: puppy)(dog.gif){pets.com/gallery}',
+//   '(image: puppy)(dog.gif) \t (pets.com/gallery)',
+//   '(image: puppy)(dog.gif) \t {pets.com/gallery}',
+//   '(image: puppy){dog.gif}(pets.com/gallery)',
+//   '(image: puppy){dog.gif}{pets.com/gallery}',
+//   '(image: puppy){dog.gif} \t (pets.com/gallery)',
+//   '(image: puppy){dog.gif} \t {pets.com/gallery}',
+// ]
+function everyPermutation(prefix: string, valuesBySegment: string[][]): string[] {
   return (
-    permutationsBySegment.length === 1
-      ? permutationsBySegment[0].map(permutation => prefix + permutation)
+    valuesBySegment.length === 1
+      // There's just one segment. This is easy! Let's just add the `prefix` to all values in the segment and
+      // return the result.
+      ? valuesBySegment[0].map(permutation => prefix + permutation)
+      // Well, there's more than one segment.
+      //
+      // Let's add the `prefix` to all values in the first segment, and then let's treat each of those prefixed
+      // values as the `prefix` for another call to this function, passing only the values from the remaining
+      // segments.
+      //
+      // This produces separate arrays of permutations, one for each value in the first segment. So let's combine
+      // those arrays into one and return the result.
       : concat(
-        permutationsBySegment[0].map(permutation =>
-          everyPermutation(prefix + permutation, permutationsBySegment.slice(1))))
+        valuesBySegment[0].map(permutation =>
+          everyPermutation(prefix + permutation, valuesBySegment.slice(1))))
   )
 }
 
