@@ -232,13 +232,3 @@ describe('A footnote reference at the beginning of a paragraph', () => {
       ]))
   })
 })
-
-
-describe('Several unmatched footnote start delimiters in the same paragraph', () => {
-  it('are all preserved as plain text', () => {
-    expect(Up.toAst("(^(^(^(^ Palm trees? (^(^")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode("(^(^(^(^ Palm trees? (^(^")
-      ]))
-  })
-})

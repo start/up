@@ -209,3 +209,13 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
       ]))
   })
 })
+
+
+describe('Several unmatched footnote start delimiters in the same paragraph', () => {
+  it('are all preserved as plain text', () => {
+    expect(Up.toAst("(^(^(^(^ Palm trees? (^(^")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("(^(^(^(^ Palm trees? (^(^")
+      ]))
+  })
+})
