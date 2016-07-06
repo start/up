@@ -18,7 +18,7 @@ export function expectEveryCombinationOfBrackets(
     urlToWrapInBrackets: string
     toProduce: DocumentNode
   }
-) {
+): void {
   const BRACKETS = [
     { open: '(', close: ')' },
     { open: '[', close: ']' },
@@ -47,7 +47,7 @@ export function expectEveryCombinationOfBrackets(
 export function expectEveryPermutationOfBrackets(
   args: {
     contentToWrapInBrackets: string
-    urlParts: UrlPart[]
+    urlSegments: UrlSegment[]
     toProduce: DocumentNode
   }
 ): void {
@@ -59,18 +59,31 @@ export function expectEveryPermutationOfBrackets(
 
   const { contentToWrapInBrackets, toProduce } = args
   
-  const urlParts = args.urlParts.map(urlPart => <UrlPart>{
-    separators: urlPart.separators || [''],
-    urlToWrapInBrackets: urlPart.urlToWrapInBrackets
+  const urlSegments = args.urlSegments.map(urlSegment => <UrlSegment>{
+    separators: urlSegment.separators || [''],
+    urlToWrapInBrackets: urlSegment.urlToWrapInBrackets
   })
 
    //     expect(Up.toAst(text)).to.be.eql(toProduce)
+   for (const contentBracket of BRACKETS) {
+     const bracktedContent = wrapInBracket(contentToWrapInBrackets, contentBracket)
 
+//     const allBracketedUrlParts =
+    
+   }
+}
 
+function getEveryPermutationOfSeparatorsAndBracketsAroundUrls(prefix: string, permutationsByUrl: string[][]): string[] {
+  if (permutationsByUrl.length === 1) {
+    return permutationsByUrl[0].map(permutation => prefix + permutation)
+  }
+
+  return null
 }
 
 
-export interface UrlPart {
+
+export interface UrlSegment {
   separators: string[],
   urlToWrapInBrackets: string
 }
