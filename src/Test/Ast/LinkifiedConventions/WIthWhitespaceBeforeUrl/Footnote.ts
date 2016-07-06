@@ -612,7 +612,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
 
 describe('If there is nothing but whitspace between a footnote and a bracketed URL, but one of the whitespace characters is escaped', () => {
-  it('the spoiler convention is not linkified', () => {
+  it('the footnote convention is not linkified', () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('something terrible')
     ], 1)
@@ -637,7 +637,7 @@ describe('If there is nothing but whitspace between a footnote and a bracketed U
 
 
 describe("A linkified footnote's URL, when separated from its content by whitespace,", () => {
-  it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
+  it('can itself contain whitespace if each whitespace character is escaped', () => {
     const footnote = new FootnoteNode([
       new LinkNode([
         new PlainTextNode('the phone was dead')
@@ -647,7 +647,7 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^the phone was dead',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
-      url: 'https://example.com/search=phone\\ was\\ dead',
+      url: 'example.com/search=phone\\ was\\ dead',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote,]),
         new FootnoteBlockNode([footnote])

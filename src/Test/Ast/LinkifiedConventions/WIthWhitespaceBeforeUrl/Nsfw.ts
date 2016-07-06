@@ -497,12 +497,12 @@ describe('If there is nothing but whitspace between a NSFW convention and a brac
 })
 
 
-describe("A NSFW convention's URL, when separated from its content by whitespace,", () => {
-  it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
+describe("A linkified NSFW convention's URL, when separated from its content by whitespace,", () => {
+  it('can itself contain whitespace if each whitespace character is escaped', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'NSFW: something terrible',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
-      url: 'https://stackoverflow.com/search=something\\ very\\ terrible',
+      url: 'stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([
           new LinkNode([
