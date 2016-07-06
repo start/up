@@ -15,7 +15,7 @@ context('A linkified image convention can have whitespace between its image URL 
       urlSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          urlToWrapInBrackets: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
@@ -23,7 +23,7 @@ context('A linkified image convention can have whitespace between its image URL 
         }],
       toProduce: new DocumentNode([
         new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg')
+          new ImageNode('something terrible', 'https://example.com/image.png')
         ], 'app:wiki/terrible-thing')
       ])
     })
@@ -37,7 +37,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -45,16 +45,16 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('Advance Wars', 'https://example.com/sounds.ogg')
+            new ImageNode('Advance Wars', 'https://example.com/image.png')
           ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
         ])
       })
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[image: something terrible](https://example.com/sounds.ogg) (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toAst('[image: something terrible](https://example.com/image.png) (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg'),
+          new ImageNode('something terrible', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('('),
@@ -68,9 +68,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[image: email sending] (https://example.com/sounds.ogg) (mailto:)')).to.be.eql(
+      expect(Up.toAst('[image: email sending] (https://example.com/image.png) (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('email sending', 'https://example.com/sounds.ogg'),
+          new ImageNode('email sending', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(mailto:)')
@@ -80,9 +80,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[image: local files rustling](https://example.com/sounds.ogg) (file:///)')).to.be.eql(
+      expect(Up.toAst('[image: local files rustling](https://example.com/image.png) (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('local files rustling', 'https://example.com/sounds.ogg'),
+          new ImageNode('local files rustling', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(file:///)')
@@ -97,7 +97,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -105,16 +105,16 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('spooky phone call', 'https://example.com/sounds.ogg')
+            new ImageNode('spooky phone call', 'https://example.com/image.png')
           ], 'tel:5555555555')
         ])
       })
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[image: email sending] (https://example.com/sounds.ogg) (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toAst('[image: email sending] (https://example.com/image.png) (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('email sending', 'https://example.com/sounds.ogg'),
+          new ImageNode('email sending', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
@@ -131,7 +131,7 @@ context('A linkified image convention can have whitespace between its image URL 
       urlSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          urlToWrapInBrackets: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
@@ -139,7 +139,7 @@ context('A linkified image convention can have whitespace between its image URL 
         }],
       toProduce: new DocumentNode([
         new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg')
+          new ImageNode('something terrible', 'https://example.com/image.png')
         ], '/wiki/something-terrible')
       ])
     })
@@ -148,9 +148,9 @@ context('A linkified image convention can have whitespace between its image URL 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[image: something terrible](https://example.com/sounds.ogg) (/r9k/ created it)')).to.be.eql(
+      expect(Up.toAst('[image: something terrible](https://example.com/image.png) (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg'),
+          new ImageNode('something terrible', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(/r9k/ created it)')
@@ -160,9 +160,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[image: slash] (https://example.com/sounds.ogg) (/)')).to.be.eql(
+      expect(Up.toAst('[image: slash] (https://example.com/image.png) (/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('slash', 'https://example.com/sounds.ogg'),
+          new ImageNode('slash', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(/)')
@@ -177,7 +177,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -185,16 +185,16 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('Model 3 theft', 'https://example.com/sounds.ogg')
+            new ImageNode('Model 3 theft', 'https://example.com/image.png')
           ], '/3')
         ])
       })
     })
 
     specify('must not have its slash escaped', () => {
-      expect(Up.toAst('[image: robots](https://example.com/sounds.ogg) (\\/r9k/)')).to.be.eql(
+      expect(Up.toAst('[image: robots](https://example.com/image.png) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('robots', 'https://example.com/sounds.ogg'),
+          new ImageNode('robots', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(/r9k/)')
@@ -211,7 +211,7 @@ context('A linkified image convention can have whitespace between its image URL 
       urlSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          urlToWrapInBrackets: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
@@ -219,7 +219,7 @@ context('A linkified image convention can have whitespace between its image URL 
         }],
       toProduce: new DocumentNode([
         new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg')
+          new ImageNode('something terrible', 'https://example.com/image.png')
         ], '#wiki/something-terrible')
       ])
     })
@@ -233,7 +233,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -241,16 +241,16 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('Model 3 theft', 'https://example.com/sounds.ogg')
+            new ImageNode('Model 3 theft', 'https://example.com/image.png')
           ], '#3')
         ])
       })
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[image: hash marking](https://example.com/sounds.ogg) (#)')).to.be.eql(
+      expect(Up.toAst('[image: hash marking](https://example.com/image.png) (#)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('hash marking', 'https://example.com/sounds.ogg'),
+          new ImageNode('hash marking', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#)')
@@ -260,9 +260,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[image: something terrible] (https://example.com/sounds.ogg) (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toAst('[image: something terrible] (https://example.com/image.png) (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg'),
+          new ImageNode('something terrible', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2 was never trending)')
@@ -272,9 +272,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[image: hash marking](https://example.com/sounds.ogg) (\\#starcraft2)')).to.be.eql(
+      expect(Up.toAst('[image: hash marking](https://example.com/image.png) (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('hash marking', 'https://example.com/sounds.ogg'),
+          new ImageNode('hash marking', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2)')
@@ -291,7 +291,7 @@ context('A linkified image convention can have whitespace between its image URL 
       urlSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          urlToWrapInBrackets: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
@@ -299,7 +299,7 @@ context('A linkified image convention can have whitespace between its image URL 
         }],
       toProduce: new DocumentNode([
         new LinkNode([
-          new ImageNode('Chrono Trigger', 'https://example.com/sounds.ogg')
+          new ImageNode('Chrono Trigger', 'https://example.com/image.png')
         ], 'https://chrono-trigger.wiki')
       ])
     })
@@ -313,7 +313,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -321,7 +321,7 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('Advance Wars', 'https://example.com/sounds.ogg')
+            new ImageNode('Advance Wars', 'https://example.com/image.png')
           ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
         ])
       })
@@ -333,7 +333,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -341,16 +341,16 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('Advance Wars', 'https://example.com/sounds.ogg')
+            new ImageNode('Advance Wars', 'https://example.com/image.png')
           ], 'https://advancewars.wikia.com/')
         ])
       })
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[image: 4chan] (https://example.com/sounds.ogg) (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[image: 4chan] (https://example.com/image.png) (4chan.org--terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('4chan', 'https://example.com/sounds.ogg'),
+          new ImageNode('4chan', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(4chan.org--terrifying)')
@@ -365,7 +365,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -373,7 +373,7 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('good luck', 'https://example.com/sounds.ogg')
+            new ImageNode('good luck', 'https://example.com/image.png')
           ], 'https://88.8888.cn')
         ])
       })
@@ -381,9 +381,9 @@ context('A linkified image convention can have whitespace between its image URL 
 
     context('The top-level domain must contain only letters ', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[image: usernaming](https://example.com/sounds.ogg) (john.e.smith5)')).to.be.eql(
+        expect(Up.toAst('[image: usernaming](https://example.com/image.png) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
-            new ImageNode('usernaming', 'https://example.com/sounds.ogg'),
+            new ImageNode('usernaming', 'https://example.com/image.png'),
             new PlainTextNode(' '),
             new ParenthesizedNode([
               new PlainTextNode('(john.e.smith5)')
@@ -393,9 +393,9 @@ context('A linkified image convention can have whitespace between its image URL 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[image: usernaming] (https://example.com/sounds.ogg) (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toAst('[image: usernaming] (https://example.com/image.png) (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
-            new ImageNode('usernaming', 'https://example.com/sounds.ogg'),
+            new ImageNode('usernaming', 'https://example.com/image.png'),
             new PlainTextNode(' '),
             new ParenthesizedNode([
               new PlainTextNode('(john.e.smith-kline)')
@@ -406,9 +406,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[image: being British](https://example.com/sounds.ogg) (.co.uk)')).to.be.eql(
+      expect(Up.toAst('[image: being British](https://example.com/image.png) (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('being British', 'https://example.com/sounds.ogg'),
+          new ImageNode('being British', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(.co.uk)')
@@ -418,9 +418,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[image: Ash claiming to be his own father] (https://example.com/sounds.ogg) (um..uh)')).to.be.eql(
+      expect(Up.toAst('[image: Ash claiming to be his own father] (https://example.com/image.png) (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('Ash claiming to be his own father', 'https://example.com/sounds.ogg'),
+          new ImageNode('Ash claiming to be his own father', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(um..uh)')
@@ -430,9 +430,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[image: debilitating sadness](https://example.com/sounds.ogg) (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toAst('[image: debilitating sadness](https://example.com/image.png) (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('debilitating sadness', 'https://example.com/sounds.ogg'),
+          new ImageNode('debilitating sadness', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(4chan.org../r9k/)')
@@ -447,7 +447,7 @@ context('A linkified image convention can have whitespace between its image URL 
         urlSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            urlToWrapInBrackets: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
@@ -455,16 +455,16 @@ context('A linkified image convention can have whitespace between its image URL 
           }],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('rocket ship', 'https://example.com/sounds.ogg')
+            new ImageNode('rocket ship', 'https://example.com/image.png')
           ], 'https://example.com/321...blastoff/1')
         ])
       })
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[image: yeah] (https://example.com/sounds.ogg) (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toAst('[image: yeah] (https://example.com/image.png) (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('yeah', 'https://example.com/sounds.ogg'),
+          new ImageNode('yeah', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
@@ -474,9 +474,9 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[image: yeah](https://example.com/sounds.ogg) (\\ign.com)')).to.be.eql(
+      expect(Up.toAst('[image: yeah](https://example.com/image.png) (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('yeah', 'https://example.com/sounds.ogg'),
+          new ImageNode('yeah', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
             new PlainTextNode('(ign.com)')
@@ -488,9 +488,9 @@ context('A linkified image convention can have whitespace between its image URL 
 
 
   specify('If none of the conditions are satisfied, the spoiler is not linkified', () => {
-    expect(Up.toAst('[image: something terrible] (https://example.com/sounds.ogg) (really)')).to.be.eql(
+    expect(Up.toAst('[image: something terrible] (https://example.com/image.png) (really)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ImageNode('something terrible', 'https://example.com/sounds.ogg'),
+        new ImageNode('something terrible', 'https://example.com/image.png'),
         new PlainTextNode(' '),
         new ParenthesizedNode([
           new PlainTextNode('(really)')
@@ -502,9 +502,9 @@ context('A linkified image convention can have whitespace between its image URL 
 
 describe("If there is whitespace between an otherwise-valid linkified image convention's image URL and its linkifying URL", () => {
   it('the image convention is not linkified', () => {
-    expect(Up.toAst('[image: something terrible](https://example.com/sounds.ogg)  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toAst('[image: something terrible](https://example.com/image.png)  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ImageNode('something terrible', 'https://example.com/sounds.ogg'),
+        new ImageNode('something terrible', 'https://example.com/image.png'),
         new PlainTextNode('    '),
         new ParenthesizedNode([
           new PlainTextNode('('),
@@ -525,7 +525,7 @@ describe("An image convention's linkifying URL, when separated from its image UR
       urlSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          urlToWrapInBrackets: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
@@ -533,7 +533,7 @@ describe("An image convention's linkifying URL, when separated from its image UR
         }],
       toProduce: new DocumentNode([
         new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/sounds.ogg')
+          new ImageNode('something terrible', 'https://example.com/image.png')
         ], 'https://stackoverflow.com/search=something very terrible')
       ])
     })
