@@ -42,6 +42,39 @@ export function expectEveryCombinationOfBrackets(
   }
 }
 
+
+
+export function expectEveryPermutationOfBrackets(
+  args: {
+    contentToWrapInBrackets: string
+    urlParts: UrlPart[]
+    toProduce: DocumentNode
+  }
+): void {
+  const BRACKETS = [
+    { open: '(', close: ')' },
+    { open: '[', close: ']' },
+    { open: '{', close: '}' }
+  ]
+
+  const { contentToWrapInBrackets, toProduce } = args
+  
+  const urlParts = args.urlParts.map(urlPart => <UrlPart>{
+    separators: urlPart.separators || [''],
+    urlToWrapInBrackets: urlPart.urlToWrapInBrackets
+  })
+
+   //     expect(Up.toAst(text)).to.be.eql(toProduce)
+
+
+}
+
+
+export interface UrlPart {
+  separators: string[],
+  urlToWrapInBrackets: string
+}
+
 export interface Bracket {
   open: string
   close: string
