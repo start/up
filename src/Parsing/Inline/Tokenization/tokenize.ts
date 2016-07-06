@@ -204,6 +204,132 @@ class Tokenizer {
       this.nakedUrlConvention)
   }
 
+  private getFootnoteConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket =>
+      this.getRichSandwichConvention({
+        richConvention: FOOTNOTE_CONVENTION,
+        startPattern: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
+        endPattern: bracket.endPattern
+      }))
+  }
+
+  private getConventionsForRichBracketedTerm(
+    args: {
+      richConvention: RichConvention
+      nonLocalizedTerm: string
+    }
+  ): TokenizableConvention[] {
+    const { richConvention, nonLocalizedTerm } = args
+
+    return BRACKETS.map(bracket =>
+      this.getRichSandwichConvention({
+        richConvention,
+        startPattern: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
+        endPattern: bracket.endPattern,
+        startPatternContainsATerm: true
+      }))
+  }
+
+  private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
+    return (
+      bracket.startPattern
+      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
+      + ANY_WHITESPACE)
+  }
+
+  private getRichSandwichConventionNotRequiringBacktracking(
+    args: {
+      richConvention: RichConvention
+      startsWith: string
+      endsWith: string
+    }
+  ): TokenizableConvention {
+    const { richConvention, startsWith, endsWith } = args
+
+    return this.getRichSandwichConvention({
+      richConvention,
+      startPattern: escapeForRegex(startsWith),
+      endPattern: escapeForRegex(endsWith),
+
+      insteadOfFailingWhenLeftUnclosed: (context) => {
+        this.insertPlainTextTokenAtContextStart(startsWith, context)
+      }
+    })
+  }
+
+  private getRichSandwichConvention(
+    args: {
+      richConvention: RichConvention
+      startPattern: string
+      endPattern: string
+      startPatternContainsATerm?: boolean
+      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
+    }
+  ): TokenizableConvention {
+    const { richConvention, startPattern, endPattern, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
+
+    return new TokenizableConvention({
+      startsWith: startPattern,
+      startPatternContainsATerm,
+      endsWith: endPattern,
+
+      flushesBufferToPlainTextTokenBeforeOpening: true,
+      whenClosingItFlushesBufferTo: TokenKind.PlainText,
+
+      whenClosing: (context) => {
+        this.encloseContextWithinRichConvention(richConvention, context)
+      },
+
+      insteadOfFailingWhenLeftUnclosed
+    })
+  }
+
+  private getMediaDescriptionConventions(): TokenizableConvention[] {
+    return concat(
+      [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
+        BRACKETS.map(bracket => new TokenizableConvention({
+          startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket),
+          startPatternContainsATerm: true,
+          endsWith: bracket.endPattern,
+
+          flushesBufferToPlainTextTokenBeforeOpening: true,
+          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+
+          whenClosingItAlsoClosesInnerConventions: true,
+          mustBeDirectlyFollowedBy: this.mediaUrlConventions,
+          whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
+        }))))
+  }
+
+  private getMediaUrlConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => new TokenizableConvention({
+      startsWith: ANY_WHITESPACE + bracket.startPattern,
+      endsWith: bracket.endPattern,
+
+      flushesBufferToPlainTextTokenBeforeOpening: true,
+
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      whenClosing: () => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        this.appendNewToken(TokenKind.MediaUrlAndEnd, url)
+      }
+    }))
+  }
+
+  private getRawBracketConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => new TokenizableConvention({
+      startsWith: bracket.startPattern,
+      endsWith: bracket.endPattern,
+
+      whenOpening: () => { this.buffer += bracket.start },
+      whenClosing: () => { this.buffer += bracket.end },
+
+      insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
+    }))
+  }
+  
   private tokenize(): void {
     do {
       this.bufferContentThatCannotOpenOrCloseAnyConventions()
@@ -846,132 +972,6 @@ class Tokenizer {
     const originalStartToken = last(this.tokens).correspondsToToken
     const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
     this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
-  }
-
-  private getFootnoteConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket =>
-      this.getRichSandwichConvention({
-        richConvention: FOOTNOTE_CONVENTION,
-        startPattern: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
-        endPattern: bracket.endPattern
-      }))
-  }
-
-  private getConventionsForRichBracketedTerm(
-    args: {
-      richConvention: RichConvention
-      nonLocalizedTerm: string
-    }
-  ): TokenizableConvention[] {
-    const { richConvention, nonLocalizedTerm } = args
-
-    return BRACKETS.map(bracket =>
-      this.getRichSandwichConvention({
-        richConvention,
-        startPattern: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
-        endPattern: bracket.endPattern,
-        startPatternContainsATerm: true
-      }))
-  }
-
-  private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
-    return (
-      bracket.startPattern
-      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
-      + ANY_WHITESPACE)
-  }
-
-  private getRichSandwichConventionNotRequiringBacktracking(
-    args: {
-      richConvention: RichConvention
-      startsWith: string
-      endsWith: string
-    }
-  ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith } = args
-
-    return this.getRichSandwichConvention({
-      richConvention,
-      startPattern: escapeForRegex(startsWith),
-      endPattern: escapeForRegex(endsWith),
-
-      insteadOfFailingWhenLeftUnclosed: (context) => {
-        this.insertPlainTextTokenAtContextStart(startsWith, context)
-      }
-    })
-  }
-
-  private getRichSandwichConvention(
-    args: {
-      richConvention: RichConvention
-      startPattern: string
-      endPattern: string
-      startPatternContainsATerm?: boolean
-      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
-    }
-  ): TokenizableConvention {
-    const { richConvention, startPattern, endPattern, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
-
-    return new TokenizableConvention({
-      startsWith: startPattern,
-      startPatternContainsATerm,
-      endsWith: endPattern,
-
-      flushesBufferToPlainTextTokenBeforeOpening: true,
-      whenClosingItFlushesBufferTo: TokenKind.PlainText,
-
-      whenClosing: (context) => {
-        this.encloseContextWithinRichConvention(richConvention, context)
-      },
-
-      insteadOfFailingWhenLeftUnclosed
-    })
-  }
-
-  private getMediaDescriptionConventions(): TokenizableConvention[] {
-    return concat(
-      [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
-        BRACKETS.map(bracket => new TokenizableConvention({
-          startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket),
-          startPatternContainsATerm: true,
-          endsWith: bracket.endPattern,
-
-          flushesBufferToPlainTextTokenBeforeOpening: true,
-          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-
-          whenClosingItAlsoClosesInnerConventions: true,
-          mustBeDirectlyFollowedBy: this.mediaUrlConventions,
-          whenClosingItFlushesBufferTo: media.descriptionAndStartTokenKind
-        }))))
-  }
-
-  private getMediaUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: ANY_WHITESPACE + bracket.startPattern,
-      endsWith: bracket.endPattern,
-
-      flushesBufferToPlainTextTokenBeforeOpening: true,
-
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: () => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.appendNewToken(TokenKind.MediaUrlAndEnd, url)
-      }
-    }))
-  }
-
-  private getRawBracketConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: bracket.startPattern,
-      endsWith: bracket.endPattern,
-
-      whenOpening: () => { this.buffer += bracket.start },
-      whenClosing: () => { this.buffer += bracket.end },
-
-      insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
-    }))
   }
 }
 
