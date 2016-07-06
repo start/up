@@ -78,9 +78,9 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
 
 
     specify('Only a single space gets trimmed. Anything beyond that single space is preserved.', () => {
-      expect(Up.toAst('``  __private  ``')).to.be.eql(
+      expect(Up.toAst('``  `__private`  ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode(' __private ')
+          new InlineCodeNode(' `__private` ')
         ]))
     })
 
