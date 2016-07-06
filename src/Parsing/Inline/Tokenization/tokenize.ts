@@ -46,9 +46,10 @@ const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
   ACTION_CONVENTION
 ]
 
-// In contrast, the following conventions are "linkified" if followed by a bracketed URL. The original
-// conventions aren't replaced, but their entire contents are placed inside a link.
-const COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
+// In contrast, the following conventions are "linkified" if they're followed by a bracketed URL. The
+// original conventions aren't replaced, but their entire contents are nested within a link (still
+// inside the original convention). 
+const RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
   SPOILER_CONVENTION,
   NSFW_CONVENTION,
   NSFL_CONVENTION,
@@ -753,14 +754,16 @@ class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // Certain conventions can be "linkified" if followed by a bracketed URL. The original conventions aren't
-  // replaced, but their entire contents are placed inside a link.
+  // Certain conventions can be "linkified" if they're followed by a bracketed URL.
+  //
+  // The original conventions aren't replaced, but their entire contents are nested within a link (still
+  // inside the original convention). 
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
       startsWith: this.getBracketedUrlStartPattern(bracket),
       endsWith: bracket.endPattern,
 
-      onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
 
       insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
       whenClosingItAlsoClosesInnerConventions: true,
@@ -781,7 +784,7 @@ class Tokenizer {
       startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
       endsWith: bracket.endPattern,
 
-      onlyOpenIfDirectlyFollowing: COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
       whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
