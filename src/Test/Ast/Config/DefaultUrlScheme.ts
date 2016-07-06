@@ -127,7 +127,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified audio URLs that start with a hash mark', () => {
+  it('is prefixed to schemeless linkified audio URLs', () => {
     const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg)(wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -140,7 +140,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified image URLs that start with a hash mark', () => {
+  it('is prefixed to schemeless linkified image URLs', () => {
     const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png)(wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -153,7 +153,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified video URLs that start with a hash mark', () => {
+  it('is prefixed to schemeless linkified video URLs', () => {
     const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm)(wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -166,7 +166,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
+  it('is prefixed to schemeless link URLs when the link content and URL are separated by whitespace', () => {
     const text = '[Chrono Cross] (example.wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -178,7 +178,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified spoiler URLs that start with a slash when the spoiler part and the URL are separated by whitespace', () => {
+  it('is prefixed to linkified schemeless spoiler URLs when the spoiler part and the URL are separated by whitespace', () => {
     const text = 'Walter White produces [SPOILER: Blue Sky meth] (example.wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -193,7 +193,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified NSFW URLs that start with a slash when the NSFW part and the URL are separated by whitespace', () => {
+  it('is prefixed to schemeless linkified NSFW URLs when the NSFW part and the URL are separated by whitespace', () => {
     const text = 'Walter White produces [NSFW: Blue Sky meth] (example.wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -208,7 +208,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified NSFL URLs that start with a slash when the NSFL part and the URL are separated by whitespace', () => {
+  it('is prefixed to schemeless linkified NSFL URLs when the NSFL part and the URL are separated by whitespace', () => {
     const text = 'Walter White produces [NSFL: Blue Sky meth] (example.wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -223,7 +223,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it("is prefixed to linkified footnote URLs that start with a slash when the footnote part and the URL are separated by whitespace", () => {
+  it("is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace", () => {
     const text = "I don't eat cereal. (^Well, I eat one.) [cereals.com/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
@@ -243,7 +243,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified audio URLs that start with a hash mark when the audio part and the linkifying URL are separated by whitespace', () => {
+  it('is prefixed to schemeless linkified audio URLs when the audio part and the linkifying URL are separated by whitespace', () => {
     const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -256,7 +256,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified image URLs that start with a hash mark when the image part and the linkifying URL are separated by whitespace', () => {
+  it('is prefixed to schemeless linkified image URLs when the image part and the linkifying URL are separated by whitespace', () => {
     const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
@@ -269,7 +269,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     )
   })
 
-  it('is prefixed to linkified video URLs that start with a hash mark when the video part and the linkifying URL are separated by whitespace', () => {
+  it('is prefixed to schemeless linkified video URLs when the video part and the linkifying URL are separated by whitespace', () => {
     const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (wiki/Blue_Sky)'
 
     expect(up.toAst(text)).to.be.eql(
