@@ -14,6 +14,8 @@ import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 
 
+// TODO: Check all permutations of brackets for negative tests, too.
+
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
   it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."

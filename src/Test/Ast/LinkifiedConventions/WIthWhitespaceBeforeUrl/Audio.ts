@@ -8,6 +8,8 @@ import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 
 
+// TODO: Check all permutations of brackets for negative tests, too.
+
 context('A linkified audio convention can have whitespace between its audio URL and its linkifying URL (regardless of whether there is whitespace between its content and its audio URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
