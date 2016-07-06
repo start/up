@@ -66,6 +66,10 @@ export function regExpStartingWith(pattern: string, containsATerm?: boolean): Re
   return new RegExp('^' + pattern, containsATerm ? 'i' : undefined)
 }
 
+export function regExpEndingWith(pattern: string): RegExp {
+  return new RegExp(pattern + '$')
+}
+
 import { ANY_WHITESPACE } from './PatternPieces'
 
 export function solely(pattern: string) {

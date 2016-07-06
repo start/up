@@ -1,4 +1,4 @@
-import { regExpStartingWith, atLeast, anyCharBut } from '../../PatternHelpers'
+import { regExpStartingWith, regExpEndingWith, atLeast, anyCharBut } from '../../PatternHelpers'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
@@ -46,7 +46,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
   let startDelimiter: string
 
   consumer.consume({
-    pattern: INLINE_CODE_DELIMITER,
+    pattern: INLINE_CODE_DELIMITER_PATTERN,
     thenBeforeAdvancingTextIndex: match => { startDelimiter = match }
   })
 
@@ -58,7 +58,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
   while (!consumer.done()) {
     consumer.consume({
-      pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE,
+      pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE_PATTERN,
       thenBeforeAdvancingTextIndex: match => { inlineCode += match }
     })
 
@@ -68,7 +68,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
     let possibleEndDelimiter: string
 
     consumer.consume({
-      pattern: INLINE_CODE_DELIMITER,
+      pattern: INLINE_CODE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: match => { possibleEndDelimiter = match }
     })
 
@@ -78,7 +78,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter.length === startDelimiter.length) {
-      then(new Token(TokenKind.InlineCode, inlineCode), consumer.textIndex)
+      then(new Token(TokenKind.InlineCode, trimInlineCode(inlineCode)), consumer.textIndex)
       return true
     }
 
@@ -92,13 +92,37 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 }
 
 
+function trimInlineCode(inlineCode: string): string {
+  if (LEADING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN.test(inlineCode)) {
+    inlineCode = inlineCode.slice(1)
+  }
+
+  if (TRAILING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN.test(inlineCode)) {
+    inlineCode = inlineCode.slice(0, -1)
+  }
+
+  return inlineCode
+}
+
+
 const INLINE_CODE_DELIMITER_CHAR =
   '`'
 
-const CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE =
+const CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE_PATTERN =
   regExpStartingWith(
     atLeast(1, anyCharBut(INLINE_CODE_DELIMITER_CHAR)))
 
-const INLINE_CODE_DELIMITER =
+const INLINE_CODE_DELIMITER_PATTERN =
   regExpStartingWith(
     atLeast(1, INLINE_CODE_DELIMITER_CHAR))
+
+const AT_LEAST_ONE_SPACE =
+  atLeast(1, ' ')
+    
+const LEADING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN =
+  regExpStartingWith(
+      AT_LEAST_ONE_SPACE + INLINE_CODE_DELIMITER_CHAR)
+
+const TRAILING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN =
+  regExpEndingWith(
+      INLINE_CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)
