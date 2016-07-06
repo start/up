@@ -499,16 +499,6 @@ class Tokenizer {
     })
   }
 
-  private isDirectlyFollowing(tokenKinds: TokenKind[]): boolean {
-    if (this.buffer || !this.tokens.length) {
-      return false
-    }
-
-    const lastToken = last(this.tokens)
-
-    return tokenKinds.some(tokenKind => lastToken.kind === tokenKind)
-  }
-
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
     this.buffer += this.consumer.currentChar
@@ -587,6 +577,16 @@ class Tokenizer {
     return (
       !this.failedConventionTracker.hasFailed(conventionToOpen, textIndex)
       && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing)))
+  }
+
+  private isDirectlyFollowing(tokenKinds: TokenKind[]): boolean {
+    if (this.buffer || !this.tokens.length) {
+      return false
+    }
+
+    const lastToken = last(this.tokens)
+
+    return tokenKinds.some(tokenKind => lastToken.kind === tokenKind)
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
