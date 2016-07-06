@@ -1,13 +1,13 @@
 import { expect } from 'chai'
-import Up from '../../../index'
-import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import Up from '../../../../index'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
+import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../../SyntaxNodes/ParagraphNode'
+import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
+import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
+import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
+import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
 
 
 context('A linkified footnote can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {

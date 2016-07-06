@@ -1,10 +1,10 @@
 import { expect } from 'chai'
-import Up from '../../../index'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import Up from '../../../../index'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
+import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
+import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
+import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
+import { SpoilerNode } from '../../../../SyntaxNodes/SpoilerNode'
 
 
 context('A linkified spoiler can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
