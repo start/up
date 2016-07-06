@@ -318,6 +318,175 @@ class Tokenizer {
     }))
   }
 
+  // These conventions are for link URLs that directly follow linked content:
+  //
+  // You should try [Typescript](http://www.typescriptlang.org).
+  //
+  // We allow whitespace between a link's content and its URL, but that isn't handled by these
+  // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
+  private getLinkUrlConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => new TokenizableConvention({
+      startsWith: this.getBracketedUrlStartPattern(bracket),
+      endsWith: bracket.endPattern,
+
+      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
+
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      whenClosing: () => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        this.closeLink(url)
+      }
+    }))
+  }
+
+  // Normally, a link's URL directly follows its content.
+  //
+  // However, if we're very sure that the author is intending to produce a link, we allow whitespace
+  // between the content and the URL. For example:
+  //
+  // You should try [Typescript] (http://www.typescriptlang.org).
+  //
+  // To ensure the author actually intends to produce a link, we apply some extra rules if there is
+  // any whitespace between a link's content and its URL.
+  //
+  // 1. First, the URL must either:
+  //    * Have a scheme (like "mailto:" or "https://")
+  //    * Start with a slash
+  //    * Start with a hash mark ("#")
+  //    * Have a top-level domain.
+  //      
+  // 2. Second, the URL must not contain any unescaped whitespace.
+  //
+  // 3. If the URL merely has a top-level domain:
+  //    * The top-level domain must consist solely of letters
+  //    * The URL must start with a number or a letter
+  //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
+  //      consecutive  periods are allowed in the resource path.
+  private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => new TokenizableConvention({
+      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+      endsWith: bracket.endPattern,
+
+      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
+      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+
+      failsIfWhitespaceIsEnounteredBeforeClosing: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      whenClosing: (context) => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+
+        if (this.probablyWasNotIntendedToBeAUrl(url)) {
+          this.backtrackToBeforeContext(context)
+        } else {
+          this.closeLink(url)
+        }
+      }
+    }))
+  }
+
+  private probablyWasNotIntendedToBeAUrl(url: string): boolean {
+    return SOLELY_URL_PREFIX_PATTERN.test(url)
+  }
+
+  private closeLink(url: string) {
+    // We know the last token is a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
+    //
+    // We'll replace that end token and its corresponding start token with link tokens.
+    const originalEndToken = last(this.tokens)
+    originalEndToken.value = url
+    originalEndToken.kind = LINK_CONVENTION.endTokenKind
+    originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
+  }
+
+  // Certain conventions can be "linkified" if they're followed by a bracketed URL.
+  //
+  // The original conventions aren't replaced, but their entire contents are nested within a link (still
+  // inside the original convention). 
+  private getLinkifyingUrlConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => new TokenizableConvention({
+      startsWith: this.getBracketedUrlStartPattern(bracket),
+      endsWith: bracket.endPattern,
+
+      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      whenClosing: (context) => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        this.closeLinkifyingUrl(url)
+      }
+    }))
+  }
+
+  private getBracketedUrlStartPattern(bracket: Bracket): string {
+    return (
+      bracket.startPattern +
+      // If the first character of the URL is escaped, we don't produce a link.
+      notFollowedBy(escapeForRegex(ESCAPER_CHAR)))
+  }
+
+  // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
+  // between the linkifying URL and the original convention.
+  //
+  // For more information, see `getLinkifyingUrlConventions` and `getConventionsForWhitespaceFollowedByLinkUrl`.
+  private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
+    return BRACKETS.map(bracket => new TokenizableConvention({
+      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+      endsWith: bracket.endPattern,
+
+      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+
+      failsIfWhitespaceIsEnounteredBeforeClosing: true,
+      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      whenClosing: (context) => {
+        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+
+        if (this.probablyWasNotIntendedToBeAUrl(url)) {
+          this.backtrackToBeforeContext(context)
+        } else {
+          this.closeLinkifyingUrl(url)
+        }
+      }
+    }))
+  }
+
+  private closeLinkifyingUrl(url: string): void {
+    const linkEndToken = new Token(LINK_CONVENTION.endTokenKind, url)
+    const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
+    linkStartToken.associateWith(linkEndToken)
+
+    // We'll insert our new link end token right before the original end token, and we'll insert our new link
+    // start token right after the original end token's corresponding start token.
+
+    const indexOfOriginalEndToken = this.tokens.length - 1
+    this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
+
+    const originalStartToken = last(this.tokens).correspondsToToken
+    const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
+    this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
+  }
+
+  private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): string {
+    return (
+      SOME_WHITESPACE + bracket.startPattern + capture(
+        either(
+          EXPLICIT_URL_PREFIX,
+          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+            // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
+            // URL, then that top-level domain must either be followed by a forward slash...
+            FORWARD_SLASH,
+            // ... or be the end of the URL.
+            followedBy(bracket.endPattern)))))
+  }
+
   private getRawBracketConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
       startsWith: bracket.startPattern,
@@ -796,159 +965,6 @@ class Tokenizer {
     })
   }
 
-  // These conventions are for link URLs that directly follow linked content:
-  //
-  // You should try [Typescript](http://www.typescriptlang.org).
-  //
-  // We allow whitespace between a link's content and its URL, but that isn't handled by these
-  // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
-  private getLinkUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getBracketedUrlStartPattern(bracket),
-      endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: () => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.closeLink(url)
-      }
-    }))
-  }
-
-  // Normally, a link's URL directly follows its content.
-  //
-  // However, if we're very sure that the author is intending to produce a link, we allow whitespace
-  // between the content and the URL. For example:
-  //
-  // You should try [Typescript] (http://www.typescriptlang.org).
-  //
-  // To ensure the author actually intends to produce a link, we apply some extra rules if there is
-  // any whitespace between a link's content and its URL.
-  //
-  // 1. First, the URL must either:
-  //    * Have a scheme (like "mailto:" or "https://")
-  //    * Start with a slash
-  //    * Start with a hash mark ("#")
-  //    * Have a top-level domain.
-  //      
-  // 2. Second, the URL must not contain any unescaped whitespace.
-  //
-  // 3. If the URL merely has a top-level domain:
-  //    * The top-level domain must consist solely of letters
-  //    * The URL must start with a number or a letter
-  //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
-  //      consecutive  periods are allowed in the resource path.
-  private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-      endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
-
-      failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-        if (this.probablyWasNotIntendedToBeAUrl(url)) {
-          this.backtrackToBeforeContext(context)
-        } else {
-          this.closeLink(url)
-        }
-      }
-    }))
-  }
-
-  private probablyWasNotIntendedToBeAUrl(url: string): boolean {
-    return SOLELY_URL_PREFIX_PATTERN.test(url)
-  }
-
-  private closeLink(url: string) {
-    // We know the last token is a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
-    //
-    // We'll replace that end token and its corresponding start token with link tokens.
-    const originalEndToken = last(this.tokens)
-    originalEndToken.value = url
-    originalEndToken.kind = LINK_CONVENTION.endTokenKind
-    originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
-  }
-
-  // Certain conventions can be "linkified" if they're followed by a bracketed URL.
-  //
-  // The original conventions aren't replaced, but their entire contents are nested within a link (still
-  // inside the original convention). 
-  private getLinkifyingUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getBracketedUrlStartPattern(bracket),
-      endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.closeLinkifyingUrl(url)
-      }
-    }))
-  }
-
-  // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
-  // between the linkifying URL and the original convention.
-  //
-  // For more information, see `getLinkifyingUrlConventions` and `getConventionsForWhitespaceFollowedByLinkUrl`.
-  private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-      endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
-
-      failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-        if (this.probablyWasNotIntendedToBeAUrl(url)) {
-          this.backtrackToBeforeContext(context)
-        } else {
-          this.closeLinkifyingUrl(url)
-        }
-      }
-    }))
-  }
-
-  private getBracketedUrlStartPattern(bracket: Bracket): string {
-    return (
-      bracket.startPattern +
-      // If the first character of the URL is escaped, we don't produce a link.
-      notFollowedBy(escapeForRegex(ESCAPER_CHAR)))
-  }
-
-  private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): string {
-    return (
-      SOME_WHITESPACE + bracket.startPattern + capture(
-        either(
-          EXPLICIT_URL_PREFIX,
-          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
-            // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
-            // URL, then that top-level domain must either be followed by a forward slash...
-            FORWARD_SLASH,
-            // ... or be the end of the URL.
-            followedBy(bracket.endPattern)))))
-  }
-
   private bufferRawText(): void {
     const didOpenConvention =
       this.rawBracketConventions.some(convention => this.tryToOpen(convention))
@@ -956,22 +972,6 @@ class Tokenizer {
     if (!didOpenConvention) {
       this.bufferCurrentChar()
     }
-  }
-
-  private closeLinkifyingUrl(url: string): void {
-    const linkEndToken = new Token(LINK_CONVENTION.endTokenKind, url)
-    const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
-    linkStartToken.associateWith(linkEndToken)
-
-    // We'll insert our new link end token right before the original end token, and we'll insert our new link
-    // start token right after the original end token's corresponding start token.
-
-    const indexOfOriginalEndToken = this.tokens.length - 1
-    this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
-
-    const originalStartToken = last(this.tokens).correspondsToToken
-    const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
-    this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
   }
 }
 
