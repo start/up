@@ -20,29 +20,15 @@ export function expectEveryCombinationOfBrackets(
     toProduce: DocumentNode
   }
 ): void {
-  const BRACKETS = [
-    { open: '(', close: ')' },
-    { open: '[', close: ']' },
-    { open: '{', close: '}' }
-  ]
-
-  const { contentToWrapInBrackets, urlToWrapInBrackets, toProduce } = args
-  const partsToPutInBetween = args.partsToPutInBetween || ['']
-
-  for (const bracketForContent of BRACKETS) {
-    for (const partToPutInBetween of partsToPutInBetween) {
-      for (const bracketForUrl of BRACKETS) {
-        const text =
-          wrapInBracket(contentToWrapInBrackets, bracketForContent)
-          + partToPutInBetween
-          + wrapInBracket(urlToWrapInBrackets, bracketForUrl)
-
-        expect(Up.toAst(text)).to.be.eql(toProduce)
-      }
-    }
-  }
+  expectEveryPermutation({
+    contentToWrapInBrackets: args.contentToWrapInBrackets,
+    urlSegments: [{
+      prefixes: args.partsToPutInBetween,
+      urlToWrapInBrackets: args.urlToWrapInBrackets
+    }],
+    toProduce: args.toProduce
+  })
 }
-
 
 
 export function expectEveryPermutation(
@@ -80,6 +66,7 @@ export function expectEveryPermutation(
     }
   }
 }
+
 
 function everyPermutation(prefix: string, permutationsBySegment: string[][]): string[] {
   if (permutationsBySegment.length === 1) {
