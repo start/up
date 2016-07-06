@@ -3,6 +3,7 @@ import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { concat } from '../../CollectionHelpers'
 
 
 export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): DocumentNode {
@@ -44,7 +45,7 @@ export function expectEveryCombinationOfBrackets(
 
 
 
-export function expectEveryPermutationOfBrackets(
+export function expectEveryPermutation(
   args: {
     contentToWrapInBrackets: string
     urlSegments: UrlSegment[]
@@ -58,33 +59,41 @@ export function expectEveryPermutationOfBrackets(
   ]
 
   const { contentToWrapInBrackets, toProduce } = args
-  
+
   const urlSegments = args.urlSegments.map(urlSegment => <UrlSegment>{
-    separators: urlSegment.separators || [''],
+    prefixes: urlSegment.prefixes || [''],
     urlToWrapInBrackets: urlSegment.urlToWrapInBrackets
   })
 
-   //     expect(Up.toAst(text)).to.be.eql(toProduce)
-   for (const contentBracket of BRACKETS) {
-     const bracktedContent = wrapInBracket(contentToWrapInBrackets, contentBracket)
+  for (const contentBracket of BRACKETS) {
+    const bracktedContent = wrapInBracket(contentToWrapInBrackets, contentBracket)
 
-//     const allBracketedUrlParts =
-    
-   }
+    const permutationsByUrlSegment =
+      urlSegments.map(urlSegment =>
+        concat(
+          urlSegment.prefixes.map(prefix =>
+            BRACKETS.map(bracket =>
+              prefix + wrapInBracket(urlSegment.urlToWrapInBrackets, bracket)))))
+
+    for (const permutation of everyPermutation('', permutationsByUrlSegment)) {
+      expect(Up.toAst(bracktedContent + permutation)).to.be.eql(toProduce)
+    }
+  }
 }
 
-function getEveryPermutationOfSeparatorsAndBracketsAroundUrls(prefix: string, permutationsByUrl: string[][]): string[] {
-  if (permutationsByUrl.length === 1) {
-    return permutationsByUrl[0].map(permutation => prefix + permutation)
+function everyPermutation(prefix: string, permutationsBySegment: string[][]): string[] {
+  if (permutationsBySegment.length === 1) {
+    return permutationsBySegment[0].map(permutation => prefix + permutation)
   }
 
-  return null
+  return concat(
+    permutationsBySegment[0].map(permutation =>
+      everyPermutation(prefix + permutation, permutationsBySegment.slice(1))))
 }
-
 
 
 export interface UrlSegment {
-  separators: string[],
+  prefixes: string[],
   urlToWrapInBrackets: string
 }
 
