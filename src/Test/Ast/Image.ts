@@ -8,7 +8,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
 describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "image:" immediately followed by another instance of bracketed text', () => {
-  it('produces an image node with the first bracketed text treated as the description and the second treated as the URL', () => {
+  it('produces an image node with the first bracketed text treated as the description and the second treated as the image URL', () => {
     expect(Up.toAst('I would never stay here. [image: haunted house](http://example.com/hauntedhouse.svg) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I would never stay here. '),
@@ -75,15 +75,15 @@ describe("The brackets enclosing an image convention's description and URL", () 
   })
 })
 
-
-describe("An image convention", () => {
-  it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
+  
+context("When an image has whitespace before its bracketed URL there are no additional restrictions on the image URL.", () => {
+  specify("For example, the URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
-      url: 'http://example.com/ghosts.svg',
+      url: 'http://example.com/ghost meeting.svg',
       toProduce: new DocumentNode([
-        new ImageNode('ghostly howling', 'http://example.com/ghosts.svg')
+        new ImageNode('ghostly howling', 'http://example.com/ghost meeting.svg')
       ])
     })
   })
