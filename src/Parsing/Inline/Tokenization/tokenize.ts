@@ -884,8 +884,7 @@ class Tokenizer {
             whenOpening(match, charAfterMatch, ...captures)
           }
         }
-      })
-    )
+      }))
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
