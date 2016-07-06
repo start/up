@@ -46,9 +46,9 @@ const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
   ACTION_CONVENTION
 ]
 
-// In contrast, the following conventions are "linkified" if they're followed by a bracketed URL. The
-// original conventions aren't replaced, but their entire contents are nested within a link (still
-// inside the original convention). 
+// Certain rich conventions can be "linkified" if they're followed by a bracketed URL. The original rich
+// conventions aren't replaced, but their entire contents are nested within a link. For more information
+// about "linkification", see the `getLinkifyingUrlConventions` method.
 const RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
   SPOILER_CONVENTION,
   NSFW_CONVENTION,
@@ -402,25 +402,43 @@ class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // Certain conventions can be "linkified" if they're followed by a bracketed URL.
+  // Certain rich conventions can be "linkified" if they're followed by a bracketed URL. The original rich
+  // conventions aren't replaced, but their entire contents are nested within a link. To be clear, the link
+  // is still inside the original rich convention.
   //
-  // The original conventions aren't replaced, but their entire contents are nested within a link (still
-  // inside the original convention). 
+  // Media conventions can be linkified, too. Linkified media conventions are simply placed within a link. 
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getBracketedUrlStartPattern(bracket),
-      endsWith: bracket.endPattern,
+    return concat(BRACKETS.map(bracket => [
+      new TokenizableConvention({
+        startsWith: this.getBracketedUrlStartPattern(bracket),
+        endsWith: bracket.endPattern,
 
-      onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+        onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
 
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-      whenClosingItAlsoClosesInnerConventions: true,
+        insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+        whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.closeLinkifyingUrl(url)
-      }
-    }))
+        whenClosing: (context) => {
+          const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+          this.closeLinkifyingUrlForRichConventions(url)
+        }
+      }),
+      
+      new TokenizableConvention({
+        startsWith: this.getBracketedUrlStartPattern(bracket),
+        endsWith: bracket.endPattern,
+
+        onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
+
+        insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+        whenClosingItAlsoClosesInnerConventions: true,
+
+        whenClosing: (context) => {
+          const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+          this.closeLinkifyingUrlForMediaConventions(url)
+        }
+      })]
+    ))
   }
 
   private getBracketedUrlStartPattern(bracket: Bracket): string {
@@ -452,13 +470,13 @@ class Tokenizer {
         if (this.probablyWasNotIntendedToBeAUrl(url)) {
           this.backtrackToBeforeContext(context)
         } else {
-          this.closeLinkifyingUrl(url)
+          this.closeLinkifyingUrlForRichConventions(url)
         }
       }
     }))
   }
 
-  private closeLinkifyingUrl(url: string): void {
+  private closeLinkifyingUrlForRichConventions(url: string): void {
     const linkEndToken = new Token(LINK_CONVENTION.endTokenKind, url)
     const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
     linkStartToken.associateWith(linkEndToken)
@@ -472,6 +490,19 @@ class Tokenizer {
     const originalStartToken = last(this.tokens).correspondsToToken
     const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
     this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
+  }
+
+  private closeLinkifyingUrlForMediaConventions(url: string): void {
+    // The media start token will always directly precede the media end token, which is currently the last token.
+    const indexOfMediaStartToken = this.tokens.length - 2
+
+    this.encloseWithin({
+      richConvention: LINK_CONVENTION,
+      startingBackAtIndex: indexOfMediaStartToken
+    })
+
+    // Now, the last token is a LinkUrlAndEnd token. Let's assign its the URL!
+    last(this.tokens).value = url 
   }
 
   private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): string {
@@ -498,7 +529,7 @@ class Tokenizer {
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     }))
   }
-  
+
   private tokenize(): void {
     do {
       this.bufferContentThatCannotOpenOrCloseAnyConventions()
