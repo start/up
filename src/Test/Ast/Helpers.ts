@@ -68,6 +68,28 @@ export function expectEveryPermutationOfBrackets(
 }
 
 
+// Returns every permutation of the different values for each segment, each prefixed by `prefix`. 
+//
+// If `prefix` is '(image: puppy)', and if `permutationsBySegment` is:
+//
+// [
+//   ['(dog.gif)', '{dog.gif}'],
+//   ['(pets.com/gallery)', '{pets.com/gallery}', ' \t (pets.com/gallery)', ' \t {pets.com/gallery}']
+// ]
+//
+// Then the results are:
+//
+// (image: puppy)(dog.gif)(pets.com/gallery)
+// (image: puppy)(dog.gif){pets.com/gallery}
+//
+// (image: puppy)(dog.gif) \t (pets.com/gallery)
+// (image: puppy)(dog.gif) \t {pets.com/gallery}
+//
+// (image: puppy){dog.gif}(pets.com/gallery)
+// (image: puppy){dog.gif}{pets.com/gallery}
+//
+// (image: puppy){dog.gif} \t (pets.com/gallery)
+// (image: puppy){dog.gif} \t {pets.com/gallery}
 function everyPermutation(prefix: string, permutationsBySegment: string[][]): string[] {
   return (
     permutationsBySegment.length === 1
@@ -80,7 +102,7 @@ function everyPermutation(prefix: string, permutationsBySegment: string[][]): st
 
 
 export interface UrlSegment {
-  prefixes: string[],
+  prefixes?: string[],
   urlToWrapInBrackets: string
 }
 
