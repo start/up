@@ -499,14 +499,14 @@ class Tokenizer {
     })
   }
 
-  private isDirectlyFollowing(conventions: RichConvention[]): boolean {
+  private isDirectlyFollowing(tokenKinds: TokenKind[]): boolean {
     if (this.buffer || !this.tokens.length) {
       return false
     }
 
     const lastToken = last(this.tokens)
 
-    return conventions.some(convention => lastToken.kind === convention.endTokenKind)
+    return tokenKinds.some(tokenKind => lastToken.kind === tokenKind)
   }
 
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
