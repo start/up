@@ -75,29 +75,15 @@ describe("The brackets enclosing a video convention's description and URL", () =
   })
 })
 
-
-describe("A video convention", () => {
-  it("can always have optional whitespace between its bracketed content and its bracketed URL", () => {
+  
+context("When an video has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
+  specify("For example, the URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
-      url: 'http://example.com/ghosts.webm',
+      url: 'http://example.com/ghost meeting.svg',
       toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', 'http://example.com/ghosts.webm')
-      ])
-    })
-  })
-})
-
-
-describe('A video URL with no URL scheme', () => {
-  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
-    expectEveryPermutationOfBracketsAroundContentAndUrl({
-      content: 'video: ghostly howling',
-      partsBetweenContentAndUrl: [' ', '\t', '  \t '],
-      url: 'example.com/ghosts.webm',
-      toProduce: new DocumentNode([
-        new VideoNode('ghostly howling', 'https://example.com/ghosts.webm')
+        new VideoNode('ghostly howling', 'http://example.com/ghost meeting.svg')
       ])
     })
   })

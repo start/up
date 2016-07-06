@@ -76,7 +76,7 @@ describe("The brackets enclosing an audio convention's description and URL", () 
 })
 
 
-context("When an audio convention has whitespace before its bracketed URL there are no additional restrictions on the audio URL.", () => {
+context("When an audio convention has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
   specify("For example, the URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'audio: ghostly howling',
