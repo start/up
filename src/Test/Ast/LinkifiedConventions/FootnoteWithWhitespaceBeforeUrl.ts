@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { expectEveryCombinationOfBrackets } from '../Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -18,10 +18,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], 'tel:555-555-5555')
     ], 1)
 
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: '^the phone was dead',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'tel:555-555-5555',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^the phone was dead',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'tel:555-555-5555',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
@@ -38,10 +38,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
@@ -117,10 +117,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], 'tel:5555555555')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^the phone was dead',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'tel:5555555555',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^the phone was dead',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'tel:5555555555',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
@@ -156,10 +156,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], '/wiki/dead-phone')
     ], 1)
 
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: '^the phone was dead',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '/wiki/dead-phone',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^the phone was dead',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '/wiki/dead-phone',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
@@ -214,10 +214,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], '/5555555555')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^the phone was dead',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '/5555555555',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^the phone was dead',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '/5555555555',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
@@ -253,10 +253,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], '#wiki/dead-phone')
     ], 1)
 
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: '^the phone was dead',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '#wiki/dead-phone',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^the phone was dead',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '#wiki/dead-phone',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote,]),
         new FootnoteBlockNode([footnote])
@@ -273,10 +273,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], '#15')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^the phone was dead',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '#15',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^the phone was dead',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '#15',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote,]),
           new FootnoteBlockNode([footnote])
@@ -350,10 +350,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], 'https://chrono-trigger.wiki')
     ], 1)
 
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: '^Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'chrono-trigger.wiki',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^Chrono Trigger',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'chrono-trigger.wiki',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote,]),
         new FootnoteBlockNode([footnote])
@@ -370,10 +370,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote,]),
           new FootnoteBlockNode([footnote])
@@ -388,10 +388,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], 'https://advancewars.wikia.com/')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^Advance Wars!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^Advance Wars!',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote,]),
           new FootnoteBlockNode([footnote])
@@ -425,10 +425,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], 'https://88.8888.cn')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^Good luck!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '88.8888.cn',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^Good luck!',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '88.8888.cn',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote,]),
           new FootnoteBlockNode([footnote])
@@ -540,10 +540,10 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], 'https://88.8888.cn')
       ], 1)
 
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: '^Good luck!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '88.8888.cn',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: '^Good luck!',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '88.8888.cn',
         toProduce: new DocumentNode([
           new ParagraphNode([footnote,]),
           new FootnoteBlockNode([footnote])
@@ -644,10 +644,10 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
       ], 'https://example.com/search=phone was dead')
     ], 1)
 
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: '^the phone was dead',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'https://example.com/search=phone\\ was\\ dead',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^the phone was dead',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'https://example.com/search=phone\\ was\\ dead',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote,]),
         new FootnoteBlockNode([footnote])

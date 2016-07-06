@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from './Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
@@ -9,10 +9,10 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 context('A link can have whitespace between its bracketed content and bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'email me',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'mailto:daniel@wants.email',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'email me',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'mailto:daniel@wants.email',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('email me')
@@ -24,10 +24,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
   describe('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Advance Wars')
@@ -83,10 +83,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the rest of the URL can consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'call me',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'tel:5555555555',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'call me',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('call me')
@@ -112,10 +112,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   specify('It starts with a slash', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '/wiki/chrono-trigger',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'Chrono Trigger',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '/wiki/chrono-trigger',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Trigger')
@@ -155,10 +155,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     it('can consist solely of digits after the slash', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'Model 3',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '/3',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'Model 3',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '/3',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Model 3')
@@ -184,10 +184,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   specify('It starts with a hash mark ("#")', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '#wiki/chrono-trigger',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'Chrono Trigger',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '#wiki/chrono-trigger',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Trigger')
@@ -199,10 +199,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
     it('may consist solely of digits after the hask mark', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'Model 3 theft',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '#3',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'Model 3 theft',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '#3',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Model 3 theft')
@@ -256,10 +256,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   specify('It has a top-level domain', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'chrono-trigger.wiki',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'Chrono Trigger',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'chrono-trigger.wiki',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Trigger')
@@ -271,10 +271,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
   describe('When the URL merely has a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Advance Wars')
@@ -284,10 +284,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Advance Wars')
@@ -311,10 +311,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'Good luck!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '88.8888.cn',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'Good luck!',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Good luck!')
@@ -396,10 +396,10 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'rocket ship',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'example.com/321...blastoff/1',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'rocket ship',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('rocket ship')
@@ -475,10 +475,10 @@ describe('If there is nothing but whitspace between a spoiler and a bracketed UR
 
 describe("A link's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'this search',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'https://stackoverflow.com/search=see\\ plus\\ plus',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this search',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'https://stackoverflow.com/search=see\\ plus\\ plus',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this search')

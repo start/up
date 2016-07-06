@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { expectEveryCombinationOfBrackets } from '../Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -47,10 +47,10 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
         ], 'http://example.com/luckycharms')
       ], 1)
 
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: '^Well, I do, but I pretend not to.',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'http://example.com/luckycharms',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^Well, I do, but I pretend not to.',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'http://example.com/luckycharms',
       toProduce: new DocumentNode([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])

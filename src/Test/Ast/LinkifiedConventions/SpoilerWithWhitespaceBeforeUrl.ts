@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '../Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -9,10 +9,10 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 context('A linkified spoiler can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'SPOILER: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'app:wiki/terrible-thing',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'app:wiki/terrible-thing',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([
           new LinkNode([
@@ -26,10 +26,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
   describe('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -87,10 +87,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the rest of the URL can consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: spooky phone call',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'tel:5555555555',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: spooky phone call',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -118,10 +118,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 
   specify('It starts with a slash', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'SPOILER: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '/wiki/something-terrible',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '/wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([
           new LinkNode([
@@ -163,10 +163,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     it('can consist solely of digits after the slash', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Model 3 theft',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '/3',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: Model 3 theft',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '/3',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -194,10 +194,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 
   specify('It starts with a hash mark ("#")', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'SPOILER: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '#wiki/something-terrible',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '#wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([
           new LinkNode([
@@ -211,10 +211,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
     it('may consist solely of digits after the hask mark', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Model 3 theft',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '#3',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: Model 3 theft',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '#3',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -270,10 +270,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 
   specify('It has a top-level domain', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'SPOILER: Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'chrono-trigger.wiki',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: Chrono Trigger',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'chrono-trigger.wiki',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([
           new LinkNode([
@@ -287,10 +287,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
   describe('When the URL merely has a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -302,10 +302,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -331,10 +331,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: Good luck!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '88.8888.cn',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: Good luck!',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -418,10 +418,10 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'SPOILER: rocket ship',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'example.com/321...blastoff/1',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'SPOILER: rocket ship',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
           new SpoilerNode([
             new LinkNode([
@@ -499,10 +499,10 @@ describe('If there is nothing but whitspace between a spoiler and a bracketed UR
 
 describe("A spoiler's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'SPOILER: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'https://stackoverflow.com/search=something\\ very\\ terrible',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'https://stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([
           new LinkNode([

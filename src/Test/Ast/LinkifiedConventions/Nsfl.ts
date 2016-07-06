@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '../Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -32,10 +32,10 @@ describe('A NSFL convention followed immediately by a parenthesized/bracketd URL
 
 describe('Any NSFL convention followed immediately by a parenthesized/bracketed URL', () => {
   it('produces a NSFL node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the NSFL convention can be different from the type of bracket surrounding the URL', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'NSFL: you eat rotting Gary',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'http://example.com/finalbattle',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFL: you eat rotting Gary',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
         new NsflNode([
           new LinkNode([

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '../Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -32,10 +32,10 @@ describe('A spoiler followed immediately by a parenthesized/bracketd URL', () =>
 
 describe('Any spoiler followed immediately by a parenthesized/bracketed URL', () => {
   it('produces a spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'SPOILER: you fight Gary',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'http://example.com/finalbattle',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: you fight Gary',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
         new SpoilerNode([
           new LinkNode([

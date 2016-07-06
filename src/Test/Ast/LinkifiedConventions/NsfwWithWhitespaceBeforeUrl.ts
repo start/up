@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { insideDocumentAndParagraph, expectEveryCombinationOfBrackets } from '../Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -9,10 +9,10 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 
 context('A linkified NSFW convention can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'NSFW: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'app:wiki/terrible-thing',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFW: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'app:wiki/terrible-thing',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([
           new LinkNode([
@@ -26,10 +26,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
   describe('When the URL has a scheme, the URL', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -87,10 +87,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the rest of the URL can consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: spooky phone call',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'tel:5555555555',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: spooky phone call',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -104,10 +104,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
 
   specify('It starts with a slash', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'NSFW: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '/wiki/something-terrible',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFW: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '/wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([
           new LinkNode([
@@ -149,10 +149,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     it('can consist solely of digits after the slash', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Model 3 theft',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '/3',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: Model 3 theft',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '/3',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -180,10 +180,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
 
   specify('It starts with a hash mark ("#")', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'NSFW: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: '#wiki/something-terrible',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFW: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: '#wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([
           new LinkNode([
@@ -197,10 +197,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
     it('may consist solely of digits after the hask mark', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Model 3 theft',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '#3',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: Model 3 theft',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '#3',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -256,10 +256,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
 
   specify('It has a top-level domain', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'NSFW: Chrono Trigger',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'chrono-trigger.wiki',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFW: Chrono Trigger',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'chrono-trigger.wiki',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([
           new LinkNode([
@@ -273,10 +273,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
   describe('When the URL merely has a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -288,10 +288,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Advance Wars',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'advancewars.wikia.com/',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: Advance Wars',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'advancewars.wikia.com/',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -331,10 +331,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: Good luck!',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: '88.8888.cn',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: Good luck!',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -418,10 +418,10 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
-      expectEveryCombinationOfBrackets({
-        contentToWrapInBrackets: 'NSFW: rocket ship',
-        partsToPutInBetween: ['  ', '\t', ' \t '],
-        urlToWrapInBrackets: 'example.com/321...blastoff/1',
+      expectEveryPermutationOfBracketsAroundContentAndUrl({
+        content: 'NSFW: rocket ship',
+        partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+        url: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
           new NsfwNode([
             new LinkNode([
@@ -499,10 +499,10 @@ describe('If there is nothing but whitspace between a NSFW convention and a brac
 
 describe("A NSFW convention's URL, when separated from its content by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
-    expectEveryCombinationOfBrackets({
-      contentToWrapInBrackets: 'NSFW: something terrible',
-      partsToPutInBetween: ['  ', '\t', ' \t '],
-      urlToWrapInBrackets: 'https://stackoverflow.com/search=something\\ very\\ terrible',
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFW: something terrible',
+      partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
+      url: 'https://stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
         new NsfwNode([
           new LinkNode([

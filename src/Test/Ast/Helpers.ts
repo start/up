@@ -12,19 +12,19 @@ export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): DocumentN
   ])
 }
 
-export function expectEveryCombinationOfBrackets(
+export function expectEveryPermutationOfBracketsAroundContentAndUrl(
   args: {
-    contentToWrapInBrackets: string
-    partsToPutInBetween?: string[]
-    urlToWrapInBrackets: string
+    content: string
+    partsBetweenContentAndUrl?: string[]
+    url: string
     toProduce: DocumentNode
   }
 ): void {
-  expectEveryPermutation({
-    contentToWrapInBrackets: args.contentToWrapInBrackets,
+  expectEveryPermutationOfBrackets({
+    contentToWrapInBrackets: args.content,
     urlSegments: [{
-      prefixes: args.partsToPutInBetween,
-      urlToWrapInBrackets: args.urlToWrapInBrackets
+      prefixes: args.partsBetweenContentAndUrl,
+      urlToWrapInBrackets: args.url
     }],
     toProduce: args.toProduce
   })
@@ -37,7 +37,7 @@ const BRACKETS = [
   { open: '{', close: '}' }
 ]
 
-export function expectEveryPermutation(
+export function expectEveryPermutationOfBrackets(
   args: {
     contentToWrapInBrackets: string
     urlSegments: UrlSegment[]
