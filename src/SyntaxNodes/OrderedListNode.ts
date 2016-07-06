@@ -4,7 +4,7 @@ import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
 export class OrderedListNode {
   OUTLINE_SYNTAX_NODE(): void { }
   
-  constructor(public listItems: OrderedListItem[] = []) { }
+  constructor(public listItems: OrderedListItem[]) { }
 
   start(): number {
     return this.listItems[0].ordinal
