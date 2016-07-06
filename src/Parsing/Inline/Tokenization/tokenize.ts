@@ -898,7 +898,9 @@ class Tokenizer {
     })
   }
 
-  private canTry(conventionToOpen: TokenizableConvention, textIndex = this.consumer.textIndex): boolean {
+  private canTry(conventionToOpen: TokenizableConvention): boolean {
+    const textIndex = this.consumer.textIndex
+
     // If a convention must be followed by one of a set of specific conventions, then there are really
     // three ways that convention can fail:
     //
@@ -929,7 +931,7 @@ class Tokenizer {
       return false
     }
 
-    const { onlyOpenIfDirectlyFollowing } = conventionToOpen
+    const  { onlyOpenIfDirectlyFollowing } = conventionToOpen
 
     return (
       !this.failedConventionTracker.hasFailed(conventionToOpen, textIndex)
