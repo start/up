@@ -145,9 +145,6 @@ class Tokenizer {
   }
 
   private configureConventions(): void {
-    this.conventions.push(
-      ...this.getFootnoteConventions())
-
     this.conventions.push(...concat([
       {
         richConvention: SPOILER_CONVENTION,
@@ -162,13 +159,16 @@ class Tokenizer {
     ].map(args => this.getConventionsForRichBracketedTerm(args))))
 
     this.conventions.push(
+      ...this.getMediaDescriptionConventions())
+
+    this.conventions.push(
+      ...this.getFootnoteConventions())
+
+    this.conventions.push(
       ...this.getLinkUrlConventions())
 
     this.conventions.push(
       ...this.getConventionsForWhitespaceFollowedByLinkUrl())
-
-    this.conventions.push(
-      ...this.getMediaDescriptionConventions())
 
     this.conventions.push(
       ...this.getLinkifyingUrlConventions())
