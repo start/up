@@ -13,7 +13,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 const footnoteProducedByParentheses =
   "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
-describe('In a paragraph, text surrounded by 2 parentheses', () => {
+describe('In a paragraph, parenthesized text starting with a caret', () => {
   it("produces a footnote node inside the paragraph, and a footnote block node for the footnote after the paragraph", () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
@@ -32,7 +32,7 @@ describe('In a paragraph, text surrounded by 2 parentheses', () => {
 })
 
 
-describe('Text surrounded by 2 square brackets', () => {
+describe('Square bracketed text starting with a caret', () => {
   it("also produces a footnote node", () => {
     const footnoteProducedBySquareBrackets =
       "I don't eat cereal. [^Well, I do, but I pretend not to.] Never have."
@@ -43,7 +43,7 @@ describe('Text surrounded by 2 square brackets', () => {
 })
 
 
-describe('Text surrounded by 2 curly brackets', () => {
+describe('Curly bracketed text starting with a caret', () => {
   it("also produces a footnote node", () => {
     const footnoteProducedByCurlyBrackets =
       "I don't eat cereal. {^Well, I do, but I pretend not to.} Never have."
@@ -123,6 +123,25 @@ describe('A footnote', () => {
           outerFootnote,
           innerFootnote
         ])
+      ]))
+  })
+})
+
+
+describe('Any whitespace after the caret in a footnote start delimiter', () => {
+  it("is ignored", () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
