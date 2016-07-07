@@ -20,7 +20,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
-            new PlainTextNode('SPOILER:')
+            new PlainTextNode('[SPOILER:]')
           ])
         ]))
     })
@@ -29,7 +29,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('[NSFW:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
-            new PlainTextNode('NSFW:')
+            new PlainTextNode('[NSFW:]')
           ])
         ]))
     })
@@ -38,7 +38,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('[NSFL:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
-            new PlainTextNode('NSFL:')
+            new PlainTextNode('[NSFL:]')
           ])
         ]))
     })
@@ -47,7 +47,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('(^)')).to.eql(
         insideDocumentAndParagraph([
           new ParenthesizedNode([
-            new PlainTextNode('^')
+            new PlainTextNode('(^)')
           ])
         ]))
     })
