@@ -108,3 +108,13 @@ describe('A left parenthesis followed by two right parentheses', () => {
       ]))
   })
 })
+
+
+context('When there is a space after the opening parenthesis', () => {
+  specify('it is treated as plain text', () => {
+    expect(Up.toAst("I can't eat most pizza. 8o( But I can have some! :~)")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I can't eat most pizza. 8o( But I can have some! :~)")
+      ]))
+  })
+})
