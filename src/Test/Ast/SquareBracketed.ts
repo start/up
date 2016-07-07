@@ -118,3 +118,17 @@ context('When there is a space after the opening square bracket', () => {
       ]))
   })
 })
+
+
+describe('A closing square bracket preceded by whitespace', () => {
+  it('does not close a square bracketed convention', () => {
+    expect(Up.toAst('I like [certain ]oB types of] pizza')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new SquareBracketedNode([
+          new PlainTextNode('[certain ]oB types of]')
+        ]),
+        new PlainTextNode(' pizza')
+      ]))
+  })
+})
