@@ -243,3 +243,13 @@ describe("A video URL (enclosed by square brackets)", () => {
       ]))
   })
 })
+
+
+describe("The closing bracket for a video description, if preceded by whitespace,", () => {
+  specify('does not close the desription', () => {
+    expect(Up.toAst('(video: ghostly )~8 howling)(http://example.com/ghosts.webm)')).to.be.eql(
+      new DocumentNode([
+        new VideoNode('ghostly )~8 howling', 'http://example.com/ghosts.webm')
+      ]))
+  })
+})

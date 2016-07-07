@@ -257,3 +257,13 @@ describe('An image URL (enclosed in curly brackets)', () => {
       ]))
   })
 })
+
+
+describe("The closing bracket for an image description, if preceded by whitespace,", () => {
+  specify('does not close the desription', () => {
+    expect(Up.toAst('{image: ghostly }~8 howling}(http://example.com/ghosts.png)')).to.be.eql(
+      new DocumentNode([
+        new ImageNode('ghostly }~8 howling', 'http://example.com/ghosts.png')
+      ]))
+  })
+})
