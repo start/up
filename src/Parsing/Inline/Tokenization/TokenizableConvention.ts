@@ -16,7 +16,7 @@ export interface TokenizableConventionArgs {
 
   beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
   whenOpening?: OnTextMatch
-  afterOpeningIgnoreAnyLeadingWhitespace?: boolean
+  ignoreAnyWhitespaceDirectlyFollowingStartDelimiter?: boolean
 
   insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
@@ -43,7 +43,7 @@ export class TokenizableConvention {
 
   flushesBufferToPlainTextTokenBeforeOpening: boolean
   whenOpening: OnTextMatch
-  afterOpeningIgnoreAnyLeadingWhitespace: boolean
+  ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: boolean
 
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
@@ -68,12 +68,12 @@ export class TokenizableConvention {
 
     this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
     this.endsWith = regExpStartingWith(args.endsWith)
-    
+
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
 
     this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
     this.whenOpening = args.whenOpening
-    this.afterOpeningIgnoreAnyLeadingWhitespace = args.afterOpeningIgnoreAnyLeadingWhitespace
+    this.ignoreAnyWhitespaceDirectlyFollowingStartDelimiter = args.ignoreAnyWhitespaceDirectlyFollowingStartDelimiter
 
     this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
     this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen

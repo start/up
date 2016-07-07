@@ -213,7 +213,7 @@ class Tokenizer {
         richConvention: FOOTNOTE_CONVENTION,
         startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
         endsWith: bracket.endPattern,
-        afterOpeningIgnoreAnyLeadingWhitespace: true
+        ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: true
       }))
   }
 
@@ -231,7 +231,7 @@ class Tokenizer {
         startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
         endsWith: bracket.endPattern,
         startPatternContainsATerm: true,
-        afterOpeningIgnoreAnyLeadingWhitespace: true
+        ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: true
       }))
   }
 
@@ -268,11 +268,11 @@ class Tokenizer {
       startsWith: string
       endsWith: string
       startPatternContainsATerm?: boolean
-      afterOpeningIgnoreAnyLeadingWhitespace?: boolean
+      ignoreAnyWhitespaceDirectlyFollowingStartDelimiter?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, afterOpeningIgnoreAnyLeadingWhitespace, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, ignoreAnyWhitespaceDirectlyFollowingStartDelimiter, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
       // If a convention is totally empty, we don't apply it.
@@ -287,7 +287,7 @@ class Tokenizer {
 
       endsWith,
 
-      afterOpeningIgnoreAnyLeadingWhitespace,
+      ignoreAnyWhitespaceDirectlyFollowingStartDelimiter,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
       beforeClosingItFlushesNonEmptyBufferTo: TokenKind.PlainText,
@@ -310,7 +310,7 @@ class Tokenizer {
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-          afterOpeningIgnoreAnyLeadingWhitespace: true,
+          ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: true,
 
           whenClosingItAlsoClosesInnerConventions: true,
           mustBeDirectlyFollowedBy: this.mediaUrlConventions,
@@ -851,7 +851,7 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening, afterOpeningIgnoreAnyLeadingWhitespace } = convention
+    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening, ignoreAnyWhitespaceDirectlyFollowingStartDelimiter } = convention
 
     const didOpenConvention = (
       this.canTry(convention)
@@ -876,7 +876,7 @@ class Tokenizer {
         return false
       }
 
-      if (afterOpeningIgnoreAnyLeadingWhitespace) {
+      if (ignoreAnyWhitespaceDirectlyFollowingStartDelimiter) {
         this.consumer.consume({ pattern: ANY_WHITESPACE_PATTERN })
       }
 
