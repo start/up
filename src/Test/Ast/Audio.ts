@@ -257,3 +257,13 @@ describe('An audio URL (enclosed in curly brackets)', () => {
       ]))
   })
 })
+
+
+describe("The closing bracket for an audio description, if preceded by whitespace,", () => {
+  specify('does not close the desription', () => {
+    expect(Up.toAst('[audio: ghostly ]~8 howling](http://example.com/ghosts.ogg)')).to.be.eql(
+      new DocumentNode([
+        new AudioNode('ghostly ]~8 howling', 'http://example.com/ghosts.ogg')
+      ]))
+  })
+})
