@@ -286,7 +286,6 @@ context('Most inline conventions are not applied if they have no content.', () =
       })
 
       specify('Shouting (emphasis and stress together)', () => {
-        // If the raised voice delimiters were alone on a line, they would be interpreted as a section separator streak.
         expect(Up.toAst('Stars! *** \t \t ***')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! *** \t \t ***')
@@ -294,7 +293,6 @@ context('Most inline conventions are not applied if they have no content.', () =
       })
 
       specify('Shouting with imbalanced delimiters', () => {
-        // If the raised voice delimiters were alone on a line, they would be interpreted as a section separator streak.
         expect(Up.toAst('Stars! *****\t  \t***')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! *****\t  \t***')
@@ -303,7 +301,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
 
-    context("Umatched delimiters are preserved as plain text, too. This includes delimiters with a length of", () => {
+    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of", () => {
       specify('1 character', () => {
         expect(Up.toAst('*')).to.eql(
           insideDocumentAndParagraph([
@@ -319,16 +317,16 @@ context('Most inline conventions are not applied if they have no content.', () =
       })
 
       specify('3 characters', () => {
-        expect(Up.toAst('***')).to.eql(
+        expect(Up.toAst('Stars! ***')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('***')
           ]))
       })
 
       specify('4 characters', () => {
-        expect(Up.toAst('****')).to.eql(
+        expect(Up.toAst('Stars! ****')).to.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('****')
+            new PlainTextNode('Stars! ****')
           ]))
       })
     })
