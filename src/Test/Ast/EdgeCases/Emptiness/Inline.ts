@@ -138,27 +138,6 @@ context('Most inline conventions are not applied if they have no content', () =>
   })
 
 
-  context('Oh the other hand, these conventions do produce syntax nodes, even when empty:', () => {
-    specify('Parentheses', () => {
-      expect(Up.toAst('()')).to.eql(
-        insideDocumentAndParagraph([
-          new ParenthesizedNode([
-            new PlainTextNode('()')
-          ])
-        ])
-      )
-    })
-
-    specify('Square brackets', () => {
-      expect(Up.toAst('[]')).to.eql(
-        insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new PlainTextNode('[]')
-          ])
-        ])
-      )
-    })
-
     context('Links are handled a bit differently, because they also have a URL.', () => {
       describe('A link with no URL', () => {
         it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
@@ -261,7 +240,6 @@ context('Most inline conventions are not applied if they have no content', () =>
         })
       })
     })
-  })
 })
 
 
