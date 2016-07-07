@@ -245,7 +245,7 @@ class Tokenizer {
       richConvention: RichConvention
       startsWith: string
       endsWith: string
-      cannotStartWithWhitespace?: boolean 
+      cannotStartWithWhitespace?: boolean
     }
   ): TokenizableConvention {
     const { richConvention, startsWith, endsWith, cannotStartWithWhitespace } = args
@@ -281,7 +281,7 @@ class Tokenizer {
       //
       // ... We treat it as a parenthesized convention containing the text "NSFW:". 
       startsWith: startsWith + notFollowedBy(endsWith),
-      
+
       startPatternContainsATerm,
 
       endsWith,
@@ -378,26 +378,10 @@ class Tokenizer {
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive  periods are allowed in the resource path.
   private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
-      endsWith: bracket.endPattern,
-
+    return BRACKETS.map(bracket => this.getConventionForWhitespaceFollowedByLinkifyingUrl({
+      bracket,
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
-
-      failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfClosingOuterConventionsWhileOpen: () => { this.bufferRawText() },
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-
-        if (this.probablyWasNotIntendedToBeAUrl(url)) {
-          this.backtrackToBeforeContext(context)
-        } else {
-          this.closeLink(url)
-        }
-      }
+      ifUrlIsValidWheClosing: url => this.closeLink(url)
     }))
   }
 
@@ -943,7 +927,7 @@ class Tokenizer {
       return false
     }
 
-    const  { onlyOpenIfDirectlyFollowing } = conventionToOpen
+    const { onlyOpenIfDirectlyFollowing } = conventionToOpen
 
     return (
       !this.failedConventionTracker.hasFailed(conventionToOpen, textIndex)
