@@ -478,7 +478,16 @@ class Tokenizer {
     const { bracket, onlyOpenIfDirectlyFollowing, ifUrlIsValidWheClosing } = args
 
     return new TokenizableConvention({
-      startsWith: this.getPatternForWhitespaceFollowedByBracketedUrl(bracket),
+      startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
+        either(
+          EXPLICIT_URL_PREFIX,
+          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+            // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
+            // URL, then that top-level domain must either be followed by a forward slash...
+            FORWARD_SLASH,
+            // ... or be the end of the URL.
+            followedBy(bracket.endPattern)))),
+
       endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing,
@@ -527,19 +536,6 @@ class Tokenizer {
 
     // Now, the last token is a LinkUrlAndEnd token. Let's assign its the URL!
     last(this.tokens).value = url
-  }
-
-  private getPatternForWhitespaceFollowedByBracketedUrl(bracket: Bracket): string {
-    return (
-      SOME_WHITESPACE + bracket.startPattern + capture(
-        either(
-          EXPLICIT_URL_PREFIX,
-          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
-            // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
-            // URL, then that top-level domain must either be followed by a forward slash...
-            FORWARD_SLASH,
-            // ... or be the end of the URL.
-            followedBy(bracket.endPattern)))))
   }
 
   private getRawBracketConventions(): TokenizableConvention[] {
