@@ -211,8 +211,9 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention: FOOTNOTE_CONVENTION,
-        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
-        endsWith: bracket.endPattern
+        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
+        endsWith: bracket.endPattern,
+        afterOpeningIgnoreAnyLeadingWhitespace: true
       }))
   }
 
@@ -229,15 +230,15 @@ class Tokenizer {
         richConvention,
         startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
         endsWith: bracket.endPattern,
-        startPatternContainsATerm: true
+        startPatternContainsATerm: true,
+        afterOpeningIgnoreAnyLeadingWhitespace: true
       }))
   }
 
   private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
     return (
       bracket.startPattern
-      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':'
-      + ANY_WHITESPACE)
+      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':')
   }
 
   private getRichSandwichConventionNotRequiringBacktracking(
@@ -267,10 +268,11 @@ class Tokenizer {
       startsWith: string
       endsWith: string
       startPatternContainsATerm?: boolean
+      afterOpeningIgnoreAnyLeadingWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, afterOpeningIgnoreAnyLeadingWhitespace, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
       // If a convention is totally empty, we don't apply it.
@@ -281,10 +283,11 @@ class Tokenizer {
       //
       // ... We treat it as a parenthesized convention containing the text "NSFW:". 
       startsWith: startsWith + notFollowedBy(endsWith),
-
       startPatternContainsATerm,
 
       endsWith,
+
+      afterOpeningIgnoreAnyLeadingWhitespace,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
       beforeClosingItFlushesNonEmptyBufferTo: TokenKind.PlainText,
@@ -307,6 +310,7 @@ class Tokenizer {
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+          afterOpeningIgnoreAnyLeadingWhitespace: true,
 
           whenClosingItAlsoClosesInnerConventions: true,
           mustBeDirectlyFollowedBy: this.mediaUrlConventions,
@@ -847,9 +851,9 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
+    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening, afterOpeningIgnoreAnyLeadingWhitespace } = convention
 
-    return (
+    const didOpenConvention = (
       this.canTry(convention)
 
       && this.consumer.consume({
@@ -867,6 +871,16 @@ class Tokenizer {
           }
         }
       }))
+
+      if (!didOpenConvention) {
+        return false
+      }
+
+      if (afterOpeningIgnoreAnyLeadingWhitespace) {
+        this.consumer.consume({ pattern: ANY_WHITESPACE_PATTERN })
+      }
+
+      return true
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
@@ -1027,6 +1041,9 @@ class Tokenizer {
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
+
+const ANY_WHITESPACE_PATTERN =
+  regExpStartingWith(ANY_WHITESPACE)
 
 const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
