@@ -227,7 +227,7 @@ context('Most inline conventions are not applied if they have no content.', () =
             new PlainTextNode('[ \t ]'),
             new ParenthesizedNode([
               new LinkNode([
-                new PlainTextNode('https://google.com')
+                new PlainTextNode('google.com')
               ], 'https://google.com')
             ])
           ]))
