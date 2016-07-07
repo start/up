@@ -147,8 +147,8 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
 })
 
 
-describe("The end bracket for a footnote preceded by whitespace", () => {
-  it("doesn't close the footnote", () => {
+describe("A footnote's closing bracket, if preceded by whitespace,", () => {
+  it("does not close the footnote", () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('Well... )oB I pretend not to.')
     ], 1)
