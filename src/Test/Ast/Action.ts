@@ -108,8 +108,8 @@ describe('A left curly bracket followed by two right curly brackets', () => {
 })
 
 
-context('When there is a space after the opening curly bracket', () => {
-  specify('it is treated as plain text', () => {
+describe('An opening curly bracket followed by whitespace', () => {
+  it('does not open an action convention', () => {
     expect(Up.toAst("I can't eat most pizza. 8o{ But I can have some! 8o}")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I can't eat most pizza. 8o{ But I can have some! 8o}")
