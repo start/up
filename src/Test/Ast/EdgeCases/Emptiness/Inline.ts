@@ -211,9 +211,11 @@ context('Most inline conventions are not applied if they have no content.', () =
           insideDocumentAndParagraph([
             new PlainTextNode('()'),
             new SquareBracketedNode([
+              new PlainTextNode('['),
               new LinkNode([
-                new PlainTextNode('https://google.com')
-              ], 'https://google.com')
+                new PlainTextNode('google.com')
+              ], 'https://google.com'),
+              new PlainTextNode(']')
             ])
           ]))
       })
@@ -226,9 +228,11 @@ context('Most inline conventions are not applied if they have no content.', () =
           insideDocumentAndParagraph([
             new PlainTextNode('[ \t ]'),
             new ParenthesizedNode([
+              new PlainTextNode('('),
               new LinkNode([
                 new PlainTextNode('google.com')
-              ], 'https://google.com')
+              ], 'https://google.com'),
+              new PlainTextNode(')')
             ])
           ]))
       })
