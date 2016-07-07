@@ -108,3 +108,13 @@ describe('A left square bracket followed by two right square brackets', () => {
       ]))
   })
 })
+
+
+context('When there is a space after the opening square bracket', () => {
+  specify('it is treated as plain text', () => {
+    expect(Up.toAst("I can't eat most pizza. 8o[ But I can have some! 8o]")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I can't eat most pizza. 8o[ But I can have some! 8o]")
+      ]))
+  })
+})
