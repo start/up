@@ -14,7 +14,7 @@ import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 
 
-context('Most inline conventions are not applied if they have no content', () => {
+context('Most inline conventions are not applied if they have no content.', () => {
   context('Specifically:', () => {
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER:]')).to.eql(
@@ -278,23 +278,26 @@ context('Most inline conventions are not applied if they have no content', () =>
       })
 
       specify('Stress', () => {
-        expect(Up.toAst('**\t  \t**')).to.eql(
+        expect(Up.toAst('Stars! **\t  \t**')).to.eql(
+          // If the raised voice delimiters were alone on a line, they would be interpreted as a section separator streak.
           insideDocumentAndParagraph([
-            new PlainTextNode('**\t  \t**')
+            new PlainTextNode('Stars! **\t  \t**')
           ]))
       })
 
       specify('Shouting (emphasis and stress together)', () => {
-        expect(Up.toAst('*** \t \t ***')).to.eql(
+        // If the raised voice delimiters were alone on a line, they would be interpreted as a section separator streak.
+        expect(Up.toAst('Stars! *** \t \t ***')).to.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('*** \t \t ***')
+            new PlainTextNode('Stars! *** \t \t ***')
           ]))
       })
 
       specify('Shouting with imbalanced delimiters', () => {
-        expect(Up.toAst('*****\t  \t***')).to.eql(
+        // If the raised voice delimiters were alone on a line, they would be interpreted as a section separator streak.
+        expect(Up.toAst('Stars! *****\t  \t***')).to.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('*****\t  \t***')
+            new PlainTextNode('Stars! *****\t  \t***')
           ]))
       })
     })
