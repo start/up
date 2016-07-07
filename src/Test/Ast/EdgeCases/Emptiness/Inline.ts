@@ -13,31 +13,61 @@ import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'
 
 
-context('Most inline conventions produce no syntax nodes if they have no content.', () => {
+context('Most inline conventions are not applied if they have no content', () => {
   context('Specifically:', () => {
     specify('Spoilers', () => {
-      expect(Up.toAst('[SPOILER:]')).to.eql(new DocumentNode())
+      expect(Up.toAst('[SPOILER:]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('SPOILER:')
+          ])
+        ]))
     })
 
     specify('NSFW', () => {
-      expect(Up.toAst('[NSFW:]')).to.eql(new DocumentNode())
+      expect(Up.toAst('[NSFW:]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('NSFW:')
+          ])
+        ]))
     })
 
     specify('NSFL', () => {
-      expect(Up.toAst('[NSFL:]')).to.eql(new DocumentNode())
+      expect(Up.toAst('[NSFL:]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('NSFL:')
+          ])
+        ]))
+    })
+
+    specify('Parentheses', () => {
+      expect(Up.toAst('()')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('()')
+        ]))
+    })
+
+    specify('Square brackets', () => {
+      expect(Up.toAst('[]')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('[]')
+        ]))
     })
 
     specify('Actions', () => {
-      expect(Up.toAst('{}')).to.eql(new DocumentNode())
+      expect(Up.toAst('{}')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('{}')
+        ]))
     })
 
     specify('Revision insertion', () => {
       // If the revision insertion delimiters were alone on a line, they would be interpreted as a section separator streak. 
       expect(Up.toAst('Spiders.++++')).to.eql(
-        new DocumentNode([
-          new ParagraphNode([
-            new PlainTextNode('Spiders.')
-          ])
+        insideDocumentAndParagraph([
+          new PlainTextNode('Spiders.++++')
         ])
       )
     })
@@ -45,10 +75,8 @@ context('Most inline conventions produce no syntax nodes if they have no content
     specify('Revision insertion', () => {
       // If the revision deletion delimiters were alone on a line, they would be interpreted as a section separator streak.
       expect(Up.toAst('Spiders.~~~~')).to.eql(
-        new DocumentNode([
-          new ParagraphNode([
-            new PlainTextNode('Spiders.')
-          ])
+        insideDocumentAndParagraph([
+          new PlainTextNode('Spiders.~~~~')
         ])
       )
     })
@@ -58,28 +86,24 @@ context('Most inline conventions produce no syntax nodes if they have no content
       context('Specifically:', () => {
         specify('Revision insertion', () => {
           expect(Up.toAst('no++ ++one')).to.eql(
-            new DocumentNode([
-              new ParagraphNode([
-                new PlainTextNode('no'),
-                new RevisionInsertionNode([
-                  new PlainTextNode(' ')
-                ]),
-                new PlainTextNode('one')
-              ])
+            insideDocumentAndParagraph([
+              new PlainTextNode('no'),
+              new RevisionInsertionNode([
+                new PlainTextNode(' ')
+              ]),
+              new PlainTextNode('one')
             ])
           )
         })
 
         specify('Revision insertion', () => {
           expect(Up.toAst('e~~ ~~mail')).to.eql(
-            new DocumentNode([
-              new ParagraphNode([
-                new PlainTextNode('e'),
-                new RevisionDeletionNode([
-                  new PlainTextNode(' ')
-                ]),
-                new PlainTextNode('mail')
-              ])
+            insideDocumentAndParagraph([
+              new PlainTextNode('e'),
+              new RevisionDeletionNode([
+                new PlainTextNode(' ')
+              ]),
+              new PlainTextNode('mail')
             ])
           )
         })
@@ -87,10 +111,8 @@ context('Most inline conventions produce no syntax nodes if they have no content
 
       specify('Actions (which are treated as plain text curly braces)', () => {
         expect(Up.toAst('{ }')).to.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              new PlainTextNode('{ }')
-            ])
+          insideDocumentAndParagraph([
+            new PlainTextNode('{ }')
           ]))
       })
 
@@ -119,11 +141,9 @@ context('Most inline conventions produce no syntax nodes if they have no content
   context('Oh the other hand, these conventions do produce syntax nodes, even when empty:', () => {
     specify('Parentheses', () => {
       expect(Up.toAst('()')).to.eql(
-        new DocumentNode([
-          new ParagraphNode([
-            new ParenthesizedNode([
-              new PlainTextNode('()')
-            ]),
+        insideDocumentAndParagraph([
+          new ParenthesizedNode([
+            new PlainTextNode('()')
           ])
         ])
       )
@@ -131,11 +151,9 @@ context('Most inline conventions produce no syntax nodes if they have no content
 
     specify('Square brackets', () => {
       expect(Up.toAst('[]')).to.eql(
-        new DocumentNode([
-          new ParagraphNode([
-            new SquareBracketedNode([
-              new PlainTextNode('[]')
-            ]),
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[]')
           ])
         ])
       )
