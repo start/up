@@ -50,7 +50,7 @@ context('If a line consists solely of media conventions, those media conventions
   context("A link containing only one or more media conventions (and optional whitspace) counts as media for the purpose of this rule.", () => {
     specify("All of the media conventions on a line can be stuffed into one link", () => {
       const text =
-        ' \t { \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) } (hauntedhouse.com)  \t '
+        ' \t {[audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com)  \t '
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
@@ -64,7 +64,7 @@ context('If a line consists solely of media conventions, those media conventions
 
     specify("One or more media conventions on the line can be left out of the link", () => {
       const text =
-        ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t { \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) } (hauntedhouse.com)  \t '
+        ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t {[image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com)  \t '
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([

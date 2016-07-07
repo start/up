@@ -85,6 +85,15 @@ context('Most inline conventions produce no syntax nodes if they have no content
         })
       })
 
+      specify('Actions (which are treated as plain text curly braces)', () => {
+        expect(Up.toAst('{ }')).to.eql(
+          new DocumentNode([
+            new ParagraphNode([
+              new PlainTextNode('{ }')
+            ])
+          ]))
+      })
+
 
       context("These don't:", () => {
         specify('Spoilers', () => {
@@ -97,10 +106,6 @@ context('Most inline conventions produce no syntax nodes if they have no content
 
         specify('NSFL', () => {
           expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(new DocumentNode())
-        })
-
-        specify('Actions', () => {
-          expect(Up.toAst('{  \t  \t }')).to.eql(new DocumentNode())
         })
 
         specify('Furthermore, these conventions produce no syntax nodes if they contain only whitespace and other empty "void" inline conventions', () => {
@@ -174,20 +179,8 @@ context('Most inline conventions produce no syntax nodes if they have no content
       })
 
 
-      describe('A link with blank content', () => {
-        it('produces a link node with its URL for its content', () => {
-          expect(Up.toAst('[   \t  ][https://google.com]')).to.be.eql(
-            insideDocumentAndParagraph([
-              new LinkNode([
-                new PlainTextNode('https://google.com')
-              ], 'https://google.com'
-              )]))
-        })
-      })
-
-
-      describe('A link with escaped blank content', () => {
-        it('also produces a link node with its URL for its content', () => {
+      context('The content of a link cannot start or end with whitespace, so it can only be blank if the whitespace is escaped.', () => {
+        specify('When this is the case, its URL is its content', () => {
           expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
             insideDocumentAndParagraph([
               new LinkNode([
