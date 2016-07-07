@@ -118,3 +118,17 @@ context('When there is a space after the opening parenthesis', () => {
       ]))
   })
 })
+
+
+describe('A closing parentheses preceded by whitespace', () => {
+  it('does not close a parenthesized convention', () => {
+    expect(Up.toAst('I like (certain )oB types of) pizza')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I like '),
+        new ParenthesizedNode([
+          new PlainTextNode('(certain )oB types of)')
+        ]),
+        new PlainTextNode(' pizza')
+      ]))
+  })
+})
