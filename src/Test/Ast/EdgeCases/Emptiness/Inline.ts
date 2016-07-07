@@ -161,7 +161,7 @@ context('Most inline conventions are not applied if they have no content', () =>
 
   context('Links are handled a bit differently, because they also have a URL to worry about.', () => {
     describe('An otherwwise-valid link with an empty URL', () => {
-      it("does not produce a link. Instead, its content produces the proper bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+      it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
         expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
@@ -176,7 +176,7 @@ context('Most inline conventions are not applied if they have no content', () =>
 
 
     describe('An otherwise valid link with a blank URL', () => {
-      it("does not produce a link. Instead, its content produces the proper bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
+      it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
         expect(Up.toAst('[*Yggdra Union*]( \t )')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
@@ -191,7 +191,7 @@ context('Most inline conventions are not applied if they have no content', () =>
 
 
     describe('An otherwise-valid link with no content', () => {
-      it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the proper bracketed convention", () => {
+      it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
         expect(Up.toAst('()[https://google.com]')).to.be.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('()'),
@@ -206,7 +206,7 @@ context('Most inline conventions are not applied if they have no content', () =>
 
 
     describe('An otherwise-valid link with blank content', () => {
-      it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the proper bracketed convention", () => {
+      it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
         expect(Up.toAst('[ \t ](https://google.com)')).to.be.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('[ \t ]'),
