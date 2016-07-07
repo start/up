@@ -180,7 +180,10 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new ParenthesizedNode([
           new PlainTextNode('(I know.)')
         ]),
-        new PlainTextNode(' ')
+        new PlainTextNode(' '),
+        new SquareBracketedNode([
+          new PlainTextNode('[SPOILER:]')
+        ])
       ])
     )
   })
@@ -191,7 +194,10 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new ParenthesizedNode([
           new PlainTextNode('(I know.)')
         ]),
-        new PlainTextNode(' ')
+        new PlainTextNode(' '),
+        new SquareBracketedNode([
+          new PlainTextNode('[NSFW:]')
+        ])
       ])
     )
   })
@@ -202,7 +208,10 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new ParenthesizedNode([
           new PlainTextNode('(I know.)')
         ]),
-        new PlainTextNode(' ')
+        new PlainTextNode(' '),
+        new SquareBracketedNode([
+          new PlainTextNode('[NSFL:]')
+        ])
       ])
     )
   })
@@ -213,10 +222,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new ParenthesizedNode([
           new PlainTextNode('(I know.)')
         ]),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('()')
-        ])
+        new PlainTextNode(' ()')
       ])
     )
   })
@@ -227,10 +233,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new ParenthesizedNode([
           new PlainTextNode('(I know.)')
         ]),
-        new PlainTextNode(' '),
-        new SquareBracketedNode([
-          new PlainTextNode('[]')
-        ])
+        new PlainTextNode(' []')
       ])
     )
   })
@@ -241,7 +244,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new ParenthesizedNode([
           new PlainTextNode('(I know.)')
         ]),
-        new PlainTextNode(' ')
+        new PlainTextNode(' {}')
       ])
     )
   })
