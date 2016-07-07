@@ -16,6 +16,7 @@ export interface TokenizableConventionArgs {
 
   beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
   whenOpening?: OnTextMatch
+  afterOpeningIgnoreAnyLeadingWhitespace?: boolean
 
   insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
@@ -37,10 +38,12 @@ export class TokenizableConvention {
 
   startsWith: RegExp
   endsWith: RegExp
+
   isCutShortByWhitespace: boolean
 
   flushesBufferToPlainTextTokenBeforeOpening: boolean
   whenOpening: OnTextMatch
+  afterOpeningIgnoreAnyLeadingWhitespace: boolean
 
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
@@ -65,16 +68,23 @@ export class TokenizableConvention {
 
     this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
     this.endsWith = regExpStartingWith(args.endsWith)
+    
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
+
     this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
     this.whenOpening = args.whenOpening
+    this.afterOpeningIgnoreAnyLeadingWhitespace = args.afterOpeningIgnoreAnyLeadingWhitespace
+
     this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
     this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen
+
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
+
     this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
     this.mustBeDirectlyFollowedBy = args.mustBeDirectlyFollowedBy
     this.beforeClosingItFlushesNonEmptyBufferTo = args.beforeClosingItFlushesNonEmptyBufferTo
     this.beforeClosingItAlwaysFlushesBufferTo = args.beforeClosingItAlwaysFlushesBufferTo
+
     this.whenClosing = args.whenClosing
     this.insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed
   }
