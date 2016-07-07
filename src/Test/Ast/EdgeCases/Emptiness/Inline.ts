@@ -174,8 +174,8 @@ context('Most inline conventions are not applied if they have no content', () =>
   })
 
 
-  context('Links are handled a bit differently, because they also have a URL to worry about.', () => {
-    describe('An otherwwise valid link with an empty URL', () => {
+  context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise valid link', () => {
+    describe('with an empty URL', () => {
       it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
         expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
           insideDocumentAndParagraph([
@@ -190,7 +190,7 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    describe('An otherwise valid link with a blank URL', () => {
+    describe('with a blank URL', () => {
       it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
         expect(Up.toAst('[*Yggdra Union*]( \t )')).to.be.eql(
           insideDocumentAndParagraph([
@@ -205,7 +205,7 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    describe('An otherwise valid link with no content', () => {
+    describe('with empty content', () => {
       it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
         expect(Up.toAst('()[https://google.com]')).to.be.eql(
           insideDocumentAndParagraph([
@@ -220,7 +220,7 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    describe('An otherwise-valid link with blank content', () => {
+    describe('with blank content', () => {
       it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
         expect(Up.toAst('[ \t ](https://google.com)')).to.be.eql(
           insideDocumentAndParagraph([
@@ -235,7 +235,7 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    describe('An otherwise valid link with blank escaped content', () => {
+    describe('with blank escaped content', () => {
       specify('Produces a link with its URL as its content', () => {
         expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
           insideDocumentAndParagraph([
@@ -247,7 +247,7 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    describe('A link with no content and no URL', () => {
+    describe('with empty content and an empty URL', () => {
       it('is treated as consecutive empty brackets', () => {
         expect(Up.toAst('Hello, [][]!')).to.be.eql(
           insideDocumentAndParagraph([
@@ -257,7 +257,7 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    describe('A link with blank content and a blank URL', () => {
+    describe('with blank content and a blank URL', () => {
       it('is treated as consecutive blank brackets', () => {
         expect(Up.toAst('Beep boop, [ ][\t]!')).to.be.eql(
           insideDocumentAndParagraph([
