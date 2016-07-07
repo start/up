@@ -82,38 +82,29 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    context('Of those conventions, only a few produce syntax nodes when they contain only whitespace.', () => {
-      context('Specifically:', () => {
-        specify('Revision insertion', () => {
-          expect(Up.toAst('no++ ++one')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainTextNode('no'),
-              new RevisionInsertionNode([
-                new PlainTextNode(' ')
-              ]),
-              new PlainTextNode('one')
-            ])
-          )
-        })
-
-        specify('Revision insertion', () => {
-          expect(Up.toAst('e~~ ~~mail')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainTextNode('e'),
-              new RevisionDeletionNode([
-                new PlainTextNode(' ')
-              ]),
-              new PlainTextNode('mail')
-            ])
-          )
-        })
+    context('Of those conventions, only the revision conventions apply when containing only unescaped whitespace. Specifically:', () => {
+      specify('Revision insertion', () => {
+        expect(Up.toAst('no++ ++one')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('no'),
+            new RevisionInsertionNode([
+              new PlainTextNode(' ')
+            ]),
+            new PlainTextNode('one')
+          ])
+        )
       })
 
-      specify('Actions (which are treated as plain text curly braces)', () => {
-        expect(Up.toAst('{ }')).to.eql(
+      specify('Revision insertion', () => {
+        expect(Up.toAst('e~~ ~~mail')).to.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('{ }')
-          ]))
+            new PlainTextNode('e'),
+            new RevisionDeletionNode([
+              new PlainTextNode(' ')
+            ]),
+            new PlainTextNode('mail')
+          ])
+        )
       })
 
 
@@ -138,108 +129,108 @@ context('Most inline conventions are not applied if they have no content', () =>
   })
 
 
-    context('Links are handled a bit differently, because they also have a URL.', () => {
-      describe('A link with no URL', () => {
-        it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
-          expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
-            insideDocumentAndParagraph([
-              new EmphasisNode([
-                new PlainTextNode('Yggdra Union')
-              ])
-            ]))
-        })
-      })
-
-
-      describe('A link with a blank URL', () => {
-        it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
-          expect(Up.toAst('[*Yggdra Union*][  \t  ]')).to.be.eql(
-            insideDocumentAndParagraph([
-              new EmphasisNode([
-                new PlainTextNode('Yggdra Union')
-              ])
-            ]))
-        })
-      })
-
-
-      describe('A link with no content', () => {
-        it('produces a link node with its URL for its content', () => {
-          expect(Up.toAst('[][https://google.com]')).to.be.eql(
-            insideDocumentAndParagraph([
-              new LinkNode([
-                new PlainTextNode('https://google.com')
-              ], 'https://google.com'
-              )]
-            ))
-        })
-      })
-
-
-      context('The content of a link cannot start or end with whitespace, so it can only be blank if the whitespace is escaped.', () => {
-        specify('When this is the case, its URL is its content', () => {
-          expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
-            insideDocumentAndParagraph([
-              new LinkNode([
-                new PlainTextNode('https://google.com')
-              ], 'https://google.com'
-              )]))
-        })
-      })
-
-
-      describe('A link with no content and no URL', () => {
-        it('produces no syntax nodes', () => {
-          expect(Up.toAst('Hello, [][]!')).to.be.eql(
-            insideDocumentAndParagraph([
-              new PlainTextNode('Hello, !')
+  context('Links are handled a bit differently, because they also have a URL.', () => {
+    describe('A link with no URL', () => {
+      it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
+        expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new EmphasisNode([
+              new PlainTextNode('Yggdra Union')
             ])
-          )
-        })
+          ]))
       })
     })
 
 
-    context("Raised voice conventions (emphasis and stress) are handled very differently from other conventions.", () => {
-      context("A contiguous delimiter will only either open conventions, close conventions, or be treated as plain text. Never a combination.", () => {
-        context('Therefore, a raised voice convention can only be empty if it contains nothing but "void" empty inline conventions. When empty, raised voice conventions produce no syntax nodes:', () => {
-          specify('Emphasis', () => {
-            expect(Up.toAst('*{SPOILER:}*')).to.eql(new DocumentNode())
-          })
+    describe('A link with a blank URL', () => {
+      it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
+        expect(Up.toAst('[*Yggdra Union*][  \t  ]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new EmphasisNode([
+              new PlainTextNode('Yggdra Union')
+            ])
+          ]))
+      })
+    })
 
-          specify('Stress', () => {
-            expect(Up.toAst('**{SPOILER:}**')).to.eql(new DocumentNode())
-          })
 
-          specify('Shouting (emphasis and stress together)', () => {
-            expect(Up.toAst('***{SPOILER:}***')).to.eql(new DocumentNode())
-          })
+    describe('A link with no content', () => {
+      it('produces a link node with its URL for its content', () => {
+        expect(Up.toAst('[][https://google.com]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('https://google.com')
+            ], 'https://google.com'
+            )]
+          ))
+      })
+    })
 
-          specify('Shouting with imbalanced delimiters', () => {
-            expect(Up.toAst('*****{SPOILER:}***')).to.eql(new DocumentNode())
-          })
+
+    context('The content of a link cannot start or end with whitespace, so it can only be blank if the whitespace is escaped.', () => {
+      specify('When this is the case, its URL is its content', () => {
+        expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('https://google.com')
+            ], 'https://google.com'
+            )]))
+      })
+    })
+
+
+    describe('A link with no content and no URL', () => {
+      it('produces no syntax nodes', () => {
+        expect(Up.toAst('Hello, [][]!')).to.be.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('Hello, !')
+          ])
+        )
+      })
+    })
+  })
+
+
+  context("Raised voice conventions (emphasis and stress) are handled very differently from other conventions.", () => {
+    context("A contiguous delimiter will only either open conventions, close conventions, or be treated as plain text. Never a combination.", () => {
+      context('Therefore, a raised voice convention can only be empty if it contains nothing but "void" empty inline conventions. When empty, raised voice conventions produce no syntax nodes:', () => {
+        specify('Emphasis', () => {
+          expect(Up.toAst('*{SPOILER:}*')).to.eql(new DocumentNode())
         })
 
+        specify('Stress', () => {
+          expect(Up.toAst('**{SPOILER:}**')).to.eql(new DocumentNode())
+        })
 
-        context('Additionally, raised voice conventions produce no syntax nodes when containing only whitespace and "void" empty conventions', () => {
-          specify('Emphasis', () => {
-            expect(Up.toAst('*{SPOILER:} \t [NSFW:]*')).to.eql(new DocumentNode())
-          })
+        specify('Shouting (emphasis and stress together)', () => {
+          expect(Up.toAst('***{SPOILER:}***')).to.eql(new DocumentNode())
+        })
 
-          specify('Stress', () => {
-            expect(Up.toAst('**{SPOILER:} \t [NSFW:]**')).to.eql(new DocumentNode())
-          })
+        specify('Shouting with imbalanced delimiters', () => {
+          expect(Up.toAst('*****{SPOILER:}***')).to.eql(new DocumentNode())
+        })
+      })
 
-          specify('Shouting (emphasis and stress together)', () => {
-            expect(Up.toAst('***{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
-          })
 
-          specify('Shouting with imbalanced delimiters', () => {
-            expect(Up.toAst('*****{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
-          })
+      context('Additionally, raised voice conventions produce no syntax nodes when containing only whitespace and "void" empty conventions', () => {
+        specify('Emphasis', () => {
+          expect(Up.toAst('*{SPOILER:} \t [NSFW:]*')).to.eql(new DocumentNode())
+        })
+
+        specify('Stress', () => {
+          expect(Up.toAst('**{SPOILER:} \t [NSFW:]**')).to.eql(new DocumentNode())
+        })
+
+        specify('Shouting (emphasis and stress together)', () => {
+          expect(Up.toAst('***{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
+        })
+
+        specify('Shouting with imbalanced delimiters', () => {
+          expect(Up.toAst('*****{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
         })
       })
     })
+  })
 })
 
 
