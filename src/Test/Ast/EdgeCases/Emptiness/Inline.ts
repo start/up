@@ -271,9 +271,10 @@ context('Most inline conventions are not applied if they have no content.', () =
   context("Due to the nature of the raised voice syntax, raised voice conventions cannot be empty or blank.", () => {
     context("Delimiters containing only whitespace are preserved as plain text", () => {
       specify('Emphasis', () => {
-        expect(Up.toAst('* \t \t *')).to.eql(
+        // If the raised voice delimiters were alone on a line, they would be interpreted as an unordered list.
+        expect(Up.toAst('Stars! * \t \t *')).to.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('* \t \t *')
+            new PlainTextNode('Stars! * \t \t *')
           ]))
       })
 
@@ -319,7 +320,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       specify('3 characters', () => {
         expect(Up.toAst('Stars! ***')).to.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('***')
+            new PlainTextNode('Stars! ***')
           ]))
       })
 
