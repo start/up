@@ -159,45 +159,69 @@ context('Most inline conventions are not applied if they have no content', () =>
   })
 
 
-  context('Links are handled a bit differently, because they also have a URL.', () => {
-    describe('A link with no URL', () => {
-      it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
+  context('Links are handled a bit differently, because they also have a URL to worry about.', () => {
+    describe('An otherwwise-valid link with an empty URL', () => {
+      it("does not produce a link. Instead, its content produces the proper bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
         expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
           insideDocumentAndParagraph([
-            new EmphasisNode([
-              new PlainTextNode('Yggdra Union')
+            new SquareBracketedNode([
+              new EmphasisNode([
+                new PlainTextNode('Yggdra Union')
+              ])
+            ]),
+            new PlainTextNode('[]')
+          ]))
+      })
+    })
+
+
+    describe('An otherwise valid link with a blank URL', () => {
+      it("does not produce a link. Instead, its content produces the proper bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
+        expect(Up.toAst('[*Yggdra Union*]( \t )')).to.be.eql(
+          insideDocumentAndParagraph([
+            new SquareBracketedNode([
+              new EmphasisNode([
+                new PlainTextNode('Yggdra Union')
+              ])
+            ]),
+            new PlainTextNode('( \t )')
+          ]))
+      })
+    })
+
+
+    describe('An otherwise-valid link with no content', () => {
+      it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the proper bracketed convention", () => {
+        expect(Up.toAst('()[https://google.com]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('()'),
+            new SquareBracketedNode([
+              new LinkNode([
+                new PlainTextNode('https://google.com')
+              ], 'https://google.com')
             ])
           ]))
       })
     })
 
 
-    describe('A link with a blank URL', () => {
-      it("does not produce a link node, but its contents are evaulated for inline conventions and included directly in the link's place", () => {
-        expect(Up.toAst('[*Yggdra Union*][  \t  ]')).to.be.eql(
+    describe('An otherwise-valid link with blank content', () => {
+      it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the proper bracketed convention", () => {
+        expect(Up.toAst('[ \t ](https://google.com)')).to.be.eql(
           insideDocumentAndParagraph([
-            new EmphasisNode([
-              new PlainTextNode('Yggdra Union')
+            new PlainTextNode('[ \t ]'),
+            new ParenthesizedNode([
+              new LinkNode([
+                new PlainTextNode('https://google.com')
+              ], 'https://google.com')
             ])
           ]))
       })
     })
 
 
-    describe('A link with no content', () => {
-      it('produces a link node with its URL for its content', () => {
-        expect(Up.toAst('[][https://google.com]')).to.be.eql(
-          insideDocumentAndParagraph([
-            new LinkNode([
-              new PlainTextNode('https://google.com')
-            ], 'https://google.com')
-          ]))
-      })
-    })
-
-
-    context('The content of a link cannot start or end with whitespace, so it can only be blank if the whitespace is escaped.', () => {
-      specify('When this is the case, its URL is its content', () => {
+    describe('A link with blank escaped content', () => {
+      specify('Produces a link with its URL as its content', () => {
         expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
           insideDocumentAndParagraph([
             new LinkNode([
@@ -209,17 +233,27 @@ context('Most inline conventions are not applied if they have no content', () =>
 
 
     describe('A link with no content and no URL', () => {
-      it('produces no syntax nodes', () => {
+      it('is treated as consecutive empty brackets', () => {
         expect(Up.toAst('Hello, [][]!')).to.be.eql(
           insideDocumentAndParagraph([
-            new PlainTextNode('Hello, !')
+            new PlainTextNode('Hello, [][]!')
+          ]))
+      })
+    })
+
+
+    describe('A link with blank content and a blank URL', () => {
+      it('is treated as consecutive blank brackets', () => {
+        expect(Up.toAst('Beep boop, [ ][\t]!')).to.be.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('Beep boop, [ ][\t]!')
           ]))
       })
     })
   })
 
 
-  context("Due to the nature of the raised voice syntax, raised voices cannot be empty.", () => {
+  context("Due to the nature of the raised voice syntax, raised voice conventions cannot be empty or blank.", () => {
     context("Delimiters containing only whitespace are preserved as plain text", () => {
       specify('Emphasis', () => {
         expect(Up.toAst('* \t \t *')).to.eql(
@@ -250,8 +284,8 @@ context('Most inline conventions are not applied if they have no content', () =>
       })
     })
 
-    context("Lone unmatched delimiters are preserved as plain text, too. This includes delimiters of", () => {
 
+    context("Umatched delimiters are preserved as plain text, too. This includes delimiters with a length of", () => {
       specify('1 character', () => {
         expect(Up.toAst('*')).to.eql(
           insideDocumentAndParagraph([
