@@ -145,3 +145,22 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
       ]))
   })
 })
+
+
+context("When the end bracket for a footnote is preceded by whitespace", () => {
+  specify("it doesn't close the footnote", () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well... )o8 I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst("I don't eat cereal. (^ Well... )o8 I pretend not to.) Never have.")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
