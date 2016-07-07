@@ -419,8 +419,11 @@ class Tokenizer {
     const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
 
     return new TokenizableConvention({
-      // If the first character of the URL is escaped, we don't produce a link.
-      startsWith: bracket.startPattern + notFollowedBy(escapeForRegex(ESCAPER_CHAR)),
+      startsWith: bracket.startPattern + notFollowedBy(
+        anyCharMatching(
+          WHITESPACE_CHAR,
+          escapeForRegex(ESCAPER_CHAR))),
+          
       endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing,

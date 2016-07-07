@@ -45,18 +45,3 @@ I'm never eating again.`
       )
   })
 })
-
-
-describe('A document consisting only of blank lines and lines consisting of empty inline conventions', () => {
-  it('produces an empty document node', () => {
-    const text = `     
-
-[SPOILER: ]
-[NSFW: \t][NSFL:(SPOILER: \t )]
-\t     
-
-[]{}`
-
-    expect(Up.toAst(text)).to.be.eql(new DocumentNode([]))
-  })
-})
