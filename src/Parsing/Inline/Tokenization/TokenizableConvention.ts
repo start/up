@@ -13,6 +13,7 @@ export interface TokenizableConventionArgs {
   endsWith?: string
 
   isCutShortByWhitespace?: boolean
+  canConsistSolelyOfWhitespace?: boolean
 
   beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
   whenOpening?: OnTextMatch
@@ -40,6 +41,7 @@ export class TokenizableConvention {
   endsWith: RegExp
 
   isCutShortByWhitespace: boolean
+  canConsistSolelyOfWhitespace: boolean
 
   flushesBufferToPlainTextTokenBeforeOpening: boolean
   whenOpening: OnTextMatch
@@ -70,6 +72,7 @@ export class TokenizableConvention {
     this.endsWith = regExpStartingWith(args.endsWith)
 
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
+    this.canConsistSolelyOfWhitespace = args.canConsistSolelyOfWhitespace
 
     this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
     this.whenOpening = args.whenOpening
