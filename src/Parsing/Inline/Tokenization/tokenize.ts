@@ -378,7 +378,7 @@ class Tokenizer {
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive  periods are allowed in the resource path.
   private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => this.getConventionForWhitespaceFollowedByLinkifyingUrl({
+    return BRACKETS.map(bracket => this.getConventionForWhitespaceFollowedByBracketedUrl({
       bracket,
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
       ifUrlIsValidWheClosing: url => this.closeLink(url)
@@ -465,10 +465,10 @@ class Tokenizer {
         onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
         ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
       }
-    ].map(args => this.getConventionForWhitespaceFollowedByLinkifyingUrl(args))))
+    ].map(args => this.getConventionForWhitespaceFollowedByBracketedUrl(args))))
   }
 
-  private getConventionForWhitespaceFollowedByLinkifyingUrl(
+  private getConventionForWhitespaceFollowedByBracketedUrl(
     args: {
       bracket: Bracket
       onlyOpenIfDirectlyFollowing: RichConvention[] | TokenKind[]
@@ -1047,7 +1047,7 @@ const NOT_FOLLOWED_BY_WHITESPACE =
 //
 // 1. To apply URL config settings
 // 2. To determine when bracketed text is intended to be a link URL. For more information, see the comments
-//    for the `getWhitespaceFollowedByLinkUrlConventions` method.
+//    for the `getConventionsForWhitespaceFollowedByLinkUrl` method.
 //
 // One important thing to note about that second point:
 //
