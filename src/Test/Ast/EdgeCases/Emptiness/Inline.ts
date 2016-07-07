@@ -190,9 +190,8 @@ context('Most inline conventions are not applied if they have no content', () =>
           insideDocumentAndParagraph([
             new LinkNode([
               new PlainTextNode('https://google.com')
-            ], 'https://google.com'
-            )]
-          ))
+            ], 'https://google.com')
+          ]))
       })
     })
 
@@ -203,8 +202,8 @@ context('Most inline conventions are not applied if they have no content', () =>
           insideDocumentAndParagraph([
             new LinkNode([
               new PlainTextNode('https://google.com')
-            ], 'https://google.com'
-            )]))
+            ], 'https://google.com')
+          ]))
       })
     })
 
@@ -214,50 +213,71 @@ context('Most inline conventions are not applied if they have no content', () =>
         expect(Up.toAst('Hello, [][]!')).to.be.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('Hello, !')
-          ])
-        )
+          ]))
       })
     })
   })
 
 
-  context("Raised voice conventions (emphasis and stress) are handled very differently from other conventions.", () => {
-    context("A contiguous delimiter will only either open conventions, close conventions, or be treated as plain text. Never a combination.", () => {
-      context('Therefore, a raised voice convention can only be empty if it contains nothing but "void" empty inline conventions. When empty, raised voice conventions produce no syntax nodes:', () => {
-        specify('Emphasis', () => {
-          expect(Up.toAst('*{SPOILER:}*')).to.eql(new DocumentNode())
-        })
-
-        specify('Stress', () => {
-          expect(Up.toAst('**{SPOILER:}**')).to.eql(new DocumentNode())
-        })
-
-        specify('Shouting (emphasis and stress together)', () => {
-          expect(Up.toAst('***{SPOILER:}***')).to.eql(new DocumentNode())
-        })
-
-        specify('Shouting with imbalanced delimiters', () => {
-          expect(Up.toAst('*****{SPOILER:}***')).to.eql(new DocumentNode())
-        })
+  context("Due to the nature of the raised voice syntax, raised voices cannot be empty.", () => {
+    context("Delimiters containing only whitespace are preserved as plain text", () => {
+      specify('Emphasis', () => {
+        expect(Up.toAst('* \t \t *')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('* \t \t *')
+          ]))
       })
 
+      specify('Stress', () => {
+        expect(Up.toAst('**\t  \t**')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('**\t  \t**')
+          ]))
+      })
 
-      context('Additionally, raised voice conventions produce no syntax nodes when containing only whitespace and "void" empty conventions', () => {
-        specify('Emphasis', () => {
-          expect(Up.toAst('*{SPOILER:} \t [NSFW:]*')).to.eql(new DocumentNode())
-        })
+      specify('Shouting (emphasis and stress together)', () => {
+        expect(Up.toAst('*** \t \t ***')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('*** \t \t ***')
+          ]))
+      })
 
-        specify('Stress', () => {
-          expect(Up.toAst('**{SPOILER:} \t [NSFW:]**')).to.eql(new DocumentNode())
-        })
+      specify('Shouting with imbalanced delimiters', () => {
+        expect(Up.toAst('*****\t  \t***')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('*****\t  \t***')
+          ]))
+      })
+    })
 
-        specify('Shouting (emphasis and stress together)', () => {
-          expect(Up.toAst('***{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
-        })
+    context("Lone unmatched delimiters are preserved as plain text, too. This includes delimiters of", () => {
 
-        specify('Shouting with imbalanced delimiters', () => {
-          expect(Up.toAst('*****{SPOILER:} \t [NSFW:]***')).to.eql(new DocumentNode())
-        })
+      specify('1 character', () => {
+        expect(Up.toAst('*')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('*')
+          ]))
+      })
+
+      specify('2 characters', () => {
+        expect(Up.toAst('**')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('**')
+          ]))
+      })
+
+      specify('3 characters', () => {
+        expect(Up.toAst('***')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('***')
+          ]))
+      })
+
+      specify('4 characters', () => {
+        expect(Up.toAst('****')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainTextNode('****')
+          ]))
       })
     })
   })
