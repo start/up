@@ -338,19 +338,10 @@ class Tokenizer {
   // We allow whitespace between a link's content and its URL, but that isn't handled by these
   // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: this.getBracketedUrlStartPattern(bracket),
-      endsWith: bracket.endPattern,
-
+    return BRACKETS.map(bracket => this.getBracketedUrlConvention({
+      bracket,
       onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-      whenClosingItAlsoClosesInnerConventions: true,
-
-      whenClosing: () => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.closeLink(url)
-      }
+      whenClosing: url => this.closeLink(url)
     }))
   }
 
@@ -415,10 +406,10 @@ class Tokenizer {
         onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
         whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
       }
-    ].map(args => this.getLinkifyingUrlConvention(args))))
+    ].map(args => this.getBracketedUrlConvention(args))))
   }
 
-  private getLinkifyingUrlConvention(
+  private getBracketedUrlConvention(
     args: {
       bracket: Bracket
       onlyOpenIfDirectlyFollowing: RichConvention[] | TokenKind[]
