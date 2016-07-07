@@ -82,8 +82,8 @@ context('Most inline conventions are not applied if they have no content', () =>
     })
 
 
-    context('Of those conventions, only the revision conventions apply when containing only unescaped whitespace. Specifically:', () => {
-      specify('Revision insertion', () => {
+    context('Of those conventions, only the revision conventions apply when containing only unescaped whitespace.', () => {
+      specify('Revision insertion applies.', () => {
         expect(Up.toAst('no++ ++one')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('no'),
@@ -95,7 +95,7 @@ context('Most inline conventions are not applied if they have no content', () =>
         )
       })
 
-      specify('Revision insertion', () => {
+      specify('Revision deletion applies.', () => {
         expect(Up.toAst('e~~ ~~mail')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('e'),
@@ -110,15 +110,24 @@ context('Most inline conventions are not applied if they have no content', () =>
 
       context("These don't:", () => {
         specify('Spoilers', () => {
-          expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(new DocumentNode())
+          expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(
+            insideDocumentAndParagraph([
+                new PlainTextNode('[SPOILER:  \t  \t ]')
+            ]))
         })
 
         specify('NSFW', () => {
-          expect(Up.toAst('[NSFW:  \t  \t ]')).to.eql(new DocumentNode())
+          expect(Up.toAst('[NSFW:  \t  \t ]')).to.eql(
+            insideDocumentAndParagraph([
+                new PlainTextNode('[NSFW:  \t  \t ]')
+            ]))
         })
 
         specify('NSFL', () => {
-          expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(new DocumentNode())
+          expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(
+            insideDocumentAndParagraph([
+                new PlainTextNode('[NSFL:  \t  \t ]')
+            ]))
         })
 
         specify('Furthermore, these conventions produce no syntax nodes if they contain only whitespace and other empty "void" inline conventions', () => {
