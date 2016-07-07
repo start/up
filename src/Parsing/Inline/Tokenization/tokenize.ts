@@ -180,15 +180,18 @@ class Tokenizer {
       {
         richConvention: PARENTHESIZED_CONVENTION,
         startsWith: '(',
-        endsWith: ')'
+        endsWith: ')',
+        cannotStartWithWhitespace: true
       }, {
         richConvention: SQUARE_BRACKETED_CONVENTION,
         startsWith: '[',
-        endsWith: ']'
+        endsWith: ']',
+        cannotStartWithWhitespace: true
       }, {
         richConvention: ACTION_CONVENTION,
         startsWith: '{',
-        endsWith: '}'
+        endsWith: '}',
+        cannotStartWithWhitespace: true
       }, {
         richConvention: REVISION_DELETION_CONVENTION,
         startsWith: '~~',
@@ -242,13 +245,14 @@ class Tokenizer {
       richConvention: RichConvention
       startsWith: string
       endsWith: string
+      cannotStartWithWhitespace?: boolean 
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith } = args
+    const { richConvention, startsWith, endsWith, cannotStartWithWhitespace } = args
 
     return this.getRichSandwichConvention({
       richConvention,
-      startsWith: escapeForRegex(startsWith),
+      startsWith: escapeForRegex(startsWith) + (cannotStartWithWhitespace ? NOT_FOLLOWED_BY_WHITESPACE : ''),
       endsWith: escapeForRegex(endsWith),
 
       insteadOfFailingWhenLeftUnclosed: (context) => {
@@ -1045,6 +1049,9 @@ class Tokenizer {
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
+
+const NOT_FOLLOWED_BY_WHITESPACE =
+  notFollowedBy(WHITESPACE_CHAR)
 
 
 // Our URL patterns and associated string constants serve two purposes:
