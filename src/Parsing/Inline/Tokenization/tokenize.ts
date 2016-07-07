@@ -419,7 +419,8 @@ class Tokenizer {
     const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
 
     return new TokenizableConvention({
-      startsWith: this.getBracketedUrlStartPattern(bracket),
+      // If the first character of the URL is escaped, we don't produce a link.
+      startsWith: bracket.startPattern + notFollowedBy(escapeForRegex(ESCAPER_CHAR)),
       endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing,
@@ -432,13 +433,6 @@ class Tokenizer {
         whenClosing(url)
       }
     })
-  }
-
-  private getBracketedUrlStartPattern(bracket: Bracket): string {
-    return (
-      bracket.startPattern +
-      // If the first character of the URL is escaped, we don't produce a link.
-      notFollowedBy(escapeForRegex(ESCAPER_CHAR)))
   }
 
   // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
