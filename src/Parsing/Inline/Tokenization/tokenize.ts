@@ -422,6 +422,7 @@ class Tokenizer {
       startsWith: bracket.startPattern + notFollowedBy(
         anyCharMatching(
           WHITESPACE_CHAR,
+          bracket.endPattern,
           escapeForRegex(ESCAPER_CHAR))),
           
       endsWith: bracket.endPattern,

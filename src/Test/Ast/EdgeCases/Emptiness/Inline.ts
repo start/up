@@ -180,9 +180,11 @@ context('Most inline conventions are not applied if they have no content.', () =
         expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
+              new PlainTextNode('['),
               new EmphasisNode([
                 new PlainTextNode('Yggdra Union')
-              ])
+              ]),
+              new PlainTextNode(']')
             ]),
             new PlainTextNode('[]')
           ]))
@@ -195,11 +197,11 @@ context('Most inline conventions are not applied if they have no content.', () =
         expect(Up.toAst('[*Yggdra Union*]( \t )')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
-                new PlainTextNode('['),              
+              new PlainTextNode('['),
               new EmphasisNode([
                 new PlainTextNode('Yggdra Union')
               ]),
-                new PlainTextNode(']')              
+              new PlainTextNode(']')
             ]),
             new PlainTextNode('( \t )')
           ]))
