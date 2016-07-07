@@ -661,7 +661,7 @@ class Tokenizer {
       const context = this.openContexts[i]
 
       if (this.shouldClose(context)) {
-        if (this.tryToCloseConvention({ atIndex: i })) {
+        if (this.tryToCloseConvention({ belongingToContextAtIndex: i })) {
           return true
         }
 
@@ -701,10 +701,21 @@ class Tokenizer {
         && this.consumer.consume({ pattern: convention.endsWith })))
   }
 
-  private tryToCloseConvention(args: { atIndex: number }): boolean {
-    const contextIndex = args.atIndex
+  private tryToCloseConvention(args: { belongingToContextAtIndex: number }): boolean {
+    const contextIndex = args.belongingToContextAtIndex
     const context = this.openContexts[contextIndex]
     const { convention } = context
+
+    if (this.isConventionTotallyEmpty({ belongingToContext: context })) {
+      // If a convention is totally empty, we backtrack and don't apply it.
+      //
+      // For example, because this convention is empty:
+      //
+      // (NSFW:)
+      //
+      // ... We treat it as a parenthesized convention containing the text "NSFW:". 
+      return false
+    }
 
     // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
     this.closeNakedUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
@@ -729,6 +740,12 @@ class Tokenizer {
     return (
       !convention.mustBeDirectlyFollowedBy
       || this.tryToOpenSubsequentConventionRequiredBy(context))
+  }
+
+  private isConventionTotallyEmpty(args: { belongingToContext: ConventionContext }): boolean {
+    const { snapshot } = args.belongingToContext
+    
+    return false
   }
 
   private isCurrentCharWhitespace(): boolean {
