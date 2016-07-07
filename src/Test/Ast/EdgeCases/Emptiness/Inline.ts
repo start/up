@@ -264,11 +264,14 @@ context('Most inline conventions are not applied if they have no content', () =>
 })
 
 
-describe('An empty revision insertion containing an empty revision deletion', () => {
-  it('produces no syntax nodes', () => {
-    expect(Up.toAst('I have nothing to add or remove: ++~~~~++')).to.be.eql(
+describe('Revision insertion containing an empty revision deletion', () => {
+  it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
+    expect(Up.toAst('I built a trail: ++~~~~++')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I have nothing to add or remove: ')
+        new PlainTextNode('I built a trail: '),
+        new RevisionInsertionNode([
+          new PlainTextNode('~~~~')
+        ])
       ])
     )
   })
