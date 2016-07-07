@@ -211,7 +211,7 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention: FOOTNOTE_CONVENTION,
-        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
+        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
         endsWith: bracket.endPattern
       }))
   }
