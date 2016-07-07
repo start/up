@@ -24,7 +24,7 @@ import { Token } from './Token'
 // which means backticks within inline code cannot be escaped (hence the fancy delimiter syntax).
 //
 // If inline code needs to start or end with backticks, those backticks can be separated from the
-// delimiters with a single space. This single space is trimmed away:
+// outer delimiters by a single space. This single space is trimmed away:
 //
 // ` ``inline_code`` `
 //
