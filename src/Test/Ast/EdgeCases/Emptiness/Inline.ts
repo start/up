@@ -203,7 +203,7 @@ context('Most inline conventions produce no syntax nodes if they have no content
     })
 
 
-    context("Raised voice conventions (emphasis and stress) are handled very differently.", () => {
+    context("Raised voice conventions (emphasis and stress) are handled very differently from other conventions.", () => {
       context("A contiguous delimiter will only either open conventions, close conventions, or be treated as plain text. Never a combination.", () => {
         context('Therefore, a raised voice convention can only be empty if it contains nothing but "void" empty inline conventions. When empty, raised voice conventions produce no syntax nodes:', () => {
           specify('Emphasis', () => {

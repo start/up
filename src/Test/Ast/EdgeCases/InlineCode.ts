@@ -16,11 +16,25 @@ describe('Inline code', () => {
 })
 
 
-describe('An unmatched backtick', () => {
-  it('does not produce any inline code', () => {
+context('Unmatched streaks of backticks are preserved as plain text. This applies for any unmatched streak, including', () => {
+  specify('"streaks" of 1', () => {
     expect(Up.toAst('I don`t ever do this')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I don`t ever do this')
+      ]))
+  })
+
+  specify('streaks of 2', () => {
+    expect(Up.toAst('I don``t ever do this')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I don``t ever do this')
+      ]))
+  })
+
+  specify('streaks of 3', () => {
+    expect(Up.toAst('I don```t ever do this')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I don```t ever do this')
       ]))
   })
 })
