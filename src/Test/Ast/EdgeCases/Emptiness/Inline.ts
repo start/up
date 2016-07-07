@@ -11,6 +11,7 @@ import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../../SyntaxNodes/StressNode'
 import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'
+import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 
 
 context('Most inline conventions are not applied if they have no content', () => {
@@ -38,6 +39,15 @@ context('Most inline conventions are not applied if they have no content', () =>
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('NSFL:')
+          ])
+        ]))
+    })
+
+    specify('Footnotes', () => {
+      expect(Up.toAst('(^)')).to.eql(
+        insideDocumentAndParagraph([
+          new ParenthesizedNode([
+            new PlainTextNode('^')
           ])
         ]))
     })
@@ -129,6 +139,15 @@ context('Most inline conventions are not applied if they have no content', () =>
               new PlainTextNode('[NSFL:  \t  \t ]')
             ]))
         })
+
+    specify('Footnotes', () => {
+      expect(Up.toAst('(^  \t \t )')).to.eql(
+        insideDocumentAndParagraph([
+          new ParenthesizedNode([
+            new PlainTextNode('(^  \t \t )')
+          ])
+        ]))
+    })
 
         specify('Parentheses', () => {
           expect(Up.toAst('(  \t  \t )')).to.eql(
