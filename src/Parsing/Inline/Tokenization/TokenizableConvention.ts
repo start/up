@@ -58,11 +58,10 @@ export class TokenizableConvention {
   constructor(args: TokenizableConventionArgs) {
     const { onlyOpenIfDirectlyFollowing } = args
 
-    this.onlyOpenIfDirectlyFollowing = (  
+    this.onlyOpenIfDirectlyFollowing =  
       isAnArrayOfRichConventions(onlyOpenIfDirectlyFollowing)
         ? onlyOpenIfDirectlyFollowing.map(richConvention => richConvention.endTokenKind)
         : onlyOpenIfDirectlyFollowing
-    )
 
     this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
     this.endsWith = regExpStartingWith(args.endsWith)
