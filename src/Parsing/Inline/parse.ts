@@ -99,23 +99,12 @@ class Parser {
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
 
-          if (url) {
-            if (isContentBlank) {
-              // If the link has a URL but no content, we use the URL for the content
-              contentNodes = [new PlainTextNode(url)]
-            }
-
-            this.nodes.push(new LinkNode(contentNodes, url))
-            continue
+          if (isContentBlank) {
+            // If the link has blank content, we use the URL for the content
+            contentNodes = [new PlainTextNode(url)]
           }
 
-          if (!isContentBlank) {
-            // If the link has no URL but does have content, we include the content directly in the document
-            // without putting it in a link node
-            this.nodes.push(...contentNodes)
-          }
-
-          // If the link has no URL and no content, there's nothing meaninful to include in the document
+          this.nodes.push(new LinkNode(contentNodes, url))
           continue
         }
       }
@@ -126,11 +115,6 @@ class Parser {
 
           // The next token will be a MediaUrlAndEnd token
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
-
-          if (!url) {
-            // If there's no URL, there's nothing meaningful to include in the document
-            continue TokenLoop
-          }
 
           if (!description) {
             // If there's no description, we treat the URL as the description
@@ -144,16 +128,16 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
         if (token.kind === richConvention.startTokenKind) {
-          const contentNodes = this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
+          const children =
+            this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
 
-          const includeConventionInDocument =
-            contentNodes.length > 0
-            && (richConvention.isMeaningfulEvenWhenContainingOnlyWhitespace || !isBlank(contentNodes))
-
-          if (includeConventionInDocument) {
-            this.nodes.push(new richConvention.NodeType(contentNodes))
+          if (!children.length) {
+            // When we properly nest overlapping conventions, we sometimes produce empty nodes.
+            // These should be discarded.
+            continue
           }
 
+          this.nodes.push(new richConvention.NodeType(children))
           continue TokenLoop
         }
       }
