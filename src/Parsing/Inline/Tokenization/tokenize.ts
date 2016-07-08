@@ -23,10 +23,6 @@ import { TokenizableConvention, OnConventionEvent } from './TokenizableConventio
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
-// TODO: Recognize these smileys (with and without tears):
-// :) ;)
-// (: (; :( ;(
-
 // Returns a collection of tokens representing inline conventions and their components.
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
