@@ -164,17 +164,3 @@ describe('Any whitespace between "NSFW:" and the start of the NSFW content', () 
       ]))
   })
 })
-
-
-describe("Common smileys with brackets matching a spoiler's open bracket", () => {
-  it('does not close the spoiler', () => {
-    expect(Up.toAst("After you beat the Elite Four, [NSFW: you face ;'] Gary :] ;] :'] ;']].")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
-          new PlainTextNode("you face ;'] Gary :] ;] :'] ;']")
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})

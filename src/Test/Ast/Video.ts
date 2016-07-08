@@ -243,13 +243,3 @@ describe("A video URL (enclosed by square brackets)", () => {
       ]))
   })
 })
-
-
-describe("Common smileys with brackets matching a video's open bracket", () => {
-  specify('does not close the desription', () => {
-    expect(Up.toAst("(video: ghostly ;') howling :) ;) :') ;'))(http://example.com/ghosts.webm)")).to.be.eql(
-      new DocumentNode([
-        new VideoNode("ghostly ;') howling :) ;) :') ;')", 'http://example.com/ghosts.webm')
-      ]))
-  })
-})

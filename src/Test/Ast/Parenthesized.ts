@@ -118,16 +118,3 @@ describe('An opening parentheses followed by whitespace', () => {
       ]))
   })
 })
-
-
-describe("Common smileys with closing parentheses", () => {
-  it('do not close parenthesized conventions', () => {
-    expect(Up.toAst("I can eat some pizza! (yes! ;') yay! :) ;) :') ;'))")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode("I can't eat most pizza."),
-        new ParenthesizedNode([
-          new PlainTextNode("(yes ;') yay! :) ;) :') ;'))")
-        ])
-      ]))
-  })
-})

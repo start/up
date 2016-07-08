@@ -145,22 +145,3 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
       ]))
   })
 })
-
-
-describe("Common smileys with brackets matching a footnote's open bracket", () => {
-  it("do not close the footnote", () => {
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well... )oB I pretend not to.')
-    ], 1)
-
-    expect(Up.toAst("I don't eat cereal. (^ Well... )oB I pretend not to.) Never have.")).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
-          footnote,
-          new PlainTextNode(" Never have."),
-        ]),
-        new FootnoteBlockNode([footnote])
-      ]))
-  })
-})

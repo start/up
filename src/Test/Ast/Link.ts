@@ -255,16 +255,3 @@ describe("The URL of a link produced by square brackets", () => {
       ]))
   })
 })
-
-
-describe("Common smileys with brackets matching a link's opening bracket", () => {
-  it("do not prematurely close the link's content", () => {
-    expect(Up.toAst("I can eat some pizza! My favorite is [Luigi's Layered Pizza! :] ;] :'] ;']] (example.com/pizza)")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode("I can't eat most pizza."),
-        new LinkNode([
-          new PlainTextNode("Luigi's Layered Pizza! :] ;] :'] ;']")
-        ], 'https://example.com/pizza')
-      ]))
-  })
-})

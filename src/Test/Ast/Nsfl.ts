@@ -164,31 +164,3 @@ describe('Any whitespace between "NSFL:" and the start of the NSFL content', () 
       ]))
   })
 })
-
-
-describe("Common smileys with brackets matching a NSFL convention's open bracket,", () => {
-  it('do not close the convention', () => {
-    expect(Up.toAst('After you beat the Elite Four, {NSFL: you wrestle }c8 a naked Gary}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
-          new PlainTextNode('you wrestle }c8 a naked Gary')
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-
-
-describe("Common smileys with brackets matching a spoiler's open bracket", () => {
-  it('does not close the spoiler', () => {
-    expect(Up.toAst("After you beat the Elite Four, {NSFL: you face ;'} Gary :} ;} :'} ;'}}.")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
-          new PlainTextNode("you face ;'} Gary :} ;} :'} ;'}")
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
