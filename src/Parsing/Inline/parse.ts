@@ -150,6 +150,10 @@ class Parser {
       }
     }
 
+    if (untilTokenOfKind) {
+      throw new Error("Missing terminator token: " + untilTokenOfKind)
+    }
+
     this.setResult()
   }
 
