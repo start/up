@@ -17,7 +17,6 @@ export interface TokenizableConventionArgs {
 
   beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
   whenOpening?: OnTextMatch
-  ignoreAnyWhitespaceDirectlyFollowingStartDelimiter?: boolean
 
   insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
@@ -45,7 +44,6 @@ export class TokenizableConvention {
 
   flushesBufferToPlainTextTokenBeforeOpening: boolean
   whenOpening: OnTextMatch
-  ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: boolean
 
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
@@ -76,7 +74,6 @@ export class TokenizableConvention {
 
     this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
     this.whenOpening = args.whenOpening
-    this.ignoreAnyWhitespaceDirectlyFollowingStartDelimiter = args.ignoreAnyWhitespaceDirectlyFollowingStartDelimiter
 
     this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
     this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen

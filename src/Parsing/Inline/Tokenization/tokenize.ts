@@ -211,9 +211,8 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention: FOOTNOTE_CONVENTION,
-        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^'),
-        endsWith: bracket.endPattern,
-        ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: true
+        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
+        endsWith: bracket.endPattern
       }))
   }
 
@@ -228,10 +227,9 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getRichSandwichConvention({
         richConvention,
-        startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket),
+        startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket) + ANY_WHITESPACE,
         endsWith: bracket.endPattern,
-        startPatternContainsATerm: true,
-        ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: true
+        startPatternContainsATerm: true
       }))
   }
 
@@ -268,11 +266,10 @@ class Tokenizer {
       startsWith: string
       endsWith: string
       startPatternContainsATerm?: boolean
-      ignoreAnyWhitespaceDirectlyFollowingStartDelimiter?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, ignoreAnyWhitespaceDirectlyFollowingStartDelimiter, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
       // If a convention is totally empty, we don't apply it.
@@ -286,8 +283,6 @@ class Tokenizer {
       startPatternContainsATerm,
 
       endsWith,
-
-      ignoreAnyWhitespaceDirectlyFollowingStartDelimiter,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
       beforeClosingItFlushesNonEmptyBufferTo: TokenKind.PlainText,
@@ -304,13 +299,12 @@ class Tokenizer {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new TokenizableConvention({
-          startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket),
+          startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket) + ANY_WHITESPACE,
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
-          ignoreAnyWhitespaceDirectlyFollowingStartDelimiter: true,
 
           whenClosingItAlsoClosesInnerConventions: true,
           mustBeDirectlyFollowedBy: this.mediaUrlConventions,
@@ -853,9 +847,9 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: TokenizableConvention): boolean {
-    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening, ignoreAnyWhitespaceDirectlyFollowingStartDelimiter } = convention
+    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
 
-    const didOpenConvention = (
+    return (
       this.canTry(convention)
 
       && this.consumer.consume({
@@ -873,16 +867,6 @@ class Tokenizer {
           }
         }
       }))
-
-      if (!didOpenConvention) {
-        return false
-      }
-
-      if (ignoreAnyWhitespaceDirectlyFollowingStartDelimiter) {
-        this.consumer.consume({ pattern: ANY_WHITESPACE_PATTERN })
-      }
-
-      return true
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
