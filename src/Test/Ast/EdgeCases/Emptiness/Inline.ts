@@ -369,7 +369,7 @@ context("Media conventions are handled a bit differently, because they also have
   })
 
 
-  describe('An image with a blank URL', () => {
+  describe('An image with an empty URL', () => {
     it("does not produce an image. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[image: Yggdra Union]{}')).to.be.eql(
         insideDocumentAndParagraph([
@@ -377,6 +377,19 @@ context("Media conventions are handled a bit differently, because they also have
             new PlainTextNode('[image: Yggdra Union]')
           ]),
           new PlainTextNode('{}')
+        ]))
+    })
+  })
+
+
+  describe('An image with a blank URL', () => {
+    it("does not produce an image. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
+      expect(Up.toAst('[image: Yggdra Union]{ \t \t}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[image: Yggdra Union]')
+          ]),
+          new PlainTextNode('{ \t \t}')
         ]))
     })
   })
@@ -443,7 +456,7 @@ context("Media conventions are handled a bit differently, because they also have
   })
 
 
-  describe('An audio convention with a blank URL', () => {
+  describe('An audio convention with an empty URL', () => {
     it("does not produce An audio convention. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('(audio: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
@@ -456,7 +469,20 @@ context("Media conventions are handled a bit differently, because they also have
   })
 
 
-  describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
+  describe('An audio convention with an empty URL', () => {
+    it("does not produce an audio convention. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+      expect(Up.toAst('[audio: Yggdra Union]{ \t \t}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[audio: Yggdra Union]')
+          ]),
+          new PlainTextNode('{ \t \t}')
+        ]))
+    })
+  })
+
+
+  describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
       expect(Up.toAst('[audio: haunted house]')).to.be.eql(
         new DocumentNode([
@@ -517,7 +543,7 @@ context("Media conventions are handled a bit differently, because they also have
   })
 
 
-  describe('A video with a blank URL', () => {
+  describe('A video with an empty URL', () => {
     it("does not produce A video. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('{video: Yggdra Union}{}')).to.be.eql(
         insideDocumentAndParagraph([
@@ -530,7 +556,20 @@ context("Media conventions are handled a bit differently, because they also have
   })
 
 
-  describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
+  describe('An audio convention with a blank URL', () => {
+    it("does not produce a video. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+      expect(Up.toAst('[video: Yggdra Union]{ \t \t}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[video: Yggdra Union]')
+          ]),
+          new PlainTextNode('{ \t \t}')
+        ]))
+    })
+  })
+
+
+  describe("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
       expect(Up.toAst('[video: haunted house]')).to.be.eql(
         new DocumentNode([
