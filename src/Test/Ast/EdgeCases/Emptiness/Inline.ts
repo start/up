@@ -218,7 +218,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
 
-    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of", () => {
+    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
       specify('1 character', () => {
         expect(Up.toAst('*')).to.eql(
           insideDocumentAndParagraph([
@@ -252,7 +252,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
 
 
-context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise valid link', () => {
+context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise valid link...', () => {
   describe('with an empty URL', () => {
     it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
@@ -321,18 +321,6 @@ context('Links are handled a bit differently, because they also have a URL to wo
   })
 
 
-  describe('with blank escaped content', () => {
-    specify('Produces a link with its URL as its content', () => {
-      expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
-        insideDocumentAndParagraph([
-          new LinkNode([
-            new PlainTextNode('https://google.com')
-          ], 'https://google.com')
-        ]))
-    })
-  })
-
-
   describe('with empty content and an empty URL', () => {
     it('is treated as consecutive empty brackets', () => {
       expect(Up.toAst('Hello, [][]!')).to.be.eql(
@@ -350,6 +338,18 @@ context('Links are handled a bit differently, because they also have a URL to wo
           new PlainTextNode('Beep boop, [ ][\t]!')
         ]))
     })
+  })
+})
+
+
+describe('A link with blank escaped content', () => {
+  specify('produces a link with its URL as its content', () => {
+    expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('https://google.com')
+        ], 'https://google.com')
+      ]))
   })
 })
 
