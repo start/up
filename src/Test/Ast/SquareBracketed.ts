@@ -122,11 +122,11 @@ describe('A square bracket followed by whitespace', () => {
 
 describe("Common smileys with closing parentheses", () => {
   it('do not close parenthesized conventions', () => {
-    expect(Up.toAst("I can eat some pizza! [yay! :] ;] :'] ;']]")).to.be.eql(
+    expect(Up.toAst("I can eat some pizza! [yes! ;-] yay! :] ;] :'] ;']]")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I can't eat most pizza."),
         new SquareBracketedNode([
-          new PlainTextNode("[yay! :] ;] :'] ;']]")
+          new PlainTextNode("[yes! ;-] yay! :] ;] :'] ;']]")
         ])
       ]))
   })

@@ -261,9 +261,9 @@ describe('An image URL (enclosed in curly brackets)', () => {
 
 describe("Common smileys with brackets matching an image description's open bracket", () => {
   specify('does not close the description', () => {
-    expect(Up.toAst("{image: ghostly howling :} ;} :'} ;'}}(http://example.com/ghosts.png)")).to.be.eql(
+    expect(Up.toAst("{image: ghostly :-} howling :} ;} :'} ;'}}(http://example.com/ghosts.png)")).to.be.eql(
       new DocumentNode([
-        new ImageNode("ghostly howling :} ;} :'} ;'}", 'http://example.com/ghosts.png')
+        new ImageNode("ghostly :-} howling :} ;} :'} ;'}", 'http://example.com/ghosts.png')
       ]))
   })
 })

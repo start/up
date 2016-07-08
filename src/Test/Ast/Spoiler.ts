@@ -170,11 +170,11 @@ describe('Any whitespace between "SPOILER:" and the start of the spoiler content
 
 describe("Common smileys with brackets matching a spoiler's open bracket", () => {
   it('does not close the spoiler', () => {
-    expect(Up.toAst('After you beat the Elite Four, (SPOILER: you wrestle )c8 a naked Gary).')).to.be.eql(
+    expect(Up.toAst("After you beat the Elite Four, (SPOILER: you face ;') Gary :) ;) :') ;')).")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new SpoilerNode([
-          new PlainTextNode('you wrestle )c8 a naked Gary')
+          new PlainTextNode("you face ;') Gary :) ;) :') ;')")
         ]),
         new PlainTextNode('.')
       ]))
