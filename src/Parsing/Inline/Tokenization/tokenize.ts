@@ -320,7 +320,9 @@ class Tokenizer {
 
   private getMediaUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: ANY_WHITESPACE + bracket.startPattern,
+      startsWith: ANY_WHITESPACE + bracket.startPattern + notFollowedBy(
+        anyCharMatching(WHITESPACE_CHAR, bracket.endPattern)),
+        
       endsWith: bracket.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,

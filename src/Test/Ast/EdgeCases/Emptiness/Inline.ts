@@ -9,6 +9,7 @@ import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../../SyntaxNodes/StressNode'
+import { ActionNode } from '../../../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
@@ -373,11 +374,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toAst('[image: Yggdra Union]{}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
-            new PlainTextNode('['),
-            new EmphasisNode([
-              new PlainTextNode('Yggdra Union')
-            ]),
-            new PlainTextNode(']')
+            new PlainTextNode('[image: Yggdra Union]')
           ]),
           new PlainTextNode('{}')
         ]))
@@ -448,14 +445,10 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with a blank URL', () => {
     it("does not produce An audio convention. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('[audio: Yggdra Union]{}')).to.be.eql(
+      expect(Up.toAst('(audio: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new PlainTextNode('['),
-            new EmphasisNode([
-              new PlainTextNode('Yggdra Union')
-            ]),
-            new PlainTextNode(']')
+          new ParenthesizedNode([
+            new PlainTextNode('(audio: Yggdra Union)')
           ]),
           new PlainTextNode('{}')
         ]))
@@ -526,14 +519,10 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with a blank URL', () => {
     it("does not produce A video. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('[video: Yggdra Union]{}')).to.be.eql(
+      expect(Up.toAst('{video: Yggdra Union}{}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new PlainTextNode('['),
-            new EmphasisNode([
-              new PlainTextNode('Yggdra Union')
-            ]),
-            new PlainTextNode(']')
+          new ActionNode([
+            new PlainTextNode('video: Yggdra Union')
           ]),
           new PlainTextNode('{}')
         ]))
