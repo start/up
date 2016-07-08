@@ -195,13 +195,15 @@ class Tokenizer {
       }, {
         richConvention: REVISION_DELETION_CONVENTION,
         startsWith: '~~',
-        endsWith: '~~'
+        endsWith: '~~',
+        isMeaningfulWhenItContainsOnlyWhitespace: true
       }, {
         richConvention: REVISION_INSERTION_CONVENTION,
         startsWith: '++',
-        endsWith: '++'
+        endsWith: '++',
+        isMeaningfulWhenItContainsOnlyWhitespace: true
       }
-    ].map(args => this.getRichSandwichConventionNotRequiringBacktracking(args)))
+    ].map(args => this.getRichConventionNotRequiringBacktracking(args)))
 
     this.conventions.push(
       this.nakedUrlConvention)
@@ -209,7 +211,7 @@ class Tokenizer {
 
   private getFootnoteConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket =>
-      this.getRichSandwichConvention({
+      this.getRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
         startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
         endsWith: bracket.endPattern
@@ -225,7 +227,7 @@ class Tokenizer {
     const { richConvention, nonLocalizedTerm } = args
 
     return BRACKETS.map(bracket =>
-      this.getRichSandwichConvention({
+      this.getRichConvention({
         richConvention,
         startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket) + ANY_WHITESPACE,
         endsWith: bracket.endPattern,
@@ -239,20 +241,23 @@ class Tokenizer {
       + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':')
   }
 
-  private getRichSandwichConventionNotRequiringBacktracking(
+  private getRichConventionNotRequiringBacktracking(
     args: {
       richConvention: RichConvention
       startsWith: string
       endsWith: string
       cannotStartWithWhitespace?: boolean
+      isMeaningfulWhenItContainsOnlyWhitespace?: boolean
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, cannotStartWithWhitespace } = args
+    const { richConvention, startsWith, endsWith, cannotStartWithWhitespace, isMeaningfulWhenItContainsOnlyWhitespace } = args
 
-    return this.getRichSandwichConvention({
+    return this.getRichConvention({
       richConvention,
       startsWith: escapeForRegex(startsWith) + (cannotStartWithWhitespace ? NOT_FOLLOWED_BY_WHITESPACE : ''),
       endsWith: escapeForRegex(endsWith),
+
+      isMeaningfulWhenItContainsOnlyWhitespace,
 
       insteadOfFailingWhenLeftUnclosed: (context) => {
         this.insertPlainTextTokenAtContextStart(startsWith, context)
@@ -260,26 +265,35 @@ class Tokenizer {
     })
   }
 
-  private getRichSandwichConvention(
+  private getRichConvention(
     args: {
       richConvention: RichConvention
       startsWith: string
       endsWith: string
       startPatternContainsATerm?: boolean
+      isMeaningfulWhenItContainsOnlyWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed } = args
 
     return new TokenizableConvention({
-      // If a convention is totally empty, we don't apply it.
-      //
-      // For example, because this would-be NSFW convention is empty:
+      // If a convention is totally empty, it's never applied. For example, this would-be NSFW convention is empty:
       //
       // (NSFW:)
       //
-      // ... We treat it as a parenthesized convention containing the text "NSFW:". 
-      startsWith: startsWith + notFollowedBy(ANY_WHITESPACE + endsWith),
+      // Therefore, we instead treat it as a parenthesized convention containing the text "NSFW:".
+      //
+      // When *most* conventions contain only whitespace, they aren't applied. For example, this would-be NSFW
+      // convention contains only whitespace: 
+      //
+      // [NSFW:   ]
+      //
+      // Therefore, we instead treat it as a square bracketed convention containing the text "NSFW:   ".
+      //
+      // However, if `isMeaningfulWhenItContainsOnlyWhitespace` is true, we do apply the convention when it contains
+      // only whitespace. This is the case for revision deletion/insertion.
+      startsWith: startsWith + notFollowedBy((isMeaningfulWhenItContainsOnlyWhitespace ? '' : ANY_WHITESPACE) + endsWith),
       startPatternContainsATerm,
 
       endsWith,
@@ -316,7 +330,7 @@ class Tokenizer {
     return BRACKETS.map(bracket => new TokenizableConvention({
       startsWith: ANY_WHITESPACE + bracket.startPattern + notFollowedBy(
         anyCharMatching(WHITESPACE_CHAR, bracket.endPattern)),
-        
+
       endsWith: bracket.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
@@ -424,7 +438,7 @@ class Tokenizer {
           WHITESPACE_CHAR,
           bracket.endPattern,
           escapeForRegex(ESCAPER_CHAR))),
-          
+
       endsWith: bracket.endPattern,
 
       onlyOpenIfDirectlyFollowing,
