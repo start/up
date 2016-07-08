@@ -424,6 +424,83 @@ context("Media conventions are handled a bit differently, because they also have
         ]))
     })
   })
+
+  describe('An audio convention with an empty description', () => {
+    it('has its URL treated as its description', () => {
+      expect(Up.toAst('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
+        new DocumentNode([
+          new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
+        ]))
+    })
+  })
+
+
+  describe('An audio convention with a blank description', () => {
+    it('has its URL treated as its description', () => {
+      expect(Up.toAst('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.be.eql(
+        new DocumentNode([
+          new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
+        ]))
+    })
+  })
+
+
+  describe('An audio convention with a blank URL', () => {
+    it("does not produce An audio convention. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+      expect(Up.toAst('[audio: Yggdra Union]{}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('['),
+            new EmphasisNode([
+              new PlainTextNode('Yggdra Union')
+            ]),
+            new PlainTextNode(']')
+          ]),
+          new PlainTextNode('{}')
+        ]))
+    })
+  })
+
+
+  describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
+    specify('nothing', () => {
+      expect(Up.toAst('[audio: haunted house]')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[audio: haunted house]')
+            ])
+          ])
+        ]))
+    })
+
+    specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+      expect(Up.toAst('[audio: haunted house] was written on the desk')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[audio: haunted house]')
+            ]),
+            new PlainTextNode(' was written on the desk')
+          ])
+        ]))
+    })
+
+    specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+      expect(Up.toAst('[audio: haunted house] was written on the desk [really]')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[audio: haunted house]')
+            ]),
+            new PlainTextNode(' was written on the desk '),
+            new SquareBracketedNode([
+              new PlainTextNode('[really]')
+            ]),
+          ])
+        ]))
+    })
+  })
 })
 
 
