@@ -168,7 +168,7 @@ describe('Any whitespace between "SPOILER:" and the start of the spoiler content
 })
 
 
-describe("A spoiler's closing bracket, if preceded by whitespace,", () => {
+describe("Common smileys with brackets matching a spoiler's open bracket", () => {
   it('does not close the spoiler', () => {
     expect(Up.toAst('After you beat the Elite Four, (SPOILER: you wrestle )c8 a naked Gary).')).to.be.eql(
       insideDocumentAndParagraph([

@@ -166,8 +166,8 @@ describe('Any whitespace between "NSFW:" and the start of the NSFW content', () 
 })
 
 
-describe("A NSFW convention's closing bracket, if preceded by whitespace,", () => {
-  it('does not close the convention', () => {
+describe("Common smileys with brackets matching a NSFW convention's open bracket", () => {
+  it('do not close the convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle ]c8 a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
