@@ -145,10 +145,9 @@ class ConventionNester {
 
       // Alright, we now know where this `cconventionNotToSplit` starts and ends. Any overlapping conventions
       // will either:
-
+      //
       // 1. Start before and end inside
       // 2. Start inside and end after
-
       const overlappingStartingBefore: Token[] = []
       const overlappingStartingInside: Token[] = []
 

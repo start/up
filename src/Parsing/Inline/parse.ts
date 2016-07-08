@@ -86,25 +86,32 @@ class Parser {
 
           const url = urlScheme + urlAfterScheme
 
-          const contents = [new PlainTextNode(urlAfterScheme)]
-          this.nodes.push(new LINK_CONVENTION.NodeType(contents, url))
+          this.nodes.push(
+            new LINK_CONVENTION.NodeType([new PlainTextNode(urlAfterScheme)], url))
 
           continue
         }
 
         case LINK_CONVENTION.startTokenKind: {
-          let contentNodes = this.produceSyntaxNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
-          const isContentBlank = isBlank(contentNodes)
+          let children = this.produceSyntaxNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
+
+          if (!children.length) {
+            // When we automatically nest overlapping conventions, we sometimes produce empty nodes. These should
+            // be discarded.
+            continue
+          }
+
+          const isContentBlank = isBlank(children)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
 
           if (isContentBlank) {
             // If the link has blank content, we use the URL for the content
-            contentNodes = [new PlainTextNode(url)]
+            children = [new PlainTextNode(url)]
           }
 
-          this.nodes.push(new LinkNode(contentNodes, url))
+          this.nodes.push(new LinkNode(children, url))
           continue
         }
       }
@@ -132,9 +139,9 @@ class Parser {
             this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
 
           if (!children.length) {
-            // When we properly nest overlapping conventions, we sometimes produce empty nodes.
-            // These should be discarded.
-            continue
+            // When we automatically nest overlapping conventions, we sometimes produce empty nodes. These
+            // should be discarded.
+            continue TokenLoop
           }
 
           this.nodes.push(new richConvention.NodeType(children))
