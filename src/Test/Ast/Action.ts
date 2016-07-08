@@ -120,11 +120,11 @@ describe("A curly bracket followed by whitespace", () => {
 
 describe("Common smileys with curly brackets", () => {
   it('do not close action conventions', () => {
-    expect(Up.toAst("I can eat some pizza! {jump ;-} and smile :} ;} :'} ;'}}")).to.be.eql(
+    expect(Up.toAst("I can eat some pizza! {jump ;'} and smile :} ;} :'} ;'}}")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I can't eat most pizza."),
         new ActionNode([
-          new PlainTextNode("jump ;-} and smile :} ;} :'} ;'}")
+          new PlainTextNode("jump ;'} and smile :} ;} :'} ;'}")
         ])
       ]))
   })
