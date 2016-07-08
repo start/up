@@ -425,6 +425,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
   })
 
+
   describe('An audio convention with an empty description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
@@ -501,8 +502,85 @@ context("Media conventions are handled a bit differently, because they also have
         ]))
     })
   })
-})
 
+
+  describe('A video with an empty description', () => {
+    it('has its URL treated as its description', () => {
+      expect(Up.toAst('[video:][http://example.com/hauntedhouse.webm]')).to.be.eql(
+        new DocumentNode([
+          new VideoNode('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
+        ]))
+    })
+  })
+
+
+  describe('A video with a blank description', () => {
+    it('has its URL treated as its description', () => {
+      expect(Up.toAst('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.be.eql(
+        new DocumentNode([
+          new VideoNode('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
+        ]))
+    })
+  })
+
+
+  describe('A video with a blank URL', () => {
+    it("does not produce A video. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+      expect(Up.toAst('[video: Yggdra Union]{}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('['),
+            new EmphasisNode([
+              new PlainTextNode('Yggdra Union')
+            ]),
+            new PlainTextNode(']')
+          ]),
+          new PlainTextNode('{}')
+        ]))
+    })
+  })
+
+
+  describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
+    specify('nothing', () => {
+      expect(Up.toAst('[video: haunted house]')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[video: haunted house]')
+            ])
+          ])
+        ]))
+    })
+
+    specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+      expect(Up.toAst('[video: haunted house] was written on the desk')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[video: haunted house]')
+            ]),
+            new PlainTextNode(' was written on the desk')
+          ])
+        ]))
+    })
+
+    specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+      expect(Up.toAst('[video: haunted house] was written on the desk [really]')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[video: haunted house]')
+            ]),
+            new PlainTextNode(' was written on the desk '),
+            new SquareBracketedNode([
+              new PlainTextNode('[really]')
+            ]),
+          ])
+        ]))
+    })
+  })
+})
 
 describe('Revision insertion containing an empty revision deletion', () => {
   it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
