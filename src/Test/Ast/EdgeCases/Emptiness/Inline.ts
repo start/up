@@ -126,21 +126,27 @@ context('Most inline conventions are not applied if they have no content.', () =
         specify('Spoilers', () => {
           expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
-              new PlainTextNode('[SPOILER:  \t  \t ]')
+              new SquareBracketedNode([
+                new PlainTextNode('[SPOILER:  \t  \t ]')
+              ])
             ]))
         })
 
         specify('NSFW', () => {
-          expect(Up.toAst('[NSFW:  \t  \t ]')).to.eql(
+          expect(Up.toAst('(NSFW:  \t  \t )')).to.eql(
             insideDocumentAndParagraph([
-              new PlainTextNode('[NSFW:  \t  \t ]')
+              new ParenthesizedNode([
+                new PlainTextNode('(NSFW:  \t  \t )')
+              ])
             ]))
         })
 
         specify('NSFL', () => {
           expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
-              new PlainTextNode('[NSFL:  \t  \t ]')
+              new SquareBracketedNode([
+                new PlainTextNode('[NSFL:  \t  \t ]')
+              ])
             ]))
         })
 

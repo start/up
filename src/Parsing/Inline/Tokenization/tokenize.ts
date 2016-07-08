@@ -282,7 +282,7 @@ class Tokenizer {
       // (NSFW:)
       //
       // ... We treat it as a parenthesized convention containing the text "NSFW:". 
-      startsWith: startsWith + notFollowedBy(endsWith),
+      startsWith: startsWith + notFollowedBy(ANY_WHITESPACE + endsWith),
       startPatternContainsATerm,
 
       endsWith,
