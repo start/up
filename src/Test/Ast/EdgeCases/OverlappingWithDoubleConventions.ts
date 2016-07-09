@@ -185,3 +185,26 @@ describe('Emphasis nested with revision deletion, both of which overlap a link',
       ]))
   })
 })
+
+
+describe('Emphasis nested with a spoiler, both of which overlap a link', () => {
+  it('splits the emphasis node then the link node', () => {
+    expect(Up.toAst("In Texas, {SPOILER: *I never eat [cereal*} outside](example.com/sun-flakes)")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Texas, '),
+        new SpoilerNode([
+          new EmphasisNode([
+            new PlainTextNode('I never eat '),
+          ]),
+          new LinkNode([
+            new EmphasisNode([
+              new PlainTextNode('cereal')
+            ]),
+          ], 'https://example.com/sun-flakes'),
+        ]),
+        new LinkNode([
+          new PlainTextNode(' outside')
+        ], 'https://example.com/sun-flakes')
+      ]))
+  })
+})
