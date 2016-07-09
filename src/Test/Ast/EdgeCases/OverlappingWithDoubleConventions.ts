@@ -161,3 +161,27 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at di
       ]))
   })
 })
+
+
+describe('Emphasis nested with revision deletion, both of which overlap a link', () => {
+  it('...', () => {
+    expect(Up.toAst("In Texas, ~~*I never eat [cereal*~~ outside](example.com/sun-flakes)")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Texas, '),
+
+        new RevisionDeletionNode([
+          new EmphasisNode([
+            new PlainTextNode('I never eat '),
+          ]),
+        ]),
+        new LinkNode([
+          new RevisionDeletionNode([
+            new EmphasisNode([
+              new PlainTextNode('cereal')
+            ])
+          ]),
+          new PlainTextNode(' outside')
+        ], 'https://example.com/sun-flakes'),
+      ]))
+  })
+})
