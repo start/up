@@ -63,6 +63,27 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
 })
 
 
+describe('Nested spoilers (closing at the same time) overlapping a link', () => {
+  it('splits the revision deletion node', () => {
+    expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't {really.]] Good!}(example.com/really-good)")).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('I know. '),
+          new SpoilerNode([
+            new PlainTextNode("Well, I don't "),
+            new LinkNode([
+              new PlainTextNode('really.')
+            ], 'https://example.com/really-good')
+          ]),
+        ]),
+        new LinkNode([
+          new PlainTextNode(' Good!')
+        ], 'https://example.com/really-good'),
+      ]))
+  })
+})
+
+
 describe('A link overlapping nested spoilers (opening at the same time)', () => {
   it('splits the link node', () => {
     expect(Up.toAst("{I suspect [SPOILER: [SPOILER: you}(example.com/crime-suspects) fight Gary.]]")).to.be.eql(
