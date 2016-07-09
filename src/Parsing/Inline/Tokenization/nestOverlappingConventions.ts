@@ -154,8 +154,11 @@ class ConventionNester {
       // 1. Start before and end inside
       // 2. Start inside and end after
       //
-      // We need to store end tokens, not conventions, because link end tokens have a URL that needs to be copied
-      // when the links are split in half.
+      // We need to store tokens, not conventions, because link end tokens have a URL that must be copied whenever
+      // links are split in half.
+      //
+      // Also, I can't fit this in the variable names, but both collections represent end tokens from outer to 
+      // inner. 
       const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
       const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
@@ -164,16 +167,17 @@ class ConventionNester {
 
         if (doesTokenStartConvention(token, splittableConventions)) {
           // Until we encounter the end token, we'll assume this token's convention overlaps.
-          endTokensOfOverlappingConventionsStartingInside.push(token.correspondsToToken)
+          endTokensOfOverlappingConventionsStartingInside.unshift(token.correspondsToToken)
           continue
         }
 
         if (doesTokenEndConvention(token, splittableConventions)) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
           // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
-          // end token we've found must end the most recent one.
+          // end token we've found must end the most recent one. We `unshift` items into this collection, so the
+          // most recent item is the first.
           if (endTokensOfOverlappingConventionsStartingInside.length) {
-            endTokensOfOverlappingConventionsStartingInside.pop()
+            endTokensOfOverlappingConventionsStartingInside.shift()
             continue
           }
 
@@ -199,14 +203,14 @@ class ConventionNester {
   //
   // Functionally, this method does exactly what its name implies: it adds convention end tokens before `index`
   // and convention start tokens after `index`.
-  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromMostRecentToLeast: Token[]): void {
-    const startTokens =
-      endTokensFromMostRecentToLeast
+  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromOuterToInner: Token[]): void {
+    const startTokensFromOuterToInner =
+      endTokensFromOuterToInner
         .map(endToken => endToken.correspondsToToken)
         .reverse()
 
-    this.insertTokens(index + 1, startTokens)
-    this.insertTokens(index, endTokensFromMostRecentToLeast)
+    this.insertTokens(index + 1, startTokensFromOuterToInner)
+    this.insertTokens(index, endTokensFromOuterToInner)
   }
 
   private insertTokens(index: number, contextualizedTokens: Token[]): void {
