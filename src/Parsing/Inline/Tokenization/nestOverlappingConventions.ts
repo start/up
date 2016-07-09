@@ -76,9 +76,14 @@ class ConventionNester {
       }
 
       // Alright, we've found a token that closes one of our unclosed start tokens. If any conventions were opened
-      // between this end token and its corresponding start token, those conventions (overlapping this one) and will
+      // between this end token and its corresponding start token, those conventions (overlapping this one) will
       // be chopped in half.
-
+      
+      // Why do we store a collection of end tokens rather than a collection of conventions?
+      //
+      // Links' end tokens have a URL that needs to be copied when links are split in half. Right now, links
+      // aren't split using this method (and none of the conventions split using this method have any values in
+      // their end tokens), but this method uses the same helper function used to split links.
       let endTokensOfOverlappingConventions: Token[] = []
 
       // We'll check the unclosed start tokens from most recently opened to least recently opened.
@@ -116,7 +121,7 @@ class ConventionNester {
   // This method assumes that any `conventionsToSplit` tokens are already properly nested within each other.
   private resolveOverlapping(splittableConventions: RichConvention[], conventionNotToSplit: RichConvention): void {
 
-    // To keep local variable names shorter, we'll refer to `cconventionNotToSplit` as the hero convention.
+    // To keep local variable names shorter, we'll refer to `conventionNotToSplit` as the hero convention.
 
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       const potentialHeroStartToken = this.tokens[tokenIndex]
@@ -143,43 +148,46 @@ class ConventionNester {
         }
       }
 
-      // Alright, we now know where this `cconventionNotToSplit` starts and ends. Any overlapping conventions
+      // Alright, we now know where this `conventionNotToSplit` starts and ends. Any overlapping conventions
       // will either:
       //
       // 1. Start before and end inside
       // 2. Start inside and end after
-      const overlappingStartingBefore: Token[] = []
-      const overlappingStartingInside: Token[] = []
+      //
+      // We need to store end tokens, not conventions, because link end tokens have a URL that needs to be copied
+      // when the links are split in half.
+      const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
+      const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const token = this.tokens[indexInsideHero]
 
         if (doesTokenStartConvention(token, splittableConventions)) {
           // Until we encounter the end token, we'll assume this token's convention overlaps.
-          overlappingStartingInside.push(token.correspondsToToken)
+          endTokensOfOverlappingConventionsStartingInside.push(token.correspondsToToken)
           continue
         }
 
         if (doesTokenEndConvention(token, splittableConventions)) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
-          // into a treee structure, if there are any conventions that started inside `cconventionNotToSplit`,
+          // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`,
           // the end token we've found must end the most recent one.
-          if (overlappingStartingInside.length) {
-            overlappingStartingInside.pop()
+          if (endTokensOfOverlappingConventionsStartingInside.length) {
+            endTokensOfOverlappingConventionsStartingInside.pop()
             continue
           }
 
-          // Ahhh, so there were no conventions started inside this `cconventionNotToSplit`! That means this one
+          // Ahhh, so there were no conventions started inside this `conventionNotToSplit`! That means this one
           // must have started before it.
-          overlappingStartingBefore.push(token)
+          endTokensOfOverlappingConventionsStartingBefore.push(token)
         }
       }
 
-      this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, overlappingStartingInside)
-      this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, overlappingStartingBefore)
+      this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, endTokensOfOverlappingConventionsStartingInside)
+      this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, endTokensOfOverlappingConventionsStartingBefore)
 
       // Each convention we split in half generates two new additional tokens.
-      const countTokensAdded = (2 * overlappingStartingBefore.length) + (2 * overlappingStartingInside.length)
+      const countTokensAdded = (2 * endTokensOfOverlappingConventionsStartingBefore.length) + (2 * endTokensOfOverlappingConventionsStartingInside.length)
 
       tokenIndex = heroEndIndex + countTokensAdded
     }
