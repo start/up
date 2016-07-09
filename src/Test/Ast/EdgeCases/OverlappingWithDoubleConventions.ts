@@ -188,7 +188,7 @@ describe('Emphasis nested with revision deletion, both of which overlap a link',
 
 
 describe('A link that overlaps both an emphasis convention and the revision deletion the emphasis convention is nested within', () => {
-  it('...', () => {
+  it('splits the revision deletion and emphasis conventions', () => {
     expect(Up.toAst("In [Texas, ~~*I]{example.com/texas-hurricans} never eat cereal*~~ outside.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In '),
@@ -210,6 +210,30 @@ describe('A link that overlaps both an emphasis convention and the revision dele
   })
 })
 
+
+describe('A link that overlaps nested emphasis conventions', () => {
+  it('splits both emphasis conventions', () => {
+    expect(Up.toAst("In [Texas, **I]{example.com/texas-hurricans} never* eat cereal* outside.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In '),
+        new LinkNode([
+          new PlainTextNode('Texas, '),
+          new EmphasisNode([
+            new EmphasisNode([
+              new PlainTextNode('I'),
+            ]),
+          ]),
+        ], 'https://example.com/texas-hurricans'),
+        new EmphasisNode([
+          new EmphasisNode([
+            new PlainTextNode(' never')
+          ]),
+          new PlainTextNode(' eat cereal')
+        ]),
+        new PlainTextNode(' outside.')
+      ]))
+  })
+})
 
 describe('Emphasis nested with a spoiler, both of which overlap a link', () => {
   it('splits the emphasis node then the link node', () => {

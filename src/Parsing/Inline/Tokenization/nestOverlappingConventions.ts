@@ -157,8 +157,7 @@ class ConventionNester {
       // We need to store tokens, not conventions, because link end tokens have a URL that must be copied whenever
       // links are split in half.
       //
-      // Also, I can't fit this in the variable names, but both collections represent end tokens from outer to 
-      // inner. 
+      // Also, both collections represent end tokens from outer to inner. 
       const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
       const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
