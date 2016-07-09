@@ -56,6 +56,7 @@ describe('Overlapped linked and emphasized text (using asterisks)', () => {
   })
 })
 
+
 describe('Overlapped emphasized (using underscores) and linked text', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
@@ -74,6 +75,7 @@ describe('Overlapped emphasized (using underscores) and linked text', () => {
       ]))
   })
 })
+
 
 describe('Overlapped linked and emphasized text (using underscores)', () => {
   it('splits the emphasis node, not the link node', () => {
@@ -636,5 +638,25 @@ describe('A footnote that overlaps a NSFL convention', () => {
         new FootnoteBlockNode([footnote])
       ])
     )
+  })
+})
+
+
+describe('Overlapped emphasized (using asterisks) and linked text', () => {
+  it('splits the emphasis node, not the link node', () => {
+    expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I do '),
+        new EmphasisNode([
+          new PlainTextNode('not ')
+        ]),
+        new LinkNode([
+          new EmphasisNode([
+            new PlainTextNode('care')
+          ]),
+          new PlainTextNode(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainTextNode(' all.')
+      ]))
   })
 })
