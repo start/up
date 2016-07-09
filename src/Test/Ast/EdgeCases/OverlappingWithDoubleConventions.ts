@@ -51,6 +51,26 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
 })
 
 
+describe('A link overlapping a NSFL convention containing a NSFW convention (opening at the same time)', () => {
+  it('splits the link node', () => {
+    expect(Up.toAst("{I suspect [NSFL: [NSFW: naked you}(example.com/crime-suspects) wrestles a rotting Gary.]]")).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode("I suspect "),
+        ], 'https://example.com/crime-suspects'),
+        new NsflNode([
+          new NsfwNode([
+            new LinkNode([
+              new PlainTextNode('naked you')
+            ], 'https://example.com/crime-suspects'),
+            new PlainTextNode(' wrestles a rotting Gary.')
+          ]),
+        ]),
+      ]))
+  })
+})
+
+
 describe('A NSFW convention nested within a NSFL convention (closing at the same time), both of which overlap a link', () => {
   it('splits the link node', () => {
     expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good)")).to.be.eql(
