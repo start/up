@@ -222,8 +222,8 @@ describe('A link that overlaps nested emphasis conventions', () => {
           new EmphasisNode([
             new EmphasisNode([
               new PlainTextNode('I'),
-            ]),
-          ]),
+            ])
+          ])
         ], 'https://example.com/texas-hurricans'),
         new EmphasisNode([
           new EmphasisNode([
@@ -238,7 +238,7 @@ describe('A link that overlaps nested emphasis conventions', () => {
 
 
 describe('A link that overlaps nested already-overlapping emphasis and stress conventions', () => {
-  it('splits both the emphasis convention and the already-split stress conventions', () => {
+  it('splits both the emphasis convention and the already-split stress convention', () => {
     expect(Up.toAst("Hello [Gary, *my **very](example.com/rhyme) dear* friend**.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello '),
@@ -248,12 +248,48 @@ describe('A link that overlaps nested already-overlapping emphasis and stress co
             new PlainTextNode('my '),
             new StressNode([
               new PlainTextNode('very'),
-            ]),
-          ]),
+            ])
+          ])
         ], 'https://example.com/rhyme'),
         new EmphasisNode([
           new StressNode([
             new PlainTextNode(' dear')
+          ]),
+        ]),
+        new StressNode([
+          new PlainTextNode(' friend')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('A link that overlaps nested already-overlapping double emphasis and stress conventions', () => {
+  it('splits both emphasis conventions and the already-split stress convention', () => {
+    expect(Up.toAst("Hello [Gary, *my *own **very](example.com/rhyme) dear* and kind* friend**.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello '),
+        new LinkNode([
+          new PlainTextNode('Gary, '),
+          new EmphasisNode([
+            new PlainTextNode('my '),
+            new EmphasisNode([
+              new PlainTextNode('own '),
+              new StressNode([
+                new PlainTextNode('very'),
+              ]),
+            ]),
+          ])
+        ], 'https://example.com/rhyme'),
+        new EmphasisNode([
+          new EmphasisNode([
+            new StressNode([
+              new PlainTextNode(' dear'),
+            ]),
+          ]),
+          new StressNode([
+            new PlainTextNode(' and kind')
           ]),
         ]),
         new StressNode([
