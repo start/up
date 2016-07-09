@@ -83,7 +83,7 @@ class ConventionNester {
       //
       // Links' end tokens have a URL that needs to be copied when links are split in half. Right now, links
       // aren't split using this method (and none of the conventions split using this method have any values in
-      // their end tokens), but this method uses the same helper function used to split links.
+      // their end tokens), but this method uses the same helper method used to split links.
       let endTokensOfOverlappingConventions: Token[] = []
 
       // We'll check the unclosed start tokens from most recently opened to least recently opened.
@@ -154,23 +154,24 @@ class ConventionNester {
       // 1. Start before and end inside
       // 2. Start inside and end after
       //
-      // We need to store tokens, not conventions, because link end tokens have a URL that must be copied whenever
-      // links are split in half.
+      // We'll keep track of both. However, we need to store tokens, not conventions, because link end tokens have
+      // a URL that must be copied whenever links are split in half.
       //
-      // Also, both collections represent end tokens from inner to outer. 
+      // Both collections contain end tokens in the order they appear in the original token collection (from inner
+      // to outer). 
       const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
       const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-        const token = this.tokens[indexInsideHero]
+        const innerToken = this.tokens[indexInsideHero]
 
-        if (doesTokenStartConvention(token, splittableConventions)) {
-          // Until we encounter the end token, we'll assume this token's convention overlaps.
-          endTokensOfOverlappingConventionsStartingInside.unshift(token.correspondsToToken)
+        if (doesTokenStartConvention(innerToken, splittableConventions)) {
+          // Until we encounter the end token, we'll assume this start token's convention overlaps.
+          endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondsToToken)
           continue
         }
 
-        if (doesTokenEndConvention(token, splittableConventions)) {
+        if (doesTokenEndConvention(innerToken, splittableConventions)) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
           // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
           // end token we've found must end the most recent one. We `unshift` items into this collection, so the
@@ -180,9 +181,9 @@ class ConventionNester {
             continue
           }
 
-          // Ahhh, so there were no conventions started inside this `conventionNotToSplit`! That means this one
-          // must have started before it.
-          endTokensOfOverlappingConventionsStartingBefore.push(token)
+          // Ahhh, so there were no conventions started inside this `conventionNotToSplit`! That means the one
+          // ended by this end token must have started before it.
+          endTokensOfOverlappingConventionsStartingBefore.push(innerToken)
         }
       }
 
@@ -202,14 +203,14 @@ class ConventionNester {
   //
   // Functionally, this method does exactly what its name implies: it adds convention end tokens before `index`
   // and convention start tokens after `index`.
-  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromInnerToOuter: Token[]): void {
-    const startTokensFromOuterToInner =
-      endTokensFromInnerToOuter
+  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensInTheirOriginalOrder: Token[]): void {
+    const startTokensInTheirOriginalOrder =
+      endTokensInTheirOriginalOrder
         .map(endToken => endToken.correspondsToToken)
         .reverse()
 
-    this.insertTokens(index + 1, startTokensFromOuterToInner)
-    this.insertTokens(index, endTokensFromInnerToOuter)
+    this.insertTokens(index + 1, startTokensInTheirOriginalOrder)
+    this.insertTokens(index, endTokensInTheirOriginalOrder)
   }
 
   private insertTokens(index: number, tokens: Token[]): void {
@@ -218,9 +219,9 @@ class ConventionNester {
 }
 
 function doesTokenStartConvention(token: Token, conventions: RichConvention[]): boolean {
-  return (conventions.some(convention => token.kind === convention.startTokenKind))
+  return conventions.some(convention => token.kind === convention.startTokenKind)
 }
 
 function doesTokenEndConvention(token: Token, conventions: RichConvention[]): boolean {
-  return (conventions.some(convention => token.kind === convention.endTokenKind))
+  return conventions.some(convention => token.kind === convention.endTokenKind)
 }
