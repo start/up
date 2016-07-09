@@ -355,7 +355,7 @@ describe('Emphasis nested with a spoiler, both of which overlap a link', () => {
 })
 
 
-describe('Emphasized overlapping a linkified NSFL convention', () => {
+describe('Emphasis overlapping a linkified NSFL convention', () => {
   it('splits the emphasis node, not the NSF: or link nodes', () => {
     expect(Up.toAst('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -372,6 +372,28 @@ describe('Emphasized overlapping a linkified NSFL convention', () => {
           ], 'https://en.wikipedia.org/wiki/Carrot'),
         ]),
         new PlainTextNode(' all.')
+      ]))
+  })
+})
+
+
+describe('A linkified spoiler overlapping emphasized text', () => {
+  it('splits the emphasis node, not the spoiler or link nodes', () => {
+    expect(Up.toAst('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('This '),
+        new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode('trash '),
+            new EmphasisNode([
+              new PlainTextNode('can')
+            ]),
+          ], 'https://en.wikipedia.org/wiki/Waste_container'),
+        ]),
+        new EmphasisNode([
+          new PlainTextNode(' not')
+        ]),
+        new PlainTextNode(' stay here.')
       ]))
   })
 })
