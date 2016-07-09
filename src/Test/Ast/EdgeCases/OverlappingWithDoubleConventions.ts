@@ -3,6 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
@@ -234,6 +235,35 @@ describe('A link that overlaps nested emphasis conventions', () => {
       ]))
   })
 })
+
+
+describe('A link that overlaps nested already-overlapping emphasis and stress conventions', () => {
+  it('splits both the emphasis convention and the already-split stress conventions', () => {
+    expect(Up.toAst("Hello [Gary, *my **very](example.com/rhyme) dear* friend**.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello '),
+        new LinkNode([
+          new PlainTextNode('Gary, '),
+          new EmphasisNode([
+            new PlainTextNode('my '),
+            new StressNode([
+              new PlainTextNode('very'),
+            ]),
+          ]),
+        ], 'https://example.com/rhyme'),
+        new EmphasisNode([
+          new StressNode([
+            new PlainTextNode(' dear')
+          ]),
+        ]),
+        new StressNode([
+          new PlainTextNode(' friend')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
 
 describe('Emphasis nested with a spoiler, both of which overlap a link', () => {
   it('splits the emphasis node then the link node', () => {
