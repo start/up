@@ -157,7 +157,7 @@ class ConventionNester {
       // We need to store tokens, not conventions, because link end tokens have a URL that must be copied whenever
       // links are split in half.
       //
-      // Also, both collections represent end tokens from outer to inner. 
+      // Also, both collections represent end tokens from inner to outer. 
       const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
       const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
@@ -202,18 +202,18 @@ class ConventionNester {
   //
   // Functionally, this method does exactly what its name implies: it adds convention end tokens before `index`
   // and convention start tokens after `index`.
-  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromOuterToInner: Token[]): void {
+  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensFromInnerToOuter: Token[]): void {
     const startTokensFromOuterToInner =
-      endTokensFromOuterToInner
+      endTokensFromInnerToOuter
         .map(endToken => endToken.correspondsToToken)
         .reverse()
 
     this.insertTokens(index + 1, startTokensFromOuterToInner)
-    this.insertTokens(index, endTokensFromOuterToInner)
+    this.insertTokens(index, endTokensFromInnerToOuter)
   }
 
-  private insertTokens(index: number, contextualizedTokens: Token[]): void {
-    this.tokens.splice(index, 0, ...contextualizedTokens)
+  private insertTokens(index: number, tokens: Token[]): void {
+    this.tokens.splice(index, 0, ...tokens)
   }
 }
 
