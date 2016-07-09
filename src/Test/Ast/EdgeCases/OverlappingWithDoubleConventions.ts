@@ -4,6 +4,8 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 
@@ -30,12 +32,33 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
 
 
 describe('Overlapped nested spoilers (closing at the same time) and a link', () => {
-  it('splits the revision deletion node', () => {
+  it('splits the link node', () => {
     expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't {really.]] Good!}(example.com/really-good)")).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('I know. '),
           new SpoilerNode([
+            new PlainTextNode("Well, I don't "),
+            new LinkNode([
+              new PlainTextNode('really.')
+            ], 'https://example.com/really-good')
+          ]),
+        ]),
+        new LinkNode([
+          new PlainTextNode(' Good!')
+        ], 'https://example.com/really-good'),
+      ]))
+  })
+})
+
+
+describe('A NSFW convention nested within a NSFL convention (closing at the same time), both of which overlap a link', () => {
+  it('splits the link node', () => {
+    expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good)")).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsflNode([
+          new PlainTextNode('I know. '),
+          new NsfwNode([
             new PlainTextNode("Well, I don't "),
             new LinkNode([
               new PlainTextNode('really.')
