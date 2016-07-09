@@ -181,7 +181,31 @@ describe('Emphasis nested with revision deletion, both of which overlap a link',
             ])
           ]),
           new PlainTextNode(' outside')
-        ], 'https://example.com/sun-flakes'),
+        ], 'https://example.com/sun-flakes')
+      ]))
+  })
+})
+
+
+describe('A link that overlaps both an emphasis convention and the revision deletion the emphasis convention is nested within', () => {
+  it('...', () => {
+    expect(Up.toAst("In [Texas, ~~*I]{example.com/texas-hurricans} never eat cereal*~~ outside.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In '),
+        new LinkNode([
+          new PlainTextNode('Texas, '),
+          new RevisionDeletionNode([
+            new EmphasisNode([
+              new PlainTextNode('I'),
+            ]),
+          ]),
+        ], 'https://example.com/texas-hurricans'),
+        new RevisionDeletionNode([
+          new EmphasisNode([
+            new PlainTextNode(' never eat cereal')
+          ])
+        ]),
+        new PlainTextNode(' outside.')
       ]))
   })
 })
