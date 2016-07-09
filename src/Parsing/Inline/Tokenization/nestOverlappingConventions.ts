@@ -140,7 +140,7 @@ class ConventionNester {
         const potentialHeroEndToken = this.tokens[i]
 
         const isEndTokenForHeroConvention =
-          potentialHeroEndToken.kind === conventionNotToSplit.endTokenKind
+          potentialHeroEndToken === potentialHeroStartToken.correspondsToToken
 
         if (isEndTokenForHeroConvention) {
           heroEndIndex = i
@@ -148,8 +148,8 @@ class ConventionNester {
         }
       }
 
-      // Alright, we now know where this `conventionNotToSplit` starts and ends. Any overlapping conventions
-      // will either:
+      // Alright, we now know where this `conventionNotToSplit` starts and ends. Any overlapping conventions will
+      // either:
       //
       // 1. Start before and end inside
       // 2. Start inside and end after
@@ -170,8 +170,8 @@ class ConventionNester {
 
         if (doesTokenEndConvention(token, splittableConventions)) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
-          // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`,
-          // the end token we've found must end the most recent one.
+          // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
+          // end token we've found must end the most recent one.
           if (endTokensOfOverlappingConventionsStartingInside.length) {
             endTokensOfOverlappingConventionsStartingInside.pop()
             continue
@@ -188,8 +188,6 @@ class ConventionNester {
 
       // Each convention we split in half generates two new additional tokens.
       const countTokensAdded = (2 * endTokensOfOverlappingConventionsStartingBefore.length) + (2 * endTokensOfOverlappingConventionsStartingInside.length)
-
-      tokenIndex = heroEndIndex + countTokensAdded
     }
   }
 
