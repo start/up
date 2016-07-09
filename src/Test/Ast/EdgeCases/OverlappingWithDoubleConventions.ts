@@ -9,6 +9,37 @@ import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
+import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
+
+
+
+
+describe('Overlapped stressed, deleted, and inserted text', () => {
+  it("split the revision deletion node once and the revision insertion node twice", () => {
+    expect(Up.toAst('I **love ~~covertly ++drinking** whole~~ milk++ all the time.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new RevisionDeletionNode([
+            new PlainTextNode('covertly '),
+            new RevisionInsertionNode([
+              new PlainTextNode('drinking')
+            ])
+          ])
+        ]),
+        new RevisionDeletionNode([
+          new RevisionInsertionNode([
+            new PlainTextNode(' whole')
+          ])
+        ]),
+        new RevisionInsertionNode([
+          new PlainTextNode(' milk')
+        ]),
+        new PlainTextNode(' all the time.')
+      ]))
+  })
+})
 
 
 describe('Overlapped doubly emphasized text (closing at the same time) and revision deletion', () => {
