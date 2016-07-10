@@ -791,7 +791,7 @@ class Tokenizer {
 
   private encloseWithin(args: EncloseWithinRichConventionArgs): void {
     const { richConvention } = args
-    let indexToInsertStartToken = args.startingBackAtIndex
+    let startTokenIndex = args.startingBackAtIndex
 
     this.flushNonEmptyBufferToPlainTextToken()
 
@@ -799,29 +799,47 @@ class Tokenizer {
     const endToken = new Token(richConvention.endTokenKind)
     startToken.associateWith(endToken)
 
-    this.insertToken({ token: startToken, atIndex: indexToInsertStartToken })
+    this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
-    let indexToInsertEndToken = this.tokens.length
 
     // Let's add the end token as close to the content it's enclosing as possible.
     //
     // TODO: Explain why
-    
-    const tokensWithContentButNoValue = [
-      TokenKind.ParenthesizedStart,
+    let endTokenIndex = this.tokens.length
+
+    // The following tokens represent actual content (rather than merely acting as delimiters).
+    //
+    // Some important notes:
+    //
+    // 1. Media conventions are content, and they're all covered by MediaUrlAndEnd. Because we'll be
+    //    searching *backward* for a content token, if there's a media convention, we'll always
+    //    encounter a MediaUrlAndEnd token first.
+    //
+    // 2. For the same reason, naked URLs are totally covered by NakedUrlAfterSchemeAndEnd.
+    //
+    // 3. Perhaps counter-intuitively, similar logic applies parenthsized/square bracketed
+    //    conventions. TODO: Explain why
+    //    
+    const TOKENS_REPRESENTING_CONTENT = [
+      TokenKind.PlainText,
       TokenKind.ParenthesizedEnd,
-      TokenKind.SquareBracketedStart,
-      TokenKind.SquareBracketedEnd
+      TokenKind.SquareBracketedEnd,
+      TokenKind.NakedUrlAfterSchemeAndEnd,
+      TokenKind.MediaUrlAndEnd,
+      TokenKind.InlineCode
     ]
 
-    for (
-      let i = indexToInsertEndToken - 1;
-      (this.tokens[i].value == null) && (i > indexToInsertStartToken) && !tokensWithContentButNoValue.some(kind => this.tokens[i].kind === kind) ;
-      i--) {
-      indexToInsertEndToken = i
+    function isNotContent(token: Token): boolean {
+      return TOKENS_REPRESENTING_CONTENT.every(contentKind => token.kind !== contentKind) 
+    } 
+
+    if (isNotContent(endToken)) {
+      for (let i = endTokenIndex - 1; (i > startTokenIndex) && isNotContent(this.tokens[i]); i--) {
+        endTokenIndex = i
+      }
     }
 
-    this.insertToken({ token: endToken, atIndex: indexToInsertEndToken })
+    this.insertToken({ token: endToken, atIndex: endTokenIndex })
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
