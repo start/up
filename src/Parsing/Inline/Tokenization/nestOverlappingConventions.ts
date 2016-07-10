@@ -52,7 +52,6 @@ class ConventionNester {
     }
   }
 
-  // This method assumes no tokens are missing.
   splitConventionsThatStartInsideAnotherConventionAndEndAfter(conventions: RichConvention[]): void {
     const unclosedStartTokens: Token[] = []
 
@@ -169,6 +168,9 @@ class ConventionNester {
 
         if (doesTokenStartConvention(innerToken, splittableConventions)) {
           // Until we encounter the end token, we'll assume this start token's convention overlaps.
+          //
+          // We `unshift`, not `push`, because the collection represents end tokens in the order they appear, and
+          // end tokens appear in the opposite order of start tokens.
           endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondsToToken)
           continue
         }
