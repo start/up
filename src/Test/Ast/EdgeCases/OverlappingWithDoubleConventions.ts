@@ -77,9 +77,9 @@ describe('When two "freely-splittable" conventions (e.g. stress, revision insert
 })
 
 
-describe('When two "only-split-when-necessary" conventions (e.g. NSFL action) overlap a third (e.g. spoiler)', () => {
+describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) overlap a third (e.g. spoiler)', () => {
   it("the three can start one after another", () => {
-    expect(Up.toAst('[NSFL: {(spoiler: thwomp} good] friend!)')).to.be.eql(
+    expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!)')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new NsflNode([
@@ -89,6 +89,27 @@ describe('When two "only-split-when-necessary" conventions (e.g. NSFL action) ov
             new PlainTextNode(' good')
           ]),
           new PlainTextNode(' friend!')
+        ])
+      ]))
+  })
+})
+
+
+// TODO: Perhaps try to nest "only-split-when-necessary" conventions better when they overlap only by their end tokens?
+describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) are overlapped by a third (e.g. spoiler)', () => {
+  it("the three can end one after another", () => {
+    expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('another '),
+        ]),
+        new NsflNode([
+          new SpoilerNode([
+            new PlainTextNode('loud '),
+            new ActionNode([
+              new PlainTextNode('stomp')
+            ]),
+          ]),
         ])
       ]))
   })
