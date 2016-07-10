@@ -94,14 +94,14 @@ context('When overlapping conventions end consecutively, they nest without being
   })
 
   it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority (e.g. spoiler) ', () => {
-    expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}] Hi!')).to.be.eql(
+    expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body {squish)}] Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
-          new PlainTextNode('another '),
+          new PlainTextNode('There was another '),
           new NsflNode([
-            new PlainTextNode('loud '),
+            new PlainTextNode('rotten body '),
             new ActionNode([
-              new PlainTextNode('stomp')
+              new PlainTextNode('squish')
             ]),
           ]),
         ]),

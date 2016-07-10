@@ -189,7 +189,6 @@ class ConventionNester {
             continue
           }
 
-
           // Well, there were no unclosed conventions started inside this `conventionNotToSplit`. That means the
           // current end token's corresponding start token appeared before the hero's start token (and thus is
           // overlapping).
@@ -203,7 +202,7 @@ class ConventionNester {
           //
           // There could also be more than two conventions involved:
           //
-          // **{loudly sings [SPOILER: Jigglypuff's Lullaby}**]
+          // (SPOILER: There was another [NSFL: rotten body {squish)}]
           //
           // Therefore, if there isn't any actual content between this end token and the hero's end token, we'll
           // simply move this end token after the hero's end token. This allows us to avoid splitting the end
