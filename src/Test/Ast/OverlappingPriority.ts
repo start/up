@@ -322,19 +322,14 @@ describe('A spoiler that overlaps an action by only their end tokens', () => {
 
 describe('An action convention that overlaps a spoiler (which is prioritized to avoid being split over action conventions) by only their end tokens', () => {
   it("is perfectly nested", () => {
-    const text =
-      'In Pokémon Red, Gary Oak {loses [SPOILER: badly}] to Ash Ketchum'
-
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst("{loudly sings [SPOILER: Jigglypuff's Lullaby}]")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('In Pokémon Red, Gary Oak '),
         new ActionNode([
-          new PlainTextNode('loses '),
+          new PlainTextNode('loudly sings '),
           new SpoilerNode([
-            new PlainTextNode('badly')
-          ]),
-        ]),
-        new PlainTextNode(' to Ash Ketchum')
+            new PlainTextNode("Jigglypuff's Lullaby")
+          ])
+        ])
       ])
     )
   })

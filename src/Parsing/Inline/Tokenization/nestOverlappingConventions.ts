@@ -199,7 +199,7 @@ class ConventionNester {
       // However, if any conventions are overlapping the hero convention by just their end tokens, the author
       // almost certainly didn't actually intend for them to overlap. For example:
       //
-      // {loudly sings [SPOILER: Jigglypuff's Lullaby]}
+      // {loudly sings [SPOILER: Jigglypuff's Lullaby}]
       //
       // TODO: Show example with more overlapping conventions
       //
