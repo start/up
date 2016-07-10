@@ -633,22 +633,22 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         ]))
 
       specify('NSFL', () => {
-        expect(Up.toAst('[NSFL: Ash fights Gary]()')).to.be.eql(
+        expect(Up.toAst('[NSFL: Ash fights Gary][]')).to.be.eql(
           insideDocumentAndParagraph([
             new NsflNode([
               new PlainTextNode('Ash fights Gary')
             ]),
-            new PlainTextNode('()')
+            new PlainTextNode('[]')
           ]))
       })
 
       specify('Spoilers', () => {
-        expect(Up.toAst('[SPOILER: Ash fights Gary]()')).to.be.eql(
+        expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
           insideDocumentAndParagraph([
             new NsflNode([
               new PlainTextNode('Ash fights Gary')
             ]),
-            new PlainTextNode('()')
+            new PlainTextNode('{}')
           ]))
       })
 
@@ -664,6 +664,30 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
               new PlainTextNode('()')
             ]),
             new FootnoteBlockNode([footnote])
+          ]))
+      })
+
+      specify('Audio', () => {
+        expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+          insideDocumentAndParagraph([
+            new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+            new PlainTextNode('()')
+          ]))
+      })
+
+      specify('Images', () => {
+        expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new ImageNode('Ash fights Gary', 'https://example.com/image'),
+            new PlainTextNode('[]')
+          ]))
+      })
+
+      specify('Videos', () => {
+        expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+          insideDocumentAndParagraph([
+            new ImageNode('Ash fights Gary', 'https://example.com/video'),
+            new PlainTextNode('{}')
           ]))
       })
     })
