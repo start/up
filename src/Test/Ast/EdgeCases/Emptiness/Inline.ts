@@ -692,6 +692,77 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       })
     })
   })
+
+  context('Blank:', () => {
+    specify('NSFW', () => {
+      expect(Up.toAst('[NSFW: Ash fights Gary](\t \t \t)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('(\t \t \t)')
+        ]))
+
+      specify('NSFL', () => {
+        expect(Up.toAst('[NSFL: Ash fights Gary][\t \t \t]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsflNode([
+              new PlainTextNode('Ash fights Gary')
+            ]),
+            new PlainTextNode('[\t \t \t]')
+          ]))
+      })
+
+      specify('Spoilers', () => {
+        expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsflNode([
+              new PlainTextNode('Ash fights Gary')
+            ]),
+            new PlainTextNode('{\t \t \t}')
+          ]))
+      })
+
+      specify('Footnotes', () => {
+        const footnote = new FootnoteNode([
+          new PlainTextNode('Ash fights gary')
+        ], 1)
+
+        expect(Up.toAst('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([
+              footnote,
+              new PlainTextNode('(\t \t \t)')
+            ]),
+            new FootnoteBlockNode([footnote])
+          ]))
+      })
+
+      specify('Audio', () => {
+        expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+          insideDocumentAndParagraph([
+            new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+            new PlainTextNode('(\t \t \t)')
+          ]))
+      })
+
+      specify('Images', () => {
+        expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+          insideDocumentAndParagraph([
+            new ImageNode('Ash fights Gary', 'https://example.com/image'),
+            new PlainTextNode('[\t \t \t]')
+          ]))
+      })
+
+      specify('Videos', () => {
+        expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+          insideDocumentAndParagraph([
+            new ImageNode('Ash fights Gary', 'https://example.com/video'),
+            new PlainTextNode('{\t \t \t}')
+          ]))
+      })
+    })
+  })
 })
 
 describe('Revision insertion containing an empty revision deletion', () => {
