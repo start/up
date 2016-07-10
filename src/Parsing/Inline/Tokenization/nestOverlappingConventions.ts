@@ -78,20 +78,21 @@ class ConventionNester {
       // Alright, we've found a token that closes one of our unclosed start tokens. If any conventions were opened
       // between this end token and its corresponding start token, those conventions (overlapping this one) will
       // be chopped in half.
+      const endToken = token
       
       // Why do we store a collection of end tokens rather than a collection of conventions?
       //
-      // Links' end tokens have a URL that needs to be copied when links are split in half. Right now, links
-      // aren't split using this method (and none of the conventions split using this method have any values in
-      // their end tokens), but this method uses the same helper method used to split links.
+      // Link end tokens have a URL that needs to be copied when links are split in half. Right now, links aren't 
+      // split using this method (and none of the conventions split using this method have any values in their end
+      // tokens), but this method uses the same helper method used to split links.
       let endTokensOfOverlappingConventions: Token[] = []
 
       // We'll check the unclosed start tokens from most recently opened to least recently opened.
       for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
         const unclosedStartToken = unclosedStartTokens[i]
 
-        if (unclosedStartToken.correspondsToToken === token) {
-          // Hooray! We've reached the convention that is closed by the current token.
+        if (unclosedStartToken.correspondsToToken === endToken) {
+          // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
           // Any conventions opened before this one don't overlap with the current convention, so we can bail.
@@ -113,7 +114,7 @@ class ConventionNester {
 
       const countOverlapping = endTokensOfOverlappingConventions.length
 
-      // Advance index to reflect the fact that we just added tokens
+      // Advance index to reflect the fact that we just added tokens 
       tokenIndex += (2 * countOverlapping)
     }
   }
