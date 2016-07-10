@@ -650,21 +650,21 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
             ]),
             new PlainTextNode('()')
           ]))
+      })
 
-        specify('Footnotes', () => {
-          const footnote = new FootnoteNode([
-            new PlainTextNode('Ash fights gary')
-          ], 1)
+      specify('Footnotes', () => {
+        const footnote = new FootnoteNode([
+          new PlainTextNode('Ash fights gary')
+        ], 1)
 
-          expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
-            new DocumentNode([
-              new ParagraphNode([
-                footnote,
-                new PlainTextNode('()')
-              ]),
-              new FootnoteBlockNode([footnote])
-            ]))
-        })
+        expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([
+              footnote,
+              new PlainTextNode('()')
+            ]),
+            new FootnoteBlockNode([footnote])
+          ]))
       })
     })
   })
