@@ -95,12 +95,6 @@ class Parser {
         case LINK_CONVENTION.startTokenKind: {
           let children = this.produceSyntaxNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
 
-          if (!children.length) {
-            // When we automatically nest overlapping conventions, we sometimes produce empty nodes. These should
-            // be discarded.
-            continue
-          }
-
           const isContentBlank = isBlank(children)
 
           // The URL was in the LinkUrlAndEnd token, the last token we parsed
@@ -137,12 +131,6 @@ class Parser {
         if (token.kind === richConvention.startTokenKind) {
           const children =
             this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
-
-          if (!children.length) {
-            // When we automatically nest overlapping conventions, we sometimes produce empty nodes. These
-            // should be discarded.
-            continue TokenLoop
-          }
 
           this.nodes.push(new richConvention.NodeType(children))
           continue TokenLoop
