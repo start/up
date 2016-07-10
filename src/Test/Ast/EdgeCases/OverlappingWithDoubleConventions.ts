@@ -41,8 +41,8 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
 })
 
 
-describe('When two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion)', () => {
-  it("the three can start consecutively, and when they do, they are perfectly nested", () => {
+context('When overlapping conventions start consecutively, they nest without being split. This includes:', () => {
+  specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion) ', () => {
     expect(Up.toAst('**++~~Hello++ good** friend!~~')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
@@ -56,29 +56,8 @@ describe('When two "freely-splittable" conventions (e.g. stress, revision insert
         ])
       ]))
   })
-})
 
-
-describe('When two "freely-splittable" conventions (e.g. stress, revision insertion) are overlapped by a third (e.g. revision deletion)', () => {
-  it("the three can end consecutively, and when they do, they are perfectly nested", () => {
-    expect(Up.toAst('~~Hello **good ++friend!~~++**')).to.be.eql(
-      insideDocumentAndParagraph([
-        new RevisionDeletionNode([
-          new PlainTextNode('Hello '),
-          new StressNode([
-            new PlainTextNode('good '),
-            new RevisionInsertionNode([
-              new PlainTextNode('friend!')
-            ]),
-          ]),
-        ])
-      ]))
-  })
-})
-
-
-describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) overlap a third (e.g. spoiler)', () => {
-  it("the three can start consecutively, and when they do, they are perfectly nested", () => {
+  specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) overlapping a third (e.g. spoiler)', () => {
     expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!)')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
@@ -95,8 +74,23 @@ describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) o
 })
 
 
-describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) are overlapped by a third with lower priority (e.g. spoiler)', () => {
-  it("the three can end consecutively, and when they do, they are perfectly nested", () => {
+context('When overlapping conventions end consecutively, they nest without being split. This includes:', () => {
+  it('Two "freely-splittable" conventions (e.g. stress, revision insertion) being overlapped by a third (e.g. revision deletion)', () => {
+    expect(Up.toAst('~~Hello **good ++friend!~~++**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionDeletionNode([
+          new PlainTextNode('Hello '),
+          new StressNode([
+            new PlainTextNode('good '),
+            new RevisionInsertionNode([
+              new PlainTextNode('friend!')
+            ]),
+          ]),
+        ])
+      ]))
+  })
+
+  it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority (e.g. spoiler) ', () => {
     expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
@@ -110,11 +104,8 @@ describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) a
         ])
       ]))
   })
-})
 
-
-describe('When several conventions (some freely splittable, and some that should only be split when necessary) are overlapping and all end consecutively', () => {
-  it("they are perfectly nested", () => {
+  it('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
     expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {stomp++**)}]')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
