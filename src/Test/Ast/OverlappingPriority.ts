@@ -301,6 +301,27 @@ describe('Action text that overlaps a spoiler', () => {
 })
 
 
+describe('Action text that overlaps a spoiler by only their end tokens', () => {
+  it("is perfectly nested", () => {
+    const text =
+      'In Pokémon Red, Gary Oak {loses [SPOILER: badly}] to Ash Ketchum'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('In Pokémon Red, Gary Oak '),
+        new ActionNode([
+          new PlainTextNode('loses '),
+          new SpoilerNode([
+            new PlainTextNode('badly')
+          ]),
+        ]),
+        new PlainTextNode(' to Ash Ketchum')
+      ])
+    )
+  })
+})
+
+
 describe('A spoiler that overlaps a footnote', () => {
   it("splits the spoiler node, not the footnote node", () => {
     const text = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'

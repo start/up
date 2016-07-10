@@ -95,7 +95,6 @@ describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) o
 })
 
 
-// TODO: Perhaps try to nest "only-split-when-necessary" conventions better when they overlap only by their end tokens?
 describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) are overlapped by a third with lower priority (e.g. spoiler)', () => {
   it("the three can end consecutively, and when they do, they are perfectly nested", () => {
     expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}]')).to.be.eql(
