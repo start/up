@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { NsflNode } from '../../../SyntaxNodes/NsflNode'
@@ -70,6 +71,24 @@ describe('When two "freely-splittable" conventions (e.g. stress, revision insert
               new PlainTextNode('friend!')
             ]),
           ]),
+        ])
+      ]))
+  })
+})
+
+
+describe('When two "only-split-when-necessary" conventions (e.g. NSFL action) overlap a third (e.g. spoiler)', () => {
+  it("the three can start one after another", () => {
+    expect(Up.toAst('[NSFL: {(spoiler: thwomp} good] friend!)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new NsflNode([
+            new ActionNode([
+              new PlainTextNode('thwomp')
+            ]),
+            new PlainTextNode(' good')
+          ]),
+          new PlainTextNode(' friend!')
         ])
       ]))
   })
