@@ -222,10 +222,10 @@ class ConventionNester {
             }
           }
 
-          // There wasn't any content between the current end token and the hero's end token, so we're dealing with
-          // the situation described above. Let's resolve the overlapping by moving the current end token.
+          // There wasn't any content between the current end token and the hero's end token, so we *are* dealing
+          // with the situation described above. Let's resolve the overlapping by moving the current end token.
           this.tokens.splice(endTokenIndex, 1)
-          this.insertTokens(heroEndIndex, [endToken])
+          this.insertTokens(heroEndIndex + 1, [endToken])
           heroEndIndex -= 1
           indexInsideHero -= 1
         }

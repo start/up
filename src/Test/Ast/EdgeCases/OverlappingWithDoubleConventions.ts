@@ -43,7 +43,7 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
 
 context('When overlapping conventions start consecutively, they nest without being split. This includes:', () => {
   specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion) ', () => {
-    expect(Up.toAst('**++~~Hello++ good** friend!~~')).to.be.eql(
+    expect(Up.toAst('**++~~Hello++ good** friend!~~ Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
           new StressNode([
@@ -53,12 +53,13 @@ context('When overlapping conventions start consecutively, they nest without bei
             new PlainTextNode(' good')
           ]),
           new PlainTextNode(' friend!')
-        ])
+        ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 
   specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) overlapping a third (e.g. spoiler)', () => {
-    expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!)')).to.be.eql(
+    expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!) Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new NsflNode([
@@ -68,7 +69,8 @@ context('When overlapping conventions start consecutively, they nest without bei
             new PlainTextNode(' good')
           ]),
           new PlainTextNode(' friend!')
-        ])
+        ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -76,7 +78,7 @@ context('When overlapping conventions start consecutively, they nest without bei
 
 context('When overlapping conventions end consecutively, they nest without being split. This includes:', () => {
   it('Two "freely-splittable" conventions (e.g. stress, revision insertion) being overlapped by a third (e.g. revision deletion)', () => {
-    expect(Up.toAst('~~Hello **good ++friend!~~++**')).to.be.eql(
+    expect(Up.toAst('~~Hello **good ++friend!~~++** Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
           new PlainTextNode('Hello '),
@@ -84,14 +86,15 @@ context('When overlapping conventions end consecutively, they nest without being
             new PlainTextNode('good '),
             new RevisionInsertionNode([
               new PlainTextNode('friend!')
-            ]),
-          ]),
-        ])
+            ])
+          ])
+        ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 
   it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority (e.g. spoiler) ', () => {
-    expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}]')).to.be.eql(
+    expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}] Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('another '),
@@ -106,7 +109,7 @@ context('When overlapping conventions end consecutively, they nest without being
   })
 
   it('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
-    expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {stomp++**)}]')).to.be.eql(
+    expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {stomp++**)}]. Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode('There '),
@@ -122,7 +125,8 @@ context('When overlapping conventions end consecutively, they nest without being
               ])
             ])
           ])
-        ])
+        ]),
+        new PlainTextNode('. Hi!')
       ]))
   })
 })
@@ -130,7 +134,7 @@ context('When overlapping conventions end consecutively, they nest without being
 
 describe('Overlapped doubly emphasized text (closing at the same time) and revision deletion', () => {
   it('splits the revision deletion node', () => {
-    expect(Up.toAst("*I know. *Well, I don't ~~really.** Ha!~~")).to.be.eql(
+    expect(Up.toAst("*I know. *Well, I don't ~~really.** Ha!~~ Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('I know. '),
@@ -144,6 +148,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
         new RevisionDeletionNode([
           new PlainTextNode(' Ha!')
         ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -151,7 +156,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
 
 describe('Nested spoilers (closing at the same time) overlapping a link', () => {
   it('splits the revision deletion node', () => {
-    expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't {really.]] Good!}(example.com/really-good)")).to.be.eql(
+    expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('I know. '),
@@ -165,14 +170,16 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
         new LinkNode([
           new PlainTextNode(' Good!')
         ], 'https://example.com/really-good'),
-      ]))
+        new PlainTextNode(' Hi!')
+      ])
+      )
   })
 })
 
 
 describe('A link overlapping nested spoilers (opening at the same time)', () => {
   it('splits the link node', () => {
-    expect(Up.toAst("{I suspect [SPOILER: [SPOILER: you}(example.com/crime-suspects) fight Gary.]]")).to.be.eql(
+    expect(Up.toAst("{I suspect [SPOILER: [SPOILER: you}(example.com/crime-suspects) fight Gary.]] Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode("I suspect "),
@@ -183,8 +190,9 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
               new PlainTextNode('you')
             ], 'https://example.com/crime-suspects'),
             new PlainTextNode(' fight Gary.')
-          ]),
+          ])
         ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -192,7 +200,7 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
 
 describe('A link overlapping a NSFL convention containing a NSFW convention (opening at the same time)', () => {
   it('splits the link node', () => {
-    expect(Up.toAst("{I suspect [NSFL: [NSFW: naked you}(example.com/crime-suspects) wrestles a rotting Gary.]]")).to.be.eql(
+    expect(Up.toAst("{I suspect [NSFL: [NSFW: naked you}(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode("I suspect "),
@@ -203,8 +211,9 @@ describe('A link overlapping a NSFL convention containing a NSFW convention (ope
               new PlainTextNode('naked you')
             ], 'https://example.com/crime-suspects'),
             new PlainTextNode(' wrestles a rotting Gary.')
-          ]),
+          ])
         ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -212,7 +221,7 @@ describe('A link overlapping a NSFL convention containing a NSFW convention (ope
 
 describe('A NSFW convention nested within a NSFL convention (closing at the same time), both of which overlap a link', () => {
   it('splits the link node', () => {
-    expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good)")).to.be.eql(
+    expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new NsflNode([
           new PlainTextNode('I know. '),
@@ -226,6 +235,7 @@ describe('A NSFW convention nested within a NSFL convention (closing at the same
         new LinkNode([
           new PlainTextNode(' Good!')
         ], 'https://example.com/really-good'),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -233,7 +243,7 @@ describe('A NSFW convention nested within a NSFL convention (closing at the same
 
 describe('Overlapped doubly emphasized text (closing at the different times) and revision deletion', () => {
   it('splits the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
-    expect(Up.toAst("*I know. *Well, I don't ~~really.* So there.* Ha!~~")).to.be.eql(
+    expect(Up.toAst("*I know. *Well, I don't ~~really.* So there.* Ha!~~ Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('I know. '),
@@ -250,6 +260,7 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
         new RevisionDeletionNode([
           new PlainTextNode(' Ha!')
         ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -257,7 +268,7 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
 
 describe('Overlapped revision deletion and doubly emphasized text (opening at the same time)', () => {
   it('splits the emphasis nodes', () => {
-    expect(Up.toAst("~~I need to sleep. **So~~ what?* It's early.*")).to.be.eql(
+    expect(Up.toAst("~~I need to sleep. **So~~ what?* It's early.* Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
           new PlainTextNode("I need to sleep. "),
@@ -273,6 +284,7 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at th
           ]),
           new PlainTextNode(" It's early.")
         ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
@@ -280,7 +292,7 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at th
 
 describe('Overlapped revision deletion and doubly emphasized text (opening at different times)', () => {
   it('splits the emphasis nodes', () => {
-    expect(Up.toAst("~~I need to sleep. *Uhhh... *So~~ what?* It's early.*")).to.be.eql(
+    expect(Up.toAst("~~I need to sleep. *Uhhh... *So~~ what?* It's early.* Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
           new PlainTextNode("I need to sleep. "),
@@ -297,17 +309,17 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at di
           ]),
           new PlainTextNode(" It's early.")
         ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 })
 
 
-describe('Emphasis nested with revision deletion, both of which overlap a link', () => {
-  it('...', () => {
-    expect(Up.toAst("In Texas, ~~*I never eat [cereal*~~ outside](example.com/sun-flakes)")).to.be.eql(
+describe('Emphasis nested within revision deletion, both of which overlap a link', () => {
+  it('are both split by the link', () => {
+    expect(Up.toAst("In Texas, ~~*I never eat [cereal*~~ outside](example.com/sun-flakes). Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Texas, '),
-
         new RevisionDeletionNode([
           new EmphasisNode([
             new PlainTextNode('I never eat '),
@@ -320,7 +332,8 @@ describe('Emphasis nested with revision deletion, both of which overlap a link',
             ])
           ]),
           new PlainTextNode(' outside')
-        ], 'https://example.com/sun-flakes')
+        ], 'https://example.com/sun-flakes'),
+        new PlainTextNode('. Hi!')
       ]))
   })
 })
