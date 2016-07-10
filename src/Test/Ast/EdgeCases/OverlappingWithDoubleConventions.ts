@@ -42,7 +42,7 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
 
 
 describe('When two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion)', () => {
-  it("the three can start consecutively", () => {
+  it("the three can start consecutively, and when they do, they are perfectly nested", () => {
     expect(Up.toAst('**++~~Hello++ good** friend!~~')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
@@ -60,7 +60,7 @@ describe('When two "freely-splittable" conventions (e.g. stress, revision insert
 
 
 describe('When two "freely-splittable" conventions (e.g. stress, revision insertion) are overlapped by a third (e.g. revision deletion)', () => {
-  it("the three can end consecutively", () => {
+  it("the three can end consecutively, and when they do, they are perfectly nested", () => {
     expect(Up.toAst('~~Hello **good ++friend!~~++**')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
@@ -78,7 +78,7 @@ describe('When two "freely-splittable" conventions (e.g. stress, revision insert
 
 
 describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) overlap a third (e.g. spoiler)', () => {
-  it("the three can start consecutively", () => {
+  it("the three can start consecutively, and when they do, they are perfectly nested", () => {
     expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!)')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
@@ -96,15 +96,13 @@ describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) o
 
 
 // TODO: Perhaps try to nest "only-split-when-necessary" conventions better when they overlap only by their end tokens?
-describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) are overlapped by a third (e.g. spoiler)', () => {
-  it("the three can end consecutively", () => {
+describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) are overlapped by a third with lower priority (e.g. spoiler)', () => {
+  it("the three can end consecutively, and when they do, they are perfectly nested", () => {
     expect(Up.toAst('(SPOILER: another [NSFL: loud {stomp)}]')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
           new PlainTextNode('another '),
-        ]),
-        new NsflNode([
-          new SpoilerNode([
+          new NsflNode([
             new PlainTextNode('loud '),
             new ActionNode([
               new PlainTextNode('stomp')
