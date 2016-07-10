@@ -166,6 +166,7 @@ class ConventionNester {
       const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
       const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
+      SearchForOverlappingConventionsInsideCurrentHeroConvention:
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const innerToken = this.tokens[indexInsideHero]
 
@@ -207,27 +208,23 @@ class ConventionNester {
           //
           // Note: The same logic applies for tokens overlapping by only their start tokens. However, that case is
           // handled by the tokenizer (due to how it inserts start tokens when a rich convention closes).
-          let isThereAnyContentBetweenCurrentEndTokenAndHeroEndToken = false
-
           for (let i = indexInsideHero + 1; i < heroEndIndex; i++) {
             const tokenBetweenCurrentEndTokenAndHeroEndToken = this.tokens[i]
 
             // If the current token doesn't end any conventions, it means that the hero convention contains some
-            // content after the overlapping convention.
+            // content after the overlapping convention. We're not dealing with the situation described above.
             if (!doesTokenEndAnyConvention(tokenBetweenCurrentEndTokenAndHeroEndToken, ALL_RICH_CONVENTIONS)) {
-              isThereAnyContentBetweenCurrentEndTokenAndHeroEndToken = true
-              break
+              endTokensOfOverlappingConventionsStartingBefore.push(endToken)
+              continue SearchForOverlappingConventionsInsideCurrentHeroConvention
             }
           }
 
-          if (isThereAnyContentBetweenCurrentEndTokenAndHeroEndToken) {
-            endTokensOfOverlappingConventionsStartingBefore.push(endToken)            
-          } else {
-            this.tokens.splice(tokenIndex, 1)
-            this.insertTokens(heroEndIndex, [endToken])
-            heroEndIndex -= 1
-            indexInsideHero -= 1
-          }
+          // There wasn't any content between the current end token and the hero's end token, so we're dealing with
+          // the situation described above. Let's resolve the overlapping by moving the current end token.
+          this.tokens.splice(endTokenIndex, 1)
+          this.insertTokens(heroEndIndex, [endToken])
+          heroEndIndex -= 1
+          indexInsideHero -= 1
         }
       }
 
