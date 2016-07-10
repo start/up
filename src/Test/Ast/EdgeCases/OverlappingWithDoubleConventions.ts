@@ -58,6 +58,24 @@ describe('When two "freely-splittable" conventions (e.g. stress, revision insert
 })
 
 
+describe('When two "freely-splittable" conventions (e.g. stress, revision insertion) are overlapped by a third (e.g. revision deletion)', () => {
+  it("the three can end one after another", () => {
+    expect(Up.toAst('~~Hello **good ++friend!~~++**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionDeletionNode([
+          new PlainTextNode('Hello '),
+          new StressNode([
+            new PlainTextNode('good '),
+            new RevisionInsertionNode([
+              new PlainTextNode('friend!')
+            ]),
+          ]),
+        ])
+      ]))
+  })
+})
+
+
 describe('Overlapped doubly emphasized text (closing at the same time) and revision deletion', () => {
   it('splits the revision deletion node', () => {
     expect(Up.toAst("*I know. *Well, I don't ~~really.** Ha!~~")).to.be.eql(
