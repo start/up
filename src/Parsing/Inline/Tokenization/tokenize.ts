@@ -806,9 +806,17 @@ class Tokenizer {
     // Let's add the end token as close to the content it's enclosing as possible.
     //
     // TODO: Explain why
+    
+    const tokensWithContentButNoValue = [
+      TokenKind.ParenthesizedStart,
+      TokenKind.ParenthesizedEnd,
+      TokenKind.SquareBracketedStart,
+      TokenKind.SquareBracketedEnd
+    ]
+
     for (
       let i = indexToInsertEndToken - 1;
-      (this.tokens[i].value == null) && (i > indexToInsertStartToken);
+      (this.tokens[i].value == null) && (i > indexToInsertStartToken) && !tokensWithContentButNoValue.some(kind => this.tokens[i].kind === kind) ;
       i--) {
       indexToInsertEndToken = i
     }
