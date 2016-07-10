@@ -819,18 +819,17 @@ class Tokenizer {
     //
     // 3. Perhaps counter-intuitively, similar logic applies parenthsized/square bracketed
     //    conventions. TODO: Explain why
-    //    
-    const TOKENS_REPRESENTING_CONTENT = [
-      TokenKind.PlainText,
-      TokenKind.ParenthesizedEnd,
-      TokenKind.SquareBracketedEnd,
-      TokenKind.NakedUrlAfterSchemeAndEnd,
-      TokenKind.MediaUrlAndEnd,
-      TokenKind.InlineCode
-    ]
+    //
 
     function isNotContent(token: Token): boolean {
-      return TOKENS_REPRESENTING_CONTENT.every(contentKind => token.kind !== contentKind) 
+      return  [
+        TokenKind.PlainText,
+        TokenKind.ParenthesizedEnd,
+        TokenKind.SquareBracketedEnd,
+        TokenKind.NakedUrlAfterSchemeAndEnd,
+        TokenKind.MediaUrlAndEnd,
+        TokenKind.InlineCode
+      ].every(contentKind => token.kind !== contentKind) 
     } 
 
     if (isNotContent(endToken)) {
