@@ -807,38 +807,40 @@ class Tokenizer {
     // TODO: Explain why
     let endTokenIndex = this.tokens.length
 
-    // The following tokens represent actual content (rather than merely acting as delimiters).
-    //
-    // Some important notes:
-    //
-    // 1. Media conventions are content, and they're all covered by MediaUrlAndEnd. Because we'll be
-    //    searching *backward* for a content token, if there's a media convention, we'll always
-    //    encounter a MediaUrlAndEnd token first.
-    //
-    // 2. For the same reason, naked URLs are totally covered by NakedUrlAfterSchemeAndEnd.
-    //
-    // 3. Perhaps counter-intuitively, similar logic applies parenthsized/square bracketed
-    //    conventions. TODO: Explain why
-    //
+    // This functions assumes that `token` is a rich convention's end token.
+    function canRichEndTokenBeMoved(token: Token): boolean {
+      // Unlike other delimiters, parenthesized and square bracketed tokens actually represent content.
+      return (token.kind !== TokenKind.ParenthesizedEnd) && (token.kind !== TokenKind.SquareBracketedEnd)
+    }
 
-    function isNotContent(token: Token): boolean {
-      return  [
-        TokenKind.PlainText,
-        TokenKind.ParenthesizedEnd,
-        TokenKind.SquareBracketedEnd,
-        TokenKind.NakedUrlAfterSchemeAndEnd,
-        TokenKind.MediaUrlAndEnd,
-        TokenKind.InlineCode
-      ].every(contentKind => token.kind !== contentKind) 
-    } 
+    if (canRichEndTokenBeMoved(endToken)) {
+      for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
+        let otherToken = this.tokens[i]
 
-    if (isNotContent(endToken)) {
-      for (let i = endTokenIndex - 1; (i > startTokenIndex) && isNotContent(this.tokens[i]); i--) {
-        endTokenIndex = i
+        const canOtherTokenBeMoved =
+          otherToken.correspondsToToken
+          && canRichEndTokenBeMoved(otherToken)
+          && startTokenIndex > this.indexOfToken(otherToken.correspondsToToken)
+
+        if (canOtherTokenBeMoved) {
+          endTokenIndex -= 1
+        } else {
+          break
+        }
       }
     }
 
     this.insertToken({ token: endToken, atIndex: endTokenIndex })
+  }
+
+  private indexOfToken(token: Token): number {
+    for (let i = this.tokens.length - 1; i >= 0; i--) {
+      if (this.tokens[i] === token) {
+        return i
+      }
+    }
+
+    throw new Error(`Token not found. Kind: ${token.kind}, value: ${token.value}`)
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
