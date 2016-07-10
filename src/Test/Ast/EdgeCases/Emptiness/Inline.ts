@@ -16,6 +16,10 @@ import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
+import { NsfwNode } from '../../../../SyntaxNodes/NsfwNode'
+import { NsflNode } from '../../../../SyntaxNodes/NsflNode'
+import { SpoilerNode } from '../../../../SyntaxNodes/SpoilerNode'
+import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
 
 
 context('Most inline conventions are not applied if they have no content.', () => {
@@ -616,6 +620,56 @@ context("Media conventions are handled a bit differently, because they also have
   })
 })
 
+
+context("Conventions aren't linkified if the bracketed URL is...", () => {
+  context('Empty:', () => {
+    specify('NSFW', () => {
+      expect(Up.toAst('[NSFW: Ash fights Gary]()')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsfwNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('()')
+        ]))
+
+      specify('NSFL', () => {
+        expect(Up.toAst('[NSFL: Ash fights Gary]()')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsflNode([
+              new PlainTextNode('Ash fights Gary')
+            ]),
+            new PlainTextNode('()')
+          ]))
+      })
+
+      specify('Spoilers', () => {
+        expect(Up.toAst('[SPOILER: Ash fights Gary]()')).to.be.eql(
+          insideDocumentAndParagraph([
+            new NsflNode([
+              new PlainTextNode('Ash fights Gary')
+            ]),
+            new PlainTextNode('()')
+          ]))
+
+        specify('Footnotes', () => {
+          const footnote = new FootnoteNode([
+            new PlainTextNode('Ash fights gary')
+          ], 1)
+
+          expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
+            new DocumentNode([
+              new ParagraphNode([
+                footnote,
+                new PlainTextNode('()')
+              ]),
+              new FootnoteBlockNode([footnote])
+            ]))
+        })
+      })
+    })
+  })
+})
+
 describe('Revision insertion containing an empty revision deletion', () => {
   it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
     expect(Up.toAst('I built a trail: ++~~~~++')).to.be.eql(
@@ -624,7 +678,6 @@ describe('Revision insertion containing an empty revision deletion', () => {
         new RevisionInsertionNode([
           new PlainTextNode('~~~~')
         ])
-      ])
-    )
+      ]))
   })
 })
