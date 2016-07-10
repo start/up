@@ -301,7 +301,26 @@ describe('Action text that overlaps a spoiler', () => {
 })
 
 
-describe('Action text that overlaps a spoiler by only their end tokens', () => {
+describe('A spoiler that overlaps an action by only their end tokens', () => {
+  it("is perfectly nested", () => {
+    const text =
+      '[SPOILER: Mario fell off the platform. {splat]}'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new SpoilerNode([
+          new PlainTextNode('Mario fell off the platform. '),
+          new ActionNode([
+            new PlainTextNode('splat')
+          ])
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('An action convention that overlaps a spoiler (which is prioritized to avoid being split over action conventions) by only their end tokens', () => {
   it("is perfectly nested", () => {
     const text =
       'In Pokémon Red, Gary Oak {loses [SPOILER: badly}] to Ash Ketchum'
@@ -316,6 +335,25 @@ describe('Action text that overlaps a spoiler by only their end tokens', () => {
           ]),
         ]),
         new PlainTextNode(' to Ash Ketchum')
+      ])
+    )
+  })
+})
+
+
+describe('A link that overlaps an action convention (which is prioritized to avoid being split over links) by only their end tokens', () => {
+  it("is perfectly nested", () => {
+    const text =
+      '[Mario fell off the platform. {splat](example.com/game-over)}'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('Mario fell off the platform. '),
+          new ActionNode([
+            new PlainTextNode('splat')
+          ])
+        ], 'https://example.com/game-over')
       ])
     )
   })
