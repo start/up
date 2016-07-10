@@ -790,15 +790,30 @@ class Tokenizer {
   }
 
   private encloseWithin(args: EncloseWithinRichConventionArgs): void {
-    const { richConvention, startingBackAtIndex} = args
+    const { richConvention } = args
+    let indexToInsertStartToken = args.startingBackAtIndex
+
     this.flushNonEmptyBufferToPlainTextToken()
 
     const startToken = new Token(richConvention.startTokenKind)
     const endToken = new Token(richConvention.endTokenKind)
     startToken.associateWith(endToken)
 
-    this.insertToken({ token: startToken, atIndex: startingBackAtIndex })
-    this.tokens.push(endToken)
+    this.insertToken({ token: startToken, atIndex: indexToInsertStartToken })
+
+    let indexToInsertEndToken = this.tokens.length
+
+    // Let's add the end token as close to the content it's enclosing as possible.
+    //
+    // TODO: Explain why
+    for (
+      let i = indexToInsertEndToken - 1;
+      (this.tokens[i].value == null) && (i > indexToInsertStartToken);
+      i--) {
+      indexToInsertEndToken = i
+    }
+
+    this.insertToken({ token: endToken, atIndex: indexToInsertEndToken })
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {

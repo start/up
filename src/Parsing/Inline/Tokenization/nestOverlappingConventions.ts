@@ -166,7 +166,6 @@ class ConventionNester {
       const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
       const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 
-      SearchForOverlappingConventionsInsideCurrentHeroConvention:
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const innerToken = this.tokens[indexInsideHero]
 
@@ -192,40 +191,8 @@ class ConventionNester {
           // Well, there were no unclosed conventions started inside this `conventionNotToSplit`. That means the
           // current end token's corresponding start token appeared before the hero's start token (and thus is
           // overlapping).
-          const endTokenIndex = indexInsideHero
-          const endToken = innerToken
+          endTokensOfOverlappingConventionsStartingBefore.push(innerToken)
 
-          // However, if any conventions are overlapping the hero convention by just their end tokens, the author
-          // almost certainly didn't actually intend for them to overlap. For example:
-          //
-          // {loudly sings [SPOILER: Jigglypuff's Lullaby}]
-          //
-          // There could also be more than two conventions involved:
-          //
-          // (SPOILER: There was another [NSFL: rotten body {squish)}]
-          //
-          // Therefore, if there isn't any actual content between this end token and the hero's end token, we'll
-          // simply move this end token after the hero's end token. This allows us to avoid splitting the end
-          // token's convention.
-          //
-          // Note: The same logic applies for tokens overlapping by only their start tokens. However, that case is
-          // handled by the tokenizer (due to how it inserts start tokens when a rich convention closes).
-          for (let i = indexInsideHero + 1; i < heroEndIndex; i++) {
-            const tokenBetweenCurrentEndTokenAndHeroEndToken = this.tokens[i]
-
-            // If the current token doesn't end any conventions, it means that the hero convention contains some
-            // content after the overlapping convention. We're not dealing with the situation described above.
-            if (!doesTokenEndAnyConvention(tokenBetweenCurrentEndTokenAndHeroEndToken, ALL_RICH_CONVENTIONS)) {
-              endTokensOfOverlappingConventionsStartingBefore.push(endToken)
-              continue SearchForOverlappingConventionsInsideCurrentHeroConvention
-            }
-          }
-
-          // There wasn't any content between the current end token and the hero's end token, so we *are* dealing
-          // with the situation described above. Let's resolve the overlapping by moving the current end token.
-          this.tokens.splice(endTokenIndex, 1)
-          this.insertTokens(heroEndIndex + 1, [endToken])
-          indexInsideHero -= 1
         }
       }
 
@@ -263,4 +230,9 @@ function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]
 
 function doesTokenEndAnyConvention(token: Token, conventions: RichConvention[]): boolean {
   return conventions.some(convention => token.kind === convention.endTokenKind)
+}
+
+function doesTokenSimplyDelimitConvention(token: Token, conventions: RichConvention[]): boolean {
+  return conventions.some(convention =>
+    (token.kind === convention.startTokenKind) || (token.kind === convention.endTokenKind))
 }
