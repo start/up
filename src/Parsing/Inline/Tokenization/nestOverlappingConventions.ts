@@ -189,9 +189,6 @@ class ConventionNester {
 
       this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, endTokensOfOverlappingConventionsStartingInside)
       this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, endTokensOfOverlappingConventionsStartingBefore)
-
-      // Each convention we split in half generates two new additional tokens.
-      const countTokensAdded = (2 * endTokensOfOverlappingConventionsStartingBefore.length) + (2 * endTokensOfOverlappingConventionsStartingInside.length)
     }
   }
 
