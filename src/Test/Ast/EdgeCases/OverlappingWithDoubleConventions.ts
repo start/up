@@ -104,7 +104,8 @@ context('When overlapping conventions end consecutively, they nest without being
               new PlainTextNode('stomp')
             ]),
           ]),
-        ])
+        ]),
+        new PlainTextNode(' Hi!')
       ]))
   })
 
