@@ -11,6 +11,7 @@ export function nestOverlappingConventions(tokens: Token[]): Token[] {
   return new ConventionNester(tokens).tokens
 }
 
+
 // We're always okay with splitting these conventions.
 const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
   REVISION_DELETION_CONVENTION,
@@ -32,9 +33,6 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
   NSFL_CONVENTION,
   FOOTNOTE_CONVENTION
 ]
-
-const ALL_RICH_CONVENTIONS =
-  [...FREELY_SPLITTABLE_CONVENTIONS, ...CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT]
 
 
 class ConventionNester {
@@ -230,9 +228,4 @@ function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]
 
 function doesTokenEndAnyConvention(token: Token, conventions: RichConvention[]): boolean {
   return conventions.some(convention => token.kind === convention.endTokenKind)
-}
-
-function doesTokenSimplyDelimitConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention =>
-    (token.kind === convention.startTokenKind) || (token.kind === convention.endTokenKind))
 }
