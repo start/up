@@ -114,7 +114,8 @@ class ConventionNester {
 
       const countOverlapping = endTokensOfOverlappingConventions.length
 
-      // Advance index to reflect the fact that we just added tokens 
+      // Advance index to reflect the fact that we just added tokens. We aded `countOverlapping` before `endToken`,
+      // and `countOverlapping` start tokens before `endToken`.
       tokenIndex += (2 * countOverlapping)
     }
   }
