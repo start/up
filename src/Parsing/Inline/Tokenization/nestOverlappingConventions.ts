@@ -33,6 +33,9 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
   FOOTNOTE_CONVENTION
 ]
 
+const ALL_RICH_CONVENTIONS =
+  [...FREELY_SPLITTABLE_CONVENTIONS, ...CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT]
+
 
 class ConventionNester {
   constructor(public tokens: Token[]) {
@@ -65,12 +68,12 @@ class ConventionNester {
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
       const token = this.tokens[tokenIndex]
 
-      if (doesTokenStartConvention(token, conventions)) {
+      if (doesTokenStartAnyConvention(token, conventions)) {
         unclosedStartTokens.push(token)
         continue
       }
 
-      if (!doesTokenEndConvention(token, conventions)) {
+      if (!doesTokenEndAnyConvention(token, conventions)) {
         continue
       }
 
@@ -166,7 +169,7 @@ class ConventionNester {
       for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
         const innerToken = this.tokens[indexInsideHero]
 
-        if (doesTokenStartConvention(innerToken, splittableConventions)) {
+        if (doesTokenStartAnyConvention(innerToken, splittableConventions)) {
           // Until we encounter the end token, we'll assume this start token's convention overlaps.
           //
           // We `unshift`, not `push`, because the collection represents end tokens in the order they appear, and
@@ -175,7 +178,7 @@ class ConventionNester {
           continue
         }
 
-        if (doesTokenEndConvention(innerToken, splittableConventions)) {
+        if (doesTokenEndAnyConvention(innerToken, splittableConventions)) {
           // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
           // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
           // end token we've found must end the most recent one. We `unshift` items into this collection, so the
@@ -188,6 +191,36 @@ class ConventionNester {
           // Ahhh, so there were no conventions started inside this `conventionNotToSplit`! That means the one
           // ended by this end token must have started before it.
           endTokensOfOverlappingConventionsStartingBefore.push(innerToken)
+        }
+      }
+
+      // We're almost convinced that we know what conventions are overlapping.
+      //
+      // However, if any conventions are overlapping the hero convention by just their end tokens, the author
+      // almost certainly didn't actually intend for them to overlap. For example:
+      //
+      // {loudly sings [SPOILER: Jigglypuff's Lullaby]}
+      //
+      // TODO: Show example with more overlapping conventions
+      //
+      // Note: The same logic applies for tokens overlapping by only their start tokens. However, that case is
+      // handled by the tokenizer (due to how it inserts start tokens when a rich convention closes).
+      for (const endTokenOfOverlappingConvention of endTokensOfOverlappingConventionsStartingInside) {
+        for (let indexAfterHero = heroEndIndex + 1; indexAfterHero < this.tokens.length; indexAfterHero++) {
+          const tokenAfterHero = this.tokens[indexAfterHero]
+
+          if (tokenAfterHero === endTokenOfOverlappingConvention) {
+            this.tokens.splice(indexAfterHero, 1)
+            this.insertTokens(heroEndIndex, [endTokenOfOverlappingConvention])
+            heroEndIndex += 1
+            break
+          }
+
+          // If the current token doesn't end any conventions, we bail. The overlapping convention contains
+          // some content after the hero convention, so we aren't dealing with the situation described above.
+          if (!doesTokenEndAnyConvention(tokenAfterHero, ALL_RICH_CONVENTIONS)) {
+            break
+          }
         }
       }
 
@@ -219,10 +252,10 @@ class ConventionNester {
   }
 }
 
-function doesTokenStartConvention(token: Token, conventions: RichConvention[]): boolean {
+function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]): boolean {
   return conventions.some(convention => token.kind === convention.startTokenKind)
 }
 
-function doesTokenEndConvention(token: Token, conventions: RichConvention[]): boolean {
+function doesTokenEndAnyConvention(token: Token, conventions: RichConvention[]): boolean {
   return conventions.some(convention => token.kind === convention.endTokenKind)
 }
