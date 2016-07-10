@@ -12,8 +12,6 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 
 
-
-
 describe('Overlapped stressed, deleted, and inserted text', () => {
   it("split the revision deletion node once and the revision insertion node twice", () => {
     expect(Up.toAst('I **love ~~covertly ++drinking** whole~~ milk++ all the time.')).to.be.eql(
@@ -37,6 +35,24 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
           new PlainTextNode(' milk')
         ]),
         new PlainTextNode(' all the time.')
+      ]))
+  })
+})
+
+
+describe('When two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion)', () => {
+  it("the three can start one after another", () => {
+    expect(Up.toAst('**++~~Hello++ good** friend!~~')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionDeletionNode([
+          new StressNode([
+            new RevisionInsertionNode([
+              new PlainTextNode('Hello')
+            ]),
+            new PlainTextNode(' good')
+          ]),
+          new PlainTextNode(' friend!')
+        ])
       ]))
   })
 })
