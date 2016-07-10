@@ -113,6 +113,30 @@ describe('When two "only-split-when-necessary" conventions (e.g. NSFL, action) a
 })
 
 
+describe('When several conventions (some freely splittable, and some that should only be split when necessary) are overlapping and all end consecutively', () => {
+  it("they are perfectly nested", () => {
+    expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {stomp++**)}]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
+          new PlainTextNode('There '),
+          new RevisionInsertionNode([
+            new PlainTextNode('was '),
+            new SpoilerNode([
+              new PlainTextNode('another '),
+              new NsflNode([
+                new PlainTextNode('loud '),
+                new ActionNode([
+                  new PlainTextNode('stomp')
+                ])
+              ])
+            ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
 describe('Overlapped doubly emphasized text (closing at the same time) and revision deletion', () => {
   it('splits the revision deletion node', () => {
     expect(Up.toAst("*I know. *Well, I don't ~~really.** Ha!~~")).to.be.eql(
