@@ -201,10 +201,13 @@ class ConventionNester {
           //
           // {loudly sings [SPOILER: Jigglypuff's Lullaby}]
           //
-          // TODO: Show example with more overlapping conventions
+          // There could also be more than two conventions involved:
+          //
+          // **{loudly sings [SPOILER: Jigglypuff's Lullaby}**]
           //
           // Therefore, if there isn't any actual content between this end token and the hero's end token, we'll
-          // simply move this end token after the hero's end token rather the end token's convention.
+          // simply move this end token after the hero's end token. This allows us to avoid splitting the end
+          // token's convention.
           //
           // Note: The same logic applies for tokens overlapping by only their start tokens. However, that case is
           // handled by the tokenizer (due to how it inserts start tokens when a rich convention closes).
