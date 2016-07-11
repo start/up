@@ -631,65 +631,65 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
           ]),
           new PlainTextNode('()')
         ]))
+    })
 
-      specify('NSFL', () => {
-        expect(Up.toAst('[NSFL: Ash fights Gary][]')).to.be.eql(
-          insideDocumentAndParagraph([
-            new NsflNode([
-              new PlainTextNode('Ash fights Gary')
-            ]),
-            new PlainTextNode('[]')
-          ]))
-      })
+    specify('NSFL', () => {
+      expect(Up.toAst('[NSFL: Ash fights Gary][]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('[]')
+        ]))
+    })
 
-      specify('Spoilers', () => {
-        expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
-          insideDocumentAndParagraph([
-            new NsflNode([
-              new PlainTextNode('Ash fights Gary')
-            ]),
-            new PlainTextNode('{}')
-          ]))
-      })
+    specify('Spoilers', () => {
+      expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('{}')
+        ]))
+    })
 
-      specify('Footnotes', () => {
-        const footnote = new FootnoteNode([
-          new PlainTextNode('Ash fights gary')
-        ], 1)
+    specify('Footnotes', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Ash fights gary')
+      ], 1)
 
-        expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              footnote,
-              new PlainTextNode('()')
-            ]),
-            new FootnoteBlockNode([footnote])
-          ]))
-      })
-
-      specify('Audio', () => {
-        expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
-          insideDocumentAndParagraph([
-            new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+      expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
             new PlainTextNode('()')
-          ]))
-      })
+          ]),
+          new FootnoteBlockNode([footnote])
+        ]))
+    })
 
-      specify('Images', () => {
-        expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
-          insideDocumentAndParagraph([
-            new ImageNode('Ash fights Gary', 'https://example.com/image'),
-            new PlainTextNode('[]')
-          ]))
-      })
+    specify('Audio', () => {
+      expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+        insideDocumentAndParagraph([
+          new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+          new PlainTextNode('()')
+        ]))
+    })
 
-      specify('Videos', () => {
-        expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
-          insideDocumentAndParagraph([
-            new ImageNode('Ash fights Gary', 'https://example.com/video'),
-            new PlainTextNode('{}')
-          ]))
-      })
+    specify('Images', () => {
+      expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new ImageNode('Ash fights Gary', 'https://example.com/image'),
+          new PlainTextNode('[]')
+        ]))
+    })
+
+    specify('Videos', () => {
+      expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new ImageNode('Ash fights Gary', 'https://example.com/video'),
+          new PlainTextNode('{}')
+        ]))
     })
   })
 
@@ -702,68 +702,69 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
           ]),
           new PlainTextNode('(\t \t \t)')
         ]))
+    })
 
-      specify('NSFL', () => {
-        expect(Up.toAst('[NSFL: Ash fights Gary][\t \t \t]')).to.be.eql(
-          insideDocumentAndParagraph([
-            new NsflNode([
-              new PlainTextNode('Ash fights Gary')
-            ]),
-            new PlainTextNode('[\t \t \t]')
-          ]))
-      })
+    specify('NSFL', () => {
+      expect(Up.toAst('[NSFL: Ash fights Gary][\t \t \t]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('[\t \t \t]')
+        ]))
+    })
 
-      specify('Spoilers', () => {
-        expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
-          insideDocumentAndParagraph([
-            new NsflNode([
-              new PlainTextNode('Ash fights Gary')
-            ]),
-            new PlainTextNode('{\t \t \t}')
-          ]))
-      })
+    specify('Spoilers', () => {
+      expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new NsflNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('{\t \t \t}')
+        ]))
+    })
 
-      specify('Footnotes', () => {
-        const footnote = new FootnoteNode([
-          new PlainTextNode('Ash fights gary')
-        ], 1)
+    specify('Footnotes', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Ash fights gary')
+      ], 1)
 
-        expect(Up.toAst('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
-          new DocumentNode([
-            new ParagraphNode([
-              footnote,
-              new PlainTextNode('(\t \t \t)')
-            ]),
-            new FootnoteBlockNode([footnote])
-          ]))
-      })
-
-      specify('Audio', () => {
-        expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
-          insideDocumentAndParagraph([
-            new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+      expect(Up.toAst('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            footnote,
             new PlainTextNode('(\t \t \t)')
-          ]))
-      })
+          ]),
+          new FootnoteBlockNode([footnote])
+        ]))
+    })
 
-      specify('Images', () => {
-        expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
-          insideDocumentAndParagraph([
-            new ImageNode('Ash fights Gary', 'https://example.com/image'),
-            new PlainTextNode('[\t \t \t]')
-          ]))
-      })
+    specify('Audio', () => {
+      expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+        insideDocumentAndParagraph([
+          new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+          new PlainTextNode('(\t \t \t)')
+        ]))
+    })
 
-      specify('Videos', () => {
-        expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
-          insideDocumentAndParagraph([
-            new ImageNode('Ash fights Gary', 'https://example.com/video'),
-            new PlainTextNode('{\t \t \t}')
-          ]))
-      })
+    specify('Images', () => {
+      expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new ImageNode('Ash fights Gary', 'https://example.com/image'),
+          new PlainTextNode('[\t \t \t]')
+        ]))
+    })
+
+    specify('Videos', () => {
+      expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new ImageNode('Ash fights Gary', 'https://example.com/video'),
+          new PlainTextNode('{\t \t \t}')
+        ]))
     })
   })
 })
+
 
 describe('Revision insertion containing an empty revision deletion', () => {
   it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
