@@ -801,19 +801,12 @@ class Tokenizer {
 
     this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
-
     // Let's add the end token as close to the content it's enclosing as possible.
     //
     // TODO: Explain why
     let endTokenIndex = this.tokens.length
 
-    // This functions assumes that `token` is a rich convention's end token!
-    function isRichEndTokenOnlyADelimiter(token: Token): boolean {
-      // Unlike other delimiters, parenthesized and square bracketed tokens actually represent content.
-      return (token.kind !== TokenKind.ParenthesizedEnd) && (token.kind !== TokenKind.SquareBracketedEnd)
-    }
-
-    if (isRichEndTokenOnlyADelimiter(endToken)) {
+    if (!doesRichEndTokenRepresentTextContent(endToken)) {
       for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
         let previousToken = this.tokens[i]
 
@@ -821,12 +814,13 @@ class Tokenizer {
         const shouldSwapEndTokenWithPreviousToken =
           // The previous token is a rich end token...
           previousToken.correspondsToToken
-          // That rich end token is only a delimiter, not representing any actual content... 
-          && isRichEndTokenOnlyADelimiter(previousToken)
-          // And the start token we just added is within the previous end token's convention 
+          // That rich end token is only a delimiter, not representing any actual text content... 
+          && !doesRichEndTokenRepresentTextContent(previousToken)
+          // And our start token (that we just added) is within the previous end token's convention! 
           && startTokenIndex > this.indexOfToken(previousToken.correspondsToToken)
 
         if (shouldSwapEndTokenWithPreviousToken) {
+          // If all that applies, our end token should really be inside the previous end token's convention.
           endTokenIndex -= 1
         } else {
           // We've hit a token that we can't swap with! Let's add our end token. 
@@ -1083,6 +1077,13 @@ class Tokenizer {
       this.bufferCurrentChar()
     }
   }
+}
+
+
+// This functions assumes that `richEndToken` is a rich convention's end token!
+function doesRichEndTokenRepresentTextContent(richEndToken: Token): boolean {
+  // Unlike other delimiters, parenthesized and square bracketed tokens actually represent content.
+  return (richEndToken.kind === TokenKind.ParenthesizedEnd) || (richEndToken.kind === TokenKind.SquareBracketedEnd)
 }
 
 
