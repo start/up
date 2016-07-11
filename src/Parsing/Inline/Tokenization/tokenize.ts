@@ -1105,9 +1105,6 @@ function doesRichEndTokenRepresentTextContent(richConventionEndToken: Token): bo
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
-const ANY_WHITESPACE_PATTERN =
-  regExpStartingWith(ANY_WHITESPACE)
-
 const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
 
