@@ -801,9 +801,22 @@ class Tokenizer {
 
     this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
-    // Let's add the end token as close to the content it's enclosing as possible.
+    // Inline conventions can overlap! However, ultimately, we must produce an abstract syntax tree, so
+    // overlapping conventions are eventually chopped up, ensuring each convention has a single parent.
+    // This process is better explained in `nestOverlappingConventions.ts`.
     //
-    // TODO: Explain why
+    // Sometimes, however, the author may overlap conventions by accident. If we can avoid having to
+    // to chop up conventions that the author didn't intend to overlap, everyone wins! Broadly, accidental
+    // overlapping can take two forms:
+    //
+    // 1. Conventions that overlap by only their start tokens:
+    //
+    //    TODO: Explain
+    //
+    // 2. Conventions that overlap only by their end tokens:
+    //
+    //    TODO: Explain
+
     let endTokenIndex = this.tokens.length
 
     if (!doesRichEndTokenRepresentTextContent(endToken)) {
