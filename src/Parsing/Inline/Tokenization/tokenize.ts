@@ -807,24 +807,29 @@ class Tokenizer {
     // TODO: Explain why
     let endTokenIndex = this.tokens.length
 
-    // This functions assumes that `token` is a rich convention's end token.
-    function canRichEndTokenBeMoved(token: Token): boolean {
+    // This functions assumes that `token` is a rich convention's end token!
+    function isRichEndTokenOnlyADelimiter(token: Token): boolean {
       // Unlike other delimiters, parenthesized and square bracketed tokens actually represent content.
       return (token.kind !== TokenKind.ParenthesizedEnd) && (token.kind !== TokenKind.SquareBracketedEnd)
     }
 
-    if (canRichEndTokenBeMoved(endToken)) {
+    if (isRichEndTokenOnlyADelimiter(endToken)) {
       for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
-        let otherToken = this.tokens[i]
+        let previousToken = this.tokens[i]
 
-        const canOtherTokenBeMoved =
-          otherToken.correspondsToToken
-          && canRichEndTokenBeMoved(otherToken)
-          && startTokenIndex > this.indexOfToken(otherToken.correspondsToToken)
+        // We should only swap our end token with the previous token if...
+        const shouldSwapEndTokenWithPreviousToken =
+          // The previous token is a rich end token...
+          previousToken.correspondsToToken
+          // That rich end token is only a delimiter, not representing any actual content... 
+          && isRichEndTokenOnlyADelimiter(previousToken)
+          // And the start token we just added is within the previous end token's convention 
+          && startTokenIndex > this.indexOfToken(previousToken.correspondsToToken)
 
-        if (canOtherTokenBeMoved) {
+        if (shouldSwapEndTokenWithPreviousToken) {
           endTokenIndex -= 1
         } else {
+          // We've hit a token that we can't swap with! Let's add our end token. 
           break
         }
       }
