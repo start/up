@@ -646,7 +646,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
         insideDocumentAndParagraph([
-          new NsflNode([
+          new SpoilerNode([
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('{}')
@@ -655,7 +655,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
     specify('Footnotes', () => {
       const footnote = new FootnoteNode([
-        new PlainTextNode('Ash fights gary')
+        new PlainTextNode('Ash fights Gary')
       ], 1)
 
       expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
@@ -671,7 +671,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Audio', () => {
       expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+          new AudioNode('Ash fights Gary', 'https://example.com/audio'),
           new PlainTextNode('()')
         ]))
     })
@@ -687,7 +687,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Videos', () => {
       expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('Ash fights Gary', 'https://example.com/video'),
+          new VideoNode('Ash fights Gary', 'https://example.com/video'),
           new PlainTextNode('{}')
         ]))
     })
@@ -717,7 +717,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
-          new NsflNode([
+          new SpoilerNode([
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('{\t \t \t}')
@@ -726,7 +726,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
     specify('Footnotes', () => {
       const footnote = new FootnoteNode([
-        new PlainTextNode('Ash fights gary')
+        new PlainTextNode('Ash fights Gary')
       ], 1)
 
       expect(Up.toAst('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
@@ -740,15 +740,15 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Audio', () => {
-      expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+      expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('Ash fights Gary', 'https://example.com/audio'),
+          new AudioNode('Ash fights Gary', 'https://example.com/audio'),
           new PlainTextNode('(\t \t \t)')
         ]))
     })
 
     specify('Images', () => {
-      expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+      expect(Up.toAst('[image: Ash fights Gary](example.com/image)[\t \t \t]')).to.be.eql(
         insideDocumentAndParagraph([
           new ImageNode('Ash fights Gary', 'https://example.com/image'),
           new PlainTextNode('[\t \t \t]')
@@ -756,9 +756,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Videos', () => {
-      expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+      expect(Up.toAst('[video: Ash fights Gary](example.com/video){\t \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('Ash fights Gary', 'https://example.com/video'),
+          new VideoNode('Ash fights Gary', 'https://example.com/video'),
           new PlainTextNode('{\t \t \t}')
         ]))
     })
