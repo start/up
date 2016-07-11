@@ -355,6 +355,25 @@ describe('A link that overlaps an action convention (which is prioritized to avo
 })
 
 
+describe('An action that overlaps a link by only their end tokens', () => {
+  it("is perfectly nested", () => {
+    const text =
+      '{loud [thwomp}](example.com/thwomp)'
+
+    expect(Up.toAst(text)).to.be.eql(
+      insideDocumentAndParagraph([
+        new ActionNode([
+          new PlainTextNode('loud '),
+          new LinkNode([
+            new PlainTextNode('thwomp')
+          ], 'https://example.com/thwomp')
+        ])
+      ])
+    )
+  })
+})
+
+
 describe('A spoiler that overlaps a footnote', () => {
   it("splits the spoiler node, not the footnote node", () => {
     const text = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
