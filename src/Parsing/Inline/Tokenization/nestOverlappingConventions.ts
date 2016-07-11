@@ -216,28 +216,31 @@ class ConventionNester {
     //
     // Befoire adding a new start token, we examine the token that would directly follow it. If that token is the
     // corresponding end token, rather than create an empty convention, we simply remove that end token.
-    for (const endToken of endTokensInTheirOriginalOrder) {
-      const indexBeforeSplittingToken = index - 1
 
+    const { tokens } = this
+
+    for (const endToken of endTokensInTheirOriginalOrder) {
       // First, let's try to add the end token before the splitting token.
 
-      if (this.tokens[indexBeforeSplittingToken].correspondsToToken === endToken) {
-        this.tokens.splice(indexBeforeSplittingToken, 1)
+      const indexBeforeSplittingToken = index - 1
+
+      if (tokens[indexBeforeSplittingToken].correspondsToToken === endToken) {
+        tokens.splice(indexBeforeSplittingToken, 1)
         index -= 1
       } else {
-        this.tokens.splice(index, 0, endToken)
+        tokens.splice(index, 0, endToken)
         index += 1
       }
 
       // Next, let's try to add the corresponding start token after the splitting token.
-
+      
       const indexAfterSplitterToken = index + 1
 
-      if (this.tokens[indexAfterSplitterToken] === endToken) {
-        this.tokens.splice(indexAfterSplitterToken, 1)
+      if (tokens[indexAfterSplitterToken] === endToken) {
+        tokens.splice(indexAfterSplitterToken, 1)
       } else {
         const startToken = endToken.correspondsToToken
-        this.tokens.splice(indexAfterSplitterToken, 0, startToken)
+        tokens.splice(indexAfterSplitterToken, 0, startToken)
       }
     }
   }
