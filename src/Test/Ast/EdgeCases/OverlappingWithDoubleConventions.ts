@@ -109,6 +109,22 @@ context('When overlapping conventions end consecutively, they nest without being
       ]))
   })
 
+  it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority (e.g. link) ', () => {
+    expect(Up.toAst('(There was another [NSFL: rotten body {squish)(example.com)}] Hi!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('There was another '),
+          new NsflNode([
+            new PlainTextNode('rotten body '),
+            new ActionNode([
+              new PlainTextNode('squish')
+            ]),
+          ]),
+        ], 'https://example.com'),
+        new PlainTextNode(' Hi!')
+      ]))
+  })
+
   it('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
     expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {stomp++**)}]. Hi!')).to.be.eql(
       insideDocumentAndParagraph([
