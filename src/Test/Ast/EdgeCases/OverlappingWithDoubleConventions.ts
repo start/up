@@ -93,7 +93,7 @@ context('When overlapping conventions end consecutively, they nest without being
       ]))
   })
 
-  it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority (e.g. spoiler) ', () => {
+  it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with a priority in between the first two (e.g. spoiler) ', () => {
     expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body {squish)}] Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([
@@ -109,7 +109,7 @@ context('When overlapping conventions end consecutively, they nest without being
       ]))
   })
 
-  it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority (e.g. link) ', () => {
+  it('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority than both (e.g. link) ', () => {
     expect(Up.toAst('(There was another [NSFL: rotten body {squish)(example.com)}] Hi!')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
