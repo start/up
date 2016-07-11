@@ -1093,10 +1093,12 @@ class Tokenizer {
 }
 
 
-// This functions assumes that `richEndToken` is a rich convention's end token!
-function doesRichEndTokenRepresentTextContent(richEndToken: Token): boolean {
+// This functions assumes that `richConventionEndToken` is a rich convention's end token!
+function doesRichEndTokenRepresentTextContent(richConventionEndToken: Token): boolean {
   // Unlike other delimiters, parenthesized and square bracketed tokens actually represent content.
-  return (richEndToken.kind === TokenKind.ParenthesizedEnd) || (richEndToken.kind === TokenKind.SquareBracketedEnd)
+  return (
+    richConventionEndToken.kind === TokenKind.ParenthesizedEnd
+    || richConventionEndToken.kind === TokenKind.SquareBracketedEnd)
 }
 
 
