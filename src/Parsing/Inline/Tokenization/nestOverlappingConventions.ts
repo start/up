@@ -207,7 +207,7 @@ class ConventionNester {
   //
   // Functionally, this method does exactly what its name implies: it adds convention end tokens before `index`
   // and convention start tokens after `index`.
-  private closeAndReopenConventionsAroundTokenAtIndex(indexOfSplittingToken: number, endTokensInTheirOriginalOrder: Token[]): void {
+  private closeAndReopenConventionsAroundTokenAtIndex(index: number, endTokensInTheirOriginalOrder: Token[]): void {
     // We're going to close and reopen the innermost conventions first (those belonging to end tokens appearing
     // earlier in `endTokensInTheirOriginalOrder`.
     //
@@ -217,25 +217,27 @@ class ConventionNester {
     // Befoire adding a new start token, we examine the token that would directly follow it. If that token is the
     // corresponding end token, rather than create an empty convention, we simply remove that end token.
     for (const endToken of endTokensInTheirOriginalOrder) {
-      const indexBeforeSplittingToken = indexOfSplittingToken - 1
+      const indexBeforeSplittingToken = index - 1
+
+      // First, let's try to add the end token before the splitting token.
 
       if (this.tokens[indexBeforeSplittingToken].correspondsToToken === endToken) {
         this.tokens.splice(indexBeforeSplittingToken, 1)
-        indexOfSplittingToken -= 1
+        index -= 1
       } else {
-        // To insert a token before the splitting token, we actually insert a token at its index...
-        this.tokens.splice(indexOfSplittingToken, 0, endToken)
-        
-        // ...And then update the splitting token's index accordingly.
-        indexOfSplittingToken += 1
+        this.tokens.splice(index, 0, endToken)
+        index += 1
       }
 
-      const indexAfterSplitterToken = indexOfSplittingToken + 1
+      // Next, let's try to add the corresponding start token after the splitting token.
+
+      const indexAfterSplitterToken = index + 1
 
       if (this.tokens[indexAfterSplitterToken] === endToken) {
         this.tokens.splice(indexAfterSplitterToken, 1)
       } else {
-        this.tokens.splice(indexAfterSplitterToken, 0, endToken.correspondsToToken)
+        const startToken = endToken.correspondsToToken
+        this.tokens.splice(indexAfterSplitterToken, 0, startToken)
       }
     }
   }
