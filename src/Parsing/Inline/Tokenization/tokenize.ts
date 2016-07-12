@@ -158,9 +158,9 @@ class Tokenizer {
 
       ...this.getFootnoteConventions(),
 
-      ...this.getLinkContentConventions(),
-
       ...this.getLinkifyingUrlConventions(),
+      
+      ...this.getLinkContentConventions(),
 
       ...[
         {
