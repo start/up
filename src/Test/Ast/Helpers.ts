@@ -22,9 +22,9 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
 ): void {
   expectEveryPermutationOfBrackets({
     contentToWrapInBrackets: args.content,
-    urlSegments: [{
+    bracketedSegments: [{
       prefixes: args.partsBetweenContentAndUrl,
-      urlToWrapInBrackets: args.url
+      content: args.url
     }],
     toProduce: args.toProduce
   })
@@ -33,7 +33,7 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
 export function expectEveryPermutationOfBrackets(
   args: {
     contentToWrapInBrackets: string
-    urlSegments: UrlSegment[]
+    bracketedSegments: BracketedSegments[]
     toProduce: DocumentNode
   }
 ): void {
@@ -45,22 +45,22 @@ export function expectEveryPermutationOfBrackets(
     { open: '{', close: '}' }
   ]
 
-  const urlSegments = args.urlSegments.map(urlSegment => <UrlSegment>{
-    prefixes: urlSegment.prefixes || [''],
-    urlToWrapInBrackets: urlSegment.urlToWrapInBrackets
+  const segments = args.bracketedSegments.map(segment => <BracketedSegments>{
+    prefixes: segment.prefixes || [''],
+    content: segment.content
   })
 
   for (const contentBracket of BRACKETS) {
     const bracktedContent = wrapInBracket(contentToWrapInBrackets, contentBracket)
 
-    const permutationsByUrlSegment =
-      urlSegments.map(urlSegment =>
+    const permutationsBySegment =
+      segments.map(segment =>
         concat(
-          urlSegment.prefixes.map(prefix =>
+          segment.prefixes.map(prefix =>
             BRACKETS.map(bracket =>
-              prefix + wrapInBracket(urlSegment.urlToWrapInBrackets, bracket)))))
+              prefix + wrapInBracket(segment.content, bracket)))))
 
-    for (const permutation of everyPermutation(bracktedContent, permutationsByUrlSegment)) {
+    for (const permutation of everyPermutation(bracktedContent, permutationsBySegment)) {
       expect(Up.toAst(permutation)).to.be.eql(toProduce)
     }
   }
@@ -109,9 +109,9 @@ function everyPermutation(prefix: string, valuesBySegment: string[][]): string[]
 }
 
 
-export interface UrlSegment {
+export interface BracketedSegments {
   prefixes?: string[],
-  urlToWrapInBrackets: string
+  content: string
 }
 
 export interface Bracket {

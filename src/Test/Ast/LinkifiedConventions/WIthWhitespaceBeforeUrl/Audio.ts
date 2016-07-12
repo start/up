@@ -14,14 +14,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
       contentToWrapInBrackets: 'audio: something terrible',
-      urlSegments: [
+      bracketedSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          content: 'https://example.com/sounds.ogg'
         },
         {
           prefixes: WITH_WHITESPACE,
-          urlToWrapInBrackets: 'app:wiki/terrible-thing'
+          content: 'app:wiki/terrible-thing'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -36,14 +36,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: Advance Wars',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
+            content: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -96,14 +96,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     specify('the rest of the URL can consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: spooky phone call',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: 'tel:5555555555'
+            content: 'tel:5555555555'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -130,14 +130,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
   specify('It starts with a slash', () => {
     expectEveryPermutationOfBrackets({
       contentToWrapInBrackets: 'audio: something terrible',
-      urlSegments: [
+      bracketedSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          content: 'https://example.com/sounds.ogg'
         },
         {
           prefixes: WITH_WHITESPACE,
-          urlToWrapInBrackets: '/wiki/something-terrible'
+          content: '/wiki/something-terrible'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -176,14 +176,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     it('can consist solely of digits after the slash', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: Model 3 theft',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: '/3'
+            content: '/3'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -210,14 +210,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryPermutationOfBrackets({
       contentToWrapInBrackets: 'audio: something terrible',
-      urlSegments: [
+      bracketedSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          content: 'https://example.com/sounds.ogg'
         },
         {
           prefixes: WITH_WHITESPACE,
-          urlToWrapInBrackets: '#wiki/something-terrible'
+          content: '#wiki/something-terrible'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -232,14 +232,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     it('may consist solely of digits after the hask mark', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: Model 3 theft',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: '#3'
+            content: '#3'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -290,14 +290,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
   specify('It has a top-level domain', () => {
     expectEveryPermutationOfBrackets({
       contentToWrapInBrackets: 'audio: Chrono Trigger',
-      urlSegments: [
+      bracketedSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          content: 'https://example.com/sounds.ogg'
         },
         {
           prefixes: WITH_WHITESPACE,
-          urlToWrapInBrackets: 'https://chrono-trigger.wiki'
+          content: 'https://chrono-trigger.wiki'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -312,14 +312,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: Advance Wars',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
+            content: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -332,14 +332,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: Advance Wars',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: 'advancewars.wikia.com/'
+            content: 'advancewars.wikia.com/'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -364,14 +364,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: good luck',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: '88.8888.cn'
+            content: '88.8888.cn'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -446,14 +446,14 @@ context('A linkified audio convention can have whitespace between its audio URL 
     specify('the URL may have consecutive periods after the slash that indicates the start of the resource path', () => {
       expectEveryPermutationOfBrackets({
         contentToWrapInBrackets: 'audio: rocket ship',
-        urlSegments: [
+        bracketedSegments: [
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+            content: 'https://example.com/sounds.ogg'
           },
           {
             prefixes: WITH_WHITESPACE,
-            urlToWrapInBrackets: 'example.com/321...blastoff/1'
+            content: 'example.com/321...blastoff/1'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -524,14 +524,14 @@ describe("An audio convention's linkifying URL, when separated from its audio UR
   it('can itself contain whitespace if each whitespace character is escaped', () => {
     expectEveryPermutationOfBrackets({
       contentToWrapInBrackets: 'audio: something terrible',
-      urlSegments: [
+      bracketedSegments: [
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          urlToWrapInBrackets: 'https://example.com/sounds.ogg'
+          content: 'https://example.com/sounds.ogg'
         },
         {
           prefixes: WITH_WHITESPACE,
-          urlToWrapInBrackets: 'stackoverflow.com/search=something\\ very\\ terrible'
+          content: 'stackoverflow.com/search=something\\ very\\ terrible'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
