@@ -33,14 +33,11 @@ describe('An video convention (with its URL) followed immediately by a (second) 
 describe('Any video convention (with its URL) followed immediately by a (second) parenthesized/bracketed URL', () => {
   it('produces an video node within a link pointing to that second URL. The types of brackets surrounding the video description, the video URL, and the "linkifying" URL can all be different', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'video: you fight Gary',
       bracketedSegments: [
-        {
-          content: 'https://example.com/fight.ogg'
-        },
-        {
-          content: 'http://example.com/finalbattle'
-        }],
+        { content: 'video: you fight Gary' },
+        { content: 'https://example.com/fight.ogg' },
+        { content: 'http://example.com/finalbattle' }
+      ],
       toProduce: new DocumentNode([
         new LinkNode([
           new VideoNode('you fight Gary', 'https://example.com/fight.ogg')
@@ -52,14 +49,11 @@ describe('Any video convention (with its URL) followed immediately by a (second)
   context("As long as there is no whitespace between the video's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
     specify('For example, the linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: you fight Gary',
         bracketedSegments: [
-          {
-            content: 'https://example.com/fight.ogg'
-          },
-          {
-            content: 'http://example.com/final battle'
-          }],
+          { content: 'video: you fight Gary' },
+          { content: 'https://example.com/fight.ogg' },
+          { content: 'http://example.com/final battle' }
+        ],
         toProduce: new DocumentNode([
           new LinkNode([
             new VideoNode('you fight Gary', 'https://example.com/fight.ogg')

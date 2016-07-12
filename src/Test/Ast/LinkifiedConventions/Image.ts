@@ -33,14 +33,11 @@ describe('An image convention (with its URL) followed immediately by a (second) 
 describe('Any image convention (with its URL) followed immediately by a (second) parenthesized/bracketed URL', () => {
   it('produces an image node within a link pointing to that second URL. The types of brackets surrounding the image description, the image URL, and the "linkifying" URL can all be different', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'image: you fight Gary',
       bracketedSegments: [
-        {
-          content: 'https://example.com/fight.ogg'
-        },
-        {
-          content: 'http://example.com/finalbattle'
-        }],
+        { content: 'image: you fight Gary' },
+        { content: 'https://example.com/fight.ogg' },
+        { content: 'http://example.com/finalbattle' }
+      ],
       toProduce: new DocumentNode([
         new LinkNode([
           new ImageNode('you fight Gary', 'https://example.com/fight.ogg')
@@ -52,14 +49,11 @@ describe('Any image convention (with its URL) followed immediately by a (second)
   context("As long as there is no whitespace between the image's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
     specify('For example, the linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: you fight Gary',
         bracketedSegments: [
-          {
-            content: 'https://example.com/fight.ogg'
-          },
-          {
-            content: 'http://example.com/final battle'
-          }],
+          { content: 'image: you fight Gary' },
+          { content: 'https://example.com/fight.ogg' },
+          { content: 'http://example.com/final battle' }
+        ],
         toProduce: new DocumentNode([
           new LinkNode([
             new ImageNode('you fight Gary', 'https://example.com/fight.ogg')

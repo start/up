@@ -33,14 +33,11 @@ describe('An audio convention (with its URL) followed immediately by a (second) 
 describe('Any audio convention (with its URL) followed immediately by a (second) parenthesized/bracketed URL', () => {
   it('produces an audio node within a link pointing to that second URL. The types of brackets surrounding the audio description, the audio URL, and the "linkifying" URL can all be different', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'audio: you fight Gary',
       bracketedSegments: [
-        {
-          content: 'https://example.com/fight.ogg'
-        },
-        {
-          content: 'http://example.com/finalbattle'
-        }],
+        { content: 'audio: you fight Gary' },
+        { content: 'https://example.com/fight.ogg' },
+        { content: 'http://example.com/finalbattle' }
+      ],
       toProduce: new DocumentNode([
         new LinkNode([
           new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
@@ -52,14 +49,11 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
   context("As long as there is no whitespace between the audio's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
     specify('For example, the linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: you fight Gary',
         bracketedSegments: [
-          {
-            content: 'https://example.com/fight.ogg'
-          },
-          {
-            content: 'http://example.com/final battle'
-          }],
+          { content: 'audio: you fight Gary' },
+          { content: 'https://example.com/fight.ogg' },
+          { content: 'http://example.com/final battle' }
+        ],
         toProduce: new DocumentNode([
           new LinkNode([
             new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
