@@ -86,7 +86,7 @@ describe('An video convention directly followed by a spoiler', () => {
 })
 
 
-describe('A spoiler directly followed by a NSFW convention', () => {
+describe('A video directly followed by a NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -101,7 +101,7 @@ describe('A spoiler directly followed by a NSFW convention', () => {
 })
 
 
-describe('A spoiler directly followed by a NSFL convention', () => {
+describe('A video directly followed by a NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -116,7 +116,7 @@ describe('A spoiler directly followed by a NSFL convention', () => {
 })
 
 
-describe('A spoiler directly followed by a footnote', () => {
+describe('A video directly followed by a footnote', () => {
   it("is not linkified", () => {
     const text = "After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"
 
