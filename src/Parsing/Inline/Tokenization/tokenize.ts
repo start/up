@@ -168,9 +168,6 @@ class Tokenizer {
       ...this.getLinkUrlConventions())
 
     this.conventions.push(
-      ...this.getConventionsForWhitespaceFollowedByLinkUrl())
-
-    this.conventions.push(
       ...this.getLinkifyingUrlConventions())
 
     this.conventions.push(
@@ -349,20 +346,8 @@ class Tokenizer {
   //
   // You should try [Typescript](http://www.typescriptlang.org).
   //
-  // We allow whitespace between a link's content and its URL, but that isn't handled by these
-  // conventions. For that, see `getConventionsForWhitespaceFollowedByLinkUrl`.
-  private getLinkUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => this.getBracketedUrlConvention({
-      bracket,
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-      whenClosing: url => this.closeLink(url)
-    }))
-  }
-
-  // Normally, a link's URL directly follows its content.
-  //
-  // However, if we're very sure that the author is intending to produce a link, we allow whitespace
-  // between the content and the URL. For example:
+  // If we're very sure that the author is intending to produce a link, we allow whitespace between
+  // the link's bracketed content and its bracketed URL. For example:
   //
   // You should try [Typescript] (http://www.typescriptlang.org).
   //
@@ -382,12 +367,19 @@ class Tokenizer {
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive  periods are allowed in the resource path.
-  private getConventionsForWhitespaceFollowedByLinkUrl(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => this.getConventionForWhitespaceFollowedByBracketedUrl({
-      bracket,
-      onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
-      ifUrlIsValidWheClosing: url => this.closeLink(url)
-    }))
+  private getLinkUrlConventions(): TokenizableConvention[] {
+    return concat(BRACKETS.map(bracket => [
+      this.getBracketedUrlConvention({
+        bracket,
+        onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
+        whenClosing: url => this.closeLink(url)
+      }),
+      this.getConventionForWhitespaceFollowedByBracketedUrl({
+        bracket,
+        onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
+        ifUrlIsValidWheClosing: url => this.closeLink(url)
+      })
+    ]))
   }
 
   private probablyWasNotIntendedToBeAUrl(url: string): boolean {
