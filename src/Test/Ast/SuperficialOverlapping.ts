@@ -287,8 +287,7 @@ context('When most conventions overlap by only their end tokens, they nest witho
           new SquareBracketedNode([
             new PlainTextNode('why would you do this?]')
           ])
-        ])
-      )
+        ]))
     })
   })
 })

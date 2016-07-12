@@ -190,8 +190,7 @@ describe('Action text that overlaps a link', () => {
         new LinkNode([
           new PlainTextNode(' Midwestern Records')
         ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records')
-      ])
-    )
+      ]))
   })
 })
 
@@ -209,8 +208,7 @@ describe('A link that overlaps action text', () => {
           ], 'https://en.wikipedia.org/wiki/Painfully_Midwestern_Records'),
           new PlainTextNode(' furiously')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -228,8 +226,7 @@ describe('A spoiler that overlaps a link', () => {
         new LinkNode([
           new PlainTextNode(' Ketchum')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-      ])
-    )
+      ]))
   })
 })
 
@@ -252,8 +249,7 @@ describe('A link that overlaps a spoiler', () => {
           new PlainTextNode(' repeatedly')
         ]),
         new PlainTextNode(' throughout the game.')
-      ])
-    )
+      ]))
   })
 })
 
@@ -272,8 +268,7 @@ describe('A spoiler that overlaps action text', () => {
         new ActionNode([
           new PlainTextNode(' badly')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -295,8 +290,7 @@ describe('Action text that overlaps a spoiler', () => {
           ]),
           new PlainTextNode(' to Ash Ketchum')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -322,8 +316,7 @@ describe('A spoiler that overlaps a footnote', () => {
           footnote
         ]),
         new FootnoteBlockNode([footnote])
-      ])
-    )
+      ]))
   })
 })
 
@@ -351,8 +344,7 @@ describe('A footnote that overlaps a spoiler', () => {
           new PlainTextNode(' footnote that overlaps a spoiler.'),
         ]),
         new FootnoteBlockNode([footnote])
-      ])
-    )
+      ]))
   })
 })
 
@@ -371,8 +363,7 @@ describe('A NSFW convention that overlaps a link', () => {
         new LinkNode([
           new PlainTextNode(' Ketchum')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-      ])
-    )
+      ]))
   })
 })
 
@@ -395,8 +386,7 @@ describe('A link that overlaps a NSFW convention', () => {
           new PlainTextNode(' repeatedly')
         ]),
         new PlainTextNode(' throughout the game.')
-      ])
-    )
+      ]))
   })
 })
 
@@ -415,8 +405,7 @@ describe('A NSFW convention that overlaps action text', () => {
         new ActionNode([
           new PlainTextNode(' badly')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -438,8 +427,7 @@ describe('Action text that overlaps a NSFW convention', () => {
           ]),
           new PlainTextNode(' to Ash Ketchum')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -465,8 +453,7 @@ describe('A NSFW convention that overlaps a footnote', () => {
           footnote
         ]),
         new FootnoteBlockNode([footnote])
-      ])
-    )
+      ]))
   })
 })
 
@@ -494,8 +481,7 @@ describe('A footnote that overlaps a NSFW convention', () => {
           new PlainTextNode(' footnote that overlaps a NSFW convention.')
         ]),
         new FootnoteBlockNode([footnote])
-      ])
-    )
+      ]))
   })
 })
 
@@ -513,8 +499,7 @@ describe('A NSFL convention that overlaps a link', () => {
         new LinkNode([
           new PlainTextNode(' Ketchum')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-      ])
-    )
+      ]))
   })
 })
 
@@ -537,8 +522,7 @@ describe('A link that overlaps a NSFL convention', () => {
           new PlainTextNode(' repeatedly')
         ]),
         new PlainTextNode(' throughout the game.')
-      ])
-    )
+      ]))
   })
 })
 
@@ -557,8 +541,7 @@ describe('A NSFL convention that overlaps action text', () => {
         new ActionNode([
           new PlainTextNode(' badly')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -580,8 +563,7 @@ describe('Action text that overlaps a NSFL convention', () => {
           ]),
           new PlainTextNode(' to Ash Ketchum')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -607,8 +589,7 @@ describe('A NSFL convention that overlaps a footnote', () => {
           footnote
         ]),
         new FootnoteBlockNode([footnote])
-      ])
-    )
+      ]))
   })
 })
 
@@ -636,8 +617,7 @@ describe('A footnote that overlaps a NSFL convention', () => {
           new PlainTextNode(' footnote that overlaps a NSFL convention.')
         ]),
         new FootnoteBlockNode([footnote])
-      ])
-    )
+      ]))
   })
 })
 
