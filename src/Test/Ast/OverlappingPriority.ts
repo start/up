@@ -301,7 +301,7 @@ describe('Action text that overlaps a spoiler', () => {
 })
 
 
-describe('A spoiler that overlaps an action by only their end tokens', () => {
+describe('A spoiler that overlaps an action by only their end delimiters', () => {
   it("is perfectly nested", () => {
     const text =
       '[SPOILER: Mario fell off the platform. {splat]}'
@@ -320,7 +320,7 @@ describe('A spoiler that overlaps an action by only their end tokens', () => {
 })
 
 
-describe('An action convention that overlaps a spoiler (which is prioritized to avoid being split over action conventions) by only their end tokens', () => {
+describe('An action convention that overlaps a spoiler (which is prioritized to avoid being split over action conventions) by only their end delimiters', () => {
   it("is perfectly nested", () => {
     expect(Up.toAst("{loudly sings [SPOILER: Jigglypuff's Lullaby}]")).to.be.eql(
       insideDocumentAndParagraph([
@@ -336,7 +336,7 @@ describe('An action convention that overlaps a spoiler (which is prioritized to 
 })
 
 
-describe('Emphasis that overlaps a link (which is prioritized to avoid being split over emphasis) by only their end tokens', () => {
+describe('Emphasis that overlaps a link (which is prioritized to avoid being split over emphasis) by only their end delimiters', () => {
   it("is perfectly nested", () => {
     expect(Up.toAst("*I watched it [live*](example.com/replay)")).to.be.eql(
       insideDocumentAndParagraph([
@@ -352,7 +352,7 @@ describe('Emphasis that overlaps a link (which is prioritized to avoid being spl
 })
 
 
-describe('A link that overlaps an action convention (which is prioritized to avoid being split over links) by only their end tokens', () => {
+describe('A link that overlaps an action convention (which is prioritized to avoid being split over links) by only their end delimiters', () => {
   it("is perfectly nested", () => {
     const text =
       '[Mario fell off the platform. {splat](example.com/game-over)}'
@@ -371,7 +371,7 @@ describe('A link that overlaps an action convention (which is prioritized to avo
 })
 
 
-describe('An action that overlaps a link by only their end tokens', () => {
+describe('An action that overlaps a link by only their end delimiters', () => {
   it("is perfectly nested", () => {
     const text =
       '{loud [thwomp}](example.com/thwomp)'

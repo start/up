@@ -146,7 +146,7 @@ describe('Conventions that completely overlap', () => {
 })
 
 
-describe("Overlapping conventions in which the first convention overlaps the second only by the second's start token", () => {
+describe("Overlapping conventions where the in which only the first convention's end delimiter is inside the second", () => {
   it('are treated as though the first convention ends before the second', () => {
     expect(Up.toAst('++Oh ~~++why would you do this?~~')).to.be.eql(
       insideDocumentAndParagraph([
@@ -162,7 +162,7 @@ describe("Overlapping conventions in which the first convention overlaps the sec
 })
 
 
-describe("Conventions in which the first convention overlaps the second only by the first's start token", () => {
+describe("Overlapping conventions where only the first convention's start delimiter is outside of the second convention", () => {
   it('are treated as though the first convention is inside the second (and thus not overlapping)', () => {
     expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
       insideDocumentAndParagraph([
