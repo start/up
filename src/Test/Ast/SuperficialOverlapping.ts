@@ -292,17 +292,39 @@ context('When most conventions overlap by only their end tokens, they nest witho
   })
 })
 
-
-describe('Conventions that completely overlap', () => {
-  it('are nested in the order they endedg', () => {
-    expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
-      insideDocumentAndParagraph([
-        new StressNode([
-          new RevisionInsertionNode([
-            new PlainTextNode('Why would you do this?')
+context('When most conventions completely overlap, they nest perfectly, with the conventions closing last becoming outermost .', () => {
+  context('This includes:', () => {
+    specify('Revision insertion and stress', () => {
+      expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
+        insideDocumentAndParagraph([
+          new StressNode([
+            new RevisionInsertionNode([
+              new PlainTextNode('Why would you do this?')
+            ])
           ])
-        ])
-      ])
-    )
+        ]))
+    })
+
+    specify('A spoiler and emphasis', () => {
+      expect(Up.toAst('[SPOILER: *Why would you do this?]*')).to.be.eql(
+        insideDocumentAndParagraph([
+          new EmphasisNode([
+            new SpoilerNode([
+              new PlainTextNode('Why would you do this?')
+            ])
+          ])
+        ]))
+    })
+
+    specify('Emphasis and a spoiler', () => {
+      expect(Up.toAst('*[SPOILER: Why would you do this?*]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new EmphasisNode([
+              new PlainTextNode('Why would you do this?')
+            ])
+          ])
+        ]))
+    })
   })
 })
