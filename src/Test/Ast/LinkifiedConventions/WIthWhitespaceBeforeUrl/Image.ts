@@ -14,14 +14,14 @@ context('A linkified image convention can have whitespace between its image URL 
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
-        { content: 'image: something terrible' },
+        { text: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          content: 'https://example.com/image.png'
+          text: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
-          content: 'app:wiki/terrible-thing'
+          text: 'app:wiki/terrible-thing'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -36,14 +36,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: Advance Wars' },
+          { text: 'image: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
+            text: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -96,14 +96,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the rest of the URL can consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: spooky phone call' },
+          { text: 'image: spooky phone call' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: 'tel:5555555555'
+            text: 'tel:5555555555'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -130,14 +130,14 @@ context('A linkified image convention can have whitespace between its image URL 
   specify('It starts with a slash', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
-        { content: 'image: something terrible' },
+        { text: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          content: 'https://example.com/image.png'
+          text: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
-          content: '/wiki/something-terrible'
+          text: '/wiki/something-terrible'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -176,14 +176,14 @@ context('A linkified image convention can have whitespace between its image URL 
     it('can consist solely of digits after the slash', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: Model 3 theft' },
+          { text: 'image: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: '/3'
+            text: '/3'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -210,14 +210,14 @@ context('A linkified image convention can have whitespace between its image URL 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
-        { content: 'image: something terrible' },
+        { text: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          content: 'https://example.com/image.png'
+          text: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
-          content: '#wiki/something-terrible'
+          text: '#wiki/something-terrible'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -232,14 +232,14 @@ context('A linkified image convention can have whitespace between its image URL 
     it('may consist solely of digits after the hask mark', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: Model 3 theft' },
+          { text: 'image: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: '#3'
+            text: '#3'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -290,14 +290,14 @@ context('A linkified image convention can have whitespace between its image URL 
   specify('It has a top-level domain', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
-        { content: 'image: Chrono Trigger' },
+        { text: 'image: Chrono Trigger' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          content: 'https://example.com/image.png'
+          text: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
-          content: 'https://chrono-trigger.wiki'
+          text: 'https://chrono-trigger.wiki'
         }],
       toProduce: new DocumentNode([
         new LinkNode([
@@ -312,14 +312,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: Advance Wars' },
+          { text: 'image: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
+            text: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -332,14 +332,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: Advance Wars' },
+          { text: 'image: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: 'advancewars.wikia.com/'
+            text: 'advancewars.wikia.com/'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -364,14 +364,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: good luck' },
+          { text: 'image: good luck' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: '88.8888.cn'
+            text: '88.8888.cn'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -446,14 +446,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the URL may have consecutive periods after the slash that indicates the start of the resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
-          { content: 'image: rocket ship' },
+          { text: 'image: rocket ship' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
-            content: 'https://example.com/image.png'
+            text: 'https://example.com/image.png'
           },
           {
             prefixes: WITH_WHITESPACE,
-            content: 'example.com/321...blastoff/1'
+            text: 'example.com/321...blastoff/1'
           }],
         toProduce: new DocumentNode([
           new LinkNode([
@@ -524,14 +524,14 @@ describe("An image convention's linkifying URL, when separated from its image UR
   it('can itself contain whitespace if each whitespace character is escaped', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
-        { content: 'image: something terrible' },
+        { text: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
-          content: 'https://example.com/image.png'
+          text: 'https://example.com/image.png'
         },
         {
           prefixes: WITH_WHITESPACE,
-          content: 'stackoverflow.com/search=something\\ very\\ terrible'
+          text: 'stackoverflow.com/search=something\\ very\\ terrible'
         }],
       toProduce: new DocumentNode([
         new LinkNode([

@@ -23,11 +23,11 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
   expectEveryPermutationOfBrackets({
     bracketedSegments: [
       {
-        content: args.content
+        text: args.content
       },
       {
         prefixes: args.partsBetweenContentAndUrl,
-        content: args.url
+        text: args.url
       }],
     toProduce: args.toProduce
   })
@@ -43,7 +43,7 @@ export function expectEveryPermutationOfBrackets(
 
   const segments = args.bracketedSegments.map(segment => <BracketedSegments>{
     prefixes: segment.prefixes || [''],
-    content: segment.content
+    text: segment.text
   })
 
   const BRACKETS = [
@@ -57,7 +57,7 @@ export function expectEveryPermutationOfBrackets(
       concat(
         segment.prefixes.map(prefix =>
           BRACKETS.map(bracket =>
-            prefix + wrapInBracket(segment.content, bracket)))))
+            prefix + wrapInBracket(segment.text, bracket)))))
 
   for (const permutation of everyPermutation('', permutationsBySegment)) {
     expect(Up.toAst(permutation)).to.be.eql(toProduce)
@@ -108,7 +108,7 @@ function everyPermutation(prefix: string, valuesBySegment: string[][]): string[]
 
 export interface BracketedSegments {
   prefixes?: string[],
-  content: string
+  text: string
 }
 
 export interface Bracket {
