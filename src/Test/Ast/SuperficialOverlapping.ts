@@ -327,4 +327,35 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
   })
+
+
+  context('But not conventions whose delimiters represent actual content:', () => {
+    specify('Parentheses', () => {
+      expect(Up.toAst('++(Why would you do this?++)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionInsertionNode([
+            new ParenthesizedNode([
+              new PlainTextNode('(Why would you do this?')
+            ]),
+          ]),
+          new ParenthesizedNode([
+            new PlainTextNode(')')
+          ])
+        ]))
+    })
+
+    specify('Square brackets', () => {
+      expect(Up.toAst('++[Why would you do this?++]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionDeletionNode([
+            new SquareBracketedNode([
+              new PlainTextNode('[Why would you do this?')
+            ]),
+          ]),
+          new SquareBracketedNode([
+            new PlainTextNode(']')
+          ])
+        ]))
+    })
+  })
 })
