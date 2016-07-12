@@ -292,7 +292,8 @@ context('When most conventions overlap by only their end tokens, they nest witho
   })
 })
 
-context('When most conventions completely overlap, they nest perfectly, with the conventions closing last becoming outermost .', () => {
+
+context('When most conventions completely overlap, they nest perfectly, with the conventions closing last becoming outermost.', () => {
   context('This includes:', () => {
     specify('Revision insertion and stress', () => {
       expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
