@@ -416,21 +416,7 @@ class Tokenizer {
   }
 
   private closeLink(url: string) {
-    // The last LinkUrlAndEnd token belongs to our link.
-    //
-    // The last token itself might not be a LinkUrlAndEnd token, though. For more information, see
-    // the `encloseWithin` method.
-
-    for (let i = this.tokens.length - 1; i >= 0; i--) {
-      const token = this.tokens[i]
-
-      if (token.kind === LINK_CONVENTION.endTokenKind) {
-        token.value = url
-        return
-      }
-    }
-
-    throw new Error('Missing link end token')
+    this.lastTokenAdded.value = url
   }
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
@@ -1031,13 +1017,10 @@ class Tokenizer {
   }
 
   private isDirectlyFollowing(tokenKinds: TokenKind[]): boolean {
-    if (this.buffer || !this.tokens.length) {
-      return false
-    }
-
-    const lastToken = last(this.tokens)
-
-    return tokenKinds.some(tokenKind => lastToken.kind === tokenKind)
+    return (
+      !this.buffer
+      && this.lastTokenAdded
+      && tokenKinds.some(tokenKind => this.lastTokenAdded.kind === tokenKind))
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
