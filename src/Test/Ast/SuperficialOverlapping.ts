@@ -291,3 +291,18 @@ context('When most conventions overlap by only their end tokens, they nest witho
     })
   })
 })
+
+
+describe('Conventions that completely overlap', () => {
+  it('are nested in the order they endedg', () => {
+    expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
+      insideDocumentAndParagraph([
+        new StressNode([
+          new RevisionInsertionNode([
+            new PlainTextNode('Why would you do this?')
+          ])
+        ])
+      ])
+    )
+  })
+})
