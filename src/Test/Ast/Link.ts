@@ -98,7 +98,7 @@ describe('A link URL with a URL scheme other than "http://" or "https://"', () =
 })
 
 
-describe('An otherwise valid link with its URL escaped"', () => {
+describe('An otherwise valid link with its URL escaped', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('[call me](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([

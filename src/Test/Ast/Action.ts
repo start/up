@@ -8,7 +8,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 describe('Text surrounded by curly brackets', () => {
   it('is put inside an action node with the curly brackets preserved as plain text', () => {
-    expect(Up.toAst('Well...  {sigh}  We have some work to do.')).to.be.eql(
+    expect(Up.toAst('Well...  {sigh} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well...  '),
         new ActionNode([
@@ -22,7 +22,7 @@ describe('Text surrounded by curly brackets', () => {
 
 describe('The text of an action', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('Well...  {the *deepest* sigh}  We have some work to do.')).to.be.eql(
+    expect(Up.toAst('Well...  {the *deepest* sigh} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well...  '),
         new ActionNode([
@@ -40,7 +40,7 @@ describe('The text of an action', () => {
 
 describe('Nested curly brackets starting at the same time', () => {
   it("produce nested action nodes starting at the same tmie", () => {
-    expect(Up.toAst('Well...  {{gasp} die}  We have some work to do.')).to.be.eql(
+    expect(Up.toAst('Well...  {{gasp} die} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well...  '),
         new ActionNode([
@@ -57,7 +57,7 @@ describe('Nested curly brackets starting at the same time', () => {
 
 describe('Nested curly brackets ending at the same time', () => {
   it("produce action nodes ending at the same time", () => {
-    expect(Up.toAst('Well...  {die {gasp}}  We have some work to do.')).to.be.eql(
+    expect(Up.toAst('Well...  {die {gasp}} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well...  '),
         new ActionNode([
@@ -74,7 +74,7 @@ describe('Nested curly brackets ending at the same time', () => {
 
 describe('Two left curly brackets followed by a single right curly bracket', () => {
   it('produce an action node starting from the second left curly bracket', () => {
-    expect(Up.toAst(':{ Well...  {the *deepest* sigh}  We have some work to do.')).to.be.eql(
+    expect(Up.toAst(':{ Well...  {the *deepest* sigh} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode(':{ Well...  '),
         new ActionNode([
@@ -92,7 +92,7 @@ describe('Two left curly brackets followed by a single right curly bracket', () 
 
 describe('A left curly bracket followed by two right curly brackets', () => {
   it('produce an action node ending with the first right curly bracket', () => {
-    expect(Up.toAst('Well...  {the *deepest* sigh}  We have some work to do. :}')).to.be.eql(
+    expect(Up.toAst('Well...  {the *deepest* sigh} We have some work to do. :}')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well...  '),
         new ActionNode([

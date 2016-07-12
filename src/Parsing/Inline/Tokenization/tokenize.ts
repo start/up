@@ -37,14 +37,6 @@ const LEADING_WHITESPACE_PATTERN =
   regExpStartingWith(ANY_WHITESPACE)
 
 
-// When tokenizing a link, we always start with one of the following conventions. If followed by a
-// (valid!) bracketed URL, the original convention is replaced by a link.
-const CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL = [
-  PARENTHESIZED_CONVENTION,
-  SQUARE_BRACKETED_CONVENTION,
-  ACTION_CONVENTION
-]
-
 // Certain rich conventions can be "linkified" if they're followed by a bracketed URL. The original rich
 // conventions aren't replaced, but their entire contents are nested within a link. For more information
 // about "linkification", see the `getLinkifyingUrlConventions` method.
@@ -411,12 +403,10 @@ class Tokenizer {
     return concat(BRACKETS.map(bracket => [
       this.getBracketedUrlConvention({
         bracket,
-        onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
         whenClosing: url => this.closeLink(url)
       }),
       this.getConventionForWhitespaceFollowedByBracketedUrl({
         bracket,
-        onlyOpenIfDirectlyFollowing: CONVENTIONS_THAT_ARE_REPLACED_BY_LINK_IF_FOLLOWED_BY_BRACKETED_URL,
         ifUrlIsValidWheClosing: url => this.closeLink(url)
       })
     ]))
@@ -473,11 +463,10 @@ class Tokenizer {
   private getBracketedUrlConvention(
     args: {
       bracket: Bracket
-      onlyOpenIfDirectlyFollowing: RichConvention[] | TokenKind[]
       whenClosing: (url: string) => void
     }
   ): TokenizableConvention {
-    const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
+    const { bracket, whenClosing } = args
 
     return new TokenizableConvention({
       startsWith: bracket.startPattern + notFollowedBy(
@@ -487,8 +476,6 @@ class Tokenizer {
           escapeForRegex(ESCAPER_CHAR))),
 
       endsWith: bracket.endPattern,
-
-      onlyOpenIfDirectlyFollowing,
 
       insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
       whenClosingItAlsoClosesInnerConventions: true,
@@ -503,11 +490,10 @@ class Tokenizer {
   private getConventionForWhitespaceFollowedByBracketedUrl(
     args: {
       bracket: Bracket
-      onlyOpenIfDirectlyFollowing: RichConvention[] | TokenKind[]
       ifUrlIsValidWheClosing: (url: string) => void
     }
   ): TokenizableConvention {
-    const { bracket, onlyOpenIfDirectlyFollowing, ifUrlIsValidWheClosing } = args
+    const { bracket, ifUrlIsValidWheClosing } = args
 
     return new TokenizableConvention({
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
@@ -522,7 +508,6 @@ class Tokenizer {
 
       endsWith: bracket.endPattern,
 
-      onlyOpenIfDirectlyFollowing,
       whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
