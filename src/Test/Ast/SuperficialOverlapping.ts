@@ -98,11 +98,11 @@ context('When most conventions overlap by only their start tokens, they nest wit
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new SquareBracketedNode([
-              new PlainTextNode('(Oh')
+              new PlainTextNode('[Oh')
             ]),
           ]),
           new SquareBracketedNode([
-            new PlainTextNode(' why would you do this?)')
+            new PlainTextNode(' why would you do this?]')
           ])
         ]))
     })
@@ -281,11 +281,11 @@ context('When most conventions overlap by only their end tokens, they nest witho
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new SquareBracketedNode([
-              new PlainTextNode('Oh (')
+              new PlainTextNode('Oh [')
             ]),
           ]),
           new SquareBracketedNode([
-            new PlainTextNode('why would you do this?)')
+            new PlainTextNode('why would you do this?]')
           ])
         ])
       )
