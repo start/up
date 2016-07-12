@@ -390,10 +390,10 @@ class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // Certain rich conventions can be "linkified" if they're followed by a bracketed URL.
+  // Certain conventions can be "linkified" if they're followed by a bracketed URL.
   // 
-  // For "linkifiable" rich conventions, their entire contents are nested within a link, which itself
-  // is nested within the original convention.
+  // For a "linkifiable" rich convention (e.g. a footnote), its entire contents are nested within a
+  // link, which itself is nested within the original convention.
   // 
   // On the other hand, when a media convention is linkified, it's simply placed inside a link.
   //
