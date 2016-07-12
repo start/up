@@ -801,21 +801,32 @@ class Tokenizer {
 
     this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
-    // Inline conventions can overlap! However, ultimately, we must produce an abstract syntax tree, so
-    // overlapping conventions are eventually chopped up, ensuring each convention has a single parent.
-    // This process is better explained in `nestOverlappingConventions.ts`.
+    // We can avoid some superficial overalpping by inserting our new end token before any overlapping
+    // end tokens.  For example:
     //
-    // Sometimes, however, the author may overlap conventions by accident. If we can avoid having to
-    // to chop up conventions that the author didn't intend to overlap, everyone wins! Broadly, accidental
-    // overlapping can take two forms:
+    // I've had enough! I hate this game! {softly curses [SPOILER: Professor Oak}]
     //
-    // 1. Conventions that overlap by only their start tokens:
+    // Normally, when conventions overlap, we split them into pieces to ensure each convention has
+    // just a single parent. If splitting a convention produces an empty piece on one side, that empty
+    // piece is discarded. This process is fully explained in `nestOverlappingConventions.ts`.
     //
-    //    TODO: Explain
+    // *Anyway*, in the above example, the spoiler convention starts inside the action convention and
+    // ends after the action convention. The two conventions overlap, but only by only their end tokens.
+    // By inserting the end token for the spoiler before the end token of the action convention, we can
+    // avoid having to split any conventions.
     //
-    // 2. Conventions that overlap only by their end tokens:
+    // This is more than just an optimization tactic, however! It actually improves the final abstract
+    // syntax tree. How? Well...
     //
-    //    TODO: Explain
+    // It's less disruptive to split certain conventions than to split others. We'd rather split an
+    // action convention than a spoiler, and we'd rather split a spoiler than a footnote.
+    //
+    // Once our process for splitting overlapping conventions has determined that a convention is being
+    // overlapped by one that we’d prefer to split, it splits the convention we’d rather split.
+    // Because we’d rather split action conventions than spoilers, the action convention in the above
+    // example would be split in two, with one hald outside the spoiler, and the other half inside the
+    // spoiler. By moving the spoiler’s end token inside the action convention, we can avoid having to 
+    // split the action convention.
 
     let endTokenIndex = this.tokens.length
 
