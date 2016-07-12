@@ -13,8 +13,8 @@ import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
 context('A linkified video convention can have whitespace between its video URL and its linkifying URL (regardless of whether there is whitespace between its content and its video URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'video: something terrible',
       bracketedSegments: [
+        { content: 'video: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/video.webm'
@@ -35,8 +35,8 @@ context('A linkified video convention can have whitespace between its video URL 
   describe('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: Advance Wars',
         bracketedSegments: [
+          { content: 'video: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -95,8 +95,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
     specify('the rest of the URL can consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: spooky phone call',
         bracketedSegments: [
+          { content: 'video: spooky phone call' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -129,8 +129,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
   specify('It starts with a slash', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'video: something terrible',
       bracketedSegments: [
+        { content: 'video: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/video.webm'
@@ -175,8 +175,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
     it('can consist solely of digits after the slash', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: Model 3 theft',
         bracketedSegments: [
+          { content: 'video: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -209,8 +209,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'video: something terrible',
       bracketedSegments: [
+        { content: 'video: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/video.webm'
@@ -231,8 +231,8 @@ context('A linkified video convention can have whitespace between its video URL 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
     it('may consist solely of digits after the hask mark', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: Model 3 theft',
         bracketedSegments: [
+          { content: 'video: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -289,8 +289,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
   specify('It has a top-level domain', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'video: Chrono Trigger',
       bracketedSegments: [
+        { content: 'video: Chrono Trigger' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/video.webm'
@@ -311,8 +311,8 @@ context('A linkified video convention can have whitespace between its video URL 
   describe('When the URL merely has a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: Advance Wars',
         bracketedSegments: [
+          { content: 'video: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -331,8 +331,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: Advance Wars',
         bracketedSegments: [
+          { content: 'video: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -363,8 +363,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: good luck',
         bracketedSegments: [
+          { content: 'video: good luck' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -445,8 +445,8 @@ context('A linkified video convention can have whitespace between its video URL 
 
     specify('the URL may have consecutive periods after the slash that indicates the start of the resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'video: rocket ship',
         bracketedSegments: [
+          { content: 'video: rocket ship' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/video.webm'
@@ -523,8 +523,8 @@ describe("If there is whitespace between an otherwise-valid linkified video conv
 describe("A video convention's linkifying URL, when separated from its video URL by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'video: something terrible',
       bracketedSegments: [
+        { content: 'video: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/video.webm'
