@@ -363,7 +363,7 @@ class Tokenizer {
     }))
   }
 
-  // These conventions are for link URLs that directly follow linked content:
+  // Link's bracketed URLs directly follow their bracketed content:
   //
   // You should try [Typescript](http://www.typescriptlang.org).
   //
