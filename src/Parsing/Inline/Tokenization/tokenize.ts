@@ -37,17 +37,6 @@ const LEADING_WHITESPACE_PATTERN =
   regExpStartingWith(ANY_WHITESPACE)
 
 
-// Certain rich conventions can be "linkified" if they're followed by a bracketed URL. The original rich
-// conventions aren't replaced, but their entire contents are nested within a link. For more information
-// about "linkification", see the `getLinkifyingUrlConventions` method.
-const RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL = [
-  SPOILER_CONVENTION,
-  NSFW_CONVENTION,
-  NSFL_CONVENTION,
-  FOOTNOTE_CONVENTION
-]
-
-
 class Tokenizer {
   tokens: Token[] = []
 
@@ -432,11 +421,18 @@ class Tokenizer {
   // whitespace between the linkifying URL and the original convention. For more information, see
   // `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
+    const LINKIFIABLE_RICH_CONVENTIONS = [
+      SPOILER_CONVENTION,
+      NSFW_CONVENTION,
+      NSFL_CONVENTION,
+      FOOTNOTE_CONVENTION
+    ]
+
     return concat(BRACKETS.map(bracket => [
       ...[
         {
           bracket,
-          onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+          onlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
         }, {
           bracket,
@@ -448,7 +444,7 @@ class Tokenizer {
       ...[
         {
           bracket,
-          onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+          onlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
           ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
         }, {
           bracket,
