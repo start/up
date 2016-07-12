@@ -79,7 +79,7 @@ class Tokenizer {
   //
   // 1. Raw bracket conventions (explained below)
   // 2. Media URL conventions (explained below)
-  private conventions: TokenizableConvention[] = []
+  private conventions: TokenizableConvention[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
@@ -145,65 +145,61 @@ class Tokenizer {
   }
 
   private configureConventions(): void {
-    this.conventions.push(...concat([
-      {
-        richConvention: SPOILER_CONVENTION,
-        nonLocalizedTerm: 'spoiler'
-      }, {
-        richConvention: NSFW_CONVENTION,
-        nonLocalizedTerm: 'nsfw'
-      }, {
-        richConvention: NSFL_CONVENTION,
-        nonLocalizedTerm: 'nsfl'
-      }
-    ].map(args => this.getConventionsForRichBracketedTerm(args))))
+    this.conventions = [
+      ...concat([
+        {
+          richConvention: SPOILER_CONVENTION,
+          nonLocalizedTerm: 'spoiler'
+        }, {
+          richConvention: NSFW_CONVENTION,
+          nonLocalizedTerm: 'nsfw'
+        }, {
+          richConvention: NSFL_CONVENTION,
+          nonLocalizedTerm: 'nsfl'
+        }
+      ].map(args => this.getConventionsForRichBracketedTerm(args))),
 
-    this.conventions.push(
-      ...this.getMediaDescriptionConventions())
+      ...this.getMediaDescriptionConventions(),
 
-    this.conventions.push(
-      ...this.getFootnoteConventions())
+      ...this.getFootnoteConventions(),
 
-    this.conventions.push(
-      ...this.getLinkUrlConventions())
+      ...this.getLinkUrlConventions(),
 
-    this.conventions.push(
-      ...this.getLinkifyingUrlConventions())
+      ...this.getLinkifyingUrlConventions(),
 
-    this.conventions.push(
-      ...this.getConventionsForWhitespaceFollowedByLinkifyingUrl())
+      ...this.getConventionsForWhitespaceFollowedByLinkifyingUrl(),
 
-    this.conventions.push(...[
-      {
-        richConvention: PARENTHESIZED_CONVENTION,
-        startsWith: '(',
-        endsWith: ')',
-        cannotStartWithWhitespace: true
-      }, {
-        richConvention: SQUARE_BRACKETED_CONVENTION,
-        startsWith: '[',
-        endsWith: ']',
-        cannotStartWithWhitespace: true
-      }, {
-        richConvention: ACTION_CONVENTION,
-        startsWith: '{',
-        endsWith: '}',
-        cannotStartWithWhitespace: true
-      }, {
-        richConvention: REVISION_DELETION_CONVENTION,
-        startsWith: '~~',
-        endsWith: '~~',
-        isMeaningfulWhenItContainsOnlyWhitespace: true
-      }, {
-        richConvention: REVISION_INSERTION_CONVENTION,
-        startsWith: '++',
-        endsWith: '++',
-        isMeaningfulWhenItContainsOnlyWhitespace: true
-      }
-    ].map(args => this.getRichConventionNotRequiringBacktracking(args)))
+      ...[
+        {
+          richConvention: PARENTHESIZED_CONVENTION,
+          startsWith: '(',
+          endsWith: ')',
+          cannotStartWithWhitespace: true
+        }, {
+          richConvention: SQUARE_BRACKETED_CONVENTION,
+          startsWith: '[',
+          endsWith: ']',
+          cannotStartWithWhitespace: true
+        }, {
+          richConvention: ACTION_CONVENTION,
+          startsWith: '{',
+          endsWith: '}',
+          cannotStartWithWhitespace: true
+        }, {
+          richConvention: REVISION_DELETION_CONVENTION,
+          startsWith: '~~',
+          endsWith: '~~',
+          isMeaningfulWhenItContainsOnlyWhitespace: true
+        }, {
+          richConvention: REVISION_INSERTION_CONVENTION,
+          startsWith: '++',
+          endsWith: '++',
+          isMeaningfulWhenItContainsOnlyWhitespace: true
+        }
+      ].map(args => this.getRichConventionNotRequiringBacktracking(args)),
 
-    this.conventions.push(
-      this.nakedUrlConvention)
+      this.nakedUrlConvention
+    ]
   }
 
   private getFootnoteConventions(): TokenizableConvention[] {
