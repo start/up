@@ -79,6 +79,7 @@ class Tokenizer {
   //
   // 1. Raw bracket conventions (explained below)
   // 2. Media URL conventions (explained below)
+  // 3. Link URL conventions (explained below)
   private conventions: TokenizableConvention[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
@@ -92,6 +93,9 @@ class Tokenizer {
   // If that fails (either because there isn't an opening bracket for the media URL, or because there isn't a
   // closing bracket), we backtrack to the beginning of the media convention and try something else. 
   private mediaUrlConventions = this.getMediaUrlConventions()
+  
+  // Link URL conventions serve the same purpose as media URL conventions, but for links.  
+  private linkUrlConventions = this.getLinkUrlConventions()
 
   // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
   //
@@ -163,7 +167,7 @@ class Tokenizer {
 
       ...this.getFootnoteConventions(),
 
-      ...this.getLinkUrlConventions(),
+      ...this.getLinkContentConventions(),
 
       ...this.getLinkifyingUrlConventions(),
 
@@ -206,6 +210,16 @@ class Tokenizer {
         richConvention: FOOTNOTE_CONVENTION,
         startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
         endsWith: bracket.endPattern
+      }))
+  }
+
+  private getLinkContentConventions(): TokenizableConvention[] {
+    return BRACKETS.map(bracket =>
+      this.getRichConvention({
+        richConvention: LINK_CONVENTION,
+        startsWith: bracket.startPattern,
+        endsWith: bracket.endPattern,
+        mustBeDirectlyFollowedBy: this.linkUrlConventions,
       }))
   }
 
@@ -263,10 +277,11 @@ class Tokenizer {
       endsWith: string
       startPatternContainsATerm?: boolean
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
-      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
+      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent,
+      mustBeDirectlyFollowedBy?: TokenizableConvention[]
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, mustBeDirectlyFollowedBy } = args
 
     return new TokenizableConvention({
       // If a convention is totally empty, it's never applied. For example, this would-be NSFW convention is empty:
@@ -296,7 +311,9 @@ class Tokenizer {
         this.encloseContextWithinRichConvention(richConvention, context)
       },
 
-      insteadOfFailingWhenLeftUnclosed
+      insteadOfFailingWhenLeftUnclosed,
+      
+      mustBeDirectlyFollowedBy
     })
   }
 
@@ -311,9 +328,9 @@ class Tokenizer {
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
+          beforeClosingItAlwaysFlushesBufferTo: media.descriptionAndStartTokenKind,
           whenClosingItAlsoClosesInnerConventions: true,
-          mustBeDirectlyFollowedBy: this.mediaUrlConventions,
-          beforeClosingItAlwaysFlushesBufferTo: media.descriptionAndStartTokenKind
+          mustBeDirectlyFollowedBy: this.mediaUrlConventions
         }))))
   }
 
@@ -381,13 +398,8 @@ class Tokenizer {
   }
 
   private closeLink(url: string) {
-    // We know the last token is a ParenthesizedEnd, SquareBracketedEnd, or ActionEnd token.
-    //
-    // We'll replace that end token and its corresponding start token with link tokens.
-    const originalEndToken = last(this.tokens)
-    originalEndToken.value = url
-    originalEndToken.kind = LINK_CONVENTION.endTokenKind
-    originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
+    // The last token is a LinkUrlAndEnd token
+    last(this.tokens).value = url
   }
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.

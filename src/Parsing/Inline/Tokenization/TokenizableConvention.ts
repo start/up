@@ -23,10 +23,10 @@ export interface TokenizableConventionArgs {
 
   failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
 
+  beforeClosingItAlwaysFlushesBufferTo?: TokenKind
+  beforeClosingItFlushesNonEmptyBufferTo?: TokenKind
   whenClosingItAlsoClosesInnerConventions?: boolean
   mustBeDirectlyFollowedBy?: TokenizableConvention[]
-  beforeClosingItFlushesNonEmptyBufferTo?: TokenKind
-  beforeClosingItAlwaysFlushesBufferTo?: TokenKind
 
   whenClosing?: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
@@ -50,10 +50,10 @@ export class TokenizableConvention {
 
   failsIfWhitespaceIsEnounteredBeforeClosing: boolean
 
-  whenClosingItAlsoClosesInnerConventions: boolean
-  mustBeDirectlyFollowedBy: TokenizableConvention[]
   beforeClosingItFlushesNonEmptyBufferTo: TokenKind
   beforeClosingItAlwaysFlushesBufferTo: TokenKind
+  whenClosingItAlsoClosesInnerConventions: boolean
+  mustBeDirectlyFollowedBy: TokenizableConvention[]
 
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
@@ -80,10 +80,10 @@ export class TokenizableConvention {
 
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
 
-    this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
-    this.mustBeDirectlyFollowedBy = args.mustBeDirectlyFollowedBy
     this.beforeClosingItFlushesNonEmptyBufferTo = args.beforeClosingItFlushesNonEmptyBufferTo
     this.beforeClosingItAlwaysFlushesBufferTo = args.beforeClosingItAlwaysFlushesBufferTo
+    this.whenClosingItAlsoClosesInnerConventions = args.whenClosingItAlsoClosesInnerConventions
+    this.mustBeDirectlyFollowedBy = args.mustBeDirectlyFollowedBy
 
     this.whenClosing = args.whenClosing
     this.insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed
