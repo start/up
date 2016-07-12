@@ -547,7 +547,7 @@ class Tokenizer {
       startingBackAtIndex: indexOfMediaStartToken
     })
 
-    // Now, the last token is a LinkUrlAndEnd token. Let's assign its the URL!
+    // Now, the last token is a LinkUrlAndEnd token. Let's assign its URL!
     last(this.tokens).value = url
   }
 
@@ -845,7 +845,7 @@ class Tokenizer {
       const shouldSwapEndTokenWithPreviousToken =
         // The previous token is a rich convention's end token...
         previousToken.correspondsToToken
-        // And our start token (that we just added) is within the previous end token's convention. 
+        // ...and our start token (that we just added) is within the previous end token's convention. 
         && startTokenIndex > this.indexOfToken(previousToken.correspondsToToken)
 
       if (shouldSwapEndTokenWithPreviousToken) {
