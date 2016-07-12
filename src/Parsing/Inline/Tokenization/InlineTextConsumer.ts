@@ -1,6 +1,3 @@
-import { OnTextMatch } from './OnTextMatch'
-
-
 export class InlineTextConsumer {
   private _remainingText: string
   private _textIndex: number
@@ -71,4 +68,9 @@ export class InlineTextConsumer {
     this._currentChar = this._remainingText[0]
     this._previousChar = this.entireText[this._textIndex - 1]
   }
+}
+
+
+export interface OnTextMatch {
+  (match: string, charAfterMatch: string, ...captures: string[]): void
 }

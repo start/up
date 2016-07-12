@@ -8,14 +8,13 @@ import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
 import { tryToTokenizeInlineCodeOrUnmatchedDelimiter } from './tryToTokenizeInlineCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
-import { insertPlainTextBracketsInsideBracketedConventions } from './insertPlainTextBracketsInsideBracketedConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
 import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { InlineTextConsumer } from './InlineTextConsumer'
+import { InlineTextConsumer, OnTextMatch } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
@@ -93,7 +92,7 @@ class Tokenizer {
   // If that fails (either because there isn't an opening bracket for the media URL, or because there isn't a
   // closing bracket), we backtrack to the beginning of the media convention and try something else. 
   private mediaUrlConventions = this.getMediaUrlConventions()
-  
+
   // Link URL conventions serve the same purpose as media URL conventions, but for links.  
   private linkUrlConventions = this.getLinkUrlConventions()
 
@@ -176,13 +175,15 @@ class Tokenizer {
           richConvention: PARENTHESIZED_CONVENTION,
           startsWith: '(',
           endsWith: ')',
-          cannotStartWithWhitespace: true
         }, {
           richConvention: SQUARE_BRACKETED_CONVENTION,
           startsWith: '[',
           endsWith: ']',
-          cannotStartWithWhitespace: true
-        }, {
+        }
+      ].map(args => this.getConventionForActualBrackets(args)),
+
+      ...[
+        {
           richConvention: ACTION_CONVENTION,
           startsWith: '{',
           endsWith: '}',
@@ -246,6 +247,27 @@ class Tokenizer {
       + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':')
   }
 
+  private getConventionForActualBrackets(
+    args: {
+      richConvention: RichConvention,
+      startsWith: string
+      endsWith: string
+    }
+  ): TokenizableConvention {
+    const { richConvention, startsWith, endsWith } = args
+
+    return this.getRichConvention({
+      richConvention,
+      startsWith: escapeForRegex(startsWith),
+      endsWith: escapeForRegex(endsWith),
+
+      whenOpening: () => this.buffer += startsWith,
+      whenClosing: () => this.buffer += endsWith,
+
+      insteadOfFailingWhenLeftUnclosed: (context) => { /*  Neither fail nor do anything special  */ }
+    })
+  }
+
   private getRichConventionNotRequiringBacktracking(
     args: {
       richConvention: RichConvention
@@ -276,12 +298,14 @@ class Tokenizer {
       startsWith: string
       endsWith: string
       startPatternContainsATerm?: boolean
+      whenOpening?: OnTextMatch
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
-      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent,
+      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
+      whenClosing?: OnConventionEvent
       mustBeDirectlyFollowedBy?: TokenizableConvention[]
     }
   ): TokenizableConvention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, mustBeDirectlyFollowedBy } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new TokenizableConvention({
       // If a convention is totally empty, it's never applied. For example, this would-be NSFW convention is empty:
@@ -307,12 +331,17 @@ class Tokenizer {
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
       beforeClosingItFlushesNonEmptyBufferTo: TokenKind.PlainText,
 
+      whenOpening,
+
       whenClosing: (context) => {
+        if (whenClosing) {
+          whenClosing(context)
+        }
+
         this.encloseContextWithinRichConvention(richConvention, context)
       },
 
       insteadOfFailingWhenLeftUnclosed,
-      
       mustBeDirectlyFollowedBy
     })
   }
@@ -565,9 +594,7 @@ class Tokenizer {
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()))
 
-    this.tokens =
-      nestOverlappingConventions(
-        insertPlainTextBracketsInsideBracketedConventions(this.tokens))
+    this.tokens = nestOverlappingConventions(this.tokens)
   }
 
   private isDone(): boolean {
@@ -830,26 +857,22 @@ class Tokenizer {
 
     let endTokenIndex = this.tokens.length
 
-    if (!doesRichEndTokenRepresentTextContent(endToken)) {
-      for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
-        let previousToken = this.tokens[i]
+    for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
+      let previousToken = this.tokens[i]
 
-        // We should only swap our end token with the previous token if...
-        const shouldSwapEndTokenWithPreviousToken =
-          // The previous token is a rich end token...
-          previousToken.correspondsToToken
-          // That rich end token is only a delimiter, not representing any actual text content... 
-          && !doesRichEndTokenRepresentTextContent(previousToken)
-          // And our start token (that we just added) is within the previous end token's convention! 
-          && startTokenIndex > this.indexOfToken(previousToken.correspondsToToken)
+      // We should only swap our end token with the previous token if...
+      const shouldSwapEndTokenWithPreviousToken =
+        // The previous token is a rich convention's end token...
+        previousToken.correspondsToToken
+        // And our start token (that we just added) is within the previous end token's convention. 
+        && startTokenIndex > this.indexOfToken(previousToken.correspondsToToken)
 
-        if (shouldSwapEndTokenWithPreviousToken) {
-          // If all that applies, our end token should really be inside the previous end token's convention.
-          endTokenIndex -= 1
-        } else {
-          // We've hit a token that we can't swap with! Let's add our end token. 
-          break
-        }
+      if (shouldSwapEndTokenWithPreviousToken) {
+        // If all that applies, our end token should really be inside the previous end token's convention.
+        endTokenIndex -= 1
+      } else {
+        // We've hit a token that we can't swap with! Let's add our end token. 
+        break
       }
     }
 
@@ -1101,15 +1124,6 @@ class Tokenizer {
       this.bufferCurrentChar()
     }
   }
-}
-
-
-// This functions assumes that `richConventionEndToken` is a rich convention's end token!
-function doesRichEndTokenRepresentTextContent(richConventionEndToken: Token): boolean {
-  // Unlike other delimiters, parenthesized and square bracketed tokens actually represent content.
-  return (
-    richConventionEndToken.kind === TokenKind.ParenthesizedEnd
-    || richConventionEndToken.kind === TokenKind.SquareBracketedEnd)
 }
 
 
