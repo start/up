@@ -62,6 +62,30 @@ describe('Square bracketed text directly followed by a footnote (without any whi
 })
 
 
+describe('Action text directly followed by a footnote (without any whitespace between the two)', () => {
+  it('does not produce a link', () => {
+    const text = "I'm normal {sigh}(^I wish I knew how to be weird) and that's a fact."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('I wish I knew how to be weird')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I'm normal "),
+          new ActionNode([
+            new PlainTextNode("sigh"),
+          ]),
+          footnote,
+          new PlainTextNode(" and that's a fact."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
 describe('An otherwise valid link with mismatched brackets surrounding its description', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('I like [this site}(https://stackoverflow.com).')).to.be.eql(
