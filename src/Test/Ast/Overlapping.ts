@@ -176,6 +176,7 @@ context("Overlapping conventions where only the first convention's start delimit
     )
   })
 
+
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses)', () => {
       expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
@@ -186,6 +187,21 @@ context("Overlapping conventions where only the first convention's start delimit
             ]),
           ]),
           new ParenthesizedNode([
+            new PlainTextNode(' why would you do this?)')
+          ])
+        ])
+      )
+    })
+
+    specify('Square brackets)', () => {
+      expect(Up.toAst('~~[Oh~~ why would you do this?]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionDeletionNode([
+            new SquareBracketedNode([
+              new PlainTextNode('(Oh')
+            ]),
+          ]),
+          new SquareBracketedNode([
             new PlainTextNode(' why would you do this?)')
           ])
         ])
