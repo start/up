@@ -118,3 +118,31 @@ describe("A line consistingly solely of a link that contains both an image and r
       ]))
   })
 })
+
+
+describe('Bracketed text starting with "image:" directly followed by a footnote (without any whitespace between the two)', () => {
+  it('does not produce an image', () => {
+    const text = "I'm normal [image: https://example.com](^There are more images where that came from) and that's a fact."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I'm normal "),
+          new SquareBracketedNode([
+            new PlainTextNode("[image: "),
+            new LinkNode([
+              new PlainTextNode('example.com')
+            ], 'https://example.com'),
+            new PlainTextNode("]"),
+          ]),
+          footnote,
+          new PlainTextNode(" and that's a fact."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
