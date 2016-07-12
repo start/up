@@ -49,6 +49,18 @@ context('When most conventions overlap by only their start tokens, they nest wit
         new PlainTextNode(' Hi!')
       ]))
   })
+
+  specify('Revision deletion and revision insertion', () => {
+    expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
+      insideDocumentAndParagraph([
+        new RevisionInsertionNode([
+          new RevisionDeletionNode([
+            new PlainTextNode('Oh')
+          ]),
+          new PlainTextNode(' why would you do this?')
+        ])
+      ]))
+  })
 })
 
 
@@ -175,7 +187,7 @@ context('When most conventions overlap by only their end tokens, they nest witho
     )
   })
 
-    specify("An action convention and a link", () => {
+  specify("An action convention and a link", () => {
     expect(Up.toAst('{loud [thwomp}](example.com/thwomp)')).to.be.eql(
       insideDocumentAndParagraph([
         new ActionNode([
@@ -187,11 +199,8 @@ context('When most conventions overlap by only their end tokens, they nest witho
       ])
     )
   })
-})
 
-
-context("Overlapping conventions where only the first convention's end delimiter is inside the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
-  it('This is the case for nearly all conventions', () => {
+    specify('Revision insertino and revision deletion', () => {
     expect(Up.toAst('++Oh ~~++why would you do this?~~')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
@@ -202,8 +211,10 @@ context("Overlapping conventions where only the first convention's end delimiter
         ])
       ]))
   })
+})
 
 
+context("Overlapping conventions where only the first convention's end delimiter is inside the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
       expect(Up.toAst('++Oh (++why would you do this?)')).to.be.eql(
@@ -238,20 +249,6 @@ context("Overlapping conventions where only the first convention's end delimiter
 
 
 context("Overlapping conventions where only the first convention's start delimiter is outside the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
-  specify('This is the case for nearly all conventions', () => {
-    expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
-      insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new RevisionDeletionNode([
-            new PlainTextNode('Oh')
-          ]),
-          new PlainTextNode(' why would you do this?')
-        ])
-      ])
-    )
-  })
-
-
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
       expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
