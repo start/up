@@ -167,8 +167,6 @@ class Tokenizer {
 
       ...this.getLinkifyingUrlConventions(),
 
-      ...this.getConventionsForWhitespaceFollowedByLinkifyingUrl(),
-
       ...[
         {
           richConvention: PARENTHESIZED_CONVENTION,
@@ -392,23 +390,43 @@ class Tokenizer {
     originalEndToken.correspondsToToken.kind = LINK_CONVENTION.startTokenKind
   }
 
-  // Certain rich conventions can be "linkified" if they're followed by a bracketed URL. The original rich
-  // conventions aren't replaced, but their entire contents are nested within a link. To be clear, the link
-  // is still inside the original rich convention.
+  // Certain rich conventions can be "linkified" if they're followed by a bracketed URL.
+  // 
+  // For "linkifiable" rich conventions, their entire contents are nested within a link, which itself
+  // is nested within the original convention.
+  // 
+  // On the other hand, when a media convention is linkified, it's simply placed inside a link.
   //
-  // Media conventions can be linkified, too. Linkified media conventions are simply placed within a link. 
+  // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow
+  // whitespace between the linkifying URL and the original convention. For more information, see
+  // `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
     return concat(BRACKETS.map(bracket => [
-      {
-        bracket,
-        onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-        whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
-      }, {
-        bracket,
-        onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
-        whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
-      }
-    ].map(args => this.getBracketedUrlConvention(args))))
+      ...[
+        {
+          bracket,
+          onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+          whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
+        }, {
+          bracket,
+          onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
+          whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
+        }
+      ].map(args => this.getBracketedUrlConvention(args)),
+
+      ...[
+        {
+          bracket,
+          onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
+          ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
+        }, {
+          bracket,
+          onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
+          ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
+        }
+      ].map(args => this.getConventionForWhitespaceFollowedByBracketedUrl(args))
+    ]
+    ))
   }
 
   private getBracketedUrlConvention(
@@ -439,24 +457,6 @@ class Tokenizer {
         whenClosing(url)
       }
     })
-  }
-
-  // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow whitespace
-  // between the linkifying URL and the original convention.
-  //
-  // For more information, see `getLinkifyingUrlConventions` and `getConventionsForWhitespaceFollowedByLinkUrl`.
-  private getConventionsForWhitespaceFollowedByLinkifyingUrl(): TokenizableConvention[] {
-    return concat(BRACKETS.map(bracket => [
-      {
-        bracket,
-        onlyOpenIfDirectlyFollowing: RICH_COVENTIONS_WHOSE_CONTENTS_ARE_LINKIFIED_IF_FOLLOWED_BY_BRACKETED_URL,
-        ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
-      }, {
-        bracket,
-        onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
-        ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
-      }
-    ].map(args => this.getConventionForWhitespaceFollowedByBracketedUrl(args))))
   }
 
   private getConventionForWhitespaceFollowedByBracketedUrl(
