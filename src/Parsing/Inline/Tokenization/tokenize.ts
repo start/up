@@ -180,7 +180,7 @@ class Tokenizer {
           startsWith: '[',
           endsWith: ']',
         }
-      ].map(args => this.getConventionForActualBrackets(args)),
+      ].map(args => this.getConventionForActualRichBrackets(args)),
 
       ...[
         {
@@ -247,7 +247,7 @@ class Tokenizer {
       + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':')
   }
 
-  private getConventionForActualBrackets(
+  private getConventionForActualRichBrackets(
     args: {
       richConvention: RichConvention,
       startsWith: string
