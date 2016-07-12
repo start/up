@@ -13,8 +13,8 @@ import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 context('A linkified audio convention can have whitespace between its audio URL and its linkifying URL (regardless of whether there is whitespace between its content and its audio URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'audio: something terrible',
       bracketedSegments: [
+        { content: 'audio: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/sounds.ogg'
@@ -35,8 +35,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
   describe('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: Advance Wars',
         bracketedSegments: [
+          { content: 'audio: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -95,8 +95,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
     specify('the rest of the URL can consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: spooky phone call',
         bracketedSegments: [
+          { content: 'audio: spooky phone call' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -129,8 +129,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
   specify('It starts with a slash', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'audio: something terrible',
       bracketedSegments: [
+        { content: 'audio: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/sounds.ogg'
@@ -175,8 +175,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
     it('can consist solely of digits after the slash', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: Model 3 theft',
         bracketedSegments: [
+          { content: 'audio: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -209,8 +209,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'audio: something terrible',
       bracketedSegments: [
+        { content: 'audio: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/sounds.ogg'
@@ -231,8 +231,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
     it('may consist solely of digits after the hask mark', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: Model 3 theft',
         bracketedSegments: [
+          { content: 'audio: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -289,8 +289,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
   specify('It has a top-level domain', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'audio: Chrono Trigger',
       bracketedSegments: [
+        { content: 'audio: Chrono Trigger' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/sounds.ogg'
@@ -311,8 +311,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
   describe('When the URL merely has a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: Advance Wars',
         bracketedSegments: [
+          { content: 'audio: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -331,8 +331,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: Advance Wars',
         bracketedSegments: [
+          { content: 'audio: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -363,8 +363,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: good luck',
         bracketedSegments: [
+          { content: 'audio: good luck' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -445,8 +445,8 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
     specify('the URL may have consecutive periods after the slash that indicates the start of the resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'audio: rocket ship',
         bracketedSegments: [
+          { content: 'audio: rocket ship' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/sounds.ogg'
@@ -523,8 +523,8 @@ describe("If there is whitespace between an otherwise-valid linkified audio conv
 describe("An audio convention's linkifying URL, when separated from its audio URL by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'audio: something terrible',
       bracketedSegments: [
+        { content: 'audio: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/sounds.ogg'

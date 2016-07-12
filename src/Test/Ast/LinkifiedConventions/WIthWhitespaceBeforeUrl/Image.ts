@@ -13,8 +13,8 @@ import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 context('A linkified image convention can have whitespace between its image URL and its linkifying URL (regardless of whether there is whitespace between its content and its image URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'image: something terrible',
       bracketedSegments: [
+        { content: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/image.png'
@@ -35,8 +35,8 @@ context('A linkified image convention can have whitespace between its image URL 
   describe('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: Advance Wars',
         bracketedSegments: [
+          { content: 'image: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -95,8 +95,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
     specify('the rest of the URL can consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: spooky phone call',
         bracketedSegments: [
+          { content: 'image: spooky phone call' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -129,8 +129,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
   specify('It starts with a slash', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'image: something terrible',
       bracketedSegments: [
+        { content: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/image.png'
@@ -175,8 +175,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
     it('can consist solely of digits after the slash', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: Model 3 theft',
         bracketedSegments: [
+          { content: 'image: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -209,8 +209,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
   specify('It starts with a hash mark ("#")', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'image: something terrible',
       bracketedSegments: [
+        { content: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/image.png'
@@ -231,8 +231,8 @@ context('A linkified image convention can have whitespace between its image URL 
   describe('When the URL starts with a hash mark ("#"), the URL', () => {
     it('may consist solely of digits after the hask mark', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: Model 3 theft',
         bracketedSegments: [
+          { content: 'image: Model 3 theft' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -289,8 +289,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
   specify('It has a top-level domain', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'image: Chrono Trigger',
       bracketedSegments: [
+        { content: 'image: Chrono Trigger' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/image.png'
@@ -311,8 +311,8 @@ context('A linkified image convention can have whitespace between its image URL 
   describe('When the URL merely has a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: Advance Wars',
         bracketedSegments: [
+          { content: 'image: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -331,8 +331,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
     specify('the top-level domain may be followed by a slash and no resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: Advance Wars',
         bracketedSegments: [
+          { content: 'image: Advance Wars' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -363,8 +363,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: good luck',
         bracketedSegments: [
+          { content: 'image: good luck' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -445,8 +445,8 @@ context('A linkified image convention can have whitespace between its image URL 
 
     specify('the URL may have consecutive periods after the slash that indicates the start of the resource path', () => {
       expectEveryPermutationOfBrackets({
-        contentToWrapInBrackets: 'image: rocket ship',
         bracketedSegments: [
+          { content: 'image: rocket ship' },
           {
             prefixes: WITH_AND_WITHOUT_WHITESPACE,
             content: 'https://example.com/image.png'
@@ -523,8 +523,8 @@ describe("If there is whitespace between an otherwise-valid linkified image conv
 describe("An image convention's linkifying URL, when separated from its image URL by whitespace,", () => {
   it('can itself contain whitespace if each whitespace character is escaped', () => {
     expectEveryPermutationOfBrackets({
-      contentToWrapInBrackets: 'image: something terrible',
       bracketedSegments: [
+        { content: 'image: something terrible' },
         {
           prefixes: WITH_AND_WITHOUT_WHITESPACE,
           content: 'https://example.com/image.png'
