@@ -38,6 +38,30 @@ describe('Parenthesized text directly followed by a footnote (without any whites
 })
 
 
+describe('Square bracketed text directly followed by a footnote (without any whitespace between the two)', () => {
+  it('does not produce a link', () => {
+    const text = "I'm normal [I don't eat cereal](^Well, I do, but I pretend not to) and that's a fact."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to')
+    ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I'm normal "),
+          new SquareBracketedNode([
+            new PlainTextNode("[I don't eat cereal]"),
+          ]),
+          footnote,
+          new PlainTextNode(" and that's a fact."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
 describe('An otherwise valid link with mismatched brackets surrounding its description', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('I like [this site}(https://stackoverflow.com).')).to.be.eql(
