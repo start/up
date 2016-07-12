@@ -62,6 +62,19 @@ context('When most conventions overlap by only their start tokens, they nest wit
           ])
         ]))
     })
+
+    specify("A link and emphasis", () => {
+      expect(Up.toAst("*[Yes*, I watched it live](example.com/replay).")).to.be.eql(
+        insideDocumentAndParagraph([
+          new LinkNode([
+            new EmphasisNode([
+              new PlainTextNode('Yes'),
+            ]),
+            new PlainTextNode(", I watched it live")
+          ], 'https://example.com/replay'),
+          new PlainTextNode('.')
+        ]))
+    })
   })
 
 
