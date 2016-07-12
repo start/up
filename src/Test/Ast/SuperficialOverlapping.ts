@@ -351,7 +351,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second", () => {
     context('This includes:', () => {
-      specify('Revision insertino and revision deletion', () => {
+      specify('Revision insertion and revision deletion', () => {
         expect(Up.toAst('++Oh ~~++why would you do this?~~')).to.be.eql(
           insideDocumentAndParagraph([
             new RevisionInsertionNode([
@@ -359,6 +359,30 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             ]),
             new RevisionDeletionNode([
               new PlainTextNode('why would you do this?')
+            ])
+          ]))
+      })
+
+      specify('Revision insertion and a link with square brackets', () => {
+        expect(Up.toAst('++Oh [++why would you do this?](example.com)')).to.be.eql(
+          insideDocumentAndParagraph([
+            new RevisionInsertionNode([
+              new PlainTextNode('Oh ')
+            ]),
+            new LinkNode([
+              new PlainTextNode('why would you do this?')
+            ], 'https://example.com')
+          ]))
+      })
+
+      specify('A link with square brackets and revision deletion', () => {
+        expect(Up.toAst('[Well, well, ~~](example.com) why would you do this?~~')).to.be.eql(
+          insideDocumentAndParagraph([
+            new LinkNode([
+              new PlainTextNode('Well, well, ')
+            ], 'https://example.com'),
+            new RevisionDeletionNode([
+              new PlainTextNode(' why would you do this?')
             ])
           ]))
       })
