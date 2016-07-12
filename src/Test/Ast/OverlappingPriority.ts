@@ -336,6 +336,22 @@ describe('An action convention that overlaps a spoiler (which is prioritized to 
 })
 
 
+describe('An action convention that overlaps a link (which is prioritized to avoid being split over action conventions) by only their end tokens', () => {
+  it("is perfectly nested", () => {
+    expect(Up.toAst("{loudly sings [Jigglypuff's Lullaby}](example.com/jigglypuff-lullaby)")).to.be.eql(
+      insideDocumentAndParagraph([
+        new ActionNode([
+          new PlainTextNode('loudly sings '),
+          new LinkNode([
+            new PlainTextNode("Jigglypuff's Lullaby")
+          ], 'https://example.com/jigglypuff-lullaby')
+        ])
+      ])
+    )
+  })
+})
+
+
 describe('A link that overlaps an action convention (which is prioritized to avoid being split over links) by only their end tokens', () => {
   it("is perfectly nested", () => {
     const text =
