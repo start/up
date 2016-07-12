@@ -379,7 +379,7 @@ class Tokenizer {
   //    * Have a scheme (like "mailto:" or "https://")
   //    * Start with a slash
   //    * Start with a hash mark ("#")
-  //    * Have a top-level domain.
+  //    * Have a top-level domain
   //      
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
@@ -387,7 +387,7 @@ class Tokenizer {
   //    * The top-level domain must consist solely of letters
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
-  //      consecutive  periods are allowed in the resource path.
+  //      consecutive periods are allowed in the resource path.
   private getLinkUrlConventions(): TokenizableConvention[] {
     return concat(BRACKETS.map(bracket => [
       this.getBracketedUrlConvention({
