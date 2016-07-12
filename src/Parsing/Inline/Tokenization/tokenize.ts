@@ -148,7 +148,7 @@ class Tokenizer {
       ...this.getFootnoteConventions(),
 
       ...this.getLinkifyingUrlConventions(),
-      
+
       ...this.getLinkContentConventions(),
 
       ...[
@@ -410,10 +410,10 @@ class Tokenizer {
     //
     // The last token itself might not be a LinkUrlAndEnd token, though. For more information, see
     // the `encloseWithin` method.
-    
+
     for (let i = this.tokens.length - 1; i >= 0; i--) {
       const token = this.tokens[i]
-      
+
       if (token.kind === LINK_CONVENTION.endTokenKind) {
         token.value = url
         return
