@@ -162,8 +162,8 @@ describe("Overlapping conventions where the in which only the first convention's
 })
 
 
-describe("Overlapping conventions where only the first convention's start delimiter is outside of the second convention", () => {
-  it('are treated as though the first convention is inside the second (and thus not overlapping)', () => {
+context("Overlapping conventions where only the first convention's start delimiter is outside of the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
+  specify('This is the case for nearly all conventions', () => {
     expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
@@ -175,22 +175,21 @@ describe("Overlapping conventions where only the first convention's start delimi
       ])
     )
   })
-})
 
-
-describe("When another convention overlaps parenthesized text, and only the other convention's start delimiter is outside the open parentheses", () => {
-  it('the open parenthesis remains inside the other convention)', () => {
-    expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
-      insideDocumentAndParagraph([
-        new RevisionDeletionNode([
-          new ParenthesizedNode([
-            new PlainTextNode('(Oh')
+  context('But not conventions whose delimiters represent actual content:', () => {
+    specify('Parentheses)', () => {
+      expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionDeletionNode([
+            new ParenthesizedNode([
+              new PlainTextNode('(Oh')
+            ]),
           ]),
-        ]),
-        new ParenthesizedNode([
-          new PlainTextNode(' why would you do this?)')
+          new ParenthesizedNode([
+            new PlainTextNode(' why would you do this?)')
+          ])
         ])
-      ])
-    )
+      )
+    })
   })
 })
