@@ -21,23 +21,30 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
   }
 ): void {
   expectEveryPermutationOfBrackets({
-    contentToWrapInBrackets: args.content,
-    bracketedSegments: [{
-      prefixes: args.partsBetweenContentAndUrl,
-      content: args.url
-    }],
+    bracketedSegments: [
+      {
+        content: args.content
+      },
+      {
+        prefixes: args.partsBetweenContentAndUrl,
+        content: args.url
+      }],
     toProduce: args.toProduce
   })
 }
 
 export function expectEveryPermutationOfBrackets(
   args: {
-    contentToWrapInBrackets: string
     bracketedSegments: BracketedSegments[]
     toProduce: DocumentNode
   }
 ): void {
-  const { contentToWrapInBrackets, toProduce } = args
+  const { toProduce } = args
+
+  const segments = args.bracketedSegments.map(segment => <BracketedSegments>{
+    prefixes: segment.prefixes || [''],
+    content: segment.content
+  })
 
   const BRACKETS = [
     { open: '(', close: ')' },
@@ -45,27 +52,17 @@ export function expectEveryPermutationOfBrackets(
     { open: '{', close: '}' }
   ]
 
-  const segments = args.bracketedSegments.map(segment => <BracketedSegments>{
-    prefixes: segment.prefixes || [''],
-    content: segment.content
-  })
+  const permutationsBySegment =
+    segments.map(segment =>
+      concat(
+        segment.prefixes.map(prefix =>
+          BRACKETS.map(bracket =>
+            prefix + wrapInBracket(segment.content, bracket)))))
 
-  for (const contentBracket of BRACKETS) {
-    const bracktedContent = wrapInBracket(contentToWrapInBrackets, contentBracket)
-
-    const permutationsBySegment =
-      segments.map(segment =>
-        concat(
-          segment.prefixes.map(prefix =>
-            BRACKETS.map(bracket =>
-              prefix + wrapInBracket(segment.content, bracket)))))
-
-    for (const permutation of everyPermutation(bracktedContent, permutationsBySegment)) {
-      expect(Up.toAst(permutation)).to.be.eql(toProduce)
-    }
+  for (const permutation of everyPermutation('', permutationsBySegment)) {
+    expect(Up.toAst(permutation)).to.be.eql(toProduce)
   }
 }
-
 
 // Returns every permutation of the different values for each segment, each prefixed by `prefix`. 
 //
