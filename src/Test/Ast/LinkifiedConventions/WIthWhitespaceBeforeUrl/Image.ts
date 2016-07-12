@@ -489,7 +489,7 @@ context('A linkified image convention can have whitespace between its image URL 
   })
 
 
-  specify('If none of the conditions are satisfied, the spoiler is not linkified', () => {
+  specify('If none of the conditions are satisfied, the image is not linkified', () => {
     expect(Up.toAst('[image: something terrible] (https://example.com/image.png) (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new ImageNode('something terrible', 'https://example.com/image.png'),

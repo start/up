@@ -489,7 +489,7 @@ context('A linkified video convention can have whitespace between its video URL 
   })
 
 
-  specify('If none of the conditions are satisfied, the spoiler is not linkified', () => {
+  specify('If none of the conditions are satisfied, the video is not linkified', () => {
     expect(Up.toAst('[video: something terrible] (https://example.com/video.webm) (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new VideoNode('something terrible', 'https://example.com/video.webm'),

@@ -489,7 +489,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
   })
 
 
-  specify('If none of the conditions are satisfied, the spoiler is not linkified', () => {
+  specify('If none of the conditions are satisfied, the audio convention is not linkified', () => {
     expect(Up.toAst('[audio: something terrible] (https://example.com/sounds.ogg) (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new AudioNode('something terrible', 'https://example.com/sounds.ogg'),
