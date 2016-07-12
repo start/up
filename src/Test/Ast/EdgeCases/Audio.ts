@@ -105,31 +105,3 @@ describe("Unmatched opening parentheses in an audio URL", () => {
       ]))
   })
 })
-
-
-describe('Bracketed text starting with "audio:" directly followed by a footnote (without any whitespace between the two)', () => {
-  it('does not produce an audio node', () => {
-    const text = "I'm normal [audio: https://example.com](^There are more clips where that came from) and that's a fact."
-
-    const footnote = new FootnoteNode([
-      new PlainTextNode('There are more clips where that came from')
-    ], 1)
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode("I'm normal "),
-          new SquareBracketedNode([
-            new PlainTextNode("[image: "),
-            new LinkNode([
-              new PlainTextNode('example.com')
-            ], 'https://example.com'),
-            new PlainTextNode("]"),
-          ]),
-          footnote,
-          new PlainTextNode(" and that's a fact."),
-        ]),
-        new FootnoteBlockNode([footnote])
-      ]))
-  })
-})

@@ -105,31 +105,3 @@ describe("Unmatched opening parentheses in a video URL", () => {
       ]))
   })
 })
-
-
-describe('Bracketed text starting with "video:" directly followed by a footnote (without any whitespace between the two)', () => {
-  it('does not produce a video node', () => {
-    const text = "I'm normal [video: https://example.com](^There are more videos where that came from) and that's a fact."
-
-    const footnote = new FootnoteNode([
-      new PlainTextNode('There are more videos where that came from')
-    ], 1)
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode("I'm normal "),
-          new SquareBracketedNode([
-            new PlainTextNode("[video: "),
-            new LinkNode([
-              new PlainTextNode('example.com')
-            ], 'https://example.com'),
-            new PlainTextNode("]"),
-          ]),
-          footnote,
-          new PlainTextNode(" and that's a fact."),
-        ]),
-        new FootnoteBlockNode([footnote])
-      ]))
-  })
-})
