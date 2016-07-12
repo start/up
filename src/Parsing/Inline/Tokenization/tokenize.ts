@@ -121,6 +121,16 @@ class Tokenizer {
       }
     }))
 
+  // The last token added isn't necessarily the last token in the `tokens` collection.
+  //
+  // 1. When rich conventions are "linkified", their contents are surrounded by a link which itself goes
+  //    inside the original convention. In this case, the last token added would be a LinkUrlAndEnd token.
+  //    For more information about "linkification", please see the `getLinkifyingUrlConventions` method.
+  //    
+  // 2. When a rich convention (one that can contain other conventions) closes, we move its end token
+  //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
+  private lastTokenAdded: Token
+
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineTextConsumer(entireText)
     this.configureConventions()
@@ -928,10 +938,15 @@ class Tokenizer {
       text: this.consumer.remainingText,
       then: (resultToken, lengthConsumed) => {
         this.flushNonEmptyBufferToPlainTextToken()
-        this.tokens.push(resultToken)
+        this.appendToken(resultToken)
         this.consumer.advanceTextIndex(lengthConsumed)
       }
     })
+  }
+
+  private appendToken(token: Token): void {
+    this.tokens.push(token)
+    this.lastTokenAdded = token
   }
 
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
@@ -1038,7 +1053,7 @@ class Tokenizer {
   }
 
   private appendNewToken(kind: TokenKind, value?: string): void {
-    this.tokens.push(new Token(kind, value))
+    this.appendToken(new Token(kind, value))
   }
 
   private flushBufferToNakedUrlEndToken(): void {
@@ -1074,6 +1089,8 @@ class Tokenizer {
     for (const raisedVoiceHandler of this.raisedVoiceHandlers) {
       raisedVoiceHandler.registerTokenInsertion({ atIndex })
     }
+
+    this.lastTokenAdded = token
   }
 
   private flushNonEmptyBufferToPlainTextToken(): void {
