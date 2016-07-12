@@ -63,7 +63,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify("A link and emphasis", () => {
+    specify("A link whose content is wrapped in square brackets and emphasis", () => {
       expect(Up.toAst("*[Yes*, I watched it live](example.com/replay).")).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
@@ -72,6 +72,19 @@ context('When most otherwise-nested conventions overlap by only their start deli
             ]),
             new PlainTextNode(", I watched it live")
           ], 'https://example.com/replay'),
+          new PlainTextNode('.')
+        ]))
+    })
+
+    specify("Emphasis and a link whose content is wrapped in square brackets and emphasis", () => {
+      expect(Up.toAst("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new EmphasisNode([
+            new LinkNode([
+              new PlainTextNode('Yes, I watched it live'),
+            ], 'https://example.com/replay'),
+            new PlainTextNode(' yesterday')
+          ]),
           new PlainTextNode('.')
         ]))
     })
@@ -208,7 +221,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       )
     })
 
-    specify("Emphasis and a link", () => {
+    specify("Emphasis and a link whose content is wrapped in square brackets", () => {
       expect(Up.toAst("*I watched it [live*](example.com/replay)")).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([
@@ -221,7 +234,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       )
     })
 
-    specify("A link and an action convention", () => {
+    specify("A link whose content is wrapped in square brackets and an action convention", () => {
       expect(Up.toAst('[Mario fell off the platform. {splat](example.com/game-over)}')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
@@ -234,7 +247,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       )
     })
 
-    specify("An action convention and a link", () => {
+    specify("An action convention and a link whose content is wrapped in square brackets", () => {
       expect(Up.toAst('{loud [thwomp}](example.com/thwomp)')).to.be.eql(
         insideDocumentAndParagraph([
           new ActionNode([
@@ -363,7 +376,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
           ]))
       })
 
-      specify('Revision insertion and a link with square brackets', () => {
+      specify('Revision insertion and a link whose content is wrapped in square brackets', () => {
         expect(Up.toAst('++Oh [++why would you do this?](example.com)')).to.be.eql(
           insideDocumentAndParagraph([
             new RevisionInsertionNode([
@@ -375,7 +388,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
           ]))
       })
 
-      specify('A link with square brackets and revision deletion', () => {
+      specify('A link whose content is wrapped in square brackets and revision deletion', () => {
         expect(Up.toAst('[Well, well, ~~](example.com) why would you do this?~~')).to.be.eql(
           insideDocumentAndParagraph([
             new LinkNode([
