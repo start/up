@@ -261,8 +261,8 @@ class Tokenizer {
       startsWith: escapeForRegex(startsWith),
       endsWith: escapeForRegex(endsWith),
 
-      whenOpening: () => this.buffer += startsWith,
-      whenClosing: () => this.buffer += endsWith,
+      whenOpening: () => { this.buffer += startsWith },
+      whenClosing: () => { this.buffer += endsWith },
 
       insteadOfFailingWhenLeftUnclosed: (context) => { /*  Neither fail nor do anything special  */ }
     })
