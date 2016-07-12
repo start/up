@@ -406,8 +406,21 @@ class Tokenizer {
   }
 
   private closeLink(url: string) {
-    // The last token is a LinkUrlAndEnd token
-    last(this.tokens).value = url
+    // The last LinkUrlAndEnd token belongs to our link.
+    //
+    // The last token itself might not be a LinkUrlAndEnd token, though. For more information, see
+    // the `encloseWithin` method.
+    
+    for (let i = this.tokens.length - 1; i >= 0; i--) {
+      const token = this.tokens[i]
+      
+      if (token.kind === LINK_CONVENTION.endTokenKind) {
+        token.value = url
+        return
+      }
+    }
+
+    throw new Error('Missing link end token')
   }
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
