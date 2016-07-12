@@ -121,15 +121,16 @@ class Tokenizer {
       }
     }))
 
-  // The last token added isn't necessarily the last token in the `tokens` collection.
+  // The most recent token isn't necessarily the last token in the `tokens` collection.
   //
-  // 1. When rich conventions are "linkified", their contents are surrounded by a link which itself goes
-  //    inside the original convention. In this case, the last token added would be a LinkUrlAndEnd token.
-  //    For more information about "linkification", please see the `getLinkifyingUrlConventions` method.
+  // 1. When a rich convention is "linkified", its entire contents are nested within a link, which
+  //    itself is nested within the original convention. In that case, the most recent token would
+  //    be a LinkUrlAndEnd token. For more information about "linkification", please see the
+  //    `getLinkifyingUrlConventions` method.
   //    
   // 2. When a rich convention (one that can contain other conventions) closes, we move its end token
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
-  private lastTokenAdded: Token
+  private mostRecentToken: Token
 
   constructor(entireText: string, private config: UpConfig) {
     this.consumer = new InlineTextConsumer(entireText)
@@ -416,7 +417,7 @@ class Tokenizer {
   }
 
   private closeLink(url: string) {
-    this.lastTokenAdded.value = url
+    this.mostRecentToken.value = url
   }
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
@@ -932,7 +933,7 @@ class Tokenizer {
 
   private appendToken(token: Token): void {
     this.tokens.push(token)
-    this.lastTokenAdded = token
+    this.mostRecentToken = token
   }
 
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
@@ -1019,8 +1020,8 @@ class Tokenizer {
   private isDirectlyFollowing(tokenKinds: TokenKind[]): boolean {
     return (
       !this.buffer
-      && this.lastTokenAdded
-      && tokenKinds.some(tokenKind => this.lastTokenAdded.kind === tokenKind))
+      && this.mostRecentToken
+      && tokenKinds.some(tokenKind => this.mostRecentToken.kind === tokenKind))
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
@@ -1073,7 +1074,7 @@ class Tokenizer {
       raisedVoiceHandler.registerTokenInsertion({ atIndex })
     }
 
-    this.lastTokenAdded = token
+    this.mostRecentToken = token
   }
 
   private flushNonEmptyBufferToPlainTextToken(): void {
