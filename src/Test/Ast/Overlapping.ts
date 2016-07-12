@@ -145,9 +145,8 @@ describe('Conventions that completely overlap', () => {
   })
 })
 
-
-describe("Overlapping conventions where the in which only the first convention's end delimiter is inside the second", () => {
-  it('are treated as though the first convention ends before the second', () => {
+context("Overlapping conventions where only the first convention's end delimiter is inside the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
+  it('This is the case for nearly all conventions', () => {
     expect(Up.toAst('++Oh ~~++why would you do this?~~')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
@@ -156,13 +155,44 @@ describe("Overlapping conventions where the in which only the first convention's
         new RevisionDeletionNode([
           new PlainTextNode('why would you do this?')
         ])
-      ])
-    )
+      ]))
+  })
+
+
+  context('But not conventions whose delimiters represent actual content:', () => {
+    specify('Parentheses', () => {
+      expect(Up.toAst('++Oh (++why would you do this?)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionInsertionNode([
+            new ParenthesizedNode([
+              new PlainTextNode('Oh (')
+            ]),
+          ]),
+          new ParenthesizedNode([
+            new PlainTextNode('why would you do this?)')
+          ])
+        ]))
+    })
+
+    specify('Square brackets', () => {
+      expect(Up.toAst('~~Oh [~~ why would you do this?]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionDeletionNode([
+            new SquareBracketedNode([
+              new PlainTextNode('Oh (')
+            ]),
+          ]),
+          new SquareBracketedNode([
+            new PlainTextNode('why would you do this?)')
+          ])
+        ])
+      )
+    })
   })
 })
 
 
-context("Overlapping conventions where only the first convention's start delimiter is outside of the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
+context("Overlapping conventions where only the first convention's start delimiter is outside the second are treated as though the first convention is inside the second (and thus not overlapping).", () => {
   specify('This is the case for nearly all conventions', () => {
     expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
       insideDocumentAndParagraph([
@@ -178,7 +208,7 @@ context("Overlapping conventions where only the first convention's start delimit
 
 
   context('But not conventions whose delimiters represent actual content:', () => {
-    specify('Parentheses)', () => {
+    specify('Parentheses', () => {
       expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
@@ -189,11 +219,10 @@ context("Overlapping conventions where only the first convention's start delimit
           new ParenthesizedNode([
             new PlainTextNode(' why would you do this?)')
           ])
-        ])
-      )
+        ]))
     })
 
-    specify('Square brackets)', () => {
+    specify('Square brackets', () => {
       expect(Up.toAst('~~[Oh~~ why would you do this?]')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
@@ -204,8 +233,7 @@ context("Overlapping conventions where only the first convention's start delimit
           new SquareBracketedNode([
             new PlainTextNode(' why would you do this?)')
           ])
-        ])
-      )
+        ]))
     })
   })
 })
