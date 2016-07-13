@@ -8,7 +8,6 @@ import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
@@ -17,11 +16,11 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 context('Square bracketed text can be directly followed by whitespace followed by', () => {
   context('a spoiler', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face (the one and only) [SPOILER: Gary].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new SquareBracketedNode([
-            new PlainTextNode('[the one and only]')
+          new ParenthesizedNode([
+            new PlainTextNode('(the one and only)')
           ]),
           new PlainTextNode(' '),
           new SpoilerNode([
@@ -32,11 +31,11 @@ context('Square bracketed text can be directly followed by whitespace followed b
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face [the one and only] [SPOILER:Gary Oak].')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face (the one and only) [SPOILER:Gary Oak].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new SquareBracketedNode([
-            new PlainTextNode('[the one and only]')
+          new ParenthesizedNode([
+            new PlainTextNode('(the one and only)')
           ]),
           new PlainTextNode(' '),
           new SpoilerNode([
@@ -49,7 +48,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
 
   context('a footnote', () => {
     specify('that only contains whitespace directly after the caret', () => {
-      const text = "I don't eat cereal [or oatmeal] (^ Lying.) on Mondays."
+      const text = "I don't eat cereal (or oatmeal) (^ Lying.) on Mondays."
 
       const footnote = new FootnoteNode([
         new PlainTextNode('Lying.')
@@ -59,8 +58,8 @@ context('Square bracketed text can be directly followed by whitespace followed b
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new SquareBracketedNode([
-              new PlainTextNode('[or oatmeal]')
+            new ParenthesizedNode([
+              new PlainTextNode('(or oatmeal)')
             ]),
             footnote,
             new PlainTextNode(" on Mondays."),
@@ -70,7 +69,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
     })
   
     specify('that contains whitespace, but none directly after the caret', () => {
-      const text = "I don't eat cereal [or oatmeal] (^Definitely lying.) on Mondays."
+      const text = "I don't eat cereal (or oatmeal) (^Definitely lying.) on Mondays."
 
       const footnote = new FootnoteNode([
         new PlainTextNode('Definitely lying.')
@@ -80,8 +79,8 @@ context('Square bracketed text can be directly followed by whitespace followed b
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new SquareBracketedNode([
-              new PlainTextNode('[or oatmeal]')
+            new ParenthesizedNode([
+              new PlainTextNode('(or oatmeal)')
             ]),
             footnote,
             new PlainTextNode(" on Mondays."),
@@ -94,11 +93,11 @@ context('Square bracketed text can be directly followed by whitespace followed b
 
   context('an image', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image: Gary] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image: Gary] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new SquareBracketedNode([
-            new PlainTextNode('[in Pokémon Red/Blue/Yellow]')
+          new ParenthesizedNode([
+            new PlainTextNode('(in Pokémon Red/Blue/Yellow)')
           ]),
           new PlainTextNode(' '),
           new ImageNode('Gary', 'https://example.com/gary.png'),
@@ -107,11 +106,11 @@ context('Square bracketed text can be directly followed by whitespace followed b
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new SquareBracketedNode([
-            new PlainTextNode('[in Pokémon Red/Blue/Yellow]')
+          new ParenthesizedNode([
+            new PlainTextNode('(in Pokémon Red/Blue/Yellow)')
           ]),
           new PlainTextNode(' '),
           new ImageNode('Gary Oak', 'https://example.com/gary.png'),
