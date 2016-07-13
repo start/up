@@ -95,12 +95,10 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify('Parentheses', () => {
       expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
         insideDocumentAndParagraph([
-          new RevisionDeletionNode([
-            new ParenthesizedNode([
+          new ParenthesizedNode([
+            new RevisionDeletionNode([
               new PlainTextNode('(Oh')
             ]),
-          ]),
-          new ParenthesizedNode([
             new PlainTextNode(' why would you do this?)')
           ])
         ]))
@@ -109,12 +107,10 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify('Square brackets', () => {
       expect(Up.toAst('~~[Oh~~ why would you do this?]')).to.be.eql(
         insideDocumentAndParagraph([
-          new RevisionDeletionNode([
-            new SquareBracketedNode([
+          new SquareBracketedNode([
+            new RevisionDeletionNode([
               new PlainTextNode('[Oh')
             ]),
-          ]),
-          new SquareBracketedNode([
             new PlainTextNode(' why would you do this?]')
           ])
         ]))
