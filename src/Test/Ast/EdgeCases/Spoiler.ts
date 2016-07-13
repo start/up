@@ -20,18 +20,4 @@ describe('A spoiler convention', () => {
         new PlainTextNode('.')
       ]))
   })
-
-  it('can directly follow square bracketed text', () => {
-    expect(Up.toAst('After you beat the Elite Four [in Pokemon Red/Blue/Yellow][SPOILER: you fight Gary].')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four '),
-        new SquareBracketedNode([
-          new PlainTextNode('[in Pokemon Red/Blue/Yellow]')
-        ]),
-        new SpoilerNode([
-          new PlainTextNode('you fight Gary')
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
 })
