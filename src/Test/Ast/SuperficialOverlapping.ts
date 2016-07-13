@@ -351,6 +351,30 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ])
       ]))
   })
+
+  specify('Parentheses and revision insertion', () => {
+    expect(Up.toAst('++(Why would you do this?++)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new RevisionInsertionNode([
+            new PlainTextNode('(Why would you do this?')
+          ]),
+          new PlainTextNode(')')
+        ])
+      ]))
+  })
+
+  specify('Square brackets and revision deletion', () => {
+    expect(Up.toAst('[~~Why would you do this?]~~')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('['),
+          new RevisionDeletionNode([
+            new PlainTextNode('Why would you do this?]')
+          ]),
+        ])
+      ]))
+  })
 })
 
 
