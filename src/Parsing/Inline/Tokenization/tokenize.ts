@@ -552,7 +552,7 @@ class Tokenizer {
     const indexOfOriginalEndToken = this.tokens.length - 1
     this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
 
-    const originalStartToken = last(this.tokens).correspondsToToken
+    const originalStartToken = last(this.tokens).correspondingDelimiter
     const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
     this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
   }
@@ -863,9 +863,9 @@ class Tokenizer {
       // We should only swap our end token with the previous token if...
       const shouldSwapEndTokenWithPreviousToken =
         // The previous token is a rich convention's end token...
-        previousToken.correspondsToToken
+        previousToken.correspondingDelimiter
         // ...and our start token (that we just added) is within the previous end token's convention. 
-        && startTokenIndex > this.indexOfToken(previousToken.correspondsToToken)
+        && startTokenIndex > this.indexOfToken(previousToken.correspondingDelimiter)
 
       if (shouldSwapEndTokenWithPreviousToken) {
         // If all that applies, our end token should really be inside the previous end token's convention.

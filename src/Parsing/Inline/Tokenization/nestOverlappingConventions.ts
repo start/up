@@ -91,7 +91,7 @@ class ConventionNester {
       for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
         const unclosedStartToken = unclosedStartTokens[i]
 
-        if (unclosedStartToken.correspondsToToken === endToken) {
+        if (unclosedStartToken.correspondingDelimiter === endToken) {
           // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -99,7 +99,7 @@ class ConventionNester {
           break
         }
 
-        endTokensOfOverlappingConventions.push(unclosedStartToken.correspondsToToken)
+        endTokensOfOverlappingConventions.push(unclosedStartToken.correspondingDelimiter)
       }
 
       // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
@@ -142,7 +142,7 @@ class ConventionNester {
         const potentialHeroEndToken = this.tokens[i]
 
         const isEndTokenForHeroConvention =
-          potentialHeroEndToken === potentialHeroStartToken.correspondsToToken
+          potentialHeroEndToken === potentialHeroStartToken.correspondingDelimiter
 
         if (isEndTokenForHeroConvention) {
           heroEndIndex = i
@@ -172,7 +172,7 @@ class ConventionNester {
           //
           // We `unshift`, not `push`, because the collection represents end tokens in the order they appear, and
           // end tokens appear in the opposite order of start tokens.
-          endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondsToToken)
+          endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondingDelimiter)
           continue
         }
 
@@ -224,7 +224,7 @@ class ConventionNester {
 
       const indexBeforeSplittingToken = index - 1
 
-      if (tokens[indexBeforeSplittingToken].correspondsToToken === endToken) {
+      if (tokens[indexBeforeSplittingToken].correspondingDelimiter === endToken) {
         tokens.splice(indexBeforeSplittingToken, 1)
         index -= 1
       } else {
@@ -239,7 +239,7 @@ class ConventionNester {
       if (tokens[indexAfterSplitterToken] === endToken) {
         tokens.splice(indexAfterSplitterToken, 1)
       } else {
-        const startToken = endToken.correspondsToToken
+        const startToken = endToken.correspondingDelimiter
         tokens.splice(indexAfterSplitterToken, 0, startToken)
       }
     }
