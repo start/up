@@ -35,30 +35,6 @@ describe('A footnote reference at the end of a paragraph', () => {
 })
 
 
-describe('A footnote reference directly following parenthesized text', () => {
-  it('does not produce a link node', () => {
-    const text = "I don't eat cereal (or oatmeal)(^Well, I do, but I pretend not to.) on Mondays."
-
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well, I do, but I pretend not to.')
-    ], 1)
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal "),
-          new ParenthesizedNode([
-            new PlainTextNode('(or oatmeal)')
-          ]),
-          footnote,
-          new PlainTextNode(" on Mondays."),
-        ]),
-        new FootnoteBlockNode([footnote])
-      ]))
-  })
-})
-
-
 describe('A footnote produced by parentheses that contains nested parenthesized text ending together', () => {
   it('produces a footnote containing the nested parenthesized text', () => {
     const text = "(^I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?)"
