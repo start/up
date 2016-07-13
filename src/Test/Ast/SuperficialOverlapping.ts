@@ -409,8 +409,9 @@ context("When most conventions overlap by only the first convention's end delimi
       expect(Up.toAst('++Oh (++why would you do this?)')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
+            new PlainTextNode('Oh '),
             new ParenthesizedNode([
-              new PlainTextNode('Oh (')
+              new PlainTextNode('(')
             ]),
           ]),
           new ParenthesizedNode([
@@ -420,11 +421,12 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Square brackets', () => {
-      expect(Up.toAst('~~Oh [~~ why would you do this?]')).to.be.eql(
+      expect(Up.toAst('~~Oh [~~why would you do this?]')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
+            new PlainTextNode('Oh '),
             new SquareBracketedNode([
-              new PlainTextNode('Oh [')
+              new PlainTextNode('[')
             ]),
           ]),
           new SquareBracketedNode([
