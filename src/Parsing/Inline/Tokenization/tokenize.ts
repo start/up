@@ -250,7 +250,7 @@ class Tokenizer {
 
     return this.getRichConvention({
       richConvention,
-      startsWith: escapeForRegex(startsWith),
+      startsWith: escapeForRegex(startsWith) + NOT_FOLLOWED_BY_WHITESPACE,
       endsWith: escapeForRegex(endsWith),
 
       whenOpening: () => { this.buffer += startsWith },
