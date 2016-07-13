@@ -1131,6 +1131,23 @@ class Tokenizer {
 }
 
 
+const RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT = [
+  PARENTHESIZED_CONVENTION,
+  SQUARE_BRACKETED_CONVENTION,
+]
+
+
+function doesRichConventionStartTokenRepresentActualContent(richConventionEndToken: Token): boolean {
+  return RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT.some(convention =>
+    convention.startTokenKind === richConventionEndToken.kind)
+}
+
+function doesRichConventionEndTokenRepresentActualContent(richConventionEndToken: Token): boolean {
+  return RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT.some(convention =>
+    convention.endTokenKind === richConventionEndToken.kind)
+}
+
+
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
@@ -1142,7 +1159,7 @@ const NOT_FOLLOWED_BY_WHITESPACE =
 //
 // 1. To apply URL config settings
 // 2. To determine when bracketed text is intended to be a link URL. For more information, see the comments
-//    for the `getConventionsForWhitespaceFollowedByLinkUrl` method.
+//    for the `getLinkUrlConventions` method.
 //
 // One important thing to note about that second point:
 //
