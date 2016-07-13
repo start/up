@@ -822,12 +822,16 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToPlainTextToken()
 
-    // Normally, when conventions overlap, we split them into pieces to ensure each convention has
-    // just a single parent. If splitting a convention produces an empty piece on one side, that empty
-    // piece is discarded. This process is fully explained in `nestOverlappingConventions.ts`.
+    const startToken = new Token(richConvention.startTokenKind)
+    const endToken = new Token(richConvention.endTokenKind)
+    startToken.associateWith(endToken)
+    
+    // Normally, when conventions overlap, we split them into pieces to ensure each convention has just a
+    // single parent. If splitting a convention produces an empty piece on one side, that empty piece is
+    // discarded. This process is fully explained in `nestOverlappingConventions.ts`.
     //
-    // We can avoid some superficial overlapping by shifting our new delimiter tokens past any overlapping
-    // delimiter tokens (but not past any content). For example:
+    // We can avoid some superficial overlapping by shifting our new end token past any overlapping end tokens
+    // tokens (but not past any content!). For example:
     //
     // I've had enough! I hate this game! {softly curses [SPOILER: Professor Oak}]
     //
@@ -846,28 +850,41 @@ class Tokenizer {
     // overlapped by one that we’d prefer to split, it splits the convention we’d rather split. Because we’d
     // rather split action conventions than spoilers, the action convention in the above example would be
     // split in two, with one half outside the spoiler, and the other half inside the spoiler. By moving the
-    // spoiler’s end token inside the action convention, we can avoid having to split the action convention.
+    // spoiler’s end token inside the action convention, we can avoid having to split the action convention. 
 
-    const startToken = new Token(richConvention.startTokenKind)
-    const endToken = new Token(richConvention.endTokenKind)
-    startToken.associateWith(endToken)
-
+    // Rich conventions' start tokens aren't added 
     this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
     let endTokenIndex = this.tokens.length
 
+    // Alright. It's time to insert our end token before any overlapping end tokens!
     for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
-      let previousToken = this.tokens[i]
+      let token = this.tokens[i]
+      
+      // If the current token has a `correspondingDelimiter`, it must be an end token. It cannot be a start
+      // token, because:
+      //
+      // 1. Rich conventions' start tokens are added after the convention closes along with their end tokens
+      //    (using this method!). If a rich convention has a start token, it has an end token, too. This
+      //    brings us to the second reason...
+      //
+      // 2. Rich conventions cannot be totally empty. There will always be content between a rich convention's
+      //    start token and its end token. 
+      //
+      // Below, we break from the loop if we encounter actual content, so we can't ever encounter a start
+      // token here.
+      const isCurrentTokenAnEndToken =
+        token.correspondingDelimiter != null
 
-      // We should only swap our end token with the previous token if...
-      const shouldSwapEndTokenWithPreviousToken =
-        // The previous token is a rich convention's end token...
-        previousToken.correspondingDelimiter
-        // ...and our start token (that we just added) is within the previous end token's convention. 
-        && startTokenIndex > this.indexOfToken(previousToken.correspondingDelimiter)
+      // We should insert our new end token before the current end token if...
+      const shouldEndTokenAppearBeforeCurrentToken =
+        // ...the current token is actually a rich convention's end token...
+        isCurrentTokenAnEndToken
+        // ...and our start token (that we just added) is inside the current end token's convention. 
+        && startTokenIndex > this.indexOfToken(token.correspondingDelimiter)
 
-      if (shouldSwapEndTokenWithPreviousToken) {
-        // If all that applies, our end token should really be inside the previous end token's convention.
+      if (shouldEndTokenAppearBeforeCurrentToken) {
+        // If all that applies, our end token should *also* be inside the current end token's convention.
         endTokenIndex -= 1
       } else {
         // We've hit a token that we can't swap with! Let's add our end token. 
