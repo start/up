@@ -822,25 +822,19 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToPlainTextToken()
 
-    const startToken = new Token(richConvention.startTokenKind)
-    const endToken = new Token(richConvention.endTokenKind)
-    startToken.associateWith(endToken)
-
-    this.insertToken({ token: startToken, atIndex: startTokenIndex })
-
-    // We can avoid some superficial overalpping by inserting our new end token before any overlapping
-    // end tokens.  For example:
-    //
-    // I've had enough! I hate this game! {softly curses [SPOILER: Professor Oak}]
-    //
     // Normally, when conventions overlap, we split them into pieces to ensure each convention has
     // just a single parent. If splitting a convention produces an empty piece on one side, that empty
     // piece is discarded. This process is fully explained in `nestOverlappingConventions.ts`.
     //
-    // *Anyway*, in the above example, the spoiler convention starts inside the action convention and
-    // ends after the action convention. The two conventions overlap, but only by only their end tokens.
-    // By inserting the end token for the spoiler before the end token of the action convention, we can
-    // avoid having to split any conventions.
+    // We can avoid some superficial overlapping by shifting our new delimiter tokens past any overlapping
+    // delimiter tokens (but not past any content). For example:
+    //
+    // I've had enough! I hate this game! {softly curses [SPOILER: Professor Oak}]
+    //
+    // In the above example, the spoiler convention starts inside the action convention and ends after the
+    // action convention. The two conventions overlap, but only by only their end tokens. By inserting the
+    // end token for the spoiler before the end token of the action convention, we can avoid having to split
+    // any conventions.
     //
     // This is more than just an optimization tactic, however! It actually improves the final abstract
     // syntax tree. How? Well...
@@ -849,11 +843,16 @@ class Tokenizer {
     // action convention than a spoiler, and we'd rather split a spoiler than a footnote.
     //
     // Once our process for splitting overlapping conventions has determined that a convention is being
-    // overlapped by one that we’d prefer to split, it splits the convention we’d rather split.
-    // Because we’d rather split action conventions than spoilers, the action convention in the above
-    // example would be split in two, with one hald outside the spoiler, and the other half inside the
-    // spoiler. By moving the spoiler’s end token inside the action convention, we can avoid having to 
-    // split the action convention.
+    // overlapped by one that we’d prefer to split, it splits the convention we’d rather split. Because we’d
+    // rather split action conventions than spoilers, the action convention in the above example would be
+    // split in two, with one half outside the spoiler, and the other half inside the spoiler. By moving the
+    // spoiler’s end token inside the action convention, we can avoid having to split the action convention.
+
+    const startToken = new Token(richConvention.startTokenKind)
+    const endToken = new Token(richConvention.endTokenKind)
+    startToken.associateWith(endToken)
+
+    this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
     let endTokenIndex = this.tokens.length
 
@@ -1137,12 +1136,12 @@ const RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT = [
 ]
 
 
-function doesRichConventionStartTokenRepresentActualContent(richConventionEndToken: Token): boolean {
+function canStartTokenBeShiftedWithoutAlteringSemantics(richConventionEndToken: Token): boolean {
   return RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT.some(convention =>
     convention.startTokenKind === richConventionEndToken.kind)
 }
 
-function doesRichConventionEndTokenRepresentActualContent(richConventionEndToken: Token): boolean {
+function canEndTokenBeShiftedWithoutAlteringSemantics(richConventionEndToken: Token): boolean {
   return RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT.some(convention =>
     convention.endTokenKind === richConventionEndToken.kind)
 }
