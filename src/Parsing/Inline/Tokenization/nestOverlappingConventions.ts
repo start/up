@@ -3,10 +3,10 @@ import { RichConvention } from '../RichConvention'
 import { Token } from './Token'
 
 
-// Conventions can overlap, which makes it painful to produce an abstract syntax tree. This function rearranges
-// and adds tokens to make that process simpler.
+// Rich conventions can overlap, which makes it painful to produce an abstract syntax tree. This function
+// rearranges and adds tokens to make that process simpler.
 //
-// Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
+// Overlapping rich conventions are split into multiple pieces to ensure each piece has just a single parent.
 export function nestOverlappingConventions(tokens: Token[]): Token[] {
   return new ConventionNester(tokens).tokens
 }
@@ -122,7 +122,6 @@ class ConventionNester {
 
   // This method assumes that any `conventionsToSplit` tokens are already properly nested within each other.
   private resolveOverlapping(splittableConventions: RichConvention[], conventionNotToSplit: RichConvention): void {
-
     // To keep local variable names shorter, we'll refer to `conventionNotToSplit` as the hero convention.
 
     for (let tokenIndex = 0; tokenIndex < this.tokens.length; tokenIndex++) {
