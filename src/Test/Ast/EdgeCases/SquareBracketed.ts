@@ -31,5 +31,20 @@ context('Square bracketed text can be directly followed by whitespace followed b
           new PlainTextNode('.')
         ]))
     })
+
+    specify('that contains whitespace, but non directly after the colon', () => {
+      expect(Up.toAst('After you beat the Elite Four, you have to face [the one and only] [SPOILER:Gary Oak].')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('After you beat the Elite Four, you have to face '),
+          new SquareBracketedNode([
+            new PlainTextNode('[the one and only]')
+          ]),
+          new PlainTextNode(' '),
+          new SpoilerNode([
+            new PlainTextNode('Gary Oak')
+          ]),
+          new PlainTextNode('.')
+        ]))
+    })
   })
 })
