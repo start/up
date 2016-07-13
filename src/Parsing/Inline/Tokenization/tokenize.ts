@@ -822,10 +822,6 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToPlainTextToken()
 
-    const startToken = new Token(richConvention.startTokenKind)
-    const endToken = new Token(richConvention.endTokenKind)
-    startToken.associateWith(endToken)
-    
     // Normally, when conventions overlap, we split them into pieces to ensure each convention has just a
     // single parent. If splitting a convention produces an empty piece on one side, that empty piece is
     // discarded. This process is fully explained in `nestOverlappingConventions.ts`.
@@ -852,7 +848,26 @@ class Tokenizer {
     // split in two, with one half outside the spoiler, and the other half inside the spoiler. By moving the
     // spoiler’s end token inside the action convention, we can avoid having to split the action convention. 
 
-    // Rich conventions' start tokens aren't added 
+    const startToken = new Token(richConvention.startTokenKind)
+    const endToken = new Token(richConvention.endTokenKind)
+    startToken.associateWith(endToken)
+
+    // Rich conventions' start tokens aren't added until the convention closes (and that happens right here!).
+    // If multiple rich conventions open consecutively, they will all try to insert their start token at the
+    // same token index, which actually works to our advantage.
+    //
+    // For example:
+    //
+    // *[Sadly*, Starcraft 2 is dead.] (reddit.com/r/starcraft)
+    //
+    // All rich conventions save the current number of tokens the time of their opening (essentially a start
+    // index). When a given convention closes, it inserts its start token back at that saved token index. Only
+    // if any tokens were added at a *previous* index will that start token index be updated.
+    //
+    // In the above example, both the emphasis convention and the link will try to insert their start tokens
+    // at the `0` index. Because the emphasis closes first, it inserts its token at the `0` index first. When
+    // the link inserts its start token at the `0` index, it naturally bumps the emphasis index forward,
+    // enclosing the emphasis convention within the link.
     this.insertToken({ token: startToken, atIndex: startTokenIndex })
 
     let endTokenIndex = this.tokens.length
@@ -860,12 +875,12 @@ class Tokenizer {
     // Alright. It's time to insert our end token before any overlapping end tokens!
     for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
       let token = this.tokens[i]
-      
+
       // If the current token has a `correspondingDelimiter`, it must be an end token. It cannot be a start
       // token, because:
       //
       // 1. Rich conventions' start tokens are added after the convention closes along with their end tokens
-      //    (using this method!). If a rich convention has a start token, it has an end token, too. This
+      //    (as explained above). If a rich convention has a start token, it has an end token, too. This
       //    brings us to the second reason...
       //
       // 2. Rich conventions cannot be totally empty. There will always be content between a rich convention's
