@@ -199,7 +199,7 @@ class Tokenizer {
 
   private getFootnoteConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket =>
-      this.getRichConvention({
+      this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
         startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
         endsWith: bracket.endPattern
@@ -208,7 +208,7 @@ class Tokenizer {
 
   private getLinkContentConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket =>
-      this.getRichConvention({
+      this.getTokenizableRichConvention({
         richConvention: LINK_CONVENTION,
         startsWith: bracket.startPattern,
         endsWith: bracket.endPattern,
@@ -225,7 +225,7 @@ class Tokenizer {
     const { richConvention, nonLocalizedTerm } = args
 
     return BRACKETS.map(bracket =>
-      this.getRichConvention({
+      this.getTokenizableRichConvention({
         richConvention,
         startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket) + ANY_WHITESPACE,
         endsWith: bracket.endPattern,
@@ -248,7 +248,7 @@ class Tokenizer {
   ): TokenizableConvention {
     const { richConvention, startsWith, endsWith } = args
 
-    return this.getRichConvention({
+    return this.getTokenizableRichConvention({
       richConvention,
       startsWith: escapeForRegex(startsWith) + NOT_FOLLOWED_BY_WHITESPACE,
       endsWith: escapeForRegex(endsWith),
@@ -271,7 +271,7 @@ class Tokenizer {
   ): TokenizableConvention {
     const { richConvention, startsWith, endsWith, cannotStartWithWhitespace, isMeaningfulWhenItContainsOnlyWhitespace } = args
 
-    return this.getRichConvention({
+    return this.getTokenizableRichConvention({
       richConvention,
       startsWith: escapeForRegex(startsWith) + (cannotStartWithWhitespace ? NOT_FOLLOWED_BY_WHITESPACE : ''),
       endsWith: escapeForRegex(endsWith),
@@ -284,7 +284,7 @@ class Tokenizer {
     })
   }
 
-  private getRichConvention(
+  private getTokenizableRichConvention(
     args: {
       richConvention: RichConvention
       startsWith: string
