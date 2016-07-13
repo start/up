@@ -220,11 +220,12 @@ class ConventionNester {
     const { tokens } = this
 
     for (const endToken of endTokensInTheirOriginalOrder) {
-      // First, let's try to add the end token before the splitting token.
+      const startToken = endToken.correspondingDelimiter
 
+      // First, let's try to add the end token before the splitting token.
       const indexBeforeSplittingToken = index - 1
 
-      if (tokens[indexBeforeSplittingToken].correspondingDelimiter === endToken) {
+      if (tokens[indexBeforeSplittingToken] === startToken) {
         tokens.splice(indexBeforeSplittingToken, 1)
         index -= 1
       } else {
@@ -233,13 +234,11 @@ class ConventionNester {
       }
 
       // Next, let's try to add the corresponding start token after the splitting token.
-      
       const indexAfterSplitterToken = index + 1
 
       if (tokens[indexAfterSplitterToken] === endToken) {
         tokens.splice(indexAfterSplitterToken, 1)
       } else {
-        const startToken = endToken.correspondingDelimiter
         tokens.splice(indexAfterSplitterToken, 0, startToken)
       }
     }
