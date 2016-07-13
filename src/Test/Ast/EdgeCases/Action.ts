@@ -8,19 +8,18 @@ import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 
 
-context('Parenthesized text can be directly followed by whitespace followed by', () => {
+context('Action text can be directly followed by whitespace followed by', () => {
   context('a spoiler', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face (the one and only) [SPOILER: Gary].')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face {sigh} [SPOILER: Gary].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new ParenthesizedNode([
-            new PlainTextNode('(the one and only)')
+          new ActionNode([
+            new PlainTextNode('sigh')
           ]),
           new PlainTextNode(' '),
           new SpoilerNode([
@@ -31,11 +30,11 @@ context('Parenthesized text can be directly followed by whitespace followed by',
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face (the one and only) [SPOILER:Gary Oak].')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face {sigh} [SPOILER:Gary Oak].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new ParenthesizedNode([
-            new PlainTextNode('(the one and only)')
+          new ActionNode([
+            new PlainTextNode('sigh')
           ]),
           new PlainTextNode(' '),
           new SpoilerNode([
@@ -48,7 +47,7 @@ context('Parenthesized text can be directly followed by whitespace followed by',
 
   context('a footnote', () => {
     specify('that only contains whitespace directly after the caret', () => {
-      const text = "I don't eat cereal (or oatmeal) (^ Lying.) on Mondays."
+      const text = "I don't eat cereal {sigh} (^ Lying.) on Mondays."
 
       const footnote = new FootnoteNode([
         new PlainTextNode('Lying.')
@@ -58,8 +57,8 @@ context('Parenthesized text can be directly followed by whitespace followed by',
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new ParenthesizedNode([
-              new PlainTextNode('(or oatmeal)')
+            new ActionNode([
+              new PlainTextNode('sigh')
             ]),
             footnote,
             new PlainTextNode(" on Mondays."),
@@ -69,7 +68,7 @@ context('Parenthesized text can be directly followed by whitespace followed by',
     })
   
     specify('that contains whitespace, but none directly after the caret', () => {
-      const text = "I don't eat cereal (or oatmeal) (^Definitely lying.) on Mondays."
+      const text = "I don't eat cereal {sigh} (^Definitely lying.) on Mondays."
 
       const footnote = new FootnoteNode([
         new PlainTextNode('Definitely lying.')
@@ -79,8 +78,8 @@ context('Parenthesized text can be directly followed by whitespace followed by',
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new ParenthesizedNode([
-              new PlainTextNode('(or oatmeal)')
+            new ActionNode([
+              new PlainTextNode('sigh')
             ]),
             footnote,
             new PlainTextNode(" on Mondays."),
@@ -93,11 +92,11 @@ context('Parenthesized text can be directly followed by whitespace followed by',
 
   context('an image', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image: Gary] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face Gary {sigh} [image: Gary] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new ParenthesizedNode([
-            new PlainTextNode('(in Pokémon Red/Blue/Yellow)')
+          new ActionNode([
+            new PlainTextNode('sigh')
           ]),
           new PlainTextNode(' '),
           new ImageNode('Gary', 'https://example.com/gary.png'),
@@ -106,11 +105,11 @@ context('Parenthesized text can be directly followed by whitespace followed by',
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toAst('After you beat the Elite Four, you have to face Gary {sigh} [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new ParenthesizedNode([
-            new PlainTextNode('(in Pokémon Red/Blue/Yellow)')
+          new ActionNode([
+            new PlainTextNode('sigh')
           ]),
           new PlainTextNode(' '),
           new ImageNode('Gary Oak', 'https://example.com/gary.png'),
