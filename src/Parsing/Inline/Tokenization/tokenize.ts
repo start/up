@@ -860,9 +860,9 @@ class Tokenizer {
     //
     // *[Sadly*, Starcraft 2 is dead.] (reddit.com/r/starcraft)
     //
-    // All rich conventions save the current number of tokens the time of their opening (essentially a start
-    // index). When a given convention closes, it inserts its start token back at that saved token index. Only
-    // if any tokens were added at a *previous* index will that start token index be updated.
+    // All rich conventions save the current count of tokens at the time of their opening, treating that count
+    // as a start token index. When a given convention closes, it inserts its start token back at that saved
+    // token index. Only if any tokens were added at a *previous* index will that start token index be updated.
     //
     // In the above example, both the emphasis convention and the link will try to insert their start tokens
     // at the `0` index. Because the emphasis closes first, it inserts its token at the `0` index first. When
