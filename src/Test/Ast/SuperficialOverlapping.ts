@@ -328,31 +328,28 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
   })
 
+  specify('Revision insertion and parentheses', () => {
+    expect(Up.toAst('++(Why would you do this?++)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new ParenthesizedNode([
+          new RevisionInsertionNode([
+            new PlainTextNode('(Why would you do this?')
+          ]),
+          new PlainTextNode(')')
+        ])
+      ]))
+  })
 
-  context('But not conventions whose delimiters represent actual content:', () => {
-    specify('Parentheses', () => {
-      expect(Up.toAst('++(Why would you do this?++)')).to.be.eql(
-        insideDocumentAndParagraph([
-          new ParenthesizedNode([
-            new RevisionInsertionNode([
-              new PlainTextNode('(Why would you do this?')
-            ]),
-            new PlainTextNode(')')
-          ])
-        ]))
-    })
-
-    specify('Square brackets', () => {
-      expect(Up.toAst('~~[Why would you do this?~~]')).to.be.eql(
-        insideDocumentAndParagraph([
-          new SquareBracketedNode([
-            new RevisionDeletionNode([
-              new PlainTextNode('[Why would you do this?')
-            ]),
-            new PlainTextNode(']')
-          ])
-        ]))
-    })
+  specify('Revision deletion and square brackets', () => {
+    expect(Up.toAst('~~[Why would you do this?~~]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new RevisionDeletionNode([
+            new PlainTextNode('[Why would you do this?')
+          ]),
+          new PlainTextNode(']')
+        ])
+      ]))
   })
 })
 
