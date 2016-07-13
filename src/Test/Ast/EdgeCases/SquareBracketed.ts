@@ -69,5 +69,26 @@ context('Square bracketed text can be directly followed by whitespace followed b
           new FootnoteBlockNode([footnote])
         ]))
     })
+  
+    specify('that contains whitespace, but none directly after the caret', () => {
+      const text = "I don't eat cereal [or oatmeal] (^Definitely lying.) on Mondays."
+
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Definitely lying.')
+      ], 1)
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new PlainTextNode("I don't eat cereal "),
+            new SquareBracketedNode([
+              new PlainTextNode('[or oatmeal]')
+            ]),
+            footnote,
+            new PlainTextNode(" on Mondays."),
+          ]),
+          new FootnoteBlockNode([footnote])
+        ]))
+    })
   })
 })
