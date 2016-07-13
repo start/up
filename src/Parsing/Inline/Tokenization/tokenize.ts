@@ -1147,23 +1147,6 @@ class Tokenizer {
 }
 
 
-const RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT = [
-  PARENTHESIZED_CONVENTION,
-  SQUARE_BRACKETED_CONVENTION,
-]
-
-
-function canStartTokenBeShiftedWithoutAlteringSemantics(richConventionEndToken: Token): boolean {
-  return RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT.some(convention =>
-    convention.startTokenKind === richConventionEndToken.kind)
-}
-
-function canEndTokenBeShiftedWithoutAlteringSemantics(richConventionEndToken: Token): boolean {
-  return RICH_CONVENTIONS_WHOSE_TOKENS_REPRESENT_ACTUAL_CONTENT.some(convention =>
-    convention.endTokenKind === richConventionEndToken.kind)
-}
-
-
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
 
