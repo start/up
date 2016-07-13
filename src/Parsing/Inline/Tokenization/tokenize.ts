@@ -431,22 +431,25 @@ class Tokenizer {
   // whitespace between the linkifying URL and the original convention. For more information, see
   // `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkifyingUrlConventions(): TokenizableConvention[] {
-    const LINKIFIABLE_RICH_CONVENTIONS = [
+    const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
       SPOILER_CONVENTION,
       NSFW_CONVENTION,
       NSFL_CONVENTION,
       FOOTNOTE_CONVENTION
-    ]
+    ].map(richConvention => richConvention.endTokenKind)
+
+    // All media conventions use the same end token
+    const KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS = [TokenKind.MediaUrlAndEnd]
 
     return concat(BRACKETS.map(bracket => [
       ...[
         {
           bracket,
-          onlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
+          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
         }, {
           bracket,
-          onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
+          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
         }
       ].map(args => this.getBracketedUrlConvention(args)),
@@ -454,11 +457,11 @@ class Tokenizer {
       ...[
         {
           bracket,
-          onlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
+          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
           ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
         }, {
           bracket,
-          onlyOpenIfDirectlyFollowing: [TokenKind.MediaUrlAndEnd],
+          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
           ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
         }
       ].map(args => this.getConventionForWhitespaceFollowedByBracketedUrl(args))
@@ -469,12 +472,15 @@ class Tokenizer {
   private getBracketedUrlConvention(
     args: {
       bracket: Bracket
+      onlyOpenIfDirectlyFollowing?: TokenKind[]
       whenClosing: (url: string) => void
     }
   ): TokenizableConvention {
-    const { bracket, whenClosing } = args
+    const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
 
     return new TokenizableConvention({
+      onlyOpenIfDirectlyFollowing,
+
       startsWith: bracket.startPattern + notFollowedBy(
         anyCharMatching(
           WHITESPACE_CHAR,
@@ -496,12 +502,15 @@ class Tokenizer {
   private getConventionForWhitespaceFollowedByBracketedUrl(
     args: {
       bracket: Bracket
+      onlyOpenIfDirectlyFollowing?: TokenKind[]
       ifUrlIsValidWheClosing: (url: string) => void
     }
   ): TokenizableConvention {
-    const { bracket, ifUrlIsValidWheClosing } = args
+    const { bracket, onlyOpenIfDirectlyFollowing, ifUrlIsValidWheClosing } = args
 
     return new TokenizableConvention({
+      onlyOpenIfDirectlyFollowing,
+
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,

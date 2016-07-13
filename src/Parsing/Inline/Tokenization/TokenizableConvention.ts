@@ -6,7 +6,7 @@ import { regExpStartingWith } from '../../PatternHelpers'
 
 
 export interface TokenizableConventionArgs {
-  onlyOpenIfDirectlyFollowing?: RichConvention[] | TokenKind[]
+  onlyOpenIfDirectlyFollowing?: TokenKind[]
 
   startsWith: string
   startPatternContainsATerm?: boolean
@@ -61,10 +61,7 @@ export class TokenizableConvention {
   constructor(args: TokenizableConventionArgs) {
     const { onlyOpenIfDirectlyFollowing } = args
 
-    this.onlyOpenIfDirectlyFollowing =  
-      isAnArrayOfRichConventions(onlyOpenIfDirectlyFollowing)
-        ? onlyOpenIfDirectlyFollowing.map(richConvention => richConvention.endTokenKind)
-        : onlyOpenIfDirectlyFollowing
+    this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
 
     this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
     this.endsWith = regExpStartingWith(args.endsWith)
@@ -93,9 +90,4 @@ export class TokenizableConvention {
 
 export interface OnConventionEvent {
   (context: ConventionContext): void
-}
-
-
-function isAnArrayOfRichConventions(items: any): items is RichConvention[] {
-  return items && items.length && (items[0].endTokenKind != null)
 }
