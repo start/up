@@ -266,8 +266,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         expect(Up.toAst('++Oh (why would you do this?++)')).to.be.eql(
           insideDocumentAndParagraph([
             new RevisionInsertionNode([
+              new PlainTextNode('Oh '),
               new ParenthesizedNode([
-                new PlainTextNode('Oh (why would you do this?')
+                new PlainTextNode('(why would you do this?')
               ]),
             ]),
             new ParenthesizedNode([
@@ -280,8 +281,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         expect(Up.toAst('~~Oh [why would you do this?~~]')).to.be.eql(
           insideDocumentAndParagraph([
             new RevisionDeletionNode([
+              new PlainTextNode('Oh '),
               new SquareBracketedNode([
-                new PlainTextNode('Oh [why would you do this?')
+                new PlainTextNode('[why would you do this?')
               ]),
             ]),
             new SquareBracketedNode([
