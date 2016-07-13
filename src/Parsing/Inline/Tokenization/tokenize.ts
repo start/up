@@ -544,7 +544,7 @@ class Tokenizer {
   private closeLinkifyingUrlForRichConventions(url: string): void {
     const linkEndToken = new Token(LINK_CONVENTION.endTokenKind, url)
     const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
-    linkStartToken.associateWith(linkEndToken)
+    linkStartToken.isTheCorrespondingDelimiterFor(linkEndToken)
 
     // We'll insert our new link end token right before the original end token, and we'll insert our new link
     // start token right after the original end token's corresponding start token.
@@ -850,7 +850,7 @@ class Tokenizer {
 
     const startToken = new Token(richConvention.startTokenKind)
     const endToken = new Token(richConvention.endTokenKind)
-    startToken.associateWith(endToken)
+    startToken.isTheCorrespondingDelimiterFor(endToken)
 
     // Rich conventions' start tokens aren't added until the convention closes (and that happens right here!).
     // If multiple rich conventions open consecutively, they will all try to insert their start token at the

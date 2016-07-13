@@ -6,7 +6,7 @@ export class Token {
 
   constructor(public kind: TokenKind, public value?: string) { }
 
-  associateWith(other: Token): void {
+  isTheCorrespondingDelimiterFor(other: Token): void {
     this.correspondingDelimiter = other
     other.correspondingDelimiter = this
   }
