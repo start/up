@@ -144,25 +144,3 @@ describe('An otherwise valid linkified audio convention with its linkifying URL 
       ]))
   })
 })
-
-
-describe('An already-linkified image', () => {
-  it('cannot be linkified again', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new LinkNode([
-          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
-        ], 'https://example.com/finalbattle'),
-        new PlainTextNode(' '),
-        new ParenthesizedNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
-          ], 'https://example.com'),
-          new PlainTextNode(')'),
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
