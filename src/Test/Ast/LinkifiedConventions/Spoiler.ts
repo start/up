@@ -155,7 +155,7 @@ describe('An otherwise valid linkified spoiler with its URL escaped"', () => {
 
 
 context("When an otherwise-valid linkified spoiler's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
-  specify('the SPOILER convention is not linkified', () => {
+  specify('the spoiler convention is not linkified', () => {
     expect(Up.toAst('[SPOILER: he called her]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new SpoilerNode([

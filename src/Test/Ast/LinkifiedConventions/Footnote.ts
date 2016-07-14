@@ -204,6 +204,27 @@ describe('An otherwise valid linkified footnote with its URL escaped"', () => {
 })
 
 
+describe("When an otherwise-valid linkified spoiler's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('the footnote is not linkified', () => {
+    const text = "[^He called her.]( \t \\tel:5555555555)"
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode('He called her.')
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          footnote,
+          new PlainTextNode('( \t tel:5555555555)')
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+})
+
+
 context("If there's no whitespace between a footnote and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     const footnote =
