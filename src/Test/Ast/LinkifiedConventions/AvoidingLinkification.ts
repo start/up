@@ -230,16 +230,18 @@ context('The following conventions cannot be linkified', () => {
   })
 
   specify('Inline code', () => {
-    expect(Up.toAst('I look forward to `--strictNullChecks` (https://github.com/Microsoft/TypeScript/pull/7140).')).to.be.eql(
+    expect(Up.toAst("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I look forward to '),
         new InlineCodeNode('--strictNullChecks'),
+        new PlainTextNode(' and '),
+        new InlineCodeNode('--noUnusedParameters'),
         new PlainTextNode(' '),
         new ParenthesizedNode([
           new PlainTextNode('('),
           new LinkNode([
-            new PlainTextNode('github.com/Microsoft/TypeScript/pull/7140')
-          ], 'https://github.com/Microsoft/TypeScript/pull/7140'),
+            new PlainTextNode("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
+          ], "https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript"),
           new PlainTextNode(')'),
         ]),
         new PlainTextNode('.')
