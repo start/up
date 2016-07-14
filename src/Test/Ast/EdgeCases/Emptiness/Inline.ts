@@ -345,13 +345,32 @@ context('Links are handled a bit differently, because they also have a URL to wo
   })
 
 
-  describe(' with escaped blank content', () => {
+  describe('with escaped blank content', () => {
     specify('produces a link with its URL as its content', () => {
       expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('https://google.com')
           ], 'https://google.com')
+        ]))
+    })
+  })
+
+
+  describe('with ane scaped blank URL', () => {
+    it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as escaped blank brackets", () => {
+      expect(Up.toAst('[*Yggdra Union*](\\ )')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('['),
+            new EmphasisNode([
+              new PlainTextNode('Yggdra Union')
+            ]),
+            new PlainTextNode(']')
+          ]),
+          new ParenthesizedNode([
+            new PlainTextNode('( )')
+          ])
         ]))
     })
   })
