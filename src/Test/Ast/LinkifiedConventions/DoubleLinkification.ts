@@ -16,6 +16,28 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
 describe('An already-linkified video', () => {
   it('cannot be linkified again', () => {
+    expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new LinkNode([
+          new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+        ], 'https://example.com/finalbattle'),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
+
+
+describe('An already-linkified video', () => {
+  it('cannot be linkified again', () => {
     expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
