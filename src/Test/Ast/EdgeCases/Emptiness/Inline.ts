@@ -258,7 +258,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
 context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise valid link...', () => {
   describe('with an empty URL', () => {
-    it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -275,7 +275,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
 
   describe('with a blank URL', () => {
-    it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
+    it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
       expect(Up.toAst('[*Yggdra Union*]( \t )')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -357,8 +357,8 @@ context('Links are handled a bit differently, because they also have a URL to wo
   })
 
 
-  describe('with ane scaped blank URL', () => {
-    it("does not produce a link. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as escaped blank brackets", () => {
+  describe('with an escaped blank URL', () => {
+    it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its bracketed URL is treated as the appropriate bracketed convention", () => {
       expect(Up.toAst('[*Yggdra Union*](\\ )')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -399,7 +399,7 @@ context("Media conventions are handled a bit differently, because they also have
 
 
   describe('An image with an empty URL', () => {
-    it("does not produce an image. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[image: Yggdra Union]{}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -412,7 +412,7 @@ context("Media conventions are handled a bit differently, because they also have
 
 
   describe('An image with a blank URL', () => {
-    it("does not produce an image. Instead, its content produces the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
+    it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
       expect(Up.toAst('[image: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -486,7 +486,7 @@ context("Media conventions are handled a bit differently, because they also have
 
 
   describe('An audio convention with an empty URL', () => {
-    it("does not produce An audio convention. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    it("does not produce An audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('(audio: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
           new ParenthesizedNode([
@@ -499,7 +499,7 @@ context("Media conventions are handled a bit differently, because they also have
 
 
   describe('An audio convention with an empty URL', () => {
-    it("does not produce an audio convention. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    it("does not produce an audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[audio: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -573,7 +573,7 @@ context("Media conventions are handled a bit differently, because they also have
 
 
   describe('A video with an empty URL', () => {
-    it("does not produce A video. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('{video: Yggdra Union}{}')).to.be.eql(
         insideDocumentAndParagraph([
           new ActionNode([
@@ -586,7 +586,7 @@ context("Media conventions are handled a bit differently, because they also have
 
 
   describe('An audio convention with a blank URL', () => {
-    it("does not produce a video. Instead, its content produces the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    it("does not produce a video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[video: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
@@ -798,15 +798,15 @@ describe('Revision insertion containing an empty revision deletion', () => {
 })
 
 
-describe('An NSFW convention with escaped blank content', () => {
-  it('produces an NSFW convention containing its content (whitespace)', () => {
-    expect(Up.toAst('The moral of this severely enriching story is [NSFW:\\  ].')).to.be.eql(
+describe('A spoiler convention with escaped blank content', () => {
+  it('produces a spoiler node containing its content (whitespace)', () => {
+    expect(Up.toAst("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('The moral of this severely enriching story is '),
-        new NsfwNode([
+        new PlainTextNode('The moral of this severely exciting, enriching story is '),
+        new SpoilerNode([
           new PlainTextNode('  ')
         ]),
-        new PlainTextNode('.')
+        new PlainTextNode(". I hope it didn't take you too long to read it.")
       ]))
   })
 })
