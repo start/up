@@ -47,12 +47,27 @@ describe('Any image convention (with its URL) followed immediately by a (second)
   })
 
   context("As long as there is no whitespace between the image's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
-    specify('For example, the linkifying URL can contain whitespace', () => {
+    specify('The linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'image: you fight Gary' },
           { text: 'https://example.com/fight.svg' },
           { text: 'http://example.com/final battle' }
+        ],
+        toProduce: new DocumentNode([
+          new LinkNode([
+            new ImageNode('you fight Gary', 'https://example.com/fight.svg')
+          ], 'http://example.com/final battle')
+        ])
+      })
+    })
+
+    specify('The linkifying URL can contain whitespace', () => {
+      expectEveryPermutationOfBrackets({
+        bracketedSegments: [
+          { text: 'image: you fight Gary' },
+          { text: 'https://example.com/fight.svg' },
+          { text: ' \t \t http://example.com/final battle' }
         ],
         toProduce: new DocumentNode([
           new LinkNode([
