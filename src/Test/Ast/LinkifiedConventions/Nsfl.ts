@@ -146,9 +146,22 @@ describe('An otherwise valid linkified NSFL convention with its URL escaped"', (
         new NsflNode([
           new PlainTextNode('he called her')
         ]),
-	      new ParenthesizedNode([
+        new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
+      ]))
+  })
+})
+
+
+context("When an otherwise-valid linkified NSFL convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('the NSFL convention is not linkified', () => {
+    expect(Up.toAst('[NSFL: he called her]( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsflNode([
+          new PlainTextNode('he called her')
+        ]),
+        new PlainTextNode('( \t tel:5555555555)')
       ]))
   })
 })
