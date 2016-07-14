@@ -38,21 +38,6 @@ describe("The brackets enclosing a link's description and URL", () => {
 })
 
 
-describe('A link URL with no scheme', () => {
-  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' config setting)", () => {
-    expectEveryPermutationOfBracketsAroundContentAndUrl({
-      content: 'this site',
-      url: 'stackoverflow.com',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
-        ], 'https://stackoverflow.com')
-      ])
-    })
-  })
-})
-
-
 describe('A link URL starting with a slash', () => {
   it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
