@@ -38,51 +38,6 @@ describe("The brackets enclosing a link's description and URL", () => {
 })
 
 
-describe('A link URL starting with a slash', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
-    expectEveryPermutationOfBracketsAroundContentAndUrl({
-      content: 'this site',
-      url: '/some-page',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
-        ], '/some-page')
-      ])
-    })
-  })
-})
-
-
-describe('A link URL starting with a hash mark ("#")', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
-    expectEveryPermutationOfBracketsAroundContentAndUrl({
-      content: 'this site',
-      url: '#some-page',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
-        ], '#some-page')
-      ])
-    })
-  })
-})
-
-
-describe('A link URL with a URL scheme other than "http://" or "https://"', () => {
-  it('has no added prefix)', () => {
-    expectEveryPermutationOfBracketsAroundContentAndUrl({
-      content: 'email me',
-      url: 'mailto:daniel@wants.email',
-      toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('email me')
-        ], 'mailto:daniel@wants.email')
-      ])
-    })
-  })
-})
-
-
 describe('An otherwise valid link with its URL escaped', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('[call me](\\tel:5555555555)')).to.be.eql(

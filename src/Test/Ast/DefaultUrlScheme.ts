@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { insideDocumentAndParagraph } from './Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
@@ -16,15 +16,15 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 describe('The default URL scheme ("https://" unless changed via config setting)', () => {
   it('is prefixed to schemeless link URLs', () => {
-    const text = '[Chrono Cross](localhost/wiki/Chrono_Chross)'
-
-    expect(Up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
+   expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this site',
+      url: 'stackoverflow.com',
+      toProduce: insideDocumentAndParagraph([
         new LinkNode([
-          new PlainTextNode('Chrono Cross')
-        ], 'https://localhost/wiki/Chrono_Chross')
+          new PlainTextNode('this site')
+        ], 'https://stackoverflow.com')
       ])
-    )
+    })
   })
 
   it('is prefixed to schemeless image URLs', () => {
@@ -102,6 +102,21 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
         ], 'mailto:daniel@wants.email')
       ])
     )
+  })
+})
+
+
+describe('A link URL with a URL scheme other than "http://" or "https://"', () => {
+  it('has no added prefix)', () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'email me',
+      url: 'mailto:daniel@wants.email',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('email me')
+        ], 'mailto:daniel@wants.email')
+      ])
+    })
   })
 })
 

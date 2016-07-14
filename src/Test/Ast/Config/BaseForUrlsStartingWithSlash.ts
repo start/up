@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { insideDocumentAndParagraph } from '../Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
@@ -22,15 +22,15 @@ const up = new Up({
 
 describe('The "baseForUrlsStartingWithSlash" config setting', () => {
   it('is prefixed to link URLs that start with a slash', () => {
-    const text = '[Chrono Cross](/wiki/Chrono_Chross)'
-
-    expect(up.toAst(text)).to.be.eql(
-      insideDocumentAndParagraph([
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this site',
+      url: '/some-page',
+      toProduce: insideDocumentAndParagraph([
         new LinkNode([
-          new PlainTextNode('Chrono Cross')
-        ], 'ftp://example.com/wiki/Chrono_Chross')
+          new PlainTextNode('this site')
+        ], '/some-page')
       ])
-    )
+    })
   })
 
   it('is prefixed to image URLs that start with a slash', () => {
