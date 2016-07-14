@@ -810,3 +810,19 @@ describe('A spoiler convention with escaped blank content', () => {
       ]))
   })
 })
+
+
+describe('An otherwise-linkified NSFW convention with escaped blank content', () => {
+  it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
+    expect(Up.toAst("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("On Professor Oak's right arm is a tattoo of "),
+        new NsfwNode([
+          new PlainTextNode('a naked Mr. Mime')
+        ]),
+        new ParenthesizedNode([
+          new PlainTextNode('( )')
+        ])
+      ]))
+  })
+})
