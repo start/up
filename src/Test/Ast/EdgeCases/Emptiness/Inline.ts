@@ -796,3 +796,17 @@ describe('Revision insertion containing an empty revision deletion', () => {
       ]))
   })
 })
+
+
+describe('An NSFW convention with escaped blank content', () => {
+  it('produces an NSFW convention containing its content (whitespace)', () => {
+    expect(Up.toAst('The moral of this severely enriching story is [NSFW:\\  ].')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('The moral of this severely enriching story is '),
+        new NsfwNode([
+          new PlainTextNode('  ')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
