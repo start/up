@@ -18,11 +18,11 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 describe('An video convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
   it('produces an video node within a link pointing to that second URL', () => {
-    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)(http://example.com/finalbattle).')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new VideoNode('you fight Gary', 'https://example.com/fight.ogg')
+          new VideoNode('you fight Gary', 'https://example.com/fight.webm')
         ], 'http://example.com/finalbattle'),
         new PlainTextNode('.')
       ]))
@@ -35,12 +35,12 @@ describe('Any video convention (with its URL) followed immediately by a (second)
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
         { text: 'video: you fight Gary' },
-        { text: 'https://example.com/fight.ogg' },
+        { text: 'https://example.com/fight.webm' },
         { text: 'http://example.com/finalbattle' }
       ],
       toProduce: new DocumentNode([
         new LinkNode([
-          new VideoNode('you fight Gary', 'https://example.com/fight.ogg')
+          new VideoNode('you fight Gary', 'https://example.com/fight.webm')
         ], 'http://example.com/finalbattle')
       ])
     })
@@ -51,12 +51,12 @@ describe('Any video convention (with its URL) followed immediately by a (second)
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'video: you fight Gary' },
-          { text: 'https://example.com/fight.ogg' },
+          { text: 'https://example.com/fight.webm' },
           { text: 'http://example.com/final battle' }
         ],
         toProduce: new DocumentNode([
           new LinkNode([
-            new VideoNode('you fight Gary', 'https://example.com/fight.ogg')
+            new VideoNode('you fight Gary', 'https://example.com/fight.webm')
           ], 'http://example.com/final battle')
         ])
       })
@@ -67,10 +67,10 @@ describe('Any video convention (with its URL) followed immediately by a (second)
 
 describe('An video convention directly followed by a spoiler', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new VideoNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new VideoNode('you fight Gary', 'https://example.com/fight.webm'),
         new SpoilerNode([
           new PlainTextNode('and win')
         ]),
@@ -82,10 +82,10 @@ describe('An video convention directly followed by a spoiler', () => {
 
 describe('A video directly followed by a NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new VideoNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new VideoNode('you fight Gary', 'https://example.com/fight.webm'),
         new NsfwNode([
           new PlainTextNode('and win')
         ]),
@@ -97,10 +97,10 @@ describe('A video directly followed by a NSFW convention', () => {
 
 describe('A video directly followed by a NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new VideoNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new VideoNode('you fight Gary', 'https://example.com/fight.webm'),
         new NsflNode([
           new PlainTextNode('and win')
         ]),
@@ -112,7 +112,7 @@ describe('A video directly followed by a NSFL convention', () => {
 
 describe('A video directly followed by a footnote', () => {
   it("is not linkified", () => {
-    const text = "After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"
+    const text = "After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(^Or whatever you name him.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -124,7 +124,7 @@ describe('A video directly followed by a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
-          new VideoNode('you fight Gary', 'https://example.com/fight.ogg'),
+          new VideoNode('you fight Gary', 'https://example.com/fight.webm'),
           footnotes[0],
         ]),
         new FootnoteBlockNode(footnotes)
@@ -135,9 +135,9 @@ describe('A video directly followed by a footnote', () => {
 
 describe('An otherwise valid linkified video convention with its linkifying URL escaped"', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('[video: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.be.eql(
+    expect(Up.toAst('[video: phone call](https://example.com/phonecall.webm)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new VideoNode('phone call', 'https://example.com/phonecall.ogg'),
+        new VideoNode('phone call', 'https://example.com/phonecall.webm'),
         new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
