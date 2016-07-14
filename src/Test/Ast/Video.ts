@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
@@ -97,6 +98,19 @@ context("When an video has whitespace before its bracketed URL, there are no add
         new VideoNode('ghostly howling', 'http://example.com/ghost meeting.svg')
       ])
     })
+  })
+})
+
+
+context("When an otherwise-valid video's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('it does not produce an video node', () => {
+    expect(Up.toAst('[video: scary]( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[video: scary]')
+        ]),
+        new PlainTextNode('( \t tel:5555555555)')
+      ]))
   })
 })
 

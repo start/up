@@ -103,11 +103,11 @@ context("When an image has whitespace before its bracketed URL, there are no add
 
 
 context("When an otherwise-valid image convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
-  specify('it does not produce an audio node', () => {
-    expect(Up.toAst('[audio: scary]( \t \\tel:5555555555)')).to.be.eql(
+  specify('it does not produce an image node', () => {
+    expect(Up.toAst('[image: scary]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
-          new PlainTextNode('[audio: scary]')
+          new PlainTextNode('[image: scary]')
         ]),
         new PlainTextNode('( \t tel:5555555555)')
       ]))
