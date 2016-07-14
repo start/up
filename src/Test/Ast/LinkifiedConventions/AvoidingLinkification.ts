@@ -14,6 +14,9 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
+import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
+import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for: ', () => {
@@ -176,6 +179,25 @@ context('The following conventions cannot be linkified', () => {
         new LinkNode([
           new PlainTextNode('you fight Gary')
         ], 'https://example.com/finalbattle'),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
+  specify('Revision insertion', () => {
+    expect(Up.toAst('After you beat the Elite Four, ++you fight Gary++ (https://example.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new RevisionInsertionNode([
+          new PlainTextNode('you fight Gary')
+        ]),
         new PlainTextNode(' '),
         new ParenthesizedNode([
           new PlainTextNode('('),
