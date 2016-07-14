@@ -60,9 +60,22 @@ describe('An otherwise valid link with its URL escaped', () => {
         new SquareBracketedNode([
           new PlainTextNode('[call me]')
         ]),
-	      new ParenthesizedNode([
+        new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
+      ]))
+  })
+})
+
+
+context("When a link's URL starts with whitespace, and the first character in the actual URL is escaped", () => {
+  specify('it does not produce a link node', () => {
+    expect(Up.toAst('[call me]( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[call me]')
+        ]),
+        new PlainTextNode('( \t tel:5555555555)')
       ]))
   })
 })
