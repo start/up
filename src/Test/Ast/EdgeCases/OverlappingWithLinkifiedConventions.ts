@@ -33,3 +33,25 @@ describe('Emphasis overlapping a linkified spoiler', () => {
       ]))
   })
 })
+
+
+describe('A linkified spoiler overlapping revision deletion', () => {
+  it('splits the revision deletion node', () => {
+    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary ~~Ketchum](http://example.com/finalbattle) and then the credits roll~~.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode('you fight Gary '),
+            new RevisionDeletionNode([
+              new PlainTextNode('Ketchum')
+            ])
+          ], 'http://example.com/finalbattle')
+        ]),
+        new RevisionDeletionNode([
+          new PlainTextNode(' and then the credits roll')
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
