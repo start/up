@@ -204,7 +204,7 @@ describe('An otherwise valid linkified footnote with its URL escaped"', () => {
 })
 
 
-context("If there's no space between a footnote and its bracketed URL", () => {
+context("If there's no whitespace between a footnote and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     const footnote =
       new FootnoteNode([

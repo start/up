@@ -38,7 +38,7 @@ describe("The brackets enclosing a link's description and URL", () => {
 })
 
 
-context("If there's no space between a link's bracketed content and its bracketed URL", () => {
+context("If there's no whitespace between a link's bracketed content and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',

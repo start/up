@@ -152,3 +152,20 @@ describe('An otherwise valid linkified spoiler with its URL escaped"', () => {
       ]))
   })
 })
+
+
+context("If there's no whitespace between a footnote and its bracketed URL", () => {
+  specify("the URL can start with whitespace", () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'SPOILER: you fight Gary',
+      url: ' \t \thttp://example.com/finalbattle',
+      toProduce: insideDocumentAndParagraph([
+        new SpoilerNode([
+          new LinkNode([
+            new PlainTextNode('you fight Gary')
+          ], 'http://example.com/finalbattle')
+        ]),
+      ])
+    })
+  })
+})
