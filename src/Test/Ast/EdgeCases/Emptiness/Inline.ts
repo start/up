@@ -256,7 +256,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
 
 
-context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise valid link...', () => {
+context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise-valid link...', () => {
   describe('with an empty URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(

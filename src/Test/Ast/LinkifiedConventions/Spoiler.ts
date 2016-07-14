@@ -139,7 +139,7 @@ describe('A spoiler directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise valid linkified spoiler with its URL escaped', () => {
+describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[SPOILER: he called her](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([

@@ -14,7 +14,7 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
-describe('An otherwise valid link with mismatched brackets surrounding its description', () => {
+describe('An otherwise-valid link with mismatched brackets surrounding its description', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('I like [this site}(https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -32,7 +32,7 @@ describe('An otherwise valid link with mismatched brackets surrounding its descr
 })
 
 
-describe('An otherwise valid link with mismatched brackets surrounding its URL', () => {
+describe('An otherwise-valid link with mismatched brackets surrounding its URL', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('I like [this site][https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([

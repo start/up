@@ -148,7 +148,7 @@ describe('An image directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise valid linkified audio convention with its linkifying URL escaped', () => {
+describe('An otherwise-valid linkified audio convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[image: phone call](https://example.com/phonecall.svg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([

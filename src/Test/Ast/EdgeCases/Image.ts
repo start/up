@@ -28,7 +28,7 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid image convention with mismatched brackets surrounding its description', () => {
+describe('An otherwise-valid image convention with mismatched brackets surrounding its description', () => {
   it('does not produce an image node', () => {
     expect(Up.toAst('I like [image: ghosts}(http://example.com/ghosts.svg).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -46,7 +46,7 @@ describe('An otherwise valid image convention with mismatched brackets surroundi
 })
 
 
-describe('An otherwise valid image convention with mismatched brackets surrounding its URL', () => {
+describe('An otherwise-valid image convention with mismatched brackets surrounding its URL', () => {
   it('does not produce a image node', () => {
     expect(Up.toAst('I like [image: ghosts][http://example.com/ghosts.svg).')).to.be.eql(
       insideDocumentAndParagraph([

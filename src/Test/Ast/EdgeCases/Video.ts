@@ -28,7 +28,7 @@ Do not pour the spiders into your sister's cereal.
 })
 
 
-describe('An otherwise valid video convention with mismatched brackets surrounding its description', () => {
+describe('An otherwise-valid video convention with mismatched brackets surrounding its description', () => {
   it('does not produce an video node', () => {
     expect(Up.toAst('I like [video: ghosts}(http://example.com/ghosts.webm).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -46,7 +46,7 @@ describe('An otherwise valid video convention with mismatched brackets surroundi
 })
 
 
-describe('An otherwise valid video convention with mismatched brackets surrounding its URL', () => {
+describe('An otherwise-valid video convention with mismatched brackets surrounding its URL', () => {
   it('does not produce a video node', () => {
     expect(Up.toAst('I like [video: ghosts][http://example.com/ghosts.webm).')).to.be.eql(
       insideDocumentAndParagraph([

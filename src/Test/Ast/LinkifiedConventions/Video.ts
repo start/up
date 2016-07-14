@@ -148,7 +148,7 @@ describe('A video directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise valid linkified video convention with its linkifying URL escaped', () => {
+describe('An otherwise-valid linkified video convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[video: phone call](https://example.com/phonecall.webm)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([

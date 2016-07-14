@@ -139,7 +139,7 @@ describe('A NSFW convention directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise valid linkified NSFW convention with its URL escaped', () => {
+describe('An otherwise-valid linkified NSFW convention with its URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[NSFW: he called her](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
