@@ -80,6 +80,35 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
       ]))
   })
 
+  specify("Footnotes", () => {
+    const text = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
+
+    const footnote =
+      new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ], 'http://example.com/luckycharms')
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal"),
+          footnote,
+          new PlainTextNode(' '),
+          new ParenthesizedNode([
+            new PlainTextNode('('),
+            new LinkNode([
+              new PlainTextNode('example.com/cereal-problems')
+            ], 'https://example.com/cereal-problems'),
+            new PlainTextNode(')'),
+          ]),
+          new PlainTextNode(" and I never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+
   specify('Audio', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
