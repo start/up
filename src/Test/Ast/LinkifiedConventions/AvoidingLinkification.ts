@@ -228,4 +228,21 @@ context('The following conventions cannot be linkified', () => {
         new PlainTextNode('.')
       ]))
   })
+
+  specify('Naked URLs', () => {
+    expect(Up.toAst('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('goo.gl/7y3XBV')
+        ], 'https://goo.gl/7y3XBV'),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('www.nintendo.co.uk')
+          ], 'https://www.nintendo.co.uk'),
+          new PlainTextNode(')')
+        ])
+      ]))
+  })
 })
