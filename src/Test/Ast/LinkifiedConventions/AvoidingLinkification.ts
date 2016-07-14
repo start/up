@@ -229,6 +229,23 @@ context('The following conventions cannot be linkified', () => {
       ]))
   })
 
+  specify('Inline code', () => {
+    expect(Up.toAst('I look forward to `--strictNullChecks` (https://github.com/Microsoft/TypeScript/pull/7140).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I look forward to '),
+        new InlineCodeNode('--strictNullChecks'),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('github.com/Microsoft/TypeScript/pull/7140')
+          ], 'https://github.com/Microsoft/TypeScript/pull/7140'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
   specify('Naked URLs', () => {
     expect(Up.toAst('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.be.eql(
       insideDocumentAndParagraph([
