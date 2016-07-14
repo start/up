@@ -39,10 +39,22 @@ describe("The brackets enclosing a link's description and URL", () => {
 
 
 context("If there's no whitespace between a link's bracketed content and its bracketed URL", () => {
-  specify("the URL can start with whitespace", () => {
+  specify("the URL can start with whitespace (and that whitespace is trimmed away)", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
       url: ' \t http://stackoverflow.com',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'http://stackoverflow.com')
+      ])
+    })
+  })
+
+  specify("the URL can end with whitespace (and that whitespace is trimmed away)", () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this site',
+      url: 'http://stackoverflow.com \t ',
       toProduce: insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('this site')
