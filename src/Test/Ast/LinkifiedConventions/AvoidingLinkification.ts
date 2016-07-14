@@ -166,3 +166,25 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
       ]))
   })
 })
+
+
+context('The following conventions cannot be linkified', () => {
+  specify('Links', () => {
+    expect(Up.toAst('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new LinkNode([
+          new PlainTextNode('you fight Gary')
+        ], 'https://example.com/finalbattle'),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+})
