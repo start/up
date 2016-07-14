@@ -357,9 +357,7 @@ class Tokenizer {
 
   private getMediaUrlConventions(): TokenizableConvention[] {
     return BRACKETS.map(bracket => new TokenizableConvention({
-      startsWith: ANY_WHITESPACE + bracket.startPattern + notFollowedBy(
-        anyCharMatching(WHITESPACE_CHAR, bracket.endPattern)),
-
+      startsWith: ANY_WHITESPACE + this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
@@ -481,10 +479,7 @@ class Tokenizer {
     return new TokenizableConvention({
       onlyOpenIfDirectlyFollowing,
 
-      startsWith: bracket.startPattern + notFollowedBy(
-        ANY_WHITESPACE + anyCharMatching(
-          bracket.endPattern,
-          escapeForRegex(ESCAPER_CHAR))),
+      startsWith: this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
 
       endsWith: bracket.endPattern,
 
@@ -496,6 +491,13 @@ class Tokenizer {
         whenClosing(url)
       }
     })
+  }
+
+  private getStartPatternForBracketedUrlAssumedToBeAUrl(bracket: Bracket): string {
+    return bracket.startPattern + notFollowedBy(
+      ANY_WHITESPACE + anyCharMatching(
+        bracket.endPattern,
+        escapeForRegex(ESCAPER_CHAR)))
   }
 
   private getConventionForWhitespaceFollowedByBracketedUrl(
