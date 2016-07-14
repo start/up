@@ -1113,11 +1113,9 @@ class Tokenizer {
   }
 
   private applyConfigSettingsToUrl(url: string): string {
+    // Due to the various URL conventions' rules, we don't need to worry about the URL being blank.
+    // However, it might have some leading or trailing whitespace.
     url = url.trim()
-
-    if (!url) {
-      return url
-    }
 
     const { settings } = this.config
 
