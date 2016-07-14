@@ -209,4 +209,23 @@ context('The following conventions cannot be linkified', () => {
         new PlainTextNode('.')
       ]))
   })
+
+  specify('Revision deletion', () => {
+    expect(Up.toAst('After you beat the Elite Four, you fight Gary ~~Ketchum~~ (https://example.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, you fight Gary '),
+        new RevisionDeletionNode([
+          new PlainTextNode('Ketchum')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
 })
