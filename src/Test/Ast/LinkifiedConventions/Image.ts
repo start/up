@@ -18,11 +18,11 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 describe('An image convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
   it('produces an image node within a link pointing to that second URL', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.ogg)(http://example.com/finalbattle).')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new ImageNode('you fight Gary', 'https://example.com/fight.ogg')
+          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
         ], 'http://example.com/finalbattle'),
         new PlainTextNode('.')
       ]))
@@ -35,12 +35,12 @@ describe('Any image convention (with its URL) followed immediately by a (second)
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
         { text: 'image: you fight Gary' },
-        { text: 'https://example.com/fight.ogg' },
+        { text: 'https://example.com/fight.svg' },
         { text: 'http://example.com/finalbattle' }
       ],
       toProduce: new DocumentNode([
         new LinkNode([
-          new ImageNode('you fight Gary', 'https://example.com/fight.ogg')
+          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
         ], 'http://example.com/finalbattle')
       ])
     })
@@ -51,12 +51,12 @@ describe('Any image convention (with its URL) followed immediately by a (second)
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'image: you fight Gary' },
-          { text: 'https://example.com/fight.ogg' },
+          { text: 'https://example.com/fight.svg' },
           { text: 'http://example.com/final battle' }
         ],
         toProduce: new DocumentNode([
           new LinkNode([
-            new ImageNode('you fight Gary', 'https://example.com/fight.ogg')
+            new ImageNode('you fight Gary', 'https://example.com/fight.svg')
           ], 'http://example.com/final battle')
         ])
       })
@@ -67,10 +67,10 @@ describe('Any image convention (with its URL) followed immediately by a (second)
 
 describe('An image convention directly followed by a spoiler', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new ImageNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new ImageNode('you fight Gary', 'https://example.com/fight.svg'),
         new SpoilerNode([
           new PlainTextNode('and win')
         ]),
@@ -82,10 +82,10 @@ describe('An image convention directly followed by a spoiler', () => {
 
 describe('An image directly followed by a NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new ImageNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new ImageNode('you fight Gary', 'https://example.com/fight.svg'),
         new NsfwNode([
           new PlainTextNode('and win')
         ]),
@@ -97,10 +97,10 @@ describe('An image directly followed by a NSFW convention', () => {
 
 describe('An image directly followed by a NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new ImageNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new ImageNode('you fight Gary', 'https://example.com/fight.svg'),
         new NsflNode([
           new PlainTextNode('and win')
         ]),
@@ -112,7 +112,7 @@ describe('An image directly followed by a NSFL convention', () => {
 
 describe('An image directly followed by a footnote', () => {
   it("is not linkified", () => {
-    const text = "After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"
+    const text = "After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(^Or whatever you name him.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -124,7 +124,7 @@ describe('An image directly followed by a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
-          new ImageNode('you fight Gary', 'https://example.com/fight.ogg'),
+          new ImageNode('you fight Gary', 'https://example.com/fight.svg'),
           footnotes[0],
         ]),
         new FootnoteBlockNode(footnotes)
@@ -135,9 +135,9 @@ describe('An image directly followed by a footnote', () => {
 
 describe('An otherwise valid linkified audio convention with its linkifying URL escaped"', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('[image: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.be.eql(
+    expect(Up.toAst('[image: phone call](https://example.com/phonecall.svg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ImageNode('phone call', 'https://example.com/phonecall.ogg'),
+        new ImageNode('phone call', 'https://example.com/phonecall.svg'),
         new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
@@ -148,11 +148,11 @@ describe('An otherwise valid linkified audio convention with its linkifying URL 
 
 describe('An already-linkified image', () => {
   it('cannot be linkified again', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new ImageNode('you fight Gary', 'https://example.com/fight.ogg')
+          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
         new ParenthesizedNode([
