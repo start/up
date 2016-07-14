@@ -38,6 +38,21 @@ describe("The brackets enclosing a link's description and URL", () => {
 })
 
 
+context("If there's no space between a link's bracketed content and its bracketed URL ", () => {
+  specify("the link's URL can start with whitespace", () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this site',
+      url: ' \t http://stackoverflow.com',
+      toProduce: insideDocumentAndParagraph([
+        new LinkNode([
+          new PlainTextNode('this site')
+        ], 'http://stackoverflow.com')
+      ])
+    })
+  })
+})
+
+
 describe('An otherwise valid link with its URL escaped', () => {
   it('does not produce a link node', () => {
     expect(Up.toAst('[call me](\\tel:5555555555)')).to.be.eql(
