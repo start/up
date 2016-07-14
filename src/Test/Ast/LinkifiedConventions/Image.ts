@@ -148,7 +148,7 @@ describe('An image directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise-valid linkified audio convention with its linkifying URL escaped', () => {
+describe('An otherwise-valid linkified image convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[image: phone call](https://example.com/phonecall.svg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
@@ -156,6 +156,17 @@ describe('An otherwise-valid linkified audio convention with its linkifying URL 
         new ParenthesizedNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
+      ]))
+  })
+})
+
+
+context("When an otherwise-valid linkified image convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('the image convention is not linkified', () => {
+    expect(Up.toAst('[image: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new ImageNode('phone call', 'https://example.com/phonecall.ogg'),
+        new PlainTextNode('( \t tel:5555555555)')
       ]))
   })
 })
