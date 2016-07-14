@@ -181,7 +181,7 @@ describe('A footnote directly followed by a NSFL convention', () => {
 })
 
 
-describe('An otherwise valid linkified footnote with its URL escaped"', () => {
+describe('An otherwise valid linkified footnote with its URL escaped', () => {
   it('is not linkified', () => {
     const text = "[^He called her.](\\tel:5555555555)"
 
