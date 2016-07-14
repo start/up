@@ -549,10 +549,10 @@ class Tokenizer {
     // We'll insert our new link end token right before the original end token, and we'll insert our new link
     // start token right after the original end token's corresponding start token.
 
-    const indexOfOriginalEndToken = this.tokens.length - 1
-    this.insertToken({ token: linkEndToken, atIndex: indexOfOriginalEndToken })
+    const originalEndToken = this.mostRecentToken
+    this.insertToken({ token: linkEndToken, atIndex: this.tokens.indexOf(originalEndToken) })
 
-    const originalStartToken = last(this.tokens).correspondingDelimiter
+    const originalStartToken = originalEndToken.correspondingDelimiter
     const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
     this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
   }
@@ -896,7 +896,7 @@ class Tokenizer {
         // ...the current token is actually a rich convention's end token...
         isCurrentTokenAnEndToken
         // ...and our start token (that we just added) is inside the current end token's convention. 
-        && startTokenIndex > this.indexOfToken(token.correspondingDelimiter)
+        && startTokenIndex > this.tokens.indexOf(token.correspondingDelimiter)
 
       if (shouldEndTokenAppearBeforeCurrentToken) {
         // If all that applies, our end token should *also* be inside the current end token's convention.
@@ -908,16 +908,6 @@ class Tokenizer {
     }
 
     this.insertToken({ token: endToken, atIndex: endTokenIndex })
-  }
-
-  private indexOfToken(token: Token): number {
-    for (let i = this.tokens.length - 1; i >= 0; i--) {
-      if (this.tokens[i] === token) {
-        return i
-      }
-    }
-
-    throw new Error(`Token not found. Kind: ${token.kind}, value: ${token.value}`)
   }
 
   private performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions(): boolean {
