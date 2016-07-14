@@ -343,17 +343,17 @@ context('Links are handled a bit differently, because they also have a URL to wo
         ]))
     })
   })
-})
 
 
-describe('A link with blank escaped content', () => {
-  specify('produces a link with its URL as its content', () => {
-    expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('https://google.com')
-        ], 'https://google.com')
-      ]))
+  describe(' with escaped blank content', () => {
+    specify('produces a link with its URL as its content', () => {
+      expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new LinkNode([
+            new PlainTextNode('https://google.com')
+          ], 'https://google.com')
+        ]))
+    })
   })
 })
 
