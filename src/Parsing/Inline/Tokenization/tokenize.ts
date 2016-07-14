@@ -482,8 +482,7 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing,
 
       startsWith: bracket.startPattern + notFollowedBy(
-        anyCharMatching(
-          WHITESPACE_CHAR,
+        ANY_WHITESPACE + anyCharMatching(
           bracket.endPattern,
           escapeForRegex(ESCAPER_CHAR))),
 
