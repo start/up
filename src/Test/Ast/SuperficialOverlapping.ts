@@ -258,6 +258,24 @@ context('When most otherwise-nested conventions overlap by only their end delimi
   })
 
 
+  context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable', () => {
+    specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
+      expect(Up.toAst('{SPOILER: There was another [NSFL: rotten body}] (example.com/rotten) Hi!')).to.be.eql(
+        insideDocumentAndParagraph([
+          new SpoilerNode([
+            new PlainTextNode('There was another '),
+            new NsflNode([
+              new LinkNode([
+                new PlainTextNode('rotten body'),
+              ], 'https://example.com/rotten')
+            ]),
+          ]),
+          new PlainTextNode(' Hi!')
+        ]))
+    })
+  })
+
+
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
       expect(Up.toAst('++Oh (why would you do this?++)')).to.be.eql(
