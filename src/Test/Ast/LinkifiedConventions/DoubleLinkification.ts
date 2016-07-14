@@ -12,10 +12,12 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
-describe('An already-linkified video', () => {
-  it('cannot be linkified again', () => {
+context('Once a convention has been linkified, it cannot be linkified again. This applies for: ', () => {
+  specify('Audio', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -33,16 +35,13 @@ describe('An already-linkified video', () => {
         new PlainTextNode('.')
       ]))
   })
-})
 
-
-describe('An already-linkified video', () => {
-  it('cannot be linkified again', () => {
-    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+  specify('Images', () => {
+    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new VideoNode('you fight Gary', 'https://example.com/fight.webm')
+          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
         new ParenthesizedNode([
@@ -55,16 +54,13 @@ describe('An already-linkified video', () => {
         new PlainTextNode('.')
       ]))
   })
-})
 
-
-describe('An already-linkified image', () => {
-  it('cannot be linkified again', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+  specify('Videos', () => {
+    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
+          new VideoNode('you fight Gary', 'https://example.com/fight.webm')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
         new ParenthesizedNode([
