@@ -47,12 +47,27 @@ describe('Any video convention (with its URL) followed immediately by a (second)
   })
 
   context("As long as there is no whitespace between the video's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
-    specify('For example, the linkifying URL can contain whitespace', () => {
+    specify('The linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'video: you fight Gary' },
           { text: 'https://example.com/fight.webm' },
           { text: 'http://example.com/final battle' }
+        ],
+        toProduce: new DocumentNode([
+          new LinkNode([
+            new VideoNode('you fight Gary', 'https://example.com/fight.webm')
+          ], 'http://example.com/final battle')
+        ])
+      })
+    })
+
+    specify('The linkifying URL can start with whitespace', () => {
+      expectEveryPermutationOfBrackets({
+        bracketedSegments: [
+          { text: 'video: you fight Gary' },
+          { text: 'https://example.com/fight.webm' },
+          { text: ' \t \t http://example.com/final battle' }
         ],
         toProduce: new DocumentNode([
           new LinkNode([
