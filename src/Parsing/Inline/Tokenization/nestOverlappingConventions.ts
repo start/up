@@ -193,7 +193,6 @@ class ConventionNester {
           // current end token's corresponding start token appeared before the hero's start token (and thus is
           // overlapping).
           endTokensOfOverlappingConventionsStartingBefore.push(innerToken)
-
         }
       }
 
