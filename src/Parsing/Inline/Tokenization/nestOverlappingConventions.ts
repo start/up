@@ -114,8 +114,8 @@ class ConventionNester {
 
       const countOverlapping = endTokensOfOverlappingConventions.length
 
-      // Advance index to reflect the fact that we just added tokens. We aded `countOverlapping` before `endToken`,
-      // and `countOverlapping` start tokens before `endToken`.
+      // Let's advance our token index to reflect the fact that we just added tokens. We aded `countOverlapping`
+      // end tokens before `endToken`, and `countOverlapping` start tokens before `endToken`.
       tokenIndex += (2 * countOverlapping)
     }
   }
@@ -243,6 +243,7 @@ class ConventionNester {
     }
   }
 }
+
 
 function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]): boolean {
   return conventions.some(convention => token.kind === convention.startTokenKind)
