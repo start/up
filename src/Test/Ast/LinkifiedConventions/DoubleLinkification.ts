@@ -17,6 +17,27 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for: ', () => {
+  specify('NSFW', () => {
+    expect(Up.toAst('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('After you beat the Elite Four, '),
+        new NsfwNode([
+          new LinkNode([
+            new PlainTextNode('you fight Gary')
+          ], 'https://example.com/finalbattle')
+        ]),
+        new PlainTextNode(' '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('example.com')
+          ], 'https://example.com'),
+          new PlainTextNode(')'),
+        ]),
+        new PlainTextNode('.')
+      ]))
+  })
+
   specify('Audio', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
