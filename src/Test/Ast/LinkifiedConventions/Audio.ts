@@ -47,12 +47,27 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
   })
 
   context("As long as there is no whitespace between the audio's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
-    specify('For example, the linkifying URL can contain whitespace', () => {
+    specify('The linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
           { text: 'audio: you fight Gary' },
           { text: 'https://example.com/fight.ogg' },
           { text: 'http://example.com/final battle' }
+        ],
+        toProduce: new DocumentNode([
+          new LinkNode([
+            new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+          ], 'http://example.com/final battle')
+        ])
+      })
+    })
+
+    specify('The linkifying URL can start with whitespace', () => {
+      expectEveryPermutationOfBrackets({
+        bracketedSegments: [
+          { text: 'audio: you fight Gary' },
+          { text: 'https://example.com/fight.ogg' },
+          { text: ' \t \thttp://example.com/final battle' }
         ],
         toProduce: new DocumentNode([
           new LinkNode([
