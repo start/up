@@ -154,6 +154,19 @@ describe('An otherwise valid linkified NSFW convention with its URL escaped"', (
 })
 
 
+context("When an otherwise-valid linkified NSFW convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('the NSFW convention is not linkified', () => {
+    expect(Up.toAst('[NSFW: he called her]( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new NsfwNode([
+          new PlainTextNode('he called her')
+        ]),
+        new PlainTextNode('( \t tel:5555555555)')
+      ]))
+  })
+})
+
+
 context("If there's no whitespace between a NSFW conventions and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
