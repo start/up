@@ -264,4 +264,18 @@ context('The following conventions cannot be linkified', () => {
         ])
       ]))
   })
+
+  specify('Regular text', () => {
+    expect(Up.toAst('The Mini-NES comes out November 11th (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('The Mini-NES comes out November 11th '),
+        new ParenthesizedNode([
+          new PlainTextNode('('),
+          new LinkNode([
+            new PlainTextNode('ign.com/articles/2016/07/14/nintendo-announces-new-nes-console')
+          ], 'http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console'),
+          new PlainTextNode(')')
+        ])
+      ]))
+  })
 })
