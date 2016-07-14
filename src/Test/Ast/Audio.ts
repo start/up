@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
@@ -97,6 +98,19 @@ context("When an audio convention has whitespace before its bracketed URL, there
         new AudioNode('ghostly howling', 'http://example.com/ghost meeting.svg')
       ])
     })
+  })
+})
+
+
+context("When an otherwise-valid audio convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('it does not produce an audio node', () => {
+    expect(Up.toAst('[audio: scary]( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new SquareBracketedNode([
+          new PlainTextNode('[audio: scary]')
+        ]),
+        new PlainTextNode('( \t tel:5555555555)')
+      ]))
   })
 })
 
