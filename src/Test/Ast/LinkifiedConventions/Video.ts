@@ -159,3 +159,14 @@ describe('An otherwise-valid linkified video convention with its linkifying URL 
       ]))
   })
 })
+
+
+context("When an otherwise-valid linkified video's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('the video convention is not linkified', () => {
+    expect(Up.toAst('[video: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.be.eql(
+      insideDocumentAndParagraph([
+        new VideoNode('phone call', 'https://example.com/phonecall.ogg'),
+        new PlainTextNode('( \t tel:5555555555)')
+      ]))
+  })
+})
