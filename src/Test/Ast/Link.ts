@@ -68,7 +68,7 @@ describe('An otherwise valid link with its URL escaped', () => {
 })
 
 
-context("When a link's URL starts with whitespace, and the first character in the actual URL is escaped", () => {
+context("When an otherwise-valid link's URL starts with whitespace, and the first character in the actual URL is escaped", () => {
   specify('it does not produce a link node', () => {
     expect(Up.toAst('[call me]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
