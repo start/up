@@ -152,3 +152,20 @@ describe('An otherwise valid linkified NSFL convention with its URL escaped"', (
       ]))
   })
 })
+
+
+context("If there's no whitespace between a NSFL conventions and its bracketed URL", () => {
+  specify("the URL can start with whitespace", () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFL: you fight Gary',
+      url: ' \t \thttp://example.com/finalbattle',
+      toProduce: insideDocumentAndParagraph([
+        new NsflNode([
+          new LinkNode([
+            new PlainTextNode('you fight Gary')
+          ], 'http://example.com/finalbattle')
+        ]),
+      ])
+    })
+  })
+})

@@ -152,3 +152,20 @@ describe('An otherwise valid linkified NSFW convention with its URL escaped"', (
       ]))
   })
 })
+
+
+context("If there's no whitespace between a NSFW conventions and its bracketed URL", () => {
+  specify("the URL can start with whitespace", () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'NSFW: you fight Gary',
+      url: ' \t \thttp://example.com/finalbattle',
+      toProduce: insideDocumentAndParagraph([
+        new NsfwNode([
+          new LinkNode([
+            new PlainTextNode('you fight Gary')
+          ], 'http://example.com/finalbattle')
+        ]),
+      ])
+    })
+  })
+})

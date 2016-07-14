@@ -154,7 +154,7 @@ describe('An otherwise valid linkified spoiler with its URL escaped"', () => {
 })
 
 
-context("If there's no whitespace between a footnote and its bracketed URL", () => {
+context("If there's no whitespace between a spoiler and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',
