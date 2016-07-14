@@ -255,38 +255,38 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ])
       )
     })
+  })
 
 
-    context('But not conventions whose delimiters represent actual content:', () => {
-      specify('Parentheses', () => {
-        expect(Up.toAst('++Oh (why would you do this?++)')).to.be.eql(
-          insideDocumentAndParagraph([
-            new RevisionInsertionNode([
-              new PlainTextNode('Oh '),
-              new ParenthesizedNode([
-                new PlainTextNode('(why would you do this?')
-              ]),
-            ]),
+  context('But not conventions whose delimiters represent actual content:', () => {
+    specify('Parentheses', () => {
+      expect(Up.toAst('++Oh (why would you do this?++)')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionInsertionNode([
+            new PlainTextNode('Oh '),
             new ParenthesizedNode([
-              new PlainTextNode(')')
-            ])
-          ]))
-      })
-
-      specify('Square brackets', () => {
-        expect(Up.toAst('~~Oh [why would you do this?~~]')).to.be.eql(
-          insideDocumentAndParagraph([
-            new RevisionDeletionNode([
-              new PlainTextNode('Oh '),
-              new SquareBracketedNode([
-                new PlainTextNode('[why would you do this?')
-              ]),
+              new PlainTextNode('(why would you do this?')
             ]),
+          ]),
+          new ParenthesizedNode([
+            new PlainTextNode(')')
+          ])
+        ]))
+    })
+
+    specify('Square brackets', () => {
+      expect(Up.toAst('~~Oh [why would you do this?~~]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new RevisionDeletionNode([
+            new PlainTextNode('Oh '),
             new SquareBracketedNode([
-              new PlainTextNode(']')
-            ])
-          ]))
-      })
+              new PlainTextNode('[why would you do this?')
+            ]),
+          ]),
+          new SquareBracketedNode([
+            new PlainTextNode(']')
+          ])
+        ]))
     })
   })
 })
