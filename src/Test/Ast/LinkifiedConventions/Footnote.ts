@@ -202,3 +202,24 @@ describe('An otherwise valid linkified footnote with its URL escaped"', () => {
       ]))
   })
 })
+
+
+context("If there's no space between a footnote and its bracketed URL", () => {
+  specify("the URL can start with whitespace", () => {
+    const footnote =
+      new FootnoteNode([
+        new LinkNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ], 'http://example.com/luckycharms')
+      ], 1)
+
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: '^Well, I do, but I pretend not to.',
+      url: ' \t \thttp://example.com/luckycharms',
+      toProduce: new DocumentNode([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ])
+    })
+  })
+})
