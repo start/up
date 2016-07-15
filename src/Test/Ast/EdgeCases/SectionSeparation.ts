@@ -12,11 +12,26 @@ import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
   
 describe('A section separator streak', () => {
-  it('can be directly followed by a heading with a different underline', () => {
+  it('can directly precede a heading with different characters in its underline', () => {
     const text = `
 - - - - - - - - - - - 
 Not me. Us!
 @---------@`
+    expect(Up.toAst(text)).to.eql(
+      new DocumentNode([
+        new SectionSeparatorNode(),
+        new HeadingNode([
+          new PlainTextNode('Not me. Us!')
+        ], 1)
+      ]))
+  })
+
+  it('can directly precede a heading with the same characters in its underline, as long as that heading has an overline', () => {
+    const text = `
+---------------------------------
+-----------
+Not me. Us!
+-----------`
     expect(Up.toAst(text)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
