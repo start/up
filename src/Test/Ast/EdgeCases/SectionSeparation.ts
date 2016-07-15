@@ -10,7 +10,7 @@ import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
-  
+
 describe('A section separator streak', () => {
   it('can directly precede a heading with different characters in its underline', () => {
     const text = `
@@ -42,6 +42,7 @@ Not me. Us!
   })
 })
 
+
 describe('A streak of asterisks with spaces between', () => {
   it('produces a single section separator node rather than a heavily nested list', () => {
     const text = '* * * * * *'
@@ -52,6 +53,7 @@ describe('A streak of asterisks with spaces between', () => {
   })
 })
 
+
 describe('A streak of number signs with spaces between', () => {
   it('produces a single section separator node rather than a heavily nested list', () => {
     const text = '# # # # # #'
@@ -61,6 +63,7 @@ describe('A streak of number signs with spaces between', () => {
       ]))
   })
 })
+
 
 describe('A streak of asterisks with spaces between', () => {
   it('can directly follow an unordered list', () => {
@@ -86,6 +89,7 @@ describe('A streak of asterisks with spaces between', () => {
       ]))
   })
 })
+
 
 describe('A streak of number signs with spaces between', () => {
   it('can directly follow an ordered list', () => {
