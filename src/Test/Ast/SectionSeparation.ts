@@ -6,8 +6,8 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('Between paragraphs', () => {
-  it('3 or more blank lines produces a section separator node', () => {
+context('Between paragraphs', () => {
+  specify('3 or more blank lines produces a section separator node', () => {
     const text = `Hello, world!
 
 
@@ -16,13 +16,17 @@ Goodbye, world!`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new ParagraphNode([
+          new PlainTextNode('Hello, world!')
+        ]),
         new SectionSeparatorNode(),
-        new ParagraphNode([new PlainTextNode('Goodbye, world!')]),
+        new ParagraphNode([
+          new PlainTextNode('Goodbye, world!')
+        ]),
       ]))
   })
 
-  it('6 or more blank lines produces only a single section separator node', () => {
+  specify('6 or more blank lines produces only a single section separator node', () => {
     const text = `Hello, world!
  \t
 
@@ -34,9 +38,13 @@ Goodbye, world!`
 Goodbye, world!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Hello, world!')]),
+        new ParagraphNode([
+          new PlainTextNode('Hello, world!')
+        ]),
         new SectionSeparatorNode(),
-        new ParagraphNode([new PlainTextNode('Goodbye, world!')])
+        new ParagraphNode([
+          new PlainTextNode('Goodbye, world!')
+        ])
       ]))
   })
 })
@@ -104,7 +112,7 @@ describe('A section separator streak', () => {
         ])
       ]))
   })
-  
+
   it('can have whitespace interspersed throughout the line in any manner', () => {
     const text = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
     expect(Up.toAst(text)).to.be.eql(
