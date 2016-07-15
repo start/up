@@ -94,7 +94,7 @@ new CodeBlockNode(
       const text = `
 \`\`\`\`\`
 \`\`\`
-function factorial2(n: number): number {
+function factorial(n: number): number {
   return (
     n <= 1
       ? 1
@@ -106,7 +106,7 @@ function factorial2(n: number): number {
         new DocumentNode([
           new CodeBlockNode(
             `\`\`\`
-function factorial2(n: number): number {
+function factorial(n: number): number {
   return (
     n <= 1
       ? 1
