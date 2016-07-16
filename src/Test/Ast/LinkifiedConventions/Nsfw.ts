@@ -14,8 +14,6 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
-// TODO: Check all permutations of brackets for negative tests, too.
-
 describe('A NSFW convention followed immediately by a parenthesized/bracketd URL', () => {
   it('produces a NSFW node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary](http://example.com/finalbattle).')).to.be.eql(

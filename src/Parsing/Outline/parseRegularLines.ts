@@ -45,8 +45,6 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   //
   // "Violets are blue" would be interpreted  as a heading due to the following line. But because
   // line blocks only examine each line individually, the line is accepted.
-  //
-  // TODO: Handle code blocks and description lists?
 
   const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
   let terminatingNodes: OutlineSyntaxNode[] = []

@@ -7,8 +7,6 @@ import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { NsflNode } from '../../../../SyntaxNodes/NsflNode'
 
 
-// TODO: Check all permutations of brackets for negative tests, too.
-
 context('A linkified NSFL convention can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
