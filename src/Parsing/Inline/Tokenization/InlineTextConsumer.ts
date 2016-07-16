@@ -37,7 +37,7 @@ export class InlineTextConsumer {
     return this._textIndex >= this.entireText.length
   }
 
-  consume(
+  tryToConsume(
     args: {
       pattern: RegExp,
       thenBeforeAdvancingTextIndex?: OnTextMatch

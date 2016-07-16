@@ -59,7 +59,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   while (true) {
     let inlineNodes: InlineSyntaxNode[]
 
-    const wasLineConsumed = consumer.consume({
+    const wasLineConsumed = consumer.tryToConsume({
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
       then: line => {

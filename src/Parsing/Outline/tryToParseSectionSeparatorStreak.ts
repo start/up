@@ -8,7 +8,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function tryToParseSectionSeparatorStreak(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
 
-  if (!consumer.consume({ linePattern: DIVIDER_STREAK_PATTERN })) {
+  if (!consumer.tryToConsume({ linePattern: DIVIDER_STREAK_PATTERN })) {
     return false
   }
 

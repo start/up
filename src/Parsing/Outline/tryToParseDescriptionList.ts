@@ -26,7 +26,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     // First, we collect every term for the next description.
     while (!consumer.done()) {
-      const isTerm = consumer.consume({
+      const isTerm = consumer.tryToConsume({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
         then: line => rawTerms.push(line)
@@ -44,7 +44,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
-    const hasDescription = consumer.consume({
+    const hasDescription = consumer.tryToConsume({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
       then: line => descriptionLines.push(line.replace(INDENTED_PATTERN, ''))

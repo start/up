@@ -22,7 +22,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   while (!consumer.done()) {
     let linesForCurrentListItem: string[] = []
 
-    const isLineBulleted = consumer.consume({
+    const isLineBulleted = consumer.tryToConsume({
       linePattern: BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: line => linesForCurrentListItem.push(line.replace(BULLET_PATTERN, ''))

@@ -45,7 +45,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
   let startDelimiter: string
 
-  consumer.consume({
+  consumer.tryToConsume({
     pattern: INLINE_CODE_DELIMITER_PATTERN,
     thenBeforeAdvancingTextIndex: match => { startDelimiter = match }
   })
@@ -57,7 +57,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
   let inlineCode = ''
 
   while (!consumer.done()) {
-    consumer.consume({
+    consumer.tryToConsume({
       pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE_PATTERN,
       thenBeforeAdvancingTextIndex: match => { inlineCode += match }
     })
@@ -67,7 +67,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
     let possibleEndDelimiter: string
 
-    consumer.consume({
+    consumer.tryToConsume({
       pattern: INLINE_CODE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: match => { possibleEndDelimiter = match }
     })

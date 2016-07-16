@@ -19,7 +19,7 @@ export class LineConsumer {
     return this._countLinesConsumed >= this.lines.length
   }
 
-  consume(
+  tryToConsume(
     args: {
       linePattern?: RegExp,
       if?: ShouldConsumeLine,

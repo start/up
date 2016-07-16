@@ -14,7 +14,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   // First, let's try to consume the optional overline...
   let optionalOverline: string
 
-  consumer.consume({
+  consumer.tryToConsume({
     linePattern: DIVIDER_STREAK_PATTERN,
     then: line => { optionalOverline = line }
   })
@@ -24,49 +24,48 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   const hasContentAndUnderline = (
     // Now, let's consume the content...
-    consumer.consume({
+    consumer.tryToConsume({
       linePattern: NON_BLANK_PATTERN,
-      then: line => { rawContent = line }
+      then: line => {
+        rawContent = line
+      }
     })
 
-    // ... and the underline!
-    && consumer.consume({
-      if: line => (
-        DIVIDER_STREAK_PATTERN.test(line)
-        && isUnderlineConsistentWithOverline(optionalOverline, line)),
-      then: line => { underline = line }
+    // ... and the underline.
+    && consumer.tryToConsume({
+      if: line => DIVIDER_STREAK_PATTERN.test(line) && isUnderlineConsistentWithOverline(optionalOverline, line),
+      then: line => {
+        underline = line
+      }
     })
-  )
+
+    // We're still not convinced this is actually a heading. Why's that?
+    //
+    // Well, what if the content is a streak? For example:
+    //
+    // =============================================
+    // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+    // =============================================
+    //
+    // Or what if the content is a list with a single item? For example:
+    //
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // * Buy milk
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    //
+    // Neither of those should be parsed as headings. We only accept the heading's content if it would
+    // would otherwise be parsed as a regular paragraph.
+    && !isLineFancyOutlineConvention(rawContent, args.config))
 
   if (!hasContentAndUnderline) {
     return false
   }
 
-  // We're still not convinced this is actually a heading. Why's that?
-  //
-  // Well, what if the content is a streak? For example:
-  //
-  // =============================================
-  // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
-  // =============================================
-  //
-  // Or what if the content is a list with a single item? For example:
-  //
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  // * Buy milk
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  //
-  // Neither of those should be parsed as headings. We only accept the heading's content if it would
-  // would otherwise be parsed as a regular paragraph.
-
-  if (isLineFancyOutlineConvention(rawContent, args.config)) {
-    return false
-  }
-
   const headingLevel = args.headingLeveler.registerUnderlineAndGetLevel(underline)
+  const headingChildren = getInlineNodes(rawContent, args.config)
 
   args.then(
-    [new HeadingNode(getInlineNodes(rawContent, args.config), headingLevel)],
+    [new HeadingNode(headingChildren, headingLevel)],
     consumer.countLinesConsumed)
 
   return true
