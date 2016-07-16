@@ -34,37 +34,40 @@ export interface TokenizableConventionArgs {
 
 
 export class TokenizableConvention {
-  onlyOpenIfDirectlyFollowing: TokenKind[]
+  onlyOpenIfDirectlyFollowing: TokenKind[] | undefined
 
   startsWith: RegExp
-  endsWith: RegExp
+  endsWith: RegExp | undefined
 
-  isCutShortByWhitespace: boolean
-  canConsistSolelyOfWhitespace: boolean
+  isCutShortByWhitespace: boolean | undefined
+  canConsistSolelyOfWhitespace: boolean | undefined
 
-  flushesBufferToPlainTextTokenBeforeOpening: boolean
-  whenOpening: OnTextMatch
+  flushesBufferToPlainTextTokenBeforeOpening: boolean | undefined
+  whenOpening: OnTextMatch | undefined
 
-  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
-  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
+  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent | undefined
+  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent | undefined
 
-  failsIfWhitespaceIsEnounteredBeforeClosing: boolean
+  failsIfWhitespaceIsEnounteredBeforeClosing: boolean | undefined
 
-  beforeClosingItFlushesNonEmptyBufferTo: TokenKind
-  beforeClosingItAlwaysFlushesBufferTo: TokenKind
-  whenClosingItAlsoClosesInnerConventions: boolean
-  mustBeDirectlyFollowedBy: TokenizableConvention[]
+  beforeClosingItFlushesNonEmptyBufferTo: TokenKind | undefined
+  beforeClosingItAlwaysFlushesBufferTo: TokenKind | undefined
+  whenClosingItAlsoClosesInnerConventions: boolean | undefined
+  mustBeDirectlyFollowedBy: TokenizableConvention[] | undefined
 
-  whenClosing: OnConventionEvent
-  insteadOfFailingWhenLeftUnclosed: OnConventionEvent
+  whenClosing: OnConventionEvent | undefined
+  insteadOfFailingWhenLeftUnclosed: OnConventionEvent | undefined
 
   constructor(args: TokenizableConventionArgs) {
-    const { onlyOpenIfDirectlyFollowing } = args
+    const { endsWith, onlyOpenIfDirectlyFollowing } = args
 
     this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
 
     this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
-    this.endsWith = regExpStartingWith(args.endsWith)
+    
+    if (endsWith) {
+      this.endsWith = regExpStartingWith(endsWith)
+    }
 
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
     this.canConsistSolelyOfWhitespace = args.canConsistSolelyOfWhitespace
