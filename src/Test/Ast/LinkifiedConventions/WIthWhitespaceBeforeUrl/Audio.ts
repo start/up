@@ -8,7 +8,10 @@ import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 
 
-// TODO: Check all permutations of brackets for negative tests, too.
+const WHTIESPACE = ' \t\t '
+const WITH_WHITESPACE = [WHTIESPACE]
+const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
+
 
 context('A linkified audio convention can have whitespace between its audio URL and its linkifying URL (regardless of whether there is whitespace between its content and its audio URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
@@ -541,8 +544,3 @@ describe("An audio convention's linkifying URL, when separated from its audio UR
     })
   })
 })
-
-
-const WHTIESPACE = ' \t\t '
-const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
-const WITH_WHITESPACE = [WHTIESPACE]

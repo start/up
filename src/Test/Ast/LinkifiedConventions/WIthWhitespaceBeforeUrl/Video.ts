@@ -8,7 +8,10 @@ import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
 
 
-// TODO: Check all permutations of brackets for negative tests, too.
+const WHTIESPACE = ' \t\t '
+const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
+const WITH_WHITESPACE = [WHTIESPACE]
+
 
 context('A linkified video convention can have whitespace between its video URL and its linkifying URL (regardless of whether there is whitespace between its content and its video URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
@@ -541,8 +544,3 @@ describe("A video convention's linkifying URL, when separated from its video URL
     })
   })
 })
-
-
-const WHTIESPACE = ' \t\t '
-const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
-const WITH_WHITESPACE = [WHTIESPACE]

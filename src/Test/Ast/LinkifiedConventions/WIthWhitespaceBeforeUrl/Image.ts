@@ -8,7 +8,10 @@ import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 
 
-// TODO: Check all permutations of brackets for negative tests, too.
+const WHTIESPACE = ' \t\t '
+const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
+const WITH_WHITESPACE = [WHTIESPACE]
+
 
 context('A linkified image convention can have whitespace between its image URL and its linkifying URL (regardless of whether there is whitespace between its content and its image URL), but the linkifying URL must satisfy one of the following conditions:', () => {
   specify('It has a scheme', () => {
@@ -541,8 +544,3 @@ describe("An image convention's linkifying URL, when separated from its image UR
     })
   })
 })
-
-
-const WHTIESPACE = ' \t\t '
-const WITH_AND_WITHOUT_WHITESPACE = ['', WHTIESPACE]
-const WITH_WHITESPACE = [WHTIESPACE]
