@@ -63,7 +63,7 @@ export class HtmlWriter extends Writer {
   private nsfwCount = 0
   private nsflCount = 0
 
-  constructor(config?: UpConfig) {
+  constructor(config: UpConfig) {
     super(config)
   }
 

@@ -31,7 +31,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
 export class UpConfig {
   public settings: UpConfigSettings
 
-  constructor(changes: UpConfigSettings, baseSettings = DEFAULT_SETTINGS) {
+  constructor(changes?: UpConfigSettings, baseSettings = DEFAULT_SETTINGS) {
     this.settings = applyChanges(baseSettings, changes)
   }
 
