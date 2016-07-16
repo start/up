@@ -22,7 +22,7 @@
     "chai": "latest",
     "istanbul": "latest",
     "mocha": "latest",
-    "tslint": "^3.13.0",
+    "tslint": "latest",
     "typescript": "latest"
   }
 }
