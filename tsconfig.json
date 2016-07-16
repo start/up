@@ -1,4 +1,5 @@
 {
+  // We'll delay enabling `strictNullChecks` until its associated syntax features have better editor support 
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
