@@ -5,7 +5,6 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "outDir": "compiled",

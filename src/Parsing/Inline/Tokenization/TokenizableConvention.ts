@@ -34,29 +34,29 @@ export interface TokenizableConventionArgs {
 
 
 export class TokenizableConvention {
-  onlyOpenIfDirectlyFollowing: TokenKind[] | undefined
+  onlyOpenIfDirectlyFollowing: TokenKind[]
 
   startsWith: RegExp
-  endsWith: RegExp | undefined
+  endsWith: RegExp
 
-  isCutShortByWhitespace: boolean | undefined
-  canConsistSolelyOfWhitespace: boolean | undefined
+  isCutShortByWhitespace: boolean
+  canConsistSolelyOfWhitespace: boolean
 
-  flushesBufferToPlainTextTokenBeforeOpening: boolean | undefined
-  whenOpening: OnTextMatch | undefined
+  flushesBufferToPlainTextTokenBeforeOpening: boolean
+  whenOpening: OnTextMatch
 
-  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent | undefined
-  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent | undefined
+  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
+  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
 
-  failsIfWhitespaceIsEnounteredBeforeClosing: boolean | undefined
+  failsIfWhitespaceIsEnounteredBeforeClosing: boolean
 
-  beforeClosingItFlushesNonEmptyBufferTo: TokenKind | undefined
-  beforeClosingItAlwaysFlushesBufferTo: TokenKind | undefined
-  whenClosingItAlsoClosesInnerConventions: boolean | undefined
-  mustBeDirectlyFollowedBy: TokenizableConvention[] | undefined
+  beforeClosingItFlushesNonEmptyBufferTo: TokenKind
+  beforeClosingItAlwaysFlushesBufferTo: TokenKind
+  whenClosingItAlsoClosesInnerConventions: boolean
+  mustBeDirectlyFollowedBy: TokenizableConvention[]
 
-  whenClosing: OnConventionEvent | undefined
-  insteadOfFailingWhenLeftUnclosed: OnConventionEvent | undefined
+  whenClosing: OnConventionEvent
+  insteadOfFailingWhenLeftUnclosed: OnConventionEvent
 
   constructor(args: TokenizableConventionArgs) {
     const { endsWith, onlyOpenIfDirectlyFollowing } = args

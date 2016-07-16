@@ -21,7 +21,7 @@ export interface UpConfigSettings {
       footnote?: string
       footnoteReference?: string
 
-      [term: string | undefined]: string
+      [term: string]: string
     }
   }
 }
