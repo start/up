@@ -11,7 +11,7 @@ import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 export function tryToParseHeading(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
 
-  // First, let's parse the optional overline...
+  // First, let's try to consume the optional overline...
   let optionalOverline: string
 
   consumer.consume({
@@ -23,13 +23,13 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   let underline: string
 
   const hasContentAndUnderline = (
-    // Now, let's parse the content...
+    // Now, let's consume the content...
     consumer.consume({
       linePattern: NON_BLANK_PATTERN,
       then: line => { rawContent = line }
     })
 
-    // And parse the underline!
+    // ... and the underline!
     && consumer.consume({
       if: line => (
         DIVIDER_STREAK_PATTERN.test(line)
@@ -42,16 +42,15 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     return false
   }
 
-
   // We're still not convinced this is actually a heading. Why's that?
   //
-  // What if the content is a streak? Example:
+  // Well, what if the content is a streak? For example:
   //
   // =============================================
   // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
   // =============================================
   //
-  // Or what if the content is a list with a single item? Example:
+  // Or what if the content is a list with a single item? For example:
   //
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   // * Buy milk
