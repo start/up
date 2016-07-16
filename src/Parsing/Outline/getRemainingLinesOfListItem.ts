@@ -23,7 +23,9 @@ export function getRemainingLinesOfListItem(
   while (!consumer.done()) {
     const wasLineBlank = consumer.tryToConsume({
       linePattern: BLANK_PATTERN,
-      then: line => lines.push(line)
+      then: line => {
+        lines.push(line)
+      }
     })
 
     if (wasLineBlank) {
@@ -33,7 +35,9 @@ export function getRemainingLinesOfListItem(
 
     const wasLineIndented = consumer.tryToConsume({
       linePattern: INDENTED_PATTERN,
-      then: line => lines.push(line)
+      then: line => {
+        lines.push(line)
+      }
     })
 
     if (!wasLineIndented) {

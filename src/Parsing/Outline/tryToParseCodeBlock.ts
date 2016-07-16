@@ -15,7 +15,9 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
   consumer.tryToConsume({
     linePattern: CODE_BLOCK_STREAK_PATTERN,
-    then: match => { startStreak = match }
+    then: match => {
+      startStreak = match
+    }
   })
 
   if (!startStreak) {
@@ -30,15 +32,24 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
     consumer.tryToConsume({
       linePattern: CODE_BLOCK_STREAK_PATTERN,
-      then: match => { possibleEndStreak = match }
+      then: match => {
+        possibleEndStreak = match
+      }
     })
 
     if (!possibleEndStreak) {
-      consumer.tryToConsume({ then: line => codeLines.push(line) })
+      // If we don't have a possible end streak, we'll just treat this line as code and move
+      // on to the next one.
+      consumer.tryToConsume({
+        then: line => {
+          codeLines.push(line)
+        }
+      })
+
       continue
     }
 
-    // Alright, we have a possible end streak.
+    // Alright, we have a possible end streak!
 
     if (possibleEndStreak.length === startStreak.length) {
       // It matches the start streak! Let's bail.

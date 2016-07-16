@@ -16,7 +16,9 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   consumer.tryToConsume({
     linePattern: DIVIDER_STREAK_PATTERN,
-    then: line => { optionalOverline = line }
+    then: line => {
+      optionalOverline = line
+    }
   })
 
   let rawContent: string
