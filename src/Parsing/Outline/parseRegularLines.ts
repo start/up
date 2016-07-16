@@ -47,7 +47,15 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   // line blocks only examine each line individually, the line is accepted.
 
   const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
-  let terminatingNodes: OutlineSyntaxNode[] = []
+
+  // If a line consists solely of media conventions, those media conventions are promoted to the
+  // outline.
+  //
+  // Such a line terminates the parsing of regualr lines.
+  //
+  // * If it follows a line block, it termines the line block
+  // * If it follows a paragraph, it prevents the paragraph from becoming a line block 
+  let inlineNodesPromotedToOutline: OutlineSyntaxNode[] = []
 
   // We don't need to ensure that the first line would be parsed as a regular paragraph. We already
   // it know would be (that's why this function was called!). 
@@ -59,36 +67,24 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     const wasLineConsumed = consumer.consume({
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
-      then: line => inlineNodes = getInlineNodes(line, args.config)
+      then: line => {
+        inlineNodes = getInlineNodes(line, args.config)
+      }
     })
 
-    isOnFirstLine = false
-
-    // Sometimes, a non-blank line can produce no syntax nodes. The following non-blank conventions
-    // produce no syntax nodes:
-    //
-    // 1. Empty sandwich conventions (e.g. revision insertion)
-    // 2. Empty inline code
-    // 3. Media conventions missing their URL
-    // 4. Links missing their content and their URL
-    //
-    // If we're bizarrely dealing with a line consisting solely of those "dud" conventions, then
-    // `inlineNodes` will be empty. We don't want to produce empty paragraphs for these lines, and
-    // we're happy to have these lines terminate a preceeding line block.
-    //
-    // In the future, we might change this behavior. A line producing no syntax nodes might simply
-    // be ignored, which means it would not terminate a line block if the block continues immediately
-    // afterward.
-
+    // If a line consisted solely of a single backslash, it doesn't generate any syntax nodes. We
+    // consider those lines to be blank.
     if (!wasLineConsumed || !inlineNodes.length) {
       break
     }
+
+    isOnFirstLine = false
 
     const nodesFromThisShouldBePlacedDirectlyIntoOutline =
       tryToPromoteToOutline({
         inlineNodes,
         then: outlineNodes => {
-          terminatingNodes = outlineNodes
+          inlineNodesPromotedToOutline = outlineNodes
         }
       })
 
@@ -108,7 +104,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       // If we only consumed only 1 line, and if that single line either produced no inline syntax
       // nodes or was promoted to the outline, then there won't any other lines left over to produce
       // a paragraph or a line block.
-      args.then(terminatingNodes, lengthConsumed)
+      args.then(inlineNodesPromotedToOutline, lengthConsumed)
       return
 
     case 1:
@@ -122,5 +118,5 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     }
   }
 
-  args.then([regularLinesResultNode].concat(terminatingNodes), lengthConsumed)
+  args.then([regularLinesResultNode].concat(inlineNodesPromotedToOutline), lengthConsumed)
 }

@@ -3,6 +3,8 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { Line } from '../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -41,11 +43,47 @@ describe('A backslash', () => {
         new PlainTextNode('Hello, ')
       ]))
   })
+})
 
-  it('does not disable line breaks', () => {
+
+context("Backslashes don't disable line breaks:", () => {
+  specify('At the end of a line in a line block', () => {
     const text = `
 Hello, world!\\
+Goodbye, world!`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new LineBlockNode([
+          new Line([
+            new PlainTextNode('Hello, world!')
+          ]),
+          new Line([
+            new PlainTextNode('Goodbye, world!')
+          ])
+        ])
+      ]))
+  })
+
+  specify('On an otherwise-empty line between paragraphs', () => {
+    const text = `
+Hello, world!
 \\
+Goodbye, world!`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Hello, world!')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('Goodbye, world!')
+        ])
+      ]))
+  })
+
+  specify('At the end of a paragraph', () => {
+    const text = `
+Hello, world!\\
+
 Goodbye, world!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
