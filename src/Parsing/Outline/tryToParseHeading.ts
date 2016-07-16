@@ -14,7 +14,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   // First, let's try to consume the optional overline...
   let optionalOverline: string
 
-  consumer.tryToConsume({
+  consumer.consume({
     linePattern: DIVIDER_STREAK_PATTERN,
     then: line => {
       optionalOverline = line
@@ -26,7 +26,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   const hasContentAndUnderline = (
     // Now, let's consume the content...
-    consumer.tryToConsume({
+    consumer.consume({
       linePattern: NON_BLANK_PATTERN,
       then: line => {
         rawContent = line
@@ -34,7 +34,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     })
 
     // ... and the underline.
-    && consumer.tryToConsume({
+    && consumer.consume({
       if: line => DIVIDER_STREAK_PATTERN.test(line) && isUnderlineConsistentWithOverline(optionalOverline, line),
       then: line => {
         underline = line

@@ -22,7 +22,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
   while (!consumer.done()) {
     let rawListItem: RawListItem
 
-    const isLineBulleted = consumer.tryToConsume({
+    const isLineBulleted = consumer.consume({
       linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: (line, bullet) => {

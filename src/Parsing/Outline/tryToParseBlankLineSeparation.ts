@@ -13,7 +13,7 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
   const consumer = new LineConsumer(args.lines)
   let countBlankLines = 0
 
-  while (consumer.tryToConsume({ linePattern: BLANK_PATTERN })) {
+  while (consumer.consume({ linePattern: BLANK_PATTERN })) {
     countBlankLines += 1
   }
 

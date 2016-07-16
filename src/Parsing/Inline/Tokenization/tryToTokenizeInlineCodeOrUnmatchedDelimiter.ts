@@ -45,9 +45,11 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
   let startDelimiter: string
 
-  consumer.tryToConsume({
+  consumer.consume({
     pattern: INLINE_CODE_DELIMITER_PATTERN,
-    thenBeforeAdvancingTextIndex: match => { startDelimiter = match }
+    thenBeforeAdvancingTextIndex: match => {
+      startDelimiter = match
+    }
   })
 
   if (!startDelimiter) {
@@ -57,9 +59,11 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
   let inlineCode = ''
 
   while (!consumer.done()) {
-    consumer.tryToConsume({
+    consumer.consume({
       pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE_PATTERN,
-      thenBeforeAdvancingTextIndex: match => { inlineCode += match }
+      thenBeforeAdvancingTextIndex: match => {
+        inlineCode += match
+      }
     })
 
     // Alright, we've consumed a chunk of inline code. Either we've reached the end of the text,
@@ -67,9 +71,11 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
 
     let possibleEndDelimiter: string
 
-    consumer.tryToConsume({
+    consumer.consume({
       pattern: INLINE_CODE_DELIMITER_PATTERN,
-      thenBeforeAdvancingTextIndex: match => { possibleEndDelimiter = match }
+      thenBeforeAdvancingTextIndex: match => {
+        possibleEndDelimiter = match
+      }
     })
 
     if (!possibleEndDelimiter) {
@@ -118,11 +124,11 @@ const INLINE_CODE_DELIMITER_PATTERN =
 
 const AT_LEAST_ONE_SPACE =
   atLeast(1, ' ')
-    
+
 const LEADING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN =
   regExpStartingWith(
-      AT_LEAST_ONE_SPACE + INLINE_CODE_DELIMITER_CHAR)
+    AT_LEAST_ONE_SPACE + INLINE_CODE_DELIMITER_CHAR)
 
 const TRAILING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN =
   regExpEndingWith(
-      INLINE_CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)
+    INLINE_CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)

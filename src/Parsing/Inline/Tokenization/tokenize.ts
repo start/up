@@ -633,7 +633,7 @@ class Tokenizer {
   // This method exists purely for optimization.
   private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
     const tryToBuffer = (pattern: RegExp) =>
-      this.consumer.tryToConsume({
+      this.consumer.consume({
         pattern,
         thenBeforeAdvancingTextIndex: match => { this.buffer += match }
       })
@@ -718,7 +718,7 @@ class Tokenizer {
       (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
       || (
         convention.endsWith
-        && this.consumer.tryToConsume({ pattern: convention.endsWith })))
+        && this.consumer.consume({ pattern: convention.endsWith })))
   }
 
   private tryToCloseConvention(args: { belongingToContextAtIndex: number }): boolean {
@@ -779,7 +779,7 @@ class Tokenizer {
     return this.raisedVoiceHandlers.some(handler => {
       let didCloseAnyRaisedVoices = false
 
-      this.consumer.tryToConsume({
+      this.consumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeAdvancingTextIndex: delimiter => {
@@ -925,7 +925,7 @@ class Tokenizer {
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
     return this.raisedVoiceHandlers.some(handler =>
-      this.consumer.tryToConsume({
+      this.consumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeAdvancingTextIndex: (delimiter, charAfterMatch) => {
@@ -981,7 +981,7 @@ class Tokenizer {
     return (
       this.canTry(convention)
 
-      && this.consumer.tryToConsume({
+      && this.consumer.consume({
         pattern: startsWith,
 
         thenBeforeAdvancingTextIndex: (match, charAfterMatch, ...captures) => {
