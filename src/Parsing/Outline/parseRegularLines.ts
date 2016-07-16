@@ -49,12 +49,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
 
   // If a line consists solely of media conventions, those media conventions are promoted to the
-  // outline.
-  //
-  // Such a line terminates the parsing of regualr lines.
-  //
-  // * If it follows a line block, it termines the line block
-  // * If it follows a paragraph, it prevents the paragraph from becoming a line block 
+  // outline. Any such line will terminate the parsing of regular lines.
   let inlineNodesPromotedToOutline: OutlineSyntaxNode[] = []
 
   // We don't need to ensure that the first line would be parsed as a regular paragraph. We already
