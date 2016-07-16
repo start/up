@@ -39,7 +39,7 @@ describe('The text of an action', () => {
 
 
 describe('Nested curly brackets starting at the same time', () => {
-  it("produce nested action nodes starting at the same tmie", () => {
+  it("produce nested action nodes starting at the same time", () => {
     expect(Up.toAst('Well... {{gasp} die} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well... '),

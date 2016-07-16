@@ -428,7 +428,7 @@ describe('A linkified spoiler overlapping emphasized text', () => {
 })
 
 
-describe('A spoiler overlapping the second half of an emphasis conventoin that split by a link', () => {
+describe('A spoiler overlapping the second half of an emphasis convention split by a link', () => {
   it('splits the emphasis node again', () => {
     expect(Up.toAst('This [SPOILER: old {trash *can}(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
