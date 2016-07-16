@@ -1,4 +1,4 @@
-import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class OrderedListItem {

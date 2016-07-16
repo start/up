@@ -1,4 +1,4 @@
-import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 export interface RichInlineSyntaxNodeType {

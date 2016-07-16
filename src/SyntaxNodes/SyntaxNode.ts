@@ -1,6 +1,6 @@
-import { DocumentNode } from '../SyntaxNodes/DocumentNode'
-import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
-import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
+import { DocumentNode } from './DocumentNode'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export type SyntaxNode =

@@ -1,4 +1,4 @@
-import { OrderedListItem } from '../SyntaxNodes/OrderedListItem'
+import { OrderedListItem } from './OrderedListItem'
 
 
 export class OrderedListNode {
