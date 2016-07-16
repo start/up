@@ -623,7 +623,7 @@ class Tokenizer {
 
   private tryToCollectEscapedChar(): boolean {
     if (this.consumer.currentChar === ESCAPER_CHAR) {
-      this.consumer.advanceTextIndex(1)
+      this.consumer.textIndex += 1
       return this.consumer.done() || this.bufferCurrentChar()
     }
 
@@ -957,7 +957,7 @@ class Tokenizer {
       then: (resultToken, lengthConsumed) => {
         this.flushNonEmptyBufferToPlainTextToken()
         this.appendToken(resultToken)
-        this.consumer.advanceTextIndex(lengthConsumed)
+        this.consumer.textIndex += lengthConsumed
       }
     })
   }
@@ -970,7 +970,7 @@ class Tokenizer {
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
     this.buffer += this.consumer.currentChar
-    this.consumer.advanceTextIndex(1)
+    this.consumer.textIndex += 1
 
     return true
   }

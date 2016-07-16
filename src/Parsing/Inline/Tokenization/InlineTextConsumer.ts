@@ -29,10 +29,6 @@ export class InlineTextConsumer {
     return this._previousChar
   }
 
-  advanceTextIndex(length: number): void {
-    this.textIndex += length
-  }
-
   done(): boolean {
     return this._textIndex >= this.entireText.length
   }
@@ -44,7 +40,6 @@ export class InlineTextConsumer {
     }
   ): boolean {
     const { pattern, thenBeforeAdvancingTextIndex } = args
-
     const result = pattern.exec(this._remainingText)
 
     if (!result) {
@@ -58,8 +53,7 @@ export class InlineTextConsumer {
       thenBeforeAdvancingTextIndex(match, charAfterMatch, ...captures)
     }
 
-    this.advanceTextIndex(match.length)
-
+    this.textIndex += match.length
     return true
   }
 
