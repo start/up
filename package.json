@@ -23,6 +23,6 @@
     "istanbul": "latest",
     "mocha": "latest",
     "tslint": "latest",
-    "typescript": "latest"
+    "typescript": "^2.0.0"
   }
 }
