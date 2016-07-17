@@ -2,16 +2,16 @@ import { LineConsumer } from './LineConsumer'
 import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
 
 
-// All indented and/or blank lines should be included in a list item.
+// Indented blocks include all indented and blank lines.
 //
-// However, if there are 2 or more trailing blank lines, they should *not* be included. Instead,
-// they indicate the end of the whole list.
+// However, if an indented block has 2 or more trailing blank lines, those trailing blank lines
+// are not included.
 //
 // Returns false if no lines could be included.
-export function getRemainingLinesOfListItem(
+export function getIndentedBlock(
   args: {
     lines: string[],
-    then: (lines: string[], lcountLinesConsumed: number, shouldTerminateList: boolean) => void
+    then: (lines: string[], lcountLinesConsumed: number, hasMultipleTrailingBlankLines: boolean) => void
   }
 ): void {
   const consumer = new LineConsumer(args.lines)
@@ -28,7 +28,7 @@ export function getRemainingLinesOfListItem(
 
     if (wasLineBlank) {
       // The line was blank, so we don't yet know whether the author intended for the line to be
-      // included in the list item or not. We'll move onto the next line without updating
+      // included in the indented block or not. We'll move onto the next line without updating
       // `countLinesIncluded`.
       continue
     }
@@ -52,10 +52,10 @@ export function getRemainingLinesOfListItem(
   }
 
   const countTrailingBlankLines = allConsumedLines.length - countLinesIncluded
-  const shouldTerminateList = countTrailingBlankLines >= 2
+  const hasMultipleTrailingBlankLines = countTrailingBlankLines >= 2
 
-  if (!shouldTerminateList) {
-    // If we aren't terminating the list, we should include everything we consumed.
+  if (!hasMultipleTrailingBlankLines) {
+    // If there aren't multiple trailing blank lines, we go ahead and include everything we consumed.
     countLinesIncluded = allConsumedLines.length
   }
 
@@ -63,5 +63,5 @@ export function getRemainingLinesOfListItem(
     .slice(0, countLinesIncluded)
     .map(line => line.replace(INDENTED_PATTERN, ''))
 
-  args.then(resultLines, countLinesIncluded, shouldTerminateList)
+  args.then(resultLines, countLinesIncluded, hasMultipleTrailingBlankLines)
 }

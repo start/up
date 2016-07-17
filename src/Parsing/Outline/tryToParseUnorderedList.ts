@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
-import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
+import { getIndentedBlock } from './getIndentedBlock'
 import { optional, regExpStartingWith, anyCharFrom } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
@@ -35,20 +35,20 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
       break
     }
 
-    let isListTerminated = false
+    let shouldTerminateList = false
 
-    getRemainingLinesOfListItem({
+    getIndentedBlock({
       lines: consumer.getRemainingLines(),
-      then: (lines, lengthParsed, shouldTerminateList) => {
+      then: (lines, lengthParsed, hasMultipleTrailingBlankLines) => {
         linesForCurrentListItem.push(...lines)
         consumer.skipLines(lengthParsed)
-        isListTerminated = shouldTerminateList
+        shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
     linesByListItem.push(linesForCurrentListItem)
 
-    if (isListTerminated) {
+    if (shouldTerminateList) {
       break
     }
   }

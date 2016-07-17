@@ -8,7 +8,7 @@ import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { INDENTED_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
+import { getIndentedBlock } from './getIndentedBlock'
 
 
 // Description lists are collections of terms and descriptions.
@@ -65,14 +65,14 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       break
     }
 
-    let isListTerminated = false
+    let shouldTerminateList = false
 
-    getRemainingLinesOfListItem({
+    getIndentedBlock({
       lines: consumer.getRemainingLines(),
-      then: (lines, countLinesConsumed, shouldTerminateList) => {
+      then: (lines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
         descriptionLines.push(...lines)
         consumer.skipLines(countLinesConsumed)
-        isListTerminated = shouldTerminateList
+        shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
@@ -88,7 +88,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     listItems.push(new DescriptionListItem(terms, description))
 
-    if (isListTerminated) {
+    if (shouldTerminateList) {
       break
     }
   }

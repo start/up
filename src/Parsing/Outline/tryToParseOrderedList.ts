@@ -6,7 +6,7 @@ import { optional, regExpStartingWith, escapeForRegex, atLeast, either, anyCharF
 import { INLINE_WHITESPACE_CHAR, DIGIT } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
+import { getIndentedBlock } from './getIndentedBlock'
 
 
 // Ordered lists are simply collections of ordered list items.
@@ -36,20 +36,20 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
       break
     }
 
-    let isListTerminated = false
+    let shouldTerminateList = false
 
-    getRemainingLinesOfListItem({
+    getIndentedBlock({
       lines: consumer.getRemainingLines(),
-      then: (lines, lengthParsed, shouldTerminateList) => {
+      then: (lines, lengthParsed, hasMultipleTrailingBlankLines) => {
         rawListItem.lines.push(...lines)
         consumer.skipLines(lengthParsed)
-        isListTerminated = shouldTerminateList
+        shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
     rawListItems.push(rawListItem)
 
-    if (isListTerminated) {
+    if (shouldTerminateList) {
       break
     }
   }
