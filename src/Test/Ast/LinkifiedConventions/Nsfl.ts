@@ -6,7 +6,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
@@ -89,7 +89,7 @@ describe('A NSFL convention directly followed by a NSFW convention', () => {
         new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

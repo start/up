@@ -6,7 +6,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
@@ -99,7 +99,7 @@ describe('A video directly followed by a NSFW convention', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new VideoNode('you fight Gary', 'https://example.com/fight.webm'),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

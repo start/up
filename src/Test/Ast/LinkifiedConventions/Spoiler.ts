@@ -6,7 +6,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
@@ -72,7 +72,7 @@ describe('A spoiler directly followed by a NSFW convention', () => {
         new InlineSpoilerNode([
           new PlainTextNode('you fight Gary')
         ]),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

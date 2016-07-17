@@ -13,7 +13,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -176,7 +176,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfw(node: NsfwNode): string {
+  protected nsfw(node: InlineNsfwNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfw',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,

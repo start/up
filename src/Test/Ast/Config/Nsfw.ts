@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 
 
 describe('The term that represents NSFW conventions', () => {
@@ -15,7 +15,7 @@ describe('The term that represents NSFW conventions', () => {
   it('comes from the "nsfw" config term ', () => {
     expect(up.toAst('[explicit: Ash wrestles naked Gary]')).to.be.eql(
       insideDocumentAndParagraph([
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('Ash wrestles naked Gary')
         ])
       ]))

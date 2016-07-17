@@ -4,7 +4,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -84,7 +84,7 @@ describe("The words in the ID of a NSFW conventions's checkbox (on both the chec
       }
     })
 
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'

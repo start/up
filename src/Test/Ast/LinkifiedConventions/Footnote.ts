@@ -10,7 +10,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -145,7 +145,7 @@ describe('A footnote directly followed by a NSFW convention', () => {
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),

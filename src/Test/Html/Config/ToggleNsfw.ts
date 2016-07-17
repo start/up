@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 
 
 describe("The text in a NSFW convention's label", () => {
@@ -11,7 +11,7 @@ describe("The text in a NSFW convention's label", () => {
       }
     })
 
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'

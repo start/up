@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
@@ -62,7 +62,7 @@ describe("Within a NSFW convention's label, all instances of < and &", () => {
       }
     })
 
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'

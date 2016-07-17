@@ -6,7 +6,7 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -170,7 +170,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const node = new NsfwNode([new PlainTextNode('45.9%')])
+    const node = new InlineNsfwNode([new PlainTextNode('45.9%')])
 
     const html =
       '<span class="up-nsfw up-revealable">'

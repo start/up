@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
@@ -17,7 +17,7 @@ describe("The ID of a NSFW convention's checkbox (on both the checkbox and the l
       }
     })
 
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
 
     const html =
       '<span class="up-nsfw up-revealable">'
@@ -37,11 +37,11 @@ describe("Multiple NSFW conventions in a document", () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('naked Red')
           ]),
           new PlainTextNode('. We meet for the eighth'),
-          new NsfwNode([
+          new InlineNsfwNode([
             new EmphasisNode([
               new PlainTextNode('naked')
             ])
@@ -50,7 +50,7 @@ describe("Multiple NSFW conventions in a document", () => {
         ]),
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('naked Blue')
           ]),
           new PlainTextNode('.'),
@@ -96,11 +96,11 @@ describe("The ID of a NSFL convention's checkbox (on both the checkbox and the l
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('naked Red')
           ]),
           new PlainTextNode('. We meet for the eighth'),
-          new NsfwNode([
+          new InlineNsfwNode([
             new EmphasisNode([
               new PlainTextNode('naked')
             ])
@@ -109,7 +109,7 @@ describe("The ID of a NSFL convention's checkbox (on both the checkbox and the l
         ]),
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('naked Blue')
           ]),
           new PlainTextNode('.'),

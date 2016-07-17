@@ -4,7 +4,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -164,7 +164,7 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
 
 describe("The ID of a NSFW conventions's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
     
     const html =
       '<span class="up-nsfw up-revealable">'
@@ -182,7 +182,7 @@ describe("The ID of a NSFW conventions's checkbox (on both the checkbox and the 
       documentName: 'reply-11'
     })
 
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
     
     const html =
       '<span class="up-nsfw up-revealable">'
@@ -199,7 +199,7 @@ describe("The ID of a NSFW conventions's checkbox (on both the checkbox and the 
       documentName: ' \t'
     })
 
-    const node = new NsfwNode([])
+    const node = new InlineNsfwNode([])
     
     const html =
       '<span class="up-nsfw up-revealable">'

@@ -10,7 +10,7 @@ import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
@@ -354,7 +354,7 @@ describe('A NSFW convention that overlaps a link', () => {
   it("splits the link node, not the NSFW convention node", () => {
     expect(Up.toAst('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('Gary loses to '),
           new LinkNode([
             new PlainTextNode('Ash')
@@ -379,7 +379,7 @@ describe('A link that overlaps a NSFW convention', () => {
         new LinkNode([
           new PlainTextNode('Gary Oak ')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new NsfwNode([
+        new InlineNsfwNode([
           new LinkNode([
             new PlainTextNode('loses to Ash Ketchum')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
@@ -396,7 +396,7 @@ describe('A NSFW convention that overlaps action text', () => {
     expect(Up.toAst('In Pokémon Red, [NSFW: Gary Oak {loses] badly}')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('Gary Oak '),
           new ActionNode([
             new PlainTextNode('loses')
@@ -421,7 +421,7 @@ describe('Action text that overlaps a NSFW convention', () => {
         new ActionNode([
           new PlainTextNode('loses ')
         ]),
-        new NsfwNode([
+        new InlineNsfwNode([
           new ActionNode([
             new PlainTextNode('badly')
           ]),
@@ -438,7 +438,7 @@ describe('A NSFW convention that overlaps a footnote', () => {
 
     const footnote =
       new FootnoteNode([
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('Ketchum')
         ]),
         new PlainTextNode(' is his last name')
@@ -447,7 +447,7 @@ describe('A NSFW convention that overlaps a footnote', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('Gary loses to Ash')
           ]),
           footnote
@@ -465,7 +465,7 @@ describe('A footnote that overlaps a NSFW convention', () => {
     const footnote =
       new FootnoteNode([
         new PlainTextNode('reasonable '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('and realistic')
         ]),
       ], 1)
@@ -475,7 +475,7 @@ describe('A footnote that overlaps a NSFW convention', () => {
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode(' example of a'),
           ]),
           new PlainTextNode(' footnote that overlaps a NSFW convention.')

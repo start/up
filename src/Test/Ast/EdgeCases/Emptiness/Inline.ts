@@ -16,7 +16,7 @@ import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
-import { NsfwNode } from '../../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../../SyntaxNodes/InlineNsflNode'
 import { InlineSpoilerNode } from '../../../../SyntaxNodes/InlineSpoilerNode'
 import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
@@ -645,7 +645,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('NSFW', () => {
       expect(Up.toAst('[NSFW: Ash fights Gary]()')).to.be.eql(
         insideDocumentAndParagraph([
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('()')
@@ -716,7 +716,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('NSFW', () => {
       expect(Up.toAst('[NSFW: Ash fights Gary](\t \t \t)')).to.be.eql(
         insideDocumentAndParagraph([
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('(\t \t \t)')
@@ -817,7 +817,7 @@ describe('An otherwise-linkified NSFW convention with escaped blank content', ()
     expect(Up.toAst("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("On Professor Oak's right arm is a tattoo of "),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('a naked Mr. Mime')
         ]),
         new ParenthesizedNode([

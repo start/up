@@ -6,7 +6,7 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
@@ -115,7 +115,7 @@ describe('A link overlapping a NSFL convention containing a NSFW convention (ope
           new PlainTextNode("I suspect "),
         ], 'https://example.com/crime-suspects'),
         new InlineNsflNode([
-          new NsfwNode([
+          new InlineNsfwNode([
             new LinkNode([
               new PlainTextNode('naked you')
             ], 'https://example.com/crime-suspects'),
@@ -134,7 +134,7 @@ describe('A NSFW convention nested within a NSFL convention (closing at the same
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('I know. '),
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode("Well, I don't "),
             new LinkNode([
               new PlainTextNode('really.')

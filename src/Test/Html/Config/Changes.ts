@@ -4,7 +4,7 @@ import { UpConfigSettings } from '../../../UpConfigSettings'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -200,7 +200,7 @@ describe('The "toggleSpoiler" config term', () => {
 
 describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NsfwNode([]),
+    node: new InlineNsfwNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle nsfw</label>'
@@ -228,7 +228,7 @@ describe('The "nsfw" config term', () => {
 
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NsfwNode([]),
+    node: new InlineNsfwNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle nsfw</label>'

@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
+import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
@@ -15,7 +15,7 @@ describe('Square bracketed text starting with "nsfw:"', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle a naked Gary')
         ]),
         new PlainTextNode('.')
@@ -29,7 +29,7 @@ describe('Parenthesized text starting with "nsfw:"', () => {
     expect(Up.toAst('After you beat the Elite Four, (NSFW: you wrestle a naked Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle a naked Gary')
         ]),
         new PlainTextNode('.')
@@ -43,7 +43,7 @@ describe('Curly bracketed text starting with "nsfw:"', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFW: you wrestle a naked Gary}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle a naked Gary')
         ]),
         new PlainTextNode('.')
@@ -64,7 +64,7 @@ describe('An NSFW convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [image: naked Gary](https://example.com/ummmm.png)].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle '),
           new ImageNode('naked Gary', 'https://example.com/ummmm.png'),
         ]),
@@ -76,9 +76,9 @@ describe('An NSFW convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [NSFW: a naked Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle '),
-          new NsfwNode([
+          new InlineNsfwNode([
             new PlainTextNode('a naked Gary')
           ]),
         ]),
@@ -93,7 +93,7 @@ describe('A NSFW convention produced by square brackets', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [and beat] a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle '),
           new SquareBracketedNode([
             new PlainTextNode('[and beat]')
@@ -111,7 +111,7 @@ describe('A NSFW convnetion produced by parentheses', () => {
     expect(Up.toAst('After you beat the Elite Four, (NSFW: you wrestle (and beat) a naked Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle '),
           new ParenthesizedNode([
             new PlainTextNode('(and beat)')
@@ -129,7 +129,7 @@ describe('A NSFW convention produced by curly brackets', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFW: you still have to wrestle a naked Gary {sigh}}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you still have to wrestle a naked Gary '),
           new ActionNode([
             new PlainTextNode('sigh')
@@ -146,7 +146,7 @@ describe('Any whitespace between "NSFW:" and the start of the NSFW content', () 
     expect(Up.toAst('After you beat the Elite Four, [NSFW:you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle a naked Gary')
         ]),
         new PlainTextNode('.')
@@ -157,7 +157,7 @@ describe('Any whitespace between "NSFW:" and the start of the NSFW content', () 
     expect(Up.toAst('After you beat the Elite Four, [NSFW: \t  \t you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsfwNode([
+        new InlineNsfwNode([
           new PlainTextNode('you wrestle a naked Gary')
         ]),
         new PlainTextNode('.')
