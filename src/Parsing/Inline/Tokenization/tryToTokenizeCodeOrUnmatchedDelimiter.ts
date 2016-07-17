@@ -83,7 +83,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
       break
     }
 
-    if (possibleEndDelimiter.length === startDelimiter.length) {
+    if (possibleEndDelimiter === startDelimiter) {
       then(new Token(TokenKind.Code, trimCode(code)), consumer.textIndex)
       return true
     }
