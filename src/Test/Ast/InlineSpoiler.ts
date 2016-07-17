@@ -11,7 +11,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Square bracketed text starting with "spoiler:"', () => {
-  it('is put inside a spoiler node', () => {
+  it('is put inside an inline spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -25,7 +25,7 @@ describe('Square bracketed text starting with "spoiler:"', () => {
 
 
 describe('Parenthesized text starting with "spoiler:"', () => {
-  it('is put inside a spoiler node', () => {
+  it('is put inside an inline spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -39,7 +39,7 @@ describe('Parenthesized text starting with "spoiler:"', () => {
 
 
 describe('Curly bracketed text starting with "spoiler:"', () => {
-  it('is put inside a spoiler node', () => {
+  it('is put inside an inline spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, {SPOILER: you fight Gary}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
