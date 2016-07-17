@@ -14,8 +14,13 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 // Description lists are collections of terms and descriptions.
 //
 // Terms are left-aligned; descriptions are indented and directly follow the corresponding terms.
-//
-// Multiple terms can be associated with a single description.
+// Descriptions can contain any outline convention, including other description lists!
+//  
+// Multiple terms can be associated with a single description. Each collection of terms and their
+// associated description comprise a single description list item.
+//     
+// Description list items don't need to be separated by blank lines, but when they are, 2 or more
+// blank lines terminates the whole description list, not just the list item. 
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
   const listItems: DescriptionListItem[] = []

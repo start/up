@@ -11,10 +11,11 @@ import { getRemainingLinesOfListItem } from './getRemainingLinesOfListItem'
 
 // Ordered lists are simply collections of ordered list items.
 //
-// List items can contain any kind of convention, even other lists!  In list items
-// with multiple lines, all subsequent lines are indented.
+// List items can contain any kind of convention, even other lists!  In list items with
+// multiple lines, all subsequent lines are indented.
 //
-// List items don't need to be separated by blank lines.
+// List items don't need to be separated by blank lines, but when they are, 2 or more
+// blank lines terminates the whole list.
 export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
   const rawListItems: RawListItem[] = []
