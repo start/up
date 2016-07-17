@@ -16,36 +16,35 @@ export function getRemainingLinesOfListItem(
 ): void {
   const consumer = new LineConsumer(args.lines)
   const allConsumedLines: string[] = []
-
   let countLinesIncluded = 0
 
   while (!consumer.done()) {
-    const isBlankOrIndented = consumer.consume({
+    const wasLineBlank = consumer.consume({
       linePattern: BLANK_PATTERN,
       then: line => {
         allConsumedLines.push(line)
       }
     })
 
-    if (isBlankOrIndented) {
-      // The line was blank, so we don't know whether we should include it yet
+    if (wasLineBlank) {
+      // The line was blank, so we don't yet know whether the author intended for the line to be
+      // included in the list item or not. We'll move onto the next line without updating
+      // `countLinesIncluded`.
       continue
     }
 
-    const isLineIndented = consumer.consume({
+    const wasLineIndented = consumer.consume({
       linePattern: INDENTED_PATTERN,
       then: line => {
         allConsumedLines.push(line)
+        countLinesIncluded = allConsumedLines.length        
       }
     })
 
-    if (!isLineIndented) {
-      // The line was neither blank nor indented. Bail!
+    if (!wasLineIndented) {
+      // The current line is neither blank nor indented. We're done!
       break
     }
-
-    // The line was indented and non-blank, so we know we need to include it
-    countLinesIncluded = allConsumedLines.length
   }
 
   if (!allConsumedLines.length) {
@@ -56,7 +55,7 @@ export function getRemainingLinesOfListItem(
   const shouldTerminateList = countTrailingBlankLines >= 2
 
   if (!shouldTerminateList) {
-    // If we aren't terminating the list, we should return everything we consumed
+    // If we aren't terminating the list, we should include everything we consumed.
     countLinesIncluded = allConsumedLines.length
   }
 
