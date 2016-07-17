@@ -34,7 +34,7 @@ import { Token } from './Token'
 // Furthermore, that single space is only trimmed when it's needed to separate a delimiter from
 // backticks. If a given "side" of inline code doesn't have any backticks that require separation
 // from the delimiter, nothing gets trimmed from that side.
-export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
+export function tryToTokenizeCodeOrUnmatchedDelimiter(
   args: {
     text: string
     then: (resultToken: Token, lengthConsumed: number) => void
@@ -84,7 +84,7 @@ export function tryToTokenizeInlineCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter.length === startDelimiter.length) {
-      then(new Token(TokenKind.InlineCode, trimInlineCode(inlineCode)), consumer.textIndex)
+      then(new Token(TokenKind.Code, trimInlineCode(inlineCode)), consumer.textIndex)
       return true
     }
 

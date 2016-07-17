@@ -7,7 +7,7 @@ export enum TokenKind {
   FootnoteEnd,
   FootnoteStart,
   ImageDescriptionAndStart,
-  InlineCode,
+  Code,
   LinkUrlAndEnd,
   LinkStart,
   MediaUrlAndEnd,

@@ -66,7 +66,7 @@ class Parser {
           continue
         }
 
-        case TokenKind.InlineCode: {
+        case TokenKind.Code: {
           this.nodes.push(new InlineCodeNode(token.value))
           continue
         }

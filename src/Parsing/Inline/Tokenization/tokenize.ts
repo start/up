@@ -6,7 +6,7 @@ import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
 import { UpConfig } from '../../../UpConfig'
 import { RichConvention } from '../RichConvention'
-import { tryToTokenizeInlineCodeOrUnmatchedDelimiter } from './tryToTokenizeInlineCodeOrUnmatchedDelimiter'
+import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
@@ -952,7 +952,7 @@ class Tokenizer {
   //
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
-    return tryToTokenizeInlineCodeOrUnmatchedDelimiter({
+    return tryToTokenizeCodeOrUnmatchedDelimiter({
       text: this.consumer.remainingText,
       then: (resultToken, lengthConsumed) => {
         this.flushNonEmptyBufferToPlainTextToken()
