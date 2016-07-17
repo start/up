@@ -15,57 +15,54 @@ export function getRemainingLinesOfListItem(
   }
 ): void {
   const consumer = new LineConsumer(args.lines)
-  const lines: string[] = []
+  const allConsumedLines: string[] = []
 
   let countLinesIncluded = 0
-  let lcountLinesConsumed = 0
 
   while (!consumer.done()) {
-    const wasLineBlank = consumer.consume({
+    const isBlankOrIndented = consumer.consume({
       linePattern: BLANK_PATTERN,
       then: line => {
-        lines.push(line)
+        allConsumedLines.push(line)
       }
     })
 
-    if (wasLineBlank) {
+    if (isBlankOrIndented) {
       // The line was blank, so we don't know whether we should include it yet
       continue
     }
 
-    const wasLineIndented = consumer.consume({
+    const isLineIndented = consumer.consume({
       linePattern: INDENTED_PATTERN,
       then: line => {
-        lines.push(line)
+        allConsumedLines.push(line)
       }
     })
 
-    if (!wasLineIndented) {
+    if (!isLineIndented) {
       // The line was neither blank nor indented. Bail!
       break
     }
 
     // The line was indented and non-blank, so we know we need to include it
-    countLinesIncluded = lines.length
-    lcountLinesConsumed = consumer.countLinesConsumed
+    countLinesIncluded = allConsumedLines.length
   }
 
-  if (!lines.length) {
+  if (!allConsumedLines.length) {
     return
   }
 
-  const countTrailingBlankLines = lines.length - countLinesIncluded
+  const countTrailingBlankLines = allConsumedLines.length - countLinesIncluded
   const shouldTerminateList = countTrailingBlankLines >= 2
 
   if (!shouldTerminateList) {
     // If we aren't terminating the list, we should return everything we consumed
-    countLinesIncluded = lines.length
-    lcountLinesConsumed = consumer.countLinesConsumed
+    countLinesIncluded = allConsumedLines.length
   }
 
-  const resultLines = lines
+  const resultLines = allConsumedLines
     .slice(0, countLinesIncluded)
     .map(line => line.replace(INDENTED_PATTERN, ''))
 
-  args.then(resultLines, lcountLinesConsumed, shouldTerminateList)
+  args.then(resultLines, countLinesIncluded, shouldTerminateList)
 }
