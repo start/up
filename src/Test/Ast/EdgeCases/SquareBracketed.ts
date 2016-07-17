@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -24,7 +24,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
             new PlainTextNode('[the one and only]')
           ]),
           new PlainTextNode(' '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Gary')
           ]),
           new PlainTextNode('.')
@@ -39,7 +39,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
             new PlainTextNode('[the one and only]')
           ]),
           new PlainTextNode(' '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Gary Oak')
           ]),
           new PlainTextNode('.')

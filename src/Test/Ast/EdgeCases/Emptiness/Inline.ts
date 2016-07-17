@@ -18,7 +18,7 @@ import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
 import { NsfwNode } from '../../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../../SyntaxNodes/InlineNsflNode'
-import { SpoilerNode } from '../../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../../SyntaxNodes/InlineSpoilerNode'
 import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
 
 
@@ -665,7 +665,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('{}')
@@ -736,7 +736,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('{\t \t \t}')
@@ -803,7 +803,7 @@ describe('A spoiler convention with escaped blank content', () => {
     expect(Up.toAst("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('The moral of this severely exciting, enriching story is '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('  ')
         ]),
         new PlainTextNode(". I hope it didn't take you too long to read it.")

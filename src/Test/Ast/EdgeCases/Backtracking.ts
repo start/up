@@ -7,7 +7,7 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
 describe('Emphasized text containing an unmatched openining delimiter requiring backtracking', () => {

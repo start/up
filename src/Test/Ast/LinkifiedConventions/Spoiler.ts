@@ -5,7 +5,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
@@ -19,7 +19,7 @@ describe('A spoiler followed immediately by a parenthesized/bracketd URL', () =>
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('you fight Gary')
           ], 'http://example.com/finalbattle')
@@ -36,7 +36,7 @@ describe('Any spoiler followed immediately by a parenthesized/bracketed URL', ()
       content: 'SPOILER: you fight Gary',
       url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('you fight Gary')
           ], 'http://example.com/finalbattle')
@@ -52,10 +52,10 @@ describe('A spoiler directly followed by another spoiler', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('you fight Gary')
         ]),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')
@@ -69,7 +69,7 @@ describe('A spoiler directly followed by a NSFW convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('you fight Gary')
         ]),
         new NsfwNode([
@@ -86,7 +86,7 @@ describe('A spoiler directly followed by a NSFL convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('you fight Gary')
         ]),
         new InlineNsflNode([
@@ -103,7 +103,7 @@ describe('A spoiler directly followed by a media convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('you fight Gary')
         ]),
         new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
@@ -126,7 +126,7 @@ describe('A spoiler directly followed by a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('you fight Gary')
           ]),
           footnotes[0],
@@ -141,7 +141,7 @@ describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toAst('[SPOILER: he called her](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('he called her')
         ]),
         new ParenthesizedNode([
@@ -156,7 +156,7 @@ context("When an otherwise-valid linkified spoiler's URL starts with whitespace,
   specify('the spoiler convention is not linkified', () => {
     expect(Up.toAst('[SPOILER: he called her]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('he called her')
         ]),
         new PlainTextNode('( \t tel:5555555555)')
@@ -171,7 +171,7 @@ context("If there's no whitespace between a spoiler and its bracketed URL", () =
       content: 'SPOILER: you fight Gary',
       url: ' \t \thttp://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('you fight Gary')
           ], 'http://example.com/finalbattle')

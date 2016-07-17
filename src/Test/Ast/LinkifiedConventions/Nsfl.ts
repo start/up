@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -72,7 +72,7 @@ describe('A NSFL convention directly followed by a spoiler convention', () => {
         new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

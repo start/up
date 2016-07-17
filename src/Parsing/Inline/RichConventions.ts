@@ -1,6 +1,6 @@
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -38,7 +38,7 @@ export const REVISION_INSERTION_CONVENTION = {
 }
 
 export const SPOILER_CONVENTION = {
-  NodeType: SpoilerNode,
+  NodeType: InlineSpoilerNode,
   startTokenKind: TokenKind.SpoilerStart,
   endTokenKind: TokenKind.SpoilerEnd
 }

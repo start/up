@@ -5,7 +5,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
@@ -84,7 +84,7 @@ describe('An video convention directly followed by a spoiler', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new VideoNode('you fight Gary', 'https://example.com/fight.webm'),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

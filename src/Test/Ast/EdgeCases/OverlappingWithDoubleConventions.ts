@@ -5,7 +5,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -67,9 +67,9 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
   it('splits the revision deletion node', () => {
     expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('I know. '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode("Well, I don't "),
             new LinkNode([
               new PlainTextNode('really.')
@@ -93,8 +93,8 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
         new LinkNode([
           new PlainTextNode("I suspect "),
         ], 'https://example.com/crime-suspects'),
-        new SpoilerNode([
-          new SpoilerNode([
+        new InlineSpoilerNode([
+          new InlineSpoilerNode([
             new LinkNode([
               new PlainTextNode('you')
             ], 'https://example.com/crime-suspects'),
@@ -366,7 +366,7 @@ describe('Emphasis nested with a spoiler, both of which overlap a link', () => {
     expect(Up.toAst("In Texas, {SPOILER: *I never eat [cereal*} outside](example.com/sun-flakes)")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Texas, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new EmphasisNode([
             new PlainTextNode('I never eat '),
           ]),
@@ -411,7 +411,7 @@ describe('A linkified spoiler overlapping emphasized text', () => {
     expect(Up.toAst('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('trash '),
             new EmphasisNode([
@@ -433,7 +433,7 @@ describe('A spoiler overlapping the second half of an emphasis convention split 
     expect(Up.toAst('This [SPOILER: old {trash *can}(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('old '),
           new LinkNode([
             new PlainTextNode('trash '),

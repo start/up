@@ -12,7 +12,7 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -167,7 +167,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: classAttrValue('action') })
   }
 
-  protected spoiler(node: SpoilerNode): string {
+  protected spoiler(node: InlineSpoilerNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,

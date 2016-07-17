@@ -14,7 +14,7 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -428,7 +428,7 @@ describe('A video node', () => {
 
 describe('A spoiler node', () => {
   it('produces a span element (with "up-spoiler" and "up-revealable" classes), containing a label (with the text "toggle spoiler"), an associated checkbox, and a span element containing the spoiler contents', () => {
-    const node = new SpoilerNode([new PlainTextNode('45.9%')])
+    const node = new InlineSpoilerNode([new PlainTextNode('45.9%')])
 
     const html =
       '<span class="up-spoiler up-revealable">'

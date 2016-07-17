@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
@@ -62,7 +62,7 @@ describe("The words in the ID of a spoiler's checkbox (on both the checkbox and 
       }
     })
 
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
 
     const html =
       '<span class="up-spoiler up-revealable">'

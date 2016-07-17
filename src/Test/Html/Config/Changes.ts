@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { UpConfigSettings } from '../../../UpConfigSettings'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
@@ -146,7 +146,7 @@ describe('The "footnote" config term', () => {
 
 describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new SpoilerNode([]),
+    node: new InlineSpoilerNode([]),
     htmlFromDefaultSettings:
       '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
@@ -173,7 +173,7 @@ describe('The "spoiler" config term', () => {
 
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new SpoilerNode([]),
+    node: new InlineSpoilerNode([]),
     htmlFromDefaultSettings:
       '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'

@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -25,7 +25,7 @@ describe('Emphasis overlapping a linkified spoiler', () => {
         new EmphasisNode([
           new PlainTextNode('only ')
         ]),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new EmphasisNode([
               new PlainTextNode('you')
@@ -44,7 +44,7 @@ describe('A linkified spoiler overlapping revision deletion', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary ~~Ketchum](http://example.com/finalbattle) and then the credits roll~~.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('you fight Gary '),
             new RevisionDeletionNode([

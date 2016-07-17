@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
@@ -113,7 +113,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
 describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
     
     const html =
       '<span class="up-spoiler up-revealable">'
@@ -131,7 +131,7 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
       documentName: 'reply-11'
     })
 
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
     
     const html =
       '<span class="up-spoiler up-revealable">'
@@ -148,7 +148,7 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
       documentName: ' \t'
     })
 
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
     
     const html =
       '<span class="up-spoiler up-revealable">'

@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
@@ -17,7 +17,7 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
       }
     })
 
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
 
     const html =
       '<span class="up-spoiler up-revealable">'
@@ -37,11 +37,11 @@ describe("Multiple spoilers in a document", () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Red')
           ]),
           new PlainTextNode('. We meet for the '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new EmphasisNode([
               new PlainTextNode('eighth')
             ])
@@ -50,7 +50,7 @@ describe("Multiple spoilers in a document", () => {
         ]),
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Blue')
           ]),
           new PlainTextNode('.'),
@@ -96,11 +96,11 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Red')
           ]),
           new PlainTextNode('. We meet for the '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new EmphasisNode([
               new PlainTextNode('eighth')
             ])
@@ -109,7 +109,7 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
         ]),
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Blue')
           ]),
           new PlainTextNode('.'),

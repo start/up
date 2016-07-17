@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
 describe('The term that represents spoiler conventions', () => {
@@ -15,7 +15,7 @@ describe('The term that represents spoiler conventions', () => {
   it('comes from the "spoiler" config term ', () => {
     expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('Ash fights Gary')
         ])
       ]))

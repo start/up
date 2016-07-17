@@ -1,6 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class SpoilerNode extends RichInlineSyntaxNode {
+export class InlineSpoilerNode extends RichInlineSyntaxNode {
   private SPOILER: any = null
 }

@@ -5,7 +5,7 @@ import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
@@ -40,7 +40,7 @@ describe("Within a spoiler's label, all instances of < and &", () => {
       }
     })
 
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
 
     const html =
       '<span class="up-spoiler up-revealable">'

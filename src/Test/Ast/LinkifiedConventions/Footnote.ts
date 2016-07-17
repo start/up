@@ -8,7 +8,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
@@ -121,7 +121,7 @@ describe('A footnote directly followed by a spoiler', () => {
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),

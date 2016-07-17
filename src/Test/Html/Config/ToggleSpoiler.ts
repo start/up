@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
 describe("The text in a spoiler's label", () => {
@@ -11,7 +11,7 @@ describe("The text in a spoiler's label", () => {
       }
     })
 
-    const node = new SpoilerNode([])
+    const node = new InlineSpoilerNode([])
 
     const html =
       '<span class="up-spoiler up-revealable">'

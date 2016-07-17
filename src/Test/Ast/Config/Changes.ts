@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { UpConfigSettings } from '../../../UpConfigSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -150,7 +150,7 @@ context('Config settings are totally independent. When one setting is changed, t
 
     expect(up.toAst('[SPOILER: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('Ash fights Gary')
         ])
       ]))
@@ -166,7 +166,7 @@ context('Config settings are totally independent. When one setting is changed, t
 
     expect(ast).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('Ash fights Gary')
         ])
       ]))

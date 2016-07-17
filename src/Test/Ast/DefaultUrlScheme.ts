@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
@@ -63,7 +63,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     expect(Up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
           ], 'https://localhost/wiki/Blue_Sky')

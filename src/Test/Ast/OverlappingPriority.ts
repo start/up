@@ -9,7 +9,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -217,7 +217,7 @@ describe('A spoiler that overlaps a link', () => {
   it("splits the link node, not the spoiler node", () => {
     expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('Gary loses to '),
           new LinkNode([
             new PlainTextNode('Ash')
@@ -242,7 +242,7 @@ describe('A link that overlaps a spoiler', () => {
         new LinkNode([
           new PlainTextNode('Gary Oak ')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('loses to Ash Ketchum')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
@@ -259,7 +259,7 @@ describe('A spoiler that overlaps action text', () => {
     expect(Up.toAst('In Pokémon Red, [SPOILER: Gary Oak {loses] badly}')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('Gary Oak '),
           new ActionNode([
             new PlainTextNode('loses')
@@ -284,7 +284,7 @@ describe('Action text that overlaps a spoiler', () => {
         new ActionNode([
           new PlainTextNode('loses ')
         ]),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new ActionNode([
             new PlainTextNode('badly')
           ]),
@@ -301,7 +301,7 @@ describe('A spoiler that overlaps a footnote', () => {
 
     const footnote =
       new FootnoteNode([
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('Ketchum')
         ]),
         new PlainTextNode(' is his last name')
@@ -310,7 +310,7 @@ describe('A spoiler that overlaps a footnote', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Gary loses to Ash'),
           ]),
           footnote
@@ -328,7 +328,7 @@ describe('A footnote that overlaps a spoiler', () => {
     const footnote =
       new FootnoteNode([
         new PlainTextNode('reasonable '),
-        new SpoilerNode([
+        new InlineSpoilerNode([
           new PlainTextNode('and realistic')
         ]),
       ], 1)
@@ -338,7 +338,7 @@ describe('A footnote that overlaps a spoiler', () => {
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode(' example of a')
           ]),
           new PlainTextNode(' footnote that overlaps a spoiler.'),

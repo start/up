@@ -9,7 +9,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
@@ -38,7 +38,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) overlapping a third (e.g. spoiler)', () => {
       expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!) Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new InlineNsflNode([
               new ActionNode([
                 new PlainTextNode('thwomp')
@@ -140,7 +140,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with a priority in between the first two (e.g. spoiler) ', () => {
       expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body {squish)}] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('There was another '),
             new InlineNsflNode([
               new PlainTextNode('rotten body '),
@@ -176,7 +176,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new PlainTextNode('There '),
             new RevisionInsertionNode([
               new PlainTextNode('was '),
-              new SpoilerNode([
+              new InlineSpoilerNode([
                 new PlainTextNode('another '),
                 new InlineNsflNode([
                   new PlainTextNode('loud '),
@@ -194,7 +194,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify("A spoiler and an action convention", () => {
       expect(Up.toAst('[SPOILER: Mario fell off the platform. {splat]}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('Mario fell off the platform. '),
             new ActionNode([
               new PlainTextNode('splat')
@@ -209,7 +209,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new ActionNode([
             new PlainTextNode('loudly sings '),
-            new SpoilerNode([
+            new InlineSpoilerNode([
               new PlainTextNode("Jigglypuff's Lullaby")
             ])
           ])
@@ -262,7 +262,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
       expect(Up.toAst('{SPOILER: There was another [NSFL: rotten body}] (example.com/rotten) Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new PlainTextNode('There was another '),
             new InlineNsflNode([
               new LinkNode([
@@ -327,7 +327,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       expect(Up.toAst('[SPOILER: *Why would you do this?]*')).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([
-            new SpoilerNode([
+            new InlineSpoilerNode([
               new PlainTextNode('Why would you do this?')
             ])
           ])
@@ -337,7 +337,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     specify('Emphasis and a spoiler', () => {
       expect(Up.toAst('*[SPOILER: Why would you do this?*]')).to.be.eql(
         insideDocumentAndParagraph([
-          new SpoilerNode([
+          new InlineSpoilerNode([
             new EmphasisNode([
               new PlainTextNode('Why would you do this?')
             ])

@@ -4,7 +4,7 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -150,7 +150,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const node = new SpoilerNode([new PlainTextNode('45.9%')])
+    const node = new InlineSpoilerNode([new PlainTextNode('45.9%')])
 
     const html =
       '<span class="up-spoiler up-revealable">'
