@@ -191,7 +191,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("A spoiler and an action convention", () => {
+    specify("An inline spoiler and an action convention", () => {
       expect(Up.toAst('[SPOILER: Mario fell off the platform. {splat]}')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
@@ -323,7 +323,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('A spoiler and emphasis', () => {
+    specify('An inline spoiler and emphasis', () => {
       expect(Up.toAst('[SPOILER: *Why would you do this?]*')).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([

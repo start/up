@@ -213,7 +213,7 @@ describe('A link that overlaps action text', () => {
 })
 
 
-describe('A spoiler that overlaps a link', () => {
+describe('An inline spoiler that overlaps a link', () => {
   it("splits the link node, not the spoiler node", () => {
     expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
@@ -254,7 +254,7 @@ describe('A link that overlaps a spoiler', () => {
 })
 
 
-describe('A spoiler that overlaps action text', () => {
+describe('An inline spoiler that overlaps action text', () => {
   it("splits the action text node, not the spoiler node", () => {
     expect(Up.toAst('In Pokémon Red, [SPOILER: Gary Oak {loses] badly}')).to.be.eql(
       insideDocumentAndParagraph([
@@ -295,7 +295,7 @@ describe('Action text that overlaps a spoiler', () => {
 })
 
 
-describe('A spoiler that overlaps a footnote', () => {
+describe('An inline spoiler that overlaps a footnote', () => {
   it("splits the spoiler node, not the footnote node", () => {
     const text = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
 

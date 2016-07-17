@@ -426,7 +426,7 @@ describe('A video node', () => {
 })
 
 
-describe('A spoiler node', () => {
+describe('An inline spoiler node', () => {
   it('produces a span element (with "up-spoiler" and "up-revealable" classes), containing a label (with the text "toggle spoiler"), an associated checkbox, and a span element containing the spoiler contents', () => {
     const node = new InlineSpoilerNode([new PlainTextNode('45.9%')])
 

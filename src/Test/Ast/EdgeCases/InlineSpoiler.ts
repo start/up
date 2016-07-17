@@ -6,7 +6,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
-describe('A spoiler convention', () => {
+describe('An inline spoiler convention', () => {
   it('can be the first convention inside another spoiler convention using same bracket type', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: [SPOILER: Gary] fights you].')).to.be.eql(
       insideDocumentAndParagraph([

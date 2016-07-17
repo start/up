@@ -52,7 +52,7 @@ describe('Curly bracketed text starting with "spoiler:"', () => {
 })
 
 
-describe('A spoiler convention', () => {
+describe('An inline spoiler convention', () => {
   it('can use any capitalization of the word "spoiler"', () => {
     const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
     const withRandomCase = 'After you beat the Elite Four, [SPoILeR: you fight Gary].'
@@ -90,7 +90,7 @@ describe('A spoiler convention', () => {
 })
 
 
-describe('A spoiler produced by square brackets', () => {
+describe('An inline spoiler produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -108,7 +108,7 @@ describe('A spoiler produced by square brackets', () => {
 })
 
 
-describe('A spoiler produced by parentheses', () => {
+describe('An inline spoiler produced by parentheses', () => {
   it('can contain parenthesized text', () => {
     expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -126,7 +126,7 @@ describe('A spoiler produced by parentheses', () => {
 })
 
 
-describe('A spoiler produced by curly brackets', () => {
+describe('An inline spoiler produced by curly brackets', () => {
   it('can contain action text', () => {
     expect(Up.toAst('After you beat the Elite Four, {SPOILER: you still have to beat Gary {sigh}}.')).to.be.eql(
       insideDocumentAndParagraph([

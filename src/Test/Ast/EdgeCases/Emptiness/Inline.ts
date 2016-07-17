@@ -798,7 +798,7 @@ describe('Revision insertion containing an empty revision deletion', () => {
 })
 
 
-describe('A spoiler convention with escaped blank content', () => {
+describe('An inline spoiler convention with escaped blank content', () => {
   it('produces a spoiler node containing its content (whitespace)', () => {
     expect(Up.toAst("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.be.eql(
       insideDocumentAndParagraph([
