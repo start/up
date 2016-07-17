@@ -31,9 +31,9 @@ import { Token } from './Token'
 // Anything beyond that single space is preserved. If there are two spaces between the delimiter
 // and the starting/ending backticks, only one is trimmed away.
 //
-// Furthermore, that single space is only trimmed when it's needed to separate a delimiter from
-// backticks. If a given "side" of inline code doesn't have any backticks that require separation
-// from the delimiter, nothing gets trimmed from that side.
+// Furthermore, that single space is only trimmed when it was used to separate a delimiter from
+// backticks in the inline code. If a given "side" of inline code has any non-whitespace characters
+// between the delimiter and the first backtick, nothing gets trimmed from that side.    
 export function tryToTokenizeCodeOrUnmatchedDelimiter(
   args: {
     text: string
@@ -46,7 +46,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
   let startDelimiter: string
 
   consumer.consume({
-    pattern: INLINE_CODE_DELIMITER_PATTERN,
+    pattern: CODE_DELIMITER_PATTERN,
     thenBeforeAdvancingTextIndex: match => {
       startDelimiter = match
     }
@@ -56,13 +56,13 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     return false
   }
 
-  let inlineCode = ''
+  let code = ''
 
   while (!consumer.done()) {
     consumer.consume({
-      pattern: CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE_PATTERN,
+      pattern: CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN,
       thenBeforeAdvancingTextIndex: match => {
-        inlineCode += match
+        code += match
       }
     })
 
@@ -72,7 +72,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     let possibleEndDelimiter: string
 
     consumer.consume({
-      pattern: INLINE_CODE_DELIMITER_PATTERN,
+      pattern: CODE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: match => {
         possibleEndDelimiter = match
       }
@@ -84,11 +84,11 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter.length === startDelimiter.length) {
-      then(new Token(TokenKind.Code, trimInlineCode(inlineCode)), consumer.textIndex)
+      then(new Token(TokenKind.Code, trimCode(code)), consumer.textIndex)
       return true
     }
 
-    inlineCode += possibleEndDelimiter
+    code += possibleEndDelimiter
   }
 
   // We couldn't find a matching end delimiter, so there's nothing left to do but treat the
@@ -98,37 +98,37 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 }
 
 
-function trimInlineCode(inlineCode: string): string {
-  if (LEADING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN.test(inlineCode)) {
-    inlineCode = inlineCode.slice(1)
+function trimCode(code: string): string {
+  if (LEADING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN.test(code)) {
+    code = code.slice(1)
   }
 
-  if (TRAILING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN.test(inlineCode)) {
-    inlineCode = inlineCode.slice(0, -1)
+  if (TRAILING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN.test(code)) {
+    code = code.slice(0, -1)
   }
 
-  return inlineCode
+  return code
 }
 
 
-const INLINE_CODE_DELIMITER_CHAR =
+const CODE_DELIMITER_CHAR =
   '`'
 
-const CONTENT_THAT_CANNOT_CLOSE_INLINE_CODE_PATTERN =
+const CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN =
   regExpStartingWith(
-    atLeast(1, anyCharBut(INLINE_CODE_DELIMITER_CHAR)))
+    atLeast(1, anyCharBut(CODE_DELIMITER_CHAR)))
 
-const INLINE_CODE_DELIMITER_PATTERN =
+const CODE_DELIMITER_PATTERN =
   regExpStartingWith(
-    atLeast(1, INLINE_CODE_DELIMITER_CHAR))
+    atLeast(1, CODE_DELIMITER_CHAR))
 
 const AT_LEAST_ONE_SPACE =
   atLeast(1, ' ')
 
-const LEADING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN =
+const LEADING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN =
   regExpStartingWith(
-    AT_LEAST_ONE_SPACE + INLINE_CODE_DELIMITER_CHAR)
+    AT_LEAST_ONE_SPACE + CODE_DELIMITER_CHAR)
 
-const TRAILING_SPACE_WAS_REQUIRED_FOR_SEPARATION_PATTERN =
+const TRAILING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN =
   regExpEndingWith(
-    INLINE_CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)
+    CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)
