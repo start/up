@@ -2,5 +2,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class InlineSpoilerNode extends RichInlineSyntaxNode {
-  private SPOILER: any = null
+  private INLINE_SPOILER: any = null
 }

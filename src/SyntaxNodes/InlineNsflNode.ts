@@ -2,5 +2,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class InlineNsflNode extends RichInlineSyntaxNode {
-  private NSFL: any = null
+  private INLINE_NSFL: any = null
 }

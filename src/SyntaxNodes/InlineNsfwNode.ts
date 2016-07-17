@@ -2,5 +2,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class InlineNsfwNode extends RichInlineSyntaxNode {
-  private NSFW: any = null
+  private INLINE_NSFW: any = null
 }
