@@ -98,7 +98,7 @@ describe("The words in the ID of an inline NSFW conventions's checkbox (on both 
 })
 
 
-describe("The words in the ID of a NSFL conventions's checkbox (on both the checkbox and the label)", () => {
+describe("The words in the ID of an inline NSFL conventions's checkbox (on both the checkbox and the label)", () => {
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {

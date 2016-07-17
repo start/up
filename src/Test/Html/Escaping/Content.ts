@@ -76,7 +76,7 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
 })
 
 
-describe("Within a NSFL convention's label, all instances of < and &", () => {
+describe("Within an inline NSFL convention's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up({
       i18n: {

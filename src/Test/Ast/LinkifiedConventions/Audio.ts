@@ -108,7 +108,7 @@ describe('An audio convention directly followed by an inline NSFW convention', (
 })
 
 
-describe('An audio convention directly followed by a NSFL convention', () => {
+describe('An audio convention directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([

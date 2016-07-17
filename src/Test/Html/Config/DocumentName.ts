@@ -213,7 +213,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
 })
 
 
-describe("The ID of a NSFL conventions's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new InlineNsflNode([])
     

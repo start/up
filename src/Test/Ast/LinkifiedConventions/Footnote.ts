@@ -155,7 +155,7 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
 })
 
 
-describe('A footnote directly followed by a NSFL convention', () => {
+describe('A footnote directly followed by an inline NSFL convention', () => {
   it("is not linkified", () => {
     const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
 

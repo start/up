@@ -88,7 +88,7 @@ describe("Multiple NSFW conventions in a document", () => {
 })
 
 
-describe("The ID of a NSFL convention's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline NSFL convention's checkbox (on both the checkbox and the label)", () => {
   it("reset each time a new document is written", () => {
     const up = new Up()
     

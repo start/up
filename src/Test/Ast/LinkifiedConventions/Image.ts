@@ -108,7 +108,7 @@ describe('An image directly followed by an inline NSFW convention', () => {
 })
 
 
-describe('An image directly followed by a NSFL convention', () => {
+describe('An image directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([

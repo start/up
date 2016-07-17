@@ -108,7 +108,7 @@ describe('A video directly followed by an inline NSFW convention', () => {
 })
 
 
-describe('A video directly followed by a NSFL convention', () => {
+describe('A video directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([

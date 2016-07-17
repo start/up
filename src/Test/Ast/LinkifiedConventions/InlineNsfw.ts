@@ -81,7 +81,7 @@ describe('An inline NSFW convention directly followed by an inline spoiler conve
 })
 
 
-describe('An inline NSFW convention directly followed by a NSFL convention', () => {
+describe('An inline NSFW convention directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([

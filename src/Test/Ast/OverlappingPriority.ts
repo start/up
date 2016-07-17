@@ -486,7 +486,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
 })
 
 
-describe('A NSFL convention that overlaps a link', () => {
+describe('An inline NSFL convention that overlaps a link', () => {
   it("splits the link node, not the NSFL convention node", () => {
     expect(Up.toAst('(NSFL: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
@@ -504,7 +504,7 @@ describe('A NSFL convention that overlaps a link', () => {
 })
 
 
-describe('A link that overlaps a NSFL convention', () => {
+describe('A link that overlaps an inline NSFL convention', () => {
   it("splits the link node, not the NSFL convention node", () => {
     const text =
       'In Pokémon Red, [Gary Oak {NSFL: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
@@ -527,7 +527,7 @@ describe('A link that overlaps a NSFL convention', () => {
 })
 
 
-describe('A NSFL convention that overlaps action text', () => {
+describe('An inline NSFL convention that overlaps action text', () => {
   it("splits the action text node, not the NSFL convention node", () => {
     expect(Up.toAst('In Pokémon Red, [NSFL: Gary Oak {loses] badly}')).to.be.eql(
       insideDocumentAndParagraph([
@@ -546,7 +546,7 @@ describe('A NSFL convention that overlaps action text', () => {
 })
 
 
-describe('Action text that overlaps a NSFL convention', () => {
+describe('Action text that overlaps an inline NSFL convention', () => {
   it("splits the action node, not the NSFL convention node", () => {
     const text =
       'In Pokémon Red, Gary Oak {loses [NSFL: badly} to Ash Ketchum]'
@@ -568,7 +568,7 @@ describe('Action text that overlaps a NSFL convention', () => {
 })
 
 
-describe('A NSFL convention that overlaps a footnote', () => {
+describe('An inline NSFL convention that overlaps a footnote', () => {
   it("splits the NSFL convention node, not the footnote node", () => {
     const text = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
 
@@ -594,9 +594,9 @@ describe('A NSFL convention that overlaps a footnote', () => {
 })
 
 
-describe('A footnote that overlaps a NSFL convention', () => {
+describe('A footnote that overlaps an inline NSFL convention', () => {
   it("splits the NSFL convention node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps a NSFL convention.'
+    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps an inline NSFL convention.'
 
     const footnote =
       new FootnoteNode([
@@ -614,7 +614,7 @@ describe('A footnote that overlaps a NSFL convention', () => {
           new InlineNsflNode([
             new PlainTextNode(' example of a')
           ]),
-          new PlainTextNode(' footnote that overlaps a NSFL convention.')
+          new PlainTextNode(' footnote that overlaps an inline NSFL convention.')
         ]),
         new FootnoteBlockNode([footnote])
       ]))

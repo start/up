@@ -88,7 +88,7 @@ describe('An NSFL convention', () => {
 })
 
 
-describe('A NSFL convention produced by square brackets', () => {
+describe('An inline NSFL convention produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat [and finish] a rotting Gary].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -124,7 +124,7 @@ describe('A NSFL convnetion produced by parentheses', () => {
 })
 
 
-describe('A NSFL convention produced by curly brackets', () => {
+describe('An inline NSFL convention produced by curly brackets', () => {
   it('can contain action text', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFL: you still have to eat a rotting Gary {sigh}}.')).to.be.eql(
       insideDocumentAndParagraph([

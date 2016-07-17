@@ -63,7 +63,7 @@ describe('A linkified spoiler overlapping revision deletion', () => {
 
 describe('A footnote that overlaps a linkified NSFL convention', () => {
   it("splits the NSFL convention node and its inner link node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] {example.com} footnote that overlaps a NSFL convention.'
+    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] {example.com} footnote that overlaps an inline NSFL convention.'
 
     const footnote =
       new FootnoteNode([
@@ -85,7 +85,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
               new PlainTextNode(' example of a')
             ], 'https://example.com')
           ]),
-          new PlainTextNode(' footnote that overlaps a NSFL convention.')
+          new PlainTextNode(' footnote that overlaps an inline NSFL convention.')
         ]),
         new FootnoteBlockNode([footnote])
       ]))
