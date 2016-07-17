@@ -11,7 +11,7 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
@@ -169,7 +169,7 @@ describe('A footnote directly followed by a NSFL convention', () => {
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),

@@ -10,7 +10,7 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
@@ -84,7 +84,7 @@ describe("Within a NSFL convention's label, all instances of < and &", () => {
       }
     })
 
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'

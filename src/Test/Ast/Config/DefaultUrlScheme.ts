@@ -6,7 +6,7 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -99,7 +99,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
@@ -215,7 +215,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')

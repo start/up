@@ -9,7 +9,7 @@ import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
@@ -68,7 +68,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
     const footnote =
       new FootnoteNode([
         new PlainTextNode('reasonable '),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('and realistic')
           ], 'https://example.com')
@@ -80,7 +80,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
-          new NsflNode([
+          new InlineNsflNode([
             new LinkNode([
               new PlainTextNode(' example of a')
             ], 'https://example.com')
@@ -99,7 +99,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
 
     const footnote =
       new FootnoteNode([
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('Ketchum')
           ], 'https://example.com')
@@ -110,7 +110,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new NsflNode([
+          new InlineNsflNode([
             new LinkNode([
               new PlainTextNode('Gary loses to Ash'),
             ], 'https://example.com')

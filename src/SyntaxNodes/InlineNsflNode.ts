@@ -1,6 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class NsflNode extends RichInlineSyntaxNode {
+export class InlineNsflNode extends RichInlineSyntaxNode {
   private NSFL: any = null
 }

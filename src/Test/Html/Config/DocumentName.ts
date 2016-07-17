@@ -5,7 +5,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
@@ -215,7 +215,7 @@ describe("The ID of a NSFW conventions's checkbox (on both the checkbox and the 
 
 describe("The ID of a NSFL conventions's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
     
     const html =
       '<span class="up-nsfl up-revealable">'
@@ -233,7 +233,7 @@ describe("The ID of a NSFL conventions's checkbox (on both the checkbox and the 
       documentName: 'reply-11'
     })
 
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
     
     const html =
       '<span class="up-nsfl up-revealable">'
@@ -250,7 +250,7 @@ describe("The ID of a NSFL conventions's checkbox (on both the checkbox and the 
       documentName: ' \t'
     })
 
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
     
     const html =
       '<span class="up-nsfl up-revealable">'

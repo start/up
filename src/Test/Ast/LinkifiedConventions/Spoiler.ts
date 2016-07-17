@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -89,7 +89,7 @@ describe('A spoiler directly followed by a NSFL convention', () => {
         new SpoilerNode([
           new PlainTextNode('you fight Gary')
         ]),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 describe("The text in a NSFL convention's label", () => {
@@ -11,7 +11,7 @@ describe("The text in a NSFL convention's label", () => {
       }
     })
 
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'

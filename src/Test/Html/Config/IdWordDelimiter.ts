@@ -5,7 +5,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 
@@ -106,7 +106,7 @@ describe("The words in the ID of a NSFL conventions's checkbox (on both the chec
       }
     })
 
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'

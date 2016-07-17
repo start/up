@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
@@ -66,7 +66,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('you fight Gary')
           ], 'https://example.com/finalbattle')

@@ -5,7 +5,7 @@ import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -256,7 +256,7 @@ describe('The "toggleNsfw" config term', () => {
 
 describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NsflNode([]),
+    node: new InlineNsflNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle nsfl</label>'
@@ -284,7 +284,7 @@ describe('The "nsfl" config term', () => {
 
 describe('The "togglensfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new NsflNode([]),
+    node: new InlineNsflNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle nsfl</label>'

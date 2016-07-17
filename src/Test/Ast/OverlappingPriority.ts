@@ -11,7 +11,7 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -490,7 +490,7 @@ describe('A NSFL convention that overlaps a link', () => {
   it("splits the link node, not the NSFL convention node", () => {
     expect(Up.toAst('(NSFL: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('Gary loses to '),
           new LinkNode([
             new PlainTextNode('Ash')
@@ -515,7 +515,7 @@ describe('A link that overlaps a NSFL convention', () => {
         new LinkNode([
           new PlainTextNode('Gary Oak ')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('loses to Ash Ketchum')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
@@ -532,7 +532,7 @@ describe('A NSFL convention that overlaps action text', () => {
     expect(Up.toAst('In Pokémon Red, [NSFL: Gary Oak {loses] badly}')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('Gary Oak '),
           new ActionNode([
             new PlainTextNode('loses')
@@ -557,7 +557,7 @@ describe('Action text that overlaps a NSFL convention', () => {
         new ActionNode([
           new PlainTextNode('loses ')
         ]),
-        new NsflNode([
+        new InlineNsflNode([
           new ActionNode([
             new PlainTextNode('badly')
           ]),
@@ -574,7 +574,7 @@ describe('A NSFL convention that overlaps a footnote', () => {
 
     const footnote =
       new FootnoteNode([
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('Ketchum')
         ]),
         new PlainTextNode(' is his last name')
@@ -583,7 +583,7 @@ describe('A NSFL convention that overlaps a footnote', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode('Gary loses to Ash'),
           ]),
           footnote
@@ -601,7 +601,7 @@ describe('A footnote that overlaps a NSFL convention', () => {
     const footnote =
       new FootnoteNode([
         new PlainTextNode('reasonable '),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('and realistic')
         ])
       ], 1)
@@ -611,7 +611,7 @@ describe('A footnote that overlaps a NSFL convention', () => {
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode(' example of a')
           ]),
           new PlainTextNode(' footnote that overlaps a NSFL convention.')

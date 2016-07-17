@@ -16,7 +16,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -460,7 +460,7 @@ describe('A NSFW node', () => {
 
 describe('A NSFL node', () => {
   it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle nsfl"), an associated checkbox, and a span element containing the NSFL contents', () => {
-    const node = new NsflNode([new PlainTextNode('rotting Gary')])
+    const node = new InlineNsflNode([new PlainTextNode('rotting Gary')])
 
     const html =
       '<span class="up-nsfl up-revealable">'

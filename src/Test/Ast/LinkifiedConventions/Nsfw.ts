@@ -5,7 +5,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
@@ -89,7 +89,7 @@ describe('A NSFW convention directly followed by a NSFL convention', () => {
         new NsfwNode([
           new PlainTextNode('you wrestle naked Gary')
         ]),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

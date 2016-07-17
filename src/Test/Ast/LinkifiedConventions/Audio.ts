@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -114,7 +114,7 @@ describe('An audio convention directly followed by a NSFL convention', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new AudioNode('you fight Gary', 'https://example.com/fight.ogg'),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -114,7 +114,7 @@ describe('An image directly followed by a NSFL convention', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new ImageNode('you fight Gary', 'https://example.com/fight.svg'),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')

@@ -14,7 +14,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -185,7 +185,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfl(node: NsflNode): string {
+  protected nsfl(node: InlineNsflNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfl',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,

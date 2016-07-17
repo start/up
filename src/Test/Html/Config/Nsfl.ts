@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
@@ -17,7 +17,7 @@ describe("The ID of a NSFL convention's checkbox (on both the checkbox and the l
       }
     })
 
-    const node = new NsflNode([])
+    const node = new InlineNsflNode([])
 
     const html =
       '<span class="up-nsfl up-revealable">'
@@ -37,11 +37,11 @@ describe("Multiple NSFL conventions in a document", () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode('rotting Red')
           ]),
           new PlainTextNode('. We meet for the eighth'),
-          new NsflNode([
+          new InlineNsflNode([
             new EmphasisNode([
               new PlainTextNode('fetid')
             ])
@@ -50,7 +50,7 @@ describe("Multiple NSFL conventions in a document", () => {
         ]),
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode('rotting Blue')
           ]),
           new PlainTextNode('.'),
@@ -96,11 +96,11 @@ describe("The ID of a NSFL convention's checkbox (on both the checkbox and the l
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode('rotting Red')
           ]),
           new PlainTextNode('. We meet for the eighth'),
-          new NsflNode([
+          new InlineNsflNode([
             new EmphasisNode([
               new PlainTextNode('fetid')
             ])
@@ -109,7 +109,7 @@ describe("The ID of a NSFL convention's checkbox (on both the checkbox and the l
         ]),
         new ParagraphNode([
           new PlainTextNode('Hello, '),
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode('rotting Blue')
           ]),
           new PlainTextNode('.'),

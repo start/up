@@ -2,7 +2,7 @@ import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
@@ -50,7 +50,7 @@ export const NSFW_CONVENTION = {
 }
 
 export const NSFL_CONVENTION = {
-  NodeType: NsflNode,
+  NodeType: InlineNsflNode,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd
 }

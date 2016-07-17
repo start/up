@@ -11,7 +11,7 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { SpoilerNode } from '../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
@@ -39,7 +39,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!) Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new SpoilerNode([
-            new NsflNode([
+            new InlineNsflNode([
               new ActionNode([
                 new PlainTextNode('thwomp')
               ]),
@@ -142,7 +142,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new SpoilerNode([
             new PlainTextNode('There was another '),
-            new NsflNode([
+            new InlineNsflNode([
               new PlainTextNode('rotten body '),
               new ActionNode([
                 new PlainTextNode('squish')
@@ -158,7 +158,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('There was another '),
-            new NsflNode([
+            new InlineNsflNode([
               new PlainTextNode('rotten body '),
               new ActionNode([
                 new PlainTextNode('squish')
@@ -178,7 +178,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new PlainTextNode('was '),
               new SpoilerNode([
                 new PlainTextNode('another '),
-                new NsflNode([
+                new InlineNsflNode([
                   new PlainTextNode('loud '),
                   new ActionNode([
                     new PlainTextNode('stomp')
@@ -264,7 +264,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new SpoilerNode([
             new PlainTextNode('There was another '),
-            new NsflNode([
+            new InlineNsflNode([
               new LinkNode([
                 new PlainTextNode('rotten body'),
               ], 'https://example.com/rotten')

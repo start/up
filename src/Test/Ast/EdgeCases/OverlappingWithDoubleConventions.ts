@@ -7,7 +7,7 @@ import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
@@ -114,7 +114,7 @@ describe('A link overlapping a NSFL convention containing a NSFW convention (ope
         new LinkNode([
           new PlainTextNode("I suspect "),
         ], 'https://example.com/crime-suspects'),
-        new NsflNode([
+        new InlineNsflNode([
           new NsfwNode([
             new LinkNode([
               new PlainTextNode('naked you')
@@ -132,7 +132,7 @@ describe('A NSFW convention nested within a NSFL convention (closing at the same
   it('splits the link node', () => {
     expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('I know. '),
           new NsfwNode([
             new PlainTextNode("Well, I don't "),
@@ -392,7 +392,7 @@ describe('Emphasis overlapping a linkified NSFL convention', () => {
         new EmphasisNode([
           new PlainTextNode('not ')
         ]),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new EmphasisNode([
               new PlainTextNode('care')

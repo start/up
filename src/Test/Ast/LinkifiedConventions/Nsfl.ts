@@ -5,7 +5,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { NsflNode } from '../../../SyntaxNodes/NsflNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { NsfwNode } from '../../../SyntaxNodes/NsfwNode'
 import { SpoilerNode } from '../../../SyntaxNodes/SpoilerNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
@@ -19,7 +19,7 @@ describe('A NSFL convention followed immediately by a parenthesized/bracketd URL
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('you eat rotting Gary')
           ], 'http://example.com/finalbattle')
@@ -36,7 +36,7 @@ describe('Any NSFL convention followed immediately by a parenthesized/bracketed 
       content: 'NSFL: you eat rotting Gary',
       url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('you eat rotting Gary')
           ], 'http://example.com/finalbattle')
@@ -52,10 +52,10 @@ describe('A NSFL convention directly followed by another NSFL convention', () =>
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('and win')
         ]),
         new PlainTextNode('.')
@@ -69,7 +69,7 @@ describe('A NSFL convention directly followed by a spoiler convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
         new SpoilerNode([
@@ -86,7 +86,7 @@ describe('A NSFL convention directly followed by a NSFW convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
         new NsfwNode([
@@ -103,7 +103,7 @@ describe('A NSFL convention directly followed by a media convention', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
         new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
@@ -126,7 +126,7 @@ describe('A NSFL convention directly followed by a footnote', () => {
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
-          new NsflNode([
+          new InlineNsflNode([
             new PlainTextNode('you eat rotting Gary')
           ]),
           footnotes[0],
@@ -141,7 +141,7 @@ describe('An otherwise-valid linkified NSFL convention with its URL escaped', ()
   it('is not linkified', () => {
     expect(Up.toAst('[NSFL: he called her](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('he called her')
         ]),
         new ParenthesizedNode([
@@ -156,7 +156,7 @@ context("When an otherwise-valid linkified NSFL convention's URL starts with whi
   specify('the NSFL convention is not linkified', () => {
     expect(Up.toAst('[NSFL: he called her]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new NsflNode([
+        new InlineNsflNode([
           new PlainTextNode('he called her')
         ]),
         new PlainTextNode('( \t tel:5555555555)')
@@ -171,7 +171,7 @@ context("If there's no whitespace between a NSFL conventions and its bracketed U
       content: 'NSFL: you fight Gary',
       url: ' \t \thttp://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new NsflNode([
+        new InlineNsflNode([
           new LinkNode([
             new PlainTextNode('you fight Gary')
           ], 'http://example.com/finalbattle')
