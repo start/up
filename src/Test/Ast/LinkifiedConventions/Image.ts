@@ -78,7 +78,7 @@ describe('Any image convention (with its URL) followed immediately by a (second)
 })
 
 
-describe('An image convention directly followed by a spoiler', () => {
+describe('An image convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -93,7 +93,7 @@ describe('An image convention directly followed by a spoiler', () => {
 })
 
 
-describe('An image directly followed by a NSFW convention', () => {
+describe('An image directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([

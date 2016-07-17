@@ -32,7 +32,7 @@ describe('Within a plain text node, >, \', and "', () => {
 })
 
 
-describe("Within a spoiler's label, all instances of < and &", () => {
+describe("Within an inline spoiler's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up({
       i18n: {
@@ -54,7 +54,7 @@ describe("Within a spoiler's label, all instances of < and &", () => {
 })
 
 
-describe("Within a NSFW convention's label, all instances of < and &", () => {
+describe("Within an inline NSFW convention's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up({
       i18n: {

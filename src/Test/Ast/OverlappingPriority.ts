@@ -231,7 +231,7 @@ describe('An inline spoiler that overlaps a link', () => {
 })
 
 
-describe('A link that overlaps a spoiler', () => {
+describe('A link that overlaps an inline spoiler', () => {
   it("splits the link node, not the spoiler node", () => {
     const text =
       'In Pokémon Red, [Gary Oak {SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
@@ -273,7 +273,7 @@ describe('An inline spoiler that overlaps action text', () => {
 })
 
 
-describe('Action text that overlaps a spoiler', () => {
+describe('Action text that overlaps an inline spoiler', () => {
   it("splits the action node, not the spoiler node", () => {
     const text =
       'In Pokémon Red, Gary Oak {loses [SPOILER: badly} to Ash Ketchum]'
@@ -321,9 +321,9 @@ describe('An inline spoiler that overlaps a footnote', () => {
 })
 
 
-describe('A footnote that overlaps a spoiler', () => {
+describe('A footnote that overlaps an inline spoiler', () => {
   it("splits the spoiler node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps a spoiler.'
+    const text = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps an inline spoiler.'
 
     const footnote =
       new FootnoteNode([
@@ -341,7 +341,7 @@ describe('A footnote that overlaps a spoiler', () => {
           new InlineSpoilerNode([
             new PlainTextNode(' example of a')
           ]),
-          new PlainTextNode(' footnote that overlaps a spoiler.'),
+          new PlainTextNode(' footnote that overlaps an inline spoiler.'),
         ]),
         new FootnoteBlockNode([footnote])
       ]))
@@ -350,7 +350,7 @@ describe('A footnote that overlaps a spoiler', () => {
 
 
 
-describe('A NSFW convention that overlaps a link', () => {
+describe('An inline NSFW convention that overlaps a link', () => {
   it("splits the link node, not the NSFW convention node", () => {
     expect(Up.toAst('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
@@ -368,7 +368,7 @@ describe('A NSFW convention that overlaps a link', () => {
 })
 
 
-describe('A link that overlaps a NSFW convention', () => {
+describe('A link that overlaps an inline NSFW convention', () => {
   it("splits the link node, not the NSFW convention node", () => {
     const text =
       'In Pokémon Red, [Gary Oak {NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
@@ -391,7 +391,7 @@ describe('A link that overlaps a NSFW convention', () => {
 })
 
 
-describe('A NSFW convention that overlaps action text', () => {
+describe('An inline NSFW convention that overlaps action text', () => {
   it("splits the action text node, not the NSFW convention node", () => {
     expect(Up.toAst('In Pokémon Red, [NSFW: Gary Oak {loses] badly}')).to.be.eql(
       insideDocumentAndParagraph([
@@ -410,7 +410,7 @@ describe('A NSFW convention that overlaps action text', () => {
 })
 
 
-describe('Action text that overlaps a NSFW convention', () => {
+describe('Action text that overlaps an inline NSFW convention', () => {
   it("splits the action node, not the NSFW convention node", () => {
     const text =
       'In Pokémon Red, Gary Oak {loses [NSFW: badly} to Ash Ketchum]'
@@ -432,7 +432,7 @@ describe('Action text that overlaps a NSFW convention', () => {
 })
 
 
-describe('A NSFW convention that overlaps a footnote', () => {
+describe('An inline NSFW convention that overlaps a footnote', () => {
   it("splits the NSFW convention node, not the footnote node", () => {
     const text = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
 
@@ -458,9 +458,9 @@ describe('A NSFW convention that overlaps a footnote', () => {
 })
 
 
-describe('A footnote that overlaps a NSFW convention', () => {
+describe('A footnote that overlaps an inline NSFW convention', () => {
   it("splits the NSFW convention node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [NSFW: and realistic) example of a] footnote that overlaps a NSFW convention.'
+    const text = 'Eventually, I will think of one (^reasonable [NSFW: and realistic) example of a] footnote that overlaps an inline NSFW convention.'
 
     const footnote =
       new FootnoteNode([
@@ -478,7 +478,7 @@ describe('A footnote that overlaps a NSFW convention', () => {
           new InlineNsfwNode([
             new PlainTextNode(' example of a'),
           ]),
-          new PlainTextNode(' footnote that overlaps a NSFW convention.')
+          new PlainTextNode(' footnote that overlaps an inline NSFW convention.')
         ]),
         new FootnoteBlockNode([footnote])
       ]))

@@ -15,7 +15,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('An inline spoiler followed immediately by a parenthesized/bracketd URL', () => {
-  it('produces a spoiler node whose contents are put inside a link pointing to that URL', () => {
+  it('produces an inline spoiler node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -31,7 +31,7 @@ describe('An inline spoiler followed immediately by a parenthesized/bracketd URL
 
 
 describe('Any spoiler followed immediately by a parenthesized/bracketed URL', () => {
-  it('produces a spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
+  it('produces an inline spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',
       url: 'http://example.com/finalbattle',
@@ -64,7 +64,7 @@ describe('An inline spoiler directly followed by another spoiler', () => {
 })
 
 
-describe('An inline spoiler directly followed by a NSFW convention', () => {
+describe('An inline spoiler directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -165,7 +165,7 @@ context("When an otherwise-valid linkified spoiler's URL starts with whitespace,
 })
 
 
-context("If there's no whitespace between a spoiler and its bracketed URL", () => {
+context("If there's no whitespace between an inline spoiler and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',

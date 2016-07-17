@@ -841,7 +841,7 @@ class Tokenizer {
     // syntax tree. How? Well...
     //
     // It's less disruptive to split certain conventions than to split others. We'd rather split an
-    // action convention than a spoiler, and we'd rather split a spoiler than a footnote.
+    // action convention than an inline spoiler, and we'd rather split an inline spoiler than a footnote.
     //
     // Once our process for splitting overlapping conventions has determined that a convention is being
     // overlapped by one that we’d prefer to split, it splits the convention we’d rather split. Because we’d

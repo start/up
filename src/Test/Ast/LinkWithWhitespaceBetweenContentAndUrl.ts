@@ -453,7 +453,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 })
 
 
-describe('If there is nothing but whitspace between a spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
+describe('If there is nothing but whitspace between an inline spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the spoiler convention is not linkified', () => {
     expect(Up.toAst('[something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([

@@ -14,7 +14,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
-describe('A NSFW convention followed immediately by a parenthesized/bracketd URL', () => {
+describe('An inline NSFW convention followed immediately by a parenthesized/bracketd URL', () => {
   it('produces a NSFW node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -47,7 +47,7 @@ describe('Any NSFW convention followed immediately by a parenthesized/bracketed 
 })
 
 
-describe('A NSFW convention directly followed by another NSFW convention', () => {
+describe('An inline NSFW convention directly followed by another NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -64,7 +64,7 @@ describe('A NSFW convention directly followed by another NSFW convention', () =>
 })
 
 
-describe('A NSFW convention directly followed by a spoiler convention', () => {
+describe('An inline NSFW convention directly followed by an inline spoiler convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -81,7 +81,7 @@ describe('A NSFW convention directly followed by a spoiler convention', () => {
 })
 
 
-describe('A NSFW convention directly followed by a NSFL convention', () => {
+describe('An inline NSFW convention directly followed by a NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -98,7 +98,7 @@ describe('A NSFW convention directly followed by a NSFL convention', () => {
 })
 
 
-describe('A NSFW convention directly followed by a media convention', () => {
+describe('An inline NSFW convention directly followed by a media convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle naked Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
       insideDocumentAndParagraph([
@@ -112,7 +112,7 @@ describe('A NSFW convention directly followed by a media convention', () => {
 })
 
 
-describe('A NSFW convention directly followed by a footnote', () => {
+describe('An inline NSFW convention directly followed by a footnote', () => {
   it("is not linkified", () => {
     const text = "After you beat the Elite Four, [NSFW: you wrestle naked Gary](^Or whatever you name him.)"
 
@@ -165,7 +165,7 @@ context("When an otherwise-valid linkified NSFW convention's URL starts with whi
 })
 
 
-context("If there's no whitespace between a NSFW conventions and its bracketed URL", () => {
+context("If there's no whitespace between an inline NSFW conventions and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'NSFW: you fight Gary',

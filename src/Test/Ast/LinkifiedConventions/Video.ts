@@ -78,7 +78,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
 })
 
 
-describe('An video convention directly followed by a spoiler', () => {
+describe('An video convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -93,7 +93,7 @@ describe('An video convention directly followed by a spoiler', () => {
 })
 
 
-describe('A video directly followed by a NSFW convention', () => {
+describe('A video directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([

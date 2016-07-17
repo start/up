@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
-describe("The text in a spoiler's label", () => {
+describe("The text in an inline spoiler's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up({
       i18n: {

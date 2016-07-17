@@ -107,7 +107,7 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
 })
 
 
-describe('A link overlapping a NSFL convention containing a NSFW convention (opening at the same time)', () => {
+describe('A link overlapping a NSFL convention containing an inline NSFW convention (opening at the same time)', () => {
   it('splits the link node', () => {
     expect(Up.toAst("{I suspect [NSFL: [NSFW: naked you}(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.be.eql(
       insideDocumentAndParagraph([
@@ -128,7 +128,7 @@ describe('A link overlapping a NSFL convention containing a NSFW convention (ope
 })
 
 
-describe('A NSFW convention nested within a NSFL convention (closing at the same time), both of which overlap a link', () => {
+describe('An inline NSFW convention nested within a NSFL convention (closing at the same time), both of which overlap a link', () => {
   it('splits the link node', () => {
     expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
@@ -361,7 +361,7 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
 })
 
 
-describe('Emphasis nested with a spoiler, both of which overlap a link', () => {
+describe('Emphasis nested with an inline spoiler, both of which overlap a link', () => {
   it('splits the emphasis node then the link node', () => {
     expect(Up.toAst("In Texas, {SPOILER: *I never eat [cereal*} outside](example.com/sun-flakes)")).to.be.eql(
       insideDocumentAndParagraph([

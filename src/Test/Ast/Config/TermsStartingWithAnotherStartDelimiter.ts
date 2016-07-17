@@ -14,7 +14,7 @@ context("When the custom term for 'spoiler' starts with the a caret, its start d
     }
   })
 
-  specify('When there is a matching closing bracket, a spoiler is produced.', () => {
+  specify('When there is a matching closing bracket, an inline spoiler is produced.', () => {
     expect(up.toAst('[^lookaway^: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineSpoilerNode([
@@ -39,7 +39,7 @@ context("When the custom term for 'nsfw' starts with the a caret, its start deli
     }
   })
 
-  specify('When there is a matching closing bracket, a spoiler is produced.', () => {
+  specify('When there is a matching closing bracket, an inline spoiler is produced.', () => {
     expect(up.toAst('[^lookaway^: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsfwNode([
@@ -64,7 +64,7 @@ context("When the custom term for 'nsfl' starts with the a caret, its start deli
     }
   })
 
-  specify('When there is a matching closing bracket, a spoiler is produced.', () => {
+  specify('When there is a matching closing bracket, an inline spoiler is produced.', () => {
     expect(up.toAst('[^lookaway^: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([

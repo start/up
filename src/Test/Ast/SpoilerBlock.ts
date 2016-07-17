@@ -15,7 +15,7 @@ import { Description } from '../../SyntaxNodes/Description'
 
 
 describe('A line consisting solely of "SPOILER:", followed by an indented block of text,', () => {
-  it('produces a spoiler block node', () => {
+  it('produces an inline spoiler block node', () => {
     const text = `
 SPOILER:
   Ash said goodbye to Pikachu.

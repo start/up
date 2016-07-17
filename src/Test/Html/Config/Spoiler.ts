@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
-describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'spoiler'", () => {
     const up = new Up({
       i18n: {
@@ -88,7 +88,7 @@ describe("Multiple spoilers in a document", () => {
 })
 
 
-describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("reset each time a new document is written", () => {
     const up = new Up()
     

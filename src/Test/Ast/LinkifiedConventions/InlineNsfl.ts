@@ -64,7 +64,7 @@ describe('A NSFL convention directly followed by another NSFL convention', () =>
 })
 
 
-describe('A NSFL convention directly followed by a spoiler convention', () => {
+describe('A NSFL convention directly followed by an inline spoiler convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -81,7 +81,7 @@ describe('A NSFL convention directly followed by a spoiler convention', () => {
 })
 
 
-describe('A NSFL convention directly followed by a NSFW convention', () => {
+describe('A NSFL convention directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([

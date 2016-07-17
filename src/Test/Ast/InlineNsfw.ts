@@ -88,7 +88,7 @@ describe('An NSFW convention', () => {
 })
 
 
-describe('A NSFW convention produced by square brackets', () => {
+describe('An inline NSFW convention produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [and beat] a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -124,7 +124,7 @@ describe('A NSFW convnetion produced by parentheses', () => {
 })
 
 
-describe('A NSFW convention produced by curly brackets', () => {
+describe('An inline NSFW convention produced by curly brackets', () => {
   it('can contain action text', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFW: you still have to wrestle a naked Gary {sigh}}.')).to.be.eql(
       insideDocumentAndParagraph([

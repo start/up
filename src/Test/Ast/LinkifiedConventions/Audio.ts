@@ -78,7 +78,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
 })
 
 
-describe('An audio convention directly followed by a spoiler', () => {
+describe('An audio convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -93,7 +93,7 @@ describe('An audio convention directly followed by a spoiler', () => {
 })
 
 
-describe('An audio convention directly followed by a NSFW convention', () => {
+describe('An audio convention directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([

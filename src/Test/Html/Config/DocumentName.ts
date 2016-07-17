@@ -111,7 +111,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 })
 
 
-describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new InlineSpoilerNode([])
     
@@ -162,7 +162,7 @@ describe("The ID of a spoiler's checkbox (on both the checkbox and the label)", 
 })
 
 
-describe("The ID of a NSFW conventions's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new InlineNsfwNode([])
     

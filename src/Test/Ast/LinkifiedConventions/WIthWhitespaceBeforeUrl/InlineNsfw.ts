@@ -477,7 +477,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 })
 
 
-describe('If there is nothing but whitspace between a NSFW convention and a bracketed URL, but one of the whitespace characters is escaped', () => {
+describe('If there is nothing but whitspace between an inline NSFW convention and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the NSFW convention is not linkified', () => {
     expect(Up.toAst('[NSFW: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([

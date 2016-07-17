@@ -15,7 +15,7 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 
 
 context('Square bracketed text can be directly followed by whitespace followed by', () => {
-  context('a spoiler', () => {
+  context('an inline spoiler', () => {
     specify('that only contains whitespace directly after the colon', () => {
       expect(Up.toAst('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.be.eql(
         insideDocumentAndParagraph([

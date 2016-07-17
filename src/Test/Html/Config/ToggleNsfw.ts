@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 
 
-describe("The text in a NSFW convention's label", () => {
+describe("The text in an inline NSFW convention's label", () => {
   it("uses the provided term for 'toggleNsfw'", () => {
     const up = new Up({
       i18n: {

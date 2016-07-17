@@ -9,7 +9,7 @@ import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
-describe("The ID of a NSFW convention's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline NSFW convention's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'nsfw'", () => {
     const up = new Up({
       i18n: {
