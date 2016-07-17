@@ -442,7 +442,7 @@ describe('An inline spoiler node', () => {
 })
 
 
-describe('A NSFW node', () => {
+describe('An NSFW node', () => {
   it('produces a span element (with "up-nsfw" and "up-revealable" classes), containing a label (with the text "toggle nsfw"), an associated checkbox, and a span element containing the NSFW contents', () => {
     const node = new InlineNsfwNode([new PlainTextNode('naked Gary')])
 
@@ -458,7 +458,7 @@ describe('A NSFW node', () => {
 })
 
 
-describe('A NSFL node', () => {
+describe('An inline NSFL node', () => {
   it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle nsfl"), an associated checkbox, and a span element containing the NSFL contents', () => {
     const node = new InlineNsflNode([new PlainTextNode('rotting Gary')])
 

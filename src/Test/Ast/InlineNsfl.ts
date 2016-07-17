@@ -11,7 +11,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Square bracketed text starting with "nsfl:"', () => {
-  it('is put inside a NSFL node', () => {
+  it('is put inside an inline NSFL node', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat a rotting Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -39,7 +39,7 @@ describe('Parenthesized text starting with "nsfl:"', () => {
 
 
 describe('Curly bracketed text starting with "nsfl:"', () => {
-  it('is put inside a NSFL node', () => {
+  it('is put inside an inline NSFL node', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFL: you eat a rotting Gary}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),

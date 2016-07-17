@@ -300,21 +300,22 @@ class Tokenizer {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new TokenizableConvention({
-      // If a convention is totally empty, it's never applied. For example, this would-be NSFW convention is empty:
+      // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
+      // is empty:
       //
       // (NSFW:)
       //
       // Therefore, we instead treat it as a parenthesized convention containing the text "NSFW:".
       //
-      // When *most* conventions contain only whitespace, they aren't applied. For example, this would-be NSFW
-      // convention contains only whitespace: 
+      // For most conventions, when they contain only whitespace, they aren't applied. For example, this would-be
+      // inline NSFW convention contains only whitespace: 
       //
       // [NSFW:   ]
       //
       // Therefore, we instead treat it as a square bracketed convention containing the text "NSFW:   ".
       //
-      // However, if `isMeaningfulWhenItContainsOnlyWhitespace` is true, we do apply the convention when it contains
-      // only whitespace. This is the case for revision deletion/insertion.
+      // However, if `isMeaningfulWhenItContainsOnlyWhitespace` is true, we do apply the convention when it
+      // contains only whitespace. This is the case for revision deletion/insertion.
       startsWith: startsWith + notFollowedBy((isMeaningfulWhenItContainsOnlyWhitespace ? '' : ANY_WHITESPACE) + endsWith),
       startPatternContainsATerm,
 

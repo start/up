@@ -11,7 +11,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Square bracketed text starting with "nsfw:"', () => {
-  it('is put inside a NSFW node', () => {
+  it('is put inside an inline NSFW node', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -39,7 +39,7 @@ describe('Parenthesized text starting with "nsfw:"', () => {
 
 
 describe('Curly bracketed text starting with "nsfw:"', () => {
-  it('is put inside a NSFW node', () => {
+  it('is put inside an inline NSFW node', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFW: you wrestle a naked Gary}.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),

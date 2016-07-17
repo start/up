@@ -15,7 +15,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
 describe('An inline NSFL convention followed immediately by a parenthesized/bracketd URL', () => {
-  it('produces a NSFL node whose contents are put inside a link pointing to that URL', () => {
+  it('produces an inline NSFL node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
@@ -31,7 +31,7 @@ describe('An inline NSFL convention followed immediately by a parenthesized/brac
 
 
 describe('Any NSFL convention followed immediately by a parenthesized/bracketed URL', () => {
-  it('produces a NSFL node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the NSFL convention can be different from the type of bracket surrounding the URL', () => {
+  it('produces an inline NSFL node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the NSFL convention can be different from the type of bracket surrounding the URL', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'NSFL: you eat rotting Gary',
       url: 'http://example.com/finalbattle',
