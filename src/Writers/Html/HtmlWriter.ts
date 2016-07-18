@@ -169,7 +169,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineSpoiler(node: InlineSpoilerNode): string {
-    return this.revealableConvent({
+    return this.inlineRevealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
@@ -178,7 +178,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineNsfw(node: InlineNsfwNode): string {
-    return this.revealableConvent({
+    return this.inlineRevealableConvent({
       nonLocalizedConventionTerm: 'nsfw',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
@@ -187,7 +187,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineNsfl(node: InlineNsflNode): string {
-    return this.revealableConvent({
+    return this.inlineRevealableConvent({
       nonLocalizedConventionTerm: 'nsfl',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
@@ -320,7 +320,7 @@ export class HtmlWriter extends Writer {
     return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
-  private revealableConvent(
+  private inlineRevealableConvent(
     args: {
       nonLocalizedConventionTerm: string
       termForTogglingVisibility: string
@@ -330,14 +330,36 @@ export class HtmlWriter extends Writer {
   ): string {
     const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren } = args
 
+    return this.revealableConvent({
+      nonLocalizedConventionTerm,
+      termForTogglingVisibility,
+      conventionCount,
+      revealableChildren,
+      genericContainerTagName: 'span',
+      idPrefix: ''
+    })
+  }
+
+  private revealableConvent(
+    args: {
+      nonLocalizedConventionTerm: string
+      termForTogglingVisibility: string
+      conventionCount: number
+      revealableChildren: InlineSyntaxNode[]
+      genericContainerTagName: string
+      idPrefix: string
+    }
+  ): string {
+    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren, genericContainerTagName, idPrefix } = args
+
     const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
-    const checkboxId = this.getId(localizedTerm, conventionCount)
+    const checkboxId = this.getId(idPrefix, localizedTerm, conventionCount)
 
     return htmlElementWithAlreadyEscapedChildren(
-      'span', [
+      genericContainerTagName, [
         htmlElement('label', termForTogglingVisibility, { for: checkboxId }),
         singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
-        this.htmlElementWithAlreadyEscapedChildren('span', revealableChildren)],
+        this.htmlElementWithAlreadyEscapedChildren(genericContainerTagName, revealableChildren)],
       { class: classAttrValue(nonLocalizedConventionTerm, 'revealable') })
   }
 
