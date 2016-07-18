@@ -44,6 +44,6 @@ export function tryToParseSpoilerBlock(args: OutlineParserArgs): boolean {
 
   const children = getOutlineNodes(contentLines, args.headingLeveler, args.config)
 
-  args.then([], consumer.countLinesConsumed)
+  args.then([new SpoilerBlockNode(children)], consumer.countLinesConsumed)
   return true
 }

@@ -9,6 +9,7 @@ import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
+import { tryToParseSpoilerBlock } from './tryToParseSpoilerBlock'
 import { parseRegularLines } from './parseRegularLines'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { last } from '../../CollectionHelpers'
@@ -24,6 +25,7 @@ const OUTLINE_CONVENTIONS = [
   tryToParseSectionSeparatorStreak,
   tryToParseCodeBlock,
   tryToParseBlockquote,
+  tryToParseSpoilerBlock,
   tryToParseDescriptionList
 ]
 

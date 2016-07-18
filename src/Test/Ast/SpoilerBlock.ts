@@ -18,18 +18,18 @@ describe('A line consisting solely of "SPOILER:", followed by an indented block 
   it('produces an inline spoiler block node', () => {
     const text = `
 SPOILER:
-  Ash said goodbye to Pikachu.
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
-  Luckily, Pikachu ultimately decided to stay with Ash.`
+  Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new ParagraphNode([
-            new PlainTextNode('Goodbye, world!')
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
