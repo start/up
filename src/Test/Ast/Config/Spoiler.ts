@@ -5,26 +5,28 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
-describe('The term that represents spoiler conventions', () => {
-  const up = new Up({
-    i18n: {
-      terms: { spoiler: 'ruins ending' }
-    }
-  })
+context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
+  context('For inline spoilers:', () => {
+    const up = new Up({
+      i18n: {
+        terms: { spoiler: 'ruins ending' }
+      }
+    })
 
-  it('comes from the "spoiler" config term ', () => {
-    expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new PlainTextNode('Ash fights Gary')
-        ])
-      ]))
-  })
+    specify('The term is used', () => {
+      expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
+    })
 
-  it('is case-insensitive even when custom', () => {
-    const uppercase = '[RUINS ENDING: Ash fights Gary]'
-    const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
+    it('The term is case-insensitive, even when custom', () => {
+      const uppercase = '[ruins ending: Ash fights Gary]'
+      const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
-    expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
+      expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
+    })
   })
 })
