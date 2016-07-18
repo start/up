@@ -72,6 +72,6 @@ export function regExpEndingWith(pattern: string): RegExp {
 
 import { ANY_WHITESPACE } from './PatternPieces'
 
-export function solely(pattern: string) {
+export function solely(pattern: string): string {
   return '^' + pattern + ANY_WHITESPACE + '$'
 }
