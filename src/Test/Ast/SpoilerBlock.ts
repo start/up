@@ -79,7 +79,7 @@ SPOILER:
       ]))
   })
 
-  it('can be followed by two blank lines', () => {
+  it('can be followed by 2 blank lines', () => {
     const text = `
 SPOILER:
 
@@ -101,7 +101,7 @@ SPOILER:
       ]))
   })
 
-  it('can be followed by three or more blank lines', () => {
+  it('can be followed by 3 or more blank lines', () => {
     const text = `
 SPOILER:
 
@@ -147,6 +147,30 @@ SPOILER:
             new ParagraphNode([
               new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
             ])
+          ])
+        ])
+      ]))
+  })
+
+  it('can contain section separators indicated by 3 or more blank lines', () => {
+    const text = `
+SPOILER:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+
+
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new SectionSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
