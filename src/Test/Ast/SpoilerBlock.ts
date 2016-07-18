@@ -12,6 +12,7 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
+import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
 describe('A line consisting solely of "spoiler:", followed by an indented block of text,', () => {
@@ -127,8 +128,9 @@ SPOILER:
 })
 
 describe('Spoiler blocks', () => {
-  it('can contain other spoiler blocks', () => {
-    const text = `
+  context('can contain any outline convention, including: ', () => {
+    specify('Other spoiler blocks', () => {
+      const text = `
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -137,23 +139,23 @@ SPOILER:
 
     Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
-          ]),
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
           new SpoilerBlockNode([
             new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new SpoilerBlockNode([
+              new ParagraphNode([
+                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+              ])
             ])
           ])
-        ])
-      ]))
-  })
+        ]))
+    })
 
-  it('can contain section separators indicated by 3 or more blank lines', () => {
-    const text = `
+    specify('Section separators indicated by 3 or more blank lines', () => {
+      const text = `
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -162,17 +164,46 @@ SPOILER:
 
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
-          ]),
-          new SectionSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new SectionSeparatorNode(),
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            ])
           ])
-        ])
-      ]))
+        ]))
+    })
+
+    specify('Code blocks', () => {
+      const text = `
+SPOILER:
+
+  \`\`\`
+  function nthFibonacci(n: number): number {
+    return (
+      n <= 2
+        ? n - 1 
+        : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+  }
+  \`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new CodeBlockNode(
+              `function nthFibonacci(n: number): number {
+  return (
+    n <= 2
+      ? n - 1 
+      : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+}`
+            )
+          ])
+        ]))
+    })
   })
 })
