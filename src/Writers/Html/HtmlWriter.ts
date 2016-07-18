@@ -167,7 +167,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: classAttrValue('action') })
   }
 
-  protected spoiler(node: InlineSpoilerNode): string {
+  protected inlineSpoiler(node: InlineSpoilerNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
@@ -176,7 +176,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfw(node: InlineNsfwNode): string {
+  protected inlineNsfw(node: InlineNsfwNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfw',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
@@ -185,7 +185,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfl(node: InlineNsflNode): string {
+  protected inlineNsfl(node: InlineNsflNode): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfl',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,

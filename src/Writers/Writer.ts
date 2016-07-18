@@ -55,9 +55,9 @@ export abstract class Writer {
   protected abstract parenthesized(node: ParenthesizedNode): string
   protected abstract squareBracketed(node: SquareBracketedNode): string
   protected abstract action(node: ActionNode): string
-  protected abstract spoiler(node: InlineSpoilerNode): string
-  protected abstract nsfw(node: InlineNsfwNode): string
-  protected abstract nsfl(node: InlineNsflNode): string
+  protected abstract inlineSpoiler(node: InlineSpoilerNode): string
+  protected abstract inlineNsfw(node: InlineNsfwNode): string
+  protected abstract inlineNsfl(node: InlineNsflNode): string
   protected abstract footnoteReference(node: FootnoteNode): string
   protected abstract footnoteBlock(node: FootnoteBlockNode): string
   protected abstract link(node: LinkNode): string
@@ -177,15 +177,15 @@ export abstract class Writer {
     }
 
     if (node instanceof InlineSpoilerNode) {
-      return this.spoiler(node)
+      return this.inlineSpoiler(node)
     }
 
     if (node instanceof InlineNsfwNode) {
-      return this.nsfw(node)
+      return this.inlineNsfw(node)
     }
 
     if (node instanceof InlineNsflNode) {
-      return this.nsfl(node)
+      return this.inlineNsfl(node)
     }
 
     if (node instanceof PlainTextNode) {
