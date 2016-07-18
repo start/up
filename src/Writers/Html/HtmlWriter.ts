@@ -336,7 +336,7 @@ export class HtmlWriter extends Writer {
       conventionCount,
       revealableChildren,
       genericContainerTagName: 'span',
-      idPrefix: ''
+      idPrefix: 'inline'
     })
   }
 
