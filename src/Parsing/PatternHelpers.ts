@@ -46,10 +46,6 @@ export function anyCharBut(...chars: string[]): string {
   return anyCharNotMatching(...chars.map(escapeForRegex))
 }
 
-export function streakOf(charPattern: string): string {
-  return solely(atLeast(3, charPattern))
-}
-
 export function followedBy(pattern: string): string {
   return `(?=${pattern})`
 }
@@ -62,6 +58,10 @@ export function escapeForRegex(text: string): string {
   return text.replace(/[(){}[\].+*?^$\\|-]/g, '\\$&')
 }
 
+export function streakOf(charPattern: string): RegExp {
+  return solely(atLeast(3, charPattern))
+}
+
 export function regExpStartingWith(pattern: string, containsATerm?: boolean): RegExp {
   return new RegExp('^' + pattern, containsATerm ? 'i' : undefined)
 }
@@ -72,6 +72,6 @@ export function regExpEndingWith(pattern: string): RegExp {
 
 import { ANY_WHITESPACE } from './PatternPieces'
 
-export function solely(pattern: string): string {
-  return '^' + pattern + ANY_WHITESPACE + '$'
+export function solely(pattern: string): RegExp {
+  return new RegExp('^' + pattern + ANY_WHITESPACE + '$')
 }

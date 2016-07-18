@@ -11,11 +11,11 @@ export const INDENTED_PATTERN =
 const DIVIDER_STREAK_CHAR =
   anyCharFrom('#', '=', '-', '+', '~', '*', '^', '@', ':', '_')
 
-export const DIVIDER_STREAK_PATTERN = new RegExp(
-  streakOf(DIVIDER_STREAK_CHAR + ANY_WHITESPACE))
+export const DIVIDER_STREAK_PATTERN =
+  streakOf(DIVIDER_STREAK_CHAR + ANY_WHITESPACE)
 
-export const BLANK_PATTERN = new RegExp(
-  solely(''))
+export const BLANK_PATTERN =
+  solely('')
 
 export const NON_BLANK_PATTERN =
   /\S/

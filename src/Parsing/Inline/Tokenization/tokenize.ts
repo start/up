@@ -1211,8 +1211,7 @@ const EXPLICIT_URL_PREFIX =
     HASH_MARK)
 
 const SOLELY_URL_PREFIX_PATTERN =
-  new RegExp(
-    solely(EXPLICIT_URL_PREFIX))
+    solely(EXPLICIT_URL_PREFIX)
 
 
 // The patterns below exist purely for optimization.
