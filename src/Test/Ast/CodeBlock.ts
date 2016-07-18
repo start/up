@@ -4,6 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 
 
 describe('Text surrounded (underlined and overlined) by matching streaks of backticks (of at least 3 characters long)', () => {
@@ -82,7 +83,7 @@ const lineBreak = "\\n"
         new CodeBlockNode(
           `// Escaping backticks in typescript...
 // Such a pain!`),
-new CodeBlockNode(
+        new CodeBlockNode(
           `// Escaping backticks in typescript...
 // Wait. Have I already said this?`),
       ]))
@@ -203,8 +204,8 @@ It's easy!`)
 })
 
 
-describe('An unmatched streak of backticks', () => {
-  it("produces a code block node containing the rest of the document", () => {
+context("An unmatched streak of backticks produces a code block that extends to the end of the code block's container", () => {
+  specify("If the code block isn't nested within another convention, it extends to the end of the document", () => {
     const text = `
 Check out the code below!
 
@@ -232,6 +233,38 @@ document.write('The factorial of 5 is: ' + factorial(5))`
 }
 
 document.write('The factorial of 5 is: ' + factorial(5))`)
+      ]))
+  })
+
+  specify('If the code block is nested with a spoiler block, it extends to the end of the spoiler block', () => {
+    const text = `
+SPOILER:
+
+  \`\`\`
+  function nthFibonacci(n: number): number {
+    return (
+      n <= 2
+        ? n - 1 
+        : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+  }
+  
+I hope you were able to find a solution without cheating.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new CodeBlockNode(
+            `function nthFibonacci(n: number): number {
+  return (
+    n <= 2
+      ? n - 1 
+      : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+}`
+          )
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('I hope you were able to find a solution without cheating.')
+        ])
       ]))
   })
 })
