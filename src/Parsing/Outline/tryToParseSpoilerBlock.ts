@@ -1,8 +1,8 @@
 import { LineConsumer } from './LineConsumer'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { getOutlineNodes } from './getOutlineNodes'
-import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
-import { patternStartingWith, optional } from '../PatternHelpers'
+import { getIndentedBlock } from './getIndentedBlock'
+import { solelyAndIgnoringCapitalization, escapeForRegex } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -23,6 +23,26 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //   3. Rhydon
 export function tryToParseSpoilerBlock(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
+
+  const indicatorLinePattern =
+    solelyAndIgnoringCapitalization(
+      escapeForRegex(args.config.settings.i18n.terms.spoiler) + ':')
+
+  if (!consumer.consume({ linePattern: indicatorLinePattern })) {
+    return false
+  }
+
+  const contentLines: string[] = []
+
+  getIndentedBlock({
+    lines: consumer.getRemainingLines(),
+    then: (lines, lengthParsed) => {
+      contentLines.push(...lines)
+      consumer.skipLines(lengthParsed)
+    }
+  })
+
+  const children = getOutlineNodes(contentLines, args.headingLeveler, args.config)
 
   args.then([], consumer.countLinesConsumed)
   return true
