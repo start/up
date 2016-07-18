@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
-import { optional, regExpStartingWith, escapeForRegex, atLeast, either, anyCharFrom, capture } from '../PatternHelpers'
+import { optional, patternStartingWith, escapeForRegex, atLeast, either, anyCharFrom, capture } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, DIGIT } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -122,8 +122,8 @@ const BULLET =
     capture(either(INTEGER, '#') + anyCharFrom('.', ')')))
 
 const BULLETED_PATTERN =
-  regExpStartingWith(
+  patternStartingWith(
     optional(' ') + BULLET + INLINE_WHITESPACE_CHAR)
 
 const INTEGER_FOLLOWED_BY_PERIOD_PATTERN =
-  regExpStartingWith(INTEGER + '\\.')
+  patternStartingWith(INTEGER + '\\.')

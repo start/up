@@ -2,7 +2,7 @@ import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { RichConvention } from '../RichConvention'
-import { regExpStartingWith } from '../../PatternHelpers'
+import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
 
 
 export interface TokenizableConventionArgs {
@@ -59,14 +59,17 @@ export class TokenizableConvention {
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
 
   constructor(args: TokenizableConventionArgs) {
-    const { endsWith, onlyOpenIfDirectlyFollowing } = args
+    const { startsWith, endsWith, onlyOpenIfDirectlyFollowing } = args
 
     this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
 
-    this.startsWith = regExpStartingWith(args.startsWith, args.startPatternContainsATerm)
-    
+    this.startsWith =
+      args.startPatternContainsATerm
+        ? patternIgnoringCapitalizationAndStartingWith(startsWith)
+        : patternStartingWith(startsWith)
+
     if (endsWith) {
-      this.endsWith = regExpStartingWith(endsWith)
+      this.endsWith = patternStartingWith(endsWith)
     }
 
     this.isCutShortByWhitespace = args.isCutShortByWhitespace

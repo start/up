@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
-import { regExpStartingWith, optional } from '../PatternHelpers'
+import { patternStartingWith, optional } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

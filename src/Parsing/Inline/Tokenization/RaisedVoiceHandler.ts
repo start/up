@@ -2,7 +2,7 @@ import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
 import { RichConvention } from '../RichConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
-import { escapeForRegex, regExpStartingWith, atLeast } from '../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, atLeast } from '../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 
@@ -19,7 +19,7 @@ export class RaisedVoiceHandler {
     public delimiterPattern?: RegExp
   ) {
     this.delimiterPattern = this.delimiterPattern ||
-      regExpStartingWith(
+      patternStartingWith(
         atLeast(1, escapeForRegex(args.delimiterChar)))
   }
 

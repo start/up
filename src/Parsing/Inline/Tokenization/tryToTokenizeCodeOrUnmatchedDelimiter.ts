@@ -1,4 +1,4 @@
-import { regExpStartingWith, regExpEndingWith, atLeast, anyCharBut } from '../../PatternHelpers'
+import { patternStartingWith, patternEndingWith, atLeast, anyCharBut } from '../../PatternHelpers'
 import { InlineTextConsumer } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
@@ -115,20 +115,20 @@ const CODE_DELIMITER_CHAR =
   '`'
 
 const CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN =
-  regExpStartingWith(
+  patternStartingWith(
     atLeast(1, anyCharBut(CODE_DELIMITER_CHAR)))
 
 const CODE_DELIMITER_PATTERN =
-  regExpStartingWith(
+  patternStartingWith(
     atLeast(1, CODE_DELIMITER_CHAR))
 
 const AT_LEAST_ONE_SPACE =
   atLeast(1, ' ')
 
 const LEADING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN =
-  regExpStartingWith(
+  patternStartingWith(
     AT_LEAST_ONE_SPACE + CODE_DELIMITER_CHAR)
 
 const TRAILING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN =
-  regExpEndingWith(
+  patternEndingWith(
     CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)

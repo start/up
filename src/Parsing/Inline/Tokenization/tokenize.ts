@@ -1,5 +1,5 @@
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, regExpStartingWith, solely, everyOptional, either, optional, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -34,7 +34,7 @@ export function tokenize(text: string, config: UpConfig): Token[] {
 }
 
 const LEADING_WHITESPACE_PATTERN =
-  regExpStartingWith(ANY_WHITESPACE)
+  patternStartingWith(ANY_WHITESPACE)
 
 
 class Tokenizer {
@@ -1185,7 +1185,7 @@ const URL_SCHEME =
   URL_SCHEME_NAME + ':' + everyOptional('/')
 
 const URL_SCHEME_PATTERN =
-  regExpStartingWith(URL_SCHEME)
+  patternStartingWith(URL_SCHEME)
 
 const FORWARD_SLASH =
   '/'
@@ -1233,7 +1233,7 @@ const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
 ]
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
-  regExpStartingWith(
+  patternStartingWith(
     atLeast(1,
       either(
         anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
@@ -1250,6 +1250,6 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 // To prevent our pattern from matching all but the last character of that whitespace, we make sure
 // our match is followed by neither an open bracket nor by another whitespace character. 
 const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
-  regExpStartingWith(
+  patternStartingWith(
     SOME_WHITESPACE + notFollowedBy(
       anyCharMatching(...BRACKET_START_PATTERNS.concat(WHITESPACE_CHAR))))

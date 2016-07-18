@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
-import { regExpStartingWith, optional } from '../PatternHelpers'
+import { patternStartingWith, optional } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -39,4 +39,4 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
 }
 
 const BLOCKQUOTE_DELIMITER_PATTERN =
-  regExpStartingWith('>' + optional(' '))
+  patternStartingWith('>' + optional(' '))

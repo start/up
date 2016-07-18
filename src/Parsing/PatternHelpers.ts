@@ -62,11 +62,15 @@ export function streakOf(charPattern: string): RegExp {
   return solely(atLeast(3, charPattern))
 }
 
-export function regExpStartingWith(pattern: string, containsATerm?: boolean): RegExp {
-  return new RegExp('^' + pattern, containsATerm ? 'i' : undefined)
+export function patternStartingWith(pattern: string): RegExp {
+  return new RegExp('^' + pattern)
 }
 
-export function regExpEndingWith(pattern: string): RegExp {
+export function patternIgnoringCapitalizationAndStartingWith(pattern: string): RegExp {
+  return new RegExp('^' + pattern, 'i')
+}
+
+export function patternEndingWith(pattern: string): RegExp {
   return new RegExp(pattern + '$')
 }
 
