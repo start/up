@@ -15,6 +15,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
+import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -192,6 +193,10 @@ export class HtmlWriter extends Writer {
       conventionCount: ++this.nsflCount,
       revealableChildren: node.children
     })
+  }
+
+  protected spoilerBlock(node: SpoilerBlockNode): string {
+    throw new Error('Not implemented')
   }
 
   protected footnoteReference(node: FootnoteNode): string {
