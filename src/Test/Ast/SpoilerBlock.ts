@@ -125,3 +125,30 @@ SPOILER:
       ]))
   })
 })
+
+describe('Spoiler blocks', () => {
+  it('can contain other spoiler blocks', () => {
+    const text = `
+SPOILER:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  SPOILER:
+
+    Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new SpoilerBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            ])
+          ])
+        ])
+      ]))
+  })
+})
