@@ -63,11 +63,11 @@ export function streakOf(charPattern: string): RegExp {
 }
 
 export function patternStartingWith(pattern: string): RegExp {
-  return new RegExp('^' + pattern)
+  return regExpFlagsStartingWith({ pattern })
 }
 
 export function patternIgnoringCapitalizationAndStartingWith(pattern: string): RegExp {
-  return new RegExp('^' + pattern, 'i')
+  return regExpFlagsStartingWith({ pattern, isCaseInsensitive: true })
 }
 
 export function patternEndingWith(pattern: string): RegExp {
@@ -77,5 +77,24 @@ export function patternEndingWith(pattern: string): RegExp {
 import { ANY_WHITESPACE } from './PatternPieces'
 
 export function solely(pattern: string): RegExp {
-  return new RegExp('^' + pattern + ANY_WHITESPACE + '$')
+  return regExpSolelyConsistingOf({ pattern })
+}
+
+export function solelyAndIgnoringCapitalization(pattern: string): RegExp {
+  return regExpSolelyConsistingOf({ pattern, isCaseInsensitive: true })
+}
+
+function regExpFlagsStartingWith(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
+  return new RegExp('^' + args.pattern, regExpFlags(args.isCaseInsensitive))
+}
+
+function regExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
+  return new RegExp('^' + args.pattern + ANY_WHITESPACE + '$', regExpFlags(args.isCaseInsensitive))
+}
+
+function regExpFlags(isCaseInsensitive: boolean): string {
+  return (
+    isCaseInsensitive
+      ? 'i'
+      : undefined)
 }

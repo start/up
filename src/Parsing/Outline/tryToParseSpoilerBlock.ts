@@ -23,7 +23,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //   3. Rhydon
 export function tryToParseSpoilerBlock(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
-  
+
   args.then([], consumer.countLinesConsumed)
   return true
 }
