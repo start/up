@@ -7,6 +7,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
 context("A spoiler block indicator does not produce a spoiler block node if it is", () => {
@@ -48,7 +49,7 @@ No!`
       ]))
   })
 
-  specify('followed two blank lines then non-indented text', () => {
+  specify('followed 2 blank lines then non-indented text', () => {
     const text = `
 Spoiler:
 
@@ -59,6 +60,26 @@ No!`
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
         ]),
+        new ParagraphNode([
+          new PlainTextNode('No!')
+        ])
+      ]))
+  })
+
+  specify('followed 3 or more blank lines then non-indented text', () => {
+    const text = `
+Spoiler:
+
+
+
+
+No!`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Spoiler:')
+        ]),
+        new SectionSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('No!')
         ])
