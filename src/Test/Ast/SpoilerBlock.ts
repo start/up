@@ -254,4 +254,30 @@ SPOILER:
         ])
       ]))
   })
+
+  specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the spoiler block', () => {
+    const text = `
+SPOILER:
+
+\tWell...
+
+ \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('Well...')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
 })
