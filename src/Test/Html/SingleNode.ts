@@ -17,6 +17,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
+import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -468,6 +469,28 @@ describe('An inline NSFL node', () => {
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span>rotting Gary</span>'
       + '</span>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe('A spoiler block node', () => {
+  it('produces the same markup as an inline spoiler node, but with div elements instead of span elements', () => {
+    const node = new SpoilerBlockNode([
+      new ParagraphNode([
+        new PlainTextNode('John Carmack is a decent programmer.')
+      ])
+    ])
+
+    const html =
+      '<div class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<div>'
+      + '<p>John Carmack is a decent programmer.</p>'
+      + '</div>'
+      + '</div>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
   })
