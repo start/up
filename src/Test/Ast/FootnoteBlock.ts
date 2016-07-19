@@ -305,6 +305,62 @@ SPOILER:
 })
 
 
+describe('Footnotes nested inside 2 or more outline conventions nested inside a spoiler block', () => {
+  it("produce footnote blocks inside the spoiler block after all the appropriate outline conventions", () => {
+    const text = `
+SPOILER:
+
+  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+ 
+    It's too expensive.
+ 
+  * I don't eat (^Or touch.) pumpkins.`
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1),
+      new FootnoteNode([
+        new PlainTextNode("Or touch."),
+      ], 2)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+
+          new UnorderedListNode([
+
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat cereal."),
+                footnotes[0],
+                new PlainTextNode(" Never have."),
+              ]),
+              new ParagraphNode([
+                new PlainTextNode("It's too expensive.")
+              ])
+            ]),
+
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat"),
+                footnotes[1],
+                new PlainTextNode(" pumpkins."),
+              ])
+            ])
+
+          ]),
+
+          new FootnoteBlockNode(footnotes)
+
+        ])
+      ])
+    )
+  })
+})
+
+
 describe('Footnotes in ordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
     const text = `
