@@ -36,9 +36,9 @@ export function tryToParseSpoilerBlock(args: OutlineParserArgs): boolean {
 
   getIndentedBlock({
     lines: consumer.getRemainingLines(),
-    then: (lines, lengthParsed) => {
+    then: (lines, countLinesConsumed) => {
       contentLines.push(...lines)
-      consumer.skipLines(lengthParsed)
+      consumer.skipLines(countLinesConsumed)
     }
   })
 

@@ -7,5 +7,5 @@ export interface OutlineParserArgs {
   lines: string[]
   headingLeveler: HeadingLeveler
   config: UpConfig
-  then: (resultNodes: OutlineSyntaxNode[], lengthParsed: number) => void
+  then: (resultNodes: OutlineSyntaxNode[], countLinesConsumed: number) => void
 }

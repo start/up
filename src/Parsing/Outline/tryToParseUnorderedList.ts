@@ -39,9 +39,9 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
     getIndentedBlock({
       lines: consumer.getRemainingLines(),
-      then: (lines, lengthParsed, hasMultipleTrailingBlankLines) => {
+      then: (lines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
         linesForCurrentListItem.push(...lines)
-        consumer.skipLines(lengthParsed)
+        consumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })

@@ -24,7 +24,7 @@ import { getIndentedBlock } from './getIndentedBlock'
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const consumer = new LineConsumer(args.lines)
   const listItems: DescriptionListItem[] = []
-  let lengthParsed = 0
+  let countLinesConsumed = 0
 
   while (!consumer.done()) {
     let rawTerms: string[] = []
@@ -69,15 +69,15 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     getIndentedBlock({
       lines: consumer.getRemainingLines(),
-      then: (lines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
+      then: (lines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
         descriptionLines.push(...lines)
-        consumer.skipLines(countLinesConsumed)
+        consumer.skipLines(countLinesConsumedByIndentedBlock)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
     // Alright, we have our description! Let's update our length parsed accordingly.
-    lengthParsed = consumer.countLinesConsumed
+    countLinesConsumed = consumer.countLinesConsumed
 
     const terms =
       rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))
@@ -97,6 +97,6 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  args.then([new DescriptionListNode(listItems)], lengthParsed)
+  args.then([new DescriptionListNode(listItems)], countLinesConsumed)
   return true
 }
