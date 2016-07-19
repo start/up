@@ -16,7 +16,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
 describe('A line consisting solely of "spoiler:", followed by an indented block of text,', () => {
-  it('produces an inline spoiler block node', () => {
+  it('produces a spoiler block node', () => {
     const text = `
 SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -205,5 +205,53 @@ SPOILER:
           ])
         ]))
     })
+  })
+})
+
+
+context('The indentation of a spoiler block can be provided by', () => {
+  specify('2 spaces', () => {
+    const text = `
+SPOILER:
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ])
+        ])
+      ]))
+  })
+
+  specify('a tab', () => {
+    const text = `
+SPOILER:
+\tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ])
+        ])
+      ]))
+  })
+
+  specify('a space then a tab', () => {
+    const text = `
+SPOILER:
+ \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ])
+        ])
+      ]))
   })
 })
