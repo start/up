@@ -7,7 +7,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // A line consisting solely of "spoiler:" followed by an indented block is treated as a spoiler.
-// Spoilers can contain any outline convention, even other spoilers.
+// Spoiler blocks can contain any outline convention, even other spoilers.
 //
 // The term for "spoiler" is configurable and case-insensitive, and an optional blank line can
 // precede the indented block.
