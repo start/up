@@ -12,6 +12,7 @@ import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
+import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
 
 
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
@@ -31,11 +32,22 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 //    inside an ordered list, it's still placed into a block after the ordered list, because the ordered list
 //    is the outermost, top-level convention.
 //
-//    Blockquotes are the exception to this rule, because...
+// 2. There are exceptions to the first rule. The rule applies to all outline conventions except:
 //
-// 2. Blockquotes are considered mini-documents! Therefore, that first rule is applied to all top-level outline
+//     * Blockquotes
+//     * Spoiler blocks
+//     * NSFW blocks
+//     * NSFL blocks
+//
+//    Blockquotes are considered mini-documents! Therefore, that first rule is applied to all top-level outline
 //    conventions inside any blockquote. In other words, a footnote inside a paragraph inside a blockquote is
 //    placed into a footnote block after the paragraph, but still inside the blockquote. Phew.
+//
+//    Spoiler blocks, NSFW blocks, and NSFL blocks shouldn't "leak" any of their content, so they have the same
+//    footnote block rules as blockquotes.
+//
+//    TODO: Better handle footnotes within the inline spoilers, inline NSFW conventions, and inline NSFL
+//    conventions.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
@@ -100,10 +112,10 @@ class FootnoteHandler {
       return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines)
     }
 
-    if (node instanceof BlockquoteNode) {
+    if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode)) {
       this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
 
-      // We've just handled all the footnotes within the blockquote. None of them are blockless!
+      // We've just handled all the footnotes within the outline convention. None of them are blockless!
       return []
     }
 
