@@ -18,6 +18,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
@@ -270,6 +271,33 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 
           new FootnoteBlockNode(footnotes)
 
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Footnotes in a spoiler block', () => {
+  it('produce footnote blocks within the spoiler block', () => {
+    const text = `
+SPOILER:
+
+  This ruins the movie. [^ And this is a fun fact.]`
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode("And this is a fun fact."),
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("This ruins the movie."),
+            footnote,
+          ]),
+          new FootnoteBlockNode([footnote]),
         ])
       ])
     )
