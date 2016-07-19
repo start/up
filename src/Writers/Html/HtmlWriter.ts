@@ -336,7 +336,6 @@ export class HtmlWriter extends Writer {
       conventionCount,
       revealableChildren,
       genericContainerTagName: 'span',
-      idPrefix: 'inline'
     })
   }
 
@@ -347,13 +346,12 @@ export class HtmlWriter extends Writer {
       conventionCount: number
       revealableChildren: InlineSyntaxNode[]
       genericContainerTagName: string
-      idPrefix: string
     }
   ): string {
-    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren, genericContainerTagName, idPrefix } = args
+    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren, genericContainerTagName } = args
 
     const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
-    const checkboxId = this.getId(idPrefix, localizedTerm, conventionCount)
+    const checkboxId = this.getId(localizedTerm, conventionCount)
 
     return htmlElementWithAlreadyEscapedChildren(
       genericContainerTagName, [
