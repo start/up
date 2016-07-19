@@ -172,34 +172,43 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineSpoiler(node: InlineSpoilerNode): string {
-    return this.inlineRevealableConvent({
+    return this.revealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
-      revealableChildren: node.children
+      revealableChildren: node.children,
+      genericContainerTagName: 'span'
     })
   }
 
   protected inlineNsfw(node: InlineNsfwNode): string {
-    return this.inlineRevealableConvent({
+    return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfw',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
-      revealableChildren: node.children
+      revealableChildren: node.children,
+      genericContainerTagName: 'span'
     })
   }
 
   protected inlineNsfl(node: InlineNsflNode): string {
-    return this.inlineRevealableConvent({
+    return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfl',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
-      revealableChildren: node.children
+      revealableChildren: node.children,
+      genericContainerTagName: 'span'
     })
   }
 
   protected spoilerBlock(node: SpoilerBlockNode): string {
-    throw new Error('Not implemented')
+    return this.revealableConvent({
+      nonLocalizedConventionTerm: 'spoiler',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      conventionCount: ++this.spoilerCount,
+      revealableChildren: node.children,
+      genericContainerTagName: 'div'
+    })
   }
 
   protected footnoteReference(node: FootnoteNode): string {
@@ -323,31 +332,12 @@ export class HtmlWriter extends Writer {
     return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
-  private inlineRevealableConvent(
-    args: {
-      nonLocalizedConventionTerm: string
-      termForTogglingVisibility: string
-      conventionCount: number
-      revealableChildren: InlineSyntaxNode[]
-    }
-  ): string {
-    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren } = args
-
-    return this.revealableConvent({
-      nonLocalizedConventionTerm,
-      termForTogglingVisibility,
-      conventionCount,
-      revealableChildren,
-      genericContainerTagName: 'span',
-    })
-  }
-
   private revealableConvent(
     args: {
       nonLocalizedConventionTerm: string
       termForTogglingVisibility: string
       conventionCount: number
-      revealableChildren: InlineSyntaxNode[]
+      revealableChildren: SyntaxNode[]
       genericContainerTagName: string
     }
   ): string {
