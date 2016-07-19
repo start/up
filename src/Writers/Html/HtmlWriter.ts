@@ -45,7 +45,10 @@ export class HtmlWriter extends Writer {
   // We don't create an anchor element for the inner link.
   private isInsideLink = false
 
-  // Our spoiler markup doesn't require JavaScript (just CSS), and it works perfectly well for screen-readers:
+  // Our markup for revealable content (spoilers, NSFW, NSFL) doesn't require JavaScript (just CSS), and it works
+  // perfectly well for screen-readers
+  //
+  // For example, here's our markup for inline spoilers:
   //
   // <span class="up-spoiler up-revealable">
   //   <label for="up-spoiler-1">toggle spoiler</label>
@@ -56,11 +59,11 @@ export class HtmlWriter extends Writer {
   // Unfortunately, this solution requires generating unique IDs to associate each spoiler's label with its
   // checkbox.
   //
-  // Each Writer class is only used once per document, so we'll just increment a counter each time we write a
-  // spoiler, appending the counter's value to the checkbox's ID.
+  // Because each Writer class instance is only used once per document, we can simply increment a counter each
+  // time we write a spoiler (inline or block), appending the counter's value to the checkbox's ID.
+  //
+  // We'll do the same for NSFW and NSFL conventions.
   private spoilerCount = 0
-
-  // We produce similar markup for NSFW and NSFL conventions, so they both need counters, too.
   private nsfwCount = 0
   private nsflCount = 0
 
