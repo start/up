@@ -4,7 +4,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
@@ -91,6 +91,33 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
             new PlainTextNode('Blue')
           ]),
           new PlainTextNode('.'),
+        ])
+      ])
+
+    expect(up.toHtml(node)).to.be.eql(up.toHtml(node))
+  })
+})
+
+
+
+describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
+  it("reset each time a new document is written", () => {
+    const up = new Up()
+    
+    const node =
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('After you beat the Elite Four, you have to face your rival.')
+          ])
+        ]),
+        new ParagraphNode([
+          new PlainTextNode("But the game isn't over yet!")
+        ]),
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('Once you beat your rival, you can finally enter Cerulean Cave.')
+          ])
         ])
       ])
 
