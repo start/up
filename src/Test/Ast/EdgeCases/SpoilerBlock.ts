@@ -21,9 +21,8 @@ context("A spoiler block indicator does not produce a spoiler block node if it i
     const text = `
 Spoiler:
 No!
-Roses don't glow!
-`
-    expect(Up.toAst('SPOILER:')).to.be.eql(
+Roses don't glow!`
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new Line([new PlainTextNode('Spoiler:')]),
@@ -38,7 +37,7 @@ Roses don't glow!
 Spoiler:
 
 No!`
-    expect(Up.toAst('SPOILER:')).to.be.eql(
+    expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
