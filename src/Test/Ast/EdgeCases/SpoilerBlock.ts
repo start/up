@@ -32,9 +32,26 @@ Roses don't glow!`
       ]))
   })
 
-  specify('followed a blank line then a non-indented text', () => {
+  specify('followed a blank line then non-indented text', () => {
     const text = `
 Spoiler:
+
+No!`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('Spoiler:')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('No!')
+        ])
+      ]))
+  })
+
+  specify('followed two blank lines then non-indented text', () => {
+    const text = `
+Spoiler:
+
 
 No!`
     expect(Up.toAst(text)).to.be.eql(
