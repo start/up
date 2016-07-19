@@ -172,13 +172,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineSpoiler(node: InlineSpoilerNode): string {
-    return this.revealableConvent({
-      nonLocalizedConventionTerm: 'spoiler',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
-      conventionCount: ++this.spoilerCount,
-      revealableChildren: node.children,
-      genericContainerTagName: 'span'
-    })
+    return this.spoiler(node, 'span')
   }
 
   protected inlineNsfw(node: InlineNsfwNode): string {
@@ -202,12 +196,16 @@ export class HtmlWriter extends Writer {
   }
 
   protected spoilerBlock(node: SpoilerBlockNode): string {
+    return this.spoiler(node, 'div')
+  }
+
+  protected spoiler(node: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: node.children,
-      genericContainerTagName: 'div'
+      genericContainerTagName
     })
   }
 
