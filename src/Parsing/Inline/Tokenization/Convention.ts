@@ -5,7 +5,7 @@ import { RichConvention } from '../RichConvention'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
 
 
-export interface TokenizableConventionArgs {
+export interface ConventionArgs {
   onlyOpenIfDirectlyFollowing?: TokenKind[]
 
   startsWith: string
@@ -58,7 +58,7 @@ export class Convention {
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
 
-  constructor(args: TokenizableConventionArgs) {
+  constructor(args: ConventionArgs) {
     const { startsWith, endsWith, onlyOpenIfDirectlyFollowing } = args
 
     this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
