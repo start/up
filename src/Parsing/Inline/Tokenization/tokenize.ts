@@ -108,9 +108,9 @@ class Tokenizer {
     delimiterChar => new RaisedVoiceHandler({
       delimiterChar,
 
-      encloseWithinRichConvention: (richConvention, startingBackAtIndex) => {
+      encloseWithinRichConvention: (richConvention, startingBackAtTokenIndex) => {
         this.closeNakedUrlContextIfOneIsOpen()
-        this.encloseWithin({ richConvention, startingBackAtIndex })
+        this.encloseWithin({ richConvention, startingBackAtTokenIndex })
       },
 
       insertPlainTextToken: (text, atIndex) => {
@@ -565,7 +565,7 @@ class Tokenizer {
 
     this.encloseWithin({
       richConvention: LINK_CONVENTION,
-      startingBackAtIndex: indexOfMediaStartToken
+      startingBackAtTokenIndex: indexOfMediaStartToken
     })
 
     // Now, the last token is a LinkUrlAndEnd token. Let's assign its URL!
@@ -815,12 +815,12 @@ class Tokenizer {
   }
 
   private encloseContextWithinRichConvention(richConvention: RichConvention, context: ConventionContext): void {
-    this.encloseWithin({ richConvention, startingBackAtIndex: context.startTokenIndex })
+    this.encloseWithin({ richConvention, startingBackAtTokenIndex: context.startTokenIndex })
   }
 
   private encloseWithin(args: EncloseWithinRichConventionArgs): void {
     const { richConvention } = args
-    let startTokenIndex = args.startingBackAtIndex
+    let startTokenIndex = args.startingBackAtTokenIndex
 
     this.flushNonEmptyBufferToPlainTextToken()
 

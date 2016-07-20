@@ -104,12 +104,12 @@ export class RaisedVoiceHandler {
 
         this.encloseWithin({
           richConvention: EMPHASIS_CONVENTION,
-          startingBackAtIndex: startDelimiter.tokenIndex
+          startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
         this.encloseWithin({
           richConvention: STRESS_CONVENTION,
-          startingBackAtIndex: startDelimiter.tokenIndex
+          startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
         const lengthInCommon =
@@ -154,7 +154,7 @@ export class RaisedVoiceHandler {
   }
 
   private encloseWithin(args: EncloseWithinRichConventionArgs) {
-    this.args.encloseWithinRichConvention(args.richConvention, args.startingBackAtIndex)
+    this.args.encloseWithinRichConvention(args.richConvention, args.startingBackAtTokenIndex)
   }
 
   private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {
@@ -168,7 +168,7 @@ export class RaisedVoiceHandler {
   private applyConvention(startDelimiter: RaisedVoiceStartDelimiter, richConvention: RichConvention, cost: number): void {
     this.encloseWithin({
       richConvention,
-      startingBackAtIndex: startDelimiter.tokenIndex
+      startingBackAtTokenIndex: startDelimiter.tokenIndex
     })
 
     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
