@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
-import { RichConvention } from '../RichConvention'
+import { RichConvention } from './RichConvention'
 import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
 import { escapeForRegex, patternStartingWith, atLeast } from '../../PatternHelpers'

@@ -1,4 +1,4 @@
-import { RichConvention } from '../RichConvention'
+import { RichConvention } from './RichConvention'
 
 
 export interface EncloseWithinRichConventionArgs {
