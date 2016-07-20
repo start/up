@@ -8,7 +8,7 @@ import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { RichConventionWithoutSpecialAttributes } from './RichConventionWithoutSpecialAttributes'
+import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
@@ -17,8 +17,8 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
 }
 
 
-// This includes every rich convention except for links, because links have that annoying URL.
-const RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES: RichConventionWithoutSpecialAttributes[] = [
+// This includes every rich convention except for links. Links have that pesky URL.
+const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
   STRESS_CONVENTION,
   EMPHASIS_CONVENTION,
   REVISION_DELETION_CONVENTION,
@@ -127,7 +127,7 @@ class Parser {
         }
       }
 
-      for (const richConvention of RICH_CONVENTIONS_WITHOUT_SPECIAL_ATTRIBUTES) {
+      for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
         if (token.kind === richConvention.startTokenKind) {
           const children =
             this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
