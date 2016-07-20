@@ -446,12 +446,12 @@ describe('An inline spoiler node', () => {
 
 
 describe('An NSFW node', () => {
-  it('produces a span element (with "up-nsfw" and "up-revealable" classes), containing a label (with the text "toggle nsfw"), an associated checkbox, and a span element containing the NSFW contents', () => {
+  it('produces a span element (with "up-nsfw" and "up-revealable" classes), containing a label (with the text "toggle NSFW"), an associated checkbox, and a span element containing the NSFW contents', () => {
     const node = new InlineNsfwNode([new PlainTextNode('naked Gary')])
 
     const html =
       '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<span>naked Gary</span>'
       + '</span>'
@@ -462,12 +462,12 @@ describe('An NSFW node', () => {
 
 
 describe('An inline NSFL node', () => {
-  it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle nsfl"), an associated checkbox, and a span element containing the NSFL contents', () => {
+  it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle NSFL"), an associated checkbox, and a span element containing the NSFL contents', () => {
     const node = new InlineNsflNode([new PlainTextNode('rotting Gary')])
 
     const html =
       '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<label for="up-nsfl-1">toggle NSFL</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span>rotting Gary</span>'
       + '</span>'
@@ -509,7 +509,7 @@ describe('A NSFW block node', () => {
 
     const html =
       '<div class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<div>'
       + '<p>John Carmack is a decent programmer.</p>'
@@ -531,7 +531,7 @@ describe('A NSFL block node', () => {
 
     const html =
       '<div class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<label for="up-nsfl-1">toggle NSFL</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<div>'
       + '<p>John Carmack is a decent programmer.</p>'

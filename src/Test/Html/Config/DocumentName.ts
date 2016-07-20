@@ -168,7 +168,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     
     const html =
       '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
@@ -186,7 +186,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     
     const html =
       '<span class="up-nsfw up-revealable">'
-      + '<label for="reply-11-nsfw-1">toggle nsfw</label>'
+      + '<label for="reply-11-nsfw-1">toggle NSFW</label>'
       + '<input id="reply-11-nsfw-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
@@ -203,7 +203,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     
     const html =
       '<span class="up-nsfw up-revealable">'
-      + '<label for="nsfw-1">toggle nsfw</label>'
+      + '<label for="nsfw-1">toggle NSFW</label>'
       + '<input id="nsfw-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
@@ -219,7 +219,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     
     const html =
       '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<label for="up-nsfl-1">toggle NSFL</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
@@ -237,7 +237,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     
     const html =
       '<span class="up-nsfl up-revealable">'
-      + '<label for="reply-11-nsfl-1">toggle nsfl</label>'
+      + '<label for="reply-11-nsfl-1">toggle NSFL</label>'
       + '<input id="reply-11-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
@@ -254,7 +254,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     
     const html =
       '<span class="up-nsfl up-revealable">'
-      + '<label for="nsfl-1">toggle nsfl</label>'
+      + '<label for="nsfl-1">toggle NSFL</label>'
       + '<input id="nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>'

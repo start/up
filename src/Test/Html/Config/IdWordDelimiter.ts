@@ -88,7 +88,7 @@ describe("The words in the ID of an inline NSFW conventions's checkbox (on both 
 
     const html =
       '<span class="up-nsfw up-revealable">'
-      + '<label for="up_nsfw_1">toggle nsfw</label>'
+      + '<label for="up_nsfw_1">toggle NSFW</label>'
       + '<input id="up_nsfw_1" type="checkbox">'
       + '<span></span>'
       + '</span>'
@@ -110,7 +110,7 @@ describe("The words in the ID of an inline NSFL conventions's checkbox (on both 
 
     const html =
       '<span class="up-nsfl up-revealable">'
-      + '<label for="up_nsfl_1">toggle nsfl</label>'
+      + '<label for="up_nsfl_1">toggle NSFL</label>'
       + '<input id="up_nsfl_1" type="checkbox">'
       + '<span></span>'
       + '</span>'

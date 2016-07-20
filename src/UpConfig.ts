@@ -18,9 +18,9 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
       spoiler: 'spoiler',
       toggleSpoiler: 'toggle spoiler',
       nsfw: 'nsfw',
-      toggleNsfw: 'toggle nsfw',
+      toggleNsfw: 'toggle NSFW',
       nsfl: 'nsfl',
-      toggleNsfl: 'toggle nsfl',
+      toggleNsfl: 'toggle NSFL',
       footnote: 'footnote',
       footnoteReference: 'footnote reference'
     }

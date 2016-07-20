@@ -203,7 +203,7 @@ describe('The "nsfw" config term', () => {
     node: new InlineNsfwNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<span></span>'
       + '</span>',
@@ -231,7 +231,7 @@ describe('The "toggleNsfw" config term', () => {
     node: new InlineNsfwNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<span></span>'
       + '</span>',
@@ -259,7 +259,7 @@ describe('The "nsfl" config term', () => {
     node: new InlineNsflNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<label for="up-nsfl-1">toggle NSFL</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>',
@@ -287,7 +287,7 @@ describe('The "togglensfl" config term', () => {
     node: new InlineNsflNode([]),
     htmlFromDefaultSettings:
       '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<label for="up-nsfl-1">toggle NSFL</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>',
