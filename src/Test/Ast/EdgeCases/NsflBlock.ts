@@ -10,38 +10,38 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
-context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
+context("A NSFL block's label line does not produce a NSFL block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toAst('SPOILER:')).to.be.eql(
+    expect(Up.toAst('NSFL:')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('SPOILER:')
+        new PlainTextNode('NSFL:')
       ]))
   })
 
   specify('immediately followed by non-indented text', () => {
     const text = `
-Spoiler:
+NSFL:
 No!
-Roses don't glow!`
+Avoid that initialism!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([new PlainTextNode('Spoiler:')]),
+          new Line([new PlainTextNode('NSFL:')]),
           new Line([new PlainTextNode('No!')]),
-          new Line([new PlainTextNode("Roses don't glow!")]),
+          new Line([new PlainTextNode("Avoid that initialism!")]),
         ])
       ]))
   })
 
   specify('followed a blank line then non-indented text', () => {
     const text = `
-Spoiler:
+NSFL:
 
 No!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('Spoiler:')
+          new PlainTextNode('NSFL:')
         ]),
         new ParagraphNode([
           new PlainTextNode('No!')
@@ -51,14 +51,14 @@ No!`
 
   specify('followed 2 blank lines then non-indented text', () => {
     const text = `
-Spoiler:
+NSFL:
 
 
 No!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('Spoiler:')
+          new PlainTextNode('NSFL:')
         ]),
         new ParagraphNode([
           new PlainTextNode('No!')
@@ -68,7 +68,7 @@ No!`
 
   specify('followed 3 or more blank lines then non-indented text', () => {
     const text = `
-Spoiler:
+NSFL:
 
 
 
@@ -77,7 +77,7 @@ No!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
-          new PlainTextNode('Spoiler:')
+          new PlainTextNode('NSFL:')
         ]),
         new SectionSeparatorNode(),
         new ParagraphNode([
