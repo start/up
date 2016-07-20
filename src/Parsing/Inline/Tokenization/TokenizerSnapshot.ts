@@ -21,8 +21,8 @@ export class TokenizerSnapshot {
   ) {
     this.textIndex = args.textIndex
     this.tokens = args.tokens.slice()
-    this.openContexts = args.openContexts
-    this.raisedVoiceHandlers = args.raisedVoiceHandlers
+    this.openContexts = args.openContexts.map(context => context.clone())
+    this.raisedVoiceHandlers = args.raisedVoiceHandlers.map(handler => handler.clone())
     this.buffer = args.buffer
   }
 }

@@ -1003,8 +1003,8 @@ class Tokenizer {
     return new TokenizerSnapshot({
       textIndex: this.consumer.textIndex,
       tokens: this.tokens,
-      openContexts: this.openContexts.map(context => context.clone()),
-      raisedVoiceHandlers: this.raisedVoiceHandlers.map(handler => handler.clone()),
+      openContexts: this.openContexts,
+      raisedVoiceHandlers: this.raisedVoiceHandlers,
       buffer: this.buffer
     })
   }
