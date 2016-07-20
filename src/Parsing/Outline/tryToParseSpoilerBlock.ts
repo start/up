@@ -22,23 +22,23 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //   2. Alakazam
 //   3. Rhydon
 export function tryToParseSpoilerBlock(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.lines)
+  const lineConsumer = new LineConsumer(args.lines)
 
   const indicatorLinePattern =
     solelyAndIgnoringCapitalization(
       escapeForRegex(args.config.settings.i18n.terms.spoiler) + ':')
 
-  if (!consumer.consume({ linePattern: indicatorLinePattern })) {
+  if (!lineConsumer.consume({ linePattern: indicatorLinePattern })) {
     return false
   }
 
   const contentLines: string[] = []
 
   getIndentedBlock({
-    lines: consumer.getRemainingLines(),
+    lines: lineConsumer.getRemainingLines(),
     then: (lines, countLinesConsumed) => {
       contentLines.push(...lines)
-      consumer.skipLines(countLinesConsumed)
+      lineConsumer.skipLines(countLinesConsumed)
     }
   })
 
@@ -48,6 +48,6 @@ export function tryToParseSpoilerBlock(args: OutlineParserArgs): boolean {
 
   const children = getOutlineNodes(contentLines, args.headingLeveler, args.config)
 
-  args.then([new SpoilerBlockNode(children)], consumer.countLinesConsumed)
+  args.then([new SpoilerBlockNode(children)], lineConsumer.countLinesConsumed)
   return true
 }

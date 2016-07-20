@@ -22,16 +22,16 @@ import { getIndentedBlock } from './getIndentedBlock'
 // Description list items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole description list, not just the list item. 
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.lines)
+  const lineConsumer = new LineConsumer(args.lines)
   const listItems: DescriptionListItem[] = []
   let countLinesConsumed = 0
 
-  while (!consumer.done()) {
+  while (!lineConsumer.done()) {
     let rawTerms: string[] = []
 
     // First, we collect every term for the next description.
-    while (!consumer.done()) {
-      const isTerm = consumer.consume({
+    while (!lineConsumer.done()) {
+      const isTerm = lineConsumer.consume({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
         then: line => {
@@ -51,7 +51,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
-    const hasDescription = consumer.consume({
+    const hasDescription = lineConsumer.consume({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
       then: line => {
@@ -68,16 +68,16 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     let shouldTerminateList = false
 
     getIndentedBlock({
-      lines: consumer.getRemainingLines(),
+      lines: lineConsumer.getRemainingLines(),
       then: (lines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
         descriptionLines.push(...lines)
-        consumer.skipLines(countLinesConsumedByIndentedBlock)
+        lineConsumer.skipLines(countLinesConsumedByIndentedBlock)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
     // Alright, we have our description! Let's update our length parsed accordingly.
-    countLinesConsumed = consumer.countLinesConsumed
+    countLinesConsumed = lineConsumer.countLinesConsumed
 
     const terms =
       rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))

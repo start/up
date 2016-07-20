@@ -41,11 +41,11 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
   }
 ): boolean {
   const { text, then } = args
-  const consumer = new TextConsumer(text)
+  const textConsumer = new TextConsumer(text)
 
   let startDelimiter: string
 
-  consumer.consume({
+  textConsumer.consume({
     pattern: CODE_DELIMITER_PATTERN,
     thenBeforeAdvancingTextIndex: match => {
       startDelimiter = match
@@ -58,8 +58,8 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
   let code = ''
 
-  while (!consumer.done()) {
-    consumer.consume({
+  while (!textConsumer.done()) {
+    textConsumer.consume({
       pattern: CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN,
       thenBeforeAdvancingTextIndex: match => {
         code += match
@@ -71,7 +71,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
     let possibleEndDelimiter: string
 
-    consumer.consume({
+    textConsumer.consume({
       pattern: CODE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: match => {
         possibleEndDelimiter = match
@@ -84,7 +84,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter === startDelimiter) {
-      then(new Token(TokenKind.Code, trimCode(code)), consumer.textIndex)
+      then(new Token(TokenKind.Code, trimCode(code)), textConsumer.textIndex)
       return true
     }
 

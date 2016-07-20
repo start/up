@@ -9,12 +9,12 @@ export function getIndentedBlock(
     then: (lines: string[], countLinesConsumed: number, hasMultipleTrailingBlankLines: boolean) => void
   }
 ): void {
-  const consumer = new LineConsumer(args.lines)
+  const lineConsumer = new LineConsumer(args.lines)
   const lines: string[] = []
   let contentLineCount = 0
 
-  while (!consumer.done()) {
-    const wasLineBlank = consumer.consume({
+  while (!lineConsumer.done()) {
+    const wasLineBlank = lineConsumer.consume({
       linePattern: BLANK_PATTERN,
       then: line => {
         lines.push(line)
@@ -28,7 +28,7 @@ export function getIndentedBlock(
       continue
     }
 
-    const wasLineIndented = consumer.consume({
+    const wasLineIndented = lineConsumer.consume({
       linePattern: INDENTED_PATTERN,
       then: line => {
         lines.push(line)

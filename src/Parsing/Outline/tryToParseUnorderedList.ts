@@ -17,13 +17,13 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
 export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
-  const consumer = new LineConsumer(args.lines)
+  const lineConsumer = new LineConsumer(args.lines)
   const linesByListItem: string[][] = []
 
-  while (!consumer.done()) {
+  while (!lineConsumer.done()) {
     let linesForCurrentListItem: string[] = []
 
-    const isLineBulleted = consumer.consume({
+    const isLineBulleted = lineConsumer.consume({
       linePattern: BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: line => {
@@ -38,10 +38,10 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     let shouldTerminateList = false
 
     getIndentedBlock({
-      lines: consumer.getRemainingLines(),
+      lines: lineConsumer.getRemainingLines(),
       then: (lines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
         linesForCurrentListItem.push(...lines)
-        consumer.skipLines(countLinesConsumed)
+        lineConsumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
@@ -61,7 +61,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     linesByListItem.map((lines) =>
       new UnorderedListItem(getOutlineNodes(lines, args.headingLeveler, args.config)))
 
-  args.then([new UnorderedListNode(listItems)], consumer.countLinesConsumed)
+  args.then([new UnorderedListNode(listItems)], lineConsumer.countLinesConsumed)
   return true
 }
 

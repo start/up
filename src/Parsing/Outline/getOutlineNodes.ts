@@ -35,17 +35,17 @@ export function getOutlineNodes(
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
-  const consumer = new LineConsumer(withoutOuterBlankLines(lines))
+  const lineConsumer = new LineConsumer(withoutOuterBlankLines(lines))
   const outlineNodes: OutlineSyntaxNode[] = []
 
-  while (!consumer.done()) {
+  while (!lineConsumer.done()) {
     const outlineParserArgs = {
-      lines: consumer.getRemainingLines(),
+      lines: lineConsumer.getRemainingLines(),
       headingLeveler,
       config,
       then: (newNodes: OutlineSyntaxNode[], countLinesConsumed: number) => {
         outlineNodes.push(...newNodes)
-        consumer.skipLines(countLinesConsumed)
+        lineConsumer.skipLines(countLinesConsumed)
       }
     }
 
