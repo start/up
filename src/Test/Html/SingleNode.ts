@@ -522,8 +522,8 @@ describe('A NSFW block node', () => {
 
 
 describe('A NSFL block node', () => {
-  it('produces the same markup as an inline NSFWLnode, but with div elements instead of span elements', () => {
-    const node = new NsfwBlockNode([
+  it('produces the same markup as an inline NSFL node, but with div elements instead of span elements', () => {
+    const node = new NsflBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
       ])
