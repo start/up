@@ -18,6 +18,8 @@ import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -487,6 +489,28 @@ describe('A spoiler block node', () => {
       '<div class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
+      + '<div>'
+      + '<p>John Carmack is a decent programmer.</p>'
+      + '</div>'
+      + '</div>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe('A NSFW block node', () => {
+  it('produces the same markup as an inline NSFW node, but with div elements instead of span elements', () => {
+    const node = new NsfwBlockNode([
+      new ParagraphNode([
+        new PlainTextNode('John Carmack is a decent programmer.')
+      ])
+    ])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle nsfw</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
       + '<div>'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'
