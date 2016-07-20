@@ -13,6 +13,8 @@ import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 
 
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
@@ -112,7 +114,7 @@ class FootnoteHandler {
       return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines)
     }
 
-    if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode)) {
+    if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
       this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
 
       // We've just handled all the footnotes within the outline convention. None of them are blockless!
