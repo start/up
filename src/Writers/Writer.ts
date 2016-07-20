@@ -16,6 +16,8 @@ import { InlineSpoilerNode } from '../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
@@ -60,6 +62,8 @@ export abstract class Writer {
   protected abstract inlineNsfw(node: InlineNsfwNode): string
   protected abstract inlineNsfl(node: InlineNsflNode): string
   protected abstract spoilerBlock(node: SpoilerBlockNode): string
+  protected abstract nsfwBlock(node: NsfwBlockNode): string
+  protected abstract nsflBlock(node: NsflBlockNode): string
   protected abstract footnoteReference(node: FootnoteNode): string
   protected abstract footnoteBlock(node: FootnoteBlockNode): string
   protected abstract link(node: LinkNode): string
@@ -192,6 +196,14 @@ export abstract class Writer {
 
     if (node instanceof SpoilerBlockNode) {
       return this.spoilerBlock(node)
+    }
+
+    if (node instanceof NsfwBlockNode) {
+      return this.nsfwBlock(node)
+    }
+
+    if (node instanceof NsflBlockNode) {
+      return this.nsflBlock(node)
     }
 
     if (node instanceof PlainTextNode) {

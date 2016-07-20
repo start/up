@@ -16,6 +16,8 @@ import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -176,27 +178,23 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineNsfw(node: InlineNsfwNode): string {
-    return this.revealableConvent({
-      nonLocalizedConventionTerm: 'nsfw',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
-      conventionCount: ++this.nsfwCount,
-      revealableChildren: node.children,
-      genericContainerTagName: 'span'
-    })
+    return this.nsfw(node, 'span')
   }
 
   protected inlineNsfl(node: InlineNsflNode): string {
-    return this.revealableConvent({
-      nonLocalizedConventionTerm: 'nsfl',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
-      conventionCount: ++this.nsflCount,
-      revealableChildren: node.children,
-      genericContainerTagName: 'span'
-    })
+    return this.nsfl(node, 'span')
   }
 
   protected spoilerBlock(node: SpoilerBlockNode): string {
     return this.spoiler(node, 'div')
+  }
+
+  protected nsfwBlock(node: NsfwBlockNode): string {
+    return this.nsfw(node, 'div')
+  }
+
+  protected nsflBlock(node: NsflBlockNode): string {
+    return this.nsfl(node, 'div')
   }
 
   protected spoiler(node: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
@@ -204,6 +202,26 @@ export class HtmlWriter extends Writer {
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
+      revealableChildren: node.children,
+      genericContainerTagName
+    })
+  }
+
+  protected nsfw(node: InlineNsfwNode | NsfwBlockNode, genericContainerTagName: string): string {
+    return this.revealableConvent({
+      nonLocalizedConventionTerm: 'nsfw',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      conventionCount: ++this.nsfwCount,
+      revealableChildren: node.children,
+      genericContainerTagName
+    })
+  }
+
+  protected nsfl(node: InlineNsflNode | NsflBlockNode, genericContainerTagName: string): string {
+    return this.revealableConvent({
+      nonLocalizedConventionTerm: 'nsfl',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      conventionCount: ++this.nsflCount,
       revealableChildren: node.children,
       genericContainerTagName
     })
