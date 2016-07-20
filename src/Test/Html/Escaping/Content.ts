@@ -12,6 +12,8 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
@@ -113,6 +115,50 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
       '<div class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("Within a NSFW block's label, all instances of < and &", () => {
+  it("are escaped", () => {
+    const up = new Up({
+      i18n: {
+        terms: { toggleNsfw: '<_< & show & hide' }
+      }
+    })
+
+    const node = new NsfwBlockNode([])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">&lt;_&lt; &amp; show &amp; hide</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("Within a NSFL block's label, all instances of < and &", () => {
+  it("are escaped", () => {
+    const up = new Up({
+      i18n: {
+        terms: { toggleNsfl: '<_< & show & hide' }
+      }
+    })
+
+    const node = new NsflBlockNode([])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">&lt;_&lt; &amp; show &amp; hide</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
       + '<div></div>'
       + '</div>'
 
