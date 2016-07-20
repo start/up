@@ -7,7 +7,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -15,17 +15,17 @@ import { Description } from '../../SyntaxNodes/Description'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
-describe('A line consisting solely of "spoiler:", followed by an indented block of text,', () => {
-  it('produces a spoiler block node', () => {
+describe('A line consisting solely of "NSFW:", followed by an indented block of text,', () => {
+  it('produces a NSFW block node', () => {
     const text = `
-SPOILER:
+NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -38,17 +38,17 @@ SPOILER:
 })
 
 
-describe('The "spoiler" term in a spoiler block', () => {
+describe('The "NSFW" term in a NSFW block', () => {
   it('is case-insensitive', () => {
     const text = `
-sPoiLeR:
+nSFw:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -61,7 +61,7 @@ sPoiLeR:
 
   it('can be followed by a blank line', () => {
     const text = `
-SPOILER:
+NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
@@ -69,7 +69,7 @@ SPOILER:
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -82,7 +82,7 @@ SPOILER:
 
   it('can be followed by 2 blank lines', () => {
     const text = `
-SPOILER:
+NSFW:
 
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -91,7 +91,7 @@ SPOILER:
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -104,7 +104,7 @@ SPOILER:
 
   it('can be followed by 3 or more blank lines', () => {
     const text = `
-SPOILER:
+NSFW:
 
 
 
@@ -115,7 +115,7 @@ SPOILER:
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -127,25 +127,25 @@ SPOILER:
   })
 })
 
-describe('Spoiler blocks', () => {
+describe('NSFW blocks', () => {
   context('can contain any outline convention, including: ', () => {
-    specify('Other spoiler blocks', () => {
+    specify('Other NSFW blocks', () => {
       const text = `
-SPOILER:
+NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
-  SPOILER:
+  NSFW:
 
     Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
-          new SpoilerBlockNode([
+          new NsfwBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new SpoilerBlockNode([
+            new NsfwBlockNode([
               new ParagraphNode([
                 new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
               ])
@@ -156,7 +156,7 @@ SPOILER:
 
     specify('Section separators indicated by 3 or more blank lines', () => {
       const text = `
-SPOILER:
+NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
@@ -166,7 +166,7 @@ SPOILER:
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
-          new SpoilerBlockNode([
+          new NsfwBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
@@ -180,7 +180,7 @@ SPOILER:
 
     specify('Code blocks', () => {
       const text = `
-SPOILER:
+NSFW:
 
   \`\`\`
   function nthFibonacci(n: number): number {
@@ -193,7 +193,7 @@ SPOILER:
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
-          new SpoilerBlockNode([
+          new NsfwBlockNode([
             new CodeBlockNode(
               `function nthFibonacci(n: number): number {
   return (
@@ -209,15 +209,15 @@ SPOILER:
 })
 
 
-context('The indentation of a spoiler block can be provided by', () => {
+context('The indentation of a NSFW block can be provided by', () => {
   specify('2 spaces', () => {
     const text = `
-SPOILER:
+NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -227,12 +227,12 @@ SPOILER:
 
   specify('a tab', () => {
     const text = `
-SPOILER:
+NSFW:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -242,12 +242,12 @@ SPOILER:
 
   specify('a space then a tab', () => {
     const text = `
-SPOILER:
+NSFW:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -255,9 +255,9 @@ SPOILER:
       ]))
   })
 
-  specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the spoiler block', () => {
+  specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the NSFW block', () => {
     const text = `
-SPOILER:
+NSFW:
 
 \tWell...
 
@@ -267,7 +267,7 @@ SPOILER:
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new SpoilerBlockNode([
+        new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('Well...')
           ]),
