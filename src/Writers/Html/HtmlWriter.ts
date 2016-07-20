@@ -42,6 +42,7 @@ import { UpConfig } from '../../UpConfig'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl} from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
+
 export class HtmlWriter extends Writer {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an anchor element for the inner link.
