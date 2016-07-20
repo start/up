@@ -4,63 +4,70 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
-
-describe("Multiple NSFL conventions in a document", () => {
-  it("have have sequential IDs", () => {
+describe("Inline NSFL conventions and NSFL blocks", () => {
+  it("have sequential IDs", () => {
     const node =
       new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode('Hello, '),
-          new InlineNsflNode([
-            new PlainTextNode('rotting Red')
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('The main character defeats the bad guy.')
           ]),
-          new PlainTextNode('. We meet for the eighth'),
-          new InlineNsflNode([
-            new EmphasisNode([
-              new PlainTextNode('fetid')
+          new NsflBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('The hero was unambiguously '),
+              new InlineNsflNode([
+                new PlainTextNode('good '),
+                new InlineNsflNode([
+                  new PlainTextNode('and righteous.')
+                ])
+              ])
             ])
-          ]),
-          new PlainTextNode(' time.')
+          ])
         ]),
-        new ParagraphNode([
-          new PlainTextNode('Hello, '),
-          new InlineNsflNode([
-            new PlainTextNode('rotting Blue')
-          ]),
-          new PlainTextNode('.'),
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('Everyone lived happily ever after, except for the bad men.')
+          ])
         ])
       ])
 
     const html =
-      '<p>'
-      + 'Hello, '
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle nsfl</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<span>rotting Red</span>'
-      + '</span>'
-      + '. We meet for the eighth'
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-2">toggle nsfl</label>'
-      + '<input id="up-nsfl-2" type="checkbox">'
-      + '<span><em>fetid</em></span>'
-      + '</span>'
-      + ' time.'
-      + '</p>'
+      '<div class="up-nsfl up-revealable"><label for="up-nsfl-1">toggle nsfl</label><input id="up-nsfl-1" type="checkbox">'
+      + '<div>'
+      + '<p>The main character defeats the bad guy.</p>'
+      + '<div class="up-nsfl up-revealable"><label for="up-nsfl-2">toggle nsfl</label><input id="up-nsfl-2" type="checkbox">'
+      + '<div>'
       + '<p>'
-      + 'Hello, '
+      + 'The hero was unambiguously '
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-3">toggle nsfl</label>'
       + '<input id="up-nsfl-3" type="checkbox">'
-      + '<span>rotting Blue</span>'
+      + '<span>'
+      + 'good '
+      + '<span class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-4">toggle nsfl</label>'
+      + '<input id="up-nsfl-4" type="checkbox">'
+      + '<span>'
+      + 'and righteous.'
       + '</span>'
-      + '.'
+      + '</span>'
+      + '</span>'
+      + '</span>'
       + '</p>'
+      + '</div>'
+      + '</div>'
+      + '</div>'
+      + '</div>'
+      + '<div class="up-nsfl up-revealable"><label for="up-nsfl-5">toggle nsfl</label><input id="up-nsfl-5" type="checkbox">'
+      + '<div>'
+      + '<p>Everyone lived happily ever after, except for the bad men.</p>'
+      + '</div>'
+      + '</div>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
   })
@@ -68,20 +75,20 @@ describe("Multiple NSFL conventions in a document", () => {
 
 
 describe("The ID of an inline NSFL convention's checkbox (on both the checkbox and the label)", () => {
-  it("reset each time a new document is written", () => {
+  it("is reset each time a new document is written", () => {
     const up = new Up()
-    
+
     const node =
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, '),
           new InlineNsflNode([
-            new PlainTextNode('rotting Red')
+            new PlainTextNode('Red')
           ]),
-          new PlainTextNode('. We meet for the eighth'),
+          new PlainTextNode('. We meet for the '),
           new InlineNsflNode([
             new EmphasisNode([
-              new PlainTextNode('fetid')
+              new PlainTextNode('eighth')
             ])
           ]),
           new PlainTextNode(' time.')
@@ -89,9 +96,36 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
         new ParagraphNode([
           new PlainTextNode('Hello, '),
           new InlineNsflNode([
-            new PlainTextNode('rotting Blue')
+            new PlainTextNode('Blue')
           ]),
           new PlainTextNode('.'),
+        ])
+      ])
+
+    expect(up.toHtml(node)).to.be.eql(up.toHtml(node))
+  })
+})
+
+
+
+describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)", () => {
+  it("is reset each time a new document is written", () => {
+    const up = new Up()
+
+    const node =
+      new DocumentNode([
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('After you beat the Elite Four, you have to face your rival.')
+          ])
+        ]),
+        new ParagraphNode([
+          new PlainTextNode("But the game isn't over yet!")
+        ]),
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('Once you beat your rival, you can finally enter Cerulean Cave.')
+          ])
         ])
       ])
 
