@@ -8,6 +8,8 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -216,6 +218,46 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const html =
       '<div class="up-spoiler up-revealable">'
       + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle spoiler</label>'
+      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+  specify("id attribute of NSFW blocks' checkboxes (and the 'for' attribute of their labels)", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '"&&"',
+        terms: { nsfw: 'look "away" & smile & forget' }
+      }
+    })
+
+    const node = new NsfwBlockNode([])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle nsfw</label>'
+      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+
+  specify("id attribute of NSFW blocks' checkboxes (and the 'for' attribute of their labels)", () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '"&&"',
+        terms: { nsfl: 'look "away" & smile & forget' }
+      }
+    })
+
+    const node = new NsflBlockNode([])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle nsfl</label>'
       + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
       + '<div></div>'
       + '</div>'
