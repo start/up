@@ -19,6 +19,8 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
@@ -328,6 +330,172 @@ SPOILER:
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
+
+          new UnorderedListNode([
+
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat cereal."),
+                footnotes[0],
+                new PlainTextNode(" Never have."),
+              ]),
+              new ParagraphNode([
+                new PlainTextNode("It's too expensive.")
+              ])
+            ]),
+
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat"),
+                footnotes[1],
+                new PlainTextNode(" pumpkins."),
+              ])
+            ])
+
+          ]),
+
+          new FootnoteBlockNode(footnotes)
+
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Footnotes in a spoiler block', () => {
+  it('produce footnote blocks within the spoiler block', () => {
+    const text = `
+NSFW:
+
+  This ruins the movie. [^ And this is a fun fact.]`
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode("And this is a fun fact."),
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsfwBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("This ruins the movie."),
+            footnote,
+          ]),
+          new FootnoteBlockNode([footnote]),
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Footnotes nested inside 2 or more outline conventions nested inside a spoiler block', () => {
+  it("produce footnote blocks inside the spoiler block after all the appropriate outline conventions", () => {
+    const text = `
+NSFW:
+
+  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+ 
+    It's too expensive.
+ 
+  * I don't eat (^Or touch.) pumpkins.`
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1),
+      new FootnoteNode([
+        new PlainTextNode("Or touch."),
+      ], 2)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsfwBlockNode([
+
+          new UnorderedListNode([
+
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat cereal."),
+                footnotes[0],
+                new PlainTextNode(" Never have."),
+              ]),
+              new ParagraphNode([
+                new PlainTextNode("It's too expensive.")
+              ])
+            ]),
+
+            new UnorderedListItem([
+              new ParagraphNode([
+                new PlainTextNode("I don't eat"),
+                footnotes[1],
+                new PlainTextNode(" pumpkins."),
+              ])
+            ])
+
+          ]),
+
+          new FootnoteBlockNode(footnotes)
+
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Footnotes in a spoiler block', () => {
+  it('produce footnote blocks within the spoiler block', () => {
+    const text = `
+NSFL:
+
+  This ruins the movie. [^ And this is a fun fact.]`
+
+    const footnote =
+      new FootnoteNode([
+        new PlainTextNode("And this is a fun fact."),
+      ], 1)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("This ruins the movie."),
+            footnote,
+          ]),
+          new FootnoteBlockNode([footnote]),
+        ])
+      ])
+    )
+  })
+})
+
+
+describe('Footnotes nested inside 2 or more outline conventions nested inside a spoiler block', () => {
+  it("produce footnote blocks inside the spoiler block after all the appropriate outline conventions", () => {
+    const text = `
+NSFL:
+
+  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+ 
+    It's too expensive.
+ 
+  * I don't eat (^Or touch.) pumpkins.`
+
+    const footnotes = [
+      new FootnoteNode([
+        new PlainTextNode("Well, I do, but I pretend not to."),
+      ], 1),
+      new FootnoteNode([
+        new PlainTextNode("Or touch."),
+      ], 2)
+    ]
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsflBlockNode([
 
           new UnorderedListNode([
 
