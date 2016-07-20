@@ -2,6 +2,8 @@ import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
 import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
@@ -23,6 +25,8 @@ export function getOutlineNodes(
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
+  const { terms } = config.settings.i18n 
+
   const outlineConventions = [
     tryToParseBlankLineSeparation,
     tryToParseHeading,
@@ -31,7 +35,9 @@ export function getOutlineNodes(
     tryToParseSectionSeparatorStreak,
     tryToParseCodeBlock,
     tryToParseBlockquote,
-    getLabeledBlockParser(config.settings.i18n.terms.spoiler, SpoilerBlockNode),
+    getLabeledBlockParser(terms.spoiler, SpoilerBlockNode),
+    getLabeledBlockParser(terms.nsfw, NsfwBlockNode),
+    getLabeledBlockParser(terms.nsfl, NsflBlockNode),
     tryToParseDescriptionList
   ]
 
