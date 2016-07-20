@@ -106,6 +106,7 @@ class FootnoteHandler {
     outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
   }
 
+  // TODO: Consider moving this process to the individual outline syntax node classes.
   handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
       return this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(node.children)
