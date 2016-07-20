@@ -11,6 +11,7 @@ import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
@@ -92,6 +93,28 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+
+    expect(up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
+describe("Within a spoiler block's label, all instances of < and &", () => {
+  it("are escaped", () => {
+    const up = new Up({
+      i18n: {
+        terms: { toggleSpoiler: '<_< & show & hide' }
+      }
+    })
+
+    const node = new SpoilerBlockNode([])
+
+    const html =
+      '<div class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">&lt;_&lt; &amp; show &amp; hide</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
