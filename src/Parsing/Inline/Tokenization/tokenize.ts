@@ -1000,13 +1000,13 @@ class Tokenizer {
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
-    return new TokenizerSnapshot({
+    return {
       textIndex: this.consumer.textIndex,
-      tokens: this.tokens,
-      openContexts: this.openContexts,
-      raisedVoiceHandlers: this.raisedVoiceHandlers,
+      tokens: this.tokens.slice(),
+      openContexts: this.openContexts.map(context => context.clone()),
+      raisedVoiceHandlers: this.raisedVoiceHandlers.map(handler => handler.clone()),
       buffer: this.buffer
-    })
+    }
   }
 
   private canTry(conventionToOpen: Convention): boolean {
