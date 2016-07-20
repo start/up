@@ -18,7 +18,7 @@ import { InlineTextConsumer, OnTextMatch } from './InlineTextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
-import { TokenizableConvention, OnConventionEvent } from './TokenizableConvention'
+import { Convention, OnConventionEvent } from './Convention'
 import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 
 
@@ -60,7 +60,7 @@ class Tokenizer {
   // 1. Raw bracket conventions (explained below)
   // 2. Media URL conventions (explained below)
   // 3. Link URL conventions (explained below)
-  private conventions: TokenizableConvention[]
+  private conventions: Convention[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
   // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
@@ -82,7 +82,7 @@ class Tokenizer {
   // Most of our conventions are just thrown in the `conventions` collection (and this one is, too), but we
   // keep a direct reference to the naked URL convention to help us determine whether another convention
   // contains a naked URL.
-  private nakedUrlConvention = new TokenizableConvention({
+  private nakedUrlConvention = new Convention({
     startsWith: 'http' + optional('s') + '://',
     isCutShortByWhitespace: true,
 
@@ -197,7 +197,7 @@ class Tokenizer {
     ]
   }
 
-  private getFootnoteConventions(): TokenizableConvention[] {
+  private getFootnoteConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
@@ -206,7 +206,7 @@ class Tokenizer {
       }))
   }
 
-  private getLinkContentConventions(): TokenizableConvention[] {
+  private getLinkContentConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: LINK_CONVENTION,
@@ -221,7 +221,7 @@ class Tokenizer {
       richConvention: RichConvention
       nonLocalizedTerm: string
     }
-  ): TokenizableConvention[] {
+  ): Convention[] {
     const { richConvention, nonLocalizedTerm } = args
 
     return BRACKETS.map(bracket =>
@@ -245,7 +245,7 @@ class Tokenizer {
       startsWith: string
       endsWith: string
     }
-  ): TokenizableConvention {
+  ): Convention {
     const { richConvention, startsWith, endsWith } = args
 
     return this.getTokenizableRichConvention({
@@ -268,7 +268,7 @@ class Tokenizer {
       cannotStartWithWhitespace?: boolean
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
     }
-  ): TokenizableConvention {
+  ): Convention {
     const { richConvention, startsWith, endsWith, cannotStartWithWhitespace, isMeaningfulWhenItContainsOnlyWhitespace } = args
 
     return this.getTokenizableRichConvention({
@@ -294,12 +294,12 @@ class Tokenizer {
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
       whenClosing?: OnConventionEvent
-      mustBeDirectlyFollowedBy?: TokenizableConvention[]
+      mustBeDirectlyFollowedBy?: Convention[]
     }
-  ): TokenizableConvention {
+  ): Convention {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
-    return new TokenizableConvention({
+    return new Convention({
       // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
       // is empty:
       //
@@ -339,10 +339,10 @@ class Tokenizer {
     })
   }
 
-  private getMediaDescriptionConventions(): TokenizableConvention[] {
+  private getMediaDescriptionConventions(): Convention[] {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
-        BRACKETS.map(bracket => new TokenizableConvention({
+        BRACKETS.map(bracket => new Convention({
           startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket) + ANY_WHITESPACE,
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
@@ -356,8 +356,8 @@ class Tokenizer {
         }))))
   }
 
-  private getMediaUrlConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
+  private getMediaUrlConventions(): Convention[] {
+    return BRACKETS.map(bracket => new Convention({
       startsWith: ANY_WHITESPACE + this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
@@ -398,7 +398,7 @@ class Tokenizer {
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive periods are allowed in the resource path.
-  private getLinkUrlConventions(): TokenizableConvention[] {
+  private getLinkUrlConventions(): Convention[] {
     return concat(BRACKETS.map(bracket => [
       this.getBracketedUrlConvention({
         bracket,
@@ -429,7 +429,7 @@ class Tokenizer {
   // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow
   // whitespace between the linkifying URL and the original convention. For more information, see
   // `getConventionsForWhitespaceFollowedByLinkUrl`.
-  private getLinkifyingUrlConventions(): TokenizableConvention[] {
+  private getLinkifyingUrlConventions(): Convention[] {
     const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
       SPOILER_CONVENTION,
       NSFW_CONVENTION,
@@ -474,10 +474,10 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing?: TokenKind[]
       whenClosing: (url: string) => void
     }
-  ): TokenizableConvention {
+  ): Convention {
     const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
 
-    return new TokenizableConvention({
+    return new Convention({
       onlyOpenIfDirectlyFollowing,
 
       startsWith: this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
@@ -507,10 +507,10 @@ class Tokenizer {
       onlyOpenIfDirectlyFollowing?: TokenKind[]
       ifUrlIsValidWheClosing: (url: string) => void
     }
-  ): TokenizableConvention {
+  ): Convention {
     const { bracket, onlyOpenIfDirectlyFollowing, ifUrlIsValidWheClosing } = args
 
-    return new TokenizableConvention({
+    return new Convention({
       onlyOpenIfDirectlyFollowing,
 
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
@@ -572,8 +572,8 @@ class Tokenizer {
     last(this.tokens).value = url
   }
 
-  private getRawBracketConventions(): TokenizableConvention[] {
-    return BRACKETS.map(bracket => new TokenizableConvention({
+  private getRawBracketConventions(): Convention[] {
+    return BRACKETS.map(bracket => new Convention({
       startsWith: bracket.startPattern,
       endsWith: bracket.endPattern,
 
@@ -976,7 +976,7 @@ class Tokenizer {
     return true
   }
 
-  private tryToOpen(convention: TokenizableConvention): boolean {
+  private tryToOpen(convention: Convention): boolean {
     const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
 
     return (
@@ -1009,7 +1009,7 @@ class Tokenizer {
     })
   }
 
-  private canTry(conventionToOpen: TokenizableConvention): boolean {
+  private canTry(conventionToOpen: Convention): boolean {
     const textIndex = this.consumer.textIndex
 
     // If a convention must be followed by one of a set of specific conventions, then there are really

@@ -1,4 +1,4 @@
-import { TokenizableConvention } from './TokenizableConvention'
+import { Convention } from './Convention'
 import { ConventionContext } from './ConventionContext'
 
 
@@ -16,7 +16,7 @@ export class FailedConventionTracker {
     this.failedConventionsByTextIndex[textIndex].push(convention)
   }
 
-  hasFailed(convention: TokenizableConvention, textIndex: number): boolean {
+  hasFailed(convention: Convention, textIndex: number): boolean {
     const failedConventions = (this.failedConventionsByTextIndex[textIndex] || [])
     return failedConventions.some(failedConvention => failedConvention === convention)
   }
@@ -24,5 +24,5 @@ export class FailedConventionTracker {
 
 
 interface FailedConventionsByTextIndex {
-  [textIndex: number]: TokenizableConvention[]
+  [textIndex: number]: Convention[]
 }

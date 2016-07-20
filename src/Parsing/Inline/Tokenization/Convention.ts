@@ -26,14 +26,14 @@ export interface TokenizableConventionArgs {
   beforeClosingItAlwaysFlushesBufferTo?: TokenKind
   beforeClosingItFlushesNonEmptyBufferTo?: TokenKind
   whenClosingItAlsoClosesInnerConventions?: boolean
-  mustBeDirectlyFollowedBy?: TokenizableConvention[]
+  mustBeDirectlyFollowedBy?: Convention[]
 
   whenClosing?: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
 }
 
 
-export class TokenizableConvention {
+export class Convention {
   onlyOpenIfDirectlyFollowing: TokenKind[]
 
   startsWith: RegExp
@@ -53,7 +53,7 @@ export class TokenizableConvention {
   beforeClosingItFlushesNonEmptyBufferTo: TokenKind
   beforeClosingItAlwaysFlushesBufferTo: TokenKind
   whenClosingItAlsoClosesInnerConventions: boolean
-  mustBeDirectlyFollowedBy: TokenizableConvention[]
+  mustBeDirectlyFollowedBy: Convention[]
 
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent

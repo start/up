@@ -1,10 +1,10 @@
-import { TokenizableConvention } from './TokenizableConvention'
+import { Convention } from './Convention'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 
 
 export class ConventionContext {
   constructor(
-    public convention: TokenizableConvention,
+    public convention: Convention,
     public snapshot: TokenizerSnapshot,
     public startTokenIndex = snapshot.tokens.length) { }
 
