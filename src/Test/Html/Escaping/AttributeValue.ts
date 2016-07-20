@@ -142,7 +142,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-  specify("id attribute of spoilers' checkboxes (and the for attribute of their labels)", () => {
+  specify("id attribute of inline spoilers' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -162,7 +162,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-  specify("id attribute of NSFW conventions' checkboxes (and the for attribute of their labels)", () => {
+  specify("id attribute of inline NSFW conventions' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
@@ -182,7 +182,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-  specify("id attribute of NSFL conventions' checkboxes (and the for attribute of their labels)", () => {
+  specify("id attribute of inline NSFL conventions' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',
