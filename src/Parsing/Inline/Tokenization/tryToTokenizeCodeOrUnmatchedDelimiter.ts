@@ -31,7 +31,7 @@ import { Token } from './Token'
 // Anything beyond that single space is preserved. If there are two spaces between the delimiter
 // and the starting/ending backticks, only one is trimmed away.
 //
-// Furthermore, that single space is only trimmed when it was used to separate a delimiter from
+// Furthermore, that single space is only trimmed when it's used to separate a delimiter from
 // backticks in the inline code. If a given "side" of inline code has any non-whitespace characters
 // between the delimiter and the first backtick, nothing gets trimmed from that side.    
 export function tryToTokenizeCodeOrUnmatchedDelimiter(
