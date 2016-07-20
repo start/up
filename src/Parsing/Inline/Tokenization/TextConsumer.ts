@@ -1,4 +1,4 @@
-export class InlineTextConsumer {
+export class TextConsumer {
   private _remainingText: string
   private _textIndex: number
   private _currentChar: string

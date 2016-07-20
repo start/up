@@ -14,7 +14,7 @@ import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { InlineTextConsumer, OnTextMatch } from './InlineTextConsumer'
+import { TextConsumer, OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
@@ -40,7 +40,7 @@ const LEADING_WHITESPACE_PATTERN =
 class Tokenizer {
   tokens: Token[] = []
 
-  private consumer: InlineTextConsumer
+  private consumer: TextConsumer
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a PlainTextToken.
@@ -133,7 +133,7 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(entireText: string, private config: UpConfig) {
-    this.consumer = new InlineTextConsumer(entireText)
+    this.consumer = new TextConsumer(entireText)
     this.configureConventions()
 
     this.tokenize()

@@ -1,5 +1,5 @@
 import { patternStartingWith, patternEndingWith, atLeast, anyCharBut } from '../../PatternHelpers'
-import { InlineTextConsumer } from './InlineTextConsumer'
+import { TextConsumer } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 
@@ -41,7 +41,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
   }
 ): boolean {
   const { text, then } = args
-  const consumer = new InlineTextConsumer(text)
+  const consumer = new TextConsumer(text)
 
   let startDelimiter: string
 

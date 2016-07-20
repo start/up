@@ -1,5 +1,5 @@
 import { ConventionContext } from './ConventionContext'
-import { OnTextMatch } from './InlineTextConsumer'
+import { OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { RichConvention } from '../RichConvention'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
