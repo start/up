@@ -1,6 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
+import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
 import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
@@ -9,7 +10,7 @@ import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
-import { tryToParseSpoilerBlock } from './tryToParseSpoilerBlock'
+import { getLabeledBlockParser } from './getLabeledBlockParser'
 import { parseRegularLines } from './parseRegularLines'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { last } from '../../CollectionHelpers'
@@ -17,24 +18,23 @@ import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
 
 
-const OUTLINE_CONVENTIONS = [
-  tryToParseBlankLineSeparation,
-  tryToParseHeading,
-  tryToParseUnorderedList,
-  trytoParseOrderedList,
-  tryToParseSectionSeparatorStreak,
-  tryToParseCodeBlock,
-  tryToParseBlockquote,
-  tryToParseSpoilerBlock,
-  tryToParseDescriptionList
-]
-
-
 export function getOutlineNodes(
   lines: string[],
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
+  const outlineConventions = [
+    tryToParseBlankLineSeparation,
+    tryToParseHeading,
+    tryToParseUnorderedList,
+    trytoParseOrderedList,
+    tryToParseSectionSeparatorStreak,
+    tryToParseCodeBlock,
+    tryToParseBlockquote,
+    getLabeledBlockParser(config.settings.i18n.terms.spoiler, SpoilerBlockNode),
+    tryToParseDescriptionList
+  ]
+
   const lineConsumer = new LineConsumer(withoutOuterBlankLines(lines))
   const outlineNodes: OutlineSyntaxNode[] = []
 
@@ -49,7 +49,7 @@ export function getOutlineNodes(
       }
     }
 
-    if (!OUTLINE_CONVENTIONS.some(tryToParse => tryToParse(outlineParserArgs))) {
+    if (!outlineConventions.some(tryToParse => tryToParse(outlineParserArgs))) {
       parseRegularLines(outlineParserArgs)
     }
   }
