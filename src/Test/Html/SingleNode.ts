@@ -521,6 +521,28 @@ describe('A NSFW block node', () => {
 })
 
 
+describe('A NSFL block node', () => {
+  it('produces the same markup as an inline NSFWLnode, but with div elements instead of span elements', () => {
+    const node = new NsfwBlockNode([
+      new ParagraphNode([
+        new PlainTextNode('John Carmack is a decent programmer.')
+      ])
+    ])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">toggle nsfl</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
+      + '<div>'
+      + '<p>John Carmack is a decent programmer.</p>'
+      + '</div>'
+      + '</div>'
+
+    expect(Up.toHtml(node)).to.be.eql(html)
+  })
+})
+
+
 describe('A plain text node', () => {
   it('produces text, not an html element', () => {
     const node = new PlainTextNode('Kokiri Forest')
