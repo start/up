@@ -9,6 +9,7 @@ import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -132,9 +133,9 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('audio conventions can be produced using the term', () => {
-      expect(up.toAst('[^look^: Ash fights Gary](example.com/audio.ogg)')).to.be.eql(
+      expect(up.toAst('[^look^: Ash fights Gary](example.com/image.svg)')).to.be.eql(
         new DocumentNode([
-          new ImageNode('Ash fights Gary', 'https://example.com/audio.ogg')
+          new ImageNode('Ash fights Gary', 'https://example.com/image.svg')
         ]))
     })
 
@@ -151,6 +152,41 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], 1)
 
       expect(up.toAst('[^look^: I guess this means "look up"?]')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([footnote]),
+          new FootnoteBlockNode([footnote])
+        ]))
+    })
+  })
+
+
+  context("When the custom term for 'video' starts with a caret", () => {
+    const up = new Up({
+      i18n: {
+        terms: { image: '^watch^' }
+      }
+    })
+
+    specify('audio conventions can be produced using the term', () => {
+      expect(up.toAst('[^watch^: Ash fights Gary](example.com/video.webm)')).to.be.eql(
+        new DocumentNode([
+          new ImageNode('Ash fights Gary', 'https://example.com/video.webm')
+        ]))
+    })
+
+    specify('an unmatched image start delimiter is treated as plain text', () => {
+      expect(up.toAst('[^watch^: Ash fights Ga')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('[^watch^: Ash fights Ga')
+        ]))
+    })
+
+    specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('watch^: I guess this means "watch up"?')
+      ], 1)
+
+      expect(up.toAst('[^watch^: I guess this means "watch up"?]')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
