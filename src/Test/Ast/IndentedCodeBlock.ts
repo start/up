@@ -7,8 +7,8 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 
 
-describe('A code block', () => {
-  it('preserves all indentation', () => {
+context('A code block preserves all indentation when it is', () => {
+  specify('a top-level convention', () => {
     const text = `
 \`\`\`
   if (x < 0) {
@@ -23,5 +23,28 @@ describe('A code block', () => {
 \t\treturn false
   }`),
       ]))
+  })
+
+
+  context('within a spoiler block', () => {
+    specify('using 2 spaces for indentation', () => {
+      const text = `
+SPOILER:
+  \`\`\`
+    if (x < 0) {
+  \t\treturn false
+    }
+  \`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new CodeBlockNode(
+              `  if (x < 0) {
+\t\treturn false
+  }`),
+          ])
+        ]))
+    })
   })
 })
