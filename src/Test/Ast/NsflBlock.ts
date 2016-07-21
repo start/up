@@ -127,6 +127,7 @@ NSFL:
   })
 })
 
+
 describe('NSFL blocks', () => {
   context('can contain any outline convention, including: ', () => {
     specify('Other NSFL blocks', () => {
@@ -205,6 +206,25 @@ NSFL:
           ])
         ]))
     })
+  })
+
+  it('can be directly followed by a paragraph', () => {
+    const text = `
+NSFL:
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+That was my favorite episode.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ])
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('That was my favorite episode.')
+        ])
+      ]))
   })
 })
 
