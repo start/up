@@ -12,6 +12,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
+import { HiddenRichConvention } from './HiddenRichConvention'
 
 
 export const EMPHASIS_CONVENTION: RichConventionWithoutExtraFields = {
@@ -38,23 +39,23 @@ export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.RevisionInsertionEnd
 }
 
-export const SPOILER_CONVENTION: RichConventionWithoutExtraFields = {
+export const SPOILER_CONVENTION = new HiddenRichConvention({
   NodeType: InlineSpoilerNode,
   startTokenKind: TokenKind.SpoilerStart,
   endTokenKind: TokenKind.SpoilerEnd,
-}
+})
 
-export const NSFW_CONVENTION: RichConventionWithoutExtraFields = {
+export const NSFW_CONVENTION = new HiddenRichConvention({
   NodeType: InlineNsfwNode,
   startTokenKind: TokenKind.NsfwStart,
   endTokenKind: TokenKind.NsfwEnd,
-}
+})
 
-export const NSFL_CONVENTION: RichConventionWithoutExtraFields = {
+export const NSFL_CONVENTION = new HiddenRichConvention({
   NodeType: InlineNsflNode,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd,
-}
+})
 
 export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: FootnoteNode,
