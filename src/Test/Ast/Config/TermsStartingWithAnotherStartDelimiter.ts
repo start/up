@@ -1,10 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
 
 context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
@@ -78,6 +80,29 @@ context("When the custom term for an inline convention starts with a caret, the 
       expect(up.toAst('[^lookaway^: Not finished typi')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('[^lookaway^: Not finished typi')
+        ]))
+    })
+  })
+
+
+  context("When the custom term for 'audio' starts with the a caret", () => {
+    const up = new Up({
+      i18n: {
+        terms: { audio: '^^ audio' }
+      }
+    })
+
+    specify('audio conventions can be produced using the term', () => {
+      expect(up.toAst('[^^ audio: Ash fights Gary](example.com/audio.ogg)')).to.be.eql(
+        new DocumentNode([
+          new AudioNode('Ash fights Gary', 'https://example.com/audio.ogg')
+        ]))
+    })
+
+    specify('an unmatched audio start delimiter is treated as plain text', () => {
+      expect(up.toAst('[^^ audio: Ash fights Ga')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('[^^ audio: Ash fights Ga')
         ]))
     })
   })
