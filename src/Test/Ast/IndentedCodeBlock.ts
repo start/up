@@ -15,6 +15,7 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
+import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
 context('A code block preserves all indentation when it is', () => {
@@ -435,6 +436,28 @@ Lesson 1
 \t\treturn false
   }`)
               ]))
+          ])
+        ]))
+    })
+  })
+
+
+  context('within a blockquote', () => {
+    specify('with a space after each delimiter', () => {
+      const text = `
+> \`\`\`
+>   if (x < 0) {
+> \t\treturn false
+>   }
+> \`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new CodeBlockNode(
+              `  if (x < 0) {
+\t\treturn false
+  }`),
           ])
         ]))
     })
