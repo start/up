@@ -4,7 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { StressNode } from '../../SyntaxNodes/StressNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
@@ -90,6 +90,28 @@ describe('A footnote', () => {
           new PlainTextNode("I don't eat cereal."),
           footnote,
           new PlainTextNode(" Never have."),
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+
+  it('can be nested within an inline convention', () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I '),
+      new EmphasisNode([
+        new PlainTextNode('do')
+      ]),
+      new PlainTextNode(', but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new StressNode([
+            new PlainTextNode("I don't eat cereal."),
+            footnote,
+            new PlainTextNode(" Never have."),
+          ])
         ]),
         new FootnoteBlockNode([footnote])
       ]))
