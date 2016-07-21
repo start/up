@@ -3,9 +3,15 @@ import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields, RichSyntaxNodeWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
-// A rich inline convention is one that can contain other inline conventions.
+
 export class HiddenRichConvention {
   NodeType: RichSyntaxNodeWithoutExtraFields
   startTokenKind: TokenKind
   endTokenKind: TokenKind
+
+  constructor(args: RichConventionWithoutExtraFields) {
+    this.NodeType = args.NodeType
+    this.startTokenKind = args.startTokenKind
+    this.endTokenKind = args.endTokenKind
+  }
 }
