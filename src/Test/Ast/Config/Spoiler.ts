@@ -9,12 +9,13 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 
 context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
+  const up = new Up({
+    i18n: {
+      terms: { spoiler: 'ruins ending' }
+    }
+  })
+
   context('For inline spoilers:', () => {
-    const up = new Up({
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
-    })
 
     specify('The term is used', () => {
       expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
@@ -35,58 +36,43 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
 
 
   context('For spoiler blocks:', () => {
-    const up = new Up({
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
-    })
-
     specify('The term is used', () => {
-      it('produces an inline spoiler block node', () => {
-        const text = `
+      const text = `
 ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-        expect(Up.toAst(text)).to.be.eql(
-          new DocumentNode([
-            new SpoilerBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
-              ]),
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
-              ])
+      expect(up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
             ])
-          ]))
-      })
-
-      expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
-        insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
           ])
         ]))
     })
+  })
 
-    it('The term is case-insensitive, even when custom', () => {
-        const lowercase = `
+  it('The term is case-insensitive, even when custom', () => {
+    const lowercase = `
 ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-        const mixedCase = `
+    const mixedCase = `
 ruINs eNDiNg:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
-    })
+    expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
   })
 })
