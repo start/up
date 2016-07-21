@@ -138,7 +138,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('h' + Math.min(6, node.level), node.children)
   }
 
-  protected sectionSeparator(node: SectionSeparatorNode): string {
+  protected sectionSeparator(): string {
     return singleTagHtmlElement('hr')
   }
 

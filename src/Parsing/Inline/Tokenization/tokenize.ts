@@ -256,7 +256,7 @@ class Tokenizer {
       whenOpening: () => { this.buffer += startsWith },
       whenClosing: () => { this.buffer += endsWith },
 
-      insteadOfFailingWhenLeftUnclosed: (context) => { /*  Neither fail nor do anything special  */ }
+      insteadOfFailingWhenLeftUnclosed: () => { /*  Neither fail nor do anything special  */ }
     })
   }
 

@@ -49,7 +49,7 @@ export abstract class Writer {
   protected abstract codeBlock(node: CodeBlockNode): string
   protected abstract paragraph(node: ParagraphNode): string
   protected abstract heading(node: HeadingNode): string
-  protected abstract sectionSeparator(node: SectionSeparatorNode): string
+  protected abstract sectionSeparator(): string
   protected abstract emphasis(node: EmphasisNode): string
   protected abstract stress(node: StressNode): string
   protected abstract inlineCode(node: InlineCodeNode): string
@@ -123,7 +123,7 @@ export abstract class Writer {
     }
 
     if (node instanceof SectionSeparatorNode) {
-      return this.sectionSeparator(node)
+      return this.sectionSeparator()
     }
 
     if (node instanceof EmphasisNode) {
