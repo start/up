@@ -9,6 +9,8 @@ import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
+import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
 
 context('A code block preserves all indentation when it is', () => {
@@ -274,6 +276,72 @@ NSFL:
         new DocumentNode([
           new OrderedListNode([
             new OrderedListItem([
+              new CodeBlockNode(
+                `  if (x < 0) {
+\t\treturn false
+  }`),
+            ])
+          ])
+        ]))
+    })
+  })
+
+
+  context('within an unordered list item', () => {
+    specify('using 2 spaces for indentation', () => {
+      const text = `
+* \`\`\`
+    if (x < 0) {
+  \t\treturn false
+    }
+  \`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new UnorderedListNode([
+            new UnorderedListItem([
+              new CodeBlockNode(
+                `  if (x < 0) {
+\t\treturn false
+  }`),
+            ])
+          ])
+        ]))
+    })
+
+    specify('using 1 tab for indentation', () => {
+      const text = `
+* \`\`\`
+\t  if (x < 0) {
+\t\t\treturn false
+\t  }
+\t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new UnorderedListNode([
+            new UnorderedListItem([
+              new CodeBlockNode(
+                `  if (x < 0) {
+\t\treturn false
+  }`),
+            ])
+          ])
+        ]))
+    })
+
+    specify('using 1 space and 1 tab for indentation', () => {
+      const text = `
+* \`\`\`
+ \t  if (x < 0) {
+ \t\t\treturn false
+ \t  }
+ \t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new UnorderedListNode([
+            new UnorderedListItem([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false
