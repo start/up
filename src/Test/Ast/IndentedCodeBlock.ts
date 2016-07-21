@@ -466,7 +466,7 @@ Lesson 1
 
 
 context('When a code block is nested within a blockquote that has no spaces after each delimiter', () => {
-  specify("the code block's tabbed indentation is preseved", () => {
+  specify("tabbed indentation within the code block is preseved", () => {
     const text = `
 >\`\`\`
 >\tif (x < 0) {
@@ -485,7 +485,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
       ]))
   })
 
-  specify('a single leading space will be consumed from any applicable lines of code', () => {
+  specify('a single leading space will be consumed from any lines of code with leading spaces', () => {
     const text = `
 >\`\`\`
 >if (x < 0) {
