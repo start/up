@@ -7,6 +7,7 @@ import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
+import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
@@ -109,7 +110,7 @@ class FootnoteHandler {
   // TODO: Consider moving this process to the individual outline syntax node classes.
   handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-      return this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(node.children)
+      return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children)
     }
 
     if (node instanceof LineBlockNode) {
@@ -134,13 +135,24 @@ class FootnoteHandler {
     return []
   }
 
-  getTopLevelFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
+  // Here, "outermost footnote" refers to any footnote that isn't nested within another footnote. It does not
+  // exclude footntoes nested within other inline conventions (e.g. emphasis or stress).
+  //
+  // Because of rule 4 (described above), the reference numbers of nested footnotes aren't assigned until we
+  // produce their containing footnote blocks.
+  getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (const node of nodes) {
       if (node instanceof FootnoteNode) {
         node.referenceNumber = this.currentFootnoteReferenceNumber++
         footnotes.push(node)
+        continue
+      }
+
+      if (node instanceof RichInlineSyntaxNode) {
+        footnotes.push(
+          ...this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children))
       }
     }
 
@@ -149,7 +161,7 @@ class FootnoteHandler {
 
   getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineNodeContainer[]): FootnoteNode[] {
     return concat(
-      containers.map(container => this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(container.children)))
+      containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)))
   }
 
   handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineNodeContainer[]): FootnoteNode[] {
@@ -184,7 +196,7 @@ class FootnoteHandler {
       const footnote = footnoteBlock.footnotes[i]
 
       const nestedFootnotes =
-        this.getTopLevelFootnotesAndAssignTheirReferenceNumbers(footnote.children)
+        this.getOutermostFootnotesAndAssignTheirReferenceNumbers(footnote.children)
 
       // Note: This appends items to the collection we're currently looping through.
       footnoteBlock.footnotes.push(...nestedFootnotes)
