@@ -105,7 +105,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
   })
 
 
-  specify("This doesn't affect revealable conventions within the footnote", () => {
+  specify("This doesn't affect revealable conventions within footnotes", () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('After you beat the Elite Four, '),
       new InlineSpoilerNode([
@@ -124,4 +124,32 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ])
       ]))
   })
+
+
+  context("When a footnote is inside multiple revealable inline conventions, the footnote's body is only placed inside the innermost one. This includes when the footnote is nested within", () => {
+    specify("a spoiler convention within a NSFW convention", () => {
+      const footnoteInsideHiddenConvention = new FootnoteNode([
+        new InlineSpoilerNode([
+          new PlainTextNode('Well, I do, but I pretend not to.')
+        ])
+      ], 1)
+
+      expect(Up.toAst("{NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]}")).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([
+            new InlineNsfwNode([
+              new InlineSpoilerNode([
+                new PlainTextNode("I don't eat cereal."),
+                footnoteInsideHiddenConvention,
+                new PlainTextNode(" Never have."),
+              ])
+            ])
+          ]),
+          new FootnoteBlockNode([
+            footnoteInsideHiddenConvention
+          ])
+        ]))
+    })
+  })
 })
+
