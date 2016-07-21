@@ -9,13 +9,13 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 context('The "nsfl" config term is used by both inline NSFL conventions and NSFL blocks.', () => {
-  context('For inline NSFL conventions:', () => {
-    const up = new Up({
-      i18n: {
-        terms: { nsfl: 'gross' }
-      }
-    })
+  const up = new Up({
+    i18n: {
+      terms: { nsfl: 'gross' }
+    }
+  })
 
+  context('For inline NSFL conventions:', () => {
     specify('The term is used', () => {
       expect(up.toAst('[gross: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
@@ -35,12 +35,6 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
 
 
   context('For NSFL blocks:', () => {
-    const up = new Up({
-      i18n: {
-        terms: { nsfl: 'gross' }
-      }
-    })
-
     specify('The term is used', () => {
       const text = `
 gross:
