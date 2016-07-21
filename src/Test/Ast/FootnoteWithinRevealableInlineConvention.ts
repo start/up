@@ -103,4 +103,25 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ]))
     })
   })
+
+
+  specify("This doesn't affect revealable conventions within the footnote", () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('After you beat the Elite Four, '),
+      new InlineSpoilerNode([
+        new PlainTextNode('You have to beat your rival.')
+      ])
+    ], 1)
+
+    expect(Up.toAst("Beating the game isn't a quick process. (^After you beat the Elite Four, [SPOILER: You have to beat your rival.])")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("Beating the game isn't a quick process."),
+          footnote
+        ]),
+        new FootnoteBlockNode([
+          footnote
+        ])
+      ]))
+  })
 })
