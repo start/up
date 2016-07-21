@@ -46,5 +46,25 @@ SPOILER:
           ])
         ]))
     })
+
+    specify('using 1 tab for indentation', () => {
+      const text = `
+SPOILER:
+\t\`\`\`
+\t  if (x < 0) {
+\t\t\treturn false
+\t  }
+\t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new CodeBlockNode(
+              `  if (x < 0) {
+\t\treturn false
+  }`),
+          ])
+        ]))
+    })
   })
 })
