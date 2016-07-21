@@ -9,11 +9,15 @@ import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
+import { RevealableConvention } from './RevealableConvention'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
-  return new Parser({ tokens }).result.nodes
+  return new Parser({
+    tokens,
+    outerRevealableConventions: []
+  }).result.nodes
 }
 
 
@@ -43,12 +47,20 @@ class Parser {
   result: ParseResult
 
   private tokens: Token[]
+  private outerRevealableConventions: RevealableConvention[]
   private tokenIndex = 0
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
 
-  constructor(args: { tokens: Token[], untilTokenOfKind?: TokenKind }) {
+  constructor(
+    args: {
+      tokens: Token[]
+      untilTokenOfKind?: TokenKind
+      outerRevealableConventions: RevealableConvention[]
+    }
+  ) {
     this.tokens = args.tokens
+    this.outerRevealableConventions = args.outerRevealableConventions
     const { untilTokenOfKind } = args
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
@@ -129,8 +141,10 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
         if (token.kind === richConvention.startTokenKind) {
-          const children =
-            this.produceSyntaxNodes({ fromHereUntil: richConvention.endTokenKind })
+          const children = this.produceSyntaxNodes({
+            fromHereUntil: richConvention.endTokenKind,
+            withinRevealableConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
+          })
 
           this.nodes.push(new richConvention.NodeType(children))
           continue TokenLoop
@@ -149,10 +163,23 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private produceSyntaxNodes(args: { fromHereUntil: TokenKind }): InlineSyntaxNode[] {
+  private produceSyntaxNodes(
+    args: {
+      fromHereUntil: TokenKind
+      withinRevealableConvention?: RevealableConvention
+    }
+  ): InlineSyntaxNode[] {
+    const outerRevealableConventions = this.outerRevealableConventions
+    const { withinRevealableConvention } = args
+
+    if (withinRevealableConvention) {
+      outerRevealableConventions.push(withinRevealableConvention)
+    }
+
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
-      untilTokenOfKind: args.fromHereUntil
+      untilTokenOfKind: args.fromHereUntil,
+      outerRevealableConventions: outerRevealableConventions
     })
 
     this.tokenIndex += result.countTokensParsed
