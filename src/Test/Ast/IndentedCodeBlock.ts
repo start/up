@@ -152,4 +152,67 @@ NSFW:
         ]))
     })
   })
+
+
+  context('within a NSFL block', () => {
+    specify('using 2 spaces for indentation', () => {
+      const text = `
+NSFL:
+  \`\`\`
+    if (x < 0) {
+  \t\treturn false
+    }
+  \`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new NsflBlockNode([
+            new CodeBlockNode(
+              `  if (x < 0) {
+\t\treturn false
+  }`),
+          ])
+        ]))
+    })
+
+    specify('using 1 tab for indentation', () => {
+      const text = `
+NSFL:
+\t\`\`\`
+\t  if (x < 0) {
+\t\t\treturn false
+\t  }
+\t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new NsflBlockNode([
+            new CodeBlockNode(
+              `  if (x < 0) {
+\t\treturn false
+  }`),
+          ])
+        ]))
+    })
+
+    specify('using 1 space and 1 tab for indentation', () => {
+      const text = `
+NSFL:
+ \t\`\`\`
+ \t  if (x < 0) {
+ \t\t\treturn false
+ \t  }
+ \t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new NsflBlockNode([
+            new CodeBlockNode(
+              `  if (x < 0) {
+\t\treturn false
+  }`),
+          ])
+        ]))
+    })
+  })
 })
