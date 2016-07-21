@@ -9,14 +9,14 @@ import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
-context("When a footnote is inside a revealable inline convention, the footnote's body in its footnote block is placed inside that same revealable inline convention.", () => {
+context("When a footnote is inside a hidden inline convention, the footnote's body in its footnote block is placed inside that same hidden inline convention.", () => {
   context('Specifically:', () => {
     specify("Spoilers", () => {
-      const footnoteOutsideRevealableConvention = new FootnoteNode([
+      const footnoteOutsideHiddenConvention = new FootnoteNode([
         new PlainTextNode('Really.')
       ], 1)
 
-      const footnoteInsideRevealableConvention = new FootnoteNode([
+      const footnoteInsideHiddenConvention = new FootnoteNode([
         new InlineSpoilerNode([
           new PlainTextNode('Well, I do, but I pretend not to.')
         ])
@@ -26,17 +26,17 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I'm normal."),
-            footnoteOutsideRevealableConvention,
+            footnoteOutsideHiddenConvention,
             new PlainTextNode(" "),
             new InlineSpoilerNode([
               new PlainTextNode("I don't eat cereal."),
-              footnoteInsideRevealableConvention,
+              footnoteInsideHiddenConvention,
               new PlainTextNode(" Never have."),
             ])
           ]),
           new FootnoteBlockNode([
-            footnoteOutsideRevealableConvention,
-            footnoteInsideRevealableConvention
+            footnoteOutsideHiddenConvention,
+            footnoteInsideHiddenConvention
           ])
         ]))
     })
