@@ -8,4 +8,5 @@ export interface RichConventionWithoutExtraFields {
   NodeType: new (children: InlineSyntaxNode[]) => RichInlineSyntaxNode
   startTokenKind: TokenKind
   endTokenKind: TokenKind
+  isInitiallyHidden?: boolean
 }
