@@ -49,7 +49,7 @@ gross:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(up.toAst(text)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new ParagraphNode([
