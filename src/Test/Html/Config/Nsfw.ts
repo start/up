@@ -1,13 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 
 
 describe("The ID of an inline NSFW convention's checkbox (on both the checkbox and the label)", () => {
