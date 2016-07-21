@@ -384,5 +384,59 @@ Lesson 1
           ])
         ]))
     })
+
+    specify('using 1 tab for indentation', () => {
+      const text = `
+Lesson 1
+\t\`\`\`
+\t  if (x < 0) {
+\t\t\treturn false
+\t  }
+\t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new DescriptionListNode([
+            new DescriptionListItem([
+              new DescriptionTerm([
+                new PlainTextNode('Lesson 1')
+              ])
+            ],
+              new Description([
+                new CodeBlockNode(
+                  `  if (x < 0) {
+\t\treturn false
+  }`)
+              ]))
+          ])
+        ]))
+    })
+
+    specify('using 1 space and 1 tab for indentation', () => {
+      const text = `
+Lesson 1
+ \t\`\`\`
+ \t  if (x < 0) {
+ \t\t\treturn false
+ \t  }
+ \t\`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new DescriptionListNode([
+            new DescriptionListItem([
+              new DescriptionTerm([
+                new PlainTextNode('Lesson 1')
+              ])
+            ],
+              new Description([
+                new CodeBlockNode(
+                  `  if (x < 0) {
+\t\treturn false
+  }`)
+              ]))
+          ])
+        ]))
+    })
   })
 })
