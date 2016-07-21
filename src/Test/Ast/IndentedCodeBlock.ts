@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 
 
-describe('An indented code block', () => {
+describe('A code block', () => {
   it('preserves all indentation', () => {
     const text = `
 \`\`\`
