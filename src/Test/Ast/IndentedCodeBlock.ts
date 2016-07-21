@@ -11,6 +11,10 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
+import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
+import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
+import { Description } from '../../SyntaxNodes/Description'
 
 
 context('A code block preserves all indentation when it is', () => {
@@ -347,6 +351,36 @@ NSFL:
 \t\treturn false
   }`),
             ])
+          ])
+        ]))
+    })
+  })
+
+
+  context("within a a description list's description", () => {
+    specify('using 2 spaces for indentation', () => {
+      const text = `
+Lesson 1
+  \`\`\`
+    if (x < 0) {
+  \t\treturn false
+    }
+  \`\`\``
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new DescriptionListNode([
+            new DescriptionListItem([
+              new DescriptionTerm([
+                new PlainTextNode('Lesson 1')
+              ])
+            ],
+              new Description([
+                new CodeBlockNode(
+                  `  if (x < 0) {
+\t\treturn false
+  }`)
+              ]))
           ])
         ]))
     })
