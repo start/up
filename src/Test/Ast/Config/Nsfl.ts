@@ -25,7 +25,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
         ]))
     })
 
-    it('The term is case-insensitive, even when custom', () => {
+    specify('The term is case-insensitive, even when custom', () => {
       const lowercase = '[gross: Ash fights Gary]'
       const mixedCase = '[gRoSs: Ash fights Gary]'
 
@@ -61,13 +61,6 @@ gross:
           ])
         ]))
     })
-
-    expect(up.toAst('[gross: Ash fights Gary]')).to.be.eql(
-      insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new PlainTextNode('Ash fights Gary')
-        ])
-      ]))
 
     specify('The term is case-insensitive, even when custom', () => {
       const lowercase = `
