@@ -8,8 +8,8 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
-context('The "nsfl" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
-  context('For inline NSFW conventions:', () => {
+context('The "nsfl" config term is used by both inline NSFL conventions and NSFL blocks.', () => {
+  context('For inline NSFL conventions:', () => {
     const up = new Up({
       i18n: {
         terms: { nsfl: 'gross' }
@@ -34,7 +34,7 @@ context('The "nsfl" config term is used by both inline NSFW conventions and NSFW
   })
 
 
-  context('For NSFW blocks:', () => {
+  context('For NSFL blocks:', () => {
     const up = new Up({
       i18n: {
         terms: { nsfl: 'gross' }
@@ -42,44 +42,42 @@ context('The "nsfl" config term is used by both inline NSFW conventions and NSFW
     })
 
     specify('The term is used', () => {
-      it('produces an inline spoiler block node', () => {
-        const text = `
+      const text = `
 gross:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-        expect(Up.toAst(text)).to.be.eql(
-          new DocumentNode([
-            new NsflBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
-              ]),
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
-              ])
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new NsflBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
             ])
-          ]))
-      })
-
-      expect(up.toAst('[gross: Ash fights Gary]')).to.be.eql(
-        insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
           ])
         ]))
     })
 
-    it('The term is case-insensitive, even when custom', () => {
-        const lowercase = `
+    expect(up.toAst('[gross: Ash fights Gary]')).to.be.eql(
+      insideDocumentAndParagraph([
+        new InlineNsflNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
+      ]))
+
+    specify('The term is case-insensitive, even when custom', () => {
+      const lowercase = `
 gross:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-        const mixedCase = `
+      const mixedCase = `
 gRosS:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
