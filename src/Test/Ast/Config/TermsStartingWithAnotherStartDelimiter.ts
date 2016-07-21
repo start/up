@@ -10,7 +10,7 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
 
 context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
-  context("When the custom term for 'spoiler' starts with the a caret", () => {
+  context("When the custom term for 'spoiler' starts with a caret", () => {
     const up = new Up({
       i18n: {
         terms: { spoiler: '^lookaway^' }
@@ -35,7 +35,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'nsfw' starts with the a caret", () => {
+  context("When the custom term for 'nsfw' starts with a caret", () => {
     const up = new Up({
       i18n: {
         terms: { nsfw: '^lookaway^' }
@@ -60,7 +60,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'nsfl' starts with the a caret", () => {
+  context("When the custom term for 'nsfl' starts with a caret", () => {
     const up = new Up({
       i18n: {
         terms: { nsfl: '^lookaway^' }
@@ -85,7 +85,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'audio' starts with the a caret", () => {
+  context("When the custom term for 'audio' starts with a caret", () => {
     const up = new Up({
       i18n: {
         terms: { audio: '^^ audio' }
