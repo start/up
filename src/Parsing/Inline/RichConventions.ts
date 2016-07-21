@@ -42,21 +42,18 @@ export const SPOILER_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: InlineSpoilerNode,
   startTokenKind: TokenKind.SpoilerStart,
   endTokenKind: TokenKind.SpoilerEnd,
-  isInitiallyHidden: true
 }
 
 export const NSFW_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: InlineNsfwNode,
   startTokenKind: TokenKind.NsfwStart,
   endTokenKind: TokenKind.NsfwEnd,
-  isInitiallyHidden: true
 }
 
 export const NSFL_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: InlineNsflNode,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd,
-  isInitiallyHidden: true
 }
 
 export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {

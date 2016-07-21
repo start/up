@@ -8,7 +8,6 @@ export interface RichConventionWithoutExtraFields {
   NodeType: RichSyntaxNodeWithoutExtraFields
   startTokenKind: TokenKind
   endTokenKind: TokenKind
-  isInitiallyHidden?: boolean
 }
 
 export interface RichSyntaxNodeWithoutExtraFields {
