@@ -7,7 +7,7 @@ export abstract class MediaSyntaxNode {
   // into the outline. Otherwise, media conventions are placed within a paragraph (or line block). 
   OUTLINE_SYNTAX_NODE(): void { }
   INLINE_SYNTAX_NODE(): void { }
-  private MEDIA_SYNTAX_NODE(): void { }
+  protected MEDIA_SYNTAX_NODE(): void { }
 
   constructor(public description: string, public url: string) { }
 }

@@ -10,7 +10,7 @@ export class LinkNode extends RichInlineSyntaxNode {
   // whitespace), the link counts as media. In that situation, the link itself is placed directly into
   // the outline.
   OUTLINE_SYNTAX_NODE(): void { }
-  private LINK: any = null
+  protected LINK: any = null
 
   constructor(public children: InlineSyntaxNode[], public url: string) {
     super(children)
