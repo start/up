@@ -117,6 +117,30 @@ describe('A footnote', () => {
       ]))
   })
 
+  it('can be nested within multiple inline convention', () => {
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I '),
+      new EmphasisNode([
+        new PlainTextNode('do')
+      ]),
+      new PlainTextNode(', but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new StressNode([
+            new EmphasisNode([
+              new PlainTextNode("I don't eat cereal."),
+              footnote,
+              new PlainTextNode(" Never have."),
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([footnote])
+      ]))
+  })
+
   it('can contain other footnotes, which produce additional footnotes in the same footnote block', () => {
     const text = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really."
 
