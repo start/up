@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'

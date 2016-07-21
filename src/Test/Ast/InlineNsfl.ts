@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
