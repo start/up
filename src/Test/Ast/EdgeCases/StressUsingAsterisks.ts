@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
 
 
 describe('Double asterisks followed by whitespace with matching double asterisks touching the end of a word', () => {

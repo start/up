@@ -8,7 +8,6 @@ import { RevisionDeletionNode } from '../../../../SyntaxNodes/RevisionDeletionNo
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../../../../SyntaxNodes/StressNode'
 import { ActionNode } from '../../../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'

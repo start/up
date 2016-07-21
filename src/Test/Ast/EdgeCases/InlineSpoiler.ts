@@ -3,7 +3,6 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
 describe('An inline spoiler convention', () => {

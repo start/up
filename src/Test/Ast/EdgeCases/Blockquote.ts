@@ -5,8 +5,6 @@ import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 
 
 describe('A single blank blockquoted line', () => {

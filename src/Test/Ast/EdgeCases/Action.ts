@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
