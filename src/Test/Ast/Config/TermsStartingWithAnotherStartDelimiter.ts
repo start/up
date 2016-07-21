@@ -8,6 +8,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -115,6 +116,41 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], 1)
 
       expect(up.toAst('[^listen^: I guess this means "listen up"?]')).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([footnote]),
+          new FootnoteBlockNode([footnote])
+        ]))
+    })
+  })
+
+
+  context("When the custom term for 'image' starts with a caret", () => {
+    const up = new Up({
+      i18n: {
+        terms: { image: '^look^' }
+      }
+    })
+
+    specify('audio conventions can be produced using the term', () => {
+      expect(up.toAst('[^look^: Ash fights Gary](example.com/audio.ogg)')).to.be.eql(
+        new DocumentNode([
+          new ImageNode('Ash fights Gary', 'https://example.com/audio.ogg')
+        ]))
+    })
+
+    specify('an unmatched image start delimiter is treated as plain text', () => {
+      expect(up.toAst('[^look^: Ash fights Ga')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('[^look^: Ash fights Ga')
+        ]))
+    })
+
+    specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('look^: I guess this means "look up"?')
+      ], 1)
+
+      expect(up.toAst('[^look^: I guess this means "look up"?]')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
