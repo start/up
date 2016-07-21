@@ -151,5 +151,29 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ]))
     })
   })
+
+  specify("a NSFW convention within a NSFL convention", () => {
+    const footnoteInsideHiddenConvention = new FootnoteNode([
+      new InlineNsfwNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ])
+    ], 1)
+
+    expect(Up.toAst("{NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]}")).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new InlineNsflNode([
+            new InlineNsfwNode([
+              new PlainTextNode("I don't eat cereal."),
+              footnoteInsideHiddenConvention,
+              new PlainTextNode(" Never have."),
+            ])
+          ])
+        ]),
+        new FootnoteBlockNode([
+          footnoteInsideHiddenConvention
+        ])
+      ]))
+  })
 })
 
