@@ -51,6 +51,7 @@ context("Some naked URLs produce links. The content of those links is the URL wi
     })
   })
 
+
   specify("It has a scheme other than 'https://' or 'http://", () => {
     expect(Up.toAst('ftp://google.com')).to.be.eql(
       insideDocumentAndParagraph([
