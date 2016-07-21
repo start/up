@@ -114,11 +114,6 @@ describe('The "video" config term', () => {
       }
     }
   })
-  const configChanges: UpConfigSettings = {
-    i18n: {
-      terms: { video: 'movie' }
-    }
-  }
 })
 
 

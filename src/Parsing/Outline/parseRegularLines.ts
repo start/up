@@ -1,6 +1,5 @@
 import { LineConsumer } from './LineConsumer'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
