@@ -8,7 +8,6 @@ import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 import { RevealableConvention } from './RevealableConvention'
 
 

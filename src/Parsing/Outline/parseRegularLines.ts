@@ -1,9 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { isWhitespace } from '../isWhitespace'
-import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
@@ -53,7 +49,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   let inlineNodesPromotedToOutline: OutlineSyntaxNode[] = []
 
   // We don't need to ensure that the first line would be parsed as a regular paragraph. We already
-  // it know would be (that's why this function was called!). 
+  // it know would be (that's why this function was called!).
   let isOnFirstLine = true
 
   while (true) {
