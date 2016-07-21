@@ -163,14 +163,14 @@ context("When the custom term for an inline convention starts with a caret, the 
   context("When the custom term for 'video' starts with a caret", () => {
     const up = new Up({
       i18n: {
-        terms: { image: '^watch^' }
+        terms: { video: '^watch^' }
       }
     })
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toAst('[^watch^: Ash fights Gary](example.com/video.webm)')).to.be.eql(
         new DocumentNode([
-          new ImageNode('Ash fights Gary', 'https://example.com/video.webm')
+          new VideoNode('Ash fights Gary', 'https://example.com/video.webm')
         ]))
     })
 
