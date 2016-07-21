@@ -1,5 +1,3 @@
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields, RichSyntaxNodeWithoutExtraFields } from './RichConventionWithoutExtraFields'
 

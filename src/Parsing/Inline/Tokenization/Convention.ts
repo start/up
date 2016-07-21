@@ -1,7 +1,6 @@
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
-import { RichConvention } from './RichConvention'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
 
 
@@ -59,10 +58,10 @@ export class Convention {
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
 
   constructor(args: ConventionArgs) {
-    const { startsWith, endsWith, onlyOpenIfDirectlyFollowing } = args
-
     this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
 
+    const { startsWith, endsWith } = args
+    
     this.startsWith =
       args.startPatternContainsATerm
         ? patternIgnoringCapitalizationAndStartingWith(startsWith)
