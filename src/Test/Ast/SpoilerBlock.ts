@@ -127,6 +127,7 @@ SPOILER:
   })
 })
 
+
 describe('Spoiler blocks', () => {
   context('can contain any outline convention, including: ', () => {
     specify('Other spoiler blocks', () => {
@@ -205,6 +206,25 @@ SPOILER:
           ])
         ]))
     })
+  })
+
+  it('can be directly followed by a paragraph', () => {
+    const text = `
+SPOILER:
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+That was my favorite episode.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ])
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('That was my favorite episode.')
+        ])
+      ]))
   })
 })
 
