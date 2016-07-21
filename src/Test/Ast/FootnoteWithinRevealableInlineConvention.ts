@@ -9,7 +9,7 @@ import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
-context("When a footnote is inside a hidden inline convention, the footnote's body in its footnote block is placed inside that same hidden inline convention.", () => {
+context("When a footnote is inside a revealable inline convention, the footnote's body in its footnote block is placed inside that same hidden revealable convention.", () => {
   context('Specifically:', () => {
     specify("Spoilers", () => {
       const footnoteOutsideHiddenConvention = new FootnoteNode([

@@ -12,7 +12,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
-import { HiddenRichConvention } from './HiddenRichConvention'
+import { RevealableConvention } from './RevealableConvention'
 
 
 export const EMPHASIS_CONVENTION: RichConventionWithoutExtraFields = {
@@ -39,19 +39,19 @@ export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.RevisionInsertionEnd
 }
 
-export const SPOILER_CONVENTION = new HiddenRichConvention({
+export const SPOILER_CONVENTION = new RevealableConvention({
   NodeType: InlineSpoilerNode,
   startTokenKind: TokenKind.SpoilerStart,
   endTokenKind: TokenKind.SpoilerEnd,
 })
 
-export const NSFW_CONVENTION = new HiddenRichConvention({
+export const NSFW_CONVENTION = new RevealableConvention({
   NodeType: InlineNsfwNode,
   startTokenKind: TokenKind.NsfwStart,
   endTokenKind: TokenKind.NsfwEnd,
 })
 
-export const NSFL_CONVENTION = new HiddenRichConvention({
+export const NSFL_CONVENTION = new RevealableConvention({
   NodeType: InlineNsflNode,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd,

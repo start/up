@@ -4,7 +4,7 @@ import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields, RichSyntaxNodeWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
 
-export class HiddenRichConvention {
+export class RevealableConvention {
   NodeType: RichSyntaxNodeWithoutExtraFields
   startTokenKind: TokenKind
   endTokenKind: TokenKind
