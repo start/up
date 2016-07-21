@@ -465,8 +465,8 @@ Lesson 1
 })
 
 
-context('When a blockquote has no spaces after each delimiter', () => {
-  specify('tabbed indentation is preseved', () => {
+context('When a code block is nested within a blockquote that has no spaces after each delimiter', () => {
+  specify("the code block's tabbed indentation is preseved", () => {
     const text = `
 >\`\`\`
 >\tif (x < 0) {
@@ -481,6 +481,25 @@ context('When a blockquote has no spaces after each delimiter', () => {
             `\tif (x < 0) {
 \t\treturn false
 \t}`),
+        ])
+      ]))
+  })
+
+  specify('a single leading space will be consumed from any applicable lines of code', () => {
+    const text = `
+>\`\`\`
+>if (x < 0) {
+>  return false
+>}
+>\`\`\``
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new CodeBlockNode(
+            `if (x < 0) {
+ return false
+}`),
         ])
       ]))
   })
