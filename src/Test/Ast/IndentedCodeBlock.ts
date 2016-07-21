@@ -463,3 +463,25 @@ Lesson 1
     })
   })
 })
+
+
+context('When a blockquote has no spaces after each delimiter', () => {
+  specify('tabbed indentation is preseved', () => {
+    const text = `
+>\`\`\`
+>\tif (x < 0) {
+>\t\treturn false
+>\t}
+>\`\`\``
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new CodeBlockNode(
+            `\tif (x < 0) {
+\t\treturn false
+\t}`),
+        ])
+      ]))
+  })
+})
