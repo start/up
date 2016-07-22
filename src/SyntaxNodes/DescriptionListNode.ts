@@ -19,15 +19,15 @@ export module DescriptionListNode {
 
   export module Item {
     export class Term {
-      protected DESCRIPTION_LIST_ITEM_TERM: any = null
-
       constructor(public children: InlineSyntaxNode[]) { }
+
+      protected DESCRIPTION_LIST_ITEM_TERM: any = null
     }
 
     export class Description {
-      protected DESCRIPTION_LIST_ITEM_DESCRIPTION: any = null
-
       constructor(public children: OutlineSyntaxNode[]) { }
+
+      protected DESCRIPTION_LIST_ITEM_DESCRIPTION: any = null
     }
   }
 }

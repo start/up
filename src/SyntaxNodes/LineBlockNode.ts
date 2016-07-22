@@ -10,8 +10,8 @@ export class LineBlockNode {
 
 export module LineBlockNode {
   export class Line {
-    protected LINE_BLOCK_LINE: any = null
-
     constructor(public children: InlineSyntaxNode[]) { }
+
+    protected LINE_BLOCK_LINE: any = null
   }
 }
