@@ -12,6 +12,6 @@ export module LineBlockNode {
   export class Line {
     constructor(public children: InlineSyntaxNode[]) { }
 
-    protected LINE_BLOCK_LINE: any = null
+    protected LINE_BLOCK_LINE(): void { }
   }
 }

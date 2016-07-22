@@ -6,5 +6,5 @@ export class FootnoteBlockNode {
 
   constructor(public footnotes: FootnoteNode[]) { }
 
-  protected FOOTNOTE_BLOCK: any = null
+  protected FOOTNOTE_BLOCK_NODE(): void { }
 }

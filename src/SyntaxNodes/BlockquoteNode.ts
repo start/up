@@ -6,5 +6,5 @@ export class BlockquoteNode {
 
   constructor(public children: OutlineSyntaxNode[] = []) { }
 
-  protected BLOCKQUOTE: any = null
+  protected BLOCKQUOTE_NODE(): void { }
 }

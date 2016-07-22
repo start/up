@@ -2,5 +2,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class ActionNode extends RichInlineSyntaxNode {
-  protected ACTION: any = null
+  protected ACTION_NODE(): void { }
 }

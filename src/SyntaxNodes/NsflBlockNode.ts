@@ -6,5 +6,5 @@ export class NsflBlockNode {
 
   constructor(public children: OutlineSyntaxNode[] = []) { }
 
-  protected NSFL_BLOCK: any = null
+  protected NSFL_BLOCK_NODE(): void { }
 }

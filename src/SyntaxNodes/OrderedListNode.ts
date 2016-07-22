@@ -34,7 +34,7 @@ export module OrderedListNode {
     // rather than `undefined` allows our unit tests to be cleaner.
     constructor(public children: OutlineSyntaxNode[], public ordinal: number = null) { }
 
-    protected ORDERED_LIST_ITEM: any = null
+    protected ORDERED_LIST_ITEM(): void { }
   }
 
   export enum Order {

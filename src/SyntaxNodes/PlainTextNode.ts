@@ -3,5 +3,5 @@ export class PlainTextNode {
 
   constructor(public text: string) { }
 
-  protected PLAIN_TEXT: any = null
+  protected PLAIN_TEXT_NODE(): void { }
 }

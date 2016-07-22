@@ -15,5 +15,5 @@ export class LinkNode extends RichInlineSyntaxNode {
     super(children)
   }
 
-  protected LINK: any = null
+  protected LINK_NODE(): void { }
 }

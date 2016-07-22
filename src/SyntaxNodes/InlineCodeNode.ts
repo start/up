@@ -3,5 +3,5 @@ export class InlineCodeNode {
 
   constructor(public text: string) { }
 
-  protected INLINE_CODE: any = null
+  protected INLINE_CODE_NODE(): void { }
 }

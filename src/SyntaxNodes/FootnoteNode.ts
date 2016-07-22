@@ -7,5 +7,5 @@ export class FootnoteNode extends RichInlineSyntaxNode {
     super(children)
   }
 
-  protected FOOTNOTE: any = null
+  protected FOOTNOTE_NODE(): void { }
 }

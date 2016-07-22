@@ -6,5 +6,5 @@ export class ParagraphNode {
 
   constructor(public children: InlineSyntaxNode[]) { }
 
-  protected PARAGRAPH: any = null
+  protected PARAGRAPH_NODE(): void { }
 }

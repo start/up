@@ -11,6 +11,6 @@ export module UnorderedListNode {
   export class Item {
     constructor(public children: OutlineSyntaxNode[]) { }
 
-    protected UNORDERED_LIST_ITEM: any = null
+    protected UNORDERED_LIST_ITEM(): void { }
   }
 }

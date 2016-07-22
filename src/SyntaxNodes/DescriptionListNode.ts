@@ -21,13 +21,13 @@ export module DescriptionListNode {
     export class Term {
       constructor(public children: InlineSyntaxNode[]) { }
 
-      protected DESCRIPTION_LIST_ITEM_TERM: any = null
+      protected DESCRIPTION_LIST_ITEM_TERM(): void { }
     }
 
     export class Description {
       constructor(public children: OutlineSyntaxNode[]) { }
 
-      protected DESCRIPTION_LIST_ITEM_DESCRIPTION: any = null
+      protected DESCRIPTION_LIST_ITEM_DESCRIPTION(): void { }
     }
   }
 }

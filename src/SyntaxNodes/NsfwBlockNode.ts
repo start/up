@@ -6,5 +6,5 @@ export class NsfwBlockNode {
 
   constructor(public children: OutlineSyntaxNode[] = []) { }
 
-  protected NSFW_BLOCK: any = null
+  protected NSFW_BLOCK_NODE(): void { }
 }

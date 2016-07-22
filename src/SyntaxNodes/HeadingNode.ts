@@ -6,5 +6,5 @@ export class HeadingNode {
 
   constructor(public children?: InlineSyntaxNode[], public level?: number) { }
 
-  protected HEADING: any = null
+  protected HEADING_NODE(): void { }
 }

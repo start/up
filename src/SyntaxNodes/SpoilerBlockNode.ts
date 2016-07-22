@@ -6,5 +6,5 @@ export class SpoilerBlockNode {
 
   constructor(public children: OutlineSyntaxNode[] = []) { }
 
-  protected SPOILER_BLOCK: any = null
+  protected SPOILER_BLOCK_NODE(): void { }
 }

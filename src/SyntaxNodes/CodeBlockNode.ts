@@ -3,5 +3,5 @@ export class CodeBlockNode {
 
   constructor(public text: string) { }
 
-  protected CODE_BLOCK: any = null
+  protected CODE_BLOCK_NODE(): void { }
 }
