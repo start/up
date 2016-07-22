@@ -10,26 +10,22 @@ export class OrderedListNode {
     return this.listItems[0].ordinal
   }
 
-  order(): OrderedListOrder {
+  order(): OrderedListNode.Order {
     const withExplicitOrdinals =
       this.listItems.filter(item => item.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
-      return OrderedListOrder.Ascending
+      return OrderedListNode.Order.Ascending
     }
 
     return (
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
-        ? OrderedListOrder.Descrending
-        : OrderedListOrder.Ascending
+        ? OrderedListNode.Order.Descrending
+        : OrderedListNode.Order.Ascending
     )
   }
 }
 
-export enum OrderedListOrder {
-  Ascending,
-  Descrending
-}
 
 export module OrderedListNode {
   export class Item {
@@ -38,5 +34,10 @@ export module OrderedListNode {
     // During parsing, `ordinal` can be either `null` or a number. Defaulting `ordinal` to `null`
     // rather than `undefined` allows our unit tests to be cleaner.
     constructor(public children: OutlineSyntaxNode[], public ordinal: number = null) { }
+  }
+
+  export enum Order {
+    Ascending,
+    Descrending
   }
 }

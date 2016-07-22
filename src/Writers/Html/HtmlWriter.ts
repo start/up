@@ -23,7 +23,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode, OrderedListOrder } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -94,7 +94,7 @@ export class HtmlWriter extends Writer {
       attrs.start = start
     }
 
-    if (node.order() === OrderedListOrder.Descrending) {
+    if (node.order() === OrderedListNode.Order.Descrending) {
       // This adds a "reversed" attribute without a value.
       attrs.reversed = null
     }
