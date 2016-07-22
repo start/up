@@ -31,7 +31,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../../UpConfig'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl} from './WritingHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
 
