@@ -3,7 +3,6 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class UnorderedListNode {
   OUTLINE_SYNTAX_NODE(): void { }
-  protected UNORDERED_LIST: any = null
 
   constructor(public listItems: UnorderedListNode.Item[]) { }
 
