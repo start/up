@@ -4,8 +4,6 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../../SyntaxNodes/Description'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
@@ -27,20 +25,20 @@ Lee Chang-ho
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('League of Legends')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A multiplayer online battle arena game')
             ])
           ])
           ),
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('StarCraft 2')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A real-time strategy game')
             ])
@@ -49,20 +47,20 @@ Lee Chang-ho
         ]),
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Magnus Carlsen')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('An above average chess player')
             ])
           ])
           ),
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Lee Chang-ho')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('An above average go player')
             ])
@@ -93,20 +91,20 @@ Lee Chang-ho
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('League of Legends')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A multiplayer online battle arena game')
             ])
           ])
           ),
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('StarCraft 2')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A real-time strategy game')
             ])
@@ -116,20 +114,20 @@ Lee Chang-ho
         new SectionSeparatorNode(),
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Magnus Carlsen')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('An above average chess player')
             ])
           ])
           ),
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Lee Chang-ho')
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('An above average go player')
             ])

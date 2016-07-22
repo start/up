@@ -7,8 +7,6 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -599,8 +597,8 @@ Gary
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Bulbasaur')])
-          ], new Description([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A strange seed was planted on its back at birth.'),
               footnotes[0],
@@ -609,21 +607,21 @@ Gary
           ])),
 
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
-            new DescriptionTerm([new PlainTextNode('Lick')]),
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Night Shade'),
               footnotes[1]
             ])
-          ], new Description([
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('Ghost type moves.')
             ])
           ])),
 
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Gary')])
-          ], new Description([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Gary')])
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A young man with a great sense of smell.'),
               footnotes[2]

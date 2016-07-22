@@ -1,7 +1,5 @@
 import { LineConsumer } from './LineConsumer'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
@@ -79,10 +77,10 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     countLinesConsumed = lineConsumer.countLinesConsumed
 
     const terms =
-      rawTerms.map(term => new DescriptionTerm(getInlineNodes(term, args.config)))
+      rawTerms.map(term => new DescriptionListNode.Item.Term(getInlineNodes(term, args.config)))
 
     const description =
-      new Description(
+      new DescriptionListNode.Item.Description(
         getOutlineNodes(descriptionLines, args.headingLeveler, args.config))
 
     listItems.push(new DescriptionListNode.Item(terms, description))

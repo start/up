@@ -6,8 +6,6 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
@@ -71,9 +69,9 @@ Charmeleon
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([new PlainTextNode('Charmander')]),
-              new DescriptionTerm([new PlainTextNode('Charmeleon')])
-            ], new Description([
+              new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
+              new DescriptionListNode.Item.Term([new PlainTextNode('Charmeleon')])
+            ], new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
@@ -141,8 +139,8 @@ Charmander
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([new PlainTextNode('Charmander')])
-            ], new Description([
+              new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
+            ], new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ]),

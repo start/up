@@ -27,8 +27,6 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
@@ -151,16 +149,16 @@ describe('A description list', () => {
     const node = new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([
-          new DescriptionTerm([new PlainTextNode('Bulbasaur')])
-        ], new Description([
+          new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
+        ], new DescriptionListNode.Item.Description([
           new ParagraphNode([
             new PlainTextNode('A grass type Pokemon')
           ])
         ])),
         new DescriptionListNode.Item([
-          new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
-          new DescriptionTerm([new PlainTextNode('Lick')]),
-        ], new Description([
+          new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
+          new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
+        ], new DescriptionListNode.Item.Description([
           new ParagraphNode([
             new PlainTextNode('Ghost type moves')
           ])

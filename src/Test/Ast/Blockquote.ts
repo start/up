@@ -8,8 +8,6 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 
 
 describe('Consecutive lines starting with "> "', () => {
@@ -87,9 +85,9 @@ context("Within a blockquote", () => {
           new BlockquoteNode([
             new DescriptionListNode([
               new DescriptionListNode.Item([
-                new DescriptionTerm([new PlainTextNode('Charmander')])
+                new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
               ],
-                new Description([
+                new DescriptionListNode.Item.Description([
                   new ParagraphNode([
                     new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
@@ -113,9 +111,9 @@ context("Within a blockquote", () => {
           new BlockquoteNode([
             new DescriptionListNode([
               new DescriptionListNode.Item([
-                new DescriptionTerm([new PlainTextNode('Charmander')])
+                new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
               ],
-                new Description([
+                new DescriptionListNode.Item.Description([
                   new ParagraphNode([
                     new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])

@@ -7,8 +7,6 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
@@ -201,8 +199,8 @@ Awkward
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
         new DescriptionListNode([
           new DescriptionListNode.Item(
-            [new DescriptionTerm([new PlainTextNode('Awkward')])],
-            new Description([
+            [new DescriptionListNode.Item.Term([new PlainTextNode('Awkward')])],
+            new DescriptionListNode.Item.Description([
               new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
             ])
           )

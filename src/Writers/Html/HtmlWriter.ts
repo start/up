@@ -25,8 +25,6 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
@@ -297,11 +295,11 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  private descriptionTerm(term: DescriptionTerm): string {
+  private descriptionTerm(term: DescriptionListNode.Item.Term): string {
     return this.htmlElementWithAlreadyEscapedChildren('dt', term.children)
   }
 
-  private description(description: Description): string {
+  private description(description: DescriptionListNode.Item.Description): string {
     return this.htmlElementWithAlreadyEscapedChildren('dd', description.children)
   }
 

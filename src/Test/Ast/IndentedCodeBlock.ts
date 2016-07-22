@@ -9,8 +9,6 @@ import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
@@ -368,11 +366,11 @@ Lesson 1
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([
+              new DescriptionListNode.Item.Term([
                 new PlainTextNode('Lesson 1')
               ])
             ],
-              new Description([
+              new DescriptionListNode.Item.Description([
                 new CodeBlockNode(
                   `  if (x < 0) {
 \t\treturn false
@@ -395,11 +393,11 @@ Lesson 1
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([
+              new DescriptionListNode.Item.Term([
                 new PlainTextNode('Lesson 1')
               ])
             ],
-              new Description([
+              new DescriptionListNode.Item.Description([
                 new CodeBlockNode(
                   `  if (x < 0) {
 \t\treturn false
@@ -422,11 +420,11 @@ Lesson 1
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([
+              new DescriptionListNode.Item.Term([
                 new PlainTextNode('Lesson 1')
               ])
             ],
-              new Description([
+              new DescriptionListNode.Item.Description([
                 new CodeBlockNode(
                   `  if (x < 0) {
 \t\treturn false

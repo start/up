@@ -5,8 +5,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
-import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 
 
@@ -20,9 +18,9 @@ Charmander
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Charmander')])
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
@@ -46,11 +44,11 @@ Torchic
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Charmander')]),
-            new DescriptionTerm([new PlainTextNode('Cyndaquil')]),
-            new DescriptionTerm([new PlainTextNode('Torchic')])
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Cyndaquil')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Torchic')])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('The first three starter Fire Pokemon')
               ])
@@ -72,13 +70,13 @@ Ash *"Little Marco"* Ketchum
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Ash '),
               new EmphasisNode([new PlainTextNode('"Little Marco"')]),
               new PlainTextNode(' Ketchum')
             ])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
               ])
@@ -100,11 +98,11 @@ Ash Ketchum
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Ash Ketchum')
             ])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('A famous Pokemon Trainer '),
                 new EmphasisNode([new PlainTextNode('probably')]),
@@ -137,28 +135,28 @@ Gary
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Bulbasaur')])
-          ], new Description([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
+          ], new DescriptionListNode.Item.Description([
             new ParagraphNode([
               new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
 
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
-            new DescriptionTerm([new PlainTextNode('Lick')]),
-            new DescriptionTerm([new PlainTextNode('Night Shade')])
+            new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Night Shade')])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('Ghost type moves.')
               ])
             ])),
 
           new DescriptionListNode.Item([
-            new DescriptionTerm([new PlainTextNode('Gary')])
+            new DescriptionListNode.Item.Term([new PlainTextNode('Gary')])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('A young man with a great sense of smell.')
               ])
@@ -180,11 +178,11 @@ The secret to eternal youth is to join a cartoon.`
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
-            new DescriptionTerm([
+            new DescriptionListNode.Item.Term([
               new PlainTextNode('Ash Ketchum')
             ])
           ],
-            new Description([
+            new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
               ])
@@ -212,11 +210,11 @@ Poem
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([
+              new DescriptionListNode.Item.Term([
                 new PlainTextNode('Poem')
               ])
             ],
-              new Description([
+              new DescriptionListNode.Item.Description([
                 new LineBlockNode([
                   new LineBlockNode.Line([
                     new PlainTextNode('Roses are red'),
@@ -241,11 +239,11 @@ Poem
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([
+              new DescriptionListNode.Item.Term([
                 new PlainTextNode('Poem')
               ])
             ],
-              new Description([
+              new DescriptionListNode.Item.Description([
                 new LineBlockNode([
                   new LineBlockNode.Line([
                     new PlainTextNode('Roses are red'),
@@ -270,11 +268,11 @@ Poem
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
-              new DescriptionTerm([
+              new DescriptionListNode.Item.Term([
                 new PlainTextNode('Poem')
               ])
             ],
-              new Description([
+              new DescriptionListNode.Item.Description([
                 new LineBlockNode([
                   new LineBlockNode.Line([
                     new PlainTextNode('Roses are red'),
@@ -311,11 +309,11 @@ Address
     new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([
-          new DescriptionTerm([
+          new DescriptionListNode.Item.Term([
             new PlainTextNode('Poem')
           ])
         ],
-          new Description([
+          new DescriptionListNode.Item.Description([
             new LineBlockNode([
               new LineBlockNode.Line([
                 new PlainTextNode('Roses are red')
@@ -333,11 +331,11 @@ Address
           ])
         ),
         new DescriptionListNode.Item([
-          new DescriptionTerm([
+          new DescriptionListNode.Item.Term([
             new PlainTextNode('Address')
           ])
         ],
-          new Description([
+          new DescriptionListNode.Item.Description([
             new LineBlockNode([
               new LineBlockNode.Line([
                 new PlainTextNode('1234 Spooky Street')
