@@ -4,7 +4,6 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../../SyntaxNodes/Line'
@@ -22,7 +21,7 @@ describe('An unordered list with a single item', () => {
       new DocumentNode([
         new SectionSeparatorNode(),
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Mittens')
             ])
@@ -55,12 +54,12 @@ And addresses do, too`
           ])
         ]),
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Kansas')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Nebraska')
             ])
@@ -92,24 +91,24 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Iowa')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('New Hampshire')
             ])
           ])
         ]),
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Clinton')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Sanders')
             ])
@@ -134,12 +133,12 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Iowa')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('New Hampshire')
             ])
@@ -147,12 +146,12 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
         ]),
         new SectionSeparatorNode(),
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Clinton')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Sanders')
             ])
@@ -173,7 +172,7 @@ describe('A code block in a list item', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new CodeBlockNode('const x = 0')
           ])
         ])
@@ -194,7 +193,7 @@ describe('A code block in a list item', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
           ])
         ])

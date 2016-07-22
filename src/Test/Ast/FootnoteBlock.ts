@@ -5,7 +5,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
@@ -161,7 +160,7 @@ describe('Footnotes in unordered list items', () => {
       new DocumentNode([
         new UnorderedListNode([
 
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnotes[0],
@@ -172,7 +171,7 @@ describe('Footnotes in unordered list items', () => {
             ])
           ]),
 
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               footnotes[1],
@@ -180,7 +179,7 @@ describe('Footnotes in unordered list items', () => {
             ])
           ]),
 
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode("Roses are red"),
@@ -249,7 +248,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 
           new UnorderedListNode([
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
                 footnotes[0],
@@ -260,7 +259,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
               ])
             ]),
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
@@ -332,7 +331,7 @@ SPOILER:
 
           new UnorderedListNode([
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
                 footnotes[0],
@@ -343,7 +342,7 @@ SPOILER:
               ])
             ]),
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
@@ -415,7 +414,7 @@ NSFW:
 
           new UnorderedListNode([
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
                 footnotes[0],
@@ -426,7 +425,7 @@ NSFW:
               ])
             ]),
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
@@ -498,7 +497,7 @@ NSFL:
 
           new UnorderedListNode([
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
                 footnotes[0],
@@ -509,7 +508,7 @@ NSFL:
               ])
             ]),
 
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
@@ -672,7 +671,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnotesInUnorderedList[0],
@@ -682,7 +681,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
               new PlainTextNode("It's too expensive.")
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               footnotesInUnorderedList[1],
@@ -731,7 +730,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnoteInUnorderedList,
@@ -741,7 +740,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
               new PlainTextNode("It's too expensive.")
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new BlockquoteNode([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
@@ -804,7 +803,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnoteInUnorderedList,
@@ -814,7 +813,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
               new PlainTextNode("It's too expensive.")
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new BlockquoteNode([
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),

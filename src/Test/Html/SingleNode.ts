@@ -25,7 +25,6 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
@@ -57,12 +56,12 @@ describe('A paragraph node', () => {
 describe('An unordered list node', () => {
   it('produces a ul element containing li elements for each list item', () => {
     const node = new UnorderedListNode([
-      new UnorderedListItem([
+      new UnorderedListNode.Item([
         new ParagraphNode([
           new PlainTextNode('Tropical')
         ])
       ]),
-      new UnorderedListItem([
+      new UnorderedListNode.Item([
         new ParagraphNode([
           new PlainTextNode('Territories')
         ])

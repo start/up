@@ -4,7 +4,6 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
@@ -74,12 +73,12 @@ describe('A streak of asterisks with spaces between', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Mittens')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Gloves')
             ])

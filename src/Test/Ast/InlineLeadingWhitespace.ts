@@ -13,7 +13,6 @@ import { Description } from '../../SyntaxNodes/Description'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 
@@ -121,7 +120,7 @@ Charmeleon
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode('Buy milk.')
               ]),

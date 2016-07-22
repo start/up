@@ -4,7 +4,6 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
@@ -150,7 +149,7 @@ Goodbye, world!
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
           ])
         ])
@@ -257,7 +256,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
           new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
             ])
           ])

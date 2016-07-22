@@ -1,6 +1,5 @@
 import { LineConsumer } from './LineConsumer'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getIndentedBlock } from './getIndentedBlock'
 import { optional, patternStartingWith, anyCharFrom } from '../PatternHelpers'
@@ -59,7 +58,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
   const listItems =
     linesByListItem.map((lines) =>
-      new UnorderedListItem(getOutlineNodes(lines, args.headingLeveler, args.config)))
+      new UnorderedListNode.Item(getOutlineNodes(lines, args.headingLeveler, args.config)))
 
   args.then([new UnorderedListNode(listItems)], lineConsumer.countLinesConsumed)
   return true

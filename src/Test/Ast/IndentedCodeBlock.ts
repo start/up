@@ -9,7 +9,6 @@ import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -303,7 +302,7 @@ NSFL:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false
@@ -324,7 +323,7 @@ NSFL:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false
@@ -345,7 +344,7 @@ NSFL:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false

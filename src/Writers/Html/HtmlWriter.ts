@@ -23,7 +23,6 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 import { OrderedListNode, OrderedListOrder } from '../../SyntaxNodes/OrderedListNode'
 import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
@@ -280,7 +279,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: classAttrValue(bracketName) })
   }
 
-  private unorderedListItem(listItem: UnorderedListItem): string {
+  private unorderedListItem(listItem: UnorderedListNode.Item): string {
     return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children)
   }
 

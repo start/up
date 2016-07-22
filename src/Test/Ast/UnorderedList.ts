@@ -8,7 +8,6 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../SyntaxNodes/UnorderedListItem'
 
 
 describe('Consecutive bulleted lines', () => {
@@ -21,17 +20,17 @@ describe('Consecutive bulleted lines', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy milk')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy bread')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy tendies')
             ])
@@ -52,12 +51,12 @@ context('Unordered list bullets can be:', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -75,12 +74,12 @@ context('Unordered list bullets can be:', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -98,12 +97,12 @@ context('Unordered list bullets can be:', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -121,12 +120,12 @@ context('Unordered list bullets can be:', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -146,22 +145,22 @@ context('Unordered list bullets can be:', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy milk')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy bread')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy tendies')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy happiness')
             ])
@@ -195,7 +194,7 @@ describe('A single bulleted line', () => {
     expect(Up.toAst('* Hello, world!')).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
@@ -218,12 +217,12 @@ describe('An indented line immediately following an ordered list item line', () 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1)
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode('Roses are red')
@@ -256,7 +255,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1),
@@ -267,7 +266,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
               new PlainTextNode('Really.')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
             ], 1)
@@ -316,7 +315,7 @@ describe('An unordered list item containing multiple indented lines', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1),
@@ -324,19 +323,19 @@ describe('An unordered list item containing multiple indented lines', () => {
               new PlainTextNode('Upcoming features:')
             ]),
             new UnorderedListNode([
-              new UnorderedListItem([
+              new UnorderedListNode.Item([
                 new ParagraphNode([
                   new PlainTextNode('Code blocks in list items')
                 ])
               ]),
-              new UnorderedListItem([
+              new UnorderedListNode.Item([
                 new ParagraphNode([
                   new PlainTextNode('Definition lists')
                 ])
               ])
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
             ], 1)
@@ -358,7 +357,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new LineBlockNode([
                 new Line([
                   new PlainTextNode('Roses are red'),
@@ -381,7 +380,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new LineBlockNode([
                 new Line([
                   new PlainTextNode('Roses are red'),
@@ -404,7 +403,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
-            new UnorderedListItem([
+            new UnorderedListNode.Item([
               new LineBlockNode([
                 new Line([
                   new PlainTextNode('Roses are red'),
@@ -437,7 +436,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
     expect(Up.toAst(withMixedIndentation)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode('Roses are red')
@@ -453,7 +452,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
               new PlainTextNode("I think it's my favorite.")
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode('1234 Spooky Street')
@@ -478,7 +477,7 @@ describe('An unordered list item with an asterisk bullet', () => {
     expect(Up.toAst('* *Hello*, world!')).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new EmphasisNode([
                 new PlainTextNode('Hello')
@@ -502,7 +501,7 @@ describe('An unordered list', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, World '),
               new EmphasisNode([
@@ -511,7 +510,7 @@ describe('An unordered list', () => {
               new PlainTextNode('!')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, World '),
               new EmphasisNode([
@@ -534,12 +533,12 @@ Hello, World 1-2!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])

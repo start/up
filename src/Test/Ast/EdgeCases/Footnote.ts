@@ -11,7 +11,6 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 
 
 describe('A footnote reference at the end of a paragraph', () => {
@@ -126,7 +125,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new BlockquoteNode([
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),

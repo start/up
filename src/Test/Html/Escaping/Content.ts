@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { UnorderedListItem } from '../../../SyntaxNodes/UnorderedListItem'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -188,7 +187,7 @@ describe('Inside a plain text node itself nested within several outline nodes, a
     const node =
       new BlockquoteNode([
         new UnorderedListNode([
-          new UnorderedListItem([
+          new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
