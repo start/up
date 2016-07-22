@@ -31,7 +31,6 @@ import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
@@ -178,10 +177,10 @@ describe('A description list', () => {
 describe('A line block node', () => {
   it('produces a div element with an "up-lines" class, containing a div element for each line', () => {
     const node = new LineBlockNode([
-      new Line([
+      new LineBlockNode.Line([
         new PlainTextNode('Hollow')
       ]),
-      new Line([
+      new LineBlockNode.Line([
         new PlainTextNode('Fangs')
       ])
     ])

@@ -6,7 +6,6 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 
@@ -344,10 +343,10 @@ describe('An indented line immediately following an ordered list item line', () 
           ]),
           new OrderedListNode.Item([
             new LineBlockNode([
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Roses are red')
               ]),
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Violets are blue')
               ])
             ])
@@ -479,10 +478,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           new OrderedListNode([
             new OrderedListNode.Item([
               new LineBlockNode([
-                new Line([
+                new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new Line([                
+                new LineBlockNode.Line([                
                   new PlainTextNode('Violets are blue')
                 ])
               ])
@@ -502,10 +501,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           new OrderedListNode([
             new OrderedListNode.Item([
               new LineBlockNode([
-                new Line([
+                new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new Line([                
+                new LineBlockNode.Line([                
                   new PlainTextNode('Violets are blue')
                 ])
               ])
@@ -525,10 +524,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           new OrderedListNode([
             new OrderedListNode.Item([
               new LineBlockNode([
-                new Line([
+                new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new Line([                
+                new LineBlockNode.Line([                
                   new PlainTextNode('Violets are blue')
                 ])
               ])
@@ -558,10 +557,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
         new OrderedListNode([
           new OrderedListNode.Item([
             new LineBlockNode([
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Roses are red')
               ]),
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Violets are blue')
               ])
             ]),
@@ -574,10 +573,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           ]),
           new OrderedListNode.Item([
             new LineBlockNode([
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('1234 Spooky Street')
               ]),
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Pepe, PA 17101')
               ])
             ]),

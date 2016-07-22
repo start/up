@@ -12,7 +12,6 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 
 
 describe('Consecutive non-blank lines', () => {
@@ -24,10 +23,10 @@ Violets are blue`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -48,19 +47,19 @@ And addresses do, too`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are '),
             new StressNode([
               new PlainTextNode('blue')
             ])
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ]),
@@ -77,16 +76,16 @@ Violets are blue`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('\t\t')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('\t\t')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -109,24 +108,24 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])
@@ -147,24 +146,24 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])
@@ -182,19 +181,19 @@ And addresses do, too`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
         new SectionSeparatorNode(),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ]),
@@ -214,10 +213,10 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
@@ -227,16 +226,16 @@ You're in for a fright`
           ])
         ]),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])
@@ -256,10 +255,10 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
@@ -271,16 +270,16 @@ You're in for a fright`
           ], 1)
         ]),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])
@@ -300,10 +299,10 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
@@ -315,16 +314,16 @@ You're in for a fright`
           ])
         ]),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])
@@ -344,10 +343,10 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
@@ -355,16 +354,16 @@ You're in for a fright`
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])
@@ -384,10 +383,10 @@ You're in for a fright`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
@@ -395,16 +394,16 @@ You're in for a fright`
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Skeltals are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('If you stay here')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
           ]),
         ])

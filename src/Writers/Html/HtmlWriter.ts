@@ -29,7 +29,6 @@ import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
@@ -307,7 +306,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('dd', description.children)
   }
 
-  private line(line: Line): string {
+  private line(line: LineBlockNode.Line): string {
     return this.htmlElementWithAlreadyEscapedChildren('div', line.children)
   }
 

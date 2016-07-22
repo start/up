@@ -7,7 +7,6 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 
 
 describe('An otherwise blank line starting with an escaped backslash', () => {
@@ -20,13 +19,13 @@ Violets are blue`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode(' \t')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -43,10 +42,10 @@ Violets are blue`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -60,10 +59,10 @@ Roses are red
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
         ]),
@@ -83,19 +82,19 @@ And addresses do, too`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('#~#~#~#~#~#~#~#~#')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ]),
@@ -114,16 +113,16 @@ And addresses do, too`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red'),
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue'),
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('And addresses do, too')
           ]),
         ])

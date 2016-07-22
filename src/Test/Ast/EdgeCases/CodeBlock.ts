@@ -4,7 +4,6 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
@@ -40,16 +39,16 @@ const pie = 3.5
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are white')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('My pies just never')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Turn out quite right')
           ])
         ]),

@@ -4,7 +4,6 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -54,10 +53,10 @@ Goodbye, world!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Hello, world!')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Goodbye, world!')
           ])
         ])

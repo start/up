@@ -5,7 +5,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -36,16 +35,16 @@ Skeltals are white
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new LineBlockNode([
-            new Line([
+            new LineBlockNode.Line([
               new PlainTextNode('Roses are red')
             ]),
-            new Line([
+            new LineBlockNode.Line([
               new PlainTextNode('Skeltals are white')
             ]),
-            new Line([
+            new LineBlockNode.Line([
               new PlainTextNode('If you stay here')
             ]),
-            new Line([
+            new LineBlockNode.Line([
               new PlainTextNode("You're in for a fright")
             ]),
           ])

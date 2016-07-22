@@ -9,7 +9,6 @@ import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 
 
 describe('A non-indented line followed by an indented line', () => {
@@ -220,10 +219,10 @@ Poem
             ],
               new Description([
                 new LineBlockNode([
-                  new Line([
+                  new LineBlockNode.Line([
                     new PlainTextNode('Roses are red'),
                   ]),
-                  new Line([
+                  new LineBlockNode.Line([
                     new PlainTextNode('Violets are blue')
                   ])
                 ])
@@ -249,10 +248,10 @@ Poem
             ],
               new Description([
                 new LineBlockNode([
-                  new Line([
+                  new LineBlockNode.Line([
                     new PlainTextNode('Roses are red'),
                   ]),
-                  new Line([
+                  new LineBlockNode.Line([
                     new PlainTextNode('Violets are blue')
                   ])
                 ])
@@ -278,10 +277,10 @@ Poem
             ],
               new Description([
                 new LineBlockNode([
-                  new Line([
+                  new LineBlockNode.Line([
                     new PlainTextNode('Roses are red'),
                   ]),
-                  new Line([
+                  new LineBlockNode.Line([
                     new PlainTextNode('Violets are blue')
                   ])
                 ])
@@ -319,10 +318,10 @@ Address
         ],
           new Description([
             new LineBlockNode([
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Roses are red')
               ]),
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Violets are blue')
               ])
             ]),
@@ -341,10 +340,10 @@ Address
         ],
           new Description([
             new LineBlockNode([
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('1234 Spooky Street')
               ]),
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode('Pepe, PA 17101')
               ])
             ]),

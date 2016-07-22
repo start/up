@@ -3,7 +3,6 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
@@ -102,7 +101,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       break
 
     default: {
-      const lineBlockLines = inlineNodesPerRegularLine.map(inlineNodes => new Line(inlineNodes))
+      const lineBlockLines = inlineNodesPerRegularLine.map(inlineNodes => new LineBlockNode.Line(inlineNodes))
       regularLinesResultNode = new LineBlockNode(lineBlockLines)
       break
     }

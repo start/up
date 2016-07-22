@@ -4,7 +4,6 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
@@ -25,9 +24,9 @@ Roses don't glow!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([new PlainTextNode('Spoiler:')]),
-          new Line([new PlainTextNode('No!')]),
-          new Line([new PlainTextNode("Roses don't glow!")]),
+          new LineBlockNode.Line([new PlainTextNode('Spoiler:')]),
+          new LineBlockNode.Line([new PlainTextNode('No!')]),
+          new LineBlockNode.Line([new PlainTextNode("Roses don't glow!")]),
         ])
       ]))
   })

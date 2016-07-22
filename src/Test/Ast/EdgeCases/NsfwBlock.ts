@@ -4,7 +4,6 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
@@ -25,9 +24,9 @@ Avoid that initialism!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([new PlainTextNode('NSFW:')]),
-          new Line([new PlainTextNode('No!')]),
-          new Line([new PlainTextNode("Avoid that initialism!")]),
+          new LineBlockNode.Line([new PlainTextNode('NSFW:')]),
+          new LineBlockNode.Line([new PlainTextNode('No!')]),
+          new LineBlockNode.Line([new PlainTextNode("Avoid that initialism!")]),
         ])
       ]))
   })

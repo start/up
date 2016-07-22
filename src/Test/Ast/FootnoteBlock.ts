@@ -13,7 +13,6 @@ import { Description } from '../../SyntaxNodes/Description'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../SyntaxNodes/Line'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
@@ -113,11 +112,11 @@ Violets are blue (^Neither is this line. I think my mom made it up.)`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("Roses are red"),
             footnotes[0],
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode("Violets are blue"),
             footnotes[1]
           ])
@@ -180,11 +179,11 @@ describe('Footnotes in unordered list items', () => {
 
           new UnorderedListNode.Item([
             new LineBlockNode([
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode("Roses are red"),
                 footnotes[2],
               ]),
-              new Line([
+              new LineBlockNode.Line([
                 new PlainTextNode("Violets are blue"),
                 footnotes[3],
               ])

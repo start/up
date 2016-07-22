@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
@@ -27,8 +26,8 @@ Violets are blue`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([new PlainTextNode('Roses are red')]),
-          new Line([new PlainTextNode('Violets are blue')])
+          new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
+          new LineBlockNode.Line([new PlainTextNode('Violets are blue')])
         ])
       ])
     )
@@ -45,8 +44,8 @@ Roses are red
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([new PlainTextNode('Roses are red')]),
-          new Line([new PlainTextNode('Violets are blue')])
+          new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
+          new LineBlockNode.Line([new PlainTextNode('Violets are blue')])
         ])
       ])
     )

@@ -6,7 +6,6 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { Line } from '../../../SyntaxNodes/Line'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 
 
@@ -46,10 +45,10 @@ And addresses do, too`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Violets are blue')
           ])
         ]),
@@ -66,10 +65,10 @@ And addresses do, too`
           ])
         ]),
         new LineBlockNode([
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('Lyrics have lines')
           ]),
-          new Line([
+          new LineBlockNode.Line([
             new PlainTextNode('And addresses do, too')
           ])
         ])
