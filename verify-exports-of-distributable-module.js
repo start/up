@@ -1,7 +1,7 @@
 "use strict";
 
 const expect = require('chai').expect
-const EXPORTS = require('./lib/index')
+const EXPORTS = require('./dist/index')
 
 
 context('The Up library is exported two ways.', () => {
