@@ -7,7 +7,6 @@ import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
@@ -236,7 +235,7 @@ NSFL:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false
@@ -257,7 +256,7 @@ NSFL:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false
@@ -278,7 +277,7 @@ NSFL:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new CodeBlockNode(
                 `  if (x < 0) {
 \t\treturn false

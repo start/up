@@ -10,7 +10,6 @@ import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
@@ -265,7 +264,7 @@ You're in for a fright`
           ])
         ]),
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Never post your address unless you subsequently post poetry.')
             ])

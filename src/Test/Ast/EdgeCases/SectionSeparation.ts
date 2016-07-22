@@ -5,7 +5,6 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
@@ -99,12 +98,12 @@ describe('A streak of number signs with spaces between', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Mittens')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Gloves')
             ])

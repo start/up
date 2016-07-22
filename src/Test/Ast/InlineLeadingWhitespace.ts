@@ -11,7 +11,6 @@ import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
@@ -98,7 +97,7 @@ Charmeleon
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new ParagraphNode([
                 new PlainTextNode('Hello, Lavender Town!')
               ]),

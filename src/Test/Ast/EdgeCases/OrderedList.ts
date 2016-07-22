@@ -4,7 +4,6 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../../SyntaxNodes/OrderedListItem'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
@@ -19,7 +18,7 @@ describe('An ordered list with a single item', () => {
       new DocumentNode([
         new SectionSeparatorNode(),
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Mittens')
             ])
@@ -44,24 +43,24 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Iowa')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('New Hampshire')
             ])
           ])
         ]),
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Clinton')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Sanders')
             ])
@@ -86,12 +85,12 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Iowa')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('New Hampshire')
             ])
@@ -99,12 +98,12 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
         ]),
         new SectionSeparatorNode(),
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Clinton')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Sanders')
             ])
@@ -124,12 +123,12 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ], 10),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -146,12 +145,12 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ], -20),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -168,12 +167,12 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ], 0),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])

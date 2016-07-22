@@ -6,7 +6,6 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -548,7 +547,7 @@ describe('Footnotes in ordered list items', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnotes[0],
@@ -558,7 +557,7 @@ describe('Footnotes in ordered list items', () => {
               new PlainTextNode("It's too expensive.")
             ])
           ], 1),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               footnotes[1],

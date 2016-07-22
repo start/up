@@ -24,7 +24,6 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode, OrderedListOrder } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
@@ -283,7 +282,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children)
   }
 
-  private orderedListItem(listItem: OrderedListItem): string {
+  private orderedListItem(listItem: OrderedListNode.Item): string {
     const attrs: { value?: number } = {}
 
     if (listItem.ordinal != null) {

@@ -8,7 +8,6 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { Line } from '../../SyntaxNodes/Line'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { OrderedListItem } from '../../SyntaxNodes/OrderedListItem'
 
 
 describe('Consecutive lines each bulleted by a number sign', () => {
@@ -20,12 +19,12 @@ describe('Consecutive lines each bulleted by a number sign', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -46,12 +45,12 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Lavender Town!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Lavender Town!')
             ])
@@ -72,12 +71,12 @@ describe('Consecutive lines each bulleted by a number sign followed by a right p
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
@@ -98,12 +97,12 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
@@ -124,12 +123,12 @@ describe('Consecutive lines each bulleted by an integer followed by a right pare
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
@@ -146,7 +145,7 @@ describe('A single line bulleted by a number sign', () => {
     expect(Up.toAst('# Hello, world!')).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
@@ -163,7 +162,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
     expect(Up.toAst('#. Hello, Lavender Town!')).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Lavender Town!')
             ])
@@ -180,7 +179,7 @@ describe('A single line bulleted by a number sign followed by a right paren', ()
     expect(Up.toAst('#) Hello, Celadon City!')).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
@@ -210,7 +209,7 @@ describe('A single line bulleted by an integer followed by a right paren', () =>
     expect(Up.toAst('1) Hello, Celadon City!')).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
@@ -234,27 +233,27 @@ describe('The 5 different bullet types', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
           ], 1),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Couriway Town!')
             ])
           ], 2),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Cinnabar Island!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Cherrygrove City!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, Camphrier Town!')
             ])
@@ -275,7 +274,7 @@ describe('An ordered list', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, World '),
               new EmphasisNode([
@@ -284,7 +283,7 @@ describe('An ordered list', () => {
               new PlainTextNode('!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, World '),
               new EmphasisNode([
@@ -307,12 +306,12 @@ Hello, World 1-2!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, world!')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, world!')
             ])
@@ -338,12 +337,12 @@ describe('An indented line immediately following an ordered list item line', () 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1)
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode('Roses are red')
@@ -376,7 +375,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1),
@@ -387,7 +386,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
               new PlainTextNode('Really.')
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
             ], 1)
@@ -436,7 +435,7 @@ describe('An ordered list item containing multiple indented lines', () => {
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Hello, world!')
             ], 1),
@@ -444,19 +443,19 @@ describe('An ordered list item containing multiple indented lines', () => {
               new PlainTextNode('Upcoming features:')
             ]),
             new OrderedListNode([
-              new OrderedListItem([
+              new OrderedListNode.Item([
                 new ParagraphNode([
                   new PlainTextNode('Code blocks in list items')
                 ])
               ]),
-              new OrderedListItem([
+              new OrderedListNode.Item([
                 new ParagraphNode([
                   new PlainTextNode('Definition lists')
                 ])
               ])
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new HeadingNode([
               new PlainTextNode('Goodbye, world!')
             ], 1)
@@ -478,7 +477,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new LineBlockNode([
                 new Line([
                   new PlainTextNode('Roses are red'),
@@ -501,7 +500,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new LineBlockNode([
                 new Line([
                   new PlainTextNode('Roses are red'),
@@ -524,7 +523,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
-            new OrderedListItem([
+            new OrderedListNode.Item([
               new LineBlockNode([
                 new Line([
                   new PlainTextNode('Roses are red'),
@@ -557,7 +556,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
     expect(Up.toAst(withMixedIndentation)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode('Roses are red')
@@ -573,7 +572,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
               new PlainTextNode("I think it's my favorite.")
             ])
           ]),
-          new OrderedListItem([
+          new OrderedListNode.Item([
             new LineBlockNode([
               new Line([
                 new PlainTextNode('1234 Spooky Street')
