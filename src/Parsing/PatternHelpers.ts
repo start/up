@@ -62,39 +62,37 @@ export function streakOf(charPattern: string): RegExp {
   return solely(atLeast(3, charPattern))
 }
 
+export function solely(pattern: string): RegExp {
+  return getRegExpSolelyConsistingOf({ pattern })
+}
+
+export function solelyAndIgnoringCapitalization(pattern: string): RegExp {
+  return getRegExpSolelyConsistingOf({ pattern, isCaseInsensitive: true })
+}
+
 export function patternStartingWith(pattern: string): RegExp {
-  return regExpFlagsStartingWith({ pattern })
+  return getRegExpStartingWith({ pattern })
 }
 
 export function patternIgnoringCapitalizationAndStartingWith(pattern: string): RegExp {
-  return regExpFlagsStartingWith({ pattern, isCaseInsensitive: true })
+  return getRegExpStartingWith({ pattern, isCaseInsensitive: true })
 }
 
 export function patternEndingWith(pattern: string): RegExp {
   return new RegExp(pattern + '$')
 }
 
+
 import { ANY_WHITESPACE } from './PatternPieces'
 
-export function solely(pattern: string): RegExp {
-  return regExpSolelyConsistingOf({ pattern })
+function getRegExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
+  return new RegExp('^' + args.pattern + ANY_WHITESPACE + '$', getRegExpFlags(args.isCaseInsensitive))
 }
 
-export function solelyAndIgnoringCapitalization(pattern: string): RegExp {
-  return regExpSolelyConsistingOf({ pattern, isCaseInsensitive: true })
+function getRegExpStartingWith(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
+  return new RegExp('^' + args.pattern, getRegExpFlags(args.isCaseInsensitive))
 }
 
-function regExpFlagsStartingWith(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
-  return new RegExp('^' + args.pattern, regExpFlags(args.isCaseInsensitive))
-}
-
-function regExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
-  return new RegExp('^' + args.pattern + ANY_WHITESPACE + '$', regExpFlags(args.isCaseInsensitive))
-}
-
-function regExpFlags(isCaseInsensitive: boolean): string {
-  return (
-    isCaseInsensitive
-      ? 'i'
-      : undefined)
+function getRegExpFlags(isCaseInsensitive: boolean): string {
+  return isCaseInsensitive ? 'i' : undefined
 }
