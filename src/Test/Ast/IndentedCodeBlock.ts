@@ -9,7 +9,6 @@ import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
@@ -368,7 +367,7 @@ Lesson 1
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([
                 new PlainTextNode('Lesson 1')
               ])
@@ -395,7 +394,7 @@ Lesson 1
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([
                 new PlainTextNode('Lesson 1')
               ])
@@ -422,7 +421,7 @@ Lesson 1
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([
                 new PlainTextNode('Lesson 1')
               ])

@@ -4,7 +4,6 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../../SyntaxNodes/Description'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
@@ -27,7 +26,7 @@ Lee Chang-ho
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('League of Legends')
             ])
@@ -37,7 +36,7 @@ Lee Chang-ho
             ])
           ])
           ),
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('StarCraft 2')
             ])
@@ -49,7 +48,7 @@ Lee Chang-ho
           )
         ]),
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Magnus Carlsen')
             ])
@@ -59,7 +58,7 @@ Lee Chang-ho
             ])
           ])
           ),
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Lee Chang-ho')
             ])
@@ -93,7 +92,7 @@ Lee Chang-ho
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('League of Legends')
             ])
@@ -103,7 +102,7 @@ Lee Chang-ho
             ])
           ])
           ),
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('StarCraft 2')
             ])
@@ -116,7 +115,7 @@ Lee Chang-ho
         ]),
         new SectionSeparatorNode(),
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Magnus Carlsen')
             ])
@@ -126,7 +125,7 @@ Lee Chang-ho
             ])
           ])
           ),
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Lee Chang-ho')
             ])

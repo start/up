@@ -25,7 +25,6 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -291,7 +290,7 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children, attrs)
   }
 
-  private descriptionListItem(listItem: DescriptionListItem): string {
+  private descriptionListItem(listItem: DescriptionListNode.Item): string {
     return (
       listItem.terms.map(term => this.descriptionTerm(term)).join('')
       + this.description(listItem.description)

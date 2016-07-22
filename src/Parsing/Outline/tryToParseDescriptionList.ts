@@ -1,5 +1,4 @@
 import { LineConsumer } from './LineConsumer'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
@@ -23,7 +22,7 @@ import { getIndentedBlock } from './getIndentedBlock'
 // blank lines terminates the whole description list, not just the list item. 
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
-  const listItems: DescriptionListItem[] = []
+  const listItems: DescriptionListNode.Item[] = []
   let countLinesConsumed = 0
 
   while (!lineConsumer.done()) {
@@ -86,7 +85,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       new Description(
         getOutlineNodes(descriptionLines, args.headingLeveler, args.config))
 
-    listItems.push(new DescriptionListItem(terms, description))
+    listItems.push(new DescriptionListNode.Item(terms, description))
 
     if (shouldTerminateList) {
       break

@@ -7,7 +7,6 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 
@@ -201,7 +200,7 @@ Awkward
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
         new DescriptionListNode([
-          new DescriptionListItem(
+          new DescriptionListNode.Item(
             [new DescriptionTerm([new PlainTextNode('Awkward')])],
             new Description([
               new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)

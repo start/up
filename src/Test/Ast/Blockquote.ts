@@ -8,7 +8,6 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 
@@ -87,7 +86,7 @@ context("Within a blockquote", () => {
         new DocumentNode([
           new BlockquoteNode([
             new DescriptionListNode([
-              new DescriptionListItem([
+              new DescriptionListNode.Item([
                 new DescriptionTerm([new PlainTextNode('Charmander')])
               ],
                 new Description([
@@ -113,7 +112,7 @@ context("Within a blockquote", () => {
         new DocumentNode([
           new BlockquoteNode([
             new DescriptionListNode([
-              new DescriptionListItem([
+              new DescriptionListNode.Item([
                 new DescriptionTerm([new PlainTextNode('Charmander')])
               ],
                 new Description([

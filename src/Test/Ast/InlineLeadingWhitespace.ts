@@ -6,7 +6,6 @@ import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
@@ -71,7 +70,7 @@ Charmeleon
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([new PlainTextNode('Charmander')]),
               new DescriptionTerm([new PlainTextNode('Charmeleon')])
             ], new Description([
@@ -141,7 +140,7 @@ Charmander
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([new PlainTextNode('Charmander')])
             ], new Description([
               new ParagraphNode([

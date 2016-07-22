@@ -27,7 +27,6 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -151,14 +150,14 @@ describe('A description list', () => {
   it('produces a dl element containing dt elements for each term, and dd elements for each description', () => {
     const node = new DocumentNode([
       new DescriptionListNode([
-        new DescriptionListItem([
+        new DescriptionListNode.Item([
           new DescriptionTerm([new PlainTextNode('Bulbasaur')])
         ], new Description([
           new ParagraphNode([
             new PlainTextNode('A grass type Pokemon')
           ])
         ])),
-        new DescriptionListItem([
+        new DescriptionListNode.Item([
           new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
           new DescriptionTerm([new PlainTextNode('Lick')]),
         ], new Description([

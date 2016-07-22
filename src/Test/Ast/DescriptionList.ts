@@ -5,7 +5,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { DescriptionListItem } from '../../SyntaxNodes/DescriptionListItem'
 import { DescriptionTerm } from '../../SyntaxNodes/DescriptionTerm'
 import { Description } from '../../SyntaxNodes/Description'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -20,7 +19,7 @@ Charmander
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([new PlainTextNode('Charmander')])
           ],
             new Description([
@@ -46,7 +45,7 @@ Torchic
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([new PlainTextNode('Charmander')]),
             new DescriptionTerm([new PlainTextNode('Cyndaquil')]),
             new DescriptionTerm([new PlainTextNode('Torchic')])
@@ -72,7 +71,7 @@ Ash *"Little Marco"* Ketchum
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Ash '),
               new EmphasisNode([new PlainTextNode('"Little Marco"')]),
@@ -100,7 +99,7 @@ Ash Ketchum
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Ash Ketchum')
             ])
@@ -137,7 +136,7 @@ Gary
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([new PlainTextNode('Bulbasaur')])
           ], new Description([
             new ParagraphNode([
@@ -145,7 +144,7 @@ Gary
             ])
           ])),
 
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([new PlainTextNode('Confuse Ray')]),
             new DescriptionTerm([new PlainTextNode('Lick')]),
             new DescriptionTerm([new PlainTextNode('Night Shade')])
@@ -156,7 +155,7 @@ Gary
               ])
             ])),
 
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([new PlainTextNode('Gary')])
           ],
             new Description([
@@ -180,7 +179,7 @@ The secret to eternal youth is to join a cartoon.`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
-          new DescriptionListItem([
+          new DescriptionListNode.Item([
             new DescriptionTerm([
               new PlainTextNode('Ash Ketchum')
             ])
@@ -212,7 +211,7 @@ Poem
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([
                 new PlainTextNode('Poem')
               ])
@@ -241,7 +240,7 @@ Poem
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([
                 new PlainTextNode('Poem')
               ])
@@ -270,7 +269,7 @@ Poem
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
-            new DescriptionListItem([
+            new DescriptionListNode.Item([
               new DescriptionTerm([
                 new PlainTextNode('Poem')
               ])
@@ -311,7 +310,7 @@ Address
   expect(Up.toAst(text)).to.be.eql(
     new DocumentNode([
       new DescriptionListNode([
-        new DescriptionListItem([
+        new DescriptionListNode.Item([
           new DescriptionTerm([
             new PlainTextNode('Poem')
           ])
@@ -333,7 +332,7 @@ Address
             ])
           ])
         ),
-        new DescriptionListItem([
+        new DescriptionListNode.Item([
           new DescriptionTerm([
             new PlainTextNode('Address')
           ])

@@ -1,6 +1,5 @@
 import { concat } from '../CollectionHelpers'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
-import { DescriptionListItem } from '../SyntaxNodes/DescriptionListItem'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
@@ -174,7 +173,7 @@ class FootnoteHandler {
       list.listItems.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item)))
   }
 
-  handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListItem): FootnoteNode[] {
+  handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListNode.Item): FootnoteNode[] {
     const footnotesFromTerms =
       this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(item.terms)
 
