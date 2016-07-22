@@ -7,8 +7,6 @@ import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
-
-
 describe('A code block', () => {
   it('can directly follow a paragraph', () => {
     const text = `
