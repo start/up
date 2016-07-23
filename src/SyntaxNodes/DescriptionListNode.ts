@@ -2,10 +2,10 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
-export class DescriptionListNode {
-  OUTLINE_SYNTAX_NODE(): void { }
-
+export class DescriptionListNode implements OutlineSyntaxNode {
   constructor(public listItems: DescriptionListNode.Item[]) { }
+
+  OUTLINE_SYNTAX_NODE(): void { }
 }
 
 
