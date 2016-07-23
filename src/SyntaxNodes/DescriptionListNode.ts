@@ -3,7 +3,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 export class DescriptionListNode implements OutlineSyntaxNode {
-  constructor(public listItems: DescriptionListNode.Item[]) { }
+  constructor(public items: DescriptionListNode.Item[]) { }
 
   OUTLINE_SYNTAX_NODE(): void { }
 }

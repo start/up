@@ -170,7 +170,7 @@ class FootnoteHandler {
 
   handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode): FootnoteNode[] {
     return concat(
-      list.listItems.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item)))
+      list.items.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item)))
   }
 
   handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListNode.Item): FootnoteNode[] {

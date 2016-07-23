@@ -105,7 +105,7 @@ export class HtmlWriter extends Writer {
   protected descriptionList(node: DescriptionListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      node.listItems.map(listItem => this.descriptionListItem(listItem))
+      node.items.map(item => this.descriptionListItem(item))
     )
   }
 
