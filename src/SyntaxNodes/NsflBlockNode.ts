@@ -1,10 +1,6 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
 
 
-export class NsflBlockNode {
-  OUTLINE_SYNTAX_NODE(): void { }
-
-  constructor(public children: OutlineSyntaxNode[] = []) { }
-
+export class NsflBlockNode extends RichOutlineSyntaxNode {
   protected NSFL_BLOCK_NODE(): void { }
 }
