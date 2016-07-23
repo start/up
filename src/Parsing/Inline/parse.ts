@@ -151,14 +151,14 @@ class Parser {
           // If this is a footnote convention, and if it's inside any revealable inline conventions...
           if ((richConvention === FOOTNOTE_CONVENTION) && this.revealableAncestorConventions.length) {
             // ... then we'll put the footnote's children directly inside the syntax node representing the
-            // innermost revealable convention that contains the footnote.
+            // footnote's closeset revealable ancestor.
             //
             // This way, the content of the footnote within its footnote block remains revealable.
             //
             // Any footnotes within revealable *outline* conventions are placed into a footnote block inside
             // the revealable outline convention. This serves the same purpose. 
-            const innermostRevealableConvention = last(this.revealableAncestorConventions)
-            children = [new innermostRevealableConvention.NodeType(children)]
+            const closestRevealableAncestorConvention = last(this.revealableAncestorConventions)
+            children = [new closestRevealableAncestorConvention.NodeType(children)]
           }
 
           this.nodes.push(new richConvention.NodeType(children))
