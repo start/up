@@ -5,7 +5,7 @@ import { RichConventionWithoutExtraFields, RichSyntaxNodeWithoutExtraFields } fr
 // A "revealable" inline convention is one that requires deliberate action from the reader to reveal.
 //
 // Spoilers are an example.
-export class RevealableConvention {
+export class RevealableConvention implements RichConventionWithoutExtraFields {
   NodeType: RichSyntaxNodeWithoutExtraFields
   startTokenKind: TokenKind
   endTokenKind: TokenKind
