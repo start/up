@@ -1,5 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class DescriptionListNode implements OutlineSyntaxNode {
@@ -18,13 +20,13 @@ export module DescriptionListNode {
 
 
   export module Item {
-    export class Term {
+    export class Term implements InlineSyntaxNodeContainer {
       constructor(public children: InlineSyntaxNode[]) { }
 
       protected DESCRIPTION_LIST_ITEM_TERM(): void { }
     }
 
-    export class Description {
+    export class Description implements OutlineSyntaxNodeContainer {
       constructor(public children: OutlineSyntaxNode[]) { }
 
       protected DESCRIPTION_LIST_ITEM_DESCRIPTION(): void { }
