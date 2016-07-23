@@ -1,4 +1,6 @@
 import { concat } from '../CollectionHelpers'
+import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
+import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
@@ -89,7 +91,7 @@ class FootnoteHandler {
     this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
   }
 
-  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContainer: OutlineNodeContainer): void {
+  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContainer: OutlineSyntaxNodeContainer): void {
     const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
 
     for (const outlineNode of outlineNodeContainer.children) {
@@ -158,12 +160,12 @@ class FootnoteHandler {
     return footnotes
   }
 
-  getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineNodeContainer[]): FootnoteNode[] {
+  getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[]): FootnoteNode[] {
     return concat(
       containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)))
   }
 
-  handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineNodeContainer[]): FootnoteNode[] {
+  handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[]): FootnoteNode[] {
     return concat(
       containers.map(container => this.handleOutlineNodesAndGetBlocklessFootnotes(container.children)))
   }
@@ -203,13 +205,4 @@ class FootnoteHandler {
 
     return footnoteBlock
   }
-}
-
-
-export interface OutlineNodeContainer {
-  children: OutlineSyntaxNode[]
-}
-
-export interface InlineNodeContainer {
-  children: InlineSyntaxNode[]
 }
