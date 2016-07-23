@@ -43,7 +43,10 @@ const MEDIA_CONVENTIONS = [
 
 
 class Parser {
-  result: ParseResult
+  result: {
+    nodes: InlineSyntaxNode[]
+    countTokensParsed: number
+  }
 
   private tokens: Token[]
   private ancestorRevealableInlineConventions: RevealableConvention[]
@@ -204,12 +207,6 @@ class Parser {
       nodes: combineConsecutivePlainTextNodes(this.nodes)
     }
   }
-}
-
-
-interface ParseResult {
-  nodes: InlineSyntaxNode[]
-  countTokensParsed: number
 }
 
 
