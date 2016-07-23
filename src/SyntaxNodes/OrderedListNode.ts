@@ -37,7 +37,7 @@ export module OrderedListNode {
   }
 
   export enum Order {
-    Ascending,
+    Ascending = 1,
     Descrending
   }
 }
