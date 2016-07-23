@@ -9,7 +9,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 // If a media convention is "linkified", or if a link otherwise contains only media conventions (and
 // whitespace), the link counts as media. In that situation, the link itself is placed directly into
 // the outline.
-export class LinkNode extends RichInlineSyntaxNode implements InlineSyntaxNode, OutlineSyntaxNode {
+export class LinkNode extends RichInlineSyntaxNode implements OutlineSyntaxNode {
   constructor(public children: InlineSyntaxNode[], public url: string) {
     super(children)
   }
