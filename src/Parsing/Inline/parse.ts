@@ -12,7 +12,7 @@ import { RevealableConvention } from './RevealableConvention'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
-export function parse(tokens: Token[]): InlineSyntaxNode[] { 
+export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return new Parser({
     tokens,
     inlineRevealableAncestorConventions: []
@@ -167,11 +167,14 @@ class Parser {
       }
     }
 
-    if (endTokenKind) {
-      throw new Error('Missing terminator token: ' + TokenKind[endTokenKind])
-    }
-
     this.setResult()
+  }
+
+  private setResult(): void {
+    this.result = {
+      countTokensParsed: this.countTokensParsed,
+      nodes: combineConsecutivePlainTextNodes(this.nodes)
+    }
   }
 
   private getNextTokenAndAdvanceIndex(): Token {
@@ -199,13 +202,6 @@ class Parser {
 
     this.tokenIndex += result.countTokensParsed
     return result.nodes
-  }
-
-  private setResult(): void {
-    this.result = {
-      countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutivePlainTextNodes(this.nodes)
-    }
   }
 }
 
