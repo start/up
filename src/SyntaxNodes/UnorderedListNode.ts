@@ -1,10 +1,10 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class UnorderedListNode {
-  OUTLINE_SYNTAX_NODE(): void { }
-
+export class UnorderedListNode implements OutlineSyntaxNode {
   constructor(public listItems: UnorderedListNode.Item[]) { }
+  
+  OUTLINE_SYNTAX_NODE(): void { }
 }
 
 export module UnorderedListNode {
