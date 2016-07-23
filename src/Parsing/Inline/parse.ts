@@ -107,11 +107,11 @@ class Parser {
         }
 
         case LINK_CONVENTION.startTokenKind: {
-          let children = this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
+          let children = this.getNodes({ fromHereUntil: TokenKind.LinkEndAndUrl })
 
           const isContentBlank = isBlank(children)
 
-          // The URL was in the LinkUrlAndEnd token, the last token we parsed
+          // The URL was in the LinkEndAndUrl token, the last token we parsed
           let url = this.tokens[this.tokenIndex].value.trim()
 
           if (isContentBlank) {
@@ -125,10 +125,10 @@ class Parser {
       }
 
       for (const media of MEDIA_CONVENTIONS) {
-        if (token.kind === media.descriptionAndStartTokenKind) {
+        if (token.kind === media.startAndDescriptionTokenKind) {
           let description = token.value.trim()
 
-          // The next token will be a MediaUrlAndEnd token
+          // The next token will be a MediaEndAndUrl token
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
           if (!description) {

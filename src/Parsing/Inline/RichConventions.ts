@@ -68,7 +68,7 @@ export const ACTION_CONVENTION: RichConventionWithoutExtraFields = {
 export const LINK_CONVENTION = {
   NodeType: LinkNode,
   startTokenKind: TokenKind.LinkStart,
-  endTokenKind: TokenKind.LinkUrlAndEnd
+  endTokenKind: TokenKind.LinkEndAndUrl
 }
 
 export const SPOILER_CONVENTION = new RevealableConvention({

@@ -125,7 +125,7 @@ class Tokenizer {
   //
   // 1. When a rich convention is "linkified", its entire contents are nested within a link, which
   //    itself is nested within the original convention. In that case, the most recent token would
-  //    be a LinkUrlAndEnd token. For more information about "linkification", please see the
+  //    be a LinkEndAndUrl token. For more information about "linkification", please see the
   //    `getLinkifyingUrlConventions` method.
   //    
   // 2. When a rich convention (one that can contain other conventions) closes, we move its end token
@@ -350,7 +350,7 @@ class Tokenizer {
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
           insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
 
-          beforeClosingItAlwaysFlushesBufferTo: media.descriptionAndStartTokenKind,
+          beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
           whenClosingItAlsoClosesInnerConventions: true,
           mustBeDirectlyFollowedBy: this.mediaUrlConventions
         }))))
@@ -368,7 +368,7 @@ class Tokenizer {
 
       whenClosing: () => {
         const url = this.applyConfigSettingsToUrl(this.flushBuffer())
-        this.appendNewToken(TokenKind.MediaUrlAndEnd, url)
+        this.appendNewToken(TokenKind.MediaEndAndUrl, url)
       }
     }))
   }
@@ -438,7 +438,7 @@ class Tokenizer {
     ].map(richConvention => richConvention.endTokenKind)
 
     // All media conventions use the same end token
-    const KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS = [TokenKind.MediaUrlAndEnd]
+    const KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS = [TokenKind.MediaEndAndUrl]
 
     return concat(BRACKETS.map(bracket => [
       ...[
@@ -568,7 +568,7 @@ class Tokenizer {
       startingBackAtTokenIndex: indexOfMediaStartToken
     })
 
-    // Now, the last token is a LinkUrlAndEnd token. Let's assign its URL!
+    // Now, the last token is a LinkEndAndUrl token. Let's assign its URL!
     last(this.tokens).value = url
   }
 

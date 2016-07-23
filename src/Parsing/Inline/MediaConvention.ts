@@ -5,5 +5,5 @@ import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 export interface MediaConvention {
   nonLocalizedTerm: string
   NodeType: MediaSyntaxNodeType
-  descriptionAndStartTokenKind: TokenKind
+  startAndDescriptionTokenKind: TokenKind
 }
