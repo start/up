@@ -181,3 +181,62 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
       ]))
   })
 })
+
+
+context("When an ordered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
+  specify('An integer followed by a closing parenthesis', () => {
+    expect(Up.toAst('1) 1783. Not a good year for Great Britain.')).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('1783. Not a good year for Great Britain.')
+            ])
+          ], 1)
+        ])
+      ])
+    )
+  })
+
+  specify('A number sign', () => {
+    expect(Up.toAst('# 1783. Not a good year for Great Britain.')).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('1783. Not a good year for Great Britain.')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+
+  specify('A number sign followed by a period', () => {
+    expect(Up.toAst('#. 1783. Not a good year for Great Britain.')).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('1783. Not a good year for Great Britain.')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+
+  specify('A number sign followed by a closing parenthesis', () => {
+    expect(Up.toAst('#) 1783. Not a good year for Great Britain.')).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('1783. Not a good year for Great Britain.')
+            ])
+          ])
+        ])
+      ])
+    )
+  })
+})

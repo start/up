@@ -139,6 +139,19 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
 })
 
 
+describe('A single line bulleted by an integer followed by a period', () => {
+  it('does not produce an ordered list', () => {
+    expect(Up.toAst('1783. Not a good year for Great Britain.')).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode('1783. Not a good year for Great Britain.')
+        ])
+      ])
+    )
+  })
+})
+
+
 describe('A single line bulleted by a number sign', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
     expect(Up.toAst('# Hello, world!')).to.be.eql(
@@ -183,19 +196,6 @@ describe('A single line bulleted by a number sign followed by a closing parenthe
               new PlainTextNode('Hello, Celadon City!')
             ])
           ])
-        ])
-      ])
-    )
-  })
-})
-
-
-describe('A single line bulleted by an integer followed by a period', () => {
-  it('produces a paragraph, not an ordered list', () => {
-    expect(Up.toAst('1783. Not a good year for Great Britain.')).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode('1783. Not a good year for Great Britain.')
         ])
       ])
     )
