@@ -1,10 +1,6 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
 
 
-export class BlockquoteNode {
-  OUTLINE_SYNTAX_NODE(): void { }
-
-  constructor(public children: OutlineSyntaxNode[] = []) { }
-
+export class BlockquoteNode extends RichOutlineSyntaxNode {
   protected BLOCKQUOTE_NODE(): void { }
 }
