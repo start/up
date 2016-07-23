@@ -15,7 +15,7 @@ import { RevealableConvention } from './RevealableConvention'
 export function parse(tokens: Token[]): InlineSyntaxNode[] {
   return new Parser({
     tokens,
-    outerRevealableInlineConventions: []
+    ancestorRevealableInlineConventions: []
   }).result.nodes
 }
 
@@ -46,7 +46,7 @@ class Parser {
   result: ParseResult
 
   private tokens: Token[]
-  private outerRevealableInlineConventions: RevealableConvention[]
+  private ancestorRevealableInlineConventions: RevealableConvention[]
   private tokenIndex = 0
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
@@ -55,11 +55,11 @@ class Parser {
     args: {
       tokens: Token[]
       untilTokenOfKind?: TokenKind
-      outerRevealableInlineConventions: RevealableConvention[]
+      ancestorRevealableInlineConventions: RevealableConvention[]
     }
   ) {
     this.tokens = args.tokens
-    this.outerRevealableInlineConventions = args.outerRevealableInlineConventions
+    this.ancestorRevealableInlineConventions = args.ancestorRevealableInlineConventions
     const { untilTokenOfKind } = args
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
@@ -142,11 +142,11 @@ class Parser {
         if (token.kind === richConvention.startTokenKind) {
           let children = this.produceSyntaxNodes({
             fromHereUntil: richConvention.endTokenKind,
-            withinRevealableConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
+            parentRevealableConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
           // If this is a footnote convention, and if it's inside any revealable inline conventions...
-          if ((richConvention === FOOTNOTE_CONVENTION) && this.outerRevealableInlineConventions.length) {
+          if ((richConvention === FOOTNOTE_CONVENTION) && this.ancestorRevealableInlineConventions.length) {
             // ... then we'll put the footnote's children directly inside the syntax node representing the
             // innermost revealable convention that contains the footnote.
             //
@@ -154,7 +154,7 @@ class Parser {
             //
             // Any footnotes within revealable *outline* conventions are placed into a footnote block inside
             // the revealable outline convention. This serves the same purpose. 
-            const innermostRevealableConvention = last(this.outerRevealableInlineConventions)
+            const innermostRevealableConvention = last(this.ancestorRevealableInlineConventions)
             children = [new innermostRevealableConvention.NodeType(children)]
           }
 
@@ -178,20 +178,20 @@ class Parser {
   private produceSyntaxNodes(
     args: {
       fromHereUntil: TokenKind
-      withinRevealableConvention?: RevealableConvention
+      parentRevealableConvention?: RevealableConvention
     }
   ): InlineSyntaxNode[] {
-    const { withinRevealableConvention } = args
+    const { parentRevealableConvention } = args
 
     let outerRevealableConventions =
-      withinRevealableConvention
-        ? this.outerRevealableInlineConventions.concat(withinRevealableConvention)
-        : this.outerRevealableInlineConventions
+      parentRevealableConvention
+        ? this.ancestorRevealableInlineConventions.concat(parentRevealableConvention)
+        : this.ancestorRevealableInlineConventions
 
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
       untilTokenOfKind: args.fromHereUntil,
-      outerRevealableInlineConventions: outerRevealableConventions
+      ancestorRevealableInlineConventions: outerRevealableConventions
     })
 
     this.tokenIndex += result.countTokensParsed
