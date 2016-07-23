@@ -39,24 +39,6 @@ export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.RevisionInsertionEnd
 }
 
-export const SPOILER_CONVENTION = new RevealableConvention({
-  NodeType: InlineSpoilerNode,
-  startTokenKind: TokenKind.SpoilerStart,
-  endTokenKind: TokenKind.SpoilerEnd,
-})
-
-export const NSFW_CONVENTION = new RevealableConvention({
-  NodeType: InlineNsfwNode,
-  startTokenKind: TokenKind.NsfwStart,
-  endTokenKind: TokenKind.NsfwEnd,
-})
-
-export const NSFL_CONVENTION = new RevealableConvention({
-  NodeType: InlineNsflNode,
-  startTokenKind: TokenKind.NsflStart,
-  endTokenKind: TokenKind.NsflEnd,
-})
-
 export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: FootnoteNode,
   startTokenKind: TokenKind.FootnoteStart,
@@ -81,10 +63,28 @@ export const ACTION_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.ActionEnd
 }
 
-// The link convention has a special attribute: its URL. Therefore, it doesn't satisfy the
-// `RichConventionWithoutSpecialAttributes` interface.
+// The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
+// `RichConventionWithoutExtraFields` interface.
 export const LINK_CONVENTION = {
   NodeType: LinkNode,
   startTokenKind: TokenKind.LinkStart,
   endTokenKind: TokenKind.LinkUrlAndEnd
 }
+
+export const SPOILER_CONVENTION = new RevealableConvention({
+  NodeType: InlineSpoilerNode,
+  startTokenKind: TokenKind.SpoilerStart,
+  endTokenKind: TokenKind.SpoilerEnd,
+})
+
+export const NSFW_CONVENTION = new RevealableConvention({
+  NodeType: InlineNsfwNode,
+  startTokenKind: TokenKind.NsfwStart,
+  endTokenKind: TokenKind.NsfwEnd,
+})
+
+export const NSFL_CONVENTION = new RevealableConvention({
+  NodeType: InlineNsflNode,
+  startTokenKind: TokenKind.NsflStart,
+  endTokenKind: TokenKind.NsflEnd,
+})
