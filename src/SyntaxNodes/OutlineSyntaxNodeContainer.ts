@@ -1,6 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export interface OutlineSyntaxNodeContainer {
-  children: OutlineSyntaxNode[]
+export class OutlineSyntaxNodeContainer {
+  constructor(public children: OutlineSyntaxNode[]) { }
 }

@@ -1,6 +1,6 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
-export interface InlineSyntaxNodeContainer {
-  children: InlineSyntaxNode[]
+export class InlineSyntaxNodeContainer {
+  constructor(public children: InlineSyntaxNode[]) { }
 }
