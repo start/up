@@ -61,7 +61,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
 })
 
 
-describe('Consecutive lines each bulleted by a number sign followed by a right paren', () => {
+describe('Consecutive lines each bulleted by a number sign followed by a closing parenthesis', () => {
   it('produce an ordered list node containing ordered list item nodes', () => {
     const text = `
 #) Hello, Celadon City!
@@ -113,7 +113,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
 })
 
 
-describe('Consecutive lines each bulleted by an integer followed by a right paren', () => {
+describe('Consecutive lines each bulleted by an integer followed by a closing parenthesis', () => {
   it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
     const text = `
 1) Hello, Celadon City!
@@ -173,7 +173,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
 })
 
 
-describe('A single line bulleted by a number sign followed by a right paren', () => {
+describe('A single line bulleted by a number sign followed by a closing parenthesis', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
     expect(Up.toAst('#) Hello, Celadon City!')).to.be.eql(
       new DocumentNode([
@@ -203,7 +203,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
 })
 
 
-describe('A single line bulleted by an integer followed by a right paren', () => {
+describe('A single line bulleted by an integer followed by a closing parenthesis', () => {
   it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
     expect(Up.toAst('1) Hello, Celadon City!')).to.be.eql(
       new DocumentNode([
