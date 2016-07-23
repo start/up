@@ -12,10 +12,10 @@ import { RevealableConvention } from './RevealableConvention'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
-export function parse(tokens: Token[]): InlineSyntaxNode[] {
+export function parse(tokens: Token[]): InlineSyntaxNode[] { 
   return new Parser({
     tokens,
-    ancestorRevealableInlineConventions: []
+    inlineRevealableAncestorConventions: []
   }).result.nodes
 }
 
@@ -49,7 +49,7 @@ class Parser {
   }
 
   private tokens: Token[]
-  private ancestorRevealableInlineConventions: RevealableConvention[]
+  private revealableAncestorConventions: RevealableConvention[]
   private tokenIndex = 0
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
@@ -57,20 +57,20 @@ class Parser {
   constructor(
     args: {
       tokens: Token[]
-      untilTokenOfKind?: TokenKind
-      ancestorRevealableInlineConventions: RevealableConvention[]
+      until?: TokenKind
+      inlineRevealableAncestorConventions: RevealableConvention[]
     }
   ) {
     this.tokens = args.tokens
-    this.ancestorRevealableInlineConventions = args.ancestorRevealableInlineConventions
-    const { untilTokenOfKind } = args
+    this.revealableAncestorConventions = args.inlineRevealableAncestorConventions
+    const endTokenKind = args.until
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
       switch (token.kind) {
-        case untilTokenOfKind: {
+        case endTokenKind: {
           this.setResult()
           return
         }
@@ -107,7 +107,7 @@ class Parser {
         }
 
         case LINK_CONVENTION.startTokenKind: {
-          let children = this.produceSyntaxNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
+          let children = this.getNodes({ fromHereUntil: TokenKind.LinkUrlAndEnd })
 
           const isContentBlank = isBlank(children)
 
@@ -143,13 +143,13 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
         if (token.kind === richConvention.startTokenKind) {
-          let children = this.produceSyntaxNodes({
+          let children = this.getNodes({
             fromHereUntil: richConvention.endTokenKind,
-            parentRevealableConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
+            revealableParentConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
           // If this is a footnote convention, and if it's inside any revealable inline conventions...
-          if ((richConvention === FOOTNOTE_CONVENTION) && this.ancestorRevealableInlineConventions.length) {
+          if ((richConvention === FOOTNOTE_CONVENTION) && this.revealableAncestorConventions.length) {
             // ... then we'll put the footnote's children directly inside the syntax node representing the
             // innermost revealable convention that contains the footnote.
             //
@@ -157,7 +157,7 @@ class Parser {
             //
             // Any footnotes within revealable *outline* conventions are placed into a footnote block inside
             // the revealable outline convention. This serves the same purpose. 
-            const innermostRevealableConvention = last(this.ancestorRevealableInlineConventions)
+            const innermostRevealableConvention = last(this.revealableAncestorConventions)
             children = [new innermostRevealableConvention.NodeType(children)]
           }
 
@@ -167,8 +167,8 @@ class Parser {
       }
     }
 
-    if (untilTokenOfKind) {
-      throw new Error('Missing terminator token: ' + TokenKind[untilTokenOfKind])
+    if (endTokenKind) {
+      throw new Error('Missing terminator token: ' + TokenKind[endTokenKind])
     }
 
     this.setResult()
@@ -178,23 +178,23 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private produceSyntaxNodes(
+  private getNodes(
     args: {
       fromHereUntil: TokenKind
-      parentRevealableConvention?: RevealableConvention
+      revealableParentConvention?: RevealableConvention
     }
   ): InlineSyntaxNode[] {
-    const { parentRevealableConvention } = args
+    const { revealableParentConvention } = args
 
     let outerRevealableConventions =
-      parentRevealableConvention
-        ? this.ancestorRevealableInlineConventions.concat(parentRevealableConvention)
-        : this.ancestorRevealableInlineConventions
+      revealableParentConvention
+        ? this.revealableAncestorConventions.concat(revealableParentConvention)
+        : this.revealableAncestorConventions
 
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
-      untilTokenOfKind: args.fromHereUntil,
-      ancestorRevealableInlineConventions: outerRevealableConventions
+      until: args.fromHereUntil,
+      inlineRevealableAncestorConventions: outerRevealableConventions
     })
 
     this.tokenIndex += result.countTokensParsed
