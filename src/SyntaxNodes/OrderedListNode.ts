@@ -2,15 +2,15 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class OrderedListNode implements OutlineSyntaxNode {
-  constructor(public listItems: OrderedListNode.Item[]) { }
+  constructor(public items: OrderedListNode.Item[]) { }
 
   start(): number {
-    return this.listItems[0].ordinal
+    return this.items[0].ordinal
   }
 
   order(): OrderedListNode.Order {
     const withExplicitOrdinals =
-      this.listItems.filter(item => item.ordinal != null)
+      this.items.filter(item => item.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
       return OrderedListNode.Order.Ascending

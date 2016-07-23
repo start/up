@@ -2,7 +2,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class UnorderedListNode implements OutlineSyntaxNode {
-  constructor(public listItems: UnorderedListNode.Item[]) { }
+  constructor(public items: UnorderedListNode.Item[]) { }
   
   OUTLINE_SYNTAX_NODE(): void { }
 }

@@ -77,7 +77,7 @@ export class HtmlWriter extends Writer {
   protected unorderedList(node: UnorderedListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
-      node.listItems.map(listItem => this.unorderedListItem(listItem))
+      node.items.map(listItem => this.unorderedListItem(listItem))
     )
   }
 
@@ -97,7 +97,7 @@ export class HtmlWriter extends Writer {
 
     return htmlElementWithAlreadyEscapedChildren(
       'ol',
-      node.listItems.map(listItem => this.orderedListItem(listItem)),
+      node.items.map(listItem => this.orderedListItem(listItem)),
       attrs
     )
   }

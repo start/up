@@ -124,7 +124,7 @@ class FootnoteHandler {
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.handleOutlineNodeContainersAndGetBlocklessFootnotes(node.listItems)
+      return this.handleOutlineNodeContainersAndGetBlocklessFootnotes(node.items)
     }
 
     if (node instanceof DescriptionListNode) {
