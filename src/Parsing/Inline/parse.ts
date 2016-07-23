@@ -148,12 +148,12 @@ class Parser {
             revealableParentConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
-          // If this is a footnote convention, and if it's inside any revealable inline conventions...
+          // If this is a footnote, and if this footnote is within any revealable inline conventions...
           if ((richConvention === FOOTNOTE_CONVENTION) && this.revealableAncestorConventions.length) {
             // ... then we'll put the footnote's children directly inside the syntax node representing the
-            // footnote's closeset revealable ancestor.
+            // footnote's closest revealable ancestor.
             //
-            // This way, the content of the footnote within its footnote block remains revealable.
+            // This way, the content of the footnote within its footnote block isn't automatically exposed.
             //
             // Any footnotes within revealable *outline* conventions are placed into a footnote block inside
             // the revealable outline convention. This serves the same purpose. 
