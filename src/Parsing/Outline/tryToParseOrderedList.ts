@@ -94,17 +94,16 @@ function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
   // Therefore, if the first bullet style is used, there must be more than one list item.
   return (
     rawListItems.length === 1
-    && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet)
-  )
+    && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet))
 }
 
 
 function getExplicitOrdinal(rawListItem: RawListItem): number {
-  const result = CAPTURE_INTEGER_PATTERN.exec(rawListItem.bullet)
+  const result = FIRST_INTEGER_PATTERN.exec(rawListItem.bullet)
 
   return (
     result
-      ? parseInt(result[1], 10)
+      ? parseInt(result[0], 10)
       : null)
 }
 
@@ -112,8 +111,8 @@ function getExplicitOrdinal(rawListItem: RawListItem): number {
 export const INTEGER =
   optional(escapeForRegex('-')) + atLeast(1, DIGIT)
 
-const CAPTURE_INTEGER_PATTERN =
-  new RegExp(capture(INTEGER))
+const FIRST_INTEGER_PATTERN =
+  new RegExp(INTEGER)
 
 const BULLET =
   either(
