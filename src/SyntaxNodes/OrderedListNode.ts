@@ -1,9 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class OrderedListNode {
-  OUTLINE_SYNTAX_NODE(): void { }
-  
+export class OrderedListNode implements OutlineSyntaxNode {
   constructor(public listItems: OrderedListNode.Item[]) { }
 
   start(): number {
@@ -25,6 +23,7 @@ export class OrderedListNode {
     )
   }
 
+  OUTLINE_SYNTAX_NODE(): void { }
 }
 
 
