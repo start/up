@@ -1,10 +1,11 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class LineBlockNode {
-  OUTLINE_SYNTAX_NODE(): void { }
-
+export class LineBlockNode implements OutlineSyntaxNode {
   constructor(public lines: LineBlockNode.Line[]) { }
+
+  OUTLINE_SYNTAX_NODE(): void { }
 }
 
 
