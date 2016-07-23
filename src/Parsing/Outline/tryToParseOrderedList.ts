@@ -53,7 +53,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     }
   }
 
-  if (!rawListItems.length || isProbablyNotAnOrderedList(rawListItems)) {
+  if (!isAnOrderedList(rawListItems)) {
     return false
   }
 
@@ -76,25 +76,29 @@ class RawListItem {
 }
 
 
-function isProbablyNotAnOrderedList(rawListItems: RawListItem[]): boolean {
-  // There are five ways to bullet an ordered list:
-  //
-  // 1. An integer followed by a period
-  // 2) An integer followed by a right parenthesis 
-  // # A number sign (this and all other bullets must be followed by a space)
-  // #. A number sign followed by a period
-  // #) A number sign followed by a right parenthesis
-  //
-  // The first one is potentially unclear. Look at the following paragraph:
-  //
-  // 1783. Not a good year for Great Britain.
-  // 
-  // Did the author intend the paragraph be an ordered list with a single item? Probably not.
-  //
-  // Therefore, if the first bullet style is used, there must be more than one list item.
+function isAnOrderedList(rawListItems: RawListItem[]): boolean {
+  const { length } = rawListItems
+
   return (
-    rawListItems.length === 1
-    && INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet))
+    // If there aren't any list items, we're not dealing with an ordered list.
+    length > 0
+    && (
+      // There are five ways to bullet an ordered list:
+      //
+      // 1. An integer followed by a period
+      // 2) An integer followed by a closing parenthesis 
+      // # A number sign (this and all other bullets must be followed by a space)
+      // #. A number sign followed by a period
+      // #) A number sign followed by a closing parenthesis
+      //
+      // The first one is potentially unclear. Look at the following paragraph:
+      //
+      //   1783. Not a good year for Great Britain.
+      // 
+      // Did the author intend the paragraph be an ordered list with a single item? Probably not.
+      //
+      // Therefore, if the first bullet style is used, we require more than one list item.
+      (length > 1) || !BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet)))
 }
 
 
@@ -123,5 +127,5 @@ const BULLETED_PATTERN =
   patternStartingWith(
     optional(' ') + BULLET + INLINE_WHITESPACE_CHAR)
 
-const INTEGER_FOLLOWED_BY_PERIOD_PATTERN =
+const BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN =
   patternStartingWith(INTEGER + '\\.')
