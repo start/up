@@ -89,12 +89,12 @@ class Tokenizer {
     beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
     whenOpening: urlScheme => {
-      this.appendNewToken(TokenKind.NakedUrlSchemeAndStart, urlScheme)
+      this.appendNewToken(TokenKind.NakedUrlScheme, urlScheme)
     },
 
     insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferRawText(),
 
-    beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterSchemeAndEnd,
+    beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterScheme,
     whenClosingItAlsoClosesInnerConventions: true,
 
     insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
@@ -1073,7 +1073,7 @@ class Tokenizer {
   }
 
   private flushBufferToNakedUrlEndToken(): void {
-    this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterSchemeAndEnd)
+    this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterScheme)
   }
 
   private flushBuffer(): string {

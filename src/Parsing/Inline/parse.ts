@@ -85,10 +85,10 @@ class Parser {
           continue
         }
 
-        case TokenKind.NakedUrlSchemeAndStart: {
+        case TokenKind.NakedUrlScheme: {
           const urlScheme = token.value
 
-          // The next token will be a TokenKind.NakedUrlAfterSchemeAndEnd
+          // The next token will be a TokenKind.NakedUrlAfterScheme
           const nakedUrlAfterSchemeToken = this.getNextTokenAndAdvanceIndex()
           const urlAfterScheme = nakedUrlAfterSchemeToken.value
 
