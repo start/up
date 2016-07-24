@@ -241,7 +241,7 @@ class Tokenizer {
 
   private getConventionForRichBrackets(
     args: {
-      richConvention: RichConvention,
+      richConvention: RichConvention
       startsWith: string
       endsWith: string
     }
