@@ -108,7 +108,7 @@ function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContai
 // TODO: Consider moving this process to the individual outline syntax node classes.
 function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, referenceNumberSequence: Sequence): FootnoteNode[] {
   if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-    return getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children, referenceNumberSequence)
+    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
   }
 
   if (node instanceof LineBlockNode) {
