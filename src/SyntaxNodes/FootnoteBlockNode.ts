@@ -6,7 +6,7 @@ import { getOutermostFootnotesAndAssignTheirReferenceNumbers } from '../Parsing/
 export class FootnoteBlockNode implements OutlineSyntaxNode {
   constructor(public footnotes: FootnoteNode[]) { }
 
-  processFootnotesAndGetBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
+  processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
     for (let i = 0; i < this.footnotes.length; i++) {
       const footnote = this.footnotes[i]
 

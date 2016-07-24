@@ -97,7 +97,7 @@ function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContai
 
     if (footnotesForNextFootnoteBlock.length) {
       const footnoteBlock = new FootnoteBlockNode(footnotesForNextFootnoteBlock)
-      footnoteBlock.processFootnotesAndGetBlockless(referenceNumberSequence)
+      footnoteBlock.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
       outlineNodesWithFootnoteBlocks.push(footnoteBlock)
     }
   }
@@ -127,7 +127,7 @@ function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, refe
   }
 
   if (node instanceof DescriptionListNode) {
-    return node.processFootnotesAndGetBlockless(referenceNumberSequence)
+    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
   }
 
   return []

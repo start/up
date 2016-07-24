@@ -10,9 +10,9 @@ import { getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumb
 export class DescriptionListNode implements OutlineSyntaxNode {
   constructor(public items: DescriptionListNode.Item[]) { }
 
-  processFootnotesAndGetBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
+  processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
     return concat(
-      this.items.map(item => item.processFootnotesAndGetBlockless(referenceNumberSequence)))
+      this.items.map(item => item.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)))
   }
 
   OUTLINE_SYNTAX_NODE(): void { }
@@ -25,7 +25,7 @@ export module DescriptionListNode {
       public terms: DescriptionListNode.Item.Term[],
       public description: DescriptionListNode.Item.Description) { }
 
-    processFootnotesAndGetBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
+    processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
       const footnotesFromTerms =
         getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.terms, referenceNumberSequence)
 
