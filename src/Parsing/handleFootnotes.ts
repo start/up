@@ -5,7 +5,6 @@ import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContai
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
-import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
@@ -82,31 +81,11 @@ import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 // placed in a footnote block.
 export function handleFootnotes(documentNode: DocumentNode): void {
   const referenceNumberSequence = new Sequence({ startingAt: 1 })
-  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode, referenceNumberSequence)
-}
-
-
-function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContainer: OutlineSyntaxNodeContainer, referenceNumberSequence: Sequence): void {
-  const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
-
-  for (const outlineNode of outlineNodeContainer.children) {
-    outlineNodesWithFootnoteBlocks.push(outlineNode)
-
-    const footnotesForNextFootnoteBlock =
-      handleOutlineNodeAndGetBlocklessFootnotes(outlineNode, referenceNumberSequence)
-
-    if (footnotesForNextFootnoteBlock.length) {
-      const footnoteBlock = new FootnoteBlockNode(footnotesForNextFootnoteBlock)
-      footnoteBlock.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
-      outlineNodesWithFootnoteBlocks.push(footnoteBlock)
-    }
-  }
-
-  outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
+  documentNode.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(referenceNumberSequence)
 }
 
 // TODO: Consider moving this process to the individual outline syntax node classes.
-function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, referenceNumberSequence: Sequence): FootnoteNode[] {
+export function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, referenceNumberSequence: Sequence): FootnoteNode[] {
   if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
     return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
   }
@@ -116,7 +95,7 @@ function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, refe
   }
 
   if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
-    insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node, referenceNumberSequence)
+    node.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(referenceNumberSequence)
 
     // We've just handled all the footnotes within the outline convention. None of them are blockless!
     return []
