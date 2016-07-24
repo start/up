@@ -112,7 +112,7 @@ function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, refe
   }
 
   if (node instanceof LineBlockNode) {
-    return getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines, referenceNumberSequence)
+    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
   }
 
   if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
