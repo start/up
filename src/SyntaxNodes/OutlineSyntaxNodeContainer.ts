@@ -6,7 +6,7 @@ import { Sequence } from '../Sequence'
 export class OutlineSyntaxNodeContainer {
   constructor(public children: OutlineSyntaxNode[]) { }
 
-  processFootnotesAndPutThemInBlocks(referenceNumberSequence: Sequence): void {
+  giveFootnotesReferenceNumbersAndPutThemInBlocks(referenceNumberSequence: Sequence): void {
     const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
 
     for (const outlineNode of this.children) {

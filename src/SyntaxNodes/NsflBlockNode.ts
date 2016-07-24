@@ -5,7 +5,7 @@ import { Sequence } from '../Sequence'
 
 export class NsflBlockNode extends RichOutlineSyntaxNode {
   processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
-    this.processFootnotesAndPutThemInBlocks(referenceNumberSequence)
+    this.giveFootnotesReferenceNumbersAndPutThemInBlocks(referenceNumberSequence)
 
     return []
   }

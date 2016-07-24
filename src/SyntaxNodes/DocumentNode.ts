@@ -64,7 +64,7 @@ export class DocumentNode extends OutlineSyntaxNodeContainer {
     //
     // Oh, one last thing! We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been
     // placed in a footnote block.
-    documentNode.processFootnotesAndPutThemInBlocks(new Sequence({ startingAt: 1 }))
+    documentNode.giveFootnotesReferenceNumbersAndPutThemInBlocks(new Sequence({ startingAt: 1 }))
 
     return documentNode
   }
