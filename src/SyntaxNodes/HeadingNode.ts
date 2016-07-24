@@ -9,5 +9,4 @@ export class HeadingNode extends InlineSyntaxNodeContainer implements OutlineSyn
   }
 
   OUTLINE_SYNTAX_NODE(): void { }
-  protected HEADING_NODE(): void { }
 }
