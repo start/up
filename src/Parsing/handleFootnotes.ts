@@ -96,7 +96,9 @@ function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContai
       handleOutlineNodeAndGetBlocklessFootnotes(outlineNode, referenceNumberSequence)
 
     if (footnotesForNextFootnoteBlock.length) {
-      outlineNodesWithFootnoteBlocks.push(getFootnoteBlock(footnotesForNextFootnoteBlock, referenceNumberSequence))
+      const footnoteBlock = new FootnoteBlockNode(footnotesForNextFootnoteBlock)
+      footnoteBlock.processFootnotesAndGetBlockless(referenceNumberSequence)
+      outlineNodesWithFootnoteBlocks.push(footnoteBlock)
     }
   }
 
@@ -136,7 +138,7 @@ function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, refe
 //
 // Because of rule 4 (described above), the reference numbers of nested footnotes aren't assigned until we
 // produce their containing footnote blocks.
-function getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
+export function getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
   const footnotes: FootnoteNode[] = []
 
   for (const node of nodes) {
@@ -168,20 +170,4 @@ function handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: Outline
 export function handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
     nodes.map(node => handleOutlineNodeAndGetBlocklessFootnotes(node, referenceNumberSequence)))
-}
-
-function getFootnoteBlock(footnotes: FootnoteNode[], referenceNumberSequence: Sequence): FootnoteBlockNode {
-  const footnoteBlock = new FootnoteBlockNode(footnotes)
-
-  for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
-    const footnote = footnoteBlock.footnotes[i]
-
-    const nestedFootnotes =
-      getOutermostFootnotesAndAssignTheirReferenceNumbers(footnote.children, referenceNumberSequence)
-
-    // Note: This appends items to the collection we're currently looping through.
-    footnoteBlock.footnotes.push(...nestedFootnotes)
-  }
-
-  return footnoteBlock
 }
