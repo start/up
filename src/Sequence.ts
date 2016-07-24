@@ -1,8 +1,8 @@
 export class Sequence {
   private value: number
 
-  constructor(args: { startingWith: number }) {
-    this.value = args.startingWith
+  constructor(args: { startingAt: number }) {
+    this.value = args.startingAt
   }
 
   next(): number {

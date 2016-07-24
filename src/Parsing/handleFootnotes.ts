@@ -1,4 +1,5 @@
 import { concat } from '../CollectionHelpers'
+import { Sequence } from'../Sequence'
 import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
 import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
@@ -85,7 +86,7 @@ export function handleFootnotes(documentNode: DocumentNode): void {
 
 
 class FootnoteHandler {
-  private currentFootnoteReferenceNumber = 1
+  private footnoteReferenceNumberSequence = new Sequence({ startingAt: 1})
 
   constructor(documentNode: DocumentNode) {
     this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
@@ -146,7 +147,7 @@ class FootnoteHandler {
 
     for (const node of nodes) {
       if (node instanceof FootnoteNode) {
-        node.referenceNumber = this.currentFootnoteReferenceNumber++
+        node.referenceNumber = this.footnoteReferenceNumberSequence.next()
         footnotes.push(node)
         continue
       }
