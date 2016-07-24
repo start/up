@@ -3,10 +3,17 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
+import { concat } from '../CollectionHelpers'
 import { getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers, handleOutlineNodesAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
+
 
 export class DescriptionListNode implements OutlineSyntaxNode {
   constructor(public items: DescriptionListNode.Item[]) { }
+
+  getBlocklessFootnotes(referenceNumberSequence: Sequence): FootnoteNode[] {
+    return concat(
+      this.items.map(item => item.getBlocklessFootnotes(referenceNumberSequence)))
+  }
 
   OUTLINE_SYNTAX_NODE(): void { }
 }
@@ -19,16 +26,15 @@ export module DescriptionListNode {
       public description: DescriptionListNode.Item.Description) { }
 
 
+    getBlocklessFootnotes(referenceNumberSequence: Sequence): FootnoteNode[] {
+      const footnotesFromTerms =
+        getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.terms, referenceNumberSequence)
 
- getBlocklessFootnotes(referenceNumberSequence: Sequence): FootnoteNode[] {
-  const footnotesFromTerms =
-    getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.terms, referenceNumberSequence)
+      const footnotesFromDescription =
+        handleOutlineNodesAndGetBlocklessFootnotes(this.description.children, referenceNumberSequence)
 
-  const footnotesFromDescription =
-    handleOutlineNodesAndGetBlocklessFootnotes(this.description.children, referenceNumberSequence)
-
-  return footnotesFromTerms.concat(footnotesFromDescription)
-}
+      return footnotesFromTerms.concat(footnotesFromDescription)
+    }
   }
 
 

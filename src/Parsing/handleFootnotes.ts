@@ -125,7 +125,7 @@ function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, refe
   }
 
   if (node instanceof DescriptionListNode) {
-    return handleDescriptionListAndGetBlocklessFootnotes(node, referenceNumberSequence)
+    return node.getBlocklessFootnotes(referenceNumberSequence)
   }
 
   return []
@@ -163,11 +163,6 @@ export function getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirRefere
 function handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
     containers.map(container => handleOutlineNodesAndGetBlocklessFootnotes(container.children, referenceNumberSequence)))
-}
-
-function handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode, referenceNumberSequence: Sequence): FootnoteNode[] {
-  return concat(
-    list.items.map(item => item.getBlocklessFootnotes(referenceNumberSequence)))
 }
 
 export function handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
