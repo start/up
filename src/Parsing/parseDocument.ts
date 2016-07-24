@@ -7,10 +7,10 @@ import { UpConfig } from '../UpConfig'
 
 
 export function parseDocument(text: string, config: UpConfig): DocumentNode {
-  const lines = text.split(INPUT_LINE_BREAK)
-  const outlineNodes = getOutlineNodes(lines, new HeadingLeveler(), config)
+  const documentLines = text.split(INPUT_LINE_BREAK)
+  const documentChildren = getOutlineNodes(documentLines, new HeadingLeveler(), config)
 
-  const documentNode = new DocumentNode(outlineNodes)
+  const documentNode = new DocumentNode(documentChildren)
   handleFootnotes(documentNode)
 
   return documentNode
