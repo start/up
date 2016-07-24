@@ -16,7 +16,12 @@ local_mocha = $(local_modules_dir)/mocha
 
 
 .PHONY: all
-all: test
+all: install test
+
+
+.PHONY: install
+install:
+	npm update
 
 
 .PHONY: clean
@@ -26,7 +31,6 @@ clean:
 
 .PHONY: compile 
 compile: clean
-	npm install
 	mkdir $(all_our_build_dirs)
 
 # Compile!
