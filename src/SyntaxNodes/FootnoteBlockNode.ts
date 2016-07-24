@@ -3,6 +3,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { Sequence } from '../Sequence'
 import { getOutermostFootnotesAndAssignTheirReferenceNumbers } from '../Parsing/handleFootnotes'
 
+
 export class FootnoteBlockNode implements OutlineSyntaxNode {
   constructor(public footnotes: FootnoteNode[]) { }
 

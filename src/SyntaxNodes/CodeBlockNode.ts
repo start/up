@@ -2,6 +2,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
 
+
 export class CodeBlockNode implements OutlineSyntaxNode {
   constructor(public text: string) { }
 

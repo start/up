@@ -3,6 +3,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
 
+
 // If a line consists solely of media conventions, those media conventions are placed directly
 // into the outline. Otherwise, media conventions are placed within a paragraph (or line block).
 export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntaxNode {

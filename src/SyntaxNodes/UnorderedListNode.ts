@@ -4,6 +4,7 @@ import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
 import { handleOutlineNodeContainersAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
 
+
 export class UnorderedListNode implements OutlineSyntaxNode {
   constructor(public items: UnorderedListNode.Item[]) { }
 

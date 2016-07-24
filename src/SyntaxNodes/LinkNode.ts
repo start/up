@@ -4,6 +4,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
 
+
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are
 // placed directly into the outline rather into a paragraph.
 //
