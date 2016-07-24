@@ -1,8 +1,8 @@
+import { concat } from '../CollectionHelpers'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
-import { handleOutlineNodeContainersAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
 
 
 export class OrderedListNode implements OutlineSyntaxNode {
@@ -27,7 +27,8 @@ export class OrderedListNode implements OutlineSyntaxNode {
   }
 
   processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
-    return handleOutlineNodeContainersAndGetBlocklessFootnotes(this.items, referenceNumberSequence)
+    return concat(
+      this.items.map(item => item.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)))
   }
 
   OUTLINE_SYNTAX_NODE(): void { }

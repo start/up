@@ -1,6 +1,5 @@
 import { concat } from '../CollectionHelpers'
 import { Sequence } from'../Sequence'
-import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
 import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
@@ -33,9 +32,4 @@ export function getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: Inlin
 export function getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
     containers.map(container => getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children, referenceNumberSequence)))
-}
-
-export function handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
-  return concat(
-    containers.map(container => container.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)))
 }
