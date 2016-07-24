@@ -74,11 +74,6 @@ export function handleFootnotes(documentNode: DocumentNode): void {
   documentNode.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(referenceNumberSequence)
 }
 
-// TODO: Consider moving this process to the individual outline syntax node classes.
-export function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, referenceNumberSequence: Sequence): FootnoteNode[] {
-  return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
-}
-
 // Here, "outermost footnote" refers to any footnote that isn't nested within another footnote. It does not
 // exclude footntoes nested within other inline conventions (e.g. emphasis or stress).
 //
@@ -115,5 +110,5 @@ export function handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: 
 
 export function handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
-    nodes.map(node => handleOutlineNodeAndGetBlocklessFootnotes(node, referenceNumberSequence)))
+    nodes.map(node => node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)))
 }

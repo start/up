@@ -1,7 +1,6 @@
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
 import { Sequence } from '../Sequence'
-import { handleOutlineNodeAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
 
 
 export class OutlineSyntaxNodeContainer {
@@ -14,7 +13,7 @@ export class OutlineSyntaxNodeContainer {
       outlineNodesWithFootnoteBlocks.push(outlineNode)
 
       const footnotesForNextFootnoteBlock =
-        handleOutlineNodeAndGetBlocklessFootnotes(outlineNode, referenceNumberSequence)
+        outlineNode.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
 
       if (footnotesForNextFootnoteBlock.length) {
         const footnoteBlock = new FootnoteBlockNode(footnotesForNextFootnoteBlock)
