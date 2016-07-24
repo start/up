@@ -1,4 +1,4 @@
-import { handleFootnotes } from './handleFootnotes'
+import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { getOutlineNodes } from './Outline/getOutlineNodes'
@@ -11,7 +11,7 @@ export function parseDocument(text: string, config: UpConfig): DocumentNode {
   const documentChildren = getOutlineNodes(documentLines, new HeadingLeveler(), config)
 
   const documentNode = new DocumentNode(documentChildren)
-  handleFootnotes(documentNode)
+  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
 
   return documentNode
 }

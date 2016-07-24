@@ -79,7 +79,7 @@ import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 //
 // Oh, one last thing! We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been
 // placed in a footnote block.
-export function handleFootnotes(documentNode: DocumentNode): void {
+export function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode: DocumentNode): void {
   new FootnoteHandler(documentNode)
 }
 
