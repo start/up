@@ -127,7 +127,7 @@ function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, refe
   }
 
   if (node instanceof DescriptionListNode) {
-    return node.getBlocklessFootnotes(referenceNumberSequence)
+    return node.processFootnotesAndGetBlockless(referenceNumberSequence)
   }
 
   return []
