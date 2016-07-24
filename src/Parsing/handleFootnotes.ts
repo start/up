@@ -155,7 +155,7 @@ function getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntax
   return footnotes
 }
 
-function getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
+export function getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
     containers.map(container => getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children, referenceNumberSequence)))
 }
@@ -167,20 +167,10 @@ function handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: Outline
 
 function handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode, referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
-    list.items.map(item => handleDescriptionListItemAndGetBlocklessFootnotes(item, referenceNumberSequence)))
+    list.items.map(item => item.getBlocklessFootnotes(referenceNumberSequence)))
 }
 
-function handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListNode.Item, referenceNumberSequence: Sequence): FootnoteNode[] {
-  const footnotesFromTerms =
-    getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(item.terms, referenceNumberSequence)
-
-  const footnotesFromDescription =
-    handleOutlineNodesAndGetBlocklessFootnotes(item.description.children, referenceNumberSequence)
-
-  return footnotesFromTerms.concat(footnotesFromDescription)
-}
-
-function handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
+export function handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
     nodes.map(node => handleOutlineNodeAndGetBlocklessFootnotes(node, referenceNumberSequence)))
 }

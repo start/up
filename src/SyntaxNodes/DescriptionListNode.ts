@@ -1,7 +1,9 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-
+import { FootnoteNode } from './FootnoteNode'
+import { Sequence } from '../Sequence'
+import { getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers, handleOutlineNodesAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
 
 export class DescriptionListNode implements OutlineSyntaxNode {
   constructor(public items: DescriptionListNode.Item[]) { }
@@ -15,6 +17,18 @@ export module DescriptionListNode {
     constructor(
       public terms: DescriptionListNode.Item.Term[],
       public description: DescriptionListNode.Item.Description) { }
+
+
+
+ getBlocklessFootnotes(referenceNumberSequence: Sequence): FootnoteNode[] {
+  const footnotesFromTerms =
+    getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.terms, referenceNumberSequence)
+
+  const footnotesFromDescription =
+    handleOutlineNodesAndGetBlocklessFootnotes(this.description.children, referenceNumberSequence)
+
+  return footnotesFromTerms.concat(footnotesFromDescription)
+}
   }
 
 
