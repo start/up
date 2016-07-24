@@ -9,7 +9,7 @@ export class UnorderedListNode implements OutlineSyntaxNode {
 }
 
 
-export module UnorderedListNode {
+export namespace UnorderedListNode {
   export class Item extends OutlineSyntaxNodeContainer {
     protected UNORDERED_LIST_ITEM(): void { }
   }

@@ -9,7 +9,7 @@ export class LineBlockNode implements OutlineSyntaxNode {
 }
 
 
-export module LineBlockNode {
+export namespace LineBlockNode {
   export class Line extends InlineSyntaxNodeContainer {
     protected LINE_BLOCK_LINE(): void { }
   }

@@ -10,7 +10,7 @@ export class DescriptionListNode implements OutlineSyntaxNode {
 }
 
 
-export module DescriptionListNode {
+export namespace DescriptionListNode {
   export class Item {
     constructor(
       public terms: DescriptionListNode.Item.Term[],
@@ -18,7 +18,7 @@ export module DescriptionListNode {
   }
 
 
-  export module Item {
+  export namespace Item {
     export class Term extends InlineSyntaxNodeContainer {
       protected DESCRIPTION_LIST_ITEM_TERM(): void { }
     }
