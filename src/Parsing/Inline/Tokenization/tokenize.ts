@@ -166,11 +166,11 @@ class Tokenizer {
         {
           richConvention: PARENTHESIZED_CONVENTION,
           startsWith: '(',
-          endsWith: ')',
+          endsWith: ')'
         }, {
           richConvention: SQUARE_BRACKETED_CONVENTION,
           startsWith: '[',
-          endsWith: ']',
+          endsWith: ']'
         }
       ].map(args => this.getConventionForRichBrackets(args)),
 
@@ -212,7 +212,7 @@ class Tokenizer {
         richConvention: LINK_CONVENTION,
         startsWith: bracket.startPattern,
         endsWith: bracket.endPattern,
-        mustBeDirectlyFollowedBy: this.linkUrlConventions,
+        mustBeDirectlyFollowedBy: this.linkUrlConventions
       }))
   }
 

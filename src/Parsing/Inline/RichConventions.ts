@@ -74,17 +74,17 @@ export const LINK_CONVENTION = {
 export const SPOILER_CONVENTION = new RevealableConvention({
   NodeType: InlineSpoilerNode,
   startTokenKind: TokenKind.SpoilerStart,
-  endTokenKind: TokenKind.SpoilerEnd,
+  endTokenKind: TokenKind.SpoilerEnd
 })
 
 export const NSFW_CONVENTION = new RevealableConvention({
   NodeType: InlineNsfwNode,
   startTokenKind: TokenKind.NsfwStart,
-  endTokenKind: TokenKind.NsfwEnd,
+  endTokenKind: TokenKind.NsfwEnd
 })
 
 export const NSFL_CONVENTION = new RevealableConvention({
   NodeType: InlineNsflNode,
   startTokenKind: TokenKind.NsflStart,
-  endTokenKind: TokenKind.NsflEnd,
+  endTokenKind: TokenKind.NsflEnd
 })
