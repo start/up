@@ -1,7 +1,8 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-
+import { FootnoteNode } from './FootnoteNode'
+import { Sequence } from '../Sequence'
 
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are
 // placed directly into the outline rather into a paragraph.
@@ -12,6 +13,11 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 export class LinkNode extends RichInlineSyntaxNode implements OutlineSyntaxNode {
   constructor(public children: InlineSyntaxNode[], public url: string) {
     super(children)
+  }
+
+  processFootnotesAndGetThoseThatAreStillBlockless(_: Sequence): FootnoteNode[] {
+    // TODO: Implement this method for inline nodes
+    return []
   }
 
   OUTLINE_SYNTAX_NODE(): void { }

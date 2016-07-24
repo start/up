@@ -2,21 +2,11 @@ import { concat } from '../CollectionHelpers'
 import { Sequence } from'../Sequence'
 import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
 import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
-import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
-import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
-import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
-import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
-import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
-import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
-import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
-import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 
 
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
@@ -86,30 +76,7 @@ export function handleFootnotes(documentNode: DocumentNode): void {
 
 // TODO: Consider moving this process to the individual outline syntax node classes.
 export function handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, referenceNumberSequence: Sequence): FootnoteNode[] {
-  if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
-  }
-
-  if (node instanceof LineBlockNode) {
-    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
-  }
-
-  if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
-    node.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(referenceNumberSequence)
-
-    // We've just handled all the footnotes within the outline convention. None of them are blockless!
-    return []
-  }
-
-  if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
-  }
-
-  if (node instanceof DescriptionListNode) {
-    return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
-  }
-
-  return []
+  return node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
 }
 
 // Here, "outermost footnote" refers to any footnote that isn't nested within another footnote. It does not
