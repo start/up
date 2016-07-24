@@ -1,4 +1,5 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class OrderedListNode implements OutlineSyntaxNode {
@@ -28,10 +29,12 @@ export class OrderedListNode implements OutlineSyntaxNode {
 
 
 export module OrderedListNode {
-  export class Item {
+  export class Item extends OutlineSyntaxNodeContainer {
     // During parsing, `ordinal` can be either `null` or a number. Defaulting `ordinal` to `null`
     // rather than `undefined` allows our unit tests to be cleaner.
-    constructor(public children: OutlineSyntaxNode[], public ordinal: number = null) { }
+    constructor(public children: OutlineSyntaxNode[], public ordinal: number = null) {
+      super(children)
+    }
 
     protected ORDERED_LIST_ITEM(): void { }
   }
