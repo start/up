@@ -86,23 +86,22 @@ export function handleFootnotes(documentNode: DocumentNode): void {
 
 
 class FootnoteHandler {
-  private footnoteReferenceNumberSequence = new Sequence({ startingAt: 1})
-
   constructor(documentNode: DocumentNode) {
-    this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
+    const referenceNumberSequence =  new Sequence({ startingAt: 1})
+    this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode,referenceNumberSequence)
   }
 
-  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContainer: OutlineSyntaxNodeContainer): void {
+  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContainer: OutlineSyntaxNodeContainer, referenceNumberSequence: Sequence): void {
     const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
 
     for (const outlineNode of outlineNodeContainer.children) {
       outlineNodesWithFootnoteBlocks.push(outlineNode)
 
       const footnotesForNextFootnoteBlock =
-        this.handleOutlineNodeAndGetBlocklessFootnotes(outlineNode)
+        this.handleOutlineNodeAndGetBlocklessFootnotes(outlineNode, referenceNumberSequence)
 
       if (footnotesForNextFootnoteBlock.length) {
-        outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock))
+        outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock, referenceNumberSequence))
       }
     }
 
@@ -110,28 +109,28 @@ class FootnoteHandler {
   }
 
   // TODO: Consider moving this process to the individual outline syntax node classes.
-  handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
+  handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode, referenceNumberSequence: Sequence): FootnoteNode[] {
     if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
-      return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children)
+      return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children, referenceNumberSequence)
     }
 
     if (node instanceof LineBlockNode) {
-      return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines)
+      return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines, referenceNumberSequence)
     }
 
     if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
-      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
+      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node, referenceNumberSequence)
 
       // We've just handled all the footnotes within the outline convention. None of them are blockless!
       return []
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.handleOutlineNodeContainersAndGetBlocklessFootnotes(node.items)
+      return this.handleOutlineNodeContainersAndGetBlocklessFootnotes(node.items, referenceNumberSequence)
     }
 
     if (node instanceof DescriptionListNode) {
-      return this.handleDescriptionListAndGetBlocklessFootnotes(node)
+      return this.handleDescriptionListAndGetBlocklessFootnotes(node, referenceNumberSequence)
     }
 
     return []
@@ -142,63 +141,63 @@ class FootnoteHandler {
   //
   // Because of rule 4 (described above), the reference numbers of nested footnotes aren't assigned until we
   // produce their containing footnote blocks.
-  getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
+  getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 
     for (const node of nodes) {
       if (node instanceof FootnoteNode) {
-        node.referenceNumber = this.footnoteReferenceNumberSequence.next()
+        node.referenceNumber = referenceNumberSequence.next()
         footnotes.push(node)
         continue
       }
 
       if (node instanceof RichInlineSyntaxNode) {
         footnotes.push(
-          ...this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children))
+          ...this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children, referenceNumberSequence))
       }
     }
 
     return footnotes
   }
 
-  getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[]): FootnoteNode[] {
+  getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
     return concat(
-      containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)))
+      containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children, referenceNumberSequence)))
   }
 
-  handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[]): FootnoteNode[] {
+  handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
     return concat(
-      containers.map(container => this.handleOutlineNodesAndGetBlocklessFootnotes(container.children)))
+      containers.map(container => this.handleOutlineNodesAndGetBlocklessFootnotes(container.children, referenceNumberSequence)))
   }
 
-  handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode): FootnoteNode[] {
+  handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode, referenceNumberSequence: Sequence): FootnoteNode[] {
     return concat(
-      list.items.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item)))
+      list.items.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item, referenceNumberSequence)))
   }
 
-  handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListNode.Item): FootnoteNode[] {
+  handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListNode.Item, referenceNumberSequence: Sequence): FootnoteNode[] {
     const footnotesFromTerms =
-      this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(item.terms)
+      this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(item.terms, referenceNumberSequence)
 
     const footnotesFromDescription =
-      this.handleOutlineNodesAndGetBlocklessFootnotes(item.description.children)
+      this.handleOutlineNodesAndGetBlocklessFootnotes(item.description.children, referenceNumberSequence)
 
     return footnotesFromTerms.concat(footnotesFromDescription)
   }
 
-  handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
+  handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
     return concat(
-      nodes.map(node => this.handleOutlineNodeAndGetBlocklessFootnotes(node)))
+      nodes.map(node => this.handleOutlineNodeAndGetBlocklessFootnotes(node, referenceNumberSequence)))
   }
 
-  getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
+  getFootnoteBlock(footnotes: FootnoteNode[], referenceNumberSequence: Sequence): FootnoteBlockNode {
     const footnoteBlock = new FootnoteBlockNode(footnotes)
 
     for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
       const footnote = footnoteBlock.footnotes[i]
 
       const nestedFootnotes =
-        this.getOutermostFootnotesAndAssignTheirReferenceNumbers(footnote.children)
+        this.getOutermostFootnotesAndAssignTheirReferenceNumbers(footnote.children, referenceNumberSequence)
 
       // Note: This appends items to the collection we're currently looping through.
       footnoteBlock.footnotes.push(...nestedFootnotes)
