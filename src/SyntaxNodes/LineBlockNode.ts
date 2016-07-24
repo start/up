@@ -3,6 +3,7 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
 import { concat } from '../CollectionHelpers'
+import { getOutermostFootnotesAndAssignTheirReferenceNumbers } from './getOutermostFootnotesAndAssignTheirReferenceNumbers'
 
 
 export class LineBlockNode implements OutlineSyntaxNode {
@@ -10,7 +11,7 @@ export class LineBlockNode implements OutlineSyntaxNode {
 
   processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
     return concat(
-      this.lines.map(line => line.getOutermostFootnotesAndAssignTheirReferenceNumbers(referenceNumberSequence)))
+      this.lines.map(line => getOutermostFootnotesAndAssignTheirReferenceNumbers(line, referenceNumberSequence)))
   }
 
   OUTLINE_SYNTAX_NODE(): void { }

@@ -4,7 +4,7 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
-
+import { getOutermostFootnotesAndAssignTheirReferenceNumbers } from './getOutermostFootnotesAndAssignTheirReferenceNumbers'
 
 export class DescriptionListNode implements OutlineSyntaxNode {
   constructor(public items: DescriptionListNode.Item[]) { }
@@ -26,7 +26,7 @@ export module DescriptionListNode {
 
     processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
       const footnotesFromTerms = concat(
-        this.terms.map(term => term.getOutermostFootnotesAndAssignTheirReferenceNumbers(referenceNumberSequence)))
+        this.terms.map(term => getOutermostFootnotesAndAssignTheirReferenceNumbers(term, referenceNumberSequence)))
 
       const footnotesFromDescription =
         this.description.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)

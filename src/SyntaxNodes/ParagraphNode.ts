@@ -2,11 +2,12 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
+import { getOutermostFootnotesAndAssignTheirReferenceNumbers } from './getOutermostFootnotesAndAssignTheirReferenceNumbers'
 
 
 export class ParagraphNode extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
   processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
-    return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(referenceNumberSequence)
+    return getOutermostFootnotesAndAssignTheirReferenceNumbers(this, referenceNumberSequence)
   }
 
   OUTLINE_SYNTAX_NODE(): void { }

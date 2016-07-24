@@ -1,6 +1,7 @@
 import { FootnoteNode } from './FootnoteNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { Sequence } from '../Sequence'
+import { getOutermostFootnotesAndAssignTheirReferenceNumbers } from './getOutermostFootnotesAndAssignTheirReferenceNumbers'
 
 
 export class FootnoteBlockNode implements OutlineSyntaxNode {
@@ -11,7 +12,7 @@ export class FootnoteBlockNode implements OutlineSyntaxNode {
       const footnote = this.footnotes[i]
 
       const nestedFootnotes =
-        footnote.getOutermostFootnotesAndAssignTheirReferenceNumbers(referenceNumberSequence)
+        getOutermostFootnotesAndAssignTheirReferenceNumbers(footnote, referenceNumberSequence)
 
       // Note: This appends items to the collection we're currently looping through.
       this.footnotes.push(...nestedFootnotes)
