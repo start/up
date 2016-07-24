@@ -1,6 +1,8 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-
+import { FootnoteNode } from './FootnoteNode'
+import { Sequence } from '../Sequence'
+import { handleOutlineNodeContainersAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
 
 export class OrderedListNode implements OutlineSyntaxNode {
   constructor(public items: OrderedListNode.Item[]) { }
@@ -21,6 +23,10 @@ export class OrderedListNode implements OutlineSyntaxNode {
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
         ? OrderedListNode.Order.Descrending
         : OrderedListNode.Order.Ascending)
+  }
+
+  processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
+    return handleOutlineNodeContainersAndGetBlocklessFootnotes(this.items, referenceNumberSequence)
   }
 
   OUTLINE_SYNTAX_NODE(): void { }
