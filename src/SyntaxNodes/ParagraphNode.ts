@@ -1,10 +1,8 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
-export class ParagraphNode implements OutlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[]) { }
-
+export class ParagraphNode extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
   OUTLINE_SYNTAX_NODE(): void { }
   protected PARAGRAPH_NODE(): void { }
 }
