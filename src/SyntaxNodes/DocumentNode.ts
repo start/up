@@ -1,8 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
-export class DocumentNode {
-  constructor(public children: OutlineSyntaxNode[] = []) { }
-  
+export class DocumentNode extends OutlineSyntaxNodeContainer {
   protected DOCUMENT_NODE(): void { }
 }
