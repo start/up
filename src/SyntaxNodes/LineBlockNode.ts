@@ -2,15 +2,15 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
-import { getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers } from '../Parsing/handleFootnotes'
+import { concat } from '../CollectionHelpers'
 
 
 export class LineBlockNode implements OutlineSyntaxNode {
   constructor(public lines: LineBlockNode.Line[]) { }
 
   processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
-    return (
-      getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.lines, referenceNumberSequence))
+    return concat(
+      this.lines.map(line => line.getOutermostFootnotesAndAssignTheirReferenceNumbers(referenceNumberSequence)))
   }
 
   OUTLINE_SYNTAX_NODE(): void { }
