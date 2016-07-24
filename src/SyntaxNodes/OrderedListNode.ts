@@ -20,8 +20,7 @@ export class OrderedListNode implements OutlineSyntaxNode {
     return (
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
         ? OrderedListNode.Order.Descrending
-        : OrderedListNode.Order.Ascending
-    )
+        : OrderedListNode.Order.Ascending)
   }
 
   OUTLINE_SYNTAX_NODE(): void { }
