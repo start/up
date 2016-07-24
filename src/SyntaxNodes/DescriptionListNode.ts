@@ -4,7 +4,7 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { FootnoteNode } from './FootnoteNode'
 import { Sequence } from '../Sequence'
 import { concat } from '../CollectionHelpers'
-import { getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers, handleOutlineNodesAndGetBlocklessFootnotes } from '../Parsing/handleFootnotes'
+import { getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers } from '../Parsing/handleFootnotes'
 
 
 export class DescriptionListNode implements OutlineSyntaxNode {
@@ -30,7 +30,7 @@ export module DescriptionListNode {
         getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.terms, referenceNumberSequence)
 
       const footnotesFromDescription =
-        handleOutlineNodesAndGetBlocklessFootnotes(this.description.children, referenceNumberSequence)
+        this.description.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)
 
       return footnotesFromTerms.concat(footnotesFromDescription)
     }

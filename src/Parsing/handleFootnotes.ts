@@ -5,7 +5,6 @@ import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContai
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
-import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 
 
 // Here, "outermost footnote" refers to any footnote that isn't nested within another footnote. It does not
@@ -38,10 +37,5 @@ export function getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirRefere
 
 export function handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[], referenceNumberSequence: Sequence): FootnoteNode[] {
   return concat(
-    containers.map(container => handleOutlineNodesAndGetBlocklessFootnotes(container.children, referenceNumberSequence)))
-}
-
-export function handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[], referenceNumberSequence: Sequence): FootnoteNode[] {
-  return concat(
-    nodes.map(node => node.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)))
+    containers.map(container => container.processFootnotesAndGetThoseThatAreStillBlockless(referenceNumberSequence)))
 }
