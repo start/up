@@ -54,9 +54,6 @@ import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 //    Spoiler blocks, NSFW blocks, and NSFL blocks shouldn't "leak" any of their content, so they have the
 //    same footnote block rules as blockquotes.
 //
-//    TODO: Better handle footnotes within the inline spoilers, inline NSFW conventions, and inline NSFL
-//    conventions.
-//
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
 //    I'm normal. [^That said, I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.] Really.
