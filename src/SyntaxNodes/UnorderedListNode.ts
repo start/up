@@ -1,4 +1,5 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class UnorderedListNode implements OutlineSyntaxNode {
@@ -7,10 +8,9 @@ export class UnorderedListNode implements OutlineSyntaxNode {
   OUTLINE_SYNTAX_NODE(): void { }
 }
 
-export module UnorderedListNode {
-  export class Item {
-    constructor(public children: OutlineSyntaxNode[]) { }
 
+export module UnorderedListNode {
+  export class Item extends OutlineSyntaxNodeContainer {
     protected UNORDERED_LIST_ITEM(): void { }
   }
 }
