@@ -42,9 +42,7 @@ export module DescriptionListNode {
       protected DESCRIPTION_LIST_ITEM_TERM(): void { }
     }
 
-    export class Description implements OutlineSyntaxNodeContainer {
-      constructor(public children: OutlineSyntaxNode[]) { }
-
+    export class Description extends OutlineSyntaxNodeContainer {
       protected DESCRIPTION_LIST_ITEM_DESCRIPTION(): void { }
     }
   }
