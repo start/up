@@ -35,7 +35,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 describe('An empty document node', () => {
   it('does not produce any HTML on its own', () => {
-    expect(Up.toHtml(new DocumentNode())).to.be.eql('')
+    expect(Up.toHtml(new DocumentNode([]))).to.be.eql('')
   })
 })
 

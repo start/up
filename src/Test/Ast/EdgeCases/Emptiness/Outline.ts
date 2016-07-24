@@ -5,7 +5,7 @@ import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
 
 describe('An empty document', () => {
   it('produces an empty document node', () => {
-    expect(Up.toAst('')).to.eql(new DocumentNode())
+    expect(Up.toAst('')).to.eql(new DocumentNode([]))
   })
 })
 
@@ -18,6 +18,6 @@ describe('A document with only blank lines', () => {
       
       
 `
-    expect(Up.toAst(text)).to.eql(new DocumentNode())
+    expect(Up.toAst(text)).to.eql(new DocumentNode([]))
   })
 })
