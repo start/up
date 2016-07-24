@@ -1,5 +1,9 @@
 export class Sequence {
-  constructor(public value: number) { }
+  private value: number
+
+  constructor(args: { startingWith: number }) {
+    this.value = args.startingWith
+  }
 
   next(): number {
     return this.value++
