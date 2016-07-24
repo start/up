@@ -66,8 +66,8 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     getIndentedBlock({
       lines: lineConsumer.getRemainingLines(),
-      then: (lines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
-        descriptionLines.push(...lines)
+      then: (indentedLines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
+        descriptionLines.push(...indentedLines)
         lineConsumer.skipLines(countLinesConsumedByIndentedBlock)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }

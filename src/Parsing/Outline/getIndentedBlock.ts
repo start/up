@@ -6,18 +6,22 @@ import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
 export function getIndentedBlock(
   args: {
     lines: string[],
-    then: (lines: string[], countLinesConsumed: number, hasMultipleTrailingBlankLines: boolean) => void
+    then: (
+      indentedLines: string[],
+      countLinesConsumed: number,
+      hasMultipleTrailingBlankLines: boolean
+    ) => void
   }
 ): void {
   const lineConsumer = new LineConsumer(args.lines)
-  const lines: string[] = []
-  let contentLineCount = 0
+  const indentedLines: string[] = []
+  let indentedBlockLineCount = 0
 
   while (!lineConsumer.done()) {
     const wasLineBlank = lineConsumer.consume({
       linePattern: BLANK_PATTERN,
       then: line => {
-        lines.push(line)
+        indentedLines.push(line)
       }
     })
 
@@ -31,8 +35,8 @@ export function getIndentedBlock(
     const wasLineIndented = lineConsumer.consume({
       linePattern: INDENTED_PATTERN,
       then: line => {
-        lines.push(line)
-        contentLineCount = lines.length
+        indentedLines.push(line)
+        indentedBlockLineCount = indentedLines.length
       }
     })
 
@@ -42,11 +46,11 @@ export function getIndentedBlock(
     }
   }
 
-  if (!lines.length) {
+  if (!indentedLines.length) {
     return
   }
 
-  const countTrailingBlankLines = lines.length - contentLineCount
+  const countTrailingBlankLines = indentedLines.length - indentedBlockLineCount
   const hasMultipleTrailingBlankLines = countTrailingBlankLines >= 2
 
   // If an indented block has a single trailing blank line, its trailing line is consumed but not
@@ -56,12 +60,12 @@ export function getIndentedBlock(
   // nor included. They're instead left behind for another outline convention to deal with.
   let countLinesConsumed =
     hasMultipleTrailingBlankLines
-      ? contentLineCount
-      : lines.length
+      ? indentedBlockLineCount
+      : indentedLines.length
 
-  const resultLines = lines
-    .slice(0, contentLineCount)
+  const indentedBlockLines = indentedLines
+    .slice(0, indentedBlockLineCount)
     .map(line => line.replace(INDENTED_PATTERN, ''))
 
-  args.then(resultLines, countLinesConsumed, hasMultipleTrailingBlankLines)
+  args.then(indentedBlockLines, countLinesConsumed, hasMultipleTrailingBlankLines)
 }

@@ -29,8 +29,8 @@ export function getLabeledBlockParser(
 
     getIndentedBlock({
       lines: lineConsumer.getRemainingLines(),
-      then: (lines, countLinesConsumed) => {
-        contentLines.push(...lines)
+      then: (indentedLines, countLinesConsumed) => {
+        contentLines.push(...indentedLines)
         lineConsumer.skipLines(countLinesConsumed)
       }
     })

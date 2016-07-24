@@ -39,8 +39,8 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 
     getIndentedBlock({
       lines: lineConsumer.getRemainingLines(),
-      then: (lines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
-        rawListItem.lines.push(...lines)
+      then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
+        rawListItem.lines.push(...indentedLines)
         lineConsumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }

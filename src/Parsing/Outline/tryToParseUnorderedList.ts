@@ -38,8 +38,8 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
     getIndentedBlock({
       lines: lineConsumer.getRemainingLines(),
-      then: (lines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
-        linesForCurrentListItem.push(...lines)
+      then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
+        linesForCurrentListItem.push(...indentedLines)
         lineConsumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
