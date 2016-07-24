@@ -10,6 +10,8 @@ export class InlineSyntaxNodeContainer {
   // exclude footntoes nested within other inline conventions (e.g. emphasis or stress).
   //
   // The reference numbers of nested footnotes aren't assigned until we produce their containing footnote blocks.
+  //
+  // For more information about our footnote handling process, see the enormous explanation in DocumentNode.ts.
   getOutermostFootnotesAndAssignTheirReferenceNumbers(referenceNumberSequence: Sequence): FootnoteNode[] {
     const footnotes: FootnoteNode[] = []
 

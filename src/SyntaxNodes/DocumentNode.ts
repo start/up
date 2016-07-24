@@ -20,7 +20,6 @@ export class DocumentNode extends OutlineSyntaxNodeContainer {
     //
     // The specific rules are below:
     //
-    //
     // 1. Any footnotes within a top-level outline convention are placed into a footnote block directly following
     //    that top-level outline convention. Even if a footnote is inside a paragraph inside an ordered list
     //    inside a description list, it's placed into a block after the description list, because the description
@@ -60,10 +59,6 @@ export class DocumentNode extends OutlineSyntaxNodeContainer {
     //    reference number after any non-nested footnotes appearing in the same top-level outline convention,
     //    because those footnotes are referenced inside the outline convention itself (and the footnote block
     //    comes after the outline convention).
-    //
-    //
-    // Oh, one last thing! We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been
-    // placed in a footnote block.
     documentNode.giveFootnotesReferenceNumbersAndPutThemInBlocks(new Sequence({ startingAt: 1 }))
 
     return documentNode
