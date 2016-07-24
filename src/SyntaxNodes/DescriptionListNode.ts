@@ -25,7 +25,6 @@ export module DescriptionListNode {
       public terms: DescriptionListNode.Item.Term[],
       public description: DescriptionListNode.Item.Description) { }
 
-
     processFootnotesAndGetBlockless(referenceNumberSequence: Sequence): FootnoteNode[] {
       const footnotesFromTerms =
         getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(this.terms, referenceNumberSequence)
