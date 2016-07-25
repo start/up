@@ -194,8 +194,7 @@ context("When an ordered list has just one item, that item can start with an int
             ])
           ], 1)
         ])
-      ])
-    )
+      ]))
   })
 
   specify('A number sign', () => {
@@ -208,8 +207,7 @@ context("When an ordered list has just one item, that item can start with an int
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   specify('A number sign followed by a period', () => {
@@ -222,8 +220,7 @@ context("When an ordered list has just one item, that item can start with an int
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   specify('A number sign followed by a closing parenthesis', () => {
@@ -236,7 +233,6 @@ context("When an ordered list has just one item, that item can start with an int
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })

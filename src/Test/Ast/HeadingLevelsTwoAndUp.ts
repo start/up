@@ -202,8 +202,7 @@ Awkward
             [new DescriptionListNode.Item.Term([new PlainTextNode('Awkward')])],
             new DescriptionListNode.Item.Description([
               new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
-            ])
-          )
+            ]))
         ])
       ]))
   })

@@ -29,7 +29,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'my-app:wiki/Chrono_Chross')
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless image URLs', () => {
@@ -38,7 +38,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'my-app:cc-logo.png')
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless audio URLs', () => {
@@ -47,7 +47,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
-      ]) )
+      ]))
   })
 
   it('is prefixed to schemeless video URLs', () => {
@@ -56,7 +56,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
@@ -70,7 +70,7 @@ describe('The "defaultUrlScheme" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless linkified NSFW URLs', () => {
@@ -84,7 +84,7 @@ describe('The "defaultUrlScheme" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
-      ]) )
+      ]))
   })
 
   it('is prefixed to schemeless linkified NSFLW URLs', () => {
@@ -98,7 +98,7 @@ describe('The "defaultUrlScheme" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
-      ])  )
+      ]))
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
@@ -130,7 +130,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki/Blue_Sky')
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless linkified image URLs', () => {
@@ -142,7 +142,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'my-app:wiki/Blue_Sky')
-      ]) )
+      ]))
   })
 
   it('is prefixed to schemeless linkified video URLs', () => {
@@ -154,7 +154,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'my-app:wiki/Blue_Sky')
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless link URLs when the link content and URL are separated by whitespace', () => {
@@ -165,7 +165,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'my-app:example.wiki/Chrono_Chross')
-      ])   )
+      ]))
   })
 
   it('is prefixed to linkified schemeless spoiler URLs when the spoiler part and the URL are separated by whitespace', () => {
@@ -179,7 +179,7 @@ describe('The "defaultUrlScheme" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
-      ])   )
+      ]))
   })
 
   it('is prefixed to schemeless linkified NSFW URLs when the NSFW part and the URL are separated by whitespace', () => {
@@ -193,7 +193,7 @@ describe('The "defaultUrlScheme" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
-      ])  )
+      ]))
   })
 
   it('is prefixed to schemeless linkified NSFL URLs when the NSFL part and the URL are separated by whitespace', () => {
@@ -207,7 +207,7 @@ describe('The "defaultUrlScheme" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
-      ]) )
+      ]))
   })
 
   it("is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace", () => {
@@ -239,7 +239,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki.com/Blue_Sky')
-      ])   )
+      ]))
   })
 
   it('is prefixed to schemeless linkified image URLs when the image part and the linkifying URL are separated by whitespace', () => {
@@ -251,7 +251,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'my-app:wiki.com/Blue_Sky')
-      ]) )
+      ]))
   })
 
   it('is prefixed to schemeless linkified video URLs when the video part and the linkifying URL are separated by whitespace', () => {
@@ -263,7 +263,7 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'my-app:wiki.com/Blue_Sky')
-      ])  )
+      ]))
   })
 
   it('is not prefixed to URLs with an explicit scheme', () => {
@@ -274,6 +274,6 @@ describe('The "defaultUrlScheme" config setting', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'their-app:localhost/wiki/Chrono_Chross')
-      ])   )
+      ]))
   })
 })

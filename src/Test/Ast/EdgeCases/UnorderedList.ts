@@ -72,8 +72,7 @@ And addresses do, too`
             new PlainTextNode('And addresses do, too')
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -175,8 +174,7 @@ describe('A code block in a list item', () => {
             new CodeBlockNode('const x = 0')
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   it('can have 3 consecutive blank lines', () => {
@@ -196,7 +194,6 @@ describe('A code block in a list item', () => {
             new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
           ])
         ])
-      ])
-    )
+      ]))
   })
 })

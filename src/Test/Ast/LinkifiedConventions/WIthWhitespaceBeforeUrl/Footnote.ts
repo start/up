@@ -68,8 +68,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('there must be somethng after the scheme', () => {
@@ -87,8 +86,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
@@ -106,8 +104,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('the rest of the URL can consist solely of digits', () => {
@@ -143,8 +140,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
   })
 
@@ -184,8 +180,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     it('must have something after the slash', () => {
@@ -203,8 +198,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     it('can consist solely of digits after the slash', () => {
@@ -240,8 +234,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
   })
 
@@ -299,8 +292,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     it('must have something after the hash mark', () => {
@@ -318,8 +310,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     it('must not have its hashmark escaped', () => {
@@ -337,8 +328,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
   })
 
@@ -414,8 +404,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
@@ -452,8 +441,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
               ])
             ]),
             new FootnoteBlockNode([footnote])
-          ])
-        )
+          ]))
       })
 
       specify('No hyphens', () => {
@@ -471,8 +459,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
               ])
             ]),
             new FootnoteBlockNode([footnote])
-          ])
-        )
+          ]))
       })
     })
 
@@ -491,8 +478,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
@@ -510,8 +496,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
@@ -529,8 +514,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
@@ -566,8 +550,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
 
     specify('the domain part must not be escaped', () => {
@@ -585,8 +568,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             ])
           ]),
           new FootnoteBlockNode([footnote])
-        ])
-      )
+        ]))
     })
   })
 

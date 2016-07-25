@@ -101,8 +101,7 @@ function everyPermutation(prefix: string, valuesBySegment: string[][]): string[]
       // those arrays into one and return the result.
       : concat(
         valuesBySegment[0].map(permutation =>
-          everyPermutation(prefix + permutation, valuesBySegment.slice(1))))
-  )
+          everyPermutation(prefix + permutation, valuesBySegment.slice(1)))))
 }
 
 

@@ -77,8 +77,7 @@ Charmeleon
               ])
             ]))
           ])
-        ])
-      )
+        ]))
     })
   })
 
@@ -102,8 +101,7 @@ Charmeleon
               ])
             ], 1)
           ])
-        ])
-      )
+        ]))
     })
 
     specify('Unordered list items', () => {
@@ -124,8 +122,7 @@ Charmeleon
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify('Descriptions in a description list', () => {
@@ -149,8 +146,7 @@ Charmander
               ])
             ]))
           ])
-        ])
-      )
+        ]))
     })
 
     specify('Blockquotes', () => {
@@ -169,8 +165,7 @@ Charmander
               new PlainTextNode("I like blankets, too.")
             ])
           ])
-        ])
-      )
+        ]))
     })
   })
 })

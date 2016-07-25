@@ -79,8 +79,7 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
           new PlainTextNode(' Good!')
         ], 'https://example.com/really-good'),
         new PlainTextNode(' Hi!')
-      ])
-      )
+      ]))
   })
 })
 

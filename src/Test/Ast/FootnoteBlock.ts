@@ -213,8 +213,7 @@ describe('Footnotes in a blockquote', () => {
           ]),
           new FootnoteBlockNode([footnote]),
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -267,8 +266,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
           new FootnoteBlockNode(footnotes)
 
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -294,8 +292,7 @@ SPOILER:
           ]),
           new FootnoteBlockNode([footnote]),
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -350,8 +347,7 @@ SPOILER:
           new FootnoteBlockNode(footnotes)
 
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -377,8 +373,7 @@ NSFW:
           ]),
           new FootnoteBlockNode([footnote]),
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -433,8 +428,7 @@ NSFW:
           new FootnoteBlockNode(footnotes)
 
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -460,8 +454,7 @@ NSFL:
           ]),
           new FootnoteBlockNode([footnote]),
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -516,8 +509,7 @@ NSFL:
           new FootnoteBlockNode(footnotes)
 
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -630,8 +622,7 @@ Gary
         ]),
 
         new FootnoteBlockNode(footnotes)
-      ])
-    )
+      ]))
   })
 })
 

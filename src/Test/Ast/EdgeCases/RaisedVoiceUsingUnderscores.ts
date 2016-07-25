@@ -313,8 +313,7 @@ describe('Matching clusters of 3+ underscores each surrounded by whitespce', () 
     expect(Up.toAst('I believe _____ will win the primary in _____ easily.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe _____ will win the primary in _____ easily.')
-      ])
-    )
+      ]))
   })
 })
 

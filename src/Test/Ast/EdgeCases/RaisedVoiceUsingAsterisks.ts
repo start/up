@@ -313,8 +313,7 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
     expect(Up.toAst('I believe ***** will win the primary in ***** easily.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe ***** will win the primary in ***** easily.')
-      ])
-    )
+      ]))
   })
 })
 

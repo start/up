@@ -100,8 +100,7 @@ Goodbye, world!
           new StressNode([new PlainTextNode('Hello')]),
           new PlainTextNode(', world!'),
         ], 1)
-      ])
-    )
+      ]))
   })
 })
 

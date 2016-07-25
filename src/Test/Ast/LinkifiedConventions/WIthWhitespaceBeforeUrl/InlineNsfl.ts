@@ -54,8 +54,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             ], 'https://stackoverflow.com'),
             new PlainTextNode(' is nice)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('there must be somethng after the scheme', () => {
@@ -68,8 +67,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(mailto:)')
           ]),
-        ])
-      )
+        ]))
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
@@ -82,8 +80,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(file:///)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('the rest of the URL can consist solely of digits', () => {
@@ -130,8 +127,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(/r9k/ created it)')
           ])
-        ])
-      )
+        ]))
     })
 
     it('must have something after the slash', () => {
@@ -144,8 +140,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(/)')
           ])
-        ])
-      )
+        ]))
     })
 
     it('can consist solely of digits after the slash', () => {
@@ -173,8 +168,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(/r9k/)')
           ]),
-        ])
-      )
+        ]))
     })
   })
 
@@ -221,8 +215,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(#)')
           ])
-        ])
-      )
+        ]))
     })
 
     it('must not contain any spaces', () => {
@@ -235,8 +228,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2 was never trending)')
           ])
-        ])
-      )
+        ]))
     })
 
     it('must not have its hashmark escaped', () => {
@@ -249,8 +241,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(#starcraft2)')
           ])
-        ])
-      )
+        ]))
     })
   })
 
@@ -312,8 +303,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(4chan.org--terrifying)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('all domains before the top-level domain may consist solely of digits', () => {
@@ -341,8 +331,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
           ])
-        ])
-      )
+        ]))
     })
 
 
@@ -357,8 +346,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new ParenthesizedNode([
               new PlainTextNode('(john.e.smith5)')
             ]),
-          ])
-        )
+          ]))
       })
 
       specify('No hyphens', () => {
@@ -371,8 +359,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new ParenthesizedNode([
               new PlainTextNode('(john.e.smith-kline)')
             ])
-          ])
-        )
+          ]))
       })
     })
 
@@ -386,8 +373,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(.co.uk)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
@@ -400,8 +386,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(um..uh)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
@@ -414,8 +399,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(4chan.org../r9k/)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
@@ -443,8 +427,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
           ])
-        ])
-      )
+        ]))
     })
 
     specify('the domain part must not be escaped', () => {
@@ -457,8 +440,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new ParenthesizedNode([
             new PlainTextNode('(ign.com)')
           ]),
-        ])
-      )
+        ]))
     })
   })
 

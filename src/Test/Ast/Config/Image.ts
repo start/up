@@ -17,8 +17,7 @@ describe('The term that represents image conventions', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
-      ])
-    )
+      ]))
   })
 
   it('is case-insensitive even when custom', () => {

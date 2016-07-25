@@ -85,8 +85,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('Spiders.++++')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Spiders.++++')
-        ])
-      )
+        ]))
     })
 
     specify('Revision insertion', () => {
@@ -94,8 +93,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('Spiders.~~~~')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Spiders.~~~~')
-        ])
-      )
+        ]))
     })
 
 
@@ -108,8 +106,7 @@ context('Most inline conventions are not applied if they have no content.', () =
               new PlainTextNode(' ')
             ]),
             new PlainTextNode('one')
-          ])
-        )
+          ]))
       })
 
       specify('Revision deletion applies.', () => {
@@ -120,8 +117,7 @@ context('Most inline conventions are not applied if they have no content.', () =
               new PlainTextNode(' ')
             ]),
             new PlainTextNode('mail')
-          ])
-        )
+          ]))
       })
 
 

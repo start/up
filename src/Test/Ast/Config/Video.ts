@@ -17,8 +17,7 @@ describe('The term that represents video conventions', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
-      ])
-    )
+      ]))
   })
 
   it('is case-insensitive even when custom', () => {

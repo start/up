@@ -25,9 +25,7 @@ describe("An almost-linkified spoiler (with whitespace between its content and U
         new PlainTextNode(' ... '),
         new LinkNode([
           new PlainTextNode('anyway, go here instead'),
-        ], 'https://example.com/happy'
-        )
-      ])
-    )
+        ], 'https://example.com/happy')
+      ]))
   })
 })
