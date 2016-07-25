@@ -17,8 +17,7 @@ describe('The term that represents video conventions', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
-      ])
-    )
+      ]))
   })
 
   it('is case-insensitive even when custom', () => {

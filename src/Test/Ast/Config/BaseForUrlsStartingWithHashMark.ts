@@ -39,8 +39,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://example.com/page#cc-logo.png')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to audio URLs that start with a hash mark', () => {
@@ -49,8 +48,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to video URLs that start with a hash mark', () => {
@@ -59,8 +57,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross ending cinematic', 'https://example.com/page#radical dreamers.webm')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified spoiler URLs that start with a hash mark', () => {
@@ -74,8 +71,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFW URLs that start with a hash mark', () => {
@@ -89,8 +85,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFL URLs that start with a hash mark', () => {
@@ -104,8 +99,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it("is prefixed to linkified footnote URLs that start with a hash mark", () => {
@@ -137,8 +131,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified image URLs that start with a hash mark', () => {
@@ -150,8 +143,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'https://example.com/page#wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified video URLs that start with a hash mark', () => {
@@ -163,8 +155,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'https://example.com/page#wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
@@ -175,8 +166,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://example.com/page#wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified spoiler URLs that start with a hash mark when the spoiler part and the URL are separated by whitespace', () => {
@@ -190,8 +180,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFW URLs that start with a hash mark when the NSFW part and the URL are separated by whitespace', () => {
@@ -205,8 +194,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFL URLs that start with a hash mark when the NSFL part and the URL are separated by whitespace', () => {
@@ -220,8 +208,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
             new PlainTextNode('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it("is prefixed to linkified footnote URLs that start with a hash mark when the footnote part and the URL are separated by whitespace", () => {
@@ -253,8 +240,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified image URLs that start with a hash mark when the image part and the linkifying URL are separated by whitespace', () => {
@@ -266,8 +252,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'https://example.com/page#wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified video URLs that start with a hash mark when the video part and the linkifying URL are separated by whitespace', () => {
@@ -279,8 +264,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'https://example.com/page#wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is not prefixed to schemeless URLs not starting with a hash mark (the default URL scheme is prefixed instead)', () => {
@@ -291,8 +275,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://localhost#wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 
   it('is not prefixed to URLs that have a scheme (which by definition cannot start with a hash mark)', () => {
@@ -303,7 +286,6 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'my-app:localhost/wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 })
