@@ -268,8 +268,12 @@ export class HtmlWriter extends Writer {
   private playableMediaElement(tagName: string, description: string, url: string): string {
     return this.htmlElementWithAlreadyEscapedChildren(
       tagName,
-      this.mediaFallback(description, url),
-      { src: url, title: description })
+      this.mediaFallback(description, url), {
+        src: url,
+        title: description,
+        controls: EMPTY_ATTRIBUTE,
+        loop: EMPTY_ATTRIBUTE
+      })
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
