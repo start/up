@@ -255,19 +255,22 @@ export class HtmlWriter extends Writer {
   }
 
   protected audio(node: AudioNode): string {
-    const { description, url } = node
-
-    return this.htmlElementWithAlreadyEscapedChildren('audio', this.mediaFallback(description, url), { src: url, title: description })
+    return this.playableMediaElement('audio', node.description, node.url)
   }
 
   protected video(node: VideoNode): string {
-    const { description, url } = node
-
-    return this.htmlElementWithAlreadyEscapedChildren('video', this.mediaFallback(description, url), { src: url, title: description })
+    return this.playableMediaElement('video', node.description, node.url)
   }
 
   protected plainText(node: PlainTextNode): string {
     return escapeHtmlContent(node.text)
+  }
+
+  private playableMediaElement(tagName: string, description: string, url: string): string {
+    return this.htmlElementWithAlreadyEscapedChildren(
+      tagName,
+      this.mediaFallback(description, url),
+      { src: url, title: description })
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
