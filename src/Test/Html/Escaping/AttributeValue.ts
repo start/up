@@ -27,14 +27,14 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const node = new AudioNode('', 'https://example.com/?x&y&z="hi"')
 
     expect(Up.toHtml(node)).to.be.eql(
-      '<audio src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
+      '<audio src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="" controls loop><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
   })
 
   specify("src attribute of videos (and of their fallback links)", () => {
     const node = new VideoNode('', 'https://example.com/?x&y&z="hi"')
 
     expect(Up.toHtml(node)).to.be.eql(
-      '<video src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
+      '<video src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="" controls loop><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
   })
 
   specify("src attribute of images", () => {
@@ -48,14 +48,14 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const node = new AudioNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
 
     expect(Up.toHtml(node)).to.be.eql(
-      '<audio src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
+      '<audio src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" controls loop><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
   })
 
   specify("title attribute of videos", () => {
     const node = new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
 
     expect(Up.toHtml(node)).to.be.eql(
-      '<video src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
+      '<video src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" controls loop><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
   })
 
   specify("alt and title attributes of images", () => {

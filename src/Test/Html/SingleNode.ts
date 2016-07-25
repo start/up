@@ -409,7 +409,7 @@ describe('An audio node', () => {
   it('produces an audio element with src and title attributes, containing a fallback anchor element', () => {
     const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
     expect(Up.toHtml(node)).to.be.eql(
-      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling"><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
+      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
   })
 })
 
@@ -418,7 +418,7 @@ describe('A video node', () => {
   it('produces a video element with src and title attributes, containing a fallback anchor element', () => {
     const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     expect(Up.toHtml(node)).to.be.eql(
-      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage"><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
+      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
   })
 })
 
