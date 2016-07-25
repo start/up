@@ -335,7 +335,7 @@ export class HtmlWriter extends Writer {
   private playableMediaElement(tagName: string, description: string, url: string): string {
     return this.htmlElementWithAlreadyEscapedChildren(
       tagName,
-      this.mediaFallback(description, url), {
+      this.playableMediaFallback(description, url), {
         src: url,
         title: description,
         controls: NO_ATTRIBUTE_VALUE,
@@ -343,7 +343,7 @@ export class HtmlWriter extends Writer {
       })
   }
 
-  private mediaFallback(content: string, url: string): LinkNode[] {
+  private playableMediaFallback(content: string, url: string): LinkNode[] {
     return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
