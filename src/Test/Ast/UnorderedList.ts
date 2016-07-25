@@ -35,8 +35,7 @@ describe('Consecutive bulleted lines', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -61,8 +60,7 @@ context('Unordered list bullets can be:', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   specify('Hyphens', () => {
@@ -84,8 +82,7 @@ context('Unordered list bullets can be:', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   specify('Plus signs', () => {
@@ -107,8 +104,7 @@ context('Unordered list bullets can be:', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   specify('Actual bullet characters', () => {
@@ -130,8 +126,7 @@ context('Unordered list bullets can be:', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 
   specify('A mix of any of the above', () => {
@@ -165,8 +160,7 @@ context('Unordered list bullets can be:', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -199,8 +193,7 @@ describe('A single bulleted line', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -232,8 +225,7 @@ describe('An indented line immediately following an ordered list item line', () 
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -271,8 +263,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
             ], 1)
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -340,8 +331,7 @@ describe('An unordered list item containing multiple indented lines', () => {
             ], 1)
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -361,14 +351,13 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
                 new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new LineBlockNode.Line([                
+                new LineBlockNode.Line([
                   new PlainTextNode('Violets are blue')
                 ])
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify('One tab', () => {
@@ -384,14 +373,13 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
                 new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new LineBlockNode.Line([                
+                new LineBlockNode.Line([
                   new PlainTextNode('Violets are blue')
                 ])
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify('One space folled by one tab', () => {
@@ -407,14 +395,13 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
                 new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new LineBlockNode.Line([                
+                new LineBlockNode.Line([
                   new PlainTextNode('Violets are blue')
                 ])
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
   })
 
@@ -465,8 +452,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -485,8 +471,7 @@ describe('An unordered list item with an asterisk bullet', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -519,8 +504,7 @@ describe('An unordered list', () => {
             ])
           ])
         ]),
-      ])
-    )
+      ]))
   })
 
   it('can be directly followed by a paragraph', () => {
@@ -546,7 +530,6 @@ Hello, World 1-2!`
         new ParagraphNode([
           new PlainTextNode('Hello, World 1-2!')
         ])
-      ])
-    )
+      ]))
   })
 })

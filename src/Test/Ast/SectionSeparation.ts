@@ -62,8 +62,7 @@ Hello, world!`
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -80,8 +79,7 @@ describe('A document that ends with 3 blank lines', () => {
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
         ])
-      ])
-    )
+      ]))
   })
 })
 

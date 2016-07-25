@@ -29,8 +29,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -55,8 +54,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -81,8 +79,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a closing
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -107,8 +104,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
             ])
           ], 2)
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -133,8 +129,7 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
             ])
           ], 2)
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -146,8 +141,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
         new ParagraphNode([
           new PlainTextNode('1783. Not a good year for Great Britain.')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -163,8 +157,7 @@ describe('A single line bulleted by a number sign', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -180,8 +173,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -197,8 +189,7 @@ describe('A single line bulleted by a number sign followed by a closing parenthe
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -214,8 +205,7 @@ describe('A single line bulleted by an integer followed by a closing parenthesis
             ])
           ], 1)
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -258,8 +248,7 @@ describe('The 5 different bullet types', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -292,8 +281,7 @@ describe('An ordered list', () => {
             ])
           ])
         ]),
-      ])
-    )
+      ]))
   })
 
   it('can be directly followed by a paragraph', () => {
@@ -319,8 +307,7 @@ Hello, World 1-2!`
         new ParagraphNode([
           new PlainTextNode('Hello, World 1-2!')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -352,8 +339,7 @@ describe('An indented line immediately following an ordered list item line', () 
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -391,8 +377,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
             ], 1)
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -460,8 +445,7 @@ describe('An ordered list item containing multiple indented lines', () => {
             ], 1)
           ])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -487,8 +471,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify('One tab', () => {
@@ -510,8 +493,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify('One space folled by one tab', () => {
@@ -533,8 +515,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
               ])
             ])
           ])
-        ])
-      )
+        ]))
     })
   })
 
@@ -585,7 +566,6 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
             ])
           ])
         ])
-      ])
-    )
+      ]))
   })
 })

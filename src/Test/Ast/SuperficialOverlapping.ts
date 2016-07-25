@@ -197,8 +197,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new PlainTextNode('splat')
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify("An action convention and an inline spoiler", () => {
@@ -210,8 +209,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new PlainTextNode("Jigglypuff's Lullaby")
             ])
           ])
-        ])
-      )
+        ]))
     })
 
     specify("Emphasis and a link whose content is wrapped in square brackets", () => {
@@ -223,8 +221,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new PlainTextNode("live")
             ], 'https://example.com/replay')
           ])
-        ])
-      )
+        ]))
     })
 
     specify("A link whose content is wrapped in square brackets and an action convention", () => {
@@ -236,8 +233,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new PlainTextNode('splat')
             ])
           ], 'https://example.com/game-over')
-        ])
-      )
+        ]))
     })
 
     specify("An action convention and a link whose content is wrapped in square brackets", () => {
@@ -249,8 +245,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new PlainTextNode('thwomp')
             ], 'https://example.com/thwomp')
           ])
-        ])
-      )
+        ]))
     })
   })
 
