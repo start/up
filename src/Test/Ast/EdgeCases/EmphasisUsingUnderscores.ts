@@ -30,8 +30,7 @@ describe('Matching single underscores each surrounded by whitespace', () => {
     expect(Up.toAst('I believe _ will win the primary in _ easily.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe _ will win the primary in _ easily.')
-      ])
-    )
+      ]))
   })
 })
 
@@ -41,8 +40,7 @@ describe('An underscore followed by whitespace with a matching underscore touchi
     expect(Up.toAst('I believe_ my spelling_ was wrong.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe_ my spelling_ was wrong.')
-      ])
-    )
+      ]))
   })
 })
 
@@ -52,7 +50,6 @@ describe('An underscore touching the beginning of a word with a matching undersc
     expect(Up.toAst('I _believe my _spelling was wrong.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I _believe my _spelling was wrong.')
-      ])
-    )
+      ]))
   })
 })

@@ -32,8 +32,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('A multiplayer online battle arena game')
             ])
-          ])
-          ),
+          ])),
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
               new PlainTextNode('StarCraft 2')
@@ -42,8 +41,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('A real-time strategy game')
             ])
-          ])
-          )
+          ]))
         ]),
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -54,8 +52,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('An above average chess player')
             ])
-          ])
-          ),
+          ])),
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
               new PlainTextNode('Lee Chang-ho')
@@ -64,8 +61,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('An above average go player')
             ])
-          ])
-          )
+          ]))
         ])
       ]))
   })
@@ -98,8 +94,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('A multiplayer online battle arena game')
             ])
-          ])
-          ),
+          ])),
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
               new PlainTextNode('StarCraft 2')
@@ -108,8 +103,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('A real-time strategy game')
             ])
-          ])
-          )
+          ]))
         ]),
         new SectionSeparatorNode(),
         new DescriptionListNode([
@@ -121,8 +115,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('An above average chess player')
             ])
-          ])
-          ),
+          ])),
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
               new PlainTextNode('Lee Chang-ho')
@@ -131,8 +124,7 @@ Lee Chang-ho
             new ParagraphNode([
               new PlainTextNode('An above average go player')
             ])
-          ])
-          )
+          ]))
         ])
       ]))
   })

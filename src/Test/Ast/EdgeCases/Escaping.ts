@@ -29,8 +29,7 @@ Violets are blue`
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
           new LineBlockNode.Line([new PlainTextNode('Violets are blue')])
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -47,8 +46,7 @@ Roses are red
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
           new LineBlockNode.Line([new PlainTextNode('Violets are blue')])
         ])
-      ])
-    )
+      ]))
   })
 })
 

@@ -39,8 +39,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'ftp://example.com/cc-logo.png')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to audio URLs that start with a slash', () => {
@@ -49,8 +48,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('Chrono Cross ending theme', 'ftp://example.com/radical dreamers.mp3')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to video URLs that start with a slash', () => {
@@ -59,8 +57,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
     expect(up.toAst(text)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to link URLs that start with a slash when the link content and URL are separated by whitespace', () => {
@@ -71,8 +68,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'ftp://example.com/wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified spoiler URLs that start with a slash', () => {
@@ -86,8 +82,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFW URLs that start with a slash', () => {
@@ -101,8 +96,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFL URLs that start with a slash', () => {
@@ -116,8 +110,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it("is prefixed to linkified footnote URLs that start with a slash", () => {
@@ -149,8 +142,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'ftp://example.com/wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified image URLs that start with a slash', () => {
@@ -162,8 +154,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'ftp://example.com/wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified video URLs that start with a slash', () => {
@@ -175,8 +166,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'ftp://example.com/wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified spoiler URLs that start with a slash when the spoiler part and the URL are separated by whitespace', () => {
@@ -190,8 +180,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFW URLs that start with a slash when the NSFW part and the URL are separated by whitespace', () => {
@@ -205,8 +194,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified NSFL URLs that start with a slash when the NSFL part and the URL are separated by whitespace', () => {
@@ -220,8 +208,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
             new PlainTextNode('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it("is prefixed to linkified footnote URLs that start with a slash when the footnote part and the URL are separated by whitespace", () => {
@@ -253,8 +240,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'ftp://example.com/wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified image URLs that start with a slash when the image part and the linkifying URL are separated by whitespace', () => {
@@ -266,8 +252,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'ftp://example.com/wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to linkified video URLs that start with a slash when the video part and the linkifying URL are separated by whitespace', () => {
@@ -279,8 +264,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'ftp://example.com/wiki/Blue_Sky')
-      ])
-    )
+      ]))
   })
 
   it('is not prefixed to schemeless URLs not starting with a slash (the default URL scheme is prefixed instead)', () => {
@@ -291,8 +275,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://localhost/wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 
   it('is not prefixed to URLs that have a scheme (which by definition cannot start with a slash)', () => {
@@ -303,7 +286,6 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'my-app:localhost/wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 })

@@ -16,7 +16,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 
 describe('The default URL scheme ("https://" unless changed via config setting)', () => {
   it('is prefixed to schemeless link URLs', () => {
-   expectEveryPermutationOfBracketsAroundContentAndUrl({
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
       url: 'stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
@@ -33,8 +33,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to schemeless audio URLs', () => {
@@ -43,8 +42,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new AudioNode('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to schemeless video URLs', () => {
@@ -53,8 +51,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
-      ])
-    )
+      ]))
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
@@ -68,8 +65,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
             new PlainTextNode('Blue Sky meth')
           ], 'https://localhost/wiki/Blue_Sky')
         ])
-      ])
-    )
+      ]))
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
@@ -100,8 +96,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
         new LinkNode([
           new PlainTextNode('say hi')
         ], 'mailto:daniel@wants.email')
-      ])
-    )
+      ]))
   })
 })
 
@@ -130,8 +125,7 @@ describe('A URL starting with a letter; followed by letters, numbers, periods, p
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'Wiki.9-App+mcgee:wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 })
 
@@ -145,8 +139,7 @@ describe('A URL not starting with a slash, but with a slash before its first col
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://wiki/chrono-cross:the-game')
-      ])
-    )
+      ]))
   })
 })
 
@@ -160,8 +153,7 @@ describe('A URL with an underscore before its first colon', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://super_admin:123abc@localhost/wiki/chrono-cross:the-game')
-      ])
-    )
+      ]))
   })
 })
 
@@ -175,8 +167,7 @@ describe('A URL starting with a number but otherwise looking like it has a schem
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://4wiki:wiki/Chrono_Chross')
-      ])
-    )
+      ]))
   })
 })
 
@@ -190,7 +181,6 @@ describe('A URL with no colon (and not starting with a slash)', () => {
         new LinkNode([
           new PlainTextNode('Chrono Cross')
         ], 'https://localhost/wiki/ChronoChross:TheGame')
-      ])
-    )
+      ]))
   })
 })

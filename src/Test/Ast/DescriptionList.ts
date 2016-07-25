@@ -26,8 +26,7 @@ Charmander
               ])
             ]))
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -54,8 +53,7 @@ Torchic
               ])
             ]))
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -82,8 +80,7 @@ Ash *"Little Marco"* Ketchum
               ])
             ]))
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -110,8 +107,7 @@ Ash Ketchum
               ])
             ]))
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -162,8 +158,7 @@ Gary
               ])
             ]))
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -191,8 +186,7 @@ The secret to eternal youth is to join a cartoon.`
         new ParagraphNode([
           new PlainTextNode('The secret to eternal youth is to join a cartoon.')
         ])
-      ])
-    )
+      ]))
   })
 })
 
@@ -225,8 +219,7 @@ Poem
                 ])
               ]))
           ]),
-        ])
-      )
+        ]))
     })
 
     specify('One tab', () => {
@@ -254,8 +247,7 @@ Poem
                 ])
               ]))
           ])
-        ])
-      )
+        ]))
     })
 
     specify('One space folled by one tab', () => {
@@ -283,8 +275,7 @@ Poem
                 ])
               ]))
           ])
-        ])
-      )
+        ]))
     })
   })
 })
@@ -328,8 +319,7 @@ Address
             new ParagraphNode([
               new PlainTextNode("I think it's my favorite.")
             ])
-          ])
-        ),
+          ])),
         new DescriptionListNode.Item([
           new DescriptionListNode.Item.Term([
             new PlainTextNode('Address')
@@ -349,6 +339,5 @@ Address
             ])
           ]))
       ])
-    ])
-  )
+    ]))
 })

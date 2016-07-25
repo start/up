@@ -184,8 +184,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new SquareBracketedNode([
           new PlainTextNode('[SPOILER:]')
         ])
-      ])
-    )
+      ]))
   })
 
   specify('NSFW', () => {
@@ -198,8 +197,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new SquareBracketedNode([
           new PlainTextNode('[NSFW:]')
         ])
-      ])
-    )
+      ]))
   })
 
   specify('NSFL', () => {
@@ -212,8 +210,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new SquareBracketedNode([
           new PlainTextNode('[NSFL:]')
         ])
-      ])
-    )
+      ]))
   })
 
   specify('Parentheses', () => {
@@ -223,8 +220,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' ()')
-      ])
-    )
+      ]))
   })
 
   specify('Square brackets', () => {
@@ -234,8 +230,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' []')
-      ])
-    )
+      ]))
   })
 
   specify('Actions', () => {
@@ -245,8 +240,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' {}')
-      ])
-    )
+      ]))
   })
 })
 
@@ -269,9 +263,7 @@ describe("An almost-link (with whitespace between its content and URL) terminate
         new PlainTextNode(' ... '),
         new LinkNode([
           new PlainTextNode('anyway, go here instead'),
-        ], 'https://example.com/happy'
-        )
-      ])
-    )
+        ], 'https://example.com/happy')
+      ]))
   })
 })

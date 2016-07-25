@@ -19,16 +19,14 @@ describe('A single blank blockquoted line', () => {
     expect(Up.toAst('> ')).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([])
-      ])
-    )
+      ]))
   })
 
   it('may have a trailing tab after the blockquote delimiter', () => {
     expect(Up.toAst('>\t')).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([])
-      ])
-    )
+      ]))
   })
 })
 
