@@ -32,6 +32,10 @@ export function internalFragmentUrl(id: string): string {
   return '#' + id
 }
 
+// Indicates that an attribute should not have any value.
+export const EMPTY_ATTRIBUTE: string = null 
+
+
 function htmlStartTag(tagName: string, attrs: any): string {
   const tagNameWithAttrs =
     [tagName].concat(htmlAttrs(attrs)).join(' ')
@@ -47,7 +51,7 @@ function htmlAttr(attrs: any, attrName: string): string {
   const value = attrs[attrName]
 
   return (
-    value == null
+    value == EMPTY_ATTRIBUTE
       ? attrName
       : `${attrName}="${escapeHtmlAttrValue(value)}"`)
 }

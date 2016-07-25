@@ -31,7 +31,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../../UpConfig'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl } from './WritingHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, EMPTY_ATTRIBUTE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
 
@@ -91,8 +91,7 @@ export class HtmlWriter extends Writer {
     }
 
     if (node.order() === OrderedListNode.Order.Descrending) {
-      // This adds a "reversed" attribute without a value.
-      attrs.reversed = null
+      attrs.reversed = EMPTY_ATTRIBUTE
     }
 
     return htmlElementWithAlreadyEscapedChildren(
