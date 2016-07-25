@@ -31,7 +31,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../../UpConfig'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, EMPTY_ATTRIBUTE } from './WritingHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
 
@@ -91,7 +91,7 @@ export class HtmlWriter extends Writer {
     }
 
     if (node.order() === OrderedListNode.Order.Descrending) {
-      attrs.reversed = EMPTY_ATTRIBUTE
+      attrs.reversed = NO_ATTRIBUTE_VALUE
     }
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -338,8 +338,8 @@ export class HtmlWriter extends Writer {
       this.mediaFallback(description, url), {
         src: url,
         title: description,
-        controls: EMPTY_ATTRIBUTE,
-        loop: EMPTY_ATTRIBUTE
+        controls: NO_ATTRIBUTE_VALUE,
+        loop: NO_ATTRIBUTE_VALUE
       })
   }
 

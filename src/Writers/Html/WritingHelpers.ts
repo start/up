@@ -32,8 +32,19 @@ export function internalFragmentUrl(id: string): string {
   return '#' + id
 }
 
-// Indicates that an attribute should not have any value.
-export const EMPTY_ATTRIBUTE: string = null 
+// Indicates that an attribute should not specify a value.
+//
+// In the following example, the `reversed` attribute doesn't specify a value:
+//
+// <ol start="2" reversed>
+//   <li value="2">
+//     <p>Ivysaur</p>
+//   </li>
+//   <li value="1">
+//     <p>Bulbasaur</p>
+//   </li>
+// </ol>
+export const NO_ATTRIBUTE_VALUE: string = null 
 
 
 function htmlStartTag(tagName: string, attrs: any): string {
@@ -51,7 +62,7 @@ function htmlAttr(attrs: any, attrName: string): string {
   const value = attrs[attrName]
 
   return (
-    value == EMPTY_ATTRIBUTE
+    value === NO_ATTRIBUTE_VALUE
       ? attrName
       : `${attrName}="${escapeHtmlAttrValue(value)}"`)
 }
