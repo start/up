@@ -24,11 +24,10 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
 
   const COUNT_BLANK_LINES_IN_SECTION_SEPARATOR = 3
 
-  const nodes = (
+  const nodes =
     countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
       ? [new SectionSeparatorNode()]
       : []
-  )
 
   args.then(nodes, lineConsumer.countLinesConsumed)
   return true

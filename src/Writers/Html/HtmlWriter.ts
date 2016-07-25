@@ -77,8 +77,7 @@ export class HtmlWriter extends Writer {
   protected unorderedList(node: UnorderedListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
-      node.items.map(listItem => this.unorderedListItem(listItem))
-    )
+      node.items.map(listItem => this.unorderedListItem(listItem)))
   }
 
   protected orderedList(node: OrderedListNode): string {
@@ -97,15 +96,13 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(
       'ol',
       node.items.map(listItem => this.orderedListItem(listItem)),
-      attrs
-    )
+      attrs)
   }
 
   protected descriptionList(node: DescriptionListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      node.items.map(item => this.descriptionListItem(item))
-    )
+      node.items.map(item => this.descriptionListItem(item)))
   }
 
   protected lineBlock(node: LineBlockNode): string {
@@ -286,8 +283,7 @@ export class HtmlWriter extends Writer {
   private descriptionListItem(listItem: DescriptionListNode.Item): string {
     return (
       listItem.terms.map(term => this.descriptionTerm(term)).join('')
-      + this.description(listItem.description)
-    )
+      + this.description(listItem.description))
   }
 
   private descriptionTerm(term: DescriptionListNode.Item.Term): string {
@@ -328,8 +324,7 @@ export class HtmlWriter extends Writer {
 
     return new LinkNode(
       [new PlainTextNode(referenceNumber.toString())],
-      internalFragmentUrl(this.footnoteReferenceId(referenceNumber))
-    )
+      internalFragmentUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
   private playableMediaElement(tagName: string, description: string, url: string): string {

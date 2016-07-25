@@ -25,7 +25,7 @@ export function getOutlineNodes(
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
-  const { terms } = config.settings.i18n 
+  const { terms } = config.settings.i18n
 
   const outlineConventions = [
     tryToParseBlankLineSeparation,
@@ -69,10 +69,9 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
   const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
-    const isConsecutiveSectionSeparatorNode = (
+    const isConsecutiveSectionSeparatorNode =
       node instanceof SectionSeparatorNode
       && last(resultNodes) instanceof SectionSeparatorNode
-    )
 
     if (!isConsecutiveSectionSeparatorNode) {
       resultNodes.push(node)

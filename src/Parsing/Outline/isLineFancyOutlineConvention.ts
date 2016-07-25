@@ -26,8 +26,7 @@ export function isLineFancyOutlineConvention(line: string, config: UpConfig): bo
       headingLeveler: DUMMY_HEADING_LEVELER,
       config: config,
       then: () => { /* Do nothing */ }
-    })
-  )
+    }))
 }
 
 

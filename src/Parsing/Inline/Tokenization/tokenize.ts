@@ -942,8 +942,7 @@ class Tokenizer {
             this.buffer += delimiter
           }
         }
-      })
-    )
+      }))
   }
 
   // Inline code is the only convention that:
