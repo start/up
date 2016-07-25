@@ -265,17 +265,6 @@ export class HtmlWriter extends Writer {
     return escapeHtmlContent(node.text)
   }
 
-  private playableMediaElement(tagName: string, description: string, url: string): string {
-    return this.htmlElementWithAlreadyEscapedChildren(
-      tagName,
-      this.mediaFallback(description, url), {
-        src: url,
-        title: description,
-        controls: EMPTY_ATTRIBUTE,
-        loop: EMPTY_ATTRIBUTE
-      })
-  }
-
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
     return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: classAttrValue(bracketName) })
   }
@@ -341,6 +330,17 @@ export class HtmlWriter extends Writer {
       [new PlainTextNode(referenceNumber.toString())],
       internalFragmentUrl(this.footnoteReferenceId(referenceNumber))
     )
+  }
+
+  private playableMediaElement(tagName: string, description: string, url: string): string {
+    return this.htmlElementWithAlreadyEscapedChildren(
+      tagName,
+      this.mediaFallback(description, url), {
+        src: url,
+        title: description,
+        controls: EMPTY_ATTRIBUTE,
+        loop: EMPTY_ATTRIBUTE
+      })
   }
 
   private mediaFallback(content: string, url: string): LinkNode[] {
