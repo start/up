@@ -1,8 +1,8 @@
-/*import { LineConsumer } from './LineConsumer'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { streakOf } from '../PatternHelpers'
+import { LineConsumer } from './LineConsumer'
+// import { TableNode } from '../../SyntaxNodes/TableNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { outlineLable } from '../PatternHelpers'
+// import { BLANK_PATTERN } from '../Patterns'
 
 // Tables start with a line consisting solely of "Table:".
 //
@@ -16,6 +16,12 @@ import { outlineLable } from '../PatternHelpers'
 export function tryToParseTable(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
+  const tableTerm = args.config.settings.i18n.terms.table
+  const labelLinePattern = outlineLable(tableTerm)
+
+  if (!lineConsumer.consume({ linePattern: labelLinePattern })) {
+    return false
+  }
+
   return false
 }
-*/
