@@ -1,7 +1,8 @@
 import { LineConsumer } from './LineConsumer'
-// import { TableNode } from '../../SyntaxNodes/TableNode'
+import { TableNode } from '../../SyntaxNodes/TableNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { outlineLable } from '../PatternHelpers'
+import { getInlineNodes } from '../Inline/getInlineNodes'
 import { BLANK_PATTERN } from '../Patterns'
 
 // Tables start with a line consisting solely of "Table:". The term for "table" is
@@ -13,14 +14,17 @@ import { BLANK_PATTERN } from '../Patterns'
 // semicolon-delimited values.
 //
 // Within a table, single blank lines are allowed. However, two consecutive blank
-// lines terminates the table.
+// lines terminates the table. Any trailing blank lines after the table are not
+// consumed.
 //
 // A table must have a header, but it doesn't need to have any rows.
 export function tryToParseTable(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
+  const {config } = args
+  const tableTerm = config.settings.i18n.terms.table
+
   let headerLine: string
-  const tableTerm = args.config.settings.i18n.terms.table
 
   const isHeader = (
     lineConsumer.consume({ linePattern: outlineLable(tableTerm) })
@@ -38,11 +42,32 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   }
 
   const rawHeaderCells = getSemicolonDelimitedValues(headerLine)
-  rawHeaderCells
+  const rawCellsByRow: string[][] = []
 
-  while (!lineConsumer.done() && !tryToTConsumeTwoConsecutiveBlankLines(lineConsumer)) {
+  let countLinesConsumed: number
 
-  }
+  do {
+    countLinesConsumed = lineConsumer.countLinesConsumed
+  } while (
+    !tryToTConsumeTwoConsecutiveBlankLines(lineConsumer)
+    && lineConsumer.consume({
+      then: line => {
+        rawCellsByRow.push(getSemicolonDelimitedValues(line))
+      }
+    }))
+
+  const header = new TableNode.Header(
+    rawHeaderCells
+      .map(rawCell => getInlineNodes(rawCell, config))
+      .map(cellChildren => new TableNode.Header.Cell(cellChildren)))
+
+  const rows = rawCellsByRow
+    .map(rawCells =>
+      new TableNode.Row(rawCells
+        .map(rawCell => getInlineNodes(rawCell, config))
+        .map(cellChildren => new TableNode.Row.Cell(cellChildren))))
+
+  args.then([new TableNode(header, rows)], countLinesConsumed)
 
   return false
 }
