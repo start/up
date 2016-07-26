@@ -31,10 +31,31 @@ SPOILER:
 })
 
 
-describe('The "spoiler" term in a spoiler block', () => {
+describe('The "spoiler:" line in a spoiler block', () => {
   it('is case-insensitive', () => {
     const text = `
 sPoiLeR:
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
+  it('can have whitespace after the colon', () => {
+    const text = `
+SPOILER:  \t  \t  
+
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
