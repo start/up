@@ -12,6 +12,7 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
+import { TableNode } from '../../SyntaxNodes/TableNode'
 
 
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is usually ignored.", () => {
@@ -233,5 +234,44 @@ NSFL:
           ])
         ]))
     })
+  })
+
+  specify('Tables', () => {
+    const text = `
+ \t Table:
+
+ \t Game; Release Date
+
+ \t Final Fantasy\; 1987
+ \t Final Fantasy II; 1988
+
+ \t Chrono Trigger; 1995
+ \t Chrono Cross; 1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ]),
+          ])
+      ]))
   })
 })
