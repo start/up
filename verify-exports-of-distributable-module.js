@@ -51,6 +51,7 @@ context('Every syntax node class is exported:', () => {
     'SpoilerBlockNode',
     'SquareBracketedNode',
     'StressNode',
+    'TableNode',
     'UnorderedListNode',
     'VideoNode'
   ]
