@@ -66,8 +66,8 @@ export function solely(pattern: string): RegExp {
   return getRegExpSolelyConsistingOf({ pattern })
 }
 
-export function solelyAndIgnoringCapitalization(pattern: string): RegExp {
-  return getRegExpSolelyConsistingOf({ pattern, isCaseInsensitive: true })
+export function outlineLable(labelTerm: string): RegExp {
+  return solelyAndIgnoringCapitalization(escapeForRegex(labelTerm) + ':')
 }
 
 export function patternStartingWith(pattern: string): RegExp {
@@ -84,6 +84,10 @@ export function patternEndingWith(pattern: string): RegExp {
 
 
 import { ANY_WHITESPACE } from './PatternPieces'
+
+function solelyAndIgnoringCapitalization(pattern: string): RegExp {
+  return getRegExpSolelyConsistingOf({ pattern, isCaseInsensitive: true })
+}
 
 function getRegExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
   return new RegExp('^' + args.pattern + ANY_WHITESPACE + '$', getRegExpFlags(args.isCaseInsensitive))
