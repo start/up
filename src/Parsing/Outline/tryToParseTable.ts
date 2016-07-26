@@ -89,6 +89,5 @@ function tryToTConsumeTwoConsecutiveBlankLines(lineConsumer: LineConsumer): bool
 
 function getSemicolonDelimitedValues(line: string): string[] {
   // TODO: Don't split on escaped semicolons
-  // TODO: Trim each value
-  return line.split(';')
+  return line.split(';').map(value => value.trim())
 }
