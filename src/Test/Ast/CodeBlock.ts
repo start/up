@@ -228,7 +228,7 @@ SPOILER:
     return (
       n <= 2
         ? n - 1 
-        : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+        : nthFibonacci(n - 1) + nthFibonacci(n - 2))
   }
   
 I hope you were able to find a solution without cheating.`
@@ -241,7 +241,7 @@ I hope you were able to find a solution without cheating.`
   return (
     n <= 2
       ? n - 1 
-      : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+      : nthFibonacci(n - 1) + nthFibonacci(n - 2))
 }`)
         ]),
         new ParagraphNode([

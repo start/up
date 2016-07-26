@@ -181,7 +181,7 @@ NSFL:
     return (
       n <= 2
         ? n - 1 
-        : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+        : nthFibonacci(n - 1) + nthFibonacci(n - 2))
   }
   \`\`\``
 
@@ -193,7 +193,7 @@ NSFL:
   return (
     n <= 2
       ? n - 1 
-      : nthFibonacci(n - 1) + nthFibonacci(n - 2)
+      : nthFibonacci(n - 1) + nthFibonacci(n - 2))
 }`)
           ])
         ]))
