@@ -174,7 +174,7 @@ Charmander
 
     specify('Spoiler blocks', () => {
       const text = `
-SPOILER:
+ SPOILER:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
@@ -195,7 +195,7 @@ SPOILER:
 
     specify('NSFW blocks', () => {
       const text = `
-NSFW:
+ NSFW:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
@@ -216,7 +216,7 @@ NSFW:
 
     specify('NSFL blocks', () => {
       const text = `
-NSFL:
+  NSFL:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
@@ -238,11 +238,11 @@ NSFL:
 
   specify('Tables', () => {
     const text = `
- \t Table:
+ Table:
 
  \t Game; Release Date
 
- \t Final Fantasy\; 1987
+ \t Final Fantasy; 1987
  \t Final Fantasy II; 1988
 
  \t Chrono Trigger; 1995
