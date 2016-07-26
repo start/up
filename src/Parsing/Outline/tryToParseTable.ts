@@ -1,12 +1,21 @@
-/*
-import { LineConsumer } from './LineConsumer'
+/*import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { streakOf } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { outlineLable } from '../PatternHelpers'
 
-// Tables consist of a header and a collection of rows. 
+// Tables start with a line consisting solely of "Table:".
+//
+// Next, there's the header. The header is a line of semicolon-delimited values.
+//
+// Finally, there's the collection of rows. Like the header, each row is a line of
+// semicolon-delimited values.
+//
+// Within a table, single blank lines are allowed. However, two consecutive blank
+// lines terminates the table.
 export function tryToParseTable(args: OutlineParserArgs): boolean {
+  const lineConsumer = new LineConsumer(args.lines)
+
   return false
 }
 */
