@@ -17,16 +17,16 @@ Chrono Cross;1999`
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Cell([new PlainTextNode('Game')]),
-            new TableNode.Cell([new PlainTextNode('Release Date')])
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
-              new TableNode.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Cell([new PlainTextNode('1995')])
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
             ]),
             new TableNode.Row([
-              new TableNode.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Cell([new PlainTextNode('1999')])
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
             ])
           ])
       ]))

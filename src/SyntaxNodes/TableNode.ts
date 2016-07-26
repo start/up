@@ -11,18 +11,30 @@ export class TableNode implements OutlineSyntaxNode {
 
 export namespace TableNode {
   export class Header {
-    constructor(public cells: Cell[]) { }
+    constructor(public cells: Header.Cell[]) { }
 
     protected TABLE_HEADER(): void { }
   }
 
   export class Row {
-    constructor(public cells: Cell[]) { }
+    constructor(public cells: Row.Cell[]) { }
 
     protected TABLE_ROW(): void { }
   }
 
-  export class Cell extends InlineSyntaxNodeContainer {
-    protected TABLE_CELL(): void { }
+  export namespace Header {
+    export class Cell extends InlineSyntaxNodeContainer {
+      protected TABLE_HEADER_CELL(): void { }
+    }
+  }
+
+  export namespace Row {
+    export class Cell extends InlineSyntaxNodeContainer {
+      isContentNumeric(): boolean {
+        return false
+      }
+
+      protected TABLE_ROW_CELL(): void { }
+    }
   }
 }
