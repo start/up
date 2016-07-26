@@ -15,4 +15,3 @@ export function tryToParseSectionSeparatorStreak(args: OutlineParserArgs): boole
   args.then([new SectionSeparatorNode()], lineConsumer.countLinesConsumed)
   return true
 }
-

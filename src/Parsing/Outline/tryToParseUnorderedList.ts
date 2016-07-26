@@ -64,6 +64,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   return true
 }
 
+
 const BULLET_PATTERN =
   patternStartingWith(
     optional(' ') + anyCharFrom('*', '-', '+', '•') + INLINE_WHITESPACE_CHAR)
