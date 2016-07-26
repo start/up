@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
     idWordDelimiter: '-',
 
     terms: {
+      table: 'table',
       image: 'image',
       audio: 'audio',
       video: 'video',

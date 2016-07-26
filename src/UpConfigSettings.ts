@@ -9,6 +9,7 @@ export interface UpConfigSettings {
     idWordDelimiter?: string
 
     terms?: {
+      table?: string
       image?: string
       audio?: string
       video?: string
