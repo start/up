@@ -9,7 +9,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-describe('Square bracketed text starting with "nsfw:"', () => {
+describe('Square bracketed text starting with "NSFW:"', () => {
   it('is put inside an inline NSFW node', () => {
     expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -23,7 +23,7 @@ describe('Square bracketed text starting with "nsfw:"', () => {
 })
 
 
-describe('Parenthesized text starting with "nsfw:"', () => {
+describe('Parenthesized text starting with "NSFW:"', () => {
   it('is put inside a nsfw node', () => {
     expect(Up.toAst('After you beat the Elite Four, (NSFW: you wrestle a naked Gary).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -37,7 +37,7 @@ describe('Parenthesized text starting with "nsfw:"', () => {
 })
 
 
-describe('Curly bracketed text starting with "nsfw:"', () => {
+describe('Curly bracketed text starting with "NSFW:"', () => {
   it('is put inside an inline NSFW node', () => {
     expect(Up.toAst('After you beat the Elite Four, {NSFW: you wrestle a naked Gary}.')).to.be.eql(
       insideDocumentAndParagraph([

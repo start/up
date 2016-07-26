@@ -9,7 +9,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
-describe('Square bracketed text starting with "spoiler:"', () => {
+describe('Square bracketed text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
@@ -23,7 +23,7 @@ describe('Square bracketed text starting with "spoiler:"', () => {
 })
 
 
-describe('Parenthesized text starting with "spoiler:"', () => {
+describe('Parenthesized text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.be.eql(
       insideDocumentAndParagraph([
@@ -37,7 +37,7 @@ describe('Parenthesized text starting with "spoiler:"', () => {
 })
 
 
-describe('Curly bracketed text starting with "spoiler:"', () => {
+describe('Curly bracketed text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
     expect(Up.toAst('After you beat the Elite Four, {SPOILER: you fight Gary}.')).to.be.eql(
       insideDocumentAndParagraph([

@@ -8,7 +8,7 @@ import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 
-describe('A line consisting solely of "spoiler:", followed by an indented block of text,', () => {
+describe('A line consisting solely of "SPOILER:", followed by an indented block of text,', () => {
   it('produces a spoiler block node', () => {
     const text = `
 SPOILER:
@@ -31,7 +31,7 @@ SPOILER:
 })
 
 
-describe('The "spoiler:" line in a spoiler block', () => {
+describe('The "SPOILER:" line in a spoiler block', () => {
   it('is case-insensitive', () => {
     const text = `
 sPoiLeR:

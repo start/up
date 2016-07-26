@@ -5,7 +5,7 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-describe('A line consisting solely of "table:", followed by any number of rows of semicolon-delimited row values,', () => {
+describe('A line consisting solely of "Table:", followed by any number of rows of semicolon-delimited row values,', () => {
   it('produces a table node', () => {
     const text = `
 Table:
