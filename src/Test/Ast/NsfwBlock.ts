@@ -31,7 +31,7 @@ NSFW:
 })
 
 
-describe('The "NSFW" term in a NSFW block', () => {
+describe('The "NSFW:" line in a NSFW block', () => {
   it('is case-insensitive', () => {
     const text = `
 nSFw:
@@ -101,6 +101,27 @@ NSFW:
 
 
 
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsfwBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
+  it('can have whitespace after the colon', () => {
+    const text = `
+NSFW:  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
