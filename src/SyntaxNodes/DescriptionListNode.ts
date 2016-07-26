@@ -17,7 +17,6 @@ export namespace DescriptionListNode {
       public description: DescriptionListNode.Item.Description) { }
   }
 
-
   export namespace Item {
     export class Term extends InlineSyntaxNodeContainer {
       protected DESCRIPTION_LIST_ITEM_TERM(): void { }

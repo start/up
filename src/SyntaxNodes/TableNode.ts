@@ -16,16 +16,17 @@ export namespace TableNode {
     protected TABLE_HEADER(): void { }
   }
 
-  export class Row {
-    constructor(public cells: Row.Cell[]) { }
-
-    protected TABLE_ROW(): void { }
-  }
-
   export namespace Header {
     export class Cell extends InlineSyntaxNodeContainer {
       protected TABLE_HEADER_CELL(): void { }
     }
+  }
+
+
+  export class Row {
+    constructor(public cells: Row.Cell[]) { }
+
+    protected TABLE_ROW(): void { }
   }
 
   export namespace Row {
