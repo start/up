@@ -32,3 +32,45 @@ Chrono Cross;1999`
       ]))
   })
 })
+
+
+describe('Within a table', () => {
+  it('single blank lines are allowed', () => {
+    const text = `
+Table:
+
+Game;Release Date
+
+Final Fantasy;1987
+Final Fantasy II;1988
+
+Chrono Trigger;1995
+Chrono Cross;1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ]),
+          ])
+      ]))
+  })
+})
