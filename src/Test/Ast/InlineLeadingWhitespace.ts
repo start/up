@@ -10,6 +10,8 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 
 
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is usually ignored.", () => {
@@ -180,6 +182,48 @@ SPOILER:
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
+            new ParagraphNode([
+              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I like blankets, too.")
+            ])
+          ])
+        ]))
+    })
+
+    specify('NSFW blocks', () => {
+      const text = `
+NSFW:
+ \t
+   \t I like shorts! They're comfy and easy to wear!
+
+\t I like blankets, too.`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new NsfwBlockNode([
+            new ParagraphNode([
+              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I like blankets, too.")
+            ])
+          ])
+        ]))
+    })
+
+    specify('NSFL blocks', () => {
+      const text = `
+NSFL:
+ \t
+   \t I like shorts! They're comfy and easy to wear!
+
+\t I like blankets, too.`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new NsflBlockNode([
             new ParagraphNode([
               new PlainTextNode("I like shorts! They're comfy and easy to wear!")
             ]),
