@@ -12,8 +12,6 @@ export class TableNode implements OutlineSyntaxNode {
 export namespace TableNode {
   export class Header {
     constructor(public cells: Header.Cell[]) { }
-
-    protected TABLE_HEADER(): void { }
   }
 
   export namespace Header {
@@ -25,8 +23,6 @@ export namespace TableNode {
 
   export class Row {
     constructor(public cells: Row.Cell[]) { }
-
-    protected TABLE_ROW(): void { }
   }
 
   export namespace Row {
