@@ -16,9 +16,8 @@ export function getLabeledBlockParser(
 ) {
   return function tryToParseLabeledBlock(args: OutlineParserArgs): boolean {
     const lineConsumer = new LineConsumer(args.lines)
-    const labelLinePattern = outlineLable(labelTerm)
 
-    if (!lineConsumer.consume({ linePattern: labelLinePattern })) {
+    if (!lineConsumer.consume({ linePattern: outlineLable(labelTerm) })) {
       return false
     }
 

@@ -17,9 +17,8 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
   const tableTerm = args.config.settings.i18n.terms.table
-  const labelLinePattern = outlineLable(tableTerm)
 
-  if (!lineConsumer.consume({ linePattern: labelLinePattern })) {
+  if (!lineConsumer.consume({ linePattern: outlineLable(tableTerm) })) {
     return false
   }
 
