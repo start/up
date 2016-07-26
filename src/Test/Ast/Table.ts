@@ -210,3 +210,31 @@ I don't like video games; in fact, I never have.`
       ]))
   })
 })
+
+
+describe('Tables', () => {
+  it('can have just 1 column', () => {
+    const text = `
+Table:
+
+Game
+
+Chrono Trigger
+Chrono Cross`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')])
+            ])
+          ])
+      ]))
+  })
+})
