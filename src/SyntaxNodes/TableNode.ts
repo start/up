@@ -11,10 +11,14 @@ export class TableNode implements OutlineSyntaxNode {
 
 export namespace TableNode {
   export class Header {
+    constructor(public cells: Cell[]) { }
+
     protected TABLE_HEADER(): void { }
   }
 
   export class Row {
+    constructor(public cells: Cell[]) { }
+
     protected TABLE_ROW(): void { }
   }
 
