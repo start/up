@@ -56,15 +56,18 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
       }
     }))
 
+  const getCellChildren = (cellContent: string) =>
+    getInlineNodes(cellContent, config)
+
   const header = new TableNode.Header(
     rawHeaderCells
-      .map(rawCell => getInlineNodes(rawCell, config))
+      .map(getCellChildren)
       .map(cellChildren => new TableNode.Header.Cell(cellChildren)))
 
   const rows = rawCellsByRow
     .map(rawCells =>
       new TableNode.Row(rawCells
-        .map(rawCell => getInlineNodes(rawCell, config))
+        .map(getCellChildren)
         .map(cellChildren => new TableNode.Row.Cell(cellChildren))))
 
   args.then([new TableNode(header, rows)], countLinesConsumed)
