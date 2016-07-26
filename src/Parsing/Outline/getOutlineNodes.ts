@@ -12,6 +12,7 @@ import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
+import { tryToParseTable } from './tryToParseTable'
 import { getLabeledBlockParser } from './getLabeledBlockParser'
 import { parseRegularLines } from './parseRegularLines'
 import { NON_BLANK_PATTERN } from '../Patterns'
@@ -35,6 +36,7 @@ export function getOutlineNodes(
     tryToParseSectionSeparatorStreak,
     tryToParseCodeBlock,
     tryToParseBlockquote,
+    tryToParseTable,
     getLabeledBlockParser(terms.spoiler, SpoilerBlockNode),
     getLabeledBlockParser(terms.nsfw, NsfwBlockNode),
     getLabeledBlockParser(terms.nsfl, NsflBlockNode),

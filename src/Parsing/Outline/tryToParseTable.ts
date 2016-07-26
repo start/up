@@ -72,7 +72,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
   args.then([new TableNode(header, rows)], countLinesConsumed)
 
-  return false
+  return true
 }
 
 
