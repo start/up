@@ -330,7 +330,35 @@ Chrono Cross;       1999`
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
               new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ])
+          ])
+      ]))
+  })
+
+  specify('can contain escaped semicolons', () => {
+    const text = `
+Table:
+
+Game;                               Publisher
+
+Final Fantasy\\; Final Fantasy II;  Square
+Super Mario Kart\\; Mario Kart 64;  Nintendo`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy; Final Fantasy II')]),
+              new TableNode.Row.Cell([new PlainTextNode('Square')])
             ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart; Mario Kart 64')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+            ])
           ])
       ]))
   })
