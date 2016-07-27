@@ -355,9 +355,7 @@ Chrono Cross;       1999`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([
-              new PlainTextNode('Release Date')
-            ])
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
