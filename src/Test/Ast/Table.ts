@@ -334,6 +334,34 @@ Chrono Cross;       1999`
           ])
       ]))
   })
+
+  specify('can contain escaped semicolons', () => {
+    const text = `
+Table:
+
+Game;               Publisher\\; Developer
+
+Final Fantasy;      Square
+Super Mario Kart;   Nintendo`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Publisher; Developer')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('Square')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+            ])
+          ])
+      ]))
+  })
 })
 
 
