@@ -4,6 +4,8 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 import { outlineLabel } from '../PatternHelpers'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { BLANK_PATTERN } from '../Patterns'
+import { ESCAPER_CHAR } from '../Strings'
+
 
 // Tables start with a line consisting solely of "Table:". The term for "table" is
 // configurable.
@@ -87,7 +89,54 @@ function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
   return consumeBlankLine() && consumeBlankLine()
 }
 
+
 function getRawCellValues(line: string): string[] {
-  // TODO: Don't split on escaped semicolons
-  return line.split(';').map(value => value.trim())
+  const rawCellValues: string[] = []
+  let nextCellStartIndex = 0
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i]
+
+    switch (char) {
+      case ESCAPER_CHAR:
+        // Escaped delimiters don't delimit cells, so we can safely skip over the next character.
+        i++
+        continue
+
+      case CELL_DELIMITER_CHAR:
+        rawCellValues.push
+          (getRawCellValue({
+            line,
+            startingAt: nextCellStartIndex,
+            endsBefore: i
+          }))
+        nextCellStartIndex = i + 1
+        continue
+    }
+  }
+
+  if (nextCellStartIndex < line.length) {
+    rawCellValues.push(
+      getRawCellValue({
+        line,
+        startingAt: nextCellStartIndex,
+        endsBefore: line.length
+      }))
+  }
+
+  return rawCellValues
 }
+
+function getRawCellValue(
+  args: {
+    line: string
+    startingAt: number
+    endsBefore: number
+  }
+): string {
+  const { line, startingAt, endsBefore} = args
+
+  return line.slice(startingAt, endsBefore).trim()
+}
+
+const CELL_DELIMITER_CHAR = ';'
