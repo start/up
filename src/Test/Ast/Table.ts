@@ -4,6 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -157,9 +158,9 @@ I don't like video games; in fact, I never have.`
               new TableNode.Row.Cell([new PlainTextNode('1999')])
             ]),
           ]),
-          new ParagraphNode([
-            new PlainTextNode("I don't like video games; in fact, I never have.")
-          ])
+        new ParagraphNode([
+          new PlainTextNode("I don't like video games; in fact, I never have.")
+        ])
       ]))
   })
 
@@ -203,10 +204,10 @@ I don't like video games; in fact, I never have.`
               new TableNode.Row.Cell([new PlainTextNode('1999')])
             ]),
           ]),
-          new SectionSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode("I don't like video games; in fact, I never have.")
-          ])
+        new SectionSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode("I don't like video games; in fact, I never have.")
+        ])
       ]))
   })
 })
@@ -283,6 +284,53 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
               new TableNode.Row.Cell([new PlainTextNode('PC')]),
               new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
             ])
+          ])
+      ]))
+  })
+})
+
+
+context('Table header cells', () => {
+  specify('can contain inline conventions', () => {
+    const text = `
+Table:
+
+Game;               Release Date (year only)
+
+Final Fantasy;      1987
+Final Fantasy II;   1988
+
+Chrono Trigger;     1995
+Chrono Cross;       1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([
+              new PlainTextNode('Release Date '),
+              new ParenthesizedNode([
+                new PlainTextNode('(year only)')
+              ])
+            ])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ]),
           ])
       ]))
   })
