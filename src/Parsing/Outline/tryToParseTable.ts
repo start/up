@@ -114,10 +114,11 @@ function getRawCellValues(line: string): string[] {
     }
   }
 
-  // If the next cell's start index is within the line, let's add that final cell here.
-  if (nextCellStartIndex < line.length) {
-    collectRawValueOfNextCell({ endingBefore: line.length })
-  }
+  // Here, we need to add the last cell, even if the row ended in a semicolon.
+  //
+  // In fact, that's the rule! Ending a row with a non-escaped semicolon indicates that one last
+  // blank cell should be added to the row.
+  collectRawValueOfNextCell({ endingBefore: line.length })
 
   return rawCellValues
 }
