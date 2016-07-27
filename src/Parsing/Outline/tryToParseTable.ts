@@ -29,7 +29,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   const isHeader = (
     lineConsumer.consume({ linePattern: outlineLabel(tableTerm) })
 
-    && !tryToTConsumeTwoConsecutiveBlankLines(lineConsumer)
+    && !tryToTerminateTable(lineConsumer)
 
     && lineConsumer.consume({
       then: line => {
@@ -41,7 +41,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const rawHeaderCells = getSemicolonDelimitedValues(headerLine)
+  const rawHeaderCells = getRawCellValues(headerLine)
   const rawCellsByRow: string[][] = []
 
   let countLinesConsumed: number
@@ -49,10 +49,10 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   do {
     countLinesConsumed = lineConsumer.countLinesConsumed
   } while (
-    !tryToTConsumeTwoConsecutiveBlankLines(lineConsumer)
+    !tryToTerminateTable(lineConsumer)
     && lineConsumer.consume({
       then: line => {
-        rawCellsByRow.push(getSemicolonDelimitedValues(line))
+        rawCellsByRow.push(getRawCellValues(line))
       }
     }))
 
@@ -79,7 +79,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 // Returns true if it's able to consume 2 blank lines.
 //
 // Note: If there was just 1 blank line, this function will consume it.
-function tryToTConsumeTwoConsecutiveBlankLines(lineConsumer: LineConsumer): boolean {
+function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
   function consumeBlankLine(): boolean {
     return lineConsumer.consume({ linePattern: BLANK_PATTERN })
   }
@@ -87,7 +87,7 @@ function tryToTConsumeTwoConsecutiveBlankLines(lineConsumer: LineConsumer): bool
   return consumeBlankLine() && consumeBlankLine()
 }
 
-function getSemicolonDelimitedValues(line: string): string[] {
+function getRawCellValues(line: string): string[] {
   // TODO: Don't split on escaped semicolons
   return line.split(';').map(value => value.trim())
 }
