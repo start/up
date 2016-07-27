@@ -66,8 +66,8 @@ export function solely(pattern: string): RegExp {
   return getRegExpSolelyConsistingOf({ pattern })
 }
 
-export function outlineLable(labelTerm: string): RegExp {
-  return solelyAndIgnoringCapitalization(escapeForRegex(labelTerm) + ':')
+export function outlineLabel(labelTerm: string): RegExp {
+  return solelyAndIgnoringCapitalization(escapeForRegex(labelTerm) + optional(':'))
 }
 
 export function patternStartingWith(pattern: string): RegExp {

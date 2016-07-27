@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { outlineLable } from '../PatternHelpers'
+import { outlineLabel } from '../PatternHelpers'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { BLANK_PATTERN } from '../Patterns'
 
@@ -27,7 +27,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   let headerLine: string
 
   const isHeader = (
-    lineConsumer.consume({ linePattern: outlineLable(tableTerm) })
+    lineConsumer.consume({ linePattern: outlineLabel(tableTerm) })
 
     && !tryToTConsumeTwoConsecutiveBlankLines(lineConsumer)
 
