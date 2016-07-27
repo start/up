@@ -54,12 +54,16 @@ Skeltals are white
 
     specify('Headings', () => {
       const text = `
- \t Hello, world!
-~~~~~~~~~~~~~~~`
+Hello, world!
+~~~~~~~~~~~~~~~
+
+ \t Hello, core!
+ \t ~~~~~~~~~~~~~~~`
 
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+          new HeadingNode([new PlainTextNode('Hello, core!')], 1),
         ]))
     })
 
