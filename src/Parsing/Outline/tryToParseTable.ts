@@ -89,10 +89,14 @@ function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
   return consumeBlankLine() && consumeBlankLine()
 }
 
-
 function getRawCellValues(line: string): string[] {
   const rawCellValues: string[] = []
   let nextCellStartIndex = 0
+
+  function collectRawValueOfNextCell(args: { endingBefore: number }): void {
+    rawCellValues.push(
+      line.slice(nextCellStartIndex, args.endingBefore).trim())
+  }
 
   for (let i = 0; i < line.length; i++) {
     const char = line[i]
@@ -103,40 +107,17 @@ function getRawCellValues(line: string): string[] {
         i++
         continue
 
-      case CELL_DELIMITER_CHAR:
-        rawCellValues.push
-          (getRawCellValue({
-            line,
-            startingAt: nextCellStartIndex,
-            endsBefore: i
-          }))
+      case ';':
+        collectRawValueOfNextCell({ endingBefore: i })
         nextCellStartIndex = i + 1
         continue
     }
   }
 
+  // If the next cell's start index is within the line, let's add that final cell here.
   if (nextCellStartIndex < line.length) {
-    rawCellValues.push(
-      getRawCellValue({
-        line,
-        startingAt: nextCellStartIndex,
-        endsBefore: line.length
-      }))
+    collectRawValueOfNextCell({ endingBefore: line.length })
   }
 
   return rawCellValues
 }
-
-function getRawCellValue(
-  args: {
-    line: string
-    startingAt: number
-    endsBefore: number
-  }
-): string {
-  const { line, startingAt, endsBefore} = args
-
-  return line.slice(startingAt, endsBefore).trim()
-}
-
-const CELL_DELIMITER_CHAR = ';'
