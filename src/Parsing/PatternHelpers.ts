@@ -67,7 +67,7 @@ export function solely(pattern: string): RegExp {
 }
 
 export function outlineLable(labelTerm: string): RegExp {
-  return solelyAndIgnoringCapitalization(optional(' ') + escapeForRegex(labelTerm) + ':')
+  return solelyAndIgnoringCapitalization(escapeForRegex(labelTerm) + ':')
 }
 
 export function patternStartingWith(pattern: string): RegExp {
@@ -90,7 +90,7 @@ function solelyAndIgnoringCapitalization(pattern: string): RegExp {
 }
 
 function getRegExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
-  return new RegExp('^' + args.pattern + ANY_WHITESPACE + '$', getRegExpFlags(args.isCaseInsensitive))
+  return new RegExp('^' + ANY_WHITESPACE + args.pattern + ANY_WHITESPACE + '$', getRegExpFlags(args.isCaseInsensitive))
 }
 
 function getRegExpStartingWith(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
