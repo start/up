@@ -4,6 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
@@ -236,6 +237,31 @@ That was my favorite episode.`
         ]),
         new ParagraphNode([
           new PlainTextNode('That was my favorite episode.')
+        ])
+      ]))
+  })
+
+  it('are evaluated for inline conventions', () => {
+    const text = `
+SPOILER:
+
+  With a *very* sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a '),
+            new EmphasisNode([
+              new PlainTextNode('very')
+            ]),
+            new PlainTextNode(' sad song playing in the background, Ash said goodbye to Pikachu.'),
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          ])
         ])
       ]))
   })
