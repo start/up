@@ -333,6 +333,34 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
+describe('A table header consisting only of a semicolon', () => {
+  it('consists of a single empty cell', () => {
+    const text = `
+Table:
+
+;
+
+Chrono Trigger
+Starcraft`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+              new TableNode.Header.Cell([])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
+            ])
+          ])
+      ]))
+  })
+})
+
+
 describe('A table row consisting only of a semicolon', () => {
   it('consists of a single empty cell', () => {
     const text = `
@@ -354,7 +382,7 @@ Starcraft`
               new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
             ]),
             new TableNode.Row([
-              new TableNode.Row.Cell([]),
+              new TableNode.Row.Cell([])
             ]),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
