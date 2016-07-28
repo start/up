@@ -4,7 +4,7 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
 export class HeadingNode extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  constructor(public children: InlineSyntaxNode[], public level: number) {
+  constructor(children: InlineSyntaxNode[], public level: number) {
     super(children)
   }
 
