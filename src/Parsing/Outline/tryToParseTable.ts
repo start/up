@@ -1,9 +1,12 @@
 import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { outlineLabel } from '../PatternHelpers'
+import { outlineLabel, patternStartingWith, atLeast } from '../PatternHelpers'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { BLANK_PATTERN } from '../Patterns'
+import { UpConfig } from '../../UpConfig'
+import { last } from '../../CollectionHelpers'
 import { ESCAPER_CHAR } from '../Strings'
 
 
@@ -23,7 +26,7 @@ import { ESCAPER_CHAR } from '../Strings'
 export function tryToParseTable(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
-  const {config } = args
+  const { config } = args
   const tableTerm = config.settings.i18n.terms.table
 
   let headerLine: string
@@ -43,9 +46,10 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const rawHeaderCells = getRawCellValues(headerLine)
-  const rawCellsByRow: string[][] = []
+  const headerCells = getCells(TableNode.Header.Cell, headerLine, config)
+  const header = new TableNode.Header(headerCells)
 
+  const rowCellsByRow: TableNode.Row.Cell[][] = []
   let countLinesConsumed: number
 
   do {
@@ -54,26 +58,13 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     !tryToTerminateTable(lineConsumer)
     && lineConsumer.consume({
       then: line => {
-        rawCellsByRow.push(getRawCellValues(line))
+        rowCellsByRow.push(getCells(TableNode.Row.Cell, line, config))
       }
     }))
 
-  const getCellChildren = (cellContent: string) =>
-    getInlineNodes(cellContent, config)
-
-  const header = new TableNode.Header(
-    rawHeaderCells
-      .map(getCellChildren)
-      .map(cellChildren => new TableNode.Header.Cell(cellChildren)))
-
-  const rows = rawCellsByRow
-    .map(rawCells =>
-      new TableNode.Row(rawCells
-        .map(getCellChildren)
-        .map(cellChildren => new TableNode.Row.Cell(cellChildren))))
+  const rows = rowCellsByRow.map(cells => new TableNode.Row(cells))
 
   args.then([new TableNode(header, rows)], countLinesConsumed)
-
   return true
 }
 
@@ -89,36 +80,75 @@ function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
   return consumeBlankLine() && consumeBlankLine()
 }
 
-function getRawCellValues(line: string): string[] {
-  const rawCellValues: string[] = []
-  let nextCellStartIndex = 0
+function getCells<TCell extends TableNode.Cell>(
+  CellType: new (children: InlineSyntaxNode[], countColumnsSpanned: number) => TCell,
+  row: string,
+  config: UpConfig
+): TCell[] {
+  // We trim the contents of each cell, which means trimming the whole row isn't strictly
+  // necessary. However, doing so makes it a bit simpler to tell when a row ends with cell
+  // delimiters (a scenario with some specific rules).
+  //
+  // TODO: Explain rules
+  row = row.trim()
 
-  function collectRawValueOfNextCell(args: { endingBefore: number }): void {
-    rawCellValues.push(
-      line.slice(nextCellStartIndex, args.endingBefore).trim())
+  const cells: TCell[] = []
+  let charIndexOfNextCell = 0
+  let charIndex = 0
+
+  function collectCell(countColumnsSpanned: number): void {
+    const rawCellValue = row.slice(charIndexOfNextCell, charIndex)
+    const cellChildren = getInlineNodes(rawCellValue, config)
+    
+    cells.push(new CellType(cellChildren, countColumnsSpanned))
   }
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i]
+  for (; charIndex < row.length; charIndex++) {
+    const char = row[charIndex]
 
-    switch (char) {
-      case ESCAPER_CHAR:
-        // Escaped delimiters don't delimit cells, so we can safely skip over the next character.
-        i++
-        continue
-
-      case ';':
-        collectRawValueOfNextCell({ endingBefore: i })
-        nextCellStartIndex = i + 1
-        continue
+    if (char === ESCAPER_CHAR) {
+      // Escaped delimiters don't delimit cells, so we can safely skip over the next character.
+      charIndex++
+      continue
     }
+
+    const result = DELIMITER_PATTERN.exec(row.slice(charIndex))
+
+    if (!result) {
+      // We aren't dealing with the end of a cell, so let's just continue the loop.
+      continue
+    }
+
+    const [delimiter] = result
+     
+    collectCell(delimiter.length)
+    charIndexOfNextCell += delimiter.length
+
+    // `i` is going to be incremented again at the start of the next iteration
+    charIndex += delimiter.length - 1
   }
 
-  // Here, we need to add the last cell, even if the row ended in a semicolon.
+  // In the loop above, cells are only collected after each delimiter.  We still need to collect
+  // the row's final cell (the one after the last delimiter).
+  //
+  // Furthermore, as a rule, if the last cell in the table isn't blank, and if it ends in with a
+  // single semicolon, we ad an extra empty cell to the end of the row.
+  // 
+  //
+  // 1. This cel
   //
   // In fact, that's the rule! Ending a row with a non-escaped semicolon indicates that one last
   // blank cell should be added to the row.
-  collectRawValueOfNextCell({ endingBefore: line.length })
 
-  return rawCellValues
+  const lastCell = last(cells)
+  
+  if (charIndexOfNextCell != row.length || (lastCell)) {
+    collectCell(1)
+  }
+
+  return cells
 }
+
+
+const DELIMITER_PATTERN =
+  patternStartingWith(atLeast(1, ';'))
