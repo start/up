@@ -182,7 +182,7 @@ describe('A (non-empty) table header cell consisting only of whitespace', () => 
     const text = `
 Table:
 
-Game;               Developer;            ;                 Release Date
+Game;               Developer;      \t    ;                 Release Date
 
 Chrono Trigger;     Square;               Super Nintendo;   March 11, 1995
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
@@ -236,10 +236,10 @@ Table:
 
 Game;               Developer;            Platform;         Release Date
 
-Chrono Trigger;     ;                     Super Nintendo;   March 11, 1995
-Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
+Chrono Trigger;     ;        \t           Super Nintendo;   March 11, 1995
+ \t ;               Quintet;              Super Nintendo;   October 20, 1995
 
-Command & Conquer;  Westwood Studios;     ;                 August 31, 1995
+Command & Conquer;  Westwood Studios;     ;    \t           August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.toAst(text)).to.be.eql(
@@ -258,7 +258,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
               new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
             ]),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
+              new TableNode.Row.Cell([]),
               new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
               new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
               new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
@@ -286,7 +286,7 @@ describe('A table header starting with a semicolon', () => {
     const text = `
 Table:
 
-;                   Developer;            Platform;         Release Date
+;    \t             Developer;            Platform;         Release Date
 
 Chrono Trigger;     Square;               Super Nintendo;   March 11, 1995
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
