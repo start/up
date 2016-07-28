@@ -154,7 +154,7 @@ Terranigma;         Nintendo;             Enix`
 
 
 context('When the final cell in a table row cell is terminated by two semicolons', () => {
-  specify('spans two columns', () => {
+  specify('it spans two columns', () => {
     const text = `
 Table:
 
@@ -228,7 +228,7 @@ Terranigma;         Nintendo;             Enix`
 
 
 context('When the final cell in a table row cell is terminated by two semicolons followed by whitespace', () => {
-  specify('spans two columns', () => {
+  specify('it spans two columns', () => {
     const text = `
 Table:
 
@@ -270,4 +270,3 @@ Starcraft;          Blizzard;; \t \t`
       ]))
   })
 })
-
