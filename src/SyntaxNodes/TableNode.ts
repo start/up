@@ -1,5 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 export class TableNode implements OutlineSyntaxNode {
@@ -10,12 +11,19 @@ export class TableNode implements OutlineSyntaxNode {
 
 
 export namespace TableNode {
+  export abstract class Cell extends InlineSyntaxNodeContainer {
+    constructor(children: InlineSyntaxNode[], public countColumnsSpanned = 1) {
+      super(children)
+    }
+  }
+
+
   export class Header {
     constructor(public cells: Header.Cell[]) { }
   }
 
   export namespace Header {
-    export class Cell extends InlineSyntaxNodeContainer {
+    export class Cell extends TableNode.Cell {
       protected TABLE_HEADER_CELL(): void { }
     }
   }
@@ -26,7 +34,7 @@ export namespace TableNode {
   }
 
   export namespace Row {
-    export class Cell extends InlineSyntaxNodeContainer {
+    export class Cell extends TableNode.Cell {
       isContentNumeric(): boolean {
         return false
       }
