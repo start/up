@@ -229,8 +229,6 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
-
-
 describe('A (non-empty) table row cell consisting only of whitespace', () => {
   it('is considered empty', () => {
     const text = `
@@ -281,4 +279,3 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
       ]))
   })
 })
-
