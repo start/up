@@ -5,7 +5,49 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-describe('A cell terminated by two semicolons', () => {
+describe('All table header cells and table row cells', () => {
+  it('span 1 column by default', () => {
+    const text = `
+Table:
+
+Game;               Release Date
+
+Final Fantasy;      1987
+Final Fantasy II;   1988
+
+Chrono Trigger;     1995
+Chrono Cross;       1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')], 1),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')], 1)
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')], 1),
+              new TableNode.Row.Cell([new PlainTextNode('1987')], 1)
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')], 1),
+              new TableNode.Row.Cell([new PlainTextNode('1988')], 1)
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')], 1),
+              new TableNode.Row.Cell([new PlainTextNode('1995')], 1)
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')], 1),
+              new TableNode.Row.Cell([new PlainTextNode('1999')], 1)
+            ]),
+          ])
+      ]))
+  })
+})
+
+
+describe('A table row cell terminated by two semicolons', () => {
   it('spans two columns', () => {
     const text = `
 Table:
@@ -52,4 +94,3 @@ Starcraft;          Blizzard;;                              March 31, 1998`
       ]))
   })
 })
-
