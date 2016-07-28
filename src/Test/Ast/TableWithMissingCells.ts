@@ -50,3 +50,36 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
       ]))
   })
 })
+
+
+describe('A table header', () => {
+  specify('can have fewer cells than its rows have', () => {
+        const text = `
+Table:
+
+Game;               Release Date
+
+Final Fantasy;      1987;               This game has some interesting bugs.
+Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')]),
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+              new TableNode.Row.Cell([new PlainTextNode('This game has some interesting bugs.')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+              new TableNode.Row.Cell([new PlainTextNode("Though not a proper sequel, it's my favorite game.")])
+            ]),
+          ])
+      ]))
+  })
+})
