@@ -392,3 +392,52 @@ Swam laps;                Sprints on track;         March 14, 2018`
       ]))
   })
 })
+
+
+context('A table row starting with 3 or more semicolons', () => {
+  it('starts with an empty cell spanning that many columns', () => {
+    const text = `
+Table:
+
+Aerobic Exercise;         Anaerobic Exercise;   Cooldown;                   Date
+
+Jogged on treadmill;      Squats;               Walked on treadmill;        March 11, 2018
+Jogged on track;          Deadlifts;            Walked on track;            March 12, 2018
+;;;                                                                         March 13, 2018
+Swam laps;                Sprints on track;     Treaded water;              March 14, 2018`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
+            new TableNode.Header.Cell([new PlainTextNode('Anaerobic Exercise')]),
+            new TableNode.Header.Cell([new PlainTextNode('Cooldown')]),
+            new TableNode.Header.Cell([new PlainTextNode('Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Jogged on treadmill')]),
+              new TableNode.Row.Cell([new PlainTextNode('Squats')]),
+              new TableNode.Row.Cell([new PlainTextNode('Walked on treadmill')]),
+              new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
+              new TableNode.Row.Cell([new PlainTextNode('Deadlifts')]),
+              new TableNode.Row.Cell([new PlainTextNode('Walked on track')]),
+              new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([], 3),
+              new TableNode.Row.Cell([new PlainTextNode('March 13, 2018')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Swam laps')]),
+              new TableNode.Row.Cell([new PlainTextNode('Sprints on track')]),
+              new TableNode.Row.Cell([new PlainTextNode('Treaded water')]),
+              new TableNode.Row.Cell([new PlainTextNode('March 14, 2018')])
+            ])
+          ])
+      ]))
+  })
+})
