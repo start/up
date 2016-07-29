@@ -468,3 +468,60 @@ Chrono Cross;   1999`
       ]))
   })
 })
+
+
+context("The label line for tables can be followed by whitespace, regardless of whether the term for 'table' is followed by a colon.", () => {
+  specify('When followed by a colon', () => {
+    const text = `
+Table:  \t \t 
+
+Game;           Release Date
+Chrono Trigger; 1995
+Chrono Cross;   1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ])
+          ])
+      ]))
+  })
+
+  specify('When not followed by a colon', () => {
+    const text = `
+Table  \t \t 
+
+Game;           Release Date
+Chrono Trigger; 1995
+Chrono Cross;   1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ])
+          ])
+      ]))
+  })
+})
