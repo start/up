@@ -597,8 +597,8 @@ Swam laps;                Sprints on track;     Treaded water;              Marc
 })
 
 
-describe('A table header cell terminated by 3 or more semicolons', () => {
-  it('spans that many columns', () => {
+describe('Empty table header cells', () => {
+  it('can span multiple columns', () => {
     const text = `
 Table:
 
