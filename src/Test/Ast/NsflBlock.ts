@@ -161,6 +161,27 @@ NSFL:  \t  \t
         ])
       ]))
   })
+
+  it("can have whitespace the 'nsfl' term if there isn't a colon", () => {
+    const text = `
+NSFL  \t  \t  
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
 })
 
 
