@@ -52,6 +52,35 @@ describe('A table header cell terminated by 2 semicolons', () => {
     const text = `
 Table:
 
+Game;               Publisher;;                       Release Date
+
+Terranigma;         Nintendo;             Enix;       October 20, 1995`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('Enix')]),
+              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            ])
+          ])
+      ]))
+  })
+})
+
+
+describe('A table header cell terminated by 3 or more semicolons', () => {
+  it('spans that many columns', () => {
+    const text = `
+Table:
+
 Game;               Director;;;                                             Release Date
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
@@ -70,35 +99,6 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
               new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
               new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')]),
               new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
-            ])
-          ])
-      ]))
-  })
-})
-
-
-describe('A table header cell terminated by 3 or more semicolons', () => {
-  it('spans that many columns', () => {
-    const text = `
-Table:
-
-Game;               Publisher;;                       Release Date
-
-Terranigma;         Nintendo;             Enix;       October 20, 1995`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-          ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Enix')]),
-              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
             ])
           ])
       ]))
@@ -351,7 +351,6 @@ Starcraft;          Blizzard;;;`
 })
 
 
-
 context('When the final cell in a table header is terminated by 2 semicolons followed by whitespace', () => {
   specify('it spans 2 columns', () => {
     const text = `
@@ -591,6 +590,91 @@ Swam laps;                Sprints on track;     Treaded water;              Marc
               new TableNode.Row.Cell([new PlainTextNode('Sprints on track')]),
               new TableNode.Row.Cell([new PlainTextNode('Treaded water')]),
               new TableNode.Row.Cell([new PlainTextNode('March 14, 2018')])
+            ])
+          ])
+      ]))
+  })
+})
+
+
+describe('A table header cell terminated by 3 or more semicolons', () => {
+  it('spans that many columns', () => {
+    const text = `
+Table:
+
+Game;               Director;         ;;                                    Release Date
+
+Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Director')]),
+            new TableNode.Header.Cell([], 2),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('Takashi Tokita')]),
+              new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
+              new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')]),
+              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            ])
+          ])
+      ]))
+  })
+})
+
+
+describe('Empty table row cells', () => {
+  it('can span multiple columns', () => {
+    const text = `
+Table:
+
+Game;               Developer;            Publisher;        Marketer;       Release Date
+
+Chrono Trigger;     Square;                                 ;;              March 11, 1995
+Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
+
+Command & Conquer;  Westwood Studios;                       ;;              August 31, 1995
+Starcraft;          Blizzard;                               ;;                March 31, 1998`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
+            new TableNode.Header.Cell([new PlainTextNode('Marketer')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('Square')]),
+              new TableNode.Row.Cell([], 2),
+              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
+              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
+              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
+              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')]),
+              new TableNode.Row.Cell([], 2),
+              new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
+              new TableNode.Row.Cell([new PlainTextNode('Blizzard')]),
+              new TableNode.Row.Cell([], 2),
+              new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
             ])
           ])
       ]))
