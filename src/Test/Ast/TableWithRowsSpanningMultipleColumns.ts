@@ -196,6 +196,52 @@ Starcraft;          Blizzard;;`
 })
 
 
+context('When the final cell in a table row cell is terminated by 3 or more semicolons', () => {
+  specify('it spans that many columns', () => {
+    const text = `
+Table:
+
+Game;               Developer;            Publisher;      Marketer
+
+Chrono Trigger;     Square;;;
+Terranigma;         Quintet;              Nintendo;       Quintet
+
+Command & Conquer;  Westwood Studios;;;
+Starcraft;          Blizzard;;;`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
+            new TableNode.Header.Cell([new PlainTextNode('Marketer')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('Square')], 3)
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
+              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('Quintet')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
+              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 3)
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
+              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 3)
+            ])
+          ])
+      ]))
+  })
+})
+
+
 
 context('When the final cell in a table header is terminated by 2 semicolons followed by whitespace', () => {
   specify('it spans 2 columns', () => {
