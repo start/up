@@ -74,7 +74,7 @@ SPOILER:
       ]))
   })
 
-  it('does require a colon at the end', () => {
+  it('does require a trailing colon', () => {
     const text = `
 SPOILER
 
