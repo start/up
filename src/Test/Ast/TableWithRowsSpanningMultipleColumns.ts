@@ -47,8 +47,8 @@ Chrono Cross;       1999`
 })
 
 
-describe('A table header cell terminated by two semicolons', () => {
-  it('spans two columns', () => {
+describe('A table header cell terminated by 2 semicolons', () => {
+  it('spans 2 columns', () => {
     const text = `
 Table:
 
@@ -76,8 +76,8 @@ Terranigma;         Nintendo;             Enix;       October 20, 1995`
 })
 
 
-describe('A table row cell terminated by two semicolons', () => {
-  it('spans two columns', () => {
+describe('A table row cell terminated by 2 semicolons', () => {
+  it('spans 2 columns', () => {
     const text = `
 Table:
 
@@ -125,8 +125,8 @@ Starcraft;          Blizzard;;                              March 31, 1998`
 })
 
 
-context('When the final cell in a table header is terminated by two semicolons', () => {
-  specify('it spans two columns', () => {
+context('When the final cell in a table header is terminated by 2 semicolons', () => {
+  specify('it spans 2 columns', () => {
     const text = `
 Table:
 
@@ -152,8 +152,8 @@ Terranigma;         Nintendo;             Enix`
 })
 
 
-context('When the final cell in a table row cell is terminated by two semicolons', () => {
-  specify('it spans two columns', () => {
+context('When the final cell in a table row cell is terminated by 2 semicolons', () => {
+  specify('it spans 2 columns', () => {
     const text = `
 Table:
 
@@ -197,8 +197,8 @@ Starcraft;          Blizzard;;`
 
 
 
-context('When the final cell in a table header is terminated by two semicolons followed by whitespace', () => {
-  specify('it spans two columns', () => {
+context('When the final cell in a table header is terminated by 2 semicolons followed by whitespace', () => {
+  specify('it spans 2 columns', () => {
     const text = `
 Table:
 
@@ -224,8 +224,8 @@ Terranigma;         Nintendo;             Enix`
 })
 
 
-context('When the final cell in a table row cell is terminated by two semicolons followed by whitespace', () => {
-  specify('it spans two columns', () => {
+context('When the final cell in a table row cell is terminated by 2 semicolons followed by whitespace', () => {
+  specify('it spans 2 columns', () => {
     const text = `
 Table:
 
@@ -268,7 +268,7 @@ Starcraft;          Blizzard;; \t \t`
 })
 
 
-context('A table header starting with two semicolons', () => {
+context('A table header starting with 2 semicolons', () => {
   it('starts with an empty cell spanning 2 columns', () => {
     const text = `
 Table:
@@ -349,7 +349,7 @@ Swam laps;                Sprints on track;   Treaded water;              March 
 })
 
 
-context('A table row starting with two semicolons', () => {
+context('A table row starting with 2 semicolons', () => {
   it('starts with an empty cell spanning 2 columns', () => {
     const text = `
 Table:
