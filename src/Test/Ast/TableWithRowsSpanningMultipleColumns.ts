@@ -245,25 +245,24 @@ Starcraft;          Blizzard;; \t \t`
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
             new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')], 2),
+              new TableNode.Row.Cell([new PlainTextNode('Square')], 2)
             ]),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
               new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
             ]),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 2),
+              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 2)
             ]),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 2),
+              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 2)
             ])
           ])
       ]))
