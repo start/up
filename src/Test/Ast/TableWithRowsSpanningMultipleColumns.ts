@@ -213,13 +213,12 @@ Terranigma;         Nintendo;             Enix`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2)
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
               new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Enix')]),
+              new TableNode.Row.Cell([new PlainTextNode('Enix')])
             ])
           ])
       ]))
