@@ -74,6 +74,27 @@ NSFW:
       ]))
   })
 
+  it('does not require trailing colon', () => {
+    const text = `
+NSFW:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new NsfwBlockNode([
+          new ParagraphNode([
+            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new ParagraphNode([
+            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
   it('can be followed by 2 blank lines', () => {
     const text = `
 NSFW:
