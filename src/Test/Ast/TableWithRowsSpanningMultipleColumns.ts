@@ -52,6 +52,36 @@ describe('A table header cell terminated by 2 semicolons', () => {
     const text = `
 Table:
 
+Game;               Director;;;                                             Release Date
+
+Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Director')], 3),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('Takashi Tokita')]),
+              new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
+              new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')]),
+              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            ])
+          ])
+      ]))
+  })
+})
+
+
+describe('A table header cell terminated by 3 or more semicolons', () => {
+  it('spans that many columns', () => {
+    const text = `
+Table:
+
 Game;               Publisher;;                       Release Date
 
 Terranigma;         Nintendo;             Enix;       October 20, 1995`
