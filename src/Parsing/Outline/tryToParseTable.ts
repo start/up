@@ -87,7 +87,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
 // Returns true if it's able to consume 2 blank lines.
 //
-// Note: If there was just 1 blank line, this function will consume it.
+// Note: If there was just 1 blank line, this function will still consume it.
 function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
   function consumeBlankLine(): boolean {
     return lineConsumer.consume({ linePattern: BLANK_PATTERN })
@@ -95,6 +95,7 @@ function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
 
   return consumeBlankLine() && consumeBlankLine()
 }
+
 
 function getCells<TCell extends TableNode.Cell>(
   CellType: new (children: InlineSyntaxNode[], countColumnsSpanned: number) => TCell,
@@ -185,3 +186,4 @@ function getCells<TCell extends TableNode.Cell>(
 
 const DELIMITER_PATTERN =
   patternStartingWith(atLeast(1, ';'))
+  
