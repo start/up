@@ -107,7 +107,7 @@ function getExplicitOrdinal(rawListItem: RawListItem): number {
   return (
     result
       ? parseInt(result[0], 10)
-      : null)
+      : undefined)
 }
 
 

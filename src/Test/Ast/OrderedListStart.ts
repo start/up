@@ -16,7 +16,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
 # Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(text)).to.be.eql(null)
+    expect(listStart(text)).to.be.undefined
   })
 
   it('does not have an explicit starting ordinal even if the second list item has a numeral bullet', () => {
@@ -25,7 +25,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
 5) Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(text)).to.be.eql(null)
+    expect(listStart(text)).to.be.undefined
   })
 })
 
