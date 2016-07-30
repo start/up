@@ -8,7 +8,8 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 context('Between paragraphs', () => {
   specify('3 or more empty or blank lines produces a section separator node', () => {
-    const text = `Hello, world!
+    const text = `
+Hello, world!
   \t \t
   \t \t
 
@@ -27,7 +28,8 @@ Goodbye, world!`
   })
 
   specify('6 or more empty or blank lines produces only a single section separator node', () => {
-    const text = `Hello, world!
+    const text = `
+Hello, world!
 
  \t
 
@@ -71,7 +73,8 @@ Hello, world!`
 
 describe('A document that ends with 3 or more blank lines', () => {
   it('does not produce a trailing section separator node', () => {
-    const text = `Hello, world!
+    const text = `
+Hello, world!
 
 \t
  \t
@@ -171,16 +174,33 @@ describe('Consecutive separator streaks', () => {
 })
 
 
-describe('Section separator streaks with empty or blank lines in between', () => {
-  it('produce a single section separator node', () => {
+context('When section separator streaks are separated from each other by only blank or empty lines, they produce only a single section separator node. This applies when they are separated by:', () => {
+  specify('1 or 2 blank or empty lines', () => {
     const text = `
 --------
 
 ########
-
-\t
-
  \t
+
+--------
+`
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new SectionSeparatorNode()
+      ]))
+  })
+
+  specify('3 or mor blank or empty lines', () => {
+    const text = `
+--------
+
+  \t
+ \t
+  \t
+########
+ 
+
+
 
 --------
 `
