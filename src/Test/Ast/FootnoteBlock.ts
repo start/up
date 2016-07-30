@@ -352,8 +352,8 @@ SPOILER:
 })
 
 
-describe('Footnotes in a spoiler block', () => {
-  it('produce footnote blocks within the spoiler block', () => {
+describe('Footnotes in a NSFW block', () => {
+  it('produce footnote blocks within the NSFW block', () => {
     const text = `
 NSFW:
 
@@ -378,8 +378,8 @@ NSFW:
 })
 
 
-describe('Footnotes nested inside 2 or more outline conventions nested inside a spoiler block', () => {
-  it("produce footnote blocks inside the spoiler block after all the appropriate outline conventions", () => {
+describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFW block', () => {
+  it("produce footnote blocks inside the NSFW block after all the appropriate outline conventions", () => {
     const text = `
 NSFW:
 
@@ -433,8 +433,8 @@ NSFW:
 })
 
 
-describe('Footnotes in a spoiler block', () => {
-  it('produce footnote blocks within the spoiler block', () => {
+describe('Footnotes in a NSFL block', () => {
+  it('produce footnote blocks within the NSFL block', () => {
     const text = `
 NSFL:
 
@@ -459,8 +459,8 @@ NSFL:
 })
 
 
-describe('Footnotes nested inside 2 or more outline conventions nested inside a spoiler block', () => {
-  it("produce footnote blocks inside the spoiler block after all the appropriate outline conventions", () => {
+describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFL block', () => {
+  it("produce footnote blocks inside the NSFL block after all the appropriate outline conventions", () => {
     const text = `
 NSFL:
 
