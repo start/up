@@ -106,6 +106,10 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellToBeNumeric('[$15.40] (example.com/price)')
     })
 
+    specify('a NSFW convention whose content is numeric', () => {
+      expectTableCellToBeNumeric('[NSFW: 80085]')
+    })
+
     specify('a linkified spoiler to a non-numeric URL whose content is numeric', () => {
       expectTableCellToBeNumeric('[SPOILER: 44.7] (example.com/defense)')
     })
