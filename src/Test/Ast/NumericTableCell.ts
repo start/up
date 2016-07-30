@@ -11,7 +11,7 @@ function expectFirstTableCellToBeNumeric(textProducingTable: string): void {
 }
 
 
-context('A tale row cell is numeric if its text content (ignoring footnotes) is a number. This includes when the cell contains', () => {
+context('A tale row cell is numeric if its text content (ignoring footnotes) contains digits and no spaces. This includes when the cell contains', () => {
   specify('an integer', () => {
     const text = `
 Table:
