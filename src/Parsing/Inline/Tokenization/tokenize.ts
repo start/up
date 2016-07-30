@@ -1,6 +1,6 @@
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -1168,9 +1168,6 @@ const NOT_FOLLOWED_BY_WHITESPACE =
 //
 // We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
 // surprising the author by producing a link when they probably didn't intend to produce one.
-
-export const LETTER_CLASS =
-  'a-zA-Z'
 
 export const LETTER_CHAR =
   anyCharMatching(LETTER_CLASS)

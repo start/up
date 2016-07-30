@@ -13,6 +13,9 @@ export const ANY_WHITESPACE =
 export const SOME_WHITESPACE =
   atLeast(1, WHITESPACE_CHAR)
 
+export const LETTER_CLASS =
+  'a-zA-Z'
+
 export const DIGIT =
   '\\d'
 
