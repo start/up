@@ -115,7 +115,7 @@ export class HtmlWriter extends Writer {
   protected codeBlock(node: CodeBlockNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
-      [htmlElement('code', node.text)])
+      [htmlElement('code', node.code)])
   }
 
   protected paragraph(node: ParagraphNode): string {
