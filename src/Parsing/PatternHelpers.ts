@@ -70,10 +70,6 @@ export function solelyAndIgnoringCapitalization(pattern: string): RegExp {
   return getRegExpSolelyConsistingOf({ pattern, isCaseInsensitive: true })
 }
 
-export function outlineLabel(labelTerm: string): RegExp {
-  return solelyAndIgnoringCapitalization(escapeForRegex(labelTerm) + optional(':'))
-}
-
 export function patternStartingWith(pattern: string): RegExp {
   return getRegExpStartingWith({ pattern })
 }
