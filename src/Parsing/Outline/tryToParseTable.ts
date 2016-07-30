@@ -2,9 +2,10 @@ import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { outlineLabel, patternStartingWith, atLeast } from '../PatternHelpers'
-import { getInlineNodes } from '../Inline/getInlineNodes'
+import { solelyAndIgnoringCapitalization, escapeForRegex, patternStartingWith, atLeast, optional, capture } from '../PatternHelpers'
 import { BLANK_PATTERN } from '../Patterns'
+import { REST_OF_TEXT } from '../PatternPieces'
+import { getInlineNodes } from '../Inline/getInlineNodes'
 import { UpConfig } from '../../UpConfig'
 import { last } from '../../CollectionHelpers'
 import { ESCAPER_CHAR } from '../Strings'
@@ -29,10 +30,20 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   const { config } = args
   const tableTerm = config.settings.i18n.terms.table
 
+  const labelPattern =
+    solelyAndIgnoringCapitalization(
+      escapeForRegex(tableTerm) + optional(':' + capture(REST_OF_TEXT)))
+
+  let rawCaptionContent: string
   let headerLine: string
 
-  const isHeader = (
-    lineConsumer.consume({ linePattern: outlineLabel(tableTerm) })
+  const wasHeaderFound = (
+    lineConsumer.consume({
+      linePattern: labelPattern,
+      then: (_, captionPart) => {
+        rawCaptionContent = (captionPart || '').trim()
+      }
+    })
 
     && !tryToTerminateTable(lineConsumer)
 
@@ -42,9 +53,14 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
       }
     }))
 
-  if (!isHeader) {
+  if (!wasHeaderFound) {
     return false
   }
+
+  const caption =
+    rawCaptionContent
+      ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
+      : undefined
 
   const headerCells = getCells(TableNode.Header.Cell, headerLine, config)
   const header = new TableNode.Header(headerCells)
@@ -64,7 +80,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
   const rows = rowCellsByRow.map(cells => new TableNode.Row(cells))
 
-  args.then([new TableNode(header, rows)], countLinesConsumed)
+  args.then([new TableNode(header, rows, caption)], countLinesConsumed)
   return true
 }
 
