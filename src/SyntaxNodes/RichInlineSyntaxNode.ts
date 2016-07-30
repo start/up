@@ -8,6 +8,4 @@ export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer imp
       .map(child => child.inlineTextContent())
       .join('')
   }
-
-  INLINE_SYNTAX_NODE(): void { }
 }

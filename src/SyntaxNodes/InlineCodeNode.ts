@@ -8,6 +8,5 @@ export class InlineCodeNode implements InlineSyntaxNode {
     return this.code
   }
 
-  INLINE_SYNTAX_NODE(): void { }
   protected INLINE_CODE_NODE(): void { }
 }

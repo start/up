@@ -12,7 +12,6 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
   }
 
   OUTLINE_SYNTAX_NODE(): void { }
-  INLINE_SYNTAX_NODE(): void { }
   protected MEDIA_SYNTAX_NODE(): void { }
 }
 
