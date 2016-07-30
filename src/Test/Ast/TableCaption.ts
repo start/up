@@ -6,7 +6,6 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-
 context("In a table's label line, when the term for 'table' is followed by a colon,", () => {
   specify('the colon can be folowed by a table caption', () => {
     const text = `
@@ -76,8 +75,11 @@ Chrono Cross;   1999`
           ]))
       ]))
   })
+})
 
-  specify('does not need to have a blank line between it and the header row', () => {
+
+describe("A table with a caption (just like a table without a caption)", () => {
+  it('does not need to have a blank line before the header row', () => {
     const text = `
 Table: Games in the Chrono series
 Game;           Release Date
@@ -101,6 +103,26 @@ Chrono Cross;   1999`
               new TableNode.Row.Cell([new PlainTextNode('1999')])
             ])
           ],
+          new TableNode.Caption([
+            new PlainTextNode('Games in the Chrono series')
+          ]))
+      ]))
+  })
+
+  it('does not need any rows', () => {
+    const text = `
+Table: Games in the Chrono series
+
+Game;           Release Date`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]),
+          [],
           new TableNode.Caption([
             new PlainTextNode('Games in the Chrono series')
           ]))
