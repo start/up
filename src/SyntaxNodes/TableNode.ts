@@ -35,7 +35,7 @@ export namespace TableNode {
 
   export namespace Row {
     export class Cell extends TableNode.Cell {
-      isContentNumeric(): boolean {
+      isNumeric(): boolean {
         return false
       }
 
