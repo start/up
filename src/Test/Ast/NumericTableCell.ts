@@ -129,6 +129,10 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellNotToBeNumeric('3D')
     })
 
+    specify('3 periods forming an ellipsis', () => {
+      expectTableCellNotToBeNumeric('...')
+    })
+
     specify('a list of numbers separated by whitespace', () => {
       expectTableCellNotToBeNumeric('1 2 3')
     })
@@ -159,6 +163,14 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
 
     specify('a video, even with a numeric description and URL', () => {
       expectTableCellNotToBeNumeric('[video: 9000] (64.233.160.0/123)')
+    })
+
+    specify('a footnote on its own, even with numeric content', () => {
+      expectTableCellNotToBeNumeric('[^ 2017]')
+    })
+
+    specify('multiple footnotes on their own, even if all have numeric content', () => {
+      expectTableCellNotToBeNumeric('[^ 2017][^ 2018]')
     })
 
     specify('whitespace', () => {
