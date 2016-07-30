@@ -39,7 +39,7 @@ export namespace TableNode {
     export class Cell extends TableNode.Cell {
       isNumeric(): boolean {
         const textContent = this.children
-          .map(child => child.text())
+          .map(child => child.inlineTextContent())
           .join('')
 
         return HAS_DIGIT_PATTERN.test(textContent) && !HAS_NON_NUMERIC_CHARACTER_PATTERN.test(textContent)

@@ -1,4 +1,4 @@
 export interface InlineSyntaxNode {
-  text(): string
+  inlineTextContent(): string
   INLINE_SYNTAX_NODE(): void
 }

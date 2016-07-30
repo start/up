@@ -7,7 +7,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntaxNode {
   constructor(public description: string, public url: string) { }
 
-  text(): string {
+  inlineTextContent(): string {
     return ''
   }
 

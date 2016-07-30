@@ -3,9 +3,9 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
 export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer implements InlineSyntaxNode {
-  text(): string {
+  inlineTextContent(): string {
     return this.children
-      .map(child => child.text())
+      .map(child => child.inlineTextContent())
       .join('')
   }
 

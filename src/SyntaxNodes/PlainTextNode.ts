@@ -4,7 +4,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 export class PlainTextNode implements InlineSyntaxNode {
   constructor(public content: string) { }
 
-  text(): string {
+  inlineTextContent(): string {
     return this.content
   }
 
