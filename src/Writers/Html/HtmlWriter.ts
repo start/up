@@ -139,7 +139,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineCode(node: InlineCodeNode): string {
-    return htmlElement('code', node.text)
+    return htmlElement('code', node.code)
   }
 
   protected revisionInsertion(node: RevisionInsertionNode): string {
@@ -259,7 +259,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected plainText(node: PlainTextNode): string {
-    return escapeHtmlContent(node.text)
+    return escapeHtmlContent(node.content)
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
