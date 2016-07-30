@@ -6,15 +6,26 @@ import { anyCharMatching } from '../Parsing/PatternHelpers'
 
 
 export class TableNode implements OutlineSyntaxNode {
-  constructor(public header: TableNode.Header, public rows: TableNode.Row[]) { }
+  constructor(
+    public header: TableNode.Header,
+    public rows: TableNode.Row[],
+    public caption?: TableNode.Caption) { }
 
   OUTLINE_SYNTAX_NODE(): void { }
 }
 
 
 export namespace TableNode {
+  export class Caption extends InlineSyntaxNodeContainer {
+    protected TABLE_CAPTION(): void { }
+  }
+
+
   export abstract class Cell extends InlineSyntaxNodeContainer {
-    constructor(children: InlineSyntaxNode[], public countColumnsSpanned = 1) {
+    constructor(
+      children: InlineSyntaxNode[],
+      public countColumnsSpanned = 1
+    ) {
       super(children)
     }
   }
@@ -50,7 +61,7 @@ export namespace TableNode {
 
 
     const HAS_DIGIT_PATTERN = new RegExp(DIGIT)
-    
+
     const HAS_NON_NUMERIC_CHARACTER_PATTERN = new RegExp(
       anyCharMatching(LETTER_CLASS, '_', WHITESPACE_CHAR))
   }
