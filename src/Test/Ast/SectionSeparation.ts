@@ -38,6 +38,7 @@ Hello, world!
 
  \t
 Goodbye, world!`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
@@ -119,6 +120,7 @@ describe('A section separator streak', () => {
 
   it('can have whitespace interspersed throughout the line in any manner', () => {
     const text = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -126,8 +128,7 @@ describe('A section separator streak', () => {
   })
 
   it('can contain as few as 3 non-whitespace characters', () => {
-    const text = '= - ~'
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst('= - ~')).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -182,8 +183,8 @@ context('When section separator streaks are separated from each other by only bl
 ########
  \t
 
---------
-`
+--------`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
@@ -202,8 +203,8 @@ context('When section separator streaks are separated from each other by only bl
 
 
 
---------
-`
+--------`
+
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
