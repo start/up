@@ -25,7 +25,7 @@ describe('Paragraphs', () => {
         new EmphasisNode([
           new PlainTextNode('everyone')
         ]),
-        new PlainTextNode(" like that?")        
+        new PlainTextNode(" like that?")
       ]))
   })
 })
