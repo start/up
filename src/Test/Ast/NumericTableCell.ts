@@ -91,11 +91,11 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
     })
 
     specify('a link to a non-numeric URL whose content is numeric', () => {
-      expectTableCellToBeNumeric('[$15.40] (https://example.com/price)')
+      expectTableCellToBeNumeric('[$15.40] (example.com/price)')
     })
 
     specify('a linkified spoiler to a non-numeric URL whose content is numeric', () => {
-      expectTableCellToBeNumeric('[SPOILER: 44.7] (https://example.com/defense)')
+      expectTableCellToBeNumeric('[SPOILER: 44.7] (example.com/defense)')
     })
 
     specify('an integer followed by a non-numeric footnote', () => {
@@ -109,7 +109,7 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
 
 
   context('This excludes when the cell contains', () => {
-    specify('a single without digits', () => {
+    specify('a single word without digits', () => {
       expectTableCellNotToBeNumeric('StarCraft')
     })
 
@@ -131,6 +131,18 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
 
     specify('a linkified spoiler to a numeric URL whose content is a non-numeric word', () => {
       expectTableCellNotToBeNumeric('[SPOILER: John] (tel:5555555555)')
+    })
+
+    specify('an image, even with a numeric description and URL', () => {
+      expectTableCellNotToBeNumeric('[image: 9000] (64.233.160.0/123)')
+    })
+
+    specify('an audio convention, even with a numeric description and URL', () => {
+      expectTableCellNotToBeNumeric('[audio: 9000] (64.233.160.0/123)')
+    })
+
+    specify('a video, even with a numeric description and URL', () => {
+      expectTableCellNotToBeNumeric('[video: 9000] (64.233.160.0/123)')
     })
 
     specify('whitespace', () => {
