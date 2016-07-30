@@ -556,7 +556,7 @@ Final Fantasy II;   1988`
 
 
 describe('Footnotes in a table row', () => {
-  specify("are placed into a footnote block after the table (after any footnotes in the table;s header)", () => {
+  specify("are placed into a footnote block after the table (after any footnotes in the table's header)", () => {
     const text = `
 Table:
 
@@ -597,6 +597,66 @@ Final Fantasy II;   1988 [^ Almost 1989]`
           ]),
 
         new FootnoteBlockNode([
+          headerFootnote,
+          rowFootnote
+        ])
+      ]))
+  })
+})
+
+
+describe('Footnotes in a table caption', () => {
+  specify("are placed into a footnote block after the table (before any footnotes in the table's header and rows)", () => {
+    const text = `
+Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
+
+Game;               Release Date [^ Only the year]
+
+Final Fantasy;      1987
+Final Fantasy II;   1988 [^ Almost 1989]`
+
+    const captionFootnote = new FootnoteNode([
+      new PlainTextNode('ファイナルファンタジ in Japan')
+    ], 1)
+
+    const headerFootnote = new FootnoteNode([
+      new PlainTextNode('Only the year')
+    ], 2)
+
+    const rowFootnote = new FootnoteNode([
+      new PlainTextNode('Almost 1989')
+    ], 3)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([
+              new PlainTextNode('Release Date'),
+              headerFootnote
+            ])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+              new TableNode.Row.Cell([
+                new PlainTextNode('1988'),
+                rowFootnote
+              ])
+            ])
+          ],
+          new TableNode.Caption([
+            new PlainTextNode('Final Fantasy'),
+            captionFootnote,
+            new PlainTextNode(' in the 1980s')
+          ])),
+
+        new FootnoteBlockNode([
+          captionFootnote,
           headerFootnote,
           rowFootnote
         ])
