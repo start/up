@@ -527,7 +527,7 @@ Final Fantasy II;   1988`
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Only the year')
-    ])
+    ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -567,11 +567,11 @@ Final Fantasy II;   1988 [^ Almost 1989]`
 
     const headerFootnote = new FootnoteNode([
       new PlainTextNode('Only the year')
-    ])
+    ], 1)
 
     const rowFootnote = new FootnoteNode([
       new PlainTextNode('Almost 1989')
-    ])
+    ], 2)
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([

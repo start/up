@@ -17,6 +17,7 @@ import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
 import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
+import { TableNode } from '../SyntaxNodes/TableNode'
 
 
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
@@ -130,6 +131,10 @@ class FootnoteBlockInserter {
       return this.getBlocklessFootnotesFromDescriptionList(node)
     }
 
+    if (node instanceof TableNode) {
+      return this.getBlocklessFootnotesFromTable(node)
+    }
+
     return []
   }
 
@@ -180,6 +185,13 @@ class FootnoteBlockInserter {
       this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
 
     return footnotesFromTerms.concat(footnotesFromDescription)
+  }
+
+  getBlocklessFootnotesFromTable(table: TableNode): FootnoteNode[] {
+    return concat([
+      table.header.cells,
+      ...table.rows.map(row => row.cells)
+    ].map(inlineContainer => this.getBlocklessFootnotesFromInlineContainers(inlineContainer)))
   }
 
   getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
