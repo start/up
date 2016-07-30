@@ -14,6 +14,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
+import { TableNode } from '../../SyntaxNodes/TableNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
@@ -509,6 +510,46 @@ NSFL:
           new FootnoteBlockNode(footnotes)
 
         ])
+      ]))
+  })
+})
+
+
+describe('Footnotes in a table header', () => {
+  specify('are placed into a footnote block after the table', () => {
+    const text = `
+Table:
+
+Game;               Release Date [^ Only the year]
+
+Final Fantasy;      1987
+Final Fantasy II;   1988`
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Only the year')
+    ])
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([
+              new PlainTextNode('Release Date'),
+              footnote
+            ])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')])
+            ])
+          ]),
+
+        new FootnoteBlockNode([footnote])
       ]))
   })
 })
