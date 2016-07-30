@@ -24,13 +24,13 @@ ${rawCellValue};`
 }
 
 
-context('A tale row cell is numeric if its text content (ignoring footnotes) contains digits, no word characters, and no spaces.', () => {
+context('A tale row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
   context('This includes when the cell contains', () => {
     specify('an integer', () => {
       expectTableCellToBeNumeric('1995')
     })
 
-    specify('an italicized and stressed integer', () => {
+    specify('an emphasized and stressed integer', () => {
       expectTableCellToBeNumeric('***1995***')
     })
 
@@ -38,11 +38,11 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellToBeNumeric('.5')
     })
 
-    specify('an italicized and stressed integer', () => {
+    specify('an emphasized and stressed integer', () => {
       expectTableCellToBeNumeric('***.5***')
     })
 
-    specify('an italicized and stressed integer surrounded by whitespace', () => {
+    specify('an emphasized and stressed integer surrounded by whitespace', () => {
       expectTableCellToBeNumeric('  \t \t \t ***.5***  \t \t \t ')
     })
 
@@ -50,23 +50,35 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellToBeNumeric('55%')
     })
 
-    specify('an italicized and stressed percentage', () => {
+    specify('an emphasized and stressed percentage', () => {
       expectTableCellToBeNumeric('***55%***')
     })
 
-    specify('a percentage with the percent sign italicized and stressed', () => {
+    specify('an emphasized and stressed negative percentage', () => {
+      expectTableCellToBeNumeric('***-55%***')
+    })
+
+    specify('a percentage with the percent sign emphasized and stressed', () => {
       expectTableCellToBeNumeric('99***%***')
+    })
+
+    specify('a time of day without the time period part', () => {
+      expectTableCellToBeNumeric('15:40')
+    })
+
+    specify('an emphasized and stressed time of day', () => {
+      expectTableCellToBeNumeric('***15:40***')
     })
 
     specify('a price', () => {
       expectTableCellToBeNumeric('$13.01')
     })
 
-    specify('an italicized and stressed price', () => {
+    specify('an emphasized and stressed price', () => {
       expectTableCellToBeNumeric('***$13.01***')
     })
 
-    specify('a price whose dollar sign is italicized and stressed', () => {
+    specify('a price whose dollar sign is emphasized and stressed', () => {
       expectTableCellToBeNumeric('***$***13.01')
     })
 
@@ -78,7 +90,7 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellToBeNumeric('***$2,000,000***')
     })
 
-    specify('a price whose dollar sign is italicized and stressed', () => {
+    specify('a price whose dollar sign is emphasized and stressed', () => {
       expectTableCellToBeNumeric('***$***13.01')
     })
 
@@ -86,7 +98,7 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellToBeNumeric('`10.0`')
     })
 
-    specify('italicized and stressed inline code containing a numeric value', () => {
+    specify('emphasized and stressed inline code containing a numeric value', () => {
       expectTableCellToBeNumeric('***`10.0`***')
     })
 
@@ -102,7 +114,7 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
       expectTableCellToBeNumeric('2018 [^ It had been delayed since 2016]')
     })
 
-    specify('an italicized and stressed integer followed by a non-numeric footnote', () => {
+    specify('an emphasized and stressed integer followed by a non-numeric footnote', () => {
       expectTableCellToBeNumeric('****2018**** [^ It had been delayed since 2016]')
     })
   })
@@ -119,6 +131,10 @@ context('A tale row cell is numeric if its text content (ignoring footnotes) con
 
     specify('a list of numbers separated by whitespace', () => {
       expectTableCellNotToBeNumeric('1 2 3')
+    })
+
+    specify('a face with zeros for eyes and an underscore for its mouth', () => {
+      expectTableCellNotToBeNumeric('0_0')
     })
 
     specify('inline code containing a non-numeric word', () => {
