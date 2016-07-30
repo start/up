@@ -112,7 +112,7 @@ class FootnoteHandler {
     }
 
     if (node instanceof LineBlockNode) {
-      return this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(node.lines)
+      return this.getBlocklessFootnotesFromInlineContainers(node.lines)
     }
 
     if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
@@ -123,11 +123,11 @@ class FootnoteHandler {
     }
 
     if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
-      return this.handleOutlineNodeContainersAndGetBlocklessFootnotes(node.items)
+      return this.getBlocklessFootnotesFromOutlineContainers(node.items)
     }
 
     if (node instanceof DescriptionListNode) {
-      return this.handleDescriptionListAndGetBlocklessFootnotes(node)
+      return this.getBlocklessFootnotesFromDescriptionList(node)
     }
 
     return []
@@ -157,32 +157,32 @@ class FootnoteHandler {
     return footnotes
   }
 
-  getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(containers: InlineSyntaxNodeContainer[]): FootnoteNode[] {
+  getBlocklessFootnotesFromInlineContainers(containers: InlineSyntaxNodeContainer[]): FootnoteNode[] {
     return concat(
       containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)))
   }
 
-  handleOutlineNodeContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[]): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineContainers(containers: OutlineSyntaxNodeContainer[]): FootnoteNode[] {
     return concat(
-      containers.map(container => this.handleOutlineNodesAndGetBlocklessFootnotes(container.children)))
+      containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
   }
 
-  handleDescriptionListAndGetBlocklessFootnotes(list: DescriptionListNode): FootnoteNode[] {
+  getBlocklessFootnotesFromDescriptionList(list: DescriptionListNode): FootnoteNode[] {
     return concat(
-      list.items.map(item => this.handleDescriptionListItemAndGetBlocklessFootnotes(item)))
+      list.items.map(item => this.getBlocklessFootnotesFromDescriptionListItem(item)))
   }
 
-  handleDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionListNode.Item): FootnoteNode[] {
+  getBlocklessFootnotesFromDescriptionListItem(item: DescriptionListNode.Item): FootnoteNode[] {
     const footnotesFromTerms =
-      this.getTopLevelFootnotesFromInlineNodeContainersAndAssignTheirReferenceNumbers(item.terms)
+      this.getBlocklessFootnotesFromInlineContainers(item.terms)
 
     const footnotesFromDescription =
-      this.handleOutlineNodesAndGetBlocklessFootnotes(item.description.children)
+      this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
 
     return footnotesFromTerms.concat(footnotesFromDescription)
   }
 
-  handleOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
     return concat(
       nodes.map(node => this.handleOutlineNodeAndGetBlocklessFootnotes(node)))
   }
