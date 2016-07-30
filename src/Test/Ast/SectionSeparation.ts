@@ -7,10 +7,10 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 context('Between paragraphs', () => {
-  specify('3 or more blank lines produces a section separator node', () => {
+  specify('3 or more empty or blank lines produces a section separator node', () => {
     const text = `Hello, world!
-
-
+  \t \t
+  \t \t
 
 Goodbye, world!`
 
@@ -26,15 +26,15 @@ Goodbye, world!`
       ]))
   })
 
-  specify('6 or more blank lines produces only a single section separator node', () => {
+  specify('6 or more empty or blank lines produces only a single section separator node', () => {
     const text = `Hello, world!
+
+ \t
+
  \t
 
 
-
-
-
-
+ \t
 Goodbye, world!`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -50,9 +50,11 @@ Goodbye, world!`
 })
 
 
-describe('A document that starts with 3 blank lines', () => {
+describe('A document that starts with 3 or more blank lines', () => {
   it('does not produce a leading section separator node', () => {
     const text = `
+
+
 
 
 Hello, world!`
@@ -67,11 +69,12 @@ Hello, world!`
 })
 
 
-describe('A document that ends with 3 blank lines', () => {
+describe('A document that ends with 3 or more blank lines', () => {
   it('does not produce a trailing section separator node', () => {
     const text = `Hello, world!
 
-
+\t
+ \t
 
 `
     expect(Up.toAst(text)).to.be.eql(
@@ -84,7 +87,7 @@ describe('A document that ends with 3 blank lines', () => {
 })
 
 
-describe('A line consisting solely of # = - + ~ * ^ @ : _', () => {
+describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', () => {
   it('produces a section separator node', () => {
     const text = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
@@ -127,10 +130,10 @@ describe('A section separator streak', () => {
       ]))
   })
 
-  it('can be surrounded by any number of blank lines and still produce a single separator node', () => {
+  it('can be surrounded by any number of empty or blank lines and still produce a single separator node', () => {
     const text = `
 Hello.
-
+ \t \t
 
 
 
@@ -168,16 +171,16 @@ describe('Consecutive separator streaks', () => {
 })
 
 
-describe('Section separator streaks with blank lines in between', () => {
+describe('Section separator streaks with empty or blank lines in between', () => {
   it('produce a single section separator node', () => {
     const text = `
 --------
 
 ########
 
+\t
 
-
-
+ \t
 
 --------
 `
