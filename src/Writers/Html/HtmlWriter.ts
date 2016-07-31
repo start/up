@@ -236,19 +236,12 @@ export class HtmlWriter extends Writer {
   }
 
   protected table(node: TableNode): string {
-    const caption =
-      this.tableCaption(node.caption)
-
-    const header =
-      this.tableHeader(node.header)
-
-    const body =
-      node.rows.map(row => this.tableRow(row)).join('')
-
     return htmlElementWithAlreadyEscapedChildren(
-      'table',
-      [caption, header, body]
-    )
+      'table', [
+        this.tableCaption(node.caption),
+        this.tableHeader(node.header),
+        node.rows.map(row => this.tableRow(row)).join('')
+      ])
   }
 
   protected link(node: LinkNode): string {
