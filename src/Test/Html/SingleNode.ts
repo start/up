@@ -502,7 +502,7 @@ describe("Each footnote in a footnote block", () => {
 
 
 describe('An image node', () => {
-  it('produces <img> element with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
+  it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
     const node = new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
     expect(Up.toHtml(node)).to.be.eql('<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
   })
@@ -510,7 +510,7 @@ describe('An image node', () => {
 
 
 describe('An audio node', () => {
-  it('produces an audio element with src and title attributes, containing a fallback anchor element', () => {
+  it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description; containing a fallback anchor element', () => {
     const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
     expect(Up.toHtml(node)).to.be.eql(
       '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
@@ -519,7 +519,7 @@ describe('An audio node', () => {
 
 
 describe('A video node', () => {
-  it('produces a video element with src and title attributes, containing a fallback anchor element', () => {
+  it('produces an <video> with its src attribute set to its URL and its title attribute set to its description; containing a fallback anchor element', () => {
     const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     expect(Up.toHtml(node)).to.be.eql(
       '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
@@ -528,7 +528,7 @@ describe('A video node', () => {
 
 
 describe('An inline spoiler node', () => {
-  it('produces a span element (with "up-spoiler" and "up-revealable" classes), containing a label (with the text "toggle spoiler"), an associated checkbox, and a span element containing the spoiler contents', () => {
+  it('produces a <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox, and a <span> containing the spoiler contents', () => {
     const node = new InlineSpoilerNode([new PlainTextNode('45.9%')])
 
     const html =
@@ -544,7 +544,7 @@ describe('An inline spoiler node', () => {
 
 
 describe('An NSFW node', () => {
-  it('produces a span element (with "up-nsfw" and "up-revealable" classes), containing a label (with the text "toggle NSFW"), an associated checkbox, and a span element containing the NSFW contents', () => {
+  it('produces a <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox, and a <span> containing the NSFW contents', () => {
     const node = new InlineNsfwNode([new PlainTextNode('naked Gary')])
 
     const html =
@@ -560,7 +560,7 @@ describe('An NSFW node', () => {
 
 
 describe('An inline NSFL node', () => {
-  it('produces a span element (with "up-nsfl" and "up-revealable" classes), containing a label (with the text "toggle NSFL"), an associated checkbox, and a span element containing the NSFL contents', () => {
+  it('produces a <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox, and a <span> containing the NSFL contents', () => {
     const node = new InlineNsflNode([new PlainTextNode('rotting Gary')])
 
     const html =
