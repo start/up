@@ -63,6 +63,7 @@ describe('An unordered list node', () => {
         ])
       ])
     ])
+    
     expect(Up.toHtml(node)).to.be.eql('<ul><li><p>Tropical</p></li><li><p>Territories</p></li></ul>')
   })
 })
@@ -82,6 +83,7 @@ describe('An ordered list node', () => {
         ])
       ])
     ])
+
     expect(Up.toHtml(node)).to.be.eql('<ol><li><p>Tropical</p></li><li><p>Territories</p></li></ol>')
   })
 })
@@ -101,6 +103,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
         ])
       ], 5)
     ])
+
     expect(Up.toHtml(node)).to.be.eql('<ol><li><p>Tropical</p></li><li value="5"><p>Territories</p></li></ol>')
   })
 })
@@ -120,6 +123,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
         ])
       ])
     ])
+
     expect(Up.toHtml(node)).to.be.eql('<ol start="3"><li value="3"><p>Tropical</p></li><li><p>Territories</p></li></ol>')
   })
 })
@@ -139,6 +143,7 @@ describe('When an ordered list node is in descending order', () => {
         ])
       ], 1)
     ])
+
     expect(Up.toHtml(node)).to.be.eql(
       '<ol start="2" reversed><li value="2"><p>Tropical</p></li><li value="1"><p>Territories</p></li></ol>')
   })
@@ -347,6 +352,7 @@ describe('A line block node', () => {
         new PlainTextNode('Fangs')
       ])
     ])
+
     expect(Up.toHtml(node)).to.be.eql('<div class="up-lines"><div>Hollow</div><div>Fangs</div></div>')
   })
 })
@@ -367,6 +373,7 @@ describe('A blockquote node', () => {
         new PlainTextNode('Centipede')
       ])
     ])
+
     expect(Up.toHtml(node)).to.be.eql('<blockquote><p>Centipede</p></blockquote>')
   })
 })
