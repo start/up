@@ -202,7 +202,7 @@ describe('A table', () => {
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
-      + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr><thead>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
       + '</table>')
@@ -221,7 +221,7 @@ describe('A table without a caption or any rows', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr><thead>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
       + '</table>')
   })
 })
@@ -238,7 +238,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="2">Developer</th></tr><thead>'
+      + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="2">Developer</th></tr></thead>'
       + '</table>')
   })
 })
@@ -268,7 +268,7 @@ context('When a table row has cells spanning multiple columns', () => {
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
-      + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></tr><thead>'
+      + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></tr></thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
       + '<tr><td colspan="3">Ran in neighborhood</td><td>March 12, 2018</td></tr>'
       + '</table>')
@@ -288,7 +288,7 @@ context('When a table header has empty cells,', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><tr><td>Game</td><th scope="col" colspan="2">Exercise</th><td colspan="2"></td></tr><thead>'
+      + '<thead><tr><td>Game</td><th scope="col" colspan="2">Exercise</th><td colspan="2"></td></tr></thead>'
       + '</table>')
   })
 })
