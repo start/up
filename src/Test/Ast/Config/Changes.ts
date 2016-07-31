@@ -135,6 +135,42 @@ describe('The "spoiler" config term', () => {
 })
 
 
+describe('The "nsfw" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    text: '[GETS YOU FIRED: Ash fights Gary]',
+    textForDefaultSettings: '[NSFW: Ash fights Gary]',
+    configChanges: {
+      i18n: {
+        terms: { nsfw: 'GETS YOU FIRED' }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: { nsfw: 'look away' }
+      }
+    }
+  })
+})
+
+
+describe('The "nsfl" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    text: '[RUINS LIFE: Ash fights Gary]',
+    textForDefaultSettings: '[NSFL: Ash fights Gary]',
+    configChanges: {
+      i18n: {
+        terms: { nsfl: 'RUINS LIFE' }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: { nsfl: 'look away' }
+      }
+    }
+  })
+})
+
+
 context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
