@@ -199,11 +199,10 @@ describe('A table', () => {
           new PlainTextNode('Games in the Chrono series')
         ]))
 
-
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
-      + '<thead><th scope="col">Game</th><th scope="col"><Release Date</th></thead>'
+      + '<thead><th scope="col">Game</th><th scope="col">Release Date</th></thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
       + '</table>')
@@ -228,7 +227,7 @@ describe('A table without a caption', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><th scope="col">Game</th><th scope="col"><Release Date</th></thead>'
+      + '<thead><th scope="col">Game</th><th scope="col">Release Date</th></thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '</table>')
   })
@@ -240,14 +239,45 @@ context('When a table has header cells spanning multiple columns', () => {
     const node =
       new TableNode(
         new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Game')], 5),
           new TableNode.Header.Cell([new PlainTextNode('Developer')], 3)
-        ]),[])
-
+        ]), [])
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><th scope="col">Game</th><th scope="col" colspan="3"><Developer</th></thead>'
+      + '<thead><th scope="col" colspan="5">Game</th><th scope="col" colspan="2">Developer</th></thead>'
+      + '</table>')
+  })
+})
+
+
+context('When a table has row cells spanning multiple columns', () => {
+  specify('the <td> elements for those row cells contain a "colspan" attribute whose value is the number of columns spanned', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
+          new TableNode.Header.Cell([new PlainTextNode('Anaerobic Exercise')]),
+          new TableNode.Header.Cell([new PlainTextNode('Cooldown')]),
+          new TableNode.Header.Cell([new PlainTextNode('Date')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
+            new TableNode.Row.Cell([new PlainTextNode('Swam laps')], 2),
+            new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Ran in neighborhood')], 3),
+            new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+          ])
+        ])
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<caption>Games in the Chrono series</caption>'
+      + '<thead><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></thead>'
+      + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
+      + '<tr><td colspan="3">Ran in neighborhood</td><td>March 12, 2018</td></tr>'
       + '</table>')
   })
 })
