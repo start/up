@@ -42,7 +42,7 @@ describe('An empty document node', () => {
 
 
 describe('A paragraph node', () => {
-  it('produces a p element', () => {
+  it('produces a <p>', () => {
     const node = new ParagraphNode([new PlainTextNode('Nimble navigator')])
     expect(Up.toHtml(node)).to.be.eql('<p>Nimble navigator</p>')
   })
@@ -50,7 +50,7 @@ describe('A paragraph node', () => {
 
 
 describe('An unordered list node', () => {
-  it('produces a ul element containing li elements for each list item', () => {
+  it('produces an <ul> containing an <li> for each list item', () => {
     const node = new UnorderedListNode([
       new UnorderedListNode.Item([
         new ParagraphNode([
@@ -69,7 +69,7 @@ describe('An unordered list node', () => {
 
 
 describe('An ordered list node', () => {
-  it('produces a ol element containing li elements for each list item', () => {
+  it('produces an <ol> containing an <li> for each list item', () => {
     const node = new OrderedListNode([
       new OrderedListNode.Item([
         new ParagraphNode([
