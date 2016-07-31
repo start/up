@@ -16,6 +16,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 ): void {
   const { textForConfigChanges, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
+  expect(textForConfigChanges).to.not.be.eql(textForDefaultSettings)
+
   const whenEverythingIsDefault =
     Up.toAst(textForDefaultSettings)
 
