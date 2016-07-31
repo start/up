@@ -27,6 +27,7 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { TableNode } from '../../SyntaxNodes/TableNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
@@ -167,6 +168,39 @@ describe('A description list', () => {
     ])
     expect(Up.toHtml(node)).to.be.eql(
       '<dl><dt>Bulbasaur</dt><dd><p>A grass type Pokemon</p></dd><dt>Confuse Ray</dt><dt>Lick</dt><dd><p>Ghost type moves</p></dd></dl>')
+  })
+})
+
+
+describe('A table', () => {
+  it('produces a <table> containing a <caption> for its caption, a <thead> containing a <th> for each header hell, and <tr> for each row containing a <td> for each row cell', () => {
+    const node = 
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+            new TableNode.Row.Cell([new PlainTextNode('1999')])
+          ])
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Games in the Chrono series')
+        ]))
+
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<caption>Games in the Chrono series</caption>'
+      + '<thead><th>Game</th><th><Release Date</th></thead>'
+      + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
+      + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
+      + '</table>')
   })
 })
 
