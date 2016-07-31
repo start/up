@@ -238,7 +238,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="2">Developer</th></tr></thead>'
+      + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="3">Developer</th></tr></thead>'
       + '</table>')
   })
 })
