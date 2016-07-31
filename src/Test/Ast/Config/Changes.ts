@@ -8,43 +8,43 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    text: string,
+    textForConfigChanges: string,
     textForDefaultSettings: string
     configChanges: UpConfigSettings,
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
-  const { text, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
+  const { textForConfigChanges, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
   describe("when provided to the default (static) toAst method", () => {
     it("does not alter subsequent calls to the default method", () => {
-      expect(Up.toAst(text, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
+      expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
     })
   })
 
   const whenProvidingConfigAtCreation =
-    new Up(configChanges).toAst(text)
+    new Up(configChanges).toAst(textForConfigChanges)
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.toAst(text, configChanges)
+    Up.toAst(textForConfigChanges, configChanges)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().toAst(text, configChanges)
+    new Up().toAst(textForConfigChanges, configChanges)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingConfigChanges).toAst(text, configChanges)
+    new Up(conflictingConfigChanges).toAst(textForConfigChanges, configChanges)
 
   describe("when provided to an Up object's toAst method", () => {
     it("does not alter the Up object's original settings", () => {
       const up = new Up(configChanges)
 
-      const resultOfConflictingChanges = up.toAst(text, conflictingConfigChanges)
+      const resultOfConflictingChanges = up.toAst(textForConfigChanges, conflictingConfigChanges)
 
       // Let's make sure the conflicting changes actually were conflicting
       expect(whenProvidingConfigAtCreation).to.not.be.eql(resultOfConflictingChanges)
 
       // And now let's make sure those conflicting changes didn't overwrite the original settings!
-      expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(text, configChanges))
+      expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(textForConfigChanges, configChanges))
     })
   })
 
@@ -66,7 +66,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "audio" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    textForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
     textForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     configChanges: {
       i18n: {
@@ -84,7 +84,7 @@ describe('The "audio" config term', () => {
 
 describe('The "image" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[see: Chrono Cross logo][https://example.com/cc.png]',
+    textForConfigChanges: '[see: Chrono Cross logo][https://example.com/cc.png]',
     textForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
     configChanges: {
       i18n: {
@@ -102,7 +102,7 @@ describe('The "image" config term', () => {
 
 describe('The "video" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[watch: Nevada caucus footage][https://example.com/video.webm]',
+    textForConfigChanges: '[watch: Nevada caucus footage][https://example.com/video.webm]',
     textForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
     configChanges: {
       i18n: {
@@ -120,7 +120,7 @@ describe('The "video" config term', () => {
 
 describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[RUINS ENDING: Ash fights Gary]',
+    textForConfigChanges: '[RUINS ENDING: Ash fights Gary]',
     textForDefaultSettings: '[SPOILER: Ash fights Gary]',
     configChanges: {
       i18n: {
@@ -138,7 +138,7 @@ describe('The "spoiler" config term', () => {
 
 describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[GETS YOU FIRED: Ash fights Gary]',
+    textForConfigChanges: '[GETS YOU FIRED: Ash fights Gary]',
     textForDefaultSettings: '[NSFW: Ash fights Gary]',
     configChanges: {
       i18n: {
@@ -156,7 +156,7 @@ describe('The "nsfw" config term', () => {
 
 describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: '[RUINS LIFE: Ash fights Gary]',
+    textForConfigChanges: '[RUINS LIFE: Ash fights Gary]',
     textForDefaultSettings: '[NSFL: Ash fights Gary]',
     configChanges: {
       i18n: {
@@ -174,7 +174,7 @@ describe('The "nsfl" config term', () => {
 
 describe('The "table" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    text: `
+    textForConfigChanges: `
 Data:
 
 Game;             Release Date
