@@ -267,8 +267,7 @@ context('When a table row has cells spanning multiple columns', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<caption>Games in the Chrono series</caption>'
-      + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></tr></thead>'
+      + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th><th scope="col">Cooldown</th><th scope="col">Date</th></tr></thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
       + '<tr><td colspan="3">Ran in neighborhood</td><td>March 12, 2018</td></tr>'
       + '</table>')
