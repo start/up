@@ -63,7 +63,7 @@ describe('An unordered list node', () => {
         ])
       ])
     ])
-    
+
     expect(Up.toHtml(node)).to.be.eql('<ul><li><p>Tropical</p></li><li><p>Territories</p></li></ul>')
   })
 })
@@ -579,7 +579,7 @@ describe('An image node', () => {
 
 
 describe('An audio node', () => {
-  it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description; containing a fallback link', () => {
+  it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description, containing a fallback link', () => {
     const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
     expect(Up.toHtml(node)).to.be.eql(
       '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
@@ -588,7 +588,7 @@ describe('An audio node', () => {
 
 
 describe('A video node', () => {
-  it('produces an <video> with its src attribute set to its URL and its title attribute set to its description; containing a fallback link', () => {
+  it('produces an <video> with its src attribute set to its URL and its title attribute set to its description, containing a fallback link', () => {
     const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     expect(Up.toHtml(node)).to.be.eql(
       '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
