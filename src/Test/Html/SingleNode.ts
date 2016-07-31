@@ -210,25 +210,18 @@ describe('A table', () => {
 })
 
 
-describe('A table without a caption', () => {
-  it('produces a <table> that does not contain a <caption>', () => {
+describe('A table without a caption or any rows', () => {
+  it('produces a <table> that does not contain a <caption> or any <tr> outside of its <thead>', () => {
     const node =
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
           new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-        ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-            new TableNode.Row.Cell([new PlainTextNode('1995')])
-          ])
-        ])
-
+        ]), [])
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr><thead>'
-      + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '</table>')
   })
 })
