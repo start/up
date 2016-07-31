@@ -510,7 +510,7 @@ describe('An image node', () => {
 
 
 describe('An audio node', () => {
-  it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description; containing a fallback anchor element', () => {
+  it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description; containing a fallback link', () => {
     const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
     expect(Up.toHtml(node)).to.be.eql(
       '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
@@ -519,7 +519,7 @@ describe('An audio node', () => {
 
 
 describe('A video node', () => {
-  it('produces an <video> with its src attribute set to its URL and its title attribute set to its description; containing a fallback anchor element', () => {
+  it('produces an <video> with its src attribute set to its URL and its title attribute set to its description; containing a fallback link', () => {
     const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     expect(Up.toHtml(node)).to.be.eql(
       '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
@@ -576,7 +576,7 @@ describe('An inline NSFL node', () => {
 
 
 describe('A spoiler block node', () => {
-  it('produces the same markup as an inline spoiler node, but with div elements instead of span elements', () => {
+  it('produces the same markup as an inline spoiler node, but with <div>s instead of <span>s', () => {
     const node = new SpoilerBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
@@ -598,7 +598,7 @@ describe('A spoiler block node', () => {
 
 
 describe('A NSFW block node', () => {
-  it('produces the same markup as an inline NSFW node, but with div elements instead of span elements', () => {
+  it('produces the same markup as an inline NSFW node, but with <div>s instead of <span>s', () => {
     const node = new NsfwBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
@@ -620,7 +620,7 @@ describe('A NSFW block node', () => {
 
 
 describe('A NSFL block node', () => {
-  it('produces the same markup as an inline NSFL node, but with div elements instead of span elements', () => {
+  it('produces the same markup as an inline NSFL node, but with <div>s instead of <span>s', () => {
     const node = new NsflBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
