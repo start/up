@@ -184,6 +184,38 @@ describe('A table', () => {
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Developer')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+            new TableNode.Row.Cell([new PlainTextNode('Square')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
+            new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+          ])
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Influential Games')
+        ]))
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<caption>Influential Games</caption>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
+      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
+      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
+      + '</table>')
+  })
+})
+
+
+context('When a table has rows with cells with numeric values', () => {
+  specify('the <td> produced for those cells each have the "up-numeric" class', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
           new TableNode.Header.Cell([new PlainTextNode('Release Date')])
         ]), [
           new TableNode.Row([
@@ -203,8 +235,8 @@ describe('A table', () => {
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
-      + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
-      + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
+      + '<tr><td>Chrono Trigger</td><td class="up-numeric">1995</td></tr>'
+      + '<tr><td>Chrono Cross</td><td class="up-numeric">1999</td></tr>'
       + '</table>')
   })
 })
@@ -244,7 +276,7 @@ context('When a table header has cells spanning multiple columns', () => {
 })
 
 
-context('When a table row has cells spanning multiple columns', () => {
+context('When a table has rows with cells spanning multiple columns', () => {
   specify('the <td>s for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const node =
       new TableNode(
