@@ -43,7 +43,7 @@ export namespace TableNode {
 
 
   export class Row {
-    constructor(public cells: Row.Cell[]) { }
+    constructor(public cells: Row.Cell[], public headerCell?: Header.Cell) { }
   }
 
   export namespace Row {
