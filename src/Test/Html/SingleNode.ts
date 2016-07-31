@@ -276,24 +276,6 @@ context('When a table row has cells spanning multiple columns', () => {
 })
 
 
-context('When a table header has empty cells,', () => {
-  specify('those header cells produce <td>, not <th>', () => {
-    const node =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),          
-          new TableNode.Header.Cell([new PlainTextNode('Exercise')]),
-          new TableNode.Header.Cell([], 2),
-        ]), [])
-
-    expect(Up.toHtml(node)).to.be.eql(
-      '<table>'
-      + '<thead><tr><td>Game</td><th scope="col" colspan="2">Exercise</th><td colspan="2"></td></tr></thead>'
-      + '</table>')
-  })
-})
-
-
 describe('A line block node', () => {
   it('produces a div element with an "up-lines" class, containing a div element for each line', () => {
     const node = new LineBlockNode([
