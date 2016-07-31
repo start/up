@@ -237,18 +237,10 @@ export class HtmlWriter extends Writer {
 
   protected table(node: TableNode): string {
     const caption =
-      node.caption
-        ? htmlElementWithAlreadyEscapedChildren(
-          'caption', this.htmlElements(node.caption.children))
-        : ''
-
-    const headerRow =
-      htmlElementWithAlreadyEscapedChildren(
-        'tr',
-        node.header.cells.map(cell => this.tableHeaderCell(cell)))
+      this.tableCaption(node.caption)
 
     const header =
-      htmlElementWithAlreadyEscapedChildren('thead', [headerRow])
+      this.tableHeader(node.header)
 
     const body =
       node.rows.map(row => this.tableRow(row)).join('')
@@ -396,6 +388,23 @@ export class HtmlWriter extends Writer {
       { class: classAttrValue(nonLocalizedConventionTerm, 'revealable') })
   }
 
+  private tableCaption(caption: TableNode.Caption): string {
+    return (
+      caption
+        ? htmlElementWithAlreadyEscapedChildren(
+          'caption', this.htmlElements(caption.children))
+        : '')
+  }
+
+  private tableHeader(header: TableNode.Header): string {
+    const headerRow =
+      htmlElementWithAlreadyEscapedChildren(
+        'tr',
+        header.cells.map(cell => this.tableHeaderCell(cell)))
+
+    return htmlElementWithAlreadyEscapedChildren('thead', [headerRow])
+  }
+
   private tableHeaderCell(cell: TableNode.Header.Cell): string {
     return this.tableCell('th', cell, { scope: 'col' })
   }
@@ -407,7 +416,7 @@ export class HtmlWriter extends Writer {
   }
 
   private tableRowCell(cell: TableNode.Row.Cell): string {
-    const attrs: { class?: string } = { }
+    const attrs: { class?: string } = {}
 
     if (cell.isNumeric()) {
       attrs.class = classAttrValue('numeric')
