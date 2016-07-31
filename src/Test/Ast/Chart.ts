@@ -11,7 +11,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 context('A chart is simply a table with a second, vertical header.', () => {
   context('Its syntax is almost exactly the same, except it uses the term "chart" instead of "table".', () => {
-    specify('Charts have a blank cell added to the beginning of its header row, and the first cell of each chart row is treated as a header cell for that row.', () => {
+    specify("An empty cell is added to the beginning of a chart's header row (its top-left corner), and the first cell of chart row is treated as a header cell for that row.", () => {
       const text = `
 Chart: \`AND\` operator logic
 

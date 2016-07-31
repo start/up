@@ -11,19 +11,30 @@ import { last } from '../../CollectionHelpers'
 import { ESCAPER_CHAR } from '../Strings'
 
 
-// Tables start with a line consisting solely of "Table:". The term for "table" is
-// configurable.
+// Tables start with a "label line". The label line consists of the configurable
+// term for "table", followed by an optional colon, followed by an optional
+// caption. The caption can contain inline conventions.
 //
-// Next, there's the header. The header is a line of semicolon-delimited values.
+// Next, there's the header, which is a line of semicolon-delimited cells.
 //
 // Finally, there's the collection of rows. Like the header, each row is a line of
-// semicolon-delimited values.
+// semicolon-delimited cells.
+//
+// If a header cell or table cell is ended by multiple semicolons, it spans that
+// many columns.
+//
+// A table must have a header, but it doesn't need to have any rows.
 //
 // Within a table, single blank lines are allowed. However, two consecutive blank
 // lines terminates the table. Any trailing blank lines after the table are not
 // consumed.
 //
-// A table must have a header, but it doesn't need to have any rows.
+// Charts are tables with a second, vertical header. The only differences are:
+//
+// 1. Charts use the configurable term for "chart" instead of "table"
+// 2. An empty cell is automatically added to the beginning of the chart's header
+//   row
+// 3. The first cell of each row in a chart is treated as a header for that row. 
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
