@@ -87,7 +87,7 @@ describe('An ordered list node', () => {
 })
 
 
-context('When ordered list node contains an item with an explicit ordinal', () => {
+context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
     const node = new OrderedListNode([
       new OrderedListNode.Item([
@@ -106,8 +106,8 @@ context('When ordered list node contains an item with an explicit ordinal', () =
 })
 
 
-describe('An ordered list node with an explicit starting ordinal', () => {
-  it('produces a ol element with an explicit starting ordinal, containing li elements for each list item', () => {
+context('When an ordered list node has an explicit starting ordinal', () => {
+  specify('the <ol> is given a "start" attribute set to the appropriate starting ordinal', () => {
     const node = new OrderedListNode([
       new OrderedListNode.Item([
         new ParagraphNode([
@@ -125,8 +125,8 @@ describe('An ordered list node with an explicit starting ordinal', () => {
 })
 
 
-describe('An ordered list node in descending order', () => {
-  it('produces a ol element with the reversed attribute, containing li elements for each list item', () => {
+describe('When an ordered list node is in descending order', () => {
+  specify('the <ol> is given the "reversed" attribute', () => {
     const node = new OrderedListNode([
       new OrderedListNode.Item([
         new ParagraphNode([
