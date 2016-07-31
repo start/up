@@ -16,13 +16,16 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 ): void {
   const { textForConfigChanges, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
+  const whenEverythingIsDefault =
+    Up.toAst(textForDefaultSettings)
+
   describe("when provided to the default (static) toAst method", () => {
     it("does not alter subsequent calls to the default method", () => {
       expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
     })
   })
 
-  const whenProvidingConfigAtCreation =
+  const whenProvidingChangesAtCreation =
     new Up(configChanges).toAst(textForConfigChanges)
 
   const whenProvidingChangesWhenCallingDefaultMethod =
@@ -35,30 +38,28 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     new Up(conflictingConfigChanges).toAst(textForConfigChanges, configChanges)
 
   describe("when provided to an Up object's toAst method", () => {
+    const up = new Up(configChanges)
+
     it("does not alter the Up object's original settings", () => {
-      const up = new Up(configChanges)
-
-      const resultOfConflictingChanges = up.toAst(textForConfigChanges, conflictingConfigChanges)
-
       // Let's make sure the conflicting changes actually were conflicting
-      expect(whenProvidingConfigAtCreation).to.not.be.eql(resultOfConflictingChanges)
+      expect(up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
 
       // And now let's make sure those conflicting changes didn't overwrite the original settings!
-      expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(textForConfigChanges, configChanges))
+      expect(up.toAst(textForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
   describe('when provided to an Up object at creation', () => {
     it('has the same result as providing the term when calling the (default) static toAst method', () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+      expect(whenProvidingChangesAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
     it("has the same result as providing the term when calling the Up object's toAst method", () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingtMethodOnObject)
+      expect(whenProvidingChangesAtCreation).to.be.eql(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
     it("has the same result as providing the term when calling the Up object's toAst method, overwriting the term provided at creation", () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenOverwritingChangesProvidedAtCreation)
+      expect(whenProvidingChangesAtCreation).to.be.eql(whenOverwritingChangesProvidedAtCreation)
     })
   })
 }
