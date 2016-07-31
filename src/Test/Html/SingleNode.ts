@@ -179,7 +179,7 @@ describe('A description list', () => {
 
 
 describe('A table', () => {
-  it('produces a <table> containing a <caption> for its caption, a <thead> containing a <th> for each header hell, and <tr> for each row containing a <td> for each row cell', () => {
+  it('produces a <table> containing a <caption> for its caption, a <thead> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
     const node =
       new TableNode(
         new TableNode.Header([
@@ -203,7 +203,7 @@ describe('A table', () => {
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
-      + '<thead><th>Game</th><th><Release Date</th></thead>'
+      + '<thead><th scope="col">Game</th><th scope="col"><Release Date</th></thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
       + '</table>')
@@ -228,7 +228,7 @@ describe('A table without a caption', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><th>Game</th><th><Release Date</th></thead>'
+      + '<thead><th scope="col">Game</th><th scope="col"><Release Date</th></thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '</table>')
   })
