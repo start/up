@@ -383,7 +383,7 @@ describe('A level 9 heading node', () => {
 
 
 describe('A section separator node', () => {
-  it('produces an hr element', () => {
+  it('produces an <hr>', () => {
     const node = new SectionSeparatorNode()
     expect(Up.toHtml(node)).to.be.eql('<hr>')
   })
@@ -391,7 +391,7 @@ describe('A section separator node', () => {
 
 
 describe('An emphasis node', () => {
-  it('produces an em element', () => {
+  it('produces an <em>', () => {
     const node = new EmphasisNode([new PlainTextNode('Always')])
     expect(Up.toHtml(node)).to.be.eql('<em>Always</em>')
   })
@@ -399,7 +399,7 @@ describe('An emphasis node', () => {
 
 
 describe('A stress node', () => {
-  it('produces a strong element', () => {
+  it('produces a <strong>', () => {
     const node = new StressNode([new PlainTextNode('Ness')])
     expect(Up.toHtml(node)).to.be.eql('<strong>Ness</strong>')
   })
@@ -407,7 +407,7 @@ describe('A stress node', () => {
 
 
 describe('An inline code node', () => {
-  it('produces a code element', () => {
+  it('produces a <code>', () => {
     const node = new InlineCodeNode('then')
     expect(Up.toHtml(node)).to.be.eql('<code>then</code>')
   })
@@ -415,7 +415,7 @@ describe('An inline code node', () => {
 
 
 describe('A revision insertion node', () => {
-  it('produces an ins element', () => {
+  it('produces an <ins>', () => {
     const node = new RevisionInsertionNode([new PlainTextNode('Wario')])
     expect(Up.toHtml(node)).to.be.eql('<ins>Wario</ins>')
   })
@@ -423,7 +423,7 @@ describe('A revision insertion node', () => {
 
 
 describe('A revision deletion node', () => {
-  it('produces a del element', () => {
+  it('produces a <del>', () => {
     const node = new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
     expect(Up.toHtml(node)).to.be.eql('<del>Koopa Tropa</del>')
   })
@@ -431,7 +431,7 @@ describe('A revision deletion node', () => {
 
 
 describe('A parenthesized node', () => {
-  it('produces a span element with an "up-parenthesized" class', () => {
+  it('produces a <span class="up-parenthesized">', () => {
     const node = new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
     expect(Up.toHtml(node)).to.be.eql('<span class="up-parenthesized">(Koopa Tropa)</span>')
   })
@@ -439,7 +439,7 @@ describe('A parenthesized node', () => {
 
 
 describe('A square bracketed node', () => {
-  it('produces a span element with an "up-square-bracketed" class', () => {
+  it('produces a <span class="up-square-bracketed">', () => {
     const node = new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
     expect(Up.toHtml(node)).to.be.eql('<span class="up-square-bracketed">[Koopa Tropa]</span>')
   })
@@ -447,7 +447,7 @@ describe('A square bracketed node', () => {
 
 
 describe('An action node', () => {
-  it('produces a span element with an "up-action" class', () => {
+  it('produces a <span class="up-action">', () => {
     const node = new ActionNode([new PlainTextNode('dies')])
     expect(Up.toHtml(node)).to.be.eql('<span class="up-action">dies</span>')
   })
@@ -455,7 +455,7 @@ describe('An action node', () => {
 
 
 describe('A link node', () => {
-  it('produces an a (anchor) element with an href attribute', () => {
+  it('produces an <a> with its href attribute set to its URL', () => {
     const node = new LinkNode([new PlainTextNode('Google')], 'https://google.com')
     expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google</a>')
   })
@@ -463,7 +463,7 @@ describe('A link node', () => {
 
 
 describe('A footnote node', () => {
-  it("produces a sup element (with an 'up-footnote-reference' class and an ID indicating its reference number) containing a link that contains the reference number and points to the footnote", () => {
+  it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const node = new FootnoteNode([], 3)
     expect(Up.toHtml(node)).to.be.eql('<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>')
   })
@@ -471,7 +471,7 @@ describe('A footnote node', () => {
 
 
 describe('A footnote block node', () => {
-  it("produces a dl element with an 'up-footnotes' class", () => {
+  it('produces a <dl class="up-footnotes">', () => {
     const node = new FootnoteBlockNode([])
     expect(Up.toHtml(node)).to.be.eql('<dl class="up-footnotes"></dl>')
   })
@@ -479,7 +479,7 @@ describe('A footnote block node', () => {
 
 
 describe("Each footnote in a footnote block", () => {
-  it("produce a dt element with an ID indicating its reference number (containing a link that contains the reference number and points to the reference) and a dd element containing the footnote contents", () => {
+  it("produce a <dt> with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> containing the footnote contents", () => {
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
@@ -502,7 +502,7 @@ describe("Each footnote in a footnote block", () => {
 
 
 describe('An image node', () => {
-  it('produces an img element with src and title attributes', () => {
+  it('produces <img> element with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
     const node = new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
     expect(Up.toHtml(node)).to.be.eql('<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
   })
