@@ -53,13 +53,15 @@ Goodbye, world!`
 })
 
 
-describe('A document that starts with 3 or more blank lines', () => {
+describe('A document that starts with 3 or more empty or blank lines', () => {
   it('does not produce a leading section separator node', () => {
     const text = `
 
 
 
-
+\t
+ \t
+\t
 Hello, world!`
 
     expect(Up.toAst(text)).to.be.eql(
@@ -72,14 +74,16 @@ Hello, world!`
 })
 
 
-describe('A document that ends with 3 or more blank lines', () => {
+describe('A document that ends with 3 or more empty or blank lines', () => {
   it('does not produce a trailing section separator node', () => {
     const text = `
 Hello, world!
 
+
+
 \t
  \t
-
+\t
 `
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -191,7 +195,7 @@ context('When section separator streaks are separated from each other by only bl
       ]))
   })
 
-  specify('3 or mor blank or empty lines', () => {
+  specify('3 or more blank or empty lines', () => {
     const text = `
 --------
 
