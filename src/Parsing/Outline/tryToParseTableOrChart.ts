@@ -24,7 +24,7 @@ import { ESCAPER_CHAR } from '../Strings'
 // consumed.
 //
 // A table must have a header, but it doesn't need to have any rows.
-export function tryToParseTable(args: OutlineParserArgs): boolean {
+export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
   const { config } = args
