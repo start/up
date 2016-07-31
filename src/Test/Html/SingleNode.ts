@@ -291,7 +291,7 @@ describe('A line block node', () => {
 
 
 describe('A code block node', () => {
-  it('produces a <pre> containing a <code> containing the code content', () => {
+  it('produces a <pre> containing a <code> containing the code', () => {
     const node = new CodeBlockNode('color = Color.Green')
     expect(Up.toHtml(node)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
   })
@@ -299,7 +299,7 @@ describe('A code block node', () => {
 
 
 describe('A blockquote node', () => {
-  it('produces a blockquote element', () => {
+  it('produces a <blockquote>', () => {
     const node = new BlockquoteNode([
       new ParagraphNode([
         new PlainTextNode('Centipede')
@@ -311,7 +311,7 @@ describe('A blockquote node', () => {
 
 
 describe('A level 1 heading node', () => {
-  it('produces an h1 element', () => {
+  it('produces an <h1>', () => {
     const node = new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
     expect(Up.toHtml(node)).to.be.eql('<h1>Bulbasaur</h1>')
   })
@@ -319,7 +319,7 @@ describe('A level 1 heading node', () => {
 
 
 describe('A level 2 heading node', () => {
-  it('produces an h2 element', () => {
+  it('produces an <h2>', () => {
     const node = new HeadingNode([new PlainTextNode('Ivysaur')], 2)
     expect(Up.toHtml(node)).to.be.eql('<h2>Ivysaur</h2>')
   })
@@ -327,7 +327,7 @@ describe('A level 2 heading node', () => {
 
 
 describe('A level 3 heading node', () => {
-  it('produces an h3 element', () => {
+  it('produces an <h3>', () => {
     const node = new HeadingNode([new PlainTextNode('Venusaur')], 3)
     expect(Up.toHtml(node)).to.be.eql('<h3>Venusaur</h3>')
   })
@@ -335,7 +335,7 @@ describe('A level 3 heading node', () => {
 
 
 describe('A level 4 heading node', () => {
-  it('produces an h4 element', () => {
+  it('produces an <h4<', () => {
     const node = new HeadingNode([new PlainTextNode('Charmander')], 4)
     expect(Up.toHtml(node)).to.be.eql('<h4>Charmander</h4>')
   })
@@ -343,7 +343,7 @@ describe('A level 4 heading node', () => {
 
 
 describe('A level 5 heading node', () => {
-  it('produces an h5 element', () => {
+  it('produces an <h5>', () => {
     const node = new HeadingNode([new PlainTextNode('Charmeleon')], 5)
     expect(Up.toHtml(node)).to.be.eql('<h5>Charmeleon</h5>')
   })
@@ -351,7 +351,7 @@ describe('A level 5 heading node', () => {
 
 
 describe('A level 6 heading node', () => {
-  it('produces an h6 element', () => {
+  it('produces an <h6>', () => {
     const node = new HeadingNode([new PlainTextNode('Charizard')], 6)
     expect(Up.toHtml(node)).to.be.eql('<h6>Charizard</h6>')
   })
@@ -359,7 +359,7 @@ describe('A level 6 heading node', () => {
 
 
 describe('A level 7 heading node', () => {
-  it('produces an h6 element', () => {
+  it('produces an <h6>', () => {
     const node = new HeadingNode([new PlainTextNode('Squirtle')], 7)
     expect(Up.toHtml(node)).to.be.eql('<h6>Squirtle</h6>')
   })
@@ -367,7 +367,7 @@ describe('A level 7 heading node', () => {
 
 
 describe('A level 8 heading node', () => {
-  it('produces an h6 element', () => {
+  it('produces an <h6>', () => {
     const node = new HeadingNode([new PlainTextNode('Wartortle')], 8)
     expect(Up.toHtml(node)).to.be.eql('<h6>Wartortle</h6>')
   })
@@ -375,7 +375,7 @@ describe('A level 8 heading node', () => {
 
 
 describe('A level 9 heading node', () => {
-  it('produces an h6 element', () => {
+  it('produces an <h6>', () => {
     const node = new HeadingNode([new PlainTextNode('Blastoise')], 9)
     expect(Up.toHtml(node)).to.be.eql('<h6>Blastoise</h6>')
   })
