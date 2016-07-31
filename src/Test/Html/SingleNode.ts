@@ -608,7 +608,7 @@ describe('An image node', () => {
 
 
 describe('An audio node', () => {
-  it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description, containing a fallback link', () => {
+  it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
     const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
 
     expect(Up.toHtml(node)).to.be.eql(
@@ -620,7 +620,7 @@ describe('An audio node', () => {
 
 
 describe('A video node', () => {
-  it('produces an <video> with its src attribute set to its URL and its title attribute set to its description, containing a fallback link', () => {
+  it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
     const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
 
     expect(Up.toHtml(node)).to.be.eql(
