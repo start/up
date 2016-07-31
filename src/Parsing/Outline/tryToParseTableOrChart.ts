@@ -45,7 +45,6 @@ import { ESCAPER_CHAR } from '../Strings'
 //
 //
 //
-//
 // Charts are tables with a second, vertical header. The only differences are:
 //
 // 1. Charts use the configurable term for "chart" instead of "table"
@@ -224,4 +223,17 @@ function getCells<TCell extends TableNode.Cell>(
 
 const DELIMITER_PATTERN =
   patternStartingWith(atLeast(1, ';'))
-  
+
+
+// `TableNode.Cell` is an abstract class extended by both`TableNode.Header.Cell` and
+// `TableNode.Row.Cell`.
+//
+// `TableNode.Cell` gets exported with our library's module. Conceivably, it could be
+// used for some sort of processing or analysis of the abstract syntax tree. However,
+// Up library users should never need to instantiate objects of that class, so it would
+// be misleading to export it as non-abstract.
+//
+// During parsing, however, we do need to create objects that can later be converted to
+// eaither header cells or row cells. Hence this fun little class. 
+class TableCell extends TableNode.Cell { }
+TableCell
