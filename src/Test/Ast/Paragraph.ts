@@ -81,30 +81,4 @@ Pokemon Sun is a truck.`
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))
   })
-
-  specify('1 empty and 1 blank line', () => {
-    const text = `
-Pokemon Moon has a Mew under a truck.
-
-\t \t 
-Pokemon Sun is a truck.`
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
-        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
-      ]))
-  })
-
-  specify('1 blank and 1 empty line', () => {
-    const text = `
-Pokemon Moon has a Mew under a truck.
-\t \t 
-
-Pokemon Sun is a truck.`
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
-        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
-      ]))
-  })
 })
