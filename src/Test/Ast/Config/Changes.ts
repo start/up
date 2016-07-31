@@ -14,9 +14,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
-
   const { text, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
-
 
   describe("when provided to the default (static) toAst method", () => {
     it("does not alter subsequent calls to the default method", () => {
@@ -168,6 +166,34 @@ describe('The "nsfl" config term', () => {
     conflictingConfigChanges: {
       i18n: {
         terms: { nsfl: 'look away' }
+      }
+    }
+  })
+})
+
+
+describe('The "table" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    text: `
+Data:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    textForDefaultSettings: `
+Table:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    configChanges: {
+      i18n: {
+        terms: { table: 'data' }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: { table: 'info' }
       }
     }
   })
