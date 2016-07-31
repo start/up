@@ -235,6 +235,24 @@ describe('A table without a caption', () => {
 })
 
 
+context('When a table has header cells spanning multiple columns', () => {
+  specify('the <th> elements for those header cells contain a "colspan" attribute whose value is the number of columns spanned', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Developer')], 3)
+        ]),[])
+
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<thead><th scope="col">Game</th><th scope="col" colspan="3"><Developer</th></thead>'
+      + '</table>')
+  })
+})
+
+
 describe('A line block node', () => {
   it('produces a div element with an "up-lines" class, containing a div element for each line', () => {
     const node = new LineBlockNode([
