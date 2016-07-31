@@ -236,8 +236,27 @@ export class HtmlWriter extends Writer {
   }
 
   protected table(node: TableNode): string {
-    node
-    throw new Error('Not implemented')
+    const caption =
+      node.caption
+        ? htmlElementWithAlreadyEscapedChildren(
+          'caption', this.htmlElements(node.caption.children))
+        : ''
+
+    const headerRow =
+      htmlElementWithAlreadyEscapedChildren(
+        'tr',
+        node.header.cells.map(cell => this.tableHeaderCell(cell)))
+
+    const header =
+      htmlElementWithAlreadyEscapedChildren('thead', [headerRow])
+
+    const body =
+      node.rows.map(row => this.tableRow(row)).join('')
+
+    return htmlElementWithAlreadyEscapedChildren(
+      'table',
+      [caption, header, body]
+    )
   }
 
   protected link(node: LinkNode): string {
@@ -368,6 +387,32 @@ export class HtmlWriter extends Writer {
         singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' }),
         this.htmlElementWithAlreadyEscapedChildren(genericContainerTagName, revealableChildren)],
       { class: classAttrValue(nonLocalizedConventionTerm, 'revealable') })
+  }
+
+  private tableHeaderCell(cell: TableNode.Header.Cell): string {
+    return this.tableCell('th', cell, { scope: 'col' })
+  }
+
+  private tableRow(row: TableNode.Row): string {
+    return htmlElementWithAlreadyEscapedChildren(
+      'tr',
+      row.cells.map(cell => this.tableRowCell(cell)))
+  }
+
+  private tableRowCell(cell: TableNode.Row.Cell): string {
+    return this.tableCell('td', cell)
+  }
+
+  private tableCell(tagName: string, cell: TableNode.Cell, attrs: any = {}): string {
+    if (cell.countColumnsSpanned > 1) {
+      attrs.colspan = cell.countColumnsSpanned
+    }
+
+    return htmlElementWithAlreadyEscapedChildren(
+      tagName,
+      this.htmlElements(cell.children),
+      attrs
+    )
   }
 
   private htmlElementWithAlreadyEscapedChildren(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
