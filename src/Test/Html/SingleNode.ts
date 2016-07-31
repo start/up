@@ -211,7 +211,7 @@ describe('A table', () => {
 
 
 context('When a table has rows with cells with numeric values', () => {
-  specify('the <td> produced for those cells each have the "up-numeric" class', () => {
+  specify('the <td> produced for those cells have the "up-numeric" class', () => {
     const node =
       new TableNode(
         new TableNode.Header([
@@ -302,6 +302,36 @@ context('When a table has rows with cells spanning multiple columns', () => {
       + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th><th scope="col">Cooldown</th><th scope="col">Date</th></tr></thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
       + '<tr><td colspan="3">Ran in neighborhood</td><td>March 12, 2018</td></tr>'
+      + '</table>')
+  })
+})
+
+
+context('When a table cell has a numeric value and spans multiple columns', () => {
+  specify('the <td> produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Year Development Started')]),
+          new TableNode.Header.Cell([new PlainTextNode('Year Released')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+            new TableNode.Row.Cell([new PlainTextNode('1989')], 2)
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            new TableNode.Row.Cell([new PlainTextNode('1993')]),
+            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          ])
+        ])
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Year Development Started</th><th scope="col">Year Released</th></tr></thead>'
+      + '<tr><td>Final Fantasy II</td><td class="up-numeric" colspan="2">1989</td></tr>'
+      + '<tr><td>Chrono Trigger</td><td class="up-numeric">1993</td><td class="up-numeric">1995</td></tr>'
       + '</table>')
   })
 })
