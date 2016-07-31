@@ -227,7 +227,7 @@ describe('A table without a caption or any rows', () => {
 })
 
 
-context('When a table has header cells spanning multiple columns', () => {
+context('When a table header has cells spanning multiple columns', () => {
   specify('the <th> for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const node =
       new TableNode(
@@ -271,6 +271,24 @@ context('When a table row has cells spanning multiple columns', () => {
       + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></tr><thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
       + '<tr><td colspan="3">Ran in neighborhood</td><td>March 12, 2018</td></tr>'
+      + '</table>')
+  })
+})
+
+
+context('When a table header has empty cells,', () => {
+  specify('those header cells produce <td>, not <th>', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),          
+          new TableNode.Header.Cell([new PlainTextNode('Exercise')]),
+          new TableNode.Header.Cell([], 2),
+        ]), [])
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<thead><tr><td>Game</td><th scope="col" colspan="2">Exercise</th><td colspan="2"></td></tr><thead>'
       + '</table>')
   })
 })
