@@ -88,6 +88,15 @@ export abstract class Writer {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
 
+
+    if (node instanceof PlainTextNode) {
+      return this.plainText(node)
+    }
+
+    if (node instanceof ParagraphNode) {
+      return this.paragraph(node)
+    }
+
     if (node instanceof DocumentNode) {
       return this.document(node)
     }
@@ -110,10 +119,6 @@ export abstract class Writer {
 
     if (node instanceof LineBlockNode) {
       return this.lineBlock(node)
-    }
-
-    if (node instanceof ParagraphNode) {
-      return this.paragraph(node)
     }
 
     if (node instanceof CodeBlockNode) {
@@ -210,10 +215,6 @@ export abstract class Writer {
 
     if (node instanceof NsflBlockNode) {
       return this.nsflBlock(node)
-    }
-
-    if (node instanceof PlainTextNode) {
-      return this.plainText(node)
     }
 
     throw new Error('Unrecognized syntax node')
