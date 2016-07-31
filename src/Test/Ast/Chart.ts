@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
-//import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 //import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 //import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
@@ -43,6 +43,78 @@ Chart: \`AND\` operator logic
               new InlineCodeNode('AND'),
               new PlainTextNode(' operator logic')
             ]))
+        ]))
+    })
+
+    specify("Charts don't need to have captions", () => {
+      const text = `
+Chart:
+
+        1;      0
+0;      true;   false
+1;      false;  false`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('1')]),
+              new TableNode.Header.Cell([new PlainTextNode('0')])
+            ]), [
+
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('true')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+              ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ])
+        ]))
+    })
+
+    specify("Charts don't need a colon after the term in its label line", () => {
+      const text = `
+Chart
+
+        1;      0
+0;      true;   false
+1;      false;  false`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('1')]),
+              new TableNode.Header.Cell([new PlainTextNode('0')])
+            ]), [
+
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('true')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+              ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ])
+        ]))
+    })
+
+    specify("Charts cannot have a caption if there isn't a colon after the term for 'chart' in its label line", () => {
+      const text = `
+Chart the numbers.
+
+Do it now; I'm tired of waiting.`
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
+          new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),
         ]))
     })
   })
