@@ -534,7 +534,11 @@ describe('A link node', () => {
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const node = new FootnoteNode([], 3)
-    expect(Up.toHtml(node)).to.be.eql('<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>')
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<sup id="up-footnote-reference-3" class="up-footnote-reference">'
+      + '<a href="#up-footnote-3">3</a>'
+      + '</sup>')
   })
 })
 
@@ -581,8 +585,11 @@ describe('An image node', () => {
 describe('An audio node', () => {
   it('produces an <audio> with its src attribute set to its URL and its title attribute set to its description, containing a fallback link', () => {
     const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+
     expect(Up.toHtml(node)).to.be.eql(
-      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop><a href="http://example.com/ghosts.ogg">ghostly howling</a></audio>')
+      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop>'
+      + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
+      + '</audio>')
   })
 })
 
@@ -590,8 +597,11 @@ describe('An audio node', () => {
 describe('A video node', () => {
   it('produces an <video> with its src attribute set to its URL and its title attribute set to its description, containing a fallback link', () => {
     const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+
     expect(Up.toHtml(node)).to.be.eql(
-      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop><a href="http://example.com/poltergeists.webm">ghosts eating luggage</a></video>')
+      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop>'
+      + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
+      + '</video>')
   })
 })
 
