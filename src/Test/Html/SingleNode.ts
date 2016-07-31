@@ -179,7 +179,7 @@ describe('A description list', () => {
 
 
 describe('A table', () => {
-  it('produces a <table> containing a <caption> for its caption, a <thead><tr> containing a <tr> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
+  it('produces a <table> containing a <caption> for its caption, a <thead> containing a <tr> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
     const node =
       new TableNode(
         new TableNode.Header([
@@ -211,7 +211,7 @@ describe('A table', () => {
 
 
 describe('A table without a caption', () => {
-  it('produces a <table> element that does not contain a <caption> element', () => {
+  it('produces a <table> that does not contain a <caption>', () => {
     const node =
       new TableNode(
         new TableNode.Header([
@@ -235,7 +235,7 @@ describe('A table without a caption', () => {
 
 
 context('When a table has header cells spanning multiple columns', () => {
-  specify('the <th> elements for those header cells contain a "colspan" attribute whose value is the number of columns spanned', () => {
+  specify('the <th> for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const node =
       new TableNode(
         new TableNode.Header([
@@ -251,8 +251,8 @@ context('When a table has header cells spanning multiple columns', () => {
 })
 
 
-context('When a table has row cells spanning multiple columns', () => {
-  specify('the <td> elements for those row cells contain a "colspan" attribute whose value is the number of columns spanned', () => {
+context('When a table row has cells spanning multiple columns', () => {
+  specify('the <td>s for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const node =
       new TableNode(
         new TableNode.Header([
