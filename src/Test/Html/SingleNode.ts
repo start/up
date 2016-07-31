@@ -87,8 +87,8 @@ describe('An ordered list node', () => {
 })
 
 
-describe('An ordered list node with an item with an explicit ordinal', () => {
-  it('produces a ol element containing li elements, with an explicit ordinal for the appropriate li element', () => {
+context('When ordered list node contains an item with an explicit ordinal', () => {
+  specify('the <li> for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
     const node = new OrderedListNode([
       new OrderedListNode.Item([
         new ParagraphNode([
