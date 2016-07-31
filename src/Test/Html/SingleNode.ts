@@ -146,7 +146,7 @@ describe('When an ordered list node is in descending order', () => {
 
 
 describe('A description list', () => {
-  it('produces a dl element containing dt elements for each term, and dd elements for each description', () => {
+  it('produces a <dl> containing a <dt> for each term, and a <dd> for each description', () => {
     const node =
       new DescriptionListNode([
         new DescriptionListNode.Item([
@@ -276,7 +276,7 @@ context('When a table row has cells spanning multiple columns', () => {
 
 
 describe('A line block node', () => {
-  it('produces a div element with an "up-lines" class, containing a div element for each line', () => {
+  it('produces a <div class="up-lines"> containing a <div> for each line', () => {
     const node = new LineBlockNode([
       new LineBlockNode.Line([
         new PlainTextNode('Hollow')
@@ -291,7 +291,7 @@ describe('A line block node', () => {
 
 
 describe('A code block node', () => {
-  it('produces a pre element containing a code element', () => {
+  it('produces a <pre> containing a <code> containing the code content', () => {
     const node = new CodeBlockNode('color = Color.Green')
     expect(Up.toHtml(node)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
   })
