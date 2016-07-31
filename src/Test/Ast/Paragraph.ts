@@ -31,7 +31,7 @@ describe('Paragraphs', () => {
 })
 
 
-context('Between paragraphs, 1 or 2 empty or blank lines provide separation without producing any syntax nodes of their own. Specifically:', () => {
+context('Between paragraphs, 1 or 2 empty or blank lines provide separation without producing any syntax nodes of their own. This includes:', () => {
   specify('1 empty line', () => {
     const text = `
 Pokemon Moon has a Mew under a truck.
