@@ -20,6 +20,7 @@ import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { TableNode } from '../../SyntaxNodes/TableNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
@@ -232,6 +233,11 @@ export class HtmlWriter extends Writer {
       'dl',
       node.footnotes.map(footnote => this.footnote(footnote)),
       { class: classAttrValue('footnotes') })
+  }
+
+  protected table(node: TableNode): string {
+    node
+    throw new Error('Not implemented')
   }
 
   protected link(node: LinkNode): string {

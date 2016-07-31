@@ -20,6 +20,7 @@ import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
+import { TableNode } from '../SyntaxNodes/TableNode'
 import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
@@ -66,6 +67,7 @@ export abstract class Writer {
   protected abstract nsflBlock(node: NsflBlockNode): string
   protected abstract footnoteReference(node: FootnoteNode): string
   protected abstract footnoteBlock(node: FootnoteBlockNode): string
+  protected abstract table(node: TableNode): string
   protected abstract link(node: LinkNode): string
   protected abstract image(node: ImageNode): string
   protected abstract audio(node: AudioNode): string
@@ -144,6 +146,10 @@ export abstract class Writer {
 
     if (node instanceof FootnoteBlockNode) {
       return this.footnoteBlock(node)
+    }
+
+    if (node instanceof TableNode) {
+      return this.table(node)
     }
 
     if (node instanceof LinkNode) {
