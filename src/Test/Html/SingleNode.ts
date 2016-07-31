@@ -180,7 +180,7 @@ describe('A description list', () => {
 
 describe('A table', () => {
   it('produces a <table> containing a <caption> for its caption, a <thead> containing a <th> for each header hell, and <tr> for each row containing a <td> for each row cell', () => {
-    const node = 
+    const node =
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -206,6 +206,30 @@ describe('A table', () => {
       + '<thead><th>Game</th><th><Release Date</th></thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
+      + '</table>')
+  })
+})
+
+
+describe('A table without a caption', () => {
+  it('produces a <table> element that does not contain a <caption> element', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          ])
+        ])
+
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<thead><th>Game</th><th><Release Date</th></thead>'
+      + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '</table>')
   })
 })
