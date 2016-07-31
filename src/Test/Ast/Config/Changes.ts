@@ -40,9 +40,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("does not alter the Up object's original settings", () => {
       const up = new Up(configChanges)
 
-      // We don't care about the result! We only care to ensure the original config settings weren't overwritten.
-      up.toAst(text, conflictingConfigChanges)
+      const resultOfConflictingChanges = up.toAst(text, conflictingConfigChanges)
 
+      // Let's make sure the conflicting changes actually were conflicting
+      expect(whenProvidingConfigAtCreation).to.not.be.eql(resultOfConflictingChanges)
+
+      // And now let's make sure those conflicting changes didn't overwrite the original settings!
       expect(whenProvidingConfigAtCreation).to.be.eql(up.toAst(text, configChanges))
     })
   })
@@ -110,7 +113,7 @@ describe('The "video" config term', () => {
     },
     conflictingConfigChanges: {
       i18n: {
-        terms: { video: 'watch' }
+        terms: { video: 'observe' }
       }
     }
   })
