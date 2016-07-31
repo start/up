@@ -29,12 +29,39 @@ import { ESCAPER_CHAR } from '../Strings'
 // lines terminates the table. Any trailing blank lines after the table are not
 // consumed.
 //
+// Here's an example table. The whitespace used for padding is optional and gets
+// trimmed away:
+//
+//
+// Table: Video games
+//
+// Game;               Developer;            Publisher;        Release Date
+//
+// Chrono Trigger;     Square;;                                March 11, 1995
+// Terranigma;         Quintet;              Nintendo;         October 20, 1995
+//
+// Command & Conquer;  Westwood Studios;;                      August 31, 1995
+// Starcraft;          Blizzard;;                              March 31, 1998
+//
+//
+//
+//
 // Charts are tables with a second, vertical header. The only differences are:
 //
 // 1. Charts use the configurable term for "chart" instead of "table"
 // 2. An empty cell is automatically added to the beginning of the chart's header
 //   row
-// 3. The first cell of each row in a chart is treated as a header for that row. 
+// 3. The first cell of each row in a chart is treated as a header for that row.
+//
+// Here's an example chart:
+//
+//
+// Chart: `AND` operator logic
+//
+//         1;      0
+// 0;      true;   false
+// 1;      false;  false
+
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
