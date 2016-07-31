@@ -147,7 +147,7 @@ describe('An ordered list node in descending order', () => {
 
 describe('A description list', () => {
   it('produces a dl element containing dt elements for each term, and dd elements for each description', () => {
-    const node = new DocumentNode([
+    const node =
       new DescriptionListNode([
         new DescriptionListNode.Item([
           new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
@@ -165,9 +165,15 @@ describe('A description list', () => {
           ])
         ]))
       ])
-    ])
+
     expect(Up.toHtml(node)).to.be.eql(
-      '<dl><dt>Bulbasaur</dt><dd><p>A grass type Pokemon</p></dd><dt>Confuse Ray</dt><dt>Lick</dt><dd><p>Ghost type moves</p></dd></dl>')
+      '<dl>'
+      + '<dt>Bulbasaur</dt>'
+      + '<dd><p>A grass type Pokemon</p></dd>'
+      + '<dt>Confuse Ray</dt>'
+      + '<dt>Lick</dt>'
+      + '<dd><p>Ghost type moves</p></dd>'
+      + '</dl>')
   })
 })
 
