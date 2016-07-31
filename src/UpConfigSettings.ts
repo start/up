@@ -10,6 +10,7 @@ export interface UpConfigSettings {
 
     terms?: {
       table?: string
+      chart?: string
       image?: string
       audio?: string
       video?: string

@@ -13,6 +13,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
 
     terms: {
       table: 'table',
+      chart: 'chart',
       image: 'image',
       audio: 'audio',
       video: 'video',
