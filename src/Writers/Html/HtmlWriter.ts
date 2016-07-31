@@ -407,7 +407,13 @@ export class HtmlWriter extends Writer {
   }
 
   private tableRowCell(cell: TableNode.Row.Cell): string {
-    return this.tableCell('td', cell)
+    const attrs: { class?: string } = { }
+
+    if (cell.isNumeric()) {
+      attrs.class = classAttrValue('numeric')
+    }
+
+    return this.tableCell('td', cell, attrs)
   }
 
   private tableCell(tagName: string, cell: TableNode.Cell, attrs: any = {}): string {
