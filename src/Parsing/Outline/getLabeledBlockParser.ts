@@ -6,8 +6,8 @@ import { solelyAndIgnoringCapitalization, escapeForRegex, optional } from '../Pa
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// A labaled block consists of a "label line" (a line consisting solely of a term followed by a colon)
-// followed by an indented block.
+// A labaled block consists of a "label line" (a term followed by an optional colon) followed by
+// an indented block.
 //
 // A labeled block can contain any outline convention, and its label's term is case-insensitive. 
 export function getLabeledBlockParser(
