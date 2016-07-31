@@ -179,7 +179,7 @@ describe('A description list', () => {
 
 
 describe('A table', () => {
-  it('produces a <table> containing a <caption> for its caption, a <thead> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
+  it('produces a <table> containing a <caption> for its caption, a <thead><tr> containing a <tr> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
     const node =
       new TableNode(
         new TableNode.Header([
@@ -202,7 +202,7 @@ describe('A table', () => {
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
-      + '<thead><th scope="col">Game</th><th scope="col">Release Date</th></thead>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr><thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '<tr><td>Chrono Cross</td><td>1999</td></tr>'
       + '</table>')
@@ -227,7 +227,7 @@ describe('A table without a caption', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><th scope="col">Game</th><th scope="col">Release Date</th></thead>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr><thead>'
       + '<tr><td>Chrono Trigger</td><td>1995</td></tr>'
       + '</table>')
   })
@@ -245,7 +245,7 @@ context('When a table has header cells spanning multiple columns', () => {
 
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
-      + '<thead><th scope="col" colspan="5">Game</th><th scope="col" colspan="2">Developer</th></thead>'
+      + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="2">Developer</th></tr><thead>'
       + '</table>')
   })
 })
@@ -275,7 +275,7 @@ context('When a table has row cells spanning multiple columns', () => {
     expect(Up.toHtml(node)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
-      + '<thead><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></thead>'
+      + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th></tr><thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
       + '<tr><td colspan="3">Ran in neighborhood</td><td>March 12, 2018</td></tr>'
       + '</table>')
