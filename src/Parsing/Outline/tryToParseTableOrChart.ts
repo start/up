@@ -57,7 +57,6 @@ import { getTableCells } from './getTableCells'
 //         1;      0
 // 0;      true;   false
 // 1;      false;  false
-
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
@@ -97,7 +96,6 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       : undefined
 
   const headerCells = getTableCells(headerLine, config).map(toHeaderCell)
-
   const header = new TableNode.Header(headerCells)
 
   const rowCellsByRow: TableNode.Row.Cell[][] = []
