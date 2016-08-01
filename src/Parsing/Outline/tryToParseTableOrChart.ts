@@ -57,89 +57,81 @@ import { getTableCells } from './getTableCells'
 //         1;      0
 // 0;      true;   false
 // 1;      false;  false
+
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
-  return new TableParser(args).success
+  const lineConsumer = new LineConsumer(args.lines)
+
+  const { config } = args
+  const tableTerm = config.settings.i18n.terms.table
+
+  const labelPattern =
+    solelyAndIgnoringCapitalization(
+      escapeForRegex(tableTerm) + optional(':' + capture(REST_OF_TEXT)))
+
+  let rawCaptionContent: string
+  let headerLine: string
+
+  const wasHeaderFound = (
+    lineConsumer.consume({
+      linePattern: labelPattern,
+      then: (_, captionPart) => {
+        rawCaptionContent = (captionPart || '').trim()
+      }
+    })
+
+    && !tryToTerminateTable(lineConsumer)
+
+    && lineConsumer.consume({
+      then: line => {
+        headerLine = line
+      }
+    }))
+
+  if (!wasHeaderFound) {
+    return false
+  }
+
+  const caption =
+    rawCaptionContent
+      ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
+      : undefined
+
+  const headerCells = getTableCells(headerLine, config).map(toHeaderCell)
+
+  const header = new TableNode.Header(headerCells)
+
+  const rowCellsByRow: TableNode.Row.Cell[][] = []
+  let countLinesConsumed: number
+
+  do {
+    countLinesConsumed = lineConsumer.countLinesConsumed
+  } while (
+    !tryToTerminateTable(lineConsumer)
+    && lineConsumer.consume({
+      then: line => {
+        const rowCells =
+          getTableCells(line, config).map(toRowCell)
+
+        rowCellsByRow.push(rowCells)
+      }
+    }))
+
+  const rows = rowCellsByRow.map(cells => new TableNode.Row(cells))
+
+  args.then([new TableNode(header, rows, caption)], countLinesConsumed)
+  return true
 }
 
 
-class TableParser {
-  success: boolean
-
-  private lineConsumer: LineConsumer
-
-  constructor(args: OutlineParserArgs) {
-    this.lineConsumer = new LineConsumer(args.lines)
-    const { config } = args
-
-    const tableTerm = config.settings.i18n.terms.table
-
-    const labelPattern =
-      solelyAndIgnoringCapitalization(
-        escapeForRegex(tableTerm) + optional(':' + capture(REST_OF_TEXT)))
-
-    let rawCaptionContent: string
-    let headerLine: string
-
-    const wasHeaderFound = (
-      this.lineConsumer.consume({
-        linePattern: labelPattern,
-        then: (_, captionPart) => {
-          rawCaptionContent = (captionPart || '').trim()
-        }
-      })
-
-      && !this.tryToTerminateTable()
-
-      && this.lineConsumer.consume({
-        then: line => {
-          headerLine = line
-        }
-      }))
-
-    if (!wasHeaderFound) {
-      return
-    }
-
-    const caption =
-      rawCaptionContent
-        ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
-        : undefined
-
-    const headerCells = getTableCells(headerLine, config).map(toHeaderCell)
-
-    const header = new TableNode.Header(headerCells)
-
-    const rowCellsByRow: TableNode.Row.Cell[][] = []
-    let countLinesConsumed: number
-
-    do {
-      countLinesConsumed = this.lineConsumer.countLinesConsumed
-    } while (
-      !this.tryToTerminateTable()
-      && this.lineConsumer.consume({
-        then: line => {
-          const rowCells =
-            getTableCells(line, config).map(toRowCell)
-
-          rowCellsByRow.push(rowCells)
-        }
-      }))
-
-    const rows = rowCellsByRow.map(cells => new TableNode.Row(cells))
-
-    args.then([new TableNode(header, rows, caption)], countLinesConsumed)
-    this.success = true
+// Returns true if it's able to consume 2 blank lines.
+//
+// Note: If there was just 1 blank line, this function will still consume it.
+function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
+  function consumeBlankLine(): boolean {
+    return lineConsumer.consume({ linePattern: BLANK_PATTERN })
   }
 
-  // Returns true if it's able to consume 2 blank lines.
-  //
-  // Note: If there was just 1 blank line, this function will still consume it.
-  tryToTerminateTable(): boolean {
-    const consumeBlankLine = () =>
-      this.lineConsumer.consume({ linePattern: BLANK_PATTERN })
-
-    return consumeBlankLine() && consumeBlankLine()
-  }
+  return consumeBlankLine() && consumeBlankLine()
 }
 
 
