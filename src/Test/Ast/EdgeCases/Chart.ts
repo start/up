@@ -8,7 +8,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
 describe('A chart with one column', () => {
-  it('can habe row header cells that would otherwise be interpreted as section separator streaks', () => {
+  it('can have row header cells that would otherwise be interpreted as section separator streaks', () => {
     const text = `
 Chart: Most common underlines for top-level headings (from most to least common)
 
