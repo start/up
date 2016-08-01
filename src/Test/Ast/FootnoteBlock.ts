@@ -534,10 +534,7 @@ Final Fantasy II;   1988`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([
-              new PlainTextNode('Release Date'),
-              footnote
-            ])
+            new TableNode.Header.Cell([new PlainTextNode('Release Date'), footnote])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
@@ -578,10 +575,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([
-              new PlainTextNode('Release Date'),
-              headerFootnote
-            ])
+            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
@@ -589,10 +583,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
             ]),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([
-                new PlainTextNode('1988'),
-                rowFootnote
-              ])
+              new TableNode.Row.Cell([new PlainTextNode('1988'), rowFootnote])
             ])
           ]),
 
@@ -632,10 +623,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([
-              new PlainTextNode('Release Date'),
-              headerFootnote
-            ])
+            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
@@ -643,10 +631,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
             ]),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([
-                new PlainTextNode('1988'),
-                rowFootnote
-              ])
+              new TableNode.Row.Cell([new PlainTextNode('1988'), rowFootnote])
             ])
           ],
           new TableNode.Caption([
@@ -700,7 +685,7 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote ])
+            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
