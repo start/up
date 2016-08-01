@@ -111,7 +111,7 @@ Chart
 Chart
 
         1;      0
-        
+
 0;      true;   false
 1;      false;  false`
 
@@ -184,90 +184,81 @@ Do it now; I'm tired of waiting.`
     })
   })
 })
-/*
 
 
-context('Within a table', () => {
-  specify('single blank lines are allowed', () => {
+context('Within a chart', () => {
+  specify('single blank lines are allowed anywhere', () => {
     const text = `
-Table:
+Chart:
 
-Game;Release Date
+                  Release Date
 
-Final Fantasy;1987
-Final Fantasy II;1988
+Final Fantasy;    1987
+Final Fantasy II; 1988
 
-Chrono Trigger;1995
-Chrono Cross;1999`
+Chrono Trigger;   1995
+Chrono Cross;     1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')])),
           ])
       ]))
   })
 
   specify('outer whitespace is trimmed from each header and row cell', () => {
     const text = `
-Table:
+Chart:
 
- \t Game\t ; \t Release Date
+ \t  \t\t  \t              Release Date \t \t \t 
 
- \t Final Fantasy\t ;\t 1987
+ \t Final Fantasy\t ;\t    1987
  \t Final Fantasy II\t ;\t 1988
 
- \t Chrono Trigger\t ;\t 1995
- \t Chrono Cross\t ;\t 1999`
+ \t Chrono Trigger\t ;\t   1995
+ \t Chrono Cross\t ;\t     1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')])),
           ])
       ]))
   })
 })
 
-
+/*
 context('A table is terminated by', () => {
   specify('2 consecutive blank lines', () => {
     const text = `
