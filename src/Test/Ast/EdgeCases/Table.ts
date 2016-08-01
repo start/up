@@ -10,9 +10,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 describe('A table with one column', () => {
   it('can contain cells that would otherwise be interpreted as section separator streaks', () => {
     const text = `
-Here are the most common underlines for top-level headings (from most to least common):
-
-Table:
+Table: Most common underlines for top-level headings (from most to least common)
 
 Underline
 
@@ -22,13 +20,6 @@ Underline
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([
-          new PlainTextNode("Here are the most common underlines for top-level headings "),
-          new ParenthesizedNode([
-            new PlainTextNode('(from most to least common)')
-          ]),
-          new PlainTextNode(':')
-        ]),
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Underline')]),
@@ -42,7 +33,13 @@ Underline
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('----')]),
             ])
-          ])
+          ],
+          new TableNode.Caption([
+            new PlainTextNode('Most common underlines for top-level headings '),
+            new ParenthesizedNode([
+              new PlainTextNode('(from most to least common)')
+            ])
+          ]))
       ]))
   })
 })
@@ -75,7 +72,7 @@ Chrono Cross;   1999`
           ])
       ]))
   })
-  
+
   it('can end with an escaped backslash', () => {
     const text = `
 Table
@@ -132,7 +129,7 @@ Chrono Cross;       1999`
           ])
       ]))
   })
-  
+
   it('can end with an escaped backslash', () => {
     const text = `
 Table
