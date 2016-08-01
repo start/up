@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-//import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 //import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
@@ -217,7 +217,7 @@ Chrono Cross;     1999`
             ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
           ])
       ]))
   })
@@ -252,25 +252,25 @@ Chart:
             ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
           ])
       ]))
   })
 })
 
-/*
-context('A table is terminated by', () => {
+
+context('A chart is terminated by', () => {
   specify('2 consecutive blank lines', () => {
     const text = `
-Table:
+Chart:
 
-Game;Release Date
+                  Release Date
 
-Final Fantasy;1987
-Final Fantasy II;1988
+Final Fantasy;    1987
+Final Fantasy II; 1988
 
-Chrono Trigger;1995
-Chrono Cross;1999
+Chrono Trigger;   1995
+Chrono Cross;     1999
 
 
 I don't like video games; in fact, I never have.`
@@ -279,25 +279,21 @@ I don't like video games; in fact, I never have.`
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
           ]),
         new ParagraphNode([
           new PlainTextNode("I don't like video games; in fact, I never have.")
@@ -307,15 +303,15 @@ I don't like video games; in fact, I never have.`
 
   specify('3 consecutive blank lines', () => {
     const text = `
-Table:
+Chart:
 
-Game;Release Date
+                  Release Date
 
-Final Fantasy;1987
-Final Fantasy II;1988
+Final Fantasy;    1987
+Final Fantasy II; 1988
 
-Chrono Trigger;1995
-Chrono Cross;1999
+Chrono Trigger;   1995
+Chrono Cross;     1999
 
 
 
@@ -325,25 +321,21 @@ I don't like video games; in fact, I never have.`
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
           ]),
         new SectionSeparatorNode(),
         new ParagraphNode([
@@ -353,7 +345,7 @@ I don't like video games; in fact, I never have.`
   })
 })
 
-
+/*
 describe('Tables', () => {
   it('can have just 1 column', () => {
     const text = `
@@ -723,4 +715,4 @@ Chrono Cross;         1999`
       ]))
   })
 })
-*/
+  */
