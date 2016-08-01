@@ -688,9 +688,8 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
             new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
               new TableNode.Row.Cell([new PlainTextNode('1987'), firstRowFootnote])
-            ]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('1988'), secondRowFootnote])
             ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II'), secondRowHeaderCellFootnote]))

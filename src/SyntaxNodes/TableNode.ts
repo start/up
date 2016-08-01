@@ -44,6 +44,16 @@ export namespace TableNode {
 
   export class Row {
     constructor(public cells: Row.Cell[], public headerCell?: Header.Cell) { }
+
+    get cellsStartingWithRowHeaderCell(): TableNode.Cell[] {
+      const allCells: TableNode.Cell[] = this.cells.slice()
+
+      if (this.headerCell) {
+        allCells.unshift(this.headerCell)
+      }
+      
+      return allCells
+    }
   }
 
   export namespace Row {
