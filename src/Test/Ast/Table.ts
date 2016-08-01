@@ -470,8 +470,8 @@ Chrono Cross;   1999`
 })
 
 
-context("The label line for tables can be followed by whitespace, regardless of whether the term for 'table' is followed by a colon.", () => {
-  specify('When followed by a colon', () => {
+context("The label line for tables can end with whitespace, regardless of whether the term for 'table' is followed by a colon.", () => {
+  specify('When followed by a colon without a caption', () => {
     const text = `
 Table:  \t \t 
 
