@@ -96,9 +96,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
       : undefined
 
-  const headerCells =
-    getTableCells(headerLine, config)
-      .map(cell => new TableNode.Header.Cell(cell.children, cell.countColumnsSpanned))
+  const headerCells = getTableCells(headerLine, config).map(toHeaderCell)
 
   const header = new TableNode.Header(headerCells)
 
@@ -111,8 +109,8 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     !tryToTerminateTable(lineConsumer)
     && lineConsumer.consume({
       then: line => {
-        const rowCells = getTableCells(line, config)
-          .map(cell => new TableNode.Row.Cell(cell.children, cell.countColumnsSpanned))
+        const rowCells =
+          getTableCells(line, config).map(toRowCell)
 
         rowCellsByRow.push(rowCells)
       }
@@ -135,3 +133,10 @@ function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
 
   return consumeBlankLine() && consumeBlankLine()
 }
+
+
+const toHeaderCell = (cell: TableNode.Cell) =>
+  new TableNode.Header.Cell(cell.children, cell.countColumnsSpanned)
+
+const toRowCell = (cell: TableNode.Cell) =>
+  new TableNode.Row.Cell(cell.children, cell.countColumnsSpanned)

@@ -16,7 +16,7 @@ import { ESCAPER_CHAR } from '../Strings'
 //
 // During parsing, however, we do need to create objects that can later be converted to
 // eaither header cells or row cells. Hence this fun little class. 
-class TableCell extends TableNode.Cell { }
+export class TableCell extends TableNode.Cell { }
 
 
 export function getTableCells(row: string, config: UpConfig): TableNode.Cell[] {
