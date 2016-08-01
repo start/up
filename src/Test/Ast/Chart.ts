@@ -473,7 +473,7 @@ Super Mario Kart;   Nintendo`
 })
 
 
-context('Table row cells', () => {
+context('Chart row cells', () => {
   specify('can contain inline conventions', () => {
     const text = `
 Chart:
@@ -711,7 +711,7 @@ Chart:
 
                       Platform;            Release Date
 [: Chrono Trigger;    Super :] Nintendo;   1995
-Chrono Cross;         Playstation;          1999`
+Chrono Cross;         Playstation;         1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -813,7 +813,7 @@ Chart: Summary of last work week
 Monday;;                                Pikachu evolved
 Tuesday;;                               Break room destroyed by Psionic Storm
 Wednesday;;                             Break room repaired by CSV
-Thursday;;                              Todd finished his work                            
+Thursday;     Really;                   Todd finished his work
 Friday;;                                Printer had ink`
 
     expect(Up.toAst(text)).to.be.eql(
@@ -834,8 +834,9 @@ Friday;;                                Printer had ink`
               new TableNode.Row.Cell([new PlainTextNode('Break room repaired by CSV')])
             ], new TableNode.Header.Cell([new PlainTextNode('Wednesday')], 2)),
             new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Really')]),
               new TableNode.Row.Cell([new PlainTextNode('Todd finished his work')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Thursday')], 2)),
+            ], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Printer had ink')])
             ], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
