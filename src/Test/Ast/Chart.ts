@@ -779,4 +779,46 @@ Starcraft;          Blizzard;;;                                             Marc
           ])
       ]))
   })
+
+    specify('Row header cells', () => {
+    const text = `
+Chart: Summary of last work week
+
+              Most Common Word;         Magical Happenings
+
+Monday;;                                Pikachu evolved
+Tuesday;;                               Break room destroyed by Psionic Storm
+Wednesday;;                             Break room repaired by CSV
+Thursday;;                              Todd finished his work                            
+Friday;;                                Printer had ink`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Most Common Word')]),
+            new TableNode.Header.Cell([new PlainTextNode('Magical Happenings')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Pikachu evolved')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Monday')], 2)),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Break room destroyed by Psionic Storm')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Tuesday')], 2)),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Break room repaired by CSV')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Wednesday')], 2)),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Todd finished his work')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Thursday')], 2)),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Printer had ink')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
+          ],
+          new TableNode.Caption([
+            new PlainTextNode('Summary of last work week')
+          ]))
+      ]))
+  })
 })
