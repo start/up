@@ -1,5 +1,4 @@
 import { TableNode } from '../../SyntaxNodes/TableNode'
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { patternStartingWith, atLeast } from '../PatternHelpers'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { UpConfig } from '../../UpConfig'
@@ -18,13 +17,9 @@ import { ESCAPER_CHAR } from '../Strings'
 // During parsing, however, we do need to create objects that can later be converted to
 // eaither header cells or row cells. Hence this fun little class. 
 class TableCell extends TableNode.Cell { }
-TableCell
 
-export function getTableCells<TCell extends TableNode.Cell>(
-  CellType: new (children: InlineSyntaxNode[], countColumnsSpanned: number) => TCell,
-  row: string,
-  config: UpConfig
-): TCell[] {
+
+export function getTableCells(row: string, config: UpConfig): TableNode.Cell[] {
   // We trim the contents of each cell, which means trimming the whole row isn't strictly
   // necessary. However, doing so (or at least trimming the end of the strimg) makes it a
   // bit easier for us to tell when a row ends with a single unescaped semicolon.
@@ -33,7 +28,7 @@ export function getTableCells<TCell extends TableNode.Cell>(
   // column, we add an extra empty cell to the end of the row.
   row = row.trim()
 
-  const cells: TCell[] = []
+  const cells: TableCell[] = []
   let charIndexOfStartOfNextCell = 0
   let charIndex = 0
 
@@ -41,7 +36,7 @@ export function getTableCells<TCell extends TableNode.Cell>(
     const rawCellValue = row.slice(charIndexOfStartOfNextCell, charIndex)
     const cellChildren = getInlineNodes(rawCellValue.trim(), config)
 
-    cells.push(new CellType(cellChildren, args.countColumnsSpanned))
+    cells.push(new TableCell(cellChildren, args.countColumnsSpanned))
   }
 
   for (; charIndex < row.length; charIndex++) {
