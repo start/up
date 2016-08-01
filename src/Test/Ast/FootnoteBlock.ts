@@ -665,6 +665,69 @@ Final Fantasy II;   1988 [^ Almost 1989]`
 })
 
 
+describe("Footnotes in a chart's row header cell", () => {
+  specify("are placed into a footnote block after the table (before footnotes in the same row and after footnotes in previous rows)", () => {
+    const text = `
+Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
+
+                                                      Release Date [^ Only the year]
+
+Final Fantasy;                                        1987 [^ Same year as Mega Man]
+Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
+
+    const captionFootnote = new FootnoteNode([
+      new PlainTextNode('ファイナルファンタジ in Japan')
+    ], 1)
+
+    const headerFootnote = new FootnoteNode([
+      new PlainTextNode('Only the year')
+    ], 2)
+
+    const firstRowFootnote = new FootnoteNode([
+      new PlainTextNode('Same year as Mega Man')
+    ], 3)
+
+    const secondRowHeaderCellFootnote = new FootnoteNode([
+      new PlainTextNode('Japan uses the numeral 2')
+    ], 4)
+
+    const secondRowFootnote = new FootnoteNode([
+      new PlainTextNode('Almost 1989')
+    ], 5)
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote ])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987'), firstRowFootnote])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('1988'), secondRowFootnote])
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II'), secondRowHeaderCellFootnote]))
+          ],
+          new TableNode.Caption([
+            new PlainTextNode('Final Fantasy'),
+            captionFootnote,
+            new PlainTextNode(' in the 1980s')
+          ])),
+
+        new FootnoteBlockNode([
+          captionFootnote,
+          headerFootnote,
+          firstRowFootnote,
+          secondRowHeaderCellFootnote,
+          secondRowFootnote
+        ])
+      ]))
+  })
+})
+
+
 describe('Footnotes in ordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
     const text = `
