@@ -50,9 +50,9 @@ describe("A table header cell", () => {
     const text = `
 Table
 
-Game [\\;;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
+Game [\\;;        Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -77,9 +77,9 @@ Chrono Cross;   1999`
     const text = `
 Table
 
-Game :\\\\;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
+Game :\\\\;       Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -107,9 +107,9 @@ describe("A table row cell", () => {
     const text = `
 Table
 
-Game;               Release Date
-Chrono Trigger [\\;; 1995
-Chrono Cross;       1999`
+Game;                 Release Date
+Chrono Trigger [\\;;  1995
+Chrono Cross;         1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
@@ -134,9 +134,9 @@ Chrono Cross;       1999`
     const text = `
 Table
 
-Game;           Release Date
-Chrono Trigger :\\\\; 1995
-Chrono Cross;   1999`
+Game;                   Release Date
+Chrono Trigger :\\\\;   1995
+Chrono Cross;           1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
