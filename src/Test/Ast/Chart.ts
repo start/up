@@ -44,68 +44,71 @@ Chart: \`AND\` operator logic
           ]))
       ]))
   })
+})
 
-  specify("Charts don't need captions", () => {
-    const text = `
+specify("Charts don't need captions", () => {
+  const text = `
 Chart:
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
-          ]), [
+  expect(Up.toAst(text)).to.be.eql(
+    new DocumentNode([
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
-          ])
-      ]))
-  })
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+        ])
+    ]))
+})
 
-  specify("Charts don't need a colon after the term in its label line", () => {
-    const text = `
+specify("Charts don't need a colon after the term in its label line", () => {
+  const text = `
 Chart
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
-          ]), [
+  expect(Up.toAst(text)).to.be.eql(
+    new DocumentNode([
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
-          ])
-      ]))
-  })
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+        ])
+    ]))
+})
 
-  specify('Within a chart, single blank lines are allowed anywhere', () => {
+
+context('Within a chart', () => {
+  specify('single blank lines are allowed anywhere', () => {
     const text = `
 Chart:
 
@@ -140,55 +143,6 @@ Chrono Cross;     1999`
       ]))
   })
 
-  specify("Charts don't need any padding between cells, and they don't need a blank line after the label line (the one with the optional caption)", () => {
-    const text = `
-Chart: \`AND\` operator logic
-1;0
-0;true;false
-1;false;false`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
-          ]), [
-
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
-
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
-          ],
-
-          new TableNode.Caption([
-            new InlineCodeNode('AND'),
-            new PlainTextNode(' operator logic')
-          ]))
-      ]))
-  })
-
-  specify("Charts cannot have a caption if there isn't a colon after the term for 'chart' in its label line", () => {
-    const text = `
-Chart the numbers.
-
-Do it now; I'm tired of waiting.`
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
-        new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),
-      ]))
-  })
-})
-
-
-context('Within a chart', () => {
   specify('outer whitespace is trimmed from each header and row cell', () => {
     const text = `
 Chart:
@@ -223,6 +177,53 @@ Chart:
           ])
       ]))
   })
+})
+
+
+specify("Charts don't need any padding between cells, and they don't need a blank line after the label line (the one with the optional caption)", () => {
+  const text = `
+Chart: \`AND\` operator logic
+1;0
+0;true;false
+1;false;false`
+
+  expect(Up.toAst(text)).to.be.eql(
+    new DocumentNode([
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
+
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+        ],
+
+        new TableNode.Caption([
+          new InlineCodeNode('AND'),
+          new PlainTextNode(' operator logic')
+        ]))
+    ]))
+})
+
+specify("Charts cannot have a caption if there isn't a colon after the term for 'chart' in its label line", () => {
+  const text = `
+Chart the numbers.
+
+Do it now; I'm tired of waiting.`
+  expect(Up.toAst(text)).to.be.eql(
+    new DocumentNode([
+      new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
+      new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),
+    ]))
 })
 
 
@@ -313,7 +314,7 @@ I don't like video games; in fact, I never have.`
 })
 
 
-describe('Tables', () => {
+describe('A chart', () => {
   it('can have 1 column, and when it does, that 1 column interpreted as a vertical heading', () => {
     const text = `
 Chart: Magical happenings this past work week
