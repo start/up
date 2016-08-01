@@ -213,6 +213,34 @@ Chrono Cross;     1999`,
 })
 
 
+describe('The "chart" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    textForConfigChanges: `
+Data:
+
+                  Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    textForDefaultSettings: `
+Chart:
+
+                  Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    configChanges: {
+      i18n: {
+        terms: { chart: 'data' }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: { chart: 'info' }
+      }
+    }
+  })
+})
+
+
 context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
