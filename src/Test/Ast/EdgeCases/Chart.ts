@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
-//import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
@@ -25,7 +25,7 @@ Friday`
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Magical Happenings')]),
+            new TableNode.Header.Cell([new PlainTextNode('Magical Happenings')])
           ]), [
             new TableNode.Row(
               [], new TableNode.Header.Cell([new PlainTextNode('Monday')])),
@@ -43,14 +43,12 @@ Friday`
           ]))
       ]))
   })
-})
 
-/*describe('A chart with one column', () => {
-  it('can contain cells that would otherwise be interpreted as section separator streaks', () => {
+  it('can habe row header cells that would otherwise be interpreted as section separator streaks', () => {
     const text = `
-Table: Most common underlines for top-level headings (from most to least common)
+Chart: Most common underlines for top-level headings (from most to least common)
 
-Underline
+      Underline Frequency
 
 ====
 ####
@@ -60,17 +58,15 @@ Underline
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Underline')]),
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Underline Frequency')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('====')]),
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('####')]),
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('----')]),
-            ])
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('====')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('####')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('----')]))
           ],
           new TableNode.Caption([
             new PlainTextNode('Most common underlines for top-level headings '),
@@ -81,8 +77,6 @@ Underline
       ]))
   })
 })
-
-*/
 
 
 describe("A chart header cell", () => {
