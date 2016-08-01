@@ -8,42 +8,6 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
 describe('A chart with one column', () => {
-  it('has that column interpreted as a vertical heading', () => {
-    const text = `
-Chart: Magical happenings this past work week
-
-            Magical Happenings
-
-Monday
-Tuesday
-Wednesday
-Thursday
-Friday`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Magical Happenings')])
-          ]), [
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Monday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Tuesday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Wednesday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Friday')]))
-          ],
-          new TableNode.Caption([
-            new PlainTextNode('Magical happenings this past work week')
-          ]))
-      ]))
-  })
-
   it('can habe row header cells that would otherwise be interpreted as section separator streaks', () => {
     const text = `
 Chart: Most common underlines for top-level headings (from most to least common)

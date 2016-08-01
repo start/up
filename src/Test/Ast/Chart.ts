@@ -345,32 +345,47 @@ I don't like video games; in fact, I never have.`
   })
 })
 
-/*
+
 describe('Tables', () => {
-  it('can have just 1 column', () => {
+  it('can have 1 column, and when it does, that 1 column interpreted as a vertical heading', () => {
     const text = `
-Table:
+Chart: Magical happenings this past work week
 
-Game
+            Magical Happenings
 
-Chrono Trigger
-Chrono Cross`
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')])
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Magical Happenings')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')])
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')])
-            ])
-          ])
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('Monday')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('Tuesday')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('Wednesday')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('Friday')]))
+          ],
+          new TableNode.Caption([
+            new PlainTextNode('Magical happenings this past work week')
+          ]))
       ]))
   })
+})
+
+/*
+
 
   it('can have 3 or more columns', () => {
     const text = `
