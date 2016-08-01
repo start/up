@@ -736,6 +736,30 @@ Chrono Cross;         Playstation;          1999`
 
 
 context('Just like in a table, cells in a chart can span multiple columns. The syntax is the same. Any chart cell can span multiple columns:', () => {
+  specify('Header cells', () => {
+    const text = `
+Chart:
+
+                     Director;;;
+
+Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Director')], 3)
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Takashi Tokita')]),
+              new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
+              new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')]))
+          ])
+      ]))
+  })
+
   specify('Row cells', () => {
     const text = `
 Chart:
@@ -771,8 +795,8 @@ Starcraft;          Blizzard;;;                                             Marc
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 3),
               new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
-            ],  new TableNode.Header.Cell([new PlainTextNode('Command & Conquer')])),
-            new TableNode.Row([ 
+            ], new TableNode.Header.Cell([new PlainTextNode('Command & Conquer')])),
+            new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 3),
               new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
             ], new TableNode.Header.Cell([new PlainTextNode('Starcraft')]))
@@ -780,7 +804,7 @@ Starcraft;          Blizzard;;;                                             Marc
       ]))
   })
 
-    specify('Row header cells', () => {
+  specify('Row header cells', () => {
     const text = `
 Chart: Summary of last work week
 
@@ -802,19 +826,19 @@ Friday;;                                Printer had ink`
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Pikachu evolved')])
-              ], new TableNode.Header.Cell([new PlainTextNode('Monday')], 2)),
+            ], new TableNode.Header.Cell([new PlainTextNode('Monday')], 2)),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Break room destroyed by Psionic Storm')])
-              ], new TableNode.Header.Cell([new PlainTextNode('Tuesday')], 2)),
+            ], new TableNode.Header.Cell([new PlainTextNode('Tuesday')], 2)),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Break room repaired by CSV')])
-              ], new TableNode.Header.Cell([new PlainTextNode('Wednesday')], 2)),
+            ], new TableNode.Header.Cell([new PlainTextNode('Wednesday')], 2)),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Todd finished his work')])
-              ], new TableNode.Header.Cell([new PlainTextNode('Thursday')], 2)),
+            ], new TableNode.Header.Cell([new PlainTextNode('Thursday')], 2)),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Printer had ink')])
-              ], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
+            ], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
           ],
           new TableNode.Caption([
             new PlainTextNode('Summary of last work week')
