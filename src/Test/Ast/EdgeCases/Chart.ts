@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
-//import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
 //import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -196,19 +196,19 @@ Chrono Cross;   1999`
   })
 })
 
+*/
 
-context("A table's label line", () => {
+context("A chart's label line", () => {
   specify('cannot be followed by two spaces', () => {
     const text = `
-Table: my favorite outline convention.
+Chart: my favorite outline convention.
 
 
-I almost didn't include them; however, I realized tables are too useful to leave out.`
+I almost didn't include them; however, I realized charts are too useful to leave out.`
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
-        new ParagraphNode([new PlainTextNode('Table: my favorite outline convention.')]),
-        new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
+        new ParagraphNode([new PlainTextNode('Chart: my favorite outline convention.')]),
+        new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized charts are too useful to leave out.")]),
       ]))
   })
 })
-*/
