@@ -124,7 +124,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
       : undefined
 
-  const rowCellsByRow: TableNode.Row.Cell[][] = []
+  const rows: TableNode.Row[] = []
   let countLinesConsumed: number
 
   do {
@@ -133,14 +133,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     !tryToTerminateTable(lineConsumer)
     && lineConsumer.consume({
       then: line => {
-        const rowCells =
-          getTableCells(line, config).map(toRowCell)
-
-        rowCellsByRow.push(rowCells)
+        const rowCells = getTableCells(line, config).map(toRowCell)
+        rows.push(new TableNode.Row(rowCells))
       }
     }))
-
-  const rows = rowCellsByRow.map(cells => new TableNode.Row(cells))
 
   args.then([new TableNode(header, rows, caption)], countLinesConsumed)
   return true
