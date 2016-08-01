@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, capture } from '../PatternHelpers'
+import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../PatternHelpers'
 import { BLANK_PATTERN } from '../Patterns'
 import { REST_OF_TEXT } from '../PatternPieces'
 import { getInlineNodes } from '../Inline/getInlineNodes'
@@ -61,20 +61,29 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const lineConsumer = new LineConsumer(args.lines)
 
   const { config } = args
-  const tableTerm = config.settings.i18n.terms.table
+  const { terms } = config.settings.i18n
+
+  const tableTerm = terms.table
+  const chartTerm = terms.chart
+
+  const termPart = either(
+    escapeForRegex(tableTerm),
+    escapeForRegex(chartTerm))
 
   const labelPattern =
     solelyAndIgnoringCapitalization(
-      escapeForRegex(tableTerm) + optional(':' + capture(REST_OF_TEXT)))
+      capture(termPart) + optional(':' + capture(REST_OF_TEXT)))
 
   let rawCaptionContent: string
+  let termUsed: string
   let headerLine: string
 
-  const wasHeaderFound = (
+  const hasLabelLineAndHeader = (
     lineConsumer.consume({
       linePattern: labelPattern,
-      then: (_, captionPart) => {
-        rawCaptionContent = (captionPart || '').trim()
+      then: (_, term, caption) => {
+        termUsed = term
+        rawCaptionContent = (caption || '').trim()
       }
     })
 
@@ -86,7 +95,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       }
     }))
 
-  if (!wasHeaderFound) {
+  if (!hasLabelLineAndHeader) {
     return false
   }
 
