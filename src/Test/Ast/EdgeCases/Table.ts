@@ -160,7 +160,7 @@ Chrono Cross;           1999`
 
 
 context("A table's label line", () => {
-  specify('cannot be followed by two spaces', () => {
+  specify('cannot be followed by two or more blank lines', () => {
     const text = `
 Table: my favorite outline convention.
 

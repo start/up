@@ -186,7 +186,7 @@ Chrono Cross;         1999 :\\\\`
 
 
 context("A chart's label line", () => {
-  specify('cannot be followed by two spaces', () => {
+  specify('cannot be followed by two or more blank lines', () => {
     const text = `
 Chart: my favorite outline convention.
 
