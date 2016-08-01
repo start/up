@@ -34,8 +34,8 @@ Chart: \`AND\` operator logic
               ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
               new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')])
               ], new TableNode.Header.Cell([new PlainTextNode('1')]))
             ],
 
@@ -69,8 +69,8 @@ Chart:
               ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
               new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')])
               ], new TableNode.Header.Cell([new PlainTextNode('1')]))
             ])
         ]))
@@ -99,8 +99,8 @@ Chart
               ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
               new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')])
               ], new TableNode.Header.Cell([new PlainTextNode('1')]))
             ])
         ]))

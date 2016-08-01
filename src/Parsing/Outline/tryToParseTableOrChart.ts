@@ -133,8 +133,15 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     !tryToTerminateTable(lineConsumer)
     && lineConsumer.consume({
       then: line => {
-        const rowCells = getTableCells(line, config).map(toRowCell)
-        rows.push(new TableNode.Row(rowCells))
+        const cells = getTableCells(line, config)
+
+        // In a chart, the first cell of each row is treated as a header for that row.
+        const rowHeaderCell =
+          isChart
+            ? toHeaderCell(cells.shift())
+            : undefined
+
+        rows.push(new TableNode.Row(cells.map(toRowCell), rowHeaderCell))
       }
     }))
 
