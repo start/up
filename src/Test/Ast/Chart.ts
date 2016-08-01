@@ -646,89 +646,117 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 0;      true;   false
 1;      false;  false`
 
-      expect(Up.toAst(text)).to.be.eql(
-        new DocumentNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([]),
-              new TableNode.Header.Cell([new PlainTextNode('1')]),
-              new TableNode.Header.Cell([new PlainTextNode('0')])
-            ]), [
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
 
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('true')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-              ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')])
-              ], new TableNode.Header.Cell([new PlainTextNode('1')]))
-            ],
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+          ],
 
-            new TableNode.Caption([
-              new InlineCodeNode('AND'),
-              new PlainTextNode(' operator logic')
-            ]))
-        ]))
-    })
+          new TableNode.Caption([
+            new InlineCodeNode('AND'),
+            new PlainTextNode(' operator logic')
+          ]))
+      ]))
+  })
 })
 
 
-/*
-  context('Inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect text in that one cell. This is true for:', () => {
-    specify('Header cells', () => {
-      const text = `
-Table:
+context('Inline conventions are evaluated separately in each chart cell. Delimiters in one cell only affect text in that one cell. This is true for:', () => {
+  specify('Header cells', () => {
+    const text = `
+Chart:
 
-[: Game;          Release Date :]
-Chrono Trigger;   1995
-Chrono Cross;     1999`
+                  [: Platform;          Release Date :]
+Chrono Trigger;   Super Nintendo;       1995
+Chrono Cross;     Playstation;          1999`
 
-      expect(Up.toAst(text)).to.be.eql(
-        new DocumentNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('[: Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date :]')])
-            ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995')])
-              ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
-              ])
-            ])
-        ]))
-    })
-
-    specify('Row cells', () => {
-      const text = `
-Table:
-
-Game;                 Release Date
-[: Chrono Trigger;    1995 :]
-Chrono Cross;         1999`
-
-      expect(Up.toAst(text)).to.be.eql(
-        new DocumentNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-            ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('[: Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995 :]')])
-              ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
-              ])
-            ])
-        ]))
-    })
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('[: Platform')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date :]')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Playstation')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+          ])
+      ]))
   })
-    */
+
+  specify('Row cells', () => {
+    const text = `
+Chart:
+
+                  Platform;           Release Date
+Chrono Trigger;   Super Nintendo;     1995
+Chrono Cross;     [: Playstation;     1999 :]`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Platform')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('[: Playstation')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999 :]')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+          ])
+      ]))
+  })
+
+  specify('Row header cells', () => {
+    const text = `
+Chart:
+
+                      Platform;            Release Date
+[: Chrono Trigger;    Super :] Nintendo;   1995
+Chrono Cross;         Playstation;          1999`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Platform')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Super :] Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('[: Chrono Trigger')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Playstation')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+          ])
+      ]))
+  })
+})
