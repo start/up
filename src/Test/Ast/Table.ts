@@ -81,13 +81,13 @@ Chrono Cross;1999`
     const text = `
 Table:
 
- \t Game\t ; \t Release Date
+ \t Game\t ; \t Release Date \t
 
- \t Final Fantasy\t ;\t 1987
- \t Final Fantasy II\t ;\t 1988
+ \t Final Fantasy\t ;\t 1987 \t 
+ \t Final Fantasy II\t ;\t 1988 \t 
 
- \t Chrono Trigger\t ;\t 1995
- \t Chrono Cross\t ;\t 1999`
+ \t Chrono Trigger\t ;\t 1995 \t 
+ \t Chrono Cross\t ;\t 1999 \t ` 
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
