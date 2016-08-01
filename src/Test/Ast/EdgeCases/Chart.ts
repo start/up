@@ -82,64 +82,61 @@ Underline
   })
 })
 
+*/
 
-describe("A table header cell", () => {
+
+describe("A chart header cell", () => {
   it('can end with an escaped semicolon', () => {
     const text = `
-Table
+Chart
 
-Game [\\;;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
+                     Release Date [\\;
+Chrono Trigger;      1995
+Chrono Cross;        1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game [;')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date [;')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
               new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
               new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')])),
           ])
       ]))
   })
 
   it('can end with an escaped backslash', () => {
     const text = `
-Table
+Chart
 
-Game :\\\\;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
+                      Release Date :\\\\
+Chrono Trigger;       1995
+Chrono Cross;         1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game :\\')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date :\\')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
               new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
               new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')])),
           ])
       ]))
   })
 })
 
-*/
 
 describe("A chart row cell", () => {
   it('can end with an escaped semicolon', () => {
