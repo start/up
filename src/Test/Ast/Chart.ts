@@ -46,64 +46,67 @@ Chart: \`AND\` operator logic
   })
 })
 
-specify("Charts don't need captions", () => {
-  const text = `
+
+context("On a chart's label line", () => {
+  specify("the caption is not required", () => {
+    const text = `
 Chart:
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-  expect(Up.toAst(text)).to.be.eql(
-    new DocumentNode([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
-        ]), [
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
 
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('1')]))
-        ])
-    ]))
-})
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+          ])
+      ]))
+  })
 
-specify("Charts don't need a colon after the term in its label line", () => {
-  const text = `
+  specify("the colon after the tern for 'chart' is not required", () => {
+    const text = `
 Chart
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-  expect(Up.toAst(text)).to.be.eql(
-    new DocumentNode([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
-        ]), [
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
 
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
 
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('1')]))
-        ])
-    ]))
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+          ])
+      ]))
+  })
 })
 
 
