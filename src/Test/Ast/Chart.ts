@@ -733,3 +733,50 @@ Chrono Cross;         Playstation;          1999`
       ]))
   })
 })
+
+
+context('Just like in a table, cells in a chart can span multiple columns. The syntax is the same. Any chart cell can span multiple columns:', () => {
+  specify('Row cells', () => {
+    const text = `
+Chart:
+
+                    Developer;            Publisher;        Marketer;       Release Date
+
+Chrono Trigger;     Square;;;                                               March 11, 1995
+Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
+
+Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
+Starcraft;          Blizzard;;;                                             March 31, 1998`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
+            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
+            new TableNode.Header.Cell([new PlainTextNode('Marketer')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Square')], 3),
+              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
+              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
+              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
+              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Terranigma')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 3),
+              new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
+            ],  new TableNode.Header.Cell([new PlainTextNode('Command & Conquer')])),
+            new TableNode.Row([ 
+              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 3),
+              new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Starcraft')]))
+          ])
+      ]))
+  })
+})
