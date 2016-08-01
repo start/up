@@ -574,149 +574,161 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 })
 
 
+context("The label line for charts can end with whitespace, regardless of whether the term for 'chart' is followed by a colon.", () => {
+  specify("When followed by a colon without a caption", () => {
+    const text = `
+Chart:  \t  \t  \t 
+
+        1;      0
+0;      true;   false
+1;      false;  false`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
+
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+          ])
+      ]))
+  })
+
+  specify("When followed by a colon with a caption", () => {
+    const text = `
+Chart:  \t  \t  \t 
+
+        1;      0
+0;      true;   false
+1;      false;  false`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
+
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+          ])
+      ]))
+  })
+})
+
+
+describe("The caption of a chart", () => {
+  it('has any outer whitespace timmed away', () => {
+    const text = `
+Chart:  \t  \t  \`AND\` operator logic \t \t  
+
+        1;      0
+0;      true;   false
+1;      false;  false`
+
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('1')]),
+              new TableNode.Header.Cell([new PlainTextNode('0')])
+            ]), [
+
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('true')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+              ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')])
+              ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ],
+
+            new TableNode.Caption([
+              new InlineCodeNode('AND'),
+              new PlainTextNode(' operator logic')
+            ]))
+        ]))
+    })
+})
+
 
 /*
-
-describe("The colon after the 'table' term", () => {
-  it('is not required', () => {
-    const text = `
-Table
-
-Game;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-          ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ])
-          ])
-      ]))
-  })
-})
-
-
-context("The label line for tables can be followed by whitespace, regardless of whether the term for 'table' is followed by a colon.", () => {
-  specify('When followed by a colon', () => {
-    const text = `
-Table:  \t \t 
-
-Game;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-          ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ])
-          ])
-      ]))
-  })
-
-  specify('When not followed by a colon', () => {
-    const text = `
-Table  \t \t 
-
-Game;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
-
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-          ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ])
-          ])
-      ]))
-  })
-})
-
-
-context('Inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect text in that one cell. This is true for:', () => {
-  specify('Header cells', () => {
-    const text = `
+  context('Inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect text in that one cell. This is true for:', () => {
+    specify('Header cells', () => {
+      const text = `
 Table:
 
 [: Game;          Release Date :]
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('[: Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date :]')])
-          ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([new PlainTextNode('[: Game')]),
+              new TableNode.Header.Cell([new PlainTextNode('Release Date :]')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              ]),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              ])
             ])
-          ])
-      ]))
-  })
+        ]))
+    })
 
-  specify('Row cells', () => {
-    const text = `
+    specify('Row cells', () => {
+      const text = `
 Table:
 
 Game;                 Release Date
 [: Chrono Trigger;    1995 :]
 Chrono Cross;         1999`
 
-    expect(Up.toAst(text)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-          ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('[: Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995 :]')])
-            ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+      expect(Up.toAst(text)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([new PlainTextNode('Game')]),
+              new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('[: Chrono Trigger')]),
+                new TableNode.Row.Cell([new PlainTextNode('1995 :]')])
+              ]),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              ])
             ])
-          ])
-      ]))
+        ]))
+    })
   })
-})
-  */
+    */
