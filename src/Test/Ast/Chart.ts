@@ -4,7 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
-//import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
@@ -431,14 +431,12 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
-/*
-
-context('Table header cells', () => {
+context('Chart header cells', () => {
   specify('can contain inline conventions', () => {
     const text = `
-Table:
+Chart:
 
-Game;               Release Date (year only)
+                    Release Date (year only)
 
 Final Fantasy;      1987
 Final Fantasy II;   1988
@@ -450,7 +448,7 @@ Chrono Cross;       1999`
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([
               new PlainTextNode('Release Date '),
               new ParenthesizedNode([
@@ -459,30 +457,26 @@ Chrono Cross;       1999`
             ])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ])
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
           ])
       ]))
   })
 
   specify('can contain escaped semicolons', () => {
     const text = `
-Table:
+Chart:
 
-Game;               Publisher\\; Developer
+                    Publisher\\; Developer
 
 Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
@@ -491,17 +485,15 @@ Super Mario Kart;   Nintendo`
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Publisher; Developer')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
               new TableNode.Row.Cell([new PlainTextNode('Square')])
-            ]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
               new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
-            ])
+            ], new TableNode.Header.Cell([new PlainTextNode('Super Mario Kart')]))
           ])
       ]))
   })
@@ -511,77 +503,79 @@ Super Mario Kart;   Nintendo`
 context('Table row cells', () => {
   specify('can contain inline conventions', () => {
     const text = `
-Table:
+Chart:
 
-Game;               Release Date
+                        Release Date
 
-Final Fantasy;      1987
-Final Fantasy II;   1988 (almost 1989)
+Final Fantasy (I);      1987
+Final Fantasy II;       1988 (almost 1989)
 
-Chrono Trigger;     1995
-Chrono Cross;       1999`
+Chrono Trigger;         1995
+Chrono Cross;           1999`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')]),
+            ], new TableNode.Header.Cell([
+              new PlainTextNode('Final Fantasy '),
+              new ParenthesizedNode([
+                new PlainTextNode('(I)')
+              ])
+            ])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
               new TableNode.Row.Cell([
                 new PlainTextNode('1988 '),
                 new ParenthesizedNode([
                   new PlainTextNode('(almost 1989)')
                 ])
-              ])
-            ]),
+              ]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
           ])
       ]))
   })
 
   specify('can contain escaped semicolons', () => {
     const text = `
-Table:
+Chart:
 
-Game;                               Publisher
+                                    Publisher
 
-Final Fantasy\\; Final Fantasy II;  Square
+Final Fantasy\\; Final Fantasy II;  Square [\\; Soft
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([]),
             new TableNode.Header.Cell([new PlainTextNode('Publisher')])
           ]), [
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy; Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')])
-            ]),
+              new TableNode.Row.Cell([new PlainTextNode('Square [; Soft')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy; Final Fantasy II')])),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart; Mario Kart 64')]),
               new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
-            ])
+            ], new TableNode.Header.Cell([new PlainTextNode('Super Mario Kart; Mario Kart 64')]))
           ])
       ]))
   })
 })
 
+
+
+/*
 
 describe("The colon after the 'table' term", () => {
   it('is not required', () => {
