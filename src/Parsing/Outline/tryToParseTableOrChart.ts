@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../PatternHelpers'
+import { solelyAndIgnoringCapitalization, escapeForRegex, optional, capture } from '../PatternHelpers'
 import { BLANK_PATTERN } from '../Patterns'
 import { REST_OF_TEXT } from '../PatternPieces'
 import { getInlineNodes } from '../Inline/getInlineNodes'
@@ -46,7 +46,7 @@ import { getTableCells } from './getTableCells'
 //
 // 1. Charts use the configurable term for "chart" instead of "table"
 // 2. An empty cell is automatically added to the beginning of the chart's header
-//   row
+//    row (the top left corner) due to the header column beneath it 
 // 3. The first cell of each row in a chart is treated as a header for that row.
 //
 // Here's an example chart:
@@ -63,49 +63,66 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const { config } = args
   const { terms } = config.settings.i18n
 
-  const tableTerm = terms.table
-  const chartTerm = terms.chart
-
-  const termPart = either(
-    escapeForRegex(tableTerm),
-    escapeForRegex(chartTerm))
-
-  const labelPattern =
+  const getLabelPattern = (term: string) =>
     solelyAndIgnoringCapitalization(
-      capture(termPart) + optional(':' + capture(REST_OF_TEXT)))
+      escapeForRegex(term) + optional(':' + capture(REST_OF_TEXT)))
 
   let rawCaptionContent: string
-  let termUsed: string
-  let headerLine: string
 
-  const hasLabelLineAndHeader = (
+  const setRawCaptionContent = (_: string, caption: string): void => {
+    rawCaptionContent = (caption || '').trim()
+  }
+
+  const isTable =
     lineConsumer.consume({
-      linePattern: labelPattern,
-      then: (_, term, caption) => {
-        termUsed = term
-        rawCaptionContent = (caption || '').trim()
-      }
+      linePattern: getLabelPattern(terms.table),
+      then: setRawCaptionContent
     })
 
-    && !tryToTerminateTable(lineConsumer)
+  const isChart =
+    !isTable && lineConsumer.consume({
+      linePattern: getLabelPattern(terms.chart),
+      then: setRawCaptionContent
+    })
 
-    && lineConsumer.consume({
-      then: line => {
-        headerLine = line
-      }
-    }))
-
-  if (!hasLabelLineAndHeader) {
+  if (!isTable && !isChart) {
     return false
   }
 
+  let headerCells: TableNode.Header.Cell[]
+
+  const hasHeader =
+    !tryToTerminateTable(lineConsumer)
+    && lineConsumer.consume({
+      then: line => {
+        headerCells = getTableCells(line, config).map(toHeaderCell)
+      }
+    })
+
+  if (!hasHeader) {
+    return false
+  }
+
+  // Okay! Now that we've found a label line (with an optional caption) and have a header,
+  // we know we're dealing with a table/chart.
+
+  if (isChart) {
+    // Charts have an extra empty cell added to the beginning of their header row due
+    // to the header column beneath it
+    headerCells.unshift(new TableNode.Header.Cell([]))
+  }
+
+  const header = new TableNode.Header(headerCells)
+
+  // Let's evaluate our caption for inline conventions. We could have done this before we
+  // found header, but we'd have to throw away our work if:
+  //
+  // * The header was missing
+  // * The label line (with the caption) was followed by 2 or more blank lines  
   const caption =
     rawCaptionContent
       ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
       : undefined
-
-  const headerCells = getTableCells(headerLine, config).map(toHeaderCell)
-  const header = new TableNode.Header(headerCells)
 
   const rowCellsByRow: TableNode.Row.Cell[][] = []
   let countLinesConsumed: number
