@@ -13,7 +13,7 @@ describe('Shouted text', () => {
       insideDocumentAndParagraph([
         new StressNode([
           new EmphasisNode([
-            new PlainTextNode('Nimble'),
+            new PlainTextNode('Nimble')
           ]),
           new PlainTextNode(' navigators?')
         ]),
@@ -29,7 +29,7 @@ describe('Shouted text', () => {
       insideDocumentAndParagraph([
         new StressNode([
           new EmphasisNode([
-            new PlainTextNode('Nimble'),
+            new PlainTextNode('Nimble')
           ]),
           new PlainTextNode(' navigators?')
         ]),
@@ -45,7 +45,7 @@ describe('Shouted text', () => {
       insideDocumentAndParagraph([
         new EmphasisNode([
           new StressNode([
-            new PlainTextNode('Nimble'),
+            new PlainTextNode('Nimble')
           ]),
           new PlainTextNode(' navigators?')
         ]),
@@ -61,7 +61,7 @@ describe('Shouted text', () => {
       insideDocumentAndParagraph([
         new EmphasisNode([
           new StressNode([
-            new PlainTextNode('Nimble'),
+            new PlainTextNode('Nimble')
           ]),
           new PlainTextNode(' navigators?')
         ]),
@@ -209,7 +209,7 @@ describe('Shouted text inside of stressed text', () => {
             new EmphasisNode([
               new PlainTextNode('stop')
             ]),
-            new PlainTextNode(' eating the cardboard'),
+            new PlainTextNode(' eating the cardboard')
           ]),
           new PlainTextNode(' immediately')
         ])
@@ -230,7 +230,7 @@ describe('Shouted text inside of stressed text', () => {
         ]),
         new EmphasisNode([
           new PlainTextNode(' immediately')
-        ]),
+        ])
       ]))
   })
 })
@@ -247,7 +247,7 @@ describe('Inside of stressed text, shouted text with its inner stress node close
               new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard immediately')
-          ]),
+          ])
         ])
       ]))
   })
@@ -283,7 +283,7 @@ describe('Inside of emphasized text, shouted text with its inner stress node clo
               new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard immediately')
-          ]),
+          ])
         ])
       ]))
   })
