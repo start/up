@@ -15,7 +15,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split.', () => {
-  context('This includes: ', () => {
+  context('This includes:', () => {
     specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion) ', () => {
       expect(Up.toAst('**++~~Hello++ good** friend!~~ Hi!')).to.be.eql(
         insideDocumentAndParagraph([
@@ -117,7 +117,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
 
 
 context('When most otherwise-nested conventions overlap by only their end delimiters, they nest without being split.', () => {
-  context('This includes: ', () => {
+  context('This includes:', () => {
     specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) being overlapped by a third (e.g. revision deletion)', () => {
       expect(Up.toAst('~~Hello **good ++friend!~~++** Hi!')).to.be.eql(
         insideDocumentAndParagraph([
