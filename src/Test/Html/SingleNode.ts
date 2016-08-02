@@ -361,6 +361,64 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 })
 
 
+context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
+  specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> produced by the row', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+        ],
+        new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<caption>AND operator logic</caption>'
+      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
+      + '<tr><th scope="row">0</th><td>true</td><td class="up-numeric">false</td></tr>'
+      + '<tr><th scope="row">1</th><td>false</td><td class="up-numeric">false</td></tr>'
+      + '</table>')
+  })
+
+  specify('When a row header cell spans multiple columns, the <th> produced for that cell has a "colspan" attribute whose value is the number of columns spanned ', () => {
+    const node =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('Most Common Word')])
+        ]), [
+          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Monday')], 2)),
+          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Tuesday')], 2)),
+          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Wednesday')], 2)),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Really')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
+          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
+        ])
+
+    expect(Up.toHtml(node)).to.be.eql(
+      '<table>'
+      + '<thead><tr><th scope="col"></th><th scope="col">Most Common Word</th></tr></thead>'
+      + '<tr><th scope="row" colspan="2">Monday</th></tr>'
+      + '<tr><th scope="row" colspan="2">Tuesday</th></tr>'
+      + '<tr><th scope="row" colspan="2">Wednesday</th></tr>'
+      + '<tr><th scope="row">Thursday</th><td>Really</td></tr>'
+      + '<tr><th scope="row" colspan="2">Friday</th></tr>'
+      + '</table>')
+  })
+})
+
+
 describe('A line block node', () => {
   it('produces a <div class="up-lines"> containing a <div> for each line', () => {
     const node = new LineBlockNode([
