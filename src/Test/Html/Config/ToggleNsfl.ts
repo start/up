@@ -26,7 +26,7 @@ describe("The text in an inline NSFL convention's label", () => {
 })
 
 
-describe("The text in an inline NSFL convention's label", () => {
+describe("The text in a NSFL block's label", () => {
   it("uses the provided term for 'toggleNsfl'", () => {
     const up = new Up({
       i18n: {

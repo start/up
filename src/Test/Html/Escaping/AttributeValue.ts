@@ -245,7 +245,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     expect(up.toHtml(node)).to.be.eql(html)
   })
 
-  specify("id attribute of NSFW blocks' checkboxes (and the 'for' attribute of their labels)", () => {
+  specify("id attribute of NSFL blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
         idWordDelimiter: '"&&"',

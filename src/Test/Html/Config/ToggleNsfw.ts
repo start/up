@@ -26,7 +26,7 @@ describe("The text in an inline NSFW convention's label", () => {
 })
 
 
-describe("The text in an inline NSFW convention's label", () => {
+describe("The text in a NSFW block's label", () => {
   it("uses the provided term for 'toggleNsfw'", () => {
     const up = new Up({
       i18n: {

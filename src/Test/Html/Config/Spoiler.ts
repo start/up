@@ -26,7 +26,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 })
 
 
-describe("The ID of an spoiler block's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'spoiler'", () => {
     const up = new Up({
       i18n: {
