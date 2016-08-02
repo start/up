@@ -268,13 +268,13 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   })
 
   it('is not prefixed to schemeless URLs not starting with a hash mark (the default URL scheme is prefixed instead)', () => {
-    const text = '[Chrono Cross](localhost#wiki/Chrono_Chross)'
+    const text = '[Chrono Cross](localhost/#wiki/Chrono_Chross)'
 
     expect(up.toAst(text)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
-        ], 'https://localhost#wiki/Chrono_Chross')
+        ], 'https://localhost/#wiki/Chrono_Chross')
       ]))
   })
 
