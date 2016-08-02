@@ -670,3 +670,22 @@ Chrono Cross;         Playstation;         1999`
       ]))
   })
 })
+
+describe('A chart', () => {
+  it('does not need any rows', () => {
+    const text = `
+Chart
+
+	      Release Date`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]),
+          [])
+      ]))
+  })
+})

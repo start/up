@@ -582,3 +582,22 @@ Chrono Cross;         1999`
       ]))
   })
 })
+
+describe('A table', () => {
+  it('does not need any rows', () => {
+    const text = `
+Table
+
+Game;           Release Date`
+
+    expect(Up.toAst(text)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]),
+          [])
+      ]))
+  })
+})

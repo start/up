@@ -109,7 +109,7 @@ Chrono Cross;     1999`
     const text = `
 Chart: Games in the Chrono series
 
-             Release Date`
+        Release Date`
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([
