@@ -60,7 +60,7 @@ context('Every syntax node class is exported:', () => {
     const syntaxNode = EXPORTS[syntaxNodeName]
 
     specify(syntaxNodeName, () => {
-      expect(typeof (syntaxNode)).to.be.eql('function')
+      expect(typeof syntaxNode).to.be.eql('function')
     })
   }
 })
