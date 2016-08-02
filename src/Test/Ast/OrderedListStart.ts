@@ -3,8 +3,8 @@ import Up from '../../index'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 
-function listStart(text: string): number {
-  const list = <OrderedListNode>Up.toAst(text).children[0]
+function listStart(textForOrderedList: string): number {
+  const list = Up.toAst(textForOrderedList).children[0] as OrderedListNode
   return list.start()
 }
 
