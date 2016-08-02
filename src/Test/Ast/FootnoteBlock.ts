@@ -32,7 +32,7 @@ describe('A footnote in a paragph', () => {
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have."),
+          new PlainTextNode(" Never have.")
         ]),
         new FootnoteBlockNode([footnote])
       ]))
@@ -82,7 +82,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         new HeadingNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have."),
+          new PlainTextNode(" Never have.")
         ], 1),
         new FootnoteBlockNode([
           footnote
@@ -139,10 +139,10 @@ describe('Footnotes in unordered list items', () => {
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("Or touch."),
+        new PlainTextNode("Or touch.")
       ], 2),
       new FootnoteNode([
         new PlainTextNode('This is not my line.')
@@ -160,7 +160,7 @@ describe('Footnotes in unordered list items', () => {
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnotes[0],
-              new PlainTextNode(" Never have."),
+              new PlainTextNode(" Never have.")
             ]),
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
@@ -171,7 +171,7 @@ describe('Footnotes in unordered list items', () => {
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               footnotes[1],
-              new PlainTextNode(" pumpkins."),
+              new PlainTextNode(" pumpkins.")
             ])
           ]),
 
@@ -179,11 +179,11 @@ describe('Footnotes in unordered list items', () => {
             new LineBlockNode([
               new LineBlockNode.Line([
                 new PlainTextNode("Roses are red"),
-                footnotes[2],
+                footnotes[2]
               ]),
               new LineBlockNode.Line([
                 new PlainTextNode("Violets are blue"),
-                footnotes[3],
+                footnotes[3]
               ])
             ]),
           ])
@@ -201,7 +201,7 @@ describe('Footnotes in a blockquote', () => {
 
     const footnote =
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -210,9 +210,9 @@ describe('Footnotes in a blockquote', () => {
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal."),
             footnote,
-            new PlainTextNode(" Never have."),
+            new PlainTextNode(" Never have.")
           ]),
-          new FootnoteBlockNode([footnote]),
+          new FootnoteBlockNode([footnote])
         ])
       ]))
   })
@@ -230,10 +230,10 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("Or touch."),
+        new PlainTextNode("Or touch.")
       ], 2)
     ]
 
@@ -247,7 +247,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
                 footnotes[0],
-                new PlainTextNode(" Never have."),
+                new PlainTextNode(" Never have.")
               ]),
               new ParagraphNode([
                 new PlainTextNode("It's too expensive.")
@@ -258,7 +258,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins."),
+                new PlainTextNode(" pumpkins.")
               ])
             ])
 
@@ -281,7 +281,7 @@ SPOILER:
 
     const footnote =
       new FootnoteNode([
-        new PlainTextNode("And this is a fun fact."),
+        new PlainTextNode("And this is a fun fact.")
       ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -291,7 +291,7 @@ SPOILER:
             new PlainTextNode("This ruins the movie."),
             footnote,
           ]),
-          new FootnoteBlockNode([footnote]),
+          new FootnoteBlockNode([footnote])
         ])
       ]))
   })
@@ -311,10 +311,10 @@ SPOILER:
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("Or touch."),
+        new PlainTextNode("Or touch.")
       ], 2)
     ]
 
@@ -339,7 +339,7 @@ SPOILER:
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins."),
+                new PlainTextNode(" pumpkins.")
               ])
             ])
 
@@ -362,7 +362,7 @@ NSFW:
 
     const footnote =
       new FootnoteNode([
-        new PlainTextNode("And this is a fun fact."),
+        new PlainTextNode("And this is a fun fact.")
       ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -372,7 +372,7 @@ NSFW:
             new PlainTextNode("This ruins the movie."),
             footnote,
           ]),
-          new FootnoteBlockNode([footnote]),
+          new FootnoteBlockNode([footnote])
         ])
       ]))
   })
@@ -392,10 +392,10 @@ NSFW:
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("Or touch."),
+        new PlainTextNode("Or touch.")
       ], 2)
     ]
 
@@ -420,7 +420,7 @@ NSFW:
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins."),
+                new PlainTextNode(" pumpkins.")
               ])
             ])
 
@@ -443,7 +443,7 @@ NSFL:
 
     const footnote =
       new FootnoteNode([
-        new PlainTextNode("And this is a fun fact."),
+        new PlainTextNode("And this is a fun fact.")
       ], 1)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -453,7 +453,7 @@ NSFL:
             new PlainTextNode("This ruins the movie."),
             footnote,
           ]),
-          new FootnoteBlockNode([footnote]),
+          new FootnoteBlockNode([footnote])
         ])
       ]))
   })
@@ -473,10 +473,10 @@ NSFL:
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("Or touch."),
+        new PlainTextNode("Or touch.")
       ], 2)
     ]
 
@@ -490,7 +490,7 @@ NSFL:
               new ParagraphNode([
                 new PlainTextNode("I don't eat cereal."),
                 footnotes[0],
-                new PlainTextNode(" Never have."),
+                new PlainTextNode(" Never have.")
               ]),
               new ParagraphNode([
                 new PlainTextNode("It's too expensive.")
@@ -501,7 +501,7 @@ NSFL:
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins."),
+                new PlainTextNode(" pumpkins.")
               ])
             ])
 
@@ -723,10 +723,10 @@ describe('Footnotes in ordered list items', () => {
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+        new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("Or touch."),
+        new PlainTextNode("Or touch.")
       ], 2)
     ]
 
@@ -737,7 +737,7 @@ describe('Footnotes in ordered list items', () => {
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnotes[0],
-              new PlainTextNode(" Never have."),
+              new PlainTextNode(" Never have.")
             ]),
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
@@ -747,7 +747,7 @@ describe('Footnotes in ordered list items', () => {
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               footnotes[1],
-              new PlainTextNode(" pumpkins."),
+              new PlainTextNode(" pumpkins.")
             ])
           ], 2)
         ]),
@@ -773,13 +773,13 @@ Gary
 
     const footnotes = [
       new FootnoteNode([
-        new PlainTextNode("What happens to the creature if the seed is never planted?"),
+        new PlainTextNode("What happens to the creature if the seed is never planted?")
       ], 1),
       new FootnoteNode([
-        new PlainTextNode("This probably wasn't a reference to the family of plants."),
+        new PlainTextNode("This probably wasn't a reference to the family of plants.")
       ], 2),
       new FootnoteNode([
-        new PlainTextNode("Or maybe Ash simply smelled really good."),
+        new PlainTextNode("Or maybe Ash simply smelled really good.")
       ], 3)
     ]
 
@@ -859,7 +859,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnotesInUnorderedList[0],
-              new PlainTextNode(" Never have."),
+              new PlainTextNode(" Never have.")
             ]),
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
@@ -869,7 +869,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new ParagraphNode([
               new PlainTextNode("I don't eat"),
               footnotesInUnorderedList[1],
-              new PlainTextNode(" pumpkins."),
+              new PlainTextNode(" pumpkins.")
             ])
           ])
         ]),
@@ -900,15 +900,15 @@ describe("Within an outline convention, a blockquoted footnote that follows a no
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnoteInUnorderedList = new FootnoteNode([
-      new PlainTextNode("Well, I do, but I pretend not to."),
+      new PlainTextNode("Well, I do, but I pretend not to.")
     ], 1)
 
     const footnoteInBlockquote = new FootnoteNode([
-      new PlainTextNode("Or touch."),
+      new PlainTextNode("Or touch.")
     ], 2)
 
     const footnoteInParagraph = new FootnoteNode([
-      new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+      new PlainTextNode("It's actually been a dream of mine ever since I was young.")
     ], 3)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -918,7 +918,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnoteInUnorderedList,
-              new PlainTextNode(" Never have."),
+              new PlainTextNode(" Never have.")
             ]),
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
@@ -929,7 +929,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnoteInBlockquote,
-                new PlainTextNode(" pumpkins."),
+                new PlainTextNode(" pumpkins.")
               ]),
               new FootnoteBlockNode([footnoteInBlockquote])
             ])
@@ -962,7 +962,7 @@ describe("Within an outline convention, a blockquoted nested footnote that follo
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const nestedFootnoteInUnorderedList = new FootnoteNode([
-      new PlainTextNode("On Mondays."),
+      new PlainTextNode("On Mondays.")
     ], 4)
 
     const footnoteInUnorderedList = new FootnoteNode([
@@ -972,7 +972,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     ], 1)
 
     const nestedFootnoteInBlockquote = new FootnoteNode([
-      new PlainTextNode("Or smell."),
+      new PlainTextNode("Or smell.")
     ], 3)
 
     const footnoteInBlockquote = new FootnoteNode([
@@ -981,7 +981,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     ], 2)
 
     const footnoteInParagraph = new FootnoteNode([
-      new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+      new PlainTextNode("It's actually been a dream of mine ever since I was young.")
     ], 5)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -991,7 +991,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             new ParagraphNode([
               new PlainTextNode("I don't eat cereal."),
               footnoteInUnorderedList,
-              new PlainTextNode(" Never have."),
+              new PlainTextNode(" Never have.")
             ]),
             new ParagraphNode([
               new PlainTextNode("It's too expensive.")
@@ -1002,7 +1002,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
               new ParagraphNode([
                 new PlainTextNode("I don't eat"),
                 footnoteInBlockquote,
-                new PlainTextNode(" pumpkins."),
+                new PlainTextNode(" pumpkins.")
               ]),
               new FootnoteBlockNode([
                 footnoteInBlockquote,
@@ -1019,7 +1019,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         new ParagraphNode([
           new PlainTextNode("I wear glasses"),
           footnoteInParagraph,
-          new PlainTextNode(" even while working out."),
+          new PlainTextNode(" even while working out.")
         ]),
         new FootnoteBlockNode([footnoteInParagraph])
       ]))
@@ -1036,13 +1036,13 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       new EmphasisNode([
         new PlainTextNode('do')
       ]),
-      new PlainTextNode(', but I pretend not to.'),
+      new PlainTextNode(', but I pretend not to.')
     ], 3)
 
     const firstFootnote = new FootnoteNode([
       new PlainTextNode("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new PlainTextNode(" Never have."),
+      new PlainTextNode(" Never have.")
     ], 1)
 
     const secondFootnote = new FootnoteNode([
@@ -1060,7 +1060,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
         new FootnoteBlockNode([
           firstFootnote,
           secondFootnote,
-          footnoteInsideFirstFootnote,
+          footnoteInsideFirstFootnote
         ])
       ]))
   })
@@ -1075,7 +1075,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       ], 5)
 
     const secondInnerFootnote = new FootnoteNode([
-      new PlainTextNode("At least you've never seen me."),
+      new PlainTextNode("At least you've never seen me.")
     ], 4)
 
     const firstInnerFootnote = new FootnoteNode([
@@ -1084,7 +1084,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
         new PlainTextNode('do'),
       ]),
       footnoteInsideFirstInnerFootnote,
-      new PlainTextNode(' but I pretend not to.'),
+      new PlainTextNode(' but I pretend not to.')
     ], 3)
 
     const firstFootnote = new FootnoteNode([
@@ -1104,7 +1104,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
           new PlainTextNode("Me? I'm totally normal."),
           firstFootnote,
           new PlainTextNode(" Really."),
-          secondFootnote,
+          secondFootnote
         ]),
         new FootnoteBlockNode([
           firstFootnote,
@@ -1133,15 +1133,15 @@ I don't eat (^Or touch.) pumpkins.`
     const firstFootnoteInFirstParagraph = new FootnoteNode([
       new PlainTextNode("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new PlainTextNode(" Never have."),
+      new PlainTextNode(" Never have.")
     ], 1)
 
     const secondFootnoteInFirstParagraph = new FootnoteNode([
-      new PlainTextNode("Probably."),
+      new PlainTextNode("Probably.")
     ], 2)
 
     const footnoteInSecondParagraph = new FootnoteNode([
-      new PlainTextNode("Or touch."),
+      new PlainTextNode("Or touch.")
     ], 4)
 
     expect(Up.toAst(text)).to.be.eql(
@@ -1155,7 +1155,7 @@ I don't eat (^Or touch.) pumpkins.`
         new FootnoteBlockNode([
           firstFootnoteInFirstParagraph,
           secondFootnoteInFirstParagraph,
-          footnoteInsideFirstFootnote,
+          footnoteInsideFirstFootnote
         ]),
         new ParagraphNode([
           new PlainTextNode("I don't eat"),
