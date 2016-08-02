@@ -1,6 +1,6 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
-export class InlineSyntaxNodeContainer {
+export abstract class InlineSyntaxNodeContainer {
   constructor(public children: InlineSyntaxNode[]) { }
 }
