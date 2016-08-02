@@ -44,7 +44,7 @@ export function internalFragmentUrl(id: string): string {
 //     <p>Bulbasaur</p>
 //   </li>
 // </ol>
-export const NO_ATTRIBUTE_VALUE: string = null 
+export const NO_ATTRIBUTE_VALUE: string = null
 
 
 function htmlStartTag(tagName: string, attrs: any): string {

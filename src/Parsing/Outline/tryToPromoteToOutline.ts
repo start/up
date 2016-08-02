@@ -40,7 +40,7 @@ export function tryToPromoteToOutline(
       if (!wasAbleToPromoteChildrenToOutline) {
         return false
       }
-      
+
       continue
     }
 

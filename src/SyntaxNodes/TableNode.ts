@@ -51,7 +51,7 @@ export namespace TableNode {
       if (this.headerCell) {
         allCells.unshift(this.headerCell)
       }
-      
+
       return allCells
     }
   }
