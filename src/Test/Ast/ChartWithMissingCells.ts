@@ -5,7 +5,7 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-context('Just like a table, when a chart row has fewer cells than the header or other rows', () => {
+context('Just like a table, when a chart row has fewer cells than the header or than other rows', () => {
   specify('no extra cells are added to that row', () => {
     const text = `
 Chart:
