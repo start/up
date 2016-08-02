@@ -1,5 +1,5 @@
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -1195,10 +1195,10 @@ const SUBDOMAIN =
     anyCharMatching(LETTER_CLASS, DIGIT, escapeForRegex('-')))
 
 const TOP_LEVEL_DOMAIN =
-  atLeast(1, LETTER_CHAR)
+  atLeastOne(LETTER_CHAR)
 
 const DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
-  atLeast(1, SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
+  atLeastOne(SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
   either(
@@ -1207,7 +1207,7 @@ const EXPLICIT_URL_PREFIX =
     HASH_MARK)
 
 const SOLELY_URL_PREFIX_PATTERN =
-    solely(EXPLICIT_URL_PREFIX)
+  solely(EXPLICIT_URL_PREFIX)
 
 
 // The patterns below exist purely for optimization.
@@ -1230,7 +1230,7 @@ const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   patternStartingWith(
-    atLeast(1,
+    atLeastOne(
       either(
         anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
         // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.

@@ -14,6 +14,10 @@ export function everyOptional(pattern: string): string {
   return group(pattern) + '*'
 }
 
+export function atLeastOne(pattern: string): string {
+  return atLeast(1, pattern)
+}
+
 export function atLeast(count: number, pattern: string): string {
   return group(pattern) + `{${count},}`
 }
