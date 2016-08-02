@@ -58,12 +58,10 @@ context('Every syntax node class is exported:', () => {
 })
 
 
-context('Every base syntax node class (and interface) is exported:', () => {
+context('Every base syntax node class is exported:', () => {
   specifyEveryClassShouldBeExported([
-    'InlineSyntaxNode',
     'InlineSyntaxNodeContainer',
     'MediaSyntaxNode',
-    'OutlineSyntaxNode',
     'OutlineSyntaxNodeContainer',
     'RichInlineSyntaxNode',
     'RichOutlineSyntaxNode'
