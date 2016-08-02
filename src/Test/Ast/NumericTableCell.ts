@@ -24,7 +24,7 @@ ${rawCellValue};`
 }
 
 
-context('A tale row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
+context('A table row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
   context('This includes when the cell contains', () => {
     specify('an integer', () => {
       expectTableCellToBeNumeric('1995')
