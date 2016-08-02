@@ -393,19 +393,27 @@ export class HtmlWriter extends Writer {
     const headerRow =
       htmlElementWithAlreadyEscapedChildren(
         'tr',
-        header.cells.map(cell => this.tableHeaderCell(cell)))
+        header.cells.map(cell => this.tableHeaderCell(cell, 'col')))
 
     return htmlElementWithAlreadyEscapedChildren('thead', [headerRow])
   }
 
-  private tableHeaderCell(cell: TableNode.Header.Cell): string {
-    return this.tableCell('th', cell, { scope: 'col' })
+  private tableHeaderCell(
+    cell: TableNode.Header.Cell,
+    scope: 'col' | 'row'
+  ): string {
+    return this.tableCell('th', cell, { scope })
   }
 
   private tableRow(row: TableNode.Row): string {
-    return htmlElementWithAlreadyEscapedChildren(
-      'tr',
-      row.cells.map(cell => this.tableRowCell(cell)))
+    const cells =
+      row.cells.map(cell => this.tableRowCell(cell))
+
+    if (row.headerCell) {
+      cells.unshift(this.tableHeaderCell(row.headerCell, 'row'))
+    }
+
+    return htmlElementWithAlreadyEscapedChildren('tr', cells)
   }
 
   private tableRowCell(cell: TableNode.Row.Cell): string {
