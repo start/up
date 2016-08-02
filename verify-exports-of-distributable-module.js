@@ -56,11 +56,14 @@ context('Every syntax node class is exported:', () => {
     'VideoNode'
   ]
 
-  for (const syntaxNodeName of SYNTAX_NODE_NAMES) {
-    const syntaxNode = EXPORTS[syntaxNodeName]
+  specifyEveryClassShouldBeExported(SYNTAX_NODE_NAMES)
+})
 
-    specify(syntaxNodeName, () => {
-      expect(typeof syntaxNode).to.be.eql('function')
+
+function specifyEveryClassShouldBeExported(classNames) {
+  for (const className of classNames) {
+    specify(className, () => {
+      expect(typeof EXPORTS[className]).to.be.eql('function')
     })
   }
-})
+}
