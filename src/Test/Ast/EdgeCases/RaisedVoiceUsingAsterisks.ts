@@ -82,7 +82,7 @@ describe('Shouted text inside of emphasized text', () => {
           new PlainTextNode('Please '),
           new EmphasisNode([
             new StressNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
@@ -98,7 +98,7 @@ describe('Shouted text inside of emphasized text', () => {
           new PlainTextNode('Please '),
           new StressNode([
             new EmphasisNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
@@ -114,7 +114,7 @@ describe('Shouted text inside of emphasized text', () => {
           new PlainTextNode('Please '),
           new StressNode([
             new EmphasisNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
@@ -191,7 +191,7 @@ describe('Shouted text inside of stressed text', () => {
           new PlainTextNode('Please '),
           new EmphasisNode([
             new StressNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
@@ -207,7 +207,7 @@ describe('Shouted text inside of stressed text', () => {
           new PlainTextNode('Please '),
           new StressNode([
             new EmphasisNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
@@ -223,7 +223,7 @@ describe('Shouted text inside of stressed text', () => {
           new PlainTextNode('Please '),
           new EmphasisNode([
             new StressNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
             new PlainTextNode(' eating the cardboard'),
           ]),
@@ -244,9 +244,9 @@ describe('Inside of stressed text, shouted text with its inner stress node close
           new PlainTextNode('Please '),
           new EmphasisNode([
             new StressNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
-            new PlainTextNode(' eating the cardboard immediately'),
+            new PlainTextNode(' eating the cardboard immediately')
           ]),
         ])
       ]))
@@ -262,9 +262,9 @@ describe('Inside of stressed text, shouted text with its inner emphasis node clo
           new PlainTextNode('Please '),
           new StressNode([
             new EmphasisNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
-            new PlainTextNode(' eating the cardboard immediately'),
+            new PlainTextNode(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -280,9 +280,9 @@ describe('Inside of emphasized text, shouted text with its inner stress node clo
           new PlainTextNode('Please '),
           new EmphasisNode([
             new StressNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
-            new PlainTextNode(' eating the cardboard immediately'),
+            new PlainTextNode(' eating the cardboard immediately')
           ]),
         ])
       ]))
@@ -298,9 +298,9 @@ describe('Inside of emphasized text, shouted text with its inner emphasis node c
           new PlainTextNode('Please '),
           new StressNode([
             new EmphasisNode([
-              new PlainTextNode('stop'),
+              new PlainTextNode('stop')
             ]),
-            new PlainTextNode(' eating the cardboard immediately'),
+            new PlainTextNode(' eating the cardboard immediately')
           ])
         ])
       ]))
