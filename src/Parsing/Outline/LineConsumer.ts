@@ -21,8 +21,8 @@ export class LineConsumer {
 
   consume(
     args: {
-      linePattern?: RegExp,
-      if?: ShouldConsumeLine,
+      linePattern?: RegExp
+      if?: ShouldConsumeLine
       then?: OnConsume
     }
   ): boolean {

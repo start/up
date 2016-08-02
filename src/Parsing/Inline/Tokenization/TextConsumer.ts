@@ -35,7 +35,7 @@ export class TextConsumer {
 
   consume(
     args: {
-      pattern: RegExp,
+      pattern: RegExp
       thenBeforeAdvancingTextIndex?: OnTextMatch
     }
   ): boolean {

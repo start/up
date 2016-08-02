@@ -10,9 +10,9 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    node: SyntaxNode,
+    node: SyntaxNode
     htmlFromDefaultSettings: string
-    configChanges: UpConfigSettings,
+    configChanges: UpConfigSettings
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {

@@ -8,9 +8,9 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    textForConfigChanges: string,
+    textForConfigChanges: string
     textForDefaultSettings: string
-    configChanges: UpConfigSettings,
+    configChanges: UpConfigSettings
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
