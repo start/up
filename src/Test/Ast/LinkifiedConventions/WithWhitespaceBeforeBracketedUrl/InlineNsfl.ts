@@ -24,7 +24,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
   })
 
 
-  describe('When the URL has a scheme, the URL', () => {
+  context('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: 'NSFL: Advance Wars',

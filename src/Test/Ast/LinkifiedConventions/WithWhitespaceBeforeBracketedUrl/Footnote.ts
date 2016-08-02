@@ -30,7 +30,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
   })
 
 
-  describe('When the URL has a scheme, the URL', () => {
+  context('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       const footnote = new FootnoteNode([
         new LinkNode([
