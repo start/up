@@ -54,7 +54,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 describe('A table header', () => {
   specify('can have fewer cells than its rows have', () => {
-        const text = `
+    const text = `
 Table:
 
 Game;               Release Date
@@ -67,7 +67,7 @@ Chrono Cross;       1999;               Though not a proper sequel, it's my favo
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
           ]), [
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
@@ -78,7 +78,7 @@ Chrono Cross;       1999;               Though not a proper sequel, it's my favo
               new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
               new TableNode.Row.Cell([new PlainTextNode('1999')]),
               new TableNode.Row.Cell([new PlainTextNode("Though not a proper sequel, it's my favorite game.")])
-            ]),
+            ])
           ])
       ]))
   })
