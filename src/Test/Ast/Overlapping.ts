@@ -69,28 +69,8 @@ describe('Overlapped stressed and emphasized text', () => {
 })
 
 
-describe('Overlapped stressed and deleted text', () => {
-  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node', () => {
-    expect(Up.toAst('I **love ~~drinking** whole~~ milk.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I '),
-        new StressNode([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('drinking')
-          ])
-        ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' whole')
-        ]),
-        new PlainTextNode(' milk.')
-      ]))
-  })
-})
-
-
 describe('Overlapped stressed and parenthesized text', () => {
-  it('splits the parenthesized node because it opened after the stress node', () => {
+  it('splits the parenthesized node because it opened second', () => {
     expect(Up.toAst('I **love (drinking** whole) milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -110,7 +90,7 @@ describe('Overlapped stressed and parenthesized text', () => {
 
 
 describe('Overlapped stressed and square bracketed text', () => {
-  it('splits the square bracketed node because it opened after the stress node', () => {
+  it('splits the square bracketed node because it opened second', () => {
     expect(Up.toAst('I **love [drinking** whole] milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
