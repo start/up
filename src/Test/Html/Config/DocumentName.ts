@@ -9,7 +9,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {   
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new FootnoteNode([], 3)
 
     expect(Up.toHtml(node)).to.be.eql(
@@ -20,7 +20,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     const up = new Up({
       documentName: 'reply-11'
     })
-    
+
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
@@ -31,7 +31,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     const up = new Up({
       documentName: ' \t'
     })
-    
+
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
@@ -45,11 +45,11 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
-          new PlainTextNode("Arwings"),
+          new PlainTextNode("Arwings")
         ], 2),
         new FootnoteNode([
-          new PlainTextNode("Killer Bees"),
-        ], 3),
+          new PlainTextNode("Killer Bees")
+        ], 3)
       ])
 
     const html =
@@ -65,15 +65,15 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     const up = new Up({
       documentName: 'reply-11'
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
-          new PlainTextNode("Arwings"),
+          new PlainTextNode("Arwings")
         ], 2),
         new FootnoteNode([
-          new PlainTextNode("Killer Bees"),
-        ], 3),
+          new PlainTextNode("Killer Bees")
+        ], 3)
       ])
 
     const html =
@@ -89,15 +89,15 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     const up = new Up({
       documentName: ' \t'
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
-          new PlainTextNode("Arwings"),
+          new PlainTextNode("Arwings")
         ], 2),
         new FootnoteNode([
-          new PlainTextNode("Killer Bees"),
-        ], 3),
+          new PlainTextNode("Killer Bees")
+        ], 3)
       ])
 
     const html =
@@ -114,7 +114,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new InlineSpoilerNode([])
-    
+
     const html =
       '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
@@ -132,7 +132,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     })
 
     const node = new InlineSpoilerNode([])
-    
+
     const html =
       '<span class="up-spoiler up-revealable">'
       + '<label for="reply-11-spoiler-1">toggle spoiler</label>'
@@ -149,7 +149,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     })
 
     const node = new InlineSpoilerNode([])
-    
+
     const html =
       '<span class="up-spoiler up-revealable">'
       + '<label for="spoiler-1">toggle spoiler</label>'
@@ -165,7 +165,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new InlineNsfwNode([])
-    
+
     const html =
       '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle NSFW</label>'
@@ -183,7 +183,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     })
 
     const node = new InlineNsfwNode([])
-    
+
     const html =
       '<span class="up-nsfw up-revealable">'
       + '<label for="reply-11-nsfw-1">toggle NSFW</label>'
@@ -200,7 +200,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     })
 
     const node = new InlineNsfwNode([])
-    
+
     const html =
       '<span class="up-nsfw up-revealable">'
       + '<label for="nsfw-1">toggle NSFW</label>'
@@ -216,7 +216,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
 describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox and the label)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
     const node = new InlineNsflNode([])
-    
+
     const html =
       '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle NSFL</label>'
@@ -234,7 +234,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     })
 
     const node = new InlineNsflNode([])
-    
+
     const html =
       '<span class="up-nsfl up-revealable">'
       + '<label for="reply-11-nsfl-1">toggle NSFL</label>'
@@ -251,7 +251,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     })
 
     const node = new InlineNsflNode([])
-    
+
     const html =
       '<span class="up-nsfl up-revealable">'
       + '<label for="nsfl-1">toggle NSFL</label>'
