@@ -21,11 +21,7 @@
         "multiline": "never"
       }
     ],
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
+    "quotemark": false,
     "variable-name": [
       true,
       "ban-keywords",
