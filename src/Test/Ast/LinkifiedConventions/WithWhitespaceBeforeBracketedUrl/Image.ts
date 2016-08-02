@@ -35,7 +35,7 @@ context('A linkified image convention can have whitespace between its image URL 
   })
 
 
-  describe('When the URL has a scheme', () => {
+  context('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
@@ -190,7 +190,7 @@ context('A linkified image convention can have whitespace between its image URL 
       })
     })
 
-    specify('must not have its slash escaped', () => {
+    it('must not have its slash escaped', () => {
       expect(Up.toAst('[image: robots](https://example.com/image.png) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new ImageNode('robots', 'https://example.com/image.png'),

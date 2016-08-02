@@ -35,7 +35,7 @@ context('A linkified video convention can have whitespace between its video URL 
   })
 
 
-  describe('When the URL has a scheme', () => {
+  context('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
@@ -190,7 +190,7 @@ context('A linkified video convention can have whitespace between its video URL 
       })
     })
 
-    specify('must not have its slash escaped', () => {
+    it('must not have its slash escaped', () => {
       expect(Up.toAst('[video: robots](https://example.com/video.webm) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('robots', 'https://example.com/video.webm'),

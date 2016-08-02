@@ -161,7 +161,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
     })
 
-    specify('must not have its slash escaped', () => {
+    it('must not have its slash escaped', () => {
       expect(Up.toAst('[yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([

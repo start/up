@@ -35,7 +35,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
   })
 
 
-  describe('When the URL has a scheme', () => {
+  context('When the URL has a scheme', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
@@ -190,7 +190,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
       })
     })
 
-    specify('must not have its slash escaped', () => {
+    it('must not have its slash escaped', () => {
       expect(Up.toAst('[audio: robots](https://example.com/sounds.ogg) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('robots', 'https://example.com/sounds.ogg'),

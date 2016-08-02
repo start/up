@@ -219,7 +219,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       })
     })
 
-    specify('must not have its slash escaped', () => {
+    it('must not have its slash escaped', () => {
       const footnote = new FootnoteNode([
         new PlainTextNode('slash')
       ], 1)
