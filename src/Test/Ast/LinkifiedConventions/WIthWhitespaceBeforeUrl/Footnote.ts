@@ -251,7 +251,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '#wiki/dead-phone',
       toProduce: new DocumentNode([
-        new ParagraphNode([footnote,]),
+        new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
       ])
     })
@@ -271,7 +271,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '#15',
         toProduce: new DocumentNode([
-          new ParagraphNode([footnote,]),
+          new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ])
       })
@@ -345,7 +345,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'chrono-trigger.wiki',
       toProduce: new DocumentNode([
-        new ParagraphNode([footnote,]),
+        new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
       ])
     })
@@ -365,7 +365,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: new DocumentNode([
-          new ParagraphNode([footnote,]),
+          new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ])
       })
@@ -383,7 +383,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/',
         toProduce: new DocumentNode([
-          new ParagraphNode([footnote,]),
+          new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ])
       })
@@ -419,7 +419,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
         toProduce: new DocumentNode([
-          new ParagraphNode([footnote,]),
+          new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ])
       })
@@ -529,7 +529,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
         toProduce: new DocumentNode([
-          new ParagraphNode([footnote,]),
+          new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ])
       })
@@ -631,7 +631,7 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'example.com/search=phone\\ was\\ dead',
       toProduce: new DocumentNode([
-        new ParagraphNode([footnote,]),
+        new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
       ])
     })
