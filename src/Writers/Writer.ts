@@ -32,6 +32,7 @@ import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../UpConfig'
+import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 
 export abstract class Writer {
@@ -75,19 +76,19 @@ export abstract class Writer {
   protected abstract plainText(node: PlainTextNode): string
 
   protected getId(...parts: any[]): string {
-    const rawId =
-      [this.config.settings.documentName, ...parts].join(' ')
+    const { settings } = this.config
 
-    return (
-      rawId
-        .trim()
-        .replace(/\s+/g, this.config.settings.i18n.idWordDelimiter))
+    const rawIdWithAllParts =
+      [settings.documentName, ...parts].join(' ')
+
+    return rawIdWithAllParts
+      .trim()
+      .replace(WHITESPACE_PATTERN, settings.i18n.idWordDelimiter)
   }
 
   private dispatchWrite(node: SyntaxNode): string {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
-
 
     if (node instanceof PlainTextNode) {
       return this.plainText(node)
@@ -220,3 +221,6 @@ export abstract class Writer {
     throw new Error('Unrecognized syntax node')
   }
 }
+
+
+const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
