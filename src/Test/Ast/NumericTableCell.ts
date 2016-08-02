@@ -4,184 +4,207 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 
 
 function expectTableCellToBeNumeric(rawCellValue: string): void {
-  expect(isTableCellNumeric(rawCellValue)).to.be.true
+  expectChartCellAndTableCell({
+    withRawValue: rawCellValue,
+    toBeNumeric: true
+  })
 }
 
 function expectTableCellNotToBeNumeric(rawCellValue: string): void {
-  expect(isTableCellNumeric(rawCellValue)).to.be.false
+  expectChartCellAndTableCell({
+    withRawValue: rawCellValue,
+    toBeNumeric: false
+  })
 }
 
-function isTableCellNumeric(rawCellValue: string): boolean {
-  const tableText = `
-Table
-Header Cell 1
-${rawCellValue};`
+function expectChartCellAndTableCell(
+  args: {
+    withRawValue: string,
+    toBeNumeric: boolean
+  }
+): void {
+  const { withRawValue, toBeNumeric } = args
 
-  const documentNode = Up.toAst(tableText)
+  specify('in a table row cell', () => {
+    expect(isFirstRowCellNumeric('table', withRawValue)).to.be.eql(toBeNumeric)
+  })
+
+  specify('in a chart row cell', () => {
+    expect(isFirstRowCellNumeric('chart', withRawValue)).to.be.eql(toBeNumeric)
+  })
+}
+
+function isFirstRowCellNumeric(term: 'chart' | 'table', rawCellValue: string): boolean {
+  const text = `
+${term}
+Header Cell
+${term === 'chart' ? 'Row Header Cell;' : ''} ${rawCellValue};`
+
+  const documentNode = Up.toAst(text)
   const table = documentNode.children[0] as TableNode
 
   return table.rows[0].cells[0].isNumeric()
 }
 
 
-context('A table row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
-  context('This includes when the cell contains', () => {
-    specify('an integer', () => {
+context('A table (or chart) row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
+  context('This includes', () => {
+    context('an integer', () => {
       expectTableCellToBeNumeric('1995')
     })
 
-    specify('an emphasized and stressed integer', () => {
+    context('an emphasized and stressed integer', () => {
       expectTableCellToBeNumeric('***1995***')
     })
 
-    specify('a decimal', () => {
+    context('a decimal', () => {
       expectTableCellToBeNumeric('.5')
     })
 
-    specify('an emphasized and stressed integer', () => {
+    context('an emphasized and stressed integer', () => {
       expectTableCellToBeNumeric('***.5***')
     })
 
-    specify('an emphasized and stressed integer surrounded by whitespace', () => {
+    context('an emphasized and stressed integer surrounded by whitespace', () => {
       expectTableCellToBeNumeric('  \t \t \t ***.5***  \t \t \t ')
     })
 
-    specify('a percentage', () => {
+    context('a percentage', () => {
       expectTableCellToBeNumeric('55%')
     })
 
-    specify('an emphasized and stressed percentage', () => {
+    context('an emphasized and stressed percentage', () => {
       expectTableCellToBeNumeric('***55%***')
     })
 
-    specify('an emphasized and stressed negative percentage', () => {
+    context('an emphasized and stressed negative percentage', () => {
       expectTableCellToBeNumeric('***-55%***')
     })
 
-    specify('a percentage with the percent sign emphasized and stressed', () => {
+    context('a percentage with the percent sign emphasized and stressed', () => {
       expectTableCellToBeNumeric('99***%***')
     })
 
-    specify('a time of day without the time period part', () => {
+    context('a time of day without the time period part', () => {
       expectTableCellToBeNumeric('15:40')
     })
 
-    specify('an emphasized and stressed time of day', () => {
+    context('an emphasized and stressed time of day', () => {
       expectTableCellToBeNumeric('***15:40***')
     })
 
-    specify('a price', () => {
+    context('a price', () => {
       expectTableCellToBeNumeric('$13.01')
     })
 
-    specify('an emphasized and stressed price', () => {
+    context('an emphasized and stressed price', () => {
       expectTableCellToBeNumeric('***$13.01***')
     })
 
-    specify('a price whose dollar sign is emphasized and stressed', () => {
+    context('a price whose dollar sign is emphasized and stressed', () => {
       expectTableCellToBeNumeric('***$***13.01')
     })
 
-    specify('a parenthesized price', () => {
+    context('a parenthesized price', () => {
       expectTableCellToBeNumeric('($13.01)')
     })
 
-    specify('a big number with commas grouping digits', () => {
+    context('a big number with commas grouping digits', () => {
       expectTableCellToBeNumeric('***$2,000,000***')
     })
 
-    specify('a price whose dollar sign is emphasized and stressed', () => {
+    context('a price whose dollar sign is emphasized and stressed', () => {
       expectTableCellToBeNumeric('***$***13.01')
     })
 
-    specify('inline code containing a numeric value', () => {
+    context('inline code containing a numeric value', () => {
       expectTableCellToBeNumeric('`10.0`')
     })
 
-    specify('emphasized and stressed inline code containing a numeric value', () => {
+    context('emphasized and stressed inline code containing a numeric value', () => {
       expectTableCellToBeNumeric('***`10.0`***')
     })
 
-    specify('a link to a non-numeric URL whose content is numeric', () => {
+    context('a link to a non-numeric URL whose content is numeric', () => {
       expectTableCellToBeNumeric('[$15.40] (example.com/price)')
     })
 
-    specify('a NSFW convention whose content is numeric', () => {
+    context('a NSFW convention whose content is numeric', () => {
       expectTableCellToBeNumeric('[NSFW: 80085]')
     })
 
-    specify('a linkified spoiler to a non-numeric URL whose content is numeric', () => {
+    context('a linkified spoiler to a non-numeric URL whose content is numeric', () => {
       expectTableCellToBeNumeric('[SPOILER: 44.7] (example.com/defense)')
     })
 
-    specify('an integer followed by a non-numeric footnote', () => {
+    context('an integer followed by a non-numeric footnote', () => {
       expectTableCellToBeNumeric('2018 [^ It had been delayed since 2016]')
     })
 
-    specify('an emphasized and stressed integer followed by a non-numeric footnote', () => {
+    context('an emphasized and stressed integer followed by a non-numeric footnote', () => {
       expectTableCellToBeNumeric('****2018**** [^ It had been delayed since 2016]')
     })
   })
 
 
-  context('This excludes when the cell contains', () => {
-    specify('a single word without digits', () => {
+  context('This excludes', () => {
+    context('a single word without digits', () => {
       expectTableCellNotToBeNumeric('StarCraft')
     })
 
-    specify('a word conaining digits and regular word characters', () => {
+    context('a word conaining digits and regular word characters', () => {
       expectTableCellNotToBeNumeric('3D')
     })
 
-    specify('3 periods forming an ellipsis', () => {
+    context('3 periods forming an ellipsis', () => {
       expectTableCellNotToBeNumeric('...')
     })
 
-    specify('a list of numbers separated by whitespace', () => {
+    context('a list of numbers separated by whitespace', () => {
       expectTableCellNotToBeNumeric('1 2 3')
     })
 
-    specify('a face with zeros for eyes and an underscore for its mouth', () => {
+    context('a face with zeros for eyes and an underscore for its mouth', () => {
       expectTableCellNotToBeNumeric('0_0')
     })
 
-    specify('inline code containing a non-numeric word', () => {
+    context('inline code containing a non-numeric word', () => {
       expectTableCellNotToBeNumeric('`<div>`')
     })
 
-    specify('a link to a numeric URL whose content is a non-numeric word', () => {
+    context('a link to a numeric URL whose content is a non-numeric word', () => {
       expectTableCellNotToBeNumeric('[John] (tel:5555555555)')
     })
 
-    specify('a linkified spoiler to a numeric URL whose content is a non-numeric word', () => {
+    context('a linkified spoiler to a numeric URL whose content is a non-numeric word', () => {
       expectTableCellNotToBeNumeric('[SPOILER: John] (tel:5555555555)')
     })
 
-    specify('an image, even with a numeric description and URL', () => {
+    context('an image, even with a numeric description and URL', () => {
       expectTableCellNotToBeNumeric('[image: 9000] (64.233.160.0/123)')
     })
 
-    specify('an audio convention, even with a numeric description and URL', () => {
+    context('an audio convention, even with a numeric description and URL', () => {
       expectTableCellNotToBeNumeric('[audio: 9000] (64.233.160.0/123)')
     })
 
-    specify('a video, even with a numeric description and URL', () => {
+    context('a video, even with a numeric description and URL', () => {
       expectTableCellNotToBeNumeric('[video: 9000] (64.233.160.0/123)')
     })
 
-    specify('a footnote on its own, even with numeric content', () => {
+    context('a footnote on its own, even with numeric content', () => {
       expectTableCellNotToBeNumeric('[^ 2017]')
     })
 
-    specify('multiple footnotes on their own, even if all have numeric content', () => {
+    context('multiple footnotes on their own, even if all have numeric content', () => {
       expectTableCellNotToBeNumeric('[^ 2017][^ 2018]')
     })
 
-    specify('whitespace', () => {
+    context('whitespace', () => {
       expectTableCellNotToBeNumeric(' \t \t')
     })
 
-    specify('nothing', () => {
+    context('an empty string', () => {
       expectTableCellNotToBeNumeric('')
     })
   })
