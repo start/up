@@ -145,7 +145,7 @@ Chrono Cross;   1999`
       ]))
   })
 
-  it('does not need any rows', () => {
+  it('does not need any rows (just like a table without a caption)', () => {
     const text = `
 Table: Games in the Chrono series
 
