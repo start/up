@@ -13,8 +13,8 @@ function expectTableCellNotToBeNumeric(rawCellValue: string): void {
 
 function isTableCellNumeric(rawCellValue: string): boolean {
   const tableText = `
-Table:
-Header Cell 1; Header Cell 2
+Table
+Header Cell 1
 ${rawCellValue};`
 
   const documentNode = Up.toAst(tableText)
