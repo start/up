@@ -42,18 +42,19 @@ import { TableNode } from '../SyntaxNodes/TableNode'
 // 2. Rule 1 applies to all outline conventions except:
 //
 //     * Blockquotes
-//     * Spoiler blocks
-//     * NSFW blocks
-//     * NSFL blocks
+//       -----------
 //
-//    Blockquotes are considered mini-documents! Therefore, footnotes inside a blockquote are placed into a
-//    footnote block inside the blockquote, and rule 1 is applied to all top-level outline conventions within
-//    the blockquote. In other words, a footnote inside a paragraph inside an ordered list inside a blockquote
-//    is placed into a footnote block after the ordered list, but still inside the blockquote, because the
-//    ordered list is the outermost, top-level convention within the blockquote.
+//      Blockquotes are considered mini-documents! Therefore, footnotes inside a blockquote are placed into a
+//      footnote block inside the blockquote, and rule 1 is applied to all top-level outline conventions
+//      within the blockquote. In other words, a footnote inside a paragraph inside an ordered list inside a
+//      blockquote is placed into a footnote block after the ordered list, but still inside the blockquote,
+//      because the ordered list is the outermost, top-level convention within the blockquote.
 //
-//    Spoiler blocks, NSFW blocks, and NSFL blocks shouldn't "leak" any of their content, so they have the
-//    same footnote block rules as blockquotes.
+//     * Spoiler blocks, NSFW blocks, and NSFL blocks
+//       --------------------------------------------
+//
+//      These conventions shouldn't "leak" any of their content, so they have the same footnote block rules
+//      as blockquotes.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
