@@ -7,7 +7,8 @@ all_our_build_dirs = $(compiled_dir) $(dist_dir)
 
 # Our behavioral unit tests describe the behavior of the Up library.
 #
-# We also have export unit tests, which verify the exports of our distributable module.
+# We also have a different set of tests that describe the exports of our distributable
+# JavaScript module (the one produced by this build process).
 #
 # For more information on why this distinction is important, see the `coverage` target.
 mocha_args_for_behavioral_tests = --recursive ./compiled/Test
@@ -51,7 +52,7 @@ test: compile
 	$(local_mocha) $(mocha_args_for_behavioral_tests)
 
 # Run all export unit tests. These tests have timed out on Travis CI before, so we specify a larger timeout.
-	$(local_mocha) ./verify-exports-of-distributable-module.js --timeout 3000
+	$(local_mocha) ./verify-exports-of-distributable-js-module.js --timeout 3000
 
 
 .PHONY: coverage
