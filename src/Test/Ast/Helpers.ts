@@ -35,16 +35,16 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
 
 export function expectEveryPermutationOfBrackets(
   args: {
-    bracketedSegments: BracketedSegments[]
+    bracketedSegments: BracketedSegment[]
     toProduce: DocumentNode
   }
 ): void {
   const { toProduce } = args
 
-  const segments = args.bracketedSegments.map(segment => <BracketedSegments>{
+  const segments = args.bracketedSegments.map(segment => ({
     prefixes: segment.prefixes || [''],
     text: segment.text
-  })
+  }) as BracketedSegment)
 
   const BRACKETS = [
     { open: '(', close: ')' },
@@ -105,7 +105,7 @@ function everyPermutation(prefix: string, valuesBySegment: string[][]): string[]
 }
 
 
-export interface BracketedSegments {
+export interface BracketedSegment {
   prefixes?: string[],
   text: string
 }
