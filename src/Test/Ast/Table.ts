@@ -87,7 +87,7 @@ Table:
  \t Final Fantasy II\t ;\t 1988 \t 
 
  \t Chrono Trigger\t ;\t 1995 \t 
- \t Chrono Cross\t ;\t 1999 \t ` 
+ \t Chrono Cross\t ;\t 1999 \t `
 
     expect(Up.toAst(text)).to.be.eql(
       new DocumentNode([

@@ -12,7 +12,7 @@ describe("A footnote reference's ID", () => {
         terms: { footnoteReference: 'ref' }
       }
     })
-    
+
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(
@@ -28,15 +28,15 @@ describe("The ID of the footnote reference referencing the footnote", () => {
         terms: { footnoteReference: 'ref' }
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
-          new PlainTextNode("Arwings"),
+          new PlainTextNode("Arwings")
         ], 2),
         new FootnoteNode([
-          new PlainTextNode("Killer Bees"),
-        ], 3),
+          new PlainTextNode("Killer Bees")
+        ], 3)
       ])
 
     const html =

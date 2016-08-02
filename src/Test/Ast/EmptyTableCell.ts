@@ -316,7 +316,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
               new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
             ]),
             new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),              
+              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
               new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')]),
               new TableNode.Row.Cell([new PlainTextNode('PC')]),
               new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])

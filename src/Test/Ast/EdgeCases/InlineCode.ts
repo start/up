@@ -42,7 +42,7 @@ context('Unmatched streaks of backticks are preserved as plain text. This applie
     expect(Up.toAst('I always use `<marquee>` elements, but I don`t ever do this.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I always use '),
-        new InlineCodeNode('<marquee>'),        
+        new InlineCodeNode('<marquee>'),
         new PlainTextNode(' elements, but I don`t ever do this.')
       ]))
   })

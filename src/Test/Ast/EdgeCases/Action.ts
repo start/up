@@ -65,7 +65,7 @@ context('Action text can be directly followed by whitespace followed by', () => 
           new FootnoteBlockNode([footnote])
         ]))
     })
-  
+
     specify('that contains whitespace, but none directly after the caret', () => {
       const text = "I don't eat cereal {sigh} (^Definitely lying.) on Mondays."
 

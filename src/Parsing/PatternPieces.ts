@@ -24,4 +24,4 @@ export const ANY_CHAR =
 
 export const REST_OF_TEXT =
   everyOptional(ANY_CHAR)
-  
+

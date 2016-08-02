@@ -81,10 +81,10 @@ context('If a line consists solely of media conventions, those media conventions
       expect(Up.toAst(text)).to.be.eql(
         new DocumentNode([
           new LinkNode([
-            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
           ], 'https://ghosts.com'),
           new LinkNode([
-            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
           ], 'https://hauntedhouse.com'),
           new LinkNode([
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')

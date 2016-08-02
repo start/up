@@ -76,7 +76,7 @@ describe("The brackets enclosing an image convention's description and URL", () 
   })
 })
 
-  
+
 context("When an image has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
   specify("The URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({

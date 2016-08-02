@@ -330,7 +330,7 @@ describe('Triply emphasized text', () => {
         ])
       ]))
   })
-  
+
   it('can be closed by 4 or more asterisks', () => {
     expect(Up.toAst('_He has _won _six in a row!_____')).to.be.eql(
       insideDocumentAndParagraph([

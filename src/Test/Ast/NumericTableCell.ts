@@ -29,7 +29,7 @@ function expectTableCellNotToBeNumeric(rawCellValue: string): void {
   })
 }
 
-function expectTableCell(args: { withRawValue: string, toBeNumeric: boolean}): void {
+function expectTableCell(args: { withRawValue: string, toBeNumeric: boolean }): void {
   const { withRawValue, toBeNumeric } = args
 
   expect(isCellNumeric(withRawValue)).to.be.eql(toBeNumeric)
@@ -43,7 +43,7 @@ ${rawCellValue};`
 
   const table =
     Up.toAst(tableOrChartText).children[0] as TableNode
-    
+
   return table.rows[0].cells[0].isNumeric()
 }
 

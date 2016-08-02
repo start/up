@@ -12,7 +12,7 @@ describe("A footnote's ID", () => {
         terms: { footnote: 'fn' }
       }
     })
-    
+
     const node =
       new FootnoteBlockNode([
         new FootnoteNode([
@@ -41,7 +41,7 @@ describe("The ID of the footnote referenced by a footnote reference", () => {
         terms: { footnote: 'fn' }
       }
     })
-    
+
     const node = new FootnoteNode([], 3)
 
     expect(up.toHtml(node)).to.be.eql(

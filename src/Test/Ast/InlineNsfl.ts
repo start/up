@@ -55,7 +55,7 @@ describe('An NSFL convention', () => {
   it('can use any capitalization of the word "nsfl"', () => {
     const withLowercase = 'After you beat the Elite Four, [nsfl: you eat a rotting Gary].'
     const withRandomCase = 'After you beat the Elite Four, [nSfL: you eat a rotting Gary].'
-    
+
     expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
   })
 
@@ -97,7 +97,7 @@ describe('An inline NSFL convention produced by square brackets', () => {
           new SquareBracketedNode([
             new PlainTextNode('[and finish]')
           ]),
-          new PlainTextNode(' a rotting Gary')          
+          new PlainTextNode(' a rotting Gary')
         ]),
         new PlainTextNode('.')
       ]))
@@ -115,7 +115,7 @@ describe('A NSFL convnetion produced by parentheses', () => {
           new ParenthesizedNode([
             new PlainTextNode('(and finish)')
           ]),
-          new PlainTextNode(' a rotting Gary')          
+          new PlainTextNode(' a rotting Gary')
         ]),
         new PlainTextNode('.')
       ]))
@@ -132,7 +132,7 @@ describe('An inline NSFL convention produced by curly brackets', () => {
           new PlainTextNode('you still have to eat a rotting Gary '),
           new ActionNode([
             new PlainTextNode('sigh')
-          ])          
+          ])
         ]),
         new PlainTextNode('.')
       ]))

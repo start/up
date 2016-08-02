@@ -391,7 +391,7 @@ describe('An ordered list item containing multiple indented lines', () => {
   It is really late, and I am really tired.
 # Goodbye, world!
   ===============`
-  
+
     const itemsWithoutSeparator = `
 # Hello, world!
   =============
@@ -465,7 +465,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
                 new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new LineBlockNode.Line([                
+                new LineBlockNode.Line([
                   new PlainTextNode('Violets are blue')
                 ])
               ])
@@ -487,7 +487,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
                 new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new LineBlockNode.Line([                
+                new LineBlockNode.Line([
                   new PlainTextNode('Violets are blue')
                 ])
               ])
@@ -509,7 +509,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
                 new LineBlockNode.Line([
                   new PlainTextNode('Roses are red'),
                 ]),
-                new LineBlockNode.Line([                
+                new LineBlockNode.Line([
                   new PlainTextNode('Violets are blue')
                 ])
               ])

@@ -55,7 +55,7 @@ describe('An NSFW convention', () => {
   it('can use any capitalization of the word "nsfw"', () => {
     const withLowercase = 'After you beat the Elite Four, [nsfw: you wrestle a naked Gary].'
     const withRandomCase = 'After you beat the Elite Four, [NsFW: you wrestle a naked Gary].'
-    
+
     expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
   })
 
@@ -97,7 +97,7 @@ describe('An inline NSFW convention produced by square brackets', () => {
           new SquareBracketedNode([
             new PlainTextNode('[and beat]')
           ]),
-          new PlainTextNode(' a naked Gary')          
+          new PlainTextNode(' a naked Gary')
         ]),
         new PlainTextNode('.')
       ]))
@@ -115,7 +115,7 @@ describe('A NSFW convnetion produced by parentheses', () => {
           new ParenthesizedNode([
             new PlainTextNode('(and beat)')
           ]),
-          new PlainTextNode(' a naked Gary')          
+          new PlainTextNode(' a naked Gary')
         ]),
         new PlainTextNode('.')
       ]))
@@ -132,7 +132,7 @@ describe('An inline NSFW convention produced by curly brackets', () => {
           new PlainTextNode('you still have to wrestle a naked Gary '),
           new ActionNode([
             new PlainTextNode('sigh')
-          ])          
+          ])
         ]),
         new PlainTextNode('.')
       ]))

@@ -24,7 +24,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("does not alter subsequent calls to the default method", () => {
       // We don't care about the result! We only care to ensure these config settings don't apply to subsequent calls.
       Up.toHtml(node, configChanges)
-      
+
       expect(Up.toHtml(node)).to.be.eql(htmlFromDefaultSettings)
     })
   })
@@ -34,7 +34,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   const whenProvidingChangesWhenCallingDefaultMethod =
     Up.toHtml(node, configChanges)
-    
+
   const whenProvidingChangesWhenCallingtMethodOnObject =
     new Up().toHtml(node, configChanges)
 
@@ -148,11 +148,11 @@ describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new InlineSpoilerNode([]),
     htmlFromDefaultSettings:
-      '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" type="checkbox">'
-      + '<span></span>'
-      + '</span>',
+    '<span class="up-spoiler up-revealable">'
+    + '<label for="up-spoiler-1">toggle spoiler</label>'
+    + '<input id="up-spoiler-1" type="checkbox">'
+    + '<span></span>'
+    + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -175,11 +175,11 @@ describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new InlineSpoilerNode([]),
     htmlFromDefaultSettings:
-      '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" type="checkbox">'
-      + '<span></span>'
-      + '</span>',
+    '<span class="up-spoiler up-revealable">'
+    + '<label for="up-spoiler-1">toggle spoiler</label>'
+    + '<input id="up-spoiler-1" type="checkbox">'
+    + '<span></span>'
+    + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -202,11 +202,11 @@ describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new InlineNsfwNode([]),
     htmlFromDefaultSettings:
-      '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<span></span>'
-      + '</span>',
+    '<span class="up-nsfw up-revealable">'
+    + '<label for="up-nsfw-1">toggle NSFW</label>'
+    + '<input id="up-nsfw-1" type="checkbox">'
+    + '<span></span>'
+    + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -214,7 +214,7 @@ describe('The "nsfw" config term', () => {
         }
       }
     },
-    
+
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -230,11 +230,11 @@ describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new InlineNsfwNode([]),
     htmlFromDefaultSettings:
-      '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<span></span>'
-      + '</span>',
+    '<span class="up-nsfw up-revealable">'
+    + '<label for="up-nsfw-1">toggle NSFW</label>'
+    + '<input id="up-nsfw-1" type="checkbox">'
+    + '<span></span>'
+    + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -242,7 +242,7 @@ describe('The "toggleNsfw" config term', () => {
         }
       }
     },
-    
+
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -258,11 +258,11 @@ describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new InlineNsflNode([]),
     htmlFromDefaultSettings:
-      '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<span></span>'
-      + '</span>',
+    '<span class="up-nsfl up-revealable">'
+    + '<label for="up-nsfl-1">toggle NSFL</label>'
+    + '<input id="up-nsfl-1" type="checkbox">'
+    + '<span></span>'
+    + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -270,7 +270,7 @@ describe('The "nsfl" config term', () => {
         }
       }
     },
-    
+
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -286,11 +286,11 @@ describe('The "togglensfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     node: new InlineNsflNode([]),
     htmlFromDefaultSettings:
-      '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<span></span>'
-      + '</span>',
+    '<span class="up-nsfl up-revealable">'
+    + '<label for="up-nsfl-1">toggle NSFL</label>'
+    + '<input id="up-nsfl-1" type="checkbox">'
+    + '<span></span>'
+    + '</span>',
     configChanges: {
       i18n: {
         terms: {
@@ -298,7 +298,7 @@ describe('The "togglensfl" config term', () => {
         }
       }
     },
-    
+
     conflictingConfigChanges: {
       i18n: {
         terms: {

@@ -55,7 +55,7 @@ describe('An inline spoiler convention', () => {
   it('can use any capitalization of the word "spoiler"', () => {
     const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
     const withRandomCase = 'After you beat the Elite Four, [SPoILeR: you fight Gary].'
-    
+
     expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
   })
 
@@ -99,7 +99,7 @@ describe('An inline spoiler produced by square brackets', () => {
           new SquareBracketedNode([
             new PlainTextNode('[and beat]')
           ]),
-          new PlainTextNode(' Gary')          
+          new PlainTextNode(' Gary')
         ]),
         new PlainTextNode('.')
       ]))
@@ -117,7 +117,7 @@ describe('An inline spoiler produced by parentheses', () => {
           new ParenthesizedNode([
             new PlainTextNode('(and beat)')
           ]),
-          new PlainTextNode(' Gary')          
+          new PlainTextNode(' Gary')
         ]),
         new PlainTextNode('.')
       ]))
@@ -134,7 +134,7 @@ describe('An inline spoiler produced by curly brackets', () => {
           new PlainTextNode('you still have to beat Gary '),
           new ActionNode([
             new PlainTextNode('sigh')
-          ])          
+          ])
         ]),
         new PlainTextNode('.')
       ]))
