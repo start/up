@@ -22,7 +22,7 @@ context('The Up library is exported two ways.', () => {
 
 
 context('Every syntax node class is exported:', () => {
-  const SYNTAX_NODE_NAMES = [
+  specifyEveryClassShouldBeExported([
     'AudioNode',
     'BlockquoteNode',
     'CodeBlockNode',
@@ -54,9 +54,20 @@ context('Every syntax node class is exported:', () => {
     'TableNode',
     'UnorderedListNode',
     'VideoNode'
-  ]
+  ])
+})
 
-  specifyEveryClassShouldBeExported(SYNTAX_NODE_NAMES)
+
+context('Every base syntax node class (and interface) is exported:', () => {
+  specifyEveryClassShouldBeExported([
+    'InlineSyntaxNode',
+    'InlineSyntaxNodeContainer',
+    'MediaSyntaxNode',
+    'OutlineSyntaxNode',
+    'OutlineSyntaxNodeContainer',
+    'RichInlineSyntaxNode',
+    'RichOutlineSyntaxNode'
+  ])
 })
 
 
