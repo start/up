@@ -361,22 +361,24 @@ export class HtmlWriter extends Writer {
       genericContainerTagName: string
     }
   ): string {
-    const localizedTerm = this.config.localizeTerm(args.nonLocalizedConventionTerm)
-    const checkboxId = this.getId(localizedTerm, args.conventionCount)
+    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren, genericContainerTagName } = args
+
+    const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
+    const checkboxId = this.getId(localizedTerm, conventionCount)
 
     const label =
-      htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
+      htmlElement('label', termForTogglingVisibility, { for: checkboxId })
 
     const checkbox =
       singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
 
     const content =
-      this.htmlElementWithAlreadyEscapedChildren(args.genericContainerTagName, args.revealableChildren)
+      this.htmlElementWithAlreadyEscapedChildren(genericContainerTagName, revealableChildren)
 
     return htmlElementWithAlreadyEscapedChildren(
-      args.genericContainerTagName,
+      genericContainerTagName,
       [label, checkbox, content],
-      { class: classAttrValue(args.nonLocalizedConventionTerm, 'revealable') })
+      { class: classAttrValue(nonLocalizedConventionTerm, 'revealable') })
   }
 
   private tableCaption(caption: TableNode.Caption): string {
