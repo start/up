@@ -41,10 +41,10 @@ export class HtmlWriter extends Writer {
   // We don't create an anchor element for the inner link.
   private isInsideLink = false
 
-  // Our markup for revealable content (spoilers, NSFW, NSFL) doesn't require JavaScript (just CSS), and it works
+  // Our HTML for revealable content (spoilers, NSFW, NSFL) doesn't require JavaScript (just CSS), and it works
   // perfectly well for screen-readers
   //
-  // For example, here's our markup for inline spoilers:
+  // For example, here's our HTML for inline spoilers:
   //
   // <span class="up-spoiler up-revealable">
   //   <label for="up-spoiler-1">toggle spoiler</label>

@@ -738,7 +738,7 @@ describe('An inline NSFL node', () => {
 
 
 describe('A spoiler block node', () => {
-  it('produces the same markup as an inline spoiler node, but with <div>s instead of <span>s', () => {
+  it('produces the same HTML as an inline spoiler node, but with <div>s instead of <span>s', () => {
     const node = new SpoilerBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
@@ -760,7 +760,7 @@ describe('A spoiler block node', () => {
 
 
 describe('A NSFW block node', () => {
-  it('produces the same markup as an inline NSFW node, but with <div>s instead of <span>s', () => {
+  it('produces the same HTML as an inline NSFW node, but with <div>s instead of <span>s', () => {
     const node = new NsfwBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
@@ -782,7 +782,7 @@ describe('A NSFW block node', () => {
 
 
 describe('A NSFL block node', () => {
-  it('produces the same markup as an inline NSFL node, but with <div>s instead of <span>s', () => {
+  it('produces the same HTML as an inline NSFL node, but with <div>s instead of <span>s', () => {
     const node = new NsflBlockNode([
       new ParagraphNode([
         new PlainTextNode('John Carmack is a decent programmer.')
