@@ -12,9 +12,9 @@ describe('The term that represents image conventions', () => {
   })
 
   it('comes from the "image" config term', () => {
-    const text = '[see: Chrono Cross logo][https://example.com/cc.png]'
+    const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))

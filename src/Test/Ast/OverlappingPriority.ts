@@ -15,7 +15,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
-describe('Overlapped emphasized (using asterisks) and linked text', () => {
+describe('Overlapping emphasis (using asterisks) and a link', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -35,7 +35,7 @@ describe('Overlapped emphasized (using asterisks) and linked text', () => {
 })
 
 
-describe('Overlapped linked and emphasized text (using asterisks)', () => {
+describe('A link overlapping emphasized text (using asterisks)', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -55,7 +55,7 @@ describe('Overlapped linked and emphasized text (using asterisks)', () => {
 })
 
 
-describe('Overlapped emphasized (using underscores) and linked text', () => {
+describe('Overlapping emphasis (using underscores) and a link', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -75,7 +75,7 @@ describe('Overlapped emphasized (using underscores) and linked text', () => {
 })
 
 
-describe('Overlapped linked and emphasized text (using underscores)', () => {
+describe('A link overlapping emphasized text (using underscores)', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -231,10 +231,10 @@ describe('An inline spoiler that overlaps a link', () => {
 
 describe('A link that overlaps an inline spoiler', () => {
   it("splits the link node, not the spoiler node", () => {
-    const text =
+    const markup =
       'In Pokémon Red, [Gary Oak {SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
         new LinkNode([
@@ -273,10 +273,10 @@ describe('An inline spoiler that overlaps action text', () => {
 
 describe('Action text that overlaps an inline spoiler', () => {
   it("splits the action node, not the spoiler node", () => {
-    const text =
+    const markup =
       'In Pokémon Red, Gary Oak {loses [SPOILER: badly} to Ash Ketchum]'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, Gary Oak '),
         new ActionNode([
@@ -295,7 +295,7 @@ describe('Action text that overlaps an inline spoiler', () => {
 
 describe('An inline spoiler that overlaps a footnote', () => {
   it("splits the spoiler node, not the footnote node", () => {
-    const text = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
+    const markup = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -305,7 +305,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineSpoilerNode([
@@ -321,7 +321,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
 
 describe('A footnote that overlaps an inline spoiler', () => {
   it("splits the spoiler node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps an inline spoiler.'
+    const markup = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps an inline spoiler.'
 
     const footnote =
       new FootnoteNode([
@@ -331,7 +331,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
         ]),
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -368,10 +368,10 @@ describe('An inline NSFW convention that overlaps a link', () => {
 
 describe('A link that overlaps an inline NSFW convention', () => {
   it("splits the link node, not the NSFW convention node", () => {
-    const text =
+    const markup =
       'In Pokémon Red, [Gary Oak {NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
         new LinkNode([
@@ -410,10 +410,10 @@ describe('An inline NSFW convention that overlaps action text', () => {
 
 describe('Action text that overlaps an inline NSFW convention', () => {
   it("splits the action node, not the NSFW convention node", () => {
-    const text =
+    const markup =
       'In Pokémon Red, Gary Oak {loses [NSFW: badly} to Ash Ketchum]'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, Gary Oak '),
         new ActionNode([
@@ -432,7 +432,7 @@ describe('Action text that overlaps an inline NSFW convention', () => {
 
 describe('An inline NSFW convention that overlaps a footnote', () => {
   it("splits the NSFW convention node, not the footnote node", () => {
-    const text = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
+    const markup = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -442,7 +442,7 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineNsfwNode([
@@ -458,7 +458,7 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
 
 describe('A footnote that overlaps an inline NSFW convention', () => {
   it("splits the NSFW convention node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [NSFW: and realistic) example of a] footnote that overlaps an inline NSFW convention.'
+    const markup = 'Eventually, I will think of one (^reasonable [NSFW: and realistic) example of a] footnote that overlaps an inline NSFW convention.'
 
     const footnote =
       new FootnoteNode([
@@ -468,7 +468,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
         ]),
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -504,10 +504,10 @@ describe('An inline NSFL convention that overlaps a link', () => {
 
 describe('A link that overlaps an inline NSFL convention', () => {
   it("splits the link node, not the NSFL convention node", () => {
-    const text =
+    const markup =
       'In Pokémon Red, [Gary Oak {NSFL: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly} throughout the game.'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
         new LinkNode([
@@ -546,10 +546,10 @@ describe('An inline NSFL convention that overlaps action text', () => {
 
 describe('Action text that overlaps an inline NSFL convention', () => {
   it("splits the action node, not the NSFL convention node", () => {
-    const text =
+    const markup =
       'In Pokémon Red, Gary Oak {loses [NSFL: badly} to Ash Ketchum]'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, Gary Oak '),
         new ActionNode([
@@ -568,7 +568,7 @@ describe('Action text that overlaps an inline NSFL convention', () => {
 
 describe('An inline NSFL convention that overlaps a footnote', () => {
   it("splits the NSFL convention node, not the footnote node", () => {
-    const text = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
+    const markup = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -578,7 +578,7 @@ describe('An inline NSFL convention that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineNsflNode([
@@ -594,7 +594,7 @@ describe('An inline NSFL convention that overlaps a footnote', () => {
 
 describe('A footnote that overlaps an inline NSFL convention', () => {
   it("splits the NSFL convention node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps an inline NSFL convention.'
+    const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps an inline NSFL convention.'
 
     const footnote =
       new FootnoteNode([
@@ -604,7 +604,7 @@ describe('A footnote that overlaps an inline NSFL convention', () => {
         ])
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -615,26 +615,6 @@ describe('A footnote that overlaps an inline NSFL convention', () => {
           new PlainTextNode(' footnote that overlaps an inline NSFL convention.')
         ]),
         new FootnoteBlockNode([footnote])
-      ]))
-  })
-})
-
-
-describe('Overlapped emphasized (using asterisks) and linked text', () => {
-  it('splits the emphasis node, not the link node', () => {
-    expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I do '),
-        new EmphasisNode([
-          new PlainTextNode('not ')
-        ]),
-        new LinkNode([
-          new EmphasisNode([
-            new PlainTextNode('care')
-          ]),
-          new PlainTextNode(' at'),
-        ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new PlainTextNode(' all.')
       ]))
   })
 })

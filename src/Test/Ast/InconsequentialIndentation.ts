@@ -27,13 +27,13 @@ context("Indentation is important for many outline conventions. However, once th
     })
 
     specify('Line blocks', () => {
-      const text = `
+      const markup = `
   \t Roses are red
 Skeltals are white
  \t  If you stay here
  You're in for a fright`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LineBlockNode([
             new LineBlockNode.Line([
@@ -53,14 +53,14 @@ Skeltals are white
     })
 
     specify('Headings', () => {
-      const text = `
+      const markup = `
 Hello, world!
 ~~~~~~~~~~~~~~~
 
  \t Hello, core!
  \t ~~~~~~~~~~~~~~~`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
           new HeadingNode([new PlainTextNode('Hello, core!')], 1),
@@ -68,12 +68,12 @@ Hello, world!
     })
 
     specify('Description list terms', () => {
-      const text = `
+      const markup = `
  Charmander
 Charmeleon
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -92,12 +92,12 @@ Charmeleon
 
   context("This rule also applies inside outline conventions that can contain other outline conventions:", () => {
     specify('Ordered list items', () => {
-      const text = `
+      const markup = `
 1)  \t Hello, Lavender Town!
 
  \t\t How are we today?`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -113,12 +113,12 @@ Charmeleon
     })
 
     specify('Unordered list items', () => {
-      const text = `
+      const markup = `
 *  \t Buy milk.
 
  \t\t Now.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -134,13 +134,13 @@ Charmeleon
     })
 
     specify('Descriptions in a description list', () => {
-      const text = `
+      const markup = `
 Charmander
    \t Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
    
 \t Does not evolve into Kadabra.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -158,12 +158,12 @@ Charmander
     })
 
     specify('Blockquotes', () => {
-      const text = `
+      const markup = `
 >   \t I like shorts! They're comfy and easy to wear!
 >
 >\t I like blankets, too.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
             new ParagraphNode([
@@ -177,14 +177,14 @@ Charmander
     })
 
     specify('Spoiler blocks', () => {
-      const text = `
+      const markup = `
  SPOILER:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
 \t I like blankets, too.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new ParagraphNode([
@@ -198,14 +198,14 @@ Charmander
     })
 
     specify('NSFW blocks', () => {
-      const text = `
+      const markup = `
  NSFW:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
 \t I like blankets, too.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -219,14 +219,14 @@ Charmander
     })
 
     specify('NSFL blocks', () => {
-      const text = `
+      const markup = `
  NSFL:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
 \t I like blankets, too.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new ParagraphNode([
@@ -241,7 +241,7 @@ Charmander
   })
 
   specify('Tables', () => {
-    const text = `
+    const markup = `
  Table:
 
  \t Game; Release Date
@@ -252,7 +252,7 @@ Charmander
  \t Chrono Trigger; 1995
  \t Chrono Cross; 1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

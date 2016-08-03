@@ -84,7 +84,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify("Footnotes", () => {
-    const text = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
+    const markup = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
 
     const footnote =
       new FootnoteNode([
@@ -93,7 +93,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
         ], 'http://example.com/luckycharms')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal"),
@@ -265,10 +265,10 @@ context('The following conventions cannot be linkified', () => {
       ]))
   })
 
-  specify('Regular text', () => {
-    expect(Up.toAst('The Mini-NES comes out November 11th (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
+  specify('Regular text (e.g. a word)', () => {
+    expect(Up.toAst('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('The Mini-NES comes out November 11th '),
+        new PlainTextNode('The Mini-NES comes out November eleventh '),
         new ParenthesizedNode([
           new PlainTextNode('('),
           new LinkNode([

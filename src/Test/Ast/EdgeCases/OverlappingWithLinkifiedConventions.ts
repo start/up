@@ -59,7 +59,7 @@ describe('A linkified spoiler overlapping revision deletion', () => {
 
 describe('A footnote that overlaps a linkified NSFL convention', () => {
   it("splits the NSFL convention node and its inner link node, not the footnote node", () => {
-    const text = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] {example.com} footnote that overlaps an inline NSFL convention.'
+    const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] {example.com} footnote that overlaps an inline NSFL convention.'
 
     const footnote =
       new FootnoteNode([
@@ -71,7 +71,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
         ])
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -91,7 +91,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
 
 describe('A linkified NSFL convention that overlaps a footnote', () => {
   it("splits the NSFL convention node and its inner link node, not the footnote node", () => {
-    const text = '[NSFL: Gary loses to Ash (^Ketchum] (example.com) is his last name)'
+    const markup = '[NSFL: Gary loses to Ash (^Ketchum] (example.com) is his last name)'
 
     const footnote =
       new FootnoteNode([
@@ -103,7 +103,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineNsflNode([

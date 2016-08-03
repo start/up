@@ -38,10 +38,10 @@ describe('A video that is the only convention on its line is not placed inside a
     })
 
     specify('is linkified', () => {
-      const text =
+      const markup =
         ' \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (hauntedhouse.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
@@ -50,10 +50,10 @@ describe('A video that is the only convention on its line is not placed inside a
     })
 
     specify('is the only convention within a link', () => {
-      const text =
+      const markup =
         ' \t {[video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')

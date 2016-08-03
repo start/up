@@ -14,14 +14,14 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 
 context('A code block preserves all indentation when it is', () => {
   specify('a top-level convention', () => {
-    const text = `
+    const markup = `
 \`\`\`
   if (x < 0) {
 \t\treturn false
   }
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
           `  if (x < 0) {
@@ -33,7 +33,7 @@ context('A code block preserves all indentation when it is', () => {
 
   context('within a spoiler block', () => {
     specify('using 2 spaces for indentation', () => {
-      const text = `
+      const markup = `
 SPOILER:
   \`\`\`
     if (x < 0) {
@@ -41,7 +41,7 @@ SPOILER:
     }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new CodeBlockNode(
@@ -53,7 +53,7 @@ SPOILER:
     })
 
     specify('using 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 SPOILER:
 \t\`\`\`
 \t  if (x < 0) {
@@ -61,7 +61,7 @@ SPOILER:
 \t  }
 \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new CodeBlockNode(
@@ -73,7 +73,7 @@ SPOILER:
     })
 
     specify('using 1 space and 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 SPOILER:
  \t\`\`\`
  \t  if (x < 0) {
@@ -81,7 +81,7 @@ SPOILER:
  \t  }
  \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new CodeBlockNode(
@@ -96,7 +96,7 @@ SPOILER:
 
   context('within a NSFW block', () => {
     specify('using 2 spaces for indentation', () => {
-      const text = `
+      const markup = `
 NSFW:
   \`\`\`
     if (x < 0) {
@@ -104,7 +104,7 @@ NSFW:
     }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new CodeBlockNode(
@@ -116,7 +116,7 @@ NSFW:
     })
 
     specify('using 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 NSFW:
 \t\`\`\`
 \t  if (x < 0) {
@@ -124,7 +124,7 @@ NSFW:
 \t  }
 \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new CodeBlockNode(
@@ -136,7 +136,7 @@ NSFW:
     })
 
     specify('using 1 space and 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 NSFW:
  \t\`\`\`
  \t  if (x < 0) {
@@ -144,7 +144,7 @@ NSFW:
  \t  }
  \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new CodeBlockNode(
@@ -159,7 +159,7 @@ NSFW:
 
   context('within a NSFL block', () => {
     specify('using 2 spaces for indentation', () => {
-      const text = `
+      const markup = `
 NSFL:
   \`\`\`
     if (x < 0) {
@@ -167,7 +167,7 @@ NSFL:
     }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new CodeBlockNode(
@@ -179,7 +179,7 @@ NSFL:
     })
 
     specify('using 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 NSFL:
 \t\`\`\`
 \t  if (x < 0) {
@@ -187,7 +187,7 @@ NSFL:
 \t  }
 \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new CodeBlockNode(
@@ -199,7 +199,7 @@ NSFL:
     })
 
     specify('using 1 space and 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 NSFL:
  \t\`\`\`
  \t  if (x < 0) {
@@ -207,7 +207,7 @@ NSFL:
  \t  }
  \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new CodeBlockNode(
@@ -222,14 +222,14 @@ NSFL:
 
   context('within an ordered list item', () => {
     specify('using 2 spaces for indentation', () => {
-      const text = `
+      const markup = `
 # \`\`\`
     if (x < 0) {
   \t\treturn false
     }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -243,14 +243,14 @@ NSFL:
     })
 
     specify('using 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 # \`\`\`
 \t  if (x < 0) {
 \t\t\treturn false
 \t  }
 \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -264,14 +264,14 @@ NSFL:
     })
 
     specify('using 1 space and 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 # \`\`\`
  \t  if (x < 0) {
  \t\t\treturn false
  \t  }
  \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -288,14 +288,14 @@ NSFL:
 
   context('within an unordered list item', () => {
     specify('using 2 spaces for indentation', () => {
-      const text = `
+      const markup = `
 * \`\`\`
     if (x < 0) {
   \t\treturn false
     }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -309,14 +309,14 @@ NSFL:
     })
 
     specify('using 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 * \`\`\`
 \t  if (x < 0) {
 \t\t\treturn false
 \t  }
 \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -330,14 +330,14 @@ NSFL:
     })
 
     specify('using 1 space and 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 * \`\`\`
  \t  if (x < 0) {
  \t\t\treturn false
  \t  }
  \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -354,7 +354,7 @@ NSFL:
 
   context("within a a description list's description", () => {
     specify('using 2 spaces for indentation', () => {
-      const text = `
+      const markup = `
 Lesson 1
   \`\`\`
     if (x < 0) {
@@ -362,7 +362,7 @@ Lesson 1
     }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -381,7 +381,7 @@ Lesson 1
     })
 
     specify('using 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 Lesson 1
 \t\`\`\`
 \t  if (x < 0) {
@@ -389,7 +389,7 @@ Lesson 1
 \t  }
 \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -408,7 +408,7 @@ Lesson 1
     })
 
     specify('using 1 space and 1 tab for indentation', () => {
-      const text = `
+      const markup = `
 Lesson 1
  \t\`\`\`
  \t  if (x < 0) {
@@ -416,7 +416,7 @@ Lesson 1
  \t  }
  \t\`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -438,14 +438,14 @@ Lesson 1
 
   context('within a blockquote', () => {
     specify('with a space after each delimiter', () => {
-      const text = `
+      const markup = `
 > \`\`\`
 >   if (x < 0) {
 > \t\treturn false
 >   }
 > \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
             new CodeBlockNode(
@@ -461,14 +461,14 @@ Lesson 1
 
 context('When a code block is nested within a blockquote that has no spaces after each delimiter', () => {
   specify("tabbed indentation within the code block is preseved", () => {
-    const text = `
+    const markup = `
 >\`\`\`
 >\tif (x < 0) {
 >\t\treturn false
 >\t}
 >\`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new CodeBlockNode(
@@ -480,14 +480,14 @@ context('When a code block is nested within a blockquote that has no spaces afte
   })
 
   specify('a single leading space will be consumed from any lines of code with leading spaces', () => {
-    const text = `
+    const markup = `
 >\`\`\`
 >if (x < 0) {
 >  return false
 >}
 >\`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new CodeBlockNode(

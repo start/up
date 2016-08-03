@@ -7,14 +7,14 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 context('Just like in a table, cells in a chart can span multiple columns. The syntax is the same. Any chart cell can span multiple columns:', () => {
   specify('Header cells', () => {
-    const text = `
+    const markup = `
 Chart:
 
                      Director;;;
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -31,7 +31,7 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
   })
 
   specify('Row cells', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Developer;            Publisher;        Marketer;       Release Date
@@ -42,7 +42,7 @@ Terranigma;         Quintet;              Nintendo;         Quintet;        Octo
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -75,7 +75,7 @@ Starcraft;          Blizzard;;;                                             Marc
   })
 
   specify('Row header cells', () => {
-    const text = `
+    const markup = `
 Chart: Summary of last work week
 
               Most Common Word;         Magical Happenings
@@ -86,7 +86,7 @@ Wednesday;;                             Break room repaired by CSV
 Thursday;     Really;                   Todd finished his work
 Friday;;                                Printer had ink`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

@@ -12,9 +12,9 @@ describe('The term that represents video conventions', () => {
   })
 
   it('comes from the "audio" config term', () => {
-    const text = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
+    const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))

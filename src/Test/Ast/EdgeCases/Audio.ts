@@ -14,10 +14,10 @@ import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 describe('A paragraph directly followed by audio on its own line', () => {
   it('produces a pagraph node followed by an audio node, not a line block', () => {
-    const text = `
+    const markup = `
 Do not pour the spiders into your sister's cereal.
 [audio: six seconds of screaming][http://example.com/screaming.ogg]`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Do not pour the spiders into your sister's cereal.")
@@ -87,14 +87,14 @@ context('Unmatched opening parentheses in an audio description have no affect on
 
 
 describe("Unmatched opening parentheses in an audio URL", () => {
-  it('do not affect any text that follows the link', () => {
-    const text = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
+  it('do not affect any markup that follows the link', () => {
+    const markup = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new FootnoteNode([
       new AudioNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote

@@ -117,8 +117,8 @@ describe("A link's contents", () => {
 
 
 describe("Unmatched opening parentheses in a link's URL", () => {
-  it('do not affect any text that follows the link', () => {
-    const text = '(^He won [West Virginia][https://example.com/a(normal(url] easily.)'
+  it('do not affect any markup that follows the link', () => {
+    const markup = '(^He won [West Virginia][https://example.com/a(normal(url] easily.)'
 
     const footnote = new FootnoteNode([
       new PlainTextNode('He won '),
@@ -128,7 +128,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
       new PlainTextNode(' easily.')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote
@@ -158,7 +158,7 @@ describe('A link missing its final closing bracket', () => {
 })
 
 
-describe("Bracketed text followed by a parenthesized URL starting with an open parenthesis (that gets matched at some point before the URL ends)", () => {
+describe("bracketed text followed by a parenthesized URL starting with an open parenthesis (that gets matched at some point before the URL ends)", () => {
   it('produce a link node (whose URL is prefixed by the default scheme)', () => {
     expect(Up.toAst('See the [documentation]((parenthetical)operators).')).to.be.eql(
       insideDocumentAndParagraph([

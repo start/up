@@ -36,14 +36,14 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
 
   context('For NSFL blocks:', () => {
     specify('The term is used', () => {
-      const text = `
+      const markup = `
 gross:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toAst(text)).to.be.eql(
+      expect(up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new ParagraphNode([

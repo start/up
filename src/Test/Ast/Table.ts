@@ -10,13 +10,13 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 describe('A line consisting solely of "Table:", followed by any number of rows of semicolon-delimited row values,', () => {
   it('produces a table node', () => {
-    const text = `
+    const markup = `
 Table:
 Game;Release Date
 Chrono Trigger;1995
 Chrono Cross;1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -39,7 +39,7 @@ Chrono Cross;1999`
 
 context('Within a table', () => {
   specify('single blank lines are allowed', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;Release Date
@@ -50,7 +50,7 @@ Final Fantasy II;1988
 Chrono Trigger;1995
 Chrono Cross;1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -78,7 +78,7 @@ Chrono Cross;1999`
   })
 
   specify('outer whitespace is trimmed from each header and row cell', () => {
-    const text = `
+    const markup = `
 Table:
 
  \t Game\t ; \t Release Date \t
@@ -89,7 +89,7 @@ Table:
  \t Chrono Trigger\t ;\t 1995 \t 
  \t Chrono Cross\t ;\t 1999 \t `
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -120,7 +120,7 @@ Table:
 
 context('A table is terminated by', () => {
   specify('2 consecutive blank lines', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;Release Date
@@ -134,7 +134,7 @@ Chrono Cross;1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -165,7 +165,7 @@ I don't like video games; in fact, I never have.`
   })
 
   specify('3 consecutive blank lines', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;Release Date
@@ -180,7 +180,7 @@ Chrono Cross;1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -215,7 +215,7 @@ I don't like video games; in fact, I never have.`
 
 describe('Tables', () => {
   it('can have just 1 column', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game
@@ -223,7 +223,7 @@ Game
 Chrono Trigger
 Chrono Cross`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -240,7 +240,7 @@ Chrono Cross`
   })
 
   it('can have 3 or more columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Platform;         Release Date
@@ -251,7 +251,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -292,7 +292,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 context('Table header cells', () => {
   specify('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date (year only)
@@ -303,7 +303,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -336,7 +336,7 @@ Chrono Cross;       1999`
   })
 
   specify('can contain escaped semicolons', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Publisher\\; Developer
@@ -344,7 +344,7 @@ Game;               Publisher\\; Developer
 Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -367,7 +367,7 @@ Super Mario Kart;   Nintendo`
 
 context('Table row cells', () => {
   specify('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date
@@ -378,7 +378,7 @@ Final Fantasy II;   1988 (almost 1989)
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -411,7 +411,7 @@ Chrono Cross;       1999`
   })
 
   specify('can contain escaped semicolons', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;                               Publisher
@@ -419,7 +419,7 @@ Game;                               Publisher
 Final Fantasy\\; Final Fantasy II;  Square
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -442,14 +442,14 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
 describe("The colon after the 'table' term", () => {
   it('is not required', () => {
-    const text = `
+    const markup = `
 Table
 
 Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -472,14 +472,14 @@ Chrono Cross;   1999`
 
 context("The label line for tables can end with whitespace, regardless of whether the term for 'table' is followed by a colon.", () => {
   specify('When followed by a colon without a caption', () => {
-    const text = `
+    const markup = `
 Table:  \t \t 
 
 Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -499,14 +499,14 @@ Chrono Cross;   1999`
   })
 
   specify('When not followed by a colon', () => {
-    const text = `
+    const markup = `
 Table  \t \t 
 
 Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -527,16 +527,16 @@ Chrono Cross;   1999`
 })
 
 
-context('Inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect text in that one cell. This is true for:', () => {
+context('Inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect markup in that one cell. This is true for:', () => {
   specify('Header cells', () => {
-    const text = `
+    const markup = `
 Table:
 
 [: Game;          Release Date :]
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -556,14 +556,14 @@ Chrono Cross;     1999`
   })
 
   specify('Row cells', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;                 Release Date
 [: Chrono Trigger;    1995 :]
 Chrono Cross;         1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -585,12 +585,12 @@ Chrono Cross;         1999`
 
 describe('A table', () => {
   it('does not need any rows', () => {
-    const text = `
+    const markup = `
 Table
 
 Game;           Release Date`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

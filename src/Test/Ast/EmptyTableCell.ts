@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 describe('A table row ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date
@@ -18,7 +18,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -49,7 +49,7 @@ Chrono Cross;       1999`
 
 describe('A table row ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date
@@ -60,7 +60,7 @@ Final Fantasy II; \t \t
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -91,7 +91,7 @@ Chrono Cross;       1999`
 
 describe('A table header ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date;
@@ -102,7 +102,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -136,7 +136,7 @@ Chrono Cross;       1999;               Though not a proper sequel, it's my favo
 
 describe('A table header ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date; \t \t 
@@ -147,7 +147,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -179,7 +179,7 @@ Chrono Cross;       1999`
 
 describe('A (non-empty) table header cell consisting only of whitespace', () => {
   it('is considered empty', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;      \t    ;                 Release Date
@@ -190,7 +190,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -231,7 +231,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 describe('A (non-empty) table row cell consisting only of whitespace', () => {
   it('is considered empty', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Platform;         Release Date
@@ -242,7 +242,7 @@ Chrono Trigger;     ;        \t           Super Nintendo;   March 11, 1995
 Command & Conquer;  Westwood Studios;     ;    \t           August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -283,7 +283,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 describe('A table header starting with a semicolon', () => {
   it('starts with an empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 ;    \t             Developer;            Platform;         Release Date
@@ -294,7 +294,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

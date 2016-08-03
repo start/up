@@ -17,11 +17,11 @@ context("A NSFL block's label line does not produce a NSFL block node if it is",
   })
 
   specify('immediately followed by non-indented text', () => {
-    const text = `
+    const markup = `
 NSFL:
 No!
 Avoid that initialism!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('NSFL:')]),
@@ -31,12 +31,12 @@ Avoid that initialism!`
       ]))
   })
 
-  specify('followed a blank line then non-indented text', () => {
-    const text = `
+  specify('followed by a blank line then a non-indented line', () => {
+    const markup = `
 NSFL:
 
 No!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('NSFL:')
@@ -47,13 +47,13 @@ No!`
       ]))
   })
 
-  specify('followed 2 blank lines then non-indented text', () => {
-    const text = `
+  specify('followed by 2 blank lines then a non-indented line', () => {
+    const markup = `
 NSFL:
 
 
 No!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('NSFL:')
@@ -64,15 +64,15 @@ No!`
       ]))
   })
 
-  specify('followed 3 or more blank lines then non-indented text', () => {
-    const text = `
+  specify('followed by 3 or more blank lines then a non-indented line', () => {
+    const markup = `
 NSFL:
 
 
 
 
 No!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('NSFL:')

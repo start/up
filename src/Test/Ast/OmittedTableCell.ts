@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 context('When a table row has fewer cells than the header or than other rows', () => {
   specify('no extra cells are added to that row', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Platform;         Release Date
@@ -18,7 +18,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -54,7 +54,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 describe('A table header', () => {
   specify('can have fewer cells than its rows have', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date
@@ -62,7 +62,7 @@ Game;               Release Date
 Final Fantasy;      1987;               This game has some interesting bugs.
 Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

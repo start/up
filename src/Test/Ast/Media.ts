@@ -9,10 +9,10 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph).', () => {
   specify('This line can be a mix of all media conventions', () => {
-    const text =
+    const markup =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -21,10 +21,10 @@ context('If a line consists solely of media conventions, those media conventions
   })
 
   specify('The line can have whitespace between and around the media conventions', () => {
-    const text =
+    const markup =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -33,10 +33,10 @@ context('If a line consists solely of media conventions, those media conventions
   })
 
   specify('The line can have whitespace between and around the media conventions', () => {
-    const text =
+    const markup =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -47,10 +47,10 @@ context('If a line consists solely of media conventions, those media conventions
 
   context("A link containing only one or more media conventions (and optional whitspace) counts as media for the purpose of this rule.", () => {
     specify("All of the media conventions on a line can be stuffed into one link", () => {
-      const text =
+      const markup =
         ' \t {[audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com)  \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -61,10 +61,10 @@ context('If a line consists solely of media conventions, those media conventions
     })
 
     specify("One or more media conventions on the line can be left out of the link", () => {
-      const text =
+      const markup =
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t {[image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com)  \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
           new LinkNode([
@@ -75,10 +75,10 @@ context('If a line consists solely of media conventions, those media conventions
     })
 
     specify("There can be multiple links on the same line", () => {
-      const text =
+      const markup =
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (ghosts.com) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (poltergeists.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')

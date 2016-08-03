@@ -19,11 +19,11 @@ describe('A backslash that is the first character in a paragraph', () => {
 
 describe("A backslash that is the first character in a line block's first line", () => {
   it('correctly escapes the next character', () => {
-    const text = `
+    const markup = `
 \\Roses are red
 Violets are blue`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
@@ -36,11 +36,11 @@ Violets are blue`
 
 describe("A backslash that is the first character in a line block's second line", () => {
   it('correctly escapes the next character', () => {
-    const text = `
+    const markup = `
 Roses are red
 \\Violets are blue`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),

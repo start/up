@@ -13,14 +13,14 @@ describe('The term that represents table conventions', () => {
   })
 
   it('comes from the "table" config term', () => {
-    const text = `
+    const markup = `
 Data:
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

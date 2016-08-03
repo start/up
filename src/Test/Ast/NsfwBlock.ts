@@ -11,13 +11,13 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 describe('A line consisting solely of "NSFW:", followed by an indented block of text,', () => {
   it('produces a NSFW block node', () => {
-    const text = `
+    const markup = `
 NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -34,13 +34,13 @@ NSFW:
 
 describe('The "NSFW:" line in a NSFW block', () => {
   it('is case-insensitive', () => {
-    const text = `
+    const markup = `
 nSFw:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -54,14 +54,14 @@ nSFw:
   })
 
   it('can be followed by a blank line', () => {
-    const text = `
+    const markup = `
 NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -75,14 +75,14 @@ NSFW:
   })
 
   it('does not require trailing colon', () => {
-    const text = `
+    const markup = `
 NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -96,7 +96,7 @@ NSFW:
   })
 
   it('can be followed by 2 blank lines', () => {
-    const text = `
+    const markup = `
 NSFW:
 
 
@@ -104,7 +104,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -118,7 +118,7 @@ NSFW:
   })
 
   it('can be followed by 3 or more blank lines', () => {
-    const text = `
+    const markup = `
 NSFW:
 
 
@@ -128,7 +128,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -142,14 +142,14 @@ NSFW:
   })
 
   it('can have whitespace after the colon', () => {
-    const text = `
+    const markup = `
 NSFW:  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -163,14 +163,14 @@ NSFW:  \t  \t
   })
 
   it("can have whitespace the 'nsfw' term if there isn't a colon", () => {
-    const text = `
+    const markup = `
 NSFW  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -188,7 +188,7 @@ NSFW  \t  \t
 describe('NSFW blocks', () => {
   context('can contain any outline convention, including: ', () => {
     specify('Other NSFW blocks', () => {
-      const text = `
+      const markup = `
 NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -197,7 +197,7 @@ NSFW:
 
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -213,7 +213,7 @@ NSFW:
     })
 
     specify('Section separators indicated by 3 or more blank lines', () => {
-      const text = `
+      const markup = `
 NSFW:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -222,7 +222,7 @@ NSFW:
 
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -237,7 +237,7 @@ NSFW:
     })
 
     specify('Code blocks', () => {
-      const text = `
+      const markup = `
 NSFW:
 
   \`\`\`
@@ -249,7 +249,7 @@ NSFW:
   }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
             new CodeBlockNode(
@@ -265,12 +265,12 @@ NSFW:
   })
 
   it('can be directly followed by a paragraph', () => {
-    const text = `
+    const markup = `
 NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
 That was my favorite episode.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -284,14 +284,14 @@ That was my favorite episode.`
   })
 
   it('are evaluated for inline conventions', () => {
-    const text = `
+    const markup = `
 NSFW:
 
   With a *very* sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -312,11 +312,11 @@ NSFW:
 
 context('The indentation of a NSFW block can be provided by', () => {
   specify('2 spaces', () => {
-    const text = `
+    const markup = `
 NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -327,11 +327,11 @@ NSFW:
   })
 
   specify('a tab', () => {
-    const text = `
+    const markup = `
 NSFW:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -342,11 +342,11 @@ NSFW:
   })
 
   specify('a space then a tab', () => {
-    const text = `
+    const markup = `
 NSFW:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -357,7 +357,7 @@ NSFW:
   })
 
   specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the NSFW block', () => {
-    const text = `
+    const markup = `
 NSFW:
 
 \tWell...
@@ -366,7 +366,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([

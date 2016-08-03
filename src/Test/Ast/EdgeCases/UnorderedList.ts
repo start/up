@@ -11,12 +11,12 @@ import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 
 describe('An unordered list with a single item', () => {
   it('can be sandwched by identical section separator streaks without producing a heading', () => {
-    const text = `
+    const markup = `
 -----------
 * Mittens
 -----------`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new UnorderedListNode([
@@ -34,7 +34,7 @@ describe('An unordered list with a single item', () => {
 
 describe('An unordered list', () => {
   it('can be sandwched by line blocks', () => {
-    const text = `
+    const markup = `
 Roses are red
 Violets are blue
 - Kansas
@@ -42,7 +42,7 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -78,7 +78,7 @@ And addresses do, too`
 
 describe('An unordered list followed by 2 blank lines followed by another unordered list', () => {
   it('produce 2 separate unordered lists', () => {
-    const text = `
+    const markup = `
 - Iowa
 - New Hampshire
 
@@ -86,7 +86,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 - Clinton
 - Sanders`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -119,7 +119,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 
 describe('An unordered list followed by 3 blank lines followed by another unordered list', () => {
   it('produce an unordered list, a section separator, and another unordered list', () => {
-    const text = `
+    const markup = `
 - Iowa
 - New Hampshire
 
@@ -128,7 +128,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 - Clinton
 - Sanders`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -162,12 +162,12 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 
 describe('A code block in a list item', () => {
   it('produces a code block node with unindented content', () => {
-    const text = `
+    const markup = `
 * \`\`\`
   const x = 0
   \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -178,7 +178,7 @@ describe('A code block in a list item', () => {
   })
 
   it('can have 3 consecutive blank lines', () => {
-    const text = `
+    const markup = `
 * \`\`\`
   const x = 0
 
@@ -187,7 +187,7 @@ describe('A code block in a list item', () => {
   const y = 0
   \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([

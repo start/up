@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 describe('Just like a table, a chart row ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Release Date
@@ -18,7 +18,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -45,7 +45,7 @@ Chrono Cross;       1999`
 
 describe('A chart row ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Release Date
@@ -56,7 +56,7 @@ Final Fantasy II; \t \t
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -83,7 +83,7 @@ Chrono Cross;       1999`
 
 describe('A chart header ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Release Date;
@@ -94,7 +94,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -124,7 +124,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
 
 describe('A chart header ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Release Date; \t \t 
@@ -135,7 +135,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -165,7 +165,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
 
 describe('A (non-empty) chart header cell consisting only of whitespace', () => {
   it('is considered empty', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Developer;        \t  ;         Release Date
@@ -176,7 +176,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -213,7 +213,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 describe('A (non-empty) chart row cell consisting only of whitespace', () => {
   it('is considered empty', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Developer;            Platform;         Release Date
@@ -224,7 +224,7 @@ Chrono Trigger;       \t  ;               Super Nintendo;   March 11, 1995
 Command & Conquer;  Westwood Studios;      \t ;             August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -261,7 +261,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 describe('A chart header starting with a semicolon', () => {
   it("starts with 2 empty cells (the first empty cell is the one that's added automatically)", () => {
-    const text = `
+    const markup = `
 Chart:
 
 ;                                         Platform;         Release Date
@@ -272,7 +272,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

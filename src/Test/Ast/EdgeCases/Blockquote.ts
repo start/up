@@ -33,12 +33,12 @@ describe('A single blank blockquoted line', () => {
 
 describe('A single line blockquote', () => {
   it('can be sandwched by identical section separator streaks without producing a heading', () => {
-    const text = `
+    const markup = `
 ---------------
 > I choose you!
 ---------------`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new BlockquoteNode([

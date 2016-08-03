@@ -10,11 +10,11 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 
 describe('A non-indented line followed by an indented line', () => {
   it('produce a description list node containing a single term and its description', () => {
-    const text = `
+    const markup = `
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -33,13 +33,13 @@ Charmander
 
 describe('Multiple non-indented lines followed by one indented line', () => {
   it('produce a description list node containing multiple terms and their single description', () => {
-    const text = `
+    const markup = `
 Charmander
 Cyndaquil
 Torchic
   The first three starter Fire Pokemon`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -60,11 +60,11 @@ Torchic
 
 describe("A term in a description list", () => {
   it('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Ash *"Little Marco"* Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -87,11 +87,11 @@ Ash *"Little Marco"* Ketchum
 
 describe("A description in a description list", () => {
   it('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -114,7 +114,7 @@ Ash Ketchum
 
 describe('Consecutive terms and descriptions', () => {
   it('produce a single description list node', () => {
-    const text = `
+    const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
 
@@ -127,7 +127,7 @@ Gary
   A young man with a great sense of smell.
 `
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -165,11 +165,11 @@ Gary
 
 describe("A description list", () => {
   it('can be directly followed by a paragraph', () => {
-    const text = `
+    const markup = `
 Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -195,12 +195,12 @@ The secret to eternal youth is to join a cartoon.`
 context('Lines in the description of description list must be indented.', () => {
   context('The indentation must be at least:', () => {
     specify('Two spaces', () => {
-      const text = `
+      const markup = `
 Poem
   Roses are red
   Violets are blue`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -223,12 +223,12 @@ Poem
     })
 
     specify('One tab', () => {
-      const text = `
+      const markup = `
 Poem
 \tRoses are red
 \tViolets are blue`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -251,12 +251,12 @@ Poem
     })
 
     specify('One space folled by one tab', () => {
-      const text = `
+      const markup = `
 Poem
  \tRoses are red
  \tViolets are blue`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -281,7 +281,7 @@ Poem
 })
 
 specify('Different lines in a description list can use different indentation', () => {
-  const text = `
+  const markup = `
 Poem
   Roses are red
  \tViolets are blue
@@ -296,7 +296,7 @@ Address
  
  \tI used to live there.`
 
-  expect(Up.toAst(text)).to.be.eql(
+  expect(Up.toAst(markup)).to.be.eql(
     new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([

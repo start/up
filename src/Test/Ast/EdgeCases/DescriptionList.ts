@@ -9,7 +9,7 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('A description list followed by 2 blank lines followed by another description list', () => {
   it('produce two separate description lists', () => {
-    const text = `
+    const markup = `
 League of Legends
   A multiplayer online battle arena game
 StarCraft 2
@@ -21,7 +21,7 @@ Magnus Carlsen
 Lee Chang-ho
   An above average go player
 `
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -70,7 +70,7 @@ Lee Chang-ho
 
 describe('A description list followed by 3 blank lines followed by another description list', () => {
   it('produce a description list, a section separator, and another description list', () => {
-    const text = `
+    const markup = `
 League of Legends
   A multiplayer online battle arena game
 StarCraft 2
@@ -83,7 +83,7 @@ Magnus Carlsen
 Lee Chang-ho
   An above average go player
 `
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([

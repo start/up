@@ -15,13 +15,13 @@ import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 
 describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -35,7 +35,7 @@ describe('A footnote reference at the end of a paragraph', () => {
 
 describe('A footnote produced by parentheses that contains nested parenthesized text ending together', () => {
   it('produces a footnote containing the nested parenthesized text', () => {
-    const text = "(^I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?)"
+    const markup = "(^I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
@@ -49,7 +49,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
       new PlainTextNode(' See?')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote
@@ -62,7 +62,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
 
 describe('A footnote produced by square brackets that contains nested square bracketed text ending together', () => {
   it('produces a footnote containing the nested square bracketed text', () => {
-    const text = "[^I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]"
+    const markup = "[^I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]"
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
@@ -76,7 +76,7 @@ describe('A footnote produced by square brackets that contains nested square bra
       new PlainTextNode(' See?')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote
@@ -89,7 +89,7 @@ describe('A footnote produced by square brackets that contains nested square bra
 
 describe('A footnote produced by curly brackets that contains nested action text ending together', () => {
   it('produces a footnote containing the nested action text', () => {
-    const text = "{^I'm normal. {eats {dies}} See?}"
+    const markup = "{^I'm normal. {eats {dies}} See?}"
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
@@ -102,7 +102,7 @@ describe('A footnote produced by curly brackets that contains nested action text
       new PlainTextNode(' See?')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote
@@ -115,14 +115,14 @@ describe('A footnote produced by curly brackets that contains nested action text
 
 describe('Inside an outline convention, blockquoted footnote references', () => {
   it('produce footnote blocks directly after each appropriate convention within the blockquote', () => {
-    const text = `
+    const markup = `
 * > I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
 
     const footnote = new FootnoteNode([
       new PlainTextNode("Well, I do, but I pretend not to."),
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -143,7 +143,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
 
 describe('A footnote with inner footnotes followed by another footnote with inner footnotes', () => {
   it('produces no duplicate reference numbers', () => {
-    const text =
+    const markup =
       "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably. (^No.))"
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
@@ -169,7 +169,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
       footnoteInsideSecondFootnote
     ], 2)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
@@ -190,13 +190,13 @@ describe('A footnote with inner footnotes followed by another footnote with inne
 
 describe('A footnote reference at the beginning of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
-    const text = "(^I would never eat cereal.) I'm a normal breakfast eater, just like you."
+    const markup = "(^I would never eat cereal.) I'm a normal breakfast eater, just like you."
 
     const footnote = new FootnoteNode([
       new PlainTextNode('I would never eat cereal.')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote,

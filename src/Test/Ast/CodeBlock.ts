@@ -9,12 +9,12 @@ import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 
 describe('Text surrounded (underlined and overlined) by matching streaks of backticks (of at least 3 characters long)', () => {
   it('produces a code block node', () => {
-    const text = `
+    const markup = `
 \`\`\`
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const pie = 3.5'),
       ]))
@@ -24,13 +24,13 @@ const pie = 3.5
 
 describe('A code block', () => {
   it('can contain multiple lines', () => {
-    const text = `
+    const markup = `
 \`\`\`
 // Escaping backticks in typescript...
 // Such a pain!
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
           `// Escaping backticks in typescript...
@@ -39,19 +39,19 @@ describe('A code block', () => {
   })
 
   it('preserves all backslashes', () => {
-    const text = `
+    const markup = `
 \`\`\`
 const lineBreak = "\\n"
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const lineBreak = "\\n"'),
       ]))
   })
 
   it('can follow another code block that uses streaks of the same length', () => {
-    const text = `
+    const markup = `
 \`\`\`
 // Escaping backticks in typescript...
 // Such a pain!
@@ -61,7 +61,7 @@ const lineBreak = "\\n"
 // Wait. Have I already said this?
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
           `// Escaping backticks in typescript...
@@ -75,7 +75,7 @@ const lineBreak = "\\n"
 
   context('can contain streaks of backticks', () => {
     specify("shorter than the code block's streaks", () => {
-      const text = `
+      const markup = `
 \`\`\`\`\`
 \`\`\`
 function factorial(n: number): number {
@@ -86,7 +86,7 @@ function factorial(n: number): number {
 }
 \`\`\`
 \`\`\`\`\``
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
             `\`\`\`
@@ -101,7 +101,7 @@ function factorial(n: number): number {
     })
 
     specify("longer than the code block's streaks", () => {
-      const text = `
+      const markup = `
 \`\`\`\`\`
 \`\`\`\`\`\`
 function factorial(n: number): number {
@@ -112,7 +112,7 @@ function factorial(n: number): number {
 }
 \`\`\`\`\`\`
 \`\`\`\`\``
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
             `\`\`\`\`\`\`
@@ -127,7 +127,7 @@ function factorial(n: number): number {
     })
 
     specify("that are unmatched", () => {
-      const text = `
+      const markup = `
 \`\`\`
 \`\`\`\`\`\`
 function factorial(n: number): number {
@@ -137,7 +137,7 @@ function factorial(n: number): number {
       : n * factorial(n - 1))
 }
 \`\`\``
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
             `\`\`\`\`\`\`
@@ -151,7 +151,7 @@ function factorial(n: number): number {
     })
 
     specify("not touching the code block's streaks", () => {
-      const text = `
+      const markup = `
 \`\`\`\`\`
 Wrap code in streaks of backticks! 
 
@@ -166,7 +166,7 @@ function factorial(n: number): number {
 
 It's easy!
 \`\`\`\`\``
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
             `Wrap code in streaks of backticks! 
@@ -189,7 +189,7 @@ It's easy!`)
 
 context("An unmatched streak of backticks produces a code block that extends to the end of the code block's container", () => {
   specify("If the code block isn't nested within another convention, it extends to the end of the document", () => {
-    const text = `
+    const markup = `
 Check out the code below!
 
 \`\`\`
@@ -202,7 +202,7 @@ function factorial(n: number): number {
 
 document.write('The factorial of 5 is: ' + factorial(5))`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Check out the code below!')
@@ -220,7 +220,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`)
   })
 
   specify('If the code block is nested with a spoiler block, it extends to the end of the spoiler block', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
   \`\`\`
@@ -233,7 +233,7 @@ SPOILER:
   
 I hope you were able to find a solution without cheating.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new CodeBlockNode(

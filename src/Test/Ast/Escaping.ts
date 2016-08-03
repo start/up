@@ -36,7 +36,7 @@ describe('A backslash', () => {
       ]))
   })
 
-  it('is ignored if it is the final character of the text', () => {
+  it('is ignored if it is the final character of the markup', () => {
     expect(Up.toAst('Hello, \\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, ')
@@ -47,10 +47,10 @@ describe('A backslash', () => {
 
 context("Backslashes don't disable line breaks:", () => {
   specify('At the end of a line in a line block', () => {
-    const text = `
+    const markup = `
 Hello, world!\\
 Goodbye, world!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -64,11 +64,11 @@ Goodbye, world!`
   })
 
   specify('On an otherwise-empty line between paragraphs', () => {
-    const text = `
+    const markup = `
 Hello, world!
 \\
 Goodbye, world!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
@@ -80,11 +80,11 @@ Goodbye, world!`
   })
 
   specify('At the end of a paragraph', () => {
-    const text = `
+    const markup = `
 Hello, world!\\
 
 Goodbye, world!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')

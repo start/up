@@ -11,13 +11,13 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 describe('A line consisting solely of "NSFL:", followed by an indented block of text,', () => {
   it('produces a NSFL block node', () => {
-    const text = `
+    const markup = `
 NSFL:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -34,13 +34,13 @@ NSFL:
 
 describe('The "NSFL:" line in a NSFL block', () => {
   it('is case-insensitive', () => {
-    const text = `
+    const markup = `
 nSfL:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -54,14 +54,14 @@ nSfL:
   })
 
   it('can be followed by a blank line', () => {
-    const text = `
+    const markup = `
 NSFL:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -75,14 +75,14 @@ NSFL:
   })
 
   it('does not require a trailing colon', () => {
-    const text = `
+    const markup = `
 NSFL
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -96,7 +96,7 @@ NSFL
   })
 
   it('can be followed by 2 blank lines', () => {
-    const text = `
+    const markup = `
 NSFL:
 
 
@@ -104,7 +104,7 @@ NSFL:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -118,7 +118,7 @@ NSFL:
   })
 
   it('can be followed by 3 or more blank lines', () => {
-    const text = `
+    const markup = `
 NSFL:
 
 
@@ -128,7 +128,7 @@ NSFL:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -142,14 +142,14 @@ NSFL:
   })
 
   it('can have whitespace after the colon', () => {
-    const text = `
+    const markup = `
 NSFL:  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -163,14 +163,14 @@ NSFL:  \t  \t
   })
 
   it("can have whitespace the 'nsfl' term if there isn't a colon", () => {
-    const text = `
+    const markup = `
 NSFL  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -188,7 +188,7 @@ NSFL  \t  \t
 describe('NSFL blocks', () => {
   context('can contain any outline convention, including: ', () => {
     specify('Other NSFL blocks', () => {
-      const text = `
+      const markup = `
 NSFL:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -197,7 +197,7 @@ NSFL:
 
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new ParagraphNode([
@@ -213,7 +213,7 @@ NSFL:
     })
 
     specify('Section separators indicated by 3 or more blank lines', () => {
-      const text = `
+      const markup = `
 NSFL:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -222,7 +222,7 @@ NSFL:
 
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new ParagraphNode([
@@ -237,7 +237,7 @@ NSFL:
     })
 
     specify('Code blocks', () => {
-      const text = `
+      const markup = `
 NSFL:
 
   \`\`\`
@@ -249,7 +249,7 @@ NSFL:
   }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
             new CodeBlockNode(
@@ -265,12 +265,12 @@ NSFL:
   })
 
   it('can be directly followed by a paragraph', () => {
-    const text = `
+    const markup = `
 NSFL:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
 That was my favorite episode.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -284,14 +284,14 @@ That was my favorite episode.`
   })
 
   it('are evaluated for inline conventions', () => {
-    const text = `
+    const markup = `
 NSFL:
 
   With a *very* sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -312,11 +312,11 @@ NSFL:
 
 context('The indentation of a NSFL block can be provided by', () => {
   specify('2 spaces', () => {
-    const text = `
+    const markup = `
 NSFL:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -327,11 +327,11 @@ NSFL:
   })
 
   specify('a tab', () => {
-    const text = `
+    const markup = `
 NSFL:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -342,11 +342,11 @@ NSFL:
   })
 
   specify('a space then a tab', () => {
-    const text = `
+    const markup = `
 NSFL:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -357,7 +357,7 @@ NSFL:
   })
 
   specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the NSFL block', () => {
-    const text = `
+    const markup = `
 NSFL:
 
 \tWell...
@@ -366,7 +366,7 @@ NSFL:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([

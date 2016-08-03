@@ -37,14 +37,14 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
 
   context('For spoiler blocks:', () => {
     specify('The term is used', () => {
-      const text = `
+      const markup = `
 ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toAst(text)).to.be.eql(
+      expect(up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new ParagraphNode([

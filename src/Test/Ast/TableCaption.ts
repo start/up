@@ -9,7 +9,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 context("In a table's label line, when the term for 'table' is followed by a colon,", () => {
   specify('the colon can be folowed by a caption', () => {
-    const text = `
+    const markup = `
 Table: Games in the Chrono series
 
 Game;           Release Date
@@ -17,7 +17,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -43,7 +43,7 @@ Chrono Cross;   1999`
 
 describe("A table caption", () => {
   it('is evaluated for inline conventions', () => {
-    const text = `
+    const markup = `
 Table: Games in the *Chrono* series
 
 Game;           Release Date
@@ -51,7 +51,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -78,7 +78,7 @@ Chrono Cross;   1999`
   })
 
   it('is trimmed', () => {
-    const text = `
+    const markup = `
 Table:  \t \t Games in the *Chrono* series \t \t
 
 Game;           Release Date
@@ -86,7 +86,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -116,14 +116,14 @@ Chrono Cross;   1999`
 
 describe("A table with a caption (just like a table without a caption)", () => {
   it('does not need to have a blank line before the header row', () => {
-    const text = `
+    const markup = `
 Table: Games in the Chrono series
 Game;           Release Date
 
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -146,12 +146,12 @@ Chrono Cross;   1999`
   })
 
   it('does not need any rows', () => {
-    const text = `
+    const markup = `
 Table: Games in the Chrono series
 
 Game;           Release Date`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -169,11 +169,11 @@ Game;           Release Date`
 
 context("When there isn't a colon after the term for 'table' in a table's label line", () => {
   specify('the table cannot have a caption', () => {
-    const text = `
+    const markup = `
 Table the proposal.
 
 Do it now; I'm tired of waiting.`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Table the proposal.')]),
         new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),

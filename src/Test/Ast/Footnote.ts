@@ -56,13 +56,13 @@ describe('Curly bracketed text starting with a caret', () => {
 
 describe('A word followed by several spaces followed by a footnote', () => {
   it("produces a footnote node directly after the word", () => {
-    const text = "I don't eat cereal.   (^Well, I do, but I pretend not to.)"
+    const markup = "I don't eat cereal.   (^Well, I do, but I pretend not to.)"
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -142,7 +142,7 @@ describe('A footnote', () => {
   })
 
   it('can contain other footnotes, which produce additional footnotes in the same footnote block', () => {
-    const text = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really."
+    const markup = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really."
 
     const innerFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
@@ -158,7 +158,7 @@ describe('A footnote', () => {
       new PlainTextNode(" Never have."),
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),

@@ -9,7 +9,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 describe('A chart with one column', () => {
   it('can have row header cells that would otherwise be interpreted as section separator streaks', () => {
-    const text = `
+    const markup = `
 Chart: Most common underlines for top-level headings (from most to least common)
 
       Underline Frequency
@@ -18,7 +18,7 @@ Chart: Most common underlines for top-level headings (from most to least common)
 ####
 ----`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -45,14 +45,14 @@ Chart: Most common underlines for top-level headings (from most to least common)
 
 describe("A chart header cell", () => {
   it('can end with an escaped semicolon', () => {
-    const text = `
+    const markup = `
 Chart
 
                      Release Date [\\;
 Chrono Trigger;      1995
 Chrono Cross;        1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -70,14 +70,14 @@ Chrono Cross;        1999`
   })
 
   it('can end with an escaped backslash', () => {
-    const text = `
+    const markup = `
 Chart
 
                       Release Date :\\\\
 Chrono Trigger;       1995
 Chrono Cross;         1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -98,14 +98,14 @@ Chrono Cross;         1999`
 
 describe("A chart row cell", () => {
   it('can end with an escaped semicolon', () => {
-    const text = `
+    const markup = `
 Chart
 
                      Release Date
 Chrono Trigger [\\;; 1995
 Chrono Cross;        1999 [\\;`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -123,14 +123,14 @@ Chrono Cross;        1999 [\\;`
   })
 
   it('can end with an escaped backslash', () => {
-    const text = `
+    const markup = `
 Chart
 
                       Release Date
 Chrono Trigger :\\\\; 1995
 Chrono Cross;         1999 :\\\\`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -151,12 +151,12 @@ Chrono Cross;         1999 :\\\\`
 
 context("A chart's label line", () => {
   specify('cannot be followed by two or more blank lines', () => {
-    const text = `
+    const markup = `
 Chart: my favorite outline convention.
 
 
 I almost didn't include them; however, I realized charts are too useful to leave out.`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Chart: my favorite outline convention.')]),
         new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized charts are too useful to leave out.")]),

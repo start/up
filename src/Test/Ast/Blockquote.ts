@@ -12,12 +12,12 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 
 describe('Consecutive lines starting with "> "', () => {
   it('produce a blockquote node. The content following the delimiter is parsed for outline conventions, which are placed', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 >
 > Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -34,12 +34,12 @@ describe('Consecutive lines starting with "> "', () => {
 
 describe("Blockquote delimeters", () => {
   specify("can have their trailing space omitted", () => {
-    const text = `
+    const markup = `
 >Hello, world!
 >
 >Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -56,12 +56,12 @@ describe("Blockquote delimeters", () => {
 
 context("Within a blockquote", () => {
   specify('some delimiters can have a trailing space while other delimiters do not', () => {
-    const text = `
+    const markup = `
 >Hello, world!
 >
 > Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -76,11 +76,11 @@ context("Within a blockquote", () => {
 
   context("A space directly following greater than sign is considered part of the delimiter", () => {
     specify('So it takes 3 spaces from the ">" to provide indention', () => {
-      const text = `
+      const markup = `
 > Charmander
 >   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
             new DescriptionListNode([
@@ -101,11 +101,11 @@ context("Within a blockquote", () => {
 
   context('A tab character directly following the ">" is not considered part of the delimiter', () => {
     specify('So a single tab (following a delimiter without space) provides indentation', () => {
-      const text = `
+      const markup = `
 > Charmander
 >\tObviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
             new DescriptionListNode([
@@ -127,12 +127,12 @@ context("Within a blockquote", () => {
 
 describe('A blockquote', () => {
   it('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 >
 > Goodbye, *world*!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -150,11 +150,11 @@ describe('A blockquote', () => {
   })
 
   it('can contain headings', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 > ===========`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new HeadingNode([
@@ -165,12 +165,12 @@ describe('A blockquote', () => {
   })
 
   it('can contain nested blockquotes', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 >
 > > Hello, mantle!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -189,7 +189,7 @@ describe('A blockquote', () => {
 
 describe('Several blockquoted lines, followed by a blank line, followed by more blockquoted lines', () => {
   it('produce two separate blockquote nodes', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 >
 > Goodbye, world!
@@ -198,7 +198,7 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 >
 > This is awkward...`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -224,7 +224,7 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 
 describe('Sseveral blockquoted lines, followed by blank line, followed by more blockquoted lines, all within an outer blockquote', () => {
   it('produce a blockquote node containing two separate blockquote nodes', () => {
-    const text = `
+    const markup = `
 > > Hello, world!
 > >
 > > Goodbye, world!
@@ -233,7 +233,7 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
 > >
 > > This is awkward...`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new BlockquoteNode([
@@ -261,14 +261,14 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
 
 describe('Within a blockquote, 3 or more blank lines', () => {
   it('produce a section separator node', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 >
 >
 >
 > Goodbye, *world*!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -362,14 +362,14 @@ describe('Multiple blockquote delimiters, each with their trailing space, follow
 
 context('Within a given blockquote', () => {
   specify('some delimiters can have trailing spaces delimeters while others do not', () => {
-    const text = `
+    const markup = `
 >Hello, world!
 >
 > Goodbye, world!
 >
 >\tUmmm... I said goodbye.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([

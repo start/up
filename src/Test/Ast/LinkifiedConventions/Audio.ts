@@ -125,7 +125,7 @@ describe('An audio convention directly followed by an inline NSFL convention', (
 
 describe('An audio convention directly followed by a footnote', () => {
   it("is not linkified", () => {
-    const text = "After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"
+    const markup = "After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -133,7 +133,7 @@ describe('An audio convention directly followed by a footnote', () => {
       ], 1)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),

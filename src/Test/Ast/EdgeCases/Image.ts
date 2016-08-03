@@ -14,10 +14,10 @@ import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 describe('A paragraph directly followed by an image on its own line', () => {
   it('produces a pagraph node followed by an image node, not a line block', () => {
-    const text = `
+    const markup = `
 Do not pour the spiders into your sister's cereal.
 [image: sister arraigned on charges][http://example.com/court.jpg]`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Do not pour the spiders into your sister's cereal.")
@@ -87,14 +87,14 @@ context('Unmatched opening parentheses in an image description have no affect on
 
 
 describe("Unmatched opening parentheses in an image URL", () => {
-  it('do not affect any text that follows the link', () => {
-    const text = '(^[image: West Virginia exit polling][https://example.com/a(normal(url])'
+  it('do not affect any markup that follows the link', () => {
+    const markup = '(^[image: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new FootnoteNode([
       new ImageNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote
@@ -107,7 +107,7 @@ describe("Unmatched opening parentheses in an image URL", () => {
 })
 
 
-describe("A line consistingly solely of a link that contains both an image and regular text", () => {
+describe("A line consistingly solely of a link that contains both an image and regular markup", () => {
   it("produces a paragraph node", () => {
     expect(Up.toAst('[Look: (image: haunted house) {http://example.com/hauntedhouse.svg}] (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([

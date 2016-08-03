@@ -16,7 +16,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 describe('A footnote directly followed by a bracketed/parenthesized URL', () => {
   it("produces a footnote whose entire contents is put inside a link pointing to that URL", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] Never have."
 
     const footnote =
       new FootnoteNode([
@@ -25,7 +25,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
         ], 'http://example.com/luckycharms')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -61,7 +61,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
 
 describe('A footnote directly followed by another footnote (with no spaces in between)', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)(^Everyone does. It isn't a big deal.)"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)(^Everyone does. It isn't a big deal.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -72,7 +72,7 @@ describe('A footnote directly followed by another footnote (with no spaces in be
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -87,14 +87,14 @@ describe('A footnote directly followed by another footnote (with no spaces in be
 
 describe('A footnote directly followed by a media convention', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[video: me not eating cereal](https://example.com/v/123)"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[video: me not eating cereal](https://example.com/v/123)"
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -109,14 +109,14 @@ describe('A footnote directly followed by a media convention', () => {
 
 describe('A footnote directly followed by an inline spoiler', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[spoiler: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -133,14 +133,14 @@ describe('A footnote directly followed by an inline spoiler', () => {
 
 describe('A footnote directly followed by an inline NSFW convention', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFW: None of the Final Four's Pokemon are named 'Cereal']"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFW: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -157,14 +157,14 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
 
 describe('A footnote directly followed by an inline NSFL convention', () => {
   it("is not linkified", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -181,14 +181,14 @@ describe('A footnote directly followed by an inline NSFL convention', () => {
 
 describe('An otherwise-valid linkified footnote with its URL escaped', () => {
   it('is not linkified', () => {
-    const text = "[^He called her.](\\tel:5555555555)"
+    const markup = "[^He called her.](\\tel:5555555555)"
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode('He called her.')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote,
@@ -204,14 +204,14 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
 
 describe("When an otherwise-valid linkified spoiler's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the footnote is not linkified', () => {
-    const text = "[^He called her.]( \t \\tel:5555555555)"
+    const markup = "[^He called her.]( \t \\tel:5555555555)"
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode('He called her.')
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           footnote,

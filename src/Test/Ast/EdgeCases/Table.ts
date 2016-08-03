@@ -9,7 +9,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 describe('A table with one column', () => {
   it('can contain cells that would otherwise be interpreted as section separator streaks', () => {
-    const text = `
+    const markup = `
 Table: Most common underlines for top-level headings (from most to least common)
 
 Underline
@@ -18,7 +18,7 @@ Underline
 ####
 ----`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -47,14 +47,14 @@ Underline
 
 describe("A table header cell", () => {
   it('can end with an escaped semicolon', () => {
-    const text = `
+    const markup = `
 Table
 
 Game [\\;;        Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -74,14 +74,14 @@ Chrono Cross;     1999`
   })
 
   it('can end with an escaped backslash', () => {
-    const text = `
+    const markup = `
 Table
 
 Game :\\\\;       Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -104,14 +104,14 @@ Chrono Cross;     1999`
 
 describe("A table row cell", () => {
   it('can end with an escaped semicolon', () => {
-    const text = `
+    const markup = `
 Table
 
 Game;                 Release Date
 Chrono Trigger [\\;;  1995
 Chrono Cross;         1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -131,14 +131,14 @@ Chrono Cross;         1999`
   })
 
   it('can end with an escaped backslash', () => {
-    const text = `
+    const markup = `
 Table
 
 Game;                   Release Date
 Chrono Trigger :\\\\;   1995
 Chrono Cross;           1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -161,12 +161,12 @@ Chrono Cross;           1999`
 
 context("A table's label line", () => {
   specify('cannot be followed by two or more blank lines', () => {
-    const text = `
+    const markup = `
 Table: my favorite outline convention.
 
 
 I almost didn't include them; however, I realized tables are too useful to leave out.`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Table: my favorite outline convention.')]),
         new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized tables are too useful to leave out.")]),

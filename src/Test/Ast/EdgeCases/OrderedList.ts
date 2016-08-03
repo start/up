@@ -9,12 +9,12 @@ import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 describe('An ordered list with a single item', () => {
   it('can be sandwched by identical section separator streaks without producing a heading', () => {
-    const text = `
+    const markup = `
 -----------
 # Mittens
 -----------`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new OrderedListNode([
@@ -32,7 +32,7 @@ describe('An ordered list with a single item', () => {
 
 describe('An ordered list followed by 2 blank lines followed by another ordered list', () => {
   it('produce two separate ordered lists', () => {
-    const text = `
+    const markup = `
 # Iowa
 # New Hampshire
 
@@ -40,7 +40,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 # Clinton
 # Sanders`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -73,7 +73,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 
 describe('An ordered list followed by 3 blank lines followed by another ordered list', () => {
   it('produce an ordered list, a section separator, and another ordered list', () => {
-    const text = `
+    const markup = `
 # Iowa
 # New Hampshire
 
@@ -82,7 +82,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 # Clinton
 # Sanders`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -116,11 +116,11 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 
 context('An ordered list item ordinal can have leading 0 digits without affecting the ordinal itself', () => {
   specify('when positive', () => {
-    const text = `
+    const markup = `
 0010) Hello, world!
 #. Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -138,11 +138,11 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
   })
 
   specify('when negative', () => {
-    const text = `
+    const markup = `
 -0020) Hello, world!
 #) Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -160,11 +160,11 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
   })
 
   specify('when zero', () => {
-    const text = `
+    const markup = `
 000) Hello, world!
 #) Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([

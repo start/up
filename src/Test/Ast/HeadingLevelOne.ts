@@ -11,11 +11,11 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 describe("A line of text underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
 
   it('produces a heading node', () => {
-    const text = `
+    const markup = `
 Messy heading tests
 #~#~#~#~#~#~#~#~#~#`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Messy heading tests')], 1),
       ]))
@@ -23,14 +23,14 @@ Messy heading tests
 })
 
 
-describe("The first text in a document underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
+describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
 
   it('produces a level-1 heading node', () => {
-    const text = `
+    const markup = `
 Hello, world!
 #=-+~*^@:_+**###=~=~=~--~~~~`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -40,22 +40,22 @@ Hello, world!
 
 describe("An underline", () => {
   it('can have whitespace interspersed throughout the underline in any manner', () => {
-    const text = `
+    const markup = `
 Hello, world!
 +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
 
   it('can use as few as 1 one of those characters in its underline', () => {
-    const text = `
+    const markup = `
 Hello, world!
 ~~~~~~~~~~~~`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
@@ -64,25 +64,25 @@ Hello, world!
 
 describe("A heading", () => {
   it('can have an optional overline consisting of the same characters as its underline', () => {
-    const text = `
+    const markup = `
 #=-+~*^@:_
 Hello, world!
 #=-+~*^@:_`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
 
   it('does not need to be the first convention in the document', () => {
-    const text = `
+    const markup = `
 Hello, world!
       
 Goodbye, world!
 ~~~~~~~~~~~~`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Hello, world!')]),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -90,11 +90,11 @@ Goodbye, world!
   })
 
   it('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 **Hello**, world!
 ~~~~~~~~~~~~`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([
           new StressNode([new PlainTextNode('Hello')]),
@@ -107,12 +107,12 @@ Goodbye, world!
 
 describe("A heading's optional overline", () => {
   it('must not contain spaces if the underline does not contains spaces', () => {
-    const text = `
+    const markup = `
 - - - - - - -
 Hello, world!
 -------------`
 
-    expect(Up.toAst(text)).to.eql(
+    expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -120,12 +120,12 @@ Hello, world!
   })
 
   it('must contain spaces if the underline contains spaces', () => {
-    const text = `
+    const markup = `
 -------------
 Hello, world!
 - - - - - - -`
 
-    expect(Up.toAst(text)).to.eql(
+    expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -133,24 +133,24 @@ Hello, world!
   })
 
   it('does not need to be the same length as the underline', () => {
-    const text = `
+    const markup = `
 --------
 Hello, world!
 ----------`
 
-    expect(Up.toAst(text)).to.eql(
+    expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
 
   it('can have its characters arranged differently than in the underline', () => {
-    const text = `
+    const markup = `
 = - = - = - = - = - = - =
 Hello, world!
 ==  --  ==  --  ==  --  ==`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))

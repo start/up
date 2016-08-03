@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 describe('A table header consisting only of a semicolon', () => {
   it('consists of a single empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 ;
@@ -15,7 +15,7 @@ Table:
 Chrono Trigger
 Starcraft`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -35,7 +35,7 @@ Starcraft`
 
 describe('A table row consisting only of a semicolon', () => {
   it('consists of a single empty cell', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game
@@ -44,7 +44,7 @@ Chrono Trigger
 ;
 Starcraft`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

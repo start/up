@@ -38,10 +38,10 @@ describe('An image that is the only convention on its line is not placed inside 
     })
 
     specify('is linkified', () => {
-      const text =
+      const markup =
         ' \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -50,10 +50,10 @@ describe('An image that is the only convention on its line is not placed inside 
     })
 
     specify('is the only convention within a link', () => {
-      const text =
+      const markup =
         ' \t {[image: haunted house] (http://example.com/hauntedhouse.svg)} (hauntedhouse.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),

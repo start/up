@@ -11,7 +11,7 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 
 
-context('Parenthesized text can be directly followed by whitespace followed by', () => {
+context('parenthesized text can be directly followed by whitespace followed by', () => {
   context('an inline spoiler', () => {
     specify('that only contains whitespace directly after the colon', () => {
       expect(Up.toAst('After you beat the Elite Four, you have to face (the one and only) [SPOILER: Gary].')).to.be.eql(
@@ -46,13 +46,13 @@ context('Parenthesized text can be directly followed by whitespace followed by',
 
   context('a footnote', () => {
     specify('that only contains whitespace directly after the caret', () => {
-      const text = "I don't eat cereal (or oatmeal) (^ Lying.) on Mondays."
+      const markup = "I don't eat cereal (or oatmeal) (^ Lying.) on Mondays."
 
       const footnote = new FootnoteNode([
         new PlainTextNode('Lying.')
       ], 1)
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
@@ -67,13 +67,13 @@ context('Parenthesized text can be directly followed by whitespace followed by',
     })
 
     specify('that contains whitespace, but none directly after the caret', () => {
-      const text = "I don't eat cereal (or oatmeal) (^Definitely lying.) on Mondays."
+      const markup = "I don't eat cereal (or oatmeal) (^Definitely lying.) on Mondays."
 
       const footnote = new FootnoteNode([
         new PlainTextNode('Definitely lying.')
       ], 1)
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),

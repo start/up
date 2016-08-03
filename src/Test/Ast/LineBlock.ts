@@ -16,11 +16,11 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 
 describe('Consecutive non-blank lines', () => {
   it('produce a line block node containing line nodes', () => {
-    const text = `
+    const markup = `
 Roses are red
 Violets are blue`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -38,13 +38,13 @@ Violets are blue`
 
 describe('Lines in a line block', () => {
   it('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Roses are red
 Violets are **blue**
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -67,13 +67,13 @@ And addresses do, too`
   })
 
   it('can be blank if at least one of the whitespace characters is escaped', () => {
-    const text = `
+    const markup = `
 Roses are red
  \\\t\t
  \\\t\t
 Violets are blue`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -96,7 +96,7 @@ Violets are blue`
 
 context('A line block can be split in two by', () => {
   specify('a single blank line', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
  \t 
@@ -105,7 +105,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -133,7 +133,7 @@ You're in for a fright`
   })
 
   specify('two blank lines', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
  \t
@@ -143,7 +143,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -171,14 +171,14 @@ You're in for a fright`
   })
 
   specify('a section separator streak', () => {
-    const text = `
+    const markup = `
 Roses are red
 Violets are blue
 #~#~#~#~#~#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -201,7 +201,7 @@ And addresses do, too`
   })
 
   specify('a single-line blockquote', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
 > posting your address on the internet in the current year
@@ -210,7 +210,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -243,7 +243,7 @@ You're in for a fright`
   })
 
   specify('a single-line ordered list', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
 1) Never post your address unless you subsequently post poetry.
@@ -252,7 +252,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -287,7 +287,7 @@ You're in for a fright`
   })
 
   specify('a single-line unordered list', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
 * Never post your address unless you subsequently post poetry.
@@ -296,7 +296,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -331,7 +331,7 @@ You're in for a fright`
   })
 
   specify('a line consisting solely of media conventions', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]
@@ -340,7 +340,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -371,7 +371,7 @@ You're in for a fright`
   })
 
   specify('a line consisting solely of media conventions and whitespace', () => {
-    const text = `
+    const markup = `
 1234 Spooky Street
 Pepe, PA 17101
  [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t 
@@ -380,7 +380,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([

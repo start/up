@@ -11,12 +11,12 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 
 describe('Consecutive bulleted lines', () => {
   it('produce an unordered list node containing unordered list items', () => {
-    const text = `
+    const markup = `
 * Buy milk
 * Buy bread
 * Buy tendies`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -42,11 +42,11 @@ describe('Consecutive bulleted lines', () => {
 
 context('Unordered list bullets can be:', () => {
   specify('Asterisks', () => {
-    const text = `
+    const markup = `
 * Hello, world!
 * Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -64,11 +64,11 @@ context('Unordered list bullets can be:', () => {
   })
 
   specify('Hyphens', () => {
-    const text = `
+    const markup = `
 - Hello, world!
 - Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -86,11 +86,11 @@ context('Unordered list bullets can be:', () => {
   })
 
   specify('Plus signs', () => {
-    const text = `
+    const markup = `
 + Hello, world!
 + Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -108,11 +108,11 @@ context('Unordered list bullets can be:', () => {
   })
 
   specify('Actual bullet characters', () => {
-    const text = `
+    const markup = `
 • Hello, world!
 • Goodbye, world!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -130,13 +130,13 @@ context('Unordered list bullets can be:', () => {
   })
 
   specify('A mix of any of the above', () => {
-    const text = `
+    const markup = `
 * Buy milk
 - Buy bread
 + Buy tendies
 • Buy happiness`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -200,13 +200,13 @@ describe('A single bulleted line', () => {
 
 describe('An indented line immediately following an ordered list item line', () => {
   it('is part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
-    const text = `
+    const markup = `
 * Hello, world!
   ============
 * Roses are red
   Violets are blue`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -232,7 +232,7 @@ describe('An indented line immediately following an ordered list item line', () 
 
 describe('Multiple indented or blank lines immediately following an unordered list item line', () => {
   it('are part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
-    const text = `
+    const markup = `
 * Hello, world!
   ============
 
@@ -243,7 +243,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
 * Goodbye, world!
   ===============`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -290,7 +290,7 @@ describe('An unordered list item containing multiple indented lines', () => {
   })
 
   it('can contain a nested unordered list that uses the same type of bullet used by its containing list item', () => {
-    const text = `
+    const markup = `
 * Hello, world!
   =============
 
@@ -302,7 +302,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 * Goodbye, world!
   ===============`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -339,11 +339,11 @@ describe('An unordered list item containing multiple indented lines', () => {
 context('Subsequent lines in an unordered list item must be indented.', () => {
   context('The indentation must be at least:', () => {
     specify('Two spaces', () => {
-      const text = `
+      const markup = `
 * Roses are red
   Violets are blue`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -361,11 +361,11 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
     })
 
     specify('One tab', () => {
-      const text = `
+      const markup = `
 * Roses are red
 \tViolets are blue`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -383,11 +383,11 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
     })
 
     specify('One space folled by one tab', () => {
-      const text = `
+      const markup = `
 * Roses are red
  \tViolets are blue`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -478,11 +478,11 @@ describe('An unordered list item with an asterisk bullet', () => {
 
 describe('An unordered list', () => {
   it('is evaluated for inline conventions', () => {
-    const text = `
+    const markup = `
 * Hello, World *1-2*!
 * Goodbye, World *1-2*!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -508,12 +508,12 @@ describe('An unordered list', () => {
   })
 
   it('can be directly followed by a paragraph', () => {
-    const text = `
+    const markup = `
 * Hello, world!
 * Goodbye, world!
 Hello, World 1-2!`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([

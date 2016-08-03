@@ -114,7 +114,7 @@ describe('An inline NSFW convention directly followed by a media convention', ()
 
 describe('An inline NSFW convention directly followed by a footnote', () => {
   it("is not linkified", () => {
-    const text = "After you beat the Elite Four, [NSFW: you wrestle naked Gary](^Or whatever you name him.)"
+    const markup = "After you beat the Elite Four, [NSFW: you wrestle naked Gary](^Or whatever you name him.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -122,7 +122,7 @@ describe('An inline NSFW convention directly followed by a footnote', () => {
       ], 1)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),

@@ -11,11 +11,11 @@ import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
 describe('A section separator streak', () => {
   it('can directly precede a heading with different characters in its underline', () => {
-    const text = `
+    const markup = `
 - - - - - - - - - - - 
 Not me. Us!
 @---------@`
-    expect(Up.toAst(text)).to.eql(
+    expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([
@@ -25,12 +25,12 @@ Not me. Us!
   })
 
   it('can directly precede a heading with the same characters in its underline, as long as that heading has an overline', () => {
-    const text = `
+    const markup = `
 ---------------------------------
 -----------
 Not me. Us!
 -----------`
-    expect(Up.toAst(text)).to.eql(
+    expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
         new SectionSeparatorNode(),
         new HeadingNode([
@@ -43,8 +43,8 @@ Not me. Us!
 
 describe('A streak of asterisks with spaces between', () => {
   it('produces a single section separator node rather than a heavily nested list', () => {
-    const text = '* * * * * *'
-    expect(Up.toAst(text)).to.be.eql(
+    const markup = '* * * * * *'
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -54,8 +54,8 @@ describe('A streak of asterisks with spaces between', () => {
 
 describe('A streak of number signs with spaces between', () => {
   it('produces a single section separator node rather than a heavily nested list', () => {
-    const text = '# # # # # #'
-    expect(Up.toAst(text)).to.be.eql(
+    const markup = '# # # # # #'
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SectionSeparatorNode()
       ]))
@@ -65,11 +65,11 @@ describe('A streak of number signs with spaces between', () => {
 
 describe('A streak of asterisks with spaces between', () => {
   it('can directly follow an unordered list', () => {
-    const text = `
+    const markup = `
 * Mittens
 * Gloves
 * * * * * *`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -91,11 +91,11 @@ describe('A streak of asterisks with spaces between', () => {
 
 describe('A streak of number signs with spaces between', () => {
   it('can directly follow an ordered list', () => {
-    const text = `
+    const markup = `
 # Mittens
 # Gloves
 # # # # # #`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([

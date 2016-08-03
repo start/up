@@ -9,13 +9,13 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 describe('A code block', () => {
   it('can directly follow a paragraph', () => {
-    const text = `
+    const markup = `
 My pies never turn out quite right.
 \`\`\`
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('My pies never turn out quite right.')
@@ -25,7 +25,7 @@ const pie = 3.5
   })
 
   it('can directly follow a line block', () => {
-    const text = `
+    const markup = `
 Roses are red
 Violets are white
 My pies just never
@@ -34,7 +34,7 @@ Turn out quite right
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -55,13 +55,13 @@ const pie = 3.5
   })
 
   it('can be directly followed by a paragraph', () => {
-    const text = `
+    const markup = `
 \`\`\`
 const pie = 3.5
 \`\`\`
 My pies never turn out quite right.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode('const pie = 3.5'),
         new ParagraphNode([
@@ -74,10 +74,10 @@ My pies never turn out quite right.`
 
 context('A code block with containing zero lines of code produces an empty code block', () => {
   specify('when it has a closing streak', () => {
-    const text = `
+    const markup = `
 \`\`\`
 \`\`\``
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(''),
       ]))
@@ -94,7 +94,7 @@ context('A code block with containing zero lines of code produces an empty code 
 
 describe('An unmatched streak of backticks, following a normal "enclosed" code block whose streaks are the same length as the unmatched streak,', () => {
   it("produces a code block node containing the rest of the document", () => {
-    const text = `
+    const markup = `
 Check out the code below!
 
 \`\`\`
@@ -109,7 +109,7 @@ function factorial(n: number): number {
 \`\`\`
 document.write('The factorial of 5 is: ' + factorial(5))`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Check out the code below!')
@@ -129,11 +129,11 @@ document.write('The factorial of 5 is: ' + factorial(5))`
 
 describe('Within a code block, a streak of backticks matching the start streak but preceded by a space', () => {
   it('is preserved as code (and does not end the code block)', () => {
-    const text = `
+    const markup = `
 \`\`\`
  \`\`\`
 \`\`\``
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(' ```'),
       ]))

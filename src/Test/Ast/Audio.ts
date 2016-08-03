@@ -38,10 +38,10 @@ describe('An audio convention that is the only convention on its line is not pla
     })
 
     specify('is linkified', () => {
-      const text =
+      const markup =
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (hauntedhouse.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -50,10 +50,10 @@ describe('An audio convention that is the only convention on its line is not pla
     })
 
     specify('is the only convention within a link', () => {
-      const text =
+      const markup =
         ' \t {[audio: ghostly howling] (http://example.com/ghosts.ogg)} (hauntedhouse.com) \t '
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),

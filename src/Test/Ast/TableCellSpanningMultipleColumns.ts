@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 describe('All table header cells and table row cells', () => {
   it('span 1 column by default', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date
@@ -18,7 +18,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -49,14 +49,14 @@ Chrono Cross;       1999`
 
 describe('A table header cell terminated by 2 semicolons', () => {
   it('spans 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Publisher;;                       Release Date
 
 Terranigma;         Nintendo;             Enix;       October 20, 1995`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -78,14 +78,14 @@ Terranigma;         Nintendo;             Enix;       October 20, 1995`
 
 describe('A table header cell terminated by 3 or more semicolons', () => {
   it('spans that many columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Director;;;                                             Release Date
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -108,7 +108,7 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
 
 describe('A table row cell terminated by 2 semicolons', () => {
   it('spans 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Publisher;        Release Date
@@ -119,7 +119,7 @@ Terranigma;         Quintet;              Nintendo;         October 20, 1995
 Command & Conquer;  Westwood Studios;;                      August 31, 1995
 Starcraft;          Blizzard;;                              March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -157,7 +157,7 @@ Starcraft;          Blizzard;;                              March 31, 1998`
 
 describe('A table row cell terminated by 3 or more semicolons', () => {
   it('spans that many columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Publisher;        Marketer;       Release Date
@@ -168,7 +168,7 @@ Terranigma;         Quintet;              Nintendo;         Quintet;        Octo
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -208,14 +208,14 @@ Starcraft;          Blizzard;;;                                             Marc
 
 context('When the final cell in a table header is terminated by 2 semicolons', () => {
   specify('it spans 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Publisher;;
 
 Terranigma;         Nintendo;             Enix`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -235,14 +235,14 @@ Terranigma;         Nintendo;             Enix`
 
 context('When the final cell in a table header is terminated by 3 or more semicolons', () => {
   specify('it spans that many columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Director;;;
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -263,7 +263,7 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
 context('When the final cell in a table row cell is terminated by 2 semicolons', () => {
   specify('it spans 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Publisher
@@ -274,7 +274,7 @@ Terranigma;         Quintet;              Nintendo
 Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;;`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -307,7 +307,7 @@ Starcraft;          Blizzard;;`
 
 context('When the final cell in a table row cell is terminated by 3 or more semicolons', () => {
   specify('it spans that many columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Publisher;      Marketer
@@ -318,7 +318,7 @@ Terranigma;         Quintet;              Nintendo;       Quintet
 Command & Conquer;  Westwood Studios;;;
 Starcraft;          Blizzard;;;`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -353,14 +353,14 @@ Starcraft;          Blizzard;;;`
 
 context('When the final cell in a table header is terminated by 2 semicolons followed by whitespace', () => {
   specify('it spans 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Publisher;; \t \t
 
 Terranigma;         Nintendo;             Enix`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -380,7 +380,7 @@ Terranigma;         Nintendo;             Enix`
 
 context('When the final cell in a table row cell is terminated by 2 semicolons followed by whitespace', () => {
   specify('it spans 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Publisher
@@ -391,7 +391,7 @@ Terranigma;         Quintet;  \t \t       Nintendo
 Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;; \t \t`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -424,7 +424,7 @@ Starcraft;          Blizzard;; \t \t`
 
 context('A table header starting with 2 semicolons', () => {
   it('starts with an empty cell spanning 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 ;;                                                  Date
@@ -433,7 +433,7 @@ Jogged on treadmill;      Squats;                   March 11, 2018
 Jogged on track;          Deadlifts;                March 12, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -463,7 +463,7 @@ Swam laps;                Sprints on track;         March 14, 2018`
 
 context('A table header starting with 3 or more semicolons', () => {
   it('starts with an empty cell spanning that many columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 ;;;                                                                       Date
@@ -472,7 +472,7 @@ Jogged on treadmill;      Squats;             Walked on treadmill;        March 
 Jogged on track;          Deadlifts;          Walked on track;            March 12, 2018
 Swam laps;                Sprints on track;   Treaded water;              March 14, 2018`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -505,7 +505,7 @@ Swam laps;                Sprints on track;   Treaded water;              March 
 
 context('A table row starting with 2 semicolons', () => {
   it('starts with an empty cell spanning 2 columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Aerobic Exercise;         Anaerobic Exercise;        Date
@@ -515,7 +515,7 @@ Jogged on track;          Deadlifts;                March 12, 2018
 ;;                                                  March 13, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -550,7 +550,7 @@ Swam laps;                Sprints on track;         March 14, 2018`
 
 context('A table row starting with 3 or more semicolons', () => {
   it('starts with an empty cell spanning that many columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Aerobic Exercise;         Anaerobic Exercise;   Cooldown;                   Date
@@ -560,7 +560,7 @@ Jogged on track;          Deadlifts;            Walked on track;            Marc
 ;;;                                                                         March 13, 2018
 Swam laps;                Sprints on track;     Treaded water;              March 14, 2018`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -599,14 +599,14 @@ Swam laps;                Sprints on track;     Treaded water;              Marc
 
 describe('Empty table header cells', () => {
   it('can span multiple columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Director;         ;;                                    Release Date
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -630,7 +630,7 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
 
 describe('Empty table row cells', () => {
   it('can span multiple columns', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Developer;            Publisher;        Marketer;       Release Date
@@ -641,7 +641,7 @@ Terranigma;         Quintet;              Nintendo;         Quintet;        Octo
 Command & Conquer;  Westwood Studios;                       ;;              August 31, 1995
 Starcraft;          Blizzard;                               ;;                March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

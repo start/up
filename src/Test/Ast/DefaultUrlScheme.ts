@@ -28,36 +28,36 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it('is prefixed to schemeless image URLs', () => {
-    const text = '[image: Chrono Cross logo](prod-web-2/cc-logo.png)'
+    const markup = '[image: Chrono Cross logo](prod-web-2/cc-logo.png)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
       ]))
   })
 
   it('is prefixed to schemeless audio URLs', () => {
-    const text = '[audio: Chrono Cross ending theme](prod-web-2/radical dreamers.mp3)'
+    const markup = '[audio: Chrono Cross ending theme](prod-web-2/radical dreamers.mp3)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new AudioNode('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
 
   it('is prefixed to schemeless video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic](prod-web-2/radical dreamers.mp3)'
+    const markup = '[video: Chrono Cross ending cinematic](prod-web-2/radical dreamers.mp3)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
-    const text = 'Walter White produces [SPOILER: Blue Sky meth](localhost/wiki/Blue_Sky)'
+    const markup = 'Walter White produces [SPOILER: Blue Sky meth](localhost/wiki/Blue_Sky)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineSpoilerNode([
@@ -69,7 +69,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. (^Well, I eat one.)(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
+    const markup = "I don't eat cereal. (^Well, I eat one.)(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -77,7 +77,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
       ], 'https://prod-web-4/cereals/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -89,9 +89,9 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   })
 
   it('is not prefixed to URLs with an explicit scheme', () => {
-    const text = '[say hi](mailto:daniel@wants.email)'
+    const markup = '[say hi](mailto:daniel@wants.email)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('say hi')
@@ -118,9 +118,9 @@ describe('A link URL with a URL scheme other than "http://" or "https://"', () =
 
 describe('A URL starting with a letter; followed by letters, numbers, periods, plus signs, or hyphens; followed by a colon', () => {
   it('has a scheme, and is not prefixed by the schemeless URL base', () => {
-    const text = '[Chrono Cross](Wiki.9-App+mcgee:wiki/Chrono_Chross)'
+    const markup = '[Chrono Cross](Wiki.9-App+mcgee:wiki/Chrono_Chross)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -132,9 +132,9 @@ describe('A URL starting with a letter; followed by letters, numbers, periods, p
 
 describe('A URL not starting with a slash, but with a slash before its first colon', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross](wiki/chrono-cross:the-game)'
+    const markup = '[Chrono Cross](wiki/chrono-cross:the-game)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -146,9 +146,9 @@ describe('A URL not starting with a slash, but with a slash before its first col
 
 describe('A URL with an underscore before its first colon', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross](super_admin:123abc@localhost/wiki/chrono-cross:the-game)'
+    const markup = '[Chrono Cross](super_admin:123abc@localhost/wiki/chrono-cross:the-game)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -160,9 +160,9 @@ describe('A URL with an underscore before its first colon', () => {
 
 describe('A URL starting with a number but otherwise looking like it has a scheme', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross](4wiki:wiki/Chrono_Chross)'
+    const markup = '[Chrono Cross](4wiki:wiki/Chrono_Chross)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -174,9 +174,9 @@ describe('A URL starting with a number but otherwise looking like it has a schem
 
 describe('A URL with no colon (and not starting with a slash)', () => {
   it('does not have a scheme and is therefore prefixed by the default URL scheme', () => {
-    const text = '[Chrono Cross](localhost/wiki/ChronoChross:TheGame)'
+    const markup = '[Chrono Cross](localhost/wiki/ChronoChross:TheGame)'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')

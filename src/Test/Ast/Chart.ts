@@ -10,14 +10,14 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 context('A chart is simply a table with a second, vertical header. Its syntax is almost exactly the same, except it uses the term "chart" instead of "table".', () => {
   specify("An empty cell is added to the beginning of a chart's header row (its top-left corner) due to the header column beneath it, and the first cell of chart row is treated as a header cell for that row.", () => {
-    const text = `
+    const markup = `
 Chart: AND operator logic
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -42,14 +42,14 @@ Chart: AND operator logic
 
 context("On a chart's label line", () => {
   specify("the caption is not required", () => {
-    const text = `
+    const markup = `
 Chart:
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -72,14 +72,14 @@ Chart:
   })
 
   specify("the colon after the tern for 'chart' is optional", () => {
-    const text = `
+    const markup = `
 Chart
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -105,7 +105,7 @@ Chart
 
 context('Within a chart', () => {
   specify('single blank lines are allowed anywhere', () => {
-    const text = `
+    const markup = `
 Chart:
 
                   Release Date
@@ -116,7 +116,7 @@ Final Fantasy II; 1988
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -140,7 +140,7 @@ Chrono Cross;     1999`
   })
 
   specify('outer whitespace is trimmed from each header and row cell', () => {
-    const text = `
+    const markup = `
 Chart:
 
  \t  \t\t  \t              Release Date \t \t \t 
@@ -151,7 +151,7 @@ Chart:
  \t Chrono Trigger\t ;\t   1995
  \t Chrono Cross\t ;\t     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -178,13 +178,13 @@ Chart:
 
 describe('The padding between cells in a chart', () => {
   it("is optional", () => {
-    const text = `
+    const markup = `
 Chart: AND operator logic
 1;0
 0;true;false
 1;false;false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -209,7 +209,7 @@ Chart: AND operator logic
 
 context('A chart is terminated by', () => {
   specify('2 consecutive blank lines', () => {
-    const text = `
+    const markup = `
 Chart:
 
                   Release Date
@@ -223,7 +223,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -250,7 +250,7 @@ I don't like video games; in fact, I never have.`
   })
 
   specify('3 consecutive blank lines', () => {
-    const text = `
+    const markup = `
 Chart:
 
                   Release Date
@@ -265,7 +265,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -296,7 +296,7 @@ I don't like video games; in fact, I never have.`
 
 describe('A chart', () => {
   it('can have 1 column, and when it does, that 1 column interpreted as a vertical heading', () => {
-    const text = `
+    const markup = `
 Chart: Magical happenings this past work week
 
             Magical Happenings
@@ -307,7 +307,7 @@ Wednesday
 Thursday
 Friday`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -333,7 +333,7 @@ Friday`
 
 
   it('can have 3 or more columns', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Developer;            Platform;         Release Date
@@ -344,7 +344,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -381,7 +381,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
 context('Chart header cells', () => {
   specify('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Release Date (year only)
@@ -392,7 +392,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -421,7 +421,7 @@ Chrono Cross;       1999`
   })
 
   specify('can contain escaped semicolons', () => {
-    const text = `
+    const markup = `
 Chart:
 
                     Publisher\\; Developer
@@ -429,7 +429,7 @@ Chart:
 Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -450,7 +450,7 @@ Super Mario Kart;   Nintendo`
 
 context('Chart row cells', () => {
   specify('can contain inline conventions', () => {
-    const text = `
+    const markup = `
 Chart:
 
                         Release Date
@@ -461,7 +461,7 @@ Final Fantasy II;       1988 (almost 1989)
 Chrono Trigger;         1995
 Chrono Cross;           1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -495,7 +495,7 @@ Chrono Cross;           1999`
   })
 
   specify('can contain escaped semicolons', () => {
-    const text = `
+    const markup = `
 Chart:
 
                                     Publisher
@@ -503,7 +503,7 @@ Chart:
 Final Fantasy\\; Final Fantasy II;  Square [\\; Soft
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -524,14 +524,14 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
 context("The label line for charts can end with whitespace, regardless of whether the term for 'chart' is followed by a colon.", () => {
   specify("When followed by a colon without a caption", () => {
-    const text = `
+    const markup = `
 Chart:  \t  \t  \t 
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -554,14 +554,14 @@ Chart:  \t  \t  \t
   })
 
   specify("When followed by a colon with a caption", () => {
-    const text = `
+    const markup = `
 Chart:  \t  \t  \t 
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -585,16 +585,16 @@ Chart:  \t  \t  \t
 })
 
 
-context('Inline conventions are evaluated separately in each chart cell. Delimiters in one cell only affect text in that one cell. This is true for:', () => {
+context('Inline conventions are evaluated separately in each chart cell. Delimiters in one cell only affect markup in that one cell. This is true for:', () => {
   specify('Header cells', () => {
-    const text = `
+    const markup = `
 Chart:
 
                   [: Platform;          Release Date :]
 Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -615,14 +615,14 @@ Chrono Cross;     Playstation;          1999`
   })
 
   specify('Row cells', () => {
-    const text = `
+    const markup = `
 Chart:
 
                   Platform;           Release Date
 Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     [: Playstation;     1999 :]`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -643,14 +643,14 @@ Chrono Cross;     [: Playstation;     1999 :]`
   })
 
   specify('Row header cells', () => {
-    const text = `
+    const markup = `
 Chart:
 
                       Platform;            Release Date
 [: Chrono Trigger;    Super :] Nintendo;   1995
 Chrono Cross;         Playstation;         1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -673,12 +673,12 @@ Chrono Cross;         Playstation;         1999`
 
 describe('A chart', () => {
   it('does not need any rows', () => {
-    const text = `
+    const markup = `
 Chart
 
 	      Release Date`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

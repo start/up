@@ -12,12 +12,12 @@ describe('An empty document', () => {
 
 describe('A document with only blank lines', () => {
   it('produces an empty document node', () => {
-    const text = `     
+    const markup = `     
 
 \t       
       
       
 `
-    expect(Up.toAst(text)).to.eql(new DocumentNode([]))
+    expect(Up.toAst(markup)).to.eql(new DocumentNode([]))
   })
 })

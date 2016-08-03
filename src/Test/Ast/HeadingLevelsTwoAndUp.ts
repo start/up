@@ -11,14 +11,14 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
   it('produces a level-2 heading node', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
 Goodbye, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -26,14 +26,14 @@ Goodbye, world!
   })
 
   it('produces a level-2 heading node when the underline characters only differ by spaces', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
 Goodbye, world!
 = = = = = = = =`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -41,7 +41,7 @@ Goodbye, world!
   })
 
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
@@ -51,7 +51,7 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -60,7 +60,7 @@ Goodbye again, world!
   })
 
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
@@ -70,7 +70,7 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -83,7 +83,7 @@ Goodbye again, world!
 describe('7 headings with different heading underlines', () => {
 
   it('produce 7 heading nodes, with levels in ascending order', () => {
-    const text = `
+    const markup = `
 ####################
 Interactive Software
 ####################
@@ -114,7 +114,7 @@ Real-Time Strategy Game Boy Games Published By Nintendo
 Warlocked
 - - - - -`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Interactive Software')], 1),
         new HeadingNode([new PlainTextNode('Video Games')], 2),
@@ -130,7 +130,7 @@ Warlocked
 
 describe("A level-2 heading underline defined outside of an unordered list", () => {
   it('produces a level-2 heading node inside the unordered list, too', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
@@ -140,7 +140,7 @@ Goodbye, world!
 * Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -156,7 +156,7 @@ Goodbye, world!
 
 describe("A level-2 heading underline defined outside of an ordered list", () => {
   it('produces a level-2 heading node inside the ordered list, too', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
@@ -166,7 +166,7 @@ Goodbye, world!
 #) Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -182,7 +182,7 @@ Goodbye, world!
 
 describe("A level-2 heading underline defined outside of a description list", () => {
   it('produces a level-2 heading node inside the description list, too', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
@@ -193,7 +193,7 @@ Awkward
   Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -211,7 +211,7 @@ Awkward
 
 describe("A level-2 heading underline defined outside of a blockquote", () => {
   it('is not recognized inside a blockquote, producing a level-1 heading node by default', () => {
-    const text = `
+    const markup = `
 Hello, world!
 =============
 
@@ -221,7 +221,7 @@ Goodbye, world!
 > Umm, I forgot my keys.
 > =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -235,7 +235,7 @@ Goodbye, world!
 
 describe("A level-2 heading underline defined inside a blockquote but outside an unordered list in the same blockquote", () => {
   it('produces a level-2 heading node inside the ordered list, too', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 > =============
 >
@@ -245,7 +245,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 > * Umm, I forgot my keys.
 >   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -263,7 +263,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 
 describe("A level-2 heading underline defined inside a blockquote", () => {
   it('is not recognized inside a further nested blockquote, producing a level-1 heading node by default', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 > =============
 >
@@ -273,7 +273,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > > Umm, I forgot my keys.
 > > =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -289,7 +289,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 
 describe("A level-2 heading underline defined inside a blockquote", () => {
   it('is not recognized inside a different blockquote, producing a level-1 heading node by default', () => {
-    const text = `
+    const markup = `
 > Hello, world!
 > =============
 >
@@ -300,7 +300,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > Umm, I forgot my keys.
 > =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),

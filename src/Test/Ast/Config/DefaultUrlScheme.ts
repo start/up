@@ -22,9 +22,9 @@ const up = new Up({
 
 describe('The "defaultUrlScheme" config setting', () => {
   it('is prefixed to schemeless link URLs', () => {
-    const text = '[Chrono Cross](wiki/Chrono_Chross)'
+    const markup = '[Chrono Cross](wiki/Chrono_Chross)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -33,36 +33,36 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless image URLs', () => {
-    const text = '[image: Chrono Cross logo](cc-logo.png)'
+    const markup = '[image: Chrono Cross logo](cc-logo.png)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'my-app:cc-logo.png')
       ]))
   })
 
   it('is prefixed to schemeless audio URLs', () => {
-    const text = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
+    const markup = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new AudioNode('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
       ]))
   })
 
   it('is prefixed to schemeless video URLs', () => {
-    const text = '[video: Chrono Cross ending cinematic](radical dreamers.webm)'
+    const markup = '[video: Chrono Cross ending cinematic](radical dreamers.webm)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new VideoNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
       ]))
   })
 
   it('is prefixed to schemeless linkified spoiler URLs', () => {
-    const text = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
+    const markup = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineSpoilerNode([
@@ -74,9 +74,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified NSFW URLs', () => {
-    const text = 'Walter White produces [NSFW: Blue Sky meth](wiki/Blue_Sky)'
+    const markup = 'Walter White produces [NSFW: Blue Sky meth](wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsfwNode([
@@ -88,9 +88,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified NSFLW URLs', () => {
-    const text = 'Walter White produces [NSFL: Blue Sky meth](wiki/Blue_Sky)'
+    const markup = 'Walter White produces [NSFL: Blue Sky meth](wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsflNode([
@@ -102,7 +102,7 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it("is prefixed to schemeless linkified footnote URLs", () => {
-    const text = "I don't eat cereal. (^Well, I eat one.)(cereals/lucky-charms?show=nutrition) Never have."
+    const markup = "I don't eat cereal. (^Well, I eat one.)(cereals/lucky-charms?show=nutrition) Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -110,7 +110,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       ], 'my-app:cereals/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -122,9 +122,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified audio URLs', () => {
-    const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg)(wiki/Blue_Sky)'
+    const markup = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg)(wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -134,9 +134,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified image URLs', () => {
-    const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png)(wiki/Blue_Sky)'
+    const markup = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png)(wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -146,9 +146,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified video URLs', () => {
-    const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm)(wiki/Blue_Sky)'
+    const markup = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm)(wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -158,9 +158,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless link URLs when the link content and URL are separated by whitespace', () => {
-    const text = '[Chrono Cross] (example.wiki/Chrono_Chross)'
+    const markup = '[Chrono Cross] (example.wiki/Chrono_Chross)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -169,9 +169,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to linkified schemeless spoiler URLs when the spoiler part and the URL are separated by whitespace', () => {
-    const text = 'Walter White produces [SPOILER: Blue Sky meth] (example.wiki/Blue_Sky)'
+    const markup = 'Walter White produces [SPOILER: Blue Sky meth] (example.wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineSpoilerNode([
@@ -183,9 +183,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified NSFW URLs when the NSFW part and the URL are separated by whitespace', () => {
-    const text = 'Walter White produces [NSFW: Blue Sky meth] (example.wiki/Blue_Sky)'
+    const markup = 'Walter White produces [NSFW: Blue Sky meth] (example.wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsfwNode([
@@ -197,9 +197,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified NSFL URLs when the NSFL part and the URL are separated by whitespace', () => {
-    const text = 'Walter White produces [NSFL: Blue Sky meth] (example.wiki/Blue_Sky)'
+    const markup = 'Walter White produces [NSFL: Blue Sky meth] (example.wiki/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsflNode([
@@ -211,7 +211,7 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it("is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace", () => {
-    const text = "I don't eat cereal. (^Well, I eat one.) [cereals.com/lucky-charms?show=nutrition] Never have."
+    const markup = "I don't eat cereal. (^Well, I eat one.) [cereals.com/lucky-charms?show=nutrition] Never have."
 
     const footnote = new FootnoteNode([
       new LinkNode([
@@ -219,7 +219,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       ], 'my-app:cereals.com/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -231,9 +231,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified audio URLs when the audio part and the linkifying URL are separated by whitespace', () => {
-    const text = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (wiki.com/Blue_Sky)'
+    const markup = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (wiki.com/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -243,9 +243,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified image URLs when the image part and the linkifying URL are separated by whitespace', () => {
-    const text = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (wiki.com/Blue_Sky)'
+    const markup = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (wiki.com/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -255,9 +255,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is prefixed to schemeless linkified video URLs when the video part and the linkifying URL are separated by whitespace', () => {
-    const text = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (wiki.com/Blue_Sky)'
+    const markup = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (wiki.com/Blue_Sky)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -267,9 +267,9 @@ describe('The "defaultUrlScheme" config setting', () => {
   })
 
   it('is not prefixed to URLs with an explicit scheme', () => {
-    const text = '[Chrono Cross](their-app:localhost/wiki/Chrono_Chross)'
+    const markup = '[Chrono Cross](their-app:localhost/wiki/Chrono_Chross)'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')

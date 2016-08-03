@@ -9,14 +9,14 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 context("A chart caption is exactly like a table caption.", () => {
   specify('It is evaluated for inline conventions', () => {
-    const text = `
+    const markup = `
 Chart: \`AND\` operator logic
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -46,14 +46,14 @@ Chart: \`AND\` operator logic
 
 
   specify('Its outer whitespace is trimmed away', () => {
-    const text = `
+    const markup = `
 Chart:  \t  \t  \`AND\` operator logic \t \t  
 
         1;      0
 0;      true;   false
 1;      false;  false`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -80,14 +80,14 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 
 describe("A chart with a caption (just like a chart without a caption)", () => {
   it('does not need to have a blank line before the header row', () => {
-    const text = `
+    const markup = `
 Chart: Games in the Chrono series
                 Release Date
 
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -106,12 +106,12 @@ Chrono Cross;     1999`
   })
 
   it('does not need any rows', () => {
-    const text = `
+    const markup = `
 Chart: Games in the Chrono series
 
         Release Date`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -129,11 +129,11 @@ Chart: Games in the Chrono series
 
 context("When there isn't a colon after the term for 'chart' in a chart's label line", () => {
   specify("the chart cannot have a caption", () => {
-    const text = `
+    const markup = `
 Chart the numbers.
 
 Do it now; I'm tired of waiting.`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
         new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),

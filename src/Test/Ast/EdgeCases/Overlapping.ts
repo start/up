@@ -39,9 +39,9 @@ describe('A paragraph with 2 separate instances of overlapped conventions', () =
 
 describe('A paragraph with 2 (separately!) overlapped links', () => {
   it('produces the correct nodes for each', () => {
-    const text = 'I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.'
+    const markup = 'I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all. I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.'
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([

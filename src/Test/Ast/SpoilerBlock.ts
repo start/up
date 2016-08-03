@@ -11,13 +11,13 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
 describe('A line consisting solely of "SPOILER:", followed by an indented block of text,', () => {
   it('produces a spoiler block node', () => {
-    const text = `
+    const markup = `
 SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -34,13 +34,13 @@ SPOILER:
 
 describe('The "SPOILER:" line in a spoiler block', () => {
   it('is case-insensitive', () => {
-    const text = `
+    const markup = `
 sPoiLeR:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -54,14 +54,14 @@ sPoiLeR:
   })
 
   it('can be followed by a blank line', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -75,14 +75,14 @@ SPOILER:
   })
 
   it('does require a trailing colon', () => {
-    const text = `
+    const markup = `
 SPOILER
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -96,7 +96,7 @@ SPOILER
   })
 
   it('can be followed by 2 blank lines', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
 
@@ -104,7 +104,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -118,7 +118,7 @@ SPOILER:
   })
 
   it('can be followed by 3 or more blank lines', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
 
@@ -128,7 +128,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -142,14 +142,14 @@ SPOILER:
   })
 
   it('can have whitespace after the colon', () => {
-    const text = `
+    const markup = `
 SPOILER:  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -163,14 +163,14 @@ SPOILER:  \t  \t
   })
 
   it("can have whitespace the 'spoiler' term if there isn't a colon", () => {
-    const text = `
+    const markup = `
 SPOILER  \t  \t  
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -188,7 +188,7 @@ SPOILER  \t  \t
 describe('Spoiler blocks', () => {
   context('can contain any outline convention, including: ', () => {
     specify('Other spoiler blocks', () => {
-      const text = `
+      const markup = `
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -197,7 +197,7 @@ SPOILER:
 
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new ParagraphNode([
@@ -213,7 +213,7 @@ SPOILER:
     })
 
     specify('Section separators indicated by 3 or more blank lines', () => {
-      const text = `
+      const markup = `
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -222,7 +222,7 @@ SPOILER:
 
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new ParagraphNode([
@@ -237,7 +237,7 @@ SPOILER:
     })
 
     specify('Code blocks', () => {
-      const text = `
+      const markup = `
 SPOILER:
 
   \`\`\`
@@ -249,7 +249,7 @@ SPOILER:
   }
   \`\`\``
 
-      expect(Up.toAst(text)).to.be.eql(
+      expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new SpoilerBlockNode([
             new CodeBlockNode(
@@ -265,12 +265,12 @@ SPOILER:
   })
 
   it('can be directly followed by a paragraph', () => {
-    const text = `
+    const markup = `
 SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
 That was my favorite episode.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -284,14 +284,14 @@ That was my favorite episode.`
   })
 
   it('are evaluated for inline conventions', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
   With a *very* sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -312,11 +312,11 @@ SPOILER:
 
 context('The indentation of a spoiler block can be provided by', () => {
   specify('2 spaces', () => {
-    const text = `
+    const markup = `
 SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -327,11 +327,11 @@ SPOILER:
   })
 
   specify('a tab', () => {
-    const text = `
+    const markup = `
 SPOILER:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -342,11 +342,11 @@ SPOILER:
   })
 
   specify('a space then a tab', () => {
-    const text = `
+    const markup = `
 SPOILER:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -357,7 +357,7 @@ SPOILER:
   })
 
   specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the spoiler block', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
 \tWell...
@@ -366,7 +366,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([

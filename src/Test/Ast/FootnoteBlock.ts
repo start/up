@@ -21,13 +21,13 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 describe('A footnote in a paragph', () => {
   it("produces a footnote block node after the paragraph", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -42,7 +42,7 @@ describe('A footnote in a paragph', () => {
 
 describe('A paragraph with two footnotes', () => {
   it("produces a single footnote block node after the paragraph for both footnotes", () => {
-    const text = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)"
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)"
 
     const footnotes = [
       new FootnoteNode([
@@ -53,7 +53,7 @@ describe('A paragraph with two footnotes', () => {
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -69,7 +69,7 @@ describe('A paragraph with two footnotes', () => {
 
 describe('Footnotes in a heading', () => {
   it('produce a footnote block after the heading', () => {
-    const text = `
+    const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 ------`
 
@@ -77,7 +77,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([
           new PlainTextNode("I don't eat cereal."),
@@ -94,7 +94,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
 describe('Footnotes in a line block', () => {
   it('produce a footnote block after the line block', () => {
-    const text = `
+    const markup = `
 Roses are red (^This is not my line.)
 Violets are blue (^Neither is this line. I think my mom made it up.)`
 
@@ -107,7 +107,7 @@ Violets are blue (^Neither is this line. I think my mom made it up.)`
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -127,7 +127,7 @@ Violets are blue (^Neither is this line. I think my mom made it up.)`
 
 describe('Footnotes in unordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
-    const text = `
+    const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -152,7 +152,7 @@ describe('Footnotes in unordered list items', () => {
       ], 4)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
 
@@ -197,14 +197,14 @@ describe('Footnotes in unordered list items', () => {
 
 describe('Footnotes in a blockquote', () => {
   it('produce footnote blocks within the blockquote', () => {
-    const text = "> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
+    const markup = "> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
     const footnote =
       new FootnoteNode([
         new PlainTextNode("Well, I do, but I pretend not to.")
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
           new ParagraphNode([
@@ -221,7 +221,7 @@ describe('Footnotes in a blockquote', () => {
 
 describe('Footnotes nested inside 2 or more outline conventions nested inside a blockquote', () => {
   it("produce footnote blocks inside the blockquote after all the appropriate outline conventions", () => {
-    const text = `
+    const markup = `
 > * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 >
 >   It's too expensive.
@@ -237,7 +237,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new BlockquoteNode([
 
@@ -274,7 +274,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 
 describe('Footnotes in a spoiler block', () => {
   it('produce footnote blocks within the spoiler block', () => {
-    const text = `
+    const markup = `
 SPOILER:
 
   This ruins the movie. [^ And this is a fun fact.]`
@@ -284,7 +284,7 @@ SPOILER:
         new PlainTextNode("And this is a fun fact.")
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
           new ParagraphNode([
@@ -300,7 +300,7 @@ SPOILER:
 
 describe('Footnotes nested inside 2 or more outline conventions nested inside a spoiler block', () => {
   it("produce footnote blocks inside the spoiler block after all the appropriate outline conventions", () => {
-    const text = `
+    const markup = `
 SPOILER:
 
   * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
@@ -318,7 +318,7 @@ SPOILER:
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new SpoilerBlockNode([
 
@@ -355,7 +355,7 @@ SPOILER:
 
 describe('Footnotes in a NSFW block', () => {
   it('produce footnote blocks within the NSFW block', () => {
-    const text = `
+    const markup = `
 NSFW:
 
   This ruins the movie. [^ And this is a fun fact.]`
@@ -365,7 +365,7 @@ NSFW:
         new PlainTextNode("And this is a fun fact.")
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -381,7 +381,7 @@ NSFW:
 
 describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFW block', () => {
   it("produce footnote blocks inside the NSFW block after all the appropriate outline conventions", () => {
-    const text = `
+    const markup = `
 NSFW:
 
   * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
@@ -399,7 +399,7 @@ NSFW:
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsfwBlockNode([
 
@@ -436,7 +436,7 @@ NSFW:
 
 describe('Footnotes in a NSFL block', () => {
   it('produce footnote blocks within the NSFL block', () => {
-    const text = `
+    const markup = `
 NSFL:
 
   This ruins the movie. [^ And this is a fun fact.]`
@@ -446,7 +446,7 @@ NSFL:
         new PlainTextNode("And this is a fun fact.")
       ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
           new ParagraphNode([
@@ -462,7 +462,7 @@ NSFL:
 
 describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFL block', () => {
   it("produce footnote blocks inside the NSFL block after all the appropriate outline conventions", () => {
-    const text = `
+    const markup = `
 NSFL:
 
   * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
@@ -480,7 +480,7 @@ NSFL:
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new NsflBlockNode([
 
@@ -517,7 +517,7 @@ NSFL:
 
 describe('Footnotes in a table header', () => {
   specify('are placed into a footnote block after the table', () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date [^ Only the year]
@@ -529,7 +529,7 @@ Final Fantasy II;   1988`
       new PlainTextNode('Only the year')
     ], 1)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -554,7 +554,7 @@ Final Fantasy II;   1988`
 
 describe('Footnotes in a table row', () => {
   specify("are placed into a footnote block after the table (after any footnotes in the table's header)", () => {
-    const text = `
+    const markup = `
 Table:
 
 Game;               Release Date [^ Only the year]
@@ -570,7 +570,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
       new PlainTextNode('Almost 1989')
     ], 2)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -598,7 +598,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
 
 describe('Footnotes in a table caption', () => {
   specify("are placed into a footnote block after the table (before any footnotes in the table's header and rows)", () => {
-    const text = `
+    const markup = `
 Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 
 Game;               Release Date [^ Only the year]
@@ -618,7 +618,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
       new PlainTextNode('Almost 1989')
     ], 3)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -652,7 +652,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
 
 describe("Footnotes in a chart's row header cell", () => {
   specify("are placed into a footnote block after the table (before footnotes in the same row and after footnotes in previous rows)", () => {
-    const text = `
+    const markup = `
 Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 
                                                       Release Date [^ Only the year]
@@ -680,7 +680,7 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
       new PlainTextNode('Almost 1989')
     ], 5)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -714,7 +714,7 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
 
 describe('Footnotes in ordered list items', () => {
   it('produce a footnote block that appears after the entire list', () => {
-    const text = `
+    const markup = `
 1) I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -730,7 +730,7 @@ describe('Footnotes in ordered list items', () => {
       ], 2)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -759,7 +759,7 @@ describe('Footnotes in ordered list items', () => {
 
 describe('Footnotes in description list terms and definitions', () => {
   it('produce a footnote block that appears after the entire description list', () => {
-    const text = `
+    const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. (^What happens to the creature if the seed is never planted?) The plant sprouts and grows with this Pokémon.
 
@@ -783,7 +783,7 @@ Gary
       ], 3)
     ]
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -827,7 +827,7 @@ Gary
 
 describe("In a document, footnotes' reference numbers", () => {
   it('do not reset between outline conventions.', () => {
-    const text = `
+    const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -852,7 +852,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         new PlainTextNode("It's actually been a dream of mine ever since I was young."),
       ], 3)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -888,7 +888,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
 describe("Within an outline convention, a blockquoted footnote that follows a non-blockquoted footnote", () => {
   it('has a reference number greater than that of the preceding footnote (inside the same outline convention), but it produces footnote block that appears before the footnote block of the preceding footnote', () => {
-    const text = `
+    const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -911,7 +911,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       new PlainTextNode("It's actually been a dream of mine ever since I was young.")
     ], 3)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -950,7 +950,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
 describe("Within an outline convention, a blockquoted nested footnote that follows a non-blockquoted nested footnote", () => {
   it('has a reference number lower than that of the preceding nested footnote (inside the same outline convention) because it gets referenced in an earlier footnote block', () => {
-    const text = `
+    const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
 
   It's too expensive.
@@ -984,7 +984,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       new PlainTextNode("It's actually been a dream of mine ever since I was young.")
     ], 5)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -1029,7 +1029,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
 describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
   it('appear in their footnote block after any non-nested footnotes (and are assigned reference numbers after any non-nested footnotes)', () => {
-    const text = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)"
+    const markup = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)"
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
@@ -1049,7 +1049,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       new PlainTextNode("Probably."),
     ], 2)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
@@ -1066,7 +1066,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
   })
 
   it('appear in the footnote block after any lesser nested footnotes (and are assigned reference numbers after any lesser-nested footnotes)', () => {
-    const text =
+    const markup =
       "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do* (^Only on Mondays...) but I pretend not to.) Never have. (^At least you've never seen me.)) Really. (^Probably.)"
 
     const footnoteInsideFirstInnerFootnote =
@@ -1098,7 +1098,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       new PlainTextNode("Probably."),
     ], 2)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
@@ -1117,7 +1117,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
   })
 
   it('have reference numbers coming before any footnotes in subsequent outline conventions (because they are referenced earlier)', () => {
-    const text = `
+    const markup = `
 Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)
 
 I don't eat (^Or touch.) pumpkins.`
@@ -1144,7 +1144,7 @@ I don't eat (^Or touch.) pumpkins.`
       new PlainTextNode("Or touch.")
     ], 4)
 
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),

@@ -17,11 +17,11 @@ context("A spoiler block's label line does not produce a spoiler block node if i
   })
 
   specify('immediately followed by non-indented text', () => {
-    const text = `
+    const markup = `
 Spoiler:
 No!
 Roses don't glow!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Spoiler:')]),
@@ -31,12 +31,12 @@ Roses don't glow!`
       ]))
   })
 
-  specify('followed a blank line then non-indented text', () => {
-    const text = `
+  specify('followed by a blank line then a non-indented line', () => {
+    const markup = `
 Spoiler:
 
 No!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
@@ -47,13 +47,13 @@ No!`
       ]))
   })
 
-  specify('followed 2 blank lines then non-indented text', () => {
-    const text = `
+  specify('followed by 2 blank lines then a non-indented line', () => {
+    const markup = `
 Spoiler:
 
 
 No!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
@@ -64,15 +64,15 @@ No!`
       ]))
   })
 
-  specify('followed 3 or more blank lines then non-indented text', () => {
-    const text = `
+  specify('followed by 3 or more blank lines then a non-indented line', () => {
+    const markup = `
 Spoiler:
 
 
 
 
 No!`
-    expect(Up.toAst(text)).to.be.eql(
+    expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')

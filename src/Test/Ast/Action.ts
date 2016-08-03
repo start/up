@@ -20,8 +20,8 @@ describe('Text surrounded by curly brackets', () => {
 })
 
 
-describe('The text of an action', () => {
-  it('is evaluated for other conventions', () => {
+describe('An action', () => {
+  it('is evaluated for inline conventions', () => {
     expect(Up.toAst('Well... {the *deepest* sigh} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well... '),

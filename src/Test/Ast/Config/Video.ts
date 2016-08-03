@@ -12,9 +12,9 @@ describe('The term that represents video conventions', () => {
   })
 
   it('comes from the "video" config term', () => {
-    const text = '[watch: Nevada caucus footage][https://example.com/video.webm]'
+    const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(up.toAst(text)).to.be.eql(
+    expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
