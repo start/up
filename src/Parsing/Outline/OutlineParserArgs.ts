@@ -4,7 +4,7 @@ import { UpConfig } from '../../UpConfig'
 
 
 export interface OutlineParserArgs {
-  lines: string[]
+  markupLines: string[]
   headingLeveler: HeadingLeveler
   config: UpConfig
   then: (resultNodes: OutlineSyntaxNode[], countLinesConsumed: number) => void

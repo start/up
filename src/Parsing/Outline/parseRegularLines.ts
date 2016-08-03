@@ -20,7 +20,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // And addresses do, too
 
 export function parseRegularLines(args: OutlineParserArgs): void {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
   //
@@ -53,7 +53,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   while (true) {
     let inlineNodes: InlineSyntaxNode[]
 
-    const wasLineConsumed = lineConsumer.consume({
+    const wasLineConsumed = markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
       then: line => {
@@ -84,7 +84,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     inlineNodesPerRegularLine.push(inlineNodes)
   }
 
-  const lengthConsumed = lineConsumer.countLinesConsumed
+  const lengthConsumed = markupLineConsumer.countLinesConsumed
 
   let regularLinesResultNode: OutlineSyntaxNode
 

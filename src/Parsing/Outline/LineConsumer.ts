@@ -7,7 +7,7 @@ export class LineConsumer {
     return this._countLinesConsumed
   }
 
-  getRemainingLines(): string[] {
+  remaining(): string[] {
     return this.lines.slice(this._countLinesConsumed)
   }
 

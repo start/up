@@ -13,12 +13,12 @@ export function getIndentedBlock(
     ) => void
   }
 ): void {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.lines)
   const indentedLines: string[] = []
   let indentedBlockLineCount = 0
 
-  while (!lineConsumer.done()) {
-    const wasLineBlank = lineConsumer.consume({
+  while (!markupLineConsumer.done()) {
+    const wasLineBlank = markupLineConsumer.consume({
       linePattern: BLANK_PATTERN,
       then: line => {
         indentedLines.push(line)
@@ -32,7 +32,7 @@ export function getIndentedBlock(
       continue
     }
 
-    const wasLineIndented = lineConsumer.consume({
+    const wasLineIndented = markupLineConsumer.consume({
       linePattern: INDENTED_PATTERN,
       then: line => {
         indentedLines.push(line)

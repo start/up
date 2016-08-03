@@ -9,12 +9,12 @@ import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 
 // If text is underlined, it's treated as a heading. Headings can have an optional overline, too.
 export function tryToParseHeading(args: OutlineParserArgs): boolean {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // First, let's try to consume the optional overline...
   let optionalOverline: string
 
-  lineConsumer.consume({
+  markupLineConsumer.consume({
     linePattern: DIVIDER_STREAK_PATTERN,
     then: line => {
       optionalOverline = line
@@ -26,7 +26,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   const hasContentAndUnderline = (
     // Now, let's consume the content...
-    lineConsumer.consume({
+    markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       then: line => {
         rawContent = line
@@ -34,7 +34,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     })
 
     // ... and the underline.
-    && lineConsumer.consume({
+    && markupLineConsumer.consume({
       if: line => DIVIDER_STREAK_PATTERN.test(line) && isUnderlineConsistentWithOverline(optionalOverline, line),
       then: line => {
         underline = line
@@ -68,7 +68,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   args.then(
     [new HeadingNode(headingChildren, headingLevel)],
-    lineConsumer.countLinesConsumed)
+    markupLineConsumer.countLinesConsumed)
 
   return true
 }

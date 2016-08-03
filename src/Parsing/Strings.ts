@@ -1,7 +1,7 @@
 // Eventually, these values might be configurable.
 
 
-// Line breaks to expect in the input text
+// Line breaks to expect in the markup
 export const INPUT_LINE_BREAK = '\n'
 
 // Line breaks to include in the final document 

@@ -58,7 +58,7 @@ import { getTableCells } from './getTableCells'
 // 0;      true;   false
 // 1;      false;  false
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { config } = args
   const { terms } = config.settings.i18n
@@ -74,13 +74,13 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   }
 
   const isTable =
-    lineConsumer.consume({
+    markupLineConsumer.consume({
       linePattern: getLabelPattern(terms.table),
       then: setRawCaptionContent
     })
 
   const isChart =
-    !isTable && lineConsumer.consume({
+    !isTable && markupLineConsumer.consume({
       linePattern: getLabelPattern(terms.chart),
       then: setRawCaptionContent
     })
@@ -92,8 +92,8 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   let headerCells: TableNode.Header.Cell[]
 
   const hasHeader =
-    !tryToTerminateTable(lineConsumer)
-    && lineConsumer.consume({
+    !tryToTerminateTable(markupLineConsumer)
+    && markupLineConsumer.consume({
       then: line => {
         headerCells = getTableCells(line, config).map(toHeaderCell)
       }
@@ -128,10 +128,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   let countLinesConsumed: number
 
   do {
-    countLinesConsumed = lineConsumer.countLinesConsumed
+    countLinesConsumed = markupLineConsumer.countLinesConsumed
   } while (
-    !tryToTerminateTable(lineConsumer)
-    && lineConsumer.consume({
+    !tryToTerminateTable(markupLineConsumer)
+    && markupLineConsumer.consume({
       then: line => {
         const cells = getTableCells(line, config)
 
@@ -153,9 +153,9 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 // Returns true if it's able to consume 2 blank lines.
 //
 // Note: If there was just 1 blank line, this function will still consume it.
-function tryToTerminateTable(lineConsumer: LineConsumer): boolean {
+function tryToTerminateTable(markupLineConsumer: LineConsumer): boolean {
   function consumeBlankLine(): boolean {
-    return lineConsumer.consume({ linePattern: BLANK_PATTERN })
+    return markupLineConsumer.consume({ linePattern: BLANK_PATTERN })
   }
 
   return consumeBlankLine() && consumeBlankLine()

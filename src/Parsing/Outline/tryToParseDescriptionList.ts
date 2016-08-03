@@ -19,16 +19,16 @@ import { getIndentedBlock } from './getIndentedBlock'
 // Description list items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole description list, not just the list item. 
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: DescriptionListNode.Item[] = []
   let countLinesConsumed = 0
 
-  while (!lineConsumer.done()) {
+  while (!markupLineConsumer.done()) {
     let rawTerms: string[] = []
 
     // First, we collect every term for the next description.
-    while (!lineConsumer.done()) {
-      const isTerm = lineConsumer.consume({
+    while (!markupLineConsumer.done()) {
+      const isTerm = markupLineConsumer.consume({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
         then: line => {
@@ -48,7 +48,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
-    const hasDescription = lineConsumer.consume({
+    const hasDescription = markupLineConsumer.consume({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
       then: line => {
@@ -65,16 +65,16 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     let shouldTerminateList = false
 
     getIndentedBlock({
-      lines: lineConsumer.getRemainingLines(),
+      lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
         descriptionLines.push(...indentedLines)
-        lineConsumer.skipLines(countLinesConsumedByIndentedBlock)
+        markupLineConsumer.skipLines(countLinesConsumedByIndentedBlock)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
     // Alright, we have our description! Let's update our length parsed accordingly.
-    countLinesConsumed = lineConsumer.countLinesConsumed
+    countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const terms =
       rawTerms.map(term => new DescriptionListNode.Item.Term(getInlineNodes(term, args.config)))

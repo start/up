@@ -10,11 +10,11 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // If no matching end streak is found, the code block extends to the end of the document (or to
 // the end of the current outline convention, if the code block is nested within one).
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.markupLines)
 
   let startStreak: string
 
-  lineConsumer.consume({
+  markupLineConsumer.consume({
     linePattern: CODE_BLOCK_STREAK_PATTERN,
     then: match => {
       startStreak = match
@@ -28,10 +28,10 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const codeLines: string[] = []
 
   // Let's keep consuming lines until we find a streak that matches the first one.
-  while (!lineConsumer.done()) {
+  while (!markupLineConsumer.done()) {
     let possibleEndStreak: string
 
-    lineConsumer.consume({
+    markupLineConsumer.consume({
       linePattern: CODE_BLOCK_STREAK_PATTERN,
       then: match => {
         possibleEndStreak = match
@@ -41,7 +41,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
     if (!possibleEndStreak) {
       // If we don't have a possible end streak, we'll just treat this line as code and move
       // on to the next one.
-      lineConsumer.consume({
+      markupLineConsumer.consume({
         then: line => {
           codeLines.push(line)
         }
@@ -62,7 +62,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   }
 
   const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
-  args.then([codeBlock], lineConsumer.countLinesConsumed)
+  args.then([codeBlock], markupLineConsumer.countLinesConsumed)
 
   return true
 }

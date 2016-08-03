@@ -22,7 +22,7 @@ import { UpConfig } from '../../UpConfig'
 
 
 export function getOutlineNodes(
-  lines: string[],
+  markupLines: string[],
   headingLeveler: HeadingLeveler,
   config: UpConfig
 ): OutlineSyntaxNode[] {
@@ -43,17 +43,17 @@ export function getOutlineNodes(
     tryToParseDescriptionList
   ]
 
-  const lineConsumer = new LineConsumer(withoutOuterBlankLines(lines))
+  const markupLineConsumer = new LineConsumer(withoutOuterBlankLines(markupLines))
   const outlineNodes: OutlineSyntaxNode[] = []
 
-  while (!lineConsumer.done()) {
+  while (!markupLineConsumer.done()) {
     const outlineParserArgs = {
-      lines: lineConsumer.getRemainingLines(),
+      markupLines: markupLineConsumer.remaining(),
       headingLeveler,
       config,
       then: (newNodes: OutlineSyntaxNode[], countLinesConsumed: number) => {
         outlineNodes.push(...newNodes)
-        lineConsumer.skipLines(countLinesConsumed)
+        markupLineConsumer.skipLines(countLinesConsumed)
       }
     }
 

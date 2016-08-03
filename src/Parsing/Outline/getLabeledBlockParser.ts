@@ -15,23 +15,23 @@ export function getLabeledBlockParser(
   NodeType: new (children: OutlineSyntaxNode[]) => OutlineSyntaxNode
 ) {
   return function tryToParseLabeledBlock(args: OutlineParserArgs): boolean {
-    const lineConsumer = new LineConsumer(args.lines)
+    const markupLineConsumer = new LineConsumer(args.markupLines)
 
     const labelLinePattern =
       solelyAndIgnoringCapitalization(
         escapeForRegex(labelTerm) + optional(':'))
 
-    if (!lineConsumer.consume({ linePattern: labelLinePattern })) {
+    if (!markupLineConsumer.consume({ linePattern: labelLinePattern })) {
       return false
     }
 
     const contentLines: string[] = []
 
     getIndentedBlock({
-      lines: lineConsumer.getRemainingLines(),
+      lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumed) => {
         contentLines.push(...indentedLines)
-        lineConsumer.skipLines(countLinesConsumed)
+        markupLineConsumer.skipLines(countLinesConsumed)
       }
     })
 
@@ -41,7 +41,7 @@ export function getLabeledBlockParser(
 
     const children = getOutlineNodes(contentLines, args.headingLeveler, args.config)
 
-    args.then([new NodeType(children)], lineConsumer.countLinesConsumed)
+    args.then([new NodeType(children)], markupLineConsumer.countLinesConsumed)
     return true
   }
 }

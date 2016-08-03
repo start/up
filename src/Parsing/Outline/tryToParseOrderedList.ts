@@ -16,13 +16,13 @@ import { getIndentedBlock } from './getIndentedBlock'
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
 export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
-  const lineConsumer = new LineConsumer(args.lines)
+  const markupLineConsumer = new LineConsumer(args.markupLines)
   const rawListItems: RawListItem[] = []
 
-  while (!lineConsumer.done()) {
+  while (!markupLineConsumer.done()) {
     let rawListItem: RawListItem
 
-    const isLineBulleted = lineConsumer.consume({
+    const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: (line, bullet) => {
@@ -38,10 +38,10 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     let shouldTerminateList = false
 
     getIndentedBlock({
-      lines: lineConsumer.getRemainingLines(),
+      lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
         rawListItem.lines.push(...indentedLines)
-        lineConsumer.skipLines(countLinesConsumed)
+        markupLineConsumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
@@ -63,7 +63,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
       getExplicitOrdinal(rawListItem))
   })
 
-  args.then([new OrderedListNode(listItems)], lineConsumer.countLinesConsumed)
+  args.then([new OrderedListNode(listItems)], markupLineConsumer.countLinesConsumed)
   return true
 }
 
