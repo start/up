@@ -141,7 +141,7 @@ export class RaisedVoiceHandler {
   treatUnusedStartDelimitersAsPlainText(): void {
     for (const startDelimiter of this.startDelimiters) {
       if (startDelimiter.isUnused()) {
-        this.args.insertPlainTextToken(startDelimiter.text, startDelimiter.tokenIndex)
+        this.args.insertPlainTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
       }
     }
   }

@@ -1,5 +1,5 @@
 export class RaisedVoiceStartDelimiter {
-  constructor(public text: string, public tokenIndex: number, public unspentLength = text.length) { }
+  constructor(public delimiterText: string, public tokenIndex: number, public unspentLength = delimiterText.length) { }
 
   canAfford(cost: number): boolean {
     return this.unspentLength >= cost
@@ -14,7 +14,7 @@ export class RaisedVoiceStartDelimiter {
   }
 
   isUnused(): boolean {
-    return this.unspentLength === this.text.length
+    return this.unspentLength === this.delimiterText.length
   }
 
   isFullySpent(): boolean {
@@ -28,6 +28,6 @@ export class RaisedVoiceStartDelimiter {
   }
 
   clone(): RaisedVoiceStartDelimiter {
-    return new RaisedVoiceStartDelimiter(this.text, this.tokenIndex, this.unspentLength)
+    return new RaisedVoiceStartDelimiter(this.delimiterText, this.tokenIndex, this.unspentLength)
   }
 }
