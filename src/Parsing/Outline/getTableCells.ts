@@ -33,8 +33,8 @@ export function getTableCells(row: string, config: UpConfig): TableNode.Cell[] {
   let charIndex = 0
 
   function collectCell(args: { countColumnsSpanned: number }): void {
-    const rawCellValue = row.slice(charIndexOfStartOfNextCell, charIndex)
-    const cellChildren = getInlineNodes(rawCellValue.trim(), config)
+    const cellMarkup = row.slice(charIndexOfStartOfNextCell, charIndex)
+    const cellChildren = getInlineNodes(cellMarkup.trim(), config)
 
     cells.push(new TableCell(cellChildren, args.countColumnsSpanned))
   }

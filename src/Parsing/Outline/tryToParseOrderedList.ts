@@ -17,17 +17,17 @@ import { getIndentedBlock } from './getIndentedBlock'
 // blank lines terminates the whole list.
 export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
-  const rawListItems: RawListItem[] = []
+  const unparsedListItems: UnparsedListItem[] = []
 
   while (!markupLineConsumer.done()) {
-    let rawListItem: RawListItem
+    let unparsedListItem: UnparsedListItem
 
     const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: (line, bullet) => {
-        rawListItem = new RawListItem(bullet)
-        rawListItem.lines.push(line.replace(BULLETED_PATTERN, ''))
+        unparsedListItem = new UnparsedListItem(bullet)
+        unparsedListItem.markupLines.push(line.replace(BULLETED_PATTERN, ''))
       }
     })
 
@@ -40,27 +40,27 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     getIndentedBlock({
       lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
-        rawListItem.lines.push(...indentedLines)
+        unparsedListItem.markupLines.push(...indentedLines)
         markupLineConsumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
-    rawListItems.push(rawListItem)
+    unparsedListItems.push(unparsedListItem)
 
     if (shouldTerminateList) {
       break
     }
   }
 
-  if (!isAnOrderedList(rawListItems)) {
+  if (!isAnOrderedList(unparsedListItems)) {
     return false
   }
 
-  let listItems = rawListItems.map((rawListItem) => {
+  let listItems = unparsedListItems.map((unparsedListItem) => {
     return new OrderedListNode.Item(
-      getOutlineNodes(rawListItem.lines, args.headingLeveler, args.config),
-      getExplicitOrdinal(rawListItem))
+      getOutlineNodes(unparsedListItem.markupLines, args.headingLeveler, args.config),
+      getExplicitOrdinal(unparsedListItem))
   })
 
   args.then([new OrderedListNode(listItems)], markupLineConsumer.countLinesConsumed)
@@ -68,15 +68,15 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 }
 
 
-class RawListItem {
-  lines: string[] = []
+class UnparsedListItem {
+  markupLines: string[] = []
 
   constructor(public bullet: string) { }
 }
 
 
-function isAnOrderedList(rawListItems: RawListItem[]): boolean {
-  const { length } = rawListItems
+function isAnOrderedList(unparsedListItems: UnparsedListItem[]): boolean {
+  const { length } = unparsedListItems
 
   return (
     // If there aren't any list items, we're not dealing with an ordered list.
@@ -97,12 +97,12 @@ function isAnOrderedList(rawListItems: RawListItem[]): boolean {
       // Did the author intend the paragraph be an ordered list with a single item? Probably not.
       //
       // Therefore, if the first bullet style is used, we require more than one list item.
-      (length > 1) || !BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(rawListItems[0].bullet)))
+      (length > 1) || !BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(unparsedListItems[0].bullet)))
 }
 
 
-function getExplicitOrdinal(rawListItem: RawListItem): number {
-  const result = FIRST_INTEGER_PATTERN.exec(rawListItem.bullet)
+function getExplicitOrdinal(unparsedListItem: UnparsedListItem): number {
+  const result = FIRST_INTEGER_PATTERN.exec(unparsedListItem.bullet)
 
   return (
     result

@@ -15,16 +15,16 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 //
 // For simplicity, we test tables.  
 
-function expectTableCellToBeNumeric(rawCellValue: string): void {
+function expectTableCellToBeNumeric(cellMarkup: string): void {
   expectTableCell({
-    withRawValue: rawCellValue,
+    withRawValue: cellMarkup,
     toBeNumeric: true
   })
 }
 
-function expectTableCellNotToBeNumeric(rawCellValue: string): void {
+function expectTableCellNotToBeNumeric(cellMarkup: string): void {
   expectTableCell({
-    withRawValue: rawCellValue,
+    withRawValue: cellMarkup,
     toBeNumeric: false
   })
 }
@@ -35,11 +35,11 @@ function expectTableCell(args: { withRawValue: string, toBeNumeric: boolean }): 
   expect(isCellNumeric(withRawValue)).to.be.eql(toBeNumeric)
 }
 
-function isCellNumeric(rawCellValue: string): boolean {
+function isCellNumeric(cellMarkup: string): boolean {
   const markup = `
 Table
 Dummy Header Cell
-${rawCellValue};`
+${cellMarkup};`
 
   const table =
     Up.toAst(markup).children[0] as TableNode

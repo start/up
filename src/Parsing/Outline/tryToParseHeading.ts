@@ -21,7 +21,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     }
   })
 
-  let rawContent: string
+  let contentMarkup: string
   let underline: string
 
   const hasContentAndUnderline = (
@@ -29,7 +29,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       then: line => {
-        rawContent = line
+        contentMarkup = line
       }
     })
 
@@ -57,14 +57,14 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     //
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
-    && !isLineFancyOutlineConvention(rawContent, args.config))
+    && !isLineFancyOutlineConvention(contentMarkup, args.config))
 
   if (!hasContentAndUnderline) {
     return false
   }
 
   const headingLevel = args.headingLeveler.registerUnderlineAndGetLevel(underline)
-  const headingChildren = getInlineNodes(rawContent, args.config)
+  const headingChildren = getInlineNodes(contentMarkup, args.config)
 
   args.then(
     [new HeadingNode(headingChildren, headingLevel)],

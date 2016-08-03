@@ -24,7 +24,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   let countLinesConsumed = 0
 
   while (!markupLineConsumer.done()) {
-    let rawTerms: string[] = []
+    let markupPerTerm: string[] = []
 
     // First, we collect every term for the next description.
     while (!markupLineConsumer.done()) {
@@ -32,7 +32,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
         then: line => {
-          rawTerms.push(line)
+          markupPerTerm.push(line)
         }
       })
 
@@ -41,7 +41,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       }
     }
 
-    if (!rawTerms.length) {
+    if (!markupPerTerm.length) {
       break
     }
 
@@ -77,7 +77,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const terms =
-      rawTerms.map(term => new DescriptionListNode.Item.Term(getInlineNodes(term, args.config)))
+      markupPerTerm.map(term => new DescriptionListNode.Item.Term(getInlineNodes(term, args.config)))
 
     const description =
       new DescriptionListNode.Item.Description(

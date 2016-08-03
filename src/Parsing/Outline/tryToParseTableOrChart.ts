@@ -67,10 +67,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     solelyAndIgnoringCapitalization(
       escapeForRegex(term) + optional(':' + capture(REST_OF_TEXT)))
 
-  let rawCaptionContent: string
+  let captionMarkup: string
 
   const setRawCaptionContent = (_: string, caption: string): void => {
-    rawCaptionContent = (caption || '').trim()
+    captionMarkup = (caption || '').trim()
   }
 
   const isTable =
@@ -120,8 +120,8 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   // * The header was missing
   // * The label line (with the caption) was followed by 2 or more blank lines  
   const caption =
-    rawCaptionContent
-      ? new TableNode.Caption(getInlineNodes(rawCaptionContent, config))
+    captionMarkup
+      ? new TableNode.Caption(getInlineNodes(captionMarkup, config))
       : undefined
 
   const rows: TableNode.Row[] = []
