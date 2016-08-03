@@ -64,6 +64,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     let shouldTerminateList = false
 
+    // Let's collect the rest of the lines in the description (if there are any)  
     getIndentedBlock({
       lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
