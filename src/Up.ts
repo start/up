@@ -7,17 +7,6 @@ import { UpConfigSettings } from './UpConfigSettings'
 
 
 export class Up {
-  private static default: Up = new Up()
-
-  static toAst(markup: string, settings?: UpConfigSettings): DocumentNode {
-    return this.default.toAst(markup, settings)
-  }
-
-  static toHtml(markupOrSyntaxNode: string | SyntaxNode, settings?: UpConfigSettings): string {
-    return this.default.toHtml(markupOrSyntaxNode, settings)
-  }
-
-
   private config: UpConfig
 
   constructor(settings?: UpConfigSettings) {
@@ -30,6 +19,32 @@ export class Up {
 
   toHtml(markupOrSyntaxNode: string | SyntaxNode, extraSettings?: UpConfigSettings): string {
     return toHtml(markupOrSyntaxNode, this.config.withChanges(extraSettings))
+  }
+}
+
+
+// This namespace allows developers to use Up without having to create any instances
+// of the Up class.
+//
+// Though it's never necessary to create instances of the Up class, it's sometimes more
+// convenient.
+//
+// For example, let's say you're parsing an article and its comments. You want to use
+// custom Japanese terms instead of the default English terms, and you want to specify
+// a unique document name for each comment (to prevent ID collisions).
+//
+// By creating an instance of the Up class, you can specify those custom Japanese terms
+// just once (in the constructor). Then, when parsing each comment, you only need to
+// provide a unique document name.
+export namespace Up {
+  const defaultUp = new Up()
+
+  export function toAst(markup: string, settings?: UpConfigSettings): DocumentNode {
+    return defaultUp.toAst(markup, settings)
+  }
+
+  export function toHtml(markupOrSyntaxNode: string | SyntaxNode, settings?: UpConfigSettings): string {
+    return defaultUp.toHtml(markupOrSyntaxNode, settings)
   }
 }
 

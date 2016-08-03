@@ -20,7 +20,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const { node, htmlFromDefaultSettings, configChanges, conflictingConfigChanges } = args
 
 
-  describe("when provided to the default (static) toHtml method", () => {
+  describe("when provided to the default toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
       // We don't care about the result! We only care to ensure these config settings don't apply to subsequent calls.
       Up.toHtml(node, configChanges)
@@ -53,7 +53,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 
   describe('when provided to an Up object at creation', () => {
-    it('has the same result as providing the term when calling the (default) static toHtml method', () => {
+    it('has the same result as providing the term when calling the default toHtml method', () => {
       expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
     })
 

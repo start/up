@@ -23,7 +23,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     Up.toAst(textForDefaultSettings)
 
 
-  describe("when provided to the default (static) toAst method", () => {
+  describe("when provided to the default toAst method", () => {
     it("does not alter subsequent calls to the default method", () => {
       expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
     })
@@ -58,7 +58,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe('when provided to an Up object at creation', () => {
-    it('has the same result as providing the term when calling the (default) static toAst method', () => {
+    it('has the same result as providing the term when calling the default toAst method', () => {
       expect(whenProvidingChangesAtCreation).to.be.eql(Up.toAst(textForConfigChanges, configChanges))
     })
 
@@ -257,7 +257,7 @@ context('Config settings are totally independent. When one setting is changed, t
       ]))
   })
 
-  specify('the default (static) Up object ', () => {
+  specify('the default Up object', () => {
     const ast =
       Up.toAst('[SPOILER: Ash fights Gary]', {
         i18n: {
