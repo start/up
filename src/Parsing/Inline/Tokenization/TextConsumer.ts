@@ -1,22 +1,22 @@
 export class TextConsumer {
-  private _remainingText: string
+  private _remaining: string
   private _textIndex: number
   private _currentChar: string
   private _previousChar: string
 
   constructor(private entireText: string) {
-    this.textIndex = 0
+    this.index = 0
   }
 
-  get remainingText(): string {
-    return this._remainingText
+  get remaining(): string {
+    return this._remaining
   }
 
-  get textIndex(): number {
+  get index(): number {
     return this._textIndex
   }
 
-  set textIndex(value: number) {
+  set index(value: number) {
     this._textIndex = value
     this.updateComputedTextFields()
   }
@@ -40,7 +40,7 @@ export class TextConsumer {
     }
   ): boolean {
     const { pattern, thenBeforeAdvancingTextIndex } = args
-    const result = pattern.exec(this._remainingText)
+    const result = pattern.exec(this._remaining)
 
     if (!result) {
       return false
@@ -53,13 +53,13 @@ export class TextConsumer {
       thenBeforeAdvancingTextIndex(match, charAfterMatch, ...captures)
     }
 
-    this.textIndex += match.length
+    this.index += match.length
     return true
   }
 
   private updateComputedTextFields(): void {
-    this._remainingText = this.entireText.substr(this._textIndex)
-    this._currentChar = this._remainingText[0]
+    this._remaining = this.entireText.substr(this._textIndex)
+    this._currentChar = this._remaining[0]
     this._previousChar = this.entireText[this._textIndex - 1]
   }
 }

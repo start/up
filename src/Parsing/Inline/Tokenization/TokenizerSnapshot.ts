@@ -4,7 +4,7 @@ import { Token } from './Token'
 
 
 export interface TokenizerSnapshot {
-  textIndex: number
+  markupIndex: number
   tokens: Token[]
   openContexts: ConventionContext[]
   raisedVoiceHandlers: RaisedVoiceHandler[]

@@ -26,9 +26,9 @@ import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(text: string, config: UpConfig): Token[] {
+export function tokenize(markup: string, config: UpConfig): Token[] {
   const textWithoutLeadingWhitespace =
-    text.replace(LEADING_WHITESPACE_PATTERN, '')
+    markup.replace(LEADING_WHITESPACE_PATTERN, '')
 
   return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
 }
@@ -40,7 +40,7 @@ const LEADING_WHITESPACE_PATTERN =
 class Tokenizer {
   tokens: Token[] = []
 
-  private textConsumer: TextConsumer
+  private markupConsumer: TextConsumer
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a PlainTextToken.
@@ -133,7 +133,7 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(entireText: string, private config: UpConfig) {
-    this.textConsumer = new TextConsumer(entireText)
+    this.markupConsumer = new TextConsumer(entireText)
     this.configureConventions()
 
     this.tokenize()
@@ -600,7 +600,7 @@ class Tokenizer {
   }
 
   private isDone(): boolean {
-    return this.textConsumer.done() && this.tryToResolveUnclosedContexts()
+    return this.markupConsumer.done() && this.tryToResolveUnclosedContexts()
   }
 
   private tryToResolveUnclosedContexts(): boolean {
@@ -623,9 +623,9 @@ class Tokenizer {
   }
 
   private tryToCollectEscapedChar(): boolean {
-    if (this.textConsumer.currentChar === ESCAPER_CHAR) {
-      this.textConsumer.textIndex += 1
-      return this.textConsumer.done() || this.bufferCurrentChar()
+    if (this.markupConsumer.currentChar === ESCAPER_CHAR) {
+      this.markupConsumer.index += 1
+      return this.markupConsumer.done() || this.bufferCurrentChar()
     }
 
     return false
@@ -634,7 +634,7 @@ class Tokenizer {
   // This method exists purely for optimization.
   private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
     const tryToBuffer = (pattern: RegExp) =>
-      this.textConsumer.consume({
+      this.markupConsumer.consume({
         pattern,
         thenBeforeAdvancingTextIndex: match => { this.buffer += match }
       })
@@ -694,7 +694,7 @@ class Tokenizer {
         this.backtrackToBeforeContext(context)
 
         // We know for a fact that we won't be able to close any other conventions at our new (backtracked)
-        // text index; we already tried to close all of them when we opened the now-failed convention. So
+        // markup index; we already tried to close all of them when we opened the now-failed convention. So
         // let's just return false and let the tokenizer continue at the next step.
         return false
       }
@@ -719,7 +719,7 @@ class Tokenizer {
       (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
       || (
         convention.endsWith
-        && this.textConsumer.consume({ pattern: convention.endsWith })))
+        && this.markupConsumer.consume({ pattern: convention.endsWith })))
   }
 
   private tryToCloseConvention(args: { belongingToContextAtIndex: number }): boolean {
@@ -753,7 +753,7 @@ class Tokenizer {
   }
 
   private isCurrentCharWhitespace(): boolean {
-    return WHITESPACE_CHAR_PATTERN.test(this.textConsumer.currentChar)
+    return WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar)
   }
 
   private tryToOpenSubsequentConventionRequiredBy(closedContext: ConventionContext): boolean {
@@ -773,21 +773,21 @@ class Tokenizer {
   private tryToCloseAnyRaisedVoices(): boolean {
     // For a delimiter to close any raised voice conventions, it must look like it's touching the end
     // of some content (i.e. it must be following a non-whitespace character).
-    if (!NON_BLANK_PATTERN.test(this.textConsumer.previousChar)) {
+    if (!NON_BLANK_PATTERN.test(this.markupConsumer.previousChar)) {
       return false
     }
 
     return this.raisedVoiceHandlers.some(handler => {
       let didCloseAnyRaisedVoices = false
 
-      this.textConsumer.consume({
+      this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeAdvancingTextIndex: delimiter => {
           didCloseAnyRaisedVoices = handler.tryToCloseAnyRaisedVoices(delimiter)
 
           if (!didCloseAnyRaisedVoices) {
-            this.textConsumer.textIndex -= delimiter.length
+            this.markupConsumer.index -= delimiter.length
           }
         }
       })
@@ -926,7 +926,7 @@ class Tokenizer {
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
     return this.raisedVoiceHandlers.some(handler =>
-      this.textConsumer.consume({
+      this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeAdvancingTextIndex: (delimiter, charAfterMatch) => {
@@ -953,11 +953,11 @@ class Tokenizer {
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
     return tryToTokenizeCodeOrUnmatchedDelimiter({
-      markup: this.textConsumer.remainingText,
+      markup: this.markupConsumer.remaining,
       then: (resultToken, lengthConsumed) => {
         this.flushNonEmptyBufferToPlainTextToken()
         this.appendToken(resultToken)
-        this.textConsumer.textIndex += lengthConsumed
+        this.markupConsumer.index += lengthConsumed
       }
     })
   }
@@ -969,8 +969,8 @@ class Tokenizer {
 
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
-    this.buffer += this.textConsumer.currentChar
-    this.textConsumer.textIndex += 1
+    this.buffer += this.markupConsumer.currentChar
+    this.markupConsumer.index += 1
 
     return true
   }
@@ -981,7 +981,7 @@ class Tokenizer {
     return (
       this.canTry(convention)
 
-      && this.textConsumer.consume({
+      && this.markupConsumer.consume({
         pattern: startsWith,
 
         thenBeforeAdvancingTextIndex: (match, charAfterMatch, ...captures) => {
@@ -1000,7 +1000,7 @@ class Tokenizer {
 
   private getCurrentSnapshot(): TokenizerSnapshot {
     return {
-      textIndex: this.textConsumer.textIndex,
+      markupIndex: this.markupConsumer.index,
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
       raisedVoiceHandlers: this.raisedVoiceHandlers.map(handler => handler.clone()),
@@ -1009,7 +1009,7 @@ class Tokenizer {
   }
 
   private canTry(conventionToOpen: Convention): boolean {
-    const textIndex = this.textConsumer.textIndex
+    const textIndex = this.markupConsumer.index
 
     // If a convention must be followed by one of a set of specific conventions, then there are really
     // three ways that convention can fail:
@@ -1024,7 +1024,7 @@ class Tokenizer {
     //
     // To handle that third case, we also check whether any of the subsequent required conventions have
     // failed. This is made easier by the fact that any subsequent required conventions inherit the
-    // snapshot of their "parent", and therefore have their failure registered at parent's text index.
+    // snapshot of their "parent", and therefore have their failure registered at parent's markup index.
     //
     // If a subsequent required convention has failed, we consider the parent convention to have failed,
     // too, and we don't try opening it again. This logic is subject to change, but for now, because all
@@ -1062,7 +1062,7 @@ class Tokenizer {
 
     this.tokens = snapshot.tokens
     this.buffer = snapshot.buffer
-    this.textConsumer.textIndex = snapshot.textIndex
+    this.markupConsumer.index = snapshot.markupIndex
     this.openContexts = snapshot.openContexts
     this.raisedVoiceHandlers = snapshot.raisedVoiceHandlers
   }
