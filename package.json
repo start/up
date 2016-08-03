@@ -2,8 +2,9 @@
   "private": true,
   "name": "up",
   "version": "0.0.0",
-  "description": "Up is a lightweight markup language for writing in plain text",
+  "description": "A lightweight markup language for writing structured documents in plain text",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
